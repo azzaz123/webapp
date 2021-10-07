@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { EventService } from '@core/event/event.service';
-import { I18nService } from '@core/i18n/i18n.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
@@ -33,6 +31,7 @@ import { CreditCardFormErrorMessages } from '@private/features/wallet/interfaces
 import { Location } from '@angular/common';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
+import { CREDIT_CARD_TRANSLATIONS } from '@private/features/wallet/translations/credit-card.translations';
 
 @Component({
   selector: 'tsl-credit-card',
@@ -60,7 +59,6 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     private uuidService: UuidService,
     private eventService: EventService,
     private toastService: ToastService,
-    private i18nService: I18nService,
     private paymentsCreditCardService: PaymentsCreditCardService,
     private router: Router,
     private location: Location
@@ -107,7 +105,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       this.submitValidForm();
     } else {
       this.creditCardForm.markAsPending();
-      this.showToast(TRANSLATION_KEY.CREDIT_CARD_MISSING_INFO_ERROR, TOAST_TYPES.ERROR);
+      this.showToast(CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR, TOAST_TYPES.ERROR);
       this.markInvalidFields();
     }
   }
@@ -138,7 +136,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         () => {
-          this.showToast(TRANSLATION_KEY.CREDIT_CARD_CREATE_SUCCESS, TOAST_TYPES.SUCCESS);
+          this.showToast(CREDIT_CARD_TRANSLATIONS.CREATE_SUCCESS, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
           this.router.navigate([this.BANK_DETAILS_URL]);
         },
@@ -163,7 +161,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   }
 
   private handleCreditCardErrors(errors: PaymentsCardsError[]): void {
-    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.FORM_FIELD_ERROR;
+    let toastText: string = CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR;
 
     errors.forEach((error: PaymentsCardsError) => {
       if (error instanceof CardIsNotAuthorizedError || error instanceof CardNumberIsInvalidError) {
@@ -183,13 +181,13 @@ export class CreditCardComponent implements OnInit, OnDestroy {
       }
 
       if (this.isGenericCreditCardError(error)) {
-        translationKey = TRANSLATION_KEY.GENERIC_CREDIT_CARD_ERROR;
+        toastText = CREDIT_CARD_TRANSLATIONS.GENERIC_ERROR;
       } else {
         this.creditCardForm.markAsPending();
       }
     });
 
-    this.showToast(translationKey, TOAST_TYPES.ERROR);
+    this.showToast(toastText, TOAST_TYPES.ERROR);
   }
 
   private isGenericCreditCardError(error: PaymentsCardsError): boolean {
@@ -227,9 +225,9 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showToast(key: TRANSLATION_KEY, type: TOAST_TYPES): void {
+  private showToast(text: string, type: TOAST_TYPES): void {
     this.toastService.show({
-      text: `${this.i18nService.translate(key)}`,
+      text,
       type,
     });
   }
