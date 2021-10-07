@@ -10,8 +10,10 @@
   [hasValue]="hasValue$ | async"
   (apply)="handleApply()"
   (clear)="handleClear()"
-  (openStateChange)="openStateChange.emit($event)"
+  (openStateChange)="filterTemplateOpenStateChange($event)"
   (cancel)="handleCancel()"
+  class="MultiSelectFilter__template"
+  [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
 >
   <tsl-drawer-placeholder-template
     #selectFilterTemplateComponent
@@ -20,12 +22,12 @@
     [placeholderIcon]="placeholderIcon$ | async"
     [contentTitle]="contentTitle"
     [isClearable]="hasValue$ | async"
-    (placeholderOpenStateChange)="placeholderOpenStateChange($event); openStateChange.emit($event)"
+    (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
     (clear)="handleClear()"
   >
     <div [class.MultiSelectFilter--bubble]="variant | isBubble">
       <form [formGroup]="formGroup" class="MultiSelectFilter__form">
-        <tsl-multi-select-form formControlName="select" [options]="options"></tsl-multi-select-form>
+        <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
       </form>
     </div>
   </tsl-drawer-placeholder-template>

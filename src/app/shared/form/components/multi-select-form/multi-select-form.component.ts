@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, Input, OnDestroy } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -27,8 +27,9 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   private extendedOptions: TemplateMultiSelectFormOption[] = [];
   private extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
+  private shownChildrenOptionIdSubject: BehaviorSubject<string> = new BehaviorSubject(null);
   public extendedOptions$: Observable<TemplateMultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
-  public shownChildrenOptionId: string;
+  public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
@@ -50,8 +51,12 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public showChildren(option: TemplateMultiSelectFormOption): void {
     if (option.children?.length) {
-      this.shownChildrenOptionId = option.value;
+      this.shownChildrenOptionIdSubject.next(option.value);
     }
+  }
+
+  public restartNavigation(): void {
+    this.shownChildrenOptionIdSubject.next(null);
   }
 
   private mapCheckedValue(): void {
