@@ -129,7 +129,9 @@ describe('WalletBalanceInfoComponent', () => {
         jest
           .spyOn(walletService, 'walletBalance$', 'get')
           .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
-        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_NO_NEED_PROPERTIES).pipe(delay(delayedTime)));
+        jest
+          .spyOn(kycPropertiesService, 'KYCProperties$', 'get')
+          .mockReturnValue(of(MOCK_KYC_VERIFIED_PROPERTIES).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -165,7 +167,7 @@ describe('WalletBalanceInfoComponent', () => {
 
         it('should track the view wallet event', fakeAsync(() => {
           expect(balanceTrackingEventService.trackViewWallet).toBeCalledTimes(1);
-          expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith(0, 'no need');
+          expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith(0, 'verified');
         }));
       });
     });
@@ -174,7 +176,9 @@ describe('WalletBalanceInfoComponent', () => {
       beforeEach(fakeAsync(() => {
         component.loading = true;
         const delayedTime = 2000;
-        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_NO_NEED_PROPERTIES).pipe(delay(delayedTime)));
+        jest
+          .spyOn(kycPropertiesService, 'KYCProperties$', 'get')
+          .mockReturnValue(of(MOCK_KYC_VERIFIED_PROPERTIES).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -210,7 +214,7 @@ describe('WalletBalanceInfoComponent', () => {
 
         it('should track the view wallet event', fakeAsync(() => {
           expect(balanceTrackingEventService.trackViewWallet).toBeCalledTimes(1);
-          expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith(1722.41, 'no need');
+          expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith(1722.41, 'verified');
         }));
       });
     });
