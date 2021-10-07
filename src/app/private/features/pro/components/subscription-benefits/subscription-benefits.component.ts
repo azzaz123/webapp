@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
-import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
@@ -15,7 +13,6 @@ export class SubscriptionBenefitsComponent implements OnInit {
   public loading = true;
   public benefits: SubscriptionBenefit[];
   public readonly ICON_TYPE = ICON_TYPE;
-  public helpPageUrl: string;
 
   constructor(private subscriptionBenefitsService: SubscriptionBenefitsService) {}
 

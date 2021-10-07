@@ -33,6 +33,14 @@ export class SubscriptionCardComponent {
     return this.isSubscribed ? this.subscriptionBodyText : this.titleConfig[this.subscription.category_id];
   }
 
+  get textBugde(): string {
+    return this.hasTrialAvailable
+      ? $localize`:@@pro_subscription_purchase_tier_list_discount_label:${this.subscription.trial_days}-day trial for
+    free`
+      : $localize`:@@pro_subscription_purchase_tier_list_discount_label:${this.tierDiscount.discount.percentage}%
+    off!`;
+  }
+
   get subscriptionBodyText(): string {
     return this.subscription.selected_tier.limit
       ? this.getTextWithLimit(this.subscription.selected_tier.limit)

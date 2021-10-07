@@ -5,7 +5,9 @@
             <div class="GenericCard Card h-100" [ngClass]="{'Card--selected' : selectedTier?.id === tier.id, 'Card--noHover': disableHover}"
                 (click)="onTierSelectedChanged(tier)">
                 <div *ngIf="tier.discount" class="mb-2">
-                    <span class="Card__banner p-1" i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tier.discount.percentage}}% off!</span>
+                    <tsl-discount-badge i18n="@@pro_subscription_purchase_tier_list_discount_label">
+                        {{tier.discount.percentage}}% off!
+                    </tsl-discount-badge>
                 </div>
                 <div class="GenericCard__title Card__title">{{ getTitleText(tier) }}</div>
                 <div *ngIf="tier.is_basic" class="GenericCard__subtitle mb-1">{{ getLimitText(tier) }}</div>

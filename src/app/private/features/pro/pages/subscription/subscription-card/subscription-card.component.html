@@ -2,15 +2,9 @@
     'SubscriptionCard--subscribed': isSubscribed
   }">
     <div class="w-100 d-flex flex-column align-items-center align-items-md-start SubscriptionCard__content">
-        <div *ngIf="hasTrialAvailable || tierDiscount" class="SubscriptionCard__banner px-2 mb-3">
-            <span *ngIf="tierDiscount; else trialLabel"
-                i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tierDiscount.discount.percentage}}%
-                off!</span>
-            <ng-template #trialLabel>
-                <span i18n="@@web_subscription_price_discount_days_trial_free">{{subscription.trial_days}}-day trial for
-                    free</span>
-            </ng-template>
-        </div>
+        <tsl-discount-badge *ngIf="hasTrialAvailable || tierDiscount" class="mb-3">
+            {{textBugde}}
+        </tsl-discount-badge>
         <div class="SubscriptionCard__title mb-1">{{subscription.category_name}}</div>
         <div class="SubscriptionCard__subtitle mb-1">{{descriptionText}}
         </div>
