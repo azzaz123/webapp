@@ -5,7 +5,6 @@ import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ItemCardFavouriteComponent } from './item-card-favourite.component';
 import { ItemService } from '@core/item/item.service';
-import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { USER_ID } from '@fixtures/user.fixtures.spec';
@@ -15,6 +14,9 @@ import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { FavouritesListTrackingEventsService } from '../../services/favourites-list-tracking-events.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CoreModule } from '@core/core.module';
+import { MARKET_PROVIDER } from '@configs/market.config';
 
 describe('ItemCardFavouriteComponent', () => {
   let component: ItemCardFavouriteComponent;
@@ -37,7 +39,7 @@ describe('ItemCardFavouriteComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [],
+        imports: [HttpClientTestingModule, CoreModule],
         declarations: [ItemCardFavouriteComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
         providers: [
           DecimalPipe,
@@ -62,7 +64,16 @@ describe('ItemCardFavouriteComponent', () => {
             provide: SITE_URL,
             useValue: MOCK_SITE_URL,
           },
-          FavouritesListTrackingEventsService,
+          {
+            provide: FavouritesListTrackingEventsService,
+            useValue: {
+              trackUnfavouriteItemEvent: () => {},
+            },
+          },
+          {
+            provide: MARKET_PROVIDER,
+            useValue: 'es',
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
