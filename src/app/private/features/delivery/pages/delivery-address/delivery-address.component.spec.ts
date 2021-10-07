@@ -308,7 +308,7 @@ describe('DeliveryAddressComponent', () => {
 
             component.onSubmit();
 
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.SHIPMENT_TRACKING]);
+            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.STREAMLINE]);
           });
 
           it('should stay at the same page by default', () => {

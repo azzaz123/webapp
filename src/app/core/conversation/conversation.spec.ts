@@ -4,10 +4,10 @@ import { Conversation } from './conversation';
 import { User } from '../user/user';
 import { Item } from '../item/item';
 import { Message } from '../message/message';
-import { CONVERSATION_DATE, CONVERSATION_ID, CONVERSATION_PHONE, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { createMessagesArray } from '../../../tests/message.fixtures.spec';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { ITEM_ID } from '../../../tests/item.fixtures.spec';
+import { CONVERSATION_DATE, CONVERSATION_ID, CONVERSATION_PHONE, MOCK_CONVERSATION } from '@fixtures/chat';
+import { createMessagesArray } from '@fixtures/chat/message.fixtures.spec';
+import { USER_ID } from '@fixtures/user.fixtures.spec';
+import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 
 describe('Conversation', () => {
   let conversation: Conversation;

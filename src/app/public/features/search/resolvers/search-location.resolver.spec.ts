@@ -20,7 +20,7 @@ describe('SearchLocationResolver', () => {
         {
           provide: SearchNavigatorService,
           useValue: {
-            addLocationParams: () => {},
+            navigateWithLocationParams: () => {},
           },
         },
       ],
@@ -37,11 +37,11 @@ describe('SearchLocationResolver', () => {
         [FILTER_QUERY_PARAM_KEY.latitude]: MOCK_COORDINATE.latitude,
         [FILTER_QUERY_PARAM_KEY.longitude]: MOCK_COORDINATE.longitude,
       };
-      spyOn(searchNavigatorService, 'addLocationParams');
+      spyOn(searchNavigatorService, 'navigateWithLocationParams');
 
       resolver.resolve(route);
 
-      expect(searchNavigatorService.addLocationParams).not.toHaveBeenCalled();
+      expect(searchNavigatorService.navigateWithLocationParams).not.toHaveBeenCalled();
     });
   });
 
@@ -51,11 +51,11 @@ describe('SearchLocationResolver', () => {
         [FILTER_QUERY_PARAM_KEY.categoryId]: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
       };
       route.queryParams = MOCK_QUERY_PARAMS;
-      spyOn(searchNavigatorService, 'addLocationParams');
+      spyOn(searchNavigatorService, 'navigateWithLocationParams');
 
       resolver.resolve(route);
 
-      expect(searchNavigatorService.addLocationParams).toHaveBeenCalledWith(MOCK_QUERY_PARAMS);
+      expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith(MOCK_QUERY_PARAMS);
     });
   });
 
@@ -66,11 +66,11 @@ describe('SearchLocationResolver', () => {
         [FILTER_QUERY_PARAM_KEY.latitude]: MOCK_COORDINATE.latitude,
       };
       route.queryParams = MOCK_QUERY_PARAMS;
-      spyOn(searchNavigatorService, 'addLocationParams');
+      spyOn(searchNavigatorService, 'navigateWithLocationParams');
 
       resolver.resolve(route);
 
-      expect(searchNavigatorService.addLocationParams).toHaveBeenCalledWith(MOCK_QUERY_PARAMS);
+      expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith(MOCK_QUERY_PARAMS);
     });
   });
 
@@ -81,11 +81,11 @@ describe('SearchLocationResolver', () => {
         [FILTER_QUERY_PARAM_KEY.longitude]: MOCK_COORDINATE.longitude,
       };
       route.queryParams = MOCK_QUERY_PARAMS;
-      spyOn(searchNavigatorService, 'addLocationParams');
+      spyOn(searchNavigatorService, 'navigateWithLocationParams');
 
       resolver.resolve(route);
 
-      expect(searchNavigatorService.addLocationParams).toHaveBeenCalledWith(MOCK_QUERY_PARAMS);
+      expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith(MOCK_QUERY_PARAMS);
     });
   });
 });

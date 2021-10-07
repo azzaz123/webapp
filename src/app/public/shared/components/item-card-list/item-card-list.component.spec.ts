@@ -47,6 +47,7 @@ export class ItemCardListWrapperComponent {
   };
   cardType: CARD_TYPES = CARD_TYPES.REGULAR;
   showPlaceholder = false;
+  showNativeAdSlots = false;
   placeholderCards = ItemCardListWrapperComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
 }
 
@@ -193,15 +194,6 @@ describe('ItemCardListComponent', () => {
       permissionService.addPermission(PERMISSIONS.showAds);
     });
     describe('when we have ads slots', () => {
-      it('should project the template', fakeAsync(() => {
-        fixture.detectChanges();
-        tick();
-
-        const adSlotList = fixture.debugElement.queryAll(By.css('.adSlot'));
-
-        expect(adSlotList.length).toBe(2);
-      }));
-
       it('should project the template with index', fakeAsync(() => {
         const slotConfig: SlotsConfig = componentWrapper.slotConfig;
         fixture.detectChanges();
@@ -217,6 +209,7 @@ describe('ItemCardListComponent', () => {
       describe('and showing wide cards', () => {
         it('should show shopping ads with wide card styles', fakeAsync(() => {
           componentWrapper.cardType = CARD_TYPES.WIDE;
+          component.showNativeAdSlots = true;
 
           fixture.detectChanges();
           tick();

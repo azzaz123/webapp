@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SORT_BY } from '@api/core/model';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS, Search } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -41,18 +42,19 @@ export class SearchTrackingEventsService {
   }
 
   private fromFilterParameterEventFilter(filterParams: FilterParameter[]): Partial<Search> {
-    const filters = {};
     const FILTER_KEY_EVENT_MAP_KEYS = Object.keys(this.FILTER_KEY_EVENT_MAP);
+    const filters = filterParams.reduce((map, parameter) => {
+      const key = parameter.key;
+      const value = parameter.value;
 
-    filterParams.forEach((parameter) => {
-      if (parameter.key === FILTER_QUERY_PARAM_KEY.orderBy) {
-        parameter.value = this.ORDER_BY_VALUE_MAP[parameter.value];
+      if (key === FILTER_QUERY_PARAM_KEY.orderBy) {
+        map[this.camelize(key)] = this.ORDER_BY_VALUE_MAP[value];
+      } else {
+        map[FILTER_KEY_EVENT_MAP_KEYS.includes(key) ? this.FILTER_KEY_EVENT_MAP[key] : this.camelize(key)] = value;
       }
 
-      FILTER_KEY_EVENT_MAP_KEYS.includes(parameter.key)
-        ? (filters[this.FILTER_KEY_EVENT_MAP[parameter.key]] = parameter.value)
-        : (filters[this.camelize(parameter.key)] = parameter.value);
-    });
+      return map;
+    }, {});
 
     return filters;
   }
