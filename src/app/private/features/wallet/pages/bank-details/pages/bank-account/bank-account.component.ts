@@ -123,6 +123,10 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  public canExit(): true | Promise<any> {
+    return this.formComponent.canExit();
+  }
+
   private submitValidForm(): void {
     this.loadingButton$.next(true);
 

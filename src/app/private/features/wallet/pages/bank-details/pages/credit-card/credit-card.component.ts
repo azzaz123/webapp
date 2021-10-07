@@ -117,6 +117,10 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  public canExit(): true | Promise<any> {
+    return this.formComponent.canExit();
+  }
+
   private markInvalidFields(): void {
     for (const control in this.creditCardForm.controls) {
       if (this.creditCardForm.controls.hasOwnProperty(control) && !this.creditCardForm.controls[control].valid) {
