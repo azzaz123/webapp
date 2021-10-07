@@ -151,7 +151,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   }
 
   private updateValueFromParent(): void {
-    this.formGroup.controls.select.setValue(this.getValue('parameterKey'), { emitEvent: false });
+    this.formGroup.controls.select.setValue(this.getValueAsArray(), { emitEvent: false });
   }
 
   private handleValueChange(value: string[]): void {
@@ -171,5 +171,9 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     if (this.config.hasContentPlaceholder && this.selectFilterTemplate.isPlaceholderOpen) {
       this.selectFilterTemplate.togglePlaceholderOpen();
     }
+  }
+
+  private getValueAsArray(): string[] {
+    return super.getValue('parameterKey').split(',');
   }
 }

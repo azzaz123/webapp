@@ -4,6 +4,7 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MultiSelectFormOption, TemplateMultiSelectFormOption } from './interfaces/multi-select-form-option.interface';
 import { MultiSelectValue } from './interfaces/multi-select-value.type';
+import { optionWithSublabelFixture } from './multi-select-option/multi-select-option/multi-select-option.component.spec';
 @Component({
   selector: 'tsl-multi-select-form',
   templateUrl: './multi-select-form.component.html',
@@ -65,6 +66,13 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public restartNavigation(): void {
     this.shownChildrenOptionIdSubject.next(null);
+  }
+
+  public selectAllChildren(option: TemplateMultiSelectFormOption) {
+    const childValues = [...option.children].map((childOption) => childOption.value);
+    this.value = this.value ? this.value.filter((value) => !childValues.includes(value)) : [];
+    this.writeValue([...this.value, option.value]);
+    this.onChange(this.value);
   }
 
   private mapCheckedValue(): void {

@@ -153,4 +153,29 @@ describe('MultiSelectFormComponent', () => {
       });
     });
   });
+
+  describe('when asking to select all child options', () => {
+    const parentOptionValue = 'aa';
+
+    beforeEach(() => {
+      component.options = optionsWithChildrenFixture;
+      component['shownChildrenOptionIdSubject'].next(parentOptionValue);
+      fixture.detectChanges();
+    });
+
+    it('should set value acordingly', () => {
+      component.selectAllChildren(extendedOptionsWithChildrenFixture[0]);
+
+      expect(component.value).toEqual([parentOptionValue]);
+    });
+
+    it('should check all options', () => {
+      component.selectAllChildren(extendedOptionsWithChildrenFixture[0]);
+      const childOptions = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+
+      childOptions.forEach((childOption: DebugElement) => {
+        expect(childOption.componentInstance.option.checked).toBeTruthy;
+      });
+    });
+  });
 });
