@@ -1,6 +1,6 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { CurrencyCode } from '@api/core/model/currency.interface';
-import { PendingTransaction } from '@api/core/model/wallet/transaction';
+import { PendingTransaction } from '@api/core/model/transaction';
 import { InnerType, ToDomainMapper } from '@api/core/utils/types';
 import { RequestsAndTransactionsPendingAsSellerApi } from '../../dtos/responses';
 

@@ -1,4 +1,4 @@
-import { Money } from '../../money.interface';
+import { Money } from '../money.interface';
 
 export interface PendingTransaction {
   itemHash: string;
