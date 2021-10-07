@@ -19,7 +19,7 @@ export class WalletHistoryMovementsUIService {
 
   constructor(private walletBalanceHistoryService: WalletBalanceHistoryService) {}
 
-  public get noMoreItemsAvailable(): boolean {
+  public get infiniteScrollDisabled(): boolean {
     return !this.nextPage && !this.initialLoad;
   }
 
@@ -45,7 +45,7 @@ export class WalletHistoryMovementsUIService {
   }
 
   public getItems(filter: WALLET_HISTORY_FILTERS): void {
-    const canNotLoadMoreItems = this.noMoreItemsAvailable || this.loading;
+    const canNotLoadMoreItems = this.infiniteScrollDisabled || this.loading;
     if (canNotLoadMoreItems) {
       return;
     }

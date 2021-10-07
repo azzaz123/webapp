@@ -38,7 +38,7 @@ describe('WalletHistoryMovementsUIService', () => {
   });
 
   it('should notify there are more items', () => {
-    expect(service.noMoreItemsAvailable).toBe(false);
+    expect(service.infiniteScrollDisabled).toBe(false);
   });
 
   describe('when getting more elements', () => {
@@ -110,7 +110,7 @@ describe('WalletHistoryMovementsUIService', () => {
         });
 
         it('should notify there are no more items', () => {
-          expect(service.noMoreItemsAvailable).toBe(true);
+          expect(service.infiniteScrollDisabled).toBe(true);
         });
       });
     });

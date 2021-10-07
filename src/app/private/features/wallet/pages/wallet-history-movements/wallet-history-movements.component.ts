@@ -25,7 +25,7 @@ export class WalletHistoryMovementsComponent implements OnInit {
   constructor(private walletHistoryMovementsUIService: WalletHistoryMovementsUIService) {}
 
   public get infiniteScrollDisabled(): boolean {
-    return this.walletHistoryMovementsUIService.noMoreItemsAvailable;
+    return this.walletHistoryMovementsUIService.infiniteScrollDisabled;
   }
 
   public get loading$(): Observable<boolean> {

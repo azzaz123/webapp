@@ -35,7 +35,7 @@ describe('WalletHistoryMovementsComponent', () => {
   const emptyStateSelector = '.HistoricList__no-results';
 
   class MockWalletHistoryMovementsUIService {
-    get noMoreItemsAvailable() {
+    get infiniteScrollDisabled() {
       return false;
     }
     loading$ = walletBalanceLoadingReplaySubject.asObservable();
@@ -197,7 +197,7 @@ describe('WalletHistoryMovementsComponent', () => {
       describe('and when there are no more pages', () => {
         beforeEach(() => {
           walletBalanceHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_EMPTY);
-          jest.spyOn(walletHistoryMovementsUIService, 'noMoreItemsAvailable', 'get').mockReturnValue(true);
+          jest.spyOn(walletHistoryMovementsUIService, 'infiniteScrollDisabled', 'get').mockReturnValue(true);
           fixture.detectChanges();
         });
 
