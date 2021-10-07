@@ -23,6 +23,7 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ToastModule } from '@layout/toast/toast.module';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
+import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/balance-tracking-event.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 import { WalletTransferDismissErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error.model';
 import { WalletTransferErrorTranslations } from '@private/features/wallet/errors/constants/wallet-transfer-error-translations';
@@ -43,6 +44,7 @@ describe('WalletBalanceInfoComponent', () => {
   let errorActionService: WalletSharedErrorActionService;
   let ngbModal: NgbModal;
   let transferService: WalletTransferService;
+  let balanceTrackingEventService: WalletBalanceTrackingEventService;
 
   const walletBalanceInfoParentSelector = '.WalletBalanceInfo';
   const walletBalanceInfoLoadingSelector = `${walletBalanceInfoParentSelector}__loading`;
@@ -86,6 +88,12 @@ describe('WalletBalanceInfoComponent', () => {
             },
           },
         },
+        {
+          provide: WalletBalanceTrackingEventService,
+          useValue: {
+            trackViewWallet() {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -102,6 +110,7 @@ describe('WalletBalanceInfoComponent', () => {
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
     ngbModal = TestBed.inject(NgbModal);
     transferService = TestBed.inject(WalletTransferService);
+    balanceTrackingEventService = TestBed.inject(WalletBalanceTrackingEventService);
   });
 
   it('should create', () => {
@@ -109,8 +118,12 @@ describe('WalletBalanceInfoComponent', () => {
   });
 
   describe('WHEN showing the Wallet balance', () => {
+    beforeEach(() => {
+      spyOn(balanceTrackingEventService, 'trackViewWallet');
+    });
+
     describe('and while waiting for payment server response', () => {
-      it('should show a loading animation', fakeAsync(() => {
+      beforeEach(fakeAsync(() => {
         component.loading = true;
         const delayedTime = 2000;
         jest
@@ -121,14 +134,19 @@ describe('WalletBalanceInfoComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
 
-        const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
-        expect(loadingContainerRef).toBeTruthy();
-
         discardPeriodicTasks();
       }));
+      it('should show a loading animation', fakeAsync(() => {
+        const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
+        expect(loadingContainerRef).toBeTruthy();
+      }));
+
+      it('should not track any event', () => {
+        expect(balanceTrackingEventService.trackViewWallet).not.toBeCalled();
+      });
 
       describe('AND WHEN server responses', () => {
-        it('should not show the loading animation', fakeAsync(() => {
+        beforeEach(fakeAsync(() => {
           component.loading = true;
           const delayedTime = 2000;
           jest
@@ -138,15 +156,22 @@ describe('WalletBalanceInfoComponent', () => {
           component.ngOnInit();
           tick(delayedTime);
           fixture.detectChanges();
+        }));
 
+        it('should not show the loading animation', fakeAsync(() => {
           const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
           expect(loadingContainerRef).toBeFalsy();
+        }));
+
+        it('should track the view wallet event', fakeAsync(() => {
+          expect(balanceTrackingEventService.trackViewWallet).toBeCalledTimes(1);
+          expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith(0, 'no need');
         }));
       });
     });
 
     describe('and while waiting for banner server response', () => {
-      it('should show a loading animation', fakeAsync(() => {
+      beforeEach(fakeAsync(() => {
         component.loading = true;
         const delayedTime = 2000;
         jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_NO_NEED_PROPERTIES).pipe(delay(delayedTime)));
@@ -154,14 +179,20 @@ describe('WalletBalanceInfoComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
 
-        const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
-        expect(loadingContainerRef).toBeTruthy();
-
         discardPeriodicTasks();
       }));
 
+      it('should show a loading animation', fakeAsync(() => {
+        const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
+        expect(loadingContainerRef).toBeTruthy();
+      }));
+
+      it('should not track any event', fakeAsync(() => {
+        expect(balanceTrackingEventService.trackViewWallet).not.toBeCalled();
+      }));
+
       describe('AND WHEN server responses', () => {
-        it('should not show the loading animation', fakeAsync(() => {
+        beforeEach(fakeAsync(() => {
           component.loading = true;
           const delayedTime = 2000;
 
@@ -169,8 +200,17 @@ describe('WalletBalanceInfoComponent', () => {
           tick(delayedTime);
           fixture.detectChanges();
 
+          discardPeriodicTasks();
+        }));
+
+        it('should not show the loading animation', fakeAsync(() => {
           const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
           expect(loadingContainerRef).toBeFalsy();
+        }));
+
+        it('should track the view wallet event', fakeAsync(() => {
+          expect(balanceTrackingEventService.trackViewWallet).toBeCalledTimes(1);
+          expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith(1722.41, 'no need');
         }));
       });
     });

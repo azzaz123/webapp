@@ -9,6 +9,7 @@ import { RequestsAndTransactionsPendingAsSellerService } from '@api/bff/delivery
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletBalanceComponent } from './wallet-balance.component';
 import { WalletBalanceInfoComponent } from '@private/features/wallet/pages/wallet-balance/modules/wallet-balance-info/wallet-balance-info.component';
+import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/balance-tracking-event.service';
 import { WalletPendingTransactionComponent } from '@private/features/wallet/pages/wallet-balance/components/wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsComponent } from '@private/features/wallet/pages/wallet-balance/components/wallet-pending-transactions/wallet-pending-transactions.component';
 import { WalletPendingTransactionsListComponent } from '@private/features/wallet/pages/wallet-balance/components/wallet-pending-transactions-list/wallet-pending-transactions-list.component';
@@ -67,6 +68,12 @@ describe('WalletBalanceComponent', () => {
             transfer() {
               return of(null);
             },
+          },
+        },
+        {
+          provide: WalletBalanceTrackingEventService,
+          useValue: {
+            trackViewWallet() {},
           },
         },
       ],
