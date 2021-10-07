@@ -1,4 +1,4 @@
-import { CONVERSATION_ID } from './conversation.fixtures.spec';
+import { CONVERSATION_ID } from '@fixtures/chat';
 import { MICRO_NAME, USER_ID, USER_WEB_SLUG } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
 import { User } from '@core/user/user';

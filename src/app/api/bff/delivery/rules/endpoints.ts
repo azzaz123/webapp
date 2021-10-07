@@ -1,3 +1,3 @@
 import { environment } from '@environments/environment';
 
-export const SHIPPING_RULES_ENDPOINT = `${environment.baseUrl}bff/delivery-rules/rules`;
+export const SHIPPING_RULES_ENDPOINT = `${environment.baseUrl}bff/delivery/rules`;

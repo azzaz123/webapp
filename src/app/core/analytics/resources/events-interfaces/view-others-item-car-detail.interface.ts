@@ -77,4 +77,8 @@ export interface ViewOthersItemCarDetail {
    * Identifier of the state of the view
    */
   state?: string;
+  /**
+   * Country of the item/seller (e.g.: ES, IT, etc.) using 2-digit ISO Code
+   */
+  sellerCountry: string;
 }

@@ -46,10 +46,6 @@ export interface ViewAcceptOffer {
    */
   title: string;
   /**
-   * Version of the accept screen
-   */
-  acceptScreenVersion?: 'v1-original' | 'v2-green-redesign';
-  /**
    * Identifier of the accept offer screen
    */
   screenId: 210;
@@ -57,4 +53,8 @@ export interface ViewAcceptOffer {
    * Drop off method
    */
   method?: 'correos' | 'HPU';
+  /**
+   * Real country of the buyer's shipping address (using 2-digit ISO Code)
+   */
+  buyerCountry: string;
 }

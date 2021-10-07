@@ -6,7 +6,14 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotShoppingBaseConfiguration } from '../../models';
+import {
+  AdKeyWords,
+  AdShoppingPageOptions,
+  AdSlotConfiguration,
+  AdSlotId,
+  AdSlotShoppingBaseConfiguration,
+  AdSlotShoppingConfiguration,
+} from '../../models';
 import { GoogCsa } from './google-ads-sense-shopping';
 
 @Injectable({
@@ -117,7 +124,7 @@ export class GooglePublisherTagService {
     });
   }
 
-  public displayShopping(pageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration): void {
+  public displayShopping(pageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration[]): void {
     this.adsKeywordsService.loadAdKeywords();
 
     const { content }: AdKeyWords = this.adsKeywordsService.adKeywords;

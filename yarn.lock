@@ -11521,9 +11521,9 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#0.99.0":
+"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#0.113.0":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#eaa155f285723abf3069cc7fd118ede19debac4b"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#492cefb0767d9170f9c19bdf6a2748076af39fd3"
 
 mri@^1.1.5:
   version "1.1.6"

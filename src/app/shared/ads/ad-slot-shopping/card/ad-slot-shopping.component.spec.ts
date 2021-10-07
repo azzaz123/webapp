@@ -53,14 +53,13 @@ describe('AdSlotShoppingComponent', () => {
   });
 
   describe('when the view init', () => {
-    it('should display ad wide shopping', () => {
+    it('should have correct wide ad slot shopping config', () => {
       component.cardType = CARD_TYPES.WIDE;
-      spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
 
       fixture.detectChanges();
-      component.ngAfterViewInit();
+      component.ngOnInit();
 
-      expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, {
+      expect(component.adSlotShoppingConfiguration).toEqual({
         container: `${adSlotContainerMock}-${indexMock.toString()}`,
         styleId: AD_SHOPPING_STYLE_ID_WIDE,
         linkTarget: '_blank',
@@ -72,12 +71,10 @@ describe('AdSlotShoppingComponent', () => {
         spyOn(deviceServiceMock, 'isMobile').and.returnValue(false);
         fixture.detectChanges();
       });
-      it('should display ad shopping', () => {
-        spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
+      it('should have correct desktop ad slot shopping config', () => {
+        component.ngOnInit();
 
-        component.ngAfterViewInit();
-
-        expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, {
+        expect(component.adSlotShoppingConfiguration).toEqual({
           container: `${adSlotContainerMock}-${indexMock.toString()}`,
           styleId: AD_SHOPPING_STYLE_ID_DESKTOP,
           linkTarget: '_blank',
@@ -90,12 +87,12 @@ describe('AdSlotShoppingComponent', () => {
         spyOn(deviceServiceMock, 'isMobile').and.returnValue(true);
         fixture.detectChanges();
       });
-      it('should display ad shopping', () => {
+      it('should have correct mobile ad slot shopping config', () => {
         spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
 
-        component.ngAfterViewInit();
+        component.ngOnInit();
 
-        expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, {
+        expect(component.adSlotShoppingConfiguration).toEqual({
           container: `${adSlotContainerMock}-${indexMock.toString()}`,
           styleId: AD_SHOPPING_STYLE_ID_MOBILE,
           linkTarget: '_blank',

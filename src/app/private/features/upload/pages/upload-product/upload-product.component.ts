@@ -868,6 +868,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         attributes: {
           ...baseEventAttrs,
           screenId: SCREEN_IDS.EditItem,
+          salePriceChange: null,
         },
       };
 
@@ -908,7 +909,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private updateShippingToggleStatus(): void {
     const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
-    const subcategoryId = this.uploadForm.get('extra_info')?.get('object_type')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
+    const subcategoryId = this.getSubcategoryId();
     const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
 
     this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
@@ -920,6 +921,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         this.clearShippingToggleFormData();
       }
     });
+  }
+
+  private getSubcategoryId(): string {
+    const objectTypeLvl1 = this.uploadForm.get('extra_info')?.get('object_type')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
+    const objectTypeLvl2 =
+      this.uploadForm.get('extra_info')?.get('object_type_2')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
+    return objectTypeLvl2 || objectTypeLvl1;
   }
 
   private clearShippingToggleFormData(): void {
@@ -934,6 +942,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.uploadForm
       .get('extra_info')
       .get('object_type')
+      .get('id')
+      .valueChanges.subscribe(() => {
+        this.updateShippingToggleStatus();
+      });
+    this.uploadForm
+      .get('extra_info')
+      .get('object_type_2')
       .get('id')
       .valueChanges.subscribe(() => {
         this.updateShippingToggleStatus();

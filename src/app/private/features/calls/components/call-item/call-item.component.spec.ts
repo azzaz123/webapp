@@ -1,5 +1,5 @@
 import { MOCK_CALL } from '@fixtures/call.fixtures';
-import { createMessagesArray } from '@fixtures/message.fixtures.spec';
+import { createMessagesArray } from '@fixtures/chat';
 import { of } from 'rxjs';
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';

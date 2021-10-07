@@ -19,8 +19,8 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletTransferAmountComponent } from '@private/features/wallet/modals/transfer/components/amount/wallet-transfer-amount.component';
 
-import { of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
 import { WalletTransferAmountModel } from '../../models/wallet-transfer-amount.model';
 
 @Component({
@@ -243,6 +243,20 @@ describe('WalletTransferAmountComponent', () => {
         const rangeWarn = fixture.debugElement.query(By.css(walletTransferAmountFigureRangeWarnSelector));
 
         expect(rangeWarn).toBeFalsy();
+      });
+
+      describe('WHEN the user clicks over the transfer button', () => {
+        it('should notify the action', () => {
+          const expected = new WalletTransferAmountModel(13.14);
+          component.transferAmount = expected;
+          const transferButton = fixture.debugElement.query(By.css(walletTransferAmountCtaButtonSelector));
+          const transferSpy = spyOn(component.transfered, 'emit').and.callThrough();
+
+          (transferButton.nativeElement as HTMLDivElement).click();
+
+          expect(transferSpy).toHaveBeenCalledTimes(1);
+          expect(transferSpy).toHaveBeenCalledWith(expected);
+        });
       });
     });
 
