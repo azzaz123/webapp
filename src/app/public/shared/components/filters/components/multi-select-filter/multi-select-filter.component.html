@@ -10,7 +10,7 @@
   [hasValue]="hasValue$ | async"
   (apply)="handleApply()"
   (clear)="handleClear()"
-  (openStateChange)="openStateChange.emit($event)"
+  (openStateChange)="filterTemplateOpenStateChange($event)"
   (cancel)="handleCancel()"
   class="MultiSelectFilter__template"
   [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId"
@@ -22,7 +22,7 @@
     [placeholderIcon]="placeholderIcon$ | async"
     [contentTitle]="contentTitle"
     [isClearable]="hasValue$ | async"
-    (placeholderOpenStateChange)="placeholderOpenStateChange($event); openStateChange.emit($event)"
+    (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
     (clear)="handleClear()"
   >
     <div [class.MultiSelectFilter--bubble]="variant | isBubble">

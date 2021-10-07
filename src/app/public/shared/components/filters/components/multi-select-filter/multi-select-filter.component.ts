@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 
 @Component({
   selector: 'tsl-multi-select-filter',
@@ -25,6 +26,8 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   public selectFilterTemplate: DrawerPlaceholderTemplateComponent;
   @ViewChild('filterTemplateComponent', { read: FilterTemplateComponent })
   public filterTemplate: FilterTemplateComponent;
+  @ViewChild('multiselectForm', { read: MultiSelectFormComponent })
+  private multiselectForm: MultiSelectFormComponent;
 
   private subscriptions = new Subscription();
   private labelSubject = new BehaviorSubject(undefined);
@@ -97,6 +100,17 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     if (!isOpen) {
       this.handleApply();
     }
+  }
+
+  public filterTemplateOpenStateChange($event: boolean): void {
+    if (!$event) {
+      this.restartMultiselectNavigation();
+    }
+    this.openStateChange.emit($event);
+  }
+
+  private restartMultiselectNavigation(): void {
+    this.multiselectForm.restartNavigation();
   }
 
   private mergeOptions(options: FilterOption[]): FilterOption[] {
