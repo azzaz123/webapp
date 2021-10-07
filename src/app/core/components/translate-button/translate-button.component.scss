@@ -1,11 +1,6 @@
 @import '~style/common';
 
 .TranslateButton {
-  &--disabled {
-    opacity: 0.2;
-    cursor: auto !important;
-  }
-
   &__wrapper {
     padding: 5px 0;
     cursor: pointer;

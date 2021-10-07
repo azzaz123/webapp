@@ -1,5 +1,5 @@
-<div class="TranslateButton__wrapper d-flex align-items-center" [class.TranslateButton--disabled]="disabled">
+<div class="TranslateButton__wrapper d-flex align-items-center">
   <tsl-svg-icon src="/assets/icons/translate.svg" [width]="18" [height]="18" class="TranslateButton__icon"></tsl-svg-icon>
-  <span *ngIf="!isTranslated" class="TranslateButton__text TranslateButton__text--translate">{{copies.showTranslation}}</span>
-  <span *ngIf="isTranslated" class="TranslateButton__text TranslateButton__text--show-original">{{copies.showOriginal}}</span>
+  <span *ngIf="!isTranslated" class="TranslateButton__text TranslateButton__text--translate" i18n="@@user_profile_reviews_translate_button">Translate review</span>
+  <span *ngIf="isTranslated" class="TranslateButton__text TranslateButton__text--show-original" i18n="@@user_profile_reviews_show_original_text_button">View original text</span>
 </div>

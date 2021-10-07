@@ -1,14 +1,14 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { environment } from '@environments/environment';
+import { environment } from '../../../environments/environment';
 import { MockRemoteConsoleService } from '../../../tests';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { CALLS_DATA, createCallsArray } from '@fixtures/call.fixtures';
-import { CONVERSATIONS_DATA, createConversationsArray } from '@fixtures/chat';
-import { ITEM_ID, MockedItemService } from '@fixtures/item.fixtures.spec';
-import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
-import { MockedUserService, MOCK_USER, USER_ID, USER_ITEM_DISTANCE } from '@fixtures/user.fixtures.spec';
+import { MockAnalyticsService } from '../../../tests/analytics.fixtures.spec';
+import { CALLS_DATA, createCallsArray } from '../../../tests/call.fixtures';
+import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
+import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
+import { RealTimeServiceMock } from '../../../tests/real-time.fixtures.spec';
+import { MockedUserService, MOCK_USER, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
 import { AnalyticsService } from '../analytics/analytics.service';
 import { ConnectionService } from '../connection/connection.service';
 import { EventService } from '../event/event.service';
@@ -67,8 +67,10 @@ describe('CallsService', () => {
   describe('init', () => {
     const CONVERSATIONS: Conversation[] = createConversationsArray(4);
     let response: Conversation[];
+    let response2: Conversation[];
     beforeEach(() => {
       response = null;
+      response2 = null;
       service.leads = [];
     });
     describe('do NOT cacheAllConversations', () => {
@@ -413,7 +415,9 @@ describe('CallsService', () => {
 
   describe('getPage', () => {
     let result: Call[];
+    const TOTAL_PHONES = 4;
     const TOTAL_CALLS = 3;
+    const MIXED_CONVERSATIONS: Conversation[] = [...createConversationsArray(6), ...createConversationsArray(TOTAL_PHONES, true)];
 
     describe('filter', () => {
       it('should filter by status', () => {

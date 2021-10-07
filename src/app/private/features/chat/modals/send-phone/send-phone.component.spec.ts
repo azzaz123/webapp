@@ -4,8 +4,11 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ErrorsService } from '@core/errors/errors.service';
+import { environment } from '@environments/environment';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
-import { MOCK_CONVERSATION, InboxConversationServiceMock, CREATE_MOCK_INBOX_CONVERSATION, MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
+import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
+import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION, MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
