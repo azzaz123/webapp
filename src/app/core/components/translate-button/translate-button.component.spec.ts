@@ -11,11 +11,6 @@ describe('TranslateButtonComponent', () => {
   let component: TranslateButtonComponent;
   let fixture: ComponentFixture<TranslateButtonComponent>;
 
-  const copies = {
-    showTranslation: 'Show me the translation!',
-    showOriginal: 'Show me the original!',
-  };
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TranslateButtonComponent, SvgIconComponent],
@@ -26,7 +21,6 @@ describe('TranslateButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TranslateButtonComponent);
     component = fixture.componentInstance;
-    component.copies = copies;
     fixture.detectChanges();
   });
 
@@ -40,10 +34,7 @@ describe('TranslateButtonComponent', () => {
 
       fixture.detectChanges();
 
-      const translateDebugElement = fixture.debugElement.query(translateSelector);
-
-      expect(translateDebugElement).toBeTruthy();
-      expect(translateDebugElement.nativeElement.innerHTML).toEqual(copies.showTranslation);
+      expect(fixture.debugElement.query(translateSelector)).toBeTruthy();
       expect(fixture.debugElement.query(showOriginalSelector)).toBeFalsy();
     });
   });
@@ -54,11 +45,8 @@ describe('TranslateButtonComponent', () => {
 
       fixture.detectChanges();
 
-      const originalDebugElement = fixture.debugElement.query(showOriginalSelector);
-
       expect(fixture.debugElement.query(translateSelector)).toBeFalsy();
-      expect(originalDebugElement).toBeTruthy();
-      expect(originalDebugElement.nativeElement.innerHTML).toEqual(copies.showOriginal);
+      expect(fixture.debugElement.query(showOriginalSelector)).toBeTruthy();
     });
   });
 });

@@ -47,6 +47,7 @@ export class ItemCardListWrapperComponent {
   };
   cardType: CARD_TYPES = CARD_TYPES.REGULAR;
   showPlaceholder = false;
+  showNativeAdSlots = false;
   placeholderCards = ItemCardListWrapperComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
 }
 
@@ -208,6 +209,7 @@ describe('ItemCardListComponent', () => {
       describe('and showing wide cards', () => {
         it('should show shopping ads with wide card styles', fakeAsync(() => {
           componentWrapper.cardType = CARD_TYPES.WIDE;
+          component.showNativeAdSlots = true;
 
           fixture.detectChanges();
           tick();
