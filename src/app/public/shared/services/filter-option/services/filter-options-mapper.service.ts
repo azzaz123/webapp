@@ -33,7 +33,18 @@ export class FilterOptionsMapperService {
   public formatObjectType(objectTypes: ObjectType[]): FilterOption[];
   public formatObjectType(response: unknown, params: QueryParams): FilterOption[];
   public formatObjectType(objectTypes: ObjectType[]): FilterOption[] {
-    return this.mapObjectTypes(objectTypes);
+    return objectTypes.map((objectType) => {
+      const mappedObjectType: FilterOption = {
+        value: objectType.id,
+        label: objectType.name,
+      };
+
+      if (objectType.children?.length) {
+        mappedObjectType.children = this.formatObjectType(objectType.children);
+      }
+
+      return mappedObjectType;
+    });
   }
 
   public formatBrandModel(brandModels: BrandModel[]): FilterOption[];
@@ -104,20 +115,5 @@ export class FilterOptionsMapperService {
     }
 
     return label;
-  }
-
-  private mapObjectTypes(objectTypes: ObjectType[]): FilterOption[] {
-    return objectTypes.map((objectType) => {
-      const mappedObjectType: FilterOption = {
-        value: objectType.id,
-        label: objectType.name,
-      };
-
-      if (objectType.children?.length) {
-        mappedObjectType.children = this.mapObjectTypes(objectType.children);
-      }
-
-      return mappedObjectType;
-    });
   }
 }
