@@ -1,34 +1,14 @@
-<div class="WalletHistoryMovements mt-3" tslInfiniteScroll [infiniteScrollDisabled]="infiniteScrollDisabled" (scrolled)="getItems()">
+<div class="WalletHistoryMovements mt-3">
   <tsl-tabs-bar [tabsBarElements]="this.tabBarElements" (onChange)="onChangeFilter($event.value)"></tsl-tabs-bar>
-  <div *ngIf="historicMovements$ | async as historicMovements">
-    <span
-      *ngIf="isHistoricMovementsEmpty(historicMovements)"
-      class="WalletHistoryMovements__no-results d-flex justify-content-center mt-3"
-      i18n="@@web_no_results_found"
-      >No results found</span
-    >
-
-    <div class="WalletHistoryMovements__header" *ngFor="let year of historicMovements.years; let firstYear = first">
-      {{ year.title }}
-      <div class="WalletHistoryMovements__subtitle" *ngFor="let month of year.elements; let firstMonth = first">
-        <div class="d-flex justify-content-between">
-          <div>{{ month.title }}</div>
-          <div
-            *ngIf="isBalanceVisible(firstYear, firstMonth)"
-            class="WalletHistoryMovements__balance"
-            i18n="@@movements_history_all_users_current_balance_label"
-          >
-            Current balance: {{ totalBalance.toString() }}
-          </div>
-        </div>
-        <div class="WalletHistoryMovements__movement" *ngFor="let balanceHistoryMovement of month.elements">
-          <tsl-wallet-history-movement [walletMovementHistoryDetail]="balanceHistoryMovement"></tsl-wallet-history-movement>
-        </div>
-      </div>
-    </div>
-  </div>
+  <tsl-historic-list
+    *ngIf="historicList$ | async as historicList"
+    [historicList]="historicList"
+    [showTotalBalance]="showTotalBalance"
+    [infiniteScrollDisabled]="infiniteScrollDisabled"
+    (scrolled)="getItems()"
+  ></tsl-historic-list>
   <tsl-svg-icon
-    *ngIf="loading"
+    *ngIf="loading$ | async"
     class="d-flex w-100 align-items-center justify-content-center spinner"
     [src]="loadingIconSrc"
     [width]="loadingIconSizePixels"

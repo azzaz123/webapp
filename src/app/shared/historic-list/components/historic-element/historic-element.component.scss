@@ -1,6 +1,6 @@
 @import '~style/common';
 
-.WalletHistoryMovement {
+.HistoricElement {
   padding: $spacing-m 0;
   color: $blue-grey-1;
 
@@ -18,7 +18,7 @@
     }
   }
 
-  &__money-flow-icon {
+  &__icon {
     position: absolute;
 
     bottom: -2px;
@@ -31,7 +31,7 @@
   }
 
   &__description,
-  &__estimatedPayoutDescription {
+  &__subDescription {
     color: $blue-grey-2;
     font-size: $font-size-xs;
   }

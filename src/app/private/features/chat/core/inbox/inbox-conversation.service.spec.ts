@@ -7,10 +7,13 @@ import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
-import { MOCK_API_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
-import { createInboxConversationsArray, CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import {
+  createInboxConversationsArray,
+  CREATE_MOCK_INBOX_CONVERSATION,
+  MOCK_API_CONVERSATION,
+  createInboxMessagesArray,
+} from '@fixtures/chat';
 import { MockedItemService } from '@fixtures/item.fixtures.spec';
-import { createInboxMessagesArray } from '@fixtures/message.fixtures.spec';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DesktopNotificationsService } from 'app/core/desktop-notifications/desktop-notifications.service';
@@ -560,7 +563,7 @@ describe('InboxConversationService', () => {
       describe('when processing a READ chat signal fromSelf', () => {
         beforeEach(() => {
           mockedConversation.messages.map((m, index) => {
-            m.fromSelf = index < unreadCount ? false : true;
+            m.fromSelf = index >= unreadCount;
             m.status = MessageStatus.RECEIVED;
           });
           expectedMarkedAsRead = mockedConversation.messages.filter((m) => !m.fromSelf);

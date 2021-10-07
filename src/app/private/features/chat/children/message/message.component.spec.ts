@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
 import { MessageComponent } from './message.component';
 
 @Directive()
