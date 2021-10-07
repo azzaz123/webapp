@@ -6,7 +6,7 @@
  */
 
 /**
- * User edits an uploaded product (in consumer goods)
+ * User edits an uploaded product (in consumer goods). If the screen is 115, it's because in the item detail, the user has edited the weight
  */
 export interface EditItemCG {
   /**
@@ -44,7 +44,7 @@ export interface EditItemCG {
   /**
    * Identifier of the screen that the item was edited from
    */
-  screenId: 162;
+  screenId: 162 | 115;
   /**
    * Hashtags
    */
@@ -57,4 +57,16 @@ export interface EditItemCG {
    * If the item has the weight informed
    */
   shippingWeight?: number;
+  /**
+   * Change in the shipping toggle
+   */
+  shippingAllowedChange?: -1 | 0 | 1;
+  /**
+   * Change in the shipping weight
+   */
+  shippingWeightChange?: number;
+  /**
+   * Change in the sale price
+   */
+  salePriceChange: number;
 }

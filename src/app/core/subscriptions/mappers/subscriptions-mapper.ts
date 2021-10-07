@@ -1,4 +1,4 @@
-import { SubscriptionsResponse, SubscriptionsV3Response, SUBSCRIPTION_CATEGORY_TYPES, Tier } from '../subscriptions.interface';
+import { SubscriptionsResponse, SubscriptionsV3Response, SUBSCRIPTION_CATEGORY_TYPES } from '../subscriptions.interface';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
 import { CURRENCY_SYMBOLS } from '@core/constants';
 

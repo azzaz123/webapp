@@ -42,12 +42,7 @@ import {
   ORDER_EVENT,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import {
-  MockSubscriptionService,
-  MOCK_SUBSCRIPTION_SLOTS,
-  MOCK_SUBSCRIPTION_SLOT_CARS,
-  TIER_WITH_DISCOUNT,
-} from '@fixtures/subscriptions.fixtures.spec';
+import { MockSubscriptionService, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -78,6 +73,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent } from '@shared/button/button.component';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
+import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
+import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscription-slots.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -89,6 +86,7 @@ describe('ListComponent', () => {
   let paymentService: PaymentService;
   let route: ActivatedRoute;
   let router: Router;
+  let catalogManagerApiService: CatalogManagerApiService;
   let errorService: ErrorsService;
   const componentInstance: any = {
     trackUploaded: jasmine.createSpy('trackUploaded'),
@@ -265,6 +263,14 @@ describe('ListComponent', () => {
             useClass: DeviceDetectorServiceMock,
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          {
+            provide: CatalogManagerApiService,
+            useValue: {
+              getSlots() {
+                return of([]);
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -287,6 +293,7 @@ describe('ListComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     permissionService = TestBed.inject(NgxPermissionsService);
     i18nService = TestBed.inject(I18nService);
+    catalogManagerApiService = TestBed.inject(CatalogManagerApiService);
     featureFlagService = TestBed.inject(FeatureFlagService);
 
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
@@ -404,9 +411,7 @@ describe('ListComponent', () => {
 
         describe('and when clicking the wallet button', () => {
           it('should navigate to wallet', () => {
-            walletButton.nativeElement.click();
-
-            expect(router.url).toEqual(`/${PRIVATE_PATHS.WALLET}`);
+            expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
           });
         });
       });
@@ -439,9 +444,7 @@ describe('ListComponent', () => {
 
         describe('and when clicking the delivery button', () => {
           it('should navigate to delivery', () => {
-            deliveryButton.nativeElement.click();
-
-            expect(router.url).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
+            expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
           });
         });
       });
@@ -685,7 +688,7 @@ describe('ListComponent', () => {
           permissionService.addPermission(PERMISSIONS.subscriptions);
         });
         it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
-          spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
+          spyOn(catalogManagerApiService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
 
           component.ngOnInit();
           tick();
@@ -701,7 +704,7 @@ describe('ListComponent', () => {
           permissionService.removePermission(PERMISSIONS.subscriptions);
         });
         it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
-          spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
+          spyOn(catalogManagerApiService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
 
           component.ngOnInit();
           tick();
@@ -1125,7 +1128,7 @@ describe('ListComponent', () => {
     describe('update counters', () => {
       beforeEach(() => {
         component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
-        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
+        component.subscriptionSlots[0].subscription.category_ids = [ITEM_CATEGORY_ID];
       });
 
       it('should update if there is not selected a subscription slot', fakeAsync(() => {
@@ -1239,7 +1242,7 @@ describe('ListComponent', () => {
     describe('update counters', () => {
       beforeEach(() => {
         component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
-        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
+        component.subscriptionSlots[0].subscription.category_ids = [ITEM_CATEGORY_ID];
       });
 
       it('should update if there is not selected a subscription slot', fakeAsync(() => {

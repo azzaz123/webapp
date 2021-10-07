@@ -20,9 +20,5 @@ export interface ClickActionTappedTransactionalTimeline {
   /**
    * Name of the button or screen that the user is clicking on
    */
-  actionName: 'Help General Doubts' | 'Help Packet On Hold' | 'Help Packet Delivered';
-  /**
-   * Test group of the users
-   */
-  experiment?: 'jtrex_tts_baseline' | 'jtrex_tts_variation';
+  actionName: 'Help General Doubts' | 'Help Packet On Hold' | 'Help Packet Delivered' | 'Tracer';
 }
