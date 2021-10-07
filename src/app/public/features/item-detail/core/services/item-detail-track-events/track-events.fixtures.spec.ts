@@ -63,7 +63,7 @@ export const MOCK_VIEW_OTHERS_CG_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemC
     title: MOCK_ITEM_GBP.title,
     isPro: MOCK_OTHER_USER.featured,
     screenId: SCREEN_IDS.ItemDetail,
-    sellerCountry: null,
+    sellerCountry: 'ES',
   },
 };
 
@@ -194,6 +194,7 @@ export const MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT: AnalyticsPageView<ViewOthers
     rooms: MOCK_REALESTATE.rooms,
     isPro: MOCK_OTHER_USER.featured,
     screenId: SCREEN_IDS.ItemDetail,
+    sellerCountry: 'ES',
   },
 };
 
@@ -216,7 +217,7 @@ export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOther
     isCarDealer: true,
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     screenId: SCREEN_IDS.ItemDetail,
-    sellerCountry: null,
+    sellerCountry: 'ES',
   },
 };
 
