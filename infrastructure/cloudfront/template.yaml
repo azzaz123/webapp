@@ -1,10 +1,4 @@
 Parameters:
-  EnvName:
-    Description: 'Environment where it has to be deployed'
-    Type: String
-  ProjectName:
-    Description: 'Name of this project'
-    Type: String
   BucketNameFunctionalWebapp:
     Description: 'Name of the bucket where the functional webapp is hosted in multiple locales'
     Type: String
