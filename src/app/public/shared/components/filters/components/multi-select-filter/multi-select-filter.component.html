@@ -13,7 +13,7 @@
   (openStateChange)="filterTemplateOpenStateChange($event)"
   (cancel)="handleCancel()"
   class="MultiSelectFilter__template"
-  [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId"
+  [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
 >
   <tsl-drawer-placeholder-template
     #selectFilterTemplateComponent
