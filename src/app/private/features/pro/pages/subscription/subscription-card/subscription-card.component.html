@@ -8,7 +8,7 @@
         <div class="SubscriptionCard__title mb-1">{{subscription.category_name}}</div>
         <div class="SubscriptionCard__subtitle mb-1">{{descriptionText}}
         </div>
-        <div class="SubscriptionCard__price mb-2">
+        <div class="SubscriptionCard__price text-md-left mb-2">
             <ng-container *ngIf="!isSubscribed; else subscriptionPrice">
                 <tsl-subscription-price-discount [subscription]="subscription" [tierDiscount]="tierDiscount">
                 </tsl-subscription-price-discount>
@@ -16,18 +16,23 @@
             <ng-template #subscriptionPrice>
                 <span
                     i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.discount ? subscription.selected_tier.discount.price : subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
-                <div class="SubscriptionCard__priceDescription">
-                    <span *ngIf="subscription.trial_available;else noFreeTrialDesc"
-                        i18n="@@web_price_after_free_days">at the end of free trial</span>
+                <span class="SubscriptionCard__priceDescription">
+                    <ng-container *ngIf="subscription.trial_available;else noFreeTrialDesc">
+                        <span ngPreserveWhitespaces> </span>
+                        <span i18n="@@web_price_after_free_days">at the end of free trial
+                        </span>
+                    </ng-container>
                     <ng-template #noFreeTrialDesc>
-                        <div *ngIf="subscription.selected_tier.discount">
+                        <span *ngIf="subscription.selected_tier.discount">
+                            <span ngPreserveWhitespaces>, </span>
                             <span
-                                i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span><br><span
-                                i18n="@@pro_subscription_purchase_summary_start_period_web">starting from
+                                i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
+                            <span ngPreserveWhitespaces> </span>
+                            <span i18n="@@pro_subscription_purchase_summary_start_period_web">starting from
                                 {{subscription.selected_tier.discount.no_discount_date |  date:'longDate' }}</span>
-                        </div>
+                        </span>
                     </ng-template>
-                </div>
+                </span>
             </ng-template>
         </div>
         <ng-container *ngIf="isSubscribed">
