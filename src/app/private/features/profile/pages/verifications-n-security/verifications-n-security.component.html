@@ -5,9 +5,9 @@
       <div class="col-md-6 col-12">
         <tsl-verification-card
           [isVerified]="userVerifications.email"
-          [title]="getTitleVerification(VERIFICATIONS_N_SECURITY_TYPES.EMAIL)"
+          [title]="titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.EMAIL]"
           [footerLegend]="user?.email"
-          [textButton]="getTextButton(userVerifications.email)"
+          [textButton]="verifiedTextButton[userVerifications.email.toString()]"
           (buttonClick)="onClickButton()"
         ></tsl-verification-card>
       </div>

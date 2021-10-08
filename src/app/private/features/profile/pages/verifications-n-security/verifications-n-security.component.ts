@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserVerifications } from '@api/core/model/verifications';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { User } from '@core/user/user';
@@ -14,12 +14,16 @@ export enum VERIFICATIONS_N_SECURITY_TYPES {
   templateUrl: './verifications-n-security.component.html',
   styleUrls: ['./verifications-n-security.component.scss'],
 })
-export class VerificationsNSecurityComponent {
+export class VerificationsNSecurityComponent implements OnInit {
   public userVerifications$: Observable<UserVerifications>;
   public user: User;
   public readonly VERIFICATIONS_N_SECURITY_TYPES = VERIFICATIONS_N_SECURITY_TYPES;
   public readonly titleVerifications = {
     [VERIFICATIONS_N_SECURITY_TYPES.EMAIL]: $localize`:@@verification_and_security_all_users_verifications_email_label:E-mail`,
+  };
+  public readonly verifiedTextButton = {
+    true: $localize`:@@verification_and_security_all_users_change_button:Change`,
+    false: $localize`:@@verification_and_security_all_users_verify_button:Verify`,
   };
 
   constructor(private userService: UserService, private userVerificationsService: UserVerificationsService) {
@@ -31,15 +35,4 @@ export class VerificationsNSecurityComponent {
   }
 
   onClickButton(): void {}
-
-  public getTitleVerification(verificationsType: VERIFICATIONS_N_SECURITY_TYPES): string {
-    return this.titleVerifications[verificationsType];
-  }
-
-  public getTextButton(isVerifiedAttribute: boolean): string {
-    if (isVerifiedAttribute) {
-      return $localize`:@@verification_and_security_all_users_change_button:Change`;
-    }
-    return $localize`:@@verification_and_security_all_users_verify_button:Verify`;
-  }
 }
