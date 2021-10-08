@@ -54,12 +54,11 @@
     border: 2px solid $color-pro-main;
   }
 
+  &__price-description {
+    font-weight: normal;
+  }
+
   &__price {
     font-weight: $font-weight-chunky;
-
-    &Description {
-      color: $blue-grey-2;
-      font-weight: normal;
-    }
   }
 }

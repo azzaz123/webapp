@@ -19,7 +19,7 @@
             <ng-template #subscriptionPrice>
                 <span
                     i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.discount ? subscription.selected_tier.discount.price : subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
-                <span class="SubscriptionCard__priceDescription">
+                <span class="SubscriptionCard__price-description">
                     <ng-container *ngIf="subscription.trial_available;else noFreeTrialDesc">
                         <span ngPreserveWhitespaces> </span>
                         <span i18n="@@web_price_after_free_days">at the end of free trial</span>

@@ -1,29 +1,8 @@
 @import '~style/common';
 
-.SubscriptionList {
-  &__link {
-    margin-top: $spacing-ms;
-    color: $walla-main;
-  }
-  &__subscription {
-    flex: 1;
-    max-width: 283px;
-    min-width: 250px;
-
-    &--narrow {
-      max-width: 245px;
-      min-width: 208px;
-    }
-  }
-}
-
 .box-content {
   color: $blue-grey-3;
-  padding: 32px (4 * $spacing-ml);
-
-  &--narrow {
-    padding: $spacing-ml (2 * $spacing-m);
-  }
+  padding: $spacing-xl 80px;
 
   h4 {
     color: $blue-grey-1;
