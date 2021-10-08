@@ -11,4 +11,5 @@ export interface FavouriteItemDto {
   reserved?: { flag: boolean };
   pro?: { flag: boolean };
   sold?: { flag: boolean };
+  user_id: string;
 }
