@@ -174,6 +174,6 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   }
 
   private getValueAsArray(): string[] {
-    return super.getValue('parameterKey').split(',');
+    return super.getValue('parameterKey')?.split(',') || [];
   }
 }
