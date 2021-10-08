@@ -1,6 +1,15 @@
 {
   "Parameters": {
-    "BucketNameFunctionalWebapp": "functional-webapp-beta"
+    "EnvName": "beta",
+    "ProjectName": "webapp",
+    "BucketES": "web-es.beta.wallapop.com",
+    "BucketEN": "web-en.beta.wallapop.com",
+    "BucketIT": "web-it.beta.wallapop.com",
+    "BucketNameFunctionalWebapp": "functional-webapp-beta",
+    "HostES": "web.beta.wallapop.com",
+    "HostEN": "web-en.beta.wallapop.com",
+    "HostedZoneName": "beta.wallapop.com.",
+    "Certificate": "arn:aws:acm:us-east-1:139222918132:certificate/c99aab6a-a8b9-4363-8f2b-edf8a507b970"
   },
   "Tags": {
     "Project": "webapp",
