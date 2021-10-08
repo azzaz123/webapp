@@ -547,6 +547,18 @@ describe('BankAccountComponent', () => {
 
       expect(KYCMessage).toBeTruthy();
     });
+
+    describe('and we click on the cross button...', () => {
+      beforeEach(() => {
+        spyOn(component.closeModal, 'emit');
+
+        fixture.debugElement.query(By.css('.BankAccount__cross')).nativeElement.click();
+      });
+
+      it('should close the modal', () => {
+        expect(component.closeModal.emit).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 
   function triggerProfileFormInit(): void {

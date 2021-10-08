@@ -3,15 +3,8 @@
 $drawing-height: 130px;
 
 .KYCStatus {
-  &__content {
-    width: 100%;
-    @include media-breakpoint-up(sm) {
-      width: 70%;
-    }
-
-    &__info {
-      height: inherit;
-    }
+  &__containerLaterals {
+    padding: 0px $spacer * 2;
   }
 
   &__title,
@@ -35,12 +28,9 @@ $drawing-height: 130px;
   &__bottomContainer {
     bottom: 0;
     background-color: transparentize($white, 0.5);
+  }
 
-    &__button {
-      width: 100%;
-      @include media-breakpoint-up(sm) {
-        width: 75%;
-      }
-    }
+  &__cross {
+    cursor: pointer;
   }
 }

@@ -67,7 +67,7 @@ describe('KYCStatusComponent', () => {
     });
 
     it('should show the svg with the received path', () => {
-      const svg = de.query(By.directive(SvgIconComponent)).componentInstance;
+      const svg = de.query(By.css('#drawingSvg')).componentInstance;
 
       expect(svg.src).toBe(KYC_STATUS_IN_PROGRESS.svgPath);
     });
@@ -106,7 +106,7 @@ describe('KYCStatusComponent', () => {
       });
     });
 
-    describe('and we click on the button', () => {
+    describe('and we click on the CTA button', () => {
       beforeEach(() => {
         spyOn(component.buttonClick, 'emit');
       });
@@ -117,6 +117,18 @@ describe('KYCStatusComponent', () => {
         button.click();
 
         expect(component.buttonClick.emit).toBeCalledTimes(1);
+      });
+    });
+
+    describe('and we click on the cross button...', () => {
+      beforeEach(() => {
+        spyOn(component.closeModal, 'emit');
+
+        fixture.debugElement.query(By.css('.KYCStatus__cross')).nativeElement.click();
+      });
+
+      it('should close the modal', () => {
+        expect(component.closeModal.emit).toHaveBeenCalledTimes(1);
       });
     });
 

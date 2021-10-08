@@ -116,7 +116,25 @@ describe('KYCModalComponent', () => {
         });
 
         it('should go to the next step', () => {
-          expect(component.stepper.goNext).toHaveBeenCalled();
+          expect(component.stepper.goNext).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(window, 'confirm').and.returnValue(true);
+          spyOn(activeModal, 'close');
+          const bankAccountComponent = fixture.debugElement.query(By.css(bankAccountSelector));
+
+          bankAccountComponent.triggerEventHandler('closeModal', {});
+        });
+
+        it('should open popup confirmation close', () => {
+          expect(window.confirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
         });
       });
     });
@@ -135,7 +153,7 @@ describe('KYCModalComponent', () => {
           const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
           KYCNationalityComponent.triggerEventHandler('goBack', {});
 
-          expect(component.stepper.goBack).toHaveBeenCalled();
+          expect(component.stepper.goBack).toHaveBeenCalledTimes(1);
         });
       });
 
@@ -162,7 +180,7 @@ describe('KYCModalComponent', () => {
           });
 
           it('should go to the next step', () => {
-            expect(component.stepper.goNext).toHaveBeenCalled();
+            expect(component.stepper.goNext).toHaveBeenCalledTimes(1);
           });
         });
 
@@ -179,8 +197,26 @@ describe('KYCModalComponent', () => {
           });
 
           it('should stay on the same step', () => {
-            expect(component.stepper.goNext).not.toHaveBeenCalled();
+            expect(component.stepper.goNext).not.toHaveBeenCalledTimes(1);
           });
+        });
+      });
+
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(window, 'confirm').and.returnValue(true);
+          spyOn(activeModal, 'close');
+          const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
+
+          KYCNationalityComponent.triggerEventHandler('closeModal', {});
+        });
+
+        it('should open popup confirmation close', () => {
+          expect(window.confirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
         });
       });
     });
@@ -201,7 +237,25 @@ describe('KYCModalComponent', () => {
         });
 
         it('should go back to the previous step', () => {
-          expect(component.stepper.goBack).toHaveBeenCalled();
+          expect(component.stepper.goBack).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(window, 'confirm').and.returnValue(true);
+          spyOn(activeModal, 'close');
+          const KYCImageOptionsComponent = fixture.debugElement.query(By.css(KYCImageOptionsSelector));
+
+          KYCImageOptionsComponent.triggerEventHandler('closeModal', {});
+        });
+
+        it('should open popup confirmation close', () => {
+          expect(window.confirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
         });
       });
     });
@@ -282,7 +336,7 @@ describe('KYCModalComponent', () => {
           });
 
           it('should NOT go to the next step', () => {
-            expect(component.stepper.goNext).not.toHaveBeenCalled();
+            expect(component.stepper.goNext).not.toHaveBeenCalledTimes(1);
           });
 
           it('should request to the KYC analytics service to track the click event', () => {
@@ -308,6 +362,26 @@ describe('KYCModalComponent', () => {
           expect(component.stepper.goBack).toHaveBeenCalledTimes(1);
         });
       });
+
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(window, 'confirm').and.returnValue(true);
+          spyOn(activeModal, 'close');
+
+          fixture.detectChanges();
+
+          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
+          KYCUploadImagesComponent.triggerEventHandler('closeModal', {});
+        });
+
+        it('should open popup confirmation close', () => {
+          expect(window.confirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+        });
+      });
     });
 
     describe('and we are on in progress informative step', () => {
@@ -319,28 +393,38 @@ describe('KYCModalComponent', () => {
 
       describe('and the user clicks on the OK button', () => {
         beforeEach(() => {
+          spyOn(window, 'confirm');
           spyOn(activeModal, 'close');
-          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCStatusPropertiesSelector));
+          const KYCStatusPropertiesComponent = fixture.debugElement.query(By.css(KYCStatusPropertiesSelector));
 
-          KYCUploadImagesComponent.triggerEventHandler('buttonClick', {});
+          KYCStatusPropertiesComponent.triggerEventHandler('buttonClick', {});
+        });
+
+        it('should not trigger confirmation close', () => {
+          expect(window.confirm).not.toHaveBeenCalled();
         });
 
         it('should close the modal', () => {
           expect(activeModal.close).toHaveBeenCalledTimes(1);
         });
       });
-    });
 
-    describe('and we click on the close modal button...', () => {
-      beforeEach(() => {
-        spyOn(activeModal, 'close');
-        const closeButton = fixture.debugElement.query(By.css('.modal-close')).nativeElement;
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(activeModal, 'close');
+          spyOn(window, 'confirm');
+          const KYCStatusPropertiesComponent = fixture.debugElement.query(By.css(KYCStatusPropertiesSelector));
 
-        closeButton.click();
-      });
+          KYCStatusPropertiesComponent.triggerEventHandler('closeModal', {});
+        });
 
-      it('should close the modal', () => {
-        expect(activeModal.close).toHaveBeenCalled();
+        it('should not trigger confirmation close', () => {
+          expect(window.confirm).not.toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+        });
       });
     });
 

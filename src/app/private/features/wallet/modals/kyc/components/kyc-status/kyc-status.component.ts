@@ -13,7 +13,9 @@ import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc
 export class KYCStatusComponent implements OnInit {
   @Input() properties: KYCModalProperties;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
-  public HELP_FORM_URL: string = this.customerHelpService.getFormPageUrl(CUSTOMER_TICKET_FORM.BLOCKED_BY_MANGOPAY);
+  @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
+
+  public HELP_FORM_URL: string = this.customerHelpService.getFormPageUrl(CUSTOMER_TICKET_FORM.KYC);
 
   constructor(private customerHelpService: CustomerHelpService, private kycTrackingEventsService: KYCTrackingEventsService) {}
 

@@ -30,6 +30,7 @@ export class KYCModalComponent implements OnDestroy {
   public KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
     (properties) => properties.status === KYC_MODAL_STATUS.IN_PROGRESS
   );
+  private KYCModalCloseWarningCopy = $localize`:@@web_kyc_modal_close_warning:Are you sure you want to get out of the process? All information will be lost.`;
 
   constructor(
     private KYCStoreService: KYCStoreService,
@@ -80,7 +81,11 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   public closeModal(): void {
-    this.activeModal.close();
+    const isInLastStep = this.stepper.activeId === 4;
+    const shouldCloseModal = isInLastStep ? true : window.confirm(this.KYCModalCloseWarningCopy);
+    if (shouldCloseModal) {
+      this.activeModal.close();
+    }
   }
 
   public goNextStep(): void {
@@ -112,8 +117,6 @@ export class KYCModalComponent implements OnDestroy {
         backSide: null,
       },
     };
-
-    this.closeModal();
   }
 
   private handleKYCError(e: Error | KYCError): void {
