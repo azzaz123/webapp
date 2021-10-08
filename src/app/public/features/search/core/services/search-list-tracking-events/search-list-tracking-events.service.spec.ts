@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -38,14 +38,15 @@ describe('SearchListTrackingEventsService', () => {
   });
 
   describe('when user clicks on the item card', () => {
-    it('should send track click item card event', () => {
+    it('should send track click item card event', fakeAsync(() => {
       spyOn(service, 'trackClickItemCardEvent').and.callThrough();
       spyOn(analyticsService, 'trackEvent');
 
       service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
+      tick();
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH);
-    });
+    }));
   });
 
   describe('when user triggers on favourite button', () => {

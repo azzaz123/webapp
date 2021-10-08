@@ -17,7 +17,7 @@ export class SubscriptionBenefitsComponent implements OnInit {
   constructor(private subscriptionBenefitsService: SubscriptionBenefitsService) {}
 
   get faqUrl(): string {
-    return $localize`:@@web_footer_links_faq_href:https://ayuda.wallapop.com/hc/en-us`;
+    return $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
   }
 
   ngOnInit() {
