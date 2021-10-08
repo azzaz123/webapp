@@ -27,18 +27,24 @@ describe('WalletBalanceTrackingEventService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe(`WHEN track the wallet view`, () => {
-    it('should send the event to analytics', () => {
+  describe.each([
+    [KYC_STATUS.NO_NEED, 'verified'],
+    [KYC_STATUS.PENDING, 'pending'],
+    [KYC_STATUS.PENDING_VERIFICATION, 'inProgress'],
+    [KYC_STATUS.REJECTED, 'pending'],
+    [KYC_STATUS.VERIFIED, 'verified'],
+  ])('WHEN user send the event', (originalStatus, mappedStatus) => {
+    it('should track the mapped status', () => {
       const expectedEvent: AnalyticsPageView<ViewWallet> = {
         name: 'View Wallet',
         attributes: {
           screenId: 235,
-          kycStatus: 'verified',
+          kycStatus: mappedStatus as 'verified' | 'pending' | 'inProgress',
           balanceAmount: 13.13,
         },
       };
 
-      service.trackViewWallet(13.13, KYC_STATUS.VERIFIED);
+      service.trackViewWallet(13.13, originalStatus);
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);

@@ -5,8 +5,10 @@ import { InnerType } from '@api/core/utils/types';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 
 const kycBannerStatusToEventAttribute: Partial<Record<KYC_STATUS, KycStatusEventAttribute>> = {
+  [KYC_STATUS.NO_NEED]: 'verified',
   [KYC_STATUS.PENDING]: 'pending',
   [KYC_STATUS.PENDING_VERIFICATION]: 'inProgress',
+  [KYC_STATUS.REJECTED]: 'pending',
   [KYC_STATUS.VERIFIED]: 'verified',
 };
 type KycStatusEventAttribute = InnerType<ViewWallet, 'kycStatus'> | undefined;
