@@ -1,3 +1,6 @@
+
+<p *ngIf="value?.length > 0 && (shownChildrenOptionId$ | async) === null" class="MultiSelectForm__reset position-absolute m-0" i18n="" (click)="unselectAll()">Restablecer</p>
+
 <ng-container *ngFor="let option of extendedOptions$ | async">
   <div *ngIf="(shownChildrenOptionId$ | async) === null" class="w-100">
     <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="option" [isDisabled]="isDisabled" 
@@ -7,14 +10,17 @@
   <ng-container *ngIf="(shownChildrenOptionId$ | async) === option.value">
     <div class="MultiSelectForm__children" #children>
       <div class="MultiSelectForm__children__header position-absolute">
-        <div class="MultiSelectForm__children__back d-flex align-items-center font-weight-bold p-3" (click)="restartNavigation()">
-          <tsl-svg-icon class="d-block mr-2" src="assets/icons/arrow-right.svg"></tsl-svg-icon> {{option.label}}
+        <div class="MultiSelectForm__children__back d-flex justify-content-between p-3" (click)="restartNavigation()">
+         <div class="d-flex align-items-center">
+          <tsl-svg-icon class="d-block mr-2" src="assets/icons/arrow-right.svg"></tsl-svg-icon> 
+          <span class="font-weight-bold">{{option.label}}</span>
+         </div>
+          <p *ngIf="hasSelectedChildren(option)" class="m-0" i18n="" (click)="unselectAllChildren(option)">Restablecer</p>
         </div>
 
         <p class="MultiSelectForm__children__select-all font-weight-bold p-3 m-0" i18n="" (click)="selectAllChildren(option)">Select all</p>
       </div>
 
-      
   
       <div class="MultiSelectForm__children__options">
         <div *ngFor="let childOption of option.children" class="w-100">

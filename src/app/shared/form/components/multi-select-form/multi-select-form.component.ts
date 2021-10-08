@@ -4,7 +4,6 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MultiSelectFormOption, TemplateMultiSelectFormOption } from './interfaces/multi-select-form-option.interface';
 import { MultiSelectValue } from './interfaces/multi-select-value.type';
-import { optionWithSublabelFixture } from './multi-select-option/multi-select-option/multi-select-option.component.spec';
 @Component({
   selector: 'tsl-multi-select-form',
   templateUrl: './multi-select-form.component.html',
@@ -35,7 +34,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   constructor(private elementRef: ElementRef) {
     super();
 
-    this.shownChildrenOptionId$.subscribe(() => {
+    this.shownChildrenOptionId$.subscribe((shownChildrenOptionId) => {
       this.elementRef.nativeElement.scrollTo(0, 0);
     });
   }
@@ -71,8 +70,27 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   public selectAllChildren(option: TemplateMultiSelectFormOption) {
     const childValues = [...option.children].map((childOption) => childOption.value);
     this.value = this.value ? this.value.filter((value) => !childValues.includes(value)) : [];
-    this.writeValue([...this.value, option.value]);
-    this.onChange(this.value);
+    this.triggerValueChange([...this.value, option.value]);
+  }
+
+  public unselectAllChildren(option: TemplateMultiSelectFormOption) {
+    const valuesToRemove = [...[...option.children].map((childOption) => childOption.value), option.value];
+    this.value = this.value ? this.value.filter((value) => !valuesToRemove.includes(value)) : [];
+    this.triggerValueChange(this.value);
+  }
+
+  public unselectAll() {
+    this.value = [];
+    this.triggerValueChange(this.value);
+  }
+
+  public hasSelectedChildren(option: TemplateMultiSelectFormOption): boolean {
+    return !![...option.children].filter((childOption) => childOption.checked).length;
+  }
+
+  private triggerValueChange(value: MultiSelectValue): void {
+    this.writeValue(value);
+    this.onChange(value);
   }
 
   private mapCheckedValue(): void {
