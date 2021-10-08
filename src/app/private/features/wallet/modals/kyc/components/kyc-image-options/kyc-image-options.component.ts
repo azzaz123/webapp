@@ -26,13 +26,6 @@ export class KYCImageOptionsComponent implements OnInit {
     this.imageMethod = imageMethod;
   }
 
-  get takeImageMessage(): string {
-    // TODO: We need to ask Miquel for the copys		Date: 2021/07/21
-    return this.isDesktop
-      ? $localize`:@@kyc_take_images_desktop:Take a picture with your webcam`
-      : $localize`:@@kyc_take_images_mobile:Take a picture with your camera`;
-  }
-
   get isDesktop(): boolean {
     return this.deviceDetectorService.isDesktop();
   }

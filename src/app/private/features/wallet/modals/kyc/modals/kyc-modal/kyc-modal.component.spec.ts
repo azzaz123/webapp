@@ -331,7 +331,7 @@ describe('KYCModalComponent', () => {
           });
 
           it('should show an error toast', () => {
-            const errorMessage = $localize`:@@saving_bank_account_unknown_error:Sorry, something went wrong`;
+            const errorMessage = $localize`:@@kyc_failed_snackbar_unknown_error_web_specific:Oops! There was an error.`;
             expect(toastService.show).toHaveBeenCalledWith({ text: errorMessage, type: TOAST_TYPES.ERROR });
           });
 
