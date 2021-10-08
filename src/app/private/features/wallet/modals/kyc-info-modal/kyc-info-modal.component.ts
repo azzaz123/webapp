@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { SlidesCarouselComponent } from '@shared/components/carousel-slides/carousel-slides.component';
@@ -18,9 +20,13 @@ export class KYCInfoModalComponent implements OnInit {
   public readonly KYC_LINK = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}/${WALLET_PATHS.KYC}`;
   public readonly KYC_SLIDER_INFO_STEPS = KYC_SLIDER_INFO_STEPS;
   public readonly LAST_SLIDE = 'ngb-slide-2';
-  public readonly ZENDESK_ID = '360004532117';
 
-  constructor(public activeModal: NgbActiveModal, private router: Router, private kycTrackingEventsService: KYCTrackingEventsService) {}
+  constructor(
+    public activeModal: NgbActiveModal,
+    private router: Router,
+    private kycTrackingEventsService: KYCTrackingEventsService,
+    private customerHelpService: CustomerHelpService
+  ) {}
 
   ngOnInit(): void {
     this.kycTrackingEventsService.trackViewKYCTutorialScreen();
@@ -45,8 +51,7 @@ export class KYCInfoModalComponent implements OnInit {
   }
 
   public get zendeskURL(): string {
-    // TODO: change it and use the zendesk service		Date: 2021/07/13
-    return `https://ayuda.wallapop.com/hc/en-us/articles/${this.ZENDESK_ID}-Verify-my-identity`;
+    return this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.VERIFY_MY_IDENTITY);
   }
 
   private requestTrackClickKYCStartVerification(): void {

@@ -1617,6 +1617,18 @@ describe('KYCUploadImagesComponent', () => {
     });
   });
 
+  describe('when we click on the cross button...', () => {
+    beforeEach(() => {
+      spyOn(component.closeModal, 'emit');
+
+      fixture.debugElement.query(By.css('.KYCUploadImages__cross')).nativeElement.click();
+    });
+
+    it('should close the modal', () => {
+      expect(component.closeModal.emit).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('ngOnDestroy', () => {
     describe('and the user video is active', () => {
       beforeEach(() => {

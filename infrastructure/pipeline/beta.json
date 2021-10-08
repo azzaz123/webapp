@@ -3,9 +3,6 @@
     "EnvName": "beta",
     "ImageTag": "release",
     "ProjectName": "webapp",
-    "BucketESName": "web-es.beta.wallapop.com",
-    "BucketENName": "web-en.beta.wallapop.com",
-    "BucketITName": "web-it.beta.wallapop.com",
     "BucketNameFunctionalWebapp":"functional-webapp-beta",
     "FunctionalWebappDistributionID":"E2XYFID5BYNMBB"
   },

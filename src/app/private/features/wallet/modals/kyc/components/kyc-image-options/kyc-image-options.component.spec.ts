@@ -144,4 +144,16 @@ describe('KYCImageOptionsComponent', () => {
       expect(uploadOptionTitle).toStrictEqual($localize`:@@kyc_take_images_desktop:Take a picture with your webcam`);
     });
   });
+
+  describe('when we click on the cross button...', () => {
+    beforeEach(() => {
+      spyOn(component.closeModal, 'emit');
+
+      fixture.debugElement.query(By.css('.KYCImageOptions__cross')).nativeElement.click();
+    });
+
+    it('should close the modal', () => {
+      expect(component.closeModal.emit).toHaveBeenCalledTimes(1);
+    });
+  });
 });
