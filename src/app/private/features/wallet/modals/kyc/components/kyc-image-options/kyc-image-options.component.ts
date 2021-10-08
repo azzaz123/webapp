@@ -11,6 +11,7 @@ import { KYC_TAKE_IMAGE_OPTIONS } from './kyc-image-options.enum';
 export class KYCImageOptionsComponent implements OnInit {
   @Output() goBack: EventEmitter<void> = new EventEmitter();
   @Output() takeImageOptionChange: EventEmitter<KYC_TAKE_IMAGE_OPTIONS> = new EventEmitter();
+  @Output() closeModal: EventEmitter<void> = new EventEmitter();
 
   public readonly KYC_TAKE_IMAGE_OPTIONS = KYC_TAKE_IMAGE_OPTIONS;
   public imageMethod: KYC_TAKE_IMAGE_OPTIONS;
@@ -23,13 +24,6 @@ export class KYCImageOptionsComponent implements OnInit {
 
   public changeImageMethod(imageMethod: KYC_TAKE_IMAGE_OPTIONS): void {
     this.imageMethod = imageMethod;
-  }
-
-  get takeImageMessage(): string {
-    // TODO: We need to ask Miquel for the copys		Date: 2021/07/21
-    return this.isDesktop
-      ? $localize`:@@kyc_take_images_desktop:Take a picture with your webcam`
-      : $localize`:@@kyc_take_images_mobile:Take a picture with your camera`;
   }
 
   get isDesktop(): boolean {

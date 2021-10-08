@@ -16,12 +16,13 @@ export const favouriteItemFixture: FavouriteItemDto = {
   sold: { flag: false },
   pro: { flag: false },
   reserved: { flag: false },
+  user_id: '123',
 };
 
 export const mappedFavouriteItemFixture: Item = new Item(
   favouriteItemFixture.id,
   null,
-  null,
+  favouriteItemFixture.user_id,
   favouriteItemFixture.title,
   undefined,
   Number.parseInt(favouriteItemFixture.category_id),

@@ -1,6 +1,36 @@
 @import '~style/common';
 
 .KYCImageOptions {
+  &__title,
+  &__description,
+  &__back {
+    color: $blue-grey-1;
+  }
+
+  &__back {
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+      &,
+      tsl-svg-icon {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &__optionsWrapper {
+    flex: 1;
+  }
+
+  &__title {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-l;
+  }
+
+  &__description {
+    font-size: $font-size-m;
+  }
+
   &__option {
     border: solid 2px $blue-grey-5;
     cursor: pointer;
@@ -25,19 +55,12 @@
     }
   }
 
-  &__back {
-    cursor: pointer;
-    &:hover {
-      text-decoration: none;
-      &,
-      tsl-svg-icon {
-        opacity: 0.8;
-      }
-    }
-  }
-
   &__bottomContainer {
     bottom: 0;
     background-color: transparentize($white, 0.5);
+  }
+
+  &__cross {
+    cursor: pointer;
   }
 }

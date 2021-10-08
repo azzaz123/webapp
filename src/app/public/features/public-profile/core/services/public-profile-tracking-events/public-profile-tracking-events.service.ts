@@ -19,6 +19,7 @@ import { UserStats } from '@core/user/user-stats.interface';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { User } from '@core/user/user';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
+import { USER_TYPE } from '@core/user/user.service';
 export type ViewReviewsAnalyticsPageView = AnalyticsPageView<ViewOwnReviews | ViewOtherReviews>;
 export type FavouriteUserAnalyticsEvent = AnalyticsEvent<FavoriteUser | UnfavoriteUser>;
 export type FavouriteItemAnalyticsEvent = AnalyticsEvent<FavoriteItem | UnfavoriteItem>;
@@ -39,6 +40,7 @@ export class PublicProfileTrackingEventsService {
         position: index + 1,
         screenId: SCREEN_IDS.Profile,
         isPro: user?.featured,
+        isCarDealer: user?.type === USER_TYPE.PROFESSIONAL,
         salePrice: itemCard.salePrice,
         title: itemCard.title,
         shippingAllowed: !!itemCard.saleConditions?.shipping_allowed,

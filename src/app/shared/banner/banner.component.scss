@@ -1,8 +1,7 @@
-@import '~web-styleguide/scss/colors';
-@import '~web-styleguide/scss/spacing';
+@import '~style/common';
 
 .alert {
-  border-radius: $spacing-ms;
+  border-radius: $border-radius;
 
   &-success,
   &-warning,
