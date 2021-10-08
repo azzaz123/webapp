@@ -55,9 +55,6 @@ describe('VerificationsNSecurityComponent', () => {
     fixture.detectChanges();
   });
   describe('when the verifications view is loaded', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
     it('should be created', () => {
       expect(component).toBeTruthy();
     });
@@ -74,6 +71,7 @@ describe('VerificationsNSecurityComponent', () => {
 
     it('should show the email card', () => {
       const card = fixture.debugElement.queryAll(By.directive(MockVerificationCardComponent));
+
       expect(card).toBeTruthy();
     });
   });
@@ -81,7 +79,8 @@ describe('VerificationsNSecurityComponent', () => {
   describe('verifications text', () => {
     describe('when the verifications service is loaded', () => {
       it('should show E-mail title', () => {
-        const title = component.getTitleVerification(VERIFICATIONS_N_SECURITY_TYPES.EMAIL);
+        const title = component.titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.EMAIL];
+
         expect(title).toBe($localize`:@@verification_and_security_all_users_verifications_email_label:E-mail`);
       });
       describe('and the email is verified', () => {
@@ -93,7 +92,8 @@ describe('VerificationsNSecurityComponent', () => {
         });
         it('should show Change button text', () => {
           component.userVerifications$.subscribe((userVerifications) => {
-            const text = component.getTextButton(userVerifications.email);
+            const text = component.verifiedTextButton[userVerifications.email.toString()];
+
             expect(text).toBe($localize`:@@verification_and_security_all_users_change_button:Change`);
           });
         });
@@ -101,7 +101,8 @@ describe('VerificationsNSecurityComponent', () => {
       describe('and the email is not verified', () => {
         it('should show Verify button text', () => {
           component.userVerifications$.subscribe((userVerifications) => {
-            const text = component.getTextButton(userVerifications.email);
+            const text = component.verifiedTextButton[userVerifications.email.toString()];
+
             expect(text).toBe($localize`:@@verification_and_security_all_users_verify_button:Verify`);
           });
         });
