@@ -31,6 +31,7 @@ export enum PhoneMethod {
 }
 
 export class InboxMessage {
+  private _translation: string;
   constructor(
     private _id: string,
     private _thread: string,
@@ -97,6 +98,14 @@ export class InboxMessage {
 
   get payload(): MessagePayload {
     return this._payload;
+  }
+
+  get translation(): string {
+    return this._translation;
+  }
+
+  set translation(value: string) {
+    this._translation = value;
   }
 
   public static messsagesFromJson(

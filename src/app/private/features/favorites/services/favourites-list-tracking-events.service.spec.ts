@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
@@ -11,6 +11,8 @@ import {
   ClickItemCard,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
+import { UserService } from '@core/user/user.service';
+import { MockedUserService } from '@fixtures/user.fixtures.spec';
 
 describe('FavouritesListTrackingEventsService', () => {
   let service: FavouritesListTrackingEventsService;
@@ -19,7 +21,11 @@ describe('FavouritesListTrackingEventsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [FavouritesListTrackingEventsService, { provide: AnalyticsService, useClass: MockAnalyticsService }],
+      providers: [
+        FavouritesListTrackingEventsService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        { provide: UserService, useClass: MockedUserService },
+      ],
     });
     service = TestBed.inject(FavouritesListTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
@@ -36,7 +42,7 @@ describe('FavouritesListTrackingEventsService', () => {
     });
     const item: Item = MOCK_ITEM;
 
-    it('should send click item card event', () => {
+    it('should send click item card event', fakeAsync(() => {
       service.trackClickItemCardEvent(item, 1);
 
       const MOCK_EVENT: AnalyticsEvent<ClickItemCard> = {
@@ -50,10 +56,14 @@ describe('FavouritesListTrackingEventsService', () => {
           salePrice: item.salePrice,
           title: item.title,
           isBumped: item.flags?.bumped,
+          isPro: false,
+          isCarDealer: false,
         },
       };
 
+      tick();
+
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_EVENT);
-    });
+    }));
   });
 });
