@@ -11,9 +11,6 @@ Parameters:
   BucketEN:
     Description: 'Bucket where the EN webapp resides'
     Type: String
-  BucketIT:
-    Description: 'Bucket where the IT webapp resides'
-    Type: String
   HostES:
     Description: 'URL to access to it'
     Type: String
@@ -146,28 +143,6 @@ Resources:
     Properties:
       CloudFrontOriginAccessIdentityConfig:
         Comment: 'Access identity for CloudFront web-en'
-
-  BucketITCloudFrontOriginaccessIdentity:
-    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
-    Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: 'Access identity for CloudFront web-it'
-
-  BucketITPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket: !Ref BucketIT
-      PolicyDocument:
-        Statement:
-          - Action:
-              - s3:GetObject
-              - s3:List*
-            Effect: Allow
-            Resource:
-              - !Sub "arn:aws:s3:::${BucketIT}/*"
-              - !Sub "arn:aws:s3:::${BucketIT}"
-            Principal:
-              CanonicalUser: !GetAtt BucketITCloudFrontOriginaccessIdentity.S3CanonicalUserId
 
   WebEsRecordSetGroup:
     Type: AWS::Route53::RecordSetGroup
