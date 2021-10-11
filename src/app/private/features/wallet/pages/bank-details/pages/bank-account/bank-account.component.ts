@@ -125,9 +125,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   }
 
   public canExit(): true | Promise<any> {
-    if (!this.isKYC) {
-      return this.formComponent.canExit();
-    }
+    return this.isKYC ? true : this.formComponent.canExit();
   }
 
   private submitValidForm(): void {

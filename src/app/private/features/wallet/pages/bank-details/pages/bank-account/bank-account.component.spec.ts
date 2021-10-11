@@ -197,10 +197,27 @@ describe('BankAccountComponent', () => {
   });
 
   describe('canExit', () => {
-    it('should return the form canExit status', () => {
-      const result = component.canExit();
+    describe('and we are in KYC process', () => {
+      beforeEach(() => {
+        component.isKYC = true;
+      });
 
-      expect(result).toStrictEqual(component.formComponent.canExit());
+      it('should return true', () => {
+        const result = component.canExit();
+
+        expect(result).toStrictEqual(true);
+      });
+    });
+
+    describe('and we are NOT in KYC process', () => {
+      beforeEach(() => {
+        component.isKYC = false;
+      });
+      it('should return the form canExit status', () => {
+        const result = component.canExit();
+
+        expect(result).toStrictEqual(component.formComponent.canExit());
+      });
     });
   });
 
