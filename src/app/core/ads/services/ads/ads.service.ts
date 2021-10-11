@@ -47,13 +47,7 @@ export class AdsService {
   }
 
   public setSlots(adSlots: AdSlotConfiguration[]): void {
-    this.googlePublisherTagService.reset();
     this.setSlotsSubject.next(adSlots);
-  }
-
-  public addSlots(adSlots: AdSlotConfiguration[]): void {
-    const actualSlots: AdSlotConfiguration[] = this.setSlotsSubject.getValue();
-    this.setSlotsSubject.next([...actualSlots, ...adSlots]);
   }
 
   public destroySlots(adSlots: AdSlotConfiguration[]): void {
