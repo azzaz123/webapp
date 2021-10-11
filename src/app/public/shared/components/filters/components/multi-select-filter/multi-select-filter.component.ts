@@ -138,9 +138,8 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   private buildLabel(): string {
     let label = '';
-    const stringValues = this._value.find((option) => option.key === this.config.mapKey.parameterKey).value?.split(',');
 
-    stringValues.forEach((value: string, index: number) => {
+    this.getValueAsArray().forEach((value: string, index: number) => {
       const valueOption = this.allOptions.find((option) => {
         return option.value === value;
       });
