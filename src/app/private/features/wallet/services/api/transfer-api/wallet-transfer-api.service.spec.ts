@@ -7,11 +7,11 @@ import {
   PayUserBankAccountsEndPoint,
   WalletTransferApiService,
 } from '@private/features/wallet/services/api/transfer-api/wallet-transfer-api.service';
-import { WalletTransferDismissErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error.model';
+import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
 import { WalletTransferErrorEnum } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-error.enum';
 import { WalletTransferErrorResponse } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-error-mapper';
-import { WalletTransferGenericErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error.model';
-import { WalletTransferPayUserBankAccountErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error.model';
+import { WalletTransferGenericError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error';
+import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error';
 
 describe('WalletTransferApiService', () => {
   let service: WalletTransferApiService;
@@ -66,7 +66,7 @@ describe('WalletTransferApiService', () => {
         const req: TestRequest = httpMock.expectOne(PayBankAccountFromUserWalletEndPoint);
         req.error([{ error_code: WalletTransferErrorEnum.InsufficientFunds, message: 'rip' }] as any);
 
-        expect(response instanceof WalletTransferGenericErrorModel).toBe(true);
+        expect(response instanceof WalletTransferGenericError).toBe(true);
       });
     });
   });
@@ -105,7 +105,7 @@ describe('WalletTransferApiService', () => {
         const req: TestRequest = httpMock.expectOne(`${PayUserBankAccountsEndPoint}?status=somestatus`);
         req.error([{ error: 'unknown error', message: 'rip' }] as any);
 
-        expect(response instanceof WalletTransferPayUserBankAccountErrorModel).toBe(true);
+        expect(response instanceof WalletTransferPayUserBankAccountError).toBe(true);
       });
     });
 
@@ -119,7 +119,7 @@ describe('WalletTransferApiService', () => {
         const req: TestRequest = httpMock.expectOne(`${PayUserBankAccountsEndPoint}?status=somestatus`);
         req.flush('I do not know this url', { status: 404, statusText: 'rip' });
 
-        expect(response instanceof WalletTransferDismissErrorModel).toBe(true);
+        expect(response instanceof WalletTransferDismissError).toBe(true);
       });
     });
   });

@@ -24,9 +24,9 @@ import { ToastModule } from '@layout/toast/toast.module';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
-import { WalletTransferDismissErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error.model';
+import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
 import { WalletTransferErrorTranslations } from '@private/features/wallet/errors/constants/wallet-transfer-error-translations';
-import { WalletTransferPayUserBankAccountErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error.model';
+import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error';
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { delay } from 'rxjs/operators';
@@ -471,7 +471,7 @@ describe('WalletBalanceInfoComponent', () => {
         let errorActionSpy;
 
         beforeEach(() => {
-          spyOn(transferService, 'checkPayUserBankAccount').and.returnValue(throwError(new WalletTransferDismissErrorModel()));
+          spyOn(transferService, 'checkPayUserBankAccount').and.returnValue(throwError(new WalletTransferDismissError()));
           spyOn(toastService, 'show');
           errorActionSpy = spyOn(errorActionService, 'show');
 
@@ -504,7 +504,7 @@ describe('WalletBalanceInfoComponent', () => {
         let errorActionSpy;
 
         beforeEach(() => {
-          spyOn(transferService, 'checkPayUserBankAccount').and.returnValue(throwError(new WalletTransferPayUserBankAccountErrorModel()));
+          spyOn(transferService, 'checkPayUserBankAccount').and.returnValue(throwError(new WalletTransferPayUserBankAccountError()));
           spyOn(toastService, 'show');
           errorActionSpy = spyOn(errorActionService, 'show');
 

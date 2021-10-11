@@ -12,8 +12,8 @@ import {
   WalletTransferErrorMapper,
   WalletTransferErrorResponse,
 } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-error-mapper';
-import { WalletTransferGenericErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error.model';
-import { WalletTransferNetworkErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-network-error.model';
+import { WalletTransferGenericError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error';
+import { WalletTransferNetworkError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-network-error';
 
 const walletTransferErrorMapper = new WalletTransferErrorMapper();
 const walletTransferErrorResponses = [
@@ -34,7 +34,7 @@ describe('WHEN receiving an error from payment backend', () => {
         error: (errors) => (result = errors),
       });
 
-      expect(result instanceof WalletTransferGenericErrorModel).toBe(true);
+      expect(result instanceof WalletTransferGenericError).toBe(true);
     });
   });
 
@@ -46,7 +46,7 @@ describe('WHEN receiving an error from payment backend', () => {
         error: (errors) => (result = errors),
       });
 
-      expect(result instanceof WalletTransferNetworkErrorModel).toBe(true);
+      expect(result instanceof WalletTransferNetworkError).toBe(true);
     });
   });
 
@@ -58,7 +58,7 @@ describe('WHEN receiving an error from payment backend', () => {
         error: (errors) => (result = errors),
       });
 
-      expect(result instanceof WalletTransferGenericErrorModel).toBe(true);
+      expect(result instanceof WalletTransferGenericError).toBe(true);
     });
   });
 });

@@ -28,7 +28,7 @@ describe('WalletTransferService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('WHEN transferint the money', () => {
+  describe('WHEN transfering the money', () => {
     beforeEach(() => {
       spyOn(walletTransferApiService, 'transfer').and.returnValue(of(null));
       spyOn(walletTransferMapperService, 'mapToRequest').and.returnValue(MOCK_API_REQUEST_TO_TRANSFER);

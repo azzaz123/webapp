@@ -1,6 +1,6 @@
 import { CurrencyCode } from '@api/core/model/currency.interface';
 
-export interface WalletTransferFundsInterface {
+export interface WalletTransferFunds {
   amount: number;
   currency: CurrencyCode;
 }

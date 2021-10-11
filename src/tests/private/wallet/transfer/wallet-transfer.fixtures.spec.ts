@@ -2,7 +2,7 @@ import { Currency } from '@api/core/model/currency.interface';
 import { Money } from '@api/core/model/money.interface';
 import { NumericAmount } from '@api/core/model/numeric-amount.interface';
 import { WalletTransferMoneyInterface } from '@private/features/wallet/modals/transfer/interfaces/wallet-transfer-money.interface';
-import { WalletTransferRequestInterface } from '@private/features/wallet/interfaces/transfer/wallet-transfer-request.interface';
+import { WalletTransferRequest } from '@private/features/wallet/interfaces/transfer/wallet-transfer-request.interface';
 
 export const MOCK_BALANCE_CURRENCY: Currency = {
   code: 'EUR',
@@ -42,7 +42,7 @@ export const MOCK_TRANSFER_AMOUNT: WalletTransferMoneyInterface = {
   currency: MOCK_CURRENCY_TO_TRANSFER,
 };
 
-export const MOCK_API_REQUEST_TO_TRANSFER: WalletTransferRequestInterface = {
+export const MOCK_API_REQUEST_TO_TRANSFER: WalletTransferRequest = {
   id: 'fake id',
   pay_out_id: 'fake id too',
   funds: {
