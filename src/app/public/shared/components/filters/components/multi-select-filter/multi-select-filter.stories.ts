@@ -122,7 +122,7 @@ WithNestedOptionsAndDefaultValue.args = {
   value: [
     {
       key: FILTER_QUERY_PARAM_KEY.objectType,
-      value: [SUBCATEGORIES_WITH_CHILDREN_MOCK[0].value, SUBCATEGORIES_WITH_CHILDREN_MOCK[1].children[2].value],
+      value: `${SUBCATEGORIES_WITH_CHILDREN_MOCK[0].value},${SUBCATEGORIES_WITH_CHILDREN_MOCK[1].children[2].value}`,
     },
   ],
 };
