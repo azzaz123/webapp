@@ -80,13 +80,7 @@ export class GooglePublisherTagService {
     this.adsKeywordsService.saveCustomKeywords(adKeywords);
   }
 
-  public setAdsSegmentation(allowSegmentation = false): void {
-    this.googletag.cmd.push(() => {
-      this.googletag.pubads().setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
-    });
-  }
-
-  public setTargetingByAdsKeywords(allowSegmentation = false): void {
+  public setTargetingByAdsKeywords(): void {
     this.adsKeywordsService.loadAdKeywords();
 
     const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
@@ -96,7 +90,6 @@ export class GooglePublisherTagService {
           this.googletag.pubads().setTargeting(key, adKeywords[key]);
         }
       }
-      this.googletag.pubads().setTargeting('allowSegmentation', allowSegmentation.toString());
     });
   }
 
@@ -115,12 +108,6 @@ export class GooglePublisherTagService {
   public clearSlots(adSlotConfigurations: AdSlotConfiguration[]): void {
     this.googletag.cmd.push(() => {
       this.googletag.pubads().clear(this.getSlots(adSlotConfigurations));
-    });
-  }
-
-  public displayAdBySlotId(slotId: AdSlotId): void {
-    this.googletag.cmd.push(() => {
-      this.googletag.display(slotId);
     });
   }
 
