@@ -6,6 +6,7 @@ import {
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
   SUBSCRIPTIONS,
 } from '@fixtures/subscriptions.fixtures.spec';
+import { DiscountBadgeComponent } from '@private/features/pro/components/discount-badge/discount-badge.component';
 import { SubscriptionPurchaseHeaderComponent } from './subscription-purchase-header.component';
 
 @Component({
@@ -22,7 +23,7 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionPurchaseHeaderComponent, MockSvgIconComponent],
+      declarations: [SubscriptionPurchaseHeaderComponent, MockSvgIconComponent, DiscountBadgeComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -60,7 +61,7 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
     });
 
     it('should show free trial label', () => {
-      const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__trialBanner')).nativeElement;
+      const trialBanner: HTMLElement = fixture.debugElement.query(By.directive(DiscountBadgeComponent)).nativeElement;
 
       expect(trialBanner.textContent).toContain(component.subscription.trial_days);
     });
@@ -68,7 +69,7 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
 
   describe('has no free trial', () => {
     it('should not show free trial label', () => {
-      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__trialBanner'));
+      const trialBanner = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
       expect(trialBanner).toBeFalsy();
     });
