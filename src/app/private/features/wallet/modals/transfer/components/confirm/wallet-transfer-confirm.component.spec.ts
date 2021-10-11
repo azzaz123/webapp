@@ -1,41 +1,84 @@
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
+import {
+  MOCK_BALANCE,
+  MOCK_MONEY_TO_TRANSFER,
+  MOCK_TRANSFER_AMOUNT,
+} from '@fixtures/private/wallet/transfer/wallet-transfer.fixtures.spec';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
 import { WalletTransferConfirmComponent } from '@private/features/wallet/modals/transfer/components/confirm/wallet-transfer-confirm.component';
+import { WalletTransferGenericError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error';
+import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
+import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { of, throwError } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
+@Component({
+  selector: 'tsl-fake-component',
+  templateUrl: './wallet-transfer-confirm.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+class FakeComponent extends WalletTransferConfirmComponent {
+  constructor(
+    changeDetectorRef: ChangeDetectorRef,
+    ngbActiveModal: NgbActiveModal,
+    toastService: ToastService,
+    transferService: WalletTransferService
+  ) {
+    super(changeDetectorRef, ngbActiveModal, toastService, transferService);
+  }
+}
 
 describe('WalletTransferConfirmComponent', () => {
   let component: WalletTransferConfirmComponent;
   let fixture: ComponentFixture<WalletTransferConfirmComponent>;
   let ngbActiveModal: NgbActiveModal;
   let toastService: ToastService;
+  let transferService: WalletTransferService;
 
   const walletTransferConfirmSelector = '.WalletTransferConfirm';
-  const walletTransferConfirmContentAmountSelector = `${walletTransferConfirmSelector}__amount`;
-  const walletTransferConfirmContentCancelButtonSelector = `${walletTransferConfirmSelector}__cancel tsl-button button`;
-  const walletTransferConfirmContentConfirmButtonSelector = `${walletTransferConfirmSelector}__confirm tsl-button button`;
-  const walletTransferConfirmContentConfirmButtonLoadingSelector = `${walletTransferConfirmContentConfirmButtonSelector}.loading`;
+  const walletTransferConfirmAmountSelector = `${walletTransferConfirmSelector}__amount`;
+  const walletTransferConfirmCancelButtonSelector = `${walletTransferConfirmSelector}__cancel tsl-button button`;
+  const walletTransferConfirmConfirmButtonSelector = `${walletTransferConfirmSelector}__confirm tsl-button button`;
+  const walletTransferConfirmConfirmButtonLoadingSelector = `${walletTransferConfirmConfirmButtonSelector}.loading`;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ButtonComponent, SvgIconComponent, WalletTransferConfirmComponent],
+      declarations: [ButtonComponent, SvgIconComponent, FakeComponent],
       imports: [HttpClientTestingModule],
-      providers: [NgbActiveModal, ToastService],
+      providers: [
+        NgbActiveModal,
+        ToastService,
+        {
+          provide: WalletTransferService,
+          useValue: {
+            checkPayUserBankAcount() {
+              return of(null);
+            },
+            transfer(value) {
+              return of(null);
+            },
+          },
+        },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     ngbActiveModal = TestBed.inject(NgbActiveModal);
     toastService = TestBed.inject(ToastService);
-    fixture = TestBed.createComponent(WalletTransferConfirmComponent);
+    transferService = TestBed.inject(WalletTransferService);
+
+    fixture = TestBed.createComponent(FakeComponent);
     component = fixture.componentInstance;
-    component.transferAmount = new WalletTransferAmountModel(3.14);
+    component.transferAmount = MOCK_TRANSFER_AMOUNT;
   });
 
   it('should create', () => {
@@ -44,17 +87,17 @@ describe('WalletTransferConfirmComponent', () => {
 
   describe('WHEN the user has set a correct amount of money', () => {
     it('should show the amount of money in the range', () => {
-      component.transferAmount = new WalletTransferAmountModel(13.31);
+      component.transferAmount = new WalletTransferMoneyModel(13.31, MOCK_BALANCE);
       const expectedAmountValue = `<span>You are going to transfer 13.31 € from wallet to your bank account</span>`;
 
       fixture.detectChanges();
-      const amountValue = fixture.debugElement.query(By.css(walletTransferConfirmContentAmountSelector)).nativeElement.innerHTML;
+      const amountValue = fixture.debugElement.query(By.css(walletTransferConfirmAmountSelector)).nativeElement.innerHTML;
 
       expect(amountValue).toEqual(expectedAmountValue);
     });
 
     it('should show the cancel button activated', () => {
-      const cancelButton = fixture.debugElement.query(By.css(walletTransferConfirmContentCancelButtonSelector)).nativeElement;
+      const cancelButton = fixture.debugElement.query(By.css(walletTransferConfirmCancelButtonSelector)).nativeElement;
 
       expect(cancelButton).toBeTruthy();
       expect((cancelButton as HTMLButtonElement).disabled).toBe(false);
@@ -63,14 +106,14 @@ describe('WalletTransferConfirmComponent', () => {
     it('should show the confirm button activated', () => {
       component.isTransferInProgress = false;
       fixture.detectChanges();
-      const confirmButton = fixture.debugElement.query(By.css(walletTransferConfirmContentConfirmButtonSelector)).nativeElement;
+      const confirmButton = fixture.debugElement.query(By.css(walletTransferConfirmConfirmButtonSelector)).nativeElement;
 
       expect(confirmButton).toBeTruthy();
       expect((confirmButton as HTMLButtonElement).disabled).toBe(false);
     });
 
     it('should not show the spinner', () => {
-      const target = fixture.debugElement.query(By.css(walletTransferConfirmContentConfirmButtonLoadingSelector));
+      const target = fixture.debugElement.query(By.css(walletTransferConfirmConfirmButtonLoadingSelector));
 
       expect(target).toBeFalsy();
     });
@@ -79,35 +122,51 @@ describe('WalletTransferConfirmComponent', () => {
   describe('WHEN they click on the cancel button', () => {
     it('should go back to the transfer view', () => {
       const canceledSpy = spyOn(component.canceled, 'emit');
-      const expectedTransferAmount = new WalletTransferAmountModel(99.99);
-      component.transferAmount = expectedTransferAmount;
 
-      fixture.debugElement.query(By.css(walletTransferConfirmContentCancelButtonSelector)).nativeElement.click();
+      fixture.debugElement.query(By.css(walletTransferConfirmCancelButtonSelector)).nativeElement.click();
 
       expect(canceledSpy).toHaveBeenCalledTimes(1);
-      expect(canceledSpy).toHaveBeenCalledWith(jasmine.objectContaining(expectedTransferAmount));
+      expect(canceledSpy).toHaveBeenCalledWith();
     });
   });
 
   describe('WHEN they click on the confirm button', () => {
-    it('should show the spinner while it transfers the money', () => {
-      fixture.debugElement.query(By.css(walletTransferConfirmContentConfirmButtonSelector)).nativeElement.click();
+    it('should process only the first click', fakeAsync(() => {
+      const delayedTime = 2000;
+      jest.spyOn(transferService, 'transfer').mockReturnValue(of(null).pipe(delay(delayedTime)));
+
+      component.confirmTransfer();
+      component.confirmTransfer();
+      component.confirmTransfer();
       fixture.detectChanges();
 
-      const target = fixture.debugElement.query(By.css(walletTransferConfirmContentConfirmButtonLoadingSelector));
+      expect(transferService.transfer).toHaveBeenCalledTimes(1);
 
+      discardPeriodicTasks();
+    }));
+
+    it('should show the spinner while it transfers the money', fakeAsync(() => {
+      const delayedTime = 2000;
+      jest.spyOn(transferService, 'transfer').mockReturnValue(of(null).pipe(delay(delayedTime)));
+
+      component.confirmTransfer();
+      fixture.detectChanges();
+
+      const target = fixture.debugElement.query(By.css(walletTransferConfirmConfirmButtonLoadingSelector));
       expect(target).toBeTruthy();
-    });
 
-    it('should not show the spinner when the transfer is completed', () => {});
+      discardPeriodicTasks();
+    }));
 
     it('should close the modal when the transfer is completed', () => {
       spyOn(ngbActiveModal, 'close').and.callThrough();
 
-      fixture.debugElement.query(By.css(walletTransferConfirmContentConfirmButtonSelector)).nativeElement.click();
-      fixture.detectChanges();
+      transferService.transfer(MOCK_MONEY_TO_TRANSFER).subscribe(() => {
+        expect(ngbActiveModal.close).toHaveBeenCalledTimes(1);
+      });
 
-      expect(ngbActiveModal.close).toHaveBeenCalledTimes(1);
+      fixture.debugElement.query(By.css(walletTransferConfirmConfirmButtonSelector)).nativeElement.click();
+      fixture.detectChanges();
     });
 
     it('should show the sent transfer message', () => {
@@ -117,11 +176,37 @@ describe('WalletTransferConfirmComponent', () => {
       };
       spyOn(toastService, 'show').and.callFake(() => {});
 
-      fixture.debugElement.query(By.css(walletTransferConfirmContentConfirmButtonSelector)).nativeElement.click();
+      transferService.transfer(MOCK_MONEY_TO_TRANSFER).subscribe(() => {
+        expect(toastService.show).toBeCalledTimes(1);
+        expect(toastService.show).toHaveBeenCalledWith(jasmine.objectContaining(expectedMessage));
+      });
+      fixture.debugElement.query(By.css(walletTransferConfirmConfirmButtonSelector)).nativeElement.click();
       fixture.detectChanges();
+    });
+  });
 
-      expect(toastService.show).toBeCalledTimes(1);
-      expect(toastService.show).toHaveBeenCalledWith(jasmine.objectContaining(expectedMessage));
+  describe('AND WhEN there is an error from the server side', () => {
+    beforeEach(() => {
+      spyOn(transferService, 'transfer').and.returnValue(throwError(new WalletTransferGenericError()));
+      spyOn(toastService, 'show');
+      spyOn(component.transferError, 'emit');
+
+      component.confirmTransfer();
+      fixture.detectChanges();
+    });
+
+    it('should show a toast with a generic message', () => {
+      const expected = {
+        text: "Something went wrong, money hasn't been transferred. Try again.",
+        title: 'Oops!',
+        type: 'error',
+      };
+      expect(toastService.show).toHaveBeenCalledWith(expected);
+    });
+
+    it('should emit an event with the error', () => {
+      component.transferAmount = MOCK_TRANSFER_AMOUNT;
+      expect(component.transferError.emit).toHaveBeenCalledWith(component.transferAmount);
     });
   });
 });
