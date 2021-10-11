@@ -23,7 +23,7 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ToastModule } from '@layout/toast/toast.module';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
-import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/balance-tracking-event.service';
+import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/wallet-balance-tracking-event.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
 import { WalletTransferErrorTranslations } from '@private/features/wallet/errors/constants/wallet-transfer-error-translations';

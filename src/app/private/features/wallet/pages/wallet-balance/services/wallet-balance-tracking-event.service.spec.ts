@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { AnalyticsPageView, ViewWallet } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/balance-tracking-event.service';
+import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/wallet-balance-tracking-event.service';
 
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 

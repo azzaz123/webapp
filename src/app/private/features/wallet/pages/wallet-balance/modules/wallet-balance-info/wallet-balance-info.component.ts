@@ -8,7 +8,7 @@ import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/balance-tracking-event.service';
+import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/wallet-balance-tracking-event.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
 import { WalletTransferError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error';
