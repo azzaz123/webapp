@@ -34,11 +34,11 @@ describe('GIVEN WalletPendingTransactionComponent', () => {
     it('should show the item title', () => {
       const target = fixture.debugElement.query(By.css(pendingTransactionItemTitleSelector)).nativeElement;
       expect(target).toBeTruthy();
-      expect(target.innerHTML).toBe(pendingTransaction.itemTitle);
+      expect(target.innerHTML).toBe(pendingTransaction.item.label);
     });
     it('should display the item image', () => {
       const target = fixture.debugElement.query(By.css(pendingTransactionItemImageSelector)).nativeElement;
-      expect(target.style['background-image']).toBe(`url(${pendingTransaction.itemImageUrl})`);
+      expect(target.style['background-image']).toBe(`url(${pendingTransaction.item.imageUrl})`);
     });
     it('should show the item amount', () => {
       const target = fixture.debugElement.query(By.css(pendingTransactionItemAmountSelector)).nativeElement;
