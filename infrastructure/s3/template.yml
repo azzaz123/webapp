@@ -3,38 +3,11 @@ Description: |
   This template contains imported bucket that already exist in AWS.
 
 Parameters:
-  BucketNameES:
-    Description: 'Name of the bucket ES'
-    Type: String
-  BucketNameEN:
-    Description: 'Name of the bucket EN'
-    Type: String
-  BucketNameIT:
-    Description: 'Name of the bucket EN'
-    Type: String
   BucketNameFunctionalWebapp:
     Description: 'Name of the bucket where the functional webapp is hosted in multiple locales'
     Type: String
 
 Resources:
-  HostingBucketES:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      BucketName: !Sub "${BucketNameES}"
-  HostingBucketEN:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      BucketName: !Sub "${BucketNameEN}"
-  HostingBucketIT:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      BucketName: !Sub "${BucketNameIT}"
   HostingBucketFunctionalWebapp:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain

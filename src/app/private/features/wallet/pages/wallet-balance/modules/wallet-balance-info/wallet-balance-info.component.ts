@@ -10,10 +10,10 @@ import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interfac
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/balance-tracking-event.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
-import { WalletTransferDismissErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error.model';
-import { WalletTransferErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error.model';
+import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
+import { WalletTransferError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error';
 import { WalletTransferMainComponent } from '@private/features/wallet/modals/transfer/components/main/wallet-transfer-main.component';
-import { WalletTransferPayUserBankAccountErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error.model';
+import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error';
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { combineLatest } from 'rxjs';
@@ -102,9 +102,8 @@ export class WalletBalanceInfoComponent implements OnInit {
 
   private checkPayUserBankAccount(): void {
     this.walletTransferService.checkPayUserBankAccount().subscribe({
-      next: () => {},
-      error: (error: WalletTransferErrorModel) => {
-        if (error instanceof WalletTransferDismissErrorModel) {
+      error: (error: WalletTransferError) => {
+        if (error instanceof WalletTransferDismissError) {
           return;
         }
         this.showTransferErrorMessage(error);
@@ -112,9 +111,9 @@ export class WalletBalanceInfoComponent implements OnInit {
     });
   }
 
-  private showTransferErrorMessage(error: WalletTransferErrorModel): void {
+  private showTransferErrorMessage(error: WalletTransferError): void {
     this.toastService.show({
-      type: error instanceof WalletTransferPayUserBankAccountErrorModel ? TOAST_TYPES.SUCCESS : TOAST_TYPES.ERROR,
+      type: error instanceof WalletTransferPayUserBankAccountError ? TOAST_TYPES.SUCCESS : TOAST_TYPES.ERROR,
       text: error.message,
     });
     this.isTransferInProgress = true;

@@ -12,7 +12,7 @@ import {
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletTransferConfirmComponent } from '@private/features/wallet/modals/transfer/components/confirm/wallet-transfer-confirm.component';
-import { WalletTransferGenericErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error.model';
+import { WalletTransferGenericError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error';
 import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
@@ -131,6 +131,20 @@ describe('WalletTransferConfirmComponent', () => {
   });
 
   describe('WHEN they click on the confirm button', () => {
+    it('should process only the first click', fakeAsync(() => {
+      const delayedTime = 2000;
+      jest.spyOn(transferService, 'transfer').mockReturnValue(of(null).pipe(delay(delayedTime)));
+
+      component.confirmTransfer();
+      component.confirmTransfer();
+      component.confirmTransfer();
+      fixture.detectChanges();
+
+      expect(transferService.transfer).toHaveBeenCalledTimes(1);
+
+      discardPeriodicTasks();
+    }));
+
     it('should show the spinner while it transfers the money', fakeAsync(() => {
       const delayedTime = 2000;
       jest.spyOn(transferService, 'transfer').mockReturnValue(of(null).pipe(delay(delayedTime)));
@@ -140,20 +154,6 @@ describe('WalletTransferConfirmComponent', () => {
 
       const target = fixture.debugElement.query(By.css(walletTransferConfirmConfirmButtonLoadingSelector));
       expect(target).toBeTruthy();
-
-      discardPeriodicTasks();
-    }));
-
-    it('should not show the spinner when the transfer is completed', fakeAsync(() => {
-      const delayedTime = 2000;
-      jest.spyOn(transferService, 'transfer').mockReturnValue(of(null).pipe(delay(delayedTime)));
-
-      component.confirmTransfer();
-      tick(delayedTime);
-      fixture.detectChanges();
-
-      const target = fixture.debugElement.query(By.css(walletTransferConfirmConfirmButtonLoadingSelector));
-      expect(target).toBeFalsy();
 
       discardPeriodicTasks();
     }));
@@ -187,7 +187,7 @@ describe('WalletTransferConfirmComponent', () => {
 
   describe('AND WhEN there is an error from the server side', () => {
     beforeEach(() => {
-      spyOn(transferService, 'transfer').and.returnValue(throwError(new WalletTransferGenericErrorModel()));
+      spyOn(transferService, 'transfer').and.returnValue(throwError(new WalletTransferGenericError()));
       spyOn(toastService, 'show');
       spyOn(component.transferError, 'emit');
 

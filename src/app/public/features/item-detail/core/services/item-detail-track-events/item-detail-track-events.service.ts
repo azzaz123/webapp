@@ -21,7 +21,7 @@ import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
 import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
-import { UserService } from '@core/user/user.service';
+import { UserService, USER_TYPE } from '@core/user/user.service';
 import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
@@ -75,6 +75,7 @@ export class ItemDetailTrackEventsService {
         position: index + 1,
         screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
         isPro: recommenedItemOwner?.featured,
+        isCarDealer: recommenedItemOwner?.type === USER_TYPE.PROFESSIONAL,
         salePrice: recommendedItemCard.salePrice,
         title: recommendedItemCard.title,
         itemSourceRecommendationId: sourceItem.id,

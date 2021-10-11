@@ -1,10 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { WalletTransferDismissErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error.model';
+import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
 import { WalletTransferErrorResponse } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-error-mapper';
-import { WalletTransferGenericErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error.model';
 import { WalletTransferPayUserBankAccountErrorMapper } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-pay-user-bank-account-error-mapper';
-import { WalletTransferPayUserBankAccountErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error.model';
+import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error';
 
 const walletTransferErrorMapper = new WalletTransferPayUserBankAccountErrorMapper();
 
@@ -19,7 +18,7 @@ describe('WHEN receiving a not found error from payment backend', () => {
       error: (errors) => (result = errors),
     });
 
-    expect(result instanceof WalletTransferDismissErrorModel).toBe(true);
+    expect(result instanceof WalletTransferDismissError).toBe(true);
   });
 });
 
@@ -34,6 +33,6 @@ describe('WHEN receiving any error different than not found error', () => {
       error: (errors) => (result = errors),
     });
 
-    expect(result instanceof WalletTransferPayUserBankAccountErrorModel).toBe(true);
+    expect(result instanceof WalletTransferPayUserBankAccountError).toBe(true);
   });
 });

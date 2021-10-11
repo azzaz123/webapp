@@ -3,9 +3,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { WalletErrorResponseApi } from '@private/features/wallet/errors/classes/wallet-error-response-api';
 import { WalletTransferErrorEnum } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-error.enum';
-import { WalletTransferErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error.model';
-import { WalletTransferGenericErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error.model';
-import { WalletTransferNetworkErrorModel } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-network-error.model';
+import { WalletTransferError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error';
+import { WalletTransferGenericError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error';
+import { WalletTransferNetworkError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-network-error';
 
 export type WalletTransferErrorResponse = WalletErrorResponseApi<WalletTransferErrorEnum>;
 
@@ -14,11 +14,11 @@ export class WalletTransferErrorMapper extends ErrorMapper<WalletTransferErrorRe
     return response.error instanceof Array ? this.getApiFirstError(response) : this.getNetworkErrors();
   }
 
-  protected getError(error_code?: WalletTransferErrorEnum): WalletTransferErrorModel {
+  protected getError(error_code?: WalletTransferErrorEnum): WalletTransferError {
     if (error_code === WalletTransferErrorEnum.Network) {
-      return new WalletTransferNetworkErrorModel();
+      return new WalletTransferNetworkError();
     }
-    return new WalletTransferGenericErrorModel();
+    return new WalletTransferGenericError();
   }
 
   private getApiFirstError(response: HttpErrorResponse): Error {

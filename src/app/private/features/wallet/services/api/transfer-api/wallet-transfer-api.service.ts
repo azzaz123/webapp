@@ -7,7 +7,7 @@ import {
   WalletTransferErrorResponse,
 } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-error-mapper';
 import { WalletTransferPayUserBankAccountErrorMapper } from '@private/features/wallet/errors/mappers/transfer/wallet-transfer-pay-user-bank-account-error-mapper';
-import { WalletTransferRequestInterface } from '@private/features/wallet/interfaces/transfer/wallet-transfer-request.interface';
+import { WalletTransferRequest } from '@private/features/wallet/interfaces/transfer/wallet-transfer-request.interface';
 
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -25,14 +25,14 @@ export class WalletTransferApiService {
   constructor(private http: HttpClient) {}
 
   public checkPayUserBankAccount(status: string): Observable<null> {
-    let params: HttpParams = new HttpParams().append(StatusParam, status);
+    const params: HttpParams = new HttpParams().append(StatusParam, status);
 
     return this.http
       .head<null>(PayUserBankAccountsEndPoint, { params: params })
       .pipe(catchError((error: WalletTransferErrorResponse) => this.payUserBankAccountErrorMapper.map(error)));
   }
 
-  public transfer(request: WalletTransferRequestInterface): Observable<null> {
+  public transfer(request: WalletTransferRequest): Observable<null> {
     return this.http
       .post<null>(PayBankAccountFromUserWalletEndPoint, request)
       .pipe(catchError((error: WalletTransferErrorResponse) => this.errorMapper.map(error)));

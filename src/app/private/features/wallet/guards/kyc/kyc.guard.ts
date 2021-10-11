@@ -5,14 +5,17 @@ import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 
 @Injectable()
 export class KYCGuard implements CanActivate {
   constructor(private kycPropertiesService: KYCPropertiesService, private router: Router) {}
 
   public canActivate(): Observable<boolean> {
-    return this.kycPropertiesService.KYCProperties$.pipe(
+    const arePropertiesInitialized = this.kycPropertiesService.arePropertiesInitialized;
+    const properties$ = arePropertiesInitialized ? this.kycPropertiesService.KYCProperties$ : this.kycPropertiesService.get().pipe(take(1));
+
+    return properties$.pipe(
       map((properties: KYCProperties) => this.isVerificationNeeded(properties)),
       tap((isVerificationNeeded: boolean) => {
         if (!isVerificationNeeded) {
