@@ -20,8 +20,8 @@
                         <span class="KYCNationality__description d-block mb-3 text-center">{{description}}</span>
                         <tsl-dropdown
                             *ngIf="KYCNationality as nationality; else selectNationalityDropdown"
-                            placeholder="Select document"
-                            i18n-placeholder="@@kyc_select_document_view_header_placeholder" 
+                            placeholder="Documents I can use"
+                            i18n-placeholder="@@kyc_select_document_view_list_title_placeholder" 
                             [options]="nationality.availableDocuments"
                             bindLabel="string"
                             bindValue="string"

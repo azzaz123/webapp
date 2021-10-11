@@ -30,7 +30,7 @@ export class KYCModalComponent implements OnDestroy {
   public KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
     (properties) => properties.status === KYC_MODAL_STATUS.IN_PROGRESS
   );
-  private KYCModalCloseWarningCopy = $localize`:@@web_kyc_modal_close_warning:Are you sure you want to get out of the process? All information will be lost.`;
+  private KYCModalCloseWarningCopy = $localize`:@@kyc_cancellation_system_modal_description_web_specific:Are you sure you want to get out of the process? All information will be lost.`;
 
   constructor(
     private KYCStoreService: KYCStoreService,
@@ -53,8 +53,8 @@ export class KYCModalComponent implements OnDestroy {
         this.updateKYCImages(KYCImages);
         this.goNextStep();
       },
-      (e: Error | KYCError) => {
-        this.handleKYCError(e);
+      (e: Error[] | KYCError[]) => {
+        this.handleKYCError(e[0]);
       }
     );
   }
@@ -120,7 +120,7 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   private handleKYCError(e: Error | KYCError): void {
-    let errorMessage: string = BANK_ACCOUNT_TRANSLATIONS.SAVE_GENERIC_ERROR;
+    let errorMessage = e?.message ? e.message : $localize`:@@kyc_failed_snackbar_unknown_error_web_specific:Oops! There was an error.`;
 
     if (e instanceof KYCError) {
       errorMessage = e.message;
