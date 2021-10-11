@@ -41,6 +41,7 @@
         [columnsConfig]="listColumnsConfig$ | async"
         [cardType]="listCardType$ | async"
         [slotsConfig]="slotsConfig"
+        [showNativeAdSlots]="searchWithKeyword$ | async"
         (clickedItemAndIndex)="trackClickItemCardEvent($event)"
         (toggleFavouriteEvent)="trackFavouriteToggleEvent($event)"
       >

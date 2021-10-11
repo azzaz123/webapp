@@ -22,7 +22,7 @@ export const KYC_SLIDER_INFO_STEPS: KYCInfoSliderStep[] = [
       src: '/assets/images/kyc-banner/slide3.png',
       alt: 'Lock',
     },
-    title: $localize`:@@kyc_request_modal_slide_3_title:Step 2: Take a picture of your ID`,
+    title: $localize`:@@kyc_request_modal_slide_3_title:Step 2: Show a picture of your ID`,
     description: $localize`:@@kyc_request_modal_slide_3_description:So we can confirm that you are the bank account holder.`,
     extraLink: $localize`:@@kyc_request_modal_slide_3_more_info_link:More info`,
   },

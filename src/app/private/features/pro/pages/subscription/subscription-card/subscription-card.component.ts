@@ -30,7 +30,7 @@ export class SubscriptionCardComponent {
   }
 
   get descriptionText(): string {
-    return this.titleConfig[this.subscription.category_id];
+    return this.isSubscribed ? this.subscriptionBodyText : this.titleConfig[this.subscription.category_id];
   }
 
   get subscriptionBodyText(): string {
@@ -46,7 +46,6 @@ export class SubscriptionCardComponent {
   }
 
   get iconSrc(): string {
-    const status = this.isSubscribed ? 'disabled' : 'normal';
-    return `/assets/icons/categories/${status}/${this.subscription.category_icon}.svg`;
+    return `/assets/images/subscriptions/types/${this.subscription.category_icon}.svg`;
   }
 }

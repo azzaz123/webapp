@@ -6,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DocumentImageIsInvalidError } from '@api/core/errors/payments/kyc';
 import { KYCServicesModule } from '@api/payments/kyc/kyc-services.module';
 import { KYCService } from '@api/payments/kyc/kyc.service';
-import { I18nService } from '@core/i18n/i18n.service';
 import {
   MOCK_EMPTY_KYC_SPECIFICATIONS,
   MOCK_KYC_DOCUMENTATION,
@@ -48,7 +47,6 @@ describe('KYCModalComponent', () => {
   let fixture: ComponentFixture<KYCModalComponent>;
   let activeModal: NgbActiveModal;
   let toastService: ToastService;
-  let i18nService: I18nService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -58,11 +56,9 @@ describe('KYCModalComponent', () => {
         DeviceDetectorService,
         NgbActiveModal,
         KYCStoreService,
-        I18nService,
         ToastService,
         KYCTrackingEventsService,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
-        I18nService,
         ToastService,
         {
           provide: KYCStoreService,
@@ -91,7 +87,6 @@ describe('KYCModalComponent', () => {
     kycService = TestBed.inject(KYCService);
     activeModal = TestBed.inject(NgbActiveModal);
     toastService = TestBed.inject(ToastService);
-    i18nService = TestBed.inject(I18nService);
   });
 
   it('should create', () => {
@@ -121,7 +116,25 @@ describe('KYCModalComponent', () => {
         });
 
         it('should go to the next step', () => {
-          expect(component.stepper.goNext).toHaveBeenCalled();
+          expect(component.stepper.goNext).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(window, 'confirm').and.returnValue(true);
+          spyOn(activeModal, 'close');
+          const bankAccountComponent = fixture.debugElement.query(By.css(bankAccountSelector));
+
+          bankAccountComponent.triggerEventHandler('closeModal', {});
+        });
+
+        it('should open popup confirmation close', () => {
+          expect(window.confirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
         });
       });
     });
@@ -140,7 +153,7 @@ describe('KYCModalComponent', () => {
           const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
           KYCNationalityComponent.triggerEventHandler('goBack', {});
 
-          expect(component.stepper.goBack).toHaveBeenCalled();
+          expect(component.stepper.goBack).toHaveBeenCalledTimes(1);
         });
       });
 
@@ -167,7 +180,7 @@ describe('KYCModalComponent', () => {
           });
 
           it('should go to the next step', () => {
-            expect(component.stepper.goNext).toHaveBeenCalled();
+            expect(component.stepper.goNext).toHaveBeenCalledTimes(1);
           });
         });
 
@@ -184,8 +197,26 @@ describe('KYCModalComponent', () => {
           });
 
           it('should stay on the same step', () => {
-            expect(component.stepper.goNext).not.toHaveBeenCalled();
+            expect(component.stepper.goNext).not.toHaveBeenCalledTimes(1);
           });
+        });
+      });
+
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(window, 'confirm').and.returnValue(true);
+          spyOn(activeModal, 'close');
+          const KYCNationalityComponent = fixture.debugElement.query(By.css(KYCNationalitySelector));
+
+          KYCNationalityComponent.triggerEventHandler('closeModal', {});
+        });
+
+        it('should open popup confirmation close', () => {
+          expect(window.confirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
         });
       });
     });
@@ -206,7 +237,25 @@ describe('KYCModalComponent', () => {
         });
 
         it('should go back to the previous step', () => {
-          expect(component.stepper.goBack).toHaveBeenCalled();
+          expect(component.stepper.goBack).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(window, 'confirm').and.returnValue(true);
+          spyOn(activeModal, 'close');
+          const KYCImageOptionsComponent = fixture.debugElement.query(By.css(KYCImageOptionsSelector));
+
+          KYCImageOptionsComponent.triggerEventHandler('closeModal', {});
+        });
+
+        it('should open popup confirmation close', () => {
+          expect(window.confirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
         });
       });
     });
@@ -263,7 +312,6 @@ describe('KYCModalComponent', () => {
         describe('and the verification request fails', () => {
           beforeEach(() => {
             spyOn(kycService, 'request').and.returnValue(throwError(new DocumentImageIsInvalidError()));
-            spyOn(i18nService, 'translate').and.returnValue('');
             spyOn(component.stepper, 'goNext');
             spyOn(toastService, 'show');
 
@@ -283,12 +331,12 @@ describe('KYCModalComponent', () => {
           });
 
           it('should show an error toast', () => {
-            const errorMessage = $localize`:@@saving_bank_account_unknown_error:Sorry, something went wrong`;
+            const errorMessage = $localize`:@@kyc_failed_snackbar_unknown_error_web_specific:Oops! There was an error.`;
             expect(toastService.show).toHaveBeenCalledWith({ text: errorMessage, type: TOAST_TYPES.ERROR });
           });
 
           it('should NOT go to the next step', () => {
-            expect(component.stepper.goNext).not.toHaveBeenCalled();
+            expect(component.stepper.goNext).not.toHaveBeenCalledTimes(1);
           });
 
           it('should request to the KYC analytics service to track the click event', () => {
@@ -314,6 +362,26 @@ describe('KYCModalComponent', () => {
           expect(component.stepper.goBack).toHaveBeenCalledTimes(1);
         });
       });
+
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(window, 'confirm').and.returnValue(true);
+          spyOn(activeModal, 'close');
+
+          fixture.detectChanges();
+
+          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
+          KYCUploadImagesComponent.triggerEventHandler('closeModal', {});
+        });
+
+        it('should open popup confirmation close', () => {
+          expect(window.confirm).toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+        });
+      });
     });
 
     describe('and we are on in progress informative step', () => {
@@ -325,28 +393,38 @@ describe('KYCModalComponent', () => {
 
       describe('and the user clicks on the OK button', () => {
         beforeEach(() => {
+          spyOn(window, 'confirm');
           spyOn(activeModal, 'close');
-          const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCStatusPropertiesSelector));
+          const KYCStatusPropertiesComponent = fixture.debugElement.query(By.css(KYCStatusPropertiesSelector));
 
-          KYCUploadImagesComponent.triggerEventHandler('buttonClick', {});
+          KYCStatusPropertiesComponent.triggerEventHandler('buttonClick', {});
+        });
+
+        it('should not trigger confirmation close', () => {
+          expect(window.confirm).not.toHaveBeenCalled();
         });
 
         it('should close the modal', () => {
           expect(activeModal.close).toHaveBeenCalledTimes(1);
         });
       });
-    });
 
-    describe('and we click on the close modal button...', () => {
-      beforeEach(() => {
-        spyOn(activeModal, 'close');
-        const closeButton = fixture.debugElement.query(By.css('.modal-close')).nativeElement;
+      describe('and we click on cross button...', () => {
+        beforeEach(() => {
+          spyOn(activeModal, 'close');
+          spyOn(window, 'confirm');
+          const KYCStatusPropertiesComponent = fixture.debugElement.query(By.css(KYCStatusPropertiesSelector));
 
-        closeButton.click();
-      });
+          KYCStatusPropertiesComponent.triggerEventHandler('closeModal', {});
+        });
 
-      it('should close the modal', () => {
-        expect(activeModal.close).toHaveBeenCalled();
+        it('should not trigger confirmation close', () => {
+          expect(window.confirm).not.toHaveBeenCalledTimes(1);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+        });
       });
     });
 

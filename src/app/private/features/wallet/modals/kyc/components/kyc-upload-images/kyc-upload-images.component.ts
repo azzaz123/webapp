@@ -29,6 +29,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   @Output() endVerification: EventEmitter<KYCImages> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
+  @Output() closeModal: EventEmitter<void> = new EventEmitter();
 
   public readonly MIME_TYPES = MIME_TYPES;
   public readonly VIDEO_PERMISSIONS_STATUS = VIDEO_PERMISSIONS_STATUS;
@@ -265,14 +266,22 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
               ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_title:Check the photo of the front side of your document`
               : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_title:Check the photo of the back side of your document`;
           } else {
-            return activeStep === 1
-              ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_title:Take a photo of the front side of your ID document`
-              : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_title:Take a back side photo of your document`;
+            if (this.isUploadImageMethod) {
+              return $localize`:@@kyc_upload_photo_view_if_two_sides_front_side_title:Upload photo of your document`;
+            } else {
+              return activeStep === 1
+                ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_title:Take a photo of the front side of your ID document`
+                : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_title:Take a back side photo of your document`;
+            }
           }
         } else {
-          return isDefined
-            ? $localize`:@@kyc_take_photo_view_if_one_side_review_title:Check the photo of your document`
-            : $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`;
+          if (isDefined) {
+            return $localize`:@@kyc_take_photo_view_if_one_side_review_title:Check the photo of your document`;
+          } else {
+            return this.isUploadImageMethod
+              ? $localize`:@@kyc_upload_photo_view_if_one_side_title:Upload photo of your document`
+              : $localize`:@@kyc_take_photo_view_if_one_side_title:Take a photo of your document`;
+          }
         }
       })
     );
@@ -290,13 +299,13 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
               : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_description:All the details on your ID document must be clear and perfectly legible.`;
           } else {
             return activeStep === 1
-              ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Go somewhere with good lighting, focus the camera on the document, and take the best photo possible.`
-              : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to take a photo of the back side of your ID document.`;
+              ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_description:Make sure the image is in focus and clearly readable.`
+              : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_description:To finish the verification process, you just need to show a photo of the back side of your ID document.`;
           }
         } else {
           return isDefined
             ? $localize`:@@kyc_take_photo_view_if_one_side_review_description:All the details on your document must be clear and perfectly legible.`
-            : $localize`:@@kyc_take_photo_view_if_one_side_description:Go somewhere with good lighting and take the photo. Make sure the document you provide is valid for at least 3 months.`;
+            : $localize`:@@kyc_take_photo_view_if_one_side_description:The document you provide must be valid for at least 3 months. Make sure the image is in focus and clearly readable.`;
         }
       })
     );
@@ -306,11 +315,19 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     return this.activeStep$.pipe(
       map((activeStep: KYCImagesNeeded) => {
         if (this.twoImagesNeeded) {
-          return activeStep === 1
-            ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_photo_button:Take front side photo`
-            : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_continue_button:Take back side photo`;
+          if (this.isUploadImageMethod) {
+            return activeStep === 1
+              ? $localize`:@@kyc_upload_photo_view_if_two_sides_front_side_upload_button:Upload front side photo`
+              : $localize`:@@kyc_upload_photo_view_if_two_sides_back_side_upload_button:Upload back side photo`;
+          } else {
+            return activeStep === 1
+              ? $localize`:@@kyc_take_photo_view_if_two_sides_front_side_photo_button:Take front side photo`
+              : $localize`:@@kyc_take_photo_view_if_two_sides_back_side_continue_button:Take back side photo`;
+          }
         } else {
-          return $localize`:@@kyc_take_photo_view_if_one_side_take_photo_button:Take photo`;
+          return this.isUploadImageMethod
+            ? $localize`:@@kyc_upload_photo_view_if_one_side_upload_button:Upload photo`
+            : $localize`:@@kyc_take_photo_view_if_one_side_take_photo_button:Take photo`;
         }
       })
     );
@@ -320,11 +337,19 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
     return this.activeStep$.pipe(
       map((activeStep: KYCImagesNeeded) => {
         if (this.twoImagesNeeded) {
-          return activeStep === 1
-            ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_photo_button:Retake front side photo`
-            : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_photo_button:Retake back side photo`;
+          if (this.isUploadImageMethod) {
+            return activeStep === 1
+              ? $localize`:@@kyc_upload_photo_view_if_two_sides_review_front_side_change_photo_button:Change photo`
+              : $localize`:@@kyc_upload_photo_view_if_two_sides_review_back_side_change_photo_button:Change photo`;
+          } else {
+            return activeStep === 1
+              ? $localize`:@@kyc_take_photo_view_if_two_sides_review_front_side_photo_button:Retake front side photo`
+              : $localize`:@@kyc_take_photo_view_if_two_sides_review_back_side_photo_button:Retake back side photo`;
+          }
         } else {
-          return $localize`:@@kyc_take_photo_view_if_one_side_review_retake_photo_button:Retake photo`;
+          return this.isUploadImageMethod
+            ? $localize`:@@kyc_upload_photo_view_if_one_side_review_upload_button:Change photo`
+            : $localize`:@@kyc_take_photo_view_if_one_side_review_retake_photo_button:Retake photo`;
         }
       })
     );

@@ -8,13 +8,15 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { Item } from '@core/item/item';
+import { UserService, USER_TYPE } from '@core/user/user.service';
 
 @Injectable()
 export class FavouritesListTrackingEventsService {
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
-  public trackClickItemCardEvent(item: Item, index: number): void {
-    const { id, categoryId, salePrice, title, flags } = item;
+  public async trackClickItemCardEvent(item: Item, index: number): Promise<void> {
+    const { id, categoryId, salePrice, title, flags, owner } = item;
+    const { featured, type } = await this.userService.get(owner).toPromise();
 
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
@@ -27,6 +29,8 @@ export class FavouritesListTrackingEventsService {
         salePrice: salePrice,
         title: title,
         isBumped: flags?.bumped,
+        isPro: featured,
+        isCarDealer: type === USER_TYPE.PROFESSIONAL,
       },
     };
 

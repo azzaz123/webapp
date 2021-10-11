@@ -297,4 +297,16 @@ describe('KYCNationalityComponent', () => {
       expect(kycTrackingEventsService.trackViewKYCDocumentationTypeScreen).toHaveBeenCalledWith(KYC_DOCUMENTATION[0].analyticsName);
     });
   });
+
+  describe('when we click on the cross button...', () => {
+    beforeEach(() => {
+      spyOn(component.closeModal, 'emit');
+
+      fixture.debugElement.query(By.css('.KYCNationality__cross')).nativeElement.click();
+    });
+
+    it('should close the modal', () => {
+      expect(component.closeModal.emit).toHaveBeenCalledTimes(1);
+    });
+  });
 });

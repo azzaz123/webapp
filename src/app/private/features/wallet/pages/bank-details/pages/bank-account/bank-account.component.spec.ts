@@ -4,8 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { I18nService } from '@core/i18n/i18n.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { UuidService } from '@core/uuid/uuid.service';
 import {
   MOCK_EMPTY_BANK_ACCOUNT,
@@ -32,6 +30,7 @@ import {
 import { BankAccountComponent } from './bank-account.component';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
+import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
 
 describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
@@ -46,7 +45,6 @@ describe('BankAccountComponent', () => {
   let bankAccountService: BankAccountService;
   let toastService: ToastService;
   let location: Location;
-  let i18nService: I18nService;
   let router: Router;
   let el: HTMLElement;
   let kycTrackingEventsService: KYCTrackingEventsService;
@@ -66,14 +64,6 @@ describe('BankAccountComponent', () => {
           useValue: {
             getUUID() {
               return 'FAKE_UUID';
-            },
-          },
-        },
-        {
-          provide: I18nService,
-          useValue: {
-            translate() {
-              return '';
             },
           },
         },
@@ -103,7 +93,6 @@ describe('BankAccountComponent', () => {
     bankAccountService = TestBed.inject(BankAccountService);
     location = TestBed.inject(Location);
     toastService = TestBed.inject(ToastService);
-    i18nService = TestBed.inject(I18nService);
     kycTrackingEventsService = TestBed.inject(KYCTrackingEventsService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
@@ -140,6 +129,32 @@ describe('BankAccountComponent', () => {
       it('should request to the KYC analytics service to track the page view event', () => {
         expect(kycTrackingEventsService.trackViewKYCBankAccountInfoScreen).toHaveBeenCalledTimes(1);
       });
+
+      describe('and the bank account is new', () => {
+        beforeEach(() => {
+          component.isNewForm = true;
+          fixture.detectChanges();
+        });
+
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@kyc_bank_account_view_if_empty_title:Add the bank account where you wish to receive payment for your sales`;
+
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+        });
+      });
+
+      describe('and the bank account was already provided', () => {
+        beforeEach(() => {
+          component.isNewForm = false;
+          fixture.detectChanges();
+        });
+
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@kyc_bank_account_view_if_already_filled_title:Please check your bank account details are correct`;
+
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+        });
+      });
     });
 
     describe('and is not KYC...', () => {
@@ -151,6 +166,32 @@ describe('BankAccountComponent', () => {
 
       it('should NOT request to the KYC analytics service to track the page view event', () => {
         expect(kycTrackingEventsService.trackViewKYCBankAccountInfoScreen).not.toHaveBeenCalled();
+      });
+
+      describe('and the bank account is new', () => {
+        beforeEach(() => {
+          component.isNewForm = true;
+          fixture.detectChanges();
+        });
+
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@delivery_add_bank_account_title:Add bank account`;
+
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+        });
+      });
+
+      describe('and the bank account was already provided', () => {
+        beforeEach(() => {
+          component.isNewForm = false;
+          fixture.detectChanges();
+        });
+
+        it('should show the correct title', () => {
+          const expectedTitle = $localize`:@@delivery_edit_bank_account_title:Edit bank account`;
+
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+        });
       });
     });
   });
@@ -264,7 +305,7 @@ describe('BankAccountComponent', () => {
 
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS),
+              text: BANK_ACCOUNT_TRANSLATIONS.ADD_SUCCESS,
               type: TOAST_TYPES.SUCCESS,
             });
           });
@@ -290,7 +331,7 @@ describe('BankAccountComponent', () => {
 
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
-                text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
+                text: BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR,
                 type: TOAST_TYPES.ERROR,
               });
             });
@@ -322,7 +363,7 @@ describe('BankAccountComponent', () => {
 
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
-                text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR),
+                text: BANK_ACCOUNT_TRANSLATIONS.SAVE_GENERIC_ERROR,
                 type: TOAST_TYPES.ERROR,
               });
             });
@@ -364,7 +405,7 @@ describe('BankAccountComponent', () => {
 
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
+              text: BANK_ACCOUNT_TRANSLATIONS.EDIT_SUCCESS,
               type: TOAST_TYPES.SUCCESS,
             });
           });
@@ -389,7 +430,7 @@ describe('BankAccountComponent', () => {
 
           it('should show a succeed message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS),
+              text: BANK_ACCOUNT_TRANSLATIONS.EDIT_SUCCESS,
               type: TOAST_TYPES.SUCCESS,
             });
           });
@@ -423,7 +464,7 @@ describe('BankAccountComponent', () => {
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
+              text: BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR,
               type: TOAST_TYPES.ERROR,
             });
           });
@@ -442,7 +483,7 @@ describe('BankAccountComponent', () => {
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR),
+              text: BANK_ACCOUNT_TRANSLATIONS.SAVE_GENERIC_ERROR,
               type: TOAST_TYPES.ERROR,
             });
           });
@@ -483,7 +524,7 @@ describe('BankAccountComponent', () => {
 
     it('should show an error toast', () => {
       expect(toastService.show).toHaveBeenCalledWith({
-        text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
+        text: BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR,
         type: TOAST_TYPES.ERROR,
       });
     });
@@ -557,6 +598,18 @@ describe('BankAccountComponent', () => {
       const KYCMessage = fixture.debugElement.query(By.css(KYCInfoMessageSelector));
 
       expect(KYCMessage).toBeTruthy();
+    });
+
+    describe('and we click on the cross button...', () => {
+      beforeEach(() => {
+        spyOn(component.closeModal, 'emit');
+
+        fixture.debugElement.query(By.css('.BankAccount__cross')).nativeElement.click();
+      });
+
+      it('should close the modal', () => {
+        expect(component.closeModal.emit).toHaveBeenCalledTimes(1);
+      });
     });
   });
 

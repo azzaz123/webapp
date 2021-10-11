@@ -7,7 +7,6 @@ import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { mockCreditCard } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { I18nService } from '@core/i18n/i18n.service';
 import { MOCK_BANK_ACCOUNT } from '@fixtures/private/wallet/bank-account/bank-account.fixtures.spec';
 import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
@@ -31,6 +30,7 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
+import { BANK_DETAILS_TRANSLATIONS } from '@private/features/wallet/translations/bank-details.translations';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -46,7 +46,6 @@ describe('BankDetailsOverviewComponent', () => {
   let bankAccountService: BankAccountService;
   let paymentsCreditCardService: PaymentsCreditCardService;
   let toastService: ToastService;
-  let i18nService: I18nService;
   let modalService: NgbModal;
   let router: Router;
   let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
@@ -82,7 +81,6 @@ describe('BankDetailsOverviewComponent', () => {
             },
           },
         },
-        I18nService,
         { provide: ToastService, useClass: MockToastService },
         {
           provide: WalletSharedErrorActionService,
@@ -103,7 +101,6 @@ describe('BankDetailsOverviewComponent', () => {
     bankAccountService = TestBed.inject(BankAccountService);
     paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
     toastService = TestBed.inject(ToastService);
-    i18nService = TestBed.inject(I18nService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
@@ -174,7 +171,7 @@ describe('BankDetailsOverviewComponent', () => {
 
           it('should show a succeed toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_SUCCESS),
+              text: BANK_DETAILS_TRANSLATIONS.DELETE_CREDIT_CARD_SUCCESS,
               type: TOAST_TYPES.SUCCESS,
             });
           });
@@ -198,7 +195,7 @@ describe('BankDetailsOverviewComponent', () => {
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_CREDIT_CARD_DELETE_ERROR),
+              text: BANK_DETAILS_TRANSLATIONS.DELETE_CREDIT_CARD_ERROR,
               type: TOAST_TYPES.ERROR,
             });
           });
@@ -313,7 +310,7 @@ describe('BankDetailsOverviewComponent', () => {
 
           it('should show a succeed toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_SUCCESS),
+              text: BANK_DETAILS_TRANSLATIONS.DELETE_BANK_ACCOUNT_SUCCESS,
               type: TOAST_TYPES.SUCCESS,
             });
           });
@@ -337,7 +334,7 @@ describe('BankDetailsOverviewComponent', () => {
 
           it('should show an error toast', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_DELETE_ERROR),
+              text: BANK_DETAILS_TRANSLATIONS.DELETE_BANK_ACCOUNT_ERROR,
               type: TOAST_TYPES.ERROR,
             });
           });
