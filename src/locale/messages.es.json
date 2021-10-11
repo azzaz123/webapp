@@ -679,7 +679,7 @@
     "web_subscription_price_discount_from_price": "Desde: {$INTERPOLATION}{$INTERPOLATION_1}/mes",
     "purchase_confirmation_view_pro_users_description": "¡Fantástico, {$INTERPOLATION}! Ya eres PRO",
     "change_plan_success_view_pro_users_title": "Tu plan se ha modificado correctamente",
-    "purchase_confirmation_view_pro_users_if_invoicing_details_informative_text": "Se enviar�� la factura a tu correo electrónico, tal como nos has especificado",
+    "purchase_confirmation_view_pro_users_if_invoicing_details_informative_text": "Se enviará la factura a tu correo electrónico, tal como nos has especificado",
     "change_plan_success_view_pro_users_description": "Sigue aprovechando al máximo Wallapop PRO.",
     "purchase_confirmation_view_pro_users_customize_profile_button": "Personaliza tu perfil PRO",
     "change_plan_success_view_pro_users_go_to_catalog_button": "Ir a mi catalogo",
