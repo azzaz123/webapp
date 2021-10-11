@@ -3,12 +3,12 @@ import { Item } from '@core/item/item';
 import { mapImageDtosToImages } from '@api/core/mappers';
 
 export function mapFavouriteItemsToLegacyItem(favouriteItems: FavouriteItemDto[]): Item[] {
-  return favouriteItems.map(({ id, title, category_id, images, price, slug, sold, bump, reserved }: FavouriteItemDto) => {
+  return favouriteItems.map(({ id, title, category_id, images, price, slug, sold, bump, reserved, user_id }: FavouriteItemDto) => {
     const mappedImages = mapImageDtosToImages(images);
     const item = new Item(
       id,
       null,
-      null,
+      user_id,
       title,
       undefined,
       Number.parseInt(category_id),

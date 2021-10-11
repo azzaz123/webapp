@@ -38,6 +38,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   @Input() isKYC = false;
 
   @Output() bankAccountSaved: EventEmitter<void> = new EventEmitter();
+  @Output() closeModal: EventEmitter<void> = new EventEmitter();
 
   public readonly loadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;

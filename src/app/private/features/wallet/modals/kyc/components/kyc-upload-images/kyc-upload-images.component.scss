@@ -29,27 +29,30 @@ $image-height--big: 240px;
     font-weight: $font-weight-chunky;
   }
 
+  &__uploadImagesWrapper {
+    flex: 1;
+  }
+
   &__imageLaterals {
     padding: 0px $spacer * 2;
   }
 
   &__imageContainer {
+    overflow: hidden;
+    border: dashed 2px $blue-grey-5;
+    border-radius: $border-radius;
+  }
+
+  &__imageContentWrapper {
     flex: 1;
   }
 
   &__image {
-    overflow: hidden;
     height: $image-height;
-    border: dashed 2px $blue-grey-5;
-    border-radius: $border-radius;
 
     @include media-breakpoint-up(sm) {
       height: $image-height--big;
     }
-  }
-
-  &__video {
-    height: fit-content;
   }
 
   &__uploadImageContainer {
@@ -70,5 +73,9 @@ $image-height--big: 240px;
 
   &__bottomContainer {
     bottom: 0;
+  }
+
+  &__cross {
+    cursor: pointer;
   }
 }
