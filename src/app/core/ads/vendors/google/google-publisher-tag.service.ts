@@ -23,6 +23,7 @@ export class GooglePublisherTagService {
   private static GOOGLE_ADS_SENSE_NAME = 'plas';
   private adSlotsNamesDefinedSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   private adSlotsLoadedSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  private adSlotsDefinedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
@@ -35,14 +36,16 @@ export class GooglePublisherTagService {
     return this.googletag.apiReady;
   }
 
+  public get isAdSlotsDefined$(): Observable<boolean> {
+    return this.adSlotsDefinedSubject.asObservable();
+  }
+
   public setSlots(adSlots: AdSlotConfiguration[]): void {
     const oldSlots: string[] = this.adSlotsNamesDefinedSubject.getValue();
     const newAdSlots: AdSlotConfiguration[] = adSlots.filter(({ name }: AdSlotConfiguration) => !oldSlots.includes(name));
     this.googletag.cmd.push(() => {
-      this.definedSlots(newAdSlots);
-      this.setPubads();
-      this.googletag.enableServices();
-      this.googletag.pubads().addEventListener('slotOnload', (event: googletag.events.Event) => this.onSlotLoad(event));
+      this.defineSlots(newAdSlots);
+      this.onSlotsDefined();
     });
   }
 
@@ -61,15 +64,14 @@ export class GooglePublisherTagService {
     return slots;
   }
 
+  public getDefinedSlots(): googletag.Slot[] {
+    return googletag.pubads().getSlots();
+  }
+
   public destroySlots(adSlotConfigurations: AdSlotConfiguration[]): void {
     this.googletag.cmd.push(() => {
       this.googletag.destroySlots(this.getSlots(adSlotConfigurations));
     });
-  }
-
-  public reset(): void {
-    this.adSlotsNamesDefinedSubject.next([]);
-    this.adSlotsLoadedSubject.next([]);
   }
 
   public isAdSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
@@ -118,20 +120,23 @@ export class GooglePublisherTagService {
     this.googCsa(GooglePublisherTagService.GOOGLE_ADS_SENSE_NAME, { ...pageOptions, query: content }, adSlotShopping);
   }
 
-  private setPubads(): void {
+  public setPubAdsConfig(): void {
+    const publisherId: string = this.getPublisherId();
+
     this.googletag.pubads().enableSingleRequest();
     this.googletag.pubads().collapseEmptyDivs();
     this.googletag.pubads().disableInitialLoad();
-
-    const publisherId: string = this.getPublisherId();
     this.googletag.pubads().setPublisherProvidedId(publisherId);
+    this.googletag.pubads().addEventListener('slotOnload', (event: googletag.events.Event) => this.onSlotLoad(event));
+
+    this.googletag.enableServices();
   }
 
   private getPublisherId(): string {
     return this.cookieService.get('publisherId') ?? '-1' + Array(31).join('0');
   }
 
-  private definedSlots(slots: AdSlotConfiguration[]): void {
+  private defineSlots(slots: AdSlotConfiguration[]): void {
     const deviceType: DeviceType = this.deviceService.getDeviceType();
     slots
       .filter((slot) => slot.device.includes(deviceType))
@@ -166,6 +171,10 @@ export class GooglePublisherTagService {
     slotsName.push(slotName);
     const newSlotsName: string[] = [...new Set(slotsName).values()];
     this.adSlotsLoadedSubject.next(newSlotsName);
+  }
+
+  private onSlotsDefined(): void {
+    this.adSlotsDefinedSubject.next(true);
   }
 
   get googletag(): googletag.Googletag {
