@@ -12,6 +12,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { MultiSelectFilterConfig } from './interfaces/multi-select-filter-config.interface';
 import { MultiSelectFilterModule } from './multi-select-filter.module';
 import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
+import { SUBCATEGORIES_WITH_CHILDREN_MOCK } from '@fixtures/subcategories.fixtures';
 
 @Component({
   selector: 'tsl-filters',
@@ -118,5 +119,10 @@ WithNestedOptions.args = {
 export const WithNestedOptionsAndDefaultValue = Template.bind({});
 WithNestedOptionsAndDefaultValue.args = {
   config: subcategoryConfig,
-  value: [{ key: FILTER_QUERY_PARAM_KEY.objectType, value: '10150,9645' }],
+  value: [
+    {
+      key: FILTER_QUERY_PARAM_KEY.objectType,
+      value: [SUBCATEGORIES_WITH_CHILDREN_MOCK[0].value, SUBCATEGORIES_WITH_CHILDREN_MOCK[1].children[2].value],
+    },
+  ],
 };
