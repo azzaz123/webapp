@@ -102,6 +102,8 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    if (this.loadingButton$.value) return;
+
     if (this.creditCardForm.valid) {
       this.submitValidForm();
     } else {

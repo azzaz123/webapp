@@ -105,6 +105,8 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     this.trackClickKYCConfirmBankAccountInfoEventWhenIsKYC();
+    if (this.loadingButton$.value) return;
+
     if (this.bankAccountForm.valid) {
       this.submitValidForm();
     } else {
