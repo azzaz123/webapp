@@ -18,6 +18,7 @@ export class KYCNationalityComponent implements OnInit {
   @Output() nationalityChange: EventEmitter<KYCNationality> = new EventEmitter();
   @Output() documentToRequestChange: EventEmitter<KYCDocumentation> = new EventEmitter();
   @Output() goBack: EventEmitter<void> = new EventEmitter();
+  @Output() closeModal: EventEmitter<void> = new EventEmitter();
 
   public readonly KYC_NATIONALITIES = KYC_NATIONALITIES;
 
