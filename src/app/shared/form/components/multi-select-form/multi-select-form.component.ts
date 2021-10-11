@@ -67,19 +67,19 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
     this.shownChildrenOptionIdSubject.next(null);
   }
 
-  public selectAllChildren(option: TemplateMultiSelectFormOption) {
+  public selectAllChildren(option: TemplateMultiSelectFormOption): void {
     const childValues = [...option.children].map((childOption) => childOption.value);
     this.value = this.value ? this.value.filter((value) => !childValues.includes(value)) : [];
     this.triggerValueChange([...this.value, option.value]);
   }
 
-  public unselectAllChildren(option: TemplateMultiSelectFormOption) {
+  public unselectAllChildren(option: TemplateMultiSelectFormOption): void {
     const valuesToRemove = [...[...option.children].map((childOption) => childOption.value), option.value];
     this.value = this.value ? this.value.filter((value) => !valuesToRemove.includes(value)) : [];
     this.triggerValueChange(this.value);
   }
 
-  public unselectAll() {
+  public unselectAll(): void {
     this.value = [];
     this.triggerValueChange(this.value);
   }
