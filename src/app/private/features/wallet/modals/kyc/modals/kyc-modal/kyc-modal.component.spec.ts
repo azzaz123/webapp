@@ -271,49 +271,89 @@ describe('KYCModalComponent', () => {
           spyOn(kycTrackingEventsService, 'trackClickKYCFinishIdentityVerification');
         });
 
-        describe('and the verification request succeed', () => {
-          beforeEach(() => {
-            spyOn(kycService, 'request').and.returnValue(of(null));
-            spyOn(component.stepper, 'goNext');
+        describe('and the form is not in progress...', () => {
+          describe('and the verification request succeed', () => {
+            beforeEach(() => {
+              spyOn(kycService, 'request').and.returnValue(of(null));
+              spyOn(component.stepper, 'goNext');
 
-            fixture.detectChanges();
+              fixture.detectChanges();
 
-            const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
-            KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
-          });
+              const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
+              KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
+            });
 
-          it('should do the kyc request ', () => {
-            expect(kycService.request).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
-            expect(kycService.request).toHaveBeenCalledTimes(1);
-          });
+            it('should do the kyc request ', () => {
+              expect(kycService.request).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
+              expect(kycService.request).toHaveBeenCalledTimes(1);
+            });
 
-          it('should update the specifications on the store', () => {
-            expect(kycStoreService.specifications).toStrictEqual({
-              ...kycStoreService.specifications,
-              images: {
-                frontSide: MOCK_KYC_IMAGES_BASE_64.frontSide,
-                backSide: MOCK_KYC_IMAGES_BASE_64.backSide,
-              },
+            it('should update the specifications on the store', () => {
+              expect(kycStoreService.specifications).toStrictEqual({
+                ...kycStoreService.specifications,
+                images: {
+                  frontSide: MOCK_KYC_IMAGES_BASE_64.frontSide,
+                  backSide: MOCK_KYC_IMAGES_BASE_64.backSide,
+                },
+              });
+            });
+
+            it('should go to the next step', () => {
+              expect(component.stepper.goNext).toHaveBeenCalledTimes(1);
+            });
+
+            it('should request to the KYC analytics service to track the click event', () => {
+              expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledTimes(1);
+              expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledWith(
+                MOCK_KYC_SPECIFICATIONS.documentation.analyticsName
+              );
             });
           });
 
-          it('should go to the next step', () => {
-            expect(component.stepper.goNext).toHaveBeenCalledTimes(1);
-          });
+          describe('and the verification request fails', () => {
+            beforeEach(() => {
+              spyOn(kycService, 'request').and.returnValue(throwError(new DocumentImageIsInvalidError()));
+              spyOn(component.stepper, 'goNext');
+              spyOn(toastService, 'show');
 
-          it('should request to the KYC analytics service to track the click event', () => {
-            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledTimes(1);
-            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledWith(
-              MOCK_KYC_SPECIFICATIONS.documentation.analyticsName
-            );
+              fixture.detectChanges();
+
+              const KYCUploadImagesComponent = fixture.debugElement.query(By.css(KYCUploadImagesSelector));
+              KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
+            });
+
+            it('should do the kyc request ', () => {
+              expect(kycService.request).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
+              expect(kycService.request).toHaveBeenCalledTimes(1);
+            });
+
+            it('should NOT update the specifications on the store', () => {
+              expect(kycStoreService.specifications).toStrictEqual(MOCK_KYC_SPECIFICATIONS);
+            });
+
+            it('should show an error toast', () => {
+              const errorMessage = $localize`:@@kyc_failed_snackbar_unknown_error_web_specific:Oops! There was an error.`;
+              expect(toastService.show).toHaveBeenCalledWith({ text: errorMessage, type: TOAST_TYPES.ERROR });
+            });
+
+            it('should NOT go to the next step', () => {
+              expect(component.stepper.goNext).not.toHaveBeenCalledTimes(1);
+            });
+
+            it('should request to the KYC analytics service to track the click event', () => {
+              expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledTimes(1);
+              expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledWith(
+                MOCK_KYC_SPECIFICATIONS.documentation.analyticsName
+              );
+            });
           });
         });
 
-        describe('and the verification request fails', () => {
+        describe('and the form is already in progress...', () => {
           beforeEach(() => {
-            spyOn(kycService, 'request').and.returnValue(throwError(new DocumentImageIsInvalidError()));
+            spyOn(kycService, 'request');
             spyOn(component.stepper, 'goNext');
-            spyOn(toastService, 'show');
+            component.isEndVerificationLoading = true;
 
             fixture.detectChanges();
 
@@ -321,29 +361,12 @@ describe('KYCModalComponent', () => {
             KYCUploadImagesComponent.triggerEventHandler('endVerification', MOCK_KYC_IMAGES_BASE_64);
           });
 
-          it('should do the kyc request ', () => {
-            expect(kycService.request).toHaveBeenCalledWith(MOCK_KYC_IMAGES_BASE_64);
-            expect(kycService.request).toHaveBeenCalledTimes(1);
-          });
-
-          it('should NOT update the specifications on the store', () => {
-            expect(kycStoreService.specifications).toStrictEqual(MOCK_KYC_SPECIFICATIONS);
-          });
-
-          it('should show an error toast', () => {
-            const errorMessage = $localize`:@@kyc_failed_snackbar_unknown_error_web_specific:Oops! There was an error.`;
-            expect(toastService.show).toHaveBeenCalledWith({ text: errorMessage, type: TOAST_TYPES.ERROR });
+          it('should NOT call any endpoint', () => {
+            expect(kycService.request).not.toHaveBeenCalled();
           });
 
           it('should NOT go to the next step', () => {
-            expect(component.stepper.goNext).not.toHaveBeenCalledTimes(1);
-          });
-
-          it('should request to the KYC analytics service to track the click event', () => {
-            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledTimes(1);
-            expect(kycTrackingEventsService.trackClickKYCFinishIdentityVerification).toHaveBeenCalledWith(
-              MOCK_KYC_SPECIFICATIONS.documentation.analyticsName
-            );
+            expect(component.stepper.goNext).not.toHaveBeenCalled();
           });
         });
       });
