@@ -9,6 +9,7 @@ import { WalletTransferError } from '@private/features/wallet/errors/classes/tra
 import { WalletTransferMapperService } from '@private/features/wallet/services/transfer/mapper/wallet-transfer-mapper.service';
 import { WalletTransferMoneyInterface } from '@private/features/wallet/modals/transfer/interfaces/wallet-transfer-money.interface';
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
+import { WalletTransferTrackingEventService } from '@private/features/wallet/modals/transfer/services/wallet-transfer-tracking-event.service';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -40,7 +41,8 @@ export class WalletTransferConfirmComponent {
     private changeDetectorRef: ChangeDetectorRef,
     private ngbActiveModal: NgbActiveModal,
     private toastService: ToastService,
-    private transferService: WalletTransferService
+    private transferService: WalletTransferService,
+    private transferTrackingEventService: WalletTransferTrackingEventService
   ) {}
 
   public get amountAsText(): string {
@@ -57,6 +59,12 @@ export class WalletTransferConfirmComponent {
     }
     this.isTransferInProgress = true;
     this.changeDetectorRef.detectChanges();
+
+    this.transferTrackingEventService.trackConfirmTransferBankAccount(
+      this.transferAmount.balance.amount.total,
+      this.transferAmount.amount.total
+    );
+
     this.transferService.transfer(this.transferAmount).subscribe(
       () => {
         this.toastService.show(transferSentMessage);
