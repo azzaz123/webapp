@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { DeviceService } from '@core/device/device.service';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { GooglePublisherTagService } from '../../vendors';
@@ -23,7 +24,8 @@ export class AdsService {
     private didomiService: DidomiService,
     private loadAdsService: LoadAdsService,
     private googlePublisherTagService: GooglePublisherTagService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    @Inject(WINDOW_TOKEN) private window: Window
   ) {
     this.listenerToSetSlots();
     this.listenerToDisplaySlots();
@@ -90,6 +92,10 @@ export class AdsService {
     return this.didomiService.allowSegmentation$();
   }
 
+  private get fetchHeaderBids(): Function {
+    return this.window['fetchHeaderBids'];
+  }
+
   private listenerToSetSlots(): void {
     combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
@@ -107,20 +113,20 @@ export class AdsService {
         map(([adsReady, adSlotsDefined, allowSegmentation]: [boolean, boolean, boolean]) => allowSegmentation)
       )
       .subscribe((allowSegmentation: boolean) => {
-        this.fetchHeaderBids(allowSegmentation);
+        this.getHeaderBids(allowSegmentation);
       });
   }
 
-  private fetchHeaderBids(allowSegmentation: boolean): void {
+  private getHeaderBids(allowSegmentation: boolean): void {
     const slots = this.setSlotsSubject.getValue();
     const definedSlots = this.googlePublisherTagService.getDefinedSlots();
     const deviceType = this.deviceService.getDeviceType();
 
     // This is needed for RichAudience initialization
-    window['deviceType'] = deviceType;
+    this.window['deviceType'] = deviceType;
 
     // RichAudience magic function
-    fetchHeaderBids(allowSegmentation, slots, definedSlots);
+    this.fetchHeaderBids(allowSegmentation, slots, definedSlots);
     this.googlePublisherTagService.setPubAdsConfig();
   }
 }

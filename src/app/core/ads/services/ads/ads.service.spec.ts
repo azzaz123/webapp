@@ -1,6 +1,9 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MockDidomiService } from '@core/ads/vendors/didomi/didomi.mock';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
+import { DeviceService } from '@core/device/device.service';
+import { DeviceType } from '@core/device/deviceType.enum';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 import {
   MockAdShoppingPageOptions,
   MockAdsKeywords,
@@ -11,6 +14,7 @@ import {
   MockGooglePublisherTagService,
   MockLoadAdsService,
 } from '@fixtures/ads.fixtures.spec';
+import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 import { of } from 'rxjs';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from './../../vendors';
@@ -18,6 +22,12 @@ import { AdsService } from './ads.service';
 
 describe('AdsService', () => {
   let service: AdsService;
+  let window: Window;
+  let windowMock;
+
+  windowMock = {
+    fetchHeaderBids: () => {},
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -43,10 +53,19 @@ describe('AdsService', () => {
           provide: DidomiService,
           useValue: MockDidomiService,
         },
+        {
+          provide: DeviceService,
+          useValue: MockDeviceService,
+        },
+        {
+          provide: WINDOW_TOKEN,
+          useValue: windowMock,
+        },
       ],
     });
 
     service = TestBed.inject(AdsService);
+    window = TestBed.inject(WINDOW_TOKEN);
   });
 
   describe('when initializing ads', () => {
@@ -71,13 +90,29 @@ describe('AdsService', () => {
 
       expect(MockGooglePublisherTagService.setSlots).toHaveBeenCalledWith(MockAdSlots);
     });
+  });
 
-    it('it should refresh ads', () => {
-      spyOn(MockGooglePublisherTagService, 'refreshAllSlots').and.callThrough();
+  describe('when slots are defined', () => {
+    it('should register the device type in window for RichAudience purposes', () => {
+      service.init();
 
-      service.setSlots(MockAdSlots);
+      expect(window['deviceType']).toEqual(DeviceType.DESKTOP);
+    });
 
-      expect(MockGooglePublisherTagService.refreshAllSlots).toHaveBeenCalledTimes(1);
+    it('should get bids from RichAudience', () => {
+      spyOn(windowMock, 'fetchHeaderBids').and.callThrough();
+
+      service.init();
+
+      expect(windowMock.fetchHeaderBids).toHaveBeenCalled();
+    });
+
+    it('should enable GPT services for showing Ad slots', () => {
+      spyOn(MockGooglePublisherTagService, 'setPubAdsConfig');
+
+      service.init();
+
+      expect(MockGooglePublisherTagService.setPubAdsConfig).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -106,49 +141,6 @@ describe('AdsService', () => {
       service.setAdKeywords(MockAdsKeywords);
 
       expect(MockGooglePublisherTagService.setAdKeywords).toHaveBeenCalledWith(MockAdsKeywords);
-    });
-  });
-
-  describe('when refreshing ads', () => {
-    beforeEach(() => {
-      service.init();
-    });
-
-    it('should set targeting to Google library', () => {
-      spyOn(MockGooglePublisherTagService, 'setTargetingByAdsKeywords').and.callThrough();
-
-      service.refresh();
-
-      expect(MockGooglePublisherTagService.setTargetingByAdsKeywords).toHaveBeenCalledTimes(1);
-    });
-
-    it('should ask for ads bidders to Amazon and Criteo', () => {
-      spyOn(MockAmazonPublisherService, 'requestBid').and.callThrough();
-      spyOn(MockCriteoService, 'requestBid').and.callThrough();
-
-      service.refresh();
-
-      expect(MockAmazonPublisherService.requestBid).toHaveBeenCalledTimes(1);
-      expect(MockCriteoService.requestBid).toHaveBeenCalledTimes(1);
-    });
-
-    it('should set segmentation to Google', fakeAsync(() => {
-      const ALLOW_SEGMENTATION = true;
-      spyOn(MockGooglePublisherTagService, 'setAdsSegmentation').and.callThrough();
-      spyOn(MockDidomiService, 'allowSegmentation$').and.returnValue(of(ALLOW_SEGMENTATION));
-
-      service.refresh();
-      tick(1000);
-
-      expect(MockGooglePublisherTagService.setAdsSegmentation).toHaveBeenCalledWith(ALLOW_SEGMENTATION);
-    }));
-
-    it('should refresh ads on google', () => {
-      spyOn(MockGooglePublisherTagService, 'refreshAllSlots').and.callThrough();
-
-      service.refresh();
-
-      expect(MockGooglePublisherTagService.refreshAllSlots).toHaveBeenCalledTimes(1);
     });
   });
 
