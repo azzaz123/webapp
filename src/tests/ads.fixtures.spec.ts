@@ -79,7 +79,7 @@ export const MockAdsKeywordsService = {
 export const MockAdSlots: AdSlotConfiguration[] = [
   {
     id: 'div-gpt-ad-1508490196308-0',
-    name: '/130868815/chat_right',
+    name: '130868815/web/chat_right',
     sizes: [
       [120, 600],
       [160, 600],
