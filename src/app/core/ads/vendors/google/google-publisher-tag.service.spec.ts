@@ -266,25 +266,6 @@ describe('GooglePublisherTagService', () => {
     });
   });
 
-  describe('when we want to display by slot ', () => {
-    it('should add on command', () => {
-      spyOn(windowMock.googletag.cmd, 'push').and.callThrough();
-
-      service.displayAdBySlotId(MockAdSlots[0].id);
-
-      expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(jasmine.any(Function));
-    });
-
-    it('should display by slot id', () => {
-      const id = '512512';
-      spyOn(MOCK_GOOGLE_TAG, 'display').and.callThrough();
-
-      service.displayAdBySlotId(id);
-
-      expect(MOCK_GOOGLE_TAG.display).toHaveBeenCalledWith(id);
-    });
-  });
-
   describe('when we want to display ad slot shopping', () => {
     it('should set page options and slot shopping to lib', () => {
       spyOn(windowMock, '_googCsa').and.callThrough();

@@ -152,31 +152,6 @@ describe('AdsService', () => {
     });
   });
 
-  describe('when displaying an ad by id', () => {
-    it('should wait to library ready to display ad', () => {
-      const adSotId = MockAdSlots[0].id;
-      spyOn(MockGooglePublisherTagService, 'displayAdBySlotId');
-
-      service.displayAdBySlotId(adSotId);
-
-      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenCalledTimes(0);
-
-      service.init();
-
-      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenLastCalledWith(adSotId);
-    });
-
-    it('should ask Google to display ad if is lib ready', () => {
-      service.init();
-      const adSlotId = MockAdSlots[0].id;
-      spyOn(MockGooglePublisherTagService, 'displayAdBySlotId');
-
-      service.displayAdBySlotId(adSlotId);
-
-      expect(MockGooglePublisherTagService.displayAdBySlotId).toHaveBeenLastCalledWith(adSlotId);
-    });
-  });
-
   describe('when get ad slot loaded', () => {
     it('should return if ad is loaded', () => {
       spyOn(MockGooglePublisherTagService, 'isAdSlotLoaded$').and.returnValue(of(true));
