@@ -21,6 +21,7 @@ export const MockAdsService = {
   adSlotLoaded$: () => of(true),
   clearSlots: () => {},
   refreshSlots: () => {},
+  refreshAllSlots: () => {},
   destroySlots: () => {},
 };
 
