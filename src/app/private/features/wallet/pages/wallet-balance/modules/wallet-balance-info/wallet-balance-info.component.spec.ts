@@ -91,6 +91,7 @@ describe('WalletBalanceInfoComponent', () => {
         {
           provide: WalletBalanceTrackingEventService,
           useValue: {
+            trackClickTransferBankAccount() {},
             trackViewWallet() {},
           },
         },
@@ -339,23 +340,25 @@ describe('WalletBalanceInfoComponent', () => {
             spyOn(ngbModal, 'open').and.returnValue({
               result: Promise.resolve(),
             });
-          });
-
-          it('should open the modal view', () => {
+            spyOn(balanceTrackingEventService, 'trackClickTransferBankAccount');
             const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
               .nativeElement;
 
             (buttonComponentRef as HTMLButtonElement).click();
+          });
 
+          it('should send the event for tracking it', () => {
+            expect(balanceTrackingEventService.trackClickTransferBankAccount).toHaveBeenCalledTimes(1);
+            expect(balanceTrackingEventService.trackClickTransferBankAccount).toHaveBeenCalledWith(
+              MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.amount.total
+            );
+          });
+
+          it('should open the modal view', () => {
             expect(ngbModal.open).toHaveBeenCalledTimes(1);
           });
 
           it('should retrieve the wallet balance', () => {
-            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
-              .nativeElement;
-
-            (buttonComponentRef as HTMLButtonElement).click();
-
             walletService.walletBalance$.subscribe(() => {
               expect(walletService.walletBalance$).toHaveBeenCalledTimes(1);
             });

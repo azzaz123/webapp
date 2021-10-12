@@ -59,6 +59,7 @@ export class WalletBalanceInfoComponent implements OnInit {
   }
 
   public transferBalance(): void {
+    this.balanceTrackingEventService.trackClickTransferBankAccount(this.walletBalance.amount.total);
     this.modalService.open(WalletTransferMainComponent).result.then(() => {
       this.loadBalanceAndSpecifications();
     });

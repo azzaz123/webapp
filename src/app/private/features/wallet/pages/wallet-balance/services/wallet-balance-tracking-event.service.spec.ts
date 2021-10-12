@@ -1,12 +1,18 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { AnalyticsPageView, ViewWallet } from '@core/analytics/analytics-constants';
+import {
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickTransferBankAccount,
+  ViewWallet,
+} from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/wallet-balance-tracking-event.service';
-
-import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
 
 describe('WalletBalanceTrackingEventService', () => {
   let service: WalletBalanceTrackingEventService;
@@ -21,10 +27,29 @@ describe('WalletBalanceTrackingEventService', () => {
     analyticsService = TestBed.inject(AnalyticsService);
 
     spyOn(analyticsService, 'trackPageView');
+    spyOn(analyticsService, 'trackEvent');
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('WHEN user clicks over the transfer to bank account button', () => {
+    it('should track the event', () => {
+      const expectedEvent: AnalyticsEvent<ClickTransferBankAccount> = {
+        name: ANALYTICS_EVENT_NAMES.ClickTransferBankAccount,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
+        attributes: {
+          screenId: 235,
+          balanceAmount: 13.13,
+        },
+      };
+
+      service.trackClickTransferBankAccount(13.13);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+    });
   });
 
   describe.each([
