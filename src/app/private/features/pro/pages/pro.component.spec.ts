@@ -6,9 +6,11 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { InvoiceService } from '@core/invoice/invoice.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MOCK_INVOICE_HISTORY } from '@fixtures/invoice.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import {
@@ -22,6 +24,7 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { of } from 'rxjs';
 import { PRO_PATHS } from '../pro-routing-constants';
 import { ProComponent } from './pro.component';
 import { SubscriptionsComponent } from './subscription/subscription.component';
@@ -84,6 +87,14 @@ describe('ProComponent', () => {
             useValue: {
               getPageUrl() {
                 return 'fake-url';
+              },
+            },
+          },
+          {
+            provide: InvoiceService,
+            useValue: {
+              getInvoiceTransactions() {
+                return of(MOCK_INVOICE_HISTORY);
               },
             },
           },

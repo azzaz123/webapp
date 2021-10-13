@@ -353,6 +353,10 @@ export class MockedUserService {
     return this.user.featured;
   }
 
+  get isProUser$(): Observable<boolean> {
+    return of(true);
+  }
+
   public isProfessional(): Observable<boolean> {
     return of(true);
   }

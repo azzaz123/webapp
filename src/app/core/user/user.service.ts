@@ -1,4 +1,4 @@
-import { from, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
 
 import { catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
@@ -66,6 +66,7 @@ export class UserService {
   private _users: User[] = [];
   private presenceInterval: any;
   private _isProSectionClicked: boolean;
+  private isProUserSubject = new BehaviorSubject(false);
 
   constructor(
     private http: HttpClient,
@@ -84,6 +85,10 @@ export class UserService {
 
   get isPro(): boolean {
     return this._user && this._user.featured;
+  }
+
+  get isProUser$(): Observable<boolean> {
+    return this.isProUserSubject.asObservable();
   }
 
   public logoutLogic(redirect?: string): void {
@@ -266,7 +271,8 @@ export class UserService {
   public edit(data: UserData): Observable<User> {
     return this.http.post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data).pipe(
       map((response) => this.mapRecordData(response)),
-      tap((user) => (this._user = user))
+      tap((user) => (this._user = user)),
+      tap(() => this.isProUserSubject.next(this.isPro))
     );
   }
 
@@ -325,6 +331,7 @@ export class UserService {
   public initializeUserWithPermissions(): Observable<boolean> {
     return this.getLoggedUserInformation().pipe(
       tap((user) => (this._user = user)),
+      tap(() => this.isProUserSubject.next(this.isPro)),
       tap((user) => this.setPermission(user)),
       tap((user) => this.getStoredIsClickedProSection(user)),
       catchError((error) => {
@@ -337,7 +344,10 @@ export class UserService {
   //TODO: This is needed for the current subscriptions flow but this should handled in some other way when
   // the application is reactive to changes in the user object
   public getAndUpdateLoggedUser(): Observable<User> {
-    return this.getLoggedUserInformation().pipe(tap((user) => (this._user = user)));
+    return this.getLoggedUserInformation().pipe(
+      tap((user) => (this._user = user)),
+      tap(() => this.isProUserSubject.next(this.isPro))
+    );
   }
 
   public setPermission(user: User): void {
