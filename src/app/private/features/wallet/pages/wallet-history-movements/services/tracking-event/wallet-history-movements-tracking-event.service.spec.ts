@@ -1,7 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { AnalyticsPageView, ViewWalletMovementsHistory } from '@core/analytics/analytics-constants';
+import {
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickItemWalletMovements,
+  ViewWalletMovementsHistory,
+} from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { WalletHistoryMovementsTrackingEventService } from '@private/features/wallet/pages/wallet-history-movements/services/tracking-event/wallet-history-movements-tracking-event.service';
@@ -19,6 +26,7 @@ describe('WalletHistoryMovementsTrackingEventService', () => {
     analyticsService = TestBed.inject(AnalyticsService);
 
     spyOn(analyticsService, 'trackPageView');
+    spyOn(analyticsService, 'trackEvent');
   });
 
   it('should be created', () => {
@@ -43,6 +51,23 @@ describe('WalletHistoryMovementsTrackingEventService', () => {
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+    });
+  });
+
+  describe('WHEN user clicks over a historic element', () => {
+    it('should track the event', () => {
+      const expectedEvent: AnalyticsEvent<ClickItemWalletMovements> = {
+        name: ANALYTICS_EVENT_NAMES.ClickItemWalletMovements,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
+        attributes: {
+          screenId: 254,
+        },
+      };
+
+      service.trackClickItemWalletMovement();
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
   });
 });

@@ -22,6 +22,7 @@ import { WalletHistoryMovementsTrackingEventService } from '@private/features/wa
 import { WalletHistoryMovementsUIService } from './services/wallet-history-movements-ui/wallet-history-movements-ui.service';
 
 import { ReplaySubject } from 'rxjs';
+import { MOCK_HISTORIC_ELEMENT } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 
 describe('WalletHistoryMovementsComponent', () => {
   let component: WalletHistoryMovementsComponent;
@@ -59,7 +60,8 @@ describe('WalletHistoryMovementsComponent', () => {
         {
           provide: WalletHistoryMovementsTrackingEventService,
           useValue: {
-            trackViewWalletHistoryMovement(): void {},
+            trackClickItemWalletMovement() {},
+            trackViewWalletHistoryMovement() {},
           },
         },
       ],
@@ -252,6 +254,17 @@ describe('WalletHistoryMovementsComponent', () => {
         const result = emptyStateElement.nativeElement.innerHTML.trim();
 
         expect(result).toEqual(expectedText);
+      });
+    });
+
+    describe('WHEN user clicks over a historic element', () => {
+      it('should track the corresponding event', () => {
+        spyOn(walletHistoryMovementsTrackingEventService, 'trackClickItemWalletMovement');
+
+        component.onItemClick(MOCK_HISTORIC_ELEMENT);
+
+        expect(walletHistoryMovementsTrackingEventService.trackClickItemWalletMovement).toHaveBeenCalledTimes(1);
+        expect(walletHistoryMovementsTrackingEventService.trackClickItemWalletMovement).toHaveBeenCalledWith();
       });
     });
   });

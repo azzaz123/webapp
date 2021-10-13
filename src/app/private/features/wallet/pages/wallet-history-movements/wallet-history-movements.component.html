@@ -6,6 +6,7 @@
     [showTotalBalance]="showTotalBalance"
     [infiniteScrollDisabled]="infiniteScrollDisabled"
     (scrolled)="getItems()"
+    (clicked)="onItemClick($event)"
   ></tsl-historic-list>
   <tsl-svg-icon
     *ngIf="loading$ | async"

@@ -7,6 +7,7 @@ import { WalletHistoryMovementsTrackingEventService } from '@private/features/wa
 import { WalletHistoryMovementsUIService } from '@private/features/wallet/pages/wallet-history-movements/services/wallet-history-movements-ui/wallet-history-movements-ui.service';
 
 import { Observable } from 'rxjs';
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 
 @Component({
   selector: 'tsl-wallet-history-movements',
@@ -59,6 +60,10 @@ export class WalletHistoryMovementsComponent implements OnInit {
     this.currentFilter = filter;
     this.walletHistoryMovementsUIService.reset();
     this.getItems();
+  }
+
+  public onItemClick(historicElement: HistoricElement): void {
+    this.walletHistoryTrackingEventService.trackClickItemWalletMovement();
   }
 
   private sendAnalytics(): void {
