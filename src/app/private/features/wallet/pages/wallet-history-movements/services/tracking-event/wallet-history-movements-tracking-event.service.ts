@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
 
 import {
   AnalyticsEvent,
@@ -10,17 +11,26 @@ import {
   ViewWalletMovementsHistory,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { InnerType } from '@api/core/utils/types';
+
+const WalletHistoryFilterToEventAttribute: Partial<Record<WALLET_HISTORY_FILTERS, ScreenIdEventAttribute>> = {
+  [WALLET_HISTORY_FILTERS.ALL]: SCREEN_IDS.WalletMovementsHistory,
+  [WALLET_HISTORY_FILTERS.IN]: SCREEN_IDS.WalletIncomingMovementsHistory,
+  [WALLET_HISTORY_FILTERS.OUT]: SCREEN_IDS.WalletOutgoingMovementsHistory,
+};
+
+type ScreenIdEventAttribute = InnerType<ClickItemWalletMovements, 'screenId'> | undefined;
 
 @Injectable()
 export class WalletHistoryMovementsTrackingEventService {
   constructor(private analyticsService: AnalyticsService) {}
 
-  public trackClickItemWalletMovement(): void {
+  public trackClickItemWalletMovement(filter: WALLET_HISTORY_FILTERS): void {
     const event: AnalyticsEvent<ClickItemWalletMovements> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemWalletMovements,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
-        screenId: SCREEN_IDS.WalletMovementsHistory,
+        screenId: this.mapWalletHistoryFilterToScreenIdAtribute(filter),
       },
     };
     this.analyticsService.trackEvent(event);
@@ -39,5 +49,9 @@ export class WalletHistoryMovementsTrackingEventService {
 
   private isEmpty(value: number): boolean {
     return !value ? true : value < 1;
+  }
+
+  private mapWalletHistoryFilterToScreenIdAtribute(filter: WALLET_HISTORY_FILTERS): ScreenIdEventAttribute {
+    return WalletHistoryFilterToEventAttribute[filter];
   }
 }

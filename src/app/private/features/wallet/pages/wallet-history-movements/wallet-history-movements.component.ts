@@ -63,7 +63,7 @@ export class WalletHistoryMovementsComponent implements OnInit {
   }
 
   public onItemClick(historicElement: HistoricElement): void {
-    this.walletHistoryTrackingEventService.trackClickItemWalletMovement();
+    this.walletHistoryTrackingEventService.trackClickItemWalletMovement(this.currentFilter);
   }
 
   private sendAnalytics(): void {

@@ -261,10 +261,11 @@ describe('WalletHistoryMovementsComponent', () => {
       it('should track the corresponding event', () => {
         spyOn(walletHistoryMovementsTrackingEventService, 'trackClickItemWalletMovement');
 
+        component.onChangeFilter(WALLET_HISTORY_FILTERS.ALL);
         component.onItemClick(MOCK_HISTORIC_ELEMENT);
 
         expect(walletHistoryMovementsTrackingEventService.trackClickItemWalletMovement).toHaveBeenCalledTimes(1);
-        expect(walletHistoryMovementsTrackingEventService.trackClickItemWalletMovement).toHaveBeenCalledWith();
+        expect(walletHistoryMovementsTrackingEventService.trackClickItemWalletMovement).toHaveBeenCalledWith(WALLET_HISTORY_FILTERS.ALL);
       });
     });
   });
