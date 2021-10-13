@@ -147,6 +147,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
           this.showToast(translationKey, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
+          this.formComponent.initFormControl();
 
           if (this.isKYC) {
             this.bankAccountSaved.emit();
