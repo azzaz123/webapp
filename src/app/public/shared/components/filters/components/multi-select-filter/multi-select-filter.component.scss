@@ -9,4 +9,21 @@
   &__form {
     max-height: 325px;
   }
+
+  &__template {
+    &--hidden-title {
+      ::ng-deep {
+        .FilterTemplate__toolbar {
+          display: none !important;
+        }
+      }
+    }
+
+    ::ng-deep {
+      .FilterTemplate__toolbar {
+        height: 57px;
+        border-bottom: 1px solid $blue-grey-5;
+      }
+    }
+  }
 }

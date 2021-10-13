@@ -249,8 +249,6 @@ export const SUBCATEGORIES_WITH_CHILDREN_MOCK: MultiSelectFormOption[] = [
   {
     value: '9567',
     label: 'Gafas',
-    excluded_fields: ['size'],
-    has_children: false,
   },
   {
     value: '10156',

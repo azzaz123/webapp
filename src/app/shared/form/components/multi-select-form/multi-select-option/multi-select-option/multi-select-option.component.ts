@@ -8,15 +8,31 @@ import { TemplateMultiSelectFormOption } from '../../interfaces/multi-select-for
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiSelectOptionComponent {
-  @Input() option: TemplateMultiSelectFormOption;
   @Input() isDisabled: boolean;
-  @Input() hasChildren = false;
   @Output() toggleOnChange = new EventEmitter();
-
+  @Input() set option(value: TemplateMultiSelectFormOption) {
+    this.data = value;
+    this.hasChildren = !!value.children?.length;
+    this.updateChildSelection();
+  }
+  public data: TemplateMultiSelectFormOption;
+  public hasChildren = false;
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
     if (this.isDisabled) {
       event.preventDefault();
+    }
+  }
+
+  public selectedChildrenCount: number;
+
+  private updateChildSelection(): void {
+    this.selectedChildrenCount = this.getSelectedChildrenCount();
+  }
+
+  public getSelectedChildrenCount(): number {
+    if (this.data.children?.length) {
+      return [...this.data.children].filter((childOption) => childOption.checked).length;
     }
   }
 
