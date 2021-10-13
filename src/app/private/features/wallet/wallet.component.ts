@@ -1,14 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
 import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
-import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
-import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
-import { Observable, Subscription } from 'rxjs';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WALLET_PATHS } from './wallet.routing.constants';
+import { WalletTrackingEventService } from '@private/features/wallet/services/tracking-event/wallet-tracking-event.service';
+
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-wallet',
@@ -39,7 +42,8 @@ export class WalletComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private customerHelpService: CustomerHelpService,
-    private kycPropertiesService: KYCPropertiesService
+    private kycPropertiesService: KYCPropertiesService,
+    private walletTrackingEventService: WalletTrackingEventService
   ) {
     this.subscriptions.add(kycPropertiesService.get().subscribe());
     router.events.subscribe((e) => {
@@ -63,6 +67,10 @@ export class WalletComponent implements OnInit, OnDestroy {
 
   public onNavLinkClicked(navLinkId: string): void {
     this.router.navigate([navLinkId]);
+  }
+
+  public sendAnalytics(): void {
+    this.walletTrackingEventService.trackHelpWallet();
   }
 
   private getLastLocationIdThatMatch(e: NavigationEnd): string {
