@@ -258,6 +258,14 @@ describe('DeliveryAddressComponent', () => {
     });
   });
 
+  describe('canExit', () => {
+    it('should return the form canExit status', () => {
+      const result = component.canExit();
+
+      expect(result).toStrictEqual(component.formComponent.canExit());
+    });
+  });
+
   describe('onSubmit', () => {
     describe('when the form is valid...', () => {
       beforeEach(() => {

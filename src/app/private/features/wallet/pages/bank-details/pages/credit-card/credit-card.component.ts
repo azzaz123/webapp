@@ -31,6 +31,7 @@ import { CreditCardFormErrorMessages } from '@private/features/wallet/interfaces
 import { Location } from '@angular/common';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
+import { BehaviorSubject } from 'rxjs';
 import { CREDIT_CARD_TRANSLATIONS } from '@private/features/wallet/translations/credit-card.translations';
 
 @Component({
@@ -44,7 +45,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   public creditCardForm: FormGroup;
   public loading = false;
   public isNewForm = true;
-  public loadingButton = false;
+  public readonly loadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public formErrorMessages: CreditCardFormErrorMessages = {
     fullName: '',
     cardNumber: '',
@@ -101,6 +102,8 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    if (this.loadingButton$.value) return;
+
     if (this.creditCardForm.valid) {
       this.submitValidForm();
     } else {
@@ -114,6 +117,10 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  public canExit(): true | Promise<any> {
+    return this.formComponent.canExit();
+  }
+
   private markInvalidFields(): void {
     for (const control in this.creditCardForm.controls) {
       if (this.creditCardForm.controls.hasOwnProperty(control) && !this.creditCardForm.controls[control].valid) {
@@ -123,7 +130,8 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   }
 
   private submitValidForm(): void {
-    this.loadingButton = true;
+    this.loadingButton$.next(true);
+
     const subscription = this.isNewForm
       ? this.paymentsCreditCardService.create(this.getCreditCardSyncRequest())
       : this.paymentsCreditCardService.update(this.getCreditCardSyncRequest());
@@ -131,7 +139,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     subscription
       .pipe(
         finalize(() => {
-          this.loadingButton = false;
+          this.loadingButton$.next(false);
         })
       )
       .subscribe(

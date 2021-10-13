@@ -31,6 +31,10 @@
     }
   }
 
+  &__form {
+    flex: 1;
+  }
+
   &__bottomContainer {
     bottom: 0;
     background-color: transparentize($white, 0.5);

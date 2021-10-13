@@ -7,7 +7,7 @@ import {
   FILTER_PARAMETER_STORE_TOKEN,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, skip } from 'rxjs/operators';
 import { AD_PUBLIC_SEARCH } from './search-ads.config';
 
 export const SEARCH_SLOTS = [AD_PUBLIC_SEARCH.search1, AD_PUBLIC_SEARCH.search2r, AD_PUBLIC_SEARCH.search3r];
@@ -43,11 +43,15 @@ export class SearchAdsService {
 
   private setAdKeywordsObservable(): Subscription {
     return this.filterParameterStoreService.parameters$
-      .pipe(map((filterParameters: FilterParameter[]) => filterParameters.find(({ key }) => key === FILTER_QUERY_PARAM_KEY.keywords)))
+      .pipe(
+        skip(1),
+        map((filterParameters: FilterParameter[]) => filterParameters.find(({ key }) => key === FILTER_QUERY_PARAM_KEY.keywords))
+      )
       .subscribe((filterKeyword: FilterParameter) => {
         const content = filterKeyword?.value || null;
+
         this.adsService.setAdKeywords({ content });
-        this.adsService.refresh();
+        this.adsService.refreshAllSlots();
       });
   }
 }
