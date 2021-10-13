@@ -191,6 +191,10 @@ export class DeliveryAddressComponent implements OnInit {
     });
   }
 
+  public canExit(): true | Promise<any> {
+    return this.formComponent.canExit();
+  }
+
   private clearFormAndResetLocationsWhenCountryChange(): void {
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
@@ -289,6 +293,7 @@ export class DeliveryAddressComponent implements OnInit {
             ? TRANSLATION_KEY.DELIVERY_ADDRESS_CREATE_SUCCESS
             : TRANSLATION_KEY.DELIVERY_ADDRESS_EDIT_SUCCESS;
 
+          this.formComponent.initFormControl();
           this.isNewForm = false;
           this.showToast(successKey, TOAST_TYPES.SUCCESS);
           this.redirect();

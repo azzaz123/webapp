@@ -7,9 +7,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { KYCDocumentation } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
-import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../constants/kyc-modal-status-constants';
 import { KYC_MODAL_STATUS } from '../../enums/kyc-modal-status.enum';
@@ -26,11 +26,13 @@ import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc
 export class KYCModalComponent implements OnDestroy {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
-  public KYCStoreSpecifications$: Observable<KYCSpecifications> = this.KYCStoreService.specifications$;
-  public KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
+  public readonly KYCStoreSpecifications$: Observable<KYCSpecifications> = this.KYCStoreService.specifications$;
+  public readonly KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
     (properties) => properties.status === KYC_MODAL_STATUS.IN_PROGRESS
   );
-  private KYCModalCloseWarningCopy = $localize`:@@kyc_cancellation_system_modal_description_web_specific:Are you sure you want to get out of the process? All information will be lost.`;
+  public isEndVerificationLoading = false;
+
+  private readonly KYCModalCloseWarningCopy = $localize`:@@kyc_cancellation_system_modal_description_web_specific:Are you sure you want to get out of the process? All information will be lost.`;
 
   constructor(
     private KYCStoreService: KYCStoreService,
@@ -45,18 +47,27 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   public endVerification(KYCImages: KYCImages): void {
+    if (this.isEndVerificationLoading) return;
+
     const selectedDocument = this.KYCStoreService.specifications.documentation.analyticsName;
     this.kycTrackingEventsService.trackClickKYCFinishIdentityVerification(selectedDocument);
+    this.isEndVerificationLoading = true;
 
-    this.KYCService.request(KYCImages).subscribe(
-      () => {
-        this.updateKYCImages(KYCImages);
-        this.goNextStep();
-      },
-      (e: Error[] | KYCError[]) => {
-        this.handleKYCError(e[0]);
-      }
-    );
+    this.KYCService.request(KYCImages)
+      .pipe(
+        finalize(() => {
+          this.isEndVerificationLoading = false;
+        })
+      )
+      .subscribe(
+        () => {
+          this.updateKYCImages(KYCImages);
+          this.goNextStep();
+        },
+        (e: Error[] | KYCError[]) => {
+          this.handleKYCError(e[0]);
+        }
+      );
   }
 
   public defineNationality(nationalitySelected: KYCNationality): void {

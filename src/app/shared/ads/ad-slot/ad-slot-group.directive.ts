@@ -17,12 +17,6 @@ export class AdSlotGroupDirective implements AfterContentInit {
       const configurations = components.map((component) => component.adSlot);
 
       this.adsService.setSlots(configurations);
-
-      if (configurations.length) {
-        // When handling ads with SRA, we only need to call display once per group, using any of the slots in the group.
-        // Check https://developers.google.com/publisher-tag/guides/ad-best-practices for more information
-        this.adsService.displayAdBySlotId(configurations[0].id);
-      }
     });
   }
 }

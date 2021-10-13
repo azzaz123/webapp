@@ -1,5 +1,5 @@
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, LOCALE_ID } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -7,8 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
-import { WalletTransferJumpDirective } from '@private/features/wallet/modals/transfer/directives/jump/wallet-transfer-jump.directive';
-import { WalletTransferMaxLengthDirective } from '@private/features/wallet/modals/transfer/directives/max-length/wallet-transfer-max-length.directive';
+import { MOCK_TRANSFER_AMOUNT } from '@fixtures/private/wallet/transfer/wallet-transfer.fixtures.spec';
 import {
   MockPaymentsWalletsService,
   MOCK_PAYMENTS_WALLETS_MAPPED_MONEY,
@@ -18,10 +17,13 @@ import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.s
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletTransferAmountComponent } from '@private/features/wallet/modals/transfer/components/amount/wallet-transfer-amount.component';
+import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
+import { WalletTransferJumpDirective } from '@private/features/wallet/modals/transfer/directives/jump/wallet-transfer-jump.directive';
+import { WalletTransferMaxLengthDirective } from '@private/features/wallet/modals/transfer/directives/max-length/wallet-transfer-max-length.directive';
+import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
 
 import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
-import { WalletTransferAmountModel } from '../../models/wallet-transfer-amount.model';
 
 @Component({
   selector: 'tsl-fake-component',
@@ -54,6 +56,7 @@ describe('WalletTransferAmountComponent', () => {
   const walletTransferAmountFigureRangeSelector = `${walletTransferAmountSelector}__range`;
   const walletTransferAmountFigureRangeWarnSelector = `${walletTransferAmountFigureRangeSelector}--invalid`;
   const walletTransferAmountCtaSelector = `${walletTransferAmountSelector}__CTA`;
+  const walletTransferAmountRetrySelector = `${walletTransferAmountSelector}__retry`;
   const walletTransferAmountCtaButtonSelector = `${walletTransferAmountCtaSelector} tsl-button button`;
   const walletTransferAmountErrorSelector = `${walletTransferAmountSelector}__error`;
 
@@ -115,6 +118,75 @@ describe('WalletTransferAmountComponent', () => {
           const loadingContainerRef = fixture.debugElement.query(By.css(walletTransferAmountSpinnerSelector));
           expect(loadingContainerRef).toBeFalsy();
         }));
+      });
+    });
+
+    describe('AND WHEN there is transfer data', () => {
+      beforeEach(() => {
+        jest.spyOn(component, 'showSpinner', 'get').mockReturnValue(false);
+        component.transferData = MOCK_TRANSFER_AMOUNT;
+        component.ngOnInit();
+      });
+
+      it('should not show a loading animation', () => {
+        const loadingContainerRef = fixture.debugElement.query(By.css(walletTransferAmountSpinnerSelector));
+        expect(loadingContainerRef).toBeFalsy();
+      });
+
+      it('should set the try again message', () => {
+        expect(component.showRetryMessage).toBe(true);
+      });
+
+      it('should not show the CTA', () => {
+        const ctaButton = fixture.debugElement.query(By.css(walletTransferAmountCtaSelector));
+        expect(ctaButton).toBeFalsy();
+      });
+
+      it('should show the retry button', () => {
+        const retryButton = fixture.debugElement.query(By.css(walletTransferAmountRetrySelector));
+        expect(retryButton).toBeTruthy();
+      });
+
+      describe('AND WhEN the user change the integer amount', () => {
+        beforeEach(() => {
+          component.transferAmount.integer = '90';
+          component.formatIntegerPart();
+        });
+
+        it('should not show the try again message', () => {
+          expect(component.showRetryMessage).toBe(false);
+        });
+
+        it('should show the CTA', () => {
+          const ctaButton = fixture.debugElement.query(By.css(walletTransferAmountCtaSelector));
+          expect(ctaButton).toBeTruthy();
+        });
+
+        it('should not show the retry button', () => {
+          const ctaButton = fixture.debugElement.query(By.css(walletTransferAmountRetrySelector));
+          expect(ctaButton).toBeFalsy();
+        });
+      });
+
+      describe('AND WhEN the user change the decimal amount', () => {
+        beforeEach(() => {
+          component.transferAmount.decimals = '33';
+          component.formatDecimalPart();
+        });
+
+        it('should not show the try again message', () => {
+          expect(component.showRetryMessage).toBe(false);
+        });
+
+        it('should show the CTA', () => {
+          const ctaButton = fixture.debugElement.query(By.css(walletTransferAmountCtaSelector));
+          expect(ctaButton).toBeTruthy();
+        });
+
+        it('should not show the retry button', () => {
+          const ctaButton = fixture.debugElement.query(By.css(walletTransferAmountRetrySelector));
+          expect(ctaButton).toBeFalsy();
+        });
       });
     });
 
@@ -247,8 +319,8 @@ describe('WalletTransferAmountComponent', () => {
 
       describe('WHEN the user clicks over the transfer button', () => {
         it('should notify the action', () => {
-          const expected = new WalletTransferAmountModel(13.14);
-          component.transferAmount = expected;
+          component.transferAmount = new WalletTransferAmountModel(13.14);
+          const expected = new WalletTransferMoneyModel(component.transferAmount.total, MOCK_PAYMENTS_WALLETS_MAPPED_MONEY);
           const transferButton = fixture.debugElement.query(By.css(walletTransferAmountCtaButtonSelector));
           const transferSpy = spyOn(component.transfered, 'emit').and.callThrough();
 
@@ -273,8 +345,9 @@ describe('WalletTransferAmountComponent', () => {
 
     describe('WHEN the user leaves the integer text box', () => {
       it('should format the integer part', fakeAsync(() => {
+        component.transferAmount.integer = '13';
         const integerPartRef = fixture.debugElement.query(By.css(walletTransferAmountFigureIntegerSelector));
-        const integerFormatSpy = jest.spyOn(component.transferAmount, 'integerAsUnits', 'get').mockReturnValue('0.00');
+        const integerFormatSpy = jest.spyOn(component.transferAmount, 'integerAsUnits', 'get').mockReturnValue('13.00');
 
         (integerPartRef.nativeElement as HTMLInputElement).focus();
         (integerPartRef.nativeElement as HTMLInputElement).blur();
@@ -284,15 +357,16 @@ describe('WalletTransferAmountComponent', () => {
     });
 
     describe('WHEN the user leaves the decimals text box', () => {
-      it('should format the decimal part', () => {
-        const integerPartRef = fixture.debugElement.query(By.css(walletTransferAmountFigureDecimalSelector));
-        const decimalFormatSpy = jest.spyOn(component.transferAmount, 'decimalsAsCents', 'get').mockReturnValue('0.00');
+      it('should format the decimal part', fakeAsync(() => {
+        component.transferAmount.decimals = '01';
+        const decimalPartRef = fixture.debugElement.query(By.css(walletTransferAmountFigureDecimalSelector));
+        const decimalFormatSpy = jest.spyOn(component.transferAmount, 'decimalsAsCents', 'get').mockReturnValue('33.01');
 
-        (integerPartRef.nativeElement as HTMLDivElement).focus();
-        (integerPartRef.nativeElement as HTMLDivElement).blur();
+        (decimalPartRef.nativeElement as HTMLInputElement).focus();
+        (decimalPartRef.nativeElement as HTMLInputElement).blur();
 
         expect(decimalFormatSpy).toHaveBeenCalledTimes(1);
-      });
+      }));
     });
 
     describe('WHEN the user select an invalid amount', () => {

@@ -21,10 +21,26 @@
           <div class="WalletBalanceInfo__amount__currency">{{ walletBalance.currency.symbol }}</div>
         </div>
 
-        <div class="WalletBalanceInfo__CTA">
+        <div class="WalletBalanceInfo__CTA" *ngIf="!isTransferInProgress">
           <tsl-button [disabled]="!allowTransfer" i18n="@@wallet_view_transfer_button" (click)="transferBalance()"
             >Transfer to my bank account</tsl-button
           >
+        </div>
+
+        <div class="WalletBalanceInfo__transfer d-flex align-items-center" *ngIf="isTransferInProgress">
+          <div class="WalletBalanceInfo__transfer__spinner">
+            <tsl-svg-icon width="30" height="30" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+          </div>
+          <div class="d-flex flex-column justify-content-start">
+            <div class="WalletBalanceInfo__transfer__title">
+              <span i18n="@@make_transfer_view_balance_indicator_reviewing_transfer_title">Transfer in progress</span>
+            </div>
+            <div class="WalletBalanceInfo__transfer__content">
+              <span i18n="@@make_transfer_view_balance_indicator_reviewing_transfer_description"
+                >To make another one this must finish. Go find something cool at Wallapop!</span
+              >
+            </div>
+          </div>
         </div>
       </div>
 

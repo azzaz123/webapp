@@ -13,10 +13,14 @@
   >
     <tsl-stepper>
       <ng-template step>
-        <tsl-wallet-transfer-amount (transfered)="goNextStep($event)"></tsl-wallet-transfer-amount>
+        <tsl-wallet-transfer-amount [transferData]="transferAmount" (transfered)="goNextStep($event)"></tsl-wallet-transfer-amount>
       </ng-template>
       <ng-template step>
-        <tsl-wallet-transfer-confirm [transferAmount]="transferAmount" (canceled)="goPreviousStep($event)"></tsl-wallet-transfer-confirm>
+        <tsl-wallet-transfer-confirm
+          [transferAmount]="transferAmount"
+          (canceled)="goPreviousStep()"
+          (transferError)="goPreviousStep($event)"
+        ></tsl-wallet-transfer-confirm>
       </ng-template>
     </tsl-stepper>
   </div>

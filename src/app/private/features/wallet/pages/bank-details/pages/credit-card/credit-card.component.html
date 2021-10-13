@@ -70,7 +70,7 @@
             <div class="row">
                 <div class="col-12 text-center d-flex flex-column align-items-center">
                     <span class="CreditCard__message CreditCard__message--info mb-4" i18n="@@credit_card_form_pre_charge_info_description" >0,10 € will be charged in order to validate credit or debit card. The amount will be returned in 7 working days.</span>
-                    <tsl-button class="col-12 col-md-3" [type]="'submit'" [loading]="loadingButton" className="btn-primary btn-block" i18n="@@credit_card_form_bottom_bar_save_button">Save</tsl-button>
+                    <tsl-button class="col-12 col-md-3" [type]="'submit'" [loading]="loadingButton$ | async" [disabled]="loadingButton$ | async" className="btn-primary btn-block" i18n="@@credit_card_form_bottom_bar_save_button">Save</tsl-button>
                 </div>
             </div>
         </form>
