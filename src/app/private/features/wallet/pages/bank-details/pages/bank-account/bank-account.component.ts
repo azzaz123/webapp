@@ -24,6 +24,7 @@ import {
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
 import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
+import { BehaviorSubject } from 'rxjs';
 import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
 
 export const IBAN_LENGTH = 40;
@@ -39,11 +40,11 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   @Output() bankAccountSaved: EventEmitter<void> = new EventEmitter();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
 
+  public readonly loadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
   public loading = false;
   public isNewForm = true;
-  public loadingButton = false;
   public maxLengthIBAN: number;
   public formErrorMessages: BankAccountFormErrorMessages = {
     iban: '',
@@ -104,6 +105,8 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     this.trackClickKYCConfirmBankAccountInfoEventWhenIsKYC();
+    if (this.loadingButton$.value) return;
+
     if (this.bankAccountForm.valid) {
       this.submitValidForm();
     } else {
@@ -121,8 +124,13 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  public canExit(): true | Promise<any> {
+    return this.isKYC ? true : this.formComponent.canExit();
+  }
+
   private submitValidForm(): void {
-    this.loadingButton = true;
+    this.loadingButton$.next(true);
+
     const subscription = this.isNewForm
       ? this.bankAccountService.create(this.bankAccountForm.getRawValue())
       : this.bankAccountService.update(this.bankAccountForm.getRawValue());
@@ -130,7 +138,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     subscription
       .pipe(
         finalize(() => {
-          this.loadingButton = false;
+          this.loadingButton$.next(false);
         })
       )
       .subscribe(

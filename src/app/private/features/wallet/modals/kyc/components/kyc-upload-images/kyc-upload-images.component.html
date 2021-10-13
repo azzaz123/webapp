@@ -66,7 +66,8 @@
                         (click)="goToDefineBackImage()">Continue</tsl-button>
                     <tsl-button
                         *ngIf="showEndVerificationButton$ | async" id="endVerificationButton"
-                        [disabled]="(isEndVerificationButtonActive$ | async) === false"
+                        [disabled]="(isEndVerificationButtonActive$ | async) === false || isEndVerificationLoading"
+                        [loading]="isEndVerificationLoading"
                         i18n="@@kyc_take_photo_view_finish_verification_button"
                         class="col-12 col-md-7 p-0"
                         className="btn-primary btn-block"

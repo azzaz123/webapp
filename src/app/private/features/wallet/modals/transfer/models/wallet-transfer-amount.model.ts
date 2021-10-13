@@ -64,6 +64,10 @@ export class WalletTransferAmountModel {
     return this.total >= this.minimum && this.total <= this.maximum;
   }
 
+  public setMaximum(maximum: number): void {
+    this.maximum = maximum;
+  }
+
   public get total(): number {
     return this.isNullOrUndefined(this._total) ? 0 : this._total;
   }

@@ -62,9 +62,14 @@
               >Maximum {{ maximumAsText }} - Minimum {{ minimumAsText }}</span
             >
           </div>
-          <div class="WalletTransferAmount__CTA">
+          <div class="WalletTransferAmount__CTA" *ngIf="!showRetryMessage">
             <tsl-button [disabled]="!allowTransfer" i18n="@@make_transfer_view_transfer_button" (click)="transferBalance()"
               >Transfer to my bank account</tsl-button
+            >
+          </div>
+          <div class="WalletTransferAmount__retry" *ngIf="showRetryMessage">
+            <tsl-button [disabled]="!allowTransfer" i18n="@@make_transfer_view_retry_transfer_button" (click)="transferBalance()"
+              >Retry transfer</tsl-button
             >
           </div>
         </div>
