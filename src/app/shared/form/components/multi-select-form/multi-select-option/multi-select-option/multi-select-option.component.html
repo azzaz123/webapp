@@ -1,8 +1,15 @@
 <div class="MultiSelectOption d-flex w-100 position-relative p-3" [class.MultiSelectOption--disabled]="isDisabled" [class.MultiSelectOption--with-children]="hasChildren">
   <div class="w-100 align-self-center d-flex justify-content-between">
-    <span class="MultiSelectOption__label d-block">{{ option.label }}</span>
-    <span *ngIf="!!option.sublabel" class="MultiSelectOption__label__sub mr-3">{{ option.sublabel }}</span>
+    <span class="MultiSelectOption__label d-block">{{ data.label }}</span>
+    <span *ngIf="!!data.sublabel" class="MultiSelectOption__label__sub mr-3">{{ data.sublabel }}</span>
   </div>
-  <tsl-checkbox-form *ngIf="!hasChildren"  class="d-flex align-self-center" [(ngModel)]="option.checked" (change)="toggleCheckbox()"></tsl-checkbox-form>
+
+  <p class="MultiSelectOption__selection m-0 px-3" *ngIf="selectedChildrenCount">
+    <span i18n="" >Selected elements: </span>
+    <span *ngIf="selectedChildrenCount === data.children.length" i18n="">All</span>
+    <span *ngIf="selectedChildrenCount !== data.children.length">{{selectedChildrenCount}}</span>
+  </p>
+
+  <tsl-checkbox-form *ngIf="!hasChildren"  class="d-flex align-self-center" [(ngModel)]="data.checked" (change)="toggleCheckbox()"></tsl-checkbox-form>
   <tsl-svg-icon *ngIf="hasChildren" class="d-flex align-items-center justify-content-center" src="assets/icons/arrow-right.svg"></tsl-svg-icon>
 </div>

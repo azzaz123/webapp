@@ -9,6 +9,7 @@ import { FASHION_CONFIGURATION_ID } from '@public/shared/components/filters/core
 import { of } from 'rxjs/internal/observable/of';
 import { CAR_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/car-configuration-ids.enum';
 import { REAL_ESTATE_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/real-estate-configuration-ids.enum';
+import { SUBCATEGORIES_WITH_CHILDREN_MOCK } from './subcategories.fixtures';
 
 export class MockFilterOptionService implements Partial<FilterOptionService> {
   public getOptions(
@@ -44,6 +45,8 @@ export class MockFilterOptionService implements Partial<FilterOptionService> {
             label: 'Has given it all',
           },
         ]);
+      case FASHION_CONFIGURATION_ID.OBJECT_TYPE:
+        return of(SUBCATEGORIES_WITH_CHILDREN_MOCK);
       case FASHION_CONFIGURATION_ID.GENDER:
         return of([
           {
