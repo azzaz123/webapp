@@ -180,8 +180,6 @@ export class FilterOptionService {
         return acc;
       }, [] as QueryParamVisibilityCondition[]);
 
-    console.log('handleVisibilityModifier', visibilityConditionsgetCategoryLabel);
-
     this.hostVisibilityService.addVisibilityConditions(visibilityConditions);
   }
 }
