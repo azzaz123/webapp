@@ -24,7 +24,7 @@ const transferSentMessage: Toast = {
   styleUrls: ['./wallet-transfer-confirm.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [WalletTransferApiService, WalletTransferMapperService, WalletTransferService],
+  providers: [WalletTransferApiService, WalletTransferMapperService, WalletTransferService, WalletTransferTrackingEventService],
 })
 export class WalletTransferConfirmComponent {
   @Input()
