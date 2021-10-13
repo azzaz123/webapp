@@ -79,7 +79,7 @@ export class WalletBalanceInfoComponent implements OnInit {
     combineLatest([this.paymentsWalletsService.walletBalance$.pipe(take(1)), this.kycPropertiesService.KYCProperties$.pipe(take(1))])
       .pipe(
         finalize(() => {
-          this.balanceTrackingEventService.trackViewWallet(this.walletBalance?.amount.total, this.KYCProperties?.status);
+          this.balanceTrackingEventService.trackViewWallet(this.walletBalance?.amount.total, this.KYCProperties.status);
         })
       )
       .subscribe({
