@@ -35,7 +35,6 @@ import {
   MOCK_OWN_REAL_ESTATE_ITEM_DETAIL,
 } from '@fixtures/item-detail.fixtures.spec';
 import { MOCK_ITEM_CAR, MOCK_ITEM_GBP } from '@fixtures/item.fixtures.spec';
-import { IsCurrentUserStub } from '@fixtures/public/core';
 import { MOCK_REALESTATE } from '@fixtures/realestate.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { AdComponentStub } from '@fixtures/shared';
@@ -93,6 +92,7 @@ describe('ItemDetailComponent', () => {
   const itemCardClass = '.ItemDetail__card';
   const carExtraInfoClass = '.ItemExtraInfo--car';
   const itemId = '123';
+  const affiliationLinksClass = '.ItemDetail__affiliation';
 
   const itemDetailSubjectMock: BehaviorSubject<ItemDetail> = new BehaviorSubject<ItemDetail>(MOCK_ITEM_DETAIL_GBP);
   const itemDetailStoreServiceMock = {
@@ -127,7 +127,7 @@ describe('ItemDetailComponent', () => {
       declarations: [
         ItemDetailComponent,
         CustomCurrencyPipe,
-        IsCurrentUserStub,
+        IsCurrentUserPipe,
         AdComponentStub,
         ItemSpecificationsComponent,
         ItemTaxonomiesComponent,
@@ -266,6 +266,7 @@ describe('ItemDetailComponent', () => {
         permissionService.addPermission(PERMISSIONS.showAds);
       });
       it('should only show AD on description', fakeAsync(() => {
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CAR_ITEM_DETAIL);
         fixture.detectChanges();
         tick();
 
@@ -283,6 +284,30 @@ describe('ItemDetailComponent', () => {
 
         expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
       }));
+
+      describe('and the item is owned by the user', () => {
+        it('should not show affiliation links', fakeAsync(() => {
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(0);
+        }));
+      });
+      describe('and the item is not owned by the user', () => {
+        it('should show affiliation links', fakeAsync(() => {
+          itemDetailSubjectMock.next(MOCK_OTHER_USER_CAR_ITEM_DETAIL);
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(1);
+        }));
+      });
     });
 
     describe('and user does not have permission to see ads', () => {
@@ -308,6 +333,7 @@ describe('ItemDetailComponent', () => {
       });
 
       it('should show only the top AD', fakeAsync(() => {
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CAR_ITEM_DETAIL);
         component.ngOnInit();
         fixture.detectChanges();
         tick();
@@ -325,6 +351,30 @@ describe('ItemDetailComponent', () => {
 
         expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
       }));
+
+      describe('and the item is owned by the user', () => {
+        it('should not show affiliation links', fakeAsync(() => {
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(0);
+        }));
+      });
+      describe('and the item is not owned by the user', () => {
+        it('should show affiliation links', fakeAsync(() => {
+          itemDetailSubjectMock.next(MOCK_OTHER_USER_CAR_ITEM_DETAIL);
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(1);
+        }));
+      });
     });
 
     describe('and user does not have permission to see ads', () => {
@@ -349,6 +399,7 @@ describe('ItemDetailComponent', () => {
         permissionService.addPermission(PERMISSIONS.showAds);
       });
       it('should show six ADS', fakeAsync(() => {
+        itemDetailSubjectMock.next(MOCK_OTHER_USER_CAR_ITEM_DETAIL);
         component.ngOnInit();
         fixture.detectChanges();
         tick();
@@ -366,6 +417,30 @@ describe('ItemDetailComponent', () => {
 
         expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
       }));
+
+      describe('and the item is owned by the user', () => {
+        it('should not show affiliation links', fakeAsync(() => {
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(0);
+        }));
+      });
+      describe('and the item is not owned by the user', () => {
+        it('should show affiliation links', fakeAsync(() => {
+          itemDetailSubjectMock.next(MOCK_OTHER_USER_CAR_ITEM_DETAIL);
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(1);
+        }));
+      });
     });
 
     describe('and user does not have permission to see ads', () => {
