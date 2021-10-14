@@ -1,117 +1,135 @@
-<div class="BankAccount container">
+<div class="BankAccount container h-100 d-flex flex-column" [ngClass]="{'pb-4': isKYC}">
     <a *ngIf="!isKYC" class="BankAccount__back d-flex pb-4 pb-md-2" (click)="goBack()">
         <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
-        <span i18n="@@web_catalog_pro_pages_checkout_638" class="ml-3">Back</span>
+        <span i18n="@@bank_account_form_back_button_web_specific" class="ml-3">Back</span>
     </a>
-    <div *ngIf="isKYC" class="d-flex justify-content-center mx-2 mt-md-2 mb-4">
-        <div class="BankAccount__KYCMessage p-3">
-            <span i18n="@@kyc_bank_account_view_info_matching_description">The name of the account holder must match the name on the ID you provide. In addition, the person must be over 18 years old.</span>
+    <div *ngIf="isKYC" class="row mb-4">
+        <div class="col">
+            <div class="BankAccount__topBarMessage row mb-3">
+                <div class="col d-flex justify-content-between p-0">
+                    <span i18n="@@kyc_bank_account_view_top_bar_title" class="p-0">Bank account</span>
+                    <tsl-svg-icon src="/assets/icons/cross.svg" class="BankAccount__cross align-self-center" (click)="closeModal.emit()"></tsl-svg-icon>
+                </div>
+            </div>
+            <div class="BankAccount__KYCMessage p-3 row mx-2">
+                <span i18n="@@kyc_bank_account_view_info_matching_description" class="col">The name of the account holder must match the name on the ID you provide. In addition, the person must be over 18 years old.</span>
+            </div>
         </div>
     </div>
-    <tsl-profile-form class="row" [profileForm]="bankAccountForm" (onInit)="initForm()">
-        <form class="col" *ngIf="!loading; else loadingState" [formGroup]="bankAccountForm" (submit)="onSubmit()">
-            <div class="row mb-2">
+    <tsl-profile-form class="BankAccount__form row" [profileForm]="bankAccountForm" (onInit)="initForm()">
+        <form class="col d-flex flex-column" *ngIf="!loading; else loadingState" [formGroup]="bankAccountForm" (submit)="onSubmit()">
+            <div class="row mb-2" *ngIf="!isKYC">
                 <div class="col-md-11 offset-md-1">
-                    <h3 *ngIf="isNewForm" i18n="@@delivery_add_bank_account_title">Add bank account</h3>
-                    <h3 *ngIf="!isNewForm" i18n="@@delivery_edit_bank_account_title">Edit bank account</h3>
+                    <h3 *ngIf="isNewForm" i18n="@@bank_account_form_top_bar_add_title" id="bankAccountTitle">Add bank account</h3>
+                    <h3 *ngIf="!isNewForm" i18n="@@bank_account_form_top_bar_edit_title" id="bankAccountTitle">Edit bank account</h3>
+                </div>
+            </div>    
+            <div class="row mb-2" *ngIf="isKYC">
+                <div class="col-md-11 offset-md-1">
+                    <h3 *ngIf="isNewForm" i18n="@@kyc_bank_account_view_if_empty_title" id="bankAccountTitle">Add the bank account where you wish to receive payment for your sales</h3>
+                    <h3 *ngIf="!isNewForm" i18n="@@kyc_bank_account_view_if_already_filled_title" id="bankAccountTitle">Please check your bank account details are correct</h3>
                 </div>
             </div>
-            <div class="form-group row align-items-center">
-                <label for="first_name" class="col-sm-12 col-md-5" i18n="@@saving_bank_account_first_name_hint">Full legal name</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="first_name" formControlName="first_name"/>
-                    <div *ngIf="bankAccountForm.controls.first_name.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
-                        <ng-container *ngIf="bankAccountForm.controls.first_name.errors as firstNameError">
-                            <span *ngIf="firstNameError.required" i18n="@@saving_bank_account_error_incomplete_first_name">
-                                Without your name, we are stuck
-                            </span>
-                            <span *ngIf="!firstNameError.required">
-                                {{formErrorMessages.first_name}}
-                            </span>
-                        </ng-container>
+            <div class="BankAccount__form d-flex flex-column justify-content-between">
+                <div>
+                    <div class="form-group row align-items-center">
+                        <label for="first_name" class="col-sm-12 col-md-5" i18n="@@bank_account_form_name_label">Full legal name</label>
+                        <div class="col-sm-12 col-md-5">
+                            <input type="text" class="form-control" id="first_name" formControlName="first_name"/>
+                            <div *ngIf="bankAccountForm.controls.first_name.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
+                                <ng-container *ngIf="bankAccountForm.controls.first_name.errors as firstNameError">
+                                    <span *ngIf="firstNameError.required" i18n="@@bank_account_form_name_empty_field_inline_error">
+                                        Without your name, we are stuck
+                                    </span>
+                                    <span *ngIf="!firstNameError.required">
+                                        {{formErrorMessages.first_name}}
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="last_name" class="col-sm-12 col-md-5" i18n="@@bank_account_form_surname_label">Surname</label>
+                        <div class="col-sm-12 col-md-5">
+                            <input type="text" class="form-control" id="last_name" formControlName="last_name"/>
+                            <div *ngIf="bankAccountForm.controls.last_name.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
+                                <ng-container *ngIf="bankAccountForm.controls.last_name.errors as lastNameError">
+                                    <span *ngIf="lastNameError.required" i18n="@@bank_account_form_surname_empty_field_inline_error">
+                                        Hey! We also need your surname
+                                    </span>
+                                    <span *ngIf="!lastNameError.required">
+                                        {{formErrorMessages.last_name}}
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="iban" class="col-sm-12 col-md-5" i18n="@@bank_account_form_iban_label">IBAN</label>
+                        <div class="col-sm-12 col-md-5">
+                            <input type="text" class="form-control" id="iban"  [value]="bankAccountForm.get('iban').value | separateWordByCharacter:4: ' '" formControlName="iban" [maxlength]="maxLengthIBAN"/>
+                            <div *ngIf="bankAccountForm.controls.iban.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
+                                <ng-container *ngIf="bankAccountForm.controls.iban.errors as IBANError">
+                                    <span *ngIf="IBANError.required" i18n="@@bank_account_form_iban_empty_field_inline_error">
+                                        "IBAN" field must be filled
+                                    </span>
+                                    <span *ngIf="!IBANError.required">
+                                        {{formErrorMessages.iban}}
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="address" class="col-sm-12 col-md-5" i18n="@@bank_account_form_street_label">Street name and number</label>
+                        <div class="col-sm-12 col-md-5">
+                            <input type="text" class="form-control" id="address" formControlName="address"/>
+                            <div *ngIf="bankAccountForm.controls.address.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
+                                <ng-container *ngIf="bankAccountForm.controls.address.errors as addressError">
+                                    <span *ngIf="addressError.required" i18n="@@bank_account_form_street_empty_field_inline_error">
+                                        "Street and number" field must be filled
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="flat_and_floor" class="col-sm-12 col-md-5" i18n="@@bank_account_form_floor_and_door_label">Floor and door number</label>
+                        <div class="col-sm-12 col-md-5">
+                            <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.FLAT_AND_FLOOR"/>
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@bank_account_form_zip_code_label">Postal code</label>
+                        <div class="col-sm-12 col-md-5">
+                            <input type="text" class="form-control" id="postal_code" formControlName="postal_code" tslNumbersOnly/>
+                            <div *ngIf="bankAccountForm.controls.postal_code.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
+                                <ng-container *ngIf="bankAccountForm.controls.postal_code.errors as postalCodeError">
+                                    <span *ngIf="postalCodeError.required" i18n="@@bank_account_form_zip_code_empty_field_inline_error">
+                                        "Postal code" field must be filled
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row align-items-center mb-4">
+                        <label for="city" class="col-sm-12 col-md-5" i18n="@@bank_account_form_city_label">City</label>
+                        <div class="col-sm-12 col-md-5">
+                            <input type="text" class="form-control" id="city" formControlName="city"/>
+                            <div *ngIf="bankAccountForm.controls.city.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
+                                <ng-container *ngIf="bankAccountForm.controls.city.errors as cityError">
+                                    <span *ngIf="cityError.required" i18n="@@bank_account_form_city_empty_field_inline_error">
+                                        "City" field must be filled
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label for="last_name" class="col-sm-12 col-md-5" i18n="@@saving_bank_account_last_name_hint">Surname</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="last_name" formControlName="last_name"/>
-                    <div *ngIf="bankAccountForm.controls.last_name.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
-                        <ng-container *ngIf="bankAccountForm.controls.last_name.errors as lastNameError">
-                            <span *ngIf="lastNameError.required" i18n="@@saving_bank_account_error_incomplete_last_name">
-                                Hey! We also need your surname
-                            </span>
-                            <span *ngIf="!lastNameError.required">
-                                {{formErrorMessages.last_name}}
-                            </span>
-                        </ng-container>
+                <div class="row justify-content-center" [ngClass]="{'BankAccount__bottomContainer position-sticky': isKYC}">
+                    <div class="col-12 col-md-2" [ngClass]="{'col-md-7': isKYC}">
+                        <tsl-button [type]="'submit'" [loading]="loadingButton$ | async" [disabled]="loadingButton$ | async" className="btn-primary btn-block" i18n="@@bank_account_form_bottom_bar_save_button">Save</tsl-button>
                     </div>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label for="iban" class="col-sm-12 col-md-5" i18n="@@saving_bank_account_iban_hint">IBAN</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="iban"  [value]="bankAccountForm.get('iban').value | separateWordByCharacter:4: ' '" formControlName="iban" [maxlength]="maxLengthIBAN"/>
-                    <div *ngIf="bankAccountForm.controls.iban.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
-                        <ng-container *ngIf="bankAccountForm.controls.iban.errors as IBANError">
-                            <span *ngIf="IBANError.required" i18n="@@saving_bank_account_error_incomplete_iban">
-                                "IBAN" field must be filled
-                            </span>
-                            <span *ngIf="!IBANError.required">
-                                {{formErrorMessages.iban}}
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label for="address" class="col-sm-12 col-md-5" i18n="@@add_back_account_address_field_hint">Street name and number</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="address" formControlName="address"/>
-                    <div *ngIf="bankAccountForm.controls.address.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
-                        <ng-container *ngIf="bankAccountForm.controls.address.errors as addressError">
-                            <span *ngIf="addressError.required" i18n="@@saving_bank_account_error_incomplete_address">
-                                Incomplete address
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label for="flat_and_floor" class="col-sm-12 col-md-5" i18n="@@shipping_flat_and_door_section_hint">Floor and door number</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="flat_and_floor" formControlName="flat_and_floor" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.FLAT_AND_FLOOR"/>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label for="postal_code" class="col-sm-12 col-md-5" i18n="@@add_back_account_postal_code_field_hint">Postal code</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="postal_code" formControlName="postal_code" tslNumbersOnly/>
-                    <div *ngIf="bankAccountForm.controls.postal_code.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
-                        <ng-container *ngIf="bankAccountForm.controls.postal_code.errors as postalCodeError">
-                            <span *ngIf="postalCodeError.required" i18n="@@saving_bank_account_error_incomplete_postal_code">
-                                "Zip code" field must be filled
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row align-items-center mb-4">
-                <label for="city" class="col-sm-12 col-md-5" i18n="@@add_back_account_city_field_hint">City</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="city" formControlName="city"/>
-                    <div *ngIf="bankAccountForm.controls.city.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
-                        <ng-container *ngIf="bankAccountForm.controls.city.errors as cityError">
-                            <span *ngIf="cityError.required" i18n="@@saving_bank_account_error_incomplete_city">
-                                "City" field must be filled
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center" [ngClass]="{'BankAccount__bottomContainer position-sticky': isKYC}">
-                <div class="col-12 col-md-2" [ngClass]="{'col-md-7': isKYC}">
-                    <tsl-button [type]="'submit'" [loading]="loadingButton" className="btn-primary btn-block" i18n="@@delivery_add_bank_account_action_button">Save</tsl-button>
                 </div>
             </div>
         </form>

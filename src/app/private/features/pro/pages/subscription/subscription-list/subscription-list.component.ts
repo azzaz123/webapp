@@ -13,8 +13,6 @@ export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
-  MAX_NARROW_CARDS = 4;
-  public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
   private readonly rowOrder = [
     SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS,
     SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS,

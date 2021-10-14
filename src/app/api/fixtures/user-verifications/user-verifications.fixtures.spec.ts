@@ -24,3 +24,10 @@ export const MOCK_USER_VERIFICATIONS_MAPPED: UserVerifications = {
   facebook: false,
   google_plus: false,
 };
+
+export const MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED: UserVerifications = {
+  email: true,
+  mobile: true,
+  facebook: false,
+  google_plus: false,
+};

@@ -1,0 +1,24 @@
+<div class="VerificationCard GenericCard">
+  <div class="row align-items-center">
+    <div class="col-auto mr-auto">
+      <div class="GenericCard__title mb-3">{{ title }}</div>
+      <ng-container *ngIf="isVerified; else notVerifiedText">
+        <div class="GenericCard__subtitle VerificationCard__verified mb-0" i18n="@@verification_and_security_all_users_verified_label">
+          Verified
+        </div>
+      </ng-container>
+      <ng-template #notVerifiedText>
+        <div class="GenericCard__subtitle mb-0" i18n="@@verification_and_security_all_users_non_verified_label">Not verified</div>
+      </ng-template>
+      <div *ngIf="footerLegend" class="GenericCard__subtitle VerificationCard__footer mt-3 mb-0">{{ footerLegend }}</div>
+    </div>
+    <div class="col-auto">
+      <ng-container *ngIf="isVerified; else verifyButton">
+        <tsl-button class="w-100" className="btn-secondary w-100" (click)="onButtonClick()">{{ textButton }}</tsl-button>
+      </ng-container>
+      <ng-template #verifyButton>
+        <tsl-button class="w-100" className="btn-primary btn-primary--bold w-100" (click)="onButtonClick()">{{ textButton }}</tsl-button>
+      </ng-template>
+    </div>
+  </div>
+</div>

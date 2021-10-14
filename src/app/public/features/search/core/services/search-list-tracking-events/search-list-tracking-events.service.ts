@@ -10,7 +10,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { User } from '@core/user/user';
-import { UserService } from '@core/user/user.service';
+import { UserService, USER_TYPE } from '@core/user/user.service';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { Observable } from 'rxjs';
 
@@ -18,7 +18,9 @@ import { Observable } from 'rxjs';
 export class SearchListTrackingEventsService {
   constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
-  public trackClickItemCardEvent(itemCard: ItemCard, index: number, searchId: string): void {
+  public async trackClickItemCardEvent(itemCard: ItemCard, index: number, searchId: string): Promise<void> {
+    const { featured, type } = await this.userService.get(itemCard.ownerId).toPromise();
+
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -28,7 +30,8 @@ export class SearchListTrackingEventsService {
         position: index + 1,
         searchId: searchId,
         screenId: SCREEN_IDS.Search,
-        isPro: this.isPro(),
+        isPro: featured,
+        isCarDealer: type === USER_TYPE.PROFESSIONAL,
         salePrice: itemCard.salePrice,
         title: itemCard.title,
         itemDistance: itemCard.distance,
@@ -75,10 +78,6 @@ export class SearchListTrackingEventsService {
       },
     };
     this.analyticsService.trackEvent(event);
-  }
-
-  private isPro(): boolean | undefined {
-    return this.userService.isPro;
   }
 
   private isProByUserId(userId: string): Observable<boolean> {

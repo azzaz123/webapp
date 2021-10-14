@@ -22,11 +22,10 @@ const adSlot2: AdSlotConfiguration = {
 };
 
 describe('AdSlotGroupDirective', () => {
-  const adsServiceMock: AdsService = ({ setSlots: () => {}, displayAdBySlotId: () => {} } as unknown) as AdsService;
+  const adsServiceMock: AdsService = ({ setSlots: () => {} } as unknown) as AdsService;
 
   it('should set all slots and ask for display on the first one', () => {
     spyOn(adsServiceMock, 'setSlots');
-    spyOn(adsServiceMock, 'displayAdBySlotId');
 
     const directive = new AdSlotGroupDirective(adsServiceMock);
     directive.slotsQuery = ({ changes: of([{ adSlot: adSlot1 }, { adSlot: adSlot2 }]) } as unknown) as QueryList<AdSlotComponent>;
@@ -35,7 +34,5 @@ describe('AdSlotGroupDirective', () => {
 
     expect(adsServiceMock.setSlots).toHaveBeenCalledTimes(1);
     expect(adsServiceMock.setSlots).toHaveBeenCalledWith([adSlot1, adSlot2]);
-    expect(adsServiceMock.displayAdBySlotId).toHaveBeenCalledTimes(1);
-    expect(adsServiceMock.displayAdBySlotId).toHaveBeenCalledWith(adSlot1.id);
   });
 });

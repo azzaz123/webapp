@@ -40,6 +40,7 @@ import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
 import { CategoryListingModalComponent } from './modal/category-listing-modal/category-listing-modal.component';
 import { SelectOptionModule } from '@shared/form/components/select/select-option/select-option.module';
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
+import { DiscountBadgeComponent } from './components/discount-badge/discount-badge.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
     SubscriptionPurchaseSuccessComponent,
     SubscriptionEditComponent,
     CategoryListingModalComponent,
+    DiscountBadgeComponent,
   ],
   imports: [
     CommonModule,

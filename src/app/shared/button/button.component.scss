@@ -188,6 +188,10 @@ $vertical-padding: $spacing-ms;
     &--success {
       color: $walla-main;
     }
+
+    &--medium-fontsize {
+      font-size: $font-size-m !important;
+    }
   }
 
   &.btn-activation {

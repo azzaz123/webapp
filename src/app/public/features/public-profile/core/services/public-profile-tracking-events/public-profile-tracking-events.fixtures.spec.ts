@@ -18,6 +18,7 @@ import { MOCK_REVIEWS } from '@fixtures/review.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
+import { USER_TYPE } from '@core/user/user.service';
 
 export const MOCK_TRACK_CLICK_ITEM_CARD_EVENT_FROM_PROFILE: AnalyticsEvent<ClickItemCard> = {
   name: ANALYTICS_EVENT_NAMES.ClickItemCard,
@@ -28,6 +29,7 @@ export const MOCK_TRACK_CLICK_ITEM_CARD_EVENT_FROM_PROFILE: AnalyticsEvent<Click
     position: MOCK_ITEM_INDEX + 1,
     screenId: SCREEN_IDS.Profile,
     isPro: MOCK_OTHER_USER.featured,
+    isCarDealer: MOCK_OTHER_USER?.type === USER_TYPE.PROFESSIONAL,
     salePrice: MOCK_ITEM_CARD.salePrice,
     title: MOCK_ITEM_CARD.title,
     shippingAllowed: !!MOCK_ITEM_CARD.saleConditions?.shipping_allowed,

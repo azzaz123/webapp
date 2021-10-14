@@ -16,6 +16,7 @@ import {
   ViewOthersItemREDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
+import { USER_TYPE } from '@core/user/user.service';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
@@ -132,6 +133,7 @@ export const MOCK_CLICK_ITEM_CARD_EVENT: AnalyticsEvent<ClickItemCard> = {
     position: MOCK_ITEM_INDEX + 1,
     screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
     isPro: MOCK_OTHER_USER.featured,
+    isCarDealer: MOCK_OTHER_USER?.type === USER_TYPE.PROFESSIONAL,
     salePrice: MOCK_ITEM_CARD.salePrice,
     title: MOCK_ITEM_CARD.title,
     itemSourceRecommendationId: MOCK_ITEM.id,
