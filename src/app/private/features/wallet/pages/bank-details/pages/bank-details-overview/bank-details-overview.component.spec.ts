@@ -1,36 +1,35 @@
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CreditCard } from '@api/core/model/cards/credit-card.interface';
-import { mockCreditCard } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
-import { PaymentsCreditCardService } from '@api/payments/cards';
-import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { MOCK_BANK_ACCOUNT } from '@fixtures/private/wallet/bank-account/bank-account.fixtures.spec';
+
+import { AddCreditCardComponent } from '@shared/add-credit-card/add-credit-card.component';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { BANK_DETAILS_TRANSLATIONS } from '@private/features/wallet/translations/bank-details.translations';
 import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
-import { AddCreditCardComponent } from '@shared/add-credit-card/add-credit-card.component';
-import { PaymentsCardInfoComponent } from '@shared/payments-card-info/payments-card-info.component';
-import { BehaviorSubject, of, throwError } from 'rxjs';
-
-import * as moment from 'moment';
-
-import { BankDetailsOverviewComponent } from './bank-details-overview.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '@layout/toast/core/services/toast.service';
+import { BankAccountTrackingEventsService } from '@private/features/wallet/pages/bank-details/services/bank-account-tracking-events/bank-account-tracking-events.service';
+import { BankDetailsOverviewComponent } from '@private/features/wallet/pages/bank-details/pages/bank-details-overview/bank-details-overview.component';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { CreditCard } from '@api/core/model/cards/credit-card.interface';
+import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+import { MOCK_BANK_ACCOUNT } from '@fixtures/private/wallet/bank-account/bank-account.fixtures.spec';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { mockCreditCard } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { PaymentsCardInfoComponent } from '@shared/payments-card-info/payments-card-info.component';
+import { PaymentsCreditCardService } from '@api/payments/cards';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
-import { BankAccountTrackingEventsService } from '../../services/bank-account-tracking-events/bank-account-tracking-events.service';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
-import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
-import { BANK_DETAILS_TRANSLATIONS } from '@private/features/wallet/translations/bank-details.translations';
+
+import { BehaviorSubject, of, throwError } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -86,7 +85,13 @@ describe('BankDetailsOverviewComponent', () => {
           provide: WalletSharedErrorActionService,
           useValue: MockWalletSharedErrorActionService,
         },
-        BankAccountTrackingEventsService,
+        {
+          provide: BankAccountTrackingEventsService,
+          useValue: {
+            trackClickAddEditBankAccount() {},
+            trackClickBankAccount() {},
+          },
+        },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         KYCPropertiesService,
         KYCPropertiesHttpService,
@@ -118,6 +123,7 @@ describe('BankDetailsOverviewComponent', () => {
     beforeEach(() => {
       spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCard));
       spyOn(bankAccountService, 'get').and.returnValue(of(MOCK_BANK_ACCOUNT));
+      spyOn(bankAccountTrackingEventsService, 'trackClickBankAccount');
 
       component.ngOnInit();
     });
@@ -128,6 +134,10 @@ describe('BankDetailsOverviewComponent', () => {
 
     it('should get the bank account', () => {
       expect(bankAccountService.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should track the corresponding event', () => {
+      expect(bankAccountTrackingEventsService.trackClickBankAccount).toHaveBeenCalledTimes(1);
     });
   });
 

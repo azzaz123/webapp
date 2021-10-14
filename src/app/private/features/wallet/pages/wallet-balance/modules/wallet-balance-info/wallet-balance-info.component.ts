@@ -8,6 +8,7 @@ import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/wallet-balance-tracking-event.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
 import { WalletTransferError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error';
@@ -16,6 +17,7 @@ import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { combineLatest } from 'rxjs';
+import { finalize, take } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 const validatingTransferMessage: Toast = {
@@ -43,7 +45,8 @@ export class WalletBalanceInfoComponent implements OnInit {
     private errorActionService: WalletSharedErrorActionService,
     private changeDetectorRef: ChangeDetectorRef,
     private modalService: NgbModal,
-    private walletTransferService: WalletTransferService
+    private walletTransferService: WalletTransferService,
+    private balanceTrackingEventService: WalletBalanceTrackingEventService
   ) {}
 
   ngOnInit() {
@@ -56,6 +59,7 @@ export class WalletBalanceInfoComponent implements OnInit {
   }
 
   public transferBalance(): void {
+    this.balanceTrackingEventService.trackClickTransferBankAccount(this.walletBalance.amount.total);
     this.modalService.open(WalletTransferMainComponent).result.then(() => {
       this.loadBalanceAndSpecifications();
     });
@@ -72,23 +76,29 @@ export class WalletBalanceInfoComponent implements OnInit {
   private loadBalanceAndSpecifications(): void {
     this.changeDetectorRef.detectChanges();
 
-    combineLatest([this.paymentsWalletsService.walletBalance$, this.kycPropertiesService.KYCProperties$]).subscribe({
-      next: ([walletBalance, specifications]: [Money, KYCProperties]) => {
-        this.walletBalance = walletBalance;
-        this.KYCProperties = specifications;
+    combineLatest([this.paymentsWalletsService.walletBalance$.pipe(take(1)), this.kycPropertiesService.KYCProperties$.pipe(take(1))])
+      .pipe(
+        finalize(() => {
+          this.balanceTrackingEventService.trackViewWallet(this.walletBalance?.amount.total, this.KYCProperties.status);
+        })
+      )
+      .subscribe({
+        next: ([walletBalance, specifications]: [Money, KYCProperties]) => {
+          this.walletBalance = walletBalance;
+          this.KYCProperties = specifications;
 
-        this.loading = false;
-        this.changeDetectorRef.detectChanges();
-      },
-      error: (error) => {
-        this.isError = true;
-        this.toastService.show(DEFAULT_ERROR_TOAST);
-        this.errorActionService.show(error);
+          this.loading = false;
+          this.changeDetectorRef.detectChanges();
+        },
+        error: (error) => {
+          this.isError = true;
+          this.toastService.show(DEFAULT_ERROR_TOAST);
+          this.errorActionService.show(error);
 
-        this.loading = false;
-        this.changeDetectorRef.detectChanges();
-      },
-    });
+          this.loading = false;
+          this.changeDetectorRef.detectChanges();
+        },
+      });
   }
 
   private checkPayUserBankAccount(): void {

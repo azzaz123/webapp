@@ -2,7 +2,9 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ButtonComponent } from '@shared/button/button.component';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
@@ -11,6 +13,7 @@ import { WalletTransferAmountComponent } from '@private/features/wallet/modals/t
 import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
 import { WalletTransferConfirmComponent } from '@private/features/wallet/modals/transfer/components/confirm/wallet-transfer-confirm.component';
 import { WalletTransferMainComponent } from '@private/features/wallet/modals/transfer/components/main/wallet-transfer-main.component';
+import { WalletTransferTrackingEventService } from '@private/features/wallet/modals/transfer/services/wallet-transfer-tracking-event.service';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -40,7 +43,18 @@ describe('GIVEN the WalletTransferMainComponent', () => {
         WalletTransferMainComponent,
       ],
       imports: [HttpClientTestingModule],
-      providers: [NgbActiveModal, ToastService],
+      providers: [
+        NgbActiveModal,
+        ToastService,
+        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        {
+          provide: WalletTransferTrackingEventService,
+          useValue: {
+            trackConfirmTransferBankAccount() {},
+            trackSelectTransferAmount() {},
+          },
+        },
+      ],
     }).compileComponents();
   });
 

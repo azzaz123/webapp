@@ -15,6 +15,7 @@ import { WalletTransferConfirmComponent } from '@private/features/wallet/modals/
 import { WalletTransferGenericError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-generic-error';
 import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
+import { WalletTransferTrackingEventService } from '@private/features/wallet/modals/transfer/services/wallet-transfer-tracking-event.service';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, throwError } from 'rxjs';
@@ -30,9 +31,10 @@ class FakeComponent extends WalletTransferConfirmComponent {
     changeDetectorRef: ChangeDetectorRef,
     ngbActiveModal: NgbActiveModal,
     toastService: ToastService,
-    transferService: WalletTransferService
+    transferService: WalletTransferService,
+    transferTrackingEventService: WalletTransferTrackingEventService
   ) {
-    super(changeDetectorRef, ngbActiveModal, toastService, transferService);
+    super(changeDetectorRef, ngbActiveModal, toastService, transferService, transferTrackingEventService);
   }
 }
 
@@ -42,6 +44,7 @@ describe('WalletTransferConfirmComponent', () => {
   let ngbActiveModal: NgbActiveModal;
   let toastService: ToastService;
   let transferService: WalletTransferService;
+  let transferTrackingEventService: WalletTransferTrackingEventService;
 
   const walletTransferConfirmSelector = '.WalletTransferConfirm';
   const walletTransferConfirmAmountSelector = `${walletTransferConfirmSelector}__amount`;
@@ -67,6 +70,13 @@ describe('WalletTransferConfirmComponent', () => {
             },
           },
         },
+        {
+          provide: WalletTransferTrackingEventService,
+          useValue: {
+            trackConfirmTransferBankAccount() {},
+            trackSelectTransferAmount() {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -75,6 +85,7 @@ describe('WalletTransferConfirmComponent', () => {
     ngbActiveModal = TestBed.inject(NgbActiveModal);
     toastService = TestBed.inject(ToastService);
     transferService = TestBed.inject(WalletTransferService);
+    transferTrackingEventService = TestBed.inject(WalletTransferTrackingEventService);
 
     fixture = TestBed.createComponent(FakeComponent);
     component = fixture.componentInstance;
@@ -131,10 +142,25 @@ describe('WalletTransferConfirmComponent', () => {
   });
 
   describe('WHEN they click on the confirm button', () => {
-    it('should process only the first click', fakeAsync(() => {
+    beforeEach(() => {
       const delayedTime = 2000;
       jest.spyOn(transferService, 'transfer').mockReturnValue(of(null).pipe(delay(delayedTime)));
+      spyOn(transferTrackingEventService, 'trackConfirmTransferBankAccount');
+    });
 
+    it('should track the corresponding event', () => {
+      component.transferAmount = MOCK_TRANSFER_AMOUNT;
+
+      component.confirmTransfer();
+
+      expect(transferTrackingEventService.trackConfirmTransferBankAccount).toHaveBeenCalledTimes(1);
+      expect(transferTrackingEventService.trackConfirmTransferBankAccount).toHaveBeenCalledWith(
+        MOCK_TRANSFER_AMOUNT.balance.amount.total,
+        MOCK_TRANSFER_AMOUNT.amount.total
+      );
+    });
+
+    it('should process only the first click', fakeAsync(() => {
       component.confirmTransfer();
       component.confirmTransfer();
       component.confirmTransfer();
@@ -146,9 +172,6 @@ describe('WalletTransferConfirmComponent', () => {
     }));
 
     it('should show the spinner while it transfers the money', fakeAsync(() => {
-      const delayedTime = 2000;
-      jest.spyOn(transferService, 'transfer').mockReturnValue(of(null).pipe(delay(delayedTime)));
-
       component.confirmTransfer();
       fixture.detectChanges();
 

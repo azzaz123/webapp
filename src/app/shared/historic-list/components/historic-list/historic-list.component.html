@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="HistoricList__element" *ngFor="let historicElement of subtitle.elements">
-        <tsl-historic-element [historicElement]="historicElement"></tsl-historic-element>
+        <tsl-historic-element [historicElement]="historicElement" (clicked)="onItemClick($event)"></tsl-historic-element>
       </div>
     </div>
   </div>
