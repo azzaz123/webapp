@@ -272,15 +272,25 @@ describe('ProComponent', () => {
 
         expect(nav).toBeTruthy();
       });
+      it('should not call invoices', () => {
+        spyOn(invoiceService, 'getInvoiceTransactions').and.callThrough();
+
+        component.ngOnInit();
+
+        expect(invoiceService.getInvoiceTransactions).not.toHaveBeenCalled();
+      });
     });
-    describe('and is not  pro user', () => {
+    describe('and is not pro user', () => {
       beforeEach(() => {
         jest.spyOn(userService, 'isProUser$', 'get').mockReturnValue(of(false));
       });
       it('should call invoices', () => {
         spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(of([]));
+
         component.ngOnInit();
-        fixture.detectChanges();
+
+        expect(invoiceService.getInvoiceTransactions).toHaveBeenCalledTimes(1);
+        expect(invoiceService.getInvoiceTransactions).toHaveBeenCalledWith();
       });
       describe('and has no invoices', () => {
         beforeEach(() => {
