@@ -50,7 +50,7 @@ describe('WalletComponent', () => {
         {
           provide: WalletTrackingEventService,
           useValue: {
-            trackHelpWallet() {},
+            trackClickHelpWallet() {},
           },
         },
       ],
@@ -141,12 +141,12 @@ describe('WalletComponent', () => {
     });
 
     it('should track the event', () => {
-      spyOn(walletTrackingEventService, 'trackHelpWallet');
+      spyOn(walletTrackingEventService, 'trackClickHelpWallet');
       const helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
 
       helpButtonRef.nativeElement.click();
 
-      expect(walletTrackingEventService.trackHelpWallet).toHaveBeenCalledTimes(1);
+      expect(walletTrackingEventService.trackClickHelpWallet).toHaveBeenCalledTimes(1);
     });
   });
 });

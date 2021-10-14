@@ -123,7 +123,7 @@ describe('BankDetailsOverviewComponent', () => {
     beforeEach(() => {
       spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCard));
       spyOn(bankAccountService, 'get').and.returnValue(of(MOCK_BANK_ACCOUNT));
-      spyOn(bankAccountTrackingEventsService, 'trackClickBankAccount').and.callFake(() => {});
+      spyOn(bankAccountTrackingEventsService, 'trackClickBankAccount');
 
       component.ngOnInit();
     });

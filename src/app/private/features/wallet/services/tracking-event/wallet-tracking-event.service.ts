@@ -13,7 +13,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 export class WalletTrackingEventService {
   constructor(private analyticsService: AnalyticsService) {}
 
-  public trackHelpWallet(): void {
+  public trackClickHelpWallet(): void {
     const event: AnalyticsEvent<ClickHelpWallet> = {
       name: ANALYTICS_EVENT_NAMES.ClickHelpWallet,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,

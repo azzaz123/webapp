@@ -1,4 +1,3 @@
-import { HELP_LOCALE } from '@core/external-links/customer-help/customer-help-constants';
 import { NumericAmount } from '../../model/numeric-amount.interface';
 import { ToDomainMapper } from '../../utils/types';
 
@@ -32,7 +31,12 @@ function getDecimalPartFromNumber(number: number): number {
       return result;
     }
 
-    return parseInt(number.toLocaleString(HELP_LOCALE.en, { maximumFractionDigits: 2, minimumFractionDigits: 2 }).split('.')[1], 10);
+    return parseInt(
+      number
+        .toLocaleString('en', { maximumFractionDigits: numberOfParsedDecimals, minimumFractionDigits: numberOfParsedDecimals })
+        .split('.')[1],
+      10
+    );
   } catch {}
 
   return result;

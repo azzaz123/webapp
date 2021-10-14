@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
@@ -7,7 +8,7 @@ import { WalletHistoryMovementsTrackingEventService } from '@private/features/wa
 import { WalletHistoryMovementsUIService } from '@private/features/wallet/pages/wallet-history-movements/services/wallet-history-movements-ui/wallet-history-movements-ui.service';
 
 import { Observable } from 'rxjs';
-import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-wallet-history-movements',
@@ -49,7 +50,7 @@ export class WalletHistoryMovementsComponent implements OnInit {
 
   ngOnInit() {
     this.getItems();
-    this.sendAnalytics();
+    this.trackViewWalletHistoryMovement();
   }
 
   public getItems(): void {
@@ -66,8 +67,8 @@ export class WalletHistoryMovementsComponent implements OnInit {
     this.walletHistoryTrackingEventService.trackClickItemWalletMovement(this.currentFilter);
   }
 
-  private sendAnalytics(): void {
-    this.walletHistoryMovementsUIService.historicList$.subscribe((historicList: HistoricList) => {
+  private trackViewWalletHistoryMovement(): void {
+    this.walletHistoryMovementsUIService.historicList$.pipe(take(1)).subscribe((historicList: HistoricList) => {
       this.walletHistoryTrackingEventService.trackViewWalletHistoryMovement(historicList.elements.length);
     });
   }

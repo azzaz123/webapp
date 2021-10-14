@@ -48,7 +48,7 @@ export class WalletHistoryMovementsTrackingEventService {
   }
 
   private isEmpty(value: number): boolean {
-    return !value ? true : value < 1;
+    return !value ? true : value === 0;
   }
 
   private mapWalletHistoryFilterToScreenIdAtribute(filter: WALLET_HISTORY_FILTERS): ScreenIdEventAttribute {

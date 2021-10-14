@@ -69,8 +69,8 @@ export class WalletComponent implements OnInit, OnDestroy {
     this.router.navigate([navLinkId]);
   }
 
-  public sendAnalytics(): void {
-    this.walletTrackingEventService.trackHelpWallet();
+  public trackClickHelpWallet(): void {
+    this.walletTrackingEventService.trackClickHelpWallet();
   }
 
   private getLastLocationIdThatMatch(e: NavigationEnd): string {

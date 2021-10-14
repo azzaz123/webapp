@@ -35,7 +35,7 @@ describe('WalletTrackingEventService', () => {
         },
       };
 
-      service.trackHelpWallet();
+      service.trackClickHelpWallet();
 
       expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
