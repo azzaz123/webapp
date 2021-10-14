@@ -21,6 +21,22 @@ describe('GIVEN the mapNumberToNumericAmount', () => {
       expect(result).toBe(expected);
     });
   });
+
+  describe.each([
+    [2.02, '2.02'],
+    [2.2, '2.20'],
+    [0.01, '0.01'],
+    [0.9, '0.90'],
+    [0.9, '0.90'],
+    [13.13, '13.13'],
+  ])('WHEN mapping a number', (input, output) => {
+    it('should map to a numeric amount', () => {
+      const result = mapNumberToNumericAmount(input).total.toLocaleString('en', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+
+      expect(result).toBe(output);
+    });
+  });
+
   describe('WHEN mapping an invalid number', () => {
     it('should map to default numeric amount (0)', () => {
       const expected = MOCK_DEFAULT_NUMERIC_AMOUNT;
