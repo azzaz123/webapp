@@ -136,14 +136,11 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     }
   }
 
-  private buildLabel(): string {
-    let label = '';
-
-    this.getValueAsArray().forEach((value: string, index: number) => {
-      const valueOption = this.allOptions.find((option) => {
+  private buildLabel(): string | string[] {
+    const label = [...this.getValueAsArray()].map((value: string, index: number) => {
+      return this.allOptions.find((option) => {
         return option.value === value;
-      });
-      label += valueOption ? `${index !== 0 && label.length > 2 ? ', ' : ''}${valueOption.label}` : '';
+      }).label;
     });
 
     return label.length ? label : this.getLabelPlaceholder();
