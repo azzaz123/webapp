@@ -1,15 +1,33 @@
-<div *ngIf="isBubble" class="FilterTemplate__bubble" [class.FilterTemplate__bubble--open]="isDropdownOpen">
-  <tsl-bubble 
+<div *ngIf="isBubble" class="FilterTemplate__bubble d-flex" [class.FilterTemplate__bubble--multiple]="isMultiValue" [class.FilterTemplate__bubble--open]="isDropdownOpen">
+  
+  
+  <ng-container *ngIf="!isMultiValue; else bubblesList">
+    <tsl-bubble 
     (click)="handleBubbleClick($event)" 
     [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
     [counter]="counter" [icon]="icon"
     [isDropdown]="isDropdown"
     [isDropdownOpen]="isDropdownOpen"
     [isClearable]="isClearable"
-    (clear)="handleClear()"
-  >
+    (clear)="handleClear()">
     {{label}}
   </tsl-bubble>
+  </ng-container>
+
+  <ng-template #bubblesList>
+    <tsl-bubble 
+      *ngFor="let value of label"
+      (click)="handleBubbleClick($event)" 
+      [variant]="hasValue ? BUBBLE_VARIANT.SELECTED : BUBBLE_VARIANT.ACTIVE"
+      [counter]="counter" [icon]="icon"
+      [isDropdown]="isDropdown"
+      [isDropdownOpen]="isDropdownOpen"
+      [isClearable]="isClearable"
+      (clear)="handleClear()">
+      {{value}}
+    </tsl-bubble>
+  </ng-template>
+
 
   <div class="FilterTemplate__dropdown" 
     tslFilterDropdown 

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement, Predicate } from '@angular/core';
+import { DebugElement, Predicate, SimpleChange } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonModule } from '@angular/common';
@@ -89,6 +89,25 @@ describe('FilterTemplateComponent', () => {
 
       it('should set selected variant to the bubble', () => {
         expectRender(By.css('.Bubble--selected'), true);
+      });
+
+      describe('and is multivalue', () => {
+        beforeEach(async () => {
+          await setInputs({
+            label: ['a', 'b'],
+          });
+          component.ngOnChanges({
+            label: new SimpleChange(null, null, null),
+          });
+        });
+
+        it('should set isMultiValue to true', () => {
+          expect(component.isMultiValue).toBeTruthy();
+        });
+      });
+
+      it('should set isMultiValue to false', () => {
+        expect(component.isMultiValue).toBeFalsy();
       });
     });
 
