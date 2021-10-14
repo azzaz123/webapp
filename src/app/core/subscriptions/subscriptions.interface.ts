@@ -25,8 +25,6 @@ export interface TierDiscount {
 
 export enum SUBSCRIPTION_MARKETS {
   STRIPE = 'STRIPE',
-  GOOGLE_PLAY = 'GOOGLE_PLAY',
-  APPLE_STORE = 'APPLE_STORE',
 }
 
 export type SUBSCRIPTION_CATEGORIES = 0 | 100 | 14000 | 12800;
