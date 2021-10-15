@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { HelpLocaleId } from '@core/external-links/customer-help/customer-help-constants';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { subscriptionBenefits } from '../constants/subscription-benefits';
 import { SubscriptionBenefit } from '../interfaces/subscription-benefit.interface';
 
+export const SUBSCRIPTION_IMAGES_FOLDER = 'assets/images/subscriptions/benefits';
 export const GENERIC_BENEFITS: string[] = [
   $localize`:@@web_subscription_benefit_title_visibility:Gain more visibility`,
   $localize`:@@web_subscription_benefit_title_time:Save management time`,
@@ -15,13 +17,28 @@ export const GENERIC_BENEFITS: string[] = [
 export class SubscriptionBenefitsService {
   private subscriptionBenefits: SubscriptionBenefit[];
 
-  constructor() {}
+  constructor(@Inject(LOCALE_ID) private locale: HelpLocaleId) {}
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]> {
     if (useCache && this.subscriptionBenefits) {
       return of(this.subscriptionBenefits);
     }
-    return of(subscriptionBenefits).pipe(tap((response) => (this.subscriptionBenefits = response)));
+    return of(subscriptionBenefits).pipe(
+      map((response) => this.mapBenefits(response)),
+      tap((benefits) => (this.subscriptionBenefits = this.mapBenefits(benefits)))
+    );
+  }
+
+  private mapBenefits(benefits: SubscriptionBenefit[]): SubscriptionBenefit[] {
+    return benefits.map((benefit) => this.mapBenefit(benefit));
+  }
+
+  private mapBenefit(benefit: SubscriptionBenefit): SubscriptionBenefit {
+    const locale = this.locale !== 'es' ? 'en' : 'es';
+    return {
+      ...benefit,
+      iconPath: `${SUBSCRIPTION_IMAGES_FOLDER}/${locale}/${benefit.iconPath}`,
+    };
   }
 
   public getBenefitsByCategory(id: number): string[] {
