@@ -22,4 +22,4 @@ export const environment: Environment = {
 
 export const localesWithNewSearchEnabled: APP_LOCALE[] = ['it', 'en', 'es'];
 
-export const isSWEnabled = true;
+export const isSWEnabled = false;

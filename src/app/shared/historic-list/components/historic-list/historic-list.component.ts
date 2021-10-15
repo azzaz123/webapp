@@ -1,14 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChange,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 
 @Component({
@@ -22,6 +14,7 @@ export class HistoricListComponent implements OnChanges {
   @Input() historicList: HistoricList;
   @Input() showTotalBalance: boolean = false;
   @Output() scrolled: EventEmitter<void> = new EventEmitter();
+  @Output() itemClicked: EventEmitter<HistoricElement> = new EventEmitter<HistoricElement>();
 
   public isHistoricListEmpty: boolean = true;
   public isTotalBalanceVisible: boolean = false;
@@ -33,6 +26,10 @@ export class HistoricListComponent implements OnChanges {
 
   public handleScrolled(): void {
     this.scrolled.emit();
+  }
+
+  public onItemClick(historicElement: HistoricElement): void {
+    this.itemClicked.emit(historicElement);
   }
 
   private checkTotalBalance(): void {

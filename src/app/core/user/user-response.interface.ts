@@ -53,6 +53,7 @@ export interface UserLocation {
   longitude?: number;
   address?: string;
   postal_code?: string;
+  country_code?: string;
 }
 
 export interface UserStatsOld {

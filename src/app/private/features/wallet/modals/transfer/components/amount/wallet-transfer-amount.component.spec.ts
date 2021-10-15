@@ -21,6 +21,7 @@ import { WalletTransferAmountModel } from '@private/features/wallet/modals/trans
 import { WalletTransferJumpDirective } from '@private/features/wallet/modals/transfer/directives/jump/wallet-transfer-jump.directive';
 import { WalletTransferMaxLengthDirective } from '@private/features/wallet/modals/transfer/directives/max-length/wallet-transfer-max-length.directive';
 import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
+import { WalletTransferTrackingEventService } from '@private/features/wallet/modals/transfer/services/wallet-transfer-tracking-event.service';
 
 import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
@@ -31,8 +32,13 @@ import { of, throwError } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class FakeComponent extends WalletTransferAmountComponent {
-  constructor(changeDetectorRef: ChangeDetectorRef, paymentsWalletsService: PaymentsWalletsService, toastService: ToastService) {
-    super(changeDetectorRef, paymentsWalletsService, toastService);
+  constructor(
+    changeDetectorRef: ChangeDetectorRef,
+    paymentsWalletsService: PaymentsWalletsService,
+    toastService: ToastService,
+    transferTrackingEventService: WalletTransferTrackingEventService
+  ) {
+    super(changeDetectorRef, paymentsWalletsService, toastService, transferTrackingEventService);
   }
 }
 
@@ -42,6 +48,7 @@ describe('WalletTransferAmountComponent', () => {
   let decimalPipe: DecimalPipe;
   let toastService: ToastService;
   let walletService: PaymentsWalletsService;
+  let transferTrackingEventService: WalletTransferTrackingEventService;
 
   const walletTransferAmountSelector = '.WalletTransferAmount';
   const walletTransferAmountSpinnerSelector = `${walletTransferAmountSelector}__spinner`;
@@ -64,7 +71,17 @@ describe('WalletTransferAmountComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ButtonComponent, FakeComponent, WalletTransferJumpDirective, WalletTransferMaxLengthDirective, SvgIconComponent],
       imports: [CommonModule, FormsModule, HttpClientTestingModule],
-      providers: [{ provide: PaymentsWalletsService, useClass: MockPaymentsWalletsService }, DecimalPipe],
+      providers: [
+        { provide: PaymentsWalletsService, useClass: MockPaymentsWalletsService },
+        DecimalPipe,
+        {
+          provide: WalletTransferTrackingEventService,
+          useValue: {
+            trackConfirmTransferBankAccount() {},
+            trackSelectTransferAmount() {},
+          },
+        },
+      ],
     }).compileComponents();
   });
 
@@ -72,6 +89,7 @@ describe('WalletTransferAmountComponent', () => {
     decimalPipe = TestBed.inject(DecimalPipe);
     toastService = TestBed.inject(ToastService);
     walletService = TestBed.inject(PaymentsWalletsService);
+    transferTrackingEventService = TestBed.inject(WalletTransferTrackingEventService);
 
     fixture = TestBed.createComponent(FakeComponent);
     component = fixture.componentInstance;
@@ -318,11 +336,30 @@ describe('WalletTransferAmountComponent', () => {
       });
 
       describe('WHEN the user clicks over the transfer button', () => {
+        let transferButton;
+        let transferSpy;
+
+        beforeEach(() => {
+          spyOn(transferTrackingEventService, 'trackSelectTransferAmount');
+          transferButton = fixture.debugElement.query(By.css(walletTransferAmountCtaButtonSelector));
+          transferSpy = spyOn(component.transfered, 'emit').and.callThrough();
+        });
+
+        it('should track the corresponding event', () => {
+          component.transferAmount = new WalletTransferAmountModel(0.5);
+
+          (transferButton.nativeElement as HTMLDivElement).click();
+
+          expect(transferTrackingEventService.trackSelectTransferAmount).toHaveBeenCalledTimes(1);
+          expect(transferTrackingEventService.trackSelectTransferAmount).toHaveBeenCalledWith(
+            MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.amount.total,
+            0.5
+          );
+        });
+
         it('should notify the action', () => {
           component.transferAmount = new WalletTransferAmountModel(13.14);
           const expected = new WalletTransferMoneyModel(component.transferAmount.total, MOCK_PAYMENTS_WALLETS_MAPPED_MONEY);
-          const transferButton = fixture.debugElement.query(By.css(walletTransferAmountCtaButtonSelector));
-          const transferSpy = spyOn(component.transfered, 'emit').and.callThrough();
 
           (transferButton.nativeElement as HTMLDivElement).click();
 

@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
@@ -11,21 +11,23 @@ import { HistoricElementComponent } from './historic-element.component';
 
 @Component({
   selector: 'tsl-test-wrapper-historic-element',
-  template: '<tsl-historic-element [historicElement]="historicElement"></tsl-historic-element>',
+  template: '<tsl-historic-element [historicElement]="historicElement" (clicked)="onClick($event)"></tsl-historic-element>',
 })
 export class TestWrapperHistoricElementComponent {
   @Input() historicElement: HistoricElement;
+  onClick(historicElement: HistoricElement): void {}
 }
 
 describe('HistoricElementComponent', () => {
   let wrapperComponent: TestWrapperHistoricElementComponent;
   let fixture: ComponentFixture<TestWrapperHistoricElementComponent>;
 
-  const imageSelector = '.HistoricElement__image > img';
-  const titleSelector = '.HistoricElement__title > div';
-  const moneyAmountSelector = '.HistoricElement__money-amount';
-  const descriptionSelector = '.HistoricElement__description';
-  const subDescriptionSelector = '.HistoricElement__subDescription';
+  const historicElementSelector = '.HistoricElement';
+  const imageSelector = `${historicElementSelector}__image > img`;
+  const titleSelector = `${historicElementSelector}__title > div`;
+  const moneyAmountSelector = `${historicElementSelector}__money-amount`;
+  const descriptionSelector = `${historicElementSelector}__description`;
+  const subDescriptionSelector = `${historicElementSelector}__subDescription`;
   const iconSelector = 'tsl-svg-icon';
 
   beforeEach(async () => {
@@ -132,6 +134,18 @@ describe('HistoricElementComponent', () => {
         const subDescriptionElement = fixture.debugElement.query(By.css(subDescriptionSelector));
 
         expect(subDescriptionElement).toBeFalsy();
+      });
+    });
+
+    describe('WHEN user clicks over the item', () => {
+      it('should send the event with the item as a payload', () => {
+        spyOn(wrapperComponent, 'onClick');
+        const historicElement = fixture.debugElement.query(By.css(historicElementSelector));
+
+        historicElement.nativeElement.click();
+
+        expect(wrapperComponent.onClick).toHaveBeenCalledTimes(1);
+        expect(wrapperComponent.onClick).toHaveBeenCalledWith(MOCK_HISTORIC_ELEMENT);
       });
     });
   });

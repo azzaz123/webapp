@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 
 @Component({
@@ -9,4 +9,9 @@ import { HistoricElement } from '@shared/historic-list/interfaces/historic-eleme
 })
 export class HistoricElementComponent {
   @Input() historicElement: HistoricElement;
+  @Output() clicked: EventEmitter<HistoricElement> = new EventEmitter<HistoricElement>();
+
+  public onItemClick(): void {
+    this.clicked.emit(this.historicElement);
+  }
 }
