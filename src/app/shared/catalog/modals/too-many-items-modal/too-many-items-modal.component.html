@@ -29,8 +29,7 @@
                 If you decide Wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
               </ng-container>
               <ng-template #noFreeTrial>
-                <span i18n="@@web_too_many_items_modal_description_in_app" *ngIf="type === inAppType">You must upgrade your subscription <b>through the Wallapop app</b> if you want to publish more {{categorySubscription?.category_name}}</span>
-                <span i18n="@@web_too_many_items_modal_description" *ngIf="type !== inAppType">Want to list more<ng-container *ngIf="categorySubscription"> {{categorySubscription.category_name}}</ng-container>?
+                <span i18n="@@web_too_many_items_modal_description">Want to list more<ng-container *ngIf="categorySubscription"> {{categorySubscription.category_name}}</ng-container>?
                   You might be interested in signing up for Wallapop PRO. Professionalise your online sales, and sell more!
                   <br><br>
                   If you decide Wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.</span>
@@ -45,7 +44,7 @@
   </div>
 
   <div class="TooManyItemsModal__actions">
-    <tsl-button *ngIf="type === inAppType || type === carDealerType" (click)="activeModal.close()" i18n="@@web_understood">Understood</tsl-button>
+    <tsl-button *ngIf="type === carDealerType" (click)="activeModal.close()" i18n="@@web_understood">Understood</tsl-button>
     <tsl-button *ngIf="type === notSubscribedType || (type === stripeType && !isHighestLimit)" (click)="activeModal.close()"
     routerLink="/{{PRO_PATHS.PRO_MANAGER}}/{{PRO_PATHS.SUBSCRIPTIONS}}">
     <ng-container *ngIf="isFreeTrial; else noTrialButton">
