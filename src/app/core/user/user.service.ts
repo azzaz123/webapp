@@ -271,8 +271,10 @@ export class UserService {
   public edit(data: UserData): Observable<User> {
     return this.http.post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data).pipe(
       map((response) => this.mapRecordData(response)),
-      tap((user) => (this._user = user)),
-      tap(() => this.isProUserSubject.next(this.isPro))
+      tap((user) => {
+        this._user = user;
+        this.isProUserSubject.next(this.isPro);
+      })
     );
   }
 
@@ -330,8 +332,10 @@ export class UserService {
 
   public initializeUserWithPermissions(): Observable<boolean> {
     return this.getLoggedUserInformation().pipe(
-      tap((user) => (this._user = user)),
-      tap(() => this.isProUserSubject.next(this.isPro)),
+      tap((user) => {
+        this._user = user;
+        this.isProUserSubject.next(this.isPro);
+      }),
       tap((user) => this.setPermission(user)),
       tap((user) => this.getStoredIsClickedProSection(user)),
       catchError((error) => {
@@ -345,8 +349,10 @@ export class UserService {
   // the application is reactive to changes in the user object
   public getAndUpdateLoggedUser(): Observable<User> {
     return this.getLoggedUserInformation().pipe(
-      tap((user) => (this._user = user)),
-      tap(() => this.isProUserSubject.next(this.isPro))
+      tap((user) => {
+        this._user = user;
+        this.isProUserSubject.next(this.isPro);
+      })
     );
   }
 
