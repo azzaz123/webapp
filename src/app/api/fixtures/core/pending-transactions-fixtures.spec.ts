@@ -7,17 +7,17 @@ export const MOCK_PENDING_TRANSACTIONS: PendingTransaction[] = [
     item: {
       id: 'kmzn9dmg4kjn',
       imageUrl: 'http://cdn-beta.wallapop.com/images/10420/34/ow/__/c10420p189278801/i420098101.jpg?pictureSize=W800',
-      label: 'Laia testing beta',
+      title: 'Laia testing beta',
     },
     buyer: {
       id: 'mxzo7qgdvlj9',
       imageUrl: 'http://cdn-beta.wallapop.com/images/13/19/ok/__/c13p76729033/i420346101.jpg?pictureSize=W800',
-      label: 'Generisius M.',
+      name: 'Generisius M.',
     },
     seller: {
       id: 'npj9v2o98m6e',
       imageUrl: 'http://cdn-beta.wallapop.com/images/13/1a/7c/__/c13p77605037/i419166102.jpg?pictureSize=W800',
-      label: 'Dimasiado P.',
+      name: 'Dimasiado P.',
     },
     status: {
       transaction: TRANSACTION_STATUS.PENDING,

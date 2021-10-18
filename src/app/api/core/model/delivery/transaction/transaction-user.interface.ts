@@ -1,3 +1,5 @@
-import { TransactionEntity } from './transaction-entity.interface';
-
-export interface TransactionUser extends TransactionEntity {}
+export interface TransactionUser {
+  id: string;
+  imageUrl: string;
+  name: string;
+}

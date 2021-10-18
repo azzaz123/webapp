@@ -34,7 +34,7 @@ describe('GIVEN WalletPendingTransactionComponent', () => {
     it('should show the item title', () => {
       const target = fixture.debugElement.query(By.css(pendingTransactionItemTitleSelector)).nativeElement;
       expect(target).toBeTruthy();
-      expect(target.innerHTML).toBe(pendingTransaction.item.label);
+      expect(target.innerHTML).toBe(pendingTransaction.item.title);
     });
     it('should display the item image', () => {
       const target = fixture.debugElement.query(By.css(pendingTransactionItemImageSelector)).nativeElement;
