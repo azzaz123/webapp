@@ -20,6 +20,9 @@ import { ITEM_REPORT_REASONS } from '@core/trust-and-safety/report/constants/ite
 import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 
 class MockConversationService {
   public loadMoreMessages() {}
@@ -76,6 +79,11 @@ describe('ConversationDetailsBarComponent', () => {
             blockUser() {},
             unblockUser() {},
           },
+        },
+        ItemDetailRoutePipe,
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
       ],
     }).compileComponents();
