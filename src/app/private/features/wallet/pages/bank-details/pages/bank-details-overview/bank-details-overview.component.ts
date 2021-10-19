@@ -57,7 +57,6 @@ export class BankDetailsOverviewComponent implements OnInit {
         return this.handleError(error);
       })
     );
-    this.bankAccountTrackingEventsService.trackClickBankAccount();
   }
 
   public redirect(URL: string): void {

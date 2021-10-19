@@ -89,7 +89,6 @@ describe('BankDetailsOverviewComponent', () => {
           provide: BankAccountTrackingEventsService,
           useValue: {
             trackClickAddEditBankAccount() {},
-            trackClickBankAccount() {},
           },
         },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
@@ -123,7 +122,6 @@ describe('BankDetailsOverviewComponent', () => {
     beforeEach(() => {
       spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCard));
       spyOn(bankAccountService, 'get').and.returnValue(of(MOCK_BANK_ACCOUNT));
-      spyOn(bankAccountTrackingEventsService, 'trackClickBankAccount');
 
       component.ngOnInit();
     });
@@ -134,10 +132,6 @@ describe('BankDetailsOverviewComponent', () => {
 
     it('should get the bank account', () => {
       expect(bankAccountService.get).toHaveBeenCalledTimes(1);
-    });
-
-    it('should track the corresponding event', () => {
-      expect(bankAccountTrackingEventsService.trackClickBankAccount).toHaveBeenCalledTimes(1);
     });
   });
 
