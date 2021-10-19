@@ -1,8 +1,8 @@
 export enum EMAIL_VERIFICATION_STATUS {
-  NOT_VERIFIED = 'not_verified',
-  SENT = 'sent',
-  SMS_VERIFIED = 'sms_verified',
-  EXHAUSTED = 'exhausted',
+  NOT_VERIFIED,
+  SENT,
+  SMS_VERIFIED,
+  EXHAUSTED,
 }
 
 export interface EmailVerification {

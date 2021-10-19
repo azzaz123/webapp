@@ -9,10 +9,10 @@ import { Observable } from 'rxjs';
 import { EmailVerificationModalComponent } from '../../modal/email-verification-modal/email-verification-modal.component';
 
 export enum VERIFICATIONS_N_SECURITY_TYPES {
-  EMAIL = 'e-mail',
+  EMAIL,
 }
 
-export type EmailModal = typeof EmailModalComponent | typeof EmailVerificationModalComponent;
+type EmailModal = typeof EmailModalComponent | typeof EmailVerificationModalComponent;
 @Component({
   selector: 'tsl-verifications-n-security',
   templateUrl: './verifications-n-security.component.html',

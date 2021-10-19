@@ -1,8 +1,6 @@
 @import '~style/common';
 
 .EmailVerificationModal {
-  padding: $spacing-xxl $spacing-xxl $spacing-xl $spacing-xxl;
-
   &__title {
     font-size: $font-size-l;
     font-weight: $font-weight-chunky;
@@ -10,7 +8,7 @@
 
   &__close {
     cursor: pointer;
-    top: 20px;
-    right: 20px;
+    top: $spacing-ml;
+    right: $spacing-ml;
   }
 }

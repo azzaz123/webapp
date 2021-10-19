@@ -77,6 +77,7 @@ describe('EmailVerificationModalComponent', () => {
         spyOn(modalService, 'open').and.callThrough();
         component.changeEmail();
 
+        expect(activeModal.close).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
         expect(modalService.open).toHaveBeenCalledWith(EmailModalComponent, {
           windowClass: 'modal-standard',
@@ -91,6 +92,7 @@ describe('EmailVerificationModalComponent', () => {
         spyOn(modalService, 'open').and.callThrough();
         component.verifyEmail();
 
+        expect(activeModal.close).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
         expect(modalService.open).toHaveBeenCalledWith(VerificationEmailThanksModalComponent, {
           windowClass: 'modal-standard',

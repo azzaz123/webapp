@@ -11,14 +11,16 @@
         <div class="GenericCard__subtitle mb-0" i18n="@@verification_and_security_all_users_non_verified_label">Not verified</div>
       </ng-template>
     </div>
-    <div class="col-5 col-lg-4 col-xl-3">
-      <ng-container *ngIf="isVerified; else verifyButton">
+    <ng-container *ngIf="isVerified; else verifyButton">
+      <div class="col-5 col-lg-4 col-xl-3">
         <tsl-button class="w-100" className="btn-secondary w-100" (click)="onButtonClick()">{{ textButton }}</tsl-button>
-      </ng-container>
-      <ng-template #verifyButton>
+      </div>
+    </ng-container>
+    <ng-template #verifyButton>
+      <div class="col-5 col-lg-4 col-xl-3">
         <tsl-button class="w-100" className="btn-primary btn-primary--bold w-100" (click)="onButtonClick()">{{ textButton }}</tsl-button>
-      </ng-template>
-    </div>
+      </div>
+    </ng-template>
     <div class="col-12">
       <div *ngIf="footerLegend" class="GenericCard__subtitle VerificationCard__footer mt-3 mb-0">{{ footerLegend }}</div>
     </div>

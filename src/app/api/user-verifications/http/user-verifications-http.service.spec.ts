@@ -50,6 +50,7 @@ describe('UserVerificationsHttpService', () => {
 
       expect(req.request.method).toBe('POST');
       expect(response).toEqual(MOCK_EMAIL_VERIFICATION_API_RESPONSE);
+      expect(req.request.body).toEqual('');
     });
   });
 });

@@ -7,14 +7,12 @@ export const mapEmailVerificationApiToEmailVerification: ToDomainMapper<EmailVer
 ): EmailVerification => {
   const { emailVerifiedStatus } = input;
 
-  const mapEmailVerificationStatusToDomain = {
-    [EMAIL_VERIFICATION_STATUS_API.NOT_VERIFIED]: EMAIL_VERIFICATION_STATUS.NOT_VERIFIED,
-    [EMAIL_VERIFICATION_STATUS_API.SENT]: EMAIL_VERIFICATION_STATUS.SENT,
-    [EMAIL_VERIFICATION_STATUS_API.EXHAUSTED]: EMAIL_VERIFICATION_STATUS.EXHAUSTED,
-    [EMAIL_VERIFICATION_STATUS_API.SMS_VERIFIED]: EMAIL_VERIFICATION_STATUS.SMS_VERIFIED,
-  };
-
   return {
-    status: mapEmailVerificationStatusToDomain[emailVerifiedStatus],
+    status: getEmailVerificationStatus(emailVerifiedStatus),
   };
+};
+
+const getEmailVerificationStatus = (emailVerifiedStatusApi: EMAIL_VERIFICATION_STATUS_API): EMAIL_VERIFICATION_STATUS => {
+  const status = EMAIL_VERIFICATION_STATUS_API[emailVerifiedStatusApi];
+  return EMAIL_VERIFICATION_STATUS[status as keyof EMAIL_VERIFICATION_STATUS];
 };
