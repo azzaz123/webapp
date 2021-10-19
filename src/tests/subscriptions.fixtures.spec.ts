@@ -27,17 +27,6 @@ export class MockSubscriptionService {
     return of(MOCK_SUBSCRIPTION_BENEFITS);
   }
 
-  public isSubscriptionInApp(subscription: SubscriptionsResponse): boolean {
-    if (!subscription.market) {
-      return false;
-    }
-    return subscription.market === SUBSCRIPTION_MARKETS.GOOGLE_PLAY || subscription.market === SUBSCRIPTION_MARKETS.APPLE_STORE;
-  }
-
-  public isOneSubscriptionInApp(subscriptions: SubscriptionsResponse[]): boolean {
-    return subscriptions.some((subscription) => this.isSubscriptionInApp(subscription));
-  }
-
   public isStripeSubscription(subscription: SubscriptionsResponse): boolean {
     if (!subscription.market) {
       return false;
@@ -356,20 +345,6 @@ export const MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS: Subscrip
   [TIER_NO_DISCOUNT_NO_BASIC, TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT]
 );
 
-export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_CG_BASIC_DATA_MAPPED,
-  MOCK_SUBSCRIBED_DATA,
-  [TIER_BASIC_WITH_DISCOUNT],
-  SUBSCRIPTION_MARKETS.GOOGLE_PLAY
-);
-
-export const MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED: SubscriptionsResponse = generateSubscription(
-  MOCK_CG_BASIC_DATA_MAPPED,
-  MOCK_SUBSCRIBED_DATA,
-  [TIER_BASIC_WITH_DISCOUNT],
-  SUBSCRIPTION_MARKETS.APPLE_STORE
-);
-
 export const FREE_TRIAL_AVAILABLE_SUBSCRIPTION: SubscriptionsResponse = generateSubscription(
   MOCK_MOTORBIKE_BASIC_DATA_MAPPED,
   MOCK_NO_SUBSCRIBED_DATA,
@@ -405,24 +380,12 @@ export const SUBSCRIPTIONS_WITH_ONE_FREE_TRIAL: SubscriptionsResponse[] = [
   FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION,
 ];
 
-export const MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY: SubscriptionsResponse[] = [
-  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED,
-];
-
-export const MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE: SubscriptionsResponse[] = [
-  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED,
-];
-
 export const SUBSCRIPTIONS_NOT_SUB: SubscriptionsResponse[] = [
   MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
 ];
 
 export const MAPPED_SUBSCRIPTIONS_WITH_RE: SubscriptionsResponse[] = [MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED];
-
-export const MAPPED_SUBSCRIPTIONS_WITH_INAPP: SubscriptionsResponse[] = MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE;
 
 export const SUBSCRIPTION_SUCCESS: SubscriptionResponse = {
   id: 'c040cfbe-0c2e-1a28-1224-4df193f0082c',

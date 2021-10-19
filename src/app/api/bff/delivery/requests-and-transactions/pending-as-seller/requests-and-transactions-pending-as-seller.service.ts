@@ -9,7 +9,7 @@ import { mapRequestsAndTransactionsPendingAsSellerToPendingBalance } from './map
 export class RequestsAndTransactionsPendingAsSellerService {
   constructor(private requestsAndTransactionsPendingAsSellerHttpService: RequestsAndTransactionsPendingAsSellerHttpService) {}
 
-  public get walletPendingTransactions$(): Observable<PendingTransaction[]> {
+  public get pendingTransactions$(): Observable<PendingTransaction[]> {
     return this.requestsAndTransactionsPendingAsSellerHttpService
       .get()
       .pipe(take(1), map(mapRequestsAndTransactionsPendingAsSellerToPendingBalance));
