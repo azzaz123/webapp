@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { InvoiceService } from '@core/invoice/invoice.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
@@ -14,7 +15,7 @@ import {
 } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { PRO_PATHS } from '../pro-routing-constants';
 
 @Component({
@@ -26,6 +27,7 @@ export class ProComponent implements OnInit, OnDestroy {
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
   public helpPageUrl: string;
+  public showNavigation: boolean;
   private hasOneTrialSubscription: boolean;
   private hasSomeDiscount: boolean;
   private subscriptions: Subscription = new Subscription();
@@ -33,17 +35,19 @@ export class ProComponent implements OnInit, OnDestroy {
     [PRO_PATHS.BILLING]: CUSTOMER_HELP_PAGE.BILLING_INFO,
   };
   constructor(
-    public userService: UserService,
+    private userService: UserService,
     private analyticsService: AnalyticsService,
     private subscriptionService: SubscriptionsService,
     private router: Router,
-    private customerHelpService: CustomerHelpService
+    private customerHelpService: CustomerHelpService,
+    private invoiceService: InvoiceService
   ) {}
 
   ngOnInit() {
     this.getSubscriptions();
     this.subscribeRoute();
     this.setCustomerHelpUrl(this.router.url);
+    this.isNavigationBarShown();
   }
 
   public trackClickSubscriptionTab(): void {
@@ -62,6 +66,26 @@ export class ProComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  private isNavigationBarShown(): void {
+    const subscription = this.userService.isProUser$
+      .pipe(
+        tap((isPro) => {
+          this.showNavigation = isPro;
+        }),
+        filter((isPro) => !isPro),
+        switchMap(() => this.invoiceService.getInvoiceTransactions().pipe(take(1)))
+      )
+      .subscribe(
+        (invoiceTransactions) => {
+          this.showNavigation = !!invoiceTransactions.length;
+        },
+        () => {
+          this.showNavigation = true;
+        }
+      );
+    this.subscriptions.add(subscription);
   }
 
   private getSubscriptions(): void {

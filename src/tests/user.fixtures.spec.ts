@@ -52,6 +52,7 @@ export const USER_LOCATION: UserLocation = {
   zip: '08009',
   approxRadius: 0,
   title: '08009, Barcelona',
+  country_code: 'ES',
 };
 
 export const STATS: UserStatsOld = {
@@ -351,6 +352,10 @@ export class MockedUserService {
 
   get isPro(): boolean {
     return this.user.featured;
+  }
+
+  get isProUser$(): Observable<boolean> {
+    return of(true);
   }
 
   public isProfessional(): Observable<boolean> {

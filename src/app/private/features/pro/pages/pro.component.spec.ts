@@ -6,9 +6,11 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { InvoiceService } from '@core/invoice/invoice.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MOCK_INVOICE_HISTORY } from '@fixtures/invoice.fixtures.spec';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import {
@@ -22,6 +24,7 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.service';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { of, throwError } from 'rxjs';
 import { PRO_PATHS } from '../pro-routing-constants';
 import { ProComponent } from './pro.component';
 import { SubscriptionsComponent } from './subscription/subscription.component';
@@ -41,6 +44,7 @@ describe('ProComponent', () => {
   let subscriptionsService: SubscriptionsService;
   let customerHelpService: CustomerHelpService;
   let router: Router;
+  let invoiceService: InvoiceService;
 
   beforeEach(
     waitForAsync(() => {
@@ -87,6 +91,14 @@ describe('ProComponent', () => {
               },
             },
           },
+          {
+            provide: InvoiceService,
+            useValue: {
+              getInvoiceTransactions() {
+                return of([]);
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -97,6 +109,7 @@ describe('ProComponent', () => {
       analyticsService = TestBed.inject(AnalyticsService);
       subscriptionsService = TestBed.inject(SubscriptionsService);
       customerHelpService = TestBed.inject(CustomerHelpService);
+      invoiceService = TestBed.inject(InvoiceService);
       router = TestBed.inject(Router);
       fixture.detectChanges();
     })
@@ -248,6 +261,71 @@ describe('ProComponent', () => {
             expect(faq).toBeTruthy();
             expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(CUSTOMER_HELP_PAGE.BILLING_INFO);
           }));
+        });
+      });
+    });
+  });
+  describe('Navigation tabs', () => {
+    describe('and is pro user', () => {
+      it('should show navigation tabs', () => {
+        const nav = fixture.debugElement.query(By.css('nav'));
+
+        expect(nav).toBeTruthy();
+      });
+      it('should not call invoices', () => {
+        spyOn(invoiceService, 'getInvoiceTransactions').and.callThrough();
+
+        component.ngOnInit();
+
+        expect(invoiceService.getInvoiceTransactions).not.toHaveBeenCalled();
+      });
+    });
+    describe('and is not pro user', () => {
+      beforeEach(() => {
+        jest.spyOn(userService, 'isProUser$', 'get').mockReturnValue(of(false));
+      });
+      it('should call invoices', () => {
+        spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(of([]));
+
+        component.ngOnInit();
+
+        expect(invoiceService.getInvoiceTransactions).toHaveBeenCalledTimes(1);
+        expect(invoiceService.getInvoiceTransactions).toHaveBeenCalledWith();
+      });
+      describe('and has no invoices', () => {
+        beforeEach(() => {
+          spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(of([]));
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should not show navigation tabs', () => {
+          const nav = fixture.debugElement.query(By.css('nav'));
+
+          expect(nav).toBeFalsy();
+        });
+      });
+      describe('and has invoices', () => {
+        beforeEach(() => {
+          spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(of(MOCK_INVOICE_HISTORY));
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should show navigation tabs', () => {
+          const nav = fixture.debugElement.query(By.css('nav'));
+
+          expect(nav).toBeTruthy();
+        });
+      });
+      describe('and invoices request fails', () => {
+        beforeEach(() => {
+          spyOn(invoiceService, 'getInvoiceTransactions').and.returnValue(throwError('error'));
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+        it('should show navigation tabs', () => {
+          const nav = fixture.debugElement.query(By.css('nav'));
+
+          expect(nav).toBeTruthy();
         });
       });
     });

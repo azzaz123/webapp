@@ -26,7 +26,6 @@ export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [CATEGORY_SUBSCRIPTIONS_IDS.
 export class TooManyItemsModalComponent implements OnInit {
   public type = SUBSCRIPTION_TYPES.notSubscribed;
   public notSubscribedType = SUBSCRIPTION_TYPES.notSubscribed;
-  public inAppType = SUBSCRIPTION_TYPES.inApp;
   public carDealerType = SUBSCRIPTION_TYPES.carDealer;
   public stripeType = SUBSCRIPTION_TYPES.stripe;
   public isFreeTrial: boolean;

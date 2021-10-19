@@ -146,6 +146,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
         () => {
           this.showToast(CREDIT_CARD_TRANSLATIONS.CREATE_SUCCESS, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
+          this.formComponent.initFormControl();
           this.router.navigate([this.BANK_DETAILS_URL]);
         },
         (errors: PaymentsCardsError[]) => {

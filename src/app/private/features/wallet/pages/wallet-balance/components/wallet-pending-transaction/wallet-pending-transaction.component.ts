@@ -12,7 +12,7 @@ export class WalletPendingTransactionComponent {
 
   public get imageStyle(): Object {
     return {
-      'background-image': `url(${this.walletPendingTransaction.itemImageUrl})`,
+      'background-image': `url(${this.walletPendingTransaction.item.imageUrl})`,
     };
   }
 }

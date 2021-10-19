@@ -46,6 +46,7 @@
     "@angular/router": "^11.2.8",
     "@angular/service-worker": "^11.2.8",
     "@mparticle/web-appboy-kit": "^2.0.6",
+    "@mparticle/web-google-analytics-kit": "^2.1.12",
     "@mparticle/web-sdk": "^2.12.3",
     "@ng-bootstrap/ng-bootstrap": "6.0.3",
     "@sentry/angular": "^6.8.0",

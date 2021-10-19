@@ -11,12 +11,8 @@ import { SubscriptionsResponse } from './subscriptions.interface';
 import {
   SUBSCRIPTIONS,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED,
-  MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
   SUBSCRIPTIONS_NOT_SUB,
-  MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY,
-  MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE,
   TIER_DISCOUNT,
   MOCK_RESPONSE_V3_SUBSCRIPTIONS,
   MOCK_V3_MAPPED_SUBSCRIPTIONS,
@@ -247,44 +243,9 @@ describe('SubscriptionsService', () => {
     });
   });
 
-  describe('isSubscriptionInApp', () => {
-    it('should be false when subscription is not subscribed', () => {
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED)).toBe(false);
-    });
-
-    it('should be false when subscription is from Stripe', () => {
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED)).toBe(false);
-    });
-
-    it('should be true when subscription was bought in Android or iOS', () => {
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(true);
-      expect(service.isSubscriptionInApp(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(true);
-    });
-  });
-
-  describe('isOneSubscriptionInApp', () => {
-    it('should be false when all subscriptions are not subscribed', () => {
-      expect(service.isOneSubscriptionInApp(SUBSCRIPTIONS_NOT_SUB)).toBe(false);
-    });
-
-    it('should be false when some subscriptions are from Stripe', () => {
-      expect(service.isOneSubscriptionInApp(SUBSCRIPTIONS)).toBe(false);
-    });
-
-    it('should be true when some subscription were bought in Android or iOS', () => {
-      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(true);
-      expect(service.isOneSubscriptionInApp(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(true);
-    });
-  });
-
   describe('isStripeSubscription', () => {
     it('should be false when subscription is not subscribed', () => {
       expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED)).toBe(false);
-    });
-
-    it('should be false when subscription was bought in Android or iOS', () => {
-      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_GOOGLE_PLAY_MAPPED)).toBe(false);
-      expect(service.isStripeSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_APPLE_STORE_MAPPED)).toBe(false);
     });
 
     it('should be true when subscription is from Stripe', () => {
@@ -295,11 +256,6 @@ describe('SubscriptionsService', () => {
   describe('hasOneStripeSubscription', () => {
     it('should be false when all subscriptions are not subscribed', () => {
       expect(service.hasOneStripeSubscription(SUBSCRIPTIONS_NOT_SUB)).toBe(false);
-    });
-
-    it('should be false when some subscription were bought in Android or iOS', () => {
-      expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY)).toBe(false);
-      expect(service.hasOneStripeSubscription(MOCK_SUBSCRIPTIONS_WITH_ONE_APPLE_STORE)).toBe(false);
     });
 
     it('should be true when some subscription are from Stripe', () => {
@@ -316,18 +272,6 @@ describe('SubscriptionsService', () => {
         service.getUserSubscriptionType().subscribe((response) => (result = response));
 
         expect(result).toEqual(SUBSCRIPTION_TYPES.carDealer);
-      });
-    });
-
-    describe('when user has inapp subscriptions', () => {
-      it('should say that user subscription type is inapp', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(of(false));
-        spyOn(service, 'getSubscriptions').and.returnValue(of(MOCK_SUBSCRIPTIONS_WITH_ONE_GOOGLE_PLAY));
-        let result: SUBSCRIPTION_TYPES;
-
-        service.getUserSubscriptionType().subscribe((response) => (result = response));
-
-        expect(result).toEqual(SUBSCRIPTION_TYPES.inApp);
       });
     });
 

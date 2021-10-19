@@ -18,7 +18,6 @@ export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
 export enum SUBSCRIPTION_TYPES {
   notSubscribed = 1,
   carDealer = 2,
-  inApp = 3,
   stripe = 4,
 }
 
@@ -47,10 +46,6 @@ export class SubscriptionsService {
 
         if (isCarDealer) {
           return SUBSCRIPTION_TYPES.carDealer;
-        }
-
-        if (this.isOneSubscriptionInApp(subscriptions)) {
-          return SUBSCRIPTION_TYPES.inApp;
         }
 
         if (this.hasOneStripeSubscription(subscriptions)) {
@@ -135,17 +130,6 @@ export class SubscriptionsService {
       { plan_id: newPlanId },
       { observe: 'response' as 'body' }
     );
-  }
-
-  public isSubscriptionInApp(subscription: SubscriptionsResponse): boolean {
-    if (!subscription.market) {
-      return false;
-    }
-    return subscription.market === SUBSCRIPTION_MARKETS.GOOGLE_PLAY || subscription.market === SUBSCRIPTION_MARKETS.APPLE_STORE;
-  }
-
-  public isOneSubscriptionInApp(subscriptions: SubscriptionsResponse[]): boolean {
-    return subscriptions.some((subscription) => this.isSubscriptionInApp(subscription));
   }
 
   public isStripeSubscription(subscription: SubscriptionsResponse): boolean {

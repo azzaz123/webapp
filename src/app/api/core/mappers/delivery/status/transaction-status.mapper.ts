@@ -1,0 +1,26 @@
+import { TRANSACTION_STATUS } from '@api/core/model/delivery/transaction/status';
+import { ToDomainMapper } from '@api/core/utils/types';
+
+enum TRANSACTION_STATUS_API {
+  PENDING = 'pending',
+  CANCELLED = 'cancelled',
+  FAILED = 'failed',
+  EXPIRED = 'expired',
+  SUCCEEDED = 'succeeded',
+  CANCELLED_BY_SELLER = 'cancelled_by_seller',
+  BUYER_OK_DELIVERY = 'buyer_ok_delivery',
+}
+
+const TransactionStatusApiRelation: Record<TRANSACTION_STATUS_API, TRANSACTION_STATUS> = {
+  [TRANSACTION_STATUS_API.PENDING]: TRANSACTION_STATUS.PENDING,
+  [TRANSACTION_STATUS_API.CANCELLED]: TRANSACTION_STATUS.CANCELLED,
+  [TRANSACTION_STATUS_API.FAILED]: TRANSACTION_STATUS.FAILED,
+  [TRANSACTION_STATUS_API.EXPIRED]: TRANSACTION_STATUS.EXPIRED,
+  [TRANSACTION_STATUS_API.SUCCEEDED]: TRANSACTION_STATUS.SUCCEEDED,
+  [TRANSACTION_STATUS_API.CANCELLED_BY_SELLER]: TRANSACTION_STATUS.CANCELLED,
+  [TRANSACTION_STATUS_API.BUYER_OK_DELIVERY]: TRANSACTION_STATUS.PENDING,
+};
+
+export const mapTransactionStatusApiToModel: ToDomainMapper<string, TRANSACTION_STATUS> = (input: string): TRANSACTION_STATUS => {
+  return TransactionStatusApiRelation[input];
+};
