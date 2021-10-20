@@ -17,8 +17,8 @@ import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { take } from 'rxjs/operators';
 
 const validatingTransferMessage: Toast = {
   type: TOAST_TYPES.SUCCESS,
@@ -77,10 +77,7 @@ export class WalletBalanceInfoComponent implements OnInit {
   private loadBalanceAndSpecifications(): void {
     this.changeDetectorRef.detectChanges();
 
-    combineLatest([
-      this.paymentsWalletsService.walletBalance$.pipe(take(1)),
-      this.kycPropertiesService.KYCProperties$.pipe(take(1)),
-    ]).subscribe({
+    combineLatest([this.paymentsWalletsService.walletBalance$.pipe(take(1)), this.kycPropertiesService.KYCProperties$]).subscribe({
       next: ([walletBalance, specifications]: [Money, KYCProperties]) => {
         this.walletBalance = walletBalance;
         this.KYCProperties = specifications;
