@@ -31,6 +31,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   private subscriptions = new Subscription();
   private labelSubject = new BehaviorSubject(undefined);
+  private multiValueSubject = new BehaviorSubject(undefined);
   private placeholderIconSubject = new BehaviorSubject(undefined);
 
   public formGroup = new FormGroup({
@@ -41,6 +42,8 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   public label$ = this.labelSubject.asObservable();
   public placeholderIcon$ = this.labelSubject.asObservable();
+
+  public multiValue$ = this.multiValueSubject.asObservable();
 
   public constructor(private optionService: FilterOptionService) {
     super();
@@ -63,6 +66,12 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
     this.updateValueFromParent();
     this.updateLabel();
+  }
+
+  public handleMultiValueClear(valueToRemove: string): void {
+    const clearValue = this.formGroup.controls.select.value.filter((value) => value !== valueToRemove);
+    this.formGroup.controls.select.setValue(clearValue, { emitEvent: false });
+    this.handleApply();
   }
 
   public handleClear(): void {
@@ -127,6 +136,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   private updateLabel(): void {
     this.labelSubject.next(this._value.length && this.options.length ? this.buildLabel() : this.getLabelPlaceholder());
+    this.multiValueSubject.next(this._value.length && this.options.length ? this.buildMultiValue() : [this.getLabelPlaceholder()]);
   }
 
   private updatePlaceholderIcon(): void {
@@ -136,14 +146,29 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     }
   }
 
-  private buildLabel(): string | string[] {
-    const label = [...this.getValueAsArray()].map((value: string, index: number) => {
-      return this.allOptions.find((option) => {
+  private buildLabel(): string {
+    let label = '';
+
+    this.getValueAsArray().forEach((value: string, index: number) => {
+      const valueOption = this.allOptions.find((option) => {
         return option.value === value;
-      }).label;
+      });
+      label += valueOption ? `${index !== 0 && label.length > 2 ? ', ' : ''}${valueOption.label}` : '';
     });
 
     return label.length ? label : this.getLabelPlaceholder();
+  }
+
+  private buildMultiValue(): FilterOption[] | string[] {
+    const label = [...this.getValueAsArray()]
+      .map((value: string, index: number) => {
+        return this.allOptions.find((option) => {
+          return option.value === value;
+        });
+      })
+      .filter((filterOption) => !!filterOption);
+
+    return label.length ? label : [this.getLabelPlaceholder()];
   }
 
   private updateValueFromParent(): void {

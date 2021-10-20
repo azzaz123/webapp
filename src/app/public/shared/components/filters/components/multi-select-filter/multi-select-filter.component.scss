@@ -1,5 +1,10 @@
 @import '~style/common';
 
+:host {
+  display: flex;
+  gap: $spacer * 0.5;
+}
+
 .MultiSelectFilter {
   &--bubble {
     margin-left: -24px;
