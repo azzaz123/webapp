@@ -175,6 +175,19 @@ $modal-border-radius: 0.3rem;
   }
 }
 
+.modal.pro-modal {
+  $modal-width: 600px;
+  .modal-dialog {
+    max-width: $modal-width;
+  }
+  .modal-content {
+    width: $modal-width !important;
+    max-width: unset;
+    height: 100%;
+    overflow: auto;
+  }
+}
+
 .modal.kyc {
   .modal-dialog {
     height: 630px;
