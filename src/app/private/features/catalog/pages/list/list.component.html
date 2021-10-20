@@ -84,7 +84,7 @@
     
     <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
       <tsl-try-pro-slot *ngIf="showTryProSlot"
-        class="mt-3 d-md-block"
+        class="mt-3 d-block"
         [hasTrialAvailable]="hasTrialAvailable"
         [tierWithDiscount]="tierWithDiscount"
         (clickCTA)="onClickTryProSlot()"
@@ -92,7 +92,7 @@
         >
       </tsl-try-pro-slot>
       <tsl-subscriptions-slots-list
-        class="mt-3 d-md-block"
+        class="mt-3 d-block"
         [subscriptionsSlots]="subscriptionSlots"
         [selectedSubscriptionSlot]="selectedSubscriptionSlot"
         (subscriptionSlotSelected)="onSelectSubscriptionSlot($event)"
