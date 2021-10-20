@@ -9,6 +9,20 @@
     max-width: 316px;
   }
 
+  &__close {
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    tsl-svg-icon ::ng-deep path {
+      fill: $white;
+    }
+    &:hover {
+      tsl-svg-icon ::ng-deep path {
+        fill: $blue-grey-3;
+      }
+    }
+  }
+
   &__text {
     padding: 32px;
     @include media-breakpoint-down(sm) {
