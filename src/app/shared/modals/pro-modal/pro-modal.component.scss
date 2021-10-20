@@ -2,7 +2,6 @@
 
 .ProModal {
   max-width: 625px;
-  height: 100%;
   min-height: 485px;
 
   @include media-breakpoint-down(sm) {
@@ -24,31 +23,28 @@
   }
 
   &__text {
-    padding: 32px;
+    padding: $spacing-xl;
     @include media-breakpoint-down(sm) {
-      padding: 20px;
+      padding: $spacing-ml;
     }
   }
 
   &__title {
-    font-size: 20px;
+    font-size: $font-size-l;
     font-weight: bold;
   }
 
   &__description {
-    margin-top: 12px;
+    margin-top: $spacing-ms;
   }
 
   &__img {
-    padding: 32px;
-    background: #385ef9;
+    padding: $spacing-xl;
+    background: $color-pro-main;
 
     @include media-breakpoint-down(sm) {
       background: linear-gradient(0deg, transparent 30%, $color-pro-main 30%);
-      padding: 20px 0 0 0;
-      img {
-        height: 160px;
-      }
+      padding: $spacing-ml 0 0 0;
     }
 
     img {
