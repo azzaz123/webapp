@@ -17,8 +17,8 @@ import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-propertie
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 
-import { finalize } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { combineLatest } from 'rxjs';
+import { finalize, take } from 'rxjs/operators';
 
 const kycBannerStatusToEventAttribute: Partial<Record<KYC_STATUS, KycStatusEventAttribute>> = {
   [KYC_STATUS.NO_NEED]: 'verified',
@@ -53,7 +53,7 @@ export class WalletBalanceTrackingEventService {
     let balance: number;
     let status: KYC_STATUS;
 
-    forkJoin([this.paymentsWalletsService.walletBalance$, this.kycPropertiesService.KYCProperties$])
+    combineLatest([this.paymentsWalletsService.walletBalance$.pipe(take(1)), this.kycPropertiesService.KYCProperties$.pipe(take(1))])
       .pipe(
         finalize(() => {
           const event: AnalyticsPageView<ViewWallet> = {
