@@ -13,7 +13,8 @@
           <tsl-svg-icon width="64" height="64" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
         </div>
 
-        <div *ngIf="showBalance" class="w-100 h-100 d-flex flex-column justify-content-center align-content-center align-items-center">
+        <div *ngIf="showBalance">
+        <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-start">
           <div class="WalletTransferAmount__figure w-100 d-flex justify-content-center align-content-start">
             <input
               type="number"
@@ -56,6 +57,8 @@
               <tsl-svg-icon src="./assets/icons/remove.svg"></tsl-svg-icon>
             </div>
           </div>
+        </div>
+        <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
           <span class="WalletTransferAmount__line" [class.WalletTransferAmount__line--invalid]="showWarnColor"></span>
           <div class="WalletTransferAmount__range" [class.WalletTransferAmount__range--invalid]="showWarnColor">
             <span i18n="@@make_transfer_view_amount_selector_price_limits_label"
@@ -73,7 +76,7 @@
             >
           </div>
         </div>
-
+        </div>
         <div
           *ngIf="showError"
           class="WalletTransferAmount__error w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
