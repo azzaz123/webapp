@@ -6,6 +6,7 @@ import { UserVerificationsService } from '@api/user-verifications/user-verificat
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { of } from 'rxjs';
+import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
 import { VerificationEmailThanksModalComponent } from '../verification-email-thanks-modal/verification-email-thanks-modal.component';
 import { EmailVerificationModalComponent } from './email-verification-modal.component';
 
@@ -44,6 +45,13 @@ describe('EmailVerificationModalComponent', () => {
                 componentInstance: {},
               };
             },
+          },
+        },
+        {
+          provide: VerificationsNSecurityTrackingEventsService,
+          useValue: {
+            trackClickVerificationOptionEvent() {},
+            trackStartEmailVerificationProcessEvent() {},
           },
         },
       ],

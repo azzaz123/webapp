@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { VERIFICATION_METHOD } from '@api/core/model/verifications';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
+import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
 import { VerificationEmailThanksModalComponent } from '../verification-email-thanks-modal/verification-email-thanks-modal.component';
 
 @Component({
@@ -14,8 +16,11 @@ export class EmailVerificationModalComponent {
   constructor(
     public activeModal: NgbActiveModal,
     private userVerificationsService: UserVerificationsService,
-    private modalService: NgbModal
-  ) {}
+    private modalService: NgbModal,
+    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService
+  ) {
+    this.verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent(VERIFICATION_METHOD.EMAIL);
+  }
 
   public changeEmail(): void {
     this.activeModal.close();
@@ -29,6 +34,8 @@ export class EmailVerificationModalComponent {
       const modalRef: NgbModalRef = this.openModal(VerificationEmailThanksModalComponent);
       modalRef.componentInstance.email = this.email;
     });
+
+    this.verificationsNSecurityTrackingEventsService.trackStartEmailVerificationProcessEvent();
   }
 
   private openModal(modalComponent: typeof EmailModalComponent | typeof VerificationEmailThanksModalComponent): NgbModalRef {
