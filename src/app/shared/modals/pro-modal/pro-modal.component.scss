@@ -1,0 +1,27 @@
+.ProModal {
+  max-width: 625px;
+  height: 100%;
+  min-height: 485px;
+
+  &__text {
+    padding: 32px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  &__description {
+    margin-top: 12px;
+  }
+
+  &__img {
+    padding: 32px;
+    background-color: #385ef9;
+
+    img {
+      width: fit-content;
+    }
+  }
+}
