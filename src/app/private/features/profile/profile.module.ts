@@ -10,6 +10,7 @@ import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
 import { EmailVerificationModalComponent } from './modal/email-verification-modal/email-verification-modal.component';
 import { VerificationEmailThanksModalComponent } from './modal/verification-email-thanks-modal/verification-email-thanks-modal.component';
+import { VerificationsNSecurityTrackingEventsService } from './services/verifications-n-security-tracking-events.service';
 
 @NgModule({
   imports: [
@@ -32,5 +33,6 @@ import { VerificationEmailThanksModalComponent } from './modal/verification-emai
     EmailVerificationModalComponent,
     VerificationEmailThanksModalComponent,
   ],
+  providers: [VerificationsNSecurityTrackingEventsService],
 })
 export class ProfileModule {}
