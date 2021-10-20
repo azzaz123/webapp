@@ -34,6 +34,7 @@ export class SubscriptionBenefitsService {
   }
 
   private mapBenefit(benefit: SubscriptionBenefit): SubscriptionBenefit {
+    // FIXME to remove this strategy for having translated text in images
     const locale = this.locale !== 'es' ? 'en' : 'es';
     return {
       ...benefit,
