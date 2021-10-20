@@ -9,7 +9,10 @@ import {
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { UserService } from '@core/user/user.service';
 import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { Observable, of } from 'rxjs';
+import { EmailVerificationModalComponent } from '../../modal/email-verification-modal/email-verification-modal.component';
 
 import { VerificationsNSecurityComponent, VERIFICATIONS_N_SECURITY_TYPES } from './verifications-n-security.component';
 
@@ -26,6 +29,7 @@ describe('VerificationsNSecurityComponent', () => {
   let userService: UserService;
   let userVerificationsService: UserVerificationsService;
   let spyUserVerificationsService;
+  let modalService: NgbModal;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -44,6 +48,7 @@ describe('VerificationsNSecurityComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
     userService = TestBed.inject(UserService);
+    modalService = TestBed.inject(NgbModal);
     userVerificationsService = TestBed.inject(UserVerificationsService);
   });
 
@@ -78,10 +83,10 @@ describe('VerificationsNSecurityComponent', () => {
 
   describe('verifications text', () => {
     describe('when the verifications service is loaded', () => {
-      it('should show E-mail title', () => {
+      it('should show Email title', () => {
         const title = component.titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.EMAIL];
 
-        expect(title).toBe($localize`:@@verification_and_security_all_users_verifications_email_label:E-mail`);
+        expect(title).toBe($localize`:@@verification_and_security_all_users_verifications_email_label:Email`);
       });
       describe('and the email is verified', () => {
         beforeEach(() => {
@@ -97,6 +102,16 @@ describe('VerificationsNSecurityComponent', () => {
             expect(text).toBe($localize`:@@verification_and_security_all_users_change_button:Change`);
           });
         });
+        it('should open the change email modal when button is clicked', () => {
+          spyOn(modalService, 'open').and.callThrough();
+          component.userVerifications$.subscribe((userVerifications) => {
+            component.onClickVerifyEmail(userVerifications.email);
+
+            expect(modalService.open).toHaveBeenCalledWith(EmailModalComponent, {
+              windowClass: 'modal-standard',
+            });
+          });
+        });
       });
       describe('and the email is not verified', () => {
         it('should show Verify button text', () => {
@@ -104,6 +119,16 @@ describe('VerificationsNSecurityComponent', () => {
             const text = component.verifiedTextButton[userVerifications.email.toString()];
 
             expect(text).toBe($localize`:@@verification_and_security_all_users_verify_button:Verify`);
+          });
+        });
+        it('should open the email verification modal when button is clicked', () => {
+          spyOn(modalService, 'open').and.callThrough();
+          component.userVerifications$.subscribe((userVerifications) => {
+            component.onClickVerifyEmail(userVerifications.email);
+
+            expect(modalService.open).toHaveBeenCalledWith(EmailVerificationModalComponent, {
+              windowClass: 'modal-standard',
+            });
           });
         });
       });
