@@ -13,13 +13,11 @@ tsl-spinner {
   appearance: none;
   border: thin solid rgba($blue-grey-4, 0.5);
   color: $blue-grey-2;
-  padding: $spacing-xs $spacing-s;
   background: none;
   border-radius: 10px;
   font-size: $font-size-xs;
   min-width: 50px;
   height: 32px;
-  margin-top: $spacing-m;
 }
 
 .info {
@@ -63,10 +61,6 @@ tsl-selected-items {
     width: 100%;
     height: auto;
   }
-}
-
-.List__title {
-  margin-right: $spacing-ms;
 }
 
 .wing-size {
