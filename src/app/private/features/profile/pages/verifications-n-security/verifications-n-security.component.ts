@@ -7,6 +7,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { Observable } from 'rxjs';
 import { EmailVerificationModalComponent } from '../../modal/email-verification-modal/email-verification-modal.component';
+import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
 
 export enum VERIFICATIONS_N_SECURITY_TYPES {
   EMAIL,
@@ -33,13 +34,17 @@ export class VerificationsNSecurityComponent implements OnInit {
   constructor(
     private userService: UserService,
     private userVerificationsService: UserVerificationsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService
   ) {
     this.userVerifications$ = this.userVerificationsService.userVerifications$;
   }
 
   ngOnInit(): void {
     this.user = this.userService.user;
+    this.userVerifications$.subscribe((response: UserVerifications) => {
+      this.verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView(response);
+    });
   }
 
   public onClickVerifyEmail(isVerifiedEmail: boolean): void {
