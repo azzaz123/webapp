@@ -8,6 +8,7 @@ import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import { DeviceService } from '@core/device/device.service';
 import { Market, MARKET_PROVIDER } from '../../../configs/market.config';
 import { APP_LOCALE } from '../../../configs/subdomains.config';
+import '@mparticle/web-google-analytics-kit';
 
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
