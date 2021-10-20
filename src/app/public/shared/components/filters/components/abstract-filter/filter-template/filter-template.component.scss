@@ -73,12 +73,6 @@ $dropdown-box-shadow: 0 3px 16px 3px;
     &--open {
       z-index: 200;
     }
-
-    &--multiple {
-      tsl-bubble:not(:first-child) {
-        margin-left: $spacer * 0.25;
-      }
-    }
   }
 }
 
