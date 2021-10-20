@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-export enum MODAL_ACTION {
-  PRIMARY_BUTTON,
-  SECONDARY_BUTON,
-}
+import { modalConfig, PRO_MODAL_TYPE } from './pro-modal.constants';
+import { MODAL_ACTION, ProModalConfig } from './pro-modal.interface';
 
 @Component({
   selector: 'tsl-pro-modal',
@@ -12,19 +9,13 @@ export enum MODAL_ACTION {
   styleUrls: ['./pro-modal.component.scss'],
 })
 export class ProModalComponent implements OnInit {
-  modalConfig;
+  modalConfig: ProModalConfig;
   public readonly MODAL_ACTION = MODAL_ACTION;
 
   constructor(private activeModal: NgbActiveModal) {}
 
   ngOnInit(): void {
-    this.modalConfig = {
-      icon: '/assets/icons/pro/modals/pop-in-person.svg',
-      title: 'simulacro',
-      text1: 'La función de agregar servicios adicionales todavía no existe, estamos valorando posibilidades.',
-      text2: '¡Gracias por tu ayuda! Tu participación ha sido muy valiosa. Nos ayudará a crear esta funcionalidad.',
-      primaryButton: 'Ok',
-    };
+    this.modalConfig = modalConfig[PRO_MODAL_TYPE.simulation];
   }
 
   public onClose(action?: MODAL_ACTION): void {
