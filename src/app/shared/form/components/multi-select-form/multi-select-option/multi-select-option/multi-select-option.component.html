@@ -6,11 +6,7 @@
 
   <p class="MultiSelectOption__selection m-0 px-3" *ngIf="selectedChildrenCount">
     <span *ngIf="selectedChildrenCount === data.children.length" i18n="@@filter_by_subcategory_all_users_level_1_list_all_items_selected_label">Items selected: all</span>
-
-    <ng-container *ngIf="selectedChildrenCount !== data.children.length" >
-      <span i18n="@@filter_by_subcategory_all_users_level_1_list_number_items_selected_label">Items selected:</span>
-      {{selectedChildrenCount}}
-    </ng-container>
+    <span *ngIf="selectedChildrenCount !== data.children.length" i18n="@@filter_by_subcategory_all_users_level_1_list_number_items_selected_label">Items selected: {{selectedChildrenCount}}</span>
   </p>
 
   <tsl-checkbox-form *ngIf="!hasChildren"  class="d-flex align-self-center" [(ngModel)]="data.checked" (change)="toggleCheckbox()"></tsl-checkbox-form>
