@@ -51,7 +51,7 @@ describe('WalletComponent', () => {
           provide: WalletTrackingEventService,
           useValue: {
             trackClickHelpWallet() {},
-            trackClickBankAccount() {},
+            trackClickBankDetails() {},
           },
         },
       ],
@@ -158,11 +158,11 @@ describe('WalletComponent', () => {
     it('should track the event for the bank details url', () => {
       const navLinksElement = fixture.debugElement.query(By.css('tsl-nav-links'));
       spyOn(router, 'navigate');
-      spyOn(walletTrackingEventService, 'trackClickBankAccount');
+      spyOn(walletTrackingEventService, 'trackClickBankDetails');
 
       navLinksElement.triggerEventHandler('clickedLink', navLinkUrl);
 
-      expect(walletTrackingEventService.trackClickBankAccount).toHaveBeenCalledTimes(times);
+      expect(walletTrackingEventService.trackClickBankDetails).toHaveBeenCalledTimes(times);
     });
   });
 });
