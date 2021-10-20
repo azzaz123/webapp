@@ -11,6 +11,7 @@ import { BankAccountApiService } from '@private/features/wallet/services/api/ban
 import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
 import { MapBankAccountService } from '@private/features/wallet/services/bank-account/map-bank-account/map-bank-account.service';
 import { bankAccountRoutedComponents, BankAccountRoutingModule } from './bank-account.routing.module';
+import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 
 @NgModule({
   imports: [
@@ -26,6 +27,6 @@ import { bankAccountRoutedComponents, BankAccountRoutingModule } from './bank-ac
   ],
   declarations: [bankAccountRoutedComponents],
   exports: [bankAccountRoutedComponents],
-  providers: [BankAccountService, BankAccountApiService, MapBankAccountService],
+  providers: [BankAccountService, BankAccountApiService, MapBankAccountService, SeparateWordByCharacterPipe],
 })
 export class BankAccountModule {}
