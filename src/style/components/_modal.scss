@@ -176,7 +176,7 @@ $modal-border-radius: 0.3rem;
 }
 
 .modal.pro-modal {
-  $modal-width: 600px;
+  $modal-width: 625px;
   .modal-dialog {
     max-width: $modal-width;
   }
@@ -185,6 +185,9 @@ $modal-border-radius: 0.3rem;
     max-width: unset;
     height: 100%;
     overflow: auto;
+    @include media-breakpoint-down(sm) {
+      width: 316px !important;
+    }
   }
 }
 
