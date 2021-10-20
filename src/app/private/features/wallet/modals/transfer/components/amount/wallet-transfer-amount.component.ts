@@ -19,6 +19,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
 import { WalletTransferMoneyInterface } from '@private/features/wallet/modals/transfer/interfaces/wallet-transfer-money.interface';
 import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
+import { WalletTransferTrackingEventService } from '@private/features/wallet/modals/transfer/services/wallet-transfer-tracking-event.service';
 
 import { finalize } from 'rxjs/operators';
 
@@ -34,7 +35,7 @@ const transferId: string = 'transfer';
   styleUrls: ['./wallet-transfer-amount.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PaymentsWalletsHttpService, PaymentsWalletsService],
+  providers: [PaymentsWalletsHttpService, PaymentsWalletsService, WalletTransferTrackingEventService],
 })
 export class WalletTransferAmountComponent implements OnInit {
   @ViewChild(decimalPartId, { static: false }) decimalElementRef: ElementRef;
@@ -57,7 +58,8 @@ export class WalletTransferAmountComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private paymentsWalletsService: PaymentsWalletsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private transferTrackingEventService: WalletTransferTrackingEventService
   ) {}
 
   public ngOnInit(): void {
@@ -125,6 +127,7 @@ export class WalletTransferAmountComponent implements OnInit {
   }
 
   public transferBalance(): void {
+    this.transferTrackingEventService.trackSelectTransferAmount(this.walletBalance.amount.total, this.transferAmount.total);
     this.transfered.emit(new WalletTransferMoneyModel(this.transferAmount.total, this.walletBalance, amountOfDecimals));
   }
 

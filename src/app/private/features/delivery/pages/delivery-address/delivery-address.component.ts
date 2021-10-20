@@ -293,6 +293,7 @@ export class DeliveryAddressComponent implements OnInit {
             ? TRANSLATION_KEY.DELIVERY_ADDRESS_CREATE_SUCCESS
             : TRANSLATION_KEY.DELIVERY_ADDRESS_EDIT_SUCCESS;
 
+          this.formComponent.initFormControl();
           this.isNewForm = false;
           this.showToast(successKey, TOAST_TYPES.SUCCESS);
           this.redirect();

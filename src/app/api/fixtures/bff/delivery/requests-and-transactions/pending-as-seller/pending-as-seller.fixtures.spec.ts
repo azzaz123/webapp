@@ -16,7 +16,7 @@ export const MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API: RequestsAndTr
       seller_user_name: 'Dimasiado P.',
       seller_user_image: 'http://cdn-beta.wallapop.com/images/13/1a/7c/__/c13p77605037/i419166102.jpg?pictureSize=W800',
       status: 'pending',
-      delivery_status: 'delivered',
+      delivery_status: 'in transit',
       payment_status: 'pay in succeeded',
       dispute_status: null,
       payment_error: null,

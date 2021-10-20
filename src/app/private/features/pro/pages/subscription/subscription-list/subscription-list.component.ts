@@ -53,9 +53,6 @@ export class SubscriptionListComponent {
     if (this.showCancel(subscription)) {
       return $localize`:@@web_profile_pages_subscription_678:Cancel`;
     }
-    if (this.showManageInApp(subscription)) {
-      return $localize`:@@web_profile_pages_subscription_327:Manage in app`;
-    }
   }
 
   public onClickButton(subscription: SubscriptionsResponse): void {
@@ -79,15 +76,11 @@ export class SubscriptionListComponent {
   }
 
   private showEdit(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
+    return subscription.tiers.length !== 1;
   }
 
   private showCancel(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
-  }
-
-  private showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription);
+    return subscription.tiers.length === 1;
   }
 
   private getNotFreeTrialText(subscription: SubscriptionsResponse): string {

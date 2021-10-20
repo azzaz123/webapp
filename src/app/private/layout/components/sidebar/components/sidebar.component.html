@@ -84,7 +84,7 @@
   </a>
 </span>
 <span *tslDeliveryDevelopment>
-  <a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-wallet" class="sidebar-section" [routerLink]="[PRIVATE_PATHS.WALLET]" routerLinkActive="active">
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-wallet" class="sidebar-section" [routerLink]="[PRIVATE_PATHS.WALLET]" (click)="trackClickToWallet()" routerLinkActive="active">
     <div class="sidebar-section-circle">
       <tsl-svg-icon src="/assets/icons/wallet.svg"></tsl-svg-icon>
     </div>

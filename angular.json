@@ -119,7 +119,7 @@
                   "maximumError": "10kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json",
               "localize": true
             },
@@ -149,7 +149,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json",
               "localize": true
             },
@@ -163,7 +163,7 @@
                   "maximumWarning": "8kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             },
             "it": {
@@ -176,7 +176,7 @@
                   "maximumWarning": "8kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             }
           }

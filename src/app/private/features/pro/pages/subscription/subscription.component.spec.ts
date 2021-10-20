@@ -20,7 +20,6 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import {
   SUBSCRIPTIONS,
-  MAPPED_SUBSCRIPTIONS_WITH_INAPP,
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
@@ -35,9 +34,7 @@ import { of } from 'rxjs';
 import { SubscriptionsComponent } from './subscription.component';
 import { By } from '@angular/platform-browser';
 import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
-import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
-import { UnsubscribeInAppFirstModalComponent } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 import { PRO_PATHS } from '../../pro-routing-constants';
 
 @Component({
@@ -496,19 +493,6 @@ describe('SubscriptionComponent', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
     });
 
-    describe('and the subscription is from Android or iOS', () => {
-      it('should open a modal that says to modify subscription in app', () => {
-        spyOn(subscriptionsService, 'isSubscriptionInApp').and.returnValue(true);
-        spyOn(modalService, 'open').and.callThrough();
-
-        component.manageSubscription(MAPPED_SUBSCRIPTIONS_WITH_INAPP[0]);
-
-        expect(modalService.open).toHaveBeenCalledWith(CheckSubscriptionInAppModalComponent, {
-          windowClass: 'review',
-        });
-      });
-    });
-
     describe('and the subscription has only one tier', () => {
       it('should open the cancel modal', () => {
         spyOn(modalService, 'open').and.callThrough();
@@ -534,19 +518,6 @@ describe('SubscriptionComponent', () => {
     });
   });
 
-  describe('when the user is NOT subscribed to the selected category and has another subscription', () => {
-    it('should open a unsubscribe inapp first modal if one subscription is inapp and selected sub is not active', () => {
-      spyOn(subscriptionsService, 'isOneSubscriptionInApp').and.returnValue(true);
-      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
-      spyOn(modalService, 'open').and.callThrough();
-
-      component.manageSubscription(MAPPED_SUBSCRIPTIONS_WITH_INAPP[0]);
-
-      expect(modalService.open).toHaveBeenCalledWith(UnsubscribeInAppFirstModalComponent, {
-        windowClass: 'review',
-      });
-    });
-  });
   afterEach(() => {
     TestBed.resetTestingModule();
   });

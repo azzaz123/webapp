@@ -10,7 +10,7 @@
         </div>
       </div>
     </tsl-header>
-    <div class="row mb-3">
+    <div class="row mb-3" *ngIf="showNavigation">
       <div class="col-12 col-sm-9">
         <nav class="nav filters-nav d-flex d-md-inline-block">
           <a class="nav-link" [routerLink]="PRO_PATHS.SUBSCRIPTIONS" routerLinkActive="active"
