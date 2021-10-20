@@ -6,10 +6,10 @@
         <div class="ProModal__title">{{modalConfig.title}}</div>
         <div class="ProModal__description">{{modalConfig.text1}}</div>
         <div class="ProModal__description">{{modalConfig.text2}}</div>
-        <tsl-button (click)="onClose(MODAL_ACTION.PRIMARY_BUTTON)" class="mt-4" className="btn-primary w-100">
-            {{modalConfig.primaryButton}}</tsl-button>
+        <tsl-button (click)="onClose(MODAL_ACTION.PRIMARY_BUTTON)" class="mt-4" 
+        className="btn-primary w-100">{{modalConfig.primaryButton}}</tsl-button>
     </div>
     <div class="ProModal__img ml-auto d-flex flex-column h-100 justify-content-center w-100 align-items-center">
-        <img [src]="modalConfig.icon">
+        <tsl-svg-icon [src]="modalConfig.icon"></tsl-svg-icon>
     </div>
 </div>
