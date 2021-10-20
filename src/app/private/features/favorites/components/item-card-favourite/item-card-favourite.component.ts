@@ -6,6 +6,7 @@ import { Item } from '@core/item/item';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { COLORS } from '@core/colors/colors-constants';
+import { FavouritesListTrackingEventsService } from '../../services/favourites-list-tracking-events.service';
 
 @Component({
   selector: 'tsl-item-card-favourite',
@@ -16,7 +17,12 @@ export class ItemCardFavouriteComponent implements OnInit {
   @Input() item: Item;
   @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
 
-  constructor(private itemService: ItemService, private modalService: NgbModal, private i18nService: I18nService) {}
+  constructor(
+    private itemService: ItemService,
+    private modalService: NgbModal,
+    private i18nService: I18nService,
+    private favouritesListTrackingEventsService: FavouritesListTrackingEventsService
+  ) {}
 
   ngOnInit() {}
 
@@ -43,6 +49,7 @@ export class ItemCardFavouriteComponent implements OnInit {
   removeFavorite() {
     this.itemService.favoriteItem(this.item.id, false).subscribe(() => {
       this.item.favorited = false;
+      this.favouritesListTrackingEventsService.trackUnfavouriteItemEvent(this.item);
       this.onFavoriteChange.emit(this.item);
     });
   }

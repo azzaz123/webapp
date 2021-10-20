@@ -1,23 +1,25 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
-import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
-import { forkJoin, Observable, throwError } from 'rxjs';
-import { COLORS } from '@core/colors/colors-constants';
 import { Router } from '@angular/router';
-import { PaymentsCreditCardService } from '@api/payments/cards';
-import { CreditCard } from '@api/core/model/cards/credit-card.interface';
-import * as moment from 'moment';
-import { ToastService } from '@layout/toast/core/services/toast.service';
-import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
-import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
-import { catchError } from 'rxjs/operators';
-import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
-import { BankAccountTrackingEventsService } from '../../services/bank-account-tracking-events/bank-account-tracking-events.service';
+
 import { BANK_DETAILS_TRANSLATIONS } from '@private/features/wallet/translations/bank-details.translations';
+import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
+import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
+import { BankAccountTrackingEventsService } from '@private/features/wallet/pages/bank-details/services/bank-account-tracking-events/bank-account-tracking-events.service';
+import { COLORS } from '@core/colors/colors-constants';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
+import { CreditCard } from '@api/core/model/cards/credit-card.interface';
+import { PaymentsCreditCardService } from '@api/payments/cards';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
+import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+
+import { catchError } from 'rxjs/operators';
+import { forkJoin, Observable, throwError } from 'rxjs';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 @Component({
   selector: 'tsl-bank-details-overview',
@@ -55,6 +57,7 @@ export class BankDetailsOverviewComponent implements OnInit {
         return this.handleError(error);
       })
     );
+    this.bankAccountTrackingEventsService.trackClickBankAccount();
   }
 
   public redirect(URL: string): void {

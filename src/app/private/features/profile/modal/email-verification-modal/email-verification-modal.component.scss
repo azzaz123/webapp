@@ -1,0 +1,14 @@
+@import '~style/common';
+
+.EmailVerificationModal {
+  &__title {
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__close {
+    cursor: pointer;
+    top: $spacing-ml;
+    right: $spacing-ml;
+  }
+}

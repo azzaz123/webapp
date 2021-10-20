@@ -31,11 +31,12 @@ function getDecimalPartFromNumber(number: number): number {
       return result;
     }
 
-    const stringDecimals = rawDecimals.toString();
-    const startDecimalPosition = 2;
-    const truncatedDecimals = stringDecimals.substring(startDecimalPosition, startDecimalPosition + numberOfParsedDecimals);
-    const parsedDecimals = parseInt(truncatedDecimals);
-    result = parsedDecimals;
+    return parseInt(
+      number
+        .toLocaleString('en', { maximumFractionDigits: numberOfParsedDecimals, minimumFractionDigits: numberOfParsedDecimals })
+        .split('.')[1],
+      10
+    );
   } catch {}
 
   return result;

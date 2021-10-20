@@ -93,6 +93,7 @@ describe('ItemDetailComponent', () => {
   const itemCardClass = '.ItemDetail__card';
   const carExtraInfoClass = '.ItemExtraInfo--car';
   const itemId = '123';
+  const affiliationLinksClass = '.ItemDetail__affiliation';
 
   const itemDetailSubjectMock: BehaviorSubject<ItemDetail> = new BehaviorSubject<ItemDetail>(MOCK_ITEM_DETAIL_GBP);
   const itemDetailStoreServiceMock = {
@@ -283,6 +284,29 @@ describe('ItemDetailComponent', () => {
 
         expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
       }));
+      describe('and the item is owned by the user', () => {
+        it('should not show affiliation links', fakeAsync(() => {
+          spyOn(IsCurrentUserStub.prototype, 'transform').and.returnValue(true);
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(0);
+        }));
+      });
+      describe('and the item is not owned by the user', () => {
+        it('should show affiliation links', fakeAsync(() => {
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(1);
+        }));
+      });
     });
 
     describe('and user does not have permission to see ads', () => {
@@ -325,6 +349,31 @@ describe('ItemDetailComponent', () => {
 
         expect(testAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
       }));
+
+      describe('and the item is owned by the user', () => {
+        it('should not show affiliation links', fakeAsync(() => {
+          spyOn(IsCurrentUserStub.prototype, 'transform').and.returnValue(true);
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(0);
+        }));
+      });
+
+      describe('and the item is not owned by the user', () => {
+        it('should show affiliation links', fakeAsync(() => {
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(1);
+        }));
+      });
     });
 
     describe('and user does not have permission to see ads', () => {
@@ -366,6 +415,31 @@ describe('ItemDetailComponent', () => {
 
         expect(MockAdsService.setAdKeywords).toHaveBeenCalledWith({ category: MOCK_ITEM_DETAIL_GBP.item.categoryId.toString() });
       }));
+
+      describe('and the item is owned by the user', () => {
+        it('should not show affiliation links', fakeAsync(() => {
+          spyOn(IsCurrentUserStub.prototype, 'transform').and.returnValue(true);
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(0);
+        }));
+      });
+
+      describe('and the item is not owned by the user', () => {
+        it('should show affiliation links', fakeAsync(() => {
+          component.ngOnInit();
+          fixture.detectChanges();
+          tick();
+
+          const affiliationLinks = fixture.debugElement.queryAll(By.css(affiliationLinksClass));
+
+          expect(affiliationLinks.length).toBe(1);
+        }));
+      });
     });
 
     describe('and user does not have permission to see ads', () => {

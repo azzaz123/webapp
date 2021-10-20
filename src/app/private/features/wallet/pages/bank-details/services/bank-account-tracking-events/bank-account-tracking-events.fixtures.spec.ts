@@ -39,11 +39,13 @@ export const MOCK_ADD_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEven
     isEdit: false,
     kycProperties: MOCK_KYC_NO_NEED_PROPERTIES,
     mappedAddOrEditToAnalytics: 'add',
+    mappedBannerStatusToAnalytics: 'verified',
   },
   {
     isEdit: false,
     kycProperties: MOCK_KYC_ERROR_PROPERTIES,
     mappedAddOrEditToAnalytics: 'add',
+    mappedBannerStatusToAnalytics: 'pending',
   },
 ];
 
@@ -70,11 +72,13 @@ export const MOCK_EDIT_BANK_ACCOUNT_TRACKING_EVENT_CASES: BankAccountTrackingEve
     isEdit: true,
     kycProperties: MOCK_KYC_NO_NEED_PROPERTIES,
     mappedAddOrEditToAnalytics: 'edit',
+    mappedBannerStatusToAnalytics: 'verified',
   },
   {
     isEdit: true,
     kycProperties: MOCK_KYC_ERROR_PROPERTIES,
     mappedAddOrEditToAnalytics: 'edit',
+    mappedBannerStatusToAnalytics: 'pending',
   },
 ];
 

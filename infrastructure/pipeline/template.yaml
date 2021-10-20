@@ -89,7 +89,7 @@ Resources:
           phases:
               build:
                   commands:
-                    - aws cloudfront create-invalidation --distribution-id $FUNCTIONAL_WEBAPP_DISTRIBUTION_ID --paths "/app/index.html" "/app/ngsw-worker.js" "/app/ngsw.json"
+                    - aws cloudfront create-invalidation --distribution-id $FUNCTIONAL_WEBAPP_DISTRIBUTION_ID --paths "/app/index.html"
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: "aws/codebuild/docker:17.09.0"

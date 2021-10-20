@@ -3,7 +3,6 @@ import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/cor
 import { RouterTestingModule } from '@angular/router/testing';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { SwUpdate } from '@angular/service-worker';
 
 import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -63,13 +62,6 @@ describe('PrivateComponent', () => {
                 componentInstance: {},
               };
             },
-          },
-        },
-        {
-          provide: SwUpdate,
-          useValue: {
-            available: of(null),
-            activated: of(null),
           },
         },
         {

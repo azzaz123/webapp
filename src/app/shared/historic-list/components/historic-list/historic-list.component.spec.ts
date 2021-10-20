@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MOCK_HISTORIC_ELEMENT } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import {
   MOCK_HISTORIC_LIST,
   MOCK_HISTORIC_LIST_EMPTY,
   MOCK_HISTORIC_LIST_WITH_BALANCE,
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { InfiniteScrollModule } from '@shared/infinite-scroll/infinite-scroll.module';
 import { HistoricElementComponent } from '../historic-element/historic-element.component';
@@ -14,8 +16,14 @@ import { HistoricListComponent } from './historic-list.component';
 
 @Component({
   selector: 'tsl-test-wrapper-historic-list',
-  template:
-    '<tsl-historic-list [loading]="loading" [infiniteScrollDisabled]="infiniteScrollDisabled" [historicList]="historicList" [showTotalBalance]="showTotalBalance" (scrolled)="handleScroll()"></tsl-historic-list>',
+  template: `<tsl-historic-list
+    [loading]="loading"
+    [infiniteScrollDisabled]="infiniteScrollDisabled"
+    [historicList]="historicList"
+    [showTotalBalance]="showTotalBalance"
+    (scrolled)="handleScroll()"
+    (clicked)="onItemClick($event)"
+  ></tsl-historic-list>`,
 })
 export class TestWrapperHistoricListComponent {
   @Input() loading = true;
@@ -24,6 +32,7 @@ export class TestWrapperHistoricListComponent {
   @Input() showTotalBalance = true;
 
   public handleScroll(): void {}
+  public onItemClick(historicElement: HistoricElement): void {}
 }
 
 describe('HistoricListComponent', () => {
@@ -156,6 +165,17 @@ describe('HistoricListComponent', () => {
         const totalBalanceElement = fixture.debugElement.query(By.css(totalBalanceSelector));
 
         expect(totalBalanceElement).toBeFalsy();
+      });
+    });
+
+    describe('WHEN user clicks over the item', () => {
+      it('should send the event with the item as a payload', () => {
+        spyOn(component.itemClicked, 'emit').and.callFake(() => {});
+
+        component.onItemClick(MOCK_HISTORIC_ELEMENT);
+
+        expect(component.itemClicked.emit).toHaveBeenCalledTimes(1);
+        expect(component.itemClicked.emit).toHaveBeenCalledWith(MOCK_HISTORIC_ELEMENT);
       });
     });
   });
