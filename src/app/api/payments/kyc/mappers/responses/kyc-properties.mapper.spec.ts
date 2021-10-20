@@ -5,17 +5,23 @@ import { MOCK_KYC_REJECTED_PROPERTIES_API } from '@fixtures/private/wallet/kyc/k
 import { mapKYCPropertiesApiToKYCProperties } from './kyc-properties.mapper';
 
 describe('when mapping the KYC properties api to KYC properties', () => {
-  it('should return the properties mapped', () => {
-    const KYCProperties: KYCProperties = mapKYCPropertiesApiToKYCProperties(MOCK_KYC_REJECTED_PROPERTIES_API);
-    const MOCK_REFUSED_REASON: KYCRefusedReason = KYC_REFUSED_REASONS.find(
-      (properties: KYCRefusedReason) => properties.reason === MOCK_KYC_REJECTED_PROPERTIES_API.document_refused_reason_type
-    );
+  describe('and the refused reason is defined...', () => {
+    it('should return the properties mapped', () => {
+      const KYCProperties: KYCProperties = mapKYCPropertiesApiToKYCProperties(MOCK_KYC_REJECTED_PROPERTIES_API);
+      const MOCK_REFUSED_REASON: KYCRefusedReason = KYC_REFUSED_REASONS.find(
+        (properties: KYCRefusedReason) => properties.reason === MOCK_KYC_REJECTED_PROPERTIES_API.document_refused_reason_type
+      );
 
-    expect(KYCProperties).toStrictEqual({
-      status: MOCK_KYC_REJECTED_PROPERTIES_API.user_kyc_status,
-      refusedReason: MOCK_REFUSED_REASON,
-      inflowStatus: MOCK_KYC_REJECTED_PROPERTIES_API.inflow_status,
-      outflowStatus: MOCK_KYC_REJECTED_PROPERTIES_API.outflow_status,
+      expect(KYCProperties).toStrictEqual({
+        status: MOCK_KYC_REJECTED_PROPERTIES_API.user_kyc_status,
+        refusedReason: MOCK_REFUSED_REASON,
+        inflowStatus: MOCK_KYC_REJECTED_PROPERTIES_API.inflow_status,
+        outflowStatus: MOCK_KYC_REJECTED_PROPERTIES_API.outflow_status,
+      });
     });
+  });
+
+  describe('and the refused reason is not defined', () => {
+    it('should return the properties mapped with unknown refused reason', () => {});
   });
 });
