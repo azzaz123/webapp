@@ -1,0 +1,12 @@
+<div class="VerificationEmailThanksModal text-center">
+  <div class="VerificationEmailThanksModal__close position-fixed" (click)="activeModal.dismiss()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+  <div class="VerificationEmailThanksModal__container">
+    <div class="VerificationEmailThanksModal__title my-3">Thanks!</div>
+    <div class="VerificationEmailThanksModal__subtitle mb-4">
+      We've sent you an email to “{{ email }}”. Go to your inbox and follow the steps to verify your email account
+    </div>
+    <tsl-button class="w-100" className="btn-primary w-100" (click)="activeModal.close()">Accept</tsl-button>
+  </div>
+</div>

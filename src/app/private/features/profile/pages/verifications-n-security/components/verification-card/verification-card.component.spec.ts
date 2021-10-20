@@ -24,7 +24,7 @@ describe('VerificationCardComponent', () => {
   describe('when it has a verified email', () => {
     beforeEach(() => {
       component.isVerified = true;
-      component.title = VERIFICATIONS_N_SECURITY_TYPES.EMAIL;
+      component.title = 'email';
       component.textButton = 'change';
       fixture.detectChanges();
     });
@@ -63,7 +63,7 @@ describe('VerificationCardComponent', () => {
   describe('when it has a not verified email', () => {
     beforeEach(() => {
       component.isVerified = false;
-      component.title = VERIFICATIONS_N_SECURITY_TYPES.EMAIL;
+      component.title = 'email';
       component.textButton = 'verify';
       component.footerLegend = 'test@wallapop.com';
       fixture.detectChanges();

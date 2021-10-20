@@ -8,6 +8,8 @@ import { BecomeProModalComponent } from './modal/become-pro-modal/become-pro-mod
 import { ChangeStoreLocationModal } from './modal/change-store-location-modal/change-store-location-modal.component';
 import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe-modal.component';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
+import { EmailVerificationModalComponent } from './modal/email-verification-modal/email-verification-modal.component';
+import { VerificationEmailThanksModalComponent } from './modal/verification-email-thanks-modal/verification-email-thanks-modal.component';
 
 @NgModule({
   imports: [
@@ -22,6 +24,13 @@ import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes'
     NgbModalModule,
     CustomCurrencyModule,
   ],
-  declarations: [profileRoutedComponents, UnsubscribeModalComponent, BecomeProModalComponent, ChangeStoreLocationModal],
+  declarations: [
+    profileRoutedComponents,
+    UnsubscribeModalComponent,
+    BecomeProModalComponent,
+    ChangeStoreLocationModal,
+    EmailVerificationModalComponent,
+    VerificationEmailThanksModalComponent,
+  ],
 })
 export class ProfileModule {}
