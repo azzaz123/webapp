@@ -2,7 +2,7 @@ import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-pro
 import { KYC_FLOW_STATUS } from '@api/core/model/kyc-properties/kyc-flow-status.enum';
 import { KYC_REFUSED_REASON } from '@api/core/model/kyc-properties/kyc-refused-reason.enum';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
-import { KYCPropertiesApi } from '@api/payments/kyc-properties/dtos/responses';
+import { KYCPropertiesApi, KYCRefusedReasonApi } from '@api/payments/kyc-properties/dtos/responses';
 
 const MOCK_KYC_PROPERTIES_API: KYCPropertiesApi = {
   inflow_status: 'blocked',
@@ -14,6 +14,12 @@ const MOCK_KYC_PROPERTIES_API: KYCPropertiesApi = {
 export const MOCK_KYC_REJECTED_PROPERTIES_API: KYCPropertiesApi = {
   ...MOCK_KYC_PROPERTIES_API,
   document_refused_reason_type: 'document unreadable',
+  user_kyc_status: 'rejected',
+};
+
+export const MOCK_KYC_REJECTED_PROPERTIES_UNKOWN_REFUSED_REASON_API: KYCPropertiesApi = {
+  ...MOCK_KYC_PROPERTIES_API,
+  document_refused_reason_type: 'disjdijsidjisdis' as KYCRefusedReasonApi,
   user_kyc_status: 'rejected',
 };
 

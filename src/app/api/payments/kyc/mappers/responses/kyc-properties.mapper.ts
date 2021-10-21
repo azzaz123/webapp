@@ -17,7 +17,8 @@ export function mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi: KYCProperti
 
 function getRefusedReason(refusedReasonApi: KYCRefusedReasonApi): KYCRefusedReason {
   const unknownRefusedReason = KYC_REFUSED_REASONS.find((properties) => properties.reason === KYC_REFUSED_REASON.UNKNOWN);
-  return refusedReasonApi ? KYC_REFUSED_REASONS.find((properties) => properties.reason === refusedReasonApi) : unknownRefusedReason;
+  const userRefusedReason = KYC_REFUSED_REASONS.find((properties) => properties.reason === refusedReasonApi);
+  return userRefusedReason || unknownRefusedReason;
 }
 
 function getDocumentStatus(definedStatus: KYCDocumentStatusApi): KYC_STATUS {
