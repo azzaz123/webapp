@@ -6,6 +6,7 @@ import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { EmailVerificationModalComponent } from '../../modal/email-verification-modal/email-verification-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
 
@@ -42,7 +43,7 @@ export class VerificationsNSecurityComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.userService.user;
-    this.userVerifications$.subscribe((response: UserVerifications) => {
+    this.userVerifications$.pipe(take(1)).subscribe((response: UserVerifications) => {
       this.verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView(response);
     });
   }
