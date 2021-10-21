@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 
 @Component({
   selector: 'tsl-pro-features',
@@ -16,8 +17,9 @@ export class ProFeaturesComponent {
   }
 
   private openModal(): void {
-    this.modalService.open(ProModalComponent, {
+    const modal = this.modalService.open(ProModalComponent, {
       windowClass: 'pro-modal',
     });
+    modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.simulation];
   }
 }
