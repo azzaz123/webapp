@@ -12,7 +12,9 @@
   }
 
   &__form {
-    max-height: 325px;
+    @include media-breakpoint-up(md) {
+      max-height: 325px;
+    }
   }
 
   &__template {
