@@ -23,7 +23,10 @@ export class BankAccountErrorMapper extends ErrorMapper<BankAccountErrorResponse
         mappedErrors.push(new LastNameIsInvalidError());
       }
 
-      if (error.error_code === BANK_ACCOUNT_ERROR_CODES.INVALID_IBAN_COUNTRY) {
+      if (
+        error.error_code === BANK_ACCOUNT_ERROR_CODES.INVALID_IBAN_COUNTRY ||
+        error.error_code === BANK_ACCOUNT_ERROR_CODES.INVALID_COUNTRY_ISO_CODE
+      ) {
         mappedErrors.push(new IbanCountryIsInvalidError());
       }
 

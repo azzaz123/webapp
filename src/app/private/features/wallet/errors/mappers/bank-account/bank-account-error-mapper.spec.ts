@@ -1,4 +1,5 @@
 import {
+  MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_IBAN_COUNTRY_ISO_CODE_RESPONSE,
   MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_IBAN_COUNTRY_RESPONSE,
   MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_IBAN_RESPONSE,
   MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_OWNER_NAME_RESPONSE,
@@ -77,6 +78,18 @@ describe('when mapping an error from bank account backend', () => {
       });
 
       expect(result instanceof UniqueBankAccountByUserError).toBe(true);
+    });
+  });
+
+  describe('and server notifies invalid country code error', () => {
+    it('should notify invalid iban country error', () => {
+      let result: BankAccountError;
+
+      bankAccountErrorMapper.map(MOCK_WALLET_BANK_ACCOUNT_ERROR_INVALID_IBAN_COUNTRY_ISO_CODE_RESPONSE).subscribe({
+        error: (errors) => (result = errors[0]),
+      });
+
+      expect(result instanceof IbanCountryIsInvalidError).toBe(true);
     });
   });
 });

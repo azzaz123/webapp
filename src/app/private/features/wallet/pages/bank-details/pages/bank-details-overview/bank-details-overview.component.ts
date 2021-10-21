@@ -16,8 +16,8 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 
-import { catchError } from 'rxjs/operators';
-import { forkJoin, Observable, throwError } from 'rxjs';
+import { catchError, take } from 'rxjs/operators';
+import { combineLatest, Observable, throwError } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 
@@ -113,16 +113,7 @@ export class BankDetailsOverviewComponent implements OnInit {
   }
 
   private getBankAccountAndCreditCard(): void {
-    forkJoin({
-      bankAccount: this.bankAccountService.get(),
-      creditCard: this.paymentsCreditCardService.get(),
-    })
-      .pipe(
-        catchError((error: unknown) => {
-          return this.handleError(error);
-        })
-      )
-      .subscribe();
+    combineLatest([this.bankAccountService.get(), this.paymentsCreditCardService.get()]).pipe(take(1)).subscribe();
   }
 
   private deleteCard(): void {

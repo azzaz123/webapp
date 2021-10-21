@@ -9,6 +9,7 @@ import {
   MOCK_EMPTY_BANK_ACCOUNT,
   MOCK_BANK_ACCOUNT,
   MOCK_BANK_ACCOUNT_INVALID,
+  MOCK_BANK_ACCOUNT_FORMATTED_IBAN,
 } from '@fixtures/private/wallet/bank-account/bank-account.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numbers-only.directive.module';
@@ -52,13 +53,14 @@ describe('BankAccountComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, NumbersOnlyDirectiveModule, HttpClientTestingModule],
-      declarations: [BankAccountComponent, ProfileFormComponent, SeparateWordByCharacterPipe],
+      declarations: [BankAccountComponent, ProfileFormComponent],
       providers: [
         FormBuilder,
         BankAccountService,
         BankAccountApiService,
         MapBankAccountService,
         Location,
+        SeparateWordByCharacterPipe,
         {
           provide: UuidService,
           useValue: {
@@ -132,8 +134,7 @@ describe('BankAccountComponent', () => {
 
       describe('and the bank account is new', () => {
         beforeEach(() => {
-          component.isNewForm = true;
-          fixture.detectChanges();
+          initializeForm(true);
         });
 
         it('should show the correct title', () => {
@@ -145,8 +146,7 @@ describe('BankAccountComponent', () => {
 
       describe('and the bank account was already provided', () => {
         beforeEach(() => {
-          component.isNewForm = false;
-          fixture.detectChanges();
+          initializeForm(false);
         });
 
         it('should show the correct title', () => {
@@ -170,8 +170,7 @@ describe('BankAccountComponent', () => {
 
       describe('and the bank account is new', () => {
         beforeEach(() => {
-          component.isNewForm = true;
-          fixture.detectChanges();
+          initializeForm(true);
         });
 
         it('should show the correct title', () => {
@@ -183,8 +182,7 @@ describe('BankAccountComponent', () => {
 
       describe('and the bank account was already provided', () => {
         beforeEach(() => {
-          component.isNewForm = false;
-          fixture.detectChanges();
+          initializeForm(false);
         });
 
         it('should show the correct title', () => {
@@ -224,11 +222,10 @@ describe('BankAccountComponent', () => {
   describe('initForm', () => {
     describe(`when we don't have the main bank account created yet...`, () => {
       beforeEach(() => {
-        spyOn(bankAccountService, 'get').and.returnValue(of(null));
         spyOn(component.formComponent, 'initFormControl');
         spyOn(component.bankAccountForm, 'updateValueAndValidity');
 
-        triggerProfileFormInit();
+        initializeForm(true);
       });
 
       it('should request the main account', () => {
@@ -244,17 +241,16 @@ describe('BankAccountComponent', () => {
       });
 
       it('should set loading to false', () => {
-        expect(component.loading).toBe(false);
+        expect(component.loading$.value).toBe(false);
       });
     });
 
-    describe('when we already have the main bank account created yet...', () => {
+    describe('when we already have the main bank account created...', () => {
       beforeEach(() => {
-        spyOn(bankAccountService, 'get').and.returnValue(of(MOCK_BANK_ACCOUNT));
         spyOn(component.formComponent, 'initFormControl');
         spyOn(component.bankAccountForm, 'updateValueAndValidity');
 
-        triggerProfileFormInit();
+        initializeForm(false);
       });
 
       it('should request the main account', () => {
@@ -262,7 +258,7 @@ describe('BankAccountComponent', () => {
       });
 
       it('should patch the main bank account value on the form', () => {
-        expect(component.bankAccountForm.getRawValue()).toStrictEqual(MOCK_BANK_ACCOUNT);
+        expect(component.bankAccountForm.getRawValue()).toStrictEqual(MOCK_BANK_ACCOUNT_FORMATTED_IBAN);
       });
 
       it('should initialize the form control', () => {
@@ -270,22 +266,25 @@ describe('BankAccountComponent', () => {
       });
 
       it('should set loading to false', () => {
-        expect(component.loading).toBe(false);
+        expect(component.loading$.value).toBe(false);
       });
     });
   });
 
   describe('onSubmit', () => {
     describe('and the form is not in progress...', () => {
-      describe('and we click on the save form button...', () => {
+      beforeEach(() => {
+        spyOn(kycTrackingEventsService, 'trackClickKYCConfirmBankAccountInfo');
+      });
+
+      describe('and is KYC...', () => {
         beforeEach(() => {
-          spyOn(kycTrackingEventsService, 'trackClickKYCConfirmBankAccountInfo');
+          initializeForm(true);
+          component.isKYC = true;
         });
 
-        describe('and is KYC...', () => {
+        describe('and we click on the save form button...', () => {
           beforeEach(() => {
-            component.isKYC = true;
-
             triggerFormSubmit();
           });
 
@@ -293,14 +292,18 @@ describe('BankAccountComponent', () => {
             expect(kycTrackingEventsService.trackClickKYCConfirmBankAccountInfo).toHaveBeenCalledTimes(1);
           });
         });
+      });
 
-        describe('and is not KYC...', () => {
+      describe('and is not KYC...', () => {
+        beforeEach(() => {
+          initializeForm(true);
+          component.isKYC = false;
+        });
+
+        describe('and we click on the save form button...', () => {
           beforeEach(() => {
-            component.isKYC = false;
-
             triggerFormSubmit();
           });
-
           it('should NOT request to the KYC analytics service to track the click event', () => {
             expect(kycTrackingEventsService.trackClickKYCConfirmBankAccountInfo).not.toHaveBeenCalled();
           });
@@ -310,11 +313,10 @@ describe('BankAccountComponent', () => {
       describe('when the form is valid...', () => {
         describe('and the bank account is new...', () => {
           beforeEach(() => {
-            spyOn(bankAccountService, 'get').and.returnValue(of(null));
             spyOn(toastService, 'show');
             spyOn(router, 'navigate');
 
-            component.initForm();
+            initializeForm(true);
             component.bankAccountForm.setValue(MOCK_BANK_ACCOUNT);
           });
 
@@ -326,7 +328,8 @@ describe('BankAccountComponent', () => {
             });
 
             it('should call the create endpoint', () => {
-              expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+              expect(bankAccountService.create).toHaveBeenCalledTimes(1);
+              expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT_FORMATTED_IBAN);
             });
 
             it('should show a succeed message', () => {
@@ -337,6 +340,7 @@ describe('BankAccountComponent', () => {
             });
 
             it('should redirect to the bank details page', () => {
+              expect(router.navigate).toHaveBeenCalledTimes(1);
               expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
             });
           });
@@ -352,7 +356,8 @@ describe('BankAccountComponent', () => {
               });
 
               it('should call the create endpoint', () => {
-                expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+                expect(bankAccountService.create).toHaveBeenCalledTimes(1);
+                expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT_FORMATTED_IBAN);
               });
 
               it('should show an error toast', () => {
@@ -384,7 +389,130 @@ describe('BankAccountComponent', () => {
               });
 
               it('should call the create endpoint', () => {
-                expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
+                expect(bankAccountService.create).toHaveBeenCalledTimes(1);
+                expect(bankAccountService.create).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT_FORMATTED_IBAN);
+              });
+
+              it('should show an error toast', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: BANK_ACCOUNT_TRANSLATIONS.SAVE_GENERIC_ERROR,
+                  type: TOAST_TYPES.ERROR,
+                });
+              });
+
+              it('should not mark form as pending', () => {
+                component.onSubmit();
+
+                expect(component.bankAccountForm.pending).toBe(false);
+              });
+
+              it('should NOT redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+            });
+          });
+        });
+
+        describe('and the bank account is an existing one...', () => {
+          beforeEach(() => {
+            spyOn(toastService, 'show');
+            spyOn(router, 'navigate');
+
+            initializeForm(false);
+          });
+
+          describe('and the petition succeed...', () => {
+            describe('and we are NOT on KYC mode', () => {
+              beforeEach(() => {
+                spyOn(bankAccountService, 'update').and.returnValue(of(null));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the edit endpoint', () => {
+                expect(bankAccountService.update).toHaveBeenCalledTimes(1);
+                expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT_FORMATTED_IBAN);
+              });
+
+              it('should show a succeed message', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: BANK_ACCOUNT_TRANSLATIONS.EDIT_SUCCESS,
+                  type: TOAST_TYPES.SUCCESS,
+                });
+              });
+
+              it('should redirect to the bank details page', () => {
+                expect(router.navigate).toHaveBeenCalledTimes(1);
+                expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
+              });
+            });
+
+            describe('and we are on KYC mode', () => {
+              beforeEach(() => {
+                component.isKYC = true;
+                spyOn(component.bankAccountSaved, 'emit');
+                spyOn(bankAccountService, 'update').and.returnValue(of(null));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the edit endpoint', () => {
+                expect(bankAccountService.update).toHaveBeenCalledTimes(1);
+                expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT_FORMATTED_IBAN);
+              });
+
+              it('should show a succeed message', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: BANK_ACCOUNT_TRANSLATIONS.EDIT_SUCCESS,
+                  type: TOAST_TYPES.SUCCESS,
+                });
+              });
+
+              it('should NOT redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+
+              it('should notify that the bank account have been saved', () => {
+                expect(component.bankAccountSaved.emit).toHaveBeenCalledTimes(1);
+              });
+            });
+          });
+
+          describe('and the petition fails...', () => {
+            describe('and when the fail is because server notifies iban country is invalid', () => {
+              beforeEach(() => {
+                spyOn(bankAccountService, 'update').and.returnValue(throwError([new IbanCountryIsInvalidError()]));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the edit endpoint', () => {
+                expect(bankAccountService.update).toHaveBeenCalledTimes(1);
+                expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT_FORMATTED_IBAN);
+              });
+
+              it('should NOT redirect the user', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+
+              it('should show an error toast', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR,
+                  type: TOAST_TYPES.ERROR,
+                });
+              });
+            });
+
+            describe('and when the fail is because server notifies unique bank account response', () => {
+              beforeEach(() => {
+                spyOn(bankAccountService, 'update').and.returnValue(throwError([new UniqueBankAccountByUserError('')]));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the update endpoint', () => {
+                expect(bankAccountService.update).toHaveBeenCalledTimes(1);
+                expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT_FORMATTED_IBAN);
               });
 
               it('should show an error toast', () => {
@@ -408,184 +536,95 @@ describe('BankAccountComponent', () => {
         });
       });
 
-      describe('and the bank account is an existing one...', () => {
+      describe('and the form is not valid...', () => {
         beforeEach(() => {
-          spyOn(bankAccountService, 'get').and.returnValue(of(MOCK_BANK_ACCOUNT));
+          spyOn(bankAccountService, 'create');
+          spyOn(bankAccountService, 'update');
           spyOn(toastService, 'show');
-          spyOn(router, 'navigate');
-
-          component.initForm();
+          initializeForm(true);
         });
 
-        describe('and the petition succeed...', () => {
-          describe('and we are NOT on KYC mode', () => {
-            beforeEach(() => {
-              spyOn(bankAccountService, 'update').and.returnValue(of(null));
+        describe('and we try to save it...', () => {
+          beforeEach(() => {
+            component.bankAccountForm.setValue(MOCK_BANK_ACCOUNT_INVALID);
 
-              triggerFormSubmit();
-            });
+            triggerFormSubmit();
+            fixture.detectChanges();
+          });
 
-            it('should call the edit endpoint', () => {
-              expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
-            });
+          it('should not call the api service', () => {
+            expect(bankAccountService.create).not.toHaveBeenCalled();
+            expect(bankAccountService.update).not.toHaveBeenCalled();
+          });
 
-            it('should show a succeed message', () => {
-              expect(toastService.show).toHaveBeenCalledWith({
-                text: BANK_ACCOUNT_TRANSLATIONS.EDIT_SUCCESS,
-                type: TOAST_TYPES.SUCCESS,
-              });
-            });
+          it('should set the form as pending', () => {
+            expect(component.bankAccountForm.pending).toBe(true);
+          });
 
-            it('should redirect to the bank details page', () => {
-              expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
+          it('should show an error toast', () => {
+            expect(toastService.show).toHaveBeenCalledWith({
+              text: BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR,
+              type: TOAST_TYPES.ERROR,
             });
           });
 
-          describe('and we are on KYC mode', () => {
-            beforeEach(() => {
-              component.isKYC = true;
-              spyOn(component.bankAccountSaved, 'emit');
-              spyOn(bankAccountService, 'update').and.returnValue(of(null));
-
-              triggerFormSubmit();
-            });
-
-            it('should call the edit endpoint', () => {
-              expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
-            });
-
-            it('should show a succeed message', () => {
-              expect(toastService.show).toHaveBeenCalledWith({
-                text: BANK_ACCOUNT_TRANSLATIONS.EDIT_SUCCESS,
-                type: TOAST_TYPES.SUCCESS,
-              });
-            });
-
-            it('should NOT redirect to the bank details page', () => {
-              expect(router.navigate).not.toHaveBeenCalled();
-              expect(router.navigate).not.toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
-            });
-
-            it('should notify that the bank account have been saved', () => {
-              expect(component.bankAccountSaved.emit).toHaveBeenCalled();
-            });
-          });
-        });
-
-        describe('and the petition fails...', () => {
-          describe('and when the fail is because server notifies iban country is invalid', () => {
-            beforeEach(() => {
-              spyOn(bankAccountService, 'update').and.returnValue(throwError([new IbanCountryIsInvalidError()]));
-
-              triggerFormSubmit();
-            });
-
-            it('should call the edit endpoint', () => {
-              expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
-            });
-
-            it('should NOT redirect the user', () => {
-              expect(router.navigate).not.toHaveBeenCalled();
-            });
-
-            it('should show an error toast', () => {
-              expect(toastService.show).toHaveBeenCalledWith({
-                text: BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR,
-                type: TOAST_TYPES.ERROR,
-              });
-            });
+          it('should mark the incorrect controls as dirty', () => {
+            expect(component.bankAccountForm.get('postal_code').dirty).toBe(true);
           });
 
-          describe('and when the fail is because server notifies unique bank account response', () => {
-            beforeEach(() => {
-              spyOn(bankAccountService, 'update').and.returnValue(throwError([new UniqueBankAccountByUserError('')]));
-
-              triggerFormSubmit();
-            });
-
-            it('should call the update endpoint', () => {
-              expect(bankAccountService.update).toHaveBeenCalledWith(MOCK_BANK_ACCOUNT);
-            });
-
-            it('should show an error toast', () => {
-              expect(toastService.show).toHaveBeenCalledWith({
-                text: BANK_ACCOUNT_TRANSLATIONS.SAVE_GENERIC_ERROR,
-                type: TOAST_TYPES.ERROR,
-              });
-            });
-
-            it('should not mark form as pending', () => {
-              component.onSubmit();
-
-              expect(component.bankAccountForm.pending).toBe(false);
-            });
-
-            it('should NOT redirect to the bank details page', () => {
-              expect(router.navigate).not.toHaveBeenCalled();
-            });
+          it('should show errors in the template', () => {
+            expect(el.querySelectorAll(messageErrorSelector).length).toBe(1);
           });
         });
       });
     });
 
     describe('and the form is already in progress...', () => {
-      beforeEach(() => {
-        spyOn(bankAccountService, 'create');
-        spyOn(bankAccountService, 'update');
-        component.loadingButton$.next(true);
+      describe('and the bank account is being created...', () => {
+        beforeEach(() => {
+          initializeForm(true);
+          spyOn(bankAccountService, 'create');
+          component.loadingButton$.next(true);
 
-        component.onSubmit();
-        fixture.detectChanges();
+          component.onSubmit();
+          fixture.detectChanges();
+        });
+
+        it('should NOT call any endpoint', () => {
+          expect(bankAccountService.create).not.toHaveBeenCalled();
+        });
+
+        it('should mark as disable the save button', () => {
+          const saveButton = fixture.debugElement.query(By.css('tsl-button')).nativeElement;
+
+          fixture.detectChanges();
+
+          expect(saveButton.disabled).toBe(true);
+        });
       });
 
-      it('should NOT call any endpoint', () => {
-        expect(bankAccountService.create).not.toHaveBeenCalled();
-        expect(bankAccountService.update).not.toHaveBeenCalled();
+      describe('and the bank account is being edited...', () => {
+        beforeEach(() => {
+          initializeForm(false);
+          spyOn(bankAccountService, 'update');
+          component.loadingButton$.next(true);
+
+          component.onSubmit();
+          fixture.detectChanges();
+        });
+
+        it('should NOT call any endpoint', () => {
+          expect(bankAccountService.update).not.toHaveBeenCalled();
+        });
+
+        it('should mark as disable the save button', () => {
+          const saveButton = fixture.debugElement.query(By.css('tsl-button')).nativeElement;
+
+          fixture.detectChanges();
+
+          expect(saveButton.disabled).toBe(true);
+        });
       });
-
-      it('should mark as disable the save button', () => {
-        const saveButton = fixture.debugElement.query(By.css('tsl-button')).nativeElement;
-
-        fixture.detectChanges();
-
-        expect(saveButton.disabled).toBe(true);
-      });
-    });
-  });
-
-  describe('when the form is not valid...', () => {
-    beforeEach(() => {
-      spyOn(bankAccountService, 'create');
-      spyOn(bankAccountService, 'update');
-      spyOn(toastService, 'show');
-      component.bankAccountForm.setValue(MOCK_BANK_ACCOUNT_INVALID);
-
-      triggerFormSubmit();
-      fixture.detectChanges();
-    });
-
-    it('should not call the api service', () => {
-      expect(bankAccountService.create).not.toHaveBeenCalled();
-      expect(bankAccountService.update).not.toHaveBeenCalled();
-    });
-
-    it('should set the form as pending', () => {
-      expect(component.bankAccountForm.pending).toBe(true);
-    });
-
-    it('should show an error toast', () => {
-      expect(toastService.show).toHaveBeenCalledWith({
-        text: BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR,
-        type: TOAST_TYPES.ERROR,
-      });
-    });
-
-    it('should mark the incorrect controls as dirty', () => {
-      expect(component.bankAccountForm.get('postal_code').dirty).toBe(true);
-    });
-
-    it('should show errors in the template', () => {
-      expect(el.querySelectorAll(messageErrorSelector).length).toBe(1);
     });
   });
 
@@ -603,8 +642,7 @@ describe('BankAccountComponent', () => {
   describe('when the component is NOT on the KYC page...', () => {
     beforeEach(() => {
       component.isKYC = false;
-
-      fixture.detectChanges();
+      initializeForm(true);
     });
 
     it('should show the back button', () => {
@@ -630,7 +668,7 @@ describe('BankAccountComponent', () => {
     beforeEach(() => {
       component.isKYC = true;
 
-      fixture.detectChanges();
+      initializeForm(true);
     });
 
     it('should NOT show the back button', () => {
@@ -672,5 +710,13 @@ describe('BankAccountComponent', () => {
   function triggerFormSubmit(): void {
     const profileFormElement = fixture.debugElement.query(By.css('form'));
     profileFormElement.triggerEventHandler('submit', {});
+  }
+
+  function initializeForm(isFormEmpty: boolean): void {
+    const result = isFormEmpty ? null : MOCK_BANK_ACCOUNT;
+    spyOn(bankAccountService, 'get').and.returnValue(of(result));
+
+    triggerProfileFormInit();
+    fixture.detectChanges();
   }
 });
