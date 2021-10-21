@@ -6,11 +6,15 @@
  */
 
 /**
- * Users do a suspicious login
+ * PRO users clicks on the additional services button when uploading an item
  */
-export interface SuspiciousLogin {
+export interface ClickAdditionalServicesUpload {
   /**
-   * Name of the experiment or A/B testing applied to the user who has done the suspicious login. The default value would be 'baseline'
+   * Identifier of the category clicked
    */
-  experiment?: string;
+  categoryId: number;
+  /**
+   * Identifier of the upload screen
+   */
+  screenId: 41;
 }

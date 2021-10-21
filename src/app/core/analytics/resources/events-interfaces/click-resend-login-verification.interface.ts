@@ -6,11 +6,11 @@
  */
 
 /**
- * Users do a suspicious login
+ * User clicks to Resend the email on the Login Verification Sent screen
  */
-export interface SuspiciousLogin {
+export interface ClickResendLoginVerification {
   /**
-   * Name of the experiment or A/B testing applied to the user who has done the suspicious login. The default value would be 'baseline'
+   * Identifier of the Login Verification Sent screen
    */
-  experiment?: string;
+  screenId: 284;
 }

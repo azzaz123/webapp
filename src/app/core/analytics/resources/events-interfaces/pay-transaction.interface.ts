@@ -57,4 +57,8 @@ export interface PayTransaction {
    * Payment method the user has selected
    */
   paymentMethod?: 'bank card' | 'wallet' | 'wallet, bank card' | 'paypal' | 'wallet, paypal';
+  /**
+   * Test group of the user
+   */
+  experiment?: 'payments_3dspopup_control' | 'payments_3dspopup_variant';
 }

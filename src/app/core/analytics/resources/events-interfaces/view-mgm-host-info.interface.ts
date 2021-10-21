@@ -6,11 +6,11 @@
  */
 
 /**
- * Users do a suspicious login
+ * Users view the MGM info after clicking More Info in the MGM Host Section
  */
-export interface SuspiciousLogin {
+export interface ViewMGMHostInfo {
   /**
-   * Name of the experiment or A/B testing applied to the user who has done the suspicious login. The default value would be 'baseline'
+   * Identifier of the screen that the link was shared from
    */
-  experiment?: string;
+  screenId: 294;
 }
