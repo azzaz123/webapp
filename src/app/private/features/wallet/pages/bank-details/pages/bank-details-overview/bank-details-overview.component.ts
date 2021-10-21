@@ -113,7 +113,8 @@ export class BankDetailsOverviewComponent implements OnInit {
   }
 
   private getBankAccountAndCreditCard(): void {
-    combineLatest([this.bankAccountService.get(), this.paymentsCreditCardService.get()]).pipe(take(1)).subscribe();
+    this.bankAccountService.get().subscribe();
+    this.paymentsCreditCardService.get().subscribe();
   }
 
   private deleteCard(): void {
