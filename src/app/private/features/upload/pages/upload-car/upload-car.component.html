@@ -398,6 +398,8 @@
     </ng-template>
   </div>
 
+  <tsl-pro-features [categoryId]="uploadForm.controls['category_id'].value"></tsl-pro-features>
+
   <tsl-location-box
     *ngIf="!!uploadForm"
     [form]="uploadForm"

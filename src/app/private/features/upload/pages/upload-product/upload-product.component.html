@@ -375,7 +375,7 @@
     </div>
   </ng-container>
 
-  <tsl-pro-features></tsl-pro-features>
+  <tsl-pro-features [categoryId]="uploadForm.controls['category_id'].value"></tsl-pro-features>
 
   <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location"></tsl-location-box>
   <div class="row" id="prueba">

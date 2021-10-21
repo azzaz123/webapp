@@ -209,6 +209,9 @@
       </ng-template>
     </div>
   </div>
+
+  <tsl-pro-features [categoryId]="uploadForm.controls['category_id'].value"></tsl-pro-features>
+  
   <div class="main-box">
     <h2 i18n="@@web_upload_pages_realestate_440">Property location</h2>
     <div class="row" [ngbPopover]="coachmarkLocation" [autoClose]="false" popoverClass="ml-3" triggers="mouseenter:mouseleave">
