@@ -48,7 +48,7 @@ tsl-selected-items {
   right: 0;
   left: $sidebar-width;
   z-index: 10;
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     bottom: $topbar-height;
     left: 0;
   }
