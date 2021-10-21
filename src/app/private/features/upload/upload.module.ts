@@ -30,6 +30,7 @@ import { ShippingToggleService } from './pages/upload-product/services/shipping-
 import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
 import { UploadTrackingEventService } from './pages/upload-product/upload-tracking-event/upload-tracking-event.service';
 import { CategoriesApiModule } from '@api/categories/categories-api.module';
+import { ProFeaturesComponent } from './components/pro-features/pro-features.component';
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import { CategoriesApiModule } from '@api/categories/categories-api.module';
     UploadProductComponent,
     UploadRealestateComponent,
     UploadComponent,
+    ProFeaturesComponent,
   ],
   providers: [
     UploadService,
