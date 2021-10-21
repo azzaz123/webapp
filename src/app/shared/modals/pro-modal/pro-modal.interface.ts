@@ -1,9 +1,16 @@
 export interface ProModalConfig {
   title: string;
-  icon: string;
+  img: string;
   text1: string;
   text2: string;
-  primaryButton: string;
+  buttons: {
+    primary: ButtonData;
+    secondary?: ButtonData;
+  };
+}
+
+interface ButtonData {
+  text: string;
 }
 
 export enum MODAL_ACTION {
