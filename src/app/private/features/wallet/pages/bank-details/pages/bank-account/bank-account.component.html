@@ -17,7 +17,7 @@
         </div>
     </div>
     <tsl-profile-form class="BankAccount__form row" [profileForm]="bankAccountForm" (onInit)="initForm()">
-        <form class="col d-flex flex-column" *ngIf="!loading; else loadingState" [formGroup]="bankAccountForm" (submit)="onSubmit()">
+        <form class="col d-flex flex-column" *ngIf="(loading$ | async) === false; else loadingState" [formGroup]="bankAccountForm" (submit)="onSubmit()">
             <div class="row mb-2" *ngIf="!isKYC">
                 <div class="col-md-11 offset-md-1">
                     <h3 *ngIf="isNewForm" i18n="@@bank_account_form_top_bar_add_title" id="bankAccountTitle">Add bank account</h3>
@@ -67,7 +67,7 @@
                     <div class="form-group row align-items-center">
                         <label for="iban" class="col-sm-12 col-md-5" i18n="@@bank_account_form_iban_label">IBAN</label>
                         <div class="col-sm-12 col-md-5">
-                            <input type="text" class="form-control" id="iban"  [value]="bankAccountForm.get('iban').value | separateWordByCharacter:4: ' '" formControlName="iban" [maxlength]="maxLengthIBAN"/>
+                            <input type="text" class="form-control" id="iban" formControlName="iban" [maxlength]="maxLengthIBAN"/>
                             <div *ngIf="bankAccountForm.controls.iban.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                                 <ng-container *ngIf="bankAccountForm.controls.iban.errors as IBANError">
                                     <span *ngIf="IBANError.required" i18n="@@bank_account_form_iban_empty_field_inline_error">

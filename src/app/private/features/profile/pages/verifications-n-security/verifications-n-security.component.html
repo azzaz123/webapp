@@ -8,7 +8,7 @@
           [title]="titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.EMAIL]"
           [footerLegend]="user?.email"
           [textButton]="verifiedTextButton[userVerifications.email.toString()]"
-          (buttonClick)="onClickButton()"
+          (buttonClick)="onClickVerifyEmail(userVerifications.email)"
         ></tsl-verification-card>
       </div>
     </div>

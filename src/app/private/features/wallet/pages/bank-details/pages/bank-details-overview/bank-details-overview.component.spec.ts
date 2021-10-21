@@ -514,7 +514,7 @@ describe('BankDetailsOverviewComponent', () => {
         }));
       });
       describe('AND WHEN retrieving the formatted data', () => {
-        it('should show the generic error catcher', fakeAsync(() => {
+        it('should NOT show the generic error catcher', fakeAsync(() => {
           spyOn(bankAccountService, 'get').and.returnValue(throwError('The server is broken'));
 
           expect(() => {
@@ -524,7 +524,7 @@ describe('BankDetailsOverviewComponent', () => {
           }).toThrowError();
           flush();
 
-          expect(errorActionSpy).toHaveBeenCalledTimes(1);
+          expect(errorActionSpy).not.toHaveBeenCalled();
         }));
       });
     });
@@ -548,7 +548,7 @@ describe('BankDetailsOverviewComponent', () => {
         }));
       });
       describe('AND WHEN retrieving the formatted data', () => {
-        it('should show the generic error catcher', fakeAsync(() => {
+        it('should NOT show the generic error catcher', fakeAsync(() => {
           spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError('The server is broken'));
 
           expect(() => {
@@ -558,7 +558,7 @@ describe('BankDetailsOverviewComponent', () => {
           }).toThrowError();
           flush();
 
-          expect(errorActionSpy).toHaveBeenCalledTimes(1);
+          expect(errorActionSpy).not.toHaveBeenCalled();
         }));
       });
     });
