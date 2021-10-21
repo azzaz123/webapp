@@ -37,7 +37,6 @@ describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
   const backAnchorSelector = '.BankAccount__back';
   const KYCInfoMessageSelector = '.BankAccount__KYCMessage';
-  const bottomStyleSelector = '.BankAccount__bottomContainer';
 
   const routerEvents: Subject<any> = new Subject();
 
@@ -651,12 +650,6 @@ describe('BankAccountComponent', () => {
       expect(back).toBeTruthy();
     });
 
-    it('should NOT apply the bottom style', () => {
-      const bottomButtonStyle = fixture.debugElement.query(By.css(bottomStyleSelector));
-
-      expect(bottomButtonStyle).toBeFalsy();
-    });
-
     it('should NOT show the informative message', () => {
       const KYCMessage = fixture.debugElement.query(By.css(KYCInfoMessageSelector));
 
@@ -675,12 +668,6 @@ describe('BankAccountComponent', () => {
       const back = fixture.debugElement.query(By.css(backAnchorSelector));
 
       expect(back).toBeFalsy();
-    });
-
-    it('should apply the bottom style', () => {
-      const bottomButtonStyle = fixture.debugElement.query(By.css(bottomStyleSelector));
-
-      expect(bottomButtonStyle).toBeTruthy();
     });
 
     it('should show the informative message', () => {
