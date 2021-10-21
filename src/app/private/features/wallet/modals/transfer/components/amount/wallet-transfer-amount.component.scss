@@ -1,14 +1,13 @@
 @import '~web-styleguide/scss/colors';
 @import '~web-styleguide/scss/text';
 @import '~web-styleguide/scss/spacing';
-@import '~style/mixins/_square.scss';
+@import '~style/common';
 
-$wallet-transfer-amount-container-height: 96px;
 $wallet-transfer-amount-line-width: 250px;
 $wallet-transfer-amount-integer-text-size: 74px;
-$wallet-transfer-amount-integer-margin-left: -40px;
 $wallet-transfer-amount-integer-width: 188px;
 $wallet-transfer-amount-square-width: 335px;
+$wallet-transfer-amount-square-width-small: 315px;
 
 $spacing-14: 14px;
 
@@ -27,12 +26,15 @@ $spacing-14: 14px;
     background: $white;
     border-radius: $spacing-14;
     box-shadow: 0px 2px 6px rgba(37, 50, 56, 0.15);
-    width: $wallet-transfer-amount-square-width;
+    width: $wallet-transfer-amount-square-width-small;
+
+    @include media-breakpoint-up(md) {
+      width: $wallet-transfer-amount-square-width;
+    }
   }
   &__figure {
     color: $blue-grey-1;
     font-weight: $font-weight-chunky;
-    height: $wallet-transfer-amount-container-height;
     padding: $spacing-m 0 11px 4px;
 
     input {
@@ -43,9 +45,9 @@ $spacing-14: 14px;
 
     &__integer {
       font-size: $wallet-transfer-amount-integer-text-size;
-      height: $wallet-transfer-amount-integer-text-size;
-      line-height: $wallet-transfer-amount-integer-text-size;
-      margin-left: $wallet-transfer-amount-integer-margin-left;
+      margin-bottom: -$spacing-l;
+      margin-left: -$spacing-xl;
+      margin-top: -$spacing-m;
       padding-left: 0;
       text-align: right;
       width: $wallet-transfer-amount-integer-width;
@@ -57,9 +59,6 @@ $spacing-14: 14px;
 
     &__decimal {
       font-size: $font-size-xl;
-      height: $font-size-xl;
-      line-height: $font-size-xl;
-      margin-top: 6px;
       padding-right: 0;
       width: $spacing-xxl;
 
@@ -71,7 +70,6 @@ $spacing-14: 14px;
     &__currency {
       color: $blue-grey-2;
       font-size: $font-size-xl;
-      margin-top: -$spacing-xxs;
     }
 
     &__reset {
@@ -98,7 +96,7 @@ $spacing-14: 14px;
   }
   &__line {
     border: 1px solid $blue-grey-4;
-    margin-bottom: $spacing-m;
+    margin-top: $spacing-ms;
     width: $wallet-transfer-amount-line-width;
 
     &--invalid {
@@ -109,14 +107,16 @@ $spacing-14: 14px;
     color: $walla-main;
     font-size: $font-size-xs;
     line-height: $font-size-m;
-    margin-bottom: $spacing-14;
+    margin-top: $spacing-m;
     text-align: center;
 
     &--invalid {
       color: $warn;
     }
   }
-
+  &__CTA {
+    margin-top: $spacing-14;
+  }
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
