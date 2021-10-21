@@ -6,6 +6,10 @@
   height: 56px;
   &__label {
     font-size: $font-size-m;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 90%;
   }
 
   &__sublabel {
