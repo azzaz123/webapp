@@ -15,13 +15,12 @@
             </div>
             <div class="d-flex justify-content-between mb-3">
                 <span i18n="@@additional_services_selector_pro_user_config_service_info_title">Configuration service</span>
-                <tsl-switch></tsl-switch>
+                <tsl-switch (onChange)="onClick()"></tsl-switch>
             </div>
             <div class="d-flex justify-content-between">
                 <span i18n="@@additional_services_selector_pro_user_guarantee_service_info_title">Guarantee</span>
-                <tsl-switch></tsl-switch>
+                <tsl-switch (onChange)="onClick()"></tsl-switch>
             </div>
         </div>
-
     </div>
 </div>
