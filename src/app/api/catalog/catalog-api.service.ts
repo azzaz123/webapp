@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of } from 'rxjs';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { PUBLISHED_QUERY_PARAMS, PublishedItem, PublishedResponse, WALL_QUERY_PARAMS, WallItem, WallResponse } from '@api/catalog/dtos';
+import {
+  PUBLISHED_QUERY_PARAMS,
+  PublishedItem,
+  PublishedResponse,
+  WALL_QUERY_PARAMS,
+  WallItem,
+  WallResponse,
+  WALL_SORT_BY,
+} from '@api/catalog/dtos';
 import { map, switchMap } from 'rxjs/operators';
-import { Location, PaginatedList } from '@api/core/model';
+import { Location, PaginatedList, SORT_BY } from '@api/core/model';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
 import { mapPublishedItemsToItemCards } from './mappers/published-item-mapper';
 import { CatalogHttpService } from '@api/catalog/http/catalog-http.service';
@@ -64,10 +72,23 @@ export class CatalogApiService {
             return {
               list: mapWallItemsToItemCards(response.data, favouriteIds),
               paginationParameter: response.meta.next,
+              orderParameter: this.mapOrderParameter(response.meta.order?.type),
             };
           })
         );
       })
     );
+  }
+
+  private mapOrderParameter(orderParameter: WALL_SORT_BY): SORT_BY {
+    let order: SORT_BY;
+
+    Object.entries(WALL_SORT_BY).forEach(([key, value]) => {
+      if (orderParameter === value) {
+        order = SORT_BY[key];
+      }
+    });
+
+    return order || null;
   }
 }
