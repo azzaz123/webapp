@@ -2,21 +2,23 @@
   [infiniteScrollDisabled]="end || loading" (scrolled)="loadMore()">
   <div class="container">
     <tsl-header>
-      <div class="col-9 col-md-11">
-        <div class="header-row">
-          <h1 class="header-title" i18n="@@web_favorites_pages_201">Your favorites</h1>
+      <div class="row mb-3">
+        <div class="col-9 col-md-11">
+          <div class="header-row">
+            <h1 class="header-title" i18n="@@web_favorites_pages_201">Your favorites</h1>
+          </div>
+          <div class="header-row">
+            <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n="@@web_wallapop_products_like_most">These are the Wallapop products that you like the most</h4>
+            <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n="@@web_wallapop_profiles_like_most">These are the Wallapop profiles that you like the most</h4>
+          </div>
         </div>
-        <div class="header-row">
-          <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n="@@web_wallapop_products_like_most">These are the Wallapop products that you like the most</h4>
-          <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n="@@web_wallapop_profiles_like_most">These are the Wallapop profiles that you like the most</h4>
+        <div class="col-3 col-md-1 header-numbers">
+          <p class="header-numbers-top">{{numberOfFavorites}}</p>
+          <p class="header-numbers-bottom">
+            <span *ngIf="numberOfFavorites > 1 || numberOfFavorites === 0" i18n="@@web_favorites_pages_202">favorites</span>
+            <span *ngIf="numberOfFavorites === 1" i18n="@@web_favorites_pages_203">favorite</span>
+          </p>
         </div>
-      </div>
-      <div class="col-3 col-md-1 header-numbers">
-        <p class="header-numbers-top">{{numberOfFavorites}}</p>
-        <p class="header-numbers-bottom">
-          <span *ngIf="numberOfFavorites > 1 || numberOfFavorites === 0" i18n="@@web_favorites_pages_202">favorites</span>
-          <span *ngIf="numberOfFavorites === 1" i18n="@@web_favorites_pages_203">favorite</span>
-        </p>
       </div>
     </tsl-header>
     <div class="row">

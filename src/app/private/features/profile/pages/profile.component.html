@@ -1,32 +1,34 @@
 <div class="page-content">
   <div class="container">
     <tsl-header>
-      <div class="col-12 col-md-9">
-        <div class="header-row">
-          <h1 class="header-title">
-            <span class="Profile__title" i18n="@@web_profile_pages_315">Your profile</span>
-            <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-              <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
-            </ng-container>
-          </h1>
+      <div class="row mb-3">
+        <div class="col-12 col-md-9">
+          <div class="header-row">
+            <h1 class="header-title">
+              <span class="Profile__title" i18n="@@web_profile_pages_315">Your profile</span>
+              <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+                <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+              </ng-container>
+            </h1>
+          </div>
+          <div class="header-row">
+            <h4 class="header-subtitle" i18n="@@web_profile_pages_316">From here you can view and edit your profile</h4>
+            <div class="header-separator d-none d-md-flex">|</div>
+            <a 
+              class="header-link d-none d-md-flex" 
+              i18n="@@web_profile_pages_317"
+              *ngIf="user"
+              [routerLink]="user.webSlug | userProfileRoute:user.id"
+            >
+                View my public profile
+            </a>
+          </div>
         </div>
-        <div class="header-row">
-          <h4 class="header-subtitle" i18n="@@web_profile_pages_316">From here you can view and edit your profile</h4>
-          <div class="header-separator d-none d-md-flex">|</div>
-          <a 
-            class="header-link d-none d-md-flex" 
-            i18n="@@web_profile_pages_317"
-            *ngIf="user"
-            [routerLink]="user.webSlug | userProfileRoute:user.id"
-          >
-              View my public profile
-          </a>
-        </div>
-      </div>
-      <div class="col-3 d-none d-md-block">
-        <div class="btn-wrapper">
-          <button class="btn btn-logout" (click)="logout($event)"
-            i18n="@@web_profile_pages_585">Logout</button>
+        <div class="col-3 d-none d-md-block">
+          <div class="btn-wrapper">
+            <button class="btn btn-logout" (click)="logout($event)"
+              i18n="@@web_profile_pages_585">Logout</button>
+          </div>
         </div>
       </div>
     </tsl-header>

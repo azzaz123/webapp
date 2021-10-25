@@ -3,28 +3,30 @@
     <tsl-spinner [firstLoad]="false" [hidden]="!loading"></tsl-spinner>
     <div [hidden]="loading">
       <tsl-header>
-        <div class="col-11">
-          <div class="header-row">
-            <h1 class="header-title">
-              <span [hidden]="withCoins" i18n>Credit</span>
-              <span [hidden]="!withCoins">Wallacoins</span>
-            </h1>
+        <div class="row mb-3">
+          <div class="col-11">
+            <div class="header-row">
+              <h1 class="header-title">
+                <span [hidden]="withCoins" i18n>Credit</span>
+                <span [hidden]="!withCoins">Wallacoins</span>
+              </h1>
+            </div>
+            <div class="header-row header-row--margin">
+              <h4 class="header-subtitle">
+                <span [hidden]="withCoins" i18n>Buy saving packs to feature your items and check your credit remaining.</span>
+                <span [hidden]="!withCoins" i18n>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit.</span>
+              </h4>
+            </div>
           </div>
-          <div class="header-row header-row--margin">
-            <h4 class="header-subtitle">
-              <span [hidden]="withCoins" i18n>Buy saving packs to feature your items and check your credit remaining.</span>
-              <span [hidden]="!withCoins" i18n>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit.</span>
-            </h4>
-          </div>
-        </div>
-        <div class="col-1">
-          <div class="total-credits" [hidden]="!withCoins">
-            <div class="credits">{{wallacoins | number}}</div>
-            <div class="label">{{currencyName}}</div>
-          </div>
-          <div class="total-credits" [hidden]="withCoins">
-            <div class="credits">{{wallacoins | customCurrency}}</div>
-            <div class="label" i18n>credit</div>
+          <div class="col-1">
+            <div class="total-credits" [hidden]="!withCoins">
+              <div class="credits">{{wallacoins | number}}</div>
+              <div class="label">{{currencyName}}</div>
+            </div>
+            <div class="total-credits" [hidden]="withCoins">
+              <div class="credits">{{wallacoins | customCurrency}}</div>
+              <div class="label" i18n>credit</div>
+            </div>
           </div>
         </div>
       </tsl-header>

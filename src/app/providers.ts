@@ -10,6 +10,7 @@ import { MonitoringService } from '@core/monitoring/services/monitoring.service'
 import { MARKET_PROVIDER, MarketSiteByLocale } from '../configs/market.config';
 import { siteUrlFactory, SITE_URL } from '@configs/site-url.config';
 import { WINDOW_TOKEN } from '@core/window/window.token';
+import { ExperimentationService } from '@core/experimentation/experimentation.service';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -41,6 +42,12 @@ export const PROVIDERS: Provider[] = [
     multi: true,
   },
   {
+    provide: APP_INITIALIZER,
+    useFactory: initializeExperiment,
+    deps: [ExperimentationService],
+    multi: true,
+  },
+  {
     provide: RouteReuseStrategy,
     useClass: CustomRouteReuseStrategy,
   },
@@ -64,4 +71,8 @@ export function defaultPermissionsFactory(
 
 export function initializeMonitoring(monitoringService: MonitoringService): () => void {
   return () => monitoringService.initialize();
+}
+
+export function initializeExperiment(experimentationService: ExperimentationService): () => void {
+  return () => experimentationService.initialize();
 }
