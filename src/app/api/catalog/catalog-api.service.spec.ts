@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { CatalogApiService } from './catalog-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
-import { Location, PaginatedList } from '@api/core/model';
+import { Location, PaginatedList, SORT_BY } from '@api/core/model';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { CatalogHttpService } from '@api/catalog/http/catalog-http.service';
 import { of } from 'rxjs';
@@ -100,7 +100,7 @@ describe('CatalogApiService', () => {
 
         expect(httpService.getWallItems).toHaveBeenCalledTimes(1);
         expect(httpService.getWallItems).toHaveBeenCalledWith(location, undefined);
-        expect(response).toEqual({ list: [mappedWallItemFixture], paginationParameter: 'nextParameter' });
+        expect(response).toEqual({ list: [mappedWallItemFixture], paginationParameter: 'nextParameter', orderParameter: SORT_BY.DISTANCE });
       });
     });
 
@@ -118,7 +118,11 @@ describe('CatalogApiService', () => {
         expect(httpService.getWallItems).toHaveBeenCalledWith(location, undefined);
         expect(favouritesApiService.getFavouriteItemsId).toHaveBeenCalledTimes(1);
         expect(favouritesApiService.getFavouriteItemsId).toHaveBeenCalledWith([wallItemFixture.id]);
-        expect(response).toEqual({ list: [mappedFavouritedWallItemFixture], paginationParameter: 'nextParameter' });
+        expect(response).toEqual({
+          list: [mappedFavouritedWallItemFixture],
+          paginationParameter: 'nextParameter',
+          orderParameter: SORT_BY.DISTANCE,
+        });
       });
     });
 
@@ -135,7 +139,7 @@ describe('CatalogApiService', () => {
         expect(httpService.getWallItems).toHaveBeenCalledWith(location, {
           [WALL_QUERY_PARAMS.SINCE]: 'oldNextParameter',
         });
-        expect(response).toEqual({ list: [mappedWallItemFixture], paginationParameter: 'nextParameter' });
+        expect(response).toEqual({ list: [mappedWallItemFixture], paginationParameter: 'nextParameter', orderParameter: SORT_BY.DISTANCE });
       });
     });
   });

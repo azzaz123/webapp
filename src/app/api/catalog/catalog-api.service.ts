@@ -9,6 +9,7 @@ import { mapPublishedItemsToItemCards } from './mappers/published-item-mapper';
 import { CatalogHttpService } from '@api/catalog/http/catalog-http.service';
 import { QueryParams } from '@api/core/utils/types';
 import { mapWallItemsToItemCards } from '@api/catalog/mappers/wall-item-mapper';
+import { mapOrderParameter } from './mappers/order-parameter-mapper';
 
 @Injectable()
 export class CatalogApiService {
@@ -64,6 +65,7 @@ export class CatalogApiService {
             return {
               list: mapWallItemsToItemCards(response.data, favouriteIds),
               paginationParameter: response.meta.next,
+              orderParameter: mapOrderParameter(response.meta.order?.type),
             };
           })
         );
