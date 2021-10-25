@@ -6,7 +6,7 @@ import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.
 import { EventService } from '@core/event/event.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
-import { finalize } from 'rxjs/operators';
+import { distinctUntilChanged, finalize } from 'rxjs/operators';
 import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 import { Router } from '@angular/router';
 import { BankAccountFormErrorMessages } from '@private/features/wallet/interfaces/bank-account/bank-account-form-error-messages.interface';
@@ -26,6 +26,7 @@ import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants'
 import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
 import { BehaviorSubject } from 'rxjs';
 import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
+import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -41,9 +42,9 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
 
   public readonly loadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
-  public loading = false;
   public isNewForm = true;
   public maxLengthIBAN: number;
   public formErrorMessages: BankAccountFormErrorMessages = {
@@ -62,7 +63,8 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     private router: Router,
     private bankAccountService: BankAccountService,
     private location: Location,
-    private kycTrackingEventsService: KYCTrackingEventsService
+    private kycTrackingEventsService: KYCTrackingEventsService,
+    private separateWordByCharacterPipe: SeparateWordByCharacterPipe
   ) {}
 
   ngOnInit(): void {
@@ -72,6 +74,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
       this.onSubmit();
     });
+    this.formatIBANWhenChanges();
   }
 
   ngOnDestroy() {
@@ -83,7 +86,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       .get()
       .pipe(
         finalize(() => {
-          this.loading = false;
+          this.loading$.next(false);
         })
       )
       .subscribe(
@@ -204,6 +207,16 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   private generateIBANMaxLength(): void {
     const spacingAllowed = IBAN_LENGTH / 4 - 1;
     this.maxLengthIBAN = IBAN_LENGTH + spacingAllowed;
+  }
+
+  private formatIBANWhenChanges(): void {
+    this.bankAccountForm
+      .get('iban')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((newIBAN: string) => {
+        const formattedIBAN = this.separateWordByCharacterPipe.transform(newIBAN, 4, ' ');
+        this.bankAccountForm.patchValue({ iban: formattedIBAN });
+      });
   }
 
   private patchFormValues(): void {

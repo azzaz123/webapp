@@ -17,7 +17,7 @@ import { WALLET_PATHS } from './wallet.routing.constants';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { MOCK_KYC_PENDING_PROPERTIES } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
-import { WalletTrackingEventService } from './services/tracking-event/wallet-tracking-event.service';
+import { WalletTrackingEventService } from '@private/features/wallet/services/tracking-event/wallet-tracking-event.service';
 
 describe('WalletComponent', () => {
   const BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
@@ -51,6 +51,7 @@ describe('WalletComponent', () => {
           provide: WalletTrackingEventService,
           useValue: {
             trackClickHelpWallet() {},
+            trackClickBankDetails() {},
           },
         },
       ],
@@ -147,6 +148,21 @@ describe('WalletComponent', () => {
       helpButtonRef.nativeElement.click();
 
       expect(walletTrackingEventService.trackClickHelpWallet).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe.each([
+    ['any url', 0],
+    [BANK_DETAILS_URL, 1],
+  ])('WHEN user clicks to the navigation link', (navLinkUrl, times) => {
+    it('should track the event for the bank details url', () => {
+      const navLinksElement = fixture.debugElement.query(By.css('tsl-nav-links'));
+      spyOn(router, 'navigate');
+      spyOn(walletTrackingEventService, 'trackClickBankDetails');
+
+      navLinksElement.triggerEventHandler('clickedLink', navLinkUrl);
+
+      expect(walletTrackingEventService.trackClickBankDetails).toHaveBeenCalledTimes(times);
     });
   });
 });
