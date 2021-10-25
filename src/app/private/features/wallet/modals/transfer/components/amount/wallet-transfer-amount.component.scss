@@ -41,6 +41,7 @@ $spacing-14: 14px;
       border: 0;
       caret-color: $walla-main;
       font-weight: $font-weight-chunky;
+      padding: 2px;
     }
 
     &__integer {
@@ -70,6 +71,8 @@ $spacing-14: 14px;
     &__currency {
       color: $blue-grey-2;
       font-size: $font-size-xl;
+      line-height: $font-size-xl;
+      margin-top: $spacing-s;
     }
 
     &__reset {

@@ -1,6 +1,10 @@
 @import '~style/common';
 
 .SubscriptionBenefit {
+  img {
+    max-width: 100%;
+  }
+
   &__title {
     font-size: $font-size-l;
     font-weight: bold;

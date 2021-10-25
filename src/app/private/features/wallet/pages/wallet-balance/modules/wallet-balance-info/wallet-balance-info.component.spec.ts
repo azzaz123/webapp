@@ -121,6 +121,15 @@ describe('WalletBalanceInfoComponent', () => {
   describe('WHEN showing the Wallet balance', () => {
     beforeEach(() => {
       spyOn(balanceTrackingEventService, 'trackViewWallet');
+      jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY));
+      jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_VERIFIED_PROPERTIES));
+    });
+
+    it('should track the view wallet event', () => {
+      component.ngOnInit();
+
+      expect(balanceTrackingEventService.trackViewWallet).toBeCalledTimes(1);
+      expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith();
     });
 
     describe('and while waiting for payment server response', () => {
@@ -144,10 +153,6 @@ describe('WalletBalanceInfoComponent', () => {
         expect(loadingContainerRef).toBeTruthy();
       }));
 
-      it('should not track any event', () => {
-        expect(balanceTrackingEventService.trackViewWallet).not.toBeCalled();
-      });
-
       describe('AND WHEN server responses', () => {
         beforeEach(fakeAsync(() => {
           component.loading = true;
@@ -164,11 +169,6 @@ describe('WalletBalanceInfoComponent', () => {
         it('should not show the loading animation', fakeAsync(() => {
           const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
           expect(loadingContainerRef).toBeFalsy();
-        }));
-
-        it('should track the view wallet event', fakeAsync(() => {
-          expect(balanceTrackingEventService.trackViewWallet).toBeCalledTimes(1);
-          expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith(0, 'verified');
         }));
       });
     });
@@ -189,11 +189,8 @@ describe('WalletBalanceInfoComponent', () => {
 
       it('should show a loading animation', fakeAsync(() => {
         const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
-        expect(loadingContainerRef).toBeTruthy();
-      }));
 
-      it('should not track any event', fakeAsync(() => {
-        expect(balanceTrackingEventService.trackViewWallet).not.toBeCalled();
+        expect(loadingContainerRef).toBeTruthy();
       }));
 
       describe('AND WHEN server responses', () => {
@@ -211,11 +208,6 @@ describe('WalletBalanceInfoComponent', () => {
         it('should not show the loading animation', fakeAsync(() => {
           const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
           expect(loadingContainerRef).toBeFalsy();
-        }));
-
-        it('should track the view wallet event', fakeAsync(() => {
-          expect(balanceTrackingEventService.trackViewWallet).toBeCalledTimes(1);
-          expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith(1722.41, 'verified');
         }));
       });
     });

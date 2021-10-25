@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
-import { subscriptionBenefits } from '../constants/subscription-benefits';
+import { subscriptionBenefitsMapped } from '@fixtures/subscription-benefits.fixture';
 import { SubscriptionBenefit } from '../interfaces/subscription-benefit.interface';
 
 import { GENERIC_BENEFITS, SubscriptionBenefitsService } from './subscription-benefits.service';
@@ -25,7 +25,7 @@ describe('SubscriptionBenefitsService', () => {
 
       service.getSubscriptionBenefits().subscribe((response) => (result = response));
 
-      expect(result).toEqual(subscriptionBenefits);
+      expect(result).toEqual(subscriptionBenefitsMapped);
     });
   });
 

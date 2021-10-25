@@ -73,7 +73,7 @@ describe('WalletTrackingEventService', () => {
             .spyOn(kycPropertiesService, 'KYCProperties$', 'get')
             .mockReturnValue(of(bankAccountTrackingEventCase.kycProperties));
 
-          service.trackClickBankAccount();
+          service.trackClickBankDetails();
 
           expect(KYCProperties).toHaveBeenCalledTimes(1);
         });
@@ -90,7 +90,7 @@ describe('WalletTrackingEventService', () => {
             },
           };
 
-          service.trackClickBankAccount();
+          service.trackClickBankDetails();
 
           expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
           expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);

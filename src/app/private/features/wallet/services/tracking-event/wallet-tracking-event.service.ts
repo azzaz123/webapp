@@ -29,7 +29,7 @@ type KycStatusEventAttribute = InnerType<ClickBankDetails, 'kycStatus'> | undefi
 export class WalletTrackingEventService {
   constructor(private analyticsService: AnalyticsService, private kycPropertiesService: KYCPropertiesService) {}
 
-  public trackClickBankAccount(): void {
+  public trackClickBankDetails(): void {
     this.kycPropertiesService.KYCProperties$.pipe(take(1)).subscribe((kycProperties: KYCProperties) => {
       const { status } = kycProperties;
       const kycStatus = this.mapKycBannerStatusToEventAttribute(status);

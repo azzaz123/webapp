@@ -119,6 +119,16 @@ describe('WalletHistoryMovementsComponent', () => {
     });
   });
 
+  describe('when user exits page', () => {
+    it('should reset historic movements', () => {
+      spyOn(walletHistoryMovementsUIService, 'reset');
+
+      component.ngOnDestroy();
+
+      expect(walletHistoryMovementsUIService.reset).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('while waiting for server to respon', () => {
     beforeEach(() => {
       walletBalanceLoadingReplaySubject.next(true);
