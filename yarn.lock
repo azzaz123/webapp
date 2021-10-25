@@ -2880,6 +2880,21 @@
     "@mparticle/web-sdk" "^2.11.3"
     appboy-web-sdk "2.5.2"
 
+"@mparticle/web-google-analytics-kit@^2.1.12":
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/@mparticle/web-google-analytics-kit/-/web-google-analytics-kit-2.1.12.tgz#9226dcfd02fefc9a4ad4086b79c3f251a07fc47e"
+  integrity sha512-ADpFXjXyf0hYkQQDUuDqlcVdO3Xgs2JpzwiZXiQKwT42gD2Ig3iug44B8PieVUuvns82ryprqTbPtlAIeJTtyg==
+  dependencies:
+    "@mparticle/web-sdk" "^2.11.0"
+
+"@mparticle/web-sdk@^2.11.0":
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.14.1.tgz#8d0c64254118a5a4c1d930719cf58a02ebceb452"
+  integrity sha512-oXbtIwauOp8fs1FrZrXxErA2Ph+oP/cdN2FXLZhR8YP1XbDCvuEuHBRr+hVIo/VXIZbt3LBQLB2H+1uSACTvHw==
+  dependencies:
+    "@babel/runtime" "^7.6.0"
+    slugify "^1.3.6"
+
 "@mparticle/web-sdk@^2.11.3":
   version "2.11.8"
   resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.11.8.tgz#3471073efa6d0f60d6d2aadcfda76e8c69ef1970"
@@ -10961,6 +10976,11 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+lottie-web@^5.7.13:
+  version "5.7.13"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.7.13.tgz#c4087e4742c485fc2c4034adad65d1f3fcd438b0"
+  integrity sha512-6iy93BGPkdk39b0jRgJ8Zosxi8QqcMP5XcDvg1f0XAvEkke6EMCl6BUO4Lu78dpgvfG2tzut4QJ+0vCrfbrldQ==
+
 lower-case@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/lower-case/-/lower-case-2.0.2.tgz#6fa237c63dbdc4a82ca0fd882e4722dc5e634e28"
@@ -11516,9 +11536,9 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#0.99.0":
+"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#0.113.0":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#eaa155f285723abf3069cc7fd118ede19debac4b"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#492cefb0767d9170f9c19bdf6a2748076af39fd3"
 
 mri@^1.1.5:
   version "1.1.6"

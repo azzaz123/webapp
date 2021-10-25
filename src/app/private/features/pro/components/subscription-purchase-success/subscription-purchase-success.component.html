@@ -1,17 +1,26 @@
 <div class="SubscriptionPurchaseSuccess">
     <div class="GenericCard d-flex flex-column text-center align-items-center p-md-5">
         <div class="mb-4">
-            <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.large" size="90" [showProBadgeWide]="true"></tsl-user-avatar>
+            <tsl-user-avatar *ngIf="user?.image; else noAvatar" [user]="user" [imageUrl]="user?.image?.urls_by_size.large" size="90" [showProBadgeWide]="true"></tsl-user-avatar>
+            <ng-template #noAvatar>
+                <tsl-pro-badge class="mb-4" [iconType]="ICON_TYPE.LARGE"></tsl-pro-badge>
+            </ng-template>
         </div>
         <div class="SubscriptionPurchaseSuccess__title">
-            <span  i18n="@@purchase_confirmation_view_pro_users_description">Awesome, {{user?.firstName}}! Now you are PRO</span>
+            <span  *ngIf="!isEditSubscription" i18n="@@purchase_confirmation_view_pro_users_description">Awesome, {{user?.firstName}}! Now you are PRO</span>
+            <span  *ngIf="isEditSubscription" i18n="@@change_plan_success_view_pro_users_title">Your plan has been successfully modified</span>
         </div>
         <div *ngIf="invoicedRequired" class="SubscriptionPurchaseSuccess__subtitle mt-md-4">
             <span i18n="@@purchase_confirmation_view_pro_users_if_invoicing_details_informative_text">An invoice will be sent to your email, as you asked</span>
         </div>
+        <div *ngIf="isEditSubscription" class="SubscriptionPurchaseSuccess__subtitle mt-md-4">
+            <span i18n="@@change_plan_success_view_pro_users_description">Keep making the most of Wallapop PRO.</span>
+        </div>
         <div class="SubscriptionPurchaseSuccess__buttons d-flex flex-column w-100">
-            <tsl-button className="btn btn-primary btn-primary--bold btn--big w-100  mb-3" i18n="@@purchase_confirmation_view_pro_users_customize_profile_button" (click)="onClose(PRIVATE_PATHS.PROFILE)"
+            <tsl-button *ngIf="!isEditSubscription" className="btn btn-primary btn-primary--bold btn--big w-100  mb-3" i18n="@@purchase_confirmation_view_pro_users_customize_profile_button" (click)="onClose(PRIVATE_PATHS.PROFILE)"
             >Customize your PRO profile</tsl-button>
+            <tsl-button *ngIf="isEditSubscription" className="btn btn-primary btn-primary--bold btn--big w-100  mb-3" i18n="@@change_plan_success_view_pro_users_go_to_catalog_button" (click)="onClose(PRIVATE_PATHS.CATALOG)"
+            >Go to my catalogue </tsl-button>
             <tsl-button class="w-100" className="btn-secondary w-100" i18n="@@purchase_confirmation_view_pro_users_dismiss_button" (click)="onClose()"> 
                 Not now, thanks
             </tsl-button>

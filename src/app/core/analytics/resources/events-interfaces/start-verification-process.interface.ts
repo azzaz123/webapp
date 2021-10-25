@@ -12,7 +12,7 @@ export interface StartVerificationProcess {
   /**
    * Identifier of the screen of the register help center
    */
-  screenId: 249;
+  screenId: 248 | 249 | 270;
   /**
    * Identifier of the verification done
    */

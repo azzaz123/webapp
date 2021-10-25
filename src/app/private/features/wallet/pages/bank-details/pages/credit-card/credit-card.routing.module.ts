@@ -1,11 +1,13 @@
 import { Route, RouterModule } from '@angular/router';
 import { CreditCardComponent } from './credit-card.component';
 import { NgModule } from '@angular/core';
+import { ExitConfirmGuard } from '@core/guards/exit-confirm.guard';
 
 const routes: Route[] = [
   {
     path: '',
     component: CreditCardComponent,
+    canDeactivate: [ExitConfirmGuard],
   },
 ];
 

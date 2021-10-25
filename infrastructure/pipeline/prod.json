@@ -3,9 +3,8 @@
     "EnvName": "prod",
     "ImageTag": "stable",
     "ProjectName": "webapp",
-    "BucketESName": "web-es.wallapop.com",
-    "BucketENName": "web-en.wallapop.com",
-    "BucketITName": "web-it.wallapop.com"
+    "BucketNameFunctionalWebapp":"functional-webapp-prod",
+    "FunctionalWebappDistributionID":"E1NRD9USZ203H"
   },
   "Tags": {
     "Project": "webapp",

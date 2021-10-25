@@ -14,6 +14,8 @@ import {
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PaginatedList } from '@api/core/model';
+import { ShippingRulesPrice } from '@api/bff/delivery/rules/dtos/shipping-rules';
+import { CategoriesApiService } from '@api/categories/categories-api.service';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -27,10 +29,12 @@ import { CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryOption, CategoryResponse, SuggestedCategory } from '@core/category/category-response.interface';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Item, ITEM_TYPES } from '@core/item/item';
-import { DeliveryInfo, ItemContent, ItemResponse } from '@core/item/item-response.interface';
+import { DeliveryInfo, ItemContent, ItemResponse, ItemSaleConditions } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -51,6 +55,10 @@ import { HashtagSuggesterApiService } from '../../core/services/hashtag-suggesti
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
+import { ShippingToggleAllowance } from './services/shipping-toggle/interfaces/shipping-toggle-allowance.interface';
+import { ShippingToggleService } from './services/shipping-toggle/shipping-toggle.service';
+import { UploadTrackingEventService } from './upload-tracking-event/upload-tracking-event.service';
+
 function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   const objectTypeControl: FormGroup = formControl?.parent as FormGroup;
   if (!objectTypeControl) {
@@ -66,7 +74,6 @@ function isObjectTypeRequiredValidator(formControl: AbstractControl) {
   }
   return null;
 }
-
 @Component({
   selector: 'tsl-upload-product',
   templateUrl: './upload-product.component.html',
@@ -101,6 +108,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public modelSuggestions: Subject<KeywordSuggestion[]> = new Subject();
   public uploadCompletedPercentage = 0;
   public pendingFiles: PendingFiles;
+
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     { value: 'EUR', label: '€' },
@@ -109,6 +117,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public deliveryInfo = DELIVERY_INFO;
   public categories: CategoryOption[] = [];
   public loading: boolean;
+  public uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   public selectedRawCategory: CategoryResponse;
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
@@ -119,8 +128,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     { label: 'ss', value: 'ss' },
     { label: 'saa', value: 'saa' },
   ];
-  public uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   public start: string = '0';
+
+  public isShippabilityAllowed = false;
+  public isShippabilityAllowedByCategory = false;
+  public priceShippingRules: ShippingRulesPrice;
+  public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
 
   private focused: boolean;
   private oldFormValue: any;
@@ -143,13 +156,19 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private uploadService: UploadService,
     private subscriptionService: SubscriptionsService,
     private itemReactivationService: ItemReactivationService,
-    private hashtagSuggesterApiService: HashtagSuggesterApiService
+    private hashtagSuggesterApiService: HashtagSuggesterApiService,
+    private customerHelpService: CustomerHelpService,
+    private shippingToggleService: ShippingToggleService,
+    private uploadTrackingEventService: UploadTrackingEventService,
+    private categoriesApiService: CategoriesApiService
   ) {
     this.genders = [
       { value: 'male', label: this.i18n.translate(TRANSLATION_KEY.MALE) },
       { value: 'female', label: this.i18n.translate(TRANSLATION_KEY.FEMALE) },
     ];
+
     this.fillForm();
+
     config.placement = 'right';
     config.triggers = 'focus:blur';
     config.container = 'body';
@@ -164,6 +183,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
       this.detectCategoryChanges();
       this.detectObjectTypeChanges();
+      this.detectShippabilityAllowanceChanges();
+      this.detectShippabilityChanges();
+
       if (this.item) {
         this.initializeEditForm();
 
@@ -177,6 +199,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.handleUploadFormExtraFields();
     });
     this.detectTitleKeyboardChanges();
+
+    this.updateShippingToggleStatus();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -197,37 +221,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  private mapHashtagOptions(hashtagList: PaginatedList<Hashtag>) {
-    /*   let { list } = hashtagList;
-    this.options = list.map((hashtag: Hashtag) => {
-      return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
-    }); */
-    //When PR need to remove
-    hashtagList = {
-      list: [
-        { text: 'd', occurrences: 1 },
-        { text: 'f', occurrences: 1 },
-        { text: 'faa', occurrences: 1 },
-        { text: 'saa', occurrences: 1 },
-        { text: 'dd', occurrences: 1 },
-        { text: 'ff', occurrences: 1 },
-        { text: 'cc', occurrences: 1 },
-      ],
-    };
-    let { list } = hashtagList;
-    this.options = list.map((hashtag: Hashtag) => {
-      return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
-    });
-  }
-
   public loadNextPage(page: string) {
     this.start = page;
     console.log('start', this.start);
   }
 
   public getExtraInfo(): any {
-    if (!this.item.extraInfo) return {};
-    const objectTypeId = this.item.extraInfo.object_type?.id;
+    const objectTypeId = this.item.extraInfo?.object_type?.id;
     if (objectTypeId) {
       if (!this.objectTypes.find((objectType) => objectType.id === objectTypeId)) {
         const objectTypeTree = this.findChildrenObjectTypeById(objectTypeId);
@@ -241,62 +241,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }
     }
     return this.item.extraInfo;
-  }
-
-  public onDeliveryChange(newDeliveryValue: any) {
-    if (newDeliveryValue === this.oldDeliveryValue) {
-      this.uploadForm.controls['delivery_info'].reset();
-      delete this.oldDeliveryValue;
-    } else {
-      this.oldDeliveryValue = newDeliveryValue;
-    }
-  }
-
-  public searchSuggestedCategories(): void {
-    const text = this.uploadForm.get('title').value;
-    if (!text.length || this.lastSuggestedCategoryText === text) {
-      return;
-    }
-
-    const categoryId = this.uploadForm.get('category_id').value;
-    if (!!categoryId.length && this.isHeroCategory(+categoryId)) {
-      return;
-    }
-
-    this.categoryService.getSuggestedCategory(text).subscribe((category: SuggestedCategory) => {
-      this.lastSuggestedCategoryText = text;
-      if (category) {
-        this.updateCategory(category);
-      }
-    });
-  }
-
-  public updateCategory(suggestedCategory: SuggestedCategory): void {
-    const suggestedId = suggestedCategory.category_id.toString();
-    const formCategoryValue = this.uploadForm.get('category_id').value;
-    if (this.isFormCategoryChangeNeeded(formCategoryValue, suggestedId)) {
-      if (!!formCategoryValue.length) {
-        this.errorsService.i18nSuccess(TRANSLATION_KEY.SUGGESTED_CATEGORY);
-      }
-      this.uploadForm.patchValue({
-        category_id: suggestedId,
-      });
-    }
-  }
-
-  public onDeleteImage(imageId: string): void {
-    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
-      () => this.removeFileFromForm(imageId),
-      (error: HttpErrorResponse) => this.onError(error)
-    );
-  }
-
-  public onOrderImages(): void {
-    const images = this.uploadForm.get('images').value;
-    this.uploadService.updateOrder(images, this.item.id).subscribe(
-      () => null,
-      (error: HttpErrorResponse) => this.onError(error)
-    );
   }
 
   public onSubmit(): void {
@@ -508,6 +452,92 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return HERO_CATEGORIES.includes(+category_id);
   }
 
+  public onDeliveryChange(newDeliveryValue: any) {
+    if (newDeliveryValue === this.oldDeliveryValue) {
+      this.uploadForm.controls['delivery_info'].reset();
+      delete this.oldDeliveryValue;
+    } else {
+      this.oldDeliveryValue = newDeliveryValue;
+    }
+  }
+
+  public searchSuggestedCategories(): void {
+    const text = this.uploadForm.get('title').value;
+    if (!text.length || this.lastSuggestedCategoryText === text) {
+      return;
+    }
+
+    const categoryId = this.uploadForm.get('category_id').value;
+    if (!!categoryId.length && this.isHeroCategory(+categoryId)) {
+      return;
+    }
+
+    this.categoryService.getSuggestedCategory(text).subscribe((category: SuggestedCategory) => {
+      this.lastSuggestedCategoryText = text;
+      if (category) {
+        this.updateCategory(category);
+      }
+    });
+  }
+
+  public updateCategory(suggestedCategory: SuggestedCategory): void {
+    const suggestedId = suggestedCategory.category_id.toString();
+    const formCategoryValue = this.uploadForm.get('category_id').value;
+    if (this.isFormCategoryChangeNeeded(formCategoryValue, suggestedId)) {
+      if (!!formCategoryValue.length) {
+        this.errorsService.i18nSuccess(TRANSLATION_KEY.SUGGESTED_CATEGORY);
+      }
+      this.uploadForm.patchValue({
+        category_id: suggestedId,
+      });
+    }
+  }
+
+  public onDeleteImage(imageId: string): void {
+    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
+      () => this.removeFileFromForm(imageId),
+      (error: HttpErrorResponse) => this.onError(error)
+    );
+  }
+
+  public onOrderImages(): void {
+    const images = this.uploadForm.get('images').value;
+    this.uploadService.updateOrder(images, this.item.id).subscribe(
+      () => null,
+      (error: HttpErrorResponse) => this.onError(error)
+    );
+  }
+
+  public trackClickHelpTransactionalEvent(): void {
+    const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
+    const price = this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
+
+    this.uploadTrackingEventService.trackClickHelpTransactionalEvent(categoryId, this.userService.user?.id, price, this.item?.id);
+  }
+
+  private mapHashtagOptions(hashtagList: PaginatedList<Hashtag>) {
+    /*   let { list } = hashtagList;
+    this.options = list.map((hashtag: Hashtag) => {
+      return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
+    }); */
+    //When PR need to remove
+    hashtagList = {
+      list: [
+        { text: 'd', occurrences: 1 },
+        { text: 'f', occurrences: 1 },
+        { text: 'faa', occurrences: 1 },
+        { text: 'saa', occurrences: 1 },
+        { text: 'dd', occurrences: 1 },
+        { text: 'ff', occurrences: 1 },
+        { text: 'cc', occurrences: 1 },
+      ],
+    };
+    let { list } = hashtagList;
+    this.options = list.map((hashtag: Hashtag) => {
+      return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
+    });
+  }
+
   private fillForm(): void {
     this.uploadForm = this.fb.group({
       id: '',
@@ -520,8 +550,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_conditions: this.fb.group({
         fix_price: false,
         exchange_allowed: false,
+        supports_shipping: true,
       }),
-      delivery_info: [null],
+      delivery_info: [null, [Validators.required]],
       location: this.fb.group({
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
@@ -562,7 +593,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       sale_price: this.item.salePrice,
       currency_code: this.item.currencyCode,
       description: this.item.description,
-      sale_conditions: this.item.saleConditions ? this.item.saleConditions : {},
+      sale_conditions: this.getSaleConditions(),
       category_id: this.item.categoryId.toString(),
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
@@ -650,6 +681,21 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
+  private detectShippabilityChanges(): void {
+    this.uploadForm
+      .get('sale_conditions')
+      .get('supports_shipping')
+      .valueChanges.subscribe((supportsShipping) => {
+        const deliveryInfo = this.uploadForm.get('delivery_info');
+        if (supportsShipping) {
+          deliveryInfo.setValidators([Validators.required]);
+        } else {
+          deliveryInfo.setValidators([]);
+          deliveryInfo.setValue(null);
+        }
+      });
+  }
+
   private handleUploadFormExtraFields(): void {
     const formCategoryId = this.uploadForm.get('category_id').value;
     const rawCategory = this.rawCategories.find((category) => category.category_id === +formCategoryId);
@@ -690,6 +736,11 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }).value;
   }
 
+  private getSaleConditions(): ItemSaleConditions {
+    this.item.saleConditions.supports_shipping = !!this.item.deliveryInfo;
+    return this.item.saleConditions ? this.item.saleConditions : null;
+  }
+
   private invalidForm(): void {
     this.uploadForm.markAsPending();
     if (!this.uploadForm.get('location.address').valid) {
@@ -697,6 +748,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
     if (!this.uploadForm.get('images').valid) {
       this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
+    } else if (!this.uploadForm.get('delivery_info').valid && this.uploadForm.get('sale_conditions').get('supports_shipping').value) {
+      this.errorsService.i18nError(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
     } else {
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
       this.validationError.emit();
@@ -796,7 +849,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private getUploadCategories(): Observable<CategoryOption[]> {
-    return this.categoryService.getCategories().pipe(
+    return this.categoriesApiService.getUploadCategories().pipe(
       tap((categories) => (this.rawCategories = categories)),
       map((categories) => this.getConsumerGoodCategories(categories)),
       map((categories) => this.getNgSelectOptions(categories))
@@ -819,6 +872,17 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
   }
 
+  private getConditions(): void {
+    const currentCategoryId: number = +this.uploadForm.get('category_id').value;
+
+    this.conditions = [];
+    this.getUploadExtraInfoControl('condition').reset();
+    this.generalSuggestionsService.getConditions(currentCategoryId).subscribe((conditions: IOption[]) => {
+      this.conditions = conditions;
+      this.dataReadyToValidate$.next();
+    });
+  }
+
   private trackEditOrUpload(isEdit: boolean, item: ItemContent) {
     const isPro = this.userService.isProUser();
     let baseEventAttrs: any = {
@@ -826,6 +890,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       categoryId: item.category_id,
       salePrice: item.sale_price,
       title: item.title,
+      shippingAllowed: !!item.sale_conditions?.supports_shipping,
       isPro,
     };
 
@@ -841,6 +906,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       }
     }
 
+    if (item.delivery_info) {
+      baseEventAttrs.shippingWeight = item.delivery_info.max_weight_kg;
+    }
+
     if (isEdit) {
       const editItemCGEvent: AnalyticsEvent<EditItemCG> = {
         name: ANALYTICS_EVENT_NAMES.EditItemCG,
@@ -848,8 +917,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         attributes: {
           ...baseEventAttrs,
           screenId: SCREEN_IDS.EditItem,
+          salePriceChange: null,
         },
       };
+
       this.analyticsService.trackEvent(editItemCGEvent);
     } else {
       const listItemCGEvent: AnalyticsEvent<ListItemCG> = {
@@ -862,23 +933,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
           language: this.analyticsService.appLocale,
         },
       };
+
       this.analyticsService.trackEvent(listItemCGEvent);
     }
   }
 
   private getUploadExtraInfoControl(field?: string): AbstractControl {
     return field ? this.uploadForm.get('extra_info').get(field) : this.uploadForm.get('extra_info');
-  }
-
-  private getConditions(): void {
-    const currentCategoryId: number = +this.uploadForm.get('category_id').value;
-
-    this.conditions = [];
-    this.getUploadExtraInfoControl('condition').reset();
-    this.generalSuggestionsService.getConditions(currentCategoryId).subscribe((conditions: IOption[]) => {
-      this.conditions = conditions;
-      this.dataReadyToValidate$.next();
-    });
   }
 
   private isFormCategoryChangeNeeded(formCategoryValue: string, suggestedId: string): boolean {
@@ -893,5 +954,56 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private objectTypeHasChildren(objectTypeId: string): boolean {
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
+  }
+
+  private updateShippingToggleStatus(): void {
+    const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
+    const subcategoryId = this.getSubcategoryId();
+    const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
+
+    this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
+      this.isShippabilityAllowed = shippingToggleAllowance.category && shippingToggleAllowance.subcategory && shippingToggleAllowance.price;
+      this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
+      this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
+
+      if (!this.isShippabilityAllowed) {
+        this.clearShippingToggleFormData();
+      }
+    });
+  }
+
+  private getSubcategoryId(): string {
+    const objectTypeLvl1 = this.uploadForm.get('extra_info')?.get('object_type')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
+    const objectTypeLvl2 =
+      this.uploadForm.get('extra_info')?.get('object_type_2')?.get('id')?.value || this.item?.extraInfo?.object_type?.id;
+    return objectTypeLvl2 || objectTypeLvl1;
+  }
+
+  private clearShippingToggleFormData(): void {
+    this.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
+    this.uploadForm.get('delivery_info').setValue(null);
+  }
+
+  private detectShippabilityAllowanceChanges(): void {
+    this.uploadForm.get('category_id').valueChanges.subscribe(() => {
+      this.updateShippingToggleStatus();
+    });
+    this.uploadForm
+      .get('extra_info')
+      .get('object_type')
+      .get('id')
+      .valueChanges.subscribe(() => {
+        this.updateShippingToggleStatus();
+      });
+    this.uploadForm
+      .get('extra_info')
+      .get('object_type_2')
+      .get('id')
+      .valueChanges.subscribe(() => {
+        this.updateShippingToggleStatus();
+      });
+    this.uploadForm.get('sale_price').valueChanges.subscribe((price) => {
+      this.updateShippingToggleStatus();
+    });
   }
 }

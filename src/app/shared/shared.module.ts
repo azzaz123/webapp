@@ -78,10 +78,11 @@ import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/sug
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { HeaderModule } from './header/header.module';
-import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
 import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
+import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
+import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 
 @NgModule({
   imports: [
@@ -110,6 +111,7 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     ProfileFormModule,
     HeaderModule,
     PaymentsCardInfoModule,
+    InfiniteScrollModule,
   ],
   exports: [
     SpinnerModule,
@@ -235,10 +237,9 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     WallacoinsDisabledModalComponent,
     SuggestProModalComponent,
     DeliveryDevelopmentDirective,
-    InfiniteScrollDirective,
     LocationSelectorModal,
   ],
-  providers: [DecimalPipe, LinkTransformPipe],
+  providers: [DecimalPipe, LinkTransformPipe, ItemDetailRoutePipe],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,

@@ -1,0 +1,16 @@
+@import '~style/common';
+
+.TabsBar {
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__element {
+    margin-left: $spacing-ms;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}

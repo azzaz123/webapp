@@ -13,7 +13,7 @@
     <span *ngIf="withCredits">{{pack.forFree | customCurrency}}</span> as a gift!
   </span>
 </div>
-<tsl-button (click)="onBuy.emit()"
+<tsl-button (click)="clickBuy.emit()"
             [className]="'btn-block ' + (packIndex === 2 ? 'btn-primary' : 'btn-grey')"
 >
   <span i18n>Buy for</span> <b>{{pack.price | customCurrency}}</b>

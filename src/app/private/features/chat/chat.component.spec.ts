@@ -8,9 +8,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { SEARCHID_STORAGE_NAME } from '@core/message/real-time.service';
 import { PhoneMethodResponse } from '@core/user/phone-method.interface';
 import { UserService } from '@core/user/user.service';
-import { InboxConversationServiceMock } from '@fixtures/inbox-coversation-service.fixtures.spec';
-import { InboxServiceMock } from '@fixtures/inbox-service.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { InboxConversationServiceMock, InboxServiceMock, CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
 import { NgbModal, NgbModalOptions, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockTrustAndSafetyService } from 'app/core/trust-and-safety/trust-and-safety.fixtures.spec';
 import { SessionProfileDataLocation } from 'app/core/trust-and-safety/trust-and-safety.interface';
@@ -24,6 +22,10 @@ import { InboxService } from './core/inbox/inbox.service';
 import { InboxConversation, MessageStatus, PhoneMethod } from './core/model';
 import { SendPhoneComponent } from './modals';
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
+import { ItemDetailRoutePipe } from '@shared/pipes';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 
 class MockUserService {
   public isProfessional() {
@@ -68,6 +70,7 @@ describe('Component: ChatComponent with ItemId', () => {
         },
         I18nService,
         EventService,
+        ItemDetailRoutePipe,
         {
           provide: AdsService,
           useValue: {
@@ -75,6 +78,10 @@ describe('Component: ChatComponent with ItemId', () => {
           },
         },
         { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
         NgbModal,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -286,10 +293,11 @@ describe('Component: ChatComponent with ItemId', () => {
       });
 
       it('should redirect to the item if the modal is closed', fakeAsync(() => {
-        const expectedUrl = 'item-123';
+        const itemSlug = 'item-123';
+        const expectedUrl = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${itemSlug}`;
         const inboxConversationWithoutMessages = CREATE_MOCK_INBOX_CONVERSATION('123', USER_STRING_ID.YA_ENCONTRE);
         inboxConversationWithoutMessages.messages = [];
-        inboxConversationWithoutMessages.item.itemUrl = expectedUrl;
+        inboxConversationWithoutMessages.item.itemSlug = itemSlug;
         spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversationWithoutMessages));
         spyOn(modalService, 'open').and.returnValue({
           result: Promise.resolve(),
@@ -336,6 +344,7 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
         },
         I18nService,
         EventService,
+        ItemDetailRoutePipe,
         {
           provide: AdsService,
           useValue: {
@@ -344,6 +353,10 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
         },
         NgbModal,
         { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });

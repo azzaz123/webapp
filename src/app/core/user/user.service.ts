@@ -1,4 +1,4 @@
-import { from, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
 
 import { catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
@@ -24,7 +24,8 @@ import { ReleaseVersionService } from '@core/release-version/release-version.ser
 
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { SITE_URL } from '@configs/site-url.config';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -65,6 +66,7 @@ export class UserService {
   private _users: User[] = [];
   private presenceInterval: any;
   private _isProSectionClicked: boolean;
+  private isProUserSubject = new BehaviorSubject(false);
 
   constructor(
     private http: HttpClient,
@@ -73,8 +75,8 @@ export class UserService {
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
     private releaseVersionService: ReleaseVersionService,
-    @Inject('SUBDOMAIN') private subdomain: string,
-    @Inject(LOCALE_ID) private locale: APP_LOCALE
+    @Inject(LOCALE_ID) private locale: APP_LOCALE,
+    @Inject(SITE_URL) private siteUrl: string
   ) {}
 
   get user(): User {
@@ -85,8 +87,12 @@ export class UserService {
     return this._user && this._user.featured;
   }
 
+  get isProUser$(): Observable<boolean> {
+    return this.isProUserSubject.asObservable();
+  }
+
   public logoutLogic(redirect?: string): void {
-    const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
+    const redirectUrl = redirect ? redirect : this.siteUrl;
     const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove('publisherId', cookieOptions);
     this.cookieService.remove('creditName', cookieOptions);
@@ -265,7 +271,10 @@ export class UserService {
   public edit(data: UserData): Observable<User> {
     return this.http.post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data).pipe(
       map((response) => this.mapRecordData(response)),
-      tap((user) => (this._user = user))
+      tap((user) => {
+        this._user = user;
+        this.isProUserSubject.next(this.isPro);
+      })
     );
   }
 
@@ -323,7 +332,10 @@ export class UserService {
 
   public initializeUserWithPermissions(): Observable<boolean> {
     return this.getLoggedUserInformation().pipe(
-      tap((user) => (this._user = user)),
+      tap((user) => {
+        this._user = user;
+        this.isProUserSubject.next(this.isPro);
+      }),
       tap((user) => this.setPermission(user)),
       tap((user) => this.getStoredIsClickedProSection(user)),
       catchError((error) => {
@@ -336,7 +348,12 @@ export class UserService {
   //TODO: This is needed for the current subscriptions flow but this should handled in some other way when
   // the application is reactive to changes in the user object
   public getAndUpdateLoggedUser(): Observable<User> {
-    return this.getLoggedUserInformation().pipe(tap((user) => (this._user = user)));
+    return this.getLoggedUserInformation().pipe(
+      tap((user) => {
+        this._user = user;
+        this.isProUserSubject.next(this.isPro);
+      })
+    );
   }
 
   public setPermission(user: User): void {

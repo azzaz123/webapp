@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
-import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { Subscription } from 'rxjs';
 import { STATUS } from './selected-product.interface';
@@ -45,6 +45,12 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
     this.selectedAction.emit(action);
   }
 
+  ngOnDestroy() {
+    if (this.selectedItemsSubscription) {
+      this.selectedItemsSubscription.unsubscribe();
+    }
+  }
+
   private isItemDisabled(items: Item[]) {
     return items.filter((item) => item.flags.onhold || item.flags.expired);
   }
@@ -55,11 +61,5 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
 
   get showActiveButton(): boolean {
     return this.selectedStatus === STATUS.INACTIVE || (this.selectedStatus === STATUS.PUBLISHED && this.showActiveOption);
-  }
-
-  ngOnDestroy() {
-    if (this.selectedItemsSubscription) {
-      this.selectedItemsSubscription.unsubscribe();
-    }
   }
 }

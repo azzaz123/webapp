@@ -14,7 +14,7 @@
 
             <tsl-item-detail-placeholder *ngIf="!(itemDetail$ | async)"></tsl-item-detail-placeholder>
 
-            <div class="ItemDetail__card px-4 pb-5" *ngIf="itemDetail$ | async as itemDetail">
+            <div tslAdSlotGroup class="ItemDetail__card px-4 pb-5" *ngIf="itemDetail$ | async as itemDetail">
                 <tsl-item-detail-header [user]="itemDetail.user" [item]="itemDetail.item"
                     [userStats]="itemDetail.userStats | async" [isOwner]="(itemDetail.user.id | isCurrentUser)"
                     (reservedItemChange)="toggleReserveItem()" (favouritedItemChange)="toggleFavouriteItem()"
@@ -39,7 +39,7 @@
                             [parentTaxonomy]="taxonomiesSpecifications.parentTaxonomy"
                             [childTaxonomy]="taxonomiesSpecifications.childTaxonomy"></tsl-item-taxonomies>
                     </ng-container>
-                    <div *ngIf="device !== deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-row mb-0"
+                    <div *ngIf="device !== deviceType.MOBILE && !(itemDetail.user.id | isCurrentUser)" class="ItemDetail__affiliation d-flex flex-row mb-0"
                         [ngClass]="{'borderBottom': adsAffiliationsLoaded$ | async, 'py-3': adsAffiliationsLoaded$ | async}">
                         <ng-container *ngFor="let adAffiliation of adsAffiliationSlotConfiguration">
                             <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" class="d-block"
@@ -51,7 +51,7 @@
                     <tsl-item-specifications [itemSpecifications]="itemDetail.counterSpecifications"
                         [isCar]="itemDetail.isItemACar"></tsl-item-specifications>
                 </div>
-                <div *ngIf="device === deviceType.MOBILE" class="ItemDetail__affiliation d-flex flex-column mb-0"
+                <div *ngIf="device === deviceType.MOBILE && !(itemDetail.user.id | isCurrentUser)" class="ItemDetail__affiliation d-flex flex-column mb-0"
                     [ngClass]="{'borderBottom': adsAffiliationsLoaded$ | async, 'py-3':  adsAffiliationsLoaded$ | async}">
                   <ng-container *ngFor="let adAffiliation of adsAffiliationSlotConfiguration">
                     <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" class="d-block"

@@ -10,4 +10,4 @@ import { KYCInfoModalComponent } from './kyc-info-modal.component';
   exports: [KYCInfoModalComponent],
   declarations: [KYCInfoModalComponent],
 })
-export class KYCInfoSliderModule {}
+export class KYCInfoModalModule {}

@@ -1,19 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
-import { Observable } from 'rxjs';
-import { KYCBannerSpecifications } from './interfaces/kyc/kyc-banner.interface';
-import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WALLET_PATHS } from './wallet.routing.constants';
+import { WalletTrackingEventService } from '@private/features/wallet/services/tracking-event/wallet-tracking-event.service';
+
+import { Observable, Subscription } from 'rxjs';
+
+const bankDetailsId: string = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
 
 @Component({
   selector: 'tsl-wallet',
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WalletComponent implements OnInit {
-  public kycBannerSpecifications$: Observable<KYCBannerSpecifications>;
+export class WalletComponent implements OnInit, OnDestroy {
+  public KYCProperties$: Observable<KYCProperties>;
   public selectedNavLinkId: string;
   public navLinks: NavLink[] = [
     {
@@ -21,16 +30,24 @@ export class WalletComponent implements OnInit {
       display: $localize`:@@profile_menu_wallet:Wallet`,
     },
     {
-      id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`,
+      id: bankDetailsId,
       display: $localize`:@@web_delivery_bank_details:Bank details`,
     },
+    {
+      id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.HISTORY}`,
+      display: $localize`:@@wallet_view_balance_history_title_web_specific:Movements`,
+    },
   ];
+  public ZENDESK_WALLET_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.WALLET_HELP);
+  private subscriptions: Subscription = new Subscription();
 
-  //FIXME: These will be moved into a service
-  public zendeskWalletHelpArticleId: number = 360017172677;
-  public zendeskWalletHelpURL = `https://ayuda.wallapop.com/hc/es-es/articles/${this.zendeskWalletHelpArticleId}`;
-
-  constructor(private router: Router, private kycBannerService: KYCBannerService) {
+  constructor(
+    private router: Router,
+    private customerHelpService: CustomerHelpService,
+    private kycPropertiesService: KYCPropertiesService,
+    private walletTrackingEventService: WalletTrackingEventService
+  ) {
+    this.subscriptions.add(kycPropertiesService.get().subscribe());
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.selectedNavLinkId = this.navLinks.find((link) => e.url === link.id)?.id || this.getLastLocationIdThatMatch(e);
@@ -39,11 +56,24 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.kycBannerSpecifications$ = this.kycBannerService.getSpecifications();
+    this.KYCProperties$ = this.kycPropertiesService.KYCProperties$;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
+  public KYCBannerSpecifications$(properties: KYCProperties): Observable<KYCBannerSpecifications> {
+    return this.kycPropertiesService.getBannerSpecificationsFromProperties(properties);
   }
 
   public onNavLinkClicked(navLinkId: string): void {
+    this.trackClickBankDetails(navLinkId);
     this.router.navigate([navLinkId]);
+  }
+
+  public trackClickHelpWallet(): void {
+    this.walletTrackingEventService.trackClickHelpWallet();
   }
 
   private getLastLocationIdThatMatch(e: NavigationEnd): string {
@@ -51,5 +81,12 @@ export class WalletComponent implements OnInit {
       .filter((link) => e.url.startsWith(link.id))
       ?.slice(-1)
       .pop()?.id;
+  }
+
+  private trackClickBankDetails(navLinkId: string): void {
+    if (navLinkId !== bankDetailsId) {
+      return;
+    }
+    this.walletTrackingEventService.trackClickBankDetails();
   }
 }

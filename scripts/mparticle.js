@@ -63,7 +63,7 @@ const createScreenIdsInterface = () => {
             const screenNumber = split[1];
 
             if (screenName && screenNumber) {
-                screenIdEnum += `  ${screenName} = ${screenNumber},\n`;
+                screenIdEnum += `  ${parseScreenName(screenName)} = ${screenNumber},\n`;
             }
         })
         screenIdEnum += '}\n';
@@ -73,6 +73,11 @@ const createScreenIdsInterface = () => {
         console.warn('Could not parse screen ids', error);
     }
 };
+
+const parseScreenName = (screenName) => {
+    const stringStartsWithNumber = /^\d/;
+    return screenName.match(stringStartsWithNumber) ? `'${screenName}'` : screenName;
+}
 
 const cleanFolders = () => {
     // This function clears all files inside a folder path if it exists

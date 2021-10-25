@@ -14,7 +14,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { By } from '@angular/platform-browser';
 import { CategoriesFilterOption } from '@public/shared/components/filters/components/categories-filter/interfaces/categories-filter-option.interface';
-import { CATEGORY_OPTIONS } from './data/category_options';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 import { FILTER_TYPES } from '@public/shared/components/filters/core/enums/filter-types/filter-types.enum';
 import { FilterTemplateComponent } from '@public/shared/components/filters/components/abstract-filter/filter-template/filter-template.component';
@@ -24,6 +23,10 @@ import { SelectFormComponent } from '@shared/form/components/select/select-form.
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { IsBubblePipe } from '../abstract-filter/pipes/is-bubble.pipe';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { of } from 'rxjs';
+import { CategoriesApiModule } from '@api/categories/categories-api.module';
+import { CategoriesApiService } from '@api/categories/categories-api.service';
+import { mappedSearchCategoriesFixture } from '@api/fixtures/categories/categories.fixtures';
 
 @Component({
   selector: 'tsl-test-component',
@@ -55,7 +58,7 @@ describe('CategoriesFilterComponent', () => {
       parameterKey: FILTER_QUERY_PARAM_KEY.categoryId,
     },
     type: FILTER_TYPES.CATEGORIES,
-    options: CATEGORY_OPTIONS,
+    options: mappedSearchCategoriesFixture,
   };
 
   beforeEach(async () => {
@@ -68,6 +71,17 @@ describe('CategoriesFilterComponent', () => {
         AbstractSelectFilterModule,
         ReactiveFormsModule,
         SelectFormModule,
+        CategoriesApiModule,
+      ],
+      providers: [
+        {
+          provide: CategoriesApiService,
+          useValue: {
+            getSearchCategories() {
+              return of(mappedSearchCategoriesFixture);
+            },
+          },
+        },
       ],
       declarations: [TestComponent, CategoriesFilterComponent, FormatSelectOptionsPipe, IsBubblePipe],
     }).compileComponents();
@@ -140,7 +154,7 @@ describe('CategoriesFilterComponent', () => {
 
       it('should not emit value change', () => {
         spyOn(component.valueChange, 'emit');
-        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.MOTORBIKE.toString() }];
         fixture.detectChanges();
 
         expect(component.valueChange.emit).not.toHaveBeenCalled();
@@ -151,22 +165,22 @@ describe('CategoriesFilterComponent', () => {
           const previousValue = component.formGroup.controls.select.value;
           expect(previousValue).toEqual([CATEGORY_IDS.CAR.toString()]);
 
-          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.MOTORBIKE.toString() }];
           fixture.detectChanges();
 
           const nextValue = component.formGroup.controls.select.value;
-          expect(nextValue).toEqual([CATEGORY_IDS.REAL_ESTATE.toString()]);
+          expect(nextValue).toEqual([CATEGORY_IDS.MOTORBIKE.toString()]);
         });
 
         it('should change label', () => {
           const previousLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
           expect(previousLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
 
-          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.MOTORBIKE.toString() }];
           fixture.detectChanges();
 
           const nextLabel = debugElement.query(filterTemplatePredicate).componentInstance.label;
-          expect(nextLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
+          expect(nextLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.MOTORBIKE.toString()));
         });
       });
 
@@ -205,39 +219,39 @@ describe('CategoriesFilterComponent', () => {
       it('should emit value change', () => {
         spyOn(component.valueChange, 'emit');
         const gridForm: GridSelectFormComponent = debugElement.query(gridFormPredicate).componentInstance;
-        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
+        gridForm.handleOptionClick(CATEGORY_IDS.MOTORBIKE.toString());
         fixture.detectChanges();
 
         expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
         expect(component.valueChange.emit).toHaveBeenCalledWith([
-          { key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() },
+          { key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.MOTORBIKE.toString() },
         ]);
       });
 
       it('should change its value', () => {
         const gridForm: GridSelectFormComponent = debugElement.query(gridFormPredicate).componentInstance;
-        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
+        gridForm.handleOptionClick(CATEGORY_IDS.MOTORBIKE.toString());
         fixture.detectChanges();
 
         const value = component.formGroup.controls.select.value;
 
-        expect(value).toEqual([CATEGORY_IDS.REAL_ESTATE.toString()]);
+        expect(value).toEqual([CATEGORY_IDS.MOTORBIKE.toString()]);
       });
 
       it('should change its label', () => {
         const gridForm: GridSelectFormComponent = debugElement.query(gridFormPredicate).componentInstance;
-        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
+        gridForm.handleOptionClick(CATEGORY_IDS.MOTORBIKE.toString());
         fixture.detectChanges();
 
         const label = debugElement.query(filterTemplatePredicate).componentInstance.label;
         fixture.detectChanges();
 
-        expect(label).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
+        expect(label).toEqual(getOptionLabelByValue(CATEGORY_IDS.MOTORBIKE.toString()));
       });
 
       it('should close bubble', () => {
         const gridForm: SelectFormComponent = debugElement.query(gridFormPredicate).componentInstance;
-        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
+        gridForm.handleOptionClick(CATEGORY_IDS.MOTORBIKE.toString());
         fixture.detectChanges();
 
         const placeholderTemplate: FilterTemplateComponent = debugElement.query(filterTemplatePredicate).componentInstance;
@@ -303,7 +317,7 @@ describe('CategoriesFilterComponent', () => {
 
       it('should not emit value change', () => {
         spyOn(component.valueChange, 'emit');
-        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.MOTORBIKE.toString() }];
         fixture.detectChanges();
 
         expect(component.valueChange.emit).not.toHaveBeenCalled();
@@ -313,22 +327,22 @@ describe('CategoriesFilterComponent', () => {
         const previousValue = component.formGroup.controls.select.value;
         expect(previousValue).toEqual(CATEGORY_IDS.CAR.toString());
 
-        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.MOTORBIKE.toString() }];
         fixture.detectChanges();
 
         const nextValue = component.formGroup.controls.select.value;
-        expect(nextValue).toEqual(CATEGORY_IDS.REAL_ESTATE.toString());
+        expect(nextValue).toEqual(CATEGORY_IDS.MOTORBIKE.toString());
       });
 
       it('should change label', () => {
         const previousLabel = debugElement.query(placeholderTemplatePredicate).componentInstance.placeholderLabel;
         expect(previousLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.CAR.toString()));
 
-        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() }];
+        testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.MOTORBIKE.toString() }];
         fixture.detectChanges();
 
         const nextLabel = debugElement.query(placeholderTemplatePredicate).componentInstance.placeholderLabel;
-        expect(nextLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
+        expect(nextLabel).toEqual(getOptionLabelByValue(CATEGORY_IDS.MOTORBIKE.toString()));
       });
     });
 
@@ -342,39 +356,39 @@ describe('CategoriesFilterComponent', () => {
       it('should emit value change', () => {
         spyOn(component.valueChange, 'emit');
         const gridForm: SelectFormComponent = debugElement.query(listFormPredicate).componentInstance;
-        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
+        gridForm.handleOptionClick(CATEGORY_IDS.MOTORBIKE.toString());
         fixture.detectChanges();
 
         expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
         expect(component.valueChange.emit).toHaveBeenCalledWith([
-          { key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.REAL_ESTATE.toString() },
+          { key: FILTER_QUERY_PARAM_KEY.categoryId, value: CATEGORY_IDS.MOTORBIKE.toString() },
         ]);
       });
 
       it('should change its value', () => {
         const gridForm: SelectFormComponent = debugElement.query(listFormPredicate).componentInstance;
-        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
+        gridForm.handleOptionClick(CATEGORY_IDS.MOTORBIKE.toString());
         fixture.detectChanges();
 
         const value = component.formGroup.controls.select.value;
 
-        expect(value).toEqual(CATEGORY_IDS.REAL_ESTATE.toString());
+        expect(value).toEqual(CATEGORY_IDS.MOTORBIKE.toString());
       });
 
       it('should change label', () => {
         const gridForm: SelectFormComponent = debugElement.query(listFormPredicate).componentInstance;
-        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
+        gridForm.handleOptionClick(CATEGORY_IDS.MOTORBIKE.toString());
         fixture.detectChanges();
 
         const label = debugElement.query(placeholderTemplatePredicate).componentInstance.placeholderLabel;
         fixture.detectChanges();
 
-        expect(label).toEqual(getOptionLabelByValue(CATEGORY_IDS.REAL_ESTATE.toString()));
+        expect(label).toEqual(getOptionLabelByValue(CATEGORY_IDS.MOTORBIKE.toString()));
       });
 
       it('should close placeholder', () => {
         const gridForm: SelectFormComponent = debugElement.query(listFormPredicate).componentInstance;
-        gridForm.handleOptionClick(CATEGORY_IDS.REAL_ESTATE.toString());
+        gridForm.handleOptionClick(CATEGORY_IDS.MOTORBIKE.toString());
         fixture.detectChanges();
 
         const placeholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(placeholderTemplatePredicate).componentInstance;

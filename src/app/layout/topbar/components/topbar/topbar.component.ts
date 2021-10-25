@@ -1,10 +1,10 @@
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment';
+import { environment, localesWithNewSearchEnabled } from '@environments/environment';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,13 +13,14 @@ import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
 import { Subscription } from 'rxjs';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { SITE_URL } from '@configs/site-url.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 @Component({
   selector: 'tsl-topbar',
@@ -46,15 +47,14 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private cookieService: CookieService,
     private modalService: NgbModal,
-    private featureFlagService: FeatureFlagService,
     private searchNavigator: SearchNavigatorService,
     private topbarTrackingEventsService: TopbarTrackingEventsService,
-    @Inject('SUBDOMAIN') private subdomain: string
-  ) {
-    this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
-  }
+    @Inject(SITE_URL) private siteUrl: string,
+    @Inject(LOCALE_ID) private locale: APP_LOCALE
+  ) {}
 
   ngOnInit() {
+    this.homeUrl = this.siteUrl;
     this.isLogged = this.userService.isLogged;
     this.user = this.userService.user;
     this.componentSubscriptions.push(
@@ -115,10 +115,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
   }
 
   private redirectToSearch(searchValue: SearchBoxValue): void {
-    // TODO: This can be removed after tests
-    const isExperimentalFeaturesEnabled = this.featureFlagService.isExperimentalFeaturesEnabled();
+    const newSearchEnabled = localesWithNewSearchEnabled.includes(this.locale);
 
-    if (isExperimentalFeaturesEnabled) {
+    if (newSearchEnabled) {
       this.redirectToSearchPage(searchValue);
     } else {
       this.redirectToOldSearch(searchValue);
@@ -144,7 +143,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.searchNavigator.navigate(filterParams, FILTERS_SOURCE.SEARCH_BOX, true);
+    this.searchNavigator.navigate(filterParams, FILTERS_SOURCE.SEARCH_BOX);
   }
 
   private redirectToOldSearch(searchParams: SearchBoxValue) {

@@ -26,7 +26,6 @@ import { CategoryService } from '@core/category/category.service';
 import {
   CATEGORIES_OPTIONS_CONSUMER_GOODS,
   CATEGORIES_DATA_CONSUMER_GOODS,
-  CATEGORY_DATA_WEB,
   SUGGESTED_CATEGORY_TV_AUDIO_CAMERAS,
   SUGGESTED_CATEGORY_COMPUTERS_ELECTRONICS,
 } from '@fixtures/category.fixtures.spec';
@@ -53,7 +52,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { BrandModel } from '../../core/models/brand-model.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
-import { CategoryOption } from '@core/category/category-response.interface';
+import { CategoryOption, CategoryResponse } from '@core/category/category-response.interface';
 import { I18nService } from '@core/i18n/i18n.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import {
@@ -72,6 +71,16 @@ import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ShippingToggleService } from './services/shipping-toggle/shipping-toggle.service';
+import { FALLBACK_SHIPPING_RULES_RESPONSE } from '@api/bff/delivery/rules/constants/fallback-shipping-rules-response';
+import { mapShippingRulesResponseToShippingRules } from '@api/bff/delivery/rules/mappers/shipping-rules-mapper';
+import {
+  MOCK_UPLOAD_PRODUCT_EDIT_ITEM_CG_SHIPPABLE_EVENT,
+  MOCK_UPLOAD_PRODUCT_LIST_ITEM_CG_SHIPPABLE_EVENT,
+} from '@fixtures/private/upload/events/upload-events.fixtures.spec';
+import { UploadTrackingEventService } from './upload-tracking-event/upload-tracking-event.service';
+import { CategoriesApiService } from '@api/categories/categories-api.service';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -98,14 +107,17 @@ describe('UploadProductComponent', () => {
   let deviceService: DeviceDetectorService;
   let userService: UserService;
   let categoryService: CategoryService;
+  let categoriesApiService: CategoriesApiService;
   let uploadService: UploadService;
   let itemReactivationService: ItemReactivationService;
+  let shippingToggleService: ShippingToggleService;
+  let uploadTrackingEventService: UploadTrackingEventService;
   const componentInstance: any = {};
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgbPopoverModule],
+        imports: [NgbPopoverModule, HttpClientTestingModule],
         providers: [
           FormBuilder,
           NgbPopoverConfig,
@@ -155,6 +167,14 @@ describe('UploadProductComponent', () => {
             },
           },
           {
+            provide: CategoriesApiService,
+            useValue: {
+              getUploadCategories() {
+                return of(CATEGORIES_DATA_CONSUMER_GOODS);
+              },
+            },
+          },
+          {
             provide: NgbModal,
             useValue: {
               open() {
@@ -199,6 +219,28 @@ describe('UploadProductComponent', () => {
             useClass: MockSubscriptionService,
           },
           I18nService,
+          {
+            provide: ShippingToggleService,
+            useValue: {
+              isActive() {
+                return of(false);
+              },
+              isAllowed() {
+                return of({
+                  category: true,
+                  subcategory: true,
+                  price: true,
+                });
+              },
+              shippingRules: mapShippingRulesResponseToShippingRules(FALLBACK_SHIPPING_RULES_RESPONSE),
+            },
+          },
+          {
+            provide: UploadTrackingEventService,
+            useValue: {
+              trackClickHelpTransactionalEvent() {},
+            },
+          },
         ],
         declarations: [UploadProductComponent],
         schemas: [NO_ERRORS_SCHEMA],
@@ -217,8 +259,11 @@ describe('UploadProductComponent', () => {
     deviceService = TestBed.inject(DeviceDetectorService);
     userService = TestBed.inject(UserService);
     categoryService = TestBed.inject(CategoryService);
+    categoriesApiService = TestBed.inject(CategoriesApiService);
     uploadService = TestBed.inject(UploadService);
     itemReactivationService = TestBed.inject(ItemReactivationService);
+    shippingToggleService = TestBed.inject(ShippingToggleService);
+    uploadTrackingEventService = TestBed.inject(UploadTrackingEventService);
     fixture.detectChanges();
   });
 
@@ -655,9 +700,18 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onSubmit', () => {
+    beforeEach(() => {
+      spyOn(shippingToggleService, 'isAllowed').and.returnValue(
+        of({
+          category: false,
+          subcategory: false,
+          price: false,
+        })
+      );
+    });
+
     it('should emit uploadEvent if form is valid', () => {
       spyOn(uploadService, 'createItem').and.callThrough();
-      fixture.detectChanges();
       component.uploadForm.get('category_id').patchValue(CATEGORY_IDS.SERVICES);
       component.uploadForm.get('title').patchValue('test');
       component.uploadForm.get('description').patchValue('test');
@@ -670,7 +724,9 @@ describe('UploadProductComponent', () => {
         longitude: USER_LOCATION.approximated_longitude,
       });
 
+      fixture.detectChanges();
       component.onSubmit();
+
       expect(uploadService.createItem).toHaveBeenCalledWith(component.uploadForm.value, ITEM_TYPES.CONSUMER_GOODS);
       expect(component.uploadForm.valid).toBe(true);
       expect(component.loading).toBe(true);
@@ -688,6 +744,43 @@ describe('UploadProductComponent', () => {
       component.onSubmit();
 
       expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
+    });
+
+    describe('and supports shipping', () => {
+      function fillValidForm() {
+        component.uploadForm.patchValue({
+          category_id: CATEGORY_IDS.SERVICES,
+          title: 'title',
+          description: 'title',
+          sale_price: 1000000,
+          currency_code: 'EUR',
+          images: [{ image: true }],
+          location: {
+            address: USER_LOCATION.full_address,
+            latitude: USER_LOCATION.approximated_latitude,
+            longitude: USER_LOCATION.approximated_longitude,
+          },
+        });
+      }
+      beforeEach(() => {
+        component.ngOnInit();
+      });
+
+      it('should show weight error', () => {
+        spyOn(errorService, 'i18nError');
+
+        fillValidForm();
+        component.uploadForm.patchValue({
+          sale_conditions: {
+            supports_shipping: true,
+          },
+          delivery_info: null,
+        });
+
+        component.onSubmit();
+
+        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR);
+      });
     });
 
     it('should not accept sale_price < 0', () => {
@@ -744,7 +837,7 @@ describe('UploadProductComponent', () => {
           latitude: 41.399132621722174,
           longitude: 2.17585484411869,
         },
-        sale_conditions: { exchange_allowed: false, fix_price: false },
+        sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
       };
@@ -793,7 +886,7 @@ describe('UploadProductComponent', () => {
           latitude: 41.399132621722174,
           longitude: 2.17585484411869,
         },
-        sale_conditions: { exchange_allowed: false, fix_price: false },
+        sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
       };
@@ -882,6 +975,7 @@ describe('UploadProductComponent', () => {
       });
     });
   });
+
   describe('when selecting a category', () => {
     it('should get the object types for the selected category', () => {
       component.uploadForm.patchValue({
@@ -1106,6 +1200,8 @@ describe('UploadProductComponent', () => {
             title: editResponse.title,
             isPro: false,
             screenId: SCREEN_IDS.EditItem,
+            shippingAllowed: false,
+            salePriceChange: null,
           },
         };
         spyOn(analyticsService, 'trackEvent');
@@ -1114,6 +1210,58 @@ describe('UploadProductComponent', () => {
         component.onUploaded(editResponse, action);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+
+      describe('and shipping flag is active', () => {
+        describe('and item is shippable', () => {
+          it('should send the Edit Item CG tracking event', () => {
+            component.item = MOCK_ITEM;
+            const action = UPLOAD_ACTION.updated;
+            const editResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
+            const weight = 10;
+            editResponse.sale_conditions = {
+              supports_shipping: true,
+              fix_price: true,
+              exchange_allowed: false,
+            };
+            editResponse.delivery_info = {
+              min_weight_kg: weight,
+              max_weight_kg: weight,
+            };
+
+            const expectedEvent = MOCK_UPLOAD_PRODUCT_EDIT_ITEM_CG_SHIPPABLE_EVENT(editResponse, true, weight);
+
+            spyOn(analyticsService, 'trackEvent');
+
+            component.ngOnInit();
+            component.onUploaded(editResponse, action);
+
+            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
+
+        describe('and item is NOT shippable', () => {
+          it('should send the Edit Item CG tracking event', () => {
+            component.item = MOCK_ITEM;
+            const action = UPLOAD_ACTION.updated;
+            const editResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
+            editResponse.sale_conditions = {
+              supports_shipping: false,
+              fix_price: true,
+              exchange_allowed: false,
+            };
+            editResponse.delivery_info = null;
+
+            const expectedEvent = MOCK_UPLOAD_PRODUCT_EDIT_ITEM_CG_SHIPPABLE_EVENT(editResponse, false);
+
+            spyOn(analyticsService, 'trackEvent');
+
+            component.ngOnInit();
+            component.onUploaded(editResponse, action);
+
+            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
       });
     });
 
@@ -1133,6 +1281,7 @@ describe('UploadProductComponent', () => {
             screenId: SCREEN_IDS.Upload,
             country: analyticsService.market,
             language: analyticsService.appLocale,
+            shippingAllowed: false,
           },
         };
         spyOn(analyticsService, 'trackEvent');
@@ -1141,6 +1290,56 @@ describe('UploadProductComponent', () => {
         component.onUploaded(uploadResponse, action);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+
+      describe('and shipping flag is active', () => {
+        describe('and item is shippable', () => {
+          it('should send the List Item CG tracking event', () => {
+            const action = UPLOAD_ACTION.created;
+            const uploadResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
+            const weight = 10;
+            uploadResponse.sale_conditions = {
+              supports_shipping: true,
+              fix_price: true,
+              exchange_allowed: false,
+            };
+            uploadResponse.delivery_info = {
+              min_weight_kg: weight,
+              max_weight_kg: weight,
+            };
+
+            const expectedEvent = MOCK_UPLOAD_PRODUCT_LIST_ITEM_CG_SHIPPABLE_EVENT(uploadResponse, true, weight);
+
+            spyOn(analyticsService, 'trackEvent');
+
+            component.ngOnInit();
+            component.onUploaded(uploadResponse, action);
+
+            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
+
+        describe('and item is NOT shippable', () => {
+          it('should send the List Item CG tracking event', () => {
+            const action = UPLOAD_ACTION.created;
+            const uploadResponse: ItemContent = MOCK_ITEM_RESPONSE_CONTENT;
+            uploadResponse.sale_conditions = {
+              supports_shipping: false,
+              fix_price: true,
+              exchange_allowed: false,
+            };
+            uploadResponse.delivery_info = null;
+
+            const expectedEvent = MOCK_UPLOAD_PRODUCT_LIST_ITEM_CG_SHIPPABLE_EVENT(uploadResponse, false);
+
+            spyOn(analyticsService, 'trackEvent');
+
+            component.ngOnInit();
+            component.onUploaded(uploadResponse, action);
+
+            expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+          });
+        });
       });
     });
   });
@@ -1232,10 +1431,7 @@ describe('UploadProductComponent', () => {
         sale_price: 1000000,
         currency_code: 'EUR',
         images: [{ image: true }],
-        sale_conditions: {
-          fix_price: false,
-          exchange_allowed: false,
-        },
+        sale_conditions: { ...MOCK_ITEM.saleConditions, supports_shipping: true },
         delivery_info: null,
         location: {
           address: USER_LOCATION.full_address,
@@ -1296,29 +1492,18 @@ describe('UploadProductComponent', () => {
 
   describe('when getting the upload categories from the server', () => {
     it('should get value, label and icon from consumer goods categories', () => {
-      spyOn(categoryService, 'getCategories').and.returnValue(of(CATEGORY_DATA_WEB));
-      const expected: CategoryOption[] = [
-        {
-          value: '15000',
-          icon_id: 'pc',
-          label: 'Computers & Electronic',
-        },
-        {
-          value: '15245',
-          icon_id: 'pc',
-          label: 'Computers & Electronic',
-        },
-        {
-          value: '14000',
-          icon_id: 'motorbike',
-          label: 'Motorbikes',
-        },
-        {
-          value: '12800',
-          icon_id: 'helmet',
-          label: 'Motor parts',
-        },
-      ];
+      const categories = CATEGORIES_DATA_CONSUMER_GOODS;
+      spyOn(categoriesApiService, 'getUploadCategories').and.returnValue(of(categories));
+
+      const expected: CategoryOption[] = categories.map((category: CategoryResponse) => {
+        const expectedCategory = {
+          value: category.category_id.toString(),
+          label: category.name,
+          icon_id: category.icon_id,
+        };
+
+        return expectedCategory;
+      });
 
       component.ngOnInit();
 
@@ -1620,6 +1805,60 @@ describe('UploadProductComponent', () => {
         const submitButtonTextElement: HTMLElement = fixture.debugElement.query(By.css('tsl-button span')).nativeElement;
 
         expect(submitButtonTextElement.innerHTML).toEqual('Reactivate item');
+      });
+    });
+  });
+
+  describe('if shipping toggle is enabled', () => {
+    const shippabilitySectionSelector = '#shippabilitySection';
+
+    it('should reset weight if disabled', () => {
+      component.ngOnInit();
+      component.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
+
+      expect(component.uploadForm.value.delivery_info).toBeNull();
+    });
+
+    describe('and shippability is allowed', () => {
+      beforeEach(() => {
+        component.isShippabilityAllowed = true;
+        fixture.detectChanges();
+      });
+
+      it('should show shipping section', () => {
+        const shippingSection = fixture.debugElement.query(By.css(shippabilitySectionSelector));
+
+        expect(shippingSection).toBeTruthy();
+      });
+
+      describe('when click in +info link', () => {
+        it('should send +info click navigation event', () => {
+          const moreInfoLinkSelector = `[href="${component.SHIPPING_INFO_HELP_LINK}"]`;
+          const moreInfoLink = fixture.debugElement.query(By.css(moreInfoLinkSelector));
+          spyOn(uploadTrackingEventService, 'trackClickHelpTransactionalEvent');
+
+          moreInfoLink.nativeElement.click();
+
+          expect(uploadTrackingEventService.trackClickHelpTransactionalEvent).toHaveBeenCalledWith(
+            component.item?.id,
+            userService.user?.id,
+            component.item?.salePrice,
+            component.item?.id
+          );
+        });
+      });
+    });
+
+    describe('and shippability is NOT allowed', () => {
+      beforeEach(() => {
+        component.isShippabilityAllowed = false;
+        fixture.detectChanges();
+      });
+
+      it('should NOT show shipping section', () => {
+        const shippingSection = fixture.debugElement.query(By.css(shippabilitySectionSelector));
+
+        expect(shippingSection).toBeFalsy();
       });
     });
   });

@@ -3,94 +3,58 @@
 .SubscriptionCard {
   border: 1px solid $blue-grey-5;
   border-radius: 10px;
-  padding: $spacing-ms;
-  flex-wrap: wrap;
+  padding: $spacing-xl;
   color: $blue-grey-2;
-  height: 100%;
-  margin: 0 auto;
+  margin-top: $spacing-xxl;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 10px 0 rgba($blue-grey-1, 0.1);
+  @include media-breakpoint-down(sm) {
+    padding: 0;
+    margin-top: $spacing-m;
+  }
+
+  &__content {
+    max-width: 500px;
+    @include media-breakpoint-down(sm) {
+      padding: $spacing-m;
+    }
   }
 
   &__banner {
-    border-radius: 2px;
-
-    &--trial {
-      background-color: $walla-soft;
-    }
-
-    &--discount {
-      background-color: $skyblue-main;
-      color: $white;
-    }
-
-    &--hidden {
-      visibility: hidden;
-    }
-  }
-
-  &__info {
-    font-size: $font-size-s;
-    flex-grow: 1;
-    &--edit {
-      color: $walla-main;
-      text-align: center;
-      cursor: pointer;
-    }
-    &--price {
-      font-weight: bold;
-    }
+    border-radius: 21px;
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-xs;
+    background-color: $color-pro-discount;
+    color: $white;
   }
 
   &__title {
     font-size: $font-size-l;
-    font-weight: bold;
-    color: $blue-grey-2;
-  }
-
-  &__subtitle {
-    min-height: 48px;
-  }
-
-  hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 2px solid $blue-grey-5;
-    margin: $spacing-xs 0;
-    width: 100%;
+    font-weight: $font-weight-chunky;
+    color: $blue-grey-1;
   }
 
   &__icon {
-    padding: 15px;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    background-color: $blue-grey-5;
-    margin-bottom: 12px;
-  }
+    margin-right: -50px;
+    margin-top: -60px;
 
-  &--subscribed {
-    border: 2px solid $walla-main;
-  }
+    @include media-breakpoint-down(sm) {
+      background: linear-gradient(0deg, transparent 30%, $color-pro-main 30%);
+      border-radius: 6px;
+      margin-right: 0;
+      margin-top: 0;
 
-  .icon-check {
-    ::ng-deep svg path {
-      fill: $blue-grey-2;
+      img {
+        padding-top: $spacing-ml;
+        height: 160px;
+      }
     }
   }
 
-  &__date {
-    color: $walla-main;
-    font-size: $font-size-s;
-    text-align: center;
+  &__price-description {
+    font-weight: normal;
   }
 
   &__price {
-    color: $walla-main;
-    font-size: $font-size-m;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
 }

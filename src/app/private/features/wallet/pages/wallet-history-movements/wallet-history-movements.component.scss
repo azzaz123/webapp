@@ -1,0 +1,11 @@
+@import '~style/common';
+
+$wallet-history-movements-border: 1px solid $blue-grey-5;
+
+.WalletHistoryMovements {
+  @include box();
+  padding: $spacing-ml;
+
+  color: $blue-grey-1;
+  font-weight: $font-weight-chunky;
+}

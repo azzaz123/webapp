@@ -29,6 +29,11 @@ import { MultiSelectFormModule } from '@shared/form/components/multi-select-form
 import { HashtagSuggesterApiService } from './core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { HashtagFieldComponent } from './components/hashtag-field/hashtag-field.component';
 import { MultiselectSearchInputModule } from '@shared/multiselect-search-input/multiselect-search-input.module';
+import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
+import { ShippingToggleService } from './pages/upload-product/services/shipping-toggle/shipping-toggle.service';
+import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
+import { UploadTrackingEventService } from './pages/upload-product/upload-tracking-event/upload-tracking-event.service';
+import { CategoriesApiModule } from '@api/categories/categories-api.module';
 
 @NgModule({
   imports: [
@@ -46,6 +51,9 @@ import { MultiselectSearchInputModule } from '@shared/multiselect-search-input/m
     CustomCurrencyModule,
     MultiSelectFormModule,
     MultiselectSearchInputModule,
+    CheckboxFormModule,
+    DeliveryRulesApiModule, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
+    CategoriesApiModule,
   ],
   declarations: [
     uploadRoutedComponents,
@@ -70,6 +78,8 @@ import { MultiselectSearchInputModule } from '@shared/multiselect-search-input/m
     GeneralSuggestionsService,
     ItemReactivationService,
     EditTrackingEventService,
+    UploadTrackingEventService,
+    ShippingToggleService, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
   ],
   entryComponents: [RemoveConfirmModalComponent, PreviewModalComponent],
 })

@@ -13,8 +13,10 @@ import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscri
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 
-export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE];
+export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE, CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS];
 
 @Component({
   selector: 'tsl-too-many-items-modal',
@@ -24,7 +26,6 @@ export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [CATEGORY_SUBSCRIPTIONS_IDS.
 export class TooManyItemsModalComponent implements OnInit {
   public type = SUBSCRIPTION_TYPES.notSubscribed;
   public notSubscribedType = SUBSCRIPTION_TYPES.notSubscribed;
-  public inAppType = SUBSCRIPTION_TYPES.inApp;
   public carDealerType = SUBSCRIPTION_TYPES.carDealer;
   public stripeType = SUBSCRIPTION_TYPES.stripe;
   public isFreeTrial: boolean;
@@ -37,10 +38,14 @@ export class TooManyItemsModalComponent implements OnInit {
   public categoryIconName: string;
   public readonly PRO_PATHS = PRO_PATHS;
 
-  private isHighestLimitConfig: { [key: string]: { zendesk: TRANSLATION_KEY; descriptionText: TRANSLATION_KEY } } = {
+  private isHighestLimitConfig: { [key: string]: { zendesk: CUSTOMER_HELP_PAGE; descriptionText: TRANSLATION_KEY } } = {
     [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE]: {
-      zendesk: TRANSLATION_KEY.ZENDESK_REAL_ESTATE_LIMIT_URL,
+      zendesk: CUSTOMER_HELP_PAGE.PROS_REAL_ESTATE_SUBSCRIPTION,
       descriptionText: TRANSLATION_KEY.REAL_ESTATE_HIGHEST_LIMIT_REACHED_DESCRIPTION,
+    },
+    [CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS]: {
+      zendesk: CUSTOMER_HELP_PAGE.PROS_CONSUMER_GOODS_SUBSCRIPTION,
+      descriptionText: TRANSLATION_KEY.CONSUMER_GOODS_HIGHEST_LIMIT_REACHED_DESCRIPTION,
     },
   };
 
@@ -49,7 +54,8 @@ export class TooManyItemsModalComponent implements OnInit {
     private itemService: ItemService,
     private subscriptionsService: SubscriptionsService,
     private analyticsService: AnalyticsService,
-    private translateService: I18nService
+    private translateService: I18nService,
+    private customerHelpService: CustomerHelpService
   ) {}
 
   ngOnInit() {
@@ -100,6 +106,6 @@ export class TooManyItemsModalComponent implements OnInit {
   }
 
   get zenDeskUrl(): string {
-    return this.translateService.translate(this.isHighestLimitConfig[this.categorySubscription.category_id].zendesk);
+    return this.customerHelpService.getPageUrl(this.isHighestLimitConfig[this.categorySubscription.category_id].zendesk);
   }
 }

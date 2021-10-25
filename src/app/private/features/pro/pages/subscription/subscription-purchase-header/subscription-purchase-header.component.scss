@@ -20,13 +20,19 @@
     flex: 1;
   }
 
+  &__link {
+    cursor: pointer;
+    color: $walla-dark;
+  }
+
   &__benefits {
     font-size: $font-size-s;
     color: $blue-grey-2;
   }
 
   &__trialBanner {
-    background-color: $walla-soft;
+    background-color: $color-pro-discount;
+    color: $white;
     border-radius: 2px;
     white-space: nowrap;
   }

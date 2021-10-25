@@ -24,6 +24,8 @@ import { SlotsConfig } from './interfaces/slots-config.interface';
 import { ItemCardListComponent } from './item-card-list.component';
 import { ShowSlotPipe } from './pipes/show-slot.pipe';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 @Component({
   selector: 'tsl-item-card-list-wrapper',
@@ -45,10 +47,9 @@ export class ItemCardListWrapperComponent {
   };
   cardType: CARD_TYPES = CARD_TYPES.REGULAR;
   showPlaceholder = false;
+  showNativeAdSlots = false;
   placeholderCards = ItemCardListWrapperComponent.DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS;
 }
-
-const SUBDOMAIN = 'it';
 
 describe('ItemCardListComponent', () => {
   const cardSelector = 'tsl-public-item-card';
@@ -97,7 +98,10 @@ describe('ItemCardListComponent', () => {
             navigate() {},
           },
         },
-        { provide: 'SUBDOMAIN', useValue: SUBDOMAIN },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -130,7 +134,7 @@ describe('ItemCardListComponent', () => {
     });
 
     it('should render item cards with valid URLs', () => {
-      const expectedEnvironmentURL = environment.siteUrl.replace('es', SUBDOMAIN);
+      const expectedEnvironmentURL = MOCK_SITE_URL;
 
       expect(itemCard.attributes.href).toEqual(`${expectedEnvironmentURL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_CARD.webSlug}`);
     });
@@ -190,15 +194,6 @@ describe('ItemCardListComponent', () => {
       permissionService.addPermission(PERMISSIONS.showAds);
     });
     describe('when we have ads slots', () => {
-      it('should project the template', fakeAsync(() => {
-        fixture.detectChanges();
-        tick();
-
-        const adSlotList = fixture.debugElement.queryAll(By.css('.adSlot'));
-
-        expect(adSlotList.length).toBe(2);
-      }));
-
       it('should project the template with index', fakeAsync(() => {
         const slotConfig: SlotsConfig = componentWrapper.slotConfig;
         fixture.detectChanges();
@@ -214,6 +209,7 @@ describe('ItemCardListComponent', () => {
       describe('and showing wide cards', () => {
         it('should show shopping ads with wide card styles', fakeAsync(() => {
           componentWrapper.cardType = CARD_TYPES.WIDE;
+          component.showNativeAdSlots = true;
 
           fixture.detectChanges();
           tick();

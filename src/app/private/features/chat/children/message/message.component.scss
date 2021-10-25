@@ -22,6 +22,8 @@ h5 {
   flex-wrap: nowrap;
   span {
     white-space: pre-wrap;
+    word-break: break-word;
+    hyphens: auto;
   }
   .message-cloud {
     flex: 0 0 auto;
@@ -30,16 +32,27 @@ h5 {
     border-radius: 20px;
     border: 1px solid $blue-grey-5;
     margin-bottom: 0;
+    p:not(.translated-message--original) {
+      display: inline;
+      margin: 0;
+    }
   }
   &.from-self {
     margin-right: 0;
     margin-left: 100px;
     position: relative;
     flex-direction: row-reverse;
-    p {
+    .message-cloud {
       padding-right: $spacing-xl;
       background-color: $blue-grey-5;
       float: right;
+    }
+  }
+
+  .translated-message {
+    &--original {
+      color: $blue-grey-3;
+      margin-bottom: 5px;
     }
   }
 }

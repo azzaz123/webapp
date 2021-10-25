@@ -3,7 +3,7 @@ export enum DELIVERY_PATHS {
   PAYVIEW = 'payview',
   ACCEPT_SCREEN = 'accept',
   TIMELINE = 'timeline',
-  SHIPMENT_TRACKING = 'shipments',
+  STREAMLINE = 'my-shippings',
   DISPUTE = 'dispute',
 }
 

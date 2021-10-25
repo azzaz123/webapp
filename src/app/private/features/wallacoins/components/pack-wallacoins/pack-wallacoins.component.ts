@@ -9,7 +9,7 @@ import { Pack } from '../../../../../core/payments/pack';
 export class PackWallacoinsComponent {
   @Input() pack: Pack;
   @Input() packIndex: number;
-  @Output() onBuy: EventEmitter<any> = new EventEmitter();
+  @Output() clickBuy: EventEmitter<any> = new EventEmitter();
 
   @HostBinding('class.credits') get withCredits(): boolean {
     return this.pack.name === 'wallacredits';

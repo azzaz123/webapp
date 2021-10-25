@@ -4,6 +4,7 @@ export enum WALLET_PATHS {
   BANK_ACCOUNT = 'bank-account',
   CREDIT_CARD = 'card',
   KYC = 'kyc',
+  HISTORY = 'history',
 }
 
 export enum WALLET_PATH_PARAMS {}

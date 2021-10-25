@@ -24,7 +24,7 @@ import {
   MOCK_KYC_IMAGES_NON_BASE_64,
   MOCK_KYC_IMAGES_NON_BASE_64_BACK_NULL,
   MOCK_KYC_REQUEST_BODY,
-} from '@fixtures/private/wallet/kyc/kyc.fixtures.spec';
+} from '@fixtures/private/wallet/kyc/kyc-images.fixtures.spec';
 import { KYCHttpService } from './http/kyc-http.service';
 
 import { KYCService } from './kyc.service';
@@ -49,7 +49,7 @@ describe('KYCService', () => {
   });
 
   describe('when we request the KYC verification...', () => {
-    describe('and the images are smaller than 1KB', () => {
+    describe('and the images are smaller than 32KB', () => {
       beforeEach(() => {
         spyOn(kycHttpService, 'request');
       });
@@ -71,7 +71,7 @@ describe('KYCService', () => {
       });
     });
 
-    describe('and the images are NOT smaller than 1KB', () => {
+    describe('and the images are bigger than 32KB', () => {
       describe(`and the server don't notify errors`, () => {
         beforeEach(() => {
           spyOn(uuidService, 'getUUID').and.returnValue('1-2');

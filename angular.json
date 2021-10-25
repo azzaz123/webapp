@@ -16,7 +16,7 @@
           },
           "it": {
             "translation": "src/locale/messages.it.json",
-            "baseHref": "/app/"
+            "baseHref": ""
           }
         }
       },
@@ -70,11 +70,13 @@
               "visibilityjs",
               "libphonenumber-js",
               "moment",
-              "hammerjs/hammer"
+              "hammerjs/hammer",
+              "lottie-web"
             ]
           },
           "configurations": {
             "docker": {
+              "baseHref": "/",
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -91,6 +93,7 @@
               "localize": true
             },
             "beta": {
+              "baseHref": "/app/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -116,11 +119,12 @@
                   "maximumError": "10kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json",
               "localize": true
             },
             "production": {
+              "baseHref": "/app/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -145,7 +149,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json",
               "localize": true
             },
@@ -159,7 +163,7 @@
                   "maximumWarning": "8kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             },
             "it": {
@@ -172,7 +176,7 @@
                   "maximumWarning": "8kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             }
           }

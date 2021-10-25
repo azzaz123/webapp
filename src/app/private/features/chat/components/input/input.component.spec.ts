@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
-
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -9,9 +7,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { InboxConversation } from '@private/features/chat/core/model';
-
-import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION, SECOND_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { MOCK_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION, SECOND_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
 import { USER_ID } from '@fixtures/user.fixtures.spec';

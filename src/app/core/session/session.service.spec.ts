@@ -40,6 +40,7 @@ describe('SessionService', () => {
         const service = TestBed.inject(SessionService);
         const callback = jest.fn();
 
+        service.initSession();
         service.newSession$.subscribe(() => callback());
 
         expect(callback).toHaveBeenCalledTimes(1);
@@ -59,6 +60,7 @@ describe('SessionService', () => {
         const service = TestBed.inject(SessionService);
         const callback = jest.fn();
 
+        service.initSession();
         service.newSession$.subscribe(() => callback());
 
         expect(callback).toHaveBeenCalledTimes(0);
@@ -86,7 +88,7 @@ describe('SessionService', () => {
       wallapop_keep_session: {
         value: 'true',
         options: {
-          domain: 'localhost',
+          domain: expect.anything(),
           path: '/',
           expires: expect.any(Date),
         },

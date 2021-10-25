@@ -1,12 +1,14 @@
+import { APP_LOCALE } from '@configs/subdomains.config';
 import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
   name: 'beta',
+  appDomain: `.beta.wallapop.com/`,
+  protocol: 'https://',
   baseUrl: 'https://beta.wallapop.com/',
   xmppDomain: 'beta.wallapop.com',
   wsUrl: 'wss://mongooseimprotool-beta.wallapop.com:443/ws-xmpp',
-  siteUrl: 'https://es.beta.wallapop.com/',
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
   cookieSuffix: 'Beta',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents',
@@ -18,4 +20,6 @@ export const environment: Environment = {
   threatMetrixProfilingDomain: 'clear.wallapop.com',
 };
 
-export const isSWEnabled = true;
+export const localesWithNewSearchEnabled: APP_LOCALE[] = ['it', 'en', 'es'];
+
+export const isSWEnabled = false;

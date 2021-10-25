@@ -14,13 +14,13 @@ export const MockAdsService = {
   adsReady$: of(true),
   init: () => {},
   refresh: () => {},
-  displayAdBySlotId: (adSlotId) => {},
   setSlots: (adSlots) => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
   displayAdShopping: (adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
   adSlotLoaded$: () => of(true),
   clearSlots: () => {},
   refreshSlots: () => {},
+  refreshAllSlots: () => {},
   destroySlots: () => {},
 };
 
@@ -40,17 +40,19 @@ export const MockGooglePublisherTagService = {
   init: () => {},
   setTargetingByAdsKeywords: () => {},
   setAdsSegmentation: () => {},
-  displayAdBySlotId: (id: AdSlotId) => {},
   setSlots: (slots: AdSlotConfiguration) => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
   displayShopping: (pageOption, adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
   isAdSlotLoaded$: () => of(true),
+  isAdSlotsDefined$: of(true),
   reset: () => {},
   getSlots: (adSlots: AdSlotConfiguration[]) => {},
   refreshSlots: (adSots: googletag.Slot[]) => {},
   clearSlots: (adSots: googletag.Slot[]) => {},
   destroySlots: (adSots: googletag.Slot[]) => {},
   refreshAllSlots: () => {},
+  setPubAdsConfig: () => {},
+  getDefinedSlots: () => {},
 };
 
 export const MockLoadAdsService = {
@@ -77,7 +79,7 @@ export const MockAdsKeywordsService = {
 export const MockAdSlots: AdSlotConfiguration[] = [
   {
     id: 'div-gpt-ad-1508490196308-0',
-    name: '/130868815/chat_right',
+    name: '130868815/web/chat_right',
     sizes: [
       [120, 600],
       [160, 600],

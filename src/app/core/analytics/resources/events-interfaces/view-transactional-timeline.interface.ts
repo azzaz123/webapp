@@ -6,39 +6,19 @@
  */
 
 /**
- * User views transactional timeline screen
+ * User views TTS
  */
 export interface ViewTransactionalTimeline {
-  /**
-   * The unique identifier for an item
-   */
-  itemId?: string;
-  /**
-   * Identifier of the user interested in the item
-   */
-  buyerUserId?: string;
-  /**
-   * Identifier of the user that the item belongs to
-   */
-  sellerUserId?: string;
   /**
    * Identifier of the transaction request
    */
   requestId: string;
   /**
-   * Identifier of the category that the transaction item belongs to
-   */
-  categoryId?: number;
-  /**
-   * Status of the transaction
-   */
-  status?: string;
-  /**
    * Identifier of the transaction timeline screen
    */
   screenId: 205;
   /**
-   * Test group of the users
+   * From where the user accesses the TRACER screen
    */
-  experiment?: 'jtrex_tts_baseline' | 'jtrex_tts_variation';
+  source?: 'tracer-push' | 'mail' | 'N/A';
 }

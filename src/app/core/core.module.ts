@@ -36,6 +36,8 @@ import { SearchQueryStringService } from '@core/search/search-query-string.servi
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MonitoringModule } from './monitoring/monitoring.module';
+import { LottieService } from './lottie/lottie.service';
+import { ExperimentationService } from './experimentation/experimentation.service';
 
 @NgModule({
   imports: [
@@ -62,6 +64,7 @@ import { MonitoringModule } from './monitoring/monitoring.module';
     DidomiService,
     LoadExternalLibsService,
     SvgService,
+    LottieService,
     FeatureFlagService,
     SessionService,
     UuidService,
@@ -78,6 +81,7 @@ import { MonitoringModule } from './monitoring/monitoring.module';
     SearchQueryStringService,
     QueryStringLocationService,
     ToastService,
+    ExperimentationService,
   ],
 })
 export class CoreModule {

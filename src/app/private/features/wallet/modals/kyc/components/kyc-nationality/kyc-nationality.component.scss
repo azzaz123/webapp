@@ -13,6 +13,10 @@ $drawing-height: 130px;
     }
   }
 
+  &__optionsWrapper {
+    flex: 1;
+  }
+
   &__infoMessage {
     font-size: $font-size-s;
   }
@@ -52,5 +56,9 @@ $drawing-height: 130px;
         opacity: 0.8;
       }
     }
+  }
+
+  &__cross {
+    cursor: pointer;
   }
 }

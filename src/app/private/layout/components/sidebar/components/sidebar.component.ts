@@ -2,7 +2,15 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
-import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOwnSaleItems } from '@core/analytics/analytics-constants';
+import {
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickWallet,
+  SCREEN_IDS,
+  ViewOwnSaleItems,
+} from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserStats } from '@core/user/user-stats.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -58,5 +66,16 @@ export class SidebarComponent implements OnInit {
       };
       this.analyticsService.trackPageView(event);
     });
+  }
+
+  public trackClickToWallet(): void {
+    const event: AnalyticsEvent<ClickWallet> = {
+      name: ANALYTICS_EVENT_NAMES.ClickWallet,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.MyProfileMenu,
+      },
+    };
+    this.analyticsService.trackEvent(event);
   }
 }

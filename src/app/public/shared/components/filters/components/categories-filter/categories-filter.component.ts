@@ -3,7 +3,7 @@ import { AbstractFilter } from '../abstract-filter/abstract-filter';
 import { CategoriesFilterParams } from './interfaces/categories-filter-params.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CATEGORY_OPTIONS } from './data/category_options';
+import { CATEGORY_ALL_OPTION } from './data/category_options';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { CategoriesFilterIcon } from './interfaces/categories-filter-icon.interface';
 import { CategoriesFilterOption } from './interfaces/categories-filter-option.interface';
@@ -11,6 +11,8 @@ import { FilterTemplateComponent } from '../abstract-filter/filter-template/filt
 import { DrawerPlaceholderTemplateComponent } from '../abstract-select-filter/select-filter-template/drawer-placeholder-template.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { CategoriesFilterConfig } from './interfaces/categories-filter-config.interface';
+import { map } from 'rxjs/operators';
+import { CategoriesApiService } from '@api/categories/categories-api.service';
 
 @Component({
   selector: 'tsl-categories-filter',
@@ -19,6 +21,10 @@ import { CategoriesFilterConfig } from './interfaces/categories-filter-config.in
 })
 export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy {
   @Input() config: CategoriesFilterConfig;
+
+  constructor(private categoriesApiService: CategoriesApiService) {
+    super();
+  }
 
   public VARIANT = FILTER_VARIANT;
   public formGroup = new FormGroup({
@@ -46,9 +52,12 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   public ngOnInit() {
-    this.updateSubjects();
-    this.initializeForm();
-    super.ngOnInit();
+    this.getCategories().subscribe((categories: CategoriesFilterOption[]) => {
+      this.config.options = categories;
+      this.updateSubjects();
+      this.initializeForm();
+      super.ngOnInit();
+    });
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
@@ -121,7 +130,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private getCategoryIcon(value: string, iconType: keyof CategoriesFilterIcon): string {
-    return this.getCategoryByValue(value).icon[iconType];
+    return this.getCategoryByValue(value)?.icon[iconType];
   }
 
   private getCategoryLabel(value: string): string {
@@ -129,7 +138,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private getCategoryByValue(value: string): CategoriesFilterOption {
-    return CATEGORY_OPTIONS.find((option) => option.value === value);
+    return this.config.options.find((option) => option.value === value);
   }
 
   private closeTemplates(): void {
@@ -139,5 +148,13 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
     if (this.placeholderTemplate?.isPlaceholderOpen) {
       this.placeholderTemplate.togglePlaceholderOpen();
     }
+  }
+
+  private getCategories(): Observable<CategoriesFilterOption[]> {
+    return this.categoriesApiService.getSearchCategories().pipe(
+      map((categories: CategoriesFilterOption[]) => {
+        return [CATEGORY_ALL_OPTION, ...categories];
+      })
+    );
   }
 }

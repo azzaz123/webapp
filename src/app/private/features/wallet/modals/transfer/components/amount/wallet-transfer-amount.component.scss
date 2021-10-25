@@ -1,0 +1,131 @@
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/text';
+@import '~web-styleguide/scss/spacing';
+@import '~style/common';
+
+$wallet-transfer-amount-line-width: 250px;
+$wallet-transfer-amount-integer-text-size: 74px;
+$wallet-transfer-amount-integer-width: 188px;
+$wallet-transfer-amount-square-width: 335px;
+$wallet-transfer-amount-square-width-small: 315px;
+
+$spacing-14: 14px;
+
+.WalletTransferAmount {
+  &__hidden {
+    display: none;
+  }
+  &__question {
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+    margin-bottom: $spacing-ms;
+    margin-top: $spacing-ms;
+    text-align: center;
+  }
+  &__square {
+    background: $white;
+    border-radius: $spacing-14;
+    box-shadow: 0px 2px 6px rgba(37, 50, 56, 0.15);
+    width: $wallet-transfer-amount-square-width-small;
+
+    @include media-breakpoint-up(md) {
+      width: $wallet-transfer-amount-square-width;
+    }
+  }
+  &__figure {
+    color: $blue-grey-1;
+    font-weight: $font-weight-chunky;
+    padding: $spacing-m 0 11px 4px;
+
+    input {
+      border: 0;
+      caret-color: $walla-main;
+      font-weight: $font-weight-chunky;
+      padding: 2px;
+    }
+
+    &__integer {
+      font-size: $wallet-transfer-amount-integer-text-size;
+      margin-bottom: -$spacing-l;
+      margin-left: -$spacing-xl;
+      margin-top: -$spacing-m;
+      padding-left: 0;
+      text-align: right;
+      width: $wallet-transfer-amount-integer-width;
+
+      &--invalid {
+        color: $warn;
+      }
+    }
+
+    &__decimal {
+      font-size: $font-size-xl;
+      padding-right: 0;
+      width: $spacing-xxl;
+
+      &--invalid {
+        color: $warn;
+      }
+    }
+
+    &__currency {
+      color: $blue-grey-2;
+      font-size: $font-size-xl;
+      line-height: $font-size-xl;
+      margin-top: $spacing-s;
+    }
+
+    &__reset {
+      align-self: flex-end;
+      @include square(20px);
+      margin-left: $spacing-14;
+      tsl-svg-icon svg {
+        @include square(20px);
+      }
+      tsl-svg-icon circle {
+        @include square(20px);
+      }
+      tsl-svg-icon path {
+        fill: $white;
+      }
+      &:hover {
+        cursor: pointer;
+        z-index: 99;
+        tsl-svg-icon circle {
+          fill: $blue-grey-3 !important;
+        }
+      }
+    }
+  }
+  &__line {
+    border: 1px solid $blue-grey-4;
+    margin-top: $spacing-ms;
+    width: $wallet-transfer-amount-line-width;
+
+    &--invalid {
+      border-color: $warn;
+    }
+  }
+  &__range {
+    color: $walla-main;
+    font-size: $font-size-xs;
+    line-height: $font-size-m;
+    margin-top: $spacing-m;
+    text-align: center;
+
+    &--invalid {
+      color: $warn;
+    }
+  }
+  &__CTA {
+    margin-top: $spacing-14;
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}

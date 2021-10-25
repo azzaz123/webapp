@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
-import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORY_TYPES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 
 @Component({
@@ -14,14 +13,13 @@ export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
-  MAX_NARROW_CARDS = 4;
-  public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
   private readonly rowOrder = [
-    CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
-    CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES,
-    CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
-    CATEGORY_SUBSCRIPTIONS_IDS.CAR,
-    CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE,
+    SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS,
+    SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS,
+    SUBSCRIPTION_CATEGORY_TYPES.CAR_PARTS,
+    SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE,
+    SUBSCRIPTION_CATEGORY_TYPES.CARS,
+    SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES,
   ];
 
   get subscriptionsOrdered(): SubscriptionsResponse[] {
@@ -55,9 +53,6 @@ export class SubscriptionListComponent {
     if (this.showCancel(subscription)) {
       return $localize`:@@web_profile_pages_subscription_678:Cancel`;
     }
-    if (this.showManageInApp(subscription)) {
-      return $localize`:@@web_profile_pages_subscription_327:Manage in app`;
-    }
   }
 
   public onClickButton(subscription: SubscriptionsResponse): void {
@@ -81,24 +76,20 @@ export class SubscriptionListComponent {
   }
 
   private showEdit(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
+    return subscription.tiers.length !== 1;
   }
 
   private showCancel(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
-  }
-
-  private showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription);
+    return subscription.tiers.length === 1;
   }
 
   private getNotFreeTrialText(subscription: SubscriptionsResponse): string {
     return subscription.tiers.length > 1 ? $localize`:@@web_see_plans:See plans` : $localize`:@@web_start:Start`;
   }
 
-  private orderByCategory(order: number[]): SubscriptionsResponse[] {
-    return order.map((categoryId) => {
-      return this.subscriptions.find((subscription) => subscription.category_id === categoryId);
+  private orderByCategory(order: string[]): SubscriptionsResponse[] {
+    return order.map((type) => {
+      return this.subscriptions.find((subscription) => subscription.type === type);
     });
   }
 }

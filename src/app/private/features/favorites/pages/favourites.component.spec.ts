@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FavouritesComponent } from './favourites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
@@ -8,6 +8,8 @@ import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { ProfileService } from '@core/profile/profile.service';
 import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 import { MeApiService } from '@api/me/me-api.service';
+import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
+import { By } from '@angular/platform-browser';
 
 describe('FavouritesComponent', () => {
   let component: FavouritesComponent;
@@ -47,8 +49,14 @@ describe('FavouritesComponent', () => {
               },
             },
           },
+          {
+            provide: FavouritesListTrackingEventsService,
+            useValue: {
+              trackClickItemCardEvent() {},
+            },
+          },
         ],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );
@@ -289,6 +297,22 @@ describe('FavouritesComponent', () => {
 
       expect(userService.getStats).toHaveBeenCalled();
       expect(component.numberOfFavorites).toEqual(MOCK_USER_STATS.counters.favorites);
+    });
+  });
+
+  describe('when clicking a favourited item', () => {
+    beforeEach(() => {
+      spyOn(component, 'trackClickFavoriteItem').and.callThrough();
+    });
+
+    it('should call click tracking method just once and with the correct params', () => {
+      const itemList = fixture.debugElement.queryAll(By.css('tsl-item-card-favourite'));
+      const index = 0;
+
+      itemList[index].triggerEventHandler('click', index);
+
+      expect(component.trackClickFavoriteItem).toHaveBeenCalledWith(index);
+      expect(component.trackClickFavoriteItem).toHaveBeenCalledTimes(1);
     });
   });
 });

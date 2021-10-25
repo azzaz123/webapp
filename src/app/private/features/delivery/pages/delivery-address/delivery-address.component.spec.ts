@@ -258,6 +258,14 @@ describe('DeliveryAddressComponent', () => {
     });
   });
 
+  describe('canExit', () => {
+    it('should return the form canExit status', () => {
+      const result = component.canExit();
+
+      expect(result).toStrictEqual(component.formComponent.canExit());
+    });
+  });
+
   describe('onSubmit', () => {
     describe('when the form is valid...', () => {
       beforeEach(() => {
@@ -308,7 +316,7 @@ describe('DeliveryAddressComponent', () => {
 
             component.onSubmit();
 
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.SHIPMENT_TRACKING]);
+            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.STREAMLINE]);
           });
 
           it('should stay at the same page by default', () => {

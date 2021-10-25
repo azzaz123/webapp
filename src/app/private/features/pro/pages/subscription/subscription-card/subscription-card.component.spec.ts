@@ -2,7 +2,13 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MAPPED_SUBSCRIPTIONS, MAPPED_SUBSCRIPTIONS_WITH_RE, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+  TIER_WITH_DISCOUNT,
+} from '@fixtures/subscriptions.fixtures.spec';
+import { DiscountBadgeComponent } from '@private/features/pro/components/discount-badge/discount-badge.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SubscriptionCardComponent } from './subscription-card.component';
 
@@ -12,7 +18,7 @@ describe('SubscriptionCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubscriptionCardComponent, ButtonComponent],
+      declarations: [SubscriptionCardComponent, ButtonComponent, DiscountBadgeComponent],
       schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(SubscriptionCardComponent, {
@@ -28,7 +34,7 @@ describe('SubscriptionCardComponent', () => {
 
   describe('when has an active subscription ', () => {
     beforeEach(() => {
-      component.subscription = MAPPED_SUBSCRIPTIONS[2];
+      component.subscription = MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED;
       component.isSubscribed = true;
       fixture.detectChanges();
     });
@@ -39,14 +45,14 @@ describe('SubscriptionCardComponent', () => {
       expect(card).toBeTruthy();
     });
 
-    it('should not show trial banner', () => {
-      const trialBanner = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
+    it('should not show banner', () => {
+      const trialBanner = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
-      expect(trialBanner).toBeTruthy();
+      expect(trialBanner).toBeFalsy();
     });
 
-    it('should show active icon', () => {
-      expect(component.iconSrc).toEqual(`/assets/icons/categories/disabled/${component.subscription.category_icon}.svg`);
+    it('should show icon', () => {
+      expect(component.iconSrc).toEqual(`/assets/images/subscriptions/types/${component.subscription.category_icon}.svg`);
     });
 
     it('should show title', () => {
@@ -62,15 +68,21 @@ describe('SubscriptionCardComponent', () => {
       expect(price.textContent).toContain(component.subscription.selected_tier.currency);
     });
 
+    it('should show subscription from date', () => {
+      const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
+
+      expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_from, 'longDate'));
+    });
+
     describe('and has tier limit', () => {
       describe('and is real estate', () => {
         beforeEach(() => {
-          component.subscription = MAPPED_SUBSCRIPTIONS_WITH_RE[0];
+          component.subscription = MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED;
           component.isSubscribed = true;
           fixture.detectChanges();
         });
         it('should show tier limit', () => {
-          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
 
           expect(info.textContent).toContain(
             $localize`:@@web_profile_pages_subscription_332:List up to ${component.subscription.selected_tier.limit} real estate`
@@ -79,7 +91,7 @@ describe('SubscriptionCardComponent', () => {
       });
       describe('and is not Real estate', () => {
         it('should show tier limit', () => {
-          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
 
           expect(info.textContent).toContain(
             $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.selected_tier.limit} items`
@@ -93,40 +105,42 @@ describe('SubscriptionCardComponent', () => {
         component.subscription.selected_tier.limit = null;
 
         fixture.detectChanges();
-        const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
+        const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
 
         expect(info.textContent).toContain($localize`:@@web_profile_pages_subscription_586:List without limits`);
       });
     });
 
-    describe('and has subscription end', () => {
-      beforeEach(() => {
-        component.subscription.subscribed_until = 1567675697;
-        fixture.detectChanges();
-      });
-      it('should show subscription end date', () => {
-        const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
+    describe('end date', () => {
+      describe('and has subscription end', () => {
+        beforeEach(() => {
+          component.subscription.subscribed_until = component.subscription.subscribed_from + 1000 * 60 * 60 * 24;
+          fixture.detectChanges();
+        });
+        it('should show subscription end date', () => {
+          const subscriptionEnd: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__endDate')).nativeElement;
 
-        expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_until, 'dd/MM/yy'));
+          expect(subscriptionEnd.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_until, 'longDate'));
+        });
       });
-    });
 
-    describe('and has not subscription end', () => {
-      beforeEach(() => {
-        component.subscription.subscribed_until = null;
-        fixture.detectChanges();
-      });
-      it('should show subscription start date', () => {
-        const subscriptionStart: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__date')).nativeElement;
+      describe('and has not subscription end', () => {
+        beforeEach(() => {
+          component.subscription.subscribed_until = null;
+          fixture.detectChanges();
+        });
+        it('should show subscription start date', () => {
+          const subscriptionEnd = fixture.debugElement.query(By.css('.SubscriptionCard__endDate'));
 
-        expect(subscriptionStart.textContent).toContain(new DatePipe('en').transform(component.subscription.subscribed_from, 'dd/MM/yy'));
+          expect(subscriptionEnd).toBeFalsy();
+        });
       });
     });
   });
 
   describe('when has not an active subscription ', () => {
     beforeEach(() => {
-      component.subscription = MAPPED_SUBSCRIPTIONS[0];
+      component.subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED;
       fixture.detectChanges();
     });
 
@@ -142,17 +156,17 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should show banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
+        const trialBannerHidden = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
-        expect(trialBannerHidden).toBeFalsy();
+        expect(trialBannerHidden).toBeTruthy();
       });
       it('should show free days amount', () => {
-        const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
+        const trialBanner: HTMLElement = fixture.debugElement.query(By.directive(DiscountBadgeComponent)).nativeElement;
 
         expect(trialBanner.textContent).toContain(component.subscription.trial_days);
       });
       it('should show trial banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--trial'));
+        const trialBannerHidden = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
         expect(trialBannerHidden).toBeTruthy();
       });
@@ -165,19 +179,14 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should show banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
+        const banner = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
-        expect(trialBannerHidden).toBeFalsy();
+        expect(banner).toBeTruthy();
       });
       it('should show discount percentage', () => {
-        const trialBanner: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__banner')).nativeElement;
+        const banner: HTMLElement = fixture.debugElement.query(By.directive(DiscountBadgeComponent)).nativeElement;
 
-        expect(trialBanner.textContent).toContain(TIER_WITH_DISCOUNT.discount.percentage);
-      });
-      it('should show discount banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--discount'));
-
-        expect(trialBannerHidden).toBeTruthy();
+        expect(banner.textContent).toContain(TIER_WITH_DISCOUNT.discount.percentage);
       });
     });
 
@@ -188,14 +197,14 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
       });
       it('should not show banner', () => {
-        const trialBannerHidden = fixture.debugElement.query(By.css('.SubscriptionCard__banner--hidden'));
+        const banner = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
-        expect(trialBannerHidden).toBeTruthy();
+        expect(banner).toBeFalsy();
       });
     });
 
-    it('should show inactive icon', () => {
-      expect(component.iconSrc).toEqual(`/assets/icons/categories/normal/${component.subscription.category_icon}.svg`);
+    it('should show icon', () => {
+      expect(component.iconSrc).toEqual(`/assets/images/subscriptions/types/${component.subscription.category_icon}.svg`);
     });
 
     it('should show title', () => {
@@ -203,19 +212,11 @@ describe('SubscriptionCardComponent', () => {
 
       expect(title.textContent).toEqual(component.subscription.category_name);
     });
-
-    it('should show benefits', () => {
-      component.subscriptionBenefits = ['benefit1', 'benefit2'];
-      fixture.detectChanges();
-
-      const benefitsContainer: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__info')).nativeElement;
-      expect(benefitsContainer.children[0].children.length).toBe(2);
-    });
   });
 
   describe('CTA button', () => {
     beforeEach(() => {
-      component.subscription = MAPPED_SUBSCRIPTIONS[2];
+      component.subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED;
       component.textButton = 'test';
       fixture.detectChanges();
     });

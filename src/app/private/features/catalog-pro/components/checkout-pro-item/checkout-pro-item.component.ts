@@ -20,18 +20,16 @@ export enum BUMPS {
   styleUrls: ['./checkout-pro-item.component.scss'],
 })
 export class CheckoutProItemComponent implements OnInit {
+  @Input() cartProItem: CartProItem;
+  @Input() selectAllEvent: Observable<any>;
+  @Input() index: string;
+  @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
   todayDate: NgbDate;
   tomorrowDate: NgbDate;
   calendarHidden = true;
   calendarType: string;
   newBumpType: string;
   newSelectedDates: CalendarDates;
-
-  @Input() cartProItem: CartProItem;
-  @Input() selectAllEvent: Observable<any>;
-  @Input() index: string;
-  @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
-
   public datesForm: FormGroup;
 
   constructor(private cartService: CartService, private calendar: NgbCalendar, private fb: FormBuilder) {
@@ -84,6 +82,17 @@ export class CheckoutProItemComponent implements OnInit {
     }
   }
 
+  onRemoveOrClean(cartProChange: CartChange): void {
+    if ((cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id) || cartProChange.action === 'clean') {
+      delete this.cartProItem.bumpType;
+      this.cartProItem.selectedDates.fromDate = this.todayDate;
+      this.cartProItem.selectedDates.toDate = this.tomorrowDate;
+      const newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
+      this.patchFormDateValue(newSelectedDates);
+      this.datesForm.disable();
+    }
+  }
+
   public removeItem(): void {
     this.cartService.remove(this.cartProItem.item.id, this.cartProItem.bumpType);
   }
@@ -121,16 +130,5 @@ export class CheckoutProItemComponent implements OnInit {
       (!this.cartProItem.bumpType && data.allSelected) ||
       (this.cartProItem.bumpType !== data.type && this.cartProItem.bumpType && data.allSelected)
     );
-  }
-
-  onRemoveOrClean(cartProChange: CartChange): void {
-    if ((cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id) || cartProChange.action === 'clean') {
-      delete this.cartProItem.bumpType;
-      this.cartProItem.selectedDates.fromDate = this.todayDate;
-      this.cartProItem.selectedDates.toDate = this.tomorrowDate;
-      const newSelectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
-      this.patchFormDateValue(newSelectedDates);
-      this.datesForm.disable();
-    }
   }
 }

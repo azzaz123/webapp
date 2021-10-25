@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-12" *ngIf="userVerifications$ | async as userVerifications">
+    <h3 i18n="@@verification_and_security_all_users_verifications_title">Verifications</h3>
+    <div class="row">
+      <div class="col-md-6 col-12">
+        <tsl-verification-card
+          [isVerified]="userVerifications.email"
+          [title]="titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.EMAIL]"
+          [footerLegend]="user?.email"
+          [textButton]="verifiedTextButton[userVerifications.email.toString()]"
+          (buttonClick)="onClickVerifyEmail(userVerifications.email)"
+        ></tsl-verification-card>
+      </div>
+    </div>
+  </div>
+</div>

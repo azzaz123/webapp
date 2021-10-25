@@ -14,9 +14,19 @@ import { UserService } from '@core/user/user.service';
 import { SidebarComponent } from './sidebar.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewOwnSaleItems } from '@core/analytics/analytics-constants';
+import {
+  AnalyticsEvent,
+  AnalyticsPageView,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickWallet,
+  SCREEN_IDS,
+  ViewOwnSaleItems,
+} from '@core/analytics/analytics-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 
 @Component({
   template: '',
@@ -52,7 +62,7 @@ describe('SidebarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent],
+        declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent, DeliveryDevelopmentDirective],
         imports: [NgxPermissionsModule.forRoot(), RouterTestingModule.withRoutes(routes)],
         providers: [
           {
@@ -84,6 +94,14 @@ describe('SidebarComponent', () => {
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           NgxPermissionsService,
+          {
+            provide: FeatureFlagService,
+            useValue: {
+              getLocalFlag() {
+                return of(true);
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -97,6 +115,7 @@ describe('SidebarComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     permissionService = TestBed.inject(NgxPermissionsService);
     spyOn(analyticsService, 'trackPageView');
+    spyOn(analyticsService, 'trackEvent');
     router = TestBed.get(Router);
     fixture.detectChanges();
   });
@@ -291,6 +310,24 @@ describe('SidebarComponent', () => {
 
           expect(proButton).toBeFalsy();
         });
+      });
+    });
+
+    describe('WHEN click on wallet', () => {
+      it('should track the event', () => {
+        const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-wallet');
+        const expectedEvent: AnalyticsEvent<ClickWallet> = {
+          name: ANALYTICS_EVENT_NAMES.ClickWallet,
+          eventType: ANALYTIC_EVENT_TYPES.Navigation,
+          attributes: {
+            screenId: SCREEN_IDS.MyProfileMenu,
+          },
+        };
+
+        element.click();
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
     });
   });

@@ -1,6 +1,8 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { SITE_URL } from '@configs/site-url.config';
 import { AccessTokenService } from '@core/http/access-token.service';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { CheckSessionDirective } from './check-session.directive';
 
@@ -29,6 +31,10 @@ describe('CheckSessionDirective', () => {
             useValue: {
               accessToken: undefined,
             },
+          },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
           },
         ],
       }).compileComponents();

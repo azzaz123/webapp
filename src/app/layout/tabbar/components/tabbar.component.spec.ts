@@ -4,12 +4,14 @@ import { EventService } from '@core/event/event.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
-import { MockUnreadChatMessagesService } from '@fixtures/message.fixtures.spec';
+import { MockUnreadChatMessagesService } from '@fixtures/chat';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { ELEMENT_TYPE, INPUT_TYPE, TabbarComponent } from './tabbar.component';
 import { TabbarService } from '../core/services/tabbar.service';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
@@ -39,7 +41,10 @@ describe('TabbarComponent', () => {
             provide: UnreadChatMessagesService,
             useClass: MockUnreadChatMessagesService,
           },
-          { provide: 'SUBDOMAIN', useValue: 'es' },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
+          },
           EventService,
           TabbarService,
         ],

@@ -22,6 +22,7 @@
       font-weight: $font-weight-chunky;
       text-transform: uppercase;
       line-height: $line-height-xl;
+      white-space: nowrap;
 
       &:hover {
         color: darken($blue-grey-2, 10%);
@@ -37,6 +38,9 @@
   .NavLinks__links {
     width: 100%;
     display: flex;
+    overflow-x: auto;
+    min-height: 38px;
+    @include hide-scroll-bars;
     div {
       display: flex;
     }

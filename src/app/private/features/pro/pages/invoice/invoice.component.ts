@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BillingInfoResponse } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { UserService } from '@core/user/user.service';
+import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -12,6 +13,7 @@ import { take } from 'rxjs/operators';
 export class InvoiceComponent implements OnInit {
   public canDownloadInvoice: boolean;
   public activeIds: string[] = ['custom-panel-1'];
+  public readonly INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
   private isCardealer: boolean;
 
   constructor(private paymentService: PaymentService, private userService: UserService) {}

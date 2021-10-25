@@ -8,13 +8,13 @@ export function mapWallItemsToItemCards(wallItems: WallItem[], favouriteIds: str
 }
 
 function mapWallItemToItemCard(item: WallItem, favoriteIds: string[]): ItemCard {
-  const { id, category_id, title, description, price, images = [], attributes = [], slug, reserved, bump, type } = item;
+  const { id, category_id, title, description, price, images = [], type_attributes = {}, slug, reserved, bump, type } = item;
 
   return {
     id,
     title,
     categoryId: category_id,
-    description: formatDescription(type, description, attributes),
+    description: formatDescription(type, description, type_attributes),
     salePrice: price.amount,
     currencyCode: price.currency,
     webSlug: slug,
@@ -25,7 +25,7 @@ function mapWallItemToItemCard(item: WallItem, favoriteIds: string[]): ItemCard 
       expired: false,
       banned: false,
       reserved: !!reserved?.flag,
-      bumped: !!bump,
+      bumped: !!bump?.type,
       favorite: favoriteIds.includes(id),
     },
   };

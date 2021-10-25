@@ -1,7 +1,7 @@
 import { SORT_BY } from '@api/core/model';
 
-export interface PaginatedList<T> {
+export interface PaginatedList<T, P = string> {
   list: T[];
-  paginationParameter?: string;
+  paginationParameter?: P;
   orderParameter?: SORT_BY;
 }

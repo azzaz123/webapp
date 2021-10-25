@@ -2,9 +2,6 @@
 .SubscriptionTierSelector {
   .Card {
     border: solid 2px $blue-grey-5;
-    &:not(:last-child) {
-      margin-right: $spacing-ms;
-    }
 
     @include media-breakpoint-down(sm) {
       margin-right: 0 !important;
@@ -16,8 +13,9 @@
       color: $blue-grey-2;
     }
 
-    &__subtitle {
-      margin: 0;
+    &__description {
+      line-height: 1;
+      color: $blue-grey-2;
 
       &--discounted {
         text-decoration: line-through;
@@ -31,25 +29,30 @@
     }
 
     &__banner {
-      border-radius: 2px;
-      background-color: $skyblue-main;
+      border-radius: 4px;
+      background-color: $color-pro-discount;
       color: $white;
       font-weight: $font-weight-chunky;
+      font-size: $font-size-xs;
     }
 
     &:hover {
       transform: $item-card-hover-translate;
       box-shadow: $item-card-hover-box-shadow;
       .Card__title,
-      .Card__subtitle {
+      .Card__description {
         color: $blue-grey-1;
       }
+    }
+
+    &--noHover {
+      pointer-events: none;
     }
 
     &--selected {
       border: solid 2px $blue-grey-2;
       .Card__title,
-      .Card__subtitle {
+      .Card__description {
         color: $blue-grey-1;
       }
     }

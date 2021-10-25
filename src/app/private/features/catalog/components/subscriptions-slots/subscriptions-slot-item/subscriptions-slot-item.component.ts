@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SubscriptionSlot } from '@core/subscriptions/subscriptions.interface';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
   AnalyticsEvent,
@@ -8,13 +7,14 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
 } from '@core/analytics/analytics-constants';
+import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 
 @Component({
   selector: 'tsl-subscriptions-slot-item',
   templateUrl: './subscriptions-slot-item.component.html',
   styleUrls: ['./subscriptions-slot-item.component.scss'],
 })
-export class SubscriptionsSlotItemComponent implements OnInit {
+export class SubscriptionsSlotItemComponent {
   @Input() subscriptionSlot: SubscriptionSlot;
   @Input() subscriptionSlotsLength = 1;
   @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
@@ -22,13 +22,11 @@ export class SubscriptionsSlotItemComponent implements OnInit {
 
   constructor(private analyticsService: AnalyticsService) {}
 
-  ngOnInit() {}
-
   isSelected() {
     if (!this.selectedSubscriptionSlot) {
       return false;
     }
-    return this.subscriptionSlot.category.category_id === this.selectedSubscriptionSlot.category.category_id;
+    return this.subscriptionSlot.subscription.type === this.selectedSubscriptionSlot.subscription.type;
   }
 
   onClick(subscriptionSlot: SubscriptionSlot, e: any) {

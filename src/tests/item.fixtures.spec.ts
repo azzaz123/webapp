@@ -36,7 +36,6 @@ import {
 } from '../app/core/item/item-response.interface';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
-import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec';
 import { MOCK_USER, USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { MOCK_ITEM_VISIBILITY_FLAGS_BUMPED } from '@fixtures/item-detail-flags.fixtures.spec';
 import { ItemCondition } from '@core/item/item-condition';
@@ -129,6 +128,7 @@ export const ITEM_ACTIONS_ALLOWED: ItemActions = {
 export const ITEM_SALE_CONDITIONS: ItemSaleConditions = {
   fix_price: false,
   exchange_allowed: false,
+  supports_shipping: false,
 };
 
 export const ITEM_MAIN_IMAGE: Image = {
@@ -1082,53 +1082,6 @@ export const generateMockItemProResponses = (
     result.push(generateMockItemProResponse(i, type, 'Taitel-' + i, imageUrl, categoryId, status));
   }
   return result;
-};
-
-export const getMockedItemProResponses = (init, categoryId, status): ItemProResponse[] => {
-  let mockResponse: ItemProResponse[] = [];
-
-  MOCK_SUBSCRIPTION_SLOTS_RESPONSE.forEach((subscriptionSlot) => {
-    if (subscriptionSlot.category_id === categoryId) {
-      let type = '';
-      let image = '';
-
-      switch (categoryId) {
-        case 100:
-          type = 'cars';
-          image = 'http://cdn-dock146.wallapop.com/images/10420/22/__/c10420p96001/i112001.jpg';
-          break;
-        case 14000:
-          type = 'motorbikes';
-          image = 'http://cdn-dock146.wallapop.com/images/10420/2b/__/c10420p108001/i134001.jpg';
-          break;
-        case 12800:
-          type = 'motor&parts';
-          image = 'http://cdn-dock146.wallapop.com/images/10420/06/__/c10420p8017/i8022.jpg';
-          break;
-      }
-
-      let numMockItems = 0;
-
-      if (init !== 0) {
-        mockResponse = [];
-      } else {
-        switch (status) {
-          case 'active':
-            numMockItems = subscriptionSlot.limit - subscriptionSlot.available;
-            break;
-          case 'inactive':
-            numMockItems = 20;
-            break;
-          case 'sold':
-            numMockItems = 50;
-            break;
-        }
-        mockResponse = generateMockItemProResponses(numMockItems, type, image, categoryId, status);
-      }
-    }
-  });
-
-  return mockResponse;
 };
 
 export const ITEMS_DATA_V3 = [
