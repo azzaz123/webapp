@@ -6,9 +6,9 @@
  */
 
 /**
- * Users clicks on the category when uploading an item (first screen shown)
+ * PRO users clicks on the intallation button in the additional services section
  */
-export interface ClickItemCategoryUpload {
+export interface ClickInstallationAdditionalServicesUpload {
   /**
    * Identifier of the category clicked
    */
@@ -18,11 +18,7 @@ export interface ClickItemCategoryUpload {
    */
   screenId: 41;
   /**
-   * Name of the experiment or A/B testing applied to the user who is uploading the item. The default value would be 'baseline'
+   * If the switch is on
    */
-  experiment?: string;
-  /**
-   * If the click is from a professional user
-   */
-  isPro?: boolean;
+  switchOn: boolean;
 }

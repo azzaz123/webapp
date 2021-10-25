@@ -6,11 +6,11 @@
  */
 
 /**
- * Users do a suspicious login
+ * Users view the Login Verification Successful screen after confirming
  */
-export interface SuspiciousLogin {
+export interface ViewLoginVerificationSuccessful {
   /**
-   * Name of the experiment or A/B testing applied to the user who has done the suspicious login. The default value would be 'baseline'
+   * Identifier of the Reset Password screen
    */
-  experiment?: string;
+  screenId: 285;
 }

@@ -6,11 +6,15 @@
  */
 
 /**
- * Users do a suspicious login
+ * User views informative 3DS Popup
  */
-export interface SuspiciousLogin {
+export interface View3DSPopup {
   /**
-   * Name of the experiment or A/B testing applied to the user who has done the suspicious login. The default value would be 'baseline'
+   * Identifier of the popup screen
    */
-  experiment?: string;
+  screenId: 283;
+  /**
+   * Hashed Id of the item of the shipping request
+   */
+  itemId?: string;
 }
