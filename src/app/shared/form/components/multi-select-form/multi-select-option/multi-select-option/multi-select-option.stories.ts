@@ -88,6 +88,29 @@ WithSelectedChildren.args = {
   disabled: false,
 };
 
+export const WithSelectedChildrenAndSublabel = Template.bind({});
+WithSelectedChildrenAndSublabel.args = {
+  option: {
+    label: 'aa',
+    value: 'aa',
+    sublabel: 'aa sublabel',
+    checked: false,
+    children: [
+      {
+        label: 'aa1',
+        value: 'aa1',
+        checked: true,
+      },
+      {
+        label: 'aa2',
+        value: 'aa2',
+        checked: false,
+      },
+    ],
+  },
+  disabled: false,
+};
+
 export const WithAllChildrenSelected = Template.bind({});
 WithAllChildrenSelected.args = {
   option: {
