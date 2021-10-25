@@ -12,7 +12,6 @@
   }
   &__content {
     margin-top: $spacing-xxl;
-    padding: $spacing-s;
 
     @include media-breakpoint-up(md) {
       padding: $spacing-xl;
