@@ -32,9 +32,9 @@ export const CONSUMER_GOODS_FILTERS: AvailableFilterConfig[] = [
   {
     id: COMMON_CONSUMER_GOODS_CONFIGURATION_ID.OBJECT_TYPE,
     type: FILTER_TYPES.MULTISELECT,
-    title: $localize`:@@web_filter_subcategory_title:Subcategory`, // TODO align with Miqueñ
-    bubblePlaceholder: $localize`:@@web_filter_subcategory_bubble_placeholder:Subcategory`,
-    drawerPlaceholder: $localize`:@@web_filter_subcategory_drawer_placeholder:Select subcategory`,
+    title: $localize`:@@filters_view_all_users_subcategory_info_title:Subcategory`,
+    bubblePlaceholder: $localize`:@@filter_by_subcategory_all_users_level_1_top_bar_title:Subcategory`,
+    drawerPlaceholder: $localize`:@@filters_view_all_users_subcategory_info_select_label:Select subcategory`,
     icon: '/assets/icons/filters/subcategory.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
