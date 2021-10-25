@@ -13,6 +13,7 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
+import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
@@ -20,7 +21,6 @@ import { MultiSelectFormComponent } from '@shared/form/components/multi-select-f
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
-import { HashtagSuggesterApiService } from '../../private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 @Component({
   selector: 'tsl-multiselect-search-input',
   templateUrl: './multiselect-search-input.component.html',
@@ -142,7 +142,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     if (!newSearchValue) {
       return of([]);
     } else {
-      return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, newSearchValue);
+      return this.hashtagSuggesterApiService.getHashtagsByPrefix(this.categoryId, newSearchValue); // TODO I DON'T WANT THIS HERE, PASS IT AS CONFIG OR STH.
     }
   }
 

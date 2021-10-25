@@ -39,7 +39,7 @@ class StoryMultiselectSearchInputComponent {
   }
 }
 export default {
-  title: 'Webapp/Shared/MultiselectSearchInput',
+  title: 'Webapp/Shared/Form/Components/MultiselectSearchInput',
   component: StoryMultiselectSearchInputComponent,
   decorators: [
     moduleMetadata({
