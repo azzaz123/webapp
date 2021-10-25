@@ -1,6 +1,5 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -21,6 +20,7 @@ describe('EmailVerificationModalComponent', () => {
   let fixture: ComponentFixture<EmailVerificationModalComponent>;
   let activeModal: NgbActiveModal;
   let modalService: NgbModal;
+  let verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -50,7 +50,6 @@ describe('EmailVerificationModalComponent', () => {
         {
           provide: VerificationsNSecurityTrackingEventsService,
           useValue: {
-            trackClickVerificationOptionEvent() {},
             trackStartEmailVerificationProcessEvent() {},
           },
         },
@@ -59,6 +58,7 @@ describe('EmailVerificationModalComponent', () => {
     }).compileComponents();
     modalService = TestBed.inject(NgbModal);
     activeModal = TestBed.inject(NgbActiveModal);
+    verificationsNSecurityTrackingEventsService = TestBed.inject(VerificationsNSecurityTrackingEventsService);
   });
 
   beforeEach(() => {
@@ -83,7 +83,8 @@ describe('EmailVerificationModalComponent', () => {
     describe('when change email button is clicked', () => {
       it('should close the current modal and open the change email modal', () => {
         spyOn(modalService, 'open').and.callThrough();
-        component.changeEmail();
+        const changeButton: HTMLElement = fixture.debugElement.query(By.css('.EmailVerificationModal__change-btn')).nativeElement;
+        changeButton.click();
 
         expect(activeModal.close).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
@@ -96,15 +97,23 @@ describe('EmailVerificationModalComponent', () => {
 
   describe('Verify Button', () => {
     describe('when verify button is clicked', () => {
-      it('should close the current modal and open the thanks email modal', () => {
+      beforeEach(() => {
         spyOn(modalService, 'open').and.callThrough();
-        component.verifyEmail();
-
+        spyOn(verificationsNSecurityTrackingEventsService, 'trackStartEmailVerificationProcessEvent');
+        const verifyButton: HTMLElement = fixture.debugElement.query(By.css('.EmailVerificationModal__verify-btn')).nativeElement;
+        verifyButton.click();
+        fixture.detectChanges();
+      });
+      it('should close the current modal and open the thanks email modal', () => {
         expect(activeModal.close).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
         expect(modalService.open).toHaveBeenCalledWith(VerificationEmailThanksModalComponent, {
           windowClass: 'modal-standard',
         });
+      });
+      it('should track the start email verification process', () => {
+        expect(verificationsNSecurityTrackingEventsService.trackStartEmailVerificationProcessEvent).toHaveBeenCalledTimes(1);
+        expect(verificationsNSecurityTrackingEventsService.trackStartEmailVerificationProcessEvent).toHaveBeenCalled();
       });
     });
   });

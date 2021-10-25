@@ -18,9 +18,7 @@ export class EmailVerificationModalComponent {
     private userVerificationsService: UserVerificationsService,
     private modalService: NgbModal,
     private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService
-  ) {
-    this.verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent(VERIFICATION_METHOD.EMAIL);
-  }
+  ) {}
 
   public changeEmail(): void {
     this.activeModal.close();
