@@ -20,10 +20,11 @@ import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.
   templateUrl: './pro-features.component.html',
   styleUrls: ['./pro-features.component.scss'],
 })
-export class ProFeaturesComponent implements OnChanges, OnInit {
+export class ProFeaturesComponent implements OnChanges {
   @Input() categoryId: number;
   @Input() clickSave: boolean;
   public proFeaturesForm: FormGroup;
+  public readonly ANALYTICS_EVENT_NAMES = ANALYTICS_EVENT_NAMES;
 
   public readonly fieldsConfig: { text: string; eventName: ANALYTICS_EVENT_NAMES }[] = [
     {
@@ -39,7 +40,9 @@ export class ProFeaturesComponent implements OnChanges, OnInit {
       eventName: ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload,
     },
   ];
-  constructor(private analyticsService: AnalyticsService, private modalService: NgbModal, private fb: FormBuilder) {}
+  constructor(private analyticsService: AnalyticsService, private modalService: NgbModal, private fb: FormBuilder) {
+    this.buildForm();
+  }
 
   public onClick(isActive: boolean, eventName: ANALYTICS_EVENT_NAMES): void {
     this.openModal();
@@ -48,13 +51,8 @@ export class ProFeaturesComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes?: SimpleChanges) {
     if (this.clickSave) {
-      console.log('click');
       this.trackSubmit();
     }
-  }
-
-  ngOnInit() {
-    this.buildForm();
   }
 
   buildForm(): void {
@@ -89,13 +87,16 @@ export class ProFeaturesComponent implements OnChanges, OnInit {
   }
 
   private trackSubmit(): void {
+    const { installation, configuration, warranty } = this.proFeaturesForm.getRawValue();
     const event: AnalyticsEvent<ClickConfirmAdditionalServicesUpload> = {
       name: ANALYTICS_EVENT_NAMES.ClickConfirmAdditionalServicesUpload,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.Upload,
         categoryId: +this.categoryId,
-        ...this.proFeaturesForm.getRawValue(),
+        installation,
+        configuration,
+        warranty,
       },
     };
 

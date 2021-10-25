@@ -10,9 +10,17 @@
         </div>
         <div class="row">
             <div class="col ProFeatures__content">
-                <div *ngFor="let field of fieldsConfig" class="d-flex justify-content-between mb-3">
-                    <span>{{field.text}}</span>
-                    <tsl-switch (onChange)="onClick($event, field.eventName)"></tsl-switch>
+                <div class="d-flex justify-content-between mb-3">
+                    <span i18n="@@additional_services_selector_pro_user_install_service_info_title">Installation service</span>
+                    <tsl-switch formControlName="installation" (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickInstallationAdditionalServicesUpload)"></tsl-switch>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span i18n="@@additional_services_selector_pro_user_config_service_info_title">Configuration service</span>
+                    <tsl-switch formControlName="configuration" (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickConfigurationAdditionalServicesUpload)"></tsl-switch>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span i18n="@@additional_services_selector_pro_user_guarantee_service_info_title">Guarantee</span>
+                    <tsl-switch formControlName="warranty" (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload)"></tsl-switch>
                 </div>
             </div>
         </div>
