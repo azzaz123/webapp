@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
@@ -13,12 +13,14 @@ import {
 } from '@core/analytics/analytics-constants';
 import { VerificationsNSecurityTrackingEventsService } from './verifications-n-security-tracking-events.service';
 import { MOCK_USER_VERIFICATIONS_MAPPED } from '@api/fixtures/user-verifications/user-verifications.fixtures.spec';
-import { VERIFICATION_METHOD } from '@api/core/model/verifications';
+import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
+import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
+import { Observable, of } from 'rxjs';
 
 describe('VerificationsNSecurityTrackingEventsService', () => {
   let service: VerificationsNSecurityTrackingEventsService;
   let analyticsService: AnalyticsService;
-  let userVerificationsMock = MOCK_USER_VERIFICATIONS_MAPPED;
+  let mockUserVerifications$: Observable<UserVerifications> = of(MOCK_USER_VERIFICATIONS_MAPPED);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,23 +37,21 @@ describe('VerificationsNSecurityTrackingEventsService', () => {
       spyOn(analyticsService, 'trackPageView');
     });
 
-    it('should track the page view', fakeAsync(() => {
-      service.verificationsNSecurityPageView(userVerificationsMock);
+    it('should track the page view', () => {
+      service.verificationsNSecurityPageView(mockUserVerifications$);
 
       const MOCK_PAGE_VIEW: AnalyticsPageView<ViewVerificationsAndSecurityScreen> = {
         name: ANALYTICS_EVENT_NAMES.ViewVerificationsandSecurityScreen,
         attributes: {
           screenId: SCREEN_IDS.VerificationsAndSecurityScreen,
-          emailVerified: userVerificationsMock.email,
-          phoneVerified: userVerificationsMock.phone,
-          facebookVerified: userVerificationsMock.facebook,
+          emailVerified: MOCK_USER_VERIFICATIONS_MAPPED.email,
+          phoneVerified: MOCK_USER_VERIFICATIONS_MAPPED.phone,
+          facebookVerified: MOCK_USER_VERIFICATIONS_MAPPED.facebook,
         },
       };
 
-      tick();
-
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_PAGE_VIEW);
-    }));
+    });
 
     describe('when user clicks on verify email | phone option', () => {
       beforeEach(() => {
@@ -59,7 +59,7 @@ describe('VerificationsNSecurityTrackingEventsService', () => {
         spyOn(analyticsService, 'trackEvent');
       });
 
-      it('should track click verification option event', fakeAsync(() => {
+      it('should track click verification option event', () => {
         service.trackClickVerificationOptionEvent(VERIFICATION_METHOD.EMAIL);
 
         const MOCK_EVENT: AnalyticsEvent<ClickVerificationOption> = {
@@ -71,10 +71,8 @@ describe('VerificationsNSecurityTrackingEventsService', () => {
           },
         };
 
-        tick();
-
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_EVENT);
-      }));
+      });
     });
 
     describe('when user clicks on the button to start the email verification', () => {
@@ -83,7 +81,7 @@ describe('VerificationsNSecurityTrackingEventsService', () => {
         spyOn(analyticsService, 'trackEvent');
       });
 
-      it('should track email verification process event', fakeAsync(() => {
+      it('should track email verification process event', () => {
         service.trackStartEmailVerificationProcessEvent();
 
         const MOCK_EVENT: AnalyticsEvent<StartVerificationProcess> = {
@@ -95,10 +93,8 @@ describe('VerificationsNSecurityTrackingEventsService', () => {
           },
         };
 
-        tick();
-
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_EVENT);
-      }));
+      });
     });
 
     describe('when user clicks on the button to start the phone verification', () => {
@@ -107,7 +103,7 @@ describe('VerificationsNSecurityTrackingEventsService', () => {
         spyOn(analyticsService, 'trackEvent');
       });
 
-      it('should track phone verification process event', fakeAsync(() => {
+      it('should track phone verification process event', () => {
         service.trackStartPhoneVerificationProcessEvent();
 
         const MOCK_EVENT: AnalyticsEvent<StartVerificationProcess> = {
@@ -119,10 +115,8 @@ describe('VerificationsNSecurityTrackingEventsService', () => {
           },
         };
 
-        tick();
-
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_EVENT);
-      }));
+      });
     });
   });
 });

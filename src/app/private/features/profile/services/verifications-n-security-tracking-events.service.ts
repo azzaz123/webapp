@@ -11,25 +11,15 @@ import {
   ViewVerificationsAndSecurityScreen,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class VerificationsNSecurityTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
-  public verificationsNSecurityPageView(userVerifications: UserVerifications): void {
-    const { email, phone, facebook } = userVerifications;
-
-    const event: AnalyticsPageView<ViewVerificationsAndSecurityScreen> = {
-      name: ANALYTICS_EVENT_NAMES.ViewVerificationsandSecurityScreen,
-      attributes: {
-        screenId: SCREEN_IDS.VerificationsAndSecurityScreen,
-        emailVerified: email,
-        phoneVerified: phone,
-        facebookVerified: facebook,
-      },
-    };
-
-    this.analyticsService.trackPageView(event);
+  public verificationsNSecurityPageView(userVerifications$: Observable<UserVerifications>): void {
+    userVerifications$.pipe(take(1)).subscribe((response: UserVerifications) => this.trackOpenVerificationsNSecurity(response));
   }
 
   public trackClickVerificationOptionEvent(verificationMethod: VERIFICATION_METHOD): void {
@@ -51,6 +41,22 @@ export class VerificationsNSecurityTrackingEventsService {
 
   public trackStartPhoneVerificationProcessEvent(): void {
     this.trackStartVerificationProcessEvent(VERIFICATION_METHOD.PHONE, SCREEN_IDS.PhoneVerificationScreen);
+  }
+
+  private trackOpenVerificationsNSecurity(userVerifications: UserVerifications): void {
+    const { email, phone, facebook } = userVerifications;
+
+    const event: AnalyticsPageView<ViewVerificationsAndSecurityScreen> = {
+      name: ANALYTICS_EVENT_NAMES.ViewVerificationsandSecurityScreen,
+      attributes: {
+        screenId: SCREEN_IDS.VerificationsAndSecurityScreen,
+        emailVerified: email,
+        phoneVerified: phone,
+        facebookVerified: facebook,
+      },
+    };
+
+    this.analyticsService.trackPageView(event);
   }
 
   private trackStartVerificationProcessEvent(verificationMethod: VERIFICATION_METHOD, screenId: SCREEN_IDS): void {
