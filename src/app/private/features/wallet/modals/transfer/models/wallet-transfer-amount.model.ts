@@ -7,6 +7,7 @@ const defaultTotalAmount: number = 0;
 export class WalletTransferAmountModel {
   private _total: number;
   private amountOfDecimals: number;
+  private beginnigByZero: boolean;
   private maximum: number;
   private minimum: number;
   private showDecimalsAsCents = true;
@@ -24,12 +25,13 @@ export class WalletTransferAmountModel {
     }
     return this.showDecimalsAsCents
       ? this.decimalsAsCents
-      : this.total.toLocaleString(HELP_LOCALE.en, { maximumFractionDigits: this.amountOfDecimals, minimumFractionDigits: 0 }).split('.')[1];
+      : this.total.toLocaleString(HELP_LOCALE.en, { maximumFractionDigits: this.amountOfDecimals, minimumFractionDigits: 1 }).split('.')[1];
   }
 
   public set decimals(value: string) {
     this.showDecimalsAsCents = false;
-    this.setTotal(this.integer, value);
+    this.setTotal(this.integer, this.beginnigByZero ? `0${value}` : value);
+    this.beginnigByZero = parseInt(value, 10) === 0;
   }
 
   public get decimalsAsCents(): string {
