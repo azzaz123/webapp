@@ -1,9 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickConfigurationAdditionalServicesUpload,
+  ClickConfirmAdditionalServicesUpload,
   ClickWarrantyAdditionalServicesUpload,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
@@ -18,8 +20,10 @@ import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.
   templateUrl: './pro-features.component.html',
   styleUrls: ['./pro-features.component.scss'],
 })
-export class ProFeaturesComponent {
+export class ProFeaturesComponent implements OnChanges, OnInit {
   @Input() categoryId: number;
+  @Input() clickSave: boolean;
+  public proFeaturesForm: FormGroup;
 
   public readonly fieldsConfig: { text: string; eventName: ANALYTICS_EVENT_NAMES }[] = [
     {
@@ -35,11 +39,30 @@ export class ProFeaturesComponent {
       eventName: ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload,
     },
   ];
-  constructor(private analyticsService: AnalyticsService, private modalService: NgbModal) {}
+  constructor(private analyticsService: AnalyticsService, private modalService: NgbModal, private fb: FormBuilder) {}
 
   public onClick(isActive: boolean, eventName: ANALYTICS_EVENT_NAMES): void {
     this.openModal();
     this.trackEvent(isActive, eventName);
+  }
+
+  ngOnChanges(changes?: SimpleChanges) {
+    if (this.clickSave) {
+      console.log('click');
+      this.trackSubmit();
+    }
+  }
+
+  ngOnInit() {
+    this.buildForm();
+  }
+
+  buildForm(): void {
+    this.proFeaturesForm = this.fb.group({
+      installation: [false],
+      configuration: [false],
+      warranty: [false],
+    });
   }
 
   private openModal(): void {
@@ -59,6 +82,20 @@ export class ProFeaturesComponent {
         screenId: SCREEN_IDS.Upload,
         switchOn: isActive,
         categoryId: +this.categoryId,
+      },
+    };
+
+    this.analyticsService.trackEvent(event);
+  }
+
+  private trackSubmit(): void {
+    const event: AnalyticsEvent<ClickConfirmAdditionalServicesUpload> = {
+      name: ANALYTICS_EVENT_NAMES.ClickConfirmAdditionalServicesUpload,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.Upload,
+        categoryId: +this.categoryId,
+        ...this.proFeaturesForm.getRawValue(),
       },
     };
 

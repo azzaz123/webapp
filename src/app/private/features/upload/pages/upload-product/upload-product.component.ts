@@ -122,6 +122,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public isShippabilityAllowedByCategory = false;
   public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
+  public clickSave: boolean;
 
   private focused: boolean;
   private oldFormValue: any;
@@ -225,6 +226,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
+      this.clickSave = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
         this.uploadForm.value.sale_conditions.shipping_allowed = !!this.uploadForm.value.delivery_info;
       }

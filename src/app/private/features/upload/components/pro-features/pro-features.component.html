@@ -1,18 +1,20 @@
 <div class="box ProFeatures">
-    <div class="row">
-        <div class="col">
-            <h2 class="d-flex">
-                <span i18n="@@upload_pro_user_additional_services_info_title">Additional services</span>
-                <tsl-pro-badge class="ml-2"></tsl-pro-badge>
-            </h2>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col ProFeatures__content">
-            <div *ngFor="let field of fieldsConfig" class="d-flex justify-content-between mb-3">
-                <span>{{field.text}}</span>
-                <tsl-switch (onChange)="onClick($event, field.eventName)"></tsl-switch>
+    <form [formGroup]="proFeaturesForm">
+        <div class="row">
+            <div class="col">
+                <h2 class="d-flex">
+                    <span i18n="@@upload_pro_user_additional_services_info_title">Additional services</span>
+                    <tsl-pro-badge class="ml-2"></tsl-pro-badge>
+                </h2>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col ProFeatures__content">
+                <div *ngFor="let field of fieldsConfig" class="d-flex justify-content-between mb-3">
+                    <span>{{field.text}}</span>
+                    <tsl-switch (onChange)="onClick($event, field.eventName)"></tsl-switch>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
