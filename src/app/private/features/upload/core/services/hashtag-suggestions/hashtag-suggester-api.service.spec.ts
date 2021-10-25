@@ -36,12 +36,12 @@ describe('HashtagSuggesterApiService', () => {
   describe('when we load hashtags...', () => {
     it('should load hashtags and call getHashtagsByPrefix endpint if we load hashtags through textarea typing', () => {
       let response;
-      const paramUrl = `category_id=${category_id}&prefix=${MOCK_PREFIX_HASHTAG}&start=${start}`;
+      const paramUrl = `category_id=${category_id}&prefix=${MOCK_PREFIX_HASHTAG}`;
       const expectedUrl = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}?${paramUrl}`;
       const HttpHeader = {};
       HttpHeader[nextPageHeaderName] = paramUrl;
 
-      service.getHashtagsByPrefix(category_id, start, MOCK_PREFIX_HASHTAG).subscribe((r) => {
+      service.getHashtagsByPrefix(category_id, MOCK_PREFIX_HASHTAG).subscribe((r) => {
         response = r;
       });
       const request = httpMock.expectOne(expectedUrl);
@@ -54,7 +54,6 @@ describe('HashtagSuggesterApiService', () => {
 
       expect(request.request.urlWithParams).toEqual(expectedUrl);
       expect(request.request.method).toBe('GET');
-      expect(response.paginationParameter).toBe(start);
       expect(response.list).toBe(MOCK_HASHTAGS);
     });
 

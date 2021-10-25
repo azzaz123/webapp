@@ -1,0 +1,42 @@
+@import '~style/common';
+$gradient-yellow: #bacc5b;
+$gradient-blue-1: #25c2a3;
+$gradient-blue-2: #2dacb6;
+$gradient-purple: #8762d8;
+$gradient-border-radius: 21px;
+
+.CancelBubbleComponent {
+  color: $blue-grey-1;
+  &__rounded_icon {
+    background-color: $white;
+    min-height: 20px;
+    min-width: 20px;
+    border: 1px solid $walla-main;
+    ::ng-deep svg path {
+      fill: $walla-main;
+    }
+  }
+  @include rounded-gradient($gradient-border-radius, $blue-grey-6, transparent);
+}
+
+:host {
+  &:nth-child(odd) {
+    .CancelBubbleComponent {
+      @include rounded-gradient(
+        $gradient-border-radius,
+        $blue-grey-6,
+        linear-gradient(360deg, $gradient-yellow 0%, $gradient-blue-1 50.33%, $walla-main 100%)
+      );
+    }
+  }
+
+  &:nth-child(even) {
+    .CancelBubbleComponent {
+      @include rounded-gradient(
+        $gradient-border-radius,
+        $blue-grey-6,
+        linear-gradient(0deg, $gradient-purple 0%, $gradient-blue-2 50.33%, $walla-main 100%)
+      );
+    }
+  }
+}

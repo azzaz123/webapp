@@ -22,6 +22,7 @@ class StoryMultiSelectFormFormComponent {
   public formGroup = new FormGroup({
     select: new FormControl(['aa', 'bb']),
   });
+
   public onClick() {
     this.formGroup.get('select').setValue(['cc']);
   }
@@ -42,7 +43,6 @@ const Template: Story<StoryMultiSelectFormFormComponent> = (args) => ({
   props: args,
   template: `
         <tsl-story-multi-select-form [disabled]="disabled" [options]="options"></tsl-story-multi-select-form>
-        
       `,
 });
 
@@ -62,17 +62,17 @@ const optionsWithSublabel = optionsWithLabels.map((option, index) => {
 export const Default = Template.bind({});
 Default.args = {
   options: optionsWithLabels,
-  disabled: 'false',
+  disabled: false,
 };
 
 export const DisableMultiSelect = Template.bind({});
 DisableMultiSelect.args = {
   options: optionsWithLabels,
-  disabled: 'true',
+  disabled: true,
 };
 
-export const OptionsWithOccurrencies = Template.bind({});
-OptionsWithOccurrencies.args = {
+export const OptionsWithOccurrences = Template.bind({});
+OptionsWithOccurrences.args = {
   options: optionsWithSublabel,
-  disabled: 'false',
+  disabled: false,
 };

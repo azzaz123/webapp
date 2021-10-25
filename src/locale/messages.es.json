@@ -890,6 +890,8 @@
     "web_upload_components_drop_area_364": "Ya has llegado al límite de {$INTERPOLATION} fotos por producto.{$LINE_BREAK} Elimina una foto primero antes de añadir otra.",
     "web_upload_components_drop_area_365": "Foto principal",
     "web_upload_components_edit_366": "Volver al catálogo",
+    "web_upload_hashtag_invalid_error_message": "Nuestros hashtags lo aceptan todo, salvo caracteres especiales y espacios.",
+    "web_upload_hashtag_placeholder":"Buscar o crear hashtag",
     "web_upload_seller_reactivation_toast_text": "Reactiva tu producto completando los nuevos campos de información obligatoria.",
     "web_upload_seller_reactivation_toast_title": "Añade información indispensable",
     "web_upload_modals_preview_modal_367": "Subir producto",

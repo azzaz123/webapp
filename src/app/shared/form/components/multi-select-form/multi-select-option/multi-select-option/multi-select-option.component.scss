@@ -38,6 +38,13 @@ $checkbox-width: 24px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    .customSelect {
+      border: 0 !important;
+      background-color: $blue-grey-5 !important;
+      &.selected {
+        background: $walla-main !important;
+      }
+    }
     .select {
       @include square($checkbox-width);
       border: 2px solid $blue-grey-4;
@@ -62,6 +69,7 @@ $checkbox-width: 24px;
           }
         }
       }
+
       &:hover {
         border-color: $yellow-dark;
       }
