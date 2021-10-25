@@ -34,6 +34,7 @@ import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { forkJoin, Observable, of, Subscriber } from 'rxjs';
 import { LocationSelectorModal } from '@shared/modals/location-selector-modal/location-selector-modal.component';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -61,6 +62,9 @@ export class UploadRealestateComponent implements OnInit {
   ];
   public uploadCompletedPercentage = 0;
   public pendingFiles: PendingFiles;
+  public readonly PERMISSIONS = PERMISSIONS;
+  public clickSave: boolean;
+  public isProUser: boolean;
 
   private oldFormValue: any;
 
@@ -109,6 +113,7 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isProUser = this.userService.isProUser();
     this.getOptions().subscribe(() => {
       if (this.item && this.isReactivation) {
         this.itemReactivationService.reactivationValidation(this.uploadForm);
@@ -309,6 +314,7 @@ export class UploadRealestateComponent implements OnInit {
 
   private saveItem(): void {
     this.loading = true;
+    this.clickSave = true;
     this.item ? this.updateItem() : this.createItem();
   }
 
@@ -371,7 +377,6 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: RealestateContent) {
-    const isPro = this.userService.isProUser();
     const baseEventAttrs: any = {
       itemId: item.id,
       categoryId: item.category_id,
@@ -382,7 +387,7 @@ export class UploadRealestateComponent implements OnInit {
       condition: item.condition,
       surface: item.surface || null,
       rooms: item.rooms || null,
-      isPro,
+      isPro: this.isProUser,
     };
 
     if (isEdit) {

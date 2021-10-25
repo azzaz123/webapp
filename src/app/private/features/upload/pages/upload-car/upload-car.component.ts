@@ -32,6 +32,7 @@ import { ItemReactivationService } from '../../core/services/item-reactivation/i
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -63,7 +64,9 @@ export class UploadCarComponent implements OnInit {
 
   public isLoadingModels: boolean;
   public isLoadingYears: boolean;
-
+  public readonly PERMISSIONS = PERMISSIONS;
+  public clickSave: boolean;
+  public isProUser: boolean;
   private oldFormValue: any;
 
   constructor(
@@ -117,7 +120,7 @@ export class UploadCarComponent implements OnInit {
 
   ngOnInit() {
     const isItemEdit = !!this.item;
-
+    this.isProUser = this.userService.isProUser();
     if (isItemEdit) {
       return this.initializeEditForm();
     }
@@ -127,6 +130,7 @@ export class UploadCarComponent implements OnInit {
   public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
+      this.clickSave = true;
       this.item ? this.updateItem() : this.createItem();
     } else {
       this.invalidForm();
@@ -509,8 +513,6 @@ export class UploadCarComponent implements OnInit {
   }
 
   private trackEditOrUpload(isEdit: boolean, item: CarContent) {
-    const isPro = this.userService.isProUser();
-
     return this.userService.isProfessional().pipe(
       tap((isCarDealer: boolean) => {
         const baseEventAttrs: any = {
@@ -528,7 +530,7 @@ export class UploadCarComponent implements OnInit {
           numDoors: item.num_doors || null,
           bodyType: item.body_type || null,
           isCarDealer,
-          isPro,
+          isPro: this.isProUser,
         };
 
         if (isEdit) {

@@ -210,7 +210,13 @@
     </div>
   </div>
 
-  <tsl-pro-features [categoryId]="uploadForm.controls['category_id'].value"></tsl-pro-features>
+  <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+    <ng-container *ngxPermissionsExcept="PERMISSIONS.professional">
+      <ng-container >
+        <tsl-pro-features *ngIf="isProUser" [categoryId]="uploadForm.controls['category_id'].value" [clickSave]="clickSave"></tsl-pro-features>
+      </ng-container>
+    </ng-container>
+  </ng-container>
   
   <div class="main-box">
     <h2 i18n="@@web_upload_pages_realestate_440">Property location</h2>

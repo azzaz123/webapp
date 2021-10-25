@@ -35,6 +35,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse, ItemSaleConditions } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -117,11 +118,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
+  public isProUser: boolean;
 
   public isShippabilityAllowed = false;
   public isShippabilityAllowedByCategory = false;
   public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
+  public readonly PERMISSIONS = PERMISSIONS;
   public clickSave: boolean;
 
   private focused: boolean;
@@ -186,6 +189,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.detectTitleKeyboardChanges();
 
     this.updateShippingToggleStatus();
+    this.isProUser = this.userService.isProUser();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -837,14 +841,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private trackEditOrUpload(isEdit: boolean, item: ItemContent) {
-    const isPro = this.userService.isProUser();
     let baseEventAttrs: any = {
       itemId: item.id,
       categoryId: item.category_id,
       salePrice: item.sale_price,
       title: item.title,
       shippingAllowed: !!item.sale_conditions?.supports_shipping,
-      isPro,
+      isPro: this.isProUser,
     };
 
     if (item.extra_info) {
