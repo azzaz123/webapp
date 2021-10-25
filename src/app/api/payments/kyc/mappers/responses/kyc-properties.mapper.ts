@@ -21,9 +21,8 @@ function getRefusedReason(KYCPropertiesApi: KYCPropertiesApi): KYCRefusedReason 
     const unknownRefusedReason = KYC_REFUSED_REASONS.find((properties) => properties.reason === KYC_REFUSED_REASON.UNKNOWN);
     const userRefusedReason = KYC_REFUSED_REASONS.find((properties) => properties.reason === KYCPropertiesApi.document_refused_reason_type);
     return userRefusedReason || unknownRefusedReason;
-  } else {
-    return null;
   }
+  return null;
 }
 
 function getDocumentStatus(definedStatus: KYCDocumentStatusApi): KYC_STATUS {

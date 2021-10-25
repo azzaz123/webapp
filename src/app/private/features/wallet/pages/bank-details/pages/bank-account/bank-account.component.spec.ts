@@ -37,6 +37,7 @@ describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
   const backAnchorSelector = '.BankAccount__back';
   const KYCInfoMessageSelector = '.BankAccount__KYCMessage';
+  const saveButtonRowSelector = '#saveButtonRow';
 
   const routerEvents: Subject<any> = new Subject();
 
@@ -655,6 +656,12 @@ describe('BankAccountComponent', () => {
 
       expect(KYCMessage).toBeFalsy();
     });
+
+    it('should NOT apply the bottom style', () => {
+      const bottomButtonStyle = fixture.debugElement.query(By.css(saveButtonRowSelector)).classes;
+
+      expect(bottomButtonStyle).not.toHaveProperty('mb-4');
+    });
   });
 
   describe('when the component is on the KYC page...', () => {
@@ -685,6 +692,12 @@ describe('BankAccountComponent', () => {
 
       it('should close the modal', () => {
         expect(component.closeModal.emit).toHaveBeenCalledTimes(1);
+      });
+
+      it('should apply the bottom style', () => {
+        const bottomButtonStyle = fixture.debugElement.query(By.css(saveButtonRowSelector)).classes;
+
+        expect(bottomButtonStyle).toHaveProperty('mb-4', true);
       });
     });
   });
