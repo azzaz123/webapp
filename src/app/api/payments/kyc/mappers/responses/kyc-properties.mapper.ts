@@ -9,16 +9,21 @@ import { KYCDocumentStatusApi, KYCFlowStatusApi, KYCPropertiesApi, KYCRefusedRea
 export function mapKYCPropertiesApiToKYCProperties(KYCPropertiesApi: KYCPropertiesApi): KYCProperties {
   return {
     status: getDocumentStatus(KYCPropertiesApi.user_kyc_status),
-    refusedReason: getRefusedReason(KYCPropertiesApi.document_refused_reason_type),
+    refusedReason: getRefusedReason(KYCPropertiesApi),
     inflowStatus: getFlowStatus(KYCPropertiesApi.inflow_status),
     outflowStatus: getFlowStatus(KYCPropertiesApi.outflow_status),
   };
 }
 
-function getRefusedReason(refusedReasonApi: KYCRefusedReasonApi): KYCRefusedReason {
-  const unknownRefusedReason = KYC_REFUSED_REASONS.find((properties) => properties.reason === KYC_REFUSED_REASON.UNKNOWN);
-  const userRefusedReason = KYC_REFUSED_REASONS.find((properties) => properties.reason === refusedReasonApi);
-  return userRefusedReason || unknownRefusedReason;
+function getRefusedReason(KYCPropertiesApi: KYCPropertiesApi): KYCRefusedReason {
+  const isKYCRefused = KYCPropertiesApi.user_kyc_status === KYC_STATUS.REJECTED;
+  if (isKYCRefused) {
+    const unknownRefusedReason = KYC_REFUSED_REASONS.find((properties) => properties.reason === KYC_REFUSED_REASON.UNKNOWN);
+    const userRefusedReason = KYC_REFUSED_REASONS.find((properties) => properties.reason === KYCPropertiesApi.document_refused_reason_type);
+    return userRefusedReason || unknownRefusedReason;
+  } else {
+    return null;
+  }
 }
 
 function getDocumentStatus(definedStatus: KYCDocumentStatusApi): KYC_STATUS {
