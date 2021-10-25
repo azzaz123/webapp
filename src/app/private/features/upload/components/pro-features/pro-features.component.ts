@@ -26,20 +26,6 @@ export class ProFeaturesComponent implements OnChanges {
   public proFeaturesForm: FormGroup;
   public readonly ANALYTICS_EVENT_NAMES = ANALYTICS_EVENT_NAMES;
 
-  public readonly fieldsConfig: { text: string; eventName: ANALYTICS_EVENT_NAMES }[] = [
-    {
-      text: $localize`:@@additional_services_selector_pro_user_install_service_info_title:Installation service`,
-      eventName: ANALYTICS_EVENT_NAMES.ClickInstallationAdditionalServicesUpload,
-    },
-    {
-      text: $localize`:@@additional_services_selector_pro_user_config_service_info_title:Configuration service`,
-      eventName: ANALYTICS_EVENT_NAMES.ClickConfigurationAdditionalServicesUpload,
-    },
-    {
-      text: $localize`:@@additional_services_selector_pro_user_guarantee_service_info_title:Guarantee`,
-      eventName: ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload,
-    },
-  ];
   constructor(private analyticsService: AnalyticsService, private modalService: NgbModal, private fb: FormBuilder) {
     this.buildForm();
   }
@@ -49,7 +35,7 @@ export class ProFeaturesComponent implements OnChanges {
     this.trackEvent(isActive, eventName);
   }
 
-  ngOnChanges(changes?: SimpleChanges) {
+  ngOnChanges() {
     if (this.clickSave) {
       this.trackSubmit();
     }
