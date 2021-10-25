@@ -74,7 +74,7 @@ export class FilterTemplateComponent {
     this.openStateChange.emit(this.isDropdownOpen);
   }
 
-  public resetScroll(): void {
+  private resetScroll(): void {
     this.scrollableContainer.nativeElement.scroll(0, 0);
   }
 }
