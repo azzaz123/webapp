@@ -1,0 +1,17 @@
+<div class="ProModal d-flex align-items-center flex-column-reverse flex-md-row text-center text-md-left h-100">
+    <div class="ProModal__close position-absolute m-3" (click)="onClose()">
+        <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+    </div>
+    <div class="ProModal__text d-flex flex-column h-100 justify-content-center">
+        <div class="ProModal__title">{{modalConfig.title}}</div>
+        <div class="ProModal__description">{{modalConfig.text1}}</div>
+        <div class="ProModal__description mb-4">{{modalConfig.text2}}</div>
+        <tsl-button *ngIf="modalConfig.buttons.secondary" (click)="onClose(MODAL_ACTION.SECONDARY_BUTON)" class="mb-3" 
+        className="btn-secondary w-100">{{modalConfig.buttons.secondary.text}}</tsl-button>
+        <tsl-button (click)="onClose(MODAL_ACTION.PRIMARY_BUTTON)" 
+        className="btn-primary w-100">{{modalConfig.buttons.primary.text}}</tsl-button>
+    </div>
+    <div class="ProModal__img ml-auto d-flex flex-column h-100 justify-content-center w-100 align-items-center">
+        <tsl-svg-icon [src]="modalConfig.img"></tsl-svg-icon>
+    </div>
+</div>
