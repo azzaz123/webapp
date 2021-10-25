@@ -57,8 +57,7 @@ describe('MultiSelectOptionComponent', () => {
       it('should only show option with label', () => {
         const label = debugElement.query(By.css(queryLabelNode)).nativeElement;
         const subLabel = debugElement.query(By.css(querySublabel));
-
-        expect(label.innerHTML).toBe(optionFixture.label);
+        expect(label.textContent.trim()).toBe(optionFixture.label);
         expect(subLabel).toBeNull();
       });
     });
@@ -73,8 +72,8 @@ describe('MultiSelectOptionComponent', () => {
         const label = debugElement.query(By.css(queryLabelNode)).nativeElement;
         const sublabel = debugElement.query(By.css(querySublabel)).nativeElement;
 
-        expect(label.innerHTML).toBe(optionWithSublabelFixture.label);
-        expect(sublabel.innerHTML).toBe(optionWithSublabelFixture.sublabel);
+        expect(label.textContent.trim()).toBe(optionWithSublabelFixture.label);
+        expect(sublabel.textContent.trim()).toBe(optionWithSublabelFixture.sublabel);
       });
     });
 
