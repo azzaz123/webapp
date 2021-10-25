@@ -17,8 +17,8 @@ import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { combineLatest } from 'rxjs';
-import { finalize, take } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { take } from 'rxjs/operators';
 
 const validatingTransferMessage: Toast = {
   type: TOAST_TYPES.SUCCESS,
@@ -50,6 +50,7 @@ export class WalletBalanceInfoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.trackViewWallet();
     this.loadBalanceAndSpecifications();
     this.checkPayUserBankAccount();
   }
@@ -76,29 +77,23 @@ export class WalletBalanceInfoComponent implements OnInit {
   private loadBalanceAndSpecifications(): void {
     this.changeDetectorRef.detectChanges();
 
-    combineLatest([this.paymentsWalletsService.walletBalance$.pipe(take(1)), this.kycPropertiesService.KYCProperties$.pipe(take(1))])
-      .pipe(
-        finalize(() => {
-          this.balanceTrackingEventService.trackViewWallet(this.walletBalance?.amount.total, this.KYCProperties.status);
-        })
-      )
-      .subscribe({
-        next: ([walletBalance, specifications]: [Money, KYCProperties]) => {
-          this.walletBalance = walletBalance;
-          this.KYCProperties = specifications;
+    combineLatest([this.paymentsWalletsService.walletBalance$.pipe(take(1)), this.kycPropertiesService.KYCProperties$]).subscribe({
+      next: ([walletBalance, specifications]: [Money, KYCProperties]) => {
+        this.walletBalance = walletBalance;
+        this.KYCProperties = specifications;
 
-          this.loading = false;
-          this.changeDetectorRef.detectChanges();
-        },
-        error: (error) => {
-          this.isError = true;
-          this.toastService.show(DEFAULT_ERROR_TOAST);
-          this.errorActionService.show(error);
+        this.loading = false;
+        this.changeDetectorRef.detectChanges();
+      },
+      error: (error) => {
+        this.isError = true;
+        this.toastService.show(DEFAULT_ERROR_TOAST);
+        this.errorActionService.show(error);
 
-          this.loading = false;
-          this.changeDetectorRef.detectChanges();
-        },
-      });
+        this.loading = false;
+        this.changeDetectorRef.detectChanges();
+      },
+    });
   }
 
   private checkPayUserBankAccount(): void {
@@ -119,5 +114,9 @@ export class WalletBalanceInfoComponent implements OnInit {
     });
     this.isTransferInProgress = true;
     this.changeDetectorRef.detectChanges();
+  }
+
+  private trackViewWallet(): void {
+    this.balanceTrackingEventService.trackViewWallet();
   }
 }

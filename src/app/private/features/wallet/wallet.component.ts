@@ -68,7 +68,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   }
 
   public onNavLinkClicked(navLinkId: string): void {
-    this.trackClickBankAccount(navLinkId);
+    this.trackClickBankDetails(navLinkId);
     this.router.navigate([navLinkId]);
   }
 
@@ -83,10 +83,10 @@ export class WalletComponent implements OnInit, OnDestroy {
       .pop()?.id;
   }
 
-  private trackClickBankAccount(navLinkId: string): void {
+  private trackClickBankDetails(navLinkId: string): void {
     if (navLinkId !== bankDetailsId) {
       return;
     }
-    this.walletTrackingEventService.trackClickBankAccount();
+    this.walletTrackingEventService.trackClickBankDetails();
   }
 }

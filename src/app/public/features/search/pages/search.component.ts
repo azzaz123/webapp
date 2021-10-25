@@ -16,11 +16,7 @@ import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { delay, distinctUntilChanged, filter, skip, map, tap } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
-import {
-  AD_SHOPPING_CONTAINER_PUBLIC_SEARCH,
-  AD_SHOPPING_PUBLIC_SEARCH,
-  AdShoppingPageOptionPublicSearchFactory,
-} from '../core/ads/shopping/search-ads-shopping.config';
+import { AD_SHOPPING_PUBLIC_SEARCH, AdShoppingPageOptionPublicSearchFactory } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchAdsService } from './../core/ads/search-ads.service';
 import { SLOTS_CONFIG_DESKTOP, SLOTS_CONFIG_MOBILE } from './search.config';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
@@ -226,6 +222,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       this.showInfoBubble = isSortByRelevance;
     } else {
       this.showInfoBubble = false;
+    }
+
+    if (searchResponseExtraData.sortBy) {
+      this.sortBySubject.next(searchResponseExtraData.sortBy);
     }
   }
 
