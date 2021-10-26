@@ -84,21 +84,27 @@ describe('WHEN the integer part is assigned', () => {
   });
 });
 
-describe('WHEN the decimal part is assigned', () => {
-  it('should not receive the decimals as a formatted number', () => {
-    const target = new WalletTransferAmountModel(13.1, 0, 3);
+describe.each([
+  [0.13, '0', '3', '03', 0.03],
+  [14.98, '', '0', '0', 14.0],
+  [13.14, '8', '83', '83', 13.83],
+])('WHEN the decimal part is assigned', (assigned, firstValue, secondValue, expectedDecimals, expectedTotal) => {
+  it('should receive the decimals at least with one decimal', () => {
+    const target = new WalletTransferAmountModel(assigned, 0, 3);
 
-    target.decimals = '1';
+    target.decimals = firstValue;
+    target.decimals = secondValue;
 
-    expect(target.decimals).toBe('1');
+    expect(target.decimals).toBe(expectedDecimals);
   });
 
   it('should set the total amount', () => {
-    const target = new WalletTransferAmountModel(13.1, 0, 3);
+    const target = new WalletTransferAmountModel(assigned, 0, 3);
 
-    target.decimals = '32';
+    target.decimals = firstValue;
+    target.decimals = secondValue;
 
-    expect(target.total).toBe(13.32);
+    expect(target.total).toBe(expectedTotal);
   });
 });
 
