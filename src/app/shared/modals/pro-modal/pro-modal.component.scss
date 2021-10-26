@@ -1,0 +1,54 @@
+@import '~style/common';
+
+.ProModal {
+  max-width: 625px;
+  min-height: 485px;
+
+  @include media-breakpoint-down(sm) {
+    max-width: 316px;
+  }
+
+  &__close {
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    tsl-svg-icon ::ng-deep path {
+      fill: $white;
+    }
+    &:hover {
+      tsl-svg-icon ::ng-deep path {
+        fill: $blue-grey-3;
+      }
+    }
+  }
+
+  &__text {
+    padding: $spacing-xl;
+    @include media-breakpoint-down(sm) {
+      padding: $spacing-ml;
+    }
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: bold;
+  }
+
+  &__description {
+    margin-top: $spacing-ms;
+  }
+
+  &__img {
+    padding: $spacing-xl;
+    background: $color-pro-main;
+
+    @include media-breakpoint-down(sm) {
+      background: linear-gradient(0deg, transparent 30%, $color-pro-main 30%);
+      padding: $spacing-ml 0 0 0;
+    }
+
+    img {
+      width: fit-content;
+    }
+  }
+}

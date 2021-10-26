@@ -21,4 +21,8 @@ export interface ClickItemCategoryUpload {
    * Name of the experiment or A/B testing applied to the user who is uploading the item. The default value would be 'baseline'
    */
   experiment?: string;
+  /**
+   * If the click is from a professional user
+   */
+  isPro?: boolean;
 }

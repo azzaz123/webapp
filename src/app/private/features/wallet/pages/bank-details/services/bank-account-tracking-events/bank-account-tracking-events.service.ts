@@ -5,7 +5,6 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   ClickAddEditBankAccount,
-  ClickBankDetails,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -16,7 +15,6 @@ import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-propertie
 
 import { take } from 'rxjs/operators';
 
-type KycStatusEventAttribute = InnerType<ClickAddEditBankAccount, 'kycStatus'> | undefined;
 type AddOrEditEventAttribute = InnerType<ClickAddEditBankAccount, 'addOrEdit'>;
 const kycBannerStatusToEventAttribute: Partial<Record<KYC_STATUS, KycStatusEventAttribute>> = {
   [KYC_STATUS.NO_NEED]: 'verified',
@@ -25,6 +23,7 @@ const kycBannerStatusToEventAttribute: Partial<Record<KYC_STATUS, KycStatusEvent
   [KYC_STATUS.REJECTED]: 'pending',
   [KYC_STATUS.VERIFIED]: 'verified',
 };
+type KycStatusEventAttribute = InnerType<ClickAddEditBankAccount, 'kycStatus'> | undefined;
 
 @Injectable()
 export class BankAccountTrackingEventsService {
@@ -36,16 +35,6 @@ export class BankAccountTrackingEventsService {
       const addOrEdit = this.mapAddOrEditAttribute(isEdit);
       const kycStatus = this.mapKycBannerStatusToEventAttribute(status);
       const event = this.generateAddEditBankAccountEvent(addOrEdit, kycStatus);
-
-      this.analyticsService.trackEvent(event);
-    });
-  }
-
-  public trackClickBankAccount(): void {
-    this.kycPropertiesService.KYCProperties$.pipe(take(1)).subscribe((kycProperties: KYCProperties) => {
-      const { status } = kycProperties;
-      const kycStatus = this.mapKycBannerStatusToEventAttribute(status);
-      const event = this.generateClickBankAccountEvent(kycStatus);
 
       this.analyticsService.trackEvent(event);
     });
@@ -65,18 +54,6 @@ export class BankAccountTrackingEventsService {
       },
     };
 
-    return event;
-  }
-
-  private generateClickBankAccountEvent(kycStatus?: KycStatusEventAttribute): AnalyticsEvent<ClickBankDetails> {
-    const event: AnalyticsEvent<ClickBankDetails> = {
-      name: ANALYTICS_EVENT_NAMES.ClickBankDetails,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.MyWallet,
-        kycStatus,
-      },
-    };
     return event;
   }
 
