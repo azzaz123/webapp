@@ -65,8 +65,12 @@
             [adShoppingPageOptions]="adShoppingGroupPageOptions"
           ></tsl-sky-slot-group-shopping>
         </div>
-        <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
+        <div *ngIf="device === DevicesType.MOBILE && variant === 'Variant-1'" class="ItemCardList__sky-bottom row justify-content-center mt-4">
+          <h1>CONCEPT PROOF VARIANT 1</h1>
+        </div>
+        <div *ngIf="device === DevicesType.MOBILE && variant === 'Baseline'" class="ItemCardList__sky-bottom row justify-content-center mt-4">
           <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
+          <h1>CONCEPT PROOF BASELINE</h1>
         </div>
       </ng-container>
     </ng-container>
