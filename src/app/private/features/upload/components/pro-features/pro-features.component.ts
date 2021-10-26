@@ -21,7 +21,7 @@ import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.
   styleUrls: ['./pro-features.component.scss'],
 })
 export class ProFeaturesComponent implements OnChanges {
-  @Input() categoryId: number;
+  @Input() categoryId: string;
   @Input() clickSave: boolean;
   public proFeaturesForm: FormGroup;
   public readonly ANALYTICS_EVENT_NAMES = ANALYTICS_EVENT_NAMES;
