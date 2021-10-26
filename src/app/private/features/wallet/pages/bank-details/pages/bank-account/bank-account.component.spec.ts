@@ -37,7 +37,7 @@ describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
   const backAnchorSelector = '.BankAccount__back';
   const KYCInfoMessageSelector = '.BankAccount__KYCMessage';
-  const bottomStyleSelector = '.BankAccount__bottomContainer';
+  const saveButtonRowSelector = '#saveButtonRow';
 
   const routerEvents: Subject<any> = new Subject();
 
@@ -651,16 +651,16 @@ describe('BankAccountComponent', () => {
       expect(back).toBeTruthy();
     });
 
-    it('should NOT apply the bottom style', () => {
-      const bottomButtonStyle = fixture.debugElement.query(By.css(bottomStyleSelector));
-
-      expect(bottomButtonStyle).toBeFalsy();
-    });
-
     it('should NOT show the informative message', () => {
       const KYCMessage = fixture.debugElement.query(By.css(KYCInfoMessageSelector));
 
       expect(KYCMessage).toBeFalsy();
+    });
+
+    it('should NOT apply the bottom style', () => {
+      const bottomButtonStyle = fixture.debugElement.query(By.css(saveButtonRowSelector)).classes;
+
+      expect(bottomButtonStyle).not.toHaveProperty('mb-4');
     });
   });
 
@@ -675,12 +675,6 @@ describe('BankAccountComponent', () => {
       const back = fixture.debugElement.query(By.css(backAnchorSelector));
 
       expect(back).toBeFalsy();
-    });
-
-    it('should apply the bottom style', () => {
-      const bottomButtonStyle = fixture.debugElement.query(By.css(bottomStyleSelector));
-
-      expect(bottomButtonStyle).toBeTruthy();
     });
 
     it('should show the informative message', () => {
@@ -698,6 +692,12 @@ describe('BankAccountComponent', () => {
 
       it('should close the modal', () => {
         expect(component.closeModal.emit).toHaveBeenCalledTimes(1);
+      });
+
+      it('should apply the bottom style', () => {
+        const bottomButtonStyle = fixture.debugElement.query(By.css(saveButtonRowSelector)).classes;
+
+        expect(bottomButtonStyle).toHaveProperty('mb-4', true);
       });
     });
   });

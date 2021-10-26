@@ -2,7 +2,7 @@ export enum DELIVERY_PATHS {
   ADDRESS = 'address',
   PAYVIEW = 'payview',
   ACCEPT_SCREEN = 'accept',
-  TIMELINE = 'timeline',
+  TTS = 'tracking',
   STREAMLINE = 'my-shippings',
   DISPUTE = 'dispute',
 }

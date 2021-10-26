@@ -120,7 +120,6 @@ export enum SCREEN_IDS {
   ReviewForSeller = 291,
   EditWeight = 292,
   MGMHost = 293,
-  MGMHostInfo = 294,
   MGMGuestLink = 295,
   OnboardingIntentionOptions = 296,
   OnboardingBuyer = 297,

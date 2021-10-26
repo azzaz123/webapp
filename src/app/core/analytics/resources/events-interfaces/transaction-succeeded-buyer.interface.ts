@@ -21,8 +21,4 @@ export interface TransactionSucceededBuyer {
    * Identifier of the transaction
    */
   transactionId: string;
-  /**
-   * Whether the buyer should receive a tracer push
-   */
-  sendTracerPush: boolean;
 }
