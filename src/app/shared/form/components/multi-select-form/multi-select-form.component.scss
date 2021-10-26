@@ -1,14 +1,55 @@
+@import 'src/style/common';
+
+$border: 1px solid $blue-grey-5;
+$nested-title-height: 57px;
+
 :host {
-  ::ng-deep > div:last-child {
-    .MultiSelectOption {
-      &::after {
-        content: '';
-        background-color: transparent !important;
-        height: 3px;
-        position: absolute;
+  display: block;
+  height: 100%;
+  overflow: auto;
+
+  .MultiSelectForm {
+    &__reset {
+      cursor: pointer;
+      right: $spacer;
+      top: $spacer;
+    }
+
+    &__option {
+      border-bottom: $border;
+    }
+
+    &__children {
+      background: $white;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      z-index: 2;
+
+      &__header {
+        background: $white;
+        border-bottom: $border;
         width: 100%;
-        left: 0px;
-        bottom: 0px;
+        z-index: 1;
+      }
+
+      &__back {
+        border-bottom: $border;
+        cursor: pointer;
+
+        tsl-svg-icon {
+          transform: scaleX(-1);
+        }
+      }
+
+      &__select-all {
+        color: $walla-main;
+        cursor: pointer;
+      }
+
+      &__options {
+        padding-top: $nested-title-height * 2;
       }
     }
   }

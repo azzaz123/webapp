@@ -1,93 +1,34 @@
 @import 'src/style/common';
 
-$sub-label-light-gray: #828282;
-$transition: all 0.5s ease;
-$checkbox-width: 24px;
-
 .MultiSelectOption {
-  cursor: pointer;
-  label {
-    margin: 1rem 0;
-  }
-  &::after {
-    content: '';
-    background-color: $blue-grey-5;
-    height: 3px;
-    position: absolute;
-    width: 100%;
-    left: 0px;
-    bottom: 0px;
-  }
   &--disabled {
     color: $blue-grey-2;
+
+    tsl-checkbox-form,
+    tsl-svg-icon {
+      opacity: 0.5;
+    }
   }
-  &__labelContainer {
-    margin: 0 10px;
+
+  &--with-children {
+    cursor: pointer;
   }
+
   &__label {
-    display: block;
-
     &__sub {
-      color: $sub-label-light-gray;
+      color: $blue-grey-2;
     }
   }
 
-  //TODO: Refactor the repeating code by having shared checkbox component
-  .checkbox {
-    transition: $transition;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    .customSelect {
-      border: 0 !important;
-      background-color: $blue-grey-5 !important;
-      &.selected {
-        background: $walla-main !important;
-      }
-    }
-    .select {
-      @include square($checkbox-width);
-      border: 2px solid $blue-grey-4;
-      border-radius: 6px;
-      padding: 0;
-      background: transparent;
-      margin-right: $spacing-ms;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      tsl-svg-icon {
-        display: none;
-      }
-      &.selected {
-        background: $yellow-dark;
-        border-color: transparent;
-        tsl-svg-icon {
-          display: flex;
-          ::ng-deep path {
-            fill: $white;
-          }
-        }
-      }
+  tsl-svg-icon {
+    @include square(24px);
+  }
 
-      &:hover {
-        border-color: $yellow-dark;
-      }
-    }
-    &.checkbox-corporate {
-      .select {
-        &.selected {
-          background: $walla-main;
-        }
-        &:hover {
-          border-color: $walla-main;
-        }
-      }
-    }
-    input[type='checkbox'] {
-      position: absolute;
-      clip: rect(0, 0, 0, 0);
-      pointer-events: none;
-    }
+  &__selection {
+    color: $walla-main;
+    font-size: $font-size-xs;
+    position: absolute;
+    bottom: 4px;
+    left: 0;
   }
 }

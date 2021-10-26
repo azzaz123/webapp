@@ -17,6 +17,7 @@ export class FilterTemplateComponent {
   @Input() hasApply?: boolean;
   @Input() isClearable?: boolean;
   @Output() apply: EventEmitter<void> = new EventEmitter();
+  @Output() cancel: EventEmitter<void> = new EventEmitter();
   @Output() clear: EventEmitter<void> = new EventEmitter();
   @Output() click: EventEmitter<void> = new EventEmitter();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
@@ -43,6 +44,7 @@ export class FilterTemplateComponent {
   public handleCancel(event: MouseEvent): void {
     event.stopPropagation();
     this.closeDropdown();
+    this.cancel.emit();
   }
 
   public handleAccept(event: MouseEvent): void {

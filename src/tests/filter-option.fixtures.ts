@@ -79,8 +79,13 @@ export const objectType: ObjectType = {
 
 export const formattedObjectType: FilterOption = {
   value: objectType.id,
-  hasChildren: objectType.has_children,
   label: objectType.name,
+  children: [
+    {
+      label: 'child_name',
+      value: 'child',
+    },
+  ],
 };
 
 export const brandNModel: BrandModel = {

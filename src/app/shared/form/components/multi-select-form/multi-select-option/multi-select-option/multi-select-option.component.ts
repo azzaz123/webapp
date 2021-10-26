@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { MultiSelectFormOption } from '../../interfaces/multi-select-form-option.interface';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, HostListener } from '@angular/core';
+import { TemplateMultiSelectFormOption } from '../../interfaces/multi-select-form-option.interface';
 
 @Component({
   selector: 'tsl-multi-select-option',
@@ -8,10 +8,33 @@ import { MultiSelectFormOption } from '../../interfaces/multi-select-form-option
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiSelectOptionComponent {
-  @Input() option: MultiSelectFormOption;
-  @Input() disabled: boolean;
-  @Input() isCustomStyle: boolean;
+  @Input() isDisabled: boolean;
   @Output() toggleOnChange = new EventEmitter();
+  @Input() set option(value: TemplateMultiSelectFormOption) {
+    this.data = value;
+    this.hasChildren = !!value.children?.length;
+    this.updateChildSelection();
+  }
+  public data: TemplateMultiSelectFormOption;
+  public hasChildren = false;
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent) {
+    if (this.isDisabled) {
+      event.preventDefault();
+    }
+  }
+
+  public selectedChildrenCount: number;
+
+  private updateChildSelection(): void {
+    this.selectedChildrenCount = this.getSelectedChildrenCount();
+  }
+
+  public getSelectedChildrenCount(): number {
+    if (this.data.children?.length) {
+      return [...this.data.children].filter((childOption) => childOption.checked).length;
+    }
+  }
 
   public toggleCheckbox(): void {
     this.toggleOnChange.emit();

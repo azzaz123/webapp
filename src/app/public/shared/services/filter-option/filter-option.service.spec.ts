@@ -20,7 +20,6 @@ jest.mock('./data/hardcoded-options', () => ({
         value: 'value',
         label: 'label',
         icon: 'icon.png',
-        hasChildren: false,
       },
     ],
   },
@@ -120,7 +119,6 @@ describe('FilterOptionService', () => {
           value: 'value',
           label: 'label',
           icon: 'icon.png',
-          hasChildren: false,
         },
       ]);
     }));
