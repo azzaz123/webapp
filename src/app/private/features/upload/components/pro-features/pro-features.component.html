@@ -11,16 +11,34 @@
         <div class="row">
             <div class="col ProFeatures__content">
                 <div class="d-flex justify-content-between mb-3">
-                    <span i18n="@@additional_services_selector_pro_user_install_service_info_title">Installation service</span>
-                    <tsl-switch formControlName="installation" (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickInstallationAdditionalServicesUpload)"></tsl-switch>
+                    <span i18n="@@additional_services_selector_pro_user_install_service_info_title">Installation
+                        service</span>
+                    <tsl-switch formControlName="installation"
+                        (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickInstallationAdditionalServicesUpload)">
+                    </tsl-switch>
                 </div>
                 <div class="d-flex justify-content-between mb-3">
-                    <span i18n="@@additional_services_selector_pro_user_config_service_info_title">Configuration service</span>
-                    <tsl-switch formControlName="configuration" (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickConfigurationAdditionalServicesUpload)"></tsl-switch>
+                    <span i18n="@@additional_services_selector_pro_user_config_service_info_title">Configuration
+                        service</span>
+                    <tsl-switch formControlName="configuration"
+                        (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickConfigurationAdditionalServicesUpload)">
+                    </tsl-switch>
                 </div>
                 <div class="d-flex justify-content-between">
                     <span i18n="@@additional_services_selector_pro_user_guarantee_service_info_title">Guarantee</span>
-                    <tsl-switch formControlName="warranty" (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload)"></tsl-switch>
+                    <tsl-switch formControlName="warranty">
+                    </tsl-switch>
+                </div>
+                <div class="form-group" *ngIf="proFeaturesForm.value.warranty">
+                    <label i18n="@@additional_services_selector_pro_user_guarantee_service_info_period_label">Guarantee
+                        period</label>
+                    <div class="d-flex">
+                        <input type="number" class="form-control mr-3" min="0" formControlName="warrantyAmount"
+                            (keyup)="onClick(proFeaturesForm.value.warranty, ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload)"
+                            max="9999" />
+                        <tsl-dropdown class="form-control" [options]="dropdownOptions" noFilter="10"
+                            formControlName="warrantyPeriod"></tsl-dropdown>
+                    </div>
                 </div>
             </div>
         </div>

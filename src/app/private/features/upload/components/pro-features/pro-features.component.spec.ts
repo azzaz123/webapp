@@ -6,6 +6,7 @@ import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS } from '@core/a
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { SwitchModule } from '@shared/switch/switch.module';
 import { ProFeaturesComponent } from './pro-features.component';
@@ -19,7 +20,7 @@ describe('ProFeaturesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProFeaturesComponent],
-      imports: [ReactiveFormsModule, FormsModule, SwitchModule],
+      imports: [ReactiveFormsModule, FormsModule, SwitchModule, DropdownModule],
       providers: [
         {
           provide: NgbModal,
@@ -52,7 +53,13 @@ describe('ProFeaturesComponent', () => {
   });
 
   it('should init default values', () => {
-    expect(component.proFeaturesForm.getRawValue()).toEqual({ configuration: false, installation: false, warranty: false });
+    expect(component.proFeaturesForm.getRawValue()).toEqual({
+      configuration: false,
+      installation: false,
+      warranty: false,
+      warrantyAmount: null,
+      warrantyPeriod: 'months',
+    });
   });
 
   describe('Submit', () => {
@@ -131,9 +138,9 @@ describe('ProFeaturesComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       oldValue = component.proFeaturesForm.get('configuration').value;
 
-      const instalationSwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-switch[formControlname="configuration"]'))
+      const configurationSwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-switch[formControlname="configuration"]'))
         .nativeElement;
-      instalationSwitch.querySelector('input').click();
+      configurationSwitch.querySelector('input').click();
     });
     it('Should emit event', () => {
       const expectedEvent = {
@@ -166,29 +173,50 @@ describe('ProFeaturesComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       oldValue = component.proFeaturesForm.get('warranty').value;
 
-      const instalationSwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-switch[formControlname="warranty"]')).nativeElement;
-      instalationSwitch.querySelector('input').click();
-    });
-    it('Should emit event', () => {
-      const expectedEvent = {
-        attributes: { categoryId: 1, screenId: SCREEN_IDS.Upload, switchOn: component.proFeaturesForm.get('warranty').value },
-        eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        name: ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload,
-      };
+      const warrantySwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-switch[formControlname="warranty"]')).nativeElement;
+      warrantySwitch.querySelector('input').click();
 
-      expect(analitycsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-      expect(analitycsService.trackEvent).toHaveBeenCalledTimes(1);
+      fixture.detectChanges();
     });
 
     it('Should change value', () => {
       expect(component.proFeaturesForm.get('warranty').value).toBe(!oldValue);
     });
 
-    it('Should open modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
-        windowClass: 'pro-modal',
+    it('Should show warranty fields', () => {
+      const warrantyAmount: HTMLElement = fixture.debugElement.query(By.css('input[formControlname="warrantyAmount"]')).nativeElement;
+      const warrantyPeriod: HTMLElement = fixture.debugElement.query(By.css('tsl-dropdown[formControlname="warrantyPeriod"]'))
+        .nativeElement;
+
+      expect(warrantyAmount).toBeTruthy();
+      expect(warrantyPeriod).toBeTruthy();
+    });
+    describe('and the user write an amount', () => {
+      beforeEach(() => {
+        const testDe = fixture.debugElement.query(By.css('input[formControlname="warrantyAmount"]'));
+        testDe.triggerEventHandler('keyup', {
+          target: {
+            value: '1',
+          },
+        });
       });
-      expect(modalService.open).toHaveBeenCalledTimes(1);
+      it('Should emit event', () => {
+        const expectedEvent = {
+          attributes: { categoryId: 1, screenId: SCREEN_IDS.Upload, switchOn: component.proFeaturesForm.get('warranty').value },
+          eventType: ANALYTIC_EVENT_TYPES.Navigation,
+          name: ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload,
+        };
+
+        expect(analitycsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        expect(analitycsService.trackEvent).toHaveBeenCalledTimes(1);
+      });
+
+      it('Should open modal', () => {
+        expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
+        });
+        expect(modalService.open).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

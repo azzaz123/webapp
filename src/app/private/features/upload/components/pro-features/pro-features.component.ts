@@ -12,6 +12,7 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ClickInstallationAdditionalServicesUpload } from '@core/analytics/resources/events-interfaces/click-installation-additional-services-upload.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 
@@ -25,6 +26,16 @@ export class ProFeaturesComponent implements OnChanges {
   @Input() clickSave: boolean;
   public proFeaturesForm: FormGroup;
   public readonly ANALYTICS_EVENT_NAMES = ANALYTICS_EVENT_NAMES;
+  public readonly dropdownOptions: IOption[] = [
+    {
+      value: 'months',
+      label: $localize`:@@additional_services_selector_pro_user_guarantee_service_info_months_unit_label:months`,
+    },
+    {
+      value: 'years',
+      label: $localize`:@@additional_services_selector_pro_user_guarantee_service_info_years_unit_label:years`,
+    },
+  ];
 
   constructor(private analyticsService: AnalyticsService, private modalService: NgbModal, private fb: FormBuilder) {
     this.buildForm();
@@ -46,6 +57,8 @@ export class ProFeaturesComponent implements OnChanges {
       installation: [false],
       configuration: [false],
       warranty: [false],
+      warrantyPeriod: ['months'],
+      warrantyAmount: [],
     });
   }
 
