@@ -136,7 +136,9 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
-    this.variant = this.experimentationService.getVariant(OPTIMIZE_EXPERIMENTS.SearchPage3rdSlotPosition);
+    this.experimentationService.experimentReady$.subscribe(() => {
+      this.variant = this.experimentationService.getVariant(OPTIMIZE_EXPERIMENTS.SearchPage3rdSlotPosition);
+    });
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(
       this.newSearch$.pipe(skip(1)).subscribe((searchResponseExtraData: SearchResponseExtraData) => {
