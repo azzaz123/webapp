@@ -83,16 +83,7 @@ import { UploadTrackingEventService } from './upload-tracking-event/upload-track
 import { CategoriesApiService } from '@api/categories/categories-api.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
-
-@Component({
-  selector: 'tsl-pro-features',
-  template: '',
-})
-class MockProFeaturesComponent {
-  src: string;
-}
 
 export const USER_LOCATION: UserLocation = {
   id: 101,
@@ -255,7 +246,7 @@ describe('UploadProductComponent', () => {
             },
           },
         ],
-        declarations: [UploadProductComponent, ProFeaturesComponent],
+        declarations: [UploadProductComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
