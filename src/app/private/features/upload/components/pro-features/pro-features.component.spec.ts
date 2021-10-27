@@ -7,8 +7,8 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
+import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
-import { SwitchModule } from '@shared/switch/switch.module';
 import { ProFeaturesComponent } from './pro-features.component';
 
 describe('ProFeaturesComponent', () => {
@@ -20,7 +20,7 @@ describe('ProFeaturesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProFeaturesComponent],
-      imports: [ReactiveFormsModule, FormsModule, SwitchModule, DropdownModule],
+      imports: [ReactiveFormsModule, FormsModule, ToggleFormModule, DropdownModule],
       providers: [
         {
           provide: NgbModal,
@@ -104,7 +104,8 @@ describe('ProFeaturesComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       oldValue = component.proFeaturesForm.get('installation').value;
 
-      const instalationSwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-switch[formControlname="installation"]')).nativeElement;
+      const instalationSwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-toggle-form[formControlname="installation"]'))
+        .nativeElement;
       instalationSwitch.querySelector('input').click();
     });
     it('Should emit event', () => {
@@ -138,7 +139,7 @@ describe('ProFeaturesComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       oldValue = component.proFeaturesForm.get('configuration').value;
 
-      const configurationSwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-switch[formControlname="configuration"]'))
+      const configurationSwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-toggle-form[formControlname="configuration"]'))
         .nativeElement;
       configurationSwitch.querySelector('input').click();
     });
@@ -173,7 +174,7 @@ describe('ProFeaturesComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       oldValue = component.proFeaturesForm.get('warranty').value;
 
-      const warrantySwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-switch[formControlname="warranty"]')).nativeElement;
+      const warrantySwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-toggle-form[formControlname="warranty"]')).nativeElement;
       warrantySwitch.querySelector('input').click();
 
       fixture.detectChanges();

@@ -13,21 +13,21 @@
                 <div class="d-flex justify-content-between mb-3">
                     <span i18n="@@additional_services_selector_pro_user_install_service_info_title">Installation
                         service</span>
-                    <tsl-switch formControlName="installation"
-                        (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickInstallationAdditionalServicesUpload)">
-                    </tsl-switch>
+                    <tsl-toggle-form formControlName="installation"
+                        (ngModelChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickInstallationAdditionalServicesUpload)">
+                    </tsl-toggle-form >
                 </div>
                 <div class="d-flex justify-content-between mb-3">
                     <span i18n="@@additional_services_selector_pro_user_config_service_info_title">Configuration
                         service</span>
-                    <tsl-switch formControlName="configuration"
-                        (onChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickConfigurationAdditionalServicesUpload)">
-                    </tsl-switch>
+                    <tsl-toggle-form  formControlName="configuration"
+                        (ngModelChange)="onClick($event, ANALYTICS_EVENT_NAMES.ClickConfigurationAdditionalServicesUpload)">
+                    </tsl-toggle-form>
                 </div>
                 <div class="d-flex justify-content-between">
                     <span i18n="@@additional_services_selector_pro_user_guarantee_service_info_title">Guarantee</span>
-                    <tsl-switch formControlName="warranty">
-                    </tsl-switch>
+                    <tsl-toggle-form formControlName="warranty">
+                    </tsl-toggle-form>
                 </div>
                 <div class="form-group" *ngIf="proFeaturesForm.value.warranty">
                     <label i18n="@@additional_services_selector_pro_user_guarantee_service_info_period_label">Guarantee
