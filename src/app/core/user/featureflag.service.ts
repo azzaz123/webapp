@@ -109,7 +109,7 @@ export class FeatureFlagService {
   }
 
   private getDeliveryFeatureFlag(): boolean {
-    return isDevMode() || this.isExperimentalFeaturesEnabled();
+    return this.isExperimentalFeaturesEnabled();
   }
 
   private checkPermission(featureFlagName: FEATURE_FLAGS_ENUM, isFlagActive: boolean): void {
