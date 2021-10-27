@@ -67,7 +67,7 @@
                     <div class="form-group row align-items-center">
                         <label for="iban" class="col-sm-12 col-md-5" i18n="@@bank_account_form_iban_label">IBAN</label>
                         <div class="col-sm-12 col-md-5">
-                            <input type="text" class="form-control" id="iban" formControlName="iban" [maxlength]="maxLengthIBAN"/>
+                            <input type="text" class="form-control" id="iban" formControlName="iban" [maxlength]="maxLengthIBAN" (blur)="formatIbanOnAndroid()"/>
                             <div *ngIf="bankAccountForm.controls.iban.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                                 <ng-container *ngIf="bankAccountForm.controls.iban.errors as IBANError">
                                     <span *ngIf="IBANError.required" i18n="@@bank_account_form_iban_empty_field_inline_error">
@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div class="row justify-content-center"  [ngClass]="{'mb-4': isKYC}" id="saveButtonRow">
-                    <div class="col-12 col-md-2" [ngClass]="{'col-md-7 p-0': isKYC}">
+                    <div class="col-12 col-md-2 p-0" [ngClass]="{'col-md-7': isKYC}">
                         <tsl-button [type]="'submit'" [loading]="loadingButton$ | async" [disabled]="loadingButton$ | async" className="btn-primary btn-block" i18n="@@bank_account_form_bottom_bar_save_button">Save</tsl-button>
                     </div>
                 </div>
