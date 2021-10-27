@@ -58,4 +58,8 @@ export class DeviceService {
   public getDeviceLanguages(): readonly string[] {
     return navigator.languages;
   }
+
+  public getOSName(): string {
+    return this.deviceDetectorService.os;
+  }
 }

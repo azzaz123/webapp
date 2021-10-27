@@ -9,7 +9,7 @@ import {
 } from '@private/features/wallet/errors/mappers/bank-account/bank-account-error-mapper';
 import { catchError } from 'rxjs/operators';
 
-export const MAIN_BANK_ACCOUNT_URL = `${environment.baseUrl}/api/v3/payments/bank_accounts/main`;
+export const MAIN_BANK_ACCOUNT_URL = `${environment.baseUrl}api/v3/payments/bank_accounts/main`;
 
 @Injectable()
 export class BankAccountApiService {
