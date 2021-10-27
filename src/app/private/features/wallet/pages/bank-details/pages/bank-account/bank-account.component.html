@@ -67,7 +67,7 @@
                     <div class="form-group row align-items-center">
                         <label for="iban" class="col-sm-12 col-md-5" i18n="@@bank_account_form_iban_label">IBAN</label>
                         <div class="col-sm-12 col-md-5">
-                            <input type="text" class="form-control" id="iban" formControlName="iban" [maxlength]="maxLengthIBAN"/>
+                            <input type="text" class="form-control" id="iban" formControlName="iban" [maxlength]="maxLengthIBAN" (blur)="formatIbanOnAndroid()"/>
                             <div *ngIf="bankAccountForm.controls.iban.invalid && bankAccountForm.pending" class="BankAccount__message BankAccount__message--error">
                                 <ng-container *ngIf="bankAccountForm.controls.iban.errors as IBANError">
                                     <span *ngIf="IBANError.required" i18n="@@bank_account_form_iban_empty_field_inline_error">
