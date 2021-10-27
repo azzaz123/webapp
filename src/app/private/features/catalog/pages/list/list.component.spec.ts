@@ -416,6 +416,7 @@ describe('ListComponent', () => {
         });
       });
 
+      // TODO: change it when we create wallet feature flag		Date: 2021/10/27
       describe('and when wallet feature flag is NOT enabled', () => {
         beforeEach(fakeAsync(() => {
           localFlagSubject.next(false);
@@ -425,8 +426,14 @@ describe('ListComponent', () => {
           walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
         }));
 
-        it('should NOT show a wallet button', () => {
-          expect(walletButton).toBeFalsy();
+        it('should show a wallet button', () => {
+          expect(walletButton).toBeTruthy();
+        });
+
+        describe('and when clicking the wallet button', () => {
+          it('should navigate to wallet', () => {
+            expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
+          });
         });
       });
 
