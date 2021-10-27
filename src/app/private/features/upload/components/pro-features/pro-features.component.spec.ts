@@ -68,8 +68,7 @@ describe('ProFeaturesComponent', () => {
     });
     describe('and the user click on submit', () => {
       beforeEach(() => {
-        component.clickSave = true;
-        component.ngOnChanges();
+        component.trackSubmit();
       });
 
       it('should emit event', () => {
@@ -82,16 +81,6 @@ describe('ProFeaturesComponent', () => {
 
         expect(analitycsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
         expect(analitycsService.trackEvent).toHaveBeenCalledTimes(1);
-      });
-    });
-    describe('and the user not click on submit', () => {
-      beforeEach(() => {
-        component.clickSave = false;
-        component.ngOnChanges();
-      });
-
-      it('should not emit event', () => {
-        expect(analitycsService.trackEvent).not.toHaveBeenCalled();
       });
     });
   });

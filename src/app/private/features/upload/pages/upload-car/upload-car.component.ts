@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -33,6 +33,7 @@ import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -42,6 +43,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 export class UploadCarComponent implements OnInit {
   @Output() validationError: EventEmitter<any> = new EventEmitter();
   @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
+  @ViewChild(ProFeaturesComponent) proFeaturesComponent: ProFeaturesComponent;
   @Input() item: Car;
   @Input() isReactivation = false;
 
@@ -65,7 +67,6 @@ export class UploadCarComponent implements OnInit {
   public isLoadingModels: boolean;
   public isLoadingYears: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
-  public clickSave: boolean;
   public isProUser: boolean;
   private oldFormValue: any;
 
@@ -130,7 +131,7 @@ export class UploadCarComponent implements OnInit {
   public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
-      this.clickSave = true;
+      this.proFeaturesComponent?.trackSubmit();
       this.item ? this.updateItem() : this.createItem();
     } else {
       this.invalidForm();

@@ -21,9 +21,9 @@ import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.
   templateUrl: './pro-features.component.html',
   styleUrls: ['./pro-features.component.scss'],
 })
-export class ProFeaturesComponent implements OnChanges {
+export class ProFeaturesComponent {
   @Input() categoryId: string;
-  @Input() clickSave: boolean;
+
   public proFeaturesForm: FormGroup;
   public readonly ANALYTICS_EVENT_NAMES = ANALYTICS_EVENT_NAMES;
   public readonly dropdownOptions: IOption[] = [
@@ -41,15 +41,26 @@ export class ProFeaturesComponent implements OnChanges {
     this.buildForm();
   }
 
-  public onClick(isActive: boolean, eventName: ANALYTICS_EVENT_NAMES): void {
+  public handleChange(isActive: boolean, eventName: ANALYTICS_EVENT_NAMES): void {
     this.openModal();
     this.trackEvent(isActive, eventName);
   }
 
-  ngOnChanges() {
-    if (this.clickSave) {
-      this.trackSubmit();
-    }
+  public trackSubmit(): void {
+    const { installation, configuration, warranty } = this.proFeaturesForm.getRawValue();
+    const event: AnalyticsEvent<ClickConfirmAdditionalServicesUpload> = {
+      name: ANALYTICS_EVENT_NAMES.ClickConfirmAdditionalServicesUpload,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.Upload,
+        categoryId: +this.categoryId,
+        installation,
+        configuration,
+        warranty,
+      },
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 
   buildForm(): void {
@@ -79,23 +90,6 @@ export class ProFeaturesComponent implements OnChanges {
         screenId: SCREEN_IDS.Upload,
         switchOn: isActive,
         categoryId: +this.categoryId,
-      },
-    };
-
-    this.analyticsService.trackEvent(event);
-  }
-
-  private trackSubmit(): void {
-    const { installation, configuration, warranty } = this.proFeaturesForm.getRawValue();
-    const event: AnalyticsEvent<ClickConfirmAdditionalServicesUpload> = {
-      name: ANALYTICS_EVENT_NAMES.ClickConfirmAdditionalServicesUpload,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.Upload,
-        categoryId: +this.categoryId,
-        installation,
-        configuration,
-        warranty,
       },
     };
 

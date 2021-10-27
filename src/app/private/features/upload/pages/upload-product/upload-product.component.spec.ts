@@ -16,7 +16,7 @@ import {
 } from '@fixtures/item.fixtures.spec';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -83,7 +83,16 @@ import { UploadTrackingEventService } from './upload-tracking-event/upload-track
 import { CategoriesApiService } from '@api/categories/categories-api.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
+
+@Component({
+  selector: 'tsl-pro-features',
+  template: '',
+})
+class MockProFeaturesComponent {
+  src: string;
+}
 
 export const USER_LOCATION: UserLocation = {
   id: 101,
@@ -246,7 +255,7 @@ describe('UploadProductComponent', () => {
             },
           },
         ],
-        declarations: [UploadProductComponent],
+        declarations: [UploadProductComponent, ProFeaturesComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })

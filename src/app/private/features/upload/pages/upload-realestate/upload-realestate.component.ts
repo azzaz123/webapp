@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -35,6 +35,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { forkJoin, Observable, of, Subscriber } from 'rxjs';
 import { LocationSelectorModal } from '@shared/modals/location-selector-modal/location-selector-modal.component';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -46,6 +47,7 @@ export class UploadRealestateComponent implements OnInit {
   @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
   @Input() item: Realestate;
   @Input() isReactivation = false;
+  @ViewChild(ProFeaturesComponent) proFeaturesComponent: ProFeaturesComponent;
   public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
@@ -63,7 +65,6 @@ export class UploadRealestateComponent implements OnInit {
   public uploadCompletedPercentage = 0;
   public pendingFiles: PendingFiles;
   public readonly PERMISSIONS = PERMISSIONS;
-  public clickSave: boolean;
   public isProUser: boolean;
 
   private oldFormValue: any;
@@ -314,7 +315,7 @@ export class UploadRealestateComponent implements OnInit {
 
   private saveItem(): void {
     this.loading = true;
-    this.clickSave = true;
+    this.proFeaturesComponent?.trackSubmit();
     this.item ? this.updateItem() : this.createItem();
   }
 

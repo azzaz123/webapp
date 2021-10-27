@@ -45,6 +45,7 @@ import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -85,6 +86,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Output() categorySelected = new EventEmitter<string>();
   @Input() suggestionValue: string;
   @ViewChild('title', { static: true }) titleField: ElementRef;
+  @ViewChild(ProFeaturesComponent) proFeaturesComponent: ProFeaturesComponent;
 
   MAX_DESCRIPTION_LENGTH = 640;
   MAX_TITLE_LENGTH = 50;
@@ -125,7 +127,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
   public readonly PERMISSIONS = PERMISSIONS;
-  public clickSave: boolean;
 
   private focused: boolean;
   private oldFormValue: any;
@@ -230,7 +231,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
-      this.clickSave = true;
+      this.proFeaturesComponent?.trackSubmit();
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
         this.uploadForm.value.sale_conditions.shipping_allowed = !!this.uploadForm.value.delivery_info;
       }
