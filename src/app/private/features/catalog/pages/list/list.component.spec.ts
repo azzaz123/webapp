@@ -389,6 +389,10 @@ describe('ListComponent', () => {
       let walletButton: DebugElement;
       let deliveryButton: DebugElement;
 
+      beforeEach(() => {
+        walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+      });
+
       it('should not open upload confirmation modal', () => {
         spyOn(deviceService, 'isMobile').and.returnValue(true);
 
@@ -397,42 +401,12 @@ describe('ListComponent', () => {
         expect(modalService.open).not.toHaveBeenCalled();
       });
 
-      describe('and when wallet feature flag is enabled', () => {
-        beforeEach(() => {
-          localFlagSubject.next(true);
-          fixture.detectChanges();
-
-          walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
-        });
-
-        it('should show a wallet button', () => {
-          expect(walletButton).toBeTruthy();
-        });
-
-        describe('and when clicking the wallet button', () => {
-          it('should navigate to wallet', () => {
-            expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
-          });
-        });
+      it('should show a wallet button', () => {
+        expect(walletButton).toBeTruthy();
       });
 
-      // TODO: change it when we create wallet feature flag		Date: 2021/10/27
-      describe('and when wallet feature flag is NOT enabled', () => {
-        beforeEach(fakeAsync(() => {
-          localFlagSubject.next(false);
-          tick();
-          fixture.detectChanges();
-
-          walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
-        }));
-
-        it('should show a wallet button', () => {
-          expect(walletButton).toBeTruthy();
-        });
-
-        it('should point to the wallet path', () => {
-          expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
-        });
+      it('should point to the wallet path', () => {
+        expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
       });
 
       describe('and when delivery feature flag is enabled', () => {
