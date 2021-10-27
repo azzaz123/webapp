@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col d-flex justify-content-center p-0">
+                            <div class="col d-flex justify-content-center p-0 mb-4">
                                 <div class="KYCUploadImages__imageBlock">
                                     <tsl-button *ngIf="showTakeImageButton$ | async" id="takeImageButton" class="p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage$ | async}}</tsl-button>
                                     <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="p-0" className="btn-gray btn-block" (click)="retakeCurrentImage()">{{retakeImageMessage$ | async}}</tsl-button>
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="KYCUploadImages__bottomContainer row position-sticky text-center justify-content-center">
+                <div class="KYCUploadImages__buttonWrapper row text-center justify-content-center">
                     <tsl-button
                         *ngIf="showContinueButton$ | async" id="continueVerificationButton"
                         [disabled]="(isContinueButtonActive$ | async) === false"
