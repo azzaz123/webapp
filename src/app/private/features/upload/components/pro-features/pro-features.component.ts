@@ -25,7 +25,10 @@ export class ProFeaturesComponent {
   @Input() categoryId: string;
 
   public proFeaturesForm: FormGroup;
-  public readonly ANALYTICS_EVENT_NAMES = ANALYTICS_EVENT_NAMES;
+  public readonly clickInstallationAdditionalServicesUpload = ANALYTICS_EVENT_NAMES.ClickInstallationAdditionalServicesUpload;
+  public readonly clickConfigurationAdditionalServicesUpload = ANALYTICS_EVENT_NAMES.ClickConfigurationAdditionalServicesUpload;
+  public readonly clickWarrantyAdditionalServicesUpload = ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload;
+
   public readonly dropdownOptions: IOption[] = [
     {
       value: 'months',
