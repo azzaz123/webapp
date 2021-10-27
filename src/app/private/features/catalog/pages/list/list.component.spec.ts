@@ -430,10 +430,8 @@ describe('ListComponent', () => {
           expect(walletButton).toBeTruthy();
         });
 
-        describe('and when clicking the wallet button', () => {
-          it('should navigate to wallet', () => {
-            expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
-          });
+        it('should point to the wallet path', () => {
+          expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
         });
       });
 
