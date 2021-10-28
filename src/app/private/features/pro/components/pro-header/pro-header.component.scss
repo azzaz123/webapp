@@ -2,10 +2,22 @@
 .ProHeader {
   background-color: $color-pro-main;
   padding: 40px 0;
+  color: white;
+
+  &--small {
+    padding: 32px 0;
+  }
+
+  @include media-breakpoint-down(md) {
+    padding: 16px 0;
+  }
 
   &__title {
-    color: white;
     font-size: 32px;
     font-weight: bold;
+
+    &--small {
+      font-size: 16px;
+    }
   }
 }

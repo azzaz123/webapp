@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./pro-header.component.scss'],
 })
 export class ProHeaderComponent {
-  @Input() isProUser;
+  @Input() showBenefits: boolean;
   public benefits$: Observable<SubscriptionBenefit[]>;
 
   constructor(private subscriptionBenefits: SubscriptionBenefitsService) {

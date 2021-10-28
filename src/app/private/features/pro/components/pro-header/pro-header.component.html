@@ -1,28 +1,44 @@
-<div class="ProHeader">
+<div class="ProHeader" [class.ProHeader--small]="!showBenefits">
     <div class="container">
-        <div class="d-flex align-items-center flex-column">
-            <div>
-                <tsl-svg-icon src="/assets/icons/pro/pro-logo.svg"> </tsl-svg-icon>
-            </div>
-            <div class="mt-3">
-                <span class="ProHeader__title">
-                    Tu audiencia está aquí
-                </span>
-            </div>
-            <div>
-                <ng-container *ngIf="benefits$ | async as benefits">
-                    <div *ngFor="let benefit of benefits">
-                        <div>
-                            {{ benefit.title}}
+        <ng-container *ngIf="showBenefits; else noBenefits">
+            <div class="d-flex align-items-center flex-column">
+                <div>
+                    <tsl-svg-icon src="/assets/icons/pro/pro-logo.svg"> </tsl-svg-icon>
+                </div>
+                <div class="mt-3">
+                    <span class="ProHeader__title">
+                        Tu audiencia está aquí
+                    </span>
+                </div>
+                <div class="d-lg-flex justify-content-between text-center mt-4 d-none">
+                    <ng-container *ngIf="benefits$ | async as benefits">
+                        <div class="d-flex flex-column align-items-center" *ngFor="let benefit of benefits">
+                            <div>
+                                <tsl-svg-icon [src]="benefit.iconPath">
+                                </tsl-svg-icon>
+                            </div>
+                            <div class="mt-3">
+                                <span class="ProHeader__title ProHeader__title--small">
+                                    {{ benefit.title}}
+                                </span>
+                            </div>
+                            <div class="mt-2"> {{ benefit.description }} </div>
                         </div>
-                        <div> {{ benefit.description }} </div>
-                        <div> 
-                            <tsl-svg-icon [src]="benefit.iconPath">
-                            </tsl-svg-icon>
-                        </div>
-                    </div>
-                </ng-container>
+                    </ng-container>
+                </div>
             </div>
-        </div>
+        </ng-container>
+        <ng-template #noBenefits>
+            <div>
+                <div>
+                    <tsl-svg-icon width="100" heigth="17" src="/assets/icons/pro/pro-logo.svg"> </tsl-svg-icon>
+                </div>
+                <div class="mt-3">
+                    <span class="ProHeader__title">
+                        Publica más, vende más
+                    </span>
+                </div>  
+            </div>
+        </ng-template>
     </div>
 </div>
