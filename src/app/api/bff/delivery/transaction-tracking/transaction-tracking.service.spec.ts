@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { TransactionTracking } from '@api/core/model/delivery/transaction/tracking';
 import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { of } from 'rxjs';
 import { TransactionTrackingHttpService } from './http/transaction-tracking-http.service';
 
@@ -49,6 +51,17 @@ describe('TransactionTrackingService', () => {
       service.get(requestId).subscribe();
 
       expect(spy).toHaveBeenCalledWith(requestId);
+    });
+
+    it('should return the transation tracking', () => {
+      const expected = MOCK_TRANSACTION_TRACKING;
+      let response: TransactionTracking;
+
+      service.get(requestId).subscribe((data) => {
+        response = data;
+      });
+
+      expect(response).toStrictEqual(expected);
     });
   });
 });
