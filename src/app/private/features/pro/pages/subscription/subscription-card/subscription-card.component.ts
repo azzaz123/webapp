@@ -15,6 +15,7 @@ export class SubscriptionCardComponent {
   @Input() isSubscribed: boolean;
   @Input() subscriptionBenefits: string[];
   @Input() tierDiscount: Tier;
+  @Input() isMobile: boolean;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter();
 
   public readonly titleConfig = {
@@ -25,8 +26,14 @@ export class SubscriptionCardComponent {
     [CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS]: $localize`:@@web_profile_pages_subscription_other_desc:Your best plan to sell all kinds of items`,
   };
 
-  public onButtonClick(): void {
+  public onClick(): void {
     this.buttonClick.emit();
+  }
+
+  public onClickCard(): void {
+    if (!this.isMobile) {
+      this.onClick();
+    }
   }
 
   get descriptionText(): string {
