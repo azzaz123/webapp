@@ -2,18 +2,18 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { TestBed } from '@angular/core/testing';
 import { TRANSACTION_TRACKING_ENDPOINT } from './endpoints';
 
-import { TransactionTrackingService } from './transaction-tracking.service';
+import { TransactionTrackingHttpService } from './transaction-tracking-http.service';
 
-describe('TransactionTrackingService', () => {
-  let service: TransactionTrackingService;
+describe('TransactionTrackingHttpService', () => {
+  let service: TransactionTrackingHttpService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TransactionTrackingService],
+      providers: [TransactionTrackingHttpService],
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(TransactionTrackingService);
+    service = TestBed.inject(TransactionTrackingHttpService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 

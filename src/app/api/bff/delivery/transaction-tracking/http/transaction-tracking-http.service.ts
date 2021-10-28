@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { TRANSACTION_TRACKING_ENDPOINT } from './endpoints';
 
 @Injectable()
-export class TransactionTrackingService {
+export class TransactionTrackingHttpService {
   constructor(private httpClient: HttpClient) {}
 
   public get(requestId: string): Observable<any> {
