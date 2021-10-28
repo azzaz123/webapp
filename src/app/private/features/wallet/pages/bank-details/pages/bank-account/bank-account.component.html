@@ -126,8 +126,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-center"  [ngClass]="{'mb-4': isKYC}" id="saveButtonRow">
-                    <div class="col-12 col-md-2 p-0" [ngClass]="{'col-md-7': isKYC}">
+                <div class="row justify-content-center text-center d-flex flex-column align-items-center"  [ngClass]="{'mb-4 p-0': isKYC}" id="saveButtonRow">
+                    <div class="col-12 col-md-3" [ngClass]="{'col-md-7': isKYC}">
                         <tsl-button [type]="'submit'" [loading]="loadingButton$ | async" [disabled]="loadingButton$ | async" className="btn-primary btn-block" i18n="@@bank_account_form_bottom_bar_save_button">Save</tsl-button>
                     </div>
                 </div>
