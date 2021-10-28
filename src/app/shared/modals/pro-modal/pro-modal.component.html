@@ -9,7 +9,7 @@
         <tsl-button *ngIf="modalConfig.buttons.secondary" (click)="onClose(MODAL_ACTION.SECONDARY_BUTON)" class="mb-3" 
         className="btn-secondary w-100">{{modalConfig.buttons.secondary.text}}</tsl-button>
         <tsl-button (click)="onClose(MODAL_ACTION.PRIMARY_BUTTON)" 
-        className="btn-primary btn-primart--bold w-100">{{modalConfig.buttons.primary.text}}</tsl-button>
+        className="btn-primary btn-primary--bold w-100">{{modalConfig.buttons.primary.text}}</tsl-button>
     </div>
     <div class="ProModal__img ml-auto d-flex flex-column h-100 justify-content-center w-100 align-items-center">
         <tsl-svg-icon [src]="modalConfig.img"></tsl-svg-icon>
