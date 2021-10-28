@@ -1,13 +1,28 @@
 <div class="ProHeader">
     <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="header-row">
-              <h1 class="header-title" i18n="@@web_wallapop_pro_title">Wallapop PRO</h1>
+        <div class="d-flex align-items-center flex-column">
+            <div>
+                <tsl-svg-icon src="/assets/icons/pro/pro-logo.svg"> </tsl-svg-icon>
             </div>
-            <div class="header-row">
-              <h4 class="header-subtitle" i18n="@@web_wallapop_pro_subtitle">Here you can find solutions to turn your sales into a real business.</h4>
+            <div class="mt-3">
+                <span class="ProHeader__title">
+                    Tu audiencia está aquí
+                </span>
             </div>
-          </div>
+            <div>
+                <ng-container *ngIf="benefits$ | async as benefits">
+                    <div *ngFor="let benefit of benefits">
+                        <div>
+                            {{ benefit.title}}
+                        </div>
+                        <div> {{ benefit.description }} </div>
+                        <div> 
+                            <tsl-svg-icon [src]="benefit.iconPath">
+                            </tsl-svg-icon>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
     </div>
 </div>

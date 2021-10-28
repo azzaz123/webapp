@@ -1,4 +1,11 @@
 @import '~style/common';
 .ProHeader {
   background-color: $color-pro-main;
+  padding: 40px 0;
+
+  &__title {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+  }
 }

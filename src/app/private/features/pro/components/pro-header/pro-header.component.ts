@@ -1,12 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tsl-pro-header',
   templateUrl: './pro-header.component.html',
   styleUrls: ['./pro-header.component.scss'],
 })
-export class ProHeaderComponent implements OnInit {
-  constructor() {}
+export class ProHeaderComponent {
+  @Input() isProUser;
+  public benefits$: Observable<SubscriptionBenefit[]>;
 
-  ngOnInit(): void {}
+  constructor(private subscriptionBenefits: SubscriptionBenefitsService) {
+    this.benefits$ = this.subscriptionBenefits.getSubscriptionsHeaderBenefits();
+  }
 }
