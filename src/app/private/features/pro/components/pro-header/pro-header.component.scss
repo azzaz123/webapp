@@ -1,23 +1,26 @@
 @import '~style/common';
 .ProHeader {
   background-color: $color-pro-main;
-  padding: 40px 0;
-  color: white;
+  padding: $spacing-xxl 0;
+  color: $white;
 
   &--small {
-    padding: 32px 0;
-  }
-
-  @include media-breakpoint-down(md) {
-    padding: 16px 0;
+    padding: $spacing-xl 0;
   }
 
   &__title {
-    font-size: 32px;
-    font-weight: bold;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-chunky;
 
     &--small {
-      font-size: 16px;
+      font-size: $font-size-m;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    padding: $spacing-m 0;
+    &__title {
+      font-size: $font-size-lll;
     }
   }
 }
