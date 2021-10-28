@@ -1,5 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
 import { TRANSACTION_TRACKING_ENDPOINT } from './endpoints';
 
 import { TransactionTrackingHttpService } from './transaction-tracking-http.service';
@@ -25,16 +27,16 @@ describe('TransactionTrackingHttpService', () => {
     it('should get transaction tracking info', () => {
       const MOCK_REQUEST_ID = '123';
       const EXPECTED_ENDPOINT = `${TRANSACTION_TRACKING_ENDPOINT}?requestId=${MOCK_REQUEST_ID}`;
-      let response: any;
+      let response: TransactionTrackingDto;
 
-      service.get(MOCK_REQUEST_ID).subscribe((properties: any) => {
+      service.get(MOCK_REQUEST_ID).subscribe((properties: TransactionTrackingDto) => {
         response = properties;
       });
 
       const transactionTrackingInfoRequest: TestRequest = httpMock.expectOne(EXPECTED_ENDPOINT);
-      transactionTrackingInfoRequest.flush({});
+      transactionTrackingInfoRequest.flush(MOCK_TRANSACTION_TRACKING_DTO_RESPONSE);
 
-      expect(response).toEqual({});
+      expect(response).toEqual(MOCK_TRANSACTION_TRACKING_DTO_RESPONSE);
       expect(transactionTrackingInfoRequest.request.url).toEqual(TRANSACTION_TRACKING_ENDPOINT);
       expect(transactionTrackingInfoRequest.request.method).toBe('GET');
     });
