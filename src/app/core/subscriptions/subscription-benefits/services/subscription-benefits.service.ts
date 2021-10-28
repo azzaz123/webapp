@@ -3,7 +3,7 @@ import { HelpLocaleId } from '@core/external-links/customer-help/customer-help-c
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { subscriptionBenefits } from '../constants/subscription-benefits';
+import { subscriptionBenefits, subscriptionsHeaderBenefits } from '../constants/subscription-benefits';
 import { SubscriptionBenefit } from '../interfaces/subscription-benefit.interface';
 
 export const SUBSCRIPTION_IMAGES_FOLDER = 'assets/images/subscriptions/benefits';
@@ -27,6 +27,10 @@ export class SubscriptionBenefitsService {
       map((response) => this.mapBenefits(response)),
       tap((benefits) => (this.subscriptionBenefits = this.mapBenefits(benefits)))
     );
+  }
+
+  public getSubscriptionsHeaderBenefits(): Observable<SubscriptionBenefit[]> {
+    return of(subscriptionsHeaderBenefits);
   }
 
   private mapBenefits(benefits: SubscriptionBenefit[]): SubscriptionBenefit[] {
