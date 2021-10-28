@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { InvoiceService } from '@core/invoice/invoice.service';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
@@ -14,7 +15,7 @@ import {
   SCREEN_IDS,
 } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { PRO_PATHS } from '../pro-routing-constants';
 
@@ -28,6 +29,8 @@ export class ProComponent implements OnInit, OnDestroy {
   public readonly PRO_PATHS = PRO_PATHS;
   public helpPageUrl: string;
   public showNavigation: boolean;
+  public isPro$: Observable<boolean> = new Observable();
+  public showBenefits$: Observable<boolean> = new Observable();
   private hasOneTrialSubscription: boolean;
   private hasSomeDiscount: boolean;
   private subscriptions: Subscription = new Subscription();
@@ -40,8 +43,12 @@ export class ProComponent implements OnInit, OnDestroy {
     private subscriptionService: SubscriptionsService,
     private router: Router,
     private customerHelpService: CustomerHelpService,
-    private invoiceService: InvoiceService
-  ) {}
+    private invoiceService: InvoiceService,
+    private benefitsService: SubscriptionBenefitsService
+  ) {
+    this.isPro$ = this.userService.isProUser$;
+    this.showBenefits$ = this.benefitsService.showHeaderBenefits$;
+  }
 
   ngOnInit() {
     this.getSubscriptions();
@@ -69,7 +76,7 @@ export class ProComponent implements OnInit, OnDestroy {
   }
 
   private isNavigationBarShown(): void {
-    const subscription = this.userService.isProUser$
+    const subscription = this.isPro$
       .pipe(
         tap((isPro) => {
           this.showNavigation = isPro;
