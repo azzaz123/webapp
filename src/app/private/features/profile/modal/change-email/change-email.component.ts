@@ -24,11 +24,15 @@ export class ChangeEmailComponent implements OnInit {
 
     modalRef.result.then(
       () => {
-        this.router.navigate([this.VERIFICATIONS_PATH]);
+        this.navigateToVerifications();
       },
       () => {
-        this.router.navigate([this.VERIFICATIONS_PATH]);
+        this.navigateToVerifications();
       }
     );
+  }
+
+  private navigateToVerifications(): void {
+    this.router.navigate([this.VERIFICATIONS_PATH]);
   }
 }
