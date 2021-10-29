@@ -25,7 +25,7 @@ $switch-slider-diameter: 15px;
       bottom: 0;
       background-color: $blue-grey-5;
       transition: 0.4s;
-      border-radius: $switch-height/2;
+      border-radius: $switch-height * 0.5;
     }
 
     .slider:hover {

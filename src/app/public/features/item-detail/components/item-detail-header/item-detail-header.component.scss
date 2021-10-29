@@ -140,7 +140,7 @@ $feature-button-width: 165px;
   &__dropdown {
     .dropdown-menu {
       .dropdown-item {
-        padding: ($spacing-ml / 2) $spacing-ml;
+        padding: ($spacing-ml * 0.5) $spacing-ml;
         color: $blue-grey-2;
         cursor: pointer;
       }
