@@ -1,9 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedModule } from '@shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonModule } from '@shared/button/button.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ChangeEmailRoutedComponents, ChangeEmailRoutingModule } from './change-email.routing.module';
 
 @NgModule({
-  imports: [SharedModule, ChangeEmailRoutingModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, SvgIconModule, ButtonModule, NgbModule, RouterModule, ChangeEmailRoutingModule],
   declarations: [ChangeEmailRoutedComponents],
   providers: [],
 })
