@@ -1,5 +1,11 @@
 @import '~style/common';
 
+.modal-close-btn {
+  cursor: pointer;
+  top: $spacing-ml;
+  right: $spacing-ml;
+}
+
 .modal-body {
   max-width: 400px;
   margin: 0 auto;
