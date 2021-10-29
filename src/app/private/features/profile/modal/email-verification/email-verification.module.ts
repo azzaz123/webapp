@@ -6,10 +6,9 @@ import { ButtonModule } from '@shared/button/button.module';
 import { EmailVerificationModalComponent } from './modals/email-verification-modal/email-verification-modal.component';
 import { EmailVerificationRoutedComponents, EmailVerificationRoutingModule } from './email-verification.routing.module';
 import { UserVerificationsModule } from '@api/user-verifications/user-verifications.module';
-import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
-  imports: [SharedModule, EmailVerificationRoutingModule, SvgIconModule, ButtonModule, FormsModule, UserVerificationsModule],
+  imports: [CommonModule, SvgIconModule, ButtonModule, FormsModule, UserVerificationsModule, EmailVerificationRoutingModule],
   declarations: [EmailVerificationRoutedComponents, EmailVerificationModalComponent],
   providers: [],
 })
