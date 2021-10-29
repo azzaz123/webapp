@@ -1,41 +1,30 @@
-import { CUSTOMER_TICKET_FORM } from './customer-help-constants';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { CUSTOMER_HELP_BASE, CUSTOMER_TICKET_FORM, HELP_LOCALE } from './customer-help-constants';
 import { getTicketFormUrl } from './get-ticket-form-url';
 
-describe('TicketFormUrl', () => {
-  describe('when asking for ticket form url', () => {
-    const formId = CUSTOMER_TICKET_FORM.KYC;
-    const expected = (lang: string) => {
-      return `https://ayuda.wallapop.com/hc/${lang}/requests/new?ticket_form_id=${formId}`;
-    };
+describe('getTicketFormUrl', () => {
+  const formId = CUSTOMER_TICKET_FORM.KYC;
+  const allLanguages: APP_LOCALE[] = ['es', 'en', 'it'];
+  const expected = (lang: string, base: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT) => {
+    return `${base}${lang}/requests/new?ticket_form_id=${formId}`;
+  };
 
-    describe('and language is es', () => {
-      const localeId = 'es';
+  describe.each(allLanguages)('when asking for ticket form url', (localeId: APP_LOCALE) => {
+    it(`should return the expected url when language is ${localeId}`, () => {
+      const url = getTicketFormUrl(formId, localeId);
+      const expectedUrl = expected(HELP_LOCALE[localeId]);
 
-      it('should return the expected url', () => {
-        const url = getTicketFormUrl(formId, localeId);
-
-        expect(url).toEqual(expected('es-es'));
-      });
+      expect(url).toEqual(expectedUrl);
     });
+  });
 
-    describe('and language is en', () => {
-      const localeId = 'en';
+  describe('and when specifying customer base URL', () => {
+    it('should use specified customer base URL', () => {
+      const localeId: APP_LOCALE = 'en';
+      const url = getTicketFormUrl(formId, localeId, CUSTOMER_HELP_BASE.ITALIAN_SITE);
+      const expectedUrl = expected(HELP_LOCALE[localeId], CUSTOMER_HELP_BASE.ITALIAN_SITE);
 
-      it('should return the expected url', () => {
-        const url = getTicketFormUrl(formId, localeId);
-
-        expect(url).toEqual(expected('en-us'));
-      });
-    });
-
-    describe('and language is it', () => {
-      const localeId = 'it';
-
-      it('should return the expected url', () => {
-        const url = getTicketFormUrl(formId, localeId);
-
-        expect(url).toEqual(expected('it'));
-      });
+      expect(url).toEqual(expectedUrl);
     });
   });
 });
