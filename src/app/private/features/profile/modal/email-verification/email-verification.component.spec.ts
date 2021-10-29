@@ -53,15 +53,19 @@ describe('EmailVerificationComponent', () => {
       });
     });
 
-    it('should redirect to verifications view when user closes the modal', () => {
-      expect(router.navigate).toHaveBeenCalledWith([component.VERIFICATIONS_PATH]);
+    describe('when the user closes the modal...', () => {
+      it('should redirect to verifications view', () => {
+        expect(router.navigate).toHaveBeenCalledWith([component.VERIFICATIONS_PATH]);
+      });
     });
 
-    it('should redirect to verifications view when user dismiss the modal', () => {
-      spyModalSerivce.and.returnValue({ result: Promise.reject(), componentInstance: { email: '' } });
-      fixture.detectChanges();
+    describe('when the user dismiss the modal...', () => {
+      it('should redirect to verifications view', () => {
+        spyModalSerivce.and.returnValue({ result: Promise.reject(), componentInstance: { email: '' } });
+        fixture.detectChanges();
 
-      expect(router.navigate).toHaveBeenCalledWith([component.VERIFICATIONS_PATH]);
+        expect(router.navigate).toHaveBeenCalledWith([component.VERIFICATIONS_PATH]);
+      });
     });
   });
 });
