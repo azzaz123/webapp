@@ -1,9 +1,12 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_EMAIL_VERIFICATION_API_RESPONSE } from '@api/fixtures/user-verifications/email-verification.fixtures.spec';
+import { MOCK_PHONE_VERIFICATION_API_RESPONSE } from '@api/fixtures/user-verifications/phone-verification.fixtures.spec';
 import { MOCK_USER_VERIFICATIONS_API_RESPONSE } from '@api/fixtures/user-verifications/user-verifications.fixtures.spec';
-import { EmailVerificationApi, UserVerificationsApi } from '../dtos';
-import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT } from './endpoints';
+import { PhoneVerificationBodyRequest, TYPE_VERIFICATION_PHONE } from '../dtos/requests/phone-verification-request.interface';
+import { EmailVerificationApi, UserVerificationsApi } from '../dtos/responses';
+import { PhoneVerificationApi } from '../dtos/responses/phone-verification-api.interface';
+import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_PHONE_ENDPOINT } from './endpoints';
 
 import { UserVerificationsHttpService } from './user-verifications-http.service';
 
@@ -51,6 +54,21 @@ describe('UserVerificationsHttpService', () => {
       expect(req.request.method).toBe('POST');
       expect(response).toEqual(MOCK_EMAIL_VERIFICATION_API_RESPONSE);
       expect(req.request.body).toEqual('');
+    });
+  });
+  describe('when asking to send the phone to verify', () => {
+    it('should retrieve the phone verification response', () => {
+      let response: PhoneVerificationApi;
+      const mobileNumber = '44444';
+      const code = '+34';
+
+      service.sendVerifyPhone(mobileNumber, code).subscribe((data) => (response = data));
+      const req: TestRequest = httpMock.expectOne(SEND_VERIFY_PHONE_ENDPOINT);
+      req.flush(MOCK_PHONE_VERIFICATION_API_RESPONSE);
+
+      expect(req.request.method).toBe('POST');
+      expect(response).toEqual(MOCK_PHONE_VERIFICATION_API_RESPONSE);
+      expect(req.request.body).toEqual({ mobileNumber, code, type: TYPE_VERIFICATION_PHONE });
     });
   });
 });

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { EmailVerification, UserVerifications } from '@api/core/model/verifications';
+import { UserVerifications, Verification } from '@api/core/model/verifications';
 import {
   MOCK_EMAIL_VERIFICATION_API_RESPONSE,
   MOCK_EMAIL_VERIFICATION_MAPPED,
@@ -63,7 +63,7 @@ describe('UserVerificationsService', () => {
     });
 
     it('should map server response to web context', () => {
-      let response: EmailVerification;
+      let response: Verification;
 
       service.verifyEmail().subscribe((data) => (response = data));
 
