@@ -74,7 +74,7 @@ const routes: Routes = [
         },
       },
       {
-        path: 'chat',
+        path: PRIVATE_PATHS.CHAT,
         loadChildren: () => import('@private/features/chat/chat.module').then((m) => m.ChatModule),
       },
       {
@@ -141,13 +141,13 @@ const routes: Routes = [
         path: PRIVATE_PATHS.VERIFICATION,
         canLoad: [DevelopmentGuard],
         children: [
-          { path: '', pathMatch: 'full', redirectTo: '/chat' },
+          { path: '', pathMatch: 'full', redirectTo: `/${PRIVATE_PATHS.CHAT}` },
           { path: 'view', redirectTo: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.VERIFICATIONS}` },
         ],
       },
       {
         path: '**',
-        redirectTo: 'chat',
+        redirectTo: PRIVATE_PATHS.CHAT,
       },
     ],
   },
