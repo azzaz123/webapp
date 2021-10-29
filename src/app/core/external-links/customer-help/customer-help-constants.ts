@@ -10,7 +10,7 @@ export const HELP_LOCALE: Record<APP_LOCALE, HelpLocaleId> = {
 
 export enum CUSTOMER_HELP_BASE {
   DEFAULT = 'https://ayuda.wallapop.com/hc/',
-  ITALIAN_SITE = 'https://assitenza.wallapop.com/hc/',
+  ITALIAN_SITE = 'https://assistenza.wallapop.com/hc/',
 }
 
 export enum CUSTOMER_HELP_PAGE {
