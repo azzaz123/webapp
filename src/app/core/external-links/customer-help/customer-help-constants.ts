@@ -1,9 +1,16 @@
-export type HelpLocaleId = 'es' | 'en' | 'it';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
-export enum HELP_LOCALE {
-  es = 'es-es',
-  en = 'en-us',
-  it = 'it',
+type HelpLocaleId = 'es-es' | 'en-us' | 'it';
+
+export const HELP_LOCALE: Record<APP_LOCALE, HelpLocaleId> = {
+  es: 'es-es',
+  en: 'en-us',
+  it: 'it',
+};
+
+export enum CUSTOMER_HELP_BASE {
+  DEFAULT = 'https://ayuda.wallapop.com/hc/',
+  ITALIAN_SITE = 'https://assitenza.wallapop.com/hc/',
 }
 
 export enum CUSTOMER_HELP_PAGE {

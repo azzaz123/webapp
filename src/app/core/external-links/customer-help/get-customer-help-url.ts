@@ -1,8 +1,6 @@
-import { CUSTOMER_HELP_PAGE, HELP_LOCALE, HelpLocaleId } from './customer-help-constants';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { CUSTOMER_HELP_PAGE, HELP_LOCALE, CUSTOMER_HELP_BASE } from './customer-help-constants';
 
-const HELP_BASE_URL = 'https://ayuda.wallapop.com/hc/';
-type CUSTOMER_HELP_PAGE_ID = CUSTOMER_HELP_PAGE;
-
-export function getCustomerHelpUrl(pageId: CUSTOMER_HELP_PAGE_ID, locale: HelpLocaleId): string {
-  return `${HELP_BASE_URL}${HELP_LOCALE[locale]}/articles/${pageId}`;
+export function getCustomerHelpUrl(pageId: CUSTOMER_HELP_PAGE, locale: APP_LOCALE, baseUrl = CUSTOMER_HELP_BASE.DEFAULT): string {
+  return `${baseUrl}${HELP_LOCALE[locale]}/articles/${pageId}`;
 }
