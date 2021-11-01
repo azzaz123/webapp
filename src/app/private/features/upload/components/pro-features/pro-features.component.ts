@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   AnalyticsEvent,
@@ -44,9 +44,20 @@ export class ProFeaturesComponent {
     this.buildForm();
   }
 
-  public handleChange(isActive: boolean, eventName: ANALYTICS_EVENT_NAMES): void {
-    this.openModal();
-    this.trackEvent(isActive, eventName);
+  public trackEvent(isActive: boolean, eventName: ANALYTICS_EVENT_NAMES): void {
+    const event: AnalyticsEvent<
+      ClickInstallationAdditionalServicesUpload | ClickConfigurationAdditionalServicesUpload | ClickWarrantyAdditionalServicesUpload
+    > = {
+      name: eventName,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.Upload,
+        switchOn: isActive,
+        categoryId: +this.categoryId,
+      },
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 
   public trackSubmit(): void {
@@ -66,7 +77,14 @@ export class ProFeaturesComponent {
     this.analyticsService.trackEvent(event);
   }
 
-  buildForm(): void {
+  public openModal(): void {
+    const modal = this.modalService.open(ProModalComponent, {
+      windowClass: 'pro-modal',
+    });
+    modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.simulation];
+  }
+
+  private buildForm(): void {
     this.proFeaturesForm = this.fb.group({
       installation: [false],
       configuration: [false],
@@ -74,28 +92,5 @@ export class ProFeaturesComponent {
       warrantyPeriod: ['months'],
       warrantyAmount: [],
     });
-  }
-
-  private openModal(): void {
-    const modal = this.modalService.open(ProModalComponent, {
-      windowClass: 'pro-modal',
-    });
-    modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.simulation];
-  }
-
-  private trackEvent(isActive: boolean, eventName: ANALYTICS_EVENT_NAMES): void {
-    const event: AnalyticsEvent<
-      ClickInstallationAdditionalServicesUpload | ClickConfigurationAdditionalServicesUpload | ClickWarrantyAdditionalServicesUpload
-    > = {
-      name: eventName,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.Upload,
-        switchOn: isActive,
-        categoryId: +this.categoryId,
-      },
-    };
-
-    this.analyticsService.trackEvent(event);
   }
 }

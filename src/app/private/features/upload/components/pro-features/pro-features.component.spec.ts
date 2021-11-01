@@ -173,6 +173,17 @@ describe('ProFeaturesComponent', () => {
       expect(component.proFeaturesForm.get('warranty').value).toBe(!oldValue);
     });
 
+    it('Should emit event', () => {
+      const expectedEvent = {
+        attributes: { categoryId: 1, screenId: SCREEN_IDS.Upload, switchOn: component.proFeaturesForm.get('warranty').value },
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
+        name: ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload,
+      };
+
+      expect(analitycsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      expect(analitycsService.trackEvent).toHaveBeenCalledTimes(1);
+    });
+
     it('Should show warranty fields', () => {
       const warrantyAmount: HTMLElement = fixture.debugElement.query(By.css('input[formControlname="warrantyAmount"]')).nativeElement;
       const warrantyPeriod: HTMLElement = fixture.debugElement.query(By.css('tsl-dropdown[formControlname="warrantyPeriod"]'))
@@ -184,23 +195,12 @@ describe('ProFeaturesComponent', () => {
     describe('and the user write an amount', () => {
       beforeEach(() => {
         const testDe = fixture.debugElement.query(By.css('input[formControlname="warrantyAmount"]'));
-        testDe.triggerEventHandler('keyup', {
+        testDe.triggerEventHandler('input', {
           target: {
             value: '1',
           },
         });
       });
-      it('Should emit event', () => {
-        const expectedEvent = {
-          attributes: { categoryId: 1, screenId: SCREEN_IDS.Upload, switchOn: component.proFeaturesForm.get('warranty').value },
-          eventType: ANALYTIC_EVENT_TYPES.Navigation,
-          name: ANALYTICS_EVENT_NAMES.ClickWarrantyAdditionalServicesUpload,
-        };
-
-        expect(analitycsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-        expect(analitycsService.trackEvent).toHaveBeenCalledTimes(1);
-      });
-
       it('Should open modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
           windowClass: 'pro-modal',
