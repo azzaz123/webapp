@@ -1,5 +1,7 @@
+@import '~style/common';
+
 .Pro {
   .container {
-    padding-top: 16px;
+    padding-top: $spacing-m;
   }
 }
