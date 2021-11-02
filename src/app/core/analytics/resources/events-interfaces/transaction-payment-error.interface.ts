@@ -35,4 +35,8 @@ export interface TransactionPaymentError {
    * Identifier of the checkout screen
    */
   screenId: 238;
+  /**
+   * Test group of the user
+   */
+  experiment?: 'payments_3dspopup_control' | 'payments_3dspopup_variant';
 }

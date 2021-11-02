@@ -13,6 +13,8 @@ import { WalletTrackingEventService } from '@private/features/wallet/services/tr
 
 import { Observable, Subscription } from 'rxjs';
 
+const bankDetailsId: string = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
+
 @Component({
   selector: 'tsl-wallet',
   templateUrl: './wallet.component.html',
@@ -28,7 +30,7 @@ export class WalletComponent implements OnInit, OnDestroy {
       display: $localize`:@@profile_menu_wallet:Wallet`,
     },
     {
-      id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`,
+      id: bankDetailsId,
       display: $localize`:@@web_delivery_bank_details:Bank details`,
     },
     {
@@ -66,6 +68,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   }
 
   public onNavLinkClicked(navLinkId: string): void {
+    this.trackClickBankDetails(navLinkId);
     this.router.navigate([navLinkId]);
   }
 
@@ -78,5 +81,12 @@ export class WalletComponent implements OnInit, OnDestroy {
       .filter((link) => e.url.startsWith(link.id))
       ?.slice(-1)
       .pop()?.id;
+  }
+
+  private trackClickBankDetails(navLinkId: string): void {
+    if (navLinkId !== bankDetailsId) {
+      return;
+    }
+    this.walletTrackingEventService.trackClickBankDetails();
   }
 }

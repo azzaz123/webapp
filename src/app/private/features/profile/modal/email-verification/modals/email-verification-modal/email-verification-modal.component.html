@@ -15,13 +15,17 @@
       >. It's easy, just follow the instructions!
     </div>
     <tsl-button
-      class="w-100 mb-2"
+      class="EmailVerificationModal__change-btn w-100 mb-2"
       className="btn-secondary w-100"
       (click)="changeEmail()"
       i18n="@@email_verification_all_users_change_email_button"
       >Change email</tsl-button
     >
-    <tsl-button class="w-100" className="btn-primary w-100" (click)="verifyEmail()" i18n="@@email_verification_all_users_verify_button"
+    <tsl-button
+      class="EmailVerificationModal__verify-btn w-100"
+      className="btn-primary w-100"
+      (click)="verifyEmail()"
+      i18n="@@email_verification_all_users_verify_button"
       >Verify</tsl-button
     >
   </div>
