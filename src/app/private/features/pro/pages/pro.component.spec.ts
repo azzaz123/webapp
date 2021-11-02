@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -47,6 +47,7 @@ describe('ProComponent', () => {
   let customerHelpService: CustomerHelpService;
   let router: Router;
   let invoiceService: InvoiceService;
+  let benefits: SubscriptionBenefitsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -106,7 +107,7 @@ describe('ProComponent', () => {
             },
           },
         ],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
       fixture = TestBed.createComponent(ProComponent);
       component = fixture.componentInstance;
@@ -117,6 +118,7 @@ describe('ProComponent', () => {
       customerHelpService = TestBed.inject(CustomerHelpService);
       invoiceService = TestBed.inject(InvoiceService);
       router = TestBed.inject(Router);
+      benefits = TestBed.inject(SubscriptionBenefitsService);
       fixture.detectChanges();
     })
   );
@@ -332,6 +334,46 @@ describe('ProComponent', () => {
           const nav = fixture.debugElement.query(By.css('nav'));
 
           expect(nav).toBeTruthy();
+        });
+      });
+    });
+  });
+  describe('Header', () => {
+    describe('and is Pro user', () => {
+      beforeEach(() => {
+        jest.spyOn(userService, 'isProUser$', 'get').mockReturnValue(of(true));
+        fixture.detectChanges();
+      });
+      it('should not show benefits', () => {
+        const nav = fixture.debugElement.query(By.css('tsl-pro-header'));
+
+        expect(nav.nativeNode.showBenefits).toBe(false);
+      });
+    });
+    describe('and is not Pro user', () => {
+      beforeEach(() => {
+        jest.spyOn(userService, 'isProUser$', 'get').mockReturnValue(of(false));
+      });
+      describe('and has not to show benefits', () => {
+        beforeEach(() => {
+          jest.spyOn(benefits, 'showHeaderBenefits$', 'get').mockReturnValue(of(false));
+          fixture.detectChanges();
+        });
+        it('should not show benefits', () => {
+          const nav = fixture.debugElement.query(By.css('tsl-pro-header'));
+
+          expect(nav.nativeNode.showBenefits).toBe(false);
+        });
+      });
+      describe('and has to show benefits', () => {
+        beforeEach(() => {
+          jest.spyOn(benefits, 'showHeaderBenefits$', 'get').mockReturnValue(of(true));
+          fixture.detectChanges();
+        });
+        it('should show benefits', () => {
+          const nav = fixture.debugElement.query(By.css('tsl-pro-header'));
+
+          expect(nav.nativeNode.showBenefits).toBe(true);
         });
       });
     });

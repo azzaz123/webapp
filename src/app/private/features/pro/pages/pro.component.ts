@@ -15,7 +15,7 @@ import {
   SCREEN_IDS,
 } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { PRO_PATHS } from '../pro-routing-constants';
 
@@ -29,8 +29,6 @@ export class ProComponent implements OnInit, OnDestroy {
   public readonly PRO_PATHS = PRO_PATHS;
   public helpPageUrl: string;
   public showNavigation: boolean;
-  public isPro$: Observable<boolean> = new Observable();
-  public showBenefits$: Observable<boolean> = new Observable();
   private hasOneTrialSubscription: boolean;
   private hasSomeDiscount: boolean;
   private subscriptions: Subscription = new Subscription();
@@ -48,12 +46,18 @@ export class ProComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.isPro$ = this.userService.isProUser$;
-    this.showBenefits$ = this.benefitsService.showHeaderBenefits$;
     this.getSubscriptions();
     this.subscribeRoute();
     this.setCustomerHelpUrl(this.router.url);
     this.isNavigationBarShown();
+  }
+
+  get isPro$() {
+    return this.userService.isProUser$;
+  }
+
+  get showBenefits$() {
+    return this.benefitsService.showHeaderBenefits$;
   }
 
   public trackClickSubscriptionTab(): void {
