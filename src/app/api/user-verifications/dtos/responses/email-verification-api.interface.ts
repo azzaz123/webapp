@@ -1,5 +1,5 @@
-import { VERIFICATION_STATUS_API } from './verification-status-api.enum';
+import { USER_VERIFIED_INFO_STATUS_API } from './user-verified-info-status-api.enum';
 
 export interface EmailVerificationApi {
-  emailVerifiedStatus: VERIFICATION_STATUS_API;
+  emailVerifiedStatus: USER_VERIFIED_INFO_STATUS_API;
 }
