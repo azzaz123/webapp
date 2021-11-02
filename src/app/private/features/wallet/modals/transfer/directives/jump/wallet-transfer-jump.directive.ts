@@ -6,6 +6,10 @@ import { DOCUMENT } from '@angular/common';
 })
 export class WalletTransferJumpDirective {
   @Input()
+  public jumpAllowArrowLeft: boolean;
+  @Input()
+  public jumpAllowArrowRight: boolean;
+  @Input()
   public jumpKey: string | string[];
   @Input()
   public jumpOnlyEmpty: boolean;
@@ -15,9 +19,10 @@ export class WalletTransferJumpDirective {
   constructor(@Inject(DOCUMENT) private document: Document, private element: ElementRef) {}
 
   @HostListener('keydown', ['$event']) onKeyDown(e: KeyboardEvent) {
-    const key = e.key;
-
-    if (!this.isJumpKey(key) || !this.jumpTargetId) {
+    const code = e.code;
+    const targete = this.element;
+    debugger;
+    if (!this.isJumpKey(code) || !this.jumpTargetId) {
       return;
     }
 
@@ -30,11 +35,13 @@ export class WalletTransferJumpDirective {
     }
   }
 
-  private isJumpKey(key: string[] | string): boolean {
+  private isJumpKey(code: string[] | string): boolean {
+    const target = this.element.nativeElement;
+    debugger;
     if (typeof this.jumpKey === 'string') {
-      return key === this.jumpKey;
+      return code === this.jumpKey;
     }
-    return !!this.jumpKey?.find((item) => item === key);
+    return !!this.jumpKey?.find((item) => item === code);
   }
 
   private get isValidJump(): boolean {
