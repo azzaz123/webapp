@@ -6,11 +6,12 @@
                     <tsl-svg-icon src="/assets/icons/pro/pro-logo.svg"> </tsl-svg-icon>
                 </div>
                 <div class="mt-3">
-                    <span class="ProHeader__title">
-                        Tu audiencia está aquí
+                    <span class="ProHeader__title"
+                        i18n="@@pro_subscription_flow_non_pro_users_key_metrics_banner_title_web_specific">
+                        Your audience is here
                     </span>
                 </div>
-                <div class="d-lg-flex justify-content-between text-center mt-4 d-none">
+                <div class="d-lg-flex text-center mt-4 d-none w-100 justify-content-around">
                     <ng-container *ngIf="benefits$ | async as benefits">
                         <div class="d-flex flex-column align-items-center" *ngFor="let benefit of benefits">
                             <div>
@@ -22,7 +23,7 @@
                                     {{ benefit.title}}
                                 </span>
                             </div>
-                            <div class="mt-2"> {{ benefit.description }} </div>
+                            <div>{{ benefit.description }}</div>
                         </div>
                     </ng-container>
                 </div>
@@ -34,10 +35,11 @@
                     <tsl-svg-icon width="100" heigth="17" src="/assets/icons/pro/pro-logo.svg"> </tsl-svg-icon>
                 </div>
                 <div class="mt-3">
-                    <span class="ProHeader__title">
-                        Publica más, vende más
+                    <span class="ProHeader__title"
+                        i18n="@@pro_subscription_flow_pro_users_key_metrics_banner_title_web_specific">
+                        Boost your online business
                     </span>
-                </div>  
+                </div>
             </div>
         </ng-template>
     </div>
