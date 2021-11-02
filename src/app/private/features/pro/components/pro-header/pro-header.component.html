@@ -13,17 +13,15 @@
                 </div>
                 <div class="d-lg-flex text-center mt-4 d-none w-100 justify-content-around">
                     <ng-container *ngIf="benefits$ | async as benefits">
-                        <div class="d-flex flex-column align-items-center" *ngFor="let benefit of benefits">
+                        <div class="d-flex flex-column align-items-center Benefit" *ngFor="let benefit of benefits">
                             <div>
                                 <tsl-svg-icon [src]="benefit.iconPath">
                                 </tsl-svg-icon>
                             </div>
                             <div class="mt-3">
-                                <span class="ProHeader__title ProHeader__title--small">
-                                    {{ benefit.title}}
-                                </span>
+                                <span class="ProHeader__title ProHeader__title--small">{{benefit.title}}</span>
                             </div>
-                            <div>{{ benefit.description }}</div>
+                            <div class="ProHeader__description">{{benefit.description}}</div>
                         </div>
                     </ng-container>
                 </div>

@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tsl-pro-header',
@@ -10,9 +8,10 @@ import { Observable } from 'rxjs';
 })
 export class ProHeaderComponent {
   @Input() showBenefits: boolean;
-  public benefits$: Observable<SubscriptionBenefit[]>;
 
-  constructor(private subscriptionBenefits: SubscriptionBenefitsService) {
-    this.benefits$ = this.subscriptionBenefits.getSubscriptionsHeaderBenefits();
+  constructor(private subscriptionBenefits: SubscriptionBenefitsService) {}
+
+  get benefits$() {
+    return this.subscriptionBenefits.getSubscriptionsHeaderBenefits();
   }
 }
