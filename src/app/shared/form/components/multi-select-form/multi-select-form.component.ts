@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Input, OnDestroy } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -27,8 +27,17 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   private extendedOptions: TemplateMultiSelectFormOption[] = [];
   private extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
+  private shownChildrenOptionIdSubject: BehaviorSubject<string> = new BehaviorSubject(null);
   public extendedOptions$: Observable<TemplateMultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
-  public shownChildrenOptionId: string;
+  public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
+
+  constructor(private elementRef: ElementRef) {
+    super();
+
+    this.shownChildrenOptionId$.subscribe((shownChildrenOptionId) => {
+      this.elementRef.nativeElement.scrollTo(0, 0);
+    });
+  }
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
@@ -50,8 +59,42 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public showChildren(option: TemplateMultiSelectFormOption): void {
     if (option.children?.length) {
-      this.shownChildrenOptionId = option.value;
+      this.shownChildrenOptionIdSubject.next(option.value);
     }
+  }
+
+  public restartNavigation(): void {
+    this.shownChildrenOptionIdSubject.next(null);
+  }
+
+  public selectAllChildren(option: TemplateMultiSelectFormOption): void {
+    const childValues = [...option.children].map((childOption) => childOption.value);
+    this.value = this.value ? this.value.filter((value) => !childValues.includes(value)) : [];
+    this.triggerValueChange([...this.value, option.value]);
+  }
+
+  public unselectAllChildren(option: TemplateMultiSelectFormOption): void {
+    const valuesToRemove = [...this.getOptionValues(option.children), option.value];
+    this.value = this.value ? this.value.filter((value) => !valuesToRemove.includes(value)) : [];
+    this.triggerValueChange(this.value);
+  }
+
+  public unselectAll(): void {
+    this.value = [];
+    this.triggerValueChange(this.value);
+  }
+
+  public hasSelectedChildren(option: TemplateMultiSelectFormOption): boolean {
+    return !![...option.children].filter((childOption) => childOption.checked).length;
+  }
+
+  private getOptionValues(options: TemplateMultiSelectFormOption[]): string[] {
+    return [...options].map((childOption) => childOption.value);
+  }
+
+  private triggerValueChange(value: MultiSelectValue): void {
+    this.writeValue(value);
+    this.onChange(value);
   }
 
   private mapCheckedValue(): void {

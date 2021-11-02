@@ -23,4 +23,10 @@
   tsl-svg-icon {
     @include square(24px);
   }
+
+  &__selection {
+    color: $walla-main;
+    font-size: $font-size-xs;
+    line-height: $font-size-xs;
+  }
 }

@@ -15,9 +15,10 @@ import { DrawerPlaceholderTemplateComponent } from '../abstract-select-filter/se
 import { SelectParentOptionComponent } from '../abstract-select-filter/select-parent-option/select-parent-option.component';
 import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { COMMON_CONFIGURATION_ID } from '../../core/enums/configuration-ids/common-configuration-ids.enum';
 import { MultiSelectFilterModule } from './multi-select-filter.module';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
+import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
+import { SUBCATEGORIES_WITH_CHILDREN_MOCK } from '@fixtures/subcategories.fixtures';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -41,7 +42,7 @@ describe('MultiSelectFilterComponent', () => {
   const multiselectFormPredicate = By.directive(MultiSelectFormComponent);
   const basicConfig: MultiSelectFilterConfig = {
     type: FILTER_TYPES.MULTISELECT,
-    id: COMMON_CONFIGURATION_ID.CONDITION,
+    id: FASHION_CONFIGURATION_ID.OBJECT_TYPE,
     title: 'MultiSelectFilterComponent',
     hasContentPlaceholder: true,
     bubblePlaceholder: 'Bubble placeholder',
@@ -50,32 +51,9 @@ describe('MultiSelectFilterComponent', () => {
       parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
     },
   };
-  const OPTIONS = [
-    {
-      value: 'un_opened',
-      label: 'Unopened',
-    },
-    {
-      value: 'new',
-      label: 'New',
-    },
-    {
-      value: 'as_good_as_new',
-      label: 'As good as new',
-    },
-    {
-      value: 'good',
-      label: 'Good condition',
-    },
-    {
-      value: 'fair',
-      label: 'Fair condition',
-    },
-    {
-      value: 'has_given_it_all',
-      label: 'Has given it all',
-    },
-  ];
+  const OPTIONS = SUBCATEGORIES_WITH_CHILDREN_MOCK;
+  const selectedOption1 = OPTIONS[0];
+  const selectedOption2 = OPTIONS[1].children[0];
 
   const setValue = (value) => {
     component.writeValue(value);
@@ -162,7 +140,7 @@ describe('MultiSelectFilterComponent', () => {
         const value = [
           {
             key: FILTER_QUERY_PARAM_KEY.objectType,
-            value: 'un_opened,new',
+            value: `${selectedOption1.value},${selectedOption2.value}`,
           },
         ];
 
@@ -180,9 +158,13 @@ describe('MultiSelectFilterComponent', () => {
         });
 
         it('should set label with correct values', () => {
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+          const filterTemplates: FilterTemplateComponent[] = debugElement
+            .queryAll(filterPredicate)
+            .map((filterTemplate) => filterTemplate.componentInstance);
 
-          expect(filterTemplate.label).toEqual('Unopened, New');
+          filterTemplates.forEach((filterTemplate) => {
+            expect([selectedOption1.label, selectedOption2.label]).toContain(filterTemplate.label);
+          });
         });
       });
 
@@ -190,7 +172,7 @@ describe('MultiSelectFilterComponent', () => {
         const value = [
           {
             key: FILTER_QUERY_PARAM_KEY.objectType,
-            value: 'unknown,un_opened,unkwown,new',
+            value: `${selectedOption1.value},unknown,${selectedOption2.value},unknown`,
           },
         ];
 
@@ -208,9 +190,13 @@ describe('MultiSelectFilterComponent', () => {
         });
 
         it('should set label with correct values', () => {
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+          const filterTemplates: FilterTemplateComponent[] = debugElement
+            .queryAll(filterPredicate)
+            .map((filterTemplate) => filterTemplate.componentInstance);
 
-          expect(filterTemplate.label).toEqual('Unopened, New');
+          filterTemplates.forEach((filterTemplate) => {
+            expect([selectedOption1.label, selectedOption2.label]).toContain(filterTemplate.label);
+          });
         });
       });
 
@@ -235,32 +221,29 @@ describe('MultiSelectFilterComponent', () => {
         });
 
         it('should restart values', () => {
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-          expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: OPTIONS[0].value }]);
-
-          filterTemplate.clear.emit();
-
-          expect(component.value).toEqual([]);
-        });
-
-        it('should restart label', () => {
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-          expect(filterTemplate.label).toEqual(OPTIONS[0].label);
-
-          filterTemplate.clear.emit();
+          component.handleMultiValueClear(OPTIONS[0].value);
           fixture.detectChanges();
 
-          expect(filterTemplate.label).toEqual(basicConfig.bubblePlaceholder);
+          expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: '' }]);
+        });
+
+        it('should restart label', (done) => {
+          component.handleMultiValueClear(OPTIONS[0].value);
+          fixture.detectChanges();
+
+          component.multiValue$.subscribe((multiValue) => {
+            expect(multiValue).toEqual([basicConfig.bubblePlaceholder]);
+            done();
+          });
         });
 
         it('should emit value changes', () => {
           spyOn(component.valueChange, 'emit');
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-
-          filterTemplate.clear.emit();
+          component.handleMultiValueClear(OPTIONS[0].value);
+          fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: undefined }]);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: '' }]);
         });
       });
     });

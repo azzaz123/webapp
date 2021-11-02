@@ -63,10 +63,10 @@ describe('MultiSelectFormComponent', () => {
         const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
         value.forEach((value) => {
           const checkedOption = options.find((option) => {
-            return option.componentInstance.option.value === value;
+            return option.componentInstance.data.value === value;
           });
 
-          expect(checkedOption.componentInstance.option.checked).toBeTruthy();
+          expect(checkedOption.componentInstance.data.checked).toBeTruthy();
         });
       });
     });
@@ -93,7 +93,7 @@ describe('MultiSelectFormComponent', () => {
 
       const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
       const checkedOptions = options.find((option) => {
-        return option.componentInstance.option.checked === true;
+        return option.componentInstance.data.checked === true;
       });
 
       expect(checkedOptions).toBeUndefined();
@@ -108,10 +108,10 @@ describe('MultiSelectFormComponent', () => {
 
         const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
         const optionToBeChecked: MultiSelectOptionComponent = options[2].componentInstance;
-        optionToBeChecked.option.checked = true;
+        optionToBeChecked.data.checked = true;
         optionToBeChecked.toggleCheckbox();
 
-        expect(component.value).toEqual([optionToBeChecked.option.value]);
+        expect(component.value).toEqual([optionToBeChecked.data.value]);
       });
     });
 
@@ -120,7 +120,7 @@ describe('MultiSelectFormComponent', () => {
 
       beforeEach(() => {
         component.options = optionsWithChildrenFixture;
-        component.shownChildrenOptionId = parentOptionValue;
+        component['shownChildrenOptionIdSubject'].next(parentOptionValue);
         fixture.detectChanges();
       });
 
@@ -130,12 +130,12 @@ describe('MultiSelectFormComponent', () => {
           const childOptionToBeChecked: MultiSelectOptionComponent = childOptions[1].componentInstance;
           const childOptionToBeChecked2: MultiSelectOptionComponent = childOptions[2].componentInstance;
 
-          childOptionToBeChecked.option.checked = true;
+          childOptionToBeChecked.data.checked = true;
           childOptionToBeChecked.toggleCheckbox();
-          childOptionToBeChecked2.option.checked = true;
+          childOptionToBeChecked2.data.checked = true;
           childOptionToBeChecked2.toggleCheckbox();
 
-          expect(component.value).toEqual([childOptionToBeChecked.option.value, childOptionToBeChecked2.option.value]);
+          expect(component.value).toEqual([childOptionToBeChecked.data.value, childOptionToBeChecked2.data.value]);
         });
       });
 
@@ -144,12 +144,86 @@ describe('MultiSelectFormComponent', () => {
           const childOptions = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
 
           childOptions.forEach((childOption) => {
-            childOption.componentInstance.option.checked = true;
+            childOption.componentInstance.data.checked = true;
             childOption.componentInstance.toggleCheckbox();
           });
 
           expect(component.value).toEqual([parentOptionValue]);
         });
+      });
+    });
+  });
+
+  describe('when asking to select all child options', () => {
+    const parentOptionValue = 'aa';
+
+    beforeEach(() => {
+      component.options = optionsWithChildrenFixture;
+      component['shownChildrenOptionIdSubject'].next(parentOptionValue);
+      fixture.detectChanges();
+    });
+
+    it('should set value acordingly', () => {
+      component.selectAllChildren(extendedOptionsWithChildrenFixture[0]);
+
+      expect(component.value).toEqual([parentOptionValue]);
+    });
+
+    it('should check all options', () => {
+      component.selectAllChildren(extendedOptionsWithChildrenFixture[0]);
+      const childOptions = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+
+      childOptions.forEach((childOption: DebugElement) => {
+        expect(childOption.componentInstance.data.checked).toBeTruthy;
+      });
+    });
+  });
+
+  describe('when asking to unselect all child options', () => {
+    const parentOptionValue = 'aa';
+
+    beforeEach(() => {
+      component.options = optionsWithChildrenFixture;
+      component.writeValue([parentOptionValue]);
+      component['shownChildrenOptionIdSubject'].next(parentOptionValue);
+      fixture.detectChanges();
+    });
+
+    it('should set value acordingly', () => {
+      component.unselectAllChildren(extendedOptionsWithChildrenFixture[0]);
+
+      expect(component.value).toEqual([]);
+    });
+
+    it('should uncheck all options', () => {
+      component.unselectAllChildren(extendedOptionsWithChildrenFixture[0]);
+      const childOptions = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+
+      childOptions.forEach((childOption: DebugElement) => {
+        expect(childOption.componentInstance.data.checked).toBeFalsy;
+      });
+    });
+  });
+
+  describe('when asking to unselect all options', () => {
+    beforeEach(() => {
+      component.options = optionsFixture;
+      component.writeValue(value);
+      fixture.detectChanges();
+    });
+
+    it('should set value acordingly', () => {
+      component.unselectAll();
+
+      expect(component.value).toEqual([]);
+    });
+
+    it('should uncheck all options', () => {
+      component.unselectAll();
+      const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
+
+      options.forEach((option: DebugElement) => {
+        expect(option.componentInstance.data.checked).toBeFalsy;
       });
     });
   });

@@ -1,9 +1,20 @@
 @import 'src/style/common';
 
 $border: 1px solid $blue-grey-5;
+$nested-title-height: 57px;
 
 :host {
+  display: block;
+  height: 100%;
+  overflow: auto;
+
   .MultiSelectForm {
+    &__reset {
+      cursor: pointer;
+      right: $spacer;
+      top: $spacer;
+    }
+
     &__option {
       border-bottom: $border;
     }
@@ -16,6 +27,17 @@ $border: 1px solid $blue-grey-5;
       top: 0;
       z-index: 2;
 
+      @include media-breakpoint-down(sm) {
+        position: fixed;
+      }
+
+      &__header {
+        background: $white;
+        border-bottom: $border;
+        width: 100%;
+        z-index: 1;
+      }
+
       &__back {
         border-bottom: $border;
         cursor: pointer;
@@ -23,6 +45,15 @@ $border: 1px solid $blue-grey-5;
         tsl-svg-icon {
           transform: scaleX(-1);
         }
+      }
+
+      &__select-all {
+        color: $walla-main;
+        cursor: pointer;
+      }
+
+      &__options {
+        padding-top: $nested-title-height * 2;
       }
     }
   }

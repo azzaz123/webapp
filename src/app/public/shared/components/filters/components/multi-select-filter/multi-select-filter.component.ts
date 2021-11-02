@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FilterOptionService } from '@public/shared/services/filter-option/filter-option.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 
 @Component({
   selector: 'tsl-multi-select-filter',
@@ -25,18 +26,24 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   public selectFilterTemplate: DrawerPlaceholderTemplateComponent;
   @ViewChild('filterTemplateComponent', { read: FilterTemplateComponent })
   public filterTemplate: FilterTemplateComponent;
+  @ViewChild('multiselectForm', { read: MultiSelectFormComponent })
+  private multiselectForm: MultiSelectFormComponent;
 
   private subscriptions = new Subscription();
   private labelSubject = new BehaviorSubject(undefined);
+  private multiValueSubject = new BehaviorSubject(undefined);
   private placeholderIconSubject = new BehaviorSubject(undefined);
 
   public formGroup = new FormGroup({
     select: new FormControl(),
   });
   public options: FilterOption[] = [];
+  private allOptions: FilterOption[] = [];
 
   public label$ = this.labelSubject.asObservable();
   public placeholderIcon$ = this.labelSubject.asObservable();
+
+  public multiValue$ = this.multiValueSubject.asObservable();
 
   public constructor(private optionService: FilterOptionService) {
     super();
@@ -48,9 +55,10 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
       .pipe(take(1))
       .subscribe((options) => {
         this.options = options;
+        this.allOptions = this.mergeOptions(options);
         this.updateLabel();
       });
-    this.updateLabel();
+
     this.updatePlaceholderIcon();
     super.ngOnInit();
   }
@@ -58,6 +66,12 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
     this.updateValueFromParent();
     this.updateLabel();
+  }
+
+  public handleMultiValueClear(valueToRemove: string): void {
+    const clearValue = this.formGroup.controls.select.value.filter((value) => value !== valueToRemove);
+    this.formGroup.controls.select.setValue(clearValue, { emitEvent: false });
+    this.handleApply();
   }
 
   public handleClear(): void {
@@ -70,7 +84,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     this.subscriptions.unsubscribe();
   }
   public handleCancel(): void {
-    const value = this.value.find((option) => option.key === this.config.mapKey.parameterKey).value?.split(',');
+    const value = this.value.find((option) => option.key === this.config.mapKey.parameterKey)?.value?.split(',');
     this.formGroup.controls.select.setValue(value, {
       emitEvent: false,
     });
@@ -97,8 +111,32 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     }
   }
 
+  public filterTemplateOpenStateChange($event: boolean): void {
+    if (!$event) {
+      this.restartMultiselectNavigation();
+    }
+    this.openStateChange.emit($event);
+  }
+
+  private restartMultiselectNavigation(): void {
+    this.multiselectForm.restartNavigation();
+  }
+
+  private mergeOptions(options: FilterOption[]): FilterOption[] {
+    let allOptions = [...options];
+
+    allOptions.map((option: FilterOption) => {
+      if (option.children?.length) {
+        allOptions = allOptions.concat(option.children);
+      }
+    });
+
+    return allOptions;
+  }
+
   private updateLabel(): void {
     this.labelSubject.next(this._value.length && this.options.length ? this.buildLabel() : this.getLabelPlaceholder());
+    this.multiValueSubject.next(this._value.length && this.options.length ? this.buildMultiValue() : [this.getLabelPlaceholder()]);
   }
 
   private updatePlaceholderIcon(): void {
@@ -110,18 +148,31 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   private buildLabel(): string {
     let label = '';
-    const stringValues = this._value.find((option) => option.key === this.config.mapKey.parameterKey).value?.split(',');
 
-    stringValues.forEach((value: string, index: number) => {
-      const option = this.options.find((option) => option.value === value);
-      label += option ? `${index !== 0 && label.length > 2 ? ', ' : ''}${option.label}` : '';
+    this.getValueAsArray().forEach((value: string, index: number) => {
+      const valueOption = this.allOptions.find((option) => {
+        return option.value === value;
+      });
+      label += valueOption ? `${index !== 0 && label.length > 2 ? ', ' : ''}${valueOption.label}` : '';
     });
 
     return label.length ? label : this.getLabelPlaceholder();
   }
 
+  private buildMultiValue(): FilterOption[] | string[] {
+    const label = [...this.getValueAsArray()]
+      .map((value: string, index: number) => {
+        return this.allOptions.find((option) => {
+          return option.value === value;
+        });
+      })
+      .filter((filterOption) => !!filterOption);
+
+    return label.length ? label : [this.getLabelPlaceholder()];
+  }
+
   private updateValueFromParent(): void {
-    this.formGroup.controls.select.setValue(this.getValue('parameterKey'), { emitEvent: false });
+    this.formGroup.controls.select.setValue(this.getValueAsArray(), { emitEvent: false });
   }
 
   private handleValueChange(value: string[]): void {
@@ -141,5 +192,9 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     if (this.config.hasContentPlaceholder && this.selectFilterTemplate.isPlaceholderOpen) {
       this.selectFilterTemplate.togglePlaceholderOpen();
     }
+  }
+
+  private getValueAsArray(): string[] {
+    return super.getValue('parameterKey')?.split(',') || [];
   }
 }

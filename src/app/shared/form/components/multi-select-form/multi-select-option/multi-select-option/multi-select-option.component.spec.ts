@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { extendedOptionsWithChildrenFixture, optionsWithChildrenFixture } from '../../fixtures/multi-select-option.fixtures';
 import { TemplateMultiSelectFormOption } from '../../interfaces/multi-select-form-option.interface';
 import { MultiSelectOptionComponent } from './multi-select-option.component';
 
@@ -20,6 +21,8 @@ export const optionWithSublabelFixture: TemplateMultiSelectFormOption = {
   value: 'bb',
   checked: true,
 };
+
+export const optionWithChildrenFixture: TemplateMultiSelectFormOption = extendedOptionsWithChildrenFixture[0];
 
 describe('MultiSelectOptionComponent', () => {
   let component: MultiSelectOptionComponent;
@@ -54,8 +57,7 @@ describe('MultiSelectOptionComponent', () => {
       it('should only show option with label', () => {
         const label = debugElement.query(By.css(queryLabelNode)).nativeElement;
         const subLabel = debugElement.query(By.css(querySublabel));
-
-        expect(label.innerHTML).toBe(optionFixture.label);
+        expect(label.textContent.trim()).toBe(optionFixture.label);
         expect(subLabel).toBeNull();
       });
     });
@@ -70,14 +72,14 @@ describe('MultiSelectOptionComponent', () => {
         const label = debugElement.query(By.css(queryLabelNode)).nativeElement;
         const sublabel = debugElement.query(By.css(querySublabel)).nativeElement;
 
-        expect(label.innerHTML).toBe(optionWithSublabelFixture.label);
-        expect(sublabel.innerHTML).toBe(optionWithSublabelFixture.sublabel);
+        expect(label.textContent.trim()).toBe(optionWithSublabelFixture.label);
+        expect(sublabel.textContent.trim()).toBe(optionWithSublabelFixture.sublabel);
       });
     });
 
     describe('has children', () => {
       beforeEach(() => {
-        component.option = optionWithSublabelFixture;
+        component.option = optionWithChildrenFixture;
         component.hasChildren = true;
         fixture.detectChanges();
       });
@@ -95,6 +97,17 @@ describe('MultiSelectOptionComponent', () => {
         const expectedClass = 'MultiSelectOption--with-children';
 
         expect(fixture.debugElement.query(By.css(elementSelector)).classes[expectedClass]).toBeTruthy();
+      });
+
+      describe('and has some of them selected', () => {
+        beforeEach(() => {
+          component.option = optionWithChildrenFixture;
+          fixture.detectChanges();
+        });
+
+        it('should accordingly update selected children count', () => {
+          expect(component.selectedChildrenCount).toEqual(1);
+        });
       });
     });
 
@@ -139,11 +152,11 @@ describe('MultiSelectOptionComponent', () => {
       });
       it('should not change the value on user click', () => {
         const checkbox = debugElement.nativeElement.querySelector('input[type=checkbox]');
-        const initialValue = component.option.checked;
+        const initialValue = component.data.checked;
 
         checkbox.click();
 
-        expect(component.option.checked).toEqual(initialValue);
+        expect(component.data.checked).toEqual(initialValue);
       });
 
       it('should add correct class', () => {

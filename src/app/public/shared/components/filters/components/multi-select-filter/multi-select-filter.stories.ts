@@ -11,6 +11,8 @@ import { MockFilterOptionService } from '@fixtures/filter-option-service.fixture
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { MultiSelectFilterConfig } from './interfaces/multi-select-filter-config.interface';
 import { MultiSelectFilterModule } from './multi-select-filter.module';
+import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
+import { SUBCATEGORIES_WITH_CHILDREN_MOCK } from '@fixtures/subcategories.fixtures';
 
 @Component({
   selector: 'tsl-filters',
@@ -21,9 +23,9 @@ import { MultiSelectFilterModule } from './multi-select-filter.module';
         <div class="m-2" style="width: 100%">
           <tsl-multi-select-filter
             [variant]="${FILTER_VARIANT.BUBBLE}"
-            [value]="subcategory"
-            [config]="subcategoryConfig"
-            (valueChange)="changeSubcategory($event)"
+            [value]="value"
+            [config]="config"
+            (valueChange)="changeValue($event)"
           >
           </tsl-multi-select-filter>
         </div>
@@ -33,9 +35,9 @@ import { MultiSelectFilterModule } from './multi-select-filter.module';
       <div style="border: 1px dashed black; background-color: white; position: relative; min-height: 400px;" class="p-3">
         <tsl-multi-select-filter
           [variant]="${FILTER_VARIANT.CONTENT}"
-          [value]="subcategory"
-          [config]="subcategoryConfig"
-          (valueChange)="changeSubcategory($event)"
+          [value]="value"
+          [config]="config"
+          (valueChange)="changeValue($event)"
         >
         </tsl-multi-select-filter>
       </div>
@@ -43,11 +45,11 @@ import { MultiSelectFilterModule } from './multi-select-filter.module';
   `,
 })
 class FiltersComponent {
-  @Input() public subcategory: FilterParameter[] = [];
-  @Input() public subcategoryConfig: MultiSelectFilterConfig;
+  @Input() public value: FilterParameter[] = [];
+  @Input() public config: MultiSelectFilterConfig;
 
-  public changeSubcategory(value: FilterParameter[]): void {
-    this.subcategory = value;
+  public changeValue(value: FilterParameter[]): void {
+    this.value = value;
   }
 }
 
@@ -72,8 +74,21 @@ const Template: Story<FiltersComponent> = (args) => ({
   component: FiltersComponent,
 });
 
-const subcategoryConfig: MultiSelectFilterConfig = {
+const conditionConfig: MultiSelectFilterConfig = {
   id: COMMON_CONFIGURATION_ID.CONDITION,
+  hasContentPlaceholder: true,
+  title: 'Condition',
+  icon: '/assets/icons/joke.svg',
+  bubblePlaceholder: 'Condition',
+  drawerPlaceholder: 'Select Condition',
+  mapKey: {
+    parameterKey: FILTER_QUERY_PARAM_KEY.condition,
+  },
+  type: FILTER_TYPES.MULTISELECT,
+};
+
+const subcategoryConfig: MultiSelectFilterConfig = {
+  id: FASHION_CONFIGURATION_ID.OBJECT_TYPE,
   hasContentPlaceholder: true,
   title: 'Subcategory',
   icon: '/assets/icons/joke.svg',
@@ -87,11 +102,27 @@ const subcategoryConfig: MultiSelectFilterConfig = {
 
 export const Default = Template.bind({});
 Default.args = {
-  subcategoryConfig,
+  config: conditionConfig,
 };
 
 export const WithDefaultValue = Template.bind({});
 WithDefaultValue.args = {
-  subcategoryConfig: subcategoryConfig,
-  subcategory: [{ key: FILTER_QUERY_PARAM_KEY.objectType, value: 'un_opened' }],
+  config: subcategoryConfig,
+  value: [{ key: FILTER_QUERY_PARAM_KEY.condition, value: 'un_opened' }],
+};
+
+export const WithNestedOptions = Template.bind({});
+WithNestedOptions.args = {
+  config: subcategoryConfig,
+};
+
+export const WithNestedOptionsAndDefaultValue = Template.bind({});
+WithNestedOptionsAndDefaultValue.args = {
+  config: subcategoryConfig,
+  value: [
+    {
+      key: FILTER_QUERY_PARAM_KEY.objectType,
+      value: `${SUBCATEGORIES_WITH_CHILDREN_MOCK[0].value},${SUBCATEGORIES_WITH_CHILDREN_MOCK[1].children[2].value}`,
+    },
+  ],
 };
