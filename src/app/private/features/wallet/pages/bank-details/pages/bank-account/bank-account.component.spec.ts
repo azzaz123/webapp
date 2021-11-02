@@ -152,7 +152,7 @@ describe('BankAccountComponent', () => {
         it('should show the correct title', () => {
           const expectedTitle = $localize`:@@kyc_bank_account_view_if_empty_title:Add the bank account where you wish to receive payment for your sales`;
 
-          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toContain(expectedTitle);
         });
       });
 
@@ -164,7 +164,7 @@ describe('BankAccountComponent', () => {
         it('should show the correct title', () => {
           const expectedTitle = $localize`:@@kyc_bank_account_view_if_already_filled_title:Please check your bank account details are correct`;
 
-          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toContain(expectedTitle);
         });
       });
     });

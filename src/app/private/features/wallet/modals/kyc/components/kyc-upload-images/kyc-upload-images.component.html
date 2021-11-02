@@ -1,90 +1,144 @@
 <div class="KYCUploadImages h-100 container d-flex flex-column">
-    <div class="row mb-4">
-        <div class="col d-flex justify-content-between p-0">
-            <a class="KYCUploadImages__back d-flex" (click)="handleBack()">
-                <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
-                <span id="headerText" class="ml-3">{{documentationSelected.label}}</span>
-            </a>
-            <tsl-svg-icon src="/assets/icons/cross.svg" class="KYCUploadImages__cross align-self-center" (click)="closeModal.emit()"></tsl-svg-icon>
-        </div>
+  <div class="row mb-4">
+    <div class="col d-flex justify-content-between p-0">
+      <a class="KYCUploadImages__back d-flex" (click)="handleBack()">
+        <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
+        <span id="headerText" class="ml-3">{{ documentationSelected.label }}</span>
+      </a>
+      <tsl-svg-icon
+        src="/assets/icons/cross.svg"
+        class="KYCUploadImages__cross align-self-center"
+        (click)="closeModal.emit()"
+      ></tsl-svg-icon>
     </div>
-    <div *ngIf="showLoadingBlock$ | async" class="row w-100 h-100" id="loadingBlock">  
-        <div class="col d-flex p-0 align-items-center justify-content-center">
-            <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
-        </div>      
+  </div>
+  <div *ngIf="showLoadingBlock$ | async" class="row w-100 h-100" id="loadingBlock">
+    <div class="col d-flex p-0 align-items-center justify-content-center">
+      <tsl-svg-icon src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
     </div>
-    <ng-container *ngIf="showImageBlock$ | async">
-        <div class="row d-flex KYCUploadImages__uploadImagesWrapper">
-            <div class="col d-flex flex-column justify-content-between">
-                <div id="imageBlock" class="KYCUploadImages__imageLaterals row flex-column justify-content-between d-flex">
-                    <div class="col d-flex flex-column justify-content-center p-0 KYCUploadImages__imageContentWrapper">
-                        <div class="row text-center mb-3">
-                            <div class="col">
-                                <span class="KYCUploadImages__title d-block mb-2">{{title$ | async}}</span>
-                                <span class="KYCUploadImages__subtitle d-block mb-2">{{subtitle$ | async}}</span>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center mb-4" >
-                            <div class="col d-flex justify-content-center p-0">
-                                <div class="KYCUploadImages__imageContainer">
-                                    <ng-container *ngIf="!isShootImageMethod">
-                                        <input id="uploadImage" #uploadImage type="file" (change)="defineImage($event)" class="d-none" [accept]="MIME_TYPES.IMAGE_JPEG">
-                                        <div id="uploadImageFallbackContent" *ngIf="(isCurrentImageDefined$ | async) === false"
-                                        class="KYCUploadImages__image KYCUploadImages__uploadImageContainer KYCUploadImages__imageBlock d-flex align-items-center justify-content-center p-0">
-                                        <tsl-svg-icon src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
-                                    </div>
-                                    <div id="uploadImageDefinedContent" *ngIf="(isCurrentImageDefined$ | async)" [style.background-image]="'url(' + (currentBase64Image$ | async) + ')'"
-                                        class="KYCUploadImages__image KYCUploadImages__uploadImageContainer KYCUploadImages__imageBlock">
-                                    </div>
-                                    </ng-container>
-                                    <ng-container *ngIf="isShootImageMethod">
-                                        <div class="KYCUploadImages__image KYCUploadImages__imageBlock d-flex align-items-center">
-                                            <canvas id="definedImage" #definedImage [ngClass]="{'d-none': (isCurrentImageDefined$ | async) === false}"></canvas>
-                                            <video *ngIf="(isCurrentImageDefined$ | async) === false" [srcObject]="videoStream$ | async" autoplay playsInline muted class="w-100" id="userVideo" #userVideo></video>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col d-flex justify-content-center p-0 mb-4">
-                                <div class="KYCUploadImages__imageBlock">
-                                    <tsl-button *ngIf="showTakeImageButton$ | async" id="takeImageButton" class="p-0" className="btn-primary btn-block" (click)="uploadOrShootImage()">{{takeImageMessage$ | async}}</tsl-button>
-                                    <tsl-button *ngIf="showRetakeImageButton$ | async" id="retakeImageButton" class="p-0" className="btn-gray btn-block" (click)="retakeCurrentImage()">{{retakeImageMessage$ | async}}</tsl-button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="KYCUploadImages__buttonWrapper row text-center justify-content-center">
-                    <tsl-button
-                        *ngIf="showContinueButton$ | async" id="continueVerificationButton"
-                        [disabled]="(isContinueButtonActive$ | async) === false"
-                        i18n="@@kyc_take_photo_view_continue_button"
-                        class="col-12 col-md-7 p-0"
-                        className="btn-primary btn-block"
-                        (click)="goToDefineBackImage()">Continue</tsl-button>
-                    <tsl-button
-                        *ngIf="showEndVerificationButton$ | async" id="endVerificationButton"
-                        [disabled]="(isEndVerificationButtonActive$ | async) === false || isEndVerificationLoading"
-                        [loading]="isEndVerificationLoading"
-                        i18n="@@kyc_take_photo_view_finish_verification_button"
-                        class="col-12 col-md-7 p-0"
-                        className="btn-primary btn-block"
-                        (click)="emitEndVerification()">Finish verification</tsl-button>
-                </div>
+  </div>
+  <ng-container *ngIf="showImageBlock$ | async">
+    <div class="row d-flex KYCUploadImages__uploadImagesWrapper">
+      <div class="col d-flex flex-column justify-content-between">
+        <div id="imageBlock" class="KYCUploadImages__imageLaterals row flex-column justify-content-between d-flex">
+          <div class="col d-flex flex-column justify-content-center p-0 KYCUploadImages__imageContentWrapper">
+            <div class="row text-center mb-3">
+              <div class="col">
+                <span class="KYCUploadImages__title d-block mb-2">{{ title$ | async }}</span>
+                <span class="KYCUploadImages__subtitle d-block mb-2">{{ subtitle$ | async }}</span>
+              </div>
             </div>
-        </div>
-    </ng-container>
-    <div *ngIf="showErrorBlock$ | async" class="row h-100 d-flex align-items-center justify-content-center">
-        <div class="col">
-            <tsl-banner [specifications]="errorBannerSpecifications" class="w-100">
-                <div class="d-flex align-items-center">
-                    <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>
-                    <span *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.DENIED" i18n="@@kyc_camera_snackbar_access_refused_error_web_specific">You must accept the permissions to be able to take photos.</span>
-                    <span *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS" i18n="@@kyc_camera_snackbar_cannot_access_error_web_specific" >Oops, due to an error we cannot access your camera.</span>
+            <div class="row justify-content-center mb-4">
+              <div class="col d-flex justify-content-center p-0">
+                <div class="KYCUploadImages__imageContainer">
+                  <ng-container *ngIf="!isShootImageMethod">
+                    <input
+                      id="uploadImage"
+                      #uploadImage
+                      type="file"
+                      (change)="defineImage($event)"
+                      class="d-none"
+                      [accept]="MIME_TYPES.IMAGE_JPEG"
+                    />
+                    <div
+                      id="uploadImageFallbackContent"
+                      *ngIf="(isCurrentImageDefined$ | async) === false"
+                      class="KYCUploadImages__image KYCUploadImages__uploadImageContainer KYCUploadImages__imageBlock d-flex align-items-center justify-content-center p-0"
+                    >
+                      <tsl-svg-icon src="/assets/icons/camera.svg" width="100" height="80"></tsl-svg-icon>
+                    </div>
+                    <div
+                      id="uploadImageDefinedContent"
+                      *ngIf="isCurrentImageDefined$ | async"
+                      [style.background-image]="'url(' + (currentBase64Image$ | async) + ')'"
+                      class="KYCUploadImages__image KYCUploadImages__uploadImageContainer KYCUploadImages__imageBlock"
+                    ></div>
+                  </ng-container>
+                  <ng-container *ngIf="isShootImageMethod">
+                    <div class="KYCUploadImages__image KYCUploadImages__imageBlock d-flex align-items-center">
+                      <canvas id="definedImage" #definedImage [ngClass]="{ 'd-none': (isCurrentImageDefined$ | async) === false }"></canvas>
+                      <video
+                        *ngIf="(isCurrentImageDefined$ | async) === false"
+                        [srcObject]="videoStream$ | async"
+                        autoplay
+                        playsInline
+                        muted
+                        class="w-100"
+                        id="userVideo"
+                        #userVideo
+                      ></video>
+                    </div>
+                  </ng-container>
                 </div>
-            </tsl-banner>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col d-flex justify-content-center p-0 mb-4">
+                <div class="KYCUploadImages__imageBlock">
+                  <tsl-button
+                    *ngIf="showTakeImageButton$ | async"
+                    id="takeImageButton"
+                    class="p-0"
+                    className="btn-primary btn-block"
+                    (click)="uploadOrShootImage()"
+                    >{{ takeImageMessage$ | async }}</tsl-button
+                  >
+                  <tsl-button
+                    *ngIf="showRetakeImageButton$ | async"
+                    id="retakeImageButton"
+                    class="p-0"
+                    className="btn-gray btn-block"
+                    (click)="retakeCurrentImage()"
+                    >{{ retakeImageMessage$ | async }}</tsl-button
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="KYCUploadImages__buttonWrapper row text-center justify-content-center">
+          <tsl-button
+            *ngIf="showContinueButton$ | async"
+            id="continueVerificationButton"
+            [disabled]="(isContinueButtonActive$ | async) === false"
+            i18n="@@kyc_take_photo_view_continue_button"
+            class="col-12 col-md-7 p-0"
+            className="btn-primary btn-block"
+            (click)="goToDefineBackImage()"
+            >Continue</tsl-button
+          >
+          <tsl-button
+            *ngIf="showEndVerificationButton$ | async"
+            id="endVerificationButton"
+            [disabled]="(isEndVerificationButtonActive$ | async) === false || isEndVerificationLoading"
+            [loading]="isEndVerificationLoading"
+            i18n="@@kyc_take_photo_view_finish_verification_button"
+            class="col-12 col-md-7 p-0"
+            className="btn-primary btn-block"
+            (click)="emitEndVerification()"
+            >Finish verification</tsl-button
+          >
+        </div>
+      </div>
     </div>
+  </ng-container>
+  <div *ngIf="showErrorBlock$ | async" class="row h-100 d-flex align-items-center justify-content-center">
+    <div class="col">
+      <tsl-banner [specifications]="errorBannerSpecifications" class="w-100">
+        <div class="d-flex align-items-center">
+          <tsl-svg-icon src="/assets/icons/wallet/kyc/banner/error.svg"></tsl-svg-icon>
+          <span
+            *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.DENIED"
+            i18n="@@kyc_camera_snackbar_access_refused_error_web_specific"
+            >You must accept the permissions to be able to take photos.</span
+          >
+          <span
+            *ngIf="(videoPermissions$ | async) === VIDEO_PERMISSIONS_STATUS.CANNOT_ACCESS"
+            i18n="@@kyc_camera_snackbar_cannot_access_error_web_specific"
+            >Oops, due to an error we cannot access your camera.</span
+          >
+        </div>
+      </tsl-banner>
+    </div>
+  </div>
 </div>
