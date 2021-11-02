@@ -35,7 +35,7 @@ export class StreamlineOngoingUIService {
   }
 
   public getItems(): void {
-    const canNotLoadMoreItems = !this.loading;
+    const canNotLoadMoreItems = this.loading;
     if (canNotLoadMoreItems) {
       return;
     }
