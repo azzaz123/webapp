@@ -60,14 +60,14 @@ export class LocationFilterService {
     if (navigator.geolocation) {
       return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
-          (position: Position) => {
+          (position: GeolocationPosition) => {
             const latitude = `${position.coords.latitude}`;
             const longitude = `${position.coords.longitude}`;
             const location: SearchLocation = { latitude, longitude };
 
             resolve(location);
           },
-          (error: PositionError) => {
+          (error: GeolocationPositionError) => {
             reject(error);
           },
           GEOLOCATION_OPTIONS
