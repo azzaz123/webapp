@@ -34,8 +34,7 @@
                     <label i18n="@@additional_services_selector_pro_user_guarantee_service_info_period_label">Guarantee
                         period</label>
                     <div class="d-flex">
-                        <input type="number" class="form-control mr-3" min="0" formControlName="warrantyAmount"
-                            (input)="openModal()" max="9999" />
+                        <input type="number" class="form-control mr-3" min="0" formControlName="warrantyAmount" max="9999" />
                         <tsl-dropdown class="form-control" [options]="dropdownOptions" noFilter="10"
                             formControlName="warrantyPeriod"></tsl-dropdown>
                     </div>

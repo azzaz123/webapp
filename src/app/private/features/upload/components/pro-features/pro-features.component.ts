@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   AnalyticsEvent,
@@ -15,13 +15,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
+export const DEBOUNCE_TIME = 500;
 
 @Component({
   selector: 'tsl-pro-features',
   templateUrl: './pro-features.component.html',
   styleUrls: ['./pro-features.component.scss'],
 })
-export class ProFeaturesComponent {
+export class ProFeaturesComponent implements OnInit, OnDestroy {
   @Input() categoryId: string;
 
   public proFeaturesForm: FormGroup;
@@ -39,9 +43,14 @@ export class ProFeaturesComponent {
       label: $localize`:@@additional_services_selector_pro_user_guarantee_service_info_years_unit_label:years`,
     },
   ];
+  private warrantyAmountSubscription: Subscription;
 
   constructor(private analyticsService: AnalyticsService, private modalService: NgbModal, private fb: FormBuilder) {
     this.buildForm();
+  }
+
+  ngOnInit() {
+    this.subscribeWarrantyAmountChanges();
   }
 
   public trackEvent(isActive: boolean, eventName: ANALYTICS_EVENT_NAMES): void {
@@ -84,6 +93,10 @@ export class ProFeaturesComponent {
     modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.simulation];
   }
 
+  ngOnDestroy() {
+    this.warrantyAmountSubscription.unsubscribe();
+  }
+
   private buildForm(): void {
     this.proFeaturesForm = this.fb.group({
       installation: [false],
@@ -92,5 +105,14 @@ export class ProFeaturesComponent {
       warrantyPeriod: ['months'],
       warrantyAmount: [],
     });
+  }
+
+  private subscribeWarrantyAmountChanges() {
+    this.warrantyAmountSubscription = this.proFeaturesForm
+      .get('warrantyAmount')
+      .valueChanges.pipe(debounceTime(DEBOUNCE_TIME))
+      .subscribe(() => {
+        this.openModal();
+      });
   }
 }

@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS } from '@core/analytics/analytics-constants';
@@ -9,7 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
-import { ProFeaturesComponent } from './pro-features.component';
+import { DEBOUNCE_TIME, ProFeaturesComponent } from './pro-features.component';
 
 describe('ProFeaturesComponent', () => {
   let component: ProFeaturesComponent;
@@ -193,20 +193,17 @@ describe('ProFeaturesComponent', () => {
       expect(warrantyPeriod).toBeTruthy();
     });
     describe('and the user write an amount', () => {
-      beforeEach(() => {
-        const testDe = fixture.debugElement.query(By.css('input[formControlname="warrantyAmount"]'));
-        testDe.triggerEventHandler('input', {
-          target: {
-            value: '1',
-          },
-        });
-      });
-      it('Should open modal', () => {
+      it('Should open modal', fakeAsync(() => {
+        const input = fixture.debugElement.query(By.css('input[formControlname="warrantyAmount"]'));
+        input.nativeElement.dispatchEvent(new Event('input'));
+
+        tick(DEBOUNCE_TIME);
+
         expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
           windowClass: 'pro-modal',
         });
         expect(modalService.open).toHaveBeenCalledTimes(1);
-      });
+      }));
     });
   });
 });
