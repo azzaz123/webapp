@@ -5,7 +5,7 @@ import { getCustomerHelpUrl } from './get-customer-help-url';
 describe('getCustomerHelpUrl', () => {
   const pageId = CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING;
   const allLanguages: APP_LOCALE[] = ['es', 'en', 'it'];
-  const expected = (lang: string, base: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT) => {
+  const expected = (lang: string, base: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT_SITE) => {
     return `${base}${lang}/articles/${pageId}`;
   };
 

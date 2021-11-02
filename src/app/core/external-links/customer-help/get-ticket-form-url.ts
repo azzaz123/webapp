@@ -4,7 +4,7 @@ import { HELP_LOCALE, CUSTOMER_TICKET_FORM, CUSTOMER_HELP_BASE } from './custome
 export function getTicketFormUrl(
   formId: CUSTOMER_TICKET_FORM,
   locale: APP_LOCALE,
-  baseUrl: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT
+  baseUrl: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT_SITE
 ): string {
   return `${baseUrl}${HELP_LOCALE[locale]}/requests/new?ticket_form_id=${formId}`;
 }

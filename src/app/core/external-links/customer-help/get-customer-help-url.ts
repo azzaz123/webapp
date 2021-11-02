@@ -4,7 +4,7 @@ import { CUSTOMER_HELP_PAGE, HELP_LOCALE, CUSTOMER_HELP_BASE, ITALIAN_CUSTOMER_H
 export function getCustomerHelpUrl(
   pageId: CUSTOMER_HELP_PAGE | ITALIAN_CUSTOMER_HELP_PAGE,
   locale: APP_LOCALE,
-  baseUrl = CUSTOMER_HELP_BASE.DEFAULT
+  baseUrl = CUSTOMER_HELP_BASE.DEFAULT_SITE
 ): string {
   return `${baseUrl}${HELP_LOCALE[locale]}/articles/${pageId}`;
 }

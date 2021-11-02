@@ -31,7 +31,7 @@ describe('CustomerHelpService', () => {
 
       customerHelpService.getPageUrl(pageId);
 
-      expect(GetCustomerHelpUrl.getCustomerHelpUrl).toHaveBeenCalledWith(pageId, MOCK_LOCALE_ID, CUSTOMER_HELP_BASE.DEFAULT);
+      expect(GetCustomerHelpUrl.getCustomerHelpUrl).toHaveBeenCalledWith(pageId, MOCK_LOCALE_ID, CUSTOMER_HELP_BASE.DEFAULT_SITE);
     });
   });
 
@@ -41,7 +41,7 @@ describe('CustomerHelpService', () => {
 
       customerHelpService.getFormPageUrl(formId);
 
-      expect(GetTicketFormUrl.getTicketFormUrl).toHaveBeenCalledWith(formId, MOCK_LOCALE_ID, CUSTOMER_HELP_BASE.DEFAULT);
+      expect(GetTicketFormUrl.getTicketFormUrl).toHaveBeenCalledWith(formId, MOCK_LOCALE_ID, CUSTOMER_HELP_BASE.DEFAULT_SITE);
     });
   });
 });

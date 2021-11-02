@@ -5,7 +5,7 @@ import { getTicketFormUrl } from './get-ticket-form-url';
 describe('getTicketFormUrl', () => {
   const formId = CUSTOMER_TICKET_FORM.KYC;
   const allLanguages: APP_LOCALE[] = ['es', 'en', 'it'];
-  const expected = (lang: string, base: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT) => {
+  const expected = (lang: string, base: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT_SITE) => {
     return `${base}${lang}/requests/new?ticket_form_id=${formId}`;
   };
 

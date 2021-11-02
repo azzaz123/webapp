@@ -12,12 +12,12 @@ export class CustomerHelpService {
 
   public getPageUrl(
     articleId: CUSTOMER_HELP_PAGE | ITALIAN_CUSTOMER_HELP_PAGE,
-    baseUrl: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT
+    baseUrl: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT_SITE
   ): string {
     return getCustomerHelpUrl(articleId, this.locale, baseUrl);
   }
 
-  public getFormPageUrl(formId: CUSTOMER_TICKET_FORM, baseUrl: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT): string {
+  public getFormPageUrl(formId: CUSTOMER_TICKET_FORM, baseUrl: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT_SITE): string {
     return getTicketFormUrl(formId, this.locale, baseUrl);
   }
 }
