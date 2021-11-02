@@ -19,8 +19,6 @@ import {
   MockPaymentsCreditCardService,
 } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { PaymentsCreditCardService } from '@api/payments/cards';
-import { I18nService } from '@core/i18n/i18n.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Router } from '@angular/router';
 import { UuidService } from '@core/uuid/uuid.service';
 import { MOCK_EMPTY_CREDIT_CARD_FORM } from '@fixtures/private/wallet/credit-card/credit-card.fixtures.spec';
@@ -33,6 +31,7 @@ import { Location } from '@angular/common';
 
 import { CreditCardComponent } from './credit-card.component';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { CREDIT_CARD_TRANSLATIONS } from '@private/features/wallet/translations/credit-card.translations';
 
 describe('CreditCreditCardComponent', () => {
   const messageErrorSelector = '.CreditCard__message--error';
@@ -40,7 +39,6 @@ describe('CreditCreditCardComponent', () => {
   let fixture: ComponentFixture<CreditCardComponent>;
   let paymentsCreditCardService: PaymentsCreditCardService;
   let toastService: ToastService;
-  let i18nService: I18nService;
   let location: Location;
   let el: HTMLElement;
   let router: Router;
@@ -55,7 +53,6 @@ describe('CreditCreditCardComponent', () => {
       providers: [
         FormBuilder,
         ToastService,
-        I18nService,
         {
           provide: PaymentsCreditCardService,
           useValue: MockPaymentsCreditCardService,
@@ -87,7 +84,6 @@ describe('CreditCreditCardComponent', () => {
     el = fixture.debugElement.nativeElement;
     paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
     toastService = TestBed.inject(ToastService);
-    i18nService = TestBed.inject(I18nService);
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
     fixture.detectChanges();
@@ -104,6 +100,14 @@ describe('CreditCreditCardComponent', () => {
 
     it('should build the form', () => {
       expect(component.creditCardForm.value).toStrictEqual(MOCK_EMPTY_CREDIT_CARD_FORM);
+    });
+  });
+
+  describe('canExit', () => {
+    it('should return the form canExit status', () => {
+      const result = component.canExit();
+
+      expect(result).toStrictEqual(component.formComponent.canExit());
     });
   });
 
@@ -162,31 +166,227 @@ describe('CreditCreditCardComponent', () => {
   });
 
   describe('onSubmit', () => {
-    describe('when the form is valid...', () => {
-      describe('and the credit card is new...', () => {
+    describe('and the form is not in progress...', () => {
+      describe('when the form is valid...', () => {
+        describe('and the credit card is new...', () => {
+          beforeEach(() => {
+            spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError(''));
+            spyOn(toastService, 'show');
+            spyOn(router, 'navigate');
+
+            component.initForm();
+            component.creditCardForm.setValue(mockFormCreditCardSyncRequest);
+          });
+
+          describe('and server notifies a success...', () => {
+            beforeEach(() => {
+              spyOn(paymentsCreditCardService, 'create').and.returnValue(of(null));
+
+              triggerFormSubmit();
+            });
+
+            it('should call the create endpoint with valid data', () => {
+              expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+            });
+
+            it('should show a succeed message', () => {
+              expect(toastService.show).toHaveBeenCalledWith({
+                text: CREDIT_CARD_TRANSLATIONS.CREATE_SUCCESS,
+                type: TOAST_TYPES.SUCCESS,
+              });
+            });
+
+            it('should redirect to the bank details page', () => {
+              expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
+            });
+          });
+
+          describe('and server notifies an error...', () => {
+            describe('and when the failure is because server notifies card is not authorized', () => {
+              beforeEach(() => {
+                spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardIsNotAuthorizedError()]));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the create endpoint', () => {
+                expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+              });
+
+              it('should show an error toast', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
+                  type: TOAST_TYPES.ERROR,
+                });
+              });
+
+              it('should mark errors in form', () => {
+                expect(component.creditCardForm.get('cardNumber').getError('invalid')).toBeTruthy();
+              });
+
+              it('should set the form as pending', () => {
+                expect(component.creditCardForm.pending).toBe(true);
+              });
+
+              it('should NOT redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+            });
+
+            describe('and when the failure is because server notifies card number is not valid', () => {
+              beforeEach(() => {
+                spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardNumberIsInvalidError()]));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the create endpoint', () => {
+                expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+              });
+
+              it('should show an error toast', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
+                  type: TOAST_TYPES.ERROR,
+                });
+              });
+
+              it('should set errors if the backend return an invalid field', () => {
+                expect(component.creditCardForm.get('cardNumber').getError('invalid')).toBeTruthy();
+              });
+
+              it('should set the form as pending', () => {
+                expect(component.creditCardForm.pending).toBe(true);
+              });
+
+              it('should NOT redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+            });
+
+            describe('and when the failure is because server notifies card expiration date is not valid', () => {
+              beforeEach(() => {
+                spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardExpirationDateIsInvalidError()]));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the create endpoint', () => {
+                expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+              });
+
+              it('should show an error toast', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
+                  type: TOAST_TYPES.ERROR,
+                });
+              });
+
+              it('should set errors if the backend return an invalid field', () => {
+                expect(component.creditCardForm.get('cardExpirationDate').getError('invalid')).toBeTruthy();
+              });
+
+              it('should set the form as pending', () => {
+                expect(component.creditCardForm.pending).toBe(true);
+              });
+
+              it('should NOT redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+            });
+
+            describe('and when the failure is because server notifies card CVX is not valid', () => {
+              beforeEach(() => {
+                spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardCvvIsInvalidError()]));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the create endpoint', () => {
+                expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+              });
+
+              it('should show an error toast', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
+                  type: TOAST_TYPES.ERROR,
+                });
+              });
+
+              it('should set errors if the backend return an invalid field', () => {
+                expect(component.creditCardForm.get('cardCvx').getError('invalid')).toBeTruthy();
+              });
+
+              it('should set the form as pending', () => {
+                expect(component.creditCardForm.pending).toBe(true);
+              });
+
+              it('should NOT redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+            });
+
+            describe('and when the failure is because server notifies a non matching error', () => {
+              beforeEach(() => {
+                spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CountryIsoCodeIsInvalidError()]));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the create endpoint', () => {
+                expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+              });
+
+              it('should show an error toast', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: CREDIT_CARD_TRANSLATIONS.GENERIC_ERROR,
+                  type: TOAST_TYPES.ERROR,
+                });
+              });
+
+              it('should not mark form as pending', () => {
+                expect(component.creditCardForm.pending).toBe(false);
+              });
+
+              it('should not mark any field as error', () => {
+                expect(component.creditCardForm.get('fullName').getError('invalid')).toBeFalsy();
+                expect(component.creditCardForm.get('cardNumber').getError('invalid')).toBeFalsy();
+                expect(component.creditCardForm.get('cardExpirationDate').getError('invalid')).toBeFalsy();
+                expect(component.creditCardForm.get('cardCvx').getError('invalid')).toBeFalsy();
+              });
+
+              it('should NOT redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+            });
+          });
+        });
+      });
+
+      describe('and the credit card is an existing one...', () => {
         beforeEach(() => {
-          spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError(''));
+          spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCardSyncRequest));
           spyOn(toastService, 'show');
           spyOn(router, 'navigate');
 
           component.initForm();
-          component.creditCardForm.setValue(mockFormCreditCardSyncRequest);
+          component.creditCardForm.setValue(mockCreditCardSyncRequest);
         });
 
-        describe('and server notifies a success...', () => {
+        describe('and the petition succeed...', () => {
           beforeEach(() => {
-            spyOn(paymentsCreditCardService, 'create').and.returnValue(of(null));
+            spyOn(paymentsCreditCardService, 'update').and.returnValue(of(null));
 
             triggerFormSubmit();
           });
 
-          it('should call the create endpoint with valid data', () => {
-            expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+          it('should call the edit endpoint', () => {
+            expect(paymentsCreditCardService.update).toHaveBeenCalledWith(mockCreditCardSyncRequest);
           });
 
-          it('should show a succeed message', () => {
+          it('should show a succeed CREATE message', () => {
             expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.CREDIT_CARD_CREATE_SUCCESS),
+              text: CREDIT_CARD_TRANSLATIONS.CREATE_SUCCESS,
               type: TOAST_TYPES.SUCCESS,
             });
           });
@@ -196,158 +396,58 @@ describe('CreditCreditCardComponent', () => {
           });
         });
 
-        describe('and server notifies an error...', () => {
-          describe('and when the failure is because server notifies card is not authorized', () => {
+        describe('and the petition fails...', () => {
+          describe('and when the fail is because server notifies owner name is invalid', () => {
             beforeEach(() => {
-              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardIsNotAuthorizedError()]));
+              spyOn(paymentsCreditCardService, 'update').and.returnValue(throwError([new CardOwnerNameIsInvalidError()]));
 
               triggerFormSubmit();
             });
 
-            it('should call the create endpoint', () => {
-              expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
-            });
-
-            it('should show an error toast', () => {
-              expect(toastService.show).toHaveBeenCalledWith({
-                text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
-                type: TOAST_TYPES.ERROR,
-              });
-            });
-
-            it('should mark errors in form', () => {
-              expect(component.creditCardForm.get('cardNumber').getError('invalid')).toBeTruthy();
-            });
-
-            it('should set the form as pending', () => {
-              expect(component.creditCardForm.pending).toBe(true);
-            });
-
-            it('should NOT redirect to the bank details page', () => {
-              expect(router.navigate).not.toHaveBeenCalled();
-            });
-          });
-
-          describe('and when the failure is because server notifies card number is not valid', () => {
-            beforeEach(() => {
-              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardNumberIsInvalidError()]));
-
-              triggerFormSubmit();
-            });
-
-            it('should call the create endpoint', () => {
-              expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
-            });
-
-            it('should show an error toast', () => {
-              expect(toastService.show).toHaveBeenCalledWith({
-                text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
-                type: TOAST_TYPES.ERROR,
-              });
+            it('should call the edit endpoint', () => {
+              expect(paymentsCreditCardService.update).toHaveBeenCalledWith(mockCreditCardSyncRequest);
             });
 
             it('should set errors if the backend return an invalid field', () => {
-              expect(component.creditCardForm.get('cardNumber').getError('invalid')).toBeTruthy();
+              expect(component.creditCardForm.get('fullName').getError('invalid')).toBeTruthy();
+            });
+
+            it('should NOT redirect the user', () => {
+              expect(router.navigate).not.toHaveBeenCalled();
             });
 
             it('should set the form as pending', () => {
               expect(component.creditCardForm.pending).toBe(true);
             });
 
-            it('should NOT redirect to the bank details page', () => {
-              expect(router.navigate).not.toHaveBeenCalled();
-            });
-          });
-
-          describe('and when the failure is because server notifies card expiration date is not valid', () => {
-            beforeEach(() => {
-              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardExpirationDateIsInvalidError()]));
-
-              triggerFormSubmit();
-            });
-
-            it('should call the create endpoint', () => {
-              expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
-            });
-
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
-                text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
+                text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
                 type: TOAST_TYPES.ERROR,
               });
             });
-
-            it('should set errors if the backend return an invalid field', () => {
-              expect(component.creditCardForm.get('cardExpirationDate').getError('invalid')).toBeTruthy();
-            });
-
-            it('should set the form as pending', () => {
-              expect(component.creditCardForm.pending).toBe(true);
-            });
-
-            it('should NOT redirect to the bank details page', () => {
-              expect(router.navigate).not.toHaveBeenCalled();
-            });
           });
 
-          describe('and when the failure is because server notifies card CVX is not valid', () => {
+          describe('and when the fail is because server notifies that the platform response is invalid', () => {
             beforeEach(() => {
-              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CardCvvIsInvalidError()]));
+              spyOn(paymentsCreditCardService, 'update').and.returnValue(throwError([new PlatformResponseIsInvalidError()]));
 
               triggerFormSubmit();
             });
 
-            it('should call the create endpoint', () => {
-              expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+            it('should call the update endpoint', () => {
+              expect(paymentsCreditCardService.update).toHaveBeenCalledWith(mockCreditCardSyncRequest);
             });
 
             it('should show an error toast', () => {
               expect(toastService.show).toHaveBeenCalledWith({
-                text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
-                type: TOAST_TYPES.ERROR,
-              });
-            });
-
-            it('should set errors if the backend return an invalid field', () => {
-              expect(component.creditCardForm.get('cardCvx').getError('invalid')).toBeTruthy();
-            });
-
-            it('should set the form as pending', () => {
-              expect(component.creditCardForm.pending).toBe(true);
-            });
-
-            it('should NOT redirect to the bank details page', () => {
-              expect(router.navigate).not.toHaveBeenCalled();
-            });
-          });
-
-          describe('and when the failure is because server notifies a non matching error', () => {
-            beforeEach(() => {
-              spyOn(paymentsCreditCardService, 'create').and.returnValue(throwError([new CountryIsoCodeIsInvalidError()]));
-
-              triggerFormSubmit();
-            });
-
-            it('should call the create endpoint', () => {
-              expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
-            });
-
-            it('should show an error toast', () => {
-              expect(toastService.show).toHaveBeenCalledWith({
-                text: i18nService.translate(TRANSLATION_KEY.GENERIC_CREDIT_CARD_ERROR),
+                text: CREDIT_CARD_TRANSLATIONS.GENERIC_ERROR,
                 type: TOAST_TYPES.ERROR,
               });
             });
 
             it('should not mark form as pending', () => {
               expect(component.creditCardForm.pending).toBe(false);
-            });
-
-            it('should not mark any field as error', () => {
-              expect(component.creditCardForm.get('fullName').getError('invalid')).toBeFalsy();
-              expect(component.creditCardForm.get('cardNumber').getError('invalid')).toBeFalsy();
-              expect(component.creditCardForm.get('cardExpirationDate').getError('invalid')).toBeFalsy();
-              expect(component.creditCardForm.get('cardCvx').getError('invalid')).toBeFalsy();
             });
 
             it('should NOT redirect to the bank details page', () => {
@@ -358,97 +458,27 @@ describe('CreditCreditCardComponent', () => {
       });
     });
 
-    describe('and the credit card is an existing one...', () => {
+    describe('and the form is already in progress...', () => {
       beforeEach(() => {
-        spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCardSyncRequest));
-        spyOn(toastService, 'show');
-        spyOn(router, 'navigate');
+        spyOn(paymentsCreditCardService, 'create');
+        spyOn(paymentsCreditCardService, 'update');
+        component.loadingButton$.next(true);
 
-        component.initForm();
-        component.creditCardForm.setValue(mockCreditCardSyncRequest);
+        component.onSubmit();
+        fixture.detectChanges();
       });
 
-      describe('and the petition succeed...', () => {
-        beforeEach(() => {
-          spyOn(paymentsCreditCardService, 'update').and.returnValue(of(null));
-
-          triggerFormSubmit();
-        });
-
-        it('should call the edit endpoint', () => {
-          expect(paymentsCreditCardService.update).toHaveBeenCalledWith(mockCreditCardSyncRequest);
-        });
-
-        it('should show a succeed CREATE message', () => {
-          expect(toastService.show).toHaveBeenCalledWith({
-            text: i18nService.translate(TRANSLATION_KEY.CREDIT_CARD_CREATE_SUCCESS),
-            type: TOAST_TYPES.SUCCESS,
-          });
-        });
-
-        it('should redirect to the bank details page', () => {
-          expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
-        });
+      it('should NOT call any endpoint', () => {
+        expect(paymentsCreditCardService.create).not.toHaveBeenCalled();
+        expect(paymentsCreditCardService.update).not.toHaveBeenCalled();
       });
 
-      describe('and the petition fails...', () => {
-        describe('and when the fail is because server notifies owner name is invalid', () => {
-          beforeEach(() => {
-            spyOn(paymentsCreditCardService, 'update').and.returnValue(throwError([new CardOwnerNameIsInvalidError()]));
+      it('should mark as disable the save button', () => {
+        const saveButton = fixture.debugElement.query(By.css('tsl-button')).nativeElement;
 
-            triggerFormSubmit();
-          });
+        fixture.detectChanges();
 
-          it('should call the edit endpoint', () => {
-            expect(paymentsCreditCardService.update).toHaveBeenCalledWith(mockCreditCardSyncRequest);
-          });
-
-          it('should set errors if the backend return an invalid field', () => {
-            expect(component.creditCardForm.get('fullName').getError('invalid')).toBeTruthy();
-          });
-
-          it('should NOT redirect the user', () => {
-            expect(router.navigate).not.toHaveBeenCalled();
-          });
-
-          it('should set the form as pending', () => {
-            expect(component.creditCardForm.pending).toBe(true);
-          });
-
-          it('should show an error toast', () => {
-            expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.FORM_FIELD_ERROR),
-              type: TOAST_TYPES.ERROR,
-            });
-          });
-        });
-
-        describe('and when the fail is because server notifies that the platform response is invalid', () => {
-          beforeEach(() => {
-            spyOn(paymentsCreditCardService, 'update').and.returnValue(throwError([new PlatformResponseIsInvalidError()]));
-
-            triggerFormSubmit();
-          });
-
-          it('should call the update endpoint', () => {
-            expect(paymentsCreditCardService.update).toHaveBeenCalledWith(mockCreditCardSyncRequest);
-          });
-
-          it('should show an error toast', () => {
-            expect(toastService.show).toHaveBeenCalledWith({
-              text: i18nService.translate(TRANSLATION_KEY.GENERIC_CREDIT_CARD_ERROR),
-              type: TOAST_TYPES.ERROR,
-            });
-          });
-
-          it('should not mark form as pending', () => {
-            expect(component.creditCardForm.pending).toBe(false);
-          });
-
-          it('should NOT redirect to the bank details page', () => {
-            expect(router.navigate).not.toHaveBeenCalled();
-          });
-        });
+        expect(saveButton.disabled).toBe(true);
       });
     });
   });
@@ -475,7 +505,7 @@ describe('CreditCreditCardComponent', () => {
 
     it('should show an error toast', () => {
       expect(toastService.show).toHaveBeenCalledWith({
-        text: i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR),
+        text: CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR,
         type: TOAST_TYPES.ERROR,
       });
     });

@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   ViewChild,
@@ -16,6 +17,9 @@ import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
+import { WalletTransferMoneyInterface } from '@private/features/wallet/modals/transfer/interfaces/wallet-transfer-money.interface';
+import { WalletTransferMoneyModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-money.model';
+import { WalletTransferTrackingEventService } from '@private/features/wallet/modals/transfer/services/wallet-transfer-tracking-event.service';
 
 import { finalize } from 'rxjs/operators';
 
@@ -31,16 +35,20 @@ const transferId: string = 'transfer';
   styleUrls: ['./wallet-transfer-amount.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PaymentsWalletsHttpService, PaymentsWalletsService],
+  providers: [PaymentsWalletsHttpService, PaymentsWalletsService, WalletTransferTrackingEventService],
 })
 export class WalletTransferAmountComponent implements OnInit {
   @ViewChild(decimalPartId, { static: false }) decimalElementRef: ElementRef;
   @ViewChild(integerPartId, { static: false }) integerElementRef: ElementRef;
   @ViewChild(transferId, { static: false }) transferElementRef: ElementRef;
 
-  @Output()
-  public transfered: EventEmitter<WalletTransferAmountModel> = new EventEmitter<WalletTransferAmountModel>();
+  @Input()
+  public transferData: WalletTransferMoneyInterface;
 
+  @Output()
+  public transfered: EventEmitter<WalletTransferMoneyInterface> = new EventEmitter<WalletTransferMoneyInterface>();
+
+  public showRetryMessage: boolean;
   public transferAmount: WalletTransferAmountModel;
 
   private error: boolean;
@@ -50,11 +58,12 @@ export class WalletTransferAmountComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private paymentsWalletsService: PaymentsWalletsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private transferTrackingEventService: WalletTransferTrackingEventService
   ) {}
 
   public ngOnInit(): void {
-    this.loadBalance();
+    !!this.transferData ? this.loadBalanceFromTransferAmount() : this.loadBalance();
   }
 
   public get allowTransfer(): boolean {
@@ -73,15 +82,20 @@ export class WalletTransferAmountComponent implements OnInit {
 
   public emptyAmount(): void {
     this.transferAmount.empty();
+    this.showRetryMessage = false;
     (this.integerElementRef.nativeElement as HTMLInputElement).focus();
   }
 
   public formatDecimalPart(): void {
+    this.showRetryMessage = this.showRetryMessage && this.transferAmount.total === this.transferData.amount.total;
     (this.decimalElementRef.nativeElement as HTMLInputElement).value = this.transferAmount.decimalsAsCents;
+    this.changeDetectorRef.detectChanges();
   }
 
   public formatIntegerPart(): void {
+    this.showRetryMessage = this.showRetryMessage && this.transferAmount.total === this.transferData.amount.total;
     (this.integerElementRef.nativeElement as HTMLInputElement).value = this.transferAmount.integerAsUnits;
+    this.changeDetectorRef.detectChanges();
   }
 
   public get integerPartMaxLength(): number {
@@ -113,7 +127,8 @@ export class WalletTransferAmountComponent implements OnInit {
   }
 
   public transferBalance(): void {
-    this.transfered.emit(this.transferAmount);
+    this.transferTrackingEventService.trackSelectTransferAmount(this.walletBalance.amount.total, this.transferAmount.total);
+    this.transfered.emit(new WalletTransferMoneyModel(this.transferAmount.total, this.walletBalance, amountOfDecimals));
   }
 
   private loadBalance(): void {
@@ -136,5 +151,14 @@ export class WalletTransferAmountComponent implements OnInit {
           this.toastService.show(DEFAULT_ERROR_TOAST);
         },
       });
+  }
+
+  private loadBalanceFromTransferAmount(): void {
+    this.walletBalance = this.transferData.balance;
+    this.transferAmount = new WalletTransferAmountModel(this.transferData.amount.total, minimumTransferAmount, amountOfDecimals);
+    this.transferAmount.setMaximum(this.walletBalance.amount.total);
+    this.showRetryMessage = true;
+    this.loading = false;
+    this.changeDetectorRef.detectChanges();
   }
 }

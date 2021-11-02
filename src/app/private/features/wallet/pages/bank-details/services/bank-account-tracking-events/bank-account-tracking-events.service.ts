@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
-import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
-import { InnerType } from '@api/core/utils/types';
-import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -11,15 +8,22 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { InnerType } from '@api/core/utils/types';
+import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
+import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+
 import { take } from 'rxjs/operators';
 
-type KycStatusEventAttribute = InnerType<ClickAddEditBankAccount, 'kycStatus'> | undefined;
 type AddOrEditEventAttribute = InnerType<ClickAddEditBankAccount, 'addOrEdit'>;
 const kycBannerStatusToEventAttribute: Partial<Record<KYC_STATUS, KycStatusEventAttribute>> = {
+  [KYC_STATUS.NO_NEED]: 'verified',
   [KYC_STATUS.PENDING]: 'pending',
   [KYC_STATUS.PENDING_VERIFICATION]: 'inProgress',
+  [KYC_STATUS.REJECTED]: 'pending',
   [KYC_STATUS.VERIFIED]: 'verified',
 };
+type KycStatusEventAttribute = InnerType<ClickAddEditBankAccount, 'kycStatus'> | undefined;
 
 @Injectable()
 export class BankAccountTrackingEventsService {

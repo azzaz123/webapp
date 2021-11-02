@@ -1,7 +1,6 @@
 import { Component, Inject, LOCALE_ID, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
-import { SwUpdate } from '@angular/service-worker';
 import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
@@ -48,7 +47,6 @@ export class PrivateComponent implements OnInit {
     private callService: CallsService,
     private stripeService: StripeService,
     private uuidService: UuidService,
-    private serviceWorker: SwUpdate,
     @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
@@ -57,23 +55,11 @@ export class PrivateComponent implements OnInit {
     this.initializeEventListeners();
     this.initializeServices();
     this.initializeRouterEventListeners();
-    this.subscribeSWChanges();
   }
 
   public onViewIsBlocked(): void {
     this.renderer.addClass(document.body, 'blocked-page');
     this.renderer.addClass(document.body.parentElement, 'blocked-page');
-  }
-
-  private subscribeSWChanges() {
-    this.serviceWorker.available.subscribe((event) => {
-      console.warn('current version is', event.current);
-      console.warn('available version is', event.available);
-    });
-    this.serviceWorker.activated.subscribe((event) => {
-      console.warn('old version was', event.previous);
-      console.warn('new version is', event.current);
-    });
   }
 
   private initializeConfigs(): void {

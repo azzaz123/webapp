@@ -1,9 +1,9 @@
-<tsl-banner *ngIf="KYCBannerSpecifications" [specifications]="ngbAlertConfiguration">
-    <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-            <tsl-svg-icon [src]="KYCBannerSpecifications.svgPath"></tsl-svg-icon>
-            <span>{{KYCBannerSpecifications.description}}</span>
-        </div>
-        <tsl-button [className]="buttonClassName" (click)="openModal()">{{KYCBannerSpecifications.buttonText}}</tsl-button>
+<tsl-banner *ngIf="KYCBannerSpecifications" [specifications]="ngbAlertConfiguration"
+  ><div class="KYCBanner d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <tsl-svg-icon [src]="KYCBannerSpecifications.svgPath"></tsl-svg-icon>
+      <p class="KYCBanner__description mb-0 mr-3">{{ KYCBannerSpecifications.description }}</p>
     </div>
+    <tsl-button [className]="buttonClassName" (click)="openModal()" class="mr-2">{{ KYCBannerSpecifications.buttonText }}</tsl-button>
+  </div>
 </tsl-banner>

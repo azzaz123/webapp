@@ -6,12 +6,24 @@ import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-pro
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
+import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/wallet-balance-tracking-event.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
+import { WalletTransferError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error';
 import { WalletTransferMainComponent } from '@private/features/wallet/modals/transfer/components/main/wallet-transfer-main.component';
+import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error';
+import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { take } from 'rxjs/operators';
+
+const validatingTransferMessage: Toast = {
+  type: TOAST_TYPES.SUCCESS,
+  text: $localize`:@@make_transfer_view_snackbar_no_commissions_description:Transfers are free, forget about fees.`,
+};
 
 @Component({
   selector: 'tsl-wallet-balance-info',
@@ -21,6 +33,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class WalletBalanceInfoComponent implements OnInit {
   public isError = false;
+  public isTransferInProgress: boolean;
   public loading = true;
   public walletBalance: Money;
   private KYCProperties: KYCProperties;
@@ -31,11 +44,15 @@ export class WalletBalanceInfoComponent implements OnInit {
     private kycPropertiesService: KYCPropertiesService,
     private errorActionService: WalletSharedErrorActionService,
     private changeDetectorRef: ChangeDetectorRef,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private walletTransferService: WalletTransferService,
+    private balanceTrackingEventService: WalletBalanceTrackingEventService
   ) {}
 
   ngOnInit() {
+    this.trackViewWallet();
     this.loadBalanceAndSpecifications();
+    this.checkPayUserBankAccount();
   }
 
   public get allowTransfer(): boolean {
@@ -43,6 +60,7 @@ export class WalletBalanceInfoComponent implements OnInit {
   }
 
   public transferBalance(): void {
+    this.balanceTrackingEventService.trackClickTransferBankAccount(this.walletBalance.amount.total);
     this.modalService.open(WalletTransferMainComponent).result.then(() => {
       this.loadBalanceAndSpecifications();
     });
@@ -59,7 +77,7 @@ export class WalletBalanceInfoComponent implements OnInit {
   private loadBalanceAndSpecifications(): void {
     this.changeDetectorRef.detectChanges();
 
-    combineLatest([this.paymentsWalletsService.walletBalance$, this.kycPropertiesService.KYCProperties$]).subscribe({
+    combineLatest([this.paymentsWalletsService.walletBalance$.pipe(take(1)), this.kycPropertiesService.KYCProperties$]).subscribe({
       next: ([walletBalance, specifications]: [Money, KYCProperties]) => {
         this.walletBalance = walletBalance;
         this.KYCProperties = specifications;
@@ -76,5 +94,29 @@ export class WalletBalanceInfoComponent implements OnInit {
         this.changeDetectorRef.detectChanges();
       },
     });
+  }
+
+  private checkPayUserBankAccount(): void {
+    this.walletTransferService.checkPayUserBankAccount().subscribe({
+      error: (error: WalletTransferError) => {
+        if (error instanceof WalletTransferDismissError) {
+          return;
+        }
+        this.showTransferErrorMessage(error);
+      },
+    });
+  }
+
+  private showTransferErrorMessage(error: WalletTransferError): void {
+    this.toastService.show({
+      type: error instanceof WalletTransferPayUserBankAccountError ? TOAST_TYPES.SUCCESS : TOAST_TYPES.ERROR,
+      text: error.message,
+    });
+    this.isTransferInProgress = true;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  private trackViewWallet(): void {
+    this.balanceTrackingEventService.trackViewWallet();
   }
 }

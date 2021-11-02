@@ -13,8 +13,6 @@ export class SubscriptionListComponent {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
-  MAX_NARROW_CARDS = 4;
-  public readonly HELP_LINK = $localize`:@@web_wallapop_pro_about_href:https://ayuda.wallapop.com/hc/en-us/sections/360001165358-What-is-a-PRO-subscription-`;
   private readonly rowOrder = [
     SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS,
     SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS,
@@ -55,9 +53,6 @@ export class SubscriptionListComponent {
     if (this.showCancel(subscription)) {
       return $localize`:@@web_profile_pages_subscription_678:Cancel`;
     }
-    if (this.showManageInApp(subscription)) {
-      return $localize`:@@web_profile_pages_subscription_327:Manage in app`;
-    }
   }
 
   public onClickButton(subscription: SubscriptionsResponse): void {
@@ -81,15 +76,11 @@ export class SubscriptionListComponent {
   }
 
   private showEdit(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length !== 1;
+    return subscription.tiers.length !== 1;
   }
 
   private showCancel(subscription: SubscriptionsResponse): boolean {
-    return !this.subscriptionsService.isSubscriptionInApp(subscription) && subscription.tiers.length === 1;
-  }
-
-  private showManageInApp(subscription: SubscriptionsResponse): boolean {
-    return this.subscriptionsService.isSubscriptionInApp(subscription);
+    return subscription.tiers.length === 1;
   }
 
   private getNotFreeTrialText(subscription: SubscriptionsResponse): string {

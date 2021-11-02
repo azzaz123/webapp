@@ -21,7 +21,7 @@ import { Car } from '@core/item/car';
 import { Item } from '@core/item/item';
 import { Realestate } from '@core/item/realestate';
 import { User } from '@core/user/user';
-import { UserService } from '@core/user/user.service';
+import { UserService, USER_TYPE } from '@core/user/user.service';
 import { RECOMMENDATIONS_ENGINE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { TypeCheckService } from '@public/core/services/type-check/type-check.service';
@@ -65,7 +65,7 @@ export class ItemDetailTrackEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickItemCardEvent(recommendedItemCard: ItemCard, sourceItem: Item, index: number, recommenedItemOwner?: User): void {
+  public trackClickItemCardEvent(recommendedItemCard: ItemCard, sourceItem: Item, index: number, recommendedItemOwner?: User): void {
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -74,7 +74,8 @@ export class ItemDetailTrackEventsService {
         categoryId: recommendedItemCard.categoryId,
         position: index + 1,
         screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
-        isPro: recommenedItemOwner?.featured,
+        isPro: recommendedItemOwner?.featured,
+        isCarDealer: recommendedItemOwner?.type === USER_TYPE.PROFESSIONAL,
         salePrice: recommendedItemCard.salePrice,
         title: recommendedItemCard.title,
         itemSourceRecommendationId: sourceItem.id,
@@ -112,7 +113,7 @@ export class ItemDetailTrackEventsService {
         title: item.title,
         isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
-        sellerCountry: null,
+        sellerCountry: user?.location?.country_code,
       },
     };
     this.analyticsService.trackPageView(event);
@@ -149,6 +150,7 @@ export class ItemDetailTrackEventsService {
         rooms: item.rooms,
         isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
+        sellerCountry: user?.location?.country_code,
       },
     };
     this.analyticsService.trackPageView(event);
@@ -194,7 +196,7 @@ export class ItemDetailTrackEventsService {
         isCarDealer: false,
         isPro: user.featured,
         screenId: SCREEN_IDS.ItemDetail,
-        sellerCountry: null,
+        sellerCountry: user?.location?.country_code,
       },
     };
     this.userService

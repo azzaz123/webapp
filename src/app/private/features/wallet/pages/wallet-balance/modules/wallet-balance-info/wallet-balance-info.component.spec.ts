@@ -23,7 +23,12 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ToastModule } from '@layout/toast/toast.module';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
+import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/wallet-balance-tracking-event.service';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
+import { WalletTransferErrorTranslations } from '@private/features/wallet/errors/constants/wallet-transfer-error-translations';
+import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error';
+import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
@@ -38,6 +43,8 @@ describe('WalletBalanceInfoComponent', () => {
   let walletService: PaymentsWalletsService;
   let errorActionService: WalletSharedErrorActionService;
   let ngbModal: NgbModal;
+  let transferService: WalletTransferService;
+  let balanceTrackingEventService: WalletBalanceTrackingEventService;
 
   const walletBalanceInfoParentSelector = '.WalletBalanceInfo';
   const walletBalanceInfoLoadingSelector = `${walletBalanceInfoParentSelector}__loading`;
@@ -48,6 +55,7 @@ describe('WalletBalanceInfoComponent', () => {
   const walletBalanceInfoIntegerSelector = `${walletBalanceInfoAmountSelector}__integer`;
   const walletBalanceInfoDecimalSelector = `${walletBalanceInfoAmountSelector}__decimal`;
   const walletBalanceInfoWithPositiveBalance = `${walletBalanceInfoAmountSelector}--hasPositiveBalance`;
+  const walletBalanceInfoTransferSelector = `${walletBalanceInfoParentSelector}__transfer`;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -69,6 +77,24 @@ describe('WalletBalanceInfoComponent', () => {
           useValue: MockWalletSharedErrorActionService,
         },
         NgbModal,
+        {
+          provide: WalletTransferService,
+          useValue: {
+            checkPayUserBankAccount() {
+              return of(null);
+            },
+            transfer() {
+              return of(null);
+            },
+          },
+        },
+        {
+          provide: WalletBalanceTrackingEventService,
+          useValue: {
+            trackClickTransferBankAccount() {},
+            trackViewWallet() {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -84,33 +110,51 @@ describe('WalletBalanceInfoComponent', () => {
     kycPropertiesService = TestBed.inject(KYCPropertiesService);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
     ngbModal = TestBed.inject(NgbModal);
+    transferService = TestBed.inject(WalletTransferService);
+    balanceTrackingEventService = TestBed.inject(WalletBalanceTrackingEventService);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when showing the Wallet balance', () => {
+  describe('WHEN showing the Wallet balance', () => {
+    beforeEach(() => {
+      spyOn(balanceTrackingEventService, 'trackViewWallet');
+      jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY));
+      jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_VERIFIED_PROPERTIES));
+    });
+
+    it('should track the view wallet event', () => {
+      component.ngOnInit();
+
+      expect(balanceTrackingEventService.trackViewWallet).toBeCalledTimes(1);
+      expect(balanceTrackingEventService.trackViewWallet).toBeCalledWith();
+    });
+
     describe('and while waiting for payment server response', () => {
-      it('should show a loading animation', fakeAsync(() => {
+      beforeEach(fakeAsync(() => {
         component.loading = true;
         const delayedTime = 2000;
         jest
           .spyOn(walletService, 'walletBalance$', 'get')
           .mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY).pipe(delay(delayedTime)));
-        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_NO_NEED_PROPERTIES).pipe(delay(delayedTime)));
+        jest
+          .spyOn(kycPropertiesService, 'KYCProperties$', 'get')
+          .mockReturnValue(of(MOCK_KYC_VERIFIED_PROPERTIES).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
 
-        const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
-        expect(loadingContainerRef).toBeTruthy();
-
         discardPeriodicTasks();
       }));
+      it('should show a loading animation', fakeAsync(() => {
+        const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
+        expect(loadingContainerRef).toBeTruthy();
+      }));
 
-      describe('and when server responses', () => {
-        it('should not show the loading animation', fakeAsync(() => {
+      describe('AND WHEN server responses', () => {
+        beforeEach(fakeAsync(() => {
           component.loading = true;
           const delayedTime = 2000;
           jest
@@ -120,7 +164,9 @@ describe('WalletBalanceInfoComponent', () => {
           component.ngOnInit();
           tick(delayedTime);
           fixture.detectChanges();
+        }));
 
+        it('should not show the loading animation', fakeAsync(() => {
           const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
           expect(loadingContainerRef).toBeFalsy();
         }));
@@ -128,22 +174,27 @@ describe('WalletBalanceInfoComponent', () => {
     });
 
     describe('and while waiting for banner server response', () => {
-      it('should show a loading animation', fakeAsync(() => {
+      beforeEach(fakeAsync(() => {
         component.loading = true;
         const delayedTime = 2000;
-        jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_NO_NEED_PROPERTIES).pipe(delay(delayedTime)));
+        jest
+          .spyOn(kycPropertiesService, 'KYCProperties$', 'get')
+          .mockReturnValue(of(MOCK_KYC_VERIFIED_PROPERTIES).pipe(delay(delayedTime)));
 
         component.ngOnInit();
         fixture.detectChanges();
 
-        const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
-        expect(loadingContainerRef).toBeTruthy();
-
         discardPeriodicTasks();
       }));
 
-      describe('and when server responses', () => {
-        it('should not show the loading animation', fakeAsync(() => {
+      it('should show a loading animation', fakeAsync(() => {
+        const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
+
+        expect(loadingContainerRef).toBeTruthy();
+      }));
+
+      describe('AND WHEN server responses', () => {
+        beforeEach(fakeAsync(() => {
           component.loading = true;
           const delayedTime = 2000;
 
@@ -151,13 +202,17 @@ describe('WalletBalanceInfoComponent', () => {
           tick(delayedTime);
           fixture.detectChanges();
 
+          discardPeriodicTasks();
+        }));
+
+        it('should not show the loading animation', fakeAsync(() => {
           const loadingContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoLoadingSelector));
           expect(loadingContainerRef).toBeFalsy();
         }));
       });
     });
 
-    describe('and when the user has a balance of 0 in the Wallet', () => {
+    describe('AND WHEN the user has a balance of 0 in the Wallet', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY));
 
@@ -208,7 +263,7 @@ describe('WalletBalanceInfoComponent', () => {
       });
     });
 
-    describe('and when there is no balance', () => {
+    describe('AND WHEN there is no balance', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(null));
 
@@ -233,7 +288,7 @@ describe('WalletBalanceInfoComponent', () => {
       });
     });
 
-    describe('and when the user has some money in the Wallet', () => {
+    describe('AND WHEN the user has some money in the Wallet', () => {
       beforeEach(() => {
         jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(of(MOCK_PAYMENTS_WALLETS_MAPPED_MONEY));
 
@@ -277,23 +332,25 @@ describe('WalletBalanceInfoComponent', () => {
             spyOn(ngbModal, 'open').and.returnValue({
               result: Promise.resolve(),
             });
-          });
-
-          it('should open the modal view', () => {
+            spyOn(balanceTrackingEventService, 'trackClickTransferBankAccount');
             const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
               .nativeElement;
 
             (buttonComponentRef as HTMLButtonElement).click();
+          });
 
+          it('should send the event for tracking it', () => {
+            expect(balanceTrackingEventService.trackClickTransferBankAccount).toHaveBeenCalledTimes(1);
+            expect(balanceTrackingEventService.trackClickTransferBankAccount).toHaveBeenCalledWith(
+              MOCK_PAYMENTS_WALLETS_MAPPED_MONEY.amount.total
+            );
+          });
+
+          it('should open the modal view', () => {
             expect(ngbModal.open).toHaveBeenCalledTimes(1);
           });
 
           it('should retrieve the wallet balance', () => {
-            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
-              .nativeElement;
-
-            (buttonComponentRef as HTMLButtonElement).click();
-
             walletService.walletBalance$.subscribe(() => {
               expect(walletService.walletBalance$).toHaveBeenCalledTimes(1);
             });
@@ -366,39 +423,158 @@ describe('WalletBalanceInfoComponent', () => {
       });
     });
 
-    describe('and when there is an error from the server side', () => {
-      beforeEach(() => {
-        jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(throwError('F in chat'));
-        spyOn(toastService, 'show');
+    describe('WHEN retrieving the user wallet balance', () => {
+      describe('AND WHEN there is an error from the server side', () => {
+        beforeEach(() => {
+          jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(throwError('F in chat'));
+          spyOn(toastService, 'show');
 
-        component.ngOnInit();
-        fixture.detectChanges();
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should show an empty error state', () => {
+          const errorContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoErrorSelector));
+
+          expect(errorContainerRef).toBeTruthy();
+        });
+
+        it('should show a toast with a generic message', () => {
+          expect(toastService.show).toHaveBeenCalledWith(DEFAULT_ERROR_TOAST);
+        });
       });
 
-      it('should show an empty error state', () => {
-        const errorContainerRef = fixture.debugElement.query(By.css(walletBalanceInfoErrorSelector));
+      describe('WHEN there is an error retrieving the balance info', () => {
+        let errorActionSpy;
 
-        expect(errorContainerRef).toBeTruthy();
-      });
+        beforeEach(() => {
+          errorActionSpy = spyOn(errorActionService, 'show');
+        });
+        it('should show the generic error catcher', fakeAsync(() => {
+          jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(throwError('The server is broken'));
 
-      it('should show a toast with a generic message', () => {
-        expect(toastService.show).toHaveBeenCalledWith(DEFAULT_ERROR_TOAST);
+          component.ngOnInit();
+
+          expect(errorActionSpy).toHaveBeenCalledTimes(1);
+        }));
       });
     });
 
-    describe('WHEN there is an error retrieving the balance info', () => {
-      let errorActionSpy;
-
-      beforeEach(() => {
-        errorActionSpy = spyOn(errorActionService, 'show');
-      });
-      it('should show the generic error catcher', fakeAsync(() => {
-        jest.spyOn(walletService, 'walletBalance$', 'get').mockReturnValue(throwError('The server is broken'));
+    describe('WHEN checking the pay user bank account', () => {
+      it('should call to the server', () => {
+        transferService.checkPayUserBankAccount().subscribe(() => {
+          expect(transferService.checkPayUserBankAccount).toHaveBeenCalledTimes(1);
+        });
 
         component.ngOnInit();
+      });
 
-        expect(errorActionSpy).toHaveBeenCalledTimes(1);
-      }));
+      describe('AND WHEN there is an error from the server side', () => {
+        let errorActionSpy;
+
+        beforeEach(() => {
+          spyOn(transferService, 'checkPayUserBankAccount').and.returnValue(throwError({ message: 'There was an error!!!' }));
+          spyOn(toastService, 'show');
+          errorActionSpy = spyOn(errorActionService, 'show');
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should not show the transfer button', () => {
+          const ctaButton = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector));
+
+          expect(ctaButton).toBeFalsy();
+        });
+
+        it('should show the transfer in progress message', () => {
+          const transferMessageSelector = fixture.debugElement.query(By.css(walletBalanceInfoTransferSelector));
+
+          expect(transferMessageSelector).toBeTruthy();
+        });
+
+        it('should show a toast with the error message', () => {
+          const expected = {
+            text: 'There was an error!!!',
+            type: 'error',
+          };
+          expect(toastService.show).toHaveBeenCalledWith(expected);
+        });
+
+        it('should not call to the generic error interceptor', () => {
+          expect(errorActionSpy).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('AND WHEN there is a dismissible error from the server side', () => {
+        let errorActionSpy;
+
+        beforeEach(() => {
+          spyOn(transferService, 'checkPayUserBankAccount').and.returnValue(throwError(new WalletTransferDismissError()));
+          spyOn(toastService, 'show');
+          errorActionSpy = spyOn(errorActionService, 'show');
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should show the transfer button', () => {
+          const ctaButton = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector));
+
+          expect(ctaButton).toBeTruthy();
+        });
+
+        it('should not show the transfer in progress message', () => {
+          const transferMessageSelector = fixture.debugElement.query(By.css(walletBalanceInfoTransferSelector));
+
+          expect(transferMessageSelector).toBeFalsy();
+        });
+
+        it('should not show a toast', () => {
+          expect(toastService.show).not.toHaveBeenCalled();
+        });
+
+        it('should not call to the generic error interceptor', () => {
+          expect(errorActionSpy).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('AND WHEN there is a pay user bank account error from the server side', () => {
+        let errorActionSpy;
+
+        beforeEach(() => {
+          spyOn(transferService, 'checkPayUserBankAccount').and.returnValue(throwError(new WalletTransferPayUserBankAccountError()));
+          spyOn(toastService, 'show');
+          errorActionSpy = spyOn(errorActionService, 'show');
+
+          component.ngOnInit();
+          fixture.detectChanges();
+        });
+
+        it('should not show the transfer button', () => {
+          const ctaButton = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector));
+
+          expect(ctaButton).toBeFalsy();
+        });
+
+        it('should show the transfer in progress message', () => {
+          const transferMessageSelector = fixture.debugElement.query(By.css(walletBalanceInfoTransferSelector));
+
+          expect(transferMessageSelector).toBeTruthy;
+        });
+
+        it('should show a toast with the specific message', () => {
+          const expected = {
+            text: WalletTransferErrorTranslations.Reviewing,
+            type: 'success',
+          };
+          expect(toastService.show).toHaveBeenCalledWith(expected);
+        });
+
+        it('should not call to the generic error interceptor', () => {
+          expect(errorActionSpy).not.toHaveBeenCalled();
+        });
+      });
     });
   });
 });

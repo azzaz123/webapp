@@ -10,15 +10,6 @@ Parameters:
   ProjectName:
     Description: 'Name of the project'
     Type: String
-  BucketESName:
-    Description: 'Name of the S3 bucket where the app in ES is hosted'
-    Type: String
-  BucketENName:
-    Description: 'Name of the S3 bucket where the app in EN is hosted'
-    Type: String
-  BucketITName:
-    Description: 'Name of the S3 bucket where the app in IT is hosted'
-    Type: String
   BucketNameFunctionalWebapp:
     Description: 'Name of the bucket where the functional webapp is hosted in multiple locales'
     Type: String
@@ -58,12 +49,6 @@ Resources:
         Image: "aws/codebuild/docker:17.09.0"
         Type: LINUX_CONTAINER
         EnvironmentVariables:
-          - Name: HOSTING_BUCKET_ES
-            Value: !Ref BucketESName
-          - Name: HOSTING_BUCKET_EN
-            Value: !Ref BucketENName
-          - Name: HOSTING_BUCKET_IT
-            Value: !Ref BucketITName
           - Name: HOSTING_BUCKET_FUNCTIONAL_WEBAPP
             Value: !Ref BucketNameFunctionalWebapp
       VpcConfig:
@@ -104,20 +89,12 @@ Resources:
           phases:
               build:
                   commands:
-                    - aws cloudfront create-invalidation --distribution-id $EN_DISTRIBUTION --paths "/index.html" "/ngsw.json"
-                    - aws cloudfront create-invalidation --distribution-id $ES_DISTRIBUTION --paths "/index.html" "/ngsw.json"
-                    - aws cloudfront create-invalidation --distribution-id $FUNCTIONAL_WEBAPP_DISTRIBUTION_ID --paths "/app/index.html" "/app/ngsw-worker.js" "/app/ngsw.json"
+                    - aws cloudfront create-invalidation --distribution-id $FUNCTIONAL_WEBAPP_DISTRIBUTION_ID --paths "/app*"
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: "aws/codebuild/docker:17.09.0"
         Type: LINUX_CONTAINER
         EnvironmentVariables:
-          - Name: EN_DISTRIBUTION
-            Value:
-              Fn::ImportValue: !Sub webapp-en-cloudfront-distribution-id-${EnvName}
-          - Name: ES_DISTRIBUTION
-            Value:
-              Fn::ImportValue: !Sub webapp-es-cloudfront-distribution-id-${EnvName}
           - Name: FUNCTIONAL_WEBAPP_DISTRIBUTION_ID
             Value: !Ref FunctionalWebappDistributionID
       VpcConfig:

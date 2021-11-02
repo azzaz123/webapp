@@ -3,6 +3,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SlidesCarouselModule } from '@shared/components/carousel-slides/carousel-slides.module';
@@ -42,6 +43,7 @@ describe('KYCInfoModalComponent', () => {
             trackClickKYCStartVerification() {},
           },
         },
+        CustomerHelpService,
       ],
     }).compileComponents();
   });
@@ -86,8 +88,6 @@ describe('KYCInfoModalComponent', () => {
 
   describe('when we are NOT on the last slide...', () => {
     beforeEach(() => {
-      jest.spyOn(component, 'currentSlide', 'get').mockReturnValue(FIRST_SLIDE);
-
       fixture.detectChanges();
     });
 
@@ -119,9 +119,19 @@ describe('KYCInfoModalComponent', () => {
 
   describe('when we are on the last slide...', () => {
     beforeEach(() => {
-      jest.spyOn(component, 'currentSlide', 'get').mockReturnValue(component.LAST_SLIDE);
+      fixture.detectChanges();
+      component.swipeToRight();
+      component.swipeToRight();
 
       fixture.detectChanges();
+    });
+
+    describe('and we click on the more info button...', () => {
+      it('should redirect to the help page', () => {
+        const CSLink: DebugElement = de.query(By.css('.KYCInfoModal__link'));
+
+        expect(CSLink.attributes['href']).toEqual(component.zendeskURL);
+      });
     });
 
     describe('the continue button...', () => {

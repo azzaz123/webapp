@@ -1,8 +1,6 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { KYCError } from '@api/core/errors/payments/kyc';
 import { KYCService } from '@api/payments/kyc/kyc.service';
-import { I18nService } from '@core/i18n/i18n.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +9,7 @@ import { KYCImages } from '@private/features/wallet/interfaces/kyc/kyc-images.in
 import { KYCNationality } from '@private/features/wallet/interfaces/kyc/kyc-nationality.interface';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../constants/kyc-modal-status-constants';
 import { KYC_MODAL_STATUS } from '../../enums/kyc-modal-status.enum';
@@ -27,17 +26,19 @@ import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc
 export class KYCModalComponent implements OnDestroy {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
-  public KYCStoreSpecifications$: Observable<KYCSpecifications> = this.KYCStoreService.specifications$;
-  public KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
+  public readonly KYCStoreSpecifications$: Observable<KYCSpecifications> = this.KYCStoreService.specifications$;
+  public readonly KYCStatusInProgressProperties: KYCModalProperties = KYC_MODAL_STATUS_PROPERTIES.find(
     (properties) => properties.status === KYC_MODAL_STATUS.IN_PROGRESS
   );
+  public isEndVerificationLoading = false;
+
+  private readonly KYCModalCloseWarningCopy = $localize`:@@kyc_cancellation_system_modal_description_web_specific:Are you sure you want to get out of the process? All information will be lost.`;
 
   constructor(
     private KYCStoreService: KYCStoreService,
     private KYCService: KYCService,
     private activeModal: NgbActiveModal,
     private toastService: ToastService,
-    private i18nService: I18nService,
     private kycTrackingEventsService: KYCTrackingEventsService
   ) {}
 
@@ -46,18 +47,27 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   public endVerification(KYCImages: KYCImages): void {
+    if (this.isEndVerificationLoading) return;
+
     const selectedDocument = this.KYCStoreService.specifications.documentation.analyticsName;
     this.kycTrackingEventsService.trackClickKYCFinishIdentityVerification(selectedDocument);
+    this.isEndVerificationLoading = true;
 
-    this.KYCService.request(KYCImages).subscribe(
-      () => {
-        this.updateKYCImages(KYCImages);
-        this.goNextStep();
-      },
-      (e: Error | KYCError) => {
-        this.handleKYCError(e);
-      }
-    );
+    this.KYCService.request(KYCImages)
+      .pipe(
+        finalize(() => {
+          this.isEndVerificationLoading = false;
+        })
+      )
+      .subscribe(
+        () => {
+          this.updateKYCImages(KYCImages);
+          this.goNextStep();
+        },
+        (e: Error[] | KYCError[]) => {
+          this.handleKYCError(e[0]);
+        }
+      );
   }
 
   public defineNationality(nationalitySelected: KYCNationality): void {
@@ -82,7 +92,11 @@ export class KYCModalComponent implements OnDestroy {
   }
 
   public closeModal(): void {
-    this.activeModal.close();
+    const isInLastStep = this.stepper.activeId === 4;
+    const shouldCloseModal = isInLastStep ? true : window.confirm(this.KYCModalCloseWarningCopy);
+    if (shouldCloseModal) {
+      this.activeModal.close();
+    }
   }
 
   public goNextStep(): void {
@@ -114,12 +128,10 @@ export class KYCModalComponent implements OnDestroy {
         backSide: null,
       },
     };
-
-    this.closeModal();
   }
 
   private handleKYCError(e: Error | KYCError): void {
-    let errorMessage: string = `${this.i18nService.translate(TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR)}`;
+    let errorMessage = e?.message ? e.message : $localize`:@@kyc_failed_snackbar_unknown_error_web_specific:Oops! There was an error.`;
 
     if (e instanceof KYCError) {
       errorMessage = e.message;

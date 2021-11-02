@@ -1,7 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
-import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -10,11 +9,13 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { of, throwError } from 'rxjs';
+import { BankAccountTrackingEventsService } from '@private/features/wallet/pages/bank-details/services/bank-account-tracking-events/bank-account-tracking-events.service';
 import { BankAccountTrackingEventTestCase, MOCK_BANK_ACCOUNT_TRACKING_EVENTS_CASES } from './bank-account-tracking-events.fixtures.spec';
+import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 
-import { BankAccountTrackingEventsService } from './bank-account-tracking-events.service';
+import { of, throwError } from 'rxjs';
 
 describe('BankAccountTrackingEventsService', () => {
   let service: BankAccountTrackingEventsService;

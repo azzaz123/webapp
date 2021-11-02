@@ -9,7 +9,7 @@ export const mapUserVerificationsApiToUserVerifications: ToDomainMapper<UserVeri
 
   return {
     email: validations.email,
-    mobile: validations.mobile,
+    phone: validations.mobile,
     facebook: validations.facebook,
     google_plus: validations.google_plus,
   };

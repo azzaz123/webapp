@@ -1,31 +1,35 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 import { HistoricElementComponent } from '@shared/historic-list/components/historic-element/historic-element.component';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { HistoricListComponent } from '@shared/historic-list/components/historic-list/historic-list.component';
 import {
   MOCK_HISTORIC_LIST_EMPTY,
   MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS,
   MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS_WITH_ALL_ELEMENTS,
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
-import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { TabComponent } from '@shared/tabs-bar/components/tab/tab.component';
 import { TabsBarComponent } from '@shared/tabs-bar/components/tabs-bar/tabs-bar.component';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
-import { ReplaySubject } from 'rxjs';
+import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-history-filters.enum';
+import { WalletHistoryMovementsComponent } from '@private/features/wallet/pages/wallet-history-movements/wallet-history-movements.component';
+import { WalletHistoryMovementsModule } from '@private/features/wallet/pages/wallet-history-movements/wallet-history-movements.module';
+import { WalletHistoryMovementsTrackingEventService } from '@private/features/wallet/pages/wallet-history-movements/services/tracking-event/wallet-history-movements-tracking-event.service';
 import { WalletHistoryMovementsUIService } from './services/wallet-history-movements-ui/wallet-history-movements-ui.service';
 
-import { WalletHistoryMovementsComponent } from './wallet-history-movements.component';
-import { WalletHistoryMovementsModule } from './wallet-history-movements.module';
+import { ReplaySubject } from 'rxjs';
+import { MOCK_HISTORIC_ELEMENT } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 
 describe('WalletHistoryMovementsComponent', () => {
   let component: WalletHistoryMovementsComponent;
   let fixture: ComponentFixture<WalletHistoryMovementsComponent>;
   let walletHistoryMovementsUIService: WalletHistoryMovementsUIService;
   let walletHistoryMovementsGetItemsSpy: jasmine.Spy;
+  let walletHistoryMovementsTrackingEventService: WalletHistoryMovementsTrackingEventService;
 
   const walletBalanceLoadingReplaySubject: ReplaySubject<boolean> = new ReplaySubject(1);
   const walletBalanceHistoricListReplaySubject: ReplaySubject<HistoricList> = new ReplaySubject(1);
@@ -53,6 +57,13 @@ describe('WalletHistoryMovementsComponent', () => {
           provide: WalletHistoryMovementsUIService,
           useClass: MockWalletHistoryMovementsUIService,
         },
+        {
+          provide: WalletHistoryMovementsTrackingEventService,
+          useValue: {
+            trackClickItemWalletMovement() {},
+            trackViewWalletHistoryMovement() {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -62,29 +73,60 @@ describe('WalletHistoryMovementsComponent', () => {
     component = fixture.componentInstance;
     walletHistoryMovementsUIService = TestBed.inject(WalletHistoryMovementsUIService);
     walletHistoryMovementsGetItemsSpy = spyOn(walletHistoryMovementsUIService, 'getItems');
+    walletHistoryMovementsTrackingEventService = TestBed.inject(WalletHistoryMovementsTrackingEventService);
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('WHEN starting', () => {
+    let walletHistoryMovementsTrackingEventServiceSpy;
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('should show all filters', () => {
+      const tabsDebugElements = fixture.debugElement.queryAll(By.directive(TabComponent));
+      const expectedNumberOfFilters = Object.values(WALLET_HISTORY_FILTERS).filter((v) => typeof v === 'string').length;
+      const findTabBarComponentByElement = (de: DebugElement, tabBarElement: TabsBarElement<WALLET_HISTORY_FILTERS>) => {
+        const tabBarComponentInstance: TabComponent<WALLET_HISTORY_FILTERS> = de.componentInstance;
+        return tabBarComponentInstance.tabsBarElement.label === tabBarElement.label;
+      };
+      const expectAllFiltersToHaveATab = () => {
+        component.tabBarElements.forEach((tabBarElement) => {
+          const foundTabBar = tabsDebugElements.find((de) => findTabBarComponentByElement(de, tabBarElement));
+          expect(foundTabBar).toBeTruthy();
+        });
+      };
+
+      expect(tabsDebugElements.length).toEqual(expectedNumberOfFilters);
+      expectAllFiltersToHaveATab();
+    });
+
+    describe('AND WHEN the backend returns the list of movements', () => {
+      beforeEach(fakeAsync(() => {
+        walletHistoryMovementsTrackingEventServiceSpy = spyOn(walletHistoryMovementsTrackingEventService, 'trackViewWalletHistoryMovement');
+        walletBalanceHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS);
+        tick();
+        fixture.detectChanges();
+      }));
+
+      it('should call to the analytics service', () => {
+        expect(walletHistoryMovementsTrackingEventServiceSpy).toHaveBeenCalledTimes(1);
+        expect(walletHistoryMovementsTrackingEventServiceSpy).toHaveBeenCalledWith(
+          MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS.elements.length
+        );
+      });
+    });
   });
 
-  it('should show all filters', () => {
-    const tabsDebugElements = fixture.debugElement.queryAll(By.directive(TabComponent));
-    const expectedNumberOfFilters = Object.values(WALLET_HISTORY_FILTERS).filter((v) => typeof v === 'string').length;
-    const findTabBarComponentByElement = (de: DebugElement, tabBarElement: TabsBarElement<WALLET_HISTORY_FILTERS>) => {
-      const tabBarComponentInstance: TabComponent<WALLET_HISTORY_FILTERS> = de.componentInstance;
-      return tabBarComponentInstance.tabsBarElement.label === tabBarElement.label;
-    };
-    const expectAllFiltersToHaveATab = () => {
-      component.tabBarElements.forEach((tabBarElement) => {
-        const foundTabBar = tabsDebugElements.find((de) => findTabBarComponentByElement(de, tabBarElement));
-        expect(foundTabBar).toBeTruthy();
-      });
-    };
+  describe('when user exits page', () => {
+    it('should reset historic movements', () => {
+      spyOn(walletHistoryMovementsUIService, 'reset');
 
-    expect(tabsDebugElements.length).toEqual(expectedNumberOfFilters);
-    expectAllFiltersToHaveATab();
+      component.ngOnDestroy();
+
+      expect(walletHistoryMovementsUIService.reset).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('while waiting for server to respon', () => {
@@ -222,6 +264,18 @@ describe('WalletHistoryMovementsComponent', () => {
         const result = emptyStateElement.nativeElement.innerHTML.trim();
 
         expect(result).toEqual(expectedText);
+      });
+    });
+
+    describe('WHEN user clicks over a historic element', () => {
+      it('should track the corresponding event', () => {
+        spyOn(walletHistoryMovementsTrackingEventService, 'trackClickItemWalletMovement');
+
+        component.onChangeFilter(WALLET_HISTORY_FILTERS.ALL);
+        component.onItemClick(MOCK_HISTORIC_ELEMENT);
+
+        expect(walletHistoryMovementsTrackingEventService.trackClickItemWalletMovement).toHaveBeenCalledTimes(1);
+        expect(walletHistoryMovementsTrackingEventService.trackClickItemWalletMovement).toHaveBeenCalledWith(WALLET_HISTORY_FILTERS.ALL);
       });
     });
   });

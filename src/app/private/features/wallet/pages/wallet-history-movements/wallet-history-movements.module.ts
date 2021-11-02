@@ -6,6 +6,7 @@ import { WalletBalanceHistoryModule } from '@api/bff/delivery/wallets/balance_hi
 import { WalletHistoryMovementsUIService } from './services/wallet-history-movements-ui/wallet-history-movements-ui.service';
 import { HistoricListModule } from '@shared/historic-list/historic-list.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { WalletHistoryMovementsTrackingEventService } from '@private/features/wallet/pages/wallet-history-movements/services/tracking-event/wallet-history-movements-tracking-event.service';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
     SvgIconModule,
   ],
   declarations: [walletHistoryMovementsRoutedComponents],
-  providers: [WalletHistoryMovementsUIService],
+  providers: [WalletHistoryMovementsTrackingEventService, WalletHistoryMovementsUIService],
 })
 export class WalletHistoryMovementsModule {}

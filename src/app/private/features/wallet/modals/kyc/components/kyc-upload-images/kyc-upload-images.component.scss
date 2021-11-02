@@ -2,8 +2,10 @@
 
 $image-block-width: 300px;
 $image-block-width--big: 360px;
+$image-block-width--small: 230px;
 $image-height: 200px;
 $image-height--big: 240px;
+$small-screen: 370px;
 
 .KYCUploadImages {
   &__back {
@@ -29,27 +31,37 @@ $image-height--big: 240px;
     font-weight: $font-weight-chunky;
   }
 
+  &__uploadImagesWrapper {
+    flex: 1;
+  }
+
+  &__buttonWrapper {
+    @media (max-width: $small-screen) {
+      margin-bottom: $spacing-ml;
+    }
+  }
+
   &__imageLaterals {
     padding: 0px $spacer * 2;
   }
 
   &__imageContainer {
+    overflow: hidden;
+    border: dashed 2px $blue-grey-5;
+    border-radius: $border-radius;
+    transform: translate3d(0, 0, 0);
+  }
+
+  &__imageContentWrapper {
     flex: 1;
   }
 
   &__image {
-    overflow: hidden;
     height: $image-height;
-    border: dashed 2px $blue-grey-5;
-    border-radius: $border-radius;
 
     @include media-breakpoint-up(sm) {
       height: $image-height--big;
     }
-  }
-
-  &__video {
-    height: fit-content;
   }
 
   &__uploadImageContainer {
@@ -58,17 +70,22 @@ $image-height--big: 240px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+    transform: translate3d(0, 0, 0);
   }
 
   &__imageBlock {
     width: $image-block-width;
+
+    @media (max-width: $small-screen) {
+      width: $image-block-width--small;
+    }
 
     @include media-breakpoint-up(sm) {
       width: $image-block-width--big;
     }
   }
 
-  &__bottomContainer {
-    bottom: 0;
+  &__cross {
+    cursor: pointer;
   }
 }

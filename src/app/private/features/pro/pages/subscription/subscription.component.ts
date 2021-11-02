@@ -20,14 +20,9 @@ import { UserService } from 'app/core/user/user.service';
 import { isEqual } from 'lodash-es';
 import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
 import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
-import { CheckSubscriptionInAppModalComponent } from '../../modal/check-subscription-in-app-modal/check-subscription-in-app-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
-import { UnsubscribeInAppFirstModalComponent } from '../../modal/unsubscribe-in-app-first-modal/unsubscribe-in-app-first-modal.component';
 
-export type SubscriptionModal =
-  | typeof CheckSubscriptionInAppModalComponent
-  | typeof CancelSubscriptionModalComponent
-  | typeof ContinueSubscriptionModalComponent;
+export type SubscriptionModal = typeof CancelSubscriptionModalComponent | typeof ContinueSubscriptionModalComponent;
 
 @Component({
   selector: 'tsl-subscription',
@@ -226,11 +221,6 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {
-    // User is trying to edit subscription that is from inapp
-    if (this.subscriptionsService.isSubscriptionInApp(subscription)) {
-      return CheckSubscriptionInAppModalComponent;
-    }
-
     // Subscription is active, from Stripe, not cancelled, with only one tier
     if (this.subscriptionsService.isStripeSubscription(subscription) && !subscription.subscribed_until && subscription.tiers.length === 1) {
       return CancelSubscriptionModalComponent;
@@ -239,11 +229,6 @@ export class SubscriptionsComponent implements OnInit {
     // Subscription was previously canceled
     if (this.subscriptionsService.isStripeSubscription(subscription) && subscription.subscribed_until) {
       return ContinueSubscriptionModalComponent;
-    }
-
-    // User is trying to subscribe but there is an active inapp subscription
-    if (this.subscriptionsService.isOneSubscriptionInApp(this.subscriptions)) {
-      return UnsubscribeInAppFirstModalComponent;
     }
   }
 

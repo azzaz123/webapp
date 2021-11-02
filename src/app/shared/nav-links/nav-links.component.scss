@@ -38,6 +38,9 @@
   .NavLinks__links {
     width: 100%;
     display: flex;
+    overflow-x: auto;
+    min-height: 38px;
+    @include hide-scroll-bars;
     div {
       display: flex;
     }

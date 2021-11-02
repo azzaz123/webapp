@@ -1,17 +1,33 @@
-import { AD_SLOT_NETWORK_ID } from '@core/ads/constants';
+import {
+  AD_DESKTOP_SCREEN_SIZE,
+  AD_DESKTOP_VERTICAL_MAPPING,
+  AD_MOBILE_MAPPING,
+  AD_MOBILE_SCREEN_SIZE,
+  AD_SLOT_NETWORK_ID,
+  AD_TABLET_MAPPING,
+  AD_TABLET_SCREEN_SIZE,
+} from '@core/ads/constants';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
 export const CHAT_AD_SLOTS: AdSlotConfiguration = {
   id: 'div-gpt-sky-1508490196308-0',
-  name: '/130868815/chat_right',
-  sizes: [
-    [120, 600],
-    [160, 600],
-    [300, 250],
-    [300, 600],
-    [336, 280],
-  ],
+  name: '130868815/web/chat_right',
+  sizes: AD_DESKTOP_VERTICAL_MAPPING,
+  sizeMapping: {
+    desktop: {
+      screenSize: AD_DESKTOP_SCREEN_SIZE,
+      mapping: AD_DESKTOP_VERTICAL_MAPPING,
+    },
+    tablet: {
+      screenSize: AD_TABLET_SCREEN_SIZE,
+      mapping: AD_TABLET_MAPPING,
+    },
+    mobile: {
+      screenSize: AD_MOBILE_SCREEN_SIZE,
+      mapping: AD_MOBILE_MAPPING.medium,
+    },
+  },
   networkId: AD_SLOT_NETWORK_ID,
   device: [DeviceType.TABLET, DeviceType.DESKTOP],
 };

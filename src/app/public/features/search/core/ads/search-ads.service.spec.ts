@@ -37,34 +37,36 @@ describe('SearchAdsService', () => {
     service = TestBed.inject(SearchAdsService);
   });
 
-  describe('when initialize observables', () => {
+  describe('when recieving a new search keyword and it`s not during initialization', () => {
     beforeEach(() => {
       service.init();
     });
 
     it('should set ads keyword to null if it does not have keyword filter', () => {
       spyOn(adsServiceMock, 'setAdKeywords').and.callThrough();
-      spyOn(adsServiceMock, 'refresh').and.callThrough();
+      spyOn(adsServiceMock, 'refreshAllSlots').and.callThrough();
 
+      filterParametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.professional, value: 'anyValue' }]);
       filterParametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.professional, value: 'anyValue' }]);
 
       expect(adsServiceMock.setAdKeywords).toHaveBeenCalledTimes(1);
       expect(adsServiceMock.setAdKeywords).toHaveBeenCalledWith({ content: null });
-      expect(adsServiceMock.refresh).toHaveBeenCalledTimes(1);
-      expect(adsServiceMock.refresh).toHaveBeenCalledWith();
+      expect(adsServiceMock.refreshAllSlots).toHaveBeenCalledTimes(1);
+      expect(adsServiceMock.refreshAllSlots).toHaveBeenCalledWith();
     });
 
     it('should set ads keywords and refresh if it has keyword filter', () => {
       const keywordValue = 'keywordValueMock';
       spyOn(adsServiceMock, 'setAdKeywords').and.callThrough();
-      spyOn(adsServiceMock, 'refresh').and.callThrough();
+      spyOn(adsServiceMock, 'refreshAllSlots').and.callThrough();
 
+      filterParametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keywordValue }]);
       filterParametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keywordValue }]);
 
       expect(adsServiceMock.setAdKeywords).toHaveBeenCalledTimes(1);
       expect(adsServiceMock.setAdKeywords).toHaveBeenCalledWith({ content: keywordValue });
-      expect(adsServiceMock.refresh).toHaveBeenCalledTimes(1);
-      expect(adsServiceMock.refresh).toHaveBeenCalledWith();
+      expect(adsServiceMock.refreshAllSlots).toHaveBeenCalledTimes(1);
+      expect(adsServiceMock.refreshAllSlots).toHaveBeenCalledWith();
     });
   });
 

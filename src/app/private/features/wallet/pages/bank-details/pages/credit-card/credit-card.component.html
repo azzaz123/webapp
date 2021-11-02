@@ -1,83 +1,125 @@
 <div class="CreditCard container">
-    <a class="CreditCard__back d-flex pb-4 pb-md-2" (click)="goBack()">
-        <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
-        <span i18n="@@web_catalog_pro_pages_checkout_638" class="ml-3">Back</span>
-    </a>
-    <tsl-profile-form class="row" [profileForm]="creditCardForm" (onInit)="initForm()">
-        <form class="col" *ngIf="!loading; else loadingState" [formGroup]="creditCardForm" (submit)="onSubmit()">
-            <div class="row">
-                <div class="col-md-11 offset-md-1">
-                    <h3 *ngIf="isNewForm" i18n="@@delivery_add_credit_card_title">Add credit card</h3>
-                    <h3 *ngIf="!isNewForm" i18n="@@delivery_edit_credit_card_title">Edit credit card</h3>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label for="fullName" class="col-sm-12 col-md-5" i18n="@@card_draf_name_hint">Name and surname</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="fullName" formControlName="fullName"/>
-                    <div *ngIf="creditCardForm.controls.fullName.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
-                        <ng-container *ngIf="creditCardForm.controls.fullName.errors as holderNameError">
-                        <span *ngIf="holderNameError.required" i18n="@@credit_card_owner_name_error">Invalid owner name</span>
-                        <span *ngIf="!holderNameError.required">
-                            {{formErrorMessages.fullName}}
-                        </span>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label for="card_number" class="col-sm-12 col-md-5" i18n="@@card_number_hint">Card number</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="cardNumber" formControlName="cardNumber" maxlength="24" [value]="creditCardForm.get('cardNumber').value | separateWordByCharacter:4:' '" tslNumbersOnly/>
-                    <div *ngIf="creditCardForm.controls.cardNumber.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
-                        <ng-container *ngIf="creditCardForm.controls.cardNumber.errors as cardNumberError">
-                            <span *ngIf="cardNumberError.required" i18n="@@credit_card_number_error">Invalid card number</span>
-                            <span *ngIf="!cardNumberError.required">
-                                {{formErrorMessages.cardNumber}}
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label for="cardExpirationDate" class="col-sm-12 col-md-5" i18n="@@card_date_hint">MM/YY</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="cardExpirationDate"  formControlName="cardExpirationDate" maxlength="5" [value]="creditCardForm.get('cardExpirationDate').value | separateWordByCharacter:2:'/'" tslNumbersOnly/>
-                    <div *ngIf="creditCardForm.controls.cardExpirationDate.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
-                        <ng-container *ngIf="creditCardForm.controls.cardExpirationDate.errors as expirationDateError">
-                            <span *ngIf="expirationDateError.required" i18n="@@credit_card_date_error">Invalid date</span>
-                            <span *ngIf="!expirationDateError.required">
-                                {{formErrorMessages.cardExpirationDate}}
-                            </span>                  
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label for="cardCvx" class="col-sm-12 col-md-5" i18n="@@card_cvv_hint">CVV</label>
-                <div class="col-sm-12 col-md-5">
-                    <input type="text" class="form-control" id="cardCvx" formControlName="cardCvx" maxlength="4" pattern="[0-9]*" tslNumbersOnly/>
-                    <div *ngIf="creditCardForm.controls.cardCvx.invalid && creditCardForm.pending" class="CreditCard__message CreditCard__message--error">
-                        <ng-container *ngIf="creditCardForm.controls.cardCvx.errors as CVVError">
-                            <span *ngIf="CVVError.required" i18n="@@credit_card_cvv_error">Invalid CCV number</span>
-                            <span *ngIf="!CVVError.required">
-                                {{formErrorMessages.cardCvx}}
-                            </span>  
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center d-flex flex-column align-items-center">
-                    <span i18n="@@delivery_add_credit_card_text_info" class="CreditCard__message CreditCard__message--info mb-4">0,10 € will be charged in order to validate credit or debit card. The amount will be returned in 7 working days.</span>
-                    <tsl-button class="col-12 col-md-3" [type]="'submit'" [loading]="loadingButton" className="btn-primary btn-block" i18n="@@delivery_add_credit_card_save_button">Save</tsl-button>
-                </div>
-            </div>
-        </form>
-    </tsl-profile-form>
-    <ng-template class="row loading-center justify-content-center" #loadingState>
-        <div class="col">
-            <tsl-spinner></tsl-spinner>
+  <a class="CreditCard__back d-flex pb-4 pb-md-2" (click)="goBack()">
+    <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
+    <span i18n="@@credit_card_form_back_button_web_specific" class="ml-3">Back</span>
+  </a>
+  <tsl-profile-form class="row" [profileForm]="creditCardForm" (onInit)="initForm()">
+    <form class="col" *ngIf="!loading; else loadingState" [formGroup]="creditCardForm" (submit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-11 offset-md-1">
+          <h3 *ngIf="isNewForm" i18n="@@credit_card_form_top_bar_add_title">Add credit card</h3>
+          <h3 *ngIf="!isNewForm" i18n="@@credit_card_form_top_bar_edit_title">Edit credit card</h3>
         </div>
-    </ng-template>
-</div> 
+      </div>
+      <div class="form-group row align-items-center">
+        <label for="fullName" class="col-sm-12 col-md-5" i18n="@@credit_card_form_name_label">Name and surname</label>
+        <div class="col-sm-12 col-md-5">
+          <input type="text" class="form-control" id="fullName" formControlName="fullName" />
+          <div
+            *ngIf="creditCardForm.controls.fullName.invalid && creditCardForm.pending"
+            class="CreditCard__message CreditCard__message--error"
+          >
+            <ng-container *ngIf="creditCardForm.controls.fullName.errors as holderNameError">
+              <span *ngIf="holderNameError.required" i18n="@@credit_card_form_name_empty_field_inline_error"
+                >"Name and surname" field must be filled</span
+              >
+              <span *ngIf="!holderNameError.required">
+                {{ formErrorMessages.fullName }}
+              </span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row align-items-center">
+        <label for="card_number" class="col-sm-12 col-md-5" i18n="@@credit_card_form_card_number_label">Card number</label>
+        <div class="col-sm-12 col-md-5">
+          <input
+            type="text"
+            class="form-control"
+            id="cardNumber"
+            formControlName="cardNumber"
+            maxlength="24"
+            [value]="creditCardForm.get('cardNumber').value | separateWordByCharacter: 4:' '"
+            tslNumbersOnly
+          />
+          <div
+            *ngIf="creditCardForm.controls.cardNumber.invalid && creditCardForm.pending"
+            class="CreditCard__message CreditCard__message--error"
+          >
+            <ng-container *ngIf="creditCardForm.controls.cardNumber.errors as cardNumberError">
+              <span *ngIf="cardNumberError.required" i18n="@@credit_card_form_card_number_empty_field_inline_error"
+                >"Card number" field must be filled</span
+              >
+              <span *ngIf="!cardNumberError.required">
+                {{ formErrorMessages.cardNumber }}
+              </span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row align-items-center">
+        <label for="cardExpirationDate" class="col-sm-12 col-md-5" i18n="@@credit_card_form_date_label">MM/YY</label>
+        <div class="col-sm-12 col-md-5">
+          <input
+            type="text"
+            class="form-control"
+            id="cardExpirationDate"
+            formControlName="cardExpirationDate"
+            maxlength="5"
+            [value]="creditCardForm.get('cardExpirationDate').value | separateWordByCharacter: 2:'/'"
+            tslNumbersOnly
+          />
+          <div
+            *ngIf="creditCardForm.controls.cardExpirationDate.invalid && creditCardForm.pending"
+            class="CreditCard__message CreditCard__message--error"
+          >
+            <ng-container *ngIf="creditCardForm.controls.cardExpirationDate.errors as expirationDateError">
+              <span *ngIf="expirationDateError.required" i18n="@@credit_card_form_date_empty_field_inline_error"
+                >"Date" field must be filled</span
+              >
+              <span *ngIf="!expirationDateError.required">
+                {{ formErrorMessages.cardExpirationDate }}
+              </span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row align-items-center">
+        <label for="cardCvx" class="col-sm-12 col-md-5" i18n="@@credit_card_form_cvv_label">CVV</label>
+        <div class="col-sm-12 col-md-5">
+          <input type="text" class="form-control" id="cardCvx" formControlName="cardCvx" maxlength="4" pattern="[0-9]*" tslNumbersOnly />
+          <div
+            *ngIf="creditCardForm.controls.cardCvx.invalid && creditCardForm.pending"
+            class="CreditCard__message CreditCard__message--error"
+          >
+            <ng-container *ngIf="creditCardForm.controls.cardCvx.errors as CVVError">
+              <span *ngIf="CVVError.required" i18n="@@credit_card_form_cvv_empty_field_inline_error">"CVV" field must be filled</span>
+              <span *ngIf="!CVVError.required">
+                {{ formErrorMessages.cardCvx }}
+              </span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="row text-center d-flex flex-column align-items-center">
+        <span class="CreditCard__message CreditCard__message--info col-12 mb-4" i18n="@@credit_card_form_pre_charge_info_description"
+          >0,10 € will be charged in order to validate credit or debit card. The amount will be returned in 7 working days.</span
+        >
+        <tsl-button
+          class="col-12 col-md-3"
+          [type]="'submit'"
+          [loading]="loadingButton$ | async"
+          [disabled]="loadingButton$ | async"
+          className="btn-primary btn-block"
+          i18n="@@credit_card_form_bottom_bar_save_button"
+          >Save</tsl-button
+        >
+      </div>
+    </form>
+  </tsl-profile-form>
+  <ng-template class="row loading-center justify-content-center" #loadingState>
+    <div class="col">
+      <tsl-spinner></tsl-spinner>
+    </div>
+  </ng-template>
+</div>

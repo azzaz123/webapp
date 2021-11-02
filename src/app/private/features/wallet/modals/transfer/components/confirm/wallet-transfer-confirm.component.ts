@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
 import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
-import { WalletTransferAmountModel } from '@private/features/wallet/modals/transfer/models/wallet-transfer-amount.model';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { translations } from '@core/i18n/translations/constants/translations';
+import { WalletTransferApiService } from '@private/features/wallet/services/api/transfer-api/wallet-transfer-api.service';
+import { WalletTransferError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error';
+import { WalletTransferMapperService } from '@private/features/wallet/services/transfer/mapper/wallet-transfer-mapper.service';
+import { WalletTransferMoneyInterface } from '@private/features/wallet/modals/transfer/interfaces/wallet-transfer-money.interface';
+import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
+import { WalletTransferTrackingEventService } from '@private/features/wallet/modals/transfer/services/wallet-transfer-tracking-event.service';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from '@layout/toast/core/services/toast.service';
 
 const transferSentMessage: Toast = {
   type: TOAST_TYPES.SUCCESS,
@@ -16,34 +23,65 @@ const transferSentMessage: Toast = {
   templateUrl: './wallet-transfer-confirm.component.html',
   styleUrls: ['./wallet-transfer-confirm.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  providers: [WalletTransferApiService, WalletTransferMapperService, WalletTransferService, WalletTransferTrackingEventService],
 })
 export class WalletTransferConfirmComponent {
   @Input()
-  public transferAmount: WalletTransferAmountModel;
+  public transferAmount: WalletTransferMoneyInterface;
 
   @Output()
-  public canceled: EventEmitter<WalletTransferAmountModel> = new EventEmitter<WalletTransferAmountModel>();
+  public canceled: EventEmitter<never> = new EventEmitter<never>();
+  @Output()
+  public transferError: EventEmitter<WalletTransferMoneyInterface> = new EventEmitter<WalletTransferMoneyInterface>();
 
   public isTransferInProgress: boolean;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private ngbActiveModal: NgbActiveModal, private toastService: ToastService) {}
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private ngbActiveModal: NgbActiveModal,
+    private toastService: ToastService,
+    private transferService: WalletTransferService,
+    private transferTrackingEventService: WalletTransferTrackingEventService
+  ) {}
 
   public get amountAsText(): string {
-    return `${this.transferAmount?.toString()} €`;
+    return this.transferAmount?.toString();
   }
 
   public cancelTransfer(): void {
-    this.canceled.emit(this.transferAmount);
+    this.canceled.emit();
   }
 
   public confirmTransfer(): void {
+    if (this.isTransferInProgress) {
+      return;
+    }
     this.isTransferInProgress = true;
+    this.changeDetectorRef.detectChanges();
 
-    // TODO - finish it!
+    this.transferTrackingEventService.trackConfirmTransferBankAccount(
+      this.transferAmount.balance.amount.total,
+      this.transferAmount.amount.total
+    );
 
-    /* this.isTransferInProgress = false;
-    this.changeDetectorRef.detectChanges(); */
-    this.toastService.show(transferSentMessage);
-    this.ngbActiveModal.close();
+    this.transferService.transfer(this.transferAmount).subscribe(
+      () => {
+        this.toastService.show(transferSentMessage);
+        this.ngbActiveModal.close();
+      },
+      (error: WalletTransferError) => {
+        this.toastService.show({
+          text: error.message,
+          title: translations[TRANSLATION_KEY.TOAST_ERROR_TITLE],
+          type: TOAST_TYPES.ERROR,
+        });
+        this.setTransferError();
+      }
+    );
+  }
+
+  private setTransferError(): void {
+    this.transferError.emit(this.transferAmount);
   }
 }

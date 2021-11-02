@@ -12,6 +12,7 @@ import { KYCModalProperties } from '../../modals/kyc/interfaces/kyc-modal-proper
 @Component({
   selector: 'tsl-kyc-banner',
   templateUrl: './kyc-banner.component.html',
+  styleUrls: ['./kyc-banner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KYCBannerComponent {
@@ -29,7 +30,7 @@ export class KYCBannerComponent {
   }
 
   public get buttonClassName(): string {
-    return `btn-white btn-white--${this.KYCBannerSpecifications.type}`;
+    return `btn-white btn-white--medium-fontsize btn-white--${this.KYCBannerSpecifications.type}`;
   }
 
   public get ngbAlertConfiguration(): NgbAlertConfig {
