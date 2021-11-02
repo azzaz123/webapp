@@ -35,7 +35,7 @@ export const subscriptionsHeaderBenefits: SubscriptionBenefit[] = [
     description: $localize`:@@pro_subscription_flow_non_pro_users_key_metrics_banner_daily_visited_items_text_web_specific:Daily viewed items`,
   },
   {
-    iconPath: `assets/images/subscriptions/benefits/img-1.svg`,
+    iconPath: `assets/images/subscriptions/benefits/img-3.svg`,
     title: $localize`:@@pro_subscription_flow_non_pro_users_key_metrics_banner_daily_searches_data_web_specific:+7 million`,
     description: $localize`:@@pro_subscription_flow_non_pro_users_key_metrics_banner_daily_searches_text_web_specific:Daily searches`,
   },
