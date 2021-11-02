@@ -36,6 +36,8 @@ import { By } from '@angular/platform-browser';
 import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { PRO_PATHS } from '../../pro-routing-constants';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
+import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 
 @Component({
   selector: 'tsl-subscription-purchase',
@@ -114,6 +116,10 @@ describe('SubscriptionComponent', () => {
                 return USER_DATA;
               },
             },
+          },
+          {
+            provide: SubscriptionBenefitsService,
+            useClass: MockSubscriptionBenefitsService,
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],

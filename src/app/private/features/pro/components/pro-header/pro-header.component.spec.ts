@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
+import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 
 import { ProHeaderComponent } from './pro-header.component';
 
@@ -9,6 +11,12 @@ describe('ProHeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProHeaderComponent],
+      providers: [
+        {
+          provide: SubscriptionBenefitsService,
+          useClass: MockSubscriptionBenefitsService,
+        },
+      ],
     }).compileComponents();
   });
 

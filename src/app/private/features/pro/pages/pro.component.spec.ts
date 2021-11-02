@@ -7,10 +7,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { InvoiceService } from '@core/invoice/invoice.service';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_INVOICE_HISTORY } from '@fixtures/invoice.fixtures.spec';
+import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import {
@@ -90,6 +92,10 @@ describe('ProComponent', () => {
                 return 'fake-url';
               },
             },
+          },
+          {
+            provide: SubscriptionBenefitsService,
+            useClass: MockSubscriptionBenefitsService,
           },
           {
             provide: InvoiceService,

@@ -1,9 +1,20 @@
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
+import { BehaviorSubject, of } from 'rxjs';
 
 export class MockSubscriptionBenefitsService {
   public getBenefitsByCategory(id: number): string[] {
     return [];
   }
+
+  public getSubscriptionsHeaderBenefits(): SubscriptionBenefit[] {
+    return [];
+  }
+
+  get showHeaderBenefits$() {
+    return of(true);
+  }
+
+  showHeaderBenefits = new BehaviorSubject(false);
 }
 
 export const subscriptionBenefitsMapped: SubscriptionBenefit[] = [

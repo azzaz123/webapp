@@ -45,12 +45,11 @@ export class ProComponent implements OnInit, OnDestroy {
     private customerHelpService: CustomerHelpService,
     private invoiceService: InvoiceService,
     private benefitsService: SubscriptionBenefitsService
-  ) {
-    this.isPro$ = this.userService.isProUser$;
-    this.showBenefits$ = this.benefitsService.showHeaderBenefits$;
-  }
+  ) {}
 
   ngOnInit() {
+    this.isPro$ = this.userService.isProUser$;
+    this.showBenefits$ = this.benefitsService.showHeaderBenefits$;
     this.getSubscriptions();
     this.subscribeRoute();
     this.setCustomerHelpUrl(this.router.url);
