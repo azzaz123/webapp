@@ -148,7 +148,7 @@ describe('WalletComponent', () => {
     });
 
     it('should open the Wallet help page', () => {
-      expect(helpButtonRef.attributes['href']).toEqual(component.ZENDESK_WALLET_HELP_URL);
+      expect(helpButtonRef.attributes['href']).toEqual(component.WALLET_HELP_URL);
     });
 
     it('should track the event', () => {

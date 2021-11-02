@@ -43,7 +43,7 @@ export class WalletComponent implements OnInit, OnDestroy {
       display: $localize`:@@wallet_view_balance_history_title_web_specific:Movements`,
     },
   ];
-  public ZENDESK_WALLET_HELP_URL: string;
+  public WALLET_HELP_URL: string;
   private subscriptions: Subscription = new Subscription();
 
   constructor(
@@ -63,7 +63,7 @@ export class WalletComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.KYCProperties$ = this.kycPropertiesService.KYCProperties$;
-    this.ZENDESK_WALLET_HELP_URL = this.getHelpURL();
+    this.WALLET_HELP_URL = this.getHelpURL();
   }
 
   ngOnDestroy() {
