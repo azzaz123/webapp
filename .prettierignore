@@ -29,9 +29,6 @@ githooks
 # CHAT
 /src/app/private/features/chat/**/*.html
 
-# WALLET
-/src/app/private/features/wallet/**/*.html
-
 # ENGAGEMENT
 /src/app/private/features/favorites/**/*.html
 /src/app/private/features/profile/modal/become-pro-modal/*.html
