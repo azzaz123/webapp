@@ -20,8 +20,7 @@ export class WalletTransferJumpDirective {
 
   @HostListener('keydown', ['$event']) onKeyDown(e: KeyboardEvent) {
     const code = e.code;
-    const targete = this.element;
-    debugger;
+
     if (!this.isJumpKey(code) || !this.jumpTargetId) {
       return;
     }
@@ -36,7 +35,9 @@ export class WalletTransferJumpDirective {
   }
 
   private isJumpKey(code: string[] | string): boolean {
-    const target = this.element.nativeElement;
+    const range = this.document.getSelection().getRangeAt(0);
+    const preCaretRange = range.cloneRange();
+    const element = this.element;
     debugger;
     if (typeof this.jumpKey === 'string') {
       return code === this.jumpKey;
