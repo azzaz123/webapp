@@ -1,11 +1,12 @@
 import { Money } from '@api/core/model/money.interface';
 
-export interface HistoricElement {
+export interface HistoricElement<T = string> {
+  id?: T;
   itemImageUrl: string;
   iconUrl?: string;
   title: string;
   description: string;
   subDescription?: string;
-  date: Date;
+  date?: Date;
   moneyAmmount: Money;
 }

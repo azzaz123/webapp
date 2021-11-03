@@ -25,13 +25,13 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
   const historicElements: HistoricElement[] = [];
 
   input.forEach((pendingTransaction: PendingTransaction) => {
-    const { item, moneyAmount } = pendingTransaction;
+    const { id, item, moneyAmount } = pendingTransaction;
 
     const historicElement: HistoricElement = {
+      id,
       itemImageUrl: item.imageUrl,
       title: item.title,
       description: item.id,
-      date: new Date(),
       moneyAmmount: moneyAmount,
     };
 
