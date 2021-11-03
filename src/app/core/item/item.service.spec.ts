@@ -629,7 +629,7 @@ describe('ItemService', () => {
 
   describe('get', () => {
     it('should get item information', () => {
-      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/vertical`;
       let response: Item;
 
       service.get(ITEM_ID).subscribe((r) => (response = r));
@@ -643,7 +643,7 @@ describe('ItemService', () => {
 
     describe('with backend errors', () => {
       it('should return a fake item', () => {
-        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/vertical`;
         let response: Item;
 
         service.get(ITEM_ID).subscribe((r) => (response = r));

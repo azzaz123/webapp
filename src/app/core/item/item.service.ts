@@ -499,7 +499,7 @@ export class ItemService {
   }
 
   public get(id: string): Observable<Item> {
-    return this.http.get<Item>(`${environment.baseUrl}${ITEMS_API_URL}/${id}`).pipe(
+    return this.http.get<Item>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/vertical`).pipe(
       mapRx.map((r) => this.mapRecordData(r)),
       catchError(() => of(this.getFakeItem(id)))
     );

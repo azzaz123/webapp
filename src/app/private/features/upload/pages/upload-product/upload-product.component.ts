@@ -35,6 +35,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { Item, ITEM_TYPES } from '@core/item/item';
 import { DeliveryInfo, ItemContent, ItemResponse, ItemSaleConditions } from '@core/item/item-response.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
+import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
@@ -44,6 +45,7 @@ import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
@@ -84,6 +86,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @Output() categorySelected = new EventEmitter<string>();
   @Input() suggestionValue: string;
   @ViewChild('title', { static: true }) titleField: ElementRef;
+  @ViewChild(ProFeaturesComponent) proFeaturesComponent: ProFeaturesComponent;
 
   MAX_DESCRIPTION_LENGTH = 640;
   MAX_TITLE_LENGTH = 50;
@@ -117,11 +120,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
+  public isProUser: boolean;
 
   public isShippabilityAllowed = false;
   public isShippabilityAllowedByCategory = false;
   public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
+  public readonly PERMISSIONS = PERMISSIONS;
 
   private focused: boolean;
   private oldFormValue: any;
@@ -185,6 +190,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.detectTitleKeyboardChanges();
 
     this.updateShippingToggleStatus();
+    this.isProUser = this.userService.isProUser();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -225,6 +231,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public onSubmit(): void {
     if (this.uploadForm.valid) {
       this.loading = true;
+      this.proFeaturesComponent?.trackSubmit();
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
         this.uploadForm.value.sale_conditions.shipping_allowed = !!this.uploadForm.value.delivery_info;
       }
@@ -835,14 +842,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private trackEditOrUpload(isEdit: boolean, item: ItemContent) {
-    const isPro = this.userService.isProUser();
     let baseEventAttrs: any = {
       itemId: item.id,
       categoryId: item.category_id,
       salePrice: item.sale_price,
       title: item.title,
       shippingAllowed: !!item.sale_conditions?.supports_shipping,
-      isPro,
+      isPro: this.isProUser,
     };
 
     if (item.extra_info) {
