@@ -21,7 +21,7 @@ export class ItemApiService {
 
   public getItem(id: string): Observable<ItemResponse> {
     const params = { language: this.locale };
-    return this.http.get<ItemResponse>(GET_ITEM_ENDPOINT(id), { params });
+    return this.http.get<ItemResponse>(`${GET_ITEM_ENDPOINT(id)}/vertical`, { params });
   }
 
   public getItemCounters(id: string): Observable<ItemCounters> {

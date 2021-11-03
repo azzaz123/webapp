@@ -221,7 +221,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
         (searchLocation: SearchLocation) => {
           this.geolocationCoordinatesSubject.next(searchLocation);
         },
-        (error: PositionError | GeolocationNotAvailableError) => {
+        (error: GeolocationPositionError | GeolocationNotAvailableError) => {
           const toast: Toast = {
             text: error.message,
             type: TOAST_TYPES.ERROR,
