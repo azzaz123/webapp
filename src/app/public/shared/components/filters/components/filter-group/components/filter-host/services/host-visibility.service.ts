@@ -155,7 +155,7 @@ export class HostVisibilityService {
           (excludingParam) => excludingParam.queryParam === currentParam.key
         );
 
-        if (excludingParameter.values.includes(currentParam.value) || excludingParameter.values.length > 1) {
+        if (excludingParameter.values.includes(currentParam.value) || currentParam.value.split(',').length > 1) {
           return false;
         }
       }
