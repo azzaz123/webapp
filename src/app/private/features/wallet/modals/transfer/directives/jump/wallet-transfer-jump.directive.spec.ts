@@ -92,7 +92,7 @@ describe('WalletTransferMaxLengthDirective', () => {
 
     describe('WHEN the target is null', () => {
       it('should not jump ', () => {
-        component.jumpKey = '.';
+        component.jumpKey = 'Period';
         component.jumpTargetId = null;
 
         fixture.detectChanges();
@@ -104,7 +104,7 @@ describe('WalletTransferMaxLengthDirective', () => {
 
     describe('WHEN the target is empty', () => {
       it('should not jump ', () => {
-        component.jumpKey = '.';
+        component.jumpKey = 'Period';
         component.jumpTargetId = '';
 
         fixture.detectChanges();
@@ -119,7 +119,7 @@ describe('WalletTransferMaxLengthDirective', () => {
     let getElementByIdSpy;
 
     beforeEach(() => {
-      component.jumpKey = '.';
+      component.jumpKey = 'Period';
       component.jumpTargetId = 'secondId';
     });
 
@@ -136,7 +136,7 @@ describe('WalletTransferMaxLengthDirective', () => {
 
     describe('WHEN the key is an array', () => {
       it('should get the target', () => {
-        component.jumpKey = ['.', ','];
+        component.jumpKey = ['Period', 'Comma'];
         getElementByIdSpy = spyOn(document, 'getElementById').and.returnValue(null);
 
         fixture.detectChanges();
@@ -272,20 +272,17 @@ describe('WalletTransferMaxLengthDirective', () => {
     });
   });
 
-  function keyPress(k: string): KeyboardEvent {
-    const event: any = document.createEvent('KeyboardEvent');
-    Object.defineProperty(event, 'key', {
-      get: function (): string {
-        return this.keyVal;
-      },
-      set: function (k: string): void {
-        this.keyVal = k;
-      },
-    });
+  function getKeyMap(): Map<string, string> {
+    let result = new Map<string, string>();
+    result.set('.', 'Period');
+    result.set(',', 'Comma');
+    return result;
+  }
 
-    event.initEvent('keydown', true, true);
-    event.key = k;
-    htmlInputElement.dispatchEvent(event);
-    return event;
+  function keyPress(key: string): KeyboardEvent {
+    const keyMap = getKeyMap();
+    const keyDownEvent = new KeyboardEvent('keydown', { code: keyMap.get(key), key: key });
+    htmlInputElement.dispatchEvent(keyDownEvent);
+    return keyDownEvent;
   }
 });

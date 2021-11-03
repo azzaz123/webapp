@@ -30,7 +30,7 @@
                 tslNumbersOnly
                 tslWalletTransferJump
                 jumpTargetId="decimalPart"
-                [jumpKey]="['Comma', 'Period', 'NumpadDecimal', 'NumpadComma', 'ArrowRight']"
+                [jumpKey]="['Comma', 'Period', 'NumpadDecimal', 'NumpadComma']"
                 [tslWalletTransferMaxLength]="integerPartMaxLength"
                 #integerPart
                 id="integerPart"
@@ -48,7 +48,7 @@
                 tslNumbersOnly
                 tslWalletTransferJump
                 jumpTargetId="integerPart"
-                [jumpKey]="['Backspace', 'ArrowLeft']"
+                [jumpKey]="['Backspace']"
                 jumpOnlyEmpty="true"
                 [tslWalletTransferMaxLength]="decimalPartMaxLength"
                 #decimalPart

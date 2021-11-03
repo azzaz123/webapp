@@ -6,10 +6,6 @@ import { DOCUMENT } from '@angular/common';
 })
 export class WalletTransferJumpDirective {
   @Input()
-  public jumpAllowArrowLeft: boolean;
-  @Input()
-  public jumpAllowArrowRight: boolean;
-  @Input()
   public jumpKey: string | string[];
   @Input()
   public jumpOnlyEmpty: boolean;
@@ -35,10 +31,6 @@ export class WalletTransferJumpDirective {
   }
 
   private isJumpKey(code: string[] | string): boolean {
-    const range = this.document.getSelection().getRangeAt(0);
-    const preCaretRange = range.cloneRange();
-    const element = this.element;
-    debugger;
     if (typeof this.jumpKey === 'string') {
       return code === this.jumpKey;
     }
