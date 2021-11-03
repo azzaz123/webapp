@@ -333,12 +333,11 @@ describe('SubscriptionComponent', () => {
 
     it('should not show show benefits header', () => {
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
-      spyOn(benefitsService.showHeaderBenefits, 'next').and.callThrough();
 
       component.manageSubscription(SUBSCRIPTIONS[0]);
       fixture.detectChanges();
 
-      expect(benefitsService.showHeaderBenefits.next).toBeCalledWith(false);
+      expect(benefitsService.showHeaderBenefits).toBe(false);
     });
 
     it('should not set loading to true if action is not present', fakeAsync(() => {
@@ -370,7 +369,6 @@ describe('SubscriptionComponent', () => {
       beforeEach(() => {
         spyOn(modalService, 'open').and.callThrough();
         spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
-        spyOn(benefitsService.showHeaderBenefits, 'next').and.callThrough();
 
         component.manageSubscription(SUBSCRIPTIONS[0]);
         component.onunselectSubscription();
@@ -382,7 +380,7 @@ describe('SubscriptionComponent', () => {
         expect(component.newSubscription).toBeFalsy();
       });
       it('should show benefits header', () => {
-        expect(benefitsService.showHeaderBenefits.next).toBeCalledWith(true);
+        expect(benefitsService.showHeaderBenefits).toBe(true);
       });
     });
   });
@@ -410,12 +408,11 @@ describe('SubscriptionComponent', () => {
 
     it('should not show show benefits header', () => {
       spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
-      spyOn(benefitsService.showHeaderBenefits, 'next').and.callThrough();
 
       component.manageSubscription(SUBSCRIPTIONS[0]);
       fixture.detectChanges();
 
-      expect(benefitsService.showHeaderBenefits.next).toBeCalledWith(false);
+      expect(benefitsService.showHeaderBenefits).toBe(false);
     });
 
     it('should not open modal', fakeAsync(() => {
@@ -430,7 +427,6 @@ describe('SubscriptionComponent', () => {
     describe('clear data', () => {
       beforeEach(() => {
         spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
-        spyOn(benefitsService.showHeaderBenefits, 'next').and.callThrough();
 
         component.manageSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED);
         component.onunselectSubscription();
@@ -443,7 +439,7 @@ describe('SubscriptionComponent', () => {
         expect(component.editSubscription).toBeFalsy();
       });
       it('should show benefits header', () => {
-        expect(benefitsService.showHeaderBenefits.next).toBeCalledWith(true);
+        expect(benefitsService.showHeaderBenefits).toBe(true);
       });
     });
   });

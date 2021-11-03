@@ -16,12 +16,16 @@ export const GENERIC_BENEFITS: string[] = [
 @Injectable()
 export class SubscriptionBenefitsService {
   private subscriptionBenefits: SubscriptionBenefit[];
-  public showHeaderBenefits: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  private _showHeaderBenefits: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(@Inject(LOCALE_ID) private locale: HelpLocaleId) {}
 
   public get showHeaderBenefits$(): Observable<boolean> {
-    return this.showHeaderBenefits.asObservable();
+    return this._showHeaderBenefits.asObservable();
+  }
+
+  public set showHeaderBenefits(value: boolean) {
+    this._showHeaderBenefits.next(value);
   }
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]> {

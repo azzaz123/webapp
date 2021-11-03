@@ -15,7 +15,7 @@ import {
   SCREEN_IDS,
 } from 'app/core/analytics/analytics-constants';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { PRO_PATHS } from '../pro-routing-constants';
 
@@ -52,11 +52,11 @@ export class ProComponent implements OnInit, OnDestroy {
     this.isNavigationBarShown();
   }
 
-  get isPro$() {
+  public get isPro$(): Observable<boolean> {
     return this.userService.isProUser$;
   }
 
-  get showBenefits$() {
+  public get showBenefits$(): Observable<boolean> {
     return this.benefitsService.showHeaderBenefits$;
   }
 

@@ -64,7 +64,7 @@ describe('SubscriptionBenefitsService', () => {
         let result: boolean;
 
         service.showHeaderBenefits$.subscribe((response) => (result = response));
-        service.showHeaderBenefits.next(true);
+        service.showHeaderBenefits = true;
 
         expect(result).toEqual(true);
       });
@@ -74,7 +74,7 @@ describe('SubscriptionBenefitsService', () => {
         let result: boolean;
 
         service.showHeaderBenefits$.subscribe((response) => (result = response));
-        service.showHeaderBenefits.next(false);
+        service.showHeaderBenefits = false;
 
         expect(result).toEqual(false);
       });

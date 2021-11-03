@@ -45,7 +45,7 @@ export class SubscriptionsComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private benefistService: SubscriptionBenefitsService
+    private benefitsService: SubscriptionBenefitsService
   ) {}
 
   ngOnInit() {
@@ -56,12 +56,12 @@ export class SubscriptionsComponent implements OnInit {
   public onunselectSubscription(): void {
     this.newSubscription = null;
     this.editSubscription = null;
-    this.benefistService.showHeaderBenefits.next(true);
+    this.benefitsService.showHeaderBenefits = true;
   }
 
   public setNewSubscription(subscription: SubscriptionsResponse) {
     this.newSubscription = subscription;
-    this.benefistService.showHeaderBenefits.next(false);
+    this.benefitsService.showHeaderBenefits = false;
   }
 
   public manageSubscription(subscription: SubscriptionsResponse): void {
@@ -87,7 +87,7 @@ export class SubscriptionsComponent implements OnInit {
 
   private openEditSubscription(subscription: SubscriptionsResponse): void {
     this.editSubscription = subscription;
-    this.benefistService.showHeaderBenefits.next(false);
+    this.benefitsService.showHeaderBenefits = false;
     this.trackEditSubscription(subscription);
   }
 

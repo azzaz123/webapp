@@ -13,8 +13,6 @@ export class MockSubscriptionBenefitsService {
   get showHeaderBenefits$() {
     return of(true);
   }
-
-  showHeaderBenefits = new BehaviorSubject(false);
 }
 
 export const subscriptionBenefitsMapped: SubscriptionBenefit[] = [
