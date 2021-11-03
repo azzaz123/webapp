@@ -345,9 +345,7 @@ describe('ProComponent', () => {
         fixture.detectChanges();
       });
       it('should not show benefits', () => {
-        const nav = fixture.debugElement.query(By.css('tsl-pro-header'));
-
-        expect(nav.nativeNode.showBenefits).toBe(false);
+        expectProHeaderBenefitsShown(false);
       });
     });
     describe('and is not Pro user', () => {
@@ -360,9 +358,7 @@ describe('ProComponent', () => {
           fixture.detectChanges();
         });
         it('should not show benefits', () => {
-          const nav = fixture.debugElement.query(By.css('tsl-pro-header'));
-
-          expect(nav.nativeNode.showBenefits).toBe(false);
+          expectProHeaderBenefitsShown(false);
         });
       });
       describe('and has to show benefits', () => {
@@ -371,11 +367,14 @@ describe('ProComponent', () => {
           fixture.detectChanges();
         });
         it('should show benefits', () => {
-          const nav = fixture.debugElement.query(By.css('tsl-pro-header'));
-
-          expect(nav.nativeNode.showBenefits).toBe(true);
+          expectProHeaderBenefitsShown(true);
         });
       });
     });
   });
+  function expectProHeaderBenefitsShown(isShown: boolean): void {
+    const header = fixture.debugElement.query(By.css('tsl-pro-header'));
+
+    expect(header.nativeNode.showBenefits).toBe(isShown);
+  }
 });
