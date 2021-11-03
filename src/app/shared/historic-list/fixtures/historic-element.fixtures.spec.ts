@@ -46,3 +46,8 @@ export const MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT: HistoricElemen
   moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
   subDescription: 'In your bank before 22 Sep',
 };
+
+export const MOCK_HISTORIC_ELEMENT_WITH_ID: HistoricElement = {
+  ...MOCK_HISTORIC_ELEMENT,
+  id: '1337',
+};
