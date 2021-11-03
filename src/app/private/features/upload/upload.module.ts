@@ -30,6 +30,7 @@ import { ShippingToggleService } from './pages/upload-product/services/shipping-
 import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
 import { UploadTrackingEventService } from './pages/upload-product/upload-tracking-event/upload-tracking-event.service';
 import { CategoriesApiModule } from '@api/categories/categories-api.module';
+import { ProFeaturesModule } from './components/pro-features/pro-features.module';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { CategoriesApiModule } from '@api/categories/categories-api.module';
     CheckboxFormModule,
     DeliveryRulesApiModule, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
     CategoriesApiModule,
+    ProFeaturesModule,
   ],
   declarations: [
     uploadRoutedComponents,

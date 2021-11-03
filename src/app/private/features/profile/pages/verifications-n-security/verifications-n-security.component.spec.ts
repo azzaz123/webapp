@@ -12,7 +12,7 @@ import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { Observable, of } from 'rxjs';
-import { EmailVerificationModalComponent } from '../../modal/email-verification-modal/email-verification-modal.component';
+import { EmailVerificationModalComponent } from '../../modal/email-verification/modals/email-verification-modal/email-verification-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
 import { VerificationsNSecurityComponent, VERIFICATIONS_N_SECURITY_TYPES } from './verifications-n-security.component';
 
