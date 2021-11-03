@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { OptimizeService } from '../../vendors/optimize/optimize.service';
 import { EXPERIMENTATION_SOURCES } from '@core/experimentation/constants';
 import { Variant } from '@core/experimentation/models';
+import { OPTIMIZE_EXPERIMENTS } from '@core/experimentation/vendors/optimize/resources/optimize-experiment-ids';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class ExperimentationService {
     });
   }
 
-  public getVariant(id: string): Variant {
+  public getOptimizeVariant(id: OPTIMIZE_EXPERIMENTS): Variant {
     return this.optimizeService.getVariant(id);
   }
 }
