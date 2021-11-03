@@ -272,16 +272,17 @@ describe('WalletTransferMaxLengthDirective', () => {
     });
   });
 
-  function getKeyMap(): Map<string, string> {
-    let result = new Map<string, string>();
-    result.set('.', 'Period');
-    result.set(',', 'Comma');
+  function getKeys(): Record<string, string> {
+    const result: Record<string, string> = {
+      '.': 'Period',
+      ',': 'Comma',
+    };
     return result;
   }
 
   function keyPress(key: string): KeyboardEvent {
-    const keyMap = getKeyMap();
-    const keyDownEvent = new KeyboardEvent('keydown', { code: keyMap.get(key), key: key });
+    const keys = getKeys();
+    const keyDownEvent = new KeyboardEvent('keydown', { code: keys[key], key: key });
     htmlInputElement.dispatchEvent(keyDownEvent);
     return keyDownEvent;
   }
