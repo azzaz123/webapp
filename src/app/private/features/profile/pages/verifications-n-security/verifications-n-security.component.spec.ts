@@ -1,7 +1,7 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { UserVerifications } from '@api/core/model/verifications';
+import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
 import {
   MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED,
   MOCK_USER_VERIFICATIONS_MAPPED,
@@ -12,8 +12,8 @@ import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { Observable, of } from 'rxjs';
-import { EmailVerificationModalComponent } from '../../modal/email-verification-modal/email-verification-modal.component';
-
+import { EmailVerificationModalComponent } from '../../modal/email-verification/modals/email-verification-modal/email-verification-modal.component';
+import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
 import { VerificationsNSecurityComponent, VERIFICATIONS_N_SECURITY_TYPES } from './verifications-n-security.component';
 
 @Component({
@@ -30,6 +30,7 @@ describe('VerificationsNSecurityComponent', () => {
   let userVerificationsService: UserVerificationsService;
   let spyUserVerificationsService;
   let modalService: NgbModal;
+  let verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -44,12 +45,20 @@ describe('VerificationsNSecurityComponent', () => {
             },
           },
         },
+        {
+          provide: VerificationsNSecurityTrackingEventsService,
+          useValue: {
+            verificationsNSecurityPageView() {},
+            trackClickVerificationOptionEvent() {},
+          },
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
     userService = TestBed.inject(UserService);
     modalService = TestBed.inject(NgbModal);
     userVerificationsService = TestBed.inject(UserVerificationsService);
+    verificationsNSecurityTrackingEventsService = TestBed.inject(VerificationsNSecurityTrackingEventsService);
   });
 
   beforeEach(() => {
@@ -78,6 +87,15 @@ describe('VerificationsNSecurityComponent', () => {
       const card = fixture.debugElement.queryAll(By.directive(MockVerificationCardComponent));
 
       expect(card).toBeTruthy();
+    });
+
+    it('should track page view event', () => {
+      spyOn(verificationsNSecurityTrackingEventsService, 'verificationsNSecurityPageView');
+
+      component.ngOnInit();
+
+      expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledTimes(1);
+      expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledWith(component.userVerifications$);
     });
   });
 
@@ -114,6 +132,10 @@ describe('VerificationsNSecurityComponent', () => {
         });
       });
       describe('and the email is not verified', () => {
+        beforeEach(() => {
+          spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
+          fixture.detectChanges();
+        });
         it('should show Verify button text', () => {
           component.userVerifications$.subscribe((userVerifications) => {
             const text = component.verifiedTextButton[userVerifications.email.toString()];
@@ -129,6 +151,11 @@ describe('VerificationsNSecurityComponent', () => {
             expect(modalService.open).toHaveBeenCalledWith(EmailVerificationModalComponent, {
               windowClass: 'modal-standard',
             });
+
+            expect(verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent).toHaveBeenCalledTimes(1);
+            expect(verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent).toHaveBeenCalledWith(
+              VERIFICATION_METHOD.EMAIL
+            );
           });
         });
       });

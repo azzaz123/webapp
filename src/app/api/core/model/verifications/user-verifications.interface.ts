@@ -1,6 +1,6 @@
 export interface UserVerifications {
   email: boolean;
-  mobile: boolean;
+  phone: boolean;
   facebook: boolean;
   google_plus: boolean;
 }

@@ -8,8 +8,9 @@ import { BecomeProModalComponent } from './modal/become-pro-modal/become-pro-mod
 import { ChangeStoreLocationModal } from './modal/change-store-location-modal/change-store-location-modal.component';
 import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe-modal.component';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
-import { EmailVerificationModalComponent } from './modal/email-verification-modal/email-verification-modal.component';
 import { VerificationEmailThanksModalComponent } from './modal/verification-email-thanks-modal/verification-email-thanks-modal.component';
+import { VerificationsNSecurityTrackingEventsService } from './services/verifications-n-security-tracking-events.service';
+import { EmailVerificationModule } from './modal/email-verification/email-verification.module';
 
 @NgModule({
   imports: [
@@ -23,14 +24,15 @@ import { VerificationEmailThanksModalComponent } from './modal/verification-emai
     NgbAccordionModule,
     NgbModalModule,
     CustomCurrencyModule,
+    EmailVerificationModule,
   ],
   declarations: [
     profileRoutedComponents,
     UnsubscribeModalComponent,
     BecomeProModalComponent,
     ChangeStoreLocationModal,
-    EmailVerificationModalComponent,
     VerificationEmailThanksModalComponent,
   ],
+  providers: [VerificationsNSecurityTrackingEventsService],
 })
 export class ProfileModule {}
