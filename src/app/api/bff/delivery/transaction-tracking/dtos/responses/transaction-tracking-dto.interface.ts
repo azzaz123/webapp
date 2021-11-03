@@ -1,3 +1,7 @@
+import { TransactionTrackingActionDto } from './transaction-tracking-action-dto.interface';
+import { TransactionTrackingActionStateDto } from './types/transaction-tracking-action-state-dto.type';
+import { TransactionTrackingActionStyleDto } from './types/transaction-tracking-action-style-dto.type';
+
 export interface TransactionTrackingDto {
   analytics?: {
     buyer_country: string;
@@ -5,9 +9,9 @@ export interface TransactionTrackingDto {
   };
   shipping_status: {
     actions: {
-      action: TransactionTrackingAction;
-      state: string;
-      style: string;
+      action: TransactionTrackingActionDto;
+      state: TransactionTrackingActionStateDto;
+      style: TransactionTrackingActionStyleDto;
       title: string;
     }[];
     animation: {
@@ -19,13 +23,13 @@ export interface TransactionTrackingDto {
   };
   title: string;
   top_action: {
-    action: TransactionTrackingAction;
-    state: string;
-    style: string;
+    action: TransactionTrackingActionDto;
+    state: TransactionTrackingActionStateDto;
+    style: TransactionTrackingActionStyleDto;
     title: string;
   };
   transaction_status_info: {
-    action: TransactionTrackingAction;
+    action: TransactionTrackingActionDto;
     action_icon: string;
     description: string;
     icon: {
@@ -34,14 +38,4 @@ export interface TransactionTrackingDto {
       url: string;
     };
   }[];
-}
-
-interface TransactionTrackingAction {
-  action_type: string;
-  analytics: {
-    request_id: string;
-    source: string;
-    user_id: string;
-  } | null;
-  payload: unknown;
 }

@@ -1,11 +1,11 @@
-import { TransactionTrackingTopAction } from './header/transaction-tracking-top-action.interface';
-
 export interface TransactionTrackingAction {
   analytics: unknown;
+  isCarrierTrackingWebview: boolean;
+  isDeeplink: boolean;
+  isDialog: boolean;
+  isUserAction: boolean;
   payload: TransactionTrackingActionPayload;
-  type: TransactionTrackingActionType;
 }
-export type TransactionTrackingActionType = 'deeplink' | 'dialog' | 'user_action' | 'carrier_tracking_webview';
 export interface TransactionTrackingActionPayload {
   description: string;
   linkUrl: string;
