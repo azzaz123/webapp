@@ -209,6 +209,13 @@
       </ng-template>
     </div>
   </div>
+
+  <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+    <ng-container *ngxPermissionsExcept="PERMISSIONS.professional">
+        <tsl-pro-features *ngIf="isProUser" [categoryId]="uploadForm.controls['category_id'].value"></tsl-pro-features>
+    </ng-container>
+  </ng-container>
+  
   <div class="main-box">
     <h2 i18n="@@web_upload_pages_realestate_440">Property location</h2>
     <div class="row" [ngbPopover]="coachmarkLocation" [autoClose]="false" popoverClass="ml-3" triggers="mouseenter:mouseleave">

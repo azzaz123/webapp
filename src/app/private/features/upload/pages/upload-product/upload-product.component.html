@@ -375,6 +375,12 @@
     </div>
   </ng-container>
 
+  <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+    <ng-container *ngxPermissionsExcept="PERMISSIONS.professional">
+        <tsl-pro-features *ngIf="isProUser" [categoryId]="uploadForm.controls['category_id'].value"></tsl-pro-features>
+    </ng-container>
+  </ng-container>
+
   <tsl-location-box *ngIf="!!uploadForm" [form]="uploadForm" name="location"></tsl-location-box>
   <div class="row" id="prueba">
     <div class="col-12 col-md-5">
