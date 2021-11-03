@@ -25,6 +25,7 @@ import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-r
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
@@ -125,7 +126,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private deviceService: DeviceDetectorService,
     private analyticsService: AnalyticsService,
     private i18nService: I18nService,
-    private permissionService: NgxPermissionsService
+    private permissionService: NgxPermissionsService,
+    private listingLimitService: ListingLimitService
   ) {}
 
   public get itemsAmount() {
@@ -250,13 +252,8 @@ export class ListComponent implements OnInit, OnDestroy {
         } else if (params && params.updated) {
           this.errorService.i18nSuccess(TRANSLATION_KEY.ITEM_UPDATED);
         } else if (params && params.createdOnHold) {
-          this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
-            windowClass: 'modal-standard',
-          });
-          this.tooManyItemsModalRef.componentInstance.itemId = params.itemId;
-          this.tooManyItemsModalRef.componentInstance.type = params.onHoldType
-            ? parseInt(params.onHoldType, 10)
-            : SUBSCRIPTION_TYPES.stripe;
+          const type = params.onHoldType ? parseInt(params.onHoldType, 10) : SUBSCRIPTION_TYPES.stripe;
+          this.tooManyItemsModalRef = this.listingLimitService.showModal(params.itemId, type);
           this.tooManyItemsModalRef.result.then(
             (orderEvent: OrderEvent) => {
               if (orderEvent) {

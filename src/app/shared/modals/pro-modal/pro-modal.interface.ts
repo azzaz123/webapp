@@ -2,7 +2,7 @@ export interface ProModalConfig {
   title: string;
   img: string;
   text1: string;
-  text2: string;
+  text2?: string;
   buttons: {
     primary: ButtonData;
     secondary?: ButtonData;
