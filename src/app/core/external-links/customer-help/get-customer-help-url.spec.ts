@@ -1,30 +1,31 @@
-import { APP_LOCALE } from '@configs/subdomains.config';
-import { CUSTOMER_HELP_BASE, CUSTOMER_HELP_PAGE, HELP_LOCALE } from './customer-help-constants';
+import { CUSTOMER_HELP_SITE_BASE } from './enums/customer-help-site.enum';
+import { EXTERNAL_CUSTOMER_HELP_PAGE_ID } from './enums/external-customer-help-page-id.enum';
 import { getCustomerHelpUrl } from './get-customer-help-url';
+import { HELP_LOCALE } from './types/help-locale';
 
 describe('getCustomerHelpUrl', () => {
-  const pageId = CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING;
-  const allLanguages: APP_LOCALE[] = ['es', 'en', 'it'];
-  const expected = (lang: string, base: CUSTOMER_HELP_BASE = CUSTOMER_HELP_BASE.DEFAULT_SITE) => {
+  const pageId = EXTERNAL_CUSTOMER_HELP_PAGE_ID.SHIPPING_SELL_WITH_SHIPPING;
+  const allHelpLocales: HELP_LOCALE[] = ['en-us', 'es-es', 'it'];
+  const generateExpectedUrl = (lang: HELP_LOCALE, base: CUSTOMER_HELP_SITE_BASE = CUSTOMER_HELP_SITE_BASE.DEFAULT) => {
     return `${base}${lang}/articles/${pageId}`;
   };
 
-  describe.each(allLanguages)('when asking for ticket form url', (localeId: APP_LOCALE) => {
-    it(`should return the expected url when language is ${localeId}`, () => {
-      const url = getCustomerHelpUrl(pageId, localeId);
-      const expectedUrl = expected(HELP_LOCALE[localeId]);
+  describe.each(allHelpLocales)('when generating customer help page url', (helpLocale: HELP_LOCALE) => {
+    it(`should return the expected url when language is ${helpLocale}`, () => {
+      const url = getCustomerHelpUrl(pageId, helpLocale);
+      const expectedUrl = generateExpectedUrl(helpLocale);
 
       expect(url).toEqual(expectedUrl);
     });
-  });
 
-  describe('and when specifying customer base URL', () => {
-    it('should use specified customer base URL', () => {
-      const localeId: APP_LOCALE = 'en';
-      const url = getCustomerHelpUrl(pageId, localeId, CUSTOMER_HELP_BASE.ITALIAN_SITE);
-      const expectedUrl = expected(HELP_LOCALE[localeId], CUSTOMER_HELP_BASE.ITALIAN_SITE);
+    describe('and when specifying customer site', () => {
+      it('should use specified customer site', () => {
+        const base = CUSTOMER_HELP_SITE_BASE.ITALIAN;
+        const url = getCustomerHelpUrl(pageId, helpLocale, base);
+        const expectedUrl = generateExpectedUrl(helpLocale, base);
 
-      expect(url).toEqual(expectedUrl);
+        expect(url).toEqual(expectedUrl);
+      });
     });
   });
 });

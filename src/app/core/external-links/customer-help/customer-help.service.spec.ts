@@ -1,47 +1,46 @@
 import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { CUSTOMER_HELP_BASE, CUSTOMER_HELP_PAGE, CUSTOMER_TICKET_FORM } from './customer-help-constants';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { allCustomerHelpPages } from './constants/help-pages/all-help-pages';
+import { allTicketFormPages } from './constants/ticket-form-pages/all-ticket-form-pages';
+import { CUSTOMER_HELP_PAGE, CUSTOMER_TICKET_FORM } from './customer-help-constants';
 import { CustomerHelpService } from './customer-help.service';
-import * as GetCustomerHelpUrl from './get-customer-help-url';
-import * as GetTicketFormUrl from './get-ticket-form-url';
 
 describe('CustomerHelpService', () => {
-  let customerHelpService: CustomerHelpService;
-  const pageId = CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING;
-  const formId = CUSTOMER_TICKET_FORM.KYC;
-  const MOCK_LOCALE_ID = 'es';
+  let service: CustomerHelpService;
+  const pageId = CUSTOMER_HELP_PAGE.WALLET_HELP;
+  const ticketFormId = CUSTOMER_TICKET_FORM.KYC;
+  const allLanguages: APP_LOCALE[] = ['es', 'en', 'it'];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        CustomerHelpService,
-        {
-          provide: LOCALE_ID,
-          useValue: MOCK_LOCALE_ID,
-        },
-      ],
-    });
-
-    customerHelpService = TestBed.inject(CustomerHelpService);
+    TestBed.configureTestingModule({});
   });
 
-  describe('when asking for page url', () => {
-    it('should ask for the url', () => {
-      spyOn(GetCustomerHelpUrl, 'getCustomerHelpUrl');
+  describe.each(allLanguages)('when asking for page url', (locale: APP_LOCALE) => {
+    beforeEach(() => {
+      TestBed.overrideProvider(LOCALE_ID, { useValue: locale });
+      service = TestBed.inject(CustomerHelpService);
+    });
 
-      customerHelpService.getPageUrl(pageId);
+    it(`should return the expected customer help page url for locale ${locale}`, () => {
+      const url = service.getPageUrl(pageId);
+      const expectedUrl = allCustomerHelpPages[locale][pageId];
 
-      expect(GetCustomerHelpUrl.getCustomerHelpUrl).toHaveBeenCalledWith(pageId, MOCK_LOCALE_ID, CUSTOMER_HELP_BASE.DEFAULT_SITE);
+      expect(url).toEqual(expectedUrl);
     });
   });
 
-  describe('when asking for ticket form url', () => {
-    it('should ask for the url', () => {
-      spyOn(GetTicketFormUrl, 'getTicketFormUrl');
+  describe.each(allLanguages)('when asking for ticket form page url', (locale: APP_LOCALE) => {
+    beforeEach(() => {
+      TestBed.overrideProvider(LOCALE_ID, { useValue: locale });
+      service = TestBed.inject(CustomerHelpService);
+    });
 
-      customerHelpService.getFormPageUrl(formId);
+    it(`should return the expected customer ticket form url for locale ${locale}`, () => {
+      const url = service.getFormPageUrl(ticketFormId);
+      const expectedUrl = allTicketFormPages[locale][ticketFormId];
 
-      expect(GetTicketFormUrl.getTicketFormUrl).toHaveBeenCalledWith(formId, MOCK_LOCALE_ID, CUSTOMER_HELP_BASE.DEFAULT_SITE);
+      expect(url).toEqual(expectedUrl);
     });
   });
 });

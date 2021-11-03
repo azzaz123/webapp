@@ -1,11 +1,7 @@
-import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
-import {
-  CUSTOMER_HELP_BASE,
-  CUSTOMER_HELP_PAGE,
-  ITALIAN_CUSTOMER_HELP_PAGE,
-} from '@core/external-links/customer-help/customer-help-constants';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
 import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
@@ -16,7 +12,6 @@ import { WALLET_PATHS } from './wallet.routing.constants';
 import { WalletTrackingEventService } from '@private/features/wallet/services/tracking-event/wallet-tracking-event.service';
 
 import { Observable, Subscription } from 'rxjs';
-import { APP_LOCALE } from '@configs/subdomains.config';
 
 const bankDetailsId: string = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
 
@@ -47,7 +42,6 @@ export class WalletComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
 
   constructor(
-    @Inject(LOCALE_ID) private locale: APP_LOCALE,
     private router: Router,
     private customerHelpService: CustomerHelpService,
     private kycPropertiesService: KYCPropertiesService,
@@ -98,9 +92,6 @@ export class WalletComponent implements OnInit, OnDestroy {
   }
 
   private getHelpURL(): string {
-    const isItalianSite = this.locale === 'it';
-    return isItalianSite
-      ? this.customerHelpService.getPageUrl(ITALIAN_CUSTOMER_HELP_PAGE.WALLET_HELP, CUSTOMER_HELP_BASE.ITALIAN_SITE)
-      : this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.WALLET_HELP);
+    return this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.WALLET_HELP);
   }
 }

@@ -19,7 +19,6 @@ import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-
 import { MOCK_KYC_PENDING_PROPERTIES } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 import { WalletTrackingEventService } from '@private/features/wallet/services/tracking-event/wallet-tracking-event.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
-import { CUSTOMER_HELP_BASE, ITALIAN_CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 
 describe('WalletComponent', () => {
   const BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
@@ -157,22 +156,6 @@ describe('WalletComponent', () => {
       helpButtonRef.nativeElement.click();
 
       expect(walletTrackingEventService.trackClickHelpWallet).toHaveBeenCalledTimes(1);
-    });
-
-    describe('and when site is in Italian', () => {
-      beforeEach(() => {
-        component['locale'] = 'it';
-        spyOn(customerHelpService, 'getPageUrl');
-
-        component.ngOnInit();
-      });
-
-      it('should generate Italian help URL link', () => {
-        expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(
-          ITALIAN_CUSTOMER_HELP_PAGE.WALLET_HELP,
-          CUSTOMER_HELP_BASE.ITALIAN_SITE
-        );
-      });
     });
   });
 
