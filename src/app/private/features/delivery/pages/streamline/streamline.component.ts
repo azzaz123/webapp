@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
+import { DELIVERY_PATHS } from '../../delivery-routing-constants';
 import { STREAMLINE_PATHS } from './streamline.routing.constants';
 
 @Component({
@@ -12,7 +14,7 @@ export class StreamlineComponent implements OnInit {
   // TODO: Use valid copies when ready
   public tabsBarElements: TabsBarElement<STREAMLINE_PATHS>[] = [{ value: STREAMLINE_PATHS.ONGOING, label: 'On going' }];
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     const firstTabsBarElement = this.tabsBarElements[0].value;
@@ -23,7 +25,8 @@ export class StreamlineComponent implements OnInit {
     this.redirect(tabsBarElement.value);
   }
 
-  private redirect(route: string): void {
-    this.router.navigate([route], { relativeTo: this.activatedRoute });
+  private redirect(subroute: string): void {
+    const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}/${subroute}`;
+    this.router.navigate([route]);
   }
 }

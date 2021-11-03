@@ -1,4 +1,4 @@
 <div class="Streamline">
-  <tsl-tabs-bar [tabsBarElements]="tabsBarElements"></tsl-tabs-bar>
+  <tsl-tabs-bar [tabsBarElements]="tabsBarElements" (onChange)="onTabsBarChange($event)"></tsl-tabs-bar>
   <router-outlet></router-outlet>
 </div>
