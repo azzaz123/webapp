@@ -1,7 +1,8 @@
 import { PendingTransaction } from '@api/core/model';
 import { ToDomainMapper } from '@api/core/utils/types';
+import { deliveryStatusTranslationsAsBuyer } from '@private/features/delivery/translations/delivery-status-as-buyer.translations';
+import { deliveryStatusTranslationsAsSeller } from '@private/features/delivery/translations/delivery-status-as-seller.translations';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
-import { HistoricListHeader } from '@shared/historic-list/interfaces/historic-list-header.interface';
 import { HistoricListSubtitle } from '@shared/historic-list/interfaces/historic-list-subtitle.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 
@@ -26,12 +27,13 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
 
   input.forEach((pendingTransaction: PendingTransaction) => {
     const { id, item, moneyAmount } = pendingTransaction;
+    const description = getTranslatedDescription(pendingTransaction);
 
     const historicElement: HistoricElement = {
       id,
       itemImageUrl: item.imageUrl,
       title: item.title,
-      description: item.id,
+      description,
       moneyAmmount: moneyAmount,
     };
 
@@ -39,5 +41,16 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
   });
 
   const result: HistoricListSubtitle = { elements: historicElements };
+  return result;
+};
+
+const getTranslatedDescription = (input: PendingTransaction): string => {
+  const { status, seller } = input;
+  const { delivery: deliveryStatus } = status;
+  let result: string = '';
+
+  // TODO: seller.id === user.id
+  const isSeller = true;
+  result = isSeller ? deliveryStatusTranslationsAsSeller[deliveryStatus] : deliveryStatusTranslationsAsBuyer[deliveryStatus];
   return result;
 };
