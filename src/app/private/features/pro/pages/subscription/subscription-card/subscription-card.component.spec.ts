@@ -241,10 +241,10 @@ describe('SubscriptionCardComponent', () => {
   describe('Responsive view', () => {
     beforeEach(() => {
       component.subscription = MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED;
+      fixture.detectChanges();
     });
     describe('and is desktop view', () => {
       it('should be shown with desktop view', () => {
-        fixture.detectChanges();
         const card = fixture.debugElement.query(By.css('.SubscriptionCard--desktop'));
 
         expect(card).toBeTruthy();

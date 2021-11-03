@@ -32,7 +32,7 @@ export class SubscriptionCardComponent {
 
   public onClickCard(): void {
     if (!this.isMobile) {
-      this.onClick();
+      this.buttonClick.emit();
     }
   }
 
