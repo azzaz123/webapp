@@ -1,4 +1,4 @@
-import { TransactionTrackingActionDto } from '../transaction-tracking-action-dto.interface';
+import { TransactionTrackingActionDetailDto } from './transaction-tracking-action-detail-dto.interface';
 
 export type TransactionTrackingActionPayloadUserActionNameDto = 'PACKAGE_ARRIVED' | 'CANCEL_TRANSACTION' | 'EXPIRE_CLAIM_PERIOD';
 
@@ -11,7 +11,7 @@ export interface TransactionTrackingActionPayloadUserActionDto {
   parameters: {
     transaction_id: string;
   };
-  on_success?: TransactionTrackingActionDto;
+  on_success?: TransactionTrackingActionDetailDto;
 }
 
 export interface TransactionTrackingActionPayloadDialogDto {
@@ -19,7 +19,7 @@ export interface TransactionTrackingActionPayloadDialogDto {
   description_text: string;
   positive: {
     title: string;
-    action: TransactionTrackingActionDto;
+    action: TransactionTrackingActionDetailDto;
   };
   negative: {
     title: string;

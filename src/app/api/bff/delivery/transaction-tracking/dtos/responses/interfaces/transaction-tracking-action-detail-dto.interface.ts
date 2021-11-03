@@ -3,8 +3,8 @@ import {
   TransactionTrackingActionPayloadUserActionDto,
   TransactionTrackingActionPayloadDialogDto,
   TransactionTrackingActionPayloadCarrierTrackingWebviewDto,
-} from './interfaces/transaction-tracking-action-payload-dtos.interface';
-import { TransactionTrackingActionTypeDto } from './types/transaction-tracking-action-type-dto.type';
+} from './transaction-tracking-action-payload-dtos.interface';
+import { TransactionTrackingActionTypeDto } from '../types/transaction-tracking-action-type-dto.type';
 
 export type TransactionTrackingActionPayloadDto =
   | TransactionTrackingActionPayloadDeeplinkDto
@@ -18,7 +18,7 @@ export interface TransactionTrackingActionAnalyticsDto {
   user_id: string;
 }
 
-export interface TransactionTrackingActionDto {
+export interface TransactionTrackingActionDetailDto {
   action_type: TransactionTrackingActionTypeDto;
   payload: TransactionTrackingActionPayloadDto;
   analytics: TransactionTrackingActionAnalyticsDto | null;
