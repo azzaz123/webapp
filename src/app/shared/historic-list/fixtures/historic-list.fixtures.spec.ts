@@ -61,3 +61,26 @@ export const MOCK_HISTORIC_LIST_FROM_WALLET_MOVEMENTS_WITH_ALL_ELEMENTS: Histori
   ],
   totalBalance: mapNumberAndCurrencyCodeToMoney({ number: 132, currency: 'EUR' }),
 };
+
+export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
+  elements: [
+    {
+      elements: [
+        {
+          elements: [
+            {
+              id: '81891bfa-9df3-41f9-9411-0cd85d1daf9e',
+              itemImageUrl: 'http://cdn-beta.wallapop.com/images/10420/34/ow/__/c10420p189278801/i420098101.jpg?pictureSize=W800',
+              title: 'Laia testing beta',
+              description: 'kmzn9dmg4kjn',
+              moneyAmmount: {
+                amount: { integer: 3, decimals: 0, total: 3 },
+                currency: { code: 'EUR', symbol: '€' },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
