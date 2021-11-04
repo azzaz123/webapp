@@ -10,11 +10,11 @@ export class TransactionTrackingActionStyleModel implements TransactionTrackingS
 
   private generateClassName(styleDto: TransactionTrackingActionStyleDto): string {
     const cssClasses: Record<TransactionTrackingActionStyleDto, string> = {
-      text: 'btn btn-link',
-      contained: 'btn btn-primary',
-      outlined: 'btn btn-secondary',
+      text: 'link',
+      contained: 'primary',
+      outlined: 'secondary',
     };
 
-    return cssClasses[styleDto];
+    return `btn btn-${cssClasses[styleDto]}`;
   }
 }
