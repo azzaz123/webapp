@@ -51,10 +51,10 @@ describe('HistoricElementComponent', () => {
   describe('when rendering the component', () => {
     it('should show the image', () => {
       const imageElement = fixture.debugElement.query(By.css(imageSelector));
-      const itemImageUrl = imageElement.attributes['src'];
-      const expecteditemImageUrl = MOCK_HISTORIC_ELEMENT.itemImageUrl;
+      const imageUrl = imageElement.attributes['src'];
+      const expectedImageUrl = MOCK_HISTORIC_ELEMENT.imageUrl;
 
-      expect(itemImageUrl).toEqual(expecteditemImageUrl);
+      expect(imageUrl).toEqual(expectedImageUrl);
     });
 
     it('should show the title', () => {
