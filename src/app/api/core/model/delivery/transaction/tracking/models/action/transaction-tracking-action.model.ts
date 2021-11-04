@@ -4,6 +4,7 @@ import { TransactionTrackingAction } from '../../interfaces/transaction-tracking
 import { TransactionTrackingActionStyleModel } from './transaction-tracking-action-style.model';
 import { TransactionTrackingState } from '../../interfaces/transaction-tracking-state.interface';
 import { TransactionTrackingStyle } from '../../interfaces/transaction-tracking-style.interface';
+import { TransactionTrackingStateModel } from '../transaction-tracking-state.model';
 
 export class TransactionTrackingActionModel implements TransactionTrackingAction {
   action: TransactionTrackingActionDetail;
@@ -13,7 +14,7 @@ export class TransactionTrackingActionModel implements TransactionTrackingAction
 
   constructor(actionDto: TransactionTrackingActionDto) {
     this.action = new TransactionTrackingActionDetailModel(actionDto.action);
-    this.state = new TransactionTrackingActionStateModel(actionDto.state);
+    this.state = new TransactionTrackingStateModel(actionDto.state);
     this.style = new TransactionTrackingActionStyleModel(actionDto.style);
     this.title = actionDto.title;
   }

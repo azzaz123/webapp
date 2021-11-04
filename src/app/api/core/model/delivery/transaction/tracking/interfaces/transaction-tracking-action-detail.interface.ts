@@ -1,35 +1,35 @@
 export interface TransactionTrackingActionDetail {
-  analytics: TransactionTrackingActionAnalytics;
+  analytics: TransactionTrackingActionDetailAnalytics;
   isCarrierTrackingWebview: boolean;
   isDeeplink: boolean;
   isDialog: boolean;
   isUserAction: boolean;
-  payload: TransactionTrackingActionPayload;
+  payload: TransactionTrackingActionDetailPayload;
 }
-export interface TransactionTrackingActionAnalytics {
+export interface TransactionTrackingActionDetailAnalytics {
   requestId: string;
   source: string;
   userId: string;
 }
-export interface TransactionTrackingActionPayload {
-  banner?: TransactionTrackingActionPayloadBanner;
+export interface TransactionTrackingActionDetailPayload {
+  banner?: TransactionTrackingActionDetailPayloadBanner;
   description?: string;
   linkUrl?: string;
   name?: string;
-  negative?: TransactionTrackingActionPayloadConfirmation;
-  parameters?: TransactionTrackingActionPayloadParameters;
-  positive?: TransactionTrackingActionPayloadConfirmation;
+  negative?: TransactionTrackingActionDetailPayloadConfirmation;
+  parameters?: TransactionTrackingActionDetailPayloadParameters;
+  positive?: TransactionTrackingActionDetailPayloadConfirmation;
   success?: TransactionTrackingActionDetail;
   title?: string;
 }
-export interface TransactionTrackingActionPayloadBanner {
+export interface TransactionTrackingActionDetailPayloadBanner {
   title: string;
   trackingCode: string;
 }
-export interface TransactionTrackingActionPayloadConfirmation {
+export interface TransactionTrackingActionDetailPayloadConfirmation {
   action?: TransactionTrackingActionDetail;
   title: string;
 }
-export interface TransactionTrackingActionPayloadParameters {
+export interface TransactionTrackingActionDetailPayloadParameters {
   transactionId: string;
 }

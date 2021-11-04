@@ -12,7 +12,7 @@ export type TransactionTrackingActionDetailPayloadDto =
   | TransactionTrackingActionDetailPayloadDialogDto
   | TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto;
 
-export interface TransactionTrackingActionAnalyticsDto {
+export interface TransactionTrackingActionDetailAnalyticsDto {
   request_id: string;
   source: string;
   user_id: string;
@@ -21,5 +21,5 @@ export interface TransactionTrackingActionAnalyticsDto {
 export interface TransactionTrackingActionDetailDto {
   action_type: TransactionTrackingActionTypeDto;
   payload: TransactionTrackingActionDetailPayloadDto;
-  analytics: TransactionTrackingActionAnalyticsDto | null;
+  analytics: TransactionTrackingActionDetailAnalyticsDto | null;
 }
