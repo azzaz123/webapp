@@ -102,7 +102,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: { text: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_dismiss_button:Leave as inactive` },
-      primary: { text: $localize`:@@listing_limit_non_pro_users_discount_modal_start_button:Try with ${50}:INTERPOLATION:% discount` },
+      primary: { text: null },
     },
   },
 };
