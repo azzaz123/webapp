@@ -327,7 +327,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     return !this.paramsHaveSortBy(params) && this.paramsHaveKeywords(params) && this.categoryWithSortByRelevanceEnabled(categoryId);
   }
 
-  // METHODS ONLY VALID FOR AN ONGOING EXPERIMENT, PLEASE REMOVE THEM WHEN THE EXPERIMENT ENDS
+  // EXPERIMENT!!
 
   private setVariant(): void {
     combineLatest([this.numberOfItems$, this.searchWithKeyword$]).subscribe((result) => {
