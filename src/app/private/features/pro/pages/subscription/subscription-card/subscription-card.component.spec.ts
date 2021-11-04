@@ -30,6 +30,7 @@ describe('SubscriptionCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionCardComponent);
     component = fixture.componentInstance;
+    component.isMobile = false;
   });
 
   describe('when has an active subscription ', () => {
@@ -231,8 +232,33 @@ describe('SubscriptionCardComponent', () => {
         const ctaButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
         ctaButton.click();
 
-        expect(component.buttonClick.emit).toHaveBeenCalledTimes(1);
+        expect(component.buttonClick.emit).toHaveBeenCalled();
         expect(component.buttonClick.emit).toHaveBeenLastCalledWith();
+      });
+    });
+  });
+
+  describe('Responsive view', () => {
+    beforeEach(() => {
+      component.subscription = MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED;
+      fixture.detectChanges();
+    });
+    describe('and is desktop view', () => {
+      it('should be shown with desktop view', () => {
+        const card = fixture.debugElement.query(By.css('.SubscriptionCard--desktop'));
+
+        expect(card).toBeTruthy();
+      });
+    });
+    describe('and is mobile view', () => {
+      beforeEach(() => {
+        component.isMobile = true;
+        fixture.detectChanges();
+      });
+      it('should be shown withot desktop view', () => {
+        const card = fixture.debugElement.query(By.css('.SubscriptionCard--desktop'));
+
+        expect(card).toBeFalsy();
       });
     });
   });

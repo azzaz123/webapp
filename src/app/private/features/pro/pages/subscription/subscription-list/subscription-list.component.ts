@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORY_TYPES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'tsl-subscription-list',
@@ -9,10 +10,11 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
   styleUrls: ['./subscription-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SubscriptionListComponent {
+export class SubscriptionListComponent implements OnInit {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
+  public isMobile: boolean;
   private readonly rowOrder = [
     SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS,
     SUBSCRIPTION_CATEGORY_TYPES.OLD_CONSUMER_GOODS,
@@ -26,7 +28,15 @@ export class SubscriptionListComponent {
     return this.orderByCategory(this.rowOrder);
   }
 
-  constructor(private subscriptionsService: SubscriptionsService, private benefitsService: SubscriptionBenefitsService) {}
+  constructor(
+    private subscriptionsService: SubscriptionsService,
+    private benefitsService: SubscriptionBenefitsService,
+    private deviceDetector: DeviceDetectorService
+  ) {}
+
+  ngOnInit() {
+    this.isMobile = this.deviceDetector.isMobile();
+  }
 
   public hasOneFreeSubscription(subscription: SubscriptionsResponse): boolean {
     return this.subscriptionsService.hasTrial(subscription);
