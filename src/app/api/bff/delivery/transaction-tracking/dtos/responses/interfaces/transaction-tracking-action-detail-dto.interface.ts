@@ -1,16 +1,16 @@
-import {
-  TransactionTrackingActionPayloadDeeplinkDto,
-  TransactionTrackingActionPayloadUserActionDto,
-  TransactionTrackingActionPayloadDialogDto,
-  TransactionTrackingActionPayloadCarrierTrackingWebviewDto,
-} from './transaction-tracking-action-payload-dtos.interface';
 import { TransactionTrackingActionTypeDto } from '../types/transaction-tracking-action-type-dto.type';
+import {
+  TransactionTrackingActionDetailPayloadDeeplinkDto,
+  TransactionTrackingActionDetailPayloadUserActionDto,
+  TransactionTrackingActionDetailPayloadDialogDto,
+  TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto,
+} from './transaction-tracking-action-detail-payload-dtos.interface';
 
-export type TransactionTrackingActionPayloadDto =
-  | TransactionTrackingActionPayloadDeeplinkDto
-  | TransactionTrackingActionPayloadUserActionDto
-  | TransactionTrackingActionPayloadDialogDto
-  | TransactionTrackingActionPayloadCarrierTrackingWebviewDto;
+export type TransactionTrackingActionDetailPayloadDto =
+  | TransactionTrackingActionDetailPayloadDeeplinkDto
+  | TransactionTrackingActionDetailPayloadUserActionDto
+  | TransactionTrackingActionDetailPayloadDialogDto
+  | TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto;
 
 export interface TransactionTrackingActionAnalyticsDto {
   request_id: string;
@@ -20,6 +20,6 @@ export interface TransactionTrackingActionAnalyticsDto {
 
 export interface TransactionTrackingActionDetailDto {
   action_type: TransactionTrackingActionTypeDto;
-  payload: TransactionTrackingActionPayloadDto;
+  payload: TransactionTrackingActionDetailPayloadDto;
   analytics: TransactionTrackingActionAnalyticsDto | null;
 }
