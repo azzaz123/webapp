@@ -7,9 +7,9 @@ export interface TransactionTrackingActionDetail {
   payload: TransactionTrackingActionPayload;
 }
 export interface TransactionTrackingActionAnalytics {
-  request_id: string;
+  requestId: string;
   source: string;
-  user_id: string;
+  userId: string;
 }
 export interface TransactionTrackingActionPayload {
   banner?: TransactionTrackingActionPayloadBanner;
