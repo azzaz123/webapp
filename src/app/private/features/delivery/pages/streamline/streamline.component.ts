@@ -17,15 +17,15 @@ export class StreamlineComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    const firstTabsBarElement = this.tabsBarElements[0].value;
-    this.redirect(firstTabsBarElement);
+    const firstTabsBarElementValue = this.tabsBarElements[0].value;
+    this.redirect(firstTabsBarElementValue);
   }
 
-  public onTabsBarChange(tabsBarElement: TabsBarElement): void {
+  public onTabsBarChange(tabsBarElement: TabsBarElement<STREAMLINE_PATHS>): void {
     this.redirect(tabsBarElement.value);
   }
 
-  private redirect(subroute: string): void {
+  private redirect(subroute: STREAMLINE_PATHS): void {
     const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}/${subroute}`;
     this.router.navigate([route]);
   }
