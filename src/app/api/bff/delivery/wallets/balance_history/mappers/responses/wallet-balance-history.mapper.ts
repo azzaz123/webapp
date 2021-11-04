@@ -94,7 +94,7 @@ const getShortDate = (createdAt: number): string => {
 };
 
 const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): WalletMovementHistoryDetail => {
-  const { amount, created_at, currency, type } = input;
+  const { id, amount, created_at, currency, type } = input;
 
   const imageUrl = getImageURLFromHistoryElement(input);
   const mappedType = mapTransferTypeToDomain[type];
@@ -103,15 +103,16 @@ const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): Wall
   const estimatedPayoutDescription = getEstimatedPayoutDescription(input);
   const date = new Date(created_at);
   const numberSign = mappedType === WALLET_HISTORY_MOVEMENT_TYPE.IN ? 1 : -1;
-  const moneyAmmount = mapNumberAndCurrencyCodeToMoney({ number: numberSign * amount, currency });
+  const moneyAmount = mapNumberAndCurrencyCodeToMoney({ number: numberSign * amount, currency });
 
   const result: WalletMovementHistoryDetail = {
+    id,
     imageUrl,
     type: mappedType,
     title,
     description,
     date,
-    moneyAmmount,
+    moneyAmount,
   };
 
   if (estimatedPayoutDescription) {
