@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewProSubscriptionPopup } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { ItemService } from '@core/item/item.service';
 import { SUBSCRIPTION_CATEGORIES, SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
@@ -16,6 +19,7 @@ export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [
 
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { ProModalConfig, REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
 import { forkJoin, Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
@@ -25,7 +29,8 @@ export class ListingLimitService {
     private modalService: NgbModal,
     private analyticsService: AnalyticsService,
     private itemService: ItemService,
-    private subscriptionsService: SubscriptionsService
+    private subscriptionsService: SubscriptionsService,
+    private customerHelpService: CustomerHelpService
   ) {}
 
   showModal(itemId: string, type: SUBSCRIPTION_TYPES): NgbModalRef {
@@ -43,35 +48,57 @@ export class ListingLimitService {
         const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(subscriptions, item.categoryId);
         const tierDicounted = this.subscriptionsService.tierDiscountByCategoryId(subscriptions, item.categoryId);
 
+        this.trackPageView(categorySubscription, type, isFreeTrial, tierDicounted);
+
         if (type === SUBSCRIPTION_TYPES.carDealer) {
           modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_cars_highest_limit];
+          return modal;
         }
 
         if (isHighestLimit) {
           if (categorySubscription.type === SUBSCRIPTION_CATEGORY_TYPES.CARS) {
             modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_cars_highest_limit];
+            return modal;
           }
           if (categorySubscription.type === SUBSCRIPTION_CATEGORY_TYPES.REAL_ESTATE) {
             modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_real_estate_highest_limit];
+            modal.componentInstance.modalConfig.buttons.primary['redirect'] = {
+              type: REDIRECT_TYPE.href,
+              url: this.zenDeskUrl(CUSTOMER_HELP_PAGE.PROS_REAL_ESTATE_SUBSCRIPTION),
+            };
+            return modal;
           }
           if (categorySubscription.type === SUBSCRIPTION_CATEGORY_TYPES.CONSUMER_GOODS) {
-            modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_real_estate_highest_limit];
+            modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_consumer_good_highest_limit];
+            modal.componentInstance.modalConfig.buttons.primary['redirect'] = {
+              type: REDIRECT_TYPE.href,
+              url: this.zenDeskUrl(CUSTOMER_HELP_PAGE.PROS_CONSUMER_GOODS_SUBSCRIPTION),
+            };
+            return modal;
           }
         }
 
         if (isFreeTrial) {
           modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_trial];
+          return modal;
         }
 
         if (tierDicounted) {
-          modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_discount];
+          const config: ProModalConfig = {
+            ...modalConfig[PRO_MODAL_TYPE.listing_limit_discount],
+            buttons: {
+              ...modalConfig[PRO_MODAL_TYPE.listing_limit_discount].buttons,
+              primary: {
+                text: $localize`:@@listing_limit_non_pro_users_discount_modal_start_button:Try with ${tierDicounted.discount.percentage}:INTERPOLATION:% discount`,
+              },
+            },
+          };
+          modal.componentInstance.modalConfig = config;
+          return modal;
         }
 
         modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_no_trial_no_discount];
-
-        this.trackPageView(categorySubscription, type, isFreeTrial, tierDicounted);
       });
-
     return modal;
   }
 
@@ -101,5 +128,9 @@ export class ListingLimitService {
       this.subscriptionsService.hasHighestLimit(categorySubscription) &&
       CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE.includes(categorySubscription.category_id)
     );
+  }
+
+  private zenDeskUrl(key: CUSTOMER_HELP_PAGE): string {
+    return this.customerHelpService.getPageUrl(key);
   }
 }

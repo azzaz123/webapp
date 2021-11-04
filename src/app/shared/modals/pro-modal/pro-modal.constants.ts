@@ -1,4 +1,5 @@
-import { MODAL_STYLE, ProModalConfig } from './pro-modal.interface';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { MODAL_STYLE, ProModalConfig, REDIRECT_TYPE } from './pro-modal.interface';
 
 export enum PRO_MODAL_TYPE {
   simulation,
@@ -62,7 +63,10 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
       secondary: {
         text: $localize`:@@listing_limit_pro_user_upgrade_tier_modal_dismiss_button:Leave as inactive`,
       },
-      primary: { text: $localize`:@@listing_limit_pro_user_upgrade_tier_modal_view_plans_button:View plans` },
+      primary: {
+        text: $localize`:@@listing_limit_pro_user_upgrade_tier_modal_view_plans_button:View plans`,
+        redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
+      },
     },
   },
   [PRO_MODAL_TYPE.listing_limit_no_trial_no_discount]: {
@@ -73,7 +77,10 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: { text: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_dismiss_button:Leave as inactive` },
-      primary: { text: $localize`:@@listing_limit_non_pro_users_no_free_trial_modal_view_plans_button:View plans` },
+      primary: {
+        text: $localize`:@@listing_limit_non_pro_users_no_free_trial_modal_view_plans_button:View plans`,
+        redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
+      },
     },
   },
   [PRO_MODAL_TYPE.listing_limit_trial]: {
