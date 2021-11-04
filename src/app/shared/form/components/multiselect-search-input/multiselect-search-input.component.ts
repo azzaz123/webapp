@@ -49,7 +49,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
   public showOptions: boolean;
   public keyUpSubject = new Subject<KeyboardEvent>();
-  private extendedOptions: MultiSelectFormOption[];
+  private extendedOptions: TemplateMultiSelectFormOption[];
   private keyUp$: Observable<unknown>;
   private subscriptions = new Subscription();
 
