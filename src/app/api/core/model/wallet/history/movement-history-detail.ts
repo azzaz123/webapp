@@ -13,5 +13,5 @@ export interface WalletMovementHistoryDetail {
   description: string;
   estimatedPayoutDescription?: string;
   date: Date;
-  moneyAmmount: Money;
+  moneyAmount: Money;
 }

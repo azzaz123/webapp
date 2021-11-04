@@ -85,7 +85,7 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
               imageUrl: 'http://cdn-beta.wallapop.com/images/10420/34/ow/__/c10420p189278801/i420098101.jpg?pictureSize=W800',
               title: 'Laia testing beta',
               description: 'IN_TRANSIT',
-              moneyAmmount: {
+              moneyAmount: {
                 amount: { integer: 3, decimals: 0, total: 3 },
                 currency: { code: 'EUR', symbol: '€' },
               },

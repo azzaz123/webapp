@@ -68,7 +68,7 @@ describe('HistoricElementComponent', () => {
     it('should show the amount of money', () => {
       const moneyAmountElement = fixture.debugElement.query(By.css(moneyAmountSelector));
       const moneyAmount = moneyAmountElement.nativeElement.innerHTML;
-      const expectedMoneyAmount = MOCK_HISTORIC_ELEMENT.moneyAmmount.toString();
+      const expectedMoneyAmount = MOCK_HISTORIC_ELEMENT.moneyAmount.toString();
 
       expect(moneyAmount).toEqual(expectedMoneyAmount);
     });

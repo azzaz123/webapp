@@ -8,7 +8,7 @@ export const MOCK_MOVEMENT_HISTORY_DETAIL_SALE: WalletMovementHistoryDetail = {
   title: 'Muñeca reborn',
   description: 'Sale · 16 Sep',
   date: new Date('2021-09-16T11:04:20.177Z'),
-  moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: 420, currency: 'EUR' }),
+  moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 420, currency: 'EUR' }),
 };
 
 export const MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT: WalletMovementHistoryDetail = {
@@ -18,7 +18,7 @@ export const MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT: WalletMovementHistoryDetail =
   title: 'ES91••••1332',
   description: 'Withdrawal · 17 Sep',
   date: new Date('2021-09-17T11:04:20.177Z'),
-  moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
+  moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
 };
 
 export const MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT_WITH_ESTIMATED_PAYOUT: WalletMovementHistoryDetail = {
@@ -29,7 +29,7 @@ export const MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT_WITH_ESTIMATED_PAYOUT: WalletM
   description: 'Withdrawal · 17 Sep',
   estimatedPayoutDescription: 'In your bank before 22 Sep',
   date: new Date('2021-09-17T11:04:20.177Z'),
-  moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
+  moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
 };
 
 export const MOCK_DEFAULT_MOVEMENT_HISTORY_DETAILS: WalletMovementHistoryDetail[] = [

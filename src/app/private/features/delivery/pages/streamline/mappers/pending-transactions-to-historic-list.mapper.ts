@@ -34,7 +34,7 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
       imageUrl: item.imageUrl,
       title: item.title,
       description,
-      moneyAmmount: moneyAmount,
+      moneyAmount,
     };
 
     historicElements.push(historicElement);

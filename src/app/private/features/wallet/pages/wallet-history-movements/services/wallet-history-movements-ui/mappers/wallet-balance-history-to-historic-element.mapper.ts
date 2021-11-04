@@ -47,7 +47,7 @@ const getMonthFromHistoryElement = (input: WalletMovementHistoryDetail): string 
 };
 
 const mapWalletBalanceHistoryElementToHistoricElement = (input: WalletMovementHistoryDetail): HistoricElement => {
-  const { id, imageUrl, type, title, description, estimatedPayoutDescription: subDescription, moneyAmmount } = input;
+  const { id, imageUrl, type, title, description, estimatedPayoutDescription: subDescription, moneyAmount } = input;
   const iconUrl = MONEY_MOVEMENT_SVG_URL_BY_TYPE[type];
 
   const historicElement: HistoricElement = {
@@ -56,7 +56,7 @@ const mapWalletBalanceHistoryElementToHistoricElement = (input: WalletMovementHi
     iconUrl,
     title,
     description,
-    moneyAmmount,
+    moneyAmount,
   };
 
   if (subDescription) {

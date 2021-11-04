@@ -6,7 +6,7 @@ export const MOCK_HISTORIC_ELEMENT: HistoricElement = {
   imageUrl: 'path/to/image/melenaalex.jpg',
   title: 'Melena Alejandro',
   description: 'Sale - 30 Sep',
-  moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: 12, currency: 'EUR' }),
+  moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 12, currency: 'EUR' }),
 };
 
 export const MOCK_HISTORIC_ELEMENT_WITH_ICON: HistoricElement = {
@@ -25,7 +25,7 @@ export const MOCK_HISTORIC_ELEMENT_SALE: HistoricElement = {
   iconUrl: 'assets/icons/money-in.svg',
   title: 'Muñeca reborn',
   description: 'Sale · 16 Sep',
-  moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: 420, currency: 'EUR' }),
+  moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 420, currency: 'EUR' }),
 };
 
 export const MOCK_HISTORIC_ELEMENT_CASHOUT: HistoricElement = {
@@ -34,7 +34,7 @@ export const MOCK_HISTORIC_ELEMENT_CASHOUT: HistoricElement = {
   iconUrl: 'assets/icons/money-out.svg',
   title: 'ES91••••1332',
   description: 'Withdrawal · 17 Sep',
-  moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
+  moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
 };
 
 export const MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT: HistoricElement = {
@@ -43,7 +43,7 @@ export const MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT: HistoricElemen
   iconUrl: 'assets/icons/money-out.svg',
   title: 'ES91••••1332',
   description: 'Withdrawal · 17 Sep',
-  moneyAmmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
+  moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
   subDescription: 'In your bank before 22 Sep',
 };
 
