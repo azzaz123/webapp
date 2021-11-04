@@ -14,8 +14,8 @@ import { StreamlineOngoingUIService } from '../../services/streamline-ongoing-ui
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StreamlineOngoingComponent implements OnInit, OnDestroy {
-  public loadingIconSrc: string = '/assets/icons/spinner.svg';
-  public loadingIconSizePixels: number = 32;
+  public readonly loadingIconSrc: string = '/assets/icons/spinner.svg';
+  public readonly loadingIconSizePixels: number = 32;
 
   constructor(private streamlineOngoingUIService: StreamlineOngoingUIService, private router: Router) {}
 
