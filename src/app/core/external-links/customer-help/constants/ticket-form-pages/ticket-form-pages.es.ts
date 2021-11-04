@@ -1,5 +1,5 @@
 import { generateBaseTicketFormPagesByLocale } from '../../functions/generate-ticket-form-pages-by-locale';
 import { CustomerTicketFormPages } from '../../types/customer-ticket-form-pages.type';
-import { SPANISH_HELP_LOCALE } from '../customer-help-locale';
+import { ES_HELP_LOCALE } from '../customer-help-locale';
 
-export const spanishCustomerTicketFormPages: CustomerTicketFormPages = generateBaseTicketFormPagesByLocale(SPANISH_HELP_LOCALE);
+export const esCustomerTicketFormPages: CustomerTicketFormPages = generateBaseTicketFormPagesByLocale(ES_HELP_LOCALE);

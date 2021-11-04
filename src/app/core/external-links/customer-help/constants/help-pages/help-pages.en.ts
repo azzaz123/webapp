@@ -1,5 +1,5 @@
 import { generateBaseHelpPagesByLocale } from '../../functions/generate-help-pages-by-locale';
 import { CustomerHelpPages } from '../../types/customer-help-pages.type';
-import { ENGLISH_HELP_LOCALE } from '../customer-help-locale';
+import { EN_HELP_LOCALE } from '../customer-help-locale';
 
-export const englishCustomerHelpPages: CustomerHelpPages = generateBaseHelpPagesByLocale(ENGLISH_HELP_LOCALE);
+export const enCustomerHelpPages: CustomerHelpPages = generateBaseHelpPagesByLocale(EN_HELP_LOCALE);
