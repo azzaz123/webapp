@@ -2,8 +2,10 @@
 
 $image-block-width: 300px;
 $image-block-width--big: 360px;
+$image-block-width--small: 230px;
 $image-height: 200px;
 $image-height--big: 240px;
+$small-screen: 370px;
 
 .KYCUploadImages {
   &__back {
@@ -31,6 +33,12 @@ $image-height--big: 240px;
 
   &__uploadImagesWrapper {
     flex: 1;
+  }
+
+  &__buttonWrapper {
+    @media (max-width: $small-screen) {
+      margin-bottom: $spacing-ml;
+    }
   }
 
   &__imageLaterals {
@@ -68,13 +76,13 @@ $image-height--big: 240px;
   &__imageBlock {
     width: $image-block-width;
 
+    @media (max-width: $small-screen) {
+      width: $image-block-width--small;
+    }
+
     @include media-breakpoint-up(sm) {
       width: $image-block-width--big;
     }
-  }
-
-  &__bottomContainer {
-    bottom: 0;
   }
 
   &__cross {

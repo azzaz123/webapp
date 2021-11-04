@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { ExperimentationService, OPTIMIZE_SRC } from './experimentation.service';
+import { ExperimentationService } from './experimentation.service';
+import { EXPERIMENTATION_SOURCES } from '@core/experimentation/constants';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import { LoadExternalLibsServiceMock } from '@fixtures/load-external-libs.fixtures.spec';
 
@@ -24,7 +25,7 @@ describe('ExperimentService', () => {
 
       service.initialize();
 
-      expect(LoadExternalLibsServiceMock.loadScriptBySource).toHaveBeenCalledWith(OPTIMIZE_SRC);
+      expect(LoadExternalLibsServiceMock.loadScriptBySource).toHaveBeenCalledWith(EXPERIMENTATION_SOURCES);
     });
   });
 });

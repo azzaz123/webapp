@@ -29,7 +29,6 @@ import {
 } from '@fixtures/user.fixtures.spec';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
-import { SwitchComponent } from '@shared/switch/switch.component';
 import { of, throwError } from 'rxjs';
 import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { ANALYTICS_FIELDS, BAD_USERNAME_ERROR_CODE, competitorLinks, ProfileInfoComponent } from './profile-info.component';
@@ -133,7 +132,7 @@ describe('ProfileInfoComponent', () => {
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
-        declarations: [ProfileInfoComponent, ProfileFormComponent, SwitchComponent, MockCoverUpload],
+        declarations: [ProfileInfoComponent, ProfileFormComponent, MockCoverUpload],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })

@@ -32,14 +32,20 @@ import { BankAccountComponent } from './bank-account.component';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
 import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
+import { DeviceService } from '@core/device/device.service';
+import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 
 describe('BankAccountComponent', () => {
   const messageErrorSelector = '.BankAccount__message--error';
   const backAnchorSelector = '.BankAccount__back';
   const KYCInfoMessageSelector = '.BankAccount__KYCMessage';
   const saveButtonRowSelector = '#saveButtonRow';
+  const inputIBANselector = '#iban';
 
   const routerEvents: Subject<any> = new Subject();
+
+  const unformattedIBAN = MOCK_BANK_ACCOUNT.iban.valueOf();
+  const formattedIBAN = MOCK_BANK_ACCOUNT_FORMATTED_IBAN.iban.valueOf();
 
   let component: BankAccountComponent;
   let fixture: ComponentFixture<BankAccountComponent>;
@@ -49,6 +55,7 @@ describe('BankAccountComponent', () => {
   let router: Router;
   let el: HTMLElement;
   let kycTrackingEventsService: KYCTrackingEventsService;
+  let deviceService: DeviceService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -61,6 +68,10 @@ describe('BankAccountComponent', () => {
         MapBankAccountService,
         Location,
         SeparateWordByCharacterPipe,
+        {
+          provide: DeviceService,
+          useValue: MockDeviceService,
+        },
         {
           provide: UuidService,
           useValue: {
@@ -96,6 +107,7 @@ describe('BankAccountComponent', () => {
     location = TestBed.inject(Location);
     toastService = TestBed.inject(ToastService);
     kycTrackingEventsService = TestBed.inject(KYCTrackingEventsService);
+    deviceService = TestBed.inject(DeviceService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -140,7 +152,7 @@ describe('BankAccountComponent', () => {
         it('should show the correct title', () => {
           const expectedTitle = $localize`:@@kyc_bank_account_view_if_empty_title:Add the bank account where you wish to receive payment for your sales`;
 
-          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toContain(expectedTitle);
         });
       });
 
@@ -152,7 +164,7 @@ describe('BankAccountComponent', () => {
         it('should show the correct title', () => {
           const expectedTitle = $localize`:@@kyc_bank_account_view_if_already_filled_title:Please check your bank account details are correct`;
 
-          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toEqual(expectedTitle);
+          expect(fixture.debugElement.nativeElement.querySelector('#bankAccountTitle').innerHTML).toContain(expectedTitle);
         });
       });
     });
@@ -699,6 +711,42 @@ describe('BankAccountComponent', () => {
 
         expect(bottomButtonStyle).toHaveProperty('mb-4', true);
       });
+    });
+  });
+
+  describe('when device operating system is Android', () => {
+    beforeEach(() => {
+      spyOn(deviceService, 'getOSName').and.returnValue('Android');
+      component.ngOnInit();
+      component.loading$.next(false);
+
+      fixture.detectChanges();
+    });
+
+    it('should NOT format IBAN while user types into the field', () => {
+      component.bankAccountForm.get('iban').patchValue(unformattedIBAN);
+
+      const result = component.bankAccountForm.get('iban').value;
+      expect(result).toEqual(unformattedIBAN);
+    });
+
+    it('should update IBAN only when user loses focus for IBAN input field', () => {
+      const inputIBAN = fixture.debugElement.query(By.css(inputIBANselector));
+
+      component.bankAccountForm.get('iban').patchValue(unformattedIBAN);
+      inputIBAN.triggerEventHandler('blur', {});
+
+      const result = component.bankAccountForm.get('iban').value;
+      expect(result).toEqual(formattedIBAN);
+    });
+  });
+
+  describe('when device operating system is not Android', () => {
+    it('should format IBAN while user types into the field', () => {
+      component.bankAccountForm.get('iban').patchValue(unformattedIBAN);
+
+      const result = component.bankAccountForm.get('iban').value;
+      expect(result).toEqual(formattedIBAN);
     });
   });
 
