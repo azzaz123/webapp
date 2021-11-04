@@ -3,9 +3,9 @@ import { TransactionTrackingStyle } from '../transaction-tracking-style.interfac
 
 export interface TransactionTrackingStatusInfo {
   action: TransactionTrackingActionDetail;
-  actionIcon: TransactionTrackingStyle;
   description: string;
   icon: TransactionTrackingStatusInfoIcon;
+  showCaret: boolean;
 }
 export interface TransactionTrackingStatusInfoIcon {
   url: string;
