@@ -6,6 +6,7 @@ export enum WALLET_HISTORY_MOVEMENT_TYPE {
 }
 
 export interface WalletMovementHistoryDetail {
+  id: string;
   imageUrl: string;
   type: WALLET_HISTORY_MOVEMENT_TYPE;
   title: string;

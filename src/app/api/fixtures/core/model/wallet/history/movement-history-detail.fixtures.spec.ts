@@ -2,6 +2,7 @@ import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { WalletMovementHistoryDetail, WALLET_HISTORY_MOVEMENT_TYPE } from '@api/core/model/wallet/history/movement-history-detail';
 
 export const MOCK_MOVEMENT_HISTORY_DETAIL_SALE: WalletMovementHistoryDetail = {
+  id: '7cd4ef9a-6fb9-427d-a26c-7a3b742be019',
   imageUrl: 'https://cdn-beta.wallapop.com/images/10420/35/gw/__/c10420p190584802/i421614104.jpg?pictureSize=W800',
   type: WALLET_HISTORY_MOVEMENT_TYPE.IN,
   title: 'Muñeca reborn',
@@ -11,6 +12,7 @@ export const MOCK_MOVEMENT_HISTORY_DETAIL_SALE: WalletMovementHistoryDetail = {
 };
 
 export const MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT: WalletMovementHistoryDetail = {
+  id: '7cd4ef9a-6fb9-427d-a26c-7a3b742be019',
   imageUrl: 'assets/images/bank.svg',
   type: WALLET_HISTORY_MOVEMENT_TYPE.OUT,
   title: 'ES91••••1332',
@@ -20,6 +22,7 @@ export const MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT: WalletMovementHistoryDetail =
 };
 
 export const MOCK_MOVEMENT_HISTORY_DETAIL_CASHOUT_WITH_ESTIMATED_PAYOUT: WalletMovementHistoryDetail = {
+  id: '7cd4ef9a-6fb9-427d-a26c-7a3b742be019',
   imageUrl: 'assets/images/bank.svg',
   type: WALLET_HISTORY_MOVEMENT_TYPE.OUT,
   title: 'ES91••••1332',

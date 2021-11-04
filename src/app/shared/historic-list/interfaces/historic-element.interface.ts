@@ -1,7 +1,7 @@
 import { Money } from '@api/core/model/money.interface';
 
 export interface HistoricElement<T = string> {
-  id?: T;
+  id: T;
   imageUrl: string;
   iconUrl?: string;
   title: string;

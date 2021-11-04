@@ -94,7 +94,7 @@ const getShortDate = (createdAt: number): string => {
 };
 
 const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): WalletMovementHistoryDetail => {
-  const { amount, created_at, currency, type } = input;
+  const { id, amount, created_at, currency, type } = input;
 
   const imageUrl = getImageURLFromHistoryElement(input);
   const mappedType = mapTransferTypeToDomain[type];
@@ -106,6 +106,7 @@ const mapBalanceHistoryElementToDetail = (input: BalanceHistoryElementApi): Wall
   const moneyAmmount = mapNumberAndCurrencyCodeToMoney({ number: numberSign * amount, currency });
 
   const result: WalletMovementHistoryDetail = {
+    id,
     imageUrl,
     type: mappedType,
     title,
