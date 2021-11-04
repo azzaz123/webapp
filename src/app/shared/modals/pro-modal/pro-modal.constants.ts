@@ -1,4 +1,4 @@
-import { ProModalConfig } from './pro-modal.interface';
+import { MODAL_STYLE, ProModalConfig } from './pro-modal.interface';
 
 export enum PRO_MODAL_TYPE {
   simulation,
@@ -25,6 +25,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     img: '/assets/icons/pro/modals/listing-limit.svg',
     title: $localize`:@@listing_limit_pro_user_real_estate_subscription_modal_title:You've reached the subscription's listing limit`,
     text1: $localize`:@@listing_limit_pro_user_real_estate_subscription_modal_description:It’s not possible to have so many Real Estate items for sale at the same time. The item will be listed to your catalog, but it will remain inactive.`,
+    style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: { text: $localize`:@@listing_limit_pro_user_real_estate_subscription_modal_understood_button:Understood` },
       primary: { text: $localize`:@@listing_limit_pro_user_real_estate_subscription_modal_more_info_button:More info` },
@@ -34,6 +35,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     img: '/assets/icons/pro/modals/listing-limit.svg',
     title: $localize`:@@listing_limit_pro_user_cg_subscription_modal_title:You've reached the subscription's listing limit`,
     text1: $localize`:@@listing_limit_pro_user_cg_subscription_modal_description:It’s not possible to have so many items for sale at the same time. The item will be listed to your catalog, but it will remain inactive.`,
+    style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: { text: $localize`:@@listing_limit_pro_user_cg_subscription_modal_understood_button:Understood` },
       primary: { text: $localize`:@@listing_limit_pro_user_cg_subscription_modal_more_info_button:More info` },
@@ -44,6 +46,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     title: $localize`:@@listing_limit_pro_user_cars_subscription_modal_title:You've reached the subscription's listing limit`,
     text1: $localize`:@@listing_limit_pro_user_cars_subscription_modal_description_1:In order to have more cars for sale, you need to contact our sales team.`,
     text2: $localize`:@@listing_limit_pro_user_cars_subscription_modal_description_2:If you decide to keep with your plan, this item will become inactive – nobody will be able to buy it.`,
+    style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: { text: $localize`:@@listing_limit_pro_user_cg_subscription_modal_understood_button:Understood` },
       primary: { text: $localize`:@@listing_limit_pro_user_cg_subscription_modal_more_info_button:More info` },
@@ -54,6 +57,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     title: $localize`:@@listing_limit_pro_user_upgrade_tier_modal_title:You've reached your plan's listing limit`,
     text1: $localize`:@@listing_limit_pro_user_upgrade_tier_modal_description_1:To list more items of this category upgrade your subscription plan. You will sell more!`,
     text2: $localize`:@@listing_limit_pro_user_upgrade_tier_modal_description_2:If you choose to keep your plan, this item will become inactive – nobody will be able to buy it.`,
+    style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: {
         text: $localize`:@@listing_limit_pro_user_upgrade_tier_modal_dismiss_button:Leave as inactive`,
@@ -66,6 +70,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     title: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_title:You've reached the free listing limit`,
     text1: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_description_part_1:Want to list more items of this category? You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!`,
     text2: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_description_part_2:If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.`,
+    style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: { text: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_dismiss_button:Leave as inactive` },
       primary: { text: $localize`:@@listing_limit_non_pro_users_no_free_trial_modal_view_plans_button:View plans` },
@@ -76,6 +81,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     title: $localize`:@@listing_limit_non_pro_users_free_trial_available_title:You've reached the free listing limit`,
     text1: $localize`:@@listing_limit_non_pro_users_free_trial_available_description_part_1:Want to list more items of this category? You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!`,
     text2: $localize`:@@listing_limit_non_pro_users_free_trial_available_description_part_2:If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.`,
+    style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: { text: $localize`:@@listing_limit_non_pro_users_free_trial_available:Leave as inactive` },
       primary: { text: $localize`:@@listing_limit_non_pro_users_free_trial_available_ok_button:Start free trial` },
@@ -86,6 +92,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     title: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_title:You've reached the free listing limit`,
     text1: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_description_part_1:Want to list more items of this category? You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!`,
     text2: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_description_part_2:If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.`,
+    style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: { text: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_dismiss_button:Leave as inactive` },
       primary: { text: $localize`:@@listing_limit_non_pro_users_discount_modal_start_button:Try with ${50}:INTERPOLATION:% discount` },
