@@ -27,6 +27,18 @@ export const MOCK_HISTORIC_LIST_EMPTY: HistoricList = {
   elements: [],
 };
 
+export const MOCK_HISTORIC_LIST_WITHOUT_LABELS: HistoricList = {
+  elements: [
+    {
+      elements: [
+        {
+          elements: [MOCK_HISTORIC_ELEMENT],
+        },
+      ],
+    },
+  ],
+};
+
 export const MOCK_HISTORIC_LIST_WITH_BALANCE: HistoricList = {
   ...MOCK_HISTORIC_LIST,
   totalBalance: mapNumberAndCurrencyCodeToMoney({ number: 123, currency: 'EUR' }),
