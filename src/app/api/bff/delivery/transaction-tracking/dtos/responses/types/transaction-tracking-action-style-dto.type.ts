@@ -1,1 +1,1 @@
-export type TransactionTrackingActionStyleDto = 'text' | 'contained' | 'none';
+export type TransactionTrackingActionStyleDto = 'text' | 'contained' | 'outlined';

@@ -1,1 +1,1 @@
-export type TransactionTrackingActionStateDto = 'enabled';
+export type TransactionTrackingActionStateDto = 'enabled' | 'disabled';
