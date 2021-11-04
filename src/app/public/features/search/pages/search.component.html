@@ -48,6 +48,9 @@
         <ng-container inlineAdSlot *ngxPermissionsOnly="PERMISSIONS.showAds">
           <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.search2r"></tsl-sky>
         </ng-container>
+        <ng-container inlineAdSlot2 *ngxPermissionsOnly="PERMISSIONS.showAds">
+          <tsl-sky *ngIf="(device === DevicesType.MOBILE) && (variant === 'Variant-1')" [adSlot]="adSlots.search3r"></tsl-sky>
+        </ng-container>
       </tsl-public-item-card-list>
 
       <div class="Search__spinner d-flex align-items-center justify-content-center py-5" *ngIf="isLoadingPaginationResults$ | async">
@@ -65,9 +68,12 @@
             [adShoppingPageOptions]="adShoppingGroupPageOptions"
           ></tsl-sky-slot-group-shopping>
         </div>
-        <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
+        <div *ngIf="(device === DevicesType.MOBILE) && (variant === 'Baseline')" class="ItemCardList__sky-bottom row justify-content-center mt-4">
+          <h1>HELLO</h1>
           <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
         </div>
+        <h1>VARIANT -> {{ variant }}</h1>
+        <h1>NUMBER OF ITEMS -> {{ numberOfItems$ | async }}</h1>
       </ng-container>
     </ng-container>
   </tsl-search-layout>

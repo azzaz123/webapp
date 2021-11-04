@@ -1,3 +1,5 @@
+// Search component with A/B test initialized
+
 import { ViewportScroller } from '@angular/common';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router, Scroll } from '@angular/router';
@@ -38,6 +40,9 @@ import { SearchService } from '../core/services/search.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
+import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
+import { Variant } from '@core/experimentation/models';
+import { OPTIMIZE_EXPERIMENTS } from '@core/experimentation/vendors/optimize/resources/optimize-experiment-ids';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -84,6 +89,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public showPlaceholder$: Observable<boolean> = this.buildShowPlaceholderObservable();
   public searchWithoutResults$: Observable<boolean> = this.buildSearchWithoutResultsObservable();
   public searchWithKeyword$: Observable<boolean> = this.buildSearchWithKeywordObservable();
+  public numberOfItems$: Observable<number> = this.buildNumberOfItemsObservable();
   public sortBy$: Observable<SORT_BY> = this.sortBySubject.asObservable();
   public columnsConfig: ColumnsConfig = {
     xl: 4,
@@ -99,6 +105,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   );
   public isWall$: Observable<boolean> = this.searchService.isWall$;
   public slotsConfig: SlotsConfig;
+  public variant: Variant;
   readonly PERMISSIONS = PERMISSIONS;
 
   public infoBubbleText: string;
@@ -124,9 +131,13 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private queryStringService: SearchQueryStringService,
     private searchListTrackingEventsService: SearchListTrackingEventsService,
     private searchTrackingEventsService: SearchTrackingEventsService,
+    private experimentationService: ExperimentationService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
+
+    this.setVariant();
+
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(
       this.newSearch$.pipe(skip(1)).subscribe((searchResponseExtraData: SearchResponseExtraData) => {
@@ -223,10 +234,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     } else {
       this.showInfoBubble = false;
     }
-
-    if (searchResponseExtraData.sortBy) {
-      this.sortBySubject.next(searchResponseExtraData.sortBy);
-    }
   }
 
   private queryParamsChange(): Observable<FilterParameter[]> {
@@ -318,5 +325,42 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   private forceSortByDistance(params: FilterParameter[]): boolean {
     const categoryId = params.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
     return !this.paramsHaveSortBy(params) && this.paramsHaveKeywords(params) && this.categoryWithSortByRelevanceEnabled(categoryId);
+  }
+
+  // METHODS ONLY VALID FOR AN ONGOING EXPERIMENT, PLEASE REMOVE THEM WHEN THE EXPERIMENT ENDS
+
+  private setVariant(): void {
+    combineLatest([this.numberOfItems$, this.searchWithKeyword$]).subscribe((result) => {
+      const itemsLength = result[0];
+      const isSearchWithKeyword = result[1];
+
+      if (isSearchWithKeyword) {
+        if (itemsLength < 17) {
+          this.variant = 'Baseline';
+        } else {
+          this.getVariantFromOptimizeAPI();
+        }
+      } else {
+        if (itemsLength < 20) {
+          this.variant = 'Baseline';
+        } else {
+          this.getVariantFromOptimizeAPI();
+        }
+      }
+    });
+  }
+
+  private getVariantFromOptimizeAPI(): void {
+    console.log('YAY! GOT THE VARIANT FROM THE API');
+    this.experimentationService.experimentReady$.subscribe(() => {
+      this.variant = this.experimentationService.getOptimizeVariant(OPTIMIZE_EXPERIMENTS.SearchPage3rdSlotPosition);
+    });
+  }
+
+  private buildNumberOfItemsObservable(): Observable<number> {
+    return this.items$.pipe(
+      skip(1),
+      map((items) => items.length)
+    );
   }
 }

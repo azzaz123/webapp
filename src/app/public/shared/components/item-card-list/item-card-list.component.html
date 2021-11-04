@@ -14,6 +14,11 @@
                 *ngIf="i === INLINE_SLOT_POSITION">
                 <ng-content select="[inlineAdSlot]"></ng-content>
             </div>
+            <div class="ItemCardList__inline-slot d-sm-none"
+                [class.ItemCardList__inline-slot--wide]="cardType === cardTypes.WIDE"
+                *ngIf="((i === 16) && showNativeAdSlots) || ((i === 19) && !showNativeAdSlots)">
+                <ng-content select="[inlineAdSlot2]"></ng-content>
+            </div>
         </ng-container>
         <a [href]="item.webSlug | itemDetailRoute" [title]="item.title" target="_blank" class="ItemCardList__item">
             <tsl-public-item-card *ngIf="cardType === cardTypes.REGULAR" [item]="item"
