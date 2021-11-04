@@ -3,6 +3,6 @@ export interface TransactionTrackingAnalytics {
   seller: TransactionTrackingAnalyticsUserProperties;
 }
 
-interface TransactionTrackingAnalyticsUserProperties {
+export interface TransactionTrackingAnalyticsUserProperties {
   country: string;
 }
