@@ -60,7 +60,6 @@ import { PictureUploadComponent } from './profile/picture-upload/picture-upload.
 import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.component';
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
-import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { SelectComponent } from './select/select.component';
@@ -82,6 +81,7 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
 import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
 import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
+import { RouterLinkModule } from './router-link/router-link.module';
 
 @NgModule({
   imports: [
@@ -178,6 +178,7 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     InfiniteScrollDirective,
     VisibleDirectiveModule,
     PaymentsCardInfoModule,
+    RouterLinkModule,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -229,7 +230,6 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     DateCalendarPipe,
     FullScreenModalComponent,
     DisableControlDirective,
-    RouterLinkDirectiveStub,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
     SuggestProModalComponent,
