@@ -15,7 +15,7 @@ import { PaginatedList } from '@api/core/model';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
-import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
+import { TemplateMultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
@@ -152,7 +152,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
       return this.createHashtagSuggesterOption();
     }
     const options = list.map((hashtag: Hashtag) => {
-      return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
+      return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: hashtag.text };
     });
     if (options[0].label !== this.searchValue) {
       return this.sliceOptions([...this.createHashtagSuggesterOption(), ...options]);
@@ -168,13 +168,13 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   private createHashtagSuggesterOption(): SelectFormOption<string>[] {
     const newSearchValue = this.searchValue.substring(1);
     if (!!newSearchValue) {
-      return [{ label: `#${newSearchValue}`, sublabel: '0', value: `#${newSearchValue}` }];
+      return [{ label: `#${newSearchValue}`, value: newSearchValue }];
     }
   }
 
   private mapExtendedOptionsToValue(): string[] {
     let newValue: string[] = this.value;
-    this.extendedOptions.forEach((option: MultiSelectFormOption) => {
+    this.extendedOptions.forEach((option: TemplateMultiSelectFormOption) => {
       const isOptionChecked = option.checked;
       const isValueIncludedInOption = this.value.includes(option.value);
       if (isOptionChecked && !isValueIncludedInOption) {
