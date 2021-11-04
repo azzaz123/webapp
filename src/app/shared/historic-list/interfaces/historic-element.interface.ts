@@ -7,6 +7,5 @@ export interface HistoricElement<T = string> {
   title: string;
   description: string;
   subDescription?: string;
-  date?: Date;
   moneyAmmount: Money;
 }
