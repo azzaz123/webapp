@@ -37,7 +37,7 @@ import { QueryStringLocationService } from '@core/search/query-string-location.s
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MonitoringModule } from './monitoring/monitoring.module';
 import { LottieService } from './lottie/lottie.service';
-import { ExperimentationService } from './experimentation/experimentation.service';
+import { ExperimentationService } from './experimentation/services/experimentation/experimentation.service';
 
 @NgModule({
   imports: [

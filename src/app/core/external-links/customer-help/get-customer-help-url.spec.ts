@@ -1,40 +1,30 @@
-import { CUSTOMER_HELP_PAGE } from './customer-help-constants';
+import { CUSTOMER_HELP_SITE_BASE } from './enums/customer-help-site.enum';
+import { EXTERNAL_CUSTOMER_HELP_PAGE_ID } from './enums/external-customer-help-page-id.enum';
 import { getCustomerHelpUrl } from './get-customer-help-url';
+import { HELP_LOCALE } from './types/help-locale';
 
-describe('CustomerHelpUrl', () => {
-  describe('when asking for page url', () => {
-    const pageId = CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING;
-    const expected = (lang) => {
-      return `https://ayuda.wallapop.com/hc/${lang}/articles/${pageId}`;
-    };
+describe('getCustomerHelpUrl', () => {
+  const pageId = EXTERNAL_CUSTOMER_HELP_PAGE_ID.SHIPPING_SELL_WITH_SHIPPING;
+  const allHelpLocales: HELP_LOCALE[] = ['en-us', 'es-es', 'it'];
+  const generateExpectedUrl = (lang: HELP_LOCALE, base: CUSTOMER_HELP_SITE_BASE = CUSTOMER_HELP_SITE_BASE.DEFAULT) => {
+    return `${base}${lang}/articles/${pageId}`;
+  };
 
-    describe('and language is es', () => {
-      const localeId = 'es';
+  describe.each(allHelpLocales)('when generating customer help page url', (helpLocale: HELP_LOCALE) => {
+    it(`should return the expected url when language is ${helpLocale}`, () => {
+      const url = getCustomerHelpUrl(pageId, helpLocale);
+      const expectedUrl = generateExpectedUrl(helpLocale);
 
-      it('should return the expected url', () => {
-        const url = getCustomerHelpUrl(pageId, localeId);
-
-        expect(url).toEqual(expected('es-es'));
-      });
+      expect(url).toEqual(expectedUrl);
     });
 
-    describe('and language is en', () => {
-      const localeId = 'en';
+    describe('and when specifying customer site', () => {
+      it('should use specified customer site', () => {
+        const base = CUSTOMER_HELP_SITE_BASE.ITALIAN;
+        const url = getCustomerHelpUrl(pageId, helpLocale, base);
+        const expectedUrl = generateExpectedUrl(helpLocale, base);
 
-      it('should return the expected url', () => {
-        const url = getCustomerHelpUrl(pageId, localeId);
-
-        expect(url).toEqual(expected('en-us'));
-      });
-    });
-
-    describe('and language is it', () => {
-      const localeId = 'it';
-
-      it('should return the expected url', () => {
-        const url = getCustomerHelpUrl(pageId, localeId);
-
-        expect(url).toEqual(expected('it'));
+        expect(url).toEqual(expectedUrl);
       });
     });
   });

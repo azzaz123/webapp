@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import {
   MockSubscriptionService,
@@ -12,6 +13,7 @@ import {
   TIER_WITH_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { SpinnerComponent } from '@shared/spinner/spinner.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { SubscriptionListComponent } from './subscription-list.component';
 
 @Component({
@@ -23,6 +25,7 @@ class MockCardComponent {}
 describe('SubscriptionListComponent', () => {
   let component: SubscriptionListComponent;
   let fixture: ComponentFixture<SubscriptionListComponent>;
+  let deviceDetector: DeviceDetectorService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,6 +33,7 @@ describe('SubscriptionListComponent', () => {
       providers: [
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: SubscriptionBenefitsService, useClass: MockSubscriptionBenefitsService },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -37,6 +41,7 @@ describe('SubscriptionListComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionListComponent);
+    deviceDetector = TestBed.inject(DeviceDetectorService);
     component = fixture.componentInstance;
   });
 
@@ -123,6 +128,34 @@ describe('SubscriptionListComponent', () => {
             expect(text).toBe($localize`:@@pro_subscription_purchase_try_discount_button:Try with discount`);
           });
         });
+      });
+    });
+  });
+  describe('device detector', () => {
+    describe('when is desktop', () => {
+      beforeEach(() => {
+        spyOn(deviceDetector, 'isMobile').and.callThrough();
+        component.ngOnInit();
+      });
+      it('should call the service', () => {
+        expect(deviceDetector.isMobile).toBeCalledTimes(1);
+        expect(deviceDetector.isMobile).toHaveBeenCalledWith();
+      });
+      it('should set the value', () => {
+        expect(component.isMobile).toBe(false);
+      });
+    });
+    describe('when is mobile', () => {
+      beforeEach(() => {
+        spyOn(deviceDetector, 'isMobile').and.returnValue(true);
+        component.ngOnInit();
+      });
+      it('should call the service', () => {
+        expect(deviceDetector.isMobile).toBeCalledTimes(1);
+        expect(deviceDetector.isMobile).toHaveBeenCalledWith();
+      });
+      it('should set the value', () => {
+        expect(component.isMobile).toBe(true);
       });
     });
   });
