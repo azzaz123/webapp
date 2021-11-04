@@ -1,24 +1,10 @@
+import { TransactionTrackingActionDetail } from './transaction-tracking-action-detail.interface';
+import { TransactionTrackingState } from './transaction-tracking-state.interface';
+import { TransactionTrackingStyle } from './transaction-tracking-style.interface';
+
 export interface TransactionTrackingAction {
-  analytics: TransactionTrackingActionAnalytics;
-  isCarrierTrackingWebview: boolean;
-  isDeeplink: boolean;
-  isDialog: boolean;
-  isUserAction: boolean;
-  payload: TransactionTrackingActionPayload;
-}
-export interface TransactionTrackingActionAnalytics {
-  request_id: string;
-  source: string;
-  user_id: string;
-}
-export interface TransactionTrackingActionPayload {
-  description: string;
-  linkUrl: string;
-  negative: TransactionTrackingActionPayloadConfirmation;
-  positive: TransactionTrackingActionPayloadConfirmation;
-  title: string;
-}
-export interface TransactionTrackingActionPayloadConfirmation {
-  action?: TransactionTrackingAction;
+  action: TransactionTrackingActionDetail;
+  state: TransactionTrackingState;
+  style: TransactionTrackingStyle;
   title: string;
 }
