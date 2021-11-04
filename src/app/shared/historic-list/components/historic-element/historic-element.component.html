@@ -1,6 +1,6 @@
 <div class="HistoricElement d-flex justify-content-between" (click)="onItemClick()">
   <div class="HistoricElement__image">
-    <img [src]="historicElement.itemImageUrl" [alt]="historicElement.title" loading="lazy" />
+    <img [src]="historicElement.imageUrl" [alt]="historicElement.title" loading="lazy" />
     <div *ngIf="historicElement.iconUrl" class="HistoricElement__icon">
       <tsl-svg-icon [src]="historicElement.iconUrl"></tsl-svg-icon>
     </div>
@@ -9,7 +9,7 @@
   <div class="HistoricElement__text w-100 d-flex flex-column justify-content-center">
     <div class="HistoricElement__title w-100 d-flex justify-content-between">
       <div>{{ historicElement.title }}</div>
-      <div class="HistoricElement__money-amount">{{ historicElement.moneyAmmount.toString() }}</div>
+      <div class="HistoricElement__money-amount">{{ historicElement.moneyAmount.toString() }}</div>
     </div>
 
     <div class="d-flex flex-column justify-content-center">

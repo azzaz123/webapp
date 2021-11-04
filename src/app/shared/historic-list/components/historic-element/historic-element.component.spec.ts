@@ -51,10 +51,10 @@ describe('HistoricElementComponent', () => {
   describe('when rendering the component', () => {
     it('should show the image', () => {
       const imageElement = fixture.debugElement.query(By.css(imageSelector));
-      const itemImageUrl = imageElement.attributes['src'];
-      const expecteditemImageUrl = MOCK_HISTORIC_ELEMENT.itemImageUrl;
+      const imageUrl = imageElement.attributes['src'];
+      const expectedImageUrl = MOCK_HISTORIC_ELEMENT.imageUrl;
 
-      expect(itemImageUrl).toEqual(expecteditemImageUrl);
+      expect(imageUrl).toEqual(expectedImageUrl);
     });
 
     it('should show the title', () => {
@@ -68,7 +68,7 @@ describe('HistoricElementComponent', () => {
     it('should show the amount of money', () => {
       const moneyAmountElement = fixture.debugElement.query(By.css(moneyAmountSelector));
       const moneyAmount = moneyAmountElement.nativeElement.innerHTML;
-      const expectedMoneyAmount = MOCK_HISTORIC_ELEMENT.moneyAmmount.toString();
+      const expectedMoneyAmount = MOCK_HISTORIC_ELEMENT.moneyAmount.toString();
 
       expect(moneyAmount).toEqual(expectedMoneyAmount);
     });
