@@ -13,5 +13,5 @@ export interface TransactionTrackingIconDto {
   url: string;
 }
 
-type TransactionTrackingActionIconDto = 'caret' | 'none';
-type TransactionTrackingIconStyleDto = 'rounded' | 'circle' | 'none';
+export type TransactionTrackingActionIconDto = 'caret' | 'none';
+export type TransactionTrackingIconStyleDto = 'rounded' | 'circle' | 'none';

@@ -1,6 +1,7 @@
 import { TransactionTrackingActionDetailPayloadDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-dto.interface';
 import {
   TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto,
+  TransactionTrackingActionDetailPayloadDeeplinkDto,
   TransactionTrackingActionDetailPayloadDialogDto,
   TransactionTrackingActionDetailPayloadUserActionDto,
 } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-payload-dtos.interface';
@@ -13,6 +14,8 @@ import {
 } from '../../../interfaces/transaction-tracking-action-detail.interface';
 import { TransactionTrackingActionDetailPayloadBannerModel } from './transaction-tracking-action-detail-payload-banner.model';
 import { TransactionTrackingActionDetailPayloadConfirmationModel } from './transaction-tracking-action-detail-payload-confirmation.model';
+import { TransactionTrackingActionDetailPayloadParametersModel } from './transaction-tracking-action-detail-payload-parameters.model';
+import { TransactionTrackingActionDetailModel } from './transaction-tracking-action-detail.model';
 
 export class TransactionTrackingActionDetailPayloadModel implements TransactionTrackingActionDetailPayload {
   banner: TransactionTrackingActionDetailPayloadBanner;
@@ -25,31 +28,53 @@ export class TransactionTrackingActionDetailPayloadModel implements TransactionT
   success: TransactionTrackingActionDetail;
   title: string;
 
-  constructor(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto) {
-    this.banner = new TransactionTrackingActionDetailPayloadBannerModel(
-      actionDetailPayloadDto as TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto
-    );
-    this.description = this.getDescription(actionDetailPayloadDto);
-    this.linkUrl = this.getLinkUrl(actionDetailPayloadDto);
-    this.name = this.getName(actionDetailPayloadDto);
-    this.negative = new TransactionTrackingActionDetailPayloadConfirmationModel(
-      actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDialogDto
-    );
-    this.parameters = new TransactionTrackingActionDetailPayloadParametersModel(
-      actionDetailPayloadDto as TransactionTrackingActionDetailPayloadUserActionDto
-    );
+  constructor(private actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto) {
+    this.banner = this.getBanner();
+    this.description = this.getDescription();
+    this.linkUrl = this.getLinkUrl();
+    this.name = this.getName();
+    this.negative = this.getNegative();
+    this.parameters = this.getParameters();
+    this.positive = this.getPositive();
+    this.success = this.getSuccess();
+    this.title = this.getTitleFromCarrierTrackingWebview() || this.getTitleFromDialog();
   }
 
-  private getDescription(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): string {
-    return (actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDialogDto).description_text;
+  private getBanner(): TransactionTrackingActionDetailPayloadBannerModel {
+    const payload = this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto;
+    return !!payload.banner ? new TransactionTrackingActionDetailPayloadBannerModel(payload) : null;
   }
-  private getLinkUrl(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): string {
-    return (actionDetailPayloadDto as TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto).link_url;
+  private getDescription(): string {
+    return (this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDialogDto).description_text ?? null;
   }
-  private getName(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): string {
-    return (actionDetailPayloadDto as TransactionTrackingActionDetailPayloadUserActionDto).name;
+  private getLinkUrl(): string {
+    return (this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDeeplinkDto).link_url ?? null;
   }
-  private getTitleText(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): string {
-    return (actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDialogDto).title_text;
+  private getName(): string {
+    return (this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadUserActionDto).name ?? null;
+  }
+  private getNegative(): TransactionTrackingActionDetailPayloadConfirmationModel {
+    const payload = this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDialogDto;
+    return !!payload.negative ? new TransactionTrackingActionDetailPayloadConfirmationModel(payload.negative.title) : null;
+  }
+  private getParameters(): TransactionTrackingActionDetailPayloadParametersModel {
+    const payload = this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadUserActionDto;
+    return !!payload ? new TransactionTrackingActionDetailPayloadParametersModel(payload) : null;
+  }
+  private getPositive(): TransactionTrackingActionDetailPayloadConfirmationModel {
+    const payload = this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDialogDto;
+    return !!payload.positive
+      ? new TransactionTrackingActionDetailPayloadConfirmationModel(payload.positive.title, payload.positive.action)
+      : null;
+  }
+  private getSuccess(): TransactionTrackingActionDetailModel {
+    const payload = this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadUserActionDto;
+    return !!payload.on_success ? new TransactionTrackingActionDetailModel(payload.on_success) : null;
+  }
+  private getTitleFromCarrierTrackingWebview(): string {
+    return (this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto).title ?? null;
+  }
+  private getTitleFromDialog(): string {
+    return (this.actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDialogDto).title_text ?? null;
   }
 }

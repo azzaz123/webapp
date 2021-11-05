@@ -6,6 +6,7 @@ import {
   TransactionTrackingActionDetailPayload,
 } from '../../../interfaces/transaction-tracking-action-detail.interface';
 import { TransactionTrackingActionDetailAnalyticsModel } from './transaction-tracking-action-detail-analytics.model';
+import { TransactionTrackingActionDetailPayloadModel } from './transaction-tracking-action-detail-payload.model';
 
 export class TransactionTrackingActionDetailModel implements TransactionTrackingActionDetail {
   analytics: TransactionTrackingActionDetailAnalytics;
@@ -16,12 +17,12 @@ export class TransactionTrackingActionDetailModel implements TransactionTracking
   payload: TransactionTrackingActionDetailPayload;
 
   constructor(actionDetailDto: TransactionTrackingActionDetailDto) {
-    this.analytics = new TransactionTrackingActionDetailAnalyticsModel(actionDetailDto.analytics);
-    this.isCarrierTrackingWebview = this.isActionType(actionDetailDto.action_type, 'carrier_tracking_webview');
-    this.isDeeplink = this.isActionType(actionDetailDto.action_type, 'deeplink');
-    this.isDialog = this.isActionType(actionDetailDto.action_type, 'dialog');
-    this.isUserAction = this.isActionType(actionDetailDto.action_type, 'user_action');
-    this.payload = null;
+    this.analytics = new TransactionTrackingActionDetailAnalyticsModel(actionDetailDto?.analytics);
+    this.isCarrierTrackingWebview = this.isActionType(actionDetailDto?.action_type, 'carrier_tracking_webview');
+    this.isDeeplink = this.isActionType(actionDetailDto?.action_type, 'deeplink');
+    this.isDialog = this.isActionType(actionDetailDto?.action_type, 'dialog');
+    this.isUserAction = this.isActionType(actionDetailDto?.action_type, 'user_action');
+    this.payload = new TransactionTrackingActionDetailPayloadModel(actionDetailDto.payload);
   }
 
   private isActionType(actionType: TransactionTrackingActionTypeDto, expectedActionType: TransactionTrackingActionTypeDto): boolean {

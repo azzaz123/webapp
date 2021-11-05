@@ -1,5 +1,5 @@
-import { TransactionTrackingActionDetail } from '../transaction-tracking-action-detail.interface';
-import { TransactionTrackingStyle } from '../transaction-tracking-style.interface';
+import { TransactionTrackingActionDetail } from './transaction-tracking-action-detail.interface';
+import { TransactionTrackingStyle } from './transaction-tracking-style.interface';
 
 export interface TransactionTrackingStatusInfo {
   action: TransactionTrackingActionDetail;

@@ -5,6 +5,7 @@ import { TransactionTrackingActionStyleModel } from './transaction-tracking-acti
 import { TransactionTrackingState } from '../../interfaces/transaction-tracking-state.interface';
 import { TransactionTrackingStyle } from '../../interfaces/transaction-tracking-style.interface';
 import { TransactionTrackingStateModel } from '../transaction-tracking-state.model';
+import { TransactionTrackingActionDetailModel } from './detail/transaction-tracking-action-detail.model';
 
 export class TransactionTrackingActionModel implements TransactionTrackingAction {
   action: TransactionTrackingActionDetail;

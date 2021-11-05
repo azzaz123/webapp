@@ -11,4 +11,4 @@ export interface TransactionTrackingAnimationDto {
   mode: TransactionTrackingAnimationModeDto;
   url: string;
 }
-type TransactionTrackingAnimationModeDto = 'normal' | 'loop' | 'loop_reverse';
+export type TransactionTrackingAnimationModeDto = 'normal' | 'loop' | 'loop_reverse';
