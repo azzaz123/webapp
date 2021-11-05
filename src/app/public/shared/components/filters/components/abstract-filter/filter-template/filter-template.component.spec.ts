@@ -47,6 +47,24 @@ describe('FilterTemplateComponent', () => {
       expectRender(By.css('.TestExtendedContent'), false);
     });
 
+    describe('on cancel click', () => {
+      const cancelSelector = By.css('tsl-button .basic.basic-dark.btn-filter');
+
+      it('should close modal', () => {
+        debugElement.query(cancelSelector).nativeElement.click();
+
+        expect(component.isDropdownOpen).toBe(false);
+      });
+
+      it('should emit cancel', () => {
+        spyOn(component.cancel, 'emit');
+        component.isDropdownOpen = true;
+        debugElement.query(cancelSelector).nativeElement.click();
+
+        expect(component.cancel.emit).toHaveBeenCalledTimes(1);
+      });
+    });
+
     describe('when clicked on the bubble', () => {
       it('should emit click', () => {
         spyOn(component.click, 'emit');

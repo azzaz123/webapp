@@ -94,18 +94,23 @@ describe('SelectFilterComponent', () => {
   });
 
   describe('when the component inits', () => {
-    it('should retrieve corresponding options from backend', () => {
+    it('should retrieve corresponding options from backend', (done) => {
       fixture.detectChanges();
-      expect(component.options).toEqual([
-        {
-          value: 'male',
-          label: 'Male',
-        },
-        {
-          value: 'female',
-          label: 'Female',
-        },
-      ]);
+
+      component.options$.subscribe((options) => {
+        expect(options).toEqual([
+          {
+            value: 'male',
+            label: 'Male',
+          },
+          {
+            value: 'female',
+            label: 'Female',
+          },
+        ]);
+
+        done();
+      });
     });
 
     describe('and is bubble variant', () => {
