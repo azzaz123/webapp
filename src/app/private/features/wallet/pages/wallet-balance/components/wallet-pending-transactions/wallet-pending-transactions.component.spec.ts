@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testi
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/pending-transactions-fixtures.spec';
 import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { PendingTransaction } from '@api/core/model';
-import { RequestsAndTransactionsPendingAsSellerService } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.service';
+import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsComponent } from './wallet-pending-transactions.component';
@@ -18,7 +18,7 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let errorActionService: WalletSharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
   let mockPendingTransactions$: Observable<PendingTransaction[]> = of(MOCK_PENDING_TRANSACTIONS);
-  let service: RequestsAndTransactionsPendingAsSellerService;
+  let service: RequestsAndTransactionsPendingService;
   let spyTransactionsPendingService;
   const walletPendingTransactionsSelector = '.WalletPendingTransactions';
   const walletPendingTransactionsLabelSelector = `${walletPendingTransactionsSelector}__label`;
@@ -34,7 +34,7 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
       ],
       providers: [
         {
-          provide: RequestsAndTransactionsPendingAsSellerService,
+          provide: RequestsAndTransactionsPendingService,
           useValue: {
             get pendingTransactions$() {
               return mockPendingTransactions$;
@@ -47,7 +47,7 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
         },
       ],
     }).compileComponents();
-    service = TestBed.inject(RequestsAndTransactionsPendingAsSellerService);
+    service = TestBed.inject(RequestsAndTransactionsPendingService);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
   });
 
@@ -134,7 +134,7 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let errorActionService: WalletSharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
   let mockPendingTransactions$: Observable<PendingTransaction[]> = of(MOCK_PENDING_TRANSACTIONS);
-  let service: RequestsAndTransactionsPendingAsSellerService;
+  let service: RequestsAndTransactionsPendingService;
   let spyTransactionsPendingService;
   const walletPendingTransactionsSelector = '.WalletPendingTransactions';
   const walletPendingTransactionsLabelSelector = `${walletPendingTransactionsSelector}__label`;
@@ -150,7 +150,7 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
       ],
       providers: [
         {
-          provide: RequestsAndTransactionsPendingAsSellerService,
+          provide: RequestsAndTransactionsPendingService,
           useValue: {
             get pendingTransactions$() {
               return throwError('There is an error!');
@@ -163,7 +163,7 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
         },
       ],
     }).compileComponents();
-    service = TestBed.inject(RequestsAndTransactionsPendingAsSellerService);
+    service = TestBed.inject(RequestsAndTransactionsPendingService);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
   });
 

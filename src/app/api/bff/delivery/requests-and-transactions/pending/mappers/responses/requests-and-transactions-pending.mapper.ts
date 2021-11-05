@@ -8,14 +8,13 @@ import { CurrencyCode } from '@api/core/model/currency.interface';
 import { PendingTransaction } from '@api/core/model/delivery/transaction';
 import { TRANSACTION_STATUS } from '@api/core/model/delivery/transaction/status';
 import { InnerType, ToDomainMapper } from '@api/core/utils/types';
-import { RequestsAndTransactionsPendingAsSellerApi } from '../../dtos/responses';
+import { RequestsAndTransactionsPendingDto } from '../../dtos/responses';
 
-type TransactionPendingAsSellerApi = InnerType<RequestsAndTransactionsPendingAsSellerApi, 'transactions'>;
+type TransactionPendingApi = InnerType<RequestsAndTransactionsPendingDto, 'transactions'>;
 
-export const mapRequestsAndTransactionsPendingAsSellerToPendingBalance: ToDomainMapper<
-  RequestsAndTransactionsPendingAsSellerApi,
-  PendingTransaction[]
-> = (input: RequestsAndTransactionsPendingAsSellerApi): PendingTransaction[] => {
+export const mapRequestsAndTransactionsPendingToPendingBalance: ToDomainMapper<RequestsAndTransactionsPendingDto, PendingTransaction[]> = (
+  input: RequestsAndTransactionsPendingDto
+): PendingTransaction[] => {
   if (!input) {
     return [];
   }
@@ -23,7 +22,7 @@ export const mapRequestsAndTransactionsPendingAsSellerToPendingBalance: ToDomain
   const { transactions } = input;
   const mappedTransactions = [];
 
-  transactions.forEach((rawTransaction: TransactionPendingAsSellerApi) => {
+  transactions.forEach((rawTransaction: TransactionPendingApi) => {
     const {
       id,
       item_hash: itemId,

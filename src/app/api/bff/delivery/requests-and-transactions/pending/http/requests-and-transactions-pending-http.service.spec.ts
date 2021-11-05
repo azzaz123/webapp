@@ -1,20 +1,20 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API } from '@api/fixtures/bff/delivery/requests-and-transactions/pending-as-seller/pending-as-seller.fixtures.spec';
-import { RequestsAndTransactionsPendingAsSellerApi } from '../dtos/responses';
+import { RequestsAndTransactionsPendingDto } from '../dtos/responses';
 import { DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_ENDPOINT } from './endpoints';
-import { RequestsAndTransactionsPendingAsSellerHttpService } from './requests-and-transactions-pending-as-seller-http.service';
+import { RequestsAndTransactionsPendingHttpService } from './requests-and-transactions-pending-http.service';
 
-describe('RequestsAndTransactionsPendingAsSellerHttpService', () => {
-  let service: RequestsAndTransactionsPendingAsSellerHttpService;
+describe('RequestsAndTransactionsPendingHttpService', () => {
+  let service: RequestsAndTransactionsPendingHttpService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [RequestsAndTransactionsPendingAsSellerHttpService],
+      providers: [RequestsAndTransactionsPendingHttpService],
     });
-    service = TestBed.inject(RequestsAndTransactionsPendingAsSellerHttpService);
+    service = TestBed.inject(RequestsAndTransactionsPendingHttpService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -28,7 +28,7 @@ describe('RequestsAndTransactionsPendingAsSellerHttpService', () => {
 
   describe('when asking to get the delivery pending transactions', () => {
     it('should get the delivery pending transactions', () => {
-      let response: RequestsAndTransactionsPendingAsSellerApi;
+      let response: RequestsAndTransactionsPendingDto;
 
       service.get().subscribe((data) => (response = data));
       const req: TestRequest = httpMock.expectOne(DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_ENDPOINT);

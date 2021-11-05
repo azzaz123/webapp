@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RequestsAndTransactionsPendingAsSellerService } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.service';
+import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { PendingTransaction } from '@api/core/model';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 import { throwError } from 'rxjs';
@@ -15,10 +15,10 @@ export class WalletPendingTransactionsComponent {
   public pendingTransactions$: Observable<PendingTransaction[]>;
 
   constructor(
-    private requestsAndTransactionsPendingAsSellerService: RequestsAndTransactionsPendingAsSellerService,
+    private requestsAndTransactionsPendingService: RequestsAndTransactionsPendingService,
     private errorActionService: WalletSharedErrorActionService
   ) {
-    this.pendingTransactions$ = this.requestsAndTransactionsPendingAsSellerService.pendingTransactions$.pipe(
+    this.pendingTransactions$ = this.requestsAndTransactionsPendingService.pendingTransactions$.pipe(
       catchError((error: unknown) => {
         this.errorActionService.show(error);
         return throwError(error);
