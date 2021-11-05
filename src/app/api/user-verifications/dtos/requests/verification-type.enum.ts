@@ -1,3 +1,3 @@
-export enum VERIFICAITON_TYPE {
+export enum VERIFICATION_TYPE {
   PHONE = 2,
 }

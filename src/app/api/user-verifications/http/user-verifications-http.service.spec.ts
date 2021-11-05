@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { MOCK_EMAIL_VERIFICATION_API_RESPONSE } from '@api/fixtures/user-verifications/email-verification.fixtures.spec';
 import { MOCK_PHONE_VERIFICATION_API_RESPONSE } from '@api/fixtures/user-verifications/phone-verification.fixtures.spec';
 import { MOCK_USER_VERIFICATIONS_API_RESPONSE } from '@api/fixtures/user-verifications/user-verifications.fixtures.spec';
-import { VERIFICAITON_TYPE } from '../dtos/requests';
+import { VERIFICATION_TYPE } from '../dtos/requests';
 import { EmailVerificationApi, UserVerificationsApi } from '../dtos/responses';
 import { PhoneVerificationApi } from '../dtos/responses/phone-verification-api.interface';
 import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_PHONE_ENDPOINT } from './endpoints';
@@ -68,7 +68,7 @@ describe('UserVerificationsHttpService', () => {
 
       expect(req.request.method).toBe('POST');
       expect(response).toEqual(MOCK_PHONE_VERIFICATION_API_RESPONSE);
-      expect(req.request.body).toEqual({ mobileNumber, code, type: VERIFICAITON_TYPE.PHONE });
+      expect(req.request.body).toEqual({ mobileNumber, code, type: VERIFICATION_TYPE.PHONE });
     });
   });
 });
