@@ -1,7 +1,11 @@
-import { HELP_LOCALE, HelpLocaleId, CUSTOMER_TICKET_FORM } from './customer-help-constants';
+import { CUSTOMER_HELP_SITE_BASE } from './enums/customer-help-site.enum';
+import { EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID } from './enums/external-customer-ticket-form-page-id.enum';
+import { HELP_LOCALE } from './types/help-locale';
 
-const HELP_BASE_URL = 'https://ayuda.wallapop.com/hc/';
-
-export function getTicketFormUrl(formId: CUSTOMER_TICKET_FORM, locale: HelpLocaleId): string {
-  return `${HELP_BASE_URL}${HELP_LOCALE[locale]}/requests/new?ticket_form_id=${formId}`;
+export function getTicketFormUrl(
+  formId: EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID,
+  helpLocale: HELP_LOCALE,
+  baseUrl: CUSTOMER_HELP_SITE_BASE = CUSTOMER_HELP_SITE_BASE.DEFAULT
+): string {
+  return `${baseUrl}${helpLocale}/requests/new?ticket_form_id=${formId}`;
 }

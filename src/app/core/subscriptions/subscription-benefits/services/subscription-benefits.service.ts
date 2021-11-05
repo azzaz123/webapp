@@ -1,5 +1,5 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { HelpLocaleId } from '@core/external-links/customer-help/customer-help-constants';
+import { APP_LOCALE } from '@configs/subdomains.config';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -17,7 +17,7 @@ export const GENERIC_BENEFITS: string[] = [
 export class SubscriptionBenefitsService {
   private subscriptionBenefits: SubscriptionBenefit[];
 
-  constructor(@Inject(LOCALE_ID) private locale: HelpLocaleId) {}
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE) {}
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]> {
     if (useCache && this.subscriptionBenefits) {

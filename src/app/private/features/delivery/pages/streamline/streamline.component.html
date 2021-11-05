@@ -1,1 +1,4 @@
-<div class="container"></div>
+<div class="Streamline">
+  <tsl-tabs-bar [tabsBarElements]="tabsBarElements" (onChange)="onTabsBarChange($event)"></tsl-tabs-bar>
+  <router-outlet></router-outlet>
+</div>
