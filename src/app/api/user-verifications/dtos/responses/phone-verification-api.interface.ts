@@ -1,5 +1,5 @@
-import { USER_VERIFIED_INFO_STATUS_API } from './user-verified-info-status-api.enum';
+import { VERIFICATION_STATUS_API } from './verification-status-api.enum';
 
 export interface PhoneVerificationApi {
-  mobileVerifiedStatus: USER_VERIFIED_INFO_STATUS_API;
+  mobileVerifiedStatus: VERIFICATION_STATUS_API;
 }

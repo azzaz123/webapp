@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PhoneVerificationBodyRequest, TYPE_VERIFICATION_PHONE } from '../dtos/requests/phone-verification-request.interface';
+import { PhoneVerificationBodyRequest, VERIFICAITON_TYPE } from '../dtos/requests';
 import { EmailVerificationApi, UserVerificationsApi } from '../dtos/responses';
 import { PhoneVerificationApi } from '../dtos/responses/phone-verification-api.interface';
 import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_PHONE_ENDPOINT } from './endpoints';
@@ -20,7 +20,7 @@ export class UserVerificationsHttpService {
     return this.httpClient.post<EmailVerificationApi>(SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_EMAIL_BODY);
   }
 
-  public sendVerifyPhone(mobileNumber: string, code: string, type = TYPE_VERIFICATION_PHONE): Observable<PhoneVerificationApi> {
+  public sendVerifyPhone(mobileNumber: string, code: string, type = VERIFICAITON_TYPE.PHONE): Observable<PhoneVerificationApi> {
     const body: PhoneVerificationBodyRequest = { mobileNumber, code, type };
 
     return this.httpClient.post<PhoneVerificationApi>(SEND_VERIFY_PHONE_ENDPOINT, body);

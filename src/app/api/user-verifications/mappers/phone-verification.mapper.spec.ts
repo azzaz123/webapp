@@ -1,15 +1,13 @@
-import {
-  MOCK_PHONE_VERIFICATION_API_RESPONSE,
-  MOCK_PHONE_VERIFICATION_MAPPED,
-} from '@api/fixtures/user-verifications/phone-verification.fixtures.spec';
-import { mapPhoneVerificationApiToUserVerifiedInfoStatus } from './phone-verification.mapper';
+import { VERIFICATION_STATUS } from '@api/core/model/verifications';
+import { MOCK_PHONE_VERIFICATION_API_RESPONSE } from '@api/fixtures/user-verifications/phone-verification.fixtures.spec';
+import { mapPhoneVerificationApiToVerificationStatus } from './phone-verification.mapper';
 
-describe('mapPhoneVerificationApiToUserVerifiedInfoStatus', () => {
+describe('mapPhoneVerificationApiToVerificationStatus', () => {
   describe('when mapping from phone verification DTO into user phone verification domain', () => {
     it('should map to phone verification domain', () => {
-      const mappedPhoneVerification = mapPhoneVerificationApiToUserVerifiedInfoStatus(MOCK_PHONE_VERIFICATION_API_RESPONSE);
+      const mappedPhoneVerification = mapPhoneVerificationApiToVerificationStatus(MOCK_PHONE_VERIFICATION_API_RESPONSE);
 
-      expect(JSON.stringify(mappedPhoneVerification)).toEqual(JSON.stringify(MOCK_PHONE_VERIFICATION_MAPPED));
+      expect(mappedPhoneVerification).toEqual(VERIFICATION_STATUS.SENT);
     });
   });
 });

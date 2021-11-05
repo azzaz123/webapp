@@ -1,1 +1,1 @@
-export * from './user-verified-info-status.mapper';
+export * from './verification-status.mapper';

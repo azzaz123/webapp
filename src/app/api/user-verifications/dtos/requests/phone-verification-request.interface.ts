@@ -1,7 +1,7 @@
-export const TYPE_VERIFICATION_PHONE = 2;
+import { VERIFICAITON_TYPE } from './verification-type.enum';
 
 export interface PhoneVerificationBodyRequest {
   mobileNumber: string;
-  type: number;
+  type: VERIFICAITON_TYPE;
   code: string;
 }

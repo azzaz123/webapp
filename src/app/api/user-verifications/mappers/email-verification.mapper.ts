@@ -1,14 +1,12 @@
-import { mapUserVerifiedInfoStatusApiToUserVerifiedInfoStatus } from '@api/core/mappers/user-verifications/status';
-import { UserVerifiedInfoStatus } from '@api/core/model/verifications';
+import { mapVerificationStatusApiToVerificationStatus } from '@api/core/mappers/user-verifications/status';
+import { VERIFICATION_STATUS } from '@api/core/model/verifications';
 import { ToDomainMapper } from '@api/core/utils/types';
 import { EmailVerificationApi } from '../dtos/responses';
 
-export const mapEmailVerificationApiToUserVerifiedInfoStatus: ToDomainMapper<EmailVerificationApi, UserVerifiedInfoStatus> = (
-  input: EmailVerificationApi
-): UserVerifiedInfoStatus => {
-  const { emailVerifiedStatus } = input;
+export const mapEmailVerificationApiToVerificationStatus: ToDomainMapper<EmailVerificationApi, VERIFICATION_STATUS> = (
+  emailVerification: EmailVerificationApi
+): VERIFICATION_STATUS => {
+  const { emailVerifiedStatus } = emailVerification;
 
-  return {
-    status: mapUserVerifiedInfoStatusApiToUserVerifiedInfoStatus(emailVerifiedStatus),
-  };
+  return mapVerificationStatusApiToVerificationStatus(emailVerifiedStatus);
 };
