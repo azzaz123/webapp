@@ -1,0 +1,26 @@
+@import '~style/common';
+.ProHeader {
+  background-color: $color-pro-main;
+  padding: $spacing-xxl 0;
+  color: $white;
+
+  &--small {
+    padding: $spacing-xl 0;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-chunky;
+
+    &--small {
+      font-size: $font-size-m;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    padding: $spacing-m 0;
+    &__title {
+      font-size: $font-size-lll;
+    }
+  }
+}

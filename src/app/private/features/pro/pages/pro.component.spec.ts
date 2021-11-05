@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -7,10 +7,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { InvoiceService } from '@core/invoice/invoice.service';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_INVOICE_HISTORY } from '@fixtures/invoice.fixtures.spec';
+import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import {
@@ -45,6 +47,7 @@ describe('ProComponent', () => {
   let customerHelpService: CustomerHelpService;
   let router: Router;
   let invoiceService: InvoiceService;
+  let benefits: SubscriptionBenefitsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -92,6 +95,10 @@ describe('ProComponent', () => {
             },
           },
           {
+            provide: SubscriptionBenefitsService,
+            useClass: MockSubscriptionBenefitsService,
+          },
+          {
             provide: InvoiceService,
             useValue: {
               getInvoiceTransactions() {
@@ -100,7 +107,7 @@ describe('ProComponent', () => {
             },
           },
         ],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
       fixture = TestBed.createComponent(ProComponent);
       component = fixture.componentInstance;
@@ -111,6 +118,7 @@ describe('ProComponent', () => {
       customerHelpService = TestBed.inject(CustomerHelpService);
       invoiceService = TestBed.inject(InvoiceService);
       router = TestBed.inject(Router);
+      benefits = TestBed.inject(SubscriptionBenefitsService);
       fixture.detectChanges();
     })
   );
@@ -330,4 +338,43 @@ describe('ProComponent', () => {
       });
     });
   });
+  describe('Header', () => {
+    describe('and is Pro user', () => {
+      beforeEach(() => {
+        jest.spyOn(userService, 'isProUser$', 'get').mockReturnValue(of(true));
+        fixture.detectChanges();
+      });
+      it('should not show benefits', () => {
+        expectProHeaderBenefitsShown(false);
+      });
+    });
+    describe('and is not Pro user', () => {
+      beforeEach(() => {
+        jest.spyOn(userService, 'isProUser$', 'get').mockReturnValue(of(false));
+      });
+      describe('and has not to show benefits', () => {
+        beforeEach(() => {
+          jest.spyOn(benefits, 'showHeaderBenefits$', 'get').mockReturnValue(of(false));
+          fixture.detectChanges();
+        });
+        it('should not show benefits', () => {
+          expectProHeaderBenefitsShown(false);
+        });
+      });
+      describe('and has to show benefits', () => {
+        beforeEach(() => {
+          jest.spyOn(benefits, 'showHeaderBenefits$', 'get').mockReturnValue(of(true));
+          fixture.detectChanges();
+        });
+        it('should show benefits', () => {
+          expectProHeaderBenefitsShown(true);
+        });
+      });
+    });
+  });
+  function expectProHeaderBenefitsShown(isShown: boolean): void {
+    const header = fixture.debugElement.query(By.css('tsl-pro-header'));
+
+    expect(header.nativeNode.showBenefits).toBe(isShown);
+  }
 });
