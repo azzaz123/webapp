@@ -12,9 +12,10 @@ import { RequestsAndTransactionsPendingDto } from '../../dtos/responses';
 
 type TransactionPendingApi = InnerType<RequestsAndTransactionsPendingDto, 'transactions'>;
 
-export const mapRequestsAndTransactionsPendingToPendingBalance: ToDomainMapper<RequestsAndTransactionsPendingDto, PendingTransaction[]> = (
-  input: RequestsAndTransactionsPendingDto
-): PendingTransaction[] => {
+export const mapRequestsAndTransactionsPendingToPendingTransactions: ToDomainMapper<
+  RequestsAndTransactionsPendingDto,
+  PendingTransaction[]
+> = (input: RequestsAndTransactionsPendingDto): PendingTransaction[] => {
   if (!input) {
     return [];
   }

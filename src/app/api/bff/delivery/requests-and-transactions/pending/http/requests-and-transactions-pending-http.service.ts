@@ -2,7 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RequestsAndTransactionsPendingDto } from '../dtos/responses';
-import { DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_ENDPOINT } from './endpoints';
+import {
+  DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_ENDPOINT,
+  DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_ENDPOINT,
+} from './endpoints';
 
 @Injectable()
 export class RequestsAndTransactionsPendingHttpService {
@@ -10,5 +13,9 @@ export class RequestsAndTransactionsPendingHttpService {
 
   public get(): Observable<RequestsAndTransactionsPendingDto> {
     return this.http.get<RequestsAndTransactionsPendingDto>(DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_ENDPOINT);
+  }
+
+  public getAsSeller(): Observable<RequestsAndTransactionsPendingDto> {
+    return this.http.get<RequestsAndTransactionsPendingDto>(DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_ENDPOINT);
   }
 }

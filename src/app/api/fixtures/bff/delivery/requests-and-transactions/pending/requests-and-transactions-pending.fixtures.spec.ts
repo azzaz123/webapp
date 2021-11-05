@@ -1,6 +1,9 @@
-import { RequestsAndTransactionsPendingDto } from '@api/bff/delivery/requests-and-transactions/pending/dtos/responses';
+import {
+  RequestsAndTransactionsPendingAsSellerDto,
+  RequestsAndTransactionsPendingDto,
+} from '@api/bff/delivery/requests-and-transactions/pending/dtos/responses';
 
-export const MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API: RequestsAndTransactionsPendingDto = {
+export const MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_DTO_RESPONSE: RequestsAndTransactionsPendingDto = {
   requests: [],
   transactions: [
     {
@@ -26,4 +29,8 @@ export const MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API: RequestsAndTr
       kyc_status: 'pending',
     },
   ],
+};
+
+export const MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_DTO_RESPONSE: RequestsAndTransactionsPendingAsSellerDto = {
+  ...MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_DTO_RESPONSE,
 };
