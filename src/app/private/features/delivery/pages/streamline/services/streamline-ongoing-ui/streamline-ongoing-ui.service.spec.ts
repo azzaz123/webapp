@@ -31,9 +31,7 @@ describe('StreamlineOngoingUIService', () => {
 
   describe('when getting elements', () => {
     beforeEach(() => {
-      jest
-        .spyOn(requestsAndTransactionsPendingService, 'pendingTransactions$', 'get')
-        .mockReturnValue(requestsReplaySubject.asObservable());
+      jest.spyOn(requestsAndTransactionsPendingService, 'pendingTransactions', 'get').mockReturnValue(requestsReplaySubject.asObservable());
       service.getItems();
     });
 

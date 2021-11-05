@@ -9,7 +9,7 @@ import { mapRequestsAndTransactionsPendingToPendingTransactions } from './mapper
 export class RequestsAndTransactionsPendingService {
   constructor(private requestsAndTransactionsPendingHttpService: RequestsAndTransactionsPendingHttpService) {}
 
-  public get pendingTransactions$(): Observable<PendingTransaction[]> {
+  public get pendingTransactions(): Observable<PendingTransaction[]> {
     return this.requestsAndTransactionsPendingHttpService.get().pipe(take(1), map(mapRequestsAndTransactionsPendingToPendingTransactions));
   }
 
