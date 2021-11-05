@@ -4,7 +4,7 @@ import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { DeviceService } from '@core/device/device.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
@@ -15,7 +15,7 @@ import { LoadAdsService } from '../load-ads/load-ads.service';
 export class AdsService {
   private readonly setSlotsSubject: BehaviorSubject<AdSlotConfiguration[]> = new BehaviorSubject<AdSlotConfiguration[]>([]);
   private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private isSegmentationAllowed;
+  private readonly refreshSlotsSubject: Subject<void> = new Subject();
 
   public get adsReady$(): Observable<boolean> {
     return this._adsReady$.asObservable();
@@ -30,6 +30,7 @@ export class AdsService {
   ) {
     this.listenerToSetSlots();
     this.listenerToDisplaySlots();
+    this.listenerToRefreshSlots();
   }
 
   public init(): void {
@@ -60,8 +61,7 @@ export class AdsService {
   }
 
   public refreshAllSlots(): void {
-    this.googlePublisherTagService.refreshAllSlots();
-    this.refreshHeaderBids(this.isSegmentationAllowed);
+    this.refreshSlotsSubject.next();
   }
 
   public clearSlots(adSlots: AdSlotConfiguration[]): void {
@@ -115,8 +115,15 @@ export class AdsService {
         map(([adsReady, adSlotsDefined, allowSegmentation]: [boolean, boolean, boolean]) => allowSegmentation)
       )
       .subscribe((allowSegmentation: boolean) => {
-        this.isSegmentationAllowed = allowSegmentation;
         this.getHeaderBids(allowSegmentation);
+      });
+  }
+
+  private listenerToRefreshSlots(): void {
+    combineLatest([this.allowSegmentation$, this.refreshSlotsSubject.asObservable()])
+      .pipe(map(([allowSegmentation, refreshSlots]: [boolean, void]) => allowSegmentation))
+      .subscribe((allowSegmentation: boolean) => {
+        this.refreshHeaderBids(allowSegmentation);
       });
   }
 
@@ -133,7 +140,7 @@ export class AdsService {
     this.googlePublisherTagService.setPubAdsConfig();
   }
 
-  private refreshHeaderBids(allowSegmentation: true): void {
+  private refreshHeaderBids(allowSegmentation: boolean): void {
     const slots = this.setSlotsSubject.getValue();
     const definedSlots = this.googlePublisherTagService.getDefinedSlots();
 

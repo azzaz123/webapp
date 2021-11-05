@@ -195,15 +195,7 @@ describe('AdsService', () => {
   });
 
   describe('when refreshing all slots', () => {
-    it('should ask Google to refresh all slots', () => {
-      spyOn(MockGooglePublisherTagService, 'refreshAllSlots').and.callThrough();
-
-      service.refreshAllSlots();
-
-      expect(MockGooglePublisherTagService.refreshAllSlots).toHaveBeenCalledTimes(1);
-    });
-
-    it('should get bids from RichAudience', () => {
+    it('should call RichAudience magic function to fetch new bidders and refresh slots', () => {
       spyOn(windowMock, 'fetchHeaderBids').and.callThrough();
 
       service.refreshAllSlots();
