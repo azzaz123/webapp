@@ -20,7 +20,9 @@ export class TransactionTrackingModel implements TransactionTracking {
   title: string;
 
   constructor(transactionDto: TransactionTrackingDto) {
-    this.analytics = new TransactionTrackingAnalyticsModel(transactionDto.analytics);
+    if (!!transactionDto.analytics) {
+      this.analytics = new TransactionTrackingAnalyticsModel(transactionDto.analytics);
+    }
     this.header = new TransactionTrackingActionModel(transactionDto.top_action);
     this.shippingStatus = new TransactionTrackingShippingStatusModel(transactionDto.shipping_status);
     this.statusInfo = this.getStatusInfos(transactionDto.transaction_status_info);
