@@ -15,6 +15,7 @@ import { LoadAdsService } from '../load-ads/load-ads.service';
 export class AdsService {
   private readonly setSlotsSubject: BehaviorSubject<AdSlotConfiguration[]> = new BehaviorSubject<AdSlotConfiguration[]>([]);
   private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private isSegmentationAllowed;
 
   public get adsReady$(): Observable<boolean> {
     return this._adsReady$.asObservable();
@@ -60,6 +61,7 @@ export class AdsService {
 
   public refreshAllSlots(): void {
     this.googlePublisherTagService.refreshAllSlots();
+    this.refreshHeaderBids(this.isSegmentationAllowed);
   }
 
   public clearSlots(adSlots: AdSlotConfiguration[]): void {
@@ -113,6 +115,7 @@ export class AdsService {
         map(([adsReady, adSlotsDefined, allowSegmentation]: [boolean, boolean, boolean]) => allowSegmentation)
       )
       .subscribe((allowSegmentation: boolean) => {
+        this.isSegmentationAllowed = allowSegmentation;
         this.getHeaderBids(allowSegmentation);
       });
   }
@@ -128,5 +131,12 @@ export class AdsService {
     // RichAudience magic function
     this.fetchHeaderBids(allowSegmentation, slots, definedSlots);
     this.googlePublisherTagService.setPubAdsConfig();
+  }
+
+  private refreshHeaderBids(allowSegmentation: true): void {
+    const slots = this.setSlotsSubject.getValue();
+    const definedSlots = this.googlePublisherTagService.getDefinedSlots();
+
+    this.fetchHeaderBids(allowSegmentation, slots, definedSlots);
   }
 }

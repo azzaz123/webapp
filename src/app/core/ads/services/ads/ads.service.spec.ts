@@ -193,4 +193,22 @@ describe('AdsService', () => {
       expect(MockGooglePublisherTagService.refreshSlots).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('when refreshing all slots', () => {
+    it('should ask Google to refresh all slots', () => {
+      spyOn(MockGooglePublisherTagService, 'refreshAllSlots').and.callThrough();
+
+      service.refreshAllSlots();
+
+      expect(MockGooglePublisherTagService.refreshAllSlots).toHaveBeenCalledTimes(1);
+    });
+
+    it('should get bids from RichAudience', () => {
+      spyOn(windowMock, 'fetchHeaderBids').and.callThrough();
+
+      service.refreshAllSlots();
+
+      expect(windowMock.fetchHeaderBids).toHaveBeenCalled();
+    });
+  });
 });
