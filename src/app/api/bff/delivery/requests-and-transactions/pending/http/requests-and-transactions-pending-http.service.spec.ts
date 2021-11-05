@@ -4,7 +4,7 @@ import {
   MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_DTO_RESPONSE,
   MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_DTO_RESPONSE,
 } from '@api/fixtures/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.fixtures.spec';
-import { RequestsAndTransactionsPendingDto } from '../dtos/responses';
+import { RequestsAndTransactionsPendingAsSellerDto, RequestsAndTransactionsPendingDto } from '../dtos/responses';
 import {
   DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_ENDPOINT,
   DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_ENDPOINT,
@@ -47,7 +47,7 @@ describe('RequestsAndTransactionsPendingHttpService', () => {
 
   describe('when asking to get the delivery pending transactions as seller', () => {
     it('should get the delivery pending transactions', () => {
-      let response: RequestsAndTransactionsPendingDto;
+      let response: RequestsAndTransactionsPendingAsSellerDto;
 
       service.getAsSeller().subscribe((data) => (response = data));
       const req: TestRequest = httpMock.expectOne(DELIVERY_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_ENDPOINT);
