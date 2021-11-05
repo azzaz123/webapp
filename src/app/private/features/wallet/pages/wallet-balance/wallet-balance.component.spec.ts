@@ -46,7 +46,7 @@ describe('WalletBalanceComponent', () => {
         {
           provide: RequestsAndTransactionsPendingService,
           useValue: {
-            get pendingTransactions$() {
+            get pendingTransactionsAsSeller() {
               return of([]);
             },
           },

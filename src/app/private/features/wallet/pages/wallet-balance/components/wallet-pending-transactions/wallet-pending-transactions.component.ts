@@ -12,13 +12,13 @@ import { catchError } from 'rxjs/operators';
   styleUrls: ['./wallet-pending-transactions.component.scss'],
 })
 export class WalletPendingTransactionsComponent {
-  public pendingTransactions$: Observable<PendingTransaction[]>;
+  public pendingTransactionsAsSeller: Observable<PendingTransaction[]>;
 
   constructor(
     private requestsAndTransactionsPendingService: RequestsAndTransactionsPendingService,
     private errorActionService: WalletSharedErrorActionService
   ) {
-    this.pendingTransactions$ = this.requestsAndTransactionsPendingService.pendingTransactions$.pipe(
+    this.pendingTransactionsAsSeller = this.requestsAndTransactionsPendingService.pendingTransactionsAsSeller.pipe(
       catchError((error: unknown) => {
         this.errorActionService.show(error);
         return throwError(error);
