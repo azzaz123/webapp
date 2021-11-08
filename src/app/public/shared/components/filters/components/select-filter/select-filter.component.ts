@@ -28,15 +28,16 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
   @ViewChild('filterTemplateComponent', { read: FilterTemplateComponent })
   public filterTemplate: FilterTemplateComponent;
 
+  private options: FilterOption[] = [];
   private subscriptions = new Subscription();
   private labelSubject = new BehaviorSubject(undefined);
   private placeholderIconSubject = new BehaviorSubject(undefined);
+  private optionsSubject: BehaviorSubject<FilterOption[]> = new BehaviorSubject([]);
 
   public formGroup = new FormGroup({
     select: new FormControl(),
   });
-  public options: FilterOption[] = [];
-
+  public options$ = this.optionsSubject.asObservable();
   public label$ = this.labelSubject.asObservable();
   public placeholderIcon$ = this.labelSubject.asObservable();
 
@@ -49,6 +50,7 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
       .getOptions(this.config.id)
       .pipe(take(1))
       .subscribe((options) => {
+        this.optionsSubject.next(options);
         this.options = options;
         this.updateLabel();
       });

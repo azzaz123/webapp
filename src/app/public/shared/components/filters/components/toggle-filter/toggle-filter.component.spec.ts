@@ -48,7 +48,7 @@ describe('ToggleFilterComponent', () => {
     el = de.nativeElement;
 
     component.config = {
-      id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+      id: COMMON_CONFIGURATION_ID.CATEGORIES,
       type: FILTER_TYPES.TOGGLE,
       mapKey: {
         key: FILTER_QUERY_PARAM_KEY.warranty,
@@ -167,7 +167,7 @@ describe('ToggleFilterComponent', () => {
       component.variant = FILTER_VARIANT.CONTENT;
 
       component.config = {
-        id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+        id: COMMON_CONFIGURATION_ID.CATEGORIES,
         type: FILTER_TYPES.TOGGLE,
         mapKey: {
           key: FILTER_QUERY_PARAM_KEY.warranty,

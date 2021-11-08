@@ -5,7 +5,7 @@ import { FilterParameter } from '../../interfaces/filter-parameter.interface';
 import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
 import { FilterGroupComponent } from './filter-group.component';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
-import { Component, DebugElement, Input } from '@angular/core';
+import { Component, DebugElement, Input, SimpleChange, SimpleChanges } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ToggleFilterComponent } from '../toggle-filter/toggle-filter.component';
 import { GridSelectFilterComponent } from '../grid-select-filter/grid-select-filter.component';
@@ -24,6 +24,7 @@ import {
 import { FASHION_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { SelectFilterComponent } from '@public/shared/components/filters/components/select-filter/select-filter.component';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '../../core/enums/configuration-ids/consumer-goods-configuration-ids.enum';
 
 @Component({
   selector: 'tsl-test-component',
@@ -48,7 +49,7 @@ describe('FilterGroupComponent', () => {
 
   const initialConfig: FilterConfig<unknown>[] = [
     {
-      id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+      id: COMMON_CONFIGURATION_ID.CATEGORIES,
       type: FILTER_TYPES.TOGGLE,
       mapKey: {
         key: 'toggle',
@@ -165,6 +166,32 @@ describe('FilterGroupComponent', () => {
 
       expect(gender).toBeTruthy();
       expect(grid).toBeTruthy();
+    });
+  });
+
+  describe('when filter group config has no changes but has a refreshable filter', () => {
+    beforeEach(() => {
+      spyOn<any>(component, 'updateHostConfigs');
+      const configWithRefreshableFilter = [
+        ...initialConfig,
+        {
+          id: COMMON_CONSUMER_GOODS_CONFIGURATION_ID.OBJECT_TYPE,
+          type: FILTER_TYPES.MULTISELECT,
+          title: 'title',
+          bubblePlaceholder: 'bubblePlaceholder',
+          mapKey: {
+            parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
+          },
+        },
+      ];
+      const changes: SimpleChanges = { config: new SimpleChange(configWithRefreshableFilter, configWithRefreshableFilter, false) };
+
+      component.ngOnChanges(changes);
+      fixture.detectChanges();
+    });
+
+    it('should update host config to refresh values', () => {
+      expect(component['updateHostConfigs']).toHaveBeenCalled();
     });
   });
 });

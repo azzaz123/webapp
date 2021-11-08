@@ -35,9 +35,10 @@ export class FilterHostComponent implements OnInit, OnChanges, OnDestroy {
   private injectFilter(): void {
     const ref = this.host.viewContainerRef.createComponent(this.hostConfig.factory, 0);
     this.filter = ref.instance;
-    this.filter.value = this.values;
+
     this.filter.variant = this.hostConfig.variant;
     this.filter.config = this.hostConfig.filterConfig;
+    this.filter.value = this.values;
 
     this.filterSubscription = new Subscription();
     this.filterSubscription.add(this.filter.valueChange.subscribe((value) => this.valueChange.emit(value)));
