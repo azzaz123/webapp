@@ -37,7 +37,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
 
   // TODO: Implement redirection to TTS
   public onItemClick(historicElement: HistoricElement): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TTS}/${historicElement.id}`;
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${historicElement.id}`;
     this.router.navigate([pathToTransactionTracking]);
   }
 }
