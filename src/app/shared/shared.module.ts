@@ -82,6 +82,7 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
 import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { RouterLinkModule } from './router-link/router-link.module';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 
 @NgModule({
   imports: [
@@ -236,7 +237,7 @@ import { RouterLinkModule } from './router-link/router-link.module';
     DeliveryDevelopmentDirective,
     LocationSelectorModal,
   ],
-  providers: [DecimalPipe, LinkTransformPipe, ItemDetailRoutePipe],
+  providers: [DecimalPipe, LinkTransformPipe, ItemDetailRoutePipe, ListingLimitService],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,

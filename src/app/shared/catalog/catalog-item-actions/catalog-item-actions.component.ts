@@ -65,7 +65,7 @@ export class CatalogItemActionsComponent implements OnInit {
         this.getCounters.emit();
         this.eventService.emit('itemChanged');
         if (resp.status === 406) {
-          this.listingLimitService.showModal(this.items[0].id, SUBSCRIPTION_TYPES.carDealer);
+          this.listingLimitService.showModal(null, SUBSCRIPTION_TYPES.carDealer);
         }
       });
   }

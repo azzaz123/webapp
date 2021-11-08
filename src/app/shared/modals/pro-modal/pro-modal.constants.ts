@@ -49,8 +49,11 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     text2: $localize`:@@listing_limit_pro_user_cars_subscription_modal_description_2:If you decide to keep with your plan, this item will become inactive – nobody will be able to buy it.`,
     style: MODAL_STYLE.GREEN,
     buttons: {
-      secondary: { text: $localize`:@@listing_limit_pro_user_cg_subscription_modal_understood_button:Understood` },
-      primary: { text: $localize`:@@listing_limit_pro_user_cg_subscription_modal_more_info_button:More info` },
+      secondary: { text: $localize`:@@listing_limit_pro_user_cars_subscription_modal_dismiss_button:Leave as inactive` },
+      primary: {
+        text: $localize`:@@listing_limit_pro_user_cars_subscription_modal_contact_button:Contact sales team`,
+        redirect: { type: REDIRECT_TYPE.href, url: 'mailto:contacto.motor@wallapop.com' },
+      },
     },
   },
   [PRO_MODAL_TYPE.listing_limit_tier_limit]: {

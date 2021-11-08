@@ -35,6 +35,11 @@ export class ListingLimitService {
       windowClass: 'pro-modal',
     });
 
+    if (type === SUBSCRIPTION_TYPES.carDealer) {
+      modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_cars_highest_limit];
+      return modal;
+    }
+
     this.getSubscriptionInfo(itemId)
       .pipe(take(1))
       .subscribe((values) => {
@@ -46,11 +51,6 @@ export class ListingLimitService {
         const tierDicounted = this.subscriptionsService.tierDiscountByCategoryId(subscriptions, item.categoryId);
 
         this.trackPageView(categorySubscription, type, isFreeTrial, tierDicounted);
-
-        if (type === SUBSCRIPTION_TYPES.carDealer) {
-          modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_cars_highest_limit];
-          return modal;
-        }
 
         if (isHighestLimit) {
           if (categorySubscription.type === SUBSCRIPTION_CATEGORY_TYPES.CARS) {
