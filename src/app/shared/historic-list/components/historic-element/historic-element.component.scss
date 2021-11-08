@@ -14,6 +14,7 @@
 
     img {
       border-radius: 5px;
+      object-fit: cover;
       @include square(48px);
     }
   }

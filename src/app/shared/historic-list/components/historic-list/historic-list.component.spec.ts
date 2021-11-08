@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ITEM } from '@private/core/services/fixtures/item-required-data.fixtures';
 import { MOCK_HISTORIC_ELEMENT } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import {
   MOCK_HISTORIC_LIST,
   MOCK_HISTORIC_LIST_EMPTY,
+  MOCK_HISTORIC_LIST_WITHOUT_LABELS,
   MOCK_HISTORIC_LIST_WITH_BALANCE,
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
@@ -42,6 +44,8 @@ describe('HistoricListComponent', () => {
 
   const emptyStateSelector = '.HistoricList__no-results';
   const totalBalanceSelector = '.HistoricList__total-balance';
+  const marginlessHeaderSelector = '.HistoricList__header--marginless';
+  const marginlessSubtitleSelector = '.HistoricList__header--marginless';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -176,6 +180,25 @@ describe('HistoricListComponent', () => {
 
         expect(component.itemClicked.emit).toHaveBeenCalledTimes(1);
         expect(component.itemClicked.emit).toHaveBeenCalledWith(MOCK_HISTORIC_ELEMENT);
+      });
+    });
+
+    describe('when displaying an historic list without labels', () => {
+      beforeEach(() => {
+        wrapperComponent.historicList = MOCK_HISTORIC_LIST_WITHOUT_LABELS;
+        fixture.detectChanges();
+      });
+
+      it('should apply marginless style to the empty header', () => {
+        const marginlessHeaderElement = fixture.debugElement.query(By.css(marginlessHeaderSelector));
+
+        expect(marginlessHeaderElement).toBeTruthy();
+      });
+
+      it('should apply marginless style to the empty subtitle', () => {
+        const marginlessSubtitleElement = fixture.debugElement.query(By.css(marginlessSubtitleSelector));
+
+        expect(marginlessSubtitleElement).toBeTruthy();
       });
     });
   });

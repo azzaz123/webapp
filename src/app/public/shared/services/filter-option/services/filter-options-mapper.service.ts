@@ -33,11 +33,18 @@ export class FilterOptionsMapperService {
   public formatObjectType(objectTypes: ObjectType[]): FilterOption[];
   public formatObjectType(response: unknown, params: QueryParams): FilterOption[];
   public formatObjectType(objectTypes: ObjectType[]): FilterOption[] {
-    return objectTypes.map((objectType) => ({
-      value: objectType.id,
-      label: objectType.name,
-      hasChildren: objectType.has_children,
-    }));
+    return objectTypes.map((objectType) => {
+      const mappedObjectType: FilterOption = {
+        value: objectType.id,
+        label: objectType.name,
+      };
+
+      if (objectType.children?.length) {
+        mappedObjectType.children = this.formatObjectType(objectType.children);
+      }
+
+      return mappedObjectType;
+    });
   }
 
   public formatBrandModel(brandModels: BrandModel[]): FilterOption[];
@@ -60,7 +67,7 @@ export class FilterOptionsMapperService {
   public formatCarsBrandModel(response: unknown, params: QueryParams): FilterOption[];
   public formatCarsBrandModel(brandModels: BrandModel[]): FilterOption[] {
     return brandModels.map((brandModel) => ({
-      value: (brandModel as unknown) as Record<string, string>,
+      value: brandModel as unknown as Record<string, string>,
       label: this.getBrandModelLabel(brandModel),
     }));
   }

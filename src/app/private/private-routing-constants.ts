@@ -3,4 +3,6 @@ export enum PRIVATE_PATHS {
   WALLET = 'wallet',
   PROFILE = 'profile',
   CATALOG = 'catalog',
+  VERIFICATION = 'verification',
+  CHAT = 'chat',
 }

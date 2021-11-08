@@ -16,7 +16,7 @@ import {
 } from '@fixtures/item.fixtures.spec';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -81,6 +81,8 @@ import {
 } from '@fixtures/private/upload/events/upload-events.fixtures.spec';
 import { UploadTrackingEventService } from './upload-tracking-event/upload-tracking-event.service';
 import { CategoriesApiService } from '@api/categories/categories-api.service';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 export const USER_LOCATION: UserLocation = {
@@ -112,15 +114,17 @@ describe('UploadProductComponent', () => {
   let itemReactivationService: ItemReactivationService;
   let shippingToggleService: ShippingToggleService;
   let uploadTrackingEventService: UploadTrackingEventService;
+  let permissionService: NgxPermissionsService;
   const componentInstance: any = {};
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgbPopoverModule, HttpClientTestingModule],
+        imports: [NgbPopoverModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
         providers: [
           FormBuilder,
           NgbPopoverConfig,
+          NgxPermissionsService,
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UploadService, useClass: MockUploadService },
           {
@@ -264,6 +268,7 @@ describe('UploadProductComponent', () => {
     itemReactivationService = TestBed.inject(ItemReactivationService);
     shippingToggleService = TestBed.inject(ShippingToggleService);
     uploadTrackingEventService = TestBed.inject(UploadTrackingEventService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     fixture.detectChanges();
   });
 
@@ -1859,6 +1864,62 @@ describe('UploadProductComponent', () => {
         const shippingSection = fixture.debugElement.query(By.css(shippabilitySectionSelector));
 
         expect(shippingSection).toBeFalsy();
+      });
+    });
+  });
+
+  describe('Pro aditional services', () => {
+    describe('And has subscription permissions', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.subscriptions);
+      });
+      describe('and is not car dealer', () => {
+        describe('and is pro user', () => {
+          beforeEach(() => {
+            component.isProUser = true;
+            fixture.detectChanges();
+          });
+          it('Should show section', fakeAsync(() => {
+            tick();
+            fixture.detectChanges();
+
+            const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+            expect(prosFeatures).toBeTruthy();
+          }));
+        });
+        describe('and is not pro user', () => {
+          it('Should not show section', fakeAsync(() => {
+            tick();
+            fixture.detectChanges();
+
+            const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+            expect(prosFeatures).toBeFalsy();
+          }));
+        });
+      });
+      describe('and is car dealer', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.professional);
+          component.isProUser = true;
+          fixture.detectChanges();
+        });
+        it('Should not show section', fakeAsync(() => {
+          tick();
+          fixture.detectChanges();
+
+          const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+          expect(prosFeatures).toBeFalsy();
+        }));
+      });
+    });
+    describe('And has not subscription permissions', () => {
+      it('Should not show section', () => {
+        const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+        expect(prosFeatures).toBeFalsy();
       });
     });
   });

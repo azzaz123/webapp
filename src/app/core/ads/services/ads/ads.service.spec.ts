@@ -193,4 +193,14 @@ describe('AdsService', () => {
       expect(MockGooglePublisherTagService.refreshSlots).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('when refreshing all slots', () => {
+    it('should call RichAudience magic function to fetch new bidders and refresh slots', () => {
+      spyOn(windowMock, 'fetchHeaderBids').and.callThrough();
+
+      service.refreshAllSlots();
+
+      expect(windowMock.fetchHeaderBids).toHaveBeenCalled();
+    });
+  });
 });

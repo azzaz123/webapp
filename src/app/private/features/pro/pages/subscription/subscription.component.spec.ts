@@ -36,6 +36,8 @@ import { By } from '@angular/platform-browser';
 import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { PRO_PATHS } from '../../pro-routing-constants';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
+import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 
 @Component({
   selector: 'tsl-subscription-purchase',
@@ -59,6 +61,7 @@ describe('SubscriptionComponent', () => {
   let analyticsService: AnalyticsService;
   let userService: UserService;
   let route: ActivatedRoute;
+  let benefitsService: SubscriptionBenefitsService;
   const componentInstance = { subscription: SUBSCRIPTIONS[0] };
 
   beforeEach(
@@ -115,6 +118,10 @@ describe('SubscriptionComponent', () => {
               },
             },
           },
+          {
+            provide: SubscriptionBenefitsService,
+            useClass: MockSubscriptionBenefitsService,
+          },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
         schemas: [NO_ERRORS_SCHEMA],
@@ -132,6 +139,7 @@ describe('SubscriptionComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     userService = TestBed.inject(UserService);
     route = TestBed.inject(ActivatedRoute);
+    benefitsService = TestBed.inject(SubscriptionBenefitsService);
     fixture.detectChanges();
   });
 
@@ -323,6 +331,15 @@ describe('SubscriptionComponent', () => {
       expect(editSubscriptionComponent).toBeFalsy();
     });
 
+    it('should not show show benefits header', () => {
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
+
+      component.manageSubscription(SUBSCRIPTIONS[0]);
+      fixture.detectChanges();
+
+      expect(benefitsService.showHeaderBenefits).toBe(false);
+    });
+
     it('should not set loading to true if action is not present', fakeAsync(() => {
       spyOn(modalService, 'open').and.returnValue({
         result: Promise.resolve(undefined),
@@ -348,17 +365,23 @@ describe('SubscriptionComponent', () => {
       expect(component.loading).toBe(false);
     }));
 
-    it('should clear data', () => {
-      spyOn(modalService, 'open').and.callThrough();
-      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
+    describe('clear data', () => {
+      beforeEach(() => {
+        spyOn(modalService, 'open').and.callThrough();
+        spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
-      component.manageSubscription(SUBSCRIPTIONS[0]);
-      component.onunselectSubscription();
-      fixture.detectChanges();
-
-      const newSubscriptionComponent = fixture.debugElement.query(By.directive(MockNewSubscriptionComponent));
-      expect(newSubscriptionComponent).toBeFalsy();
-      expect(component.newSubscription).toBeFalsy();
+        component.manageSubscription(SUBSCRIPTIONS[0]);
+        component.onunselectSubscription();
+        fixture.detectChanges();
+      });
+      it('should clear data', () => {
+        const newSubscriptionComponent = fixture.debugElement.query(By.directive(MockNewSubscriptionComponent));
+        expect(newSubscriptionComponent).toBeFalsy();
+        expect(component.newSubscription).toBeFalsy();
+      });
+      it('should show benefits header', () => {
+        expect(benefitsService.showHeaderBenefits).toBe(true);
+      });
     });
   });
 
@@ -383,6 +406,15 @@ describe('SubscriptionComponent', () => {
       expect(newSubscriptionComponent).toBeFalsy();
     });
 
+    it('should not show show benefits header', () => {
+      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
+
+      component.manageSubscription(SUBSCRIPTIONS[0]);
+      fixture.detectChanges();
+
+      expect(benefitsService.showHeaderBenefits).toBe(false);
+    });
+
     it('should not open modal', fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
       component.subscriptions = [MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED];
@@ -392,16 +424,23 @@ describe('SubscriptionComponent', () => {
       expect(modalService.open).not.toHaveBeenCalled();
     }));
 
-    it('should show clear data', () => {
-      spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
+    describe('clear data', () => {
+      beforeEach(() => {
+        spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
 
-      component.manageSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED);
-      component.onunselectSubscription();
-      fixture.detectChanges();
+        component.manageSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED);
+        component.onunselectSubscription();
+        fixture.detectChanges();
+      });
+      it('should clear data', () => {
+        const editSubscriptionComponent = fixture.debugElement.query(By.directive(MockEditSubscriptionComponent));
 
-      const editSubscriptionComponent = fixture.debugElement.query(By.directive(MockEditSubscriptionComponent));
-      expect(editSubscriptionComponent).toBeFalsy();
-      expect(component.editSubscription).toBeFalsy();
+        expect(editSubscriptionComponent).toBeFalsy();
+        expect(component.editSubscription).toBeFalsy();
+      });
+      it('should show benefits header', () => {
+        expect(benefitsService.showHeaderBenefits).toBe(true);
+      });
     });
   });
 

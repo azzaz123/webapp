@@ -68,7 +68,6 @@ import { SpinnerModule } from './spinner/spinner.module';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsModule } from './stars/stars.module';
 import { StatusIconComponent } from './status-icon';
-import { SwitchComponent } from './switch/switch.component';
 import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.component';
 import { UploaderModule } from './uploader/uploader.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
@@ -132,7 +131,6 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     ArchivableComponent,
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
-    SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
     SearchInputComponent,
@@ -193,7 +191,6 @@ import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.direc
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
     ReviewModalComponent,
-    SwitchComponent,
     ReviewModalComponent,
     CheckboxComponent,
     SelectComponent,

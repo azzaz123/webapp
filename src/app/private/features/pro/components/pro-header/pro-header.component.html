@@ -1,0 +1,44 @@
+<div class="ProHeader" [class.ProHeader--small]="!showBenefits">
+    <div class="container">
+        <ng-container *ngIf="showBenefits; else noBenefits">
+            <div class="d-flex align-items-center flex-column">
+                <div>
+                    <tsl-svg-icon src="/assets/icons/pro/pro-logo.svg"> </tsl-svg-icon>
+                </div>
+                <div class="mt-3">
+                    <span class="ProHeader__title"
+                        i18n="@@pro_subscription_flow_non_pro_users_key_metrics_banner_title_web_specific">
+                        Your audience is here
+                    </span>
+                </div>
+                <div class="d-lg-flex text-center mt-4 d-none w-100 justify-content-around">
+                    <ng-container *ngIf="benefits$ | async as benefits">
+                        <div class="d-flex flex-column align-items-center Benefit" *ngFor="let benefit of benefits">
+                            <div>
+                                <tsl-svg-icon [src]="benefit.iconPath">
+                                </tsl-svg-icon>
+                            </div>
+                            <div class="mt-3">
+                                <span class="ProHeader__title ProHeader__title--small">{{benefit.title}}</span>
+                            </div>
+                            <div class="ProHeader__description">{{benefit.description}}</div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #noBenefits>
+            <div>
+                <div>
+                    <tsl-svg-icon width="100" heigth="17" src="/assets/icons/pro/pro-logo.svg"> </tsl-svg-icon>
+                </div>
+                <div class="mt-3">
+                    <span class="ProHeader__title"
+                        i18n="@@pro_subscription_flow_pro_users_key_metrics_banner_title_web_specific">
+                        Boost your online business
+                    </span>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

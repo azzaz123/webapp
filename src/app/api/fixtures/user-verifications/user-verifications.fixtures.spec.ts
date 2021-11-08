@@ -20,14 +20,14 @@ export const MOCK_USER_VERIFICATIONS_API_RESPONSE: UserVerificationsApi = {
 
 export const MOCK_USER_VERIFICATIONS_MAPPED: UserVerifications = {
   email: false,
-  mobile: true,
+  phone: true,
   facebook: false,
   google_plus: false,
 };
 
 export const MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED: UserVerifications = {
   email: true,
-  mobile: true,
+  phone: true,
   facebook: false,
   google_plus: false,
 };

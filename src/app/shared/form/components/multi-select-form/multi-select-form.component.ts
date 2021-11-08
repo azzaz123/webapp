@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Input, OnDestroy } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { SelectFormOption } from '../select/interfaces/select-form-option.interface';
-import { MultiSelectFormOption } from './interfaces/multi-select-form-option.interface';
+import { MultiSelectFormOption, TemplateMultiSelectFormOption } from './interfaces/multi-select-form-option.interface';
 import { MultiSelectValue } from './interfaces/multi-select-value.type';
 @Component({
   selector: 'tsl-multi-select-form',
@@ -19,24 +18,27 @@ import { MultiSelectValue } from './interfaces/multi-select-value.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectValue> {
-  @Input() set options(value: SelectFormOption<string>[]) {
-    if (!value) {
-      return;
-    }
-    this.extendedOptions = value.map((option) => {
-      return { ...option, checked: false };
-    });
-    if (this.value) {
-      this.mapCheckedValue();
-    }
+  @Input() set options(value: MultiSelectFormOption[]) {
+    this.extendedOptions = this.formatToExtendedOptions(value);
+    this.mapCheckedValue();
     this.extendedOptionsSubject.next(this.extendedOptions);
   }
   @Input() disabled: boolean = false;
   @Input() isCustomStyle: boolean;
 
-  private extendedOptions: MultiSelectFormOption[] = [];
-  private extendedOptionsSubject: BehaviorSubject<MultiSelectFormOption[]> = new BehaviorSubject([]);
-  public extendedOptions$: Observable<MultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
+  private extendedOptions: TemplateMultiSelectFormOption[] = [];
+  private extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
+  private shownChildrenOptionIdSubject: BehaviorSubject<string> = new BehaviorSubject(null);
+  public extendedOptions$: Observable<TemplateMultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
+  public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
+
+  constructor(private elementRef: ElementRef) {
+    super();
+
+    this.shownChildrenOptionId$.subscribe((shownChildrenOptionId) => {
+      this.elementRef.nativeElement.scrollTo(0, 0);
+    });
+  }
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
@@ -51,14 +53,108 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
       .map((option) => {
         return option.value;
       });
+
+    this.value = this.getValue(this.extendedOptions);
     this.onChange(this.value);
   }
 
+  public showChildren(option: TemplateMultiSelectFormOption): void {
+    if (option.children?.length) {
+      this.shownChildrenOptionIdSubject.next(option.value);
+    }
+  }
+
+  public restartNavigation(): void {
+    this.shownChildrenOptionIdSubject.next(null);
+  }
+
+  public selectAllChildren(option: TemplateMultiSelectFormOption): void {
+    const childValues = [...option.children].map((childOption) => childOption.value);
+    this.value = this.value ? this.value.filter((value) => !childValues.includes(value)) : [];
+    this.triggerValueChange([...this.value, option.value]);
+  }
+
+  public unselectAllChildren(option: TemplateMultiSelectFormOption): void {
+    const valuesToRemove = [...this.getOptionValues(option.children), option.value];
+    this.value = this.value ? this.value.filter((value) => !valuesToRemove.includes(value)) : [];
+    this.triggerValueChange(this.value);
+  }
+
+  public unselectAll(): void {
+    this.value = [];
+    this.triggerValueChange(this.value);
+  }
+
+  public hasSelectedChildren(option: TemplateMultiSelectFormOption): boolean {
+    return !![...option.children].filter((childOption) => childOption.checked).length;
+  }
+
+  private getOptionValues(options: TemplateMultiSelectFormOption[]): string[] {
+    return [...options].map((childOption) => childOption.value);
+  }
+
+  private triggerValueChange(value: MultiSelectValue): void {
+    this.writeValue(value);
+    this.onChange(value);
+  }
+
   private mapCheckedValue(): void {
-    this.extendedOptions = this.extendedOptions.map((option: MultiSelectFormOption) => {
-      option.checked = this.value.includes(option.value);
+    this.extendedOptions = this.mapCheckedOptions(this.extendedOptions);
+    this.extendedOptionsSubject.next(this.extendedOptions);
+  }
+
+  private mapCheckedOptions(options: TemplateMultiSelectFormOption[]): TemplateMultiSelectFormOption[] {
+    const mappedCheckedOptions: TemplateMultiSelectFormOption[] = options.map((option) => {
+      const isChecked = this.value?.includes(option.value);
+
+      if (option.children?.length) {
+        if (isChecked) {
+          option.checked = false;
+          option.children.map((childOption) => (childOption.checked = true));
+        } else {
+          option.children = this.mapCheckedOptions(option.children);
+        }
+      } else {
+        option.checked = isChecked;
+      }
+
       return { ...option };
     });
-    this.extendedOptionsSubject.next(this.extendedOptions);
+
+    return mappedCheckedOptions;
+  }
+
+  private formatToExtendedOptions(options: MultiSelectFormOption[]): TemplateMultiSelectFormOption[] {
+    const formattedExtendedOptions: TemplateMultiSelectFormOption[] = options.map((option) => {
+      const { label, sublabel, icon, value } = option;
+
+      if (option.children?.length) {
+        return { label, sublabel, icon, value, children: this.formatToExtendedOptions(option.children), checked: false };
+      } else {
+        return { label, sublabel, icon, value, checked: false };
+      }
+    });
+
+    return formattedExtendedOptions;
+  }
+
+  private getValue(options: TemplateMultiSelectFormOption[]): string[] {
+    let value = [];
+    options.forEach((option: TemplateMultiSelectFormOption) => {
+      if (option.checked) {
+        value.push(option.value);
+      } else {
+        if (option.children?.length) {
+          const checkedChildOptions = this.getValue(option.children);
+          if (checkedChildOptions.length === option.children.length) {
+            value = [...value, option.value];
+          } else {
+            value = [...value, ...this.getValue(option.children)];
+          }
+        }
+      }
+    });
+
+    return value;
   }
 }

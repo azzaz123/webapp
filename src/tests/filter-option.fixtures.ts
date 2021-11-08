@@ -79,8 +79,13 @@ export const objectType: ObjectType = {
 
 export const formattedObjectType: FilterOption = {
   value: objectType.id,
-  hasChildren: objectType.has_children,
   label: objectType.name,
+  children: [
+    {
+      label: 'child_name',
+      value: 'child',
+    },
+  ],
 };
 
 export const brandNModel: BrandModel = {
@@ -94,7 +99,7 @@ export const formattedPhoneBrandNModel: FilterOption = {
 };
 
 export const formattedCarBrandNModel: FilterOption = {
-  value: (brandNModel as unknown) as Record<string, string>,
+  value: brandNModel as unknown as Record<string, string>,
   label: calcBrandModelLabel(brandNModel),
 };
 

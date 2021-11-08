@@ -11,7 +11,7 @@
     <div *ngIf="ownerName" class="PaymentsCardInfo__owner PaymentsCardInfo--grey mt-1">{{ownerName}}</div>
   </div>
   <div class="PaymentsCardInfo__actions d-flex w-100">
-    <div class="PaymentsCardInfo__actions--change mr-3" *ngIf="!hideEdit" (click)="changeCardClick.emit($event)" i18n="@@web_change">Change</div>
-    <div class="PaymentsCardInfo__actions--delete" *ngIf="!hideDelete" (click)="deleteCardClick.emit($event)" i18n="@@web_delete">Delete</div>
+    <div class="PaymentsCardInfo__actions--change mr-3" *ngIf="!hideEdit" (click)="changeCardClick.emit($event)" i18n="@@agnostic_payments_card_info_change_label">Change</div>
+    <div class="PaymentsCardInfo__actions--delete" *ngIf="!hideDelete" (click)="deleteCardClick.emit($event)" i18n="@@agnostic_payments_card_info_delete_label">Delete</div>
   </div>
 </div>

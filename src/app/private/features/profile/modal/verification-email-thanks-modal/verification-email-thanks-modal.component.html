@@ -3,10 +3,16 @@
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <div class="VerificationEmailThanksModal__container">
-    <div class="VerificationEmailThanksModal__title my-3">Thanks!</div>
-    <div class="VerificationEmailThanksModal__subtitle mb-4">
-      We've sent you an email to “{{ email }}”. Go to your inbox and follow the steps to verify your email account
+    <div class="VerificationEmailThanksModal__title my-3" i18n="@@email_verification_all_users_system_modal_title">Thank you!</div>
+    <div class="VerificationEmailThanksModal__subtitle mb-4" i18n="@@email_verification_all_users_system_modal_description">
+      We have sent a verification email to {{ email }}. Access your mailbox and follow the steps to verify your email.
     </div>
-    <tsl-button class="w-100" className="btn-primary w-100" (click)="activeModal.close()">Accept</tsl-button>
+    <tsl-button
+      class="w-100"
+      className="btn-primary w-100"
+      (click)="activeModal.close()"
+      i18n="@@email_verification_all_users_system_modal_ok_button"
+      >Understood</tsl-button
+    >
   </div>
 </div>
