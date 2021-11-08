@@ -812,11 +812,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.parseActivation([itemId]);
       },
       () => {
-        const modalRef = this.modalService.open(TooManyItemsModalComponent, {
-          windowClass: 'modal-standard',
-        });
-        modalRef.componentInstance.type = subscriptionType;
-        modalRef.componentInstance.itemId = itemId;
+        this.listingLimitService.showModal(itemId, subscriptionType);
       }
     );
   }
@@ -828,9 +824,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this.parseActivation(items);
       },
       () => {
-        const modalRef = this.modalService.open(TooManyItemsModalComponent, {
-          windowClass: 'modal-standard',
-        });
         const itemsData: Item[] = [];
         let itemId: string;
         items.forEach((id: string) => {
@@ -841,8 +834,7 @@ export class ListComponent implements OnInit, OnDestroy {
         if (itemsData.every((item) => item.categoryId === itemsData[0].categoryId)) {
           itemId = itemsData[0].id;
         }
-        modalRef.componentInstance.type = subscriptionType;
-        modalRef.componentInstance.itemId = itemId;
+        this.listingLimitService.showModal(itemId, subscriptionType);
       }
     );
   }

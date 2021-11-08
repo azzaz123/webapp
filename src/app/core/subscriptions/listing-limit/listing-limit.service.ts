@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AnalyticsPageView, ANALYTICS_EVENT_NAMES, SCREEN_IDS, ViewProSubscriptionPopup } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { CATEGORY_IDS } from '@core/category/category-ids';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { ItemService } from '@core/item/item.service';
 import { SUBSCRIPTION_CATEGORIES, SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 
 export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [
   CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
@@ -21,7 +18,7 @@ import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component'
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 import { ProModalConfig, REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
 import { forkJoin, Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
 @Injectable()
 export class ListingLimitService {
@@ -78,21 +75,20 @@ export class ListingLimitService {
           }
         }
 
+        if (categorySubscription.subscribed_from) {
+          modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_tier_limit];
+          return modal;
+        }
+
         if (isFreeTrial) {
           modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_trial];
+          modal.componentInstance.modalConfig.text1 = $localize`:@@listing_limit_non_pro_users_free_trial_available_description_part_1:To list more items of this category, try Wallapop PRO with a ${categorySubscription.trial_days}:INTERPOLATION:-day free trial. Professionalise your online sales, and sell more!`;
           return modal;
         }
 
         if (tierDicounted) {
-          const config: ProModalConfig = {
-            ...modalConfig[PRO_MODAL_TYPE.listing_limit_discount],
-            buttons: {
-              ...modalConfig[PRO_MODAL_TYPE.listing_limit_discount].buttons,
-              primary: {
-                text: $localize`:@@listing_limit_non_pro_users_discount_modal_start_button:Try with ${tierDicounted.discount.percentage}:INTERPOLATION:% discount`,
-              },
-            },
-          };
+          const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_discount];
+          config.buttons.primary.text = $localize`:@@listing_limit_non_pro_users_discount_modal_start_button:Try with ${tierDicounted.discount.percentage}:INTERPOLATION:% discount`;
           modal.componentInstance.modalConfig = config;
           return modal;
         }
@@ -101,8 +97,6 @@ export class ListingLimitService {
       });
     return modal;
   }
-
-  private getModalInfo(itemId) {}
 
   private getSubscriptionInfo(itemId: string): Observable<any> {
     return forkJoin([this.itemService.get(itemId), this.subscriptionsService.getSubscriptions(false)]);
