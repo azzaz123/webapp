@@ -14,7 +14,7 @@ const routes: Route[] = [
         loadChildren: () => TransactionTrackingOverviewComponent,
       },
       {
-        path: TRANSACTION_TRACKING_PATHS.INFO,
+        path: TRANSACTION_TRACKING_PATHS.INSTRUCTIONS,
         loadChildren: () =>
           import(
             '@private/features/delivery/modals/transaction-tracking-screen/transaction-tracking-instructions/transaction-tracking-instructions.module'
