@@ -7,6 +7,10 @@ const routes: Route[] = [
     path: '',
     component: TransactionTrackingInstructionsComponent,
   },
+  {
+    path: '*',
+    redirectTo: '',
+  },
 ];
 
 @NgModule({
