@@ -9,4 +9,5 @@ interface TransactionHistoryDto {
   user_hash_id: string;
 }
 
-export type TransactionsHistoryDto = TransactionHistoryDto[] | [];
+// FIXME: Remove comment when updating TS version to >=4.2
+export type TransactionsHistoryDto = TransactionHistoryDto[]; // | [];
