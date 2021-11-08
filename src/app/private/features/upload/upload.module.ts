@@ -27,7 +27,6 @@ import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { HashtagSuggesterApiService } from './core/services/hashtag-suggestions/hashtag-suggester-api.service';
-import { HashtagFieldComponent } from './components/hashtag-field/hashtag-field.component';
 import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
 import { ShippingToggleService } from './pages/upload-product/services/shipping-toggle/shipping-toggle.service';
 import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
@@ -66,7 +65,6 @@ import { MultiselectSearchInputModule } from '@shared/form/components/multiselec
     UploadProductComponent,
     UploadRealestateComponent,
     UploadComponent,
-    HashtagFieldComponent,
   ],
   providers: [
     HashtagSuggesterApiService,
