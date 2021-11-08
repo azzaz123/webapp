@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 @Component({
@@ -17,9 +17,13 @@ export class FilterTemplateComponent {
   @Input() hasApply?: boolean;
   @Input() isClearable?: boolean;
   @Output() apply: EventEmitter<void> = new EventEmitter();
+  @Output() cancel: EventEmitter<void> = new EventEmitter();
   @Output() clear: EventEmitter<void> = new EventEmitter();
   @Output() click: EventEmitter<void> = new EventEmitter();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
+  @ViewChild('scrollableContainer') private scrollableContainer: ElementRef;
+
+  constructor(private elementRef: ElementRef) {}
 
   public BUBBLE_VARIANT = BUBBLE_VARIANT;
 
@@ -36,19 +40,23 @@ export class FilterTemplateComponent {
   }
 
   public handleOpenChange(isOpen: boolean): void {
-    this.openStateChange.emit(isOpen);
     this.isDropdownOpen = isOpen;
+    this.openStateChange.emit(isOpen);
+    this.resetScroll();
   }
 
   public handleCancel(event: MouseEvent): void {
     event.stopPropagation();
     this.closeDropdown();
+    this.cancel.emit();
+    this.resetScroll();
   }
 
   public handleAccept(event: MouseEvent): void {
     event.stopPropagation();
     this.closeDropdown();
     this.apply.emit();
+    this.resetScroll();
   }
 
   public handleClear(): void {
@@ -64,5 +72,9 @@ export class FilterTemplateComponent {
   private closeDropdown(): void {
     this.isDropdownOpen = false;
     this.openStateChange.emit(this.isDropdownOpen);
+  }
+
+  private resetScroll(): void {
+    this.scrollableContainer.nativeElement.scroll(0, 0);
   }
 }

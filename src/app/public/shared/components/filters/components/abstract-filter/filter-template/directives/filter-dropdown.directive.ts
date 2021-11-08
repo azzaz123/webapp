@@ -52,12 +52,22 @@ export class FilterDropdownDirective implements OnChanges, OnDestroy {
   }
 
   private getDropdownPosition(): FilterDropdownPosition {
-    const dropdownContentElement = this.elementRef.nativeElement;
-    const dropdownAbsolutePosition = dropdownContentElement.getBoundingClientRect();
+    const dropdownContentElement: HTMLElement = this.elementRef.nativeElement;
     const dropdownContentPosition: FilterDropdownPosition = { top: `${DROPDOWN_TOP_POSITION}px` };
+    const dropdownWidth = dropdownContentElement.clientWidth;
+    const bubbleElement: HTMLElement = this.elementRef.nativeElement.parentNode.querySelector('tsl-bubble');
+    const bubbleAbsoluteXPosition = bubbleElement.getBoundingClientRect().x;
+    const bubbleAbsoluteLeftPosition = bubbleElement.getBoundingClientRect().left;
 
-    if (dropdownAbsolutePosition.right > window.innerWidth) {
+    dropdownContentPosition.left = 'unset';
+    dropdownContentPosition.right = 'unset';
+
+    if (bubbleAbsoluteXPosition + dropdownWidth > window.innerWidth) {
       dropdownContentPosition.right = `${DROPDOWN_RIGHT_MARGIN}px`;
+    } else if (bubbleAbsoluteXPosition < 0) {
+      dropdownContentPosition.left = `${DROPDOWN_RIGHT_MARGIN}px`;
+    } else {
+      dropdownContentPosition.left = `${bubbleAbsoluteLeftPosition}px`;
     }
 
     return dropdownContentPosition;

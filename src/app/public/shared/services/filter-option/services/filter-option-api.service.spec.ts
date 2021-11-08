@@ -3,8 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { FilterOptionsApiService } from './filter-options-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '@environments/environment';
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { FILTER_OPTIONS_API_ENDPOINTS } from '../configurations/filter-options-api-endpoints';
+import { ACCEPT_HEADERS, HEADER_NAMES } from '@public/core/constants/header-constants';
 
 describe('FilterOptionsApiService', () => {
   let service: FilterOptionsApiService;
@@ -58,6 +59,30 @@ describe('FilterOptionsApiService', () => {
 
         service.getObjectTypesByCategoryId(parentIdParams).subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, parentIdParams);
+      });
+    });
+
+    describe('for getting object type options with children by category id', () => {
+      it('should retrieve options', () => {
+        const params = {
+          ...defaultParams,
+          category_id: '100',
+        };
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append(HEADER_NAMES.ACCEPT, ACCEPT_HEADERS.SUGGESTERS_V3);
+
+        service.getObjectTypesByCategoryIdWithChildren(params).subscribe();
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, params, headers);
+
+        const parentIdParams = {
+          ...defaultParams,
+          parent_id: '1200',
+          category_id: '100',
+        };
+
+        service.getObjectTypesByCategoryIdWithChildren(parentIdParams).subscribe();
+
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.OBJECT_TYPE, parentIdParams, headers);
       });
     });
 
@@ -177,17 +202,21 @@ describe('FilterOptionsApiService', () => {
     });
   });
 
-  function expectGetHttpQuery(path: string, params?: Record<string, string>): void {
+  function expectGetHttpQuery(path: string, params?: Record<string, string>, headers?: HttpHeaders): void {
     const testParams = new HttpParams({
       fromObject: params,
     });
+
+    const acceptHeader = (headers !== (null || undefined) ? headers : new HttpHeaders()).get(HEADER_NAMES.ACCEPT);
+
     const url = `${environment.baseUrl}api/v3${path}`;
     const urlWithParams = testParams ? url.concat('?', testParams.toString()) : url;
     const req = httpMock.expectOne(`${urlWithParams}`);
-    req.flush({});
+    req.flush({}, { headers: headers });
 
     expect(req.request.url).toEqual(url);
     expect(req.request.method).toEqual('GET');
+    expect(req.request.headers.get(HEADER_NAMES.ACCEPT)).toEqual(acceptHeader);
 
     const reqParams = req.request.params;
 
