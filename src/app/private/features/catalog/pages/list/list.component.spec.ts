@@ -75,6 +75,8 @@ import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
 import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscription-slots.fixtures.spec';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
+import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -99,6 +101,7 @@ describe('ListComponent', () => {
   let permissionService: NgxPermissionsService;
   let i18nService: I18nService;
   let featureFlagService: FeatureFlagService;
+  let listingLimitService: ListingLimitService;
 
   const prosButtonSelector = '.List__button--pros';
   const deliveryButtonSelector = '.List__button--delivery';
@@ -271,6 +274,10 @@ describe('ListComponent', () => {
               },
             },
           },
+          {
+            provide: ListingLimitService,
+            useClass: ListingLimitServiceMock,
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -295,6 +302,7 @@ describe('ListComponent', () => {
     i18nService = TestBed.inject(I18nService);
     catalogManagerApiService = TestBed.inject(CatalogManagerApiService);
     featureFlagService = TestBed.inject(FeatureFlagService);
+    listingLimitService = TestBed.inject(ListingLimitService);
 
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -554,17 +562,17 @@ describe('ListComponent', () => {
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
-    it('should open the too many items modal if create is on hold', fakeAsync(() => {
+    it('should open listing limit modal if create is on hold', fakeAsync(() => {
+      spyOn(listingLimitService, 'showModal').and.callThrough();
       route.params = of({
         createdOnHold: true,
+        itemId: '123',
       });
 
       component.ngOnInit();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(TooManyItemsModalComponent, {
-        windowClass: 'modal-standard',
-      });
+      expect(listingLimitService.showModal).toHaveBeenCalledWith('123', SUBSCRIPTION_TYPES.stripe);
     }));
 
     it('should open disable wallacoins modal if has param disableWallacoinsModal', fakeAsync(() => {

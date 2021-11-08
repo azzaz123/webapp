@@ -14,18 +14,12 @@ import {
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-export const CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE = [
-  CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE,
-  CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS,
-  CATEGORY_SUBSCRIPTIONS_IDS.CAR,
-];
-
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 import { ProModalConfig, REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
 import { forkJoin } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
+import { CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE } from './listing-limit.constants';
 @Injectable()
 export class ListingLimitService {
   constructor(
