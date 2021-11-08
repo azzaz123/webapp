@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Input, OnDestroy } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Input, OnDestroy, Self } from '@angular/core';
+import { FormControl, NgControl, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MultiSelectFormOption, TemplateMultiSelectFormOption } from './interfaces/multi-select-form-option.interface';
@@ -19,18 +19,23 @@ import { MultiSelectValue } from './interfaces/multi-select-value.type';
 })
 export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectValue> {
   @Input() set options(value: MultiSelectFormOption[]) {
-    this.extendedOptions = this.formatToExtendedOptions(value);
-    this.mapCheckedValue();
-    this.extendedOptionsSubject.next(this.extendedOptions);
+    console.log('MultiSelectFormComponent set', value);
+    if (value) {
+      this.extendedOptions = this.formatToExtendedOptions(value);
+      this.mapCheckedValue();
+      this.extendedOptionsSubject.next(this.extendedOptions);
+    }
   }
   @Input() disabled: boolean = false;
-  @Input() isCustomStyle: boolean;
+  @Input() max: number;
 
   private extendedOptions: TemplateMultiSelectFormOption[] = [];
   private extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
   private shownChildrenOptionIdSubject: BehaviorSubject<string> = new BehaviorSubject(null);
   public extendedOptions$: Observable<TemplateMultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
   public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
+
+  public maxLengthReached: boolean = false;
 
   constructor(private elementRef: ElementRef) {
     super();
@@ -43,6 +48,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
     this.mapCheckedValue();
+    this.handleMaxLength();
   }
 
   public handleSelectedOption(): void {
@@ -56,6 +62,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
     this.value = this.getValue(this.extendedOptions);
     this.onChange(this.value);
+    this.handleMaxLength();
   }
 
   public showChildren(option: TemplateMultiSelectFormOption): void {
@@ -87,6 +94,15 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public hasSelectedChildren(option: TemplateMultiSelectFormOption): boolean {
     return !![...option.children].filter((childOption) => childOption.checked).length;
+  }
+
+  public isDisabledByMaxLengthReached(checked: boolean): boolean {
+    console.log(checked, this.maxLengthReached);
+    return !checked && this.maxLengthReached;
+  }
+
+  private handleMaxLength(): void {
+    this.maxLengthReached = this.value?.length >= this.max;
   }
 
   private getOptionValues(options: TemplateMultiSelectFormOption[]): string[] {
@@ -126,12 +142,12 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   private formatToExtendedOptions(options: MultiSelectFormOption[]): TemplateMultiSelectFormOption[] {
     const formattedExtendedOptions: TemplateMultiSelectFormOption[] = options.map((option) => {
-      const { label, sublabel, icon, value } = option;
+      const { label, icon, value } = option;
 
       if (option.children?.length) {
-        return { label, sublabel, icon, value, children: this.formatToExtendedOptions(option.children), checked: false };
+        return { label, icon, value, children: this.formatToExtendedOptions(option.children), checked: false };
       } else {
-        return { label, sublabel, icon, value, checked: false };
+        return { label, icon, value, checked: false };
       }
     });
 

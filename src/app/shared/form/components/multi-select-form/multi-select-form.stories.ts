@@ -11,7 +11,7 @@ import { MultiSelectFormModule } from './multi-select-form.module';
     <h4 class="mt-4">MultiSelect FormGroup: {{ formGroup.value.select }}</h4>
     <div style="background: white;background: white;height: 300px;">
       <form [formGroup]="formGroup" style="height:100%">
-        <tsl-multi-select-form formControlName="select" [options]="options" [disabled]="disabled"></tsl-multi-select-form>
+        <tsl-multi-select-form formControlName="select" [options]="options" [disabled]="disabled" [max]="max"></tsl-multi-select-form>
       </form>
     </div>
 
@@ -20,6 +20,7 @@ import { MultiSelectFormModule } from './multi-select-form.module';
 })
 class StoryMultiSelectFormFormComponent {
   @Input() options;
+  @Input() max: boolean = false;
   @Input() disabled: boolean = false;
   public formGroup = new FormGroup({
     select: new FormControl(['9568']),
@@ -51,6 +52,12 @@ const Template: Story<StoryMultiSelectFormFormComponent> = (args) => ({
 export const Default = Template.bind({});
 Default.args = {
   options: SUBCATEGORIES_MOCK,
+};
+
+export const WithMaxRestriction = Template.bind({});
+WithMaxRestriction.args = {
+  options: SUBCATEGORIES_MOCK,
+  max: true,
 };
 
 export const WithNestedOptions = Template.bind({});
