@@ -1,14 +1,24 @@
-<div class="TrackingDetailInfo">
-  <div
-    class="TrackingDetailInfo__imageContainer"
-    [ngClass]="{
-      'TrackingDetailInfo__imageContainer--round': isRoundedImage
-    }"
-  >
-    <img *ngIf="imageSrc" [src]="imageSrc" class="TrackingDetailInfo__image" />
+<div class="TrackingDetailInfo d-flex w-100">
+  <div class="TrackingDetailInfo__imageWrapper mr-2">
+    <img
+      *ngIf="imageSrc"
+      [src]="imageSrc"
+      class="TrackingDetailInfo__image w-100 h-100"
+      [ngClass]="{
+        'TrackingDetailInfo__image--round': isRoundedImage
+      }"
+    />
     <tsl-svg-icon *ngIf="defaultSvgSrc && !imageSrc" [src]="defaultSvgSrc"></tsl-svg-icon>
   </div>
-  <tsl-svg-icon *ngIf="showCaret" src="path/to/caret"></tsl-svg-icon>
-  <span class="TrackingDetailInfo__title">{{ title }}</span>
-  <span class="TrackingDetailInfo__subtitle">{{ subtitle }}</span>
+  <div class="TrackingDetailInfo__textWrapper d-flex flex-column">
+    <span class="TrackingDetailInfo__title">{{ title }}</span>
+    <span class="TrackingDetailInfo__subtitle">{{ subtitle }}</span>
+  </div>
+  <tsl-svg-icon
+    *ngIf="showCaret"
+    src="/assets/icons/arrow-right.svg"
+    width="5"
+    height="10"
+    class="TrackingDetailInfo__arrowRight"
+  ></tsl-svg-icon>
 </div>
