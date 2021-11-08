@@ -1,3 +1,4 @@
+import { TransactionTrackingActionDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-dto.interface';
 import { TransactionTrackingShippingStatusDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-shipping-status-dto.interface';
 import { TransactionTrackingAction } from '../interfaces/transaction-tracking-action.interface';
 import { TransactionTrackingAnimation } from '../interfaces/transaction-tracking-animation.interface';
@@ -11,18 +12,18 @@ export class TransactionTrackingShippingStatusModel implements TransactionTracki
   description: string;
   title: string;
 
-  constructor(private transactionTrackingShippingStatusDto: TransactionTrackingShippingStatusDto) {
-    this.actions = this.getActions();
+  constructor(transactionTrackingShippingStatusDto: TransactionTrackingShippingStatusDto) {
+    this.actions = this.getActions(transactionTrackingShippingStatusDto.actions);
     this.animation = new TransactionTrackingShippingStatusAnimationModel(transactionTrackingShippingStatusDto.animation);
     this.description = transactionTrackingShippingStatusDto.description;
     this.title = transactionTrackingShippingStatusDto.title;
   }
 
-  private getActions(): TransactionTrackingAction[] {
-    let actions: TransactionTrackingAction[] = [];
-    this.transactionTrackingShippingStatusDto.actions.forEach((action) => {
-      actions.push(new TransactionTrackingActionModel(action));
+  private getActions(actions: TransactionTrackingActionDto[]): TransactionTrackingAction[] {
+    let result: TransactionTrackingAction[] = [];
+    actions.forEach((action) => {
+      result.push(new TransactionTrackingActionModel(action));
     });
-    return actions;
+    return result;
   }
 }

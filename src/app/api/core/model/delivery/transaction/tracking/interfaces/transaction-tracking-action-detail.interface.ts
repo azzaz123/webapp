@@ -1,5 +1,5 @@
 export interface TransactionTrackingActionDetail {
-  analytics: TransactionTrackingActionDetailAnalytics;
+  analytics?: TransactionTrackingActionDetailAnalytics;
   isCarrierTrackingWebview: boolean;
   isDeeplink: boolean;
   isDialog: boolean;
@@ -12,15 +12,15 @@ export interface TransactionTrackingActionDetailAnalytics {
   userId: string;
 }
 export interface TransactionTrackingActionDetailPayload {
-  banner: TransactionTrackingActionDetailPayloadBanner;
-  description: string;
-  linkUrl: string;
-  name: string;
-  negative: TransactionTrackingActionDetailPayloadConfirmation;
-  parameters: TransactionTrackingActionDetailPayloadParameters;
-  positive: TransactionTrackingActionDetailPayloadConfirmation;
-  success: TransactionTrackingActionDetail;
-  title: string;
+  banner?: TransactionTrackingActionDetailPayloadBanner;
+  description?: string;
+  linkUrl?: string;
+  name?: string;
+  negative?: TransactionTrackingActionDetailPayloadConfirmation;
+  parameters?: TransactionTrackingActionDetailPayloadParameters;
+  positive?: TransactionTrackingActionDetailPayloadConfirmation;
+  success?: TransactionTrackingActionDetail;
+  title?: string;
 }
 export interface TransactionTrackingActionDetailPayloadBanner {
   title: string;

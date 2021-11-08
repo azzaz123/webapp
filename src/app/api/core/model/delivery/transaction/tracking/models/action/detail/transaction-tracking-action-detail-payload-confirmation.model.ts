@@ -7,7 +7,9 @@ export class TransactionTrackingActionDetailPayloadConfirmationModel implements 
   action: TransactionTrackingActionDetail;
   title: string;
   constructor(title: string, action?: TransactionTrackingActionDetailDto) {
-    this.action = new TransactionTrackingActionDetailModel(action);
+    if (!!action) {
+      this.action = new TransactionTrackingActionDetailModel(action);
+    }
     this.title = title;
   }
 }

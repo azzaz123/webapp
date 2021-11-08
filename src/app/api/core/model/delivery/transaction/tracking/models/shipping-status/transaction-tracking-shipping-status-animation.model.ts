@@ -10,14 +10,14 @@ export class TransactionTrackingShippingStatusAnimationModel implements Transact
   isNormal: boolean;
   url: string;
 
-  constructor(private animation: TransactionTrackingAnimationDto) {
-    this.isLoop = this.isType('loop');
-    this.isLoopReverse = this.isType('loop_reverse');
-    this.isNormal = this.isType('normal');
+  constructor(animation: TransactionTrackingAnimationDto) {
+    this.isLoop = this.isType(animation, 'loop');
+    this.isLoopReverse = this.isType(animation, 'loop_reverse');
+    this.isNormal = this.isType(animation, 'normal');
     this.url = animation.url;
   }
 
-  private isType(expected: TransactionTrackingAnimationModeDto): boolean {
-    return this.animation.mode === expected;
+  private isType(animation: TransactionTrackingAnimationDto, expected: TransactionTrackingAnimationModeDto): boolean {
+    return animation.mode === expected;
   }
 }

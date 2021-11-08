@@ -1,5 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { TransactionTracking } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingModel } from '@api/core/model/delivery/transaction/tracking/models/transaction-tracking.model';
 import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { of } from 'rxjs';
@@ -53,15 +54,16 @@ describe('TransactionTrackingService', () => {
       expect(spy).toHaveBeenCalledWith(requestId);
     });
 
-    it('should return the transation tracking', () => {
+    it('should return the transation tracking', fakeAsync(() => {
       const expected = MOCK_TRANSACTION_TRACKING;
       let response: TransactionTracking;
 
       service.get(requestId).subscribe((data) => {
         response = data;
+        expect(JSON.stringify(response)).toEqual(JSON.stringify(expected));
       });
 
-      expect(response).toStrictEqual(expected);
-    });
+      flush();
+    }));
   });
 });

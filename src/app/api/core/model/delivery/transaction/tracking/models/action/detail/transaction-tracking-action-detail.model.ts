@@ -16,18 +16,18 @@ export class TransactionTrackingActionDetailModel implements TransactionTracking
   isUserAction: boolean;
   payload: TransactionTrackingActionDetailPayload;
 
-  constructor(private actionDetailDto: TransactionTrackingActionDetailDto) {
+  constructor(actionDetailDto: TransactionTrackingActionDetailDto) {
     if (!!actionDetailDto.analytics) {
       this.analytics = new TransactionTrackingActionDetailAnalyticsModel(actionDetailDto.analytics);
     }
-    this.isCarrierTrackingWebview = this.isActionType('carrier_tracking_webview');
-    this.isDeeplink = this.isActionType('deeplink');
-    this.isDialog = this.isActionType('dialog');
-    this.isUserAction = this.isActionType('user_action');
+    this.isCarrierTrackingWebview = this.isActionType(actionDetailDto.action_type, 'carrier_tracking_webview');
+    this.isDeeplink = this.isActionType(actionDetailDto.action_type, 'deeplink');
+    this.isDialog = this.isActionType(actionDetailDto.action_type, 'dialog');
+    this.isUserAction = this.isActionType(actionDetailDto.action_type, 'user_action');
     this.payload = new TransactionTrackingActionDetailPayloadModel(actionDetailDto.payload);
   }
 
-  private isActionType(expectedActionType: TransactionTrackingActionTypeDto): boolean {
-    return this.actionDetailDto.action_type === expectedActionType;
+  private isActionType(actionType: TransactionTrackingActionTypeDto, expectedActionType: TransactionTrackingActionTypeDto): boolean {
+    return actionType === expectedActionType;
   }
 }
