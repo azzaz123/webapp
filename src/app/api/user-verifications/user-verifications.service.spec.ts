@@ -91,4 +91,26 @@ describe('UserVerificationsService', () => {
       expect(response).toEqual(VERIFICATION_STATUS.SENT);
     });
   });
+
+  describe('when request to send the sms code to verify', () => {
+    let smsCode = '11111';
+
+    beforeEach(() => {
+      spyOn(userVerificationsHttpService, 'sendVerifyUserIdentity').and.returnValue(of(MOCK_PHONE_VERIFICATION_API_RESPONSE));
+    });
+
+    it('should call the post verify user identity ', () => {
+      service.verifySmsCode(smsCode).subscribe();
+
+      expect(userVerificationsHttpService.sendVerifyUserIdentity).toHaveBeenCalledWith(smsCode);
+    });
+
+    it('should map server response to web context', () => {
+      let response: VERIFICATION_STATUS;
+
+      service.verifySmsCode(smsCode).subscribe((data) => (response = data));
+
+      expect(response).toEqual(VERIFICATION_STATUS.SENT);
+    });
+  });
 });
