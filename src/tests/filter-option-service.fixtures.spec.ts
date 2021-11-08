@@ -111,7 +111,7 @@ export class MockFilterOptionService implements Partial<FilterOptionService> {
           },
         ]);
 
-      case ('with_icon' as unknown) as ConfigurationId:
+      case 'with_icon' as unknown as ConfigurationId:
         return of(
           this.getOptionsByText({ text: 'with_icons' }).map((option) => ({
             ...option,

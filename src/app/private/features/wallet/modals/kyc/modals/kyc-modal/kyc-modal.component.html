@@ -1,36 +1,41 @@
 <div class="KYCModal__content modal-body profile-box">
-    <tsl-stepper>
-        <ng-template step>
-            <tsl-bank-account isKYC="true" (bankAccountSaved)="goNextStep()" (closeModal)="closeModal()"></tsl-bank-account>
-        </ng-template>
-        <ng-template step>
-            <tsl-kyc-nationality
-                *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
-                [KYCNationality]="KYCSpecifications.nationality"
-                [KYCDocumentation]="KYCSpecifications.documentation"
-                (goBack)="goPreviousStep()"
-                (closeModal)="closeModal()"
-                (nationalityChange)="defineNationality($event)"
-                (documentToRequestChange)="defineDocumentationAndGoNext($event)"></tsl-kyc-nationality>
-        </ng-template>
-        <ng-template step>
-            <tsl-kyc-image-options (goBack)="resetKYCDocumentationAndGoPreviousStep()" (takeImageOptionChange)="defineImageMethodAndGoNext($event)" (closeModal)="closeModal()"></tsl-kyc-image-options>
-        </ng-template>
-        <ng-template step>
-            <tsl-kyc-upload-images
-                *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
-                [takeImageMethod]="KYCSpecifications.imageMethod"
-                [imagesNeeded]="KYCSpecifications.documentation.imagesNeeded"
-                [documentationSelected]="KYCSpecifications.documentation"
-                [isEndVerificationLoading]="isEndVerificationLoading"
-                (endVerification)="endVerification($event)"
-                (goBack)="goPreviousStep()"
-                (closeModal)="closeModal()"
-            ></tsl-kyc-upload-images>
-        </ng-template>
-        <ng-template step>
-            <tsl-kyc-status [properties]="KYCStatusInProgressProperties" (buttonClick)="closeModal()" (closeModal)="closeModal()">
-            </tsl-kyc-status>
-        </ng-template>
-    </tsl-stepper>
+  <tsl-stepper>
+    <ng-template step>
+      <tsl-bank-account isKYC="true" (bankAccountSaved)="goNextStep()" (closeModal)="closeModal()"></tsl-bank-account>
+    </ng-template>
+    <ng-template step>
+      <tsl-kyc-nationality
+        *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
+        [KYCNationality]="KYCSpecifications.nationality"
+        [KYCDocumentation]="KYCSpecifications.documentation"
+        (goBack)="goPreviousStep()"
+        (closeModal)="closeModal()"
+        (nationalityChange)="defineNationality($event)"
+        (documentToRequestChange)="defineDocumentationAndGoNext($event)"
+      ></tsl-kyc-nationality>
+    </ng-template>
+    <ng-template step>
+      <tsl-kyc-image-options
+        (goBack)="resetKYCDocumentationAndGoPreviousStep()"
+        (takeImageOptionChange)="defineImageMethodAndGoNext($event)"
+        (closeModal)="closeModal()"
+      ></tsl-kyc-image-options>
+    </ng-template>
+    <ng-template step>
+      <tsl-kyc-upload-images
+        *ngIf="KYCStoreSpecifications$ | async as KYCSpecifications"
+        [takeImageMethod]="KYCSpecifications.imageMethod"
+        [imagesNeeded]="KYCSpecifications.documentation.imagesNeeded"
+        [documentationSelected]="KYCSpecifications.documentation"
+        [isEndVerificationLoading]="isEndVerificationLoading"
+        (endVerification)="endVerification($event)"
+        (goBack)="goPreviousStep()"
+        (closeModal)="closeModal()"
+      ></tsl-kyc-upload-images>
+    </ng-template>
+    <ng-template step>
+      <tsl-kyc-status [properties]="KYCStatusInProgressProperties" (buttonClick)="closeModal()" (closeModal)="closeModal()">
+      </tsl-kyc-status>
+    </ng-template>
+  </tsl-stepper>
 </div>

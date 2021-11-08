@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
@@ -18,6 +18,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
 import { MOCK_KYC_PENDING_PROPERTIES } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 import { WalletTrackingEventService } from '@private/features/wallet/services/tracking-event/wallet-tracking-event.service';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 
 describe('WalletComponent', () => {
   const BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
@@ -28,8 +29,10 @@ describe('WalletComponent', () => {
   let router: Router;
   let kycPropertiesService: KYCPropertiesService;
   let walletTrackingEventService: WalletTrackingEventService;
+  let customerHelpService: CustomerHelpService;
 
   const walletHelpButtonSelector = 'a';
+  let MOCK_APP_LOCALE = 'es';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -47,6 +50,7 @@ describe('WalletComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
         KYCPropertiesService,
         KYCPropertiesHttpService,
+        CustomerHelpService,
         {
           provide: WalletTrackingEventService,
           useValue: {
@@ -59,11 +63,13 @@ describe('WalletComponent', () => {
   });
 
   beforeEach(() => {
+    TestBed.overrideProvider(LOCALE_ID, { useValue: MOCK_APP_LOCALE });
     fixture = TestBed.createComponent(WalletComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     kycPropertiesService = TestBed.inject(KYCPropertiesService);
     walletTrackingEventService = TestBed.inject(WalletTrackingEventService);
+    customerHelpService = TestBed.inject(CustomerHelpService);
   });
 
   it('should create', () => {
@@ -133,17 +139,19 @@ describe('WalletComponent', () => {
   });
 
   describe('when the user clicks the help button', () => {
-    beforeEach(() => fixture.detectChanges());
+    let helpButtonRef: DebugElement;
+
+    beforeEach(() => {
+      helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
+      fixture.detectChanges();
+    });
 
     it('should open the Wallet help page', () => {
-      const helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
-
-      expect(helpButtonRef.attributes['href']).toEqual(component.ZENDESK_WALLET_HELP_URL);
+      expect(helpButtonRef.attributes['href']).toEqual(component.WALLET_HELP_URL);
     });
 
     it('should track the event', () => {
       spyOn(walletTrackingEventService, 'trackClickHelpWallet');
-      const helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
 
       helpButtonRef.nativeElement.click();
 

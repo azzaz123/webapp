@@ -17,7 +17,7 @@ import {
 export const OBJECT_TYPE_API_URL = 'api/v3/suggesters/general/object-type';
 export const FASHION_SIZE_KEYS_API_URL = 'api/v3/fashion/keys/size';
 export const ITEMS_API_URL = (itemId: string) => `${environment.baseUrl}api/v3/items/${itemId}`;
-export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}`;
+export const GET_ITEM_ENDPOINT = (id: string) => `${ITEMS_API_URL(id)}/vertical`;
 
 @Injectable()
 export class ItemRequiredDataService {

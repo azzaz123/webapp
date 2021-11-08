@@ -1,5 +1,3 @@
-import { HELP_LOCALE } from '@core/external-links/customer-help/customer-help-constants';
-
 const defaultAmountOfDecimals: number = 2;
 const defaultMinimumAmount: number = 0;
 const defaultTotalAmount: number = 0;
@@ -7,6 +5,7 @@ const defaultTotalAmount: number = 0;
 export class WalletTransferAmountModel {
   private _total: number;
   private amountOfDecimals: number;
+  private beginsWithZero: boolean;
   private maximum: number;
   private minimum: number;
   private showDecimalsAsCents = true;
@@ -24,12 +23,13 @@ export class WalletTransferAmountModel {
     }
     return this.showDecimalsAsCents
       ? this.decimalsAsCents
-      : this.total.toLocaleString(HELP_LOCALE.en, { maximumFractionDigits: this.amountOfDecimals, minimumFractionDigits: 0 }).split('.')[1];
+      : this.total.toLocaleString('en', { maximumFractionDigits: this.amountOfDecimals, minimumFractionDigits: 1 }).split('.')[1];
   }
 
   public set decimals(value: string) {
     this.showDecimalsAsCents = false;
-    this.setTotal(this.integer, value);
+    this.setTotal(this.integer, this.beginsWithZero ? `0${value}` : value);
+    this.beginsWithZero = parseInt(value, 10) === 0;
   }
 
   public get decimalsAsCents(): string {

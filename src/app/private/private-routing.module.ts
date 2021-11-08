@@ -6,6 +6,8 @@ import { PRIVATE_PATHS } from './private-routing-constants';
 import { PrivateComponent } from './private.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from './features/pro/pro-routing-constants';
+import { DevelopmentGuard } from '@core/user/development.guard';
+import { PROFILE_PATHS } from './features/profile/profile-routing-constants';
 
 const routes: Routes = [
   {
@@ -72,7 +74,7 @@ const routes: Routes = [
         },
       },
       {
-        path: 'chat',
+        path: PRIVATE_PATHS.CHAT,
         loadChildren: () => import('@private/features/chat/chat.module').then((m) => m.ChatModule),
       },
       {
@@ -132,12 +134,19 @@ const routes: Routes = [
       {
         // TODO: Change the guard to the wallet one when created		Date: 2021/07/01
         path: PRIVATE_PATHS.WALLET,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => import('@private/features/wallet/wallet.module').then((m) => m.WalletModule),
       },
       {
+        path: PRIVATE_PATHS.VERIFICATION,
+        canLoad: [DevelopmentGuard],
+        children: [
+          { path: '', pathMatch: 'full', redirectTo: `/${PRIVATE_PATHS.CHAT}` },
+          { path: 'view', redirectTo: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.VERIFICATIONS}` },
+        ],
+      },
+      {
         path: '**',
-        redirectTo: 'chat',
+        redirectTo: PRIVATE_PATHS.CHAT,
       },
     ],
   },

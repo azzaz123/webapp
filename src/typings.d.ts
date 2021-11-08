@@ -10,6 +10,7 @@ declare let ga: Function;
 declare let fbq: Function;
 declare let pintrk: Function;
 declare let fetchHeaderBids: Function;
+declare let Optimize: import('./app/core/experimentation/vendors/optimize/optimize.interface').GoogleOptimize;
 declare let Criteo: import('./app/core/ads/vendors/criteo/criteo.interface').CriteoLibrary;
 declare let apstag: import('./app/core/ads/vendors/amazon/amazon-publisher-service.model').AmazonPublisherServiceLibrary;
 declare let mParticle: any;

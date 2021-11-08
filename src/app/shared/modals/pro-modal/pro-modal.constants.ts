@@ -7,13 +7,11 @@ export enum PRO_MODAL_TYPE {
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
   [PRO_MODAL_TYPE.simulation]: {
     img: '/assets/icons/pro/modals/pop-in-person.svg',
-    title: 'simulacro',
-    text1: 'La función de agregar servicios adicionales todavía no existe, estamos valorando posibilidades.',
-    text2: '¡Gracias por tu ayuda! Tu participación ha sido muy valiosa. Nos ayudará a crear esta funcionalidad.',
+    title: $localize`:@@additional_services_selector_pro_user_smoke_test_modal_title:This was a test, services haven't been added`,
+    text1: $localize`:@@additional_services_selector_pro_user_smoke_test_modal_part_1_description:The feature doesn't yet exist, we are evaluating their possibilities.`,
+    text2: $localize`:@@additional_services_selector_pro_user_smoke_test_modal_part_2_description:We appreciate your participation. It will help us to make this feature real. Thanks!`,
     buttons: {
-      primary: {
-        text: 'OK',
-      },
+      primary: { text: $localize`:@@additional_services_selector_pro_user_smoke_test_modal_ok_button:Understood` },
     },
   },
 };

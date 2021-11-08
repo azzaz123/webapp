@@ -1,9 +1,9 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { HelpLocaleId } from '@core/external-links/customer-help/customer-help-constants';
+import { APP_LOCALE } from '@configs/subdomains.config';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { subscriptionBenefits } from '../constants/subscription-benefits';
+import { subscriptionBenefits, subscriptionsHeaderBenefits } from '../constants/subscription-benefits';
 import { SubscriptionBenefit } from '../interfaces/subscription-benefit.interface';
 
 export const SUBSCRIPTION_IMAGES_FOLDER = 'assets/images/subscriptions/benefits';
@@ -16,8 +16,17 @@ export const GENERIC_BENEFITS: string[] = [
 @Injectable()
 export class SubscriptionBenefitsService {
   private subscriptionBenefits: SubscriptionBenefit[];
+  private showHeaderBenefitsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  constructor(@Inject(LOCALE_ID) private locale: HelpLocaleId) {}
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE) {}
+
+  public get showHeaderBenefits$(): Observable<boolean> {
+    return this.showHeaderBenefitsSubject.asObservable();
+  }
+
+  public set showHeaderBenefits(value: boolean) {
+    this.showHeaderBenefitsSubject.next(value);
+  }
 
   public getSubscriptionBenefits(useCache = true): Observable<SubscriptionBenefit[]> {
     if (useCache && this.subscriptionBenefits) {
@@ -27,6 +36,10 @@ export class SubscriptionBenefitsService {
       map((response) => this.mapBenefits(response)),
       tap((benefits) => (this.subscriptionBenefits = this.mapBenefits(benefits)))
     );
+  }
+
+  public getSubscriptionsHeaderBenefits(): Observable<SubscriptionBenefit[]> {
+    return of(subscriptionsHeaderBenefits);
   }
 
   private mapBenefits(benefits: SubscriptionBenefit[]): SubscriptionBenefit[] {
