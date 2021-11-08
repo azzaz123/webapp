@@ -17,7 +17,8 @@ const Template: Story<TransactionTrackingDetailInfoComponent> = (args: Transacti
     declarations: [TransactionTrackingDetailInfoComponent],
     imports: [CommonModule, SvgIconModule],
   },
-  template: '<tsl-transaction-tracking-detail-info></tsl-transaction-tracking-detail-info>',
+  template:
+    '<tsl-transaction-tracking-detail-info [title]="title" [subtitle]="subtitle" [imageSrc]="imageSrc" [showCaret]="showCaret" [defaultSvgSrc]="defaultSvgSrc" [isRoundedImage]="isRoundedImage"></tsl-transaction-tracking-detail-info>',
 });
 
 export const Default = Template.bind({});
