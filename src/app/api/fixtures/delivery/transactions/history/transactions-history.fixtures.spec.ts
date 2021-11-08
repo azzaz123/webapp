@@ -1,6 +1,6 @@
 import { TransactionsHistoryDto } from '@api/delivery/transactions/history/dtos/transactions-history-dto.interface';
 
-export const MOCK_DEFAULT_DELIVERY_TRANSACTIONS_HISTORY_RESPONSE: TransactionsHistoryDto = [
+export const MOCK_TRANSACTIONS_HISTORY_DTO: TransactionsHistoryDto = [
   {
     amount: { amount: 19.75, currency: 'EUR' },
     created_at: '2021-10-22T10:57:14Z',

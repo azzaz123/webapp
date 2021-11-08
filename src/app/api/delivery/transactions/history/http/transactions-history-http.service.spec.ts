@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MOCK_DEFAULT_DELIVERY_TRANSACTIONS_HISTORY_RESPONSE } from '@api/fixtures/delivery/transactions/history/transactions-history.fixtures.spec';
+import { MOCK_TRANSACTIONS_HISTORY_DTO } from '@api/fixtures/delivery/transactions/history/transactions-history.fixtures.spec';
 import { TransactionsHistoryDto } from '../dtos/transactions-history-dto.interface';
 import { DELIVERY_TRANSACTIONS_HISTORY_ENDPOINT } from './endpoints';
 import { TransactionsHistoryHttpService } from './transactions-history-http.service';
@@ -44,10 +44,10 @@ describe('TransactionsHistoryHttpServicensactionsHistoryHttpService', () => {
 
         service.get(queryParams).subscribe((data) => (response = data));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
-        req.flush(MOCK_DEFAULT_DELIVERY_TRANSACTIONS_HISTORY_RESPONSE);
+        req.flush(MOCK_TRANSACTIONS_HISTORY_DTO);
 
         expect(req.request.method).toBe('GET');
-        expect(response).toEqual(MOCK_DEFAULT_DELIVERY_TRANSACTIONS_HISTORY_RESPONSE);
+        expect(response).toEqual(MOCK_TRANSACTIONS_HISTORY_DTO);
       });
     });
   });
