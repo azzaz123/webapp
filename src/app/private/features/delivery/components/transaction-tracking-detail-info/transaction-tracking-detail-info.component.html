@@ -2,12 +2,11 @@
   <div
     class="TrackingDetailInfo__imageContainer"
     [ngClass]="{
-      'TrackingDetailInfo__imageContainer--round': isRoundedImage,
-      'TrackingDetailInfo__imageContainer--roundedBorder': isRoundedBorderImage
+      'TrackingDetailInfo__imageContainer--round': isRoundedImage
     }"
   >
-    <img *ngIf="srcImage" [src]="srcImage" class="TrackingDetailInfo__image" />
-    <tsl-svg-icon *ngIf="defaultSrcSvg && !srcImage" [src]="defaultSrcSvg"></tsl-svg-icon>
+    <img *ngIf="imageSrc" [src]="imageSrc" class="TrackingDetailInfo__image" />
+    <tsl-svg-icon *ngIf="defaultSvgSrc && !imageSrc" [src]="defaultSvgSrc"></tsl-svg-icon>
   </div>
   <tsl-svg-icon *ngIf="showCaret" src="path/to/caret"></tsl-svg-icon>
   <span class="TrackingDetailInfo__title">{{ title }}</span>

@@ -8,9 +8,8 @@ import { Component, Input } from '@angular/core';
 export class TransactionTrackingDetailInfoComponent {
   @Input() title: string;
   @Input() subtitle: string;
-  @Input() srcImage: string;
-  @Input() defaultSrcSvg: string;
+  @Input() imageSrc: string;
+  @Input() defaultSvgSrc: string;
   @Input() showCaret: boolean;
   @Input() isRoundedImage: boolean;
-  @Input() isRoundedBorderImage: boolean;
 }
