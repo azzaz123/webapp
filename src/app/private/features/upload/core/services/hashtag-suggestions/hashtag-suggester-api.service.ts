@@ -26,7 +26,7 @@ export class HashtagSuggesterApiService {
 
   public getHashtags(category_id: string, start: string): Observable<PaginatedList<Hashtag>> {
     const url = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}`;
-    let httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix: null, start } });
+    let httpParams: HttpParams = new HttpParams({ fromObject: { category_id, start } });
     return this.getResults(
       this.http.get<HttpResponse<HashtagResponse>>(url, { params: httpParams, observe: 'response' as 'body' })
     );
