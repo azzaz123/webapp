@@ -39,7 +39,7 @@ describe('RangeFilterComponent', () => {
       },
       title: 'How much do you want to pay?',
       icon: '/assets/icons/joke.svg',
-      id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+      id: COMMON_CONFIGURATION_ID.CATEGORIES,
       bubblePlaceholder: 'placeholder',
       range: [0, 500],
     };
