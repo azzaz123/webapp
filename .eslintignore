@@ -11,7 +11,9 @@
 
 # ENGAGEMENT
 /src/app/private/features/favorites
-/src/app/private/features/profile/modal
+/src/app/private/features/profile/modal/become-pro-modal
+/src/app/private/features/profile/modal/change-store-location-modal
+/src/app/private/features/profile/modal/unsubscribe-modal
 /src/app/private/features/profile/pages/account
 /src/app/private/features/profile/pages/profile-info
 /src/app/private/features/profile/pipes

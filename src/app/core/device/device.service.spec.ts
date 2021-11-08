@@ -165,4 +165,15 @@ describe('DeviceService', () => {
       });
     });
   });
+
+  describe('when asking for the OS', () => {
+    it('should get the OS', () => {
+      const expected = 'Aifone';
+      deviceDetectorService.os = expected;
+
+      const result = deviceService.getOSName();
+
+      expect(result).toBe(expected);
+    });
+  });
 });

@@ -1,40 +1,41 @@
 <div class="page-content">
-    <div class="container">
-      <tsl-header>
-        <div class="row mb-3">
-          <div class="col">
-            <div class="header-row">
-              <h1 class="Wallet__title w-100 header-title">
-                <div class="w-100 d-flex justify-content-between">
-                  <div i18n="@@wallet_view_top_bar_title">Wallet</div>
-                  <div>
-                    <a [href]="ZENDESK_WALLET_HELP_URL" target="_blank" i18n="@@wallet_view_top_bar_help_link" (click)="trackClickHelpWallet()">
-                      Help
-                    </a>
-                  </div>
-                </div>
-              </h1>
-            </div>
-            <ng-container *ngIf="KYCProperties$ | async as properties">
-              <tsl-kyc-banner
-                *ngIf="(KYCBannerSpecifications$(properties) | async) as specifications"
-                [KYCProperties]="properties"
-                [KYCBannerSpecifications]="specifications"></tsl-kyc-banner>
-            </ng-container>
-          </div>
-        </div>
-      </tsl-header>
-      <div class="row">
+  <div class="container">
+    <tsl-header>
+      <div class="row mb-3">
         <div class="col">
-          <tsl-nav-links
-            [navLinks]="navLinks"
-            [selectedLinkId]="selectedNavLinkId"
-            [marginless]="true"
-            (clickedLink)="onNavLinkClicked($event)"
-          >
-          </tsl-nav-links>
+          <div class="header-row">
+            <h1 class="Wallet__title w-100 header-title">
+              <div class="w-100 d-flex justify-content-between">
+                <div i18n="@@wallet_view_top_bar_title">Wallet</div>
+                <div>
+                  <a [href]="WALLET_HELP_URL" target="_blank" i18n="@@wallet_view_top_bar_help_link" (click)="trackClickHelpWallet()">
+                    Help
+                  </a>
+                </div>
+              </div>
+            </h1>
+          </div>
+          <ng-container *ngIf="KYCProperties$ | async as properties">
+            <tsl-kyc-banner
+              *ngIf="KYCBannerSpecifications$(properties) | async as specifications"
+              [KYCProperties]="properties"
+              [KYCBannerSpecifications]="specifications"
+            ></tsl-kyc-banner>
+          </ng-container>
         </div>
       </div>
-      <router-outlet></router-outlet>
+    </tsl-header>
+    <div class="row">
+      <div class="col">
+        <tsl-nav-links
+          [navLinks]="navLinks"
+          [selectedLinkId]="selectedNavLinkId"
+          [marginless]="true"
+          (clickedLink)="onNavLinkClicked($event)"
+        >
+        </tsl-nav-links>
+      </div>
     </div>
+    <router-outlet></router-outlet>
   </div>
+</div>

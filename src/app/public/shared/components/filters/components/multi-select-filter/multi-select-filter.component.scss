@@ -2,12 +2,19 @@
 
 .MultiSelectFilter {
   &--bubble {
+    display: flex;
+    gap: $spacer * 0.5;
+  }
+
+  &__bubble {
     margin-left: -24px;
     margin-right: -24px;
   }
 
   &__form {
-    max-height: 325px;
+    @include media-breakpoint-up(md) {
+      max-height: 325px;
+    }
   }
 
   &__template {

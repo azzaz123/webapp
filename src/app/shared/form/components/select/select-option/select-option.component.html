@@ -3,7 +3,7 @@
     <tsl-svg-icon *ngIf="icon" class="d-flex flex-grow-0 mr-3 justify-content-center align-items-center"
                   [class.SelectOption__icon--active]="isActive"
                   [src]="icon" [width]="24" [height]="24"></tsl-svg-icon>
-    <span class="SelectOption__label">{{label}}</span>
+    <span class="SelectOption__label text-truncate overflow-hidden">{{label}}</span>
   </div>
   <span *ngIf="sublabel" [class.SelectOption__sublabel--with-icon]="icon" class="SelectOption__sublabel">{{sublabel}}</span>
 </div>

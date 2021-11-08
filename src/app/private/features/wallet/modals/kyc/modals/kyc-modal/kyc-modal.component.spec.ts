@@ -28,6 +28,8 @@ import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { KYCSpecifications } from '../../interfaces/kyc-specifications.interface';
+import { DeviceService } from '@core/device/device.service';
+import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 
 const kycSpecificationsSubjectMock: BehaviorSubject<KYCSpecifications> = new BehaviorSubject<KYCSpecifications>(
   MOCK_EMPTY_KYC_SPECIFICATIONS
@@ -60,6 +62,10 @@ describe('KYCModalComponent', () => {
         KYCTrackingEventsService,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         ToastService,
+        {
+          provide: DeviceService,
+          useValue: MockDeviceService,
+        },
         {
           provide: KYCStoreService,
           useValue: {

@@ -10,7 +10,7 @@ import { MonitoringService } from '@core/monitoring/services/monitoring.service'
 import { MARKET_PROVIDER, MarketSiteByLocale } from '../configs/market.config';
 import { siteUrlFactory, SITE_URL } from '@configs/site-url.config';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import { ExperimentationService } from '@core/experimentation/experimentation.service';
+import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 
 export const PROVIDERS: Provider[] = [
   {

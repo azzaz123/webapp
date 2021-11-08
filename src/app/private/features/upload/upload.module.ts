@@ -34,6 +34,7 @@ import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-a
 import { UploadTrackingEventService } from './pages/upload-product/upload-tracking-event/upload-tracking-event.service';
 import { CategoriesApiModule } from '@api/categories/categories-api.module';
 import { MultiselectSearchInputModule } from '@shared/form/components/multiselect-search-input/multiselect-search-input.module';
+import { ProFeaturesModule } from './components/pro-features/pro-features.module';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { MultiselectSearchInputModule } from '@shared/form/components/multiselec
     CheckboxFormModule,
     DeliveryRulesApiModule, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
     CategoriesApiModule,
+    ProFeaturesModule,
   ],
   declarations: [
     uploadRoutedComponents,

@@ -1,4 +1,5 @@
 <tsl-filter-template #filterTemplateComponent
+  *ngIf="(options$ | async).length"
   [isBubble]="variant | isBubble"
   [isDropdown]="true"
   [isClearable]="true"
@@ -22,7 +23,7 @@
       <form [formGroup]="formGroup" class="SelectFilter__form">
         <tsl-select-form
           formControlName="select"
-          [options]="options">
+          [options]="options$ | async">
         </tsl-select-form>
       </form>
     </div>

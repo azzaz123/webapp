@@ -134,7 +134,7 @@ export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterPa
   }
 
   private getCategoryLabel(value: string): string {
-    return this.getCategoryByValue(value).label;
+    return this.getCategoryByValue(value)?.label;
   }
 
   private getCategoryByValue(value: string): CategoriesFilterOption {

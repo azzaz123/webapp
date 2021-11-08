@@ -3,13 +3,13 @@ import { Route, RouterModule } from '@angular/router';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { ExitConfirmGuard } from '@core/guards/exit-confirm.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { AccountComponent } from './pages/account/account.component';
 import { ProfileInfoComponent } from './pages/profile-info/profile-info.component';
 import { ProfileComponent } from './pages/profile.component';
 import { PRO_PATHS } from '../pro/pro-routing-constants';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { VerificationsNScurityModule } from './pages/verifications-n-security/verifications-n-securty.module';
 import { PROFILE_PATHS } from './profile-routing-constants';
+import { AccountModule } from './pages/account/account.module';
 
 const routes: Route[] = [
   {
@@ -35,12 +35,7 @@ const routes: Route[] = [
       },
       {
         path: PROFILE_PATHS.ACCOUNT,
-        component: AccountComponent,
-        canDeactivate: [ExitConfirmGuard],
-        data: {
-          isMyZone: true,
-          isProfile: true,
-        },
+        loadChildren: () => AccountModule,
       },
       {
         path: PROFILE_PATHS.VERIFICATIONS,
@@ -69,4 +64,4 @@ const routes: Route[] = [
 })
 export class ProfileRoutingModule {}
 
-export const profileRoutedComponents = [ProfileComponent, ProfileInfoComponent, AccountComponent];
+export const profileRoutedComponents = [ProfileComponent, ProfileInfoComponent];

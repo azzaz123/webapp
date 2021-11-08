@@ -7,6 +7,7 @@ import { SelectOptionComponent } from '@shared/form/components/select/select-opt
 import { SelectParentOptionComponent } from '../select-parent-option/select-parent-option.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ButtonModule } from '@shared/button/button.module';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -37,7 +38,7 @@ describe('DrawerPlaceholderTemplateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, ButtonModule],
       declarations: [
         DrawerPlaceholderTemplateComponent,
         TestSelectFilterTemplateComponent,

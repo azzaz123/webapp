@@ -27,6 +27,7 @@ import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/se
 import { BehaviorSubject } from 'rxjs';
 import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
+import { DeviceService } from '@core/device/device.service';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -64,7 +65,8 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     private bankAccountService: BankAccountService,
     private location: Location,
     private kycTrackingEventsService: KYCTrackingEventsService,
-    private separateWordByCharacterPipe: SeparateWordByCharacterPipe
+    private separateWordByCharacterPipe: SeparateWordByCharacterPipe,
+    private deviceService: DeviceService
   ) {}
 
   ngOnInit(): void {
@@ -129,6 +131,19 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
   public canExit(): true | Promise<any> {
     return this.isKYC ? true : this.formComponent.canExit();
+  }
+
+  // TODO: Formating IBAN on blur event only for Android due to an unknown behaviour from Android OS
+  public formatIbanOnAndroid(): void {
+    const deviceOSName = this.deviceService.getOSName();
+    const deviceIsNotAndroid = deviceOSName !== 'Android';
+    if (deviceIsNotAndroid) {
+      return;
+    }
+
+    const currentIBAN = this.bankAccountForm.get('iban').value;
+    const formattedIBAN = this.separateWordByCharacterPipe.transform(currentIBAN, 4, ' ');
+    this.bankAccountForm.patchValue({ iban: formattedIBAN });
   }
 
   private submitValidForm(): void {
@@ -210,6 +225,10 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   }
 
   private formatIBANWhenChanges(): void {
+    const isAndroidDevice = this.deviceService.getOSName() === 'Android';
+    if (isAndroidDevice) {
+      return;
+    }
     this.bankAccountForm
       .get('iban')
       .valueChanges.pipe(distinctUntilChanged())

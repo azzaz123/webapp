@@ -110,8 +110,8 @@ describe('MultiSelectFilterComponent', () => {
       });
 
       it('should set label to drawer placeholder', () => {
-        const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-          .componentInstance;
+        const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+          debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
 
         expect(drawerPlaceholderTemplate.placeholderLabel).toEqual(basicConfig.drawerPlaceholder);
       });
@@ -158,9 +158,13 @@ describe('MultiSelectFilterComponent', () => {
         });
 
         it('should set label with correct values', () => {
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+          const filterTemplates: FilterTemplateComponent[] = debugElement
+            .queryAll(filterPredicate)
+            .map((filterTemplate) => filterTemplate.componentInstance);
 
-          expect(filterTemplate.label).toEqual(`${selectedOption1.label}, ${selectedOption2.label}`);
+          filterTemplates.forEach((filterTemplate) => {
+            expect([selectedOption1.label, selectedOption2.label]).toContain(filterTemplate.label);
+          });
         });
       });
 
@@ -186,9 +190,13 @@ describe('MultiSelectFilterComponent', () => {
         });
 
         it('should set label with correct values', () => {
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
+          const filterTemplates: FilterTemplateComponent[] = debugElement
+            .queryAll(filterPredicate)
+            .map((filterTemplate) => filterTemplate.componentInstance);
 
-          expect(filterTemplate.label).toEqual(`${selectedOption1.label}, ${selectedOption2.label}`);
+          filterTemplates.forEach((filterTemplate) => {
+            expect([selectedOption1.label, selectedOption2.label]).toContain(filterTemplate.label);
+          });
         });
       });
 
@@ -213,32 +221,29 @@ describe('MultiSelectFilterComponent', () => {
         });
 
         it('should restart values', () => {
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-          expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: OPTIONS[0].value }]);
-
-          filterTemplate.clear.emit();
-
-          expect(component.value).toEqual([]);
-        });
-
-        it('should restart label', () => {
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-          expect(filterTemplate.label).toEqual(OPTIONS[0].label);
-
-          filterTemplate.clear.emit();
+          component.handleMultiValueClear(OPTIONS[0].value);
           fixture.detectChanges();
 
-          expect(filterTemplate.label).toEqual(basicConfig.bubblePlaceholder);
+          expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: '' }]);
+        });
+
+        it('should restart label', (done) => {
+          component.handleMultiValueClear(OPTIONS[0].value);
+          fixture.detectChanges();
+
+          component.multiValue$.subscribe((multiValue) => {
+            expect(multiValue).toEqual([basicConfig.bubblePlaceholder]);
+            done();
+          });
         });
 
         it('should emit value changes', () => {
           spyOn(component.valueChange, 'emit');
-          const filterTemplate: FilterTemplateComponent = debugElement.query(filterPredicate).componentInstance;
-
-          filterTemplate.clear.emit();
+          component.handleMultiValueClear(OPTIONS[0].value);
+          fixture.detectChanges();
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
-          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: undefined }]);
+          expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: '' }]);
         });
       });
     });
@@ -271,8 +276,8 @@ describe('MultiSelectFilterComponent', () => {
       describe('and value changes', () => {
         it('should emit changes', () => {
           spyOn(component.valueChange, 'emit');
-          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-            .componentInstance;
+          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+            debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
           const value = [
             {
               key: FILTER_QUERY_PARAM_KEY.objectType,
@@ -294,8 +299,8 @@ describe('MultiSelectFilterComponent', () => {
           fixture.detectChanges();
         });
         it('should restart values', () => {
-          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-            .componentInstance;
+          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+            debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
           expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: OPTIONS[0].value }]);
 
           drawerPlaceholderTemplate.clear.emit();
@@ -304,8 +309,8 @@ describe('MultiSelectFilterComponent', () => {
         });
 
         it('should restart label', () => {
-          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-            .componentInstance;
+          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+            debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
           expect(drawerPlaceholderTemplate.placeholderLabel).toEqual(OPTIONS[0].label);
 
           drawerPlaceholderTemplate.clear.emit();
@@ -316,8 +321,8 @@ describe('MultiSelectFilterComponent', () => {
 
         it('should emit value changes', () => {
           spyOn(component.valueChange, 'emit');
-          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-            .componentInstance;
+          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+            debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
 
           drawerPlaceholderTemplate.clear.emit();
 

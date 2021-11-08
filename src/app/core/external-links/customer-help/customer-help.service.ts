@@ -1,19 +1,30 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { CUSTOMER_HELP_PAGE, CUSTOMER_TICKET_FORM, HelpLocaleId } from './customer-help-constants';
-import { getCustomerHelpUrl } from './get-customer-help-url';
-import { getTicketFormUrl } from './get-ticket-form-url';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { allCustomerHelpPages } from './constants/help-pages/all-help-pages';
+import { enCustomerHelpPages } from './constants/help-pages/help-pages.en';
+import { allTicketFormPages } from './constants/ticket-form-pages/all-ticket-form-pages';
+import { enCustomerTicketFormPages } from './constants/ticket-form-pages/ticket-form-pages.en';
+import { CUSTOMER_HELP_PAGE, CUSTOMER_TICKET_FORM } from './customer-help-constants';
+import { CustomerHelpPages } from './types/customer-help-pages.type';
+import { CustomerTicketFormPages } from './types/customer-ticket-form-pages.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomerHelpService {
-  constructor(@Inject(LOCALE_ID) private locale: HelpLocaleId) {}
+  private helpPages: CustomerHelpPages;
+  private ticketFormPages: CustomerTicketFormPages;
 
-  public getPageUrl(articleId: CUSTOMER_HELP_PAGE): string {
-    return getCustomerHelpUrl(articleId, this.locale);
+  constructor(@Inject(LOCALE_ID) locale: APP_LOCALE) {
+    this.helpPages = allCustomerHelpPages[locale] || enCustomerHelpPages;
+    this.ticketFormPages = allTicketFormPages[locale] || enCustomerTicketFormPages;
   }
 
-  public getFormPageUrl(formId: CUSTOMER_TICKET_FORM): string {
-    return getTicketFormUrl(formId, this.locale);
+  public getPageUrl(helpPageId: CUSTOMER_HELP_PAGE): string {
+    return this.helpPages[helpPageId];
+  }
+
+  public getFormPageUrl(ticketFormId: CUSTOMER_TICKET_FORM): string {
+    return this.ticketFormPages[ticketFormId];
   }
 }

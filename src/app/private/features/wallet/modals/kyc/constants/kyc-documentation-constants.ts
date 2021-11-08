@@ -11,7 +11,7 @@ export const KYC_DOCUMENTATION: KYCDocumentation[] = [
   {
     value: KYC_DOCUMENTATION_TYPE.DRIVING_LICENSE,
     label: $localize`:@@kyc_select_document_view_list_driving_license_placeholder:Driving license`,
-    imagesNeeded: 1,
+    imagesNeeded: 2,
     analyticsName: 'driving_license',
   },
   {
@@ -23,7 +23,7 @@ export const KYC_DOCUMENTATION: KYCDocumentation[] = [
   {
     value: KYC_DOCUMENTATION_TYPE.RESIDENCE_PERMIT,
     label: $localize`:@@kyc_select_document_view_list_residence_permit_placeholder:Residence permit`,
-    imagesNeeded: 1,
+    imagesNeeded: 2,
     analyticsName: 'residence_permit',
   },
 ];
