@@ -27,15 +27,14 @@ Default.args = {
   title: 'Producto:',
   subtitle: 'Altavoces B&WG',
   imageSrc: 'http://localhost:6006/images/item-camera.jpg',
-  showCaret: true,
 };
 
-export const WithoutCaret = Template.bind({});
-WithoutCaret.args = {
+export const WithCaret = Template.bind({});
+WithCaret.args = {
   title: 'Producto:',
   subtitle: 'Altavoces B&WG',
   imageSrc: 'http://localhost:6006/images/item-camera.jpg',
-  showCaret: false,
+  showCaret: true,
 };
 
 export const WithoutImage = Template.bind({});
