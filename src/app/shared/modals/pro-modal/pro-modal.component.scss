@@ -55,7 +55,7 @@
   &--green {
     .ProModal__close {
       tsl-svg-icon ::ng-deep path {
-        fill: #253238;
+        fill: $blue-grey-1;
       }
       &:hover {
         tsl-svg-icon ::ng-deep path {
