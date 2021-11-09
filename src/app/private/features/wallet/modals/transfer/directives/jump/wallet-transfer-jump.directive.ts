@@ -15,9 +15,9 @@ export class WalletTransferJumpDirective {
   constructor(@Inject(DOCUMENT) private document: Document, private element: ElementRef) {}
 
   @HostListener('keydown', ['$event']) onKeyDown(e: KeyboardEvent) {
-    const key = e.key;
+    const code = e.code;
 
-    if (!this.isJumpKey(key) || !this.jumpTargetId) {
+    if (!this.isJumpKey(code) || !this.jumpTargetId) {
       return;
     }
 
@@ -30,11 +30,11 @@ export class WalletTransferJumpDirective {
     }
   }
 
-  private isJumpKey(key: string[] | string): boolean {
+  private isJumpKey(code: string[] | string): boolean {
     if (typeof this.jumpKey === 'string') {
-      return key === this.jumpKey;
+      return code === this.jumpKey;
     }
-    return !!this.jumpKey?.find((item) => item === key);
+    return !!this.jumpKey?.find((item) => item === code);
   }
 
   private get isValidJump(): boolean {

@@ -7,6 +7,16 @@
   color: $blue-grey-2;
   margin-top: $spacing-xxl;
 
+  &--desktop {
+    > * {
+      pointer-events: none;
+    }
+    &:hover {
+      border: solid 2px $color-pro-main;
+      cursor: pointer;
+    }
+  }
+
   @include media-breakpoint-down(sm) {
     padding: 0;
     margin-top: $spacing-m;

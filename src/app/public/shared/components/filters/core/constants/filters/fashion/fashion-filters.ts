@@ -18,19 +18,17 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     isClearable: true,
   },
   {
-    id: FASHION_CONFIGURATION_ID.CLOTHING_TYPE,
-    type: FILTER_TYPES.SUGGESTER,
+    id: FASHION_CONFIGURATION_ID.OBJECT_TYPE,
+    type: FILTER_TYPES.MULTISELECT,
     title: $localize`:@@web_filter_clothing_type_title:Type of clothing`,
     bubblePlaceholder: $localize`:@@web_filter_clothing_type_bubble_placeholder:Type of clothing`,
     drawerPlaceholder: $localize`:@@web_filter_clothing_type_drawer_placeholder:Select type of clothing`,
-    suggesterPlaceholder: $localize`:@@web_filter_clothing_type_suggester_placeholder:Search`,
     icon: '/assets/icons/filters/fashion_type.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
     },
     isClearable: true,
     hasContentPlaceholder: true,
-    hasOptionsOnInit: true,
   },
   {
     id: FASHION_CONFIGURATION_ID.BRAND,

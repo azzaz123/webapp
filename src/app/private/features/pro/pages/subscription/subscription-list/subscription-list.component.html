@@ -14,6 +14,7 @@
               [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
               [tierDiscount]="hasDiscount(subscription)"
               [subscriptionBenefits]="getBenefits(subscription)"
+              [isMobile]="isMobile"
               *ngIf="subscription"
             >
             </tsl-subscription-card>

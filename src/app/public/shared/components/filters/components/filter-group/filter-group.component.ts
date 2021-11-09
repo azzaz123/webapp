@@ -16,6 +16,7 @@ import { FilterHostDirective } from './directives/filter-host.directive';
 import { BehaviorSubject } from 'rxjs';
 import { FilterHostConfig } from './components/filter-host/interfaces/filter-host-config.interface';
 import { FILTER_TYPE_COMPONENT } from './constants/filter-type-component.constant';
+import { FILTER_IDS_TO_REFRESH_VALUES } from '@public/shared/services/filter-option/configurations/filter-ids-to-refresh-values';
 
 @Component({
   selector: 'tsl-filter-group',
@@ -41,7 +42,7 @@ export class FilterGroupComponent implements OnChanges {
   public ngOnChanges(changes: SimpleChanges) {
     const { config } = changes;
 
-    if (config && this.hasConfigChanged(config.previousValue, config.currentValue)) {
+    if (config && (this.hasConfigChanged(config.previousValue, config.currentValue) || this.needsToRefreshValues(config.currentValue))) {
       this.updateHostConfigs();
     }
   }
@@ -68,5 +69,9 @@ export class FilterGroupComponent implements OnChanges {
     const currentIds = currentConfig.map((curr) => curr.id);
 
     return !currentIds.every((id) => previousIds.includes(id));
+  }
+
+  private needsToRefreshValues(config: FilterConfig<unknown>[]): boolean {
+    return !!config.find((config: FilterConfig<unknown>) => FILTER_IDS_TO_REFRESH_VALUES.includes(config.id));
   }
 }

@@ -39,6 +39,7 @@ import { CategoryListingModalComponent } from './modal/category-listing-modal/ca
 import { SelectOptionModule } from '@shared/form/components/select/select-option/select-option.module';
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 import { DiscountBadgeComponent } from './components/discount-badge/discount-badge.component';
+import { ProHeaderComponent } from './components/pro-header/pro-header.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { DiscountBadgeComponent } from './components/discount-badge/discount-bad
     SubscriptionEditComponent,
     CategoryListingModalComponent,
     DiscountBadgeComponent,
+    ProHeaderComponent,
   ],
   imports: [
     CommonModule,
