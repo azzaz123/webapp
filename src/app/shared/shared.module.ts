@@ -59,8 +59,8 @@ import { PictureUploadComponent } from './profile/picture-upload/picture-upload.
 import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.component';
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
-import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
 import { RouterLinkDirectiveStub } from './router-link-directive-stub';
+import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { SelectComponent } from './select/select.component';
 import { SpinnerModule } from './spinner/spinner.module';
