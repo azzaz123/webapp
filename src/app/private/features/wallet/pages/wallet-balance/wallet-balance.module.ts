@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { RequestAndTransactionsPendingAsSellerModule } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.module';
+import { RequestAndTransactionsPendingModule } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { WalletBalanceInfoModule } from '@private/features/wallet/pages/wallet-balance/modules/wallet-balance-info/wallet-balance-info.module';
 import { walletBalanceRoutedComponents, WalletBalanceRoutingModule } from './wallet-balance.routing.module';
@@ -17,7 +16,7 @@ import { WalletTransferModule } from '@private/features/wallet/modals/transfer/w
     CommonModule,
     WalletBalanceInfoModule,
     WalletBalanceRoutingModule,
-    RequestAndTransactionsPendingAsSellerModule,
+    RequestAndTransactionsPendingModule,
     SvgIconModule,
     WalletTransferModule,
     WalletSharedErrorActionModule,
