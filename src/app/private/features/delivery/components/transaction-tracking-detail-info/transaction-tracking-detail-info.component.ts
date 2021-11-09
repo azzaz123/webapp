@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'tsl-transaction-tracking-detail-info',
@@ -7,9 +7,13 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./transaction-tracking-detail-info.component.scss'],
 })
 export class TransactionTrackingDetailInfoComponent {
-  constructor(public sanitizer: DomSanitizer) {}
   @Input() description: string;
   @Input() iconSrc: string;
   @Input() showCaret: boolean;
   @Input() isRoundedIcon: boolean;
+  public descriptionByPass: SafeHtml;
+
+  constructor(private sanitizer: DomSanitizer) {
+    this.descriptionByPass = this.sanitizer.bypassSecurityTrustHtml(this.description);
+  }
 }

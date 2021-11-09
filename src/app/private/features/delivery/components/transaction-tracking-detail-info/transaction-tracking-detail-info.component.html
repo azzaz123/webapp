@@ -10,10 +10,7 @@
       }"
     />
   </div>
-  <div
-    class="TrackingDetailInfo__descriptionWrapper overflow-hidden mr-3"
-    [innerHTML]="sanitizer.bypassSecurityTrustHtml(description)"
-  ></div>
+  <div class="TrackingDetailInfo__descriptionWrapper overflow-hidden mr-3" [innerHTML]="descriptionByPass"></div>
   <tsl-svg-icon
     *ngIf="showCaret"
     src="/assets/icons/arrow-right.svg"
