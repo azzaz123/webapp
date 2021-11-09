@@ -1,19 +1,19 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/pending-transactions-fixtures.spec';
-import { MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API } from '@api/fixtures/bff/delivery/requests-and-transactions/pending-as-seller/pending-as-seller.fixtures.spec';
-import { RequestsAndTransactionsPendingAsSellerHttpService } from './http/requests-and-transactions-pending-as-seller-http.service';
+import { RequestsAndTransactionsPendingHttpService } from './http/requests-and-transactions-pending-http.service';
 
 import { of } from 'rxjs';
+import { MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.fixtures.spec';
 
-describe('GIVEN the RequestsAndTransactionsPendingAsSellerService', () => {
+describe('GIVEN the RequestsAndTransactionsPendingService', () => {
   class MockTransactionsService {
     get() {
-      return of(MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_API);
+      return of(MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_DTO_RESPONSE);
     }
   }
   let mockTransactionsService: MockTransactionsService = new MockTransactionsService();
-  let service: RequestsAndTransactionsPendingAsSellerHttpService;
+  let service: RequestsAndTransactionsPendingHttpService;
 
   beforeEach(
     waitForAsync(() => {
@@ -21,12 +21,12 @@ describe('GIVEN the RequestsAndTransactionsPendingAsSellerService', () => {
         imports: [],
         providers: [
           {
-            provide: RequestsAndTransactionsPendingAsSellerHttpService,
+            provide: RequestsAndTransactionsPendingHttpService,
             useValue: mockTransactionsService,
           },
         ],
       });
-      service = TestBed.inject(RequestsAndTransactionsPendingAsSellerHttpService);
+      service = TestBed.inject(RequestsAndTransactionsPendingHttpService);
     })
   );
 
