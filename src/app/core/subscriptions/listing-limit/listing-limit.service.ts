@@ -4,13 +4,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { ItemService } from '@core/item/item.service';
-import {
-  SubscriptionsResponse,
-  SUBSCRIPTION_CATEGORIES,
-  SUBSCRIPTION_CATEGORY_TYPES,
-  Tier,
-  TierDiscount,
-} from '@core/subscriptions/subscriptions.interface';
+import { SUBSCRIPTION_CATEGORIES, SUBSCRIPTION_CATEGORY_TYPES, Tier, TierDiscount } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
@@ -19,7 +13,7 @@ import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.
 import { ProModalConfig, REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
 import { forkJoin } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE } from './listing-limit.constants';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
 @Injectable()
 export class ListingLimitService {
   constructor(
@@ -37,37 +31,26 @@ export class ListingLimitService {
 
     if (type === SUBSCRIPTION_TYPES.carDealer) {
       modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_cars_highest_limit];
+      this.trackPageView(CATEGORY_SUBSCRIPTIONS_IDS.CAR, true, null, null);
       return modal;
     }
 
     return this.handleListingLimitModal(itemId, type, modal);
   }
 
-  private trackPageView(
-    categorySubscription: SubscriptionsResponse,
-    type: SUBSCRIPTION_TYPES,
-    isFreeTrial: boolean,
-    tierDicounted: Tier
-  ): void {
+  private trackPageView(categoryId: number, isCarDealer: boolean, isFreeTrial: boolean, tierDicounted: Tier): void {
     const event: AnalyticsPageView<ViewProSubscriptionPopup> = {
       name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
       attributes: {
         screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
-        subscription: categorySubscription.category_id as SUBSCRIPTION_CATEGORIES,
+        subscription: categoryId as SUBSCRIPTION_CATEGORIES,
         freeTrial: isFreeTrial,
-        isCarDealer: type === SUBSCRIPTION_TYPES.carDealer,
+        isCarDealer,
         discount: !!tierDicounted,
       },
     };
 
     this.analyticsService.trackPageView(event);
-  }
-
-  private hasHighestLimitReached(categorySubscription: SubscriptionsResponse): boolean {
-    return (
-      this.subscriptionsService.hasHighestLimit(categorySubscription) &&
-      CATEGORIES_WITH_HIGHEST_LIMIT_ACTIVE.includes(categorySubscription.category_id)
-    );
   }
 
   private zenDeskUrl(key: CUSTOMER_HELP_PAGE): string {
@@ -81,15 +64,17 @@ export class ListingLimitService {
         const item = values[0];
         const subscriptions = values[1];
         const categorySubscription = this.subscriptionsService.getSubscriptionByCategory(subscriptions, item.categoryId);
-        const isHighestLimit = this.hasHighestLimitReached(categorySubscription);
         const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(subscriptions, item.categoryId);
         const tierDicounted = this.subscriptionsService.tierDiscountByCategoryId(subscriptions, item.categoryId);
+        const isCarDealer = type === SUBSCRIPTION_TYPES.carDealer;
 
-        this.trackPageView(categorySubscription, type, isFreeTrial, tierDicounted);
+        this.trackPageView(categorySubscription.category_id, isCarDealer, isFreeTrial, tierDicounted);
 
-        if (isHighestLimit) {
+        if (this.subscriptionsService.hasHighestLimit(categorySubscription)) {
           modal.componentInstance.modalConfig = this.handleHighestLimitConfig(categorySubscription.type);
-          return;
+          if (modal.componentInstance.modalConfig) {
+            return;
+          }
         }
 
         if (categorySubscription.subscribed_from) {
