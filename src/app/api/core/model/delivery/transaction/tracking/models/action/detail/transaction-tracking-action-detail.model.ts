@@ -13,6 +13,8 @@ export class TransactionTrackingActionDetailModel implements TransactionTracking
   isCarrierTrackingWebview: boolean;
   isDeeplink: boolean;
   isDialog: boolean;
+  isDismiss: boolean;
+  isReload: boolean;
   isUserAction: boolean;
   payload: TransactionTrackingActionDetailPayload;
 
@@ -23,6 +25,8 @@ export class TransactionTrackingActionDetailModel implements TransactionTracking
     this.isCarrierTrackingWebview = this.isActionType(actionDetailDto.action_type, 'carrier_tracking_webview');
     this.isDeeplink = this.isActionType(actionDetailDto.action_type, 'deeplink');
     this.isDialog = this.isActionType(actionDetailDto.action_type, 'dialog');
+    this.isDismiss = this.isActionType(actionDetailDto.action_type, 'dismiss');
+    this.isReload = this.isActionType(actionDetailDto.action_type, 'reload');
     this.isUserAction = this.isActionType(actionDetailDto.action_type, 'user_action');
     this.payload = new TransactionTrackingActionDetailPayloadModel(actionDetailDto.payload);
   }

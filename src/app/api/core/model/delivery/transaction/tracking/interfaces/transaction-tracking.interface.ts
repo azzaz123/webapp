@@ -6,6 +6,7 @@ import { TransactionTrackingStatusInfo } from './transaction-tracking-status-inf
 export interface TransactionTracking {
   analytics?: TransactionTrackingAnalytics;
   header: TransactionTrackingAction;
+  navigationTitle?: string;
   shippingStatus: TransactionTrackingShippingStatus;
   statusInfo: TransactionTrackingStatusInfo[];
   title: string;

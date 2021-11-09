@@ -3,6 +3,8 @@ export interface TransactionTrackingActionDetail {
   isCarrierTrackingWebview: boolean;
   isDeeplink: boolean;
   isDialog: boolean;
+  isDismiss: boolean;
+  isReload: boolean;
   isUserAction: boolean;
   payload: TransactionTrackingActionDetailPayload;
 }

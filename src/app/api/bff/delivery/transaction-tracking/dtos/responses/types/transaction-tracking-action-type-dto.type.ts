@@ -1,1 +1,1 @@
-export type TransactionTrackingActionTypeDto = 'deeplink' | 'dialog' | 'user_action' | 'carrier_tracking_webview';
+export type TransactionTrackingActionTypeDto = 'carrier_tracking_webview' | 'deeplink' | 'dialog' | 'dismiss' | 'reload' | 'user_action';

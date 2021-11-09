@@ -5,6 +5,6 @@ export class TransactionTrackingActionDetailPayloadParametersModel implements Tr
   transactionId: string;
 
   constructor(userActionDto: TransactionTrackingActionDetailPayloadUserActionDto) {
-    this.transactionId = userActionDto.parameters?.transaction_id;
+    this.transactionId = userActionDto.parameters.transaction_id;
   }
 }

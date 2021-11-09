@@ -63,7 +63,7 @@ export class TransactionTrackingActionDetailPayloadModel implements TransactionT
     actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto
   ): TransactionTrackingActionDetailPayloadParametersModel {
     const payload = actionDetailPayloadDto as TransactionTrackingActionDetailPayloadUserActionDto;
-    return !!payload?.parameters ? new TransactionTrackingActionDetailPayloadParametersModel(payload) : undefined;
+    return !!payload.parameters ? new TransactionTrackingActionDetailPayloadParametersModel(payload) : undefined;
   }
   private getPositive(
     actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto

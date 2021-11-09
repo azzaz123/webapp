@@ -10,7 +10,8 @@ export type TransactionTrackingActionDetailPayloadDto =
   | TransactionTrackingActionDetailPayloadDeeplinkDto
   | TransactionTrackingActionDetailPayloadUserActionDto
   | TransactionTrackingActionDetailPayloadDialogDto
-  | TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto;
+  | TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto
+  | {};
 
 export interface TransactionTrackingActionDetailAnalyticsDto {
   request_id: string;
@@ -20,6 +21,6 @@ export interface TransactionTrackingActionDetailAnalyticsDto {
 
 export interface TransactionTrackingActionDetailDto {
   action_type: TransactionTrackingActionTypeDto;
-  payload: TransactionTrackingActionDetailPayloadDto;
   analytics: TransactionTrackingActionDetailAnalyticsDto | null;
+  payload?: TransactionTrackingActionDetailPayloadDto;
 }
