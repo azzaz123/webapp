@@ -22,7 +22,12 @@ describe('TransactionTrackingDetailInfoComponent', () => {
     fixture = TestBed.createComponent(TransactionTrackingDetailInfoComponent);
     de = fixture.debugElement;
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    component.transactionTrackingInfo = {
+      description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
+      iconSrc: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
+      isRoundedIcon: true,
+      showCaret: true,
+    };
   });
 
   it('should create', () => {
@@ -31,18 +36,14 @@ describe('TransactionTrackingDetailInfoComponent', () => {
 
   describe('when we have the properties defined...', () => {
     it('should show the provided description', () => {
-      component.description = '<span style="color: #AFB6B6">Total:</span><br>5.90€';
-
       fixture.detectChanges();
       const descriptionSanitized: HTMLElement = de.query(By.css('.TrackingDetailInfo__descriptionWrapper')).nativeElement.innerHTML;
 
-      expect(descriptionSanitized).toEqual(component.description);
+      expect(descriptionSanitized).toEqual(component.transactionTrackingInfo.description);
     });
 
     describe('and the icon src is defined...', () => {
       beforeEach(() => {
-        component.iconSrc =
-          'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png';
         fixture.detectChanges();
       });
 
@@ -51,12 +52,11 @@ describe('TransactionTrackingDetailInfoComponent', () => {
       });
 
       it('should have the provided src', () => {
-        expect(de.nativeElement.querySelector(`[src*="${component.iconSrc}"]`)).toBeTruthy();
+        expect(de.nativeElement.querySelector(`[src*="${component.transactionTrackingInfo.iconSrc}"]`)).toBeTruthy();
       });
 
       describe('and we specify rounded icon style', () => {
         beforeEach(() => {
-          component.isRoundedIcon = true;
           fixture.detectChanges();
         });
 
@@ -67,7 +67,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
 
       describe('and we NOT specify rounded icon style', () => {
         beforeEach(() => {
-          component.isRoundedIcon = false;
+          component.transactionTrackingInfo.isRoundedIcon = false;
           fixture.detectChanges();
         });
 
@@ -79,7 +79,6 @@ describe('TransactionTrackingDetailInfoComponent', () => {
 
     describe('and we specify showing caret', () => {
       beforeEach(() => {
-        component.showCaret = true;
         fixture.detectChanges();
       });
 
@@ -90,7 +89,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
 
     describe('and we specify not showing caret', () => {
       beforeEach(() => {
-        component.showCaret = false;
+        component.transactionTrackingInfo.showCaret = false;
         fixture.detectChanges();
       });
 

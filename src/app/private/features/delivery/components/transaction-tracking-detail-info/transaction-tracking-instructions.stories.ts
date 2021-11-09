@@ -19,27 +19,35 @@ const Template: Story<TransactionTrackingDetailInfoComponent> = (args: Transacti
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
   template:
-    '<tsl-transaction-tracking-detail-info [description]="description" [iconSrc]="iconSrc" [showCaret]="showCaret" [isRoundedIcon]="isRoundedIcon"></tsl-transaction-tracking-detail-info>',
+    '<tsl-transaction-tracking-detail-info [transactionTrackingInfo]="transactionTrackingInfo"></tsl-transaction-tracking-detail-info>',
 });
 
 export const ProductExample = Template.bind({});
 ProductExample.args = {
-  description: '<span style="color: #AFB6B6">Producto:</span><br>crayones',
-  showCaret: true,
-  iconSrc: 'https://cdn-beta.wallapop.com/images/10420/35/gw/__/c10420p190584802/i421614104.jpg?pictureSize=W800',
+  transactionTrackingInfo: {
+    description: '<span style="color: #AFB6B6">Producto:</span><br>crayones',
+    showCaret: true,
+    isRoundedIcon: false,
+    iconSrc: 'https://cdn-beta.wallapop.com/images/10420/35/gw/__/c10420p190584802/i421614104.jpg?pictureSize=W800',
+  },
 };
 
 export const UserExample = Template.bind({});
 UserExample.args = {
-  description: '<span style="color: #AFB6B6">Vendido por:</span><br>Coccofresco F.',
-  showCaret: true,
-  isRoundedIcon: true,
-  iconSrc: 'http://localhost:6006/images/item-camera.jpg',
+  transactionTrackingInfo: {
+    description: '<span style="color: #AFB6B6">Vendido por:</span><br>Coccofresco F.',
+    showCaret: true,
+    isRoundedIcon: true,
+    iconSrc: 'http://localhost:6006/images/item-camera.jpg',
+  },
 };
 
 export const PriceExample = Template.bind({});
 PriceExample.args = {
-  description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
-  showCaret: false,
-  iconSrc: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
+  transactionTrackingInfo: {
+    description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
+    showCaret: false,
+    isRoundedIcon: false,
+    iconSrc: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
+  },
 };
