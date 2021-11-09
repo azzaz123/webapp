@@ -1,18 +1,18 @@
-<div class="TrackingDetailInfo d-flex">
+<div *ngIf="transactionTrackingInfo as info" class="TrackingDetailInfo d-flex">
   <div class="TrackingDetailInfo__iconWrapper d-flex align-items-center justify-content-center">
     <img
-      *ngIf="transactionTrackingInfo.iconSrc"
-      [src]="transactionTrackingInfo.iconSrc"
+      *ngIf="info.iconSrc"
+      [src]="info.iconSrc"
       alt="icon"
       class="TrackingDetailInfo__icon w-100 h-100"
       [ngClass]="{
-        'TrackingDetailInfo__icon--round': transactionTrackingInfo.isRoundedIcon
+        'TrackingDetailInfo__icon--round': info.isRoundedIcon
       }"
     />
   </div>
   <div class="TrackingDetailInfo__descriptionWrapper overflow-hidden mr-3" [innerHTML]="descriptionByPass"></div>
   <tsl-svg-icon
-    *ngIf="transactionTrackingInfo.showCaret"
+    *ngIf="info.showCaret"
     src="/assets/icons/arrow-right.svg"
     width="5"
     height="10"
