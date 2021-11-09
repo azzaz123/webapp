@@ -16,8 +16,8 @@ const Template: Story<MultiSelectOptionComponent> = (args) => ({
   props: args,
   component: MultiSelectOptionComponent,
   template: `
-    <div style="background: white; border: 1px dashed black;">
-        <tsl-multi-select-option [option]="option" [disabled]="disabled"></tsl-multi-select-option>
+    <div style="background: white;">
+        <tsl-multi-select-option [option]="option" [isDisabled]="disabled" ></tsl-multi-select-option>
     </div>
     `,
 });
@@ -38,8 +38,97 @@ WithSublabel.args = {
   disabled: false,
 };
 
+export const WithChildren = Template.bind({});
+WithChildren.args = {
+  option: {
+    label: 'aa',
+    value: 'aa',
+    checked: false,
+    children: [
+      {
+        label: 'aa1',
+        value: 'aa1',
+        checked: false,
+      },
+      {
+        label: 'aa2',
+        value: 'aa2',
+        checked: false,
+      },
+    ],
+  },
+  disabled: false,
+};
+
 export const DisabledOption = Template.bind({});
 DisabledOption.args = {
   ...Default.args,
   disabled: true,
+};
+
+export const WithSelectedChildren = Template.bind({});
+WithSelectedChildren.args = {
+  option: {
+    label: 'aa',
+    value: 'aa',
+    checked: false,
+    children: [
+      {
+        label: 'aa1',
+        value: 'aa1',
+        checked: true,
+      },
+      {
+        label: 'aa2',
+        value: 'aa2',
+        checked: false,
+      },
+    ],
+  },
+  disabled: false,
+};
+
+export const WithSelectedChildrenAndSublabel = Template.bind({});
+WithSelectedChildrenAndSublabel.args = {
+  option: {
+    label: 'aa',
+    value: 'aa',
+    sublabel: 'aa sublabel',
+    checked: false,
+    children: [
+      {
+        label: 'aa1',
+        value: 'aa1',
+        checked: true,
+      },
+      {
+        label: 'aa2',
+        value: 'aa2',
+        checked: false,
+      },
+    ],
+  },
+  disabled: false,
+};
+
+export const WithAllChildrenSelected = Template.bind({});
+WithAllChildrenSelected.args = {
+  option: {
+    label: 'aa',
+    value: 'aa',
+    checked: false,
+    children: [
+      {
+        label: 'aa1',
+        value: 'aa1',
+        checked: true,
+      },
+      {
+        label: 'aa2',
+        value: 'aa2',
+        checked: true,
+      },
+    ],
+  },
+  disabled: false,
 };

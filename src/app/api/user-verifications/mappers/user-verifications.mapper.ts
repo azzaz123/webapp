@@ -1,6 +1,6 @@
 import { UserVerifications } from '@api/core/model/verifications';
 import { ToDomainMapper } from '@api/core/utils/types';
-import { UserVerificationsApi } from '../dtos/user-verifications-api.interface';
+import { UserVerificationsApi } from '../dtos/responses';
 
 export const mapUserVerificationsApiToUserVerifications: ToDomainMapper<UserVerificationsApi, UserVerifications> = (
   input: UserVerificationsApi

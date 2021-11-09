@@ -114,7 +114,7 @@ describe('StreamlineOngoingComponent', () => {
 
     describe('when user clicks on a historic element', () => {
       it('should navigate to the tracking page', () => {
-        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TTS}/${MOCK_HISTORIC_ELEMENT_WITH_ID.id}`;
+        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_ID.id}`;
 
         component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_ID);
 
