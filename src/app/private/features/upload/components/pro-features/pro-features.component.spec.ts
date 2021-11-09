@@ -93,8 +93,9 @@ describe('ProFeaturesComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       oldValue = component.proFeaturesForm.get('installation').value;
 
-      const instalationSwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-toggle-form[formControlname="installation"]'))
-        .nativeElement;
+      const instalationSwitch: HTMLElement = fixture.debugElement.query(
+        By.css('tsl-toggle-form[formControlname="installation"]')
+      ).nativeElement;
       instalationSwitch.querySelector('input').click();
     });
     it('Should emit event', () => {
@@ -128,8 +129,9 @@ describe('ProFeaturesComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       oldValue = component.proFeaturesForm.get('configuration').value;
 
-      const configurationSwitch: HTMLElement = fixture.debugElement.query(By.css('tsl-toggle-form[formControlname="configuration"]'))
-        .nativeElement;
+      const configurationSwitch: HTMLElement = fixture.debugElement.query(
+        By.css('tsl-toggle-form[formControlname="configuration"]')
+      ).nativeElement;
       configurationSwitch.querySelector('input').click();
     });
     it('Should emit event', () => {
@@ -186,8 +188,9 @@ describe('ProFeaturesComponent', () => {
 
     it('Should show warranty fields', () => {
       const warrantyAmount: HTMLElement = fixture.debugElement.query(By.css('input[formControlname="warrantyAmount"]')).nativeElement;
-      const warrantyPeriod: HTMLElement = fixture.debugElement.query(By.css('tsl-dropdown[formControlname="warrantyPeriod"]'))
-        .nativeElement;
+      const warrantyPeriod: HTMLElement = fixture.debugElement.query(
+        By.css('tsl-dropdown[formControlname="warrantyPeriod"]')
+      ).nativeElement;
 
       expect(warrantyAmount).toBeTruthy();
       expect(warrantyPeriod).toBeTruthy();
