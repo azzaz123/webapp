@@ -50,7 +50,7 @@ export const WithLongTitle = Template.bind({});
 WithLongTitle.args = {
   title: 'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   subtitle: 'Altavoces B&WG',
-  fallbackSvgSrc: '/assets/icons/shield_verified.svg',
+  fallbackSvgSrc: '/assets/icons/joke.svg',
   showCaret: true,
 };
 
