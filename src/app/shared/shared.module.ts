@@ -17,7 +17,6 @@ import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/cata
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
-import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CountdownComponent } from './countdown/countdown.component';
@@ -197,7 +196,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     CheckboxComponent,
     SelectComponent,
     SearchInputComponent,
-    TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     RestrictInputNumberDirective,
     WallacoinComponent,
@@ -242,7 +240,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     ConfirmationModalComponent,
     SoldModalComponent,
     ReviewModalComponent,
-    TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     EmailModalComponent,
     PasswordModalComponent,
