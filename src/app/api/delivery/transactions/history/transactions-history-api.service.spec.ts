@@ -29,7 +29,9 @@ describe('TransactionsHistoryApiService', () => {
 
   const allMockUsers: User[] = [MOCK_USER, MOCK_USER_PRO];
   const allMockItems: Item[] = [MOCK_ITEM, MOCK_ITEM_FEATURED];
-  const allUniqueUserIds: string[] = getUniqueArray(allMockUsers.map((user) => user.id));
+  const allUniqueUserIdsWithoutCurrentUserId: string[] = getUniqueArray(allMockUsers.map((user) => user.id)).filter(
+    (ids) => ids !== MOCK_USER_PRO.id
+  );
   const allUniqueItemsIds: string[] = getUniqueArray(allMockItems.map((item) => item.id));
   const page = 1337;
   const mockMappedRequest = new HttpParams().append('page', page.toString());
@@ -79,7 +81,7 @@ describe('TransactionsHistoryApiService', () => {
     });
 
     it('should ask information to server for users that are not current user', () => {
-      expect(userService.get).toHaveBeenCalledWith(MOCK_USER.id, false);
+      expect(userService.get).toHaveBeenCalledWith(...allUniqueUserIdsWithoutCurrentUserId);
     });
 
     it('should ask to server for items information', () => {
