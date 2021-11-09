@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testi
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { PendingTransaction } from '@api/core/model';
-import { RequestsAndTransactionsPendingAsSellerService } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.service';
+import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsComponent } from './wallet-pending-transactions.component';
@@ -17,8 +17,8 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let component: WalletPendingTransactionsComponent;
   let errorActionService: WalletSharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
-  let mockPendingTransactions$: Observable<PendingTransaction[]> = of(MOCK_PENDING_TRANSACTIONS);
-  let service: RequestsAndTransactionsPendingAsSellerService;
+  let mockpendingTransactionsAsSeller: Observable<PendingTransaction[]> = of(MOCK_PENDING_TRANSACTIONS);
+  let service: RequestsAndTransactionsPendingService;
   let spyTransactionsPendingService;
   const walletPendingTransactionsSelector = '.WalletPendingTransactions';
   const walletPendingTransactionsLabelSelector = `${walletPendingTransactionsSelector}__label`;
@@ -34,10 +34,10 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
       ],
       providers: [
         {
-          provide: RequestsAndTransactionsPendingAsSellerService,
+          provide: RequestsAndTransactionsPendingService,
           useValue: {
-            get pendingTransactions$() {
-              return mockPendingTransactions$;
+            get pendingTransactionsAsSeller() {
+              return mockpendingTransactionsAsSeller;
             },
           },
         },
@@ -47,12 +47,12 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
         },
       ],
     }).compileComponents();
-    service = TestBed.inject(RequestsAndTransactionsPendingAsSellerService);
+    service = TestBed.inject(RequestsAndTransactionsPendingService);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
   });
 
   beforeEach(() => {
-    spyTransactionsPendingService = jest.spyOn(service, 'pendingTransactions$', 'get');
+    spyTransactionsPendingService = jest.spyOn(service, 'pendingTransactionsAsSeller', 'get');
     fixture = TestBed.createComponent(WalletPendingTransactionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -68,7 +68,7 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
 
     describe('WHEN there are some pending transactions', () => {
       it('should retrieve the list of pending transactions', () => {
-        service.pendingTransactions$.subscribe((result) => {
+        service.pendingTransactionsAsSeller.subscribe((result) => {
           expect(result).toEqual(MOCK_PENDING_TRANSACTIONS);
         });
       });
@@ -98,14 +98,14 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
 
     describe('WHEN there are no pending transactions', () => {
       beforeEach(() => {
-        spyTransactionsPendingService = jest.spyOn(service, 'pendingTransactions$', 'get').mockReturnValue(of([]));
+        spyTransactionsPendingService = jest.spyOn(service, 'pendingTransactionsAsSeller', 'get').mockReturnValue(of([]));
         fixture = TestBed.createComponent(WalletPendingTransactionsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
       });
 
       it('should retrieve the list of pending transactions', () => {
-        service.pendingTransactions$.subscribe((result) => {
+        service.pendingTransactionsAsSeller.subscribe((result) => {
           expect(result).toEqual(0);
         });
       });
@@ -129,16 +129,13 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
   });
 });
 
+// FIXME: This could be
 describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let component: WalletPendingTransactionsComponent;
   let errorActionService: WalletSharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
-  let mockPendingTransactions$: Observable<PendingTransaction[]> = of(MOCK_PENDING_TRANSACTIONS);
-  let service: RequestsAndTransactionsPendingAsSellerService;
-  let spyTransactionsPendingService;
-  const walletPendingTransactionsSelector = '.WalletPendingTransactions';
-  const walletPendingTransactionsLabelSelector = `${walletPendingTransactionsSelector}__label`;
-  const walletPendingTransactionsLabelAmountSelector = `${walletPendingTransactionsLabelSelector} span:nth-child(2)`;
+  let service: RequestsAndTransactionsPendingService;
+  let spyTransactionsPendingService: jest.SpyInstance;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -150,9 +147,9 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
       ],
       providers: [
         {
-          provide: RequestsAndTransactionsPendingAsSellerService,
+          provide: RequestsAndTransactionsPendingService,
           useValue: {
-            get pendingTransactions$() {
+            get pendingTransactionsAsSeller() {
               return throwError('There is an error!');
             },
           },
@@ -163,12 +160,12 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
         },
       ],
     }).compileComponents();
-    service = TestBed.inject(RequestsAndTransactionsPendingAsSellerService);
+    service = TestBed.inject(RequestsAndTransactionsPendingService);
     errorActionService = TestBed.inject(WalletSharedErrorActionService);
   });
 
   beforeEach(() => {
-    spyTransactionsPendingService = jest.spyOn(service, 'pendingTransactions$', 'get');
+    spyTransactionsPendingService = jest.spyOn(service, 'pendingTransactionsAsSeller', 'get');
     fixture = TestBed.createComponent(WalletPendingTransactionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -189,9 +186,9 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
         errorActionSpy = spyOn(errorActionService, 'show');
       });
       it('should show the generic error catcher', fakeAsync(() => {
-        jest.spyOn(service, 'pendingTransactions$', 'get').mockReturnValue(throwError('The server is broken'));
+        jest.spyOn(service, 'pendingTransactionsAsSeller', 'get').mockReturnValue(throwError('The server is broken'));
 
-        component.pendingTransactions$.subscribe(
+        component.pendingTransactionsAsSeller.subscribe(
           () => {},
           (error) => {
             expect(errorActionSpy).toHaveBeenCalledTimes(1);

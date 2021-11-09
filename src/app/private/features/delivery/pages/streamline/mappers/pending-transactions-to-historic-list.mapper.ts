@@ -3,6 +3,7 @@ import { ToDomainMapper } from '@api/core/utils/types';
 import { deliveryStatusTranslationsAsBuyer } from '@private/features/delivery/translations/delivery-status-as-buyer.translations';
 import { deliveryStatusTranslationsAsSeller } from '@private/features/delivery/translations/delivery-status-as-seller.translations';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
+import { HistoricListHeader } from '@shared/historic-list/interfaces/historic-list-header.interface';
 import { HistoricListSubtitle } from '@shared/historic-list/interfaces/historic-list-subtitle.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 
@@ -11,15 +12,24 @@ export const mapPendingTransactionToHistoricList: ToDomainMapper<PendingTransact
 ): HistoricList => {
   const historicListSubtitle: HistoricListSubtitle = mapPendingTransactionToHistoricListSubtitle(input);
 
-  const result: HistoricList = {
-    elements: [
-      {
-        elements: [historicListSubtitle],
-      },
-    ],
-  };
+  const isEmptyList = historicListSubtitle.elements.length === 0;
+  if (isEmptyList) {
+    const emptyList: HistoricList = {
+      elements: [],
+    };
 
-  return result;
+    return emptyList;
+  }
+
+  const listHeader = mapPendingTransactionToHistoricListHeader(historicListSubtitle);
+  return {
+    elements: [listHeader],
+  };
+};
+
+const mapPendingTransactionToHistoricListHeader = (input: HistoricListSubtitle): HistoricListHeader => {
+  const isEmptyList = input.elements.length === 0;
+  return isEmptyList ? { elements: [] } : { elements: [input] };
 };
 
 const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]): HistoricListSubtitle => {

@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { MOCK_KYC_NO_NEED_PROPERTIES_API } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
-import { RequestsAndTransactionsPendingAsSellerService } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.service';
+import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletBalanceComponent } from './wallet-balance.component';
 import { WalletBalanceInfoComponent } from '@private/features/wallet/pages/wallet-balance/modules/wallet-balance-info/wallet-balance-info.component';
@@ -44,9 +44,9 @@ describe('WalletBalanceComponent', () => {
           },
         },
         {
-          provide: RequestsAndTransactionsPendingAsSellerService,
+          provide: RequestsAndTransactionsPendingService,
           useValue: {
-            get pendingTransactions$() {
+            get pendingTransactionsAsSeller() {
               return of([]);
             },
           },
