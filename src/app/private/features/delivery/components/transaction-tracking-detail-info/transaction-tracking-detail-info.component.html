@@ -8,7 +8,7 @@
         'TrackingDetailInfo__image--round': isRoundedImage
       }"
     />
-    <tsl-svg-icon *ngIf="fallbackSvgSrc && !imageSrc" [src]="fallbackSvgSrc"></tsl-svg-icon>
+    <tsl-svg-icon *ngIf="fallbackSvgSrc && !imageSrc" id="fallbackSvg" [src]="fallbackSvgSrc"></tsl-svg-icon>
   </div>
   <div class="TrackingDetailInfo__textWrapper d-flex flex-column mr-3">
     <span class="TrackingDetailInfo__title text-truncate">{{ title }}</span>
