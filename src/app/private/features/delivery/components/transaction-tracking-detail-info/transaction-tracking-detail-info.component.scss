@@ -9,10 +9,6 @@ $icon-size: 48px;
   background-color: $white;
   padding: $padding-container;
 
-  br {
-    display: none;
-  }
-
   &__iconWrapper {
     margin-right: $icon-wrapper-margin-right;
     @include square($icon-size);
