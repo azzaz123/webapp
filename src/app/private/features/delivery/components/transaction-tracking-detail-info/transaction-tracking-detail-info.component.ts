@@ -9,7 +9,7 @@ export class TransactionTrackingDetailInfoComponent {
   @Input() title: string;
   @Input() subtitle: string;
   @Input() imageSrc: string;
-  @Input() defaultSvgSrc: string;
+  @Input() fallbackSvgSrc: string;
   @Input() showCaret: boolean;
   @Input() isRoundedImage: boolean;
 }

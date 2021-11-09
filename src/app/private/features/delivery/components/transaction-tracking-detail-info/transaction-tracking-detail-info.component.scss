@@ -5,6 +5,7 @@
   padding: 13px 20px;
 
   &__imageWrapper {
+    margin-right: 12px;
     @include square(48px);
   }
 
@@ -17,7 +18,14 @@
     }
   }
 
+  &__fallbackSvg {
+    ::ng-deep svg path {
+      fill: $blue-grey-5;
+    }
+  }
+
   &__textWrapper {
+    overflow: hidden;
     flex: 1;
   }
 

@@ -1,5 +1,5 @@
-<div class="TrackingDetailInfo d-flex w-100">
-  <div class="TrackingDetailInfo__imageWrapper mr-2">
+<div class="TrackingDetailInfo d-flex">
+  <div class="TrackingDetailInfo__imageWrapper d-flex align-items-center justify-center">
     <img
       *ngIf="imageSrc"
       [src]="imageSrc"
@@ -8,17 +8,24 @@
         'TrackingDetailInfo__image--round': isRoundedImage
       }"
     />
-    <tsl-svg-icon *ngIf="defaultSvgSrc && !imageSrc" [src]="defaultSvgSrc"></tsl-svg-icon>
+    <tsl-svg-icon
+      *ngIf="fallbackSvgSrc && !imageSrc"
+      class="TrackingDetailInfo__fallbackSvg"
+      [src]="fallbackSvgSrc"
+      width="100"
+      height="100"
+      sizeUnit="%"
+    ></tsl-svg-icon>
   </div>
-  <div class="TrackingDetailInfo__textWrapper d-flex flex-column">
-    <span class="TrackingDetailInfo__title">{{ title }}</span>
-    <span class="TrackingDetailInfo__subtitle">{{ subtitle }}</span>
+  <div class="TrackingDetailInfo__textWrapper d-flex flex-column mr-3">
+    <span class="TrackingDetailInfo__title text-truncate">{{ title }}</span>
+    <span class="TrackingDetailInfo__subtitle text-truncate">{{ subtitle }}</span>
   </div>
   <tsl-svg-icon
     *ngIf="showCaret"
     src="/assets/icons/arrow-right.svg"
     width="5"
     height="10"
-    class="TrackingDetailInfo__arrowRight"
+    class="TrackingDetailInfo__arrowRight d-flex align-items-center mr-4"
   ></tsl-svg-icon>
 </div>

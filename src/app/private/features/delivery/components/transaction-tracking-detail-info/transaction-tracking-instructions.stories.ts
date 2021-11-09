@@ -3,7 +3,7 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 import { TransactionTrackingDetailInfoComponent } from '@private/features/delivery/components/transaction-tracking-detail-info/transaction-tracking-detail-info.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Webapp/Private/Features/Delivery/Components/TransactionTrackingDetailInfo',
@@ -16,10 +16,10 @@ const Template: Story<TransactionTrackingDetailInfoComponent> = (args: Transacti
   props: args,
   moduleMetadata: {
     declarations: [TransactionTrackingDetailInfoComponent],
-    imports: [CommonModule, SvgIconModule, HttpClientTestingModule],
+    imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
   template:
-    '<tsl-transaction-tracking-detail-info [title]="title" [subtitle]="subtitle" [imageSrc]="imageSrc" [showCaret]="showCaret" [defaultSvgSrc]="defaultSvgSrc" [isRoundedImage]="isRoundedImage"></tsl-transaction-tracking-detail-info>',
+    '<tsl-transaction-tracking-detail-info [title]="title" [subtitle]="subtitle" [imageSrc]="imageSrc" [showCaret]="showCaret" [fallbackSvgSrc]="fallbackSvgSrc" [isRoundedImage]="isRoundedImage"></tsl-transaction-tracking-detail-info>',
 });
 
 export const Default = Template.bind({});
@@ -40,10 +40,10 @@ WithoutCaret.args = {
 
 export const WithoutImage = Template.bind({});
 WithoutImage.args = {
-  title: 'Producto:',
-  subtitle: 'Altavoces B&WG',
+  title: 'Vendido por:',
+  subtitle: 'Lalli López',
   imageSrc: null,
-  defaultSvgSrc: '/assets/icons/joke.svg',
+  fallbackSvgSrc: '/assets/icons/joke.svg',
   showCaret: true,
 };
 
