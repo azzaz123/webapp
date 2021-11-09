@@ -64,20 +64,19 @@ export class ListingLimitService {
         const item = values[0];
         const subscriptions = values[1];
         const categorySubscription = this.subscriptionsService.getSubscriptionByCategory(subscriptions, item.categoryId);
-        const isFreeTrial = this.subscriptionsService.hasFreeTrialByCategoryId(subscriptions, item.categoryId);
+        const isFreeTrial = categorySubscription.trial_available;
         const tierDicounted = this.subscriptionsService.tierDiscountByCategoryId(subscriptions, item.categoryId);
         const isCarDealer = type === SUBSCRIPTION_TYPES.carDealer;
 
         this.trackPageView(categorySubscription.category_id, isCarDealer, isFreeTrial, tierDicounted);
 
-        if (this.subscriptionsService.hasHighestLimit(categorySubscription)) {
-          modal.componentInstance.modalConfig = this.handleHighestLimitConfig(categorySubscription.type);
-          if (modal.componentInstance.modalConfig) {
-            return;
-          }
-        }
-
         if (categorySubscription.subscribed_from) {
+          if (this.subscriptionsService.hasHighestLimit(categorySubscription)) {
+            modal.componentInstance.modalConfig = this.handleHighestLimitConfig(categorySubscription.type);
+            if (modal.componentInstance.modalConfig) {
+              return;
+            }
+          }
           modal.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.listing_limit_tier_limit];
           return;
         }
