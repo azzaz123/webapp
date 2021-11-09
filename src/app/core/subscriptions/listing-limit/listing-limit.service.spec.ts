@@ -7,9 +7,12 @@ import { ItemService } from '@core/item/item.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_ITEM_V3_3 } from '@fixtures/item.fixtures.spec';
 import {
+  FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION,
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED,
+  MOCK_SUBSCRIPTION_MOTORBIKE_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -154,11 +157,11 @@ describe('ListingLimitService', () => {
             expect(analyticsService.trackPageView).toBeCalledWith(event);
           });
         });
-        describe('and is real estate subscription', () => {
+        describe('and is consumer good subscription', () => {
           beforeEach(() => {
             spyOn(subscriptionsService, 'getSubscriptionByCategory').and.returnValue(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
           });
-          it('should show real estate modal', () => {
+          it('should show consumer good modal', () => {
             const modal = service.showModal('1', SUBSCRIPTION_TYPES.stripe);
 
             expect(modal.componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.listing_limit_consumer_good_highest_limit]);
@@ -171,6 +174,32 @@ describe('ListingLimitService', () => {
               attributes: {
                 screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
                 subscription: CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS as SUBSCRIPTION_CATEGORIES,
+                freeTrial: true,
+                isCarDealer: false,
+                discount: false,
+              },
+            };
+            expect(analyticsService.trackPageView).toBeCalledTimes(1);
+            expect(analyticsService.trackPageView).toBeCalledWith(event);
+          });
+        });
+        describe('and it has not a custom modal', () => {
+          beforeEach(() => {
+            spyOn(subscriptionsService, 'getSubscriptionByCategory').and.returnValue(MOCK_SUBSCRIPTION_MOTORBIKE_SUBSCRIBED_MAPPED);
+          });
+          it('should show tier limit modal', () => {
+            const modal = service.showModal('1', SUBSCRIPTION_TYPES.stripe);
+
+            expect(modal.componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.listing_limit_tier_limit]);
+          });
+          it('should track event', () => {
+            service.showModal('1', SUBSCRIPTION_TYPES.stripe);
+
+            const event: AnalyticsPageView<ViewProSubscriptionPopup> = {
+              name: ANALYTICS_EVENT_NAMES.ViewProSubscriptionPopup,
+              attributes: {
+                screenId: SCREEN_IDS.ProSubscriptionLimitPopup,
+                subscription: CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE as SUBSCRIPTION_CATEGORIES,
                 freeTrial: true,
                 isCarDealer: false,
                 discount: false,
