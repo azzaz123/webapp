@@ -1,39 +1,35 @@
 @import '~style/common';
 
-$image-border-radius-default: 5px;
+$icon-border-radius-default: 5px;
 $padding-container: 13px 20px;
-$image-wrapper-margin-right: 12px;
-$image-size: 48px;
+$icon-wrapper-margin-right: 12px;
+$icon-size: 48px;
 
 .TrackingDetailInfo {
   background-color: $white;
   padding: $padding-container;
 
-  &__imageWrapper {
-    margin-right: $image-wrapper-margin-right;
-    @include square($image-size);
+  br {
+    display: none;
   }
 
-  &__image {
+  &__iconWrapper {
+    margin-right: $icon-wrapper-margin-right;
+    @include square($icon-size);
+  }
+
+  &__icon {
     object-fit: cover;
-    border-radius: $image-border-radius-default;
+    border-radius: $icon-border-radius-default;
 
     &--round {
       border-radius: 50%;
     }
   }
 
-  &__textWrapper {
+  &__descriptionWrapper {
     overflow: hidden;
     flex: 1;
-  }
-
-  &__title {
-    color: $blue-grey-2;
-  }
-
-  &__subtitle {
-    color: $blue-grey-1;
   }
 
   &__arrowRight {

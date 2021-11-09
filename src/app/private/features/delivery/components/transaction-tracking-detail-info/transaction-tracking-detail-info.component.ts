@@ -1,15 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'tsl-transaction-tracking-detail-info',
   templateUrl: './transaction-tracking-detail-info.component.html',
   styleUrls: ['./transaction-tracking-detail-info.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TransactionTrackingDetailInfoComponent {
-  @Input() title: string;
-  @Input() subtitle: string;
-  @Input() imageSrc: string;
-  @Input() fallbackSvgSrc: string;
+  constructor(public sanitizer: DomSanitizer) {}
+  @Input() description: string;
+  @Input() iconSrc: string;
   @Input() showCaret: boolean;
-  @Input() isRoundedImage: boolean;
+  @Input() isRoundedIcon: boolean;
 }

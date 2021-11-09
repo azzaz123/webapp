@@ -2,7 +2,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 import { TransactionTrackingDetailInfoComponent } from './transaction-tracking-detail-info.component';
@@ -31,104 +30,49 @@ describe('TransactionTrackingDetailInfoComponent', () => {
   });
 
   describe('when we have the properties defined...', () => {
-    it('should show the provided title', () => {
-      component.title = 'Helloooooooooo';
+    it('should show the provided description', () => {
+      component.description = '<span style="color: #AFB6B6">Total:</span><br>5.90€';
 
       fixture.detectChanges();
-      const title: HTMLElement = de.query(By.css('.TrackingDetailInfo__title')).nativeElement;
+      const descriptionSanitized: HTMLElement = de.query(By.css('.TrackingDetailInfo__descriptionWrapper')).nativeElement.innerHTML;
 
-      expect(title.textContent).toStrictEqual(component.title);
+      expect(descriptionSanitized).toEqual(component.description);
     });
 
-    it('should show the provided subtitle', () => {
-      component.subtitle = 'Subtitleeee';
-
-      fixture.detectChanges();
-      const title: HTMLElement = de.query(By.css('.TrackingDetailInfo__subtitle')).nativeElement;
-
-      expect(title.textContent).toStrictEqual(component.subtitle);
-    });
-
-    describe('and the image src is defined...', () => {
+    describe('and the icon src is defined...', () => {
       beforeEach(() => {
-        component.imageSrc = '/assets/images/image.svg';
+        component.iconSrc =
+          'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png';
         fixture.detectChanges();
       });
 
-      it('should show the image', () => {
+      it('should show the provided icon', () => {
         shouldShowImage(true);
       });
 
       it('should have the provided src', () => {
-        expect(de.nativeElement.querySelector(`[src*="${component.imageSrc}"]`)).toBeTruthy();
+        expect(de.nativeElement.querySelector(`[src*="${component.iconSrc}"]`)).toBeTruthy();
       });
 
-      it('should NOT show the fallback svg', () => {
-        shouldShowFallbackSvg(false);
-      });
-
-      describe('and we specify rounded image style', () => {
+      describe('and we specify rounded icon style', () => {
         beforeEach(() => {
-          component.isRoundedImage = true;
+          component.isRoundedIcon = true;
           fixture.detectChanges();
         });
 
-        it('should apply image round style', () => {
+        it('should apply icon round style', () => {
           shouldApplyRoundedImageStyle(true);
         });
       });
 
-      describe('and we NOT specify rounded image style', () => {
+      describe('and we NOT specify rounded icon style', () => {
         beforeEach(() => {
-          component.isRoundedImage = false;
+          component.isRoundedIcon = false;
           fixture.detectChanges();
         });
 
-        it('should NOT apply image round style', () => {
+        it('should NOT apply icon round style', () => {
           shouldApplyRoundedImageStyle(false);
-        });
-      });
-    });
-
-    describe('and the image src is not defined', () => {
-      beforeEach(() => {
-        component.imageSrc = null;
-        fixture.detectChanges();
-      });
-
-      describe('and the fallback svg is defined', () => {
-        beforeEach(() => {
-          component.fallbackSvgSrc = '/assets/images/fb.svg';
-          fixture.detectChanges();
-        });
-
-        it('should not show any image', () => {
-          shouldShowImage(false);
-        });
-
-        it('should show the fallback svg', () => {
-          shouldShowFallbackSvg(true);
-        });
-
-        it('should have the provided src', () => {
-          const fallbackSvg: SvgIconComponent = fixture.debugElement.query(By.css('#fallbackSvg')).componentInstance;
-
-          expect(fallbackSvg.src).toEqual(component.fallbackSvgSrc);
-        });
-      });
-
-      describe('and the fallback svg is not defined', () => {
-        beforeEach(() => {
-          component.fallbackSvgSrc = null;
-          fixture.detectChanges();
-        });
-
-        it('should not show any image', () => {
-          shouldShowImage(false);
-        });
-
-        it('should not show the fallback svg', () => {
-          shouldShowFallbackSvg(false);
         });
       });
     });
@@ -157,20 +101,11 @@ describe('TransactionTrackingDetailInfoComponent', () => {
   });
 
   function shouldShowImage(shouldBeInTemplate: boolean): void {
-    const image: DebugElement = de.query(By.css('.TrackingDetailInfo__image'));
+    const icon: DebugElement = de.query(By.css('.TrackingDetailInfo__icon'));
     if (shouldBeInTemplate) {
-      expect(image).toBeTruthy();
+      expect(icon).toBeTruthy();
     } else {
-      expect(image).toBeFalsy();
-    }
-  }
-
-  function shouldShowFallbackSvg(shouldBeInTemplate: boolean): void {
-    const fallbackSvg: DebugElement = de.query(By.css('#fallbackSvg'));
-    if (shouldBeInTemplate) {
-      expect(fallbackSvg).toBeTruthy();
-    } else {
-      expect(fallbackSvg).toBeFalsy();
+      expect(icon).toBeFalsy();
     }
   }
 
@@ -184,7 +119,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
   }
 
   function shouldApplyRoundedImageStyle(shouldBeInTemplate: boolean): void {
-    const roundedImageStyles: DebugElement = de.query(By.css('.TrackingDetailInfo__image--round'));
+    const roundedImageStyles: DebugElement = de.query(By.css('.TrackingDetailInfo__icon--round'));
     if (shouldBeInTemplate) {
       expect(roundedImageStyles).toBeTruthy();
     } else {
