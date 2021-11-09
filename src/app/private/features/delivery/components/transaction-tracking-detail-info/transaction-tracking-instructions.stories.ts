@@ -51,7 +51,7 @@ export const WithLongTitle = Template.bind({});
 WithLongTitle.args = {
   title: 'Titleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   subtitle: 'Altavoces B&WG',
-  imageSrc: 'http://localhost:6006/images/item-camera.jpg',
+  fallbackSvgSrc: '/assets/icons/shield_verified.svg',
   showCaret: true,
 };
 

@@ -1,26 +1,25 @@
 @import '~style/common';
 
+$image-border-radius-default: 5px;
+$padding-container: 13px 20px;
+$image-wrapper-margin-right: 12px;
+$image-size: 48px;
+
 .TrackingDetailInfo {
   background-color: $white;
-  padding: 13px 20px;
+  padding: $padding-container;
 
   &__imageWrapper {
-    margin-right: 12px;
-    @include square(48px);
+    margin-right: $image-wrapper-margin-right;
+    @include square($image-size);
   }
 
   &__image {
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: $image-border-radius-default;
 
     &--round {
       border-radius: 50%;
-    }
-  }
-
-  &__fallbackSvg {
-    ::ng-deep svg path {
-      fill: $blue-grey-5;
     }
   }
 
