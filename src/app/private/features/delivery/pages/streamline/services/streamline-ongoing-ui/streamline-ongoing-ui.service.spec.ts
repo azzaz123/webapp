@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { RequestAndTransactionsPendingAsSellerModule } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.module';
-import { RequestsAndTransactionsPendingAsSellerService } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.service';
+import { RequestAndTransactionsPendingModule } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.module';
+import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { PendingTransaction } from '@api/core/model';
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/pending-transactions-fixtures.spec';
 import { MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
@@ -12,17 +12,17 @@ import { StreamlineOngoingUIService } from './streamline-ongoing-ui.service';
 
 describe('StreamlineOngoingUIService', () => {
   let service: StreamlineOngoingUIService;
-  let requestsAndTransactionsPendingAsSellerService: RequestsAndTransactionsPendingAsSellerService;
+  let requestsAndTransactionsPendingService: RequestsAndTransactionsPendingService;
 
   const requestsReplaySubject: ReplaySubject<PendingTransaction[]> = new ReplaySubject<PendingTransaction[]>(1);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RequestAndTransactionsPendingAsSellerModule],
+      imports: [HttpClientTestingModule, RequestAndTransactionsPendingModule],
       providers: [StreamlineOngoingUIService],
     });
     service = TestBed.inject(StreamlineOngoingUIService);
-    requestsAndTransactionsPendingAsSellerService = TestBed.inject(RequestsAndTransactionsPendingAsSellerService);
+    requestsAndTransactionsPendingService = TestBed.inject(RequestsAndTransactionsPendingService);
   });
 
   it('should be created', () => {
@@ -31,9 +31,7 @@ describe('StreamlineOngoingUIService', () => {
 
   describe('when getting elements', () => {
     beforeEach(() => {
-      jest
-        .spyOn(requestsAndTransactionsPendingAsSellerService, 'pendingTransactions$', 'get')
-        .mockReturnValue(requestsReplaySubject.asObservable());
+      jest.spyOn(requestsAndTransactionsPendingService, 'pendingTransactions', 'get').mockReturnValue(requestsReplaySubject.asObservable());
       service.getItems();
     });
 
