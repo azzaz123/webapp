@@ -28,8 +28,8 @@ describe('TransactionsHistoryHttpServicensactionsHistoryHttpService', () => {
     httpMock.verify();
   });
 
-  describe('when asking to get the Wallet balance history', () => {
-    describe('and when asking an specific page to server', () => {
+  describe('when asking to get the transactions history to server', () => {
+    describe('and when asking for an specific page', () => {
       const page = 1337;
 
       beforeEach(() => {
