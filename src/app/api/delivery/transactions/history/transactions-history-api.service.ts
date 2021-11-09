@@ -59,7 +59,7 @@ export class TransactionsHistoryApiService {
 
   private getUser(userId: string): Observable<User> {
     const isCurrentUser: boolean = userId === this.userService.user.id;
-    return isCurrentUser ? of(this.userService.user) : this.userService.get(userId, false);
+    return isCurrentUser ? of(this.userService.user) : this.userService.get(userId);
   }
 
   private getItem(itemId: string): Observable<Item> {
