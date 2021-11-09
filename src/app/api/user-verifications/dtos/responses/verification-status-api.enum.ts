@@ -1,0 +1,6 @@
+export enum VERIFICATION_STATUS_API {
+  NOT_VERIFIED = 0,
+  SENT = 10,
+  SMS_VERIFIED = 30,
+  EXHAUSTED = 40,
+}
