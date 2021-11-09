@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
+import { RouterLinkDirectiveStub } from '@shared/router-link-directive-stub';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
@@ -26,7 +27,6 @@ import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
-import { RouterLinkDirectiveStub } from '@shared/router-link/router-link-directive-stub';
 
 @Component({
   template: '',

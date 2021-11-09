@@ -60,6 +60,7 @@ import { StripeCardsComponent } from './profile/stripe-cards/stripe-cards.compon
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 import { SanitizedBackgroundModule } from './sanitized-background/sanitized-background.module';
+import { RouterLinkDirectiveStub } from './router-link-directive-stub';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { SelectComponent } from './select/select.component';
 import { SpinnerModule } from './spinner/spinner.module';
@@ -80,7 +81,6 @@ import { LocationSelectorModal } from './modals/location-selector-modal/location
 import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
 import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
-import { RouterLinkModule } from './router-link/router-link.module';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 
 @NgModule({
@@ -178,7 +178,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     InfiniteScrollDirective,
     VisibleDirectiveModule,
     PaymentsCardInfoModule,
-    RouterLinkModule,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -229,6 +228,7 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     DateCalendarPipe,
     FullScreenModalComponent,
     DisableControlDirective,
+    RouterLinkDirectiveStub,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
     SuggestProModalComponent,
