@@ -51,4 +51,25 @@
       width: fit-content;
     }
   }
+
+  &--green {
+    .ProModal__close {
+      tsl-svg-icon ::ng-deep path {
+        fill: $blue-grey-1;
+      }
+      &:hover {
+        tsl-svg-icon ::ng-deep path {
+          fill: $blue-grey-3;
+        }
+      }
+    }
+
+    .ProModal__img {
+      background: $walla-soft;
+
+      @include media-breakpoint-down(sm) {
+        background: linear-gradient(0deg, transparent 30%, $walla-main 30%);
+      }
+    }
+  }
 }
