@@ -1,10 +1,13 @@
-<div *ngIf="transactionTrackingGeneralInfo as info">
-  <tsl-lottie [src]="info.animation.url" [loop]="info.animation.isLoop"></tsl-lottie>
-  <span class="TrackingGeneral__title">{{ info.title }}</span>
-  <div [innerHTML]="info.description"></div>
+<div *ngIf="transactionTrackingGeneralInfo as info" class="TrackingGeneral d-flex flex-column text-center align-items-center">
+  <div class="TrackingGeneral__lottieContainer mb-4">
+    <tsl-lottie [src]="info.animation.url" [loop]="info.animation.isLoop"></tsl-lottie>
+  </div>
+  <span class="TrackingGeneral__title TrackingGeneral__text mb-3">{{ info.title }}</span>
+  <div class="TrackingGeneral__text mb-3" [innerHTML]="descriptionByPass"></div>
   <tsl-button
     *ngFor="let action of info.actions"
-    [className]="action.style.className"
+    class="TrackingGeneral__actionButton"
+    className="btn-block {{ action.style.className }}"
     [disabled]="action.state.isDisabled"
     (click)="buttonClick.emit(action)"
     >{{ action.title }}</tsl-button
