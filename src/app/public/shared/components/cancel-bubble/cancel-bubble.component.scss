@@ -7,11 +7,12 @@ $gradient-border-radius: 21px;
 
 .CancelBubbleComponent {
   color: $blue-grey-1;
-  &__rounded_icon {
+  &__cancel {
     background-color: $white;
+    border: 1px solid $walla-main;
+    cursor: pointer;
     min-height: 20px;
     min-width: 20px;
-    border: 1px solid $walla-main;
     ::ng-deep svg path {
       fill: $walla-main;
     }
