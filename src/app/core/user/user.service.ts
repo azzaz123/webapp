@@ -326,7 +326,10 @@ export class UserService {
       data.gender,
       data.email,
       data.featured,
-      data.extra_info
+      data.extra_info,
+      null,
+      null,
+      data.phone
     );
   }
 
