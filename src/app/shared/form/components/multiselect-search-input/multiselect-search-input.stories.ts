@@ -18,7 +18,7 @@ import { MultiselectSearchInputModule } from './multiselect-search-input.module'
         formControlName="hashtag"
         [disabled]="disabled"
         [categoryId]="categoryId"
-        (showInvalidMessage)="showMessage($event)"
+        (changeValidStatus)="showMessage($event)"
       ></tsl-multiselect-search-input>
     </form>
     <div *ngIf="showErrorNessage">Our hashtags are good with anything except special characters and spaces of course</div>

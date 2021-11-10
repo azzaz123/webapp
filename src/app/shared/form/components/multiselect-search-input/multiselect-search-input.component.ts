@@ -9,6 +9,7 @@ import {
   Output,
   EventEmitter,
   HostListener,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model';
@@ -25,6 +26,7 @@ import { debounceTime, switchMap } from 'rxjs/operators';
   selector: 'tsl-multiselect-search-input',
   templateUrl: './multiselect-search-input.component.html',
   styleUrls: ['./multiselect-search-input.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -39,7 +41,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   @ViewChild('hashtagSuggesterInput', { static: true }) hashtagSuggesterInput: ElementRef;
   @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;
   @ViewChild('hashtagSuggesterOptions') hashtagSuggesterOptions: ElementRef;
-  @Output() showInvalidMessage = new EventEmitter<boolean>();
+  @Output() changeValidStatus = new EventEmitter<boolean>();
 
   public selected: string[];
   public searchValue: string;
@@ -84,7 +86,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
       return;
     }
     if (!this.isValidKey()) {
-      this.showInvalidMessage.emit(!this.isValid);
+      this.changeValidStatus.emit(!this.isValid);
       this.emptyOptions();
       return;
     }
@@ -197,7 +199,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     } else {
       this.isValid = true;
     }
-    this.showInvalidMessage.emit(!this.isValid);
+    this.changeValidStatus.emit(!this.isValid);
     return this.isValid;
   }
 }
