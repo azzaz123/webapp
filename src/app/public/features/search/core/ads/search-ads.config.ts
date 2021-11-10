@@ -14,6 +14,7 @@ export interface AdSlotSearch {
   search1: AdSlotConfiguration;
   search2r: AdSlotConfiguration;
   search3r: AdSlotConfiguration;
+  search4r: AdSlotConfiguration;
 }
 
 export const AD_PUBLIC_SEARCH: AdSlotSearch = {
@@ -80,7 +81,29 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
       },
     },
     networkId: 6866,
-    type: 'search',
+    type: 'search/baseline',
     device: [DeviceType.MOBILE, DeviceType.TABLET, DeviceType.DESKTOP],
+  },
+  search4r: {
+    name: '130868815/web/search3r',
+    id: 'sky-unit-search-right-bottom',
+    sizes: AD_DESKTOP_VERTICAL_MAPPING,
+    sizeMapping: {
+      desktop: {
+        screenSize: AD_DESKTOP_SCREEN_SIZE,
+        mapping: AD_DESKTOP_VERTICAL_MAPPING,
+      },
+      tablet: {
+        screenSize: AD_TABLET_SCREEN_SIZE,
+        mapping: AD_TABLET_MAPPING,
+      },
+      mobile: {
+        screenSize: AD_MOBILE_SCREEN_SIZE,
+        mapping: AD_MOBILE_MAPPING.big,
+      },
+    },
+    networkId: 6866,
+    type: 'search/variant',
+    device: [DeviceType.MOBILE],
   },
 };
