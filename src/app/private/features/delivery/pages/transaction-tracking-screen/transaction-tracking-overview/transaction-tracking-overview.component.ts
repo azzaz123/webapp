@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Observable, of } from 'rxjs';
-import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
-import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 
 @Component({
   selector: 'tsl-transaction-tracking-overview',
