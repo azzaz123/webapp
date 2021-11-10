@@ -21,6 +21,7 @@ import { isEqual } from 'lodash-es';
 import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
 import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
+import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 
 export type SubscriptionModal = typeof CancelSubscriptionModalComponent | typeof ContinueSubscriptionModalComponent;
 
@@ -43,7 +44,8 @@ export class SubscriptionsComponent implements OnInit {
     private router: Router,
     private analyticsService: AnalyticsService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private benefitsService: SubscriptionBenefitsService
   ) {}
 
   ngOnInit() {
@@ -54,10 +56,12 @@ export class SubscriptionsComponent implements OnInit {
   public onunselectSubscription(): void {
     this.newSubscription = null;
     this.editSubscription = null;
+    this.benefitsService.showHeaderBenefits = true;
   }
 
   public setNewSubscription(subscription: SubscriptionsResponse) {
     this.newSubscription = subscription;
+    this.benefitsService.showHeaderBenefits = false;
   }
 
   public manageSubscription(subscription: SubscriptionsResponse): void {
@@ -83,6 +87,7 @@ export class SubscriptionsComponent implements OnInit {
 
   private openEditSubscription(subscription: SubscriptionsResponse): void {
     this.editSubscription = subscription;
+    this.benefitsService.showHeaderBenefits = false;
     this.trackEditSubscription(subscription);
   }
 
