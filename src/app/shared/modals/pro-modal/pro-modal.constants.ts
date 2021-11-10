@@ -113,7 +113,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     },
   },
   [PRO_MODAL_TYPE.reactivation]: {
-    img: '/assets/icons/pro/modals/listing-limit.svg',
+    img: '/assets/icons/pro/modals/reactivation.svg',
     title: $localize`:@@pro_after_reactivation_non_subscribed_user_title:You've reached the free listing limit`,
     text1: $localize`:@@pro_after_reactivation_non_subscribed_user_description_1:Want to list more items of this category? You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!`,
     text2: $localize`:@@pro_after_reactivation_non_subscribed_user_description_2:If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.`,
