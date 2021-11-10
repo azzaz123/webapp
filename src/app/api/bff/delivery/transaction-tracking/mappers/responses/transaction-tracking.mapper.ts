@@ -3,8 +3,14 @@ import { TransactionTracking } from '@api/core/model/delivery/transaction/tracki
 import { TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import { TransactionTrackingModel } from '@api/core/model/delivery/transaction/tracking/models/transaction-tracking.model';
 
+const emptyTransactionTracking: TransactionTracking = {
+  header: undefined,
+  shippingStatus: undefined,
+  statusInfo: undefined,
+  title: undefined,
+};
 export const mapTransactionTrackingDtoTransactionTracking: ToDomainMapper<TransactionTrackingDto, TransactionTracking> = (
   input: TransactionTrackingDto
 ): TransactionTracking => {
-  return new TransactionTrackingModel(input);
+  return !!input ? new TransactionTrackingModel(input) : emptyTransactionTracking;
 };

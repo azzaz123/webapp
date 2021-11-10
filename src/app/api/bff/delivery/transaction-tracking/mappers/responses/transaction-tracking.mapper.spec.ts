@@ -1,14 +1,14 @@
-import {
-  MOCK_TRANSACTION_TRACKING_DTO_RESPONSE,
-  MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS_DTO_RESPONSE,
-  MOCK_TRANSACTION_TRACKING_WITH_SUCCESS_DTO_RESPONSE,
-} from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
+import { mapTransactionTrackingDtoTransactionTracking } from './transaction-tracking.mapper';
 import {
   MOCK_TRANSACTION_TRACKING,
   MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_WITH_SUCCESS,
 } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
-import { mapTransactionTrackingDtoTransactionTracking } from './transaction-tracking.mapper';
+import {
+  MOCK_TRANSACTION_TRACKING_DTO_RESPONSE,
+  MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS_DTO_RESPONSE,
+  MOCK_TRANSACTION_TRACKING_WITH_SUCCESS_DTO_RESPONSE,
+} from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
 
 describe('GIVEN mapTransactionTrackingDtoTransactionTracking', () => {
   describe('WHEN there is a TransactionTrackingDto without analytics', () => {
@@ -42,6 +42,12 @@ describe('GIVEN mapTransactionTrackingDtoTransactionTracking', () => {
   });
 
   describe('WHEN there is no TransactionTrackingDto', () => {
-    it('should map to empty TransactionTracking', () => {});
+    it('should map to empty TransactionTracking', () => {
+      const expected = {};
+
+      const response = mapTransactionTrackingDtoTransactionTracking(null);
+
+      expect(response).toEqual(expected);
+    });
   });
 });
