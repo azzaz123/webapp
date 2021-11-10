@@ -12,7 +12,6 @@ import { metadata } from 'assets/js/metadata-phonenumber';
 import { isValidNumber } from 'libphonenumber-js/custom';
 import * as moment from 'moment';
 import { finalize, map, mergeMap, take, tap } from 'rxjs/operators';
-import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { Router } from '@angular/router';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -27,7 +26,6 @@ import {
 } from '@core/analytics/analytics-constants';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { isEqual } from 'lodash-es';
 import { Observable, of } from 'rxjs';
 import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
