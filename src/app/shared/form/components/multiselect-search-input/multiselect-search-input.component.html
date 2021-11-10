@@ -9,8 +9,9 @@ class="MultiselectSearchInput border-0"
 [disabled]="disabled"
 #hashtagSuggesterInput
 />
-<div [hidden]="!(options?.length > 0)">
+
+<div [hidden]="!((options$ | async)?.length > 0)">
     <div  class="MultiselectSearchInput__hashtagList" #hashtagSuggesterOptions>
-        <tsl-multi-select-form [(ngModel)]="suggestions" [options]="options" (change)="handleSelectedOption()" ></tsl-multi-select-form>
+        <tsl-multi-select-form [(ngModel)]="suggestions" [options]="options$ | async" (change)="handleSelectedOption()" ></tsl-multi-select-form>
     </div>
 </div>

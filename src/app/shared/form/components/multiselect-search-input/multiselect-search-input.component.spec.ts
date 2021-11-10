@@ -107,7 +107,7 @@ describe('MultiselectSearchInputComponent', () => {
     });
 
     describe('when we have the hashtag suggestions', () => {
-      it('should load the hashtags from our endpoint with our input value and hashtags should have # in front', fakeAsync(() => {
+      it('should load the hashtags from our endpoint with our input value and hashtags should have # in front', fakeAsync((done) => {
         spyOn(hashtagSuggesterApiService, 'getHashtagsByPrefix').and.returnValue(of({ list: MOCK_HASHTAGS, paginationParameter: '10' }));
         spyOn(component, 'detectTitleKeyboardChanges').and.callThrough();
         const event = new KeyboardEvent('keyup', {});
@@ -122,13 +122,16 @@ describe('MultiselectSearchInputComponent', () => {
         tick(750);
         fixture.detectChanges();
 
-        expect(component.options[0].label).toBe(`#${inputValue}`);
-        expect(component.options[1].label).toBe(`#${MOCK_HASHTAGS[0].text}`);
+        component.options$.subscribe((options) => {
+          expect(options[0].label).toBe(`#${inputValue}`);
+          expect(options[1].label).toBe(`#${MOCK_HASHTAGS[0].text}2`);
+          done();
+        });
       }));
     });
 
     describe('when we do not have the hashtags suggestions', () => {
-      it('should create new hashtag for user with hashtag # symbol in front', fakeAsync(() => {
+      it('should create new hashtag for user with hashtag # symbol in front', fakeAsync((done) => {
         spyOn(hashtagSuggesterApiService, 'getHashtagsByPrefix').and.returnValue(of({ list: [] }));
         spyOn(component, 'detectTitleKeyboardChanges').and.callThrough();
         const event = new KeyboardEvent('keyup', {});
@@ -143,8 +146,11 @@ describe('MultiselectSearchInputComponent', () => {
         tick(750);
         fixture.detectChanges();
 
-        expect(component.options[0].label).toBe(`#${inputValue}`);
-        expect(component.options.length).toBe(1);
+        component.options$.subscribe((options) => {
+          expect(options[0].label).toBe(`#${inputValue}`);
+          expect(options.length).toBe(1);
+          done();
+        });
       }));
     });
   });

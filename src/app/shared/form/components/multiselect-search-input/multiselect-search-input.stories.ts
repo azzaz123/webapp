@@ -26,9 +26,9 @@ import { MultiselectSearchInputModule } from './multiselect-search-input.module'
 })
 class StoryMultiselectSearchInputComponent {
   @Input() disabled: boolean = false;
-  @Input() categoryId: string = '1000';
+  @Input() categoryId: string = '12465';
   public formGroup = new FormGroup({
-    hashtag: new FormControl(['#aa', '#ss', '#design']),
+    hashtag: new FormControl(['aa', 'ss', 'design']),
   });
 
   public options = this.formGroup.value.hashtag;
@@ -67,11 +67,11 @@ const Template: Story<StoryMultiselectSearchInputComponent> = (args) => ({
 export const Default = Template.bind({});
 Default.args = {
   disabled: false,
-  categoryId: '1000',
+  categoryId: '12465',
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
-  categoryId: '1000',
+  categoryId: '12465',
 };
