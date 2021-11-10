@@ -113,7 +113,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     },
   },
   [PRO_MODAL_TYPE.profile_pro_fields]: {
-    img: '/assets/icons/pro/modals/listing-limit.svg',
+    img: '/assets/icons/pro/modals/pro-fields.svg',
     title: $localize`:@@web_suggest_pro_modal_description_plans:Choose a plan and take advantage of Wallapop PRO benefits.`,
     text1: null,
     textList: [
@@ -125,7 +125,6 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
       $localize`:@@web_profile_modal_become_pro_236:Your items won't expire`,
     ],
     buttons: {
-      secondary: { text: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_dismiss_button:Leave as inactive` },
       primary: {
         text: $localize`:@@web_see_plans:See plans`,
         redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
