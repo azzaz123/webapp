@@ -5,8 +5,13 @@ $gradient-blue-2: #2dacb6;
 $gradient-purple: #8762d8;
 $gradient-border-radius: 21px;
 
+:host {
+  display: inline-block;
+}
+
 .CancelBubbleComponent {
   color: $blue-grey-1;
+  margin: 1px;
   &__cancel {
     background-color: $white;
     border: 1px solid $walla-main;
