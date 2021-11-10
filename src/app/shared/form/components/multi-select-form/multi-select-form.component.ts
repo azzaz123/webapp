@@ -97,7 +97,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   }
 
   public isDisabledByMaxLengthReached(checked: boolean): boolean {
-    console.log(checked, this.maxLengthReached);
     return !checked && this.maxLengthReached;
   }
 
