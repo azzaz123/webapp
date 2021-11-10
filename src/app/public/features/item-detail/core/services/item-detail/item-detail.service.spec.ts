@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CAR_DATA, MOCK_CAR } from '@fixtures/car.fixtures.spec';
-import { MOCK_FULL_USER, MOCK_FULL_USER_WITOUT_PHONE, USER_DATA } from '@fixtures/user.fixtures.spec';
+import { MOCK_FULL_USER_WITHOUT_PHONE, USER_DATA } from '@fixtures/user.fixtures.spec';
 import { ITEM_COUNTERS_DATA, ITEM_BUMP_FLAGS } from '@fixtures/item.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
@@ -86,7 +86,7 @@ describe('ItemDetailService', () => {
 
     it('should ask for the item and return it with correct format', () => {
       let expectedResponse: ItemDetailResponse;
-      MOCK_FULL_USER_WITOUT_PHONE.coverImage = null;
+      MOCK_FULL_USER_WITHOUT_PHONE.coverImage = null;
 
       itemDetailService.getItemDetail(itemId).subscribe((response: ItemDetailResponse) => {
         expectedResponse = response;
@@ -94,7 +94,7 @@ describe('ItemDetailService', () => {
 
       expect(expectedResponse.item).toEqual(item);
       expect(expectedResponse.item.bumpFlags).toEqual(ITEM_BUMP_FLAGS);
-      expect(expectedResponse.user).toEqual(MOCK_FULL_USER_WITOUT_PHONE);
+      expect(expectedResponse.user).toEqual(MOCK_FULL_USER_WITHOUT_PHONE);
     });
   });
 

@@ -236,7 +236,7 @@ export const MOCK_FULL_USER = new User(
   USER_DATA.phone
 );
 
-export const MOCK_FULL_USER_WITOUT_PHONE = new User(
+export const MOCK_FULL_USER_WITHOUT_PHONE = new User(
   USER_DATA.id,
   USER_DATA.micro_name,
   USER_DATA.image,
