@@ -10,6 +10,7 @@ export enum PRO_MODAL_TYPE {
   listing_limit_no_trial_no_discount,
   listing_limit_trial,
   listing_limit_discount,
+  reactivation,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -109,6 +110,19 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     buttons: {
       secondary: { text: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_dismiss_button:Leave as inactive` },
       primary: { text: null, redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` } },
+    },
+  },
+  [PRO_MODAL_TYPE.reactivation]: {
+    img: '/assets/icons/pro/modals/listing-limit.svg',
+    title: $localize`:@@pro_after_reactivation_non_subscribed_user_title:You've reached the free listing limit`,
+    text1: $localize`:@@pro_after_reactivation_non_subscribed_user_description_1:Want to list more items of this category? You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!`,
+    text2: $localize`:@@pro_after_reactivation_non_subscribed_user_description_2:If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.`,
+    buttons: {
+      secondary: { text: $localize`:@@pro_after_reactivation_non_subscribed_user_reject_button:Leave as inactive` },
+      primary: {
+        text: $localize`:@@pro_after_reactivation_non_subscribed_user_view_plans_button:Leave as inactive`,
+        redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
+      },
     },
   },
 };
