@@ -351,20 +351,21 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
       windowClass: 'pro-modal',
     });
 
-    modalRef.componentInstance.modalConfig = this.getProReactivationModalConfig();
+    modalRef.componentInstance.modalConfig = this.getProModalConfig();
     this.trackViewProBenefitsPopup();
   }
 
-  private getProReactivationModalConfig(): ProModalConfig {
-    const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.simulation];
+  private getProModalConfig(): ProModalConfig {
+    const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.profile_pro_fields];
 
     if (this.hasTrialAvailable) {
-      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_free_trial_start_subscription_button:Start free trial`;
+      config.title = $localize`:@@web_suggest_pro_modal_description_trial:Try Wallapop PRO for free and explore all their benefits.`;
+      config.buttons.primary.text = $localize`:@@web_start_free_trial:Start free trial`;
       return config;
     }
 
     if (this.tierWithDiscount) {
-      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:Try with ${this.tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`;
+      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:Start with ${this.tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`;
       return config;
     }
 
