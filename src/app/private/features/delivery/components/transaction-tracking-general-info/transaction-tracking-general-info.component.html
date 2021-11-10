@@ -1,0 +1,6 @@
+<div *ngIf="transactionTrackingGeneralInfo as info">
+  <tsl-lottie [src]="info.animation.url" [loop]="info.animation.isLoop"></tsl-lottie>
+  <span class="TrackingGeneral__title">{{ info.title }}</span>
+  <div [innerHTML]="info.description"></div>
+  <!-- <tsl-button> ACTION ?? </tsl-button> -->
+</div>
