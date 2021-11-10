@@ -33,6 +33,9 @@ import { Observable, of } from 'rxjs';
 import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
 import { UserLocation } from '@core/user/user-response.interface';
 import { Tier } from '@core/subscriptions/subscriptions.interface';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { ProModalConfig } from '@shared/modals/pro-modal/pro-modal.interface';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 
 export const competitorLinks = ['coches.net', 'autoscout24.es', 'autocasion.com', 'vibbo.com', 'milanuncios.com', 'motor.es'];
 
@@ -344,16 +347,28 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   }
 
   private manageModal(): void {
-    const modalRef: NgbModalRef = this.modalService.open(BecomeProModalComponent, {
-      windowClass: 'become-pro',
+    const modalRef = this.modalService.open(ProModalComponent, {
+      windowClass: 'pro-modal',
     });
-    modalRef.componentInstance.hasTrialAvailable = this.hasTrialAvailable;
-    modalRef.componentInstance.tierWithDiscount = this.tierWithDiscount;
-    modalRef.result.then(
-      () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
-      () => null
-    );
+
+    modalRef.componentInstance.modalConfig = this.getProReactivationModalConfig();
     this.trackViewProBenefitsPopup();
+  }
+
+  private getProReactivationModalConfig(): ProModalConfig {
+    const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.simulation];
+
+    if (this.hasTrialAvailable) {
+      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_free_trial_start_subscription_button:Start free trial`;
+      return config;
+    }
+
+    if (this.tierWithDiscount) {
+      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:Try with ${this.tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`;
+      return config;
+    }
+
+    return config;
   }
 
   private getTrialAvailable(callback?: () => void): void {
