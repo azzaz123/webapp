@@ -103,7 +103,6 @@ export class ListComponent implements OnInit, OnDestroy {
   private firstItemLoad = true;
   private init = 0;
   private counters: Counters;
-  private tooManyItemsModalRef: NgbModalRef;
   private searchTerm: string;
   private page = 1;
   private pageSize = 20;
@@ -252,16 +251,7 @@ export class ListComponent implements OnInit, OnDestroy {
           this.errorService.i18nSuccess(TRANSLATION_KEY.ITEM_UPDATED);
         } else if (params && params.createdOnHold) {
           const type = params.onHoldType ? parseInt(params.onHoldType, 10) : SUBSCRIPTION_TYPES.stripe;
-          this.tooManyItemsModalRef = this.listingLimitService.showModal(params.itemId, type);
-          this.tooManyItemsModalRef.result.then(
-            (orderEvent: OrderEvent) => {
-              if (orderEvent) {
-                this.purchaseListingFee(orderEvent);
-              }
-              this.tooManyItemsModalRef = null;
-            },
-            () => {}
-          );
+          this.listingLimitService.showModal(params.itemId, type);
         } else if (params && params.sold && params.itemId) {
           this.itemService.get(params.itemId).subscribe((item: Item) => {
             this.soldButton.item = item;
