@@ -65,5 +65,17 @@ describe('TransactionTrackingService', () => {
 
       flush();
     }));
+
+    it('should return the transation tracking details', fakeAsync(() => {
+      const expected = MOCK_TRANSACTION_TRACKING_DETAILS;
+      let response: TransactionTrackingDetails;
+
+      service.getDetails(requestId).subscribe((data) => {
+        response = data;
+        expect(JSON.stringify(response)).toEqual(JSON.stringify(expected));
+      });
+
+      flush();
+    }));
   });
 });
