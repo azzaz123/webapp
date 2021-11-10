@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { PhoneVerificationBodyRequest, VERIFICATION_TYPE } from '../dtos/requests';
 import { EmailVerificationApi, UserVerificationsApi } from '../dtos/responses';
 import { PhoneVerificationApi } from '../dtos/responses/phone-verification-api.interface';
-import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_PHONE_ENDPOINT } from './endpoints';
+import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_PHONE_ENDPOINT, VERIFY_USER_ENDPOINT } from './endpoints';
 
 const SEND_VERIFY_EMAIL_BODY = '';
 
@@ -24,5 +24,11 @@ export class UserVerificationsHttpService {
     const body: PhoneVerificationBodyRequest = { mobileNumber, code, type };
 
     return this.httpClient.post<PhoneVerificationApi>(SEND_VERIFY_PHONE_ENDPOINT, body);
+  }
+
+  public sendVerifyUserIdentity(smsCode: string, type = VERIFICATION_TYPE.PHONE, mobileNumber = null): Observable<PhoneVerificationApi> {
+    const body: PhoneVerificationBodyRequest = { code: smsCode, type, mobileNumber };
+
+    return this.httpClient.post<PhoneVerificationApi>(VERIFY_USER_ENDPOINT, body);
   }
 }
