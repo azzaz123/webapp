@@ -7,6 +7,10 @@ const routes: Route[] = [
     path: '',
     component: BankDetailsOverviewComponent,
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
 
 @NgModule({
