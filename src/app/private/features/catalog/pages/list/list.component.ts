@@ -40,7 +40,7 @@ import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmat
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
-import { ProModalConfig } from '@shared/modals/pro-modal/pro-modal.interface';
+import { MODAL_ACTION, ProModalConfig } from '@shared/modals/pro-modal/pro-modal.interface';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
@@ -717,13 +717,14 @@ export class ListComponent implements OnInit, OnDestroy {
 
     modalRef.componentInstance.modalConfig = this.getProReactivationModalConfig(isFreeTrial, tierDiscount);
 
-    /*     modalRef.result.then(
-      (action ) => {
-
-      }
-      () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
-      () => this.reloadItem(reactivatedItem.id, index) */
-    //  );
+    modalRef.result.then(
+      (action: MODAL_ACTION) => {
+        if (action !== MODAL_ACTION.PRIMARY_BUTTON) {
+          this.reloadItem(reactivatedItem.id, index);
+        }
+      },
+      () => this.reloadItem(reactivatedItem.id, index)
+    );
   }
 
   private getProReactivationModalConfig(isFreeTrial: boolean, tierWithDiscount: Tier): ProModalConfig {
