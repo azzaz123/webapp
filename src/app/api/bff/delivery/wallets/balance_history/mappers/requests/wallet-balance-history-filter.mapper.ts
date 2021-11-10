@@ -7,10 +7,12 @@ type WalletBalanceHistoryFilters = { page: number; type?: WALLET_HISTORY_FILTERS
 export const mapWalletHistoryFiltersToApi: ToApiMapper<WalletBalanceHistoryFilters, HttpParams> = (
   input: WalletBalanceHistoryFilters
 ): HttpParams => {
-  return new HttpParams().appendAll({
-    page: input.page.toString(),
-    type: mapWalletHistoryTypeToApi[input.type],
-  });
+  let params: HttpParams = new HttpParams().set('page', input.page.toString());
+  const type = mapWalletHistoryTypeToApi[input.type];
+  if (type) {
+    params = params.set('type', type);
+  }
+  return params;
 };
 
 const mapWalletHistoryTypeToApi: Record<WALLET_HISTORY_FILTERS, string | null> = {
