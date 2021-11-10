@@ -26,7 +26,7 @@ export class TransactionTrackingOverviewComponent implements OnInit {
         isReload: false,
         isUserAction: false,
         payload: {
-          articleId: '360013447218',
+          linkUrl: 'https://ayuda.wallapop.com/hc/en-us/articles/360017172677',
         },
       },
       state: { isDisabled: false },
@@ -143,7 +143,7 @@ export class TransactionTrackingOverviewComponent implements OnInit {
     title: 'Estado de tu compra',
   });
 
-  constructor(private location: Location, private customerHelpService: CustomerHelpService) {}
+  constructor(private location: Location) {}
 
   ngOnInit(): void {}
 
@@ -153,13 +153,11 @@ export class TransactionTrackingOverviewComponent implements OnInit {
 
   public manageAction(action: any): void {
     if (action.isDeeplink) {
-      this.navigateToAnExternalPage(action.payload.articleId);
+      this.navigateToAnExternalPage(action.payload.linkUrl);
     }
   }
 
-  private navigateToAnExternalPage(articleId: string): void {
-    // TODO: fixme		Date: 2021/11/10
-    const URL = this.customerHelpService.getPageUrl(articleId as unknown as CUSTOMER_HELP_PAGE);
+  private navigateToAnExternalPage(URL: string): void {
     window.open(URL, '_blank');
   }
 }
