@@ -14,6 +14,7 @@
   <tsl-svg-icon
     *ngIf="info.showCaret"
     src="/assets/icons/arrow-right.svg"
+    (click)="caretClick.emit()"
     width="5"
     height="10"
     class="TrackingDetailInfo__arrowRight d-flex align-items-center mr-4"

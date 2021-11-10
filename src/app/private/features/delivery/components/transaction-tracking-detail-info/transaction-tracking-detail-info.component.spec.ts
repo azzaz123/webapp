@@ -85,6 +85,17 @@ describe('TransactionTrackingDetailInfoComponent', () => {
       it('should show caret svg', () => {
         shouldShowCaret(true);
       });
+
+      describe('and we click in caret...', () => {
+        it('should emit the click to the parent', () => {
+          spyOn(component.caretClick, 'emit');
+          const caretIcon = fixture.debugElement.query(By.css('.TrackingDetailInfo__arrowRight')).nativeElement;
+
+          caretIcon.click();
+
+          expect(component.caretClick.emit).toBeCalledTimes(1);
+        });
+      });
     });
 
     describe('and we specify not showing caret', () => {

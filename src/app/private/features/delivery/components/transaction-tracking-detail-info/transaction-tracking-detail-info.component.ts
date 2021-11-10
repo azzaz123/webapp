@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TransactionTrackingInfo } from '../../interfaces/tts/transaction-tracking-info.interface';
 
@@ -9,6 +9,7 @@ import { TransactionTrackingInfo } from '../../interfaces/tts/transaction-tracki
 })
 export class TransactionTrackingDetailInfoComponent implements OnInit {
   @Input() transactionTrackingInfo: TransactionTrackingInfo;
+  @Output() caretClick: EventEmitter<void> = new EventEmitter<void>();
 
   public descriptionByPass: SafeHtml;
 
