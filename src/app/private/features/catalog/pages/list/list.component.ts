@@ -731,12 +731,12 @@ export class ListComponent implements OnInit, OnDestroy {
     const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.reactivation];
 
     if (isFreeTrial) {
-      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_free_trial_start_subscription_button:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
+      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_free_trial_start_subscription_button:Start free trial`;
       return config;
     }
 
     if (tierWithDiscount) {
-      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:Start with ${tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`;
+      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:Try with ${tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`;
       return config;
     }
 

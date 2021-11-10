@@ -114,13 +114,13 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
   },
   [PRO_MODAL_TYPE.reactivation]: {
     img: '/assets/icons/pro/modals/reactivation.svg',
-    title: $localize`:@@pro_after_reactivation_non_subscribed_user_title:You've reached the free listing limit`,
-    text1: $localize`:@@pro_after_reactivation_non_subscribed_user_description_1:Want to list more items of this category? You might be interested in signing up for wallapop PRO. Professionalise your online sales, and sell more!`,
-    text2: $localize`:@@pro_after_reactivation_non_subscribed_user_description_2:If you decide wallapop PRO isn't for you, this item will become inactive – nobody will be able to buy it.`,
+    title: $localize`:@@pro_after_reactivation_non_subscribed_user_title:Item reactivated!`,
+    text1: $localize`:@@pro_after_reactivation_non_subscribed_user_free_trial_description_1_2v:If you were PRO your items wouldn’t become inactive. Sounds good, right?`,
+    text2: $localize`:@@pro_after_reactivation_non_subscribed_user_description_2:Choose a plan and take advantage of Wallapop PRO benefits.`,
     buttons: {
-      secondary: { text: $localize`:@@pro_after_reactivation_non_subscribed_user_reject_button:Leave as inactive` },
+      secondary: { text: $localize`:@@pro_after_reactivation_non_subscribed_user_reject_button:Not now thanks` },
       primary: {
-        text: $localize`:@@pro_after_reactivation_non_subscribed_user_view_plans_button:Leave as inactive`,
+        text: $localize`:@@pro_after_reactivation_non_subscribed_user_view_plans_button:View plans`,
         redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
       },
     },
