@@ -276,7 +276,7 @@ $feature-button-width: 170px;
         margin-right: $spacing-s;
       }
       @include media-breakpoint-down(md) {
-        width: $feature-button-width / 2;
+        width: $feature-button-width * 0.5;
         padding: 0;
         tsl-svg-icon {
           margin: 0;
@@ -325,7 +325,7 @@ $feature-button-width: 170px;
     background-color: $blue-grey-1;
     font-family: $wallie;
     padding: 10px 15px;
-    border-radius: $border-radius / 2;
+    border-radius: $border-radius * 0.5;
     font-size: $font-size-s;
   }
   .arrow:before {
