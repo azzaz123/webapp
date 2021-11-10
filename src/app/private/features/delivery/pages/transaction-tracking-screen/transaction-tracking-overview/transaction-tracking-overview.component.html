@@ -1,7 +1,7 @@
 <div *ngIf="trackingInfo$ | async as info">
   <div class="d-flex justify-content-between">
     <div class="d-flex">
-      <a class="TTS__back d-flex align-items-center mr-3" (click)="goBack()">
+      <a class="TTS__back d-flex align-items-center mr-4" (click)="goBack()">
         <tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon>
       </a>
       <span id="headerTitle">{{ info.title }}</span>
