@@ -15,7 +15,6 @@ import { TransactionTrackingStatusInfoModel } from './transaction-tracking-statu
 export class TransactionTrackingModel implements TransactionTracking {
   analytics: TransactionTrackingAnalytics;
   header: TransactionTrackingAction;
-  navigationTitle: string;
   shippingStatus: TransactionTrackingShippingStatus;
   statusInfo: TransactionTrackingStatusInfo[];
   title: string;
