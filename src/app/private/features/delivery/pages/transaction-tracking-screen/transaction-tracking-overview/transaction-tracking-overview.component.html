@@ -6,8 +6,8 @@
       </a>
       <span id="headerTitle">{{ info.title }}</span>
     </div>
-    <tsl-button class="TTS__buttonHeader" [className]="info.header.style.className" (click)="manageAction(info.header.action)">
-      {{ info.header.title }}
-    </tsl-button>
+    <tsl-button class="TTS__buttonHeader" [className]="info.header.style.className" (click)="manageAction(info.header.action)">{{
+      info.header.title
+    }}</tsl-button>
   </div>
 </div>

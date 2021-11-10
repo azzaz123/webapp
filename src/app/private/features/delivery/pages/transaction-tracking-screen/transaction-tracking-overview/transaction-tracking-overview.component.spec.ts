@@ -38,8 +38,14 @@ describe('TransactionTrackingOverviewComponent', () => {
   });
 
   describe('when we have tracking info...', () => {
+    let headerActionButton: HTMLElement;
+
+    beforeEach(() => {
+      headerActionButton = fixture.debugElement.query(By.css('.TTS__buttonHeader')).nativeElement;
+    });
+
     describe('the header section...', () => {
-      it('should have the recieved title', () => {
+      it('should have the receieved title', () => {
         const title: HTMLElement = de.query(By.css('#headerTitle')).nativeElement;
 
         expect(title.textContent).toStrictEqual(MOCK_TRANSACTION_TRACKING.title);
@@ -56,12 +62,17 @@ describe('TransactionTrackingOverviewComponent', () => {
         });
       });
 
+      describe('the action button...', () => {
+        it('should have the received title', () => {
+          expect(headerActionButton.textContent).toEqual(MOCK_TRANSACTION_TRACKING.header.title);
+        });
+      });
+
       describe('and we click on the action button...', () => {
         it('should open the link url in a new tab', () => {
           spyOn(window, 'open');
 
-          const button: HTMLElement = fixture.debugElement.query(By.css('.TTS__buttonHeader')).nativeElement;
-          button.click();
+          headerActionButton.click();
 
           expect(window.open).toHaveBeenCalledTimes(1);
           expect(window.open).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING.header.action.payload.linkUrl, '_blank');
