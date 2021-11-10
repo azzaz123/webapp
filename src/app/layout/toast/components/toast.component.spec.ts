@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { ToastComponent } from './toast.component';
 import { ToastService } from '../core/services/toast.service';
 import { By } from '@angular/platform-browser';
 import { Toast, TOAST_TYPES } from '../core/interfaces/toast.interface';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastModule } from '../toast.module';
 
 describe('ToastComponent', () => {
   let injector: TestBed;
@@ -11,15 +11,11 @@ describe('ToastComponent', () => {
   let component: ToastComponent;
   let toastService: ToastService;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NgbModule],
-        providers: [ToastService],
-        declarations: [ToastComponent],
-      }).compileComponents();
-    })
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ToastModule],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToastComponent);
@@ -27,7 +23,6 @@ describe('ToastComponent', () => {
     fixture.detectChanges();
     injector = getTestBed();
     toastService = injector.inject<ToastService>(ToastService);
-    jest.setTimeout(10000);
   });
 
   it('should create', () => {
