@@ -1,14 +1,11 @@
 import { takeWhile } from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
-import { I18nService } from '../../../core/i18n/i18n.service';
 import { ItemBulkResponse } from '../../../core/item/item-response.interface';
-import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '../../../core/item/item';
 
 import { find, findIndex } from 'lodash-es';
-import { TooManyItemsModalComponent } from '../modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from '../modals/already-featured-modal/already-featured-modal.component';
 import { Router } from '@angular/router';
 import { EventService } from '../../../core/event/event.service';
@@ -16,6 +13,7 @@ import { DeactivateItemsModalComponent } from './deactivate-items-modal/deactiva
 import { SUBSCRIPTION_TYPES } from '../../../core/subscriptions/subscriptions.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 
 @Component({
   selector: 'tsl-catalog-item-actions',
@@ -31,11 +29,10 @@ export class CatalogItemActionsComponent implements OnInit {
   constructor(
     public itemService: ItemService,
     private modalService: NgbModal,
-    private toastService: ToastService,
-    private i18n: I18nService,
     private errorService: ErrorsService,
     private router: Router,
-    private eventService: EventService
+    private eventService: EventService,
+    private listingLimitService: ListingLimitService
   ) {}
 
   ngOnInit() {
@@ -68,14 +65,7 @@ export class CatalogItemActionsComponent implements OnInit {
         this.getCounters.emit();
         this.eventService.emit('itemChanged');
         if (resp.status === 406) {
-          const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
-            windowClass: 'modal-standard',
-          });
-          modalRef.componentInstance.type = SUBSCRIPTION_TYPES.carDealer;
-          modalRef.result.then(
-            () => {},
-            () => {}
-          );
+          this.listingLimitService.showModal(null, SUBSCRIPTION_TYPES.carDealer);
         }
       });
   }
