@@ -1,10 +1,14 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
-import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
-import { TRANSACTION_TRACKING_ENDPOINT } from './endpoints';
 
-import { TransactionTrackingHttpService } from './transaction-tracking-http.service';
+import { MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-details-dto.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
+import {
+  TRANSACTION_TRACKING_DETAILS_ENDPOINT,
+  TRANSACTION_TRACKING_ENDPOINT,
+} from '@api/bff/delivery/transaction-tracking/http/endpoints';
+import { TransactionTrackingDetailsDto, TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 
 describe('TransactionTrackingHttpService', () => {
   let service: TransactionTrackingHttpService;
@@ -23,8 +27,8 @@ describe('TransactionTrackingHttpService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when asking transaction tracking info to server', () => {
-    it('should get transaction tracking info', () => {
+  describe('when asking transaction tracking data to server', () => {
+    it('should get transaction tracking data', () => {
       const MOCK_REQUEST_ID = '123';
       const EXPECTED_ENDPOINT = `${TRANSACTION_TRACKING_ENDPOINT}?requestId=${MOCK_REQUEST_ID}`;
       let response: TransactionTrackingDto;
@@ -33,12 +37,29 @@ describe('TransactionTrackingHttpService', () => {
         response = properties;
       });
 
-      const transactionTrackingInfoRequest: TestRequest = httpMock.expectOne(EXPECTED_ENDPOINT);
-      transactionTrackingInfoRequest.flush(MOCK_TRANSACTION_TRACKING_DTO_RESPONSE);
+      const transactionTrackingRequest: TestRequest = httpMock.expectOne(EXPECTED_ENDPOINT);
+      transactionTrackingRequest.flush(MOCK_TRANSACTION_TRACKING_DTO_RESPONSE);
 
       expect(response).toEqual(MOCK_TRANSACTION_TRACKING_DTO_RESPONSE);
-      expect(transactionTrackingInfoRequest.request.url).toEqual(TRANSACTION_TRACKING_ENDPOINT);
-      expect(transactionTrackingInfoRequest.request.method).toBe('GET');
+      expect(transactionTrackingRequest.request.url).toEqual(TRANSACTION_TRACKING_ENDPOINT);
+      expect(transactionTrackingRequest.request.method).toBe('GET');
+    });
+
+    it('should get transaction tracking details info', () => {
+      const MOCK_REQUEST_ID = '123';
+      const EXPECTED_ENDPOINT = `${TRANSACTION_TRACKING_DETAILS_ENDPOINT}?requestId=${MOCK_REQUEST_ID}`;
+      let response: TransactionTrackingDetailsDto;
+
+      service.getDetails(MOCK_REQUEST_ID).subscribe((properties: TransactionTrackingDetailsDto) => {
+        response = properties;
+      });
+
+      const transactionTrackingDetailsRequest: TestRequest = httpMock.expectOne(EXPECTED_ENDPOINT);
+      transactionTrackingDetailsRequest.flush(MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE);
+
+      expect(response).toEqual(MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE);
+      expect(transactionTrackingDetailsRequest.request.url).toEqual(TRANSACTION_TRACKING_DETAILS_ENDPOINT);
+      expect(transactionTrackingDetailsRequest.request.method).toBe('GET');
     });
   });
 });
