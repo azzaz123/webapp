@@ -20,21 +20,21 @@ const Template: Story<CancelBubbleComponent> = (args) => ({
   props: args,
   template: `
   <div style="width:132px; margin:35px;">
-  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
-  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
-  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
-  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
-  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>
+  <tsl-cancel-bubble [text]="text"></tsl-cancel-bubble>
+  <tsl-cancel-bubble [text]="text"></tsl-cancel-bubble>
+  <tsl-cancel-bubble [text]="text"></tsl-cancel-bubble>
+  <tsl-cancel-bubble [text]="text"></tsl-cancel-bubble>
+  <tsl-cancel-bubble [text]="text"></tsl-cancel-bubble>
   </div>
-  <tsl-cancel-bubble [bubbleText]="bubbleText"></tsl-cancel-bubble>`,
+  <tsl-cancel-bubble [text]="text"></tsl-cancel-bubble>`,
 });
 
 export const Default = Template.bind({});
 Default.args = {
-  bubbleText: 'Bubble',
+  text: 'Bubble',
 };
 
 export const LongText = Template.bind({});
 LongText.args = {
-  bubbleText: 'SuperLongTextSJOIJDOJFUHOU',
+  text: 'SuperLongTextSJOIJDOJFUHOU',
 };

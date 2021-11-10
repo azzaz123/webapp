@@ -31,15 +31,15 @@ describe('CancelBubbleComponent', () => {
   });
 
   describe('CancelBubble behavior', () => {
-    let bubbleText = 'bubbleText';
+    let text = 'text';
     beforeEach(() => {
-      component.bubbleText = bubbleText;
+      component.text = text;
       fixture.detectChanges();
     });
     it('should show text in bubble', () => {
-      const bubbleText = debugElement.query(By.css('span')).nativeNode.innerHTML;
+      const text = debugElement.query(By.css('span')).nativeNode.innerHTML;
 
-      expect(bubbleText).toBe(bubbleText);
+      expect(text).toBe(text);
     });
 
     describe('when we click the cross', () => {
@@ -49,7 +49,7 @@ describe('CancelBubbleComponent', () => {
 
         crossIcon.click();
 
-        expect(component.clear.emit).toHaveBeenCalledWith(bubbleText);
+        expect(component.clear.emit).toHaveBeenCalledWith(text);
       });
     });
   });
