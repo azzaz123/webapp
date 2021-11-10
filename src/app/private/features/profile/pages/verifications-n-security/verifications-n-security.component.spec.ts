@@ -1,4 +1,4 @@
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
@@ -83,10 +83,10 @@ describe('VerificationsNSecurityComponent', () => {
       });
     });
 
-    it('should show the email card', () => {
-      const card = fixture.debugElement.queryAll(By.directive(MockVerificationCardComponent));
+    it('should show the email and phone cards', () => {
+      const cards: DebugElement[] = fixture.debugElement.queryAll(By.directive(MockVerificationCardComponent));
 
-      expect(card).toBeTruthy();
+      expect(cards).toHaveLength(2);
     });
 
     it('should track page view event', () => {
@@ -106,6 +106,12 @@ describe('VerificationsNSecurityComponent', () => {
 
         expect(title).toBe($localize`:@@verification_and_security_all_users_verifications_email_label:Email`);
       });
+      it('should show Mobile phone title', () => {
+        const title = component.titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.PHONE];
+
+        expect(title).toBe($localize`:@@verification_and_security_all_users_verifications_phone_label:Mobile phone`);
+      });
+
       describe('and the email is verified', () => {
         beforeEach(() => {
           spyUserVerificationsService = jest
@@ -157,6 +163,46 @@ describe('VerificationsNSecurityComponent', () => {
               VERIFICATION_METHOD.EMAIL
             );
           });
+        });
+      });
+
+      describe('and the phone is verified', () => {
+        beforeEach(() => {
+          spyUserVerificationsService = jest
+            .spyOn(userVerificationsService, 'userVerifications$', 'get')
+            .mockReturnValue(of(MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED));
+          fixture.detectChanges();
+        });
+        it('should show Change button text and not phone legend', () => {
+          component.userVerifications$.subscribe((userVerifications) => {
+            const text = component.verifiedTextButton[userVerifications.phone.toString()];
+
+            expect(text).toBe($localize`:@@verification_and_security_all_users_change_button:Change`);
+            expect(component.userPhone).toBe('+34 44 44 44 44');
+          });
+        });
+      });
+      describe('and the phone is not verified', () => {
+        beforeEach(() => {
+          spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
+          fixture.detectChanges();
+        });
+        it('should show Verify button text and not show phone legend', () => {
+          component.userVerifications$.subscribe((userVerifications) => {
+            const text = component.verifiedTextButton[userVerifications.phone.toString()];
+
+            expect(text).toBe($localize`:@@verification_and_security_all_users_verify_button:Verify`);
+            expect(component.userPhone).not.toBe('');
+          });
+        });
+
+        it('should track the phone when button is clicked', () => {
+          component.onClickVerifyPhone();
+
+          expect(verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent).toHaveBeenCalledTimes(1);
+          expect(verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent).toHaveBeenCalledWith(
+            VERIFICATION_METHOD.PHONE
+          );
         });
       });
     });
