@@ -1,4 +1,27 @@
-.hashtag-container {
-  height: 300px;
-  overflow: auto;
+@import '~style/common';
+
+:host {
+  display: block;
+}
+
+.HashtagField {
+  &__counter {
+    color: $blue-grey-3;
+  }
+  &__suggested,
+  &__search {
+    flex: 1;
+  }
+
+  &__search {
+    background-color: $white;
+    border-radius: 6px;
+    border: 1px solid $blue-grey-4;
+  }
+
+  &__suggested {
+    &__title {
+      color: $blue-grey-2;
+    }
+  }
 }
