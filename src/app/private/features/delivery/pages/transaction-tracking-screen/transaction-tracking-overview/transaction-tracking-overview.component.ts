@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { MOCK_TRANSACTION_TRACKING } from '@fixtures/private/delivery/TTS/transaction-tracking.fixtures.spec';
-import { TransactionTrackingActionsService } from '@private/features/delivery/services/TTS/transaction-tracking-actions/transaction-tracking-actions.service';
+import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

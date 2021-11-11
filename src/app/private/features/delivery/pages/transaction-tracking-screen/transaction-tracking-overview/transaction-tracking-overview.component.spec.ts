@@ -4,7 +4,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@fixtures/private/delivery/TTS/transaction-tracking.fixtures.spec';
-import { TransactionTrackingActionsService } from '@private/features/delivery/services/TTS/transaction-tracking-actions/transaction-tracking-actions.service';
+import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { of } from 'rxjs';
