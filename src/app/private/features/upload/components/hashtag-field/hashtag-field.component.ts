@@ -1,63 +1,70 @@
-import { JsonpClientBackend } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControlName, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { PaginatedList } from '@api/core/model';
+import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
+import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
-import { distinctUntilChanged, pairwise, startWith } from 'rxjs/operators';
+import { Hashtag } from '../../core/models/hashtag.interface';
+import { HashtagSuggesterApiService } from '../../core/services/hashtag-suggestions/hashtag-suggester-api.service';
+import { union } from 'lodash-es';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 
 @Component({
   selector: 'tsl-hashtag-field',
   templateUrl: './hashtag-field.component.html',
   styleUrls: ['./hashtag-field.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => HashtagFieldComponent),
+      multi: true,
+    },
+  ],
 })
-export class HashtagFieldComponent implements OnInit {
+export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit {
   @Input() categoryId: string;
-  @Input() options: SelectFormOption<string>[];
-  @Input() form: FormGroup;
-  @Input() controlName: FormControlName;
-  @Output() start = new EventEmitter<string>();
-  @ViewChild('generalHashtagForm') generalHashtagForm: ElementRef;
-  public maxHashtagsNumber: number = 5;
-  public page: number = 0;
+  @Input() max: number;
 
-  ngOnInit() {
-    this.form.valueChanges
-      .pipe(
-        startWith({ hashtags: [], searchedHashtags: [] }),
-        distinctUntilChanged((prev, next) => {
-          return JSON.stringify(prev) === JSON.stringify(next);
-        }),
-        pairwise()
-      )
-      .subscribe(([prev, next]) => {
-        this.onChangeFormControlValue(prev, next); // Problem might be here, change this code to the code below
-        this.form.patchValue(next, { emitEvent: true });
-      });
+  @ViewChild(MultiSelectFormComponent) generalHashtagForm: MultiSelectFormComponent;
+  public page: number = 0;
+  public hashtagForm: FormGroup = new FormGroup({ search: new FormControl(), suggested: new FormControl() });
+
+  private optionsSubject = new BehaviorSubject<SelectFormOption<string>[]>([]);
+
+  constructor(private hashtagSuggesterApiService: HashtagSuggesterApiService) {
+    super();
   }
 
-  private onChangeFormControlValue(prev, next): void {
-    let formToBePatched: string;
-    let modifiedForm: string;
-    // Compare the property of object and only patch the one that is not changed
-    if (prev.hashtags.length !== next.hashtags.length) {
-      formToBePatched = 'searchedHashtags';
-      modifiedForm = 'hashtags';
-    } else if (prev.searchedHashtags.length !== next.searchedHashtags.length) {
-      formToBePatched = 'hashtags';
-      modifiedForm = 'searchedHashtags';
-    }
-    if (next[modifiedForm].length > prev[modifiedForm].length) {
-      const lastItemIndex = next[modifiedForm].length - 1;
-      const newSelected = next[modifiedForm][lastItemIndex];
-      // Add it and remove the repeated value (Add it and remove it if it was already selected)
-      next[formToBePatched].push(newSelected);
-      next[formToBePatched] = next[formToBePatched].filter((item, pos, self) => self.indexOf(item) === pos); // Remove repeate value
-    } else {
-      const hashtagToRemove = prev[modifiedForm].find((n) => {
-        return !next[modifiedForm].includes(n);
-      });
-      next[formToBePatched] = next[formToBePatched].filter((n) => {
-        return n !== hashtagToRemove;
-      });
-    }
+  public get options$(): Observable<SelectFormOption<string>[]> {
+    return this.optionsSubject.asObservable();
+  }
+
+  ngOnInit() {
+    this.hashtagForm.valueChanges.subscribe((changes: { search: MultiSelectValue; suggested: MultiSelectValue }) => {
+      this.value = union(changes.search, changes.suggested);
+      this.onChange(this.value);
+      this.isDisabled = this.value.length > this.max;
+    });
+
+    this.hashtagSuggesterApiService.getHashtags(this.categoryId, '0').subscribe((n) => {
+      this.mapHashtagOptions(n);
+    });
+  }
+
+  public removeValue(valueString: string) {
+    this.value = this.value.filter((value) => valueString !== value);
+    this.writeValue(this.value);
+  }
+
+  private mapHashtagOptions(hashtags: PaginatedList<Hashtag>) {
+    let options: SelectFormOption<string>[] = [];
+
+    hashtags.list.forEach((hashtag: Hashtag) => {
+      options.push({ label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: hashtag.text });
+    });
+
+    this.optionsSubject.next(options);
   }
 }

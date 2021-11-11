@@ -13,8 +13,7 @@ import { HashtagFieldModule } from './hashtag-field.module';
     CategoryId: {{ categoryId }}
     <form [formGroup]="formGroup">
       <h4 class="mt-4">Selected hashtags: {{ formGroup.value.hashtag }}</h4>
-      Get your hashtags:
-      <tsl-hashtag-field [categoryId]="categoryId" formControlName="hashtag"></tsl-hashtag-field>
+      <tsl-hashtag-field [categoryId]="categoryId" formControlName="hashtag" [max]="max"></tsl-hashtag-field>
     </form>
   `,
 })
@@ -54,9 +53,11 @@ const Template: Story<StoryHashtagFieldComponent> = (args) => ({
 export const Default = Template.bind({});
 Default.args = {
   disabled: false,
+  max: 5,
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
+  max: 5,
 };
