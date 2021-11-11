@@ -5,6 +5,7 @@ import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifica
 import {
   MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED,
   MOCK_USER_VERIFICATIONS_MAPPED,
+  MOCK_USER_VERIFICATIONS_PHONE_VERIFIED,
 } from '@api/fixtures/user-verifications/user-verifications.fixtures.spec';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { UserService } from '@core/user/user.service';
@@ -117,14 +118,20 @@ describe('VerificationsNSecurityComponent', () => {
           spyUserVerificationsService = jest
             .spyOn(userVerificationsService, 'userVerifications$', 'get')
             .mockReturnValue(of(MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED));
+          fixture = TestBed.createComponent(VerificationsNSecurityComponent);
+          component = fixture.componentInstance;
           fixture.detectChanges();
         });
         it('should show Change button text', () => {
-          component.userVerifications$.subscribe((userVerifications) => {
-            const text = component.verifiedTextButton[userVerifications.email.toString()];
+          let response: UserVerifications;
 
-            expect(text).toBe($localize`:@@verification_and_security_all_users_change_button:Change`);
+          component.userVerifications$.subscribe((userVerifications) => {
+            response = userVerifications;
+            console.log(response);
           });
+          const text = component.verifiedTextButton[response.email.toString()];
+
+          expect(text).toBe($localize`:@@verification_and_security_all_users_change_button:Change`);
         });
         it('should open the change email modal when button is clicked', () => {
           spyOn(modalService, 'open').and.callThrough();
@@ -143,11 +150,13 @@ describe('VerificationsNSecurityComponent', () => {
           fixture.detectChanges();
         });
         it('should show Verify button text', () => {
+          let response: UserVerifications;
           component.userVerifications$.subscribe((userVerifications) => {
-            const text = component.verifiedTextButton[userVerifications.email.toString()];
-
-            expect(text).toBe($localize`:@@verification_and_security_all_users_verify_button:Verify`);
+            response = userVerifications;
           });
+          const text = component.verifiedTextButton[response.email.toString()];
+
+          expect(text).toBe($localize`:@@verification_and_security_all_users_verify_button:Verify`);
         });
         it('should open the email verification modal when button is clicked', () => {
           spyOn(modalService, 'open').and.callThrough();
@@ -170,30 +179,41 @@ describe('VerificationsNSecurityComponent', () => {
         beforeEach(() => {
           spyUserVerificationsService = jest
             .spyOn(userVerificationsService, 'userVerifications$', 'get')
-            .mockReturnValue(of(MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED));
+            .mockReturnValue(of(MOCK_USER_VERIFICATIONS_PHONE_VERIFIED));
+          fixture = TestBed.createComponent(VerificationsNSecurityComponent);
+          component = fixture.componentInstance;
           fixture.detectChanges();
         });
-        it('should show Change button text and not phone legend', () => {
+        it('should show Change button text and the phone legend', () => {
+          let response: UserVerifications;
           component.userVerifications$.subscribe((userVerifications) => {
-            const text = component.verifiedTextButton[userVerifications.phone.toString()];
-
-            expect(text).toBe($localize`:@@verification_and_security_all_users_change_button:Change`);
-            expect(component.userPhone).toBe('+34 44 44 44 44');
+            response = userVerifications;
           });
+          const text = component.verifiedTextButton[response.phone.toString()];
+
+          expect(text).toBe($localize`:@@verification_and_security_all_users_change_button:Change`);
+          expect(component.userPhone).toBe('+34 935 50 09 96');
         });
       });
       describe('and the phone is not verified', () => {
         beforeEach(() => {
           spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
+          spyUserVerificationsService = jest
+            .spyOn(userVerificationsService, 'userVerifications$', 'get')
+            .mockReturnValue(of(MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED));
+          fixture = TestBed.createComponent(VerificationsNSecurityComponent);
+          component = fixture.componentInstance;
           fixture.detectChanges();
         });
         it('should show Verify button text and not show phone legend', () => {
+          let response: UserVerifications;
           component.userVerifications$.subscribe((userVerifications) => {
-            const text = component.verifiedTextButton[userVerifications.phone.toString()];
-
-            expect(text).toBe($localize`:@@verification_and_security_all_users_verify_button:Verify`);
-            expect(component.userPhone).not.toBe('');
+            response = userVerifications;
           });
+          const text = component.verifiedTextButton[response.phone.toString()];
+
+          expect(text).toBe($localize`:@@verification_and_security_all_users_verify_button:Verify`);
+          expect(component.userPhone).toBe('');
         });
 
         it('should track the phone when button is clicked', () => {
