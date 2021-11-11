@@ -4,6 +4,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@fixtures/private/delivery/TTS/transaction-tracking.fixtures.spec';
+import { TransactionTrackingActionsService } from '@private/features/delivery/services/TTS/transaction-tracking-actions/transaction-tracking-actions.service';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { of } from 'rxjs';
@@ -12,6 +13,7 @@ import { TransactionTrackingOverviewComponent } from './transaction-tracking-ove
 
 describe('TransactionTrackingOverviewComponent', () => {
   let component: TransactionTrackingOverviewComponent;
+  let transactionTrackingActionsService: TransactionTrackingActionsService;
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
   let de: DebugElement;
   let location: Location;
@@ -19,7 +21,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [Location],
+      providers: [Location, TransactionTrackingActionsService],
       declarations: [TransactionTrackingOverviewComponent, ButtonComponent, SvgIconComponent],
     }).compileComponents();
   });
@@ -29,6 +31,7 @@ describe('TransactionTrackingOverviewComponent', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     location = TestBed.inject(Location);
+    transactionTrackingActionsService = TestBed.inject(TransactionTrackingActionsService);
     component.trackingInfo$ = of(MOCK_TRANSACTION_TRACKING);
     fixture.detectChanges();
   });
@@ -73,13 +76,13 @@ describe('TransactionTrackingOverviewComponent', () => {
       });
 
       describe('and we click on the action button...', () => {
-        it('should open the link url in a new tab', () => {
-          spyOn(window, 'open');
+        it('should call the transaction tracking actions service', () => {
+          spyOn(transactionTrackingActionsService, 'manageAction');
 
           headerActionButton.nativeElement.click();
 
-          expect(window.open).toHaveBeenCalledTimes(1);
-          expect(window.open).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING.header.action.payload.linkUrl, '_blank');
+          expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledTimes(1);
+          expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING.header.action);
         });
       });
     });

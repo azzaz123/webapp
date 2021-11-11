@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { MOCK_TRANSACTION_TRACKING } from '@fixtures/private/delivery/TTS/transaction-tracking.fixtures.spec';
+import { TransactionTrackingActionsService } from '@private/features/delivery/services/TTS/transaction-tracking-actions/transaction-tracking-actions.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,7 +13,7 @@ import { MOCK_TRANSACTION_TRACKING } from '@fixtures/private/delivery/TTS/transa
 export class TransactionTrackingOverviewComponent implements OnInit {
   public trackingInfo$: Observable<any> = of(MOCK_TRANSACTION_TRACKING);
 
-  constructor(private location: Location) {}
+  constructor(private location: Location, private transactionTrackingActionsService: TransactionTrackingActionsService) {}
 
   ngOnInit(): void {}
 
@@ -21,12 +22,6 @@ export class TransactionTrackingOverviewComponent implements OnInit {
   }
 
   public manageAction(action: any): void {
-    if (action.isDeeplink) {
-      this.navigateToAnExternalPage(action.payload.linkUrl);
-    }
-  }
-
-  private navigateToAnExternalPage(URL: string): void {
-    window.open(URL, '_blank');
+    this.transactionTrackingActionsService.manageAction(action);
   }
 }
