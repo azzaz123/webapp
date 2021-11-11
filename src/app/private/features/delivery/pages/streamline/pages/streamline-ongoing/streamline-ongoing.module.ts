@@ -4,10 +4,10 @@ import { streamlineOngoingRoutedComponents, StreamlineOngoingRoutingModule } fro
 import { HistoricListModule } from '@shared/historic-list/historic-list.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { StreamlineOngoingUIService } from '../../services/streamline-ongoing-ui/streamline-ongoing-ui.service';
-import { RequestAndTransactionsPendingAsSellerModule } from '@api/bff/delivery/requests-and-transactions/pending-as-seller/requests-and-transactions-pending-as-seller.module';
+import { RequestAndTransactionsPendingModule } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.module';
 
 @NgModule({
-  imports: [CommonModule, HistoricListModule, SvgIconModule, RequestAndTransactionsPendingAsSellerModule, StreamlineOngoingRoutingModule],
+  imports: [CommonModule, HistoricListModule, SvgIconModule, RequestAndTransactionsPendingModule, StreamlineOngoingRoutingModule],
   declarations: [streamlineOngoingRoutedComponents],
   providers: [StreamlineOngoingUIService],
 })

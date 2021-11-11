@@ -183,7 +183,6 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
 
   private mapExtendedOptionsToValue(): string[] {
     let newValue: string[] = this.value;
-
     const valuesToAdd = this.extendedOptions.filter((opt) => opt.checked).map((opt) => opt.value);
     const valuesToRemove = this.extendedOptions.filter((opt) => !opt.checked).map((opt) => opt.value);
 
