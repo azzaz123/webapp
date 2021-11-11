@@ -13,7 +13,7 @@ export const OTHER_USER_ID = 'qxkmav12tp8f';
 export const MICRO_NAME = 'String S.';
 export const ACCESS_TOKEN = 'bS7D7d26UordM5M0uy5o4IisuyrPz35mfxfpw7PLRqQfzouQGXGpQtyZWFRRDdRFFT5fJZ';
 export const USER_EMAIL = 'test@test.it';
-export const USER_PHONE = '+34444444444';
+export const USER_PHONE = '+34935500996';
 
 export const IMAGE: Image = {
   id: '9jd7ryx5odjk',
