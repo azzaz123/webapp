@@ -1,4 +1,4 @@
-export interface RequestsAndTransactionsPendingAsSellerApi {
+export interface RequestsAndTransactionsPendingDto {
   requests:
     | [
         {

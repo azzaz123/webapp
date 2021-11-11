@@ -1,5 +1,5 @@
 import { UserVerifications } from '@api/core/model/verifications';
-import { UserVerificationsApi } from '@api/user-verifications/dtos';
+import { UserVerificationsApi } from '@api/user-verifications/dtos/responses';
 
 export const MOCK_USER_VERIFICATIONS_API_RESPONSE: UserVerificationsApi = {
   scoring_stars: 0.0,
