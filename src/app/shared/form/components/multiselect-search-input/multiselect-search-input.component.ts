@@ -24,6 +24,8 @@ import { MultiSelectValue } from '@shared/form/components/multi-select-form/inte
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
+import { union } from 'lodash-es';
+
 @Component({
   selector: 'tsl-multiselect-search-input',
   templateUrl: './multiselect-search-input.component.html',
@@ -40,6 +42,7 @@ import { debounceTime, switchMap } from 'rxjs/operators';
 export class MultiselectSearchInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
   @Input() categoryId: string;
   @Input() disabled: boolean;
+  @Input() max: number;
   @ViewChild('hashtagSuggesterInput', { static: true }) hashtagSuggesterInput: ElementRef;
   @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;
   @ViewChild('hashtagSuggesterOptions') hashtagSuggesterOptions: ElementRef;
@@ -69,6 +72,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     this.subscriptions.add(
       this.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions) => {
         this.extendedOptions = extendedOptions;
+        this.handleSelectedOption();
       })
     );
   }
@@ -111,7 +115,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     this.value = value;
   }
 
-  public handleSelectedOption(): void {
+  private handleSelectedOption(): void {
     this.value = this.mapExtendedOptionsToValue();
     this.onChange(this.value);
   }
@@ -179,18 +183,12 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
 
   private mapExtendedOptionsToValue(): string[] {
     let newValue: string[] = this.value;
-    this.extendedOptions.forEach((option: TemplateMultiSelectFormOption) => {
-      const isOptionChecked = option.checked;
-      const isValueIncludedInOption = this.value.includes(option.value);
-      if (isOptionChecked && !isValueIncludedInOption) {
-        newValue = newValue.concat(option.value);
-      }
-      if (!isOptionChecked && isValueIncludedInOption) {
-        newValue = newValue.filter((value) => {
-          return value !== option.value;
-        });
-      }
-    });
+
+    const valuesToAdd = this.extendedOptions.filter((opt) => opt.checked).map((opt) => opt.value);
+    const valuesToRemove = this.extendedOptions.filter((opt) => !opt.checked).map((opt) => opt.value);
+
+    newValue = union(newValue, valuesToAdd);
+    newValue = newValue.filter((value) => !valuesToRemove.includes(value));
 
     return newValue;
   }

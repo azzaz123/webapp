@@ -13,11 +13,14 @@ import { MultiselectSearchInputModule } from './multiselect-search-input.module'
   template: `
     <form [formGroup]="formGroup">
       <h4 class="mt-4">Selected hashtags: {{ formGroup.value.hashtag }}</h4>
+      <h5 *ngIf="max">Max restriction set to: {{ max }}</h5>
+
       Get your hashtags:
       <tsl-multiselect-search-input
         formControlName="hashtag"
         [disabled]="disabled"
         [categoryId]="categoryId"
+        [max]="max"
         (changeValidStatus)="showMessage($event)"
       ></tsl-multiselect-search-input>
     </form>
@@ -28,7 +31,7 @@ class StoryMultiselectSearchInputComponent {
   @Input() disabled: boolean = false;
   @Input() categoryId: string = '12465';
   public formGroup = new FormGroup({
-    hashtag: new FormControl(['aa', 'ss', 'design']),
+    hashtag: new FormControl(['a', 'ss', 'design']),
   });
 
   public options = this.formGroup.value.hashtag;
@@ -72,6 +75,12 @@ Default.args = {
 
 export const Disabled = Template.bind({});
 Disabled.args = {
+  ...Default.args,
   disabled: true,
-  categoryId: '12465',
+};
+
+export const WithMaxRestriction = Template.bind({});
+WithMaxRestriction.args = {
+  ...Default.args,
+  max: 3,
 };

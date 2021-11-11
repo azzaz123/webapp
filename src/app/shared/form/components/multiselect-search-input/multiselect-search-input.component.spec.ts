@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MOCK_HASHTAGS } from '@fixtures/hashtag.fixtures.spec';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
-import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { of } from 'rxjs';
@@ -107,7 +106,7 @@ describe('MultiselectSearchInputComponent', () => {
     });
 
     describe('when we have the hashtag suggestions', () => {
-      it('should load the hashtags from our endpoint with our input value and hashtags should have # in front', fakeAsync((done) => {
+      it('should load the hashtags from our endpoint with our input value and hashtags should have # in front', fakeAsync(() => {
         spyOn(hashtagSuggesterApiService, 'getHashtagsByPrefix').and.returnValue(of({ list: MOCK_HASHTAGS, paginationParameter: '10' }));
         spyOn(component, 'detectTitleKeyboardChanges').and.callThrough();
         const event = new KeyboardEvent('keyup', {});
@@ -124,14 +123,13 @@ describe('MultiselectSearchInputComponent', () => {
 
         component.options$.subscribe((options) => {
           expect(options[0].label).toBe(`#${inputValue}`);
-          expect(options[1].label).toBe(`#${MOCK_HASHTAGS[0].text}2`);
-          done();
+          expect(options[1].label).toBe(`#${MOCK_HASHTAGS[0].text}`);
         });
       }));
     });
 
     describe('when we do not have the hashtags suggestions', () => {
-      it('should create new hashtag for user with hashtag # symbol in front', fakeAsync((done) => {
+      it('should create new hashtag for user with hashtag # symbol in front', fakeAsync(() => {
         spyOn(hashtagSuggesterApiService, 'getHashtagsByPrefix').and.returnValue(of({ list: [] }));
         spyOn(component, 'detectTitleKeyboardChanges').and.callThrough();
         const event = new KeyboardEvent('keyup', {});
@@ -149,7 +147,6 @@ describe('MultiselectSearchInputComponent', () => {
         component.options$.subscribe((options) => {
           expect(options[0].label).toBe(`#${inputValue}`);
           expect(options.length).toBe(1);
-          done();
         });
       }));
     });
@@ -157,21 +154,13 @@ describe('MultiselectSearchInputComponent', () => {
 
   describe('Select and unslect hashtag suggestions', () => {
     describe('when we change the input checkbox', () => {
-      it('should be able to update the value', fakeAsync(() => {
-        spyOn(component, 'handleSelectedOption').and.callThrough();
+      it('should be able to update the value', () => {
         spyOn(component, 'onChange');
-        spyOn(component.multiSelectFormComponent.extendedOptions$, 'subscribe').and.returnValue(of(HASHTAG_EXTENDED_OPTIONS));
-        component.value = [HASHTAG_OPTIONS[0].label, '#aa', '#bb'];
-        const form = fixture.debugElement.query(By.directive(MultiSelectFormComponent));
+        component.multiSelectFormComponent['extendedOptionsSubject'].next(HASHTAG_EXTENDED_OPTIONS);
+        const expextedValue = HASHTAG_EXTENDED_OPTIONS.filter((opt) => opt.checked).map((opt) => opt.value);
 
-        component.multiSelectFormComponent.extendedOptions$.subscribe();
-        tick(1000);
-        fixture.detectChanges();
-        form.triggerEventHandler('change', {});
-
-        expect(component.handleSelectedOption).toBeCalled();
-        expect(component.onChange).toHaveBeenCalledWith([HASHTAG_OPTIONS[0].label, '#aa', '#bb']);
-      }));
+        expect(component.onChange).toHaveBeenCalledWith(expextedValue);
+      });
     });
   });
 
