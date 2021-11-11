@@ -19,15 +19,17 @@ import { MultiSelectValue } from './interfaces/multi-select-value.type';
 })
 export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectValue> {
   @Input() set options(value: MultiSelectFormOption[]) {
-    console.log('MultiSelectFormComponent set', value);
     if (value) {
       this.extendedOptions = this.formatToExtendedOptions(value);
       this.mapCheckedValue();
       this.extendedOptionsSubject.next(this.extendedOptions);
     }
   }
+  @Input() set max(value: number) {
+    this.maxLength = value;
+    this.handleMaxLength();
+  }
   @Input() disabled: boolean = false;
-  @Input() max: number;
 
   private extendedOptions: TemplateMultiSelectFormOption[] = [];
   private extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
@@ -36,6 +38,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
 
   public maxLengthReached: boolean = false;
+  public maxLength: number;
 
   constructor(private elementRef: ElementRef) {
     super();
@@ -62,6 +65,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
     this.value = this.getValue(this.extendedOptions);
     this.onChange(this.value);
+    this.extendedOptionsSubject.next(this.extendedOptions);
     this.handleMaxLength();
   }
 
@@ -101,7 +105,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   }
 
   private handleMaxLength(): void {
-    this.maxLengthReached = this.value?.length >= this.max;
+    this.maxLengthReached = this.value?.length >= this.maxLength;
   }
 
   private getOptionValues(options: TemplateMultiSelectFormOption[]): string[] {
