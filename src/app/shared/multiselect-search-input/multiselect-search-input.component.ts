@@ -14,7 +14,10 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
-import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
+import {
+  MultiSelectFormOption,
+  TemplateMultiSelectFormOption,
+} from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
@@ -174,7 +177,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
 
   private mapExtendedOptionsToValue(): string[] {
     let newValue: string[] = this.value;
-    this.extendedOptions.forEach((option: MultiSelectFormOption) => {
+    this.extendedOptions.forEach((option: TemplateMultiSelectFormOption) => {
       const isOptionChecked = option.checked;
       const isValueIncludedInOption = this.value.includes(option.value);
       if (isOptionChecked && !isValueIncludedInOption) {
