@@ -27,7 +27,7 @@ ProductExample.args = {
   transactionTrackingInfo: {
     description: '<span style="color: #AFB6B6">Producto:</span><br>crayones',
     showCaret: true,
-    isRoundedIcon: false,
+    iconClassName: 'rounded',
     iconSrc: 'https://cdn-beta.wallapop.com/images/10420/35/gw/__/c10420p190584802/i421614104.jpg?pictureSize=W800',
   },
 };
@@ -37,7 +37,7 @@ UserExample.args = {
   transactionTrackingInfo: {
     description: '<span style="color: #AFB6B6">Vendido por:</span><br>Coccofresco F.',
     showCaret: true,
-    isRoundedIcon: true,
+    iconClassName: 'circle',
     iconSrc: 'http://localhost:6006/images/item-camera.jpg',
   },
 };
@@ -47,7 +47,7 @@ PriceExample.args = {
   transactionTrackingInfo: {
     description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
     showCaret: false,
-    isRoundedIcon: false,
+    iconClassName: 'rounded',
     iconSrc: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
   },
 };

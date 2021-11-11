@@ -25,7 +25,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
     component.transactionTrackingInfo = {
       description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
       iconSrc: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
-      isRoundedIcon: true,
+      iconClassName: 'rounded',
       showCaret: true,
     };
   });
@@ -57,6 +57,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
 
       describe('and we specify rounded icon style', () => {
         beforeEach(() => {
+          component.transactionTrackingInfo.iconClassName = 'rounded';
           fixture.detectChanges();
         });
 
@@ -67,12 +68,34 @@ describe('TransactionTrackingDetailInfoComponent', () => {
 
       describe('and we NOT specify rounded icon style', () => {
         beforeEach(() => {
-          component.transactionTrackingInfo.isRoundedIcon = false;
+          component.transactionTrackingInfo.iconClassName = 'circle';
           fixture.detectChanges();
         });
 
         it('should NOT apply icon round style', () => {
           shouldApplyRoundedImageStyle(false);
+        });
+      });
+
+      describe('and we specify circle icon style', () => {
+        beforeEach(() => {
+          component.transactionTrackingInfo.iconClassName = 'circle';
+          fixture.detectChanges();
+        });
+
+        it('should apply icon circle style', () => {
+          shouldApplyCircleImageStyle(true);
+        });
+      });
+
+      describe('and we NOT specify circle icon style', () => {
+        beforeEach(() => {
+          component.transactionTrackingInfo.iconClassName = 'rounded';
+          fixture.detectChanges();
+        });
+
+        it('should NOT apply icon circle style', () => {
+          shouldApplyCircleImageStyle(false);
         });
       });
     });
@@ -129,11 +152,20 @@ describe('TransactionTrackingDetailInfoComponent', () => {
   }
 
   function shouldApplyRoundedImageStyle(shouldBeInTemplate: boolean): void {
-    const roundedImageStyles: DebugElement = de.query(By.css('.TrackingDetailInfo__icon--round'));
+    const roundedImageStyles: DebugElement = de.query(By.css('.TrackingDetailInfo__icon--rounded'));
     if (shouldBeInTemplate) {
       expect(roundedImageStyles).toBeTruthy();
     } else {
       expect(roundedImageStyles).toBeFalsy();
+    }
+  }
+
+  function shouldApplyCircleImageStyle(shouldBeInTemplate: boolean): void {
+    const circleImageStyles: DebugElement = de.query(By.css('.TrackingDetailInfo__icon--circle'));
+    if (shouldBeInTemplate) {
+      expect(circleImageStyles).toBeTruthy();
+    } else {
+      expect(circleImageStyles).toBeFalsy();
     }
   }
 });

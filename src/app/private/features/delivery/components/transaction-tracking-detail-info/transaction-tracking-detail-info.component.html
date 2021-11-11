@@ -4,10 +4,7 @@
       *ngIf="info.iconSrc"
       [src]="info.iconSrc"
       alt="icon"
-      class="TrackingDetailInfo__icon w-100 h-100"
-      [ngClass]="{
-        'TrackingDetailInfo__icon--round': info.isRoundedIcon
-      }"
+      class="TrackingDetailInfo__icon w-100 h-100 TrackingDetailInfo__icon--{{ info.iconClassName }}"
     />
   </div>
   <div class="TrackingDetailInfo__descriptionWrapper overflow-hidden mr-3" [innerHTML]="descriptionByPass"></div>

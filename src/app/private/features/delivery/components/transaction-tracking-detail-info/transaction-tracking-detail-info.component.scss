@@ -11,10 +11,13 @@
 
   &__icon {
     object-fit: cover;
-    border-radius: 5px;
 
-    &--round {
+    &--circle {
       border-radius: 50%;
+    }
+
+    &--rounded {
+      border-radius: 5px;
     }
   }
 
