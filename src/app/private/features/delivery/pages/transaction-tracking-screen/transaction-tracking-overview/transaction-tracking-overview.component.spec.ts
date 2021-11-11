@@ -32,7 +32,7 @@ describe('TransactionTrackingOverviewComponent', () => {
     de = fixture.debugElement;
     location = TestBed.inject(Location);
     transactionTrackingActionsService = TestBed.inject(TransactionTrackingActionsService);
-    component.trackingInfo$ = of(MOCK_TRANSACTION_TRACKING);
+    component.transactionTrackingInfo$ = of(MOCK_TRANSACTION_TRACKING);
     fixture.detectChanges();
   });
 

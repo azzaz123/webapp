@@ -11,7 +11,7 @@ import { TransactionTrackingActionsService } from '@private/features/delivery/se
   styleUrls: ['./transaction-tracking-overview.component.scss'],
 })
 export class TransactionTrackingOverviewComponent implements OnInit {
-  public trackingInfo$: Observable<any> = of(MOCK_TRANSACTION_TRACKING);
+  public transactionTrackingInfo$: Observable<any> = of(MOCK_TRANSACTION_TRACKING);
 
   constructor(private location: Location, private transactionTrackingActionsService: TransactionTrackingActionsService) {}
 
