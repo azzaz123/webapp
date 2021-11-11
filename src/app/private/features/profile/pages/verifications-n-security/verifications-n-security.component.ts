@@ -48,7 +48,7 @@ export class VerificationsNSecurityComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.userService.user;
-    this.userPhone = this.getUserPhone();
+    this.setUserPhone();
 
     this.verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView(this.userVerifications$);
   }
@@ -82,15 +82,13 @@ export class VerificationsNSecurityComponent implements OnInit {
     });
   }
 
-  private getUserPhone(): string {
-    let phone: string = '';
+  private setUserPhone(): void {
+    this.userPhone = '';
 
     this.userVerifications$.pipe(take(1)).subscribe((response: UserVerifications) => {
       if (response.phone) {
-        phone = parsePhoneNumber(this.user.phone).format('INTERNATIONAL');
+        this.userPhone = parsePhoneNumber(this.user.phone).format('INTERNATIONAL');
       }
     });
-
-    return phone;
   }
 }
