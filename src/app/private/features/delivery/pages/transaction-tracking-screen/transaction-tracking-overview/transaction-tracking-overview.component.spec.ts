@@ -28,9 +28,9 @@ describe('TransactionTrackingOverviewComponent', () => {
     fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-    fixture.detectChanges();
     location = TestBed.inject(Location);
     component.trackingInfo$ = of(MOCK_TRANSACTION_TRACKING);
+    fixture.detectChanges();
   });
 
   it('should create', () => {

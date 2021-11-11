@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { MOCK_TRANSACTION_TRACKING } from '@fixtures/private/delivery/TTS/transaction-tracking.fixtures.spec';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'tsl-transaction-tracking-overview',
   templateUrl: './transaction-tracking-overview.component.html',
   styleUrls: ['./transaction-tracking-overview.component.scss'],
