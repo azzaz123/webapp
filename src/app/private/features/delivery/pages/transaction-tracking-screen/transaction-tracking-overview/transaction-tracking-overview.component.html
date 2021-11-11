@@ -1,6 +1,5 @@
 <div *ngIf="transactionTrackingInfo$ | async as info">
   <tsl-transaction-tracking-header
     [transactionTrackingHeader]="transactionTrackingHeaderProperties$ | async"
-    (backClick)="goBack()"
   ></tsl-transaction-tracking-header>
 </div>

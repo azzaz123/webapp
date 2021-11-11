@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -14,6 +15,7 @@ describe('TransactionTrackingHeaderComponent', () => {
   let fixture: ComponentFixture<TransactionTrackingHeaderComponent>;
   let transactionTrackingActionsService: TransactionTrackingActionsService;
   let de: DebugElement;
+  let location: Location;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,6 +29,7 @@ describe('TransactionTrackingHeaderComponent', () => {
     fixture = TestBed.createComponent(TransactionTrackingHeaderComponent);
     component = fixture.componentInstance;
     transactionTrackingActionsService = TestBed.inject(TransactionTrackingActionsService);
+    location = TestBed.inject(Location);
     de = fixture.debugElement;
     component.transactionTrackingHeader = {
       title: MOCK_TRANSACTION_TRACKING.title,
@@ -55,13 +58,13 @@ describe('TransactionTrackingHeaderComponent', () => {
       });
 
       describe('and we click on the go back button...', () => {
-        it('should emit the back click', () => {
-          spyOn(component.backClick, 'emit');
+        it('should go back to the previous page', () => {
+          spyOn(location, 'back');
 
           const button: HTMLElement = fixture.debugElement.query(By.css('.TTS__back')).nativeElement;
           button.click();
 
-          expect(component.backClick.emit).toHaveBeenCalledTimes(1);
+          expect(location.back).toHaveBeenCalledTimes(1);
         });
       });
 

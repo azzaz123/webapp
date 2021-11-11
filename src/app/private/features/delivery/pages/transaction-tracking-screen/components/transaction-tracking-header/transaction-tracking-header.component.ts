@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { TransactionTrackingHeader } from '../../interfaces/transaction-tracking-header.interface';
 
@@ -9,9 +10,12 @@ import { TransactionTrackingHeader } from '../../interfaces/transaction-tracking
 })
 export class TransactionTrackingHeaderComponent {
   @Input() transactionTrackingHeader: TransactionTrackingHeader;
-  @Output() backClick: EventEmitter<void> = new EventEmitter();
 
-  constructor(private transactionTrackingActionsService: TransactionTrackingActionsService) {}
+  constructor(private location: Location, private transactionTrackingActionsService: TransactionTrackingActionsService) {}
+
+  public goBack(): void {
+    this.location.back();
+  }
 
   public manageAction(action: any): void {
     this.transactionTrackingActionsService.manageAction(action);
