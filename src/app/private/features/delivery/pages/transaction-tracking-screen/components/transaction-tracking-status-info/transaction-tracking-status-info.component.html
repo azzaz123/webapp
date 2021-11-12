@@ -1,6 +1,7 @@
 <tsl-transaction-tracking-detail-info
-  *ngFor="let infoSlot of detailInfoSlots"
-  isCursorPointerAction="true"
+  *ngFor="let infoSlot of detailInfoSlots; let index = index"
+  isClickableAction="true"
   isBorderBottom="true"
   [transactionTrackingInfo]="infoSlot"
+  (actionClick)="manageSlotAction(index)"
 ></tsl-transaction-tracking-detail-info>

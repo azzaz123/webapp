@@ -26,10 +26,13 @@
   }
 
   &__descriptionWrapper {
+    pointer-events: none;
     flex: 1;
+
     &--cursor {
       ::ng-deep {
         span {
+          pointer-events: initial;
           cursor: pointer;
         }
       }

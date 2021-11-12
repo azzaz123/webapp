@@ -8,7 +8,15 @@ import { TransactionTrackingInfo } from '@private/features/delivery/interfaces/t
   styleUrls: ['./transaction-tracking-status-info.component.scss'],
 })
 export class TransactionTrackingStatusInfoComponent {
-  @Input() transactionTrackingStatusInfo;
+  @Input() transactionTrackingStatusInfo: any[];
+
+  constructor() {}
+
+  public manageSlotAction(actionIndex: number): void {
+    // Call to actions service
+
+    console.log('action => ', this.transactionTrackingStatusInfo[actionIndex].action);
+  }
 
   public get detailInfoSlots(): TransactionTrackingInfo[] {
     const propertiesMapped: TransactionTrackingInfo[] = [];
