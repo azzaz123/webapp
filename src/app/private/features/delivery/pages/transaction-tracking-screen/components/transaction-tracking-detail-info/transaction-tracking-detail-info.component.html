@@ -1,4 +1,8 @@
-<div *ngIf="transactionTrackingInfo as info" class="TrackingDetailInfo d-flex">
+<div
+  *ngIf="transactionTrackingInfo as info"
+  class="TrackingDetailInfo d-flex"
+  [ngClass]="{ 'TrackingDetailInfo--borderBottom': isBorderBottom }"
+>
   <div class="TrackingDetailInfo__iconWrapper d-flex align-items-center justify-content-center">
     <img
       *ngIf="info.iconSrc"
@@ -7,7 +11,11 @@
       class="TrackingDetailInfo__icon w-100 h-100 TrackingDetailInfo__icon--{{ info.iconClassName }}"
     />
   </div>
-  <div class="TrackingDetailInfo__descriptionWrapper overflow-hidden mr-3" [innerHTML]="descriptionByPass"></div>
+  <div
+    class="TrackingDetailInfo__descriptionWrapper overflow-hidden mr-3"
+    [innerHTML]="descriptionByPass"
+    [ngClass]="{ 'TrackingDetailInfo__descriptionWrapper--cursor': isCursorPointerAction }"
+  ></div>
   <tsl-svg-icon
     *ngIf="info.showCaret"
     src="/assets/icons/arrow-right.svg"

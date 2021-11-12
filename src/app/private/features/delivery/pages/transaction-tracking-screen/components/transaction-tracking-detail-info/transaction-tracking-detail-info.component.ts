@@ -9,6 +9,8 @@ import { TransactionTrackingInfo } from '../../../../interfaces/tts/transaction-
 })
 export class TransactionTrackingDetailInfoComponent implements OnInit {
   @Input() transactionTrackingInfo: TransactionTrackingInfo;
+  @Input() isCursorPointerAction: boolean;
+  @Input() isBorderBottom: boolean;
   @Output() caretClick: EventEmitter<void> = new EventEmitter<void>();
 
   public descriptionByPass: SafeHtml;
