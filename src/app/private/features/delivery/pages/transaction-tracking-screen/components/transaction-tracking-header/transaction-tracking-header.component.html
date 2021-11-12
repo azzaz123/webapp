@@ -1,15 +1,15 @@
-<div *ngIf="transactionTrackingHeader as info" class="d-flex justify-content-between">
+<div *ngIf="transactionTrackingHeader as header" class="d-flex justify-content-between">
   <div class="d-flex">
     <a class="TTS__back d-flex align-items-center mr-4" (click)="goBack()">
       <tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon>
     </a>
-    <span id="headerTitle">{{ info.title }}</span>
+    <span id="headerTitle">{{ header.title }}</span>
   </div>
   <tsl-button
     class="TTS__buttonHeader"
-    className="{{ info.header.style.className }} btn--noPadding"
-    [disabled]="info.header.state.isDisabled"
-    (click)="manageAction(info.header.action)"
-    >{{ info.header.title }}</tsl-button
+    className="{{ header.detail.style.className }} btn--noPadding"
+    [disabled]="header.detail.state.isDisabled"
+    (click)="manageAction(header.detail.action)"
+    >{{ header.detail.title }}</tsl-button
   >
 </div>

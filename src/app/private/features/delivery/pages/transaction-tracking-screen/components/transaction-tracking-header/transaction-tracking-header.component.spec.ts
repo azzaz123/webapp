@@ -31,11 +31,7 @@ describe('TransactionTrackingHeaderComponent', () => {
     transactionTrackingActionsService = TestBed.inject(TransactionTrackingActionsService);
     location = TestBed.inject(Location);
     de = fixture.debugElement;
-    component.transactionTrackingHeader = {
-      title: MOCK_TRANSACTION_TRACKING_INFO.title,
-      header: MOCK_TRANSACTION_TRACKING_INFO.header,
-    };
-
+    component.transactionTrackingHeader = MOCK_TRANSACTION_TRACKING_INFO.header;
     fixture.detectChanges();
   });
 
@@ -54,7 +50,7 @@ describe('TransactionTrackingHeaderComponent', () => {
       it('should have the receieved title', () => {
         const title: HTMLElement = de.query(By.css('#headerTitle')).nativeElement;
 
-        expect(title.textContent).toStrictEqual(MOCK_TRANSACTION_TRACKING_INFO.title);
+        expect(title.textContent).toStrictEqual(MOCK_TRANSACTION_TRACKING_INFO.header.title);
       });
 
       describe('and we click on the go back button...', () => {
@@ -70,11 +66,11 @@ describe('TransactionTrackingHeaderComponent', () => {
 
       describe('the action button...', () => {
         it('should have the received title', () => {
-          expect(headerActionButton.nativeElement.textContent).toEqual(MOCK_TRANSACTION_TRACKING_INFO.header.title);
+          expect(headerActionButton.nativeElement.textContent).toEqual(MOCK_TRANSACTION_TRACKING_INFO.header.detail.title);
         });
 
         it('should have the received state', () => {
-          expect(headerActionButton.componentInstance.disabled).toBe(MOCK_TRANSACTION_TRACKING_INFO.header.state.isDisabled);
+          expect(headerActionButton.componentInstance.disabled).toBe(MOCK_TRANSACTION_TRACKING_INFO.header.detail.state.isDisabled);
         });
       });
 
@@ -85,7 +81,7 @@ describe('TransactionTrackingHeaderComponent', () => {
           headerActionButton.nativeElement.click();
 
           expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledTimes(1);
-          expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING_INFO.header.action);
+          expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING_INFO.header.detail.action);
         });
       });
     });

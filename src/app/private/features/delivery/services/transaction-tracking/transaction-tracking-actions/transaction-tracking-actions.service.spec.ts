@@ -4,6 +4,7 @@ import { MOCK_TRANSACTION_TRACKING_INFO } from '@fixtures/private/delivery/trans
 import { TransactionTrackingActionsService } from './transaction-tracking-actions.service';
 
 describe('TransactionTrackingActionsService', () => {
+  const MOCK_DEEP_LINK_ACTION = MOCK_TRANSACTION_TRACKING_INFO.header.detail.action;
   let service: TransactionTrackingActionsService;
 
   beforeEach(() => {
@@ -22,10 +23,10 @@ describe('TransactionTrackingActionsService', () => {
       it('should open the link url in a new page', () => {
         spyOn(window, 'open');
 
-        service.manageAction(MOCK_TRANSACTION_TRACKING_INFO.header.action);
+        service.manageAction(MOCK_DEEP_LINK_ACTION);
 
         expect(window.open).toHaveBeenCalledTimes(1);
-        expect(window.open).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING_INFO.header.action.payload.linkUrl, '_blank');
+        expect(window.open).toHaveBeenCalledWith(MOCK_DEEP_LINK_ACTION.payload.linkUrl, '_blank');
       });
     });
   });

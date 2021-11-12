@@ -2,25 +2,28 @@
 export const MOCK_TRANSACTION_TRACKING_INFO: any = {
   analytics: { buyer: { country: 'IT' }, seller: { country: 'ES' } },
   header: {
-    action: {
-      analytics: {
-        requestId: '3d5d9154-1e52-4a99-87ee-bdedd7b1eb70',
-        source: 'Help General Doubts',
-        userId: '81497033',
+    detail: {
+      action: {
+        analytics: {
+          requestId: '3d5d9154-1e52-4a99-87ee-bdedd7b1eb70',
+          source: 'Help General Doubts',
+          userId: '81497033',
+        },
+        isCarrierTrackingWebview: false,
+        isDeeplink: true,
+        isDialog: false,
+        isDismiss: false,
+        isReload: false,
+        isUserAction: false,
+        payload: {
+          linkUrl: 'https://ayuda.wallapop.com/hc/en-us/articles/360017172677',
+        },
       },
-      isCarrierTrackingWebview: false,
-      isDeeplink: true,
-      isDialog: false,
-      isDismiss: false,
-      isReload: false,
-      isUserAction: false,
-      payload: {
-        linkUrl: 'https://ayuda.wallapop.com/hc/en-us/articles/360017172677',
-      },
+      state: { isDisabled: false },
+      style: { className: 'btn btn-link' },
+      title: '¿Dudas?',
     },
-    state: { isDisabled: false },
-    style: { className: 'btn btn-link' },
-    title: '¿Dudas?',
+    title: 'Estado de tu compra',
   },
   shippingStatus: {
     actions: [
@@ -129,5 +132,4 @@ export const MOCK_TRANSACTION_TRACKING_INFO: any = {
       showCaret: false,
     },
   ],
-  title: 'Estado de tu compra',
 };
