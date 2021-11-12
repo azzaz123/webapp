@@ -20,13 +20,14 @@ export class AdSlotGroupDirective implements AfterContentInit {
   public ngAfterContentInit(): void {
     combineLatest([this.experimentationService.experimentReady$, this.slotsQuery.changes.pipe(take(1))])
       .pipe(
-        map(([experimentReady, components]: [boolean, AdSlotComponent[]]) => {
+        map(([_, components]: [boolean, AdSlotComponent[]]) => {
           return components;
         })
       )
       .subscribe((components) => {
         const variant: Variant = this.experimentationService.getOptimizeVariant(OPTIMIZE_EXPERIMENTS.SearchPage3rdSlotPosition);
         const configurations: AdSlotConfiguration[] = components.map((component) => component.adSlot);
+
         const filteredConfigurations: AdSlotConfiguration[] = this.filterOnVariant(variant, configurations);
 
         this.adsService.setSlots(filteredConfigurations);
