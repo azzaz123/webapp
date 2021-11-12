@@ -1,1 +1,5 @@
-<tsl-transaction-tracking-detail-info *ngFor="let slot of statusInfoProperties$ | async"></tsl-transaction-tracking-detail-info>
+<div *ngIf="transactionTracking$ | async as transactionTracking">
+  <tsl-transaction-tracking-status-info
+    [transactionTrackingStatusInfo]="transactionTracking.statusInfo"
+  ></tsl-transaction-tracking-status-info>
+</div>

@@ -4,10 +4,10 @@ import {
   TransactionTrackingOverviewRoutingModule,
 } from './transaction-tracking-overview.routing.module';
 import { CommonModule } from '@angular/common';
-import { TransactionTrackingDetailInfoModule } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-tracking-detail-info/transaction-tracking-detail-info.module';
+import { TransactionTrackingStatusInfoModule } from '../components/transaction-tracking-status-info/transaction-tracking-status-info.module';
 
 @NgModule({
   declarations: [transactionTrackingOverviewRoutedComponents],
-  imports: [TransactionTrackingOverviewRoutingModule, CommonModule, TransactionTrackingDetailInfoModule],
+  imports: [TransactionTrackingOverviewRoutingModule, CommonModule, TransactionTrackingStatusInfoModule],
 })
 export class TransactionTrackingOverviewModule {}
