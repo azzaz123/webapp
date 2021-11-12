@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TransactionTrackingInfo } from '@private/features/delivery/interfaces/tts/transaction-tracking-info.interface';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'tsl-transaction-tracking-status-info',
   templateUrl: './transaction-tracking-status-info.component.html',
   styleUrls: ['./transaction-tracking-status-info.component.scss'],
