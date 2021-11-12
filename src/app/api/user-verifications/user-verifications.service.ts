@@ -19,7 +19,11 @@ export class UserVerificationsService {
     return this.userVerificationsHttpService.sendVerifyEmail().pipe(map(mapEmailVerificationApiToVerificationStatus));
   }
 
-  public verifyPhone(phone: string, code: string): Observable<VERIFICATION_STATUS> {
-    return this.userVerificationsHttpService.sendVerifyPhone(phone, code).pipe(map(mapPhoneVerificationApiToVerificationStatus));
+  public verifyPhone(phone: string, prefix: string): Observable<VERIFICATION_STATUS> {
+    return this.userVerificationsHttpService.sendVerifyPhone(phone, prefix).pipe(map(mapPhoneVerificationApiToVerificationStatus));
+  }
+
+  public verifySmsCode(smsCode: string): Observable<VERIFICATION_STATUS> {
+    return this.userVerificationsHttpService.sendVerifyUserIdentity(smsCode).pipe(map(mapPhoneVerificationApiToVerificationStatus));
   }
 }

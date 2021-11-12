@@ -6,7 +6,7 @@ import { MOCK_USER_VERIFICATIONS_API_RESPONSE } from '@api/fixtures/user-verific
 import { VERIFICATION_TYPE } from '../dtos/requests';
 import { EmailVerificationApi, UserVerificationsApi } from '../dtos/responses';
 import { PhoneVerificationApi } from '../dtos/responses/phone-verification-api.interface';
-import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_PHONE_ENDPOINT } from './endpoints';
+import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_PHONE_ENDPOINT, VERIFY_USER_ENDPOINT } from './endpoints';
 
 import { UserVerificationsHttpService } from './user-verifications-http.service';
 
@@ -56,6 +56,7 @@ describe('UserVerificationsHttpService', () => {
       expect(req.request.body).toEqual('');
     });
   });
+
   describe('when asking to send the phone to verify', () => {
     it('should retrieve the phone verification response', () => {
       let response: PhoneVerificationApi;
@@ -69,6 +70,21 @@ describe('UserVerificationsHttpService', () => {
       expect(req.request.method).toBe('POST');
       expect(response).toEqual(MOCK_PHONE_VERIFICATION_API_RESPONSE);
       expect(req.request.body).toEqual({ mobileNumber, code, type: VERIFICATION_TYPE.PHONE });
+    });
+  });
+
+  describe('when asking to send the sms code to verify', () => {
+    it('should retrieve the phone verification response', () => {
+      let response: PhoneVerificationApi;
+      const smsCode = '11111';
+
+      service.sendVerifyUserIdentity(smsCode).subscribe((data) => (response = data));
+      const req: TestRequest = httpMock.expectOne(VERIFY_USER_ENDPOINT);
+      req.flush(MOCK_PHONE_VERIFICATION_API_RESPONSE);
+
+      expect(req.request.method).toBe('POST');
+      expect(response).toEqual(MOCK_PHONE_VERIFICATION_API_RESPONSE);
+      expect(req.request.body).toEqual({ mobileNumber: null, code: smsCode, type: VERIFICATION_TYPE.PHONE });
     });
   });
 });

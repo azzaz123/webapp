@@ -1,6 +1,6 @@
 <div class="modal-body">
-  <h2 *ngxPermissionsOnly="['isNormal']" i18n="@@web_delete_conversation">Delete conversation</h2>
-  <p *ngxPermissionsOnly="['isNormal']" i18n="@@web_delete_conversation_warning">This will delete the conversation.</p>
+  <h2 *ngxPermissionsExcept="['isProfessional']" i18n="@@web_delete_conversation">Delete conversation</h2>
+  <p *ngxPermissionsExcept="['isProfessional']" i18n="@@web_delete_conversation_warning">This will delete the conversation.</p>
   <h2 *ngxPermissionsOnly="['isProfessional']" i18n="@@web_archive_conversation">Archive conversation</h2>
   <p *ngxPermissionsOnly="['isProfessional']" i18n="@@web_archive_conversation_warning">This will archive the conversation.</p>
 </div>
@@ -9,7 +9,7 @@
   <button *ngxPermissionsOnly="['isProfessional']" type="button" class="btn btn-warn" i18n="@@web_archive_button"
           (click)="activeModal.close()">Archive
   </button>
-  <button *ngxPermissionsOnly="['isNormal']" type="button" class="btn btn-warn" i18n="@@web_delete_button"
+  <button *ngxPermissionsExcept="['isProfessional']" type="button" class="btn btn-warn" i18n="@@web_delete_button"
           (click)="activeModal.close()">Delete
   </button>
 </div>
