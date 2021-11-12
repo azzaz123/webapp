@@ -12,10 +12,10 @@ import * as responseMapper from './mappers/responses/transactions-history.mapper
 import { Observable, of } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { MOCK_TRANSACTIONS_HISTORY_DTO } from '@api/fixtures/delivery/transactions/history/transactions-history.fixtures.spec';
-import { TransactionWithCreationDate } from '@api/core/model';
+import { HistoricTransaction } from '@api/core/model';
 import { User } from '@core/user/user';
 import { Item } from '@core/item/item';
-import { MOCK_TRANSACTIONS_WITH_CREATION_DATE } from '@api/fixtures/core/model/delivery/transaction/transaction-with-creation-date.fixtures.spec';
+import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
 
 describe('TransactionsHistoryApiService', () => {
   let service: TransactionsHistoryApiService;
@@ -64,7 +64,7 @@ describe('TransactionsHistoryApiService', () => {
   });
 
   describe('when asking to get the transactions history', () => {
-    let response: TransactionWithCreationDate[];
+    let response: HistoricTransaction[];
 
     beforeEach(fakeAsync(() => {
       service.get(page).subscribe((data) => (response = data));
@@ -92,8 +92,8 @@ describe('TransactionsHistoryApiService', () => {
       expect(responseMapper.mapTransactionsHistoryToTransactions).toHaveBeenCalledTimes(1);
     });
 
-    it('should return transactions with creation date', () => {
-      expect(JSON.stringify(response)).toEqual(JSON.stringify(MOCK_TRANSACTIONS_WITH_CREATION_DATE));
+    it('should return historic transactions', () => {
+      expect(JSON.stringify(response)).toEqual(JSON.stringify(MOCK_HISTORIC_TRANSACTIONS));
     });
   });
 });

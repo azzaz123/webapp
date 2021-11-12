@@ -1,10 +1,10 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
-import { TransactionWithCreationDate } from '@api/core/model';
+import { HistoricTransaction } from '@api/core/model';
 import { TRANSACTION_DELIVERY_STATUS, TRANSACTION_PAYMENT_STATUS, TRANSACTION_STATUS } from '@api/core/model/delivery/transaction/status';
 import { MOCK_TRANSACTION_ITEM_1, MOCK_TRANSACTION_ITEM_2 } from './transaction-item.fixtures.spec';
 import { MOCK_TRANSACTION_USER_1, MOCK_TRANSACTION_USER_2 } from './transaction-user.fixtures.spec';
 
-export const MOCK_TRANSACTIONS_WITH_CREATION_DATE: TransactionWithCreationDate[] = [
+export const MOCK_HISTORIC_TRANSACTIONS: HistoricTransaction[] = [
   {
     id: '3b7560cc-b4f8-48bf-ba27-4d070952b3e8',
     creationDate: new Date('2021-10-22T10:57:14.000Z'),

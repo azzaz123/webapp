@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TransactionWithCreationDate } from '@api/core/model/delivery/transaction/transaction-with-creation-date.interface';
+import { HistoricTransaction } from '@api/core/model/delivery/transaction/';
 import { Unpacked } from '@api/core/utils/types';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
@@ -20,7 +20,7 @@ export class TransactionsHistoryApiService {
     private userService: UserService
   ) {}
 
-  public get(page: number = 0): Observable<TransactionWithCreationDate[] | []> {
+  public get(page: number = 0): Observable<HistoricTransaction[] | []> {
     return this.transactionsHistoryHttpService.get(mapTransactionsHistoryFiltersToApi({ page })).pipe(
       take(1),
       concatMap((transactionsHistoryResponse) =>
@@ -34,7 +34,7 @@ export class TransactionsHistoryApiService {
     );
   }
 
-  private mapToTransactions(input: [User[], Item[], TransactionsHistoryDto]): TransactionWithCreationDate[] {
+  private mapToTransactions(input: [User[], Item[], TransactionsHistoryDto]): HistoricTransaction[] {
     const [users, items, transactions] = input;
 
     return mapTransactionsHistoryToTransactions({

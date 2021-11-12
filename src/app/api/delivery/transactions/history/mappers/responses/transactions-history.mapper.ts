@@ -2,7 +2,7 @@ import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { TransactionItem, TransactionUser } from '@api/core/model';
 import { CurrencyCode } from '@api/core/model/currency.interface';
 import { TRANSACTION_DELIVERY_STATUS, TRANSACTION_PAYMENT_STATUS, TRANSACTION_STATUS } from '@api/core/model/delivery/transaction/status';
-import { TransactionWithCreationDate } from '@api/core/model/delivery/transaction/transaction-with-creation-date.interface';
+import { HistoricTransaction } from '@api/core/model/delivery/transaction/';
 import { Money } from '@api/core/model/money.interface';
 import { ToDomainMapper, Unpacked } from '@api/core/utils/types';
 import { Item } from '@core/item/item';
@@ -16,16 +16,16 @@ interface TransactionsHistoryWithUserAndItem {
   items: Item[];
 }
 
-export const mapTransactionsHistoryToTransactions: ToDomainMapper<TransactionsHistoryWithUserAndItem, TransactionWithCreationDate[]> = (
+export const mapTransactionsHistoryToTransactions: ToDomainMapper<TransactionsHistoryWithUserAndItem, HistoricTransaction[]> = (
   input: TransactionsHistoryWithUserAndItem
 ) => {
-  const mappedTransactions: TransactionWithCreationDate[] = mapToTransactions(input);
+  const mappedTransactions: HistoricTransaction[] = mapToTransactions(input);
   return mappedTransactions;
 };
 
-const mapToTransactions = (input: TransactionsHistoryWithUserAndItem): TransactionWithCreationDate[] => {
+const mapToTransactions = (input: TransactionsHistoryWithUserAndItem): HistoricTransaction[] => {
   const { transactions, currentUser, users, items } = input;
-  const mappedTransactions: TransactionWithCreationDate[] = transactions.map((transaction: Unpacked<TransactionsHistoryDto>) => {
+  const mappedTransactions: HistoricTransaction[] = transactions.map((transaction: Unpacked<TransactionsHistoryDto>) => {
     const item = items.find((i) => i.id === transaction.item_hash_id);
     const transactorUser: User = users.find((i) => i.id === transaction.transactor_user_hash_id);
     const userIsSeller = transaction.amount.amount > 0;
