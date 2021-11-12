@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { MOCK_TRANSACTION_TRACKING } from '@fixtures/private/delivery/TTS/transaction-tracking.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_INFO } from '@fixtures/private/delivery/transaction-tracking-screen/transaction-tracking-info.fixtures.spec';
 import { TransactionTrackingHeader } from '../interfaces/transaction-tracking-header.interface';
 import { map } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./transaction-tracking-overview.component.scss'],
 })
 export class TransactionTrackingOverviewComponent implements OnInit {
-  public transactionTrackingInfo$: Observable<any> = of(MOCK_TRANSACTION_TRACKING);
+  public transactionTrackingInfo$: Observable<any> = of(MOCK_TRANSACTION_TRACKING_INFO);
   public transactionTrackingHeaderProperties$: Observable<TransactionTrackingHeader>;
 
   constructor() {}

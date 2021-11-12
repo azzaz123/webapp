@@ -1,4 +1,4 @@
-export const MOCK_TRANSACTION_TRACKING: any = {
+export const MOCK_TRANSACTION_TRACKING_INFO: any = {
   analytics: { buyer: { country: 'IT' }, seller: { country: 'ES' } },
   header: {
     action: {

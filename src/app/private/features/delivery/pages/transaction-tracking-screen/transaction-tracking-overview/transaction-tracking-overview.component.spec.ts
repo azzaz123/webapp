@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MOCK_TRANSACTION_TRACKING } from '@fixtures/private/delivery/TTS/transaction-tracking.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_INFO } from '@fixtures/private/delivery/transaction-tracking-screen/transaction-tracking-info.fixtures.spec';
 import { of } from 'rxjs';
 
 import { TransactionTrackingOverviewComponent } from './transaction-tracking-overview.component';
@@ -23,7 +23,7 @@ describe('TransactionTrackingOverviewComponent', () => {
     fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-    component.transactionTrackingInfo$ = of(MOCK_TRANSACTION_TRACKING);
+    component.transactionTrackingInfo$ = of(MOCK_TRANSACTION_TRACKING_INFO);
     fixture.detectChanges();
   });
 

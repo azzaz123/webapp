@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MOCK_TRANSACTION_TRACKING } from '@fixtures/private/delivery/TTS/transaction-tracking.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_INFO } from '@fixtures/private/delivery/transaction-tracking-screen/transaction-tracking-info.fixtures.spec';
 
 import { TransactionTrackingActionsService } from './transaction-tracking-actions.service';
 
@@ -22,10 +22,10 @@ describe('TransactionTrackingActionsService', () => {
       it('should open the link url in a new page', () => {
         spyOn(window, 'open');
 
-        service.manageAction(MOCK_TRANSACTION_TRACKING.header.action);
+        service.manageAction(MOCK_TRANSACTION_TRACKING_INFO.header.action);
 
         expect(window.open).toHaveBeenCalledTimes(1);
-        expect(window.open).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING.header.action.payload.linkUrl, '_blank');
+        expect(window.open).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING_INFO.header.action.payload.linkUrl, '_blank');
       });
     });
   });
