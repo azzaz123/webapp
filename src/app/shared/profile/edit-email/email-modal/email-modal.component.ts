@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../../core/user/user.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { EmailThanksModalComponent } from '@private/features/profile/modal/email-thanks-modal/email-thanks-modal.component';
 
 @Component({
   selector: 'tsl-email-modal',
@@ -18,7 +19,8 @@ export class EmailModalComponent {
     private fb: FormBuilder,
     private userService: UserService,
     public activeModal: NgbActiveModal,
-    private errorsService: ErrorsService
+    private errorsService: ErrorsService,
+    private modalService: NgbModal
   ) {
     this.emailForm = fb.group({
       email_address: ['', [Validators.required, this.email]],
@@ -31,6 +33,14 @@ export class EmailModalComponent {
       this.userService.updateEmail(email).subscribe(
         () => {
           this.activeModal.close(email);
+          const modalRef: NgbModalRef = this.modalService.open(EmailThanksModalComponent, {
+            windowClass: 'modal-standard',
+          });
+          modalRef.componentInstance.copies = {
+            title: $localize`:@@change_email_all_users_system_alert_how_to_verify_title:Thank you!`,
+            description: $localize`:@@change_email_all_users_system_alert_how_to_verify_description:We have sent a verification email to ${email}. Access your mailbox and follow the steps to verify your email.`,
+            button: $localize`:@@change_email_all_users_system_alert_how_to_verify_button:Understood`,
+          };
         },
         () => {
           this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR);
@@ -50,7 +60,8 @@ export class EmailModalComponent {
     if (Validators.required(control)) {
       return null;
     }
-    const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const pattern: RegExp =
+      /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return pattern.test(control.value) ? null : { email: true };
   }
 }
