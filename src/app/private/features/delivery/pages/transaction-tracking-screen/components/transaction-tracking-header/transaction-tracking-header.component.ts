@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
-import { TransactionTrackingHeader } from '../../interfaces/transaction-tracking-header.interface';
 
 @Component({
   selector: 'tsl-transaction-tracking-header',
@@ -9,7 +8,8 @@ import { TransactionTrackingHeader } from '../../interfaces/transaction-tracking
   styleUrls: ['./transaction-tracking-header.component.scss'],
 })
 export class TransactionTrackingHeaderComponent {
-  @Input() transactionTrackingHeader: TransactionTrackingHeader;
+  // TODO: to be typed when we have the interface		Date: 2021/11/12
+  @Input() transactionTrackingHeader: any;
 
   constructor(private location: Location, private transactionTrackingActionsService: TransactionTrackingActionsService) {}
 
