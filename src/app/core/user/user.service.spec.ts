@@ -210,8 +210,8 @@ describe('Service: User', () => {
   });
 
   describe('get', () => {
-    describe('when there are no users stored', () => {
-      it('should ask backend and return user', () => {
+    describe('when there are no users in local cache', () => {
+      it('should get user from server', () => {
         let response: User;
 
         service.get(USER_ID).subscribe((r) => (response = r));
@@ -223,16 +223,32 @@ describe('Service: User', () => {
       });
     });
 
-    describe('when there are users stored', () => {
-      it('should not ask backend and return user from memory', () => {
-        let response: User;
-
+    describe('when there are users in local cache', () => {
+      beforeEach(() => {
         service.get(USER_ID).subscribe();
         httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`).flush(USER_DATA);
+      });
+
+      it('should get user from local cache', () => {
+        let response: User;
+
         service.get(USER_ID).subscribe((r) => (response = r));
         httpMock.expectNone(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
 
         expect(response).toEqual(MOCK_FULL_USER);
+      });
+
+      describe('and when specifying to not use local cache', () => {
+        it('should get user from server', () => {
+          let response: User;
+
+          service.get(USER_ID, false).subscribe((r) => (response = r));
+          const req = httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
+          req.flush(USER_DATA);
+
+          expect(req.request.method).toBe('GET');
+          expect(response).toEqual(MOCK_FULL_USER);
+        });
       });
     });
 

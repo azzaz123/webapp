@@ -3,37 +3,42 @@ import { WALLET_HISTORY_FILTERS } from '@api/core/model/wallet/history/wallet-hi
 import { mapWalletHistoryFiltersToApi } from './wallet-balance-history-filter.mapper';
 
 describe('mapWalletHistoryFiltersToApi', () => {
+  const page: number = 288;
+
   describe('when converting wallet history filters from web context to server', () => {
     describe('and when asking for specific page', () => {
       it('should map to server context', () => {
         let result: HttpParams;
-        const expectedResult = new HttpParams().appendAll({ page: '288', type: undefined });
+        const expectedParams = new HttpParams().set('page', page.toString());
+        const expectedResult = expectedParams.toString();
 
-        result = mapWalletHistoryFiltersToApi({ page: 288 });
+        result = mapWalletHistoryFiltersToApi({ page });
 
-        expect(result).toEqual(expectedResult);
+        expect(result.toString()).toEqual(expectedResult);
       });
     });
 
     describe('and when asking for IN type', () => {
       it('should map to server context', () => {
         let result: HttpParams;
-        const expectedResult = new HttpParams().appendAll({ page: '0', type: 'IN' });
+        const expectedParams = new HttpParams().set('page', page.toString()).set('type', 'IN');
+        const expectedResult = expectedParams.toString();
 
-        result = mapWalletHistoryFiltersToApi({ page: 0, type: WALLET_HISTORY_FILTERS.IN });
+        result = mapWalletHistoryFiltersToApi({ page, type: WALLET_HISTORY_FILTERS.IN });
 
-        expect(result).toEqual(expectedResult);
+        expect(result.toString()).toEqual(expectedResult);
       });
     });
 
     describe('and when asking for OUT type', () => {
       it('should map to server context', () => {
         let result: HttpParams;
-        const expectedResult = new HttpParams().appendAll({ page: '0', type: 'OUT' });
+        const expectedParams = new HttpParams().set('page', page.toString()).set('type', 'OUT');
+        const expectedResult = expectedParams.toString();
 
-        result = mapWalletHistoryFiltersToApi({ page: 0, type: WALLET_HISTORY_FILTERS.OUT });
+        result = mapWalletHistoryFiltersToApi({ page, type: WALLET_HISTORY_FILTERS.OUT });
 
-        expect(result).toEqual(expectedResult);
+        expect(result.toString()).toEqual(expectedResult);
       });
     });
   });
