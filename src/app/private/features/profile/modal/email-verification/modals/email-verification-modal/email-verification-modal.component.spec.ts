@@ -6,7 +6,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { of } from 'rxjs';
-import { VerificationEmailThanksModalComponent } from '../../../verification-email-thanks-modal/verification-email-thanks-modal.component';
+import { EmailThanksModalComponent } from '../../../email-thanks-modal/email-thanks-modal.component';
 import { EmailVerificationModalComponent } from './email-verification-modal.component';
 
 @Component({
@@ -107,7 +107,7 @@ describe('EmailVerificationModalComponent', () => {
       it('should close the current modal and open the thanks email modal', () => {
         expect(activeModal.close).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
-        expect(modalService.open).toHaveBeenCalledWith(VerificationEmailThanksModalComponent, {
+        expect(modalService.open).toHaveBeenCalledWith(EmailThanksModalComponent, {
           windowClass: 'modal-standard',
         });
       });

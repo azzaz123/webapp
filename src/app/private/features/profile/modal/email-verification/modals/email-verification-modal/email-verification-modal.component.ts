@@ -3,7 +3,7 @@ import { UserVerificationsService } from '@api/user-verifications/user-verificat
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
-import { VerificationEmailThanksModalComponent } from '../../../verification-email-thanks-modal/verification-email-thanks-modal.component';
+import { EmailThanksModalComponent } from '../../../email-thanks-modal/email-thanks-modal.component';
 
 @Component({
   selector: 'tsl-email-verification-modal',
@@ -28,14 +28,18 @@ export class EmailVerificationModalComponent {
   public verifyEmail(): void {
     this.userVerificationsService.verifyEmail().subscribe(() => {
       this.activeModal.close();
-      const modalRef: NgbModalRef = this.openModal(VerificationEmailThanksModalComponent);
-      modalRef.componentInstance.email = this.email;
+      const modalRef: NgbModalRef = this.openModal(EmailThanksModalComponent);
+      modalRef.componentInstance.copies = {
+        title: $localize`:@@email_verification_all_users_system_modal_title:Thank you!`,
+        description: $localize`:@@email_verification_all_users_system_modal_description:We have sent a verification email to ${this.email}. Access your mailbox and follow the steps to verify your email.`,
+        button: $localize`:@@email_verification_all_users_system_modal_ok_button:Understood`,
+      };
     });
 
     this.verificationsNSecurityTrackingEventsService.trackStartEmailVerificationProcessEvent();
   }
 
-  private openModal(modalComponent: typeof EmailModalComponent | typeof VerificationEmailThanksModalComponent): NgbModalRef {
+  private openModal(modalComponent: typeof EmailModalComponent | typeof EmailThanksModalComponent): NgbModalRef {
     return this.modalService.open(modalComponent, {
       windowClass: 'modal-standard',
     });
