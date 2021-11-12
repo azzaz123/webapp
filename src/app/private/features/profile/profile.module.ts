@@ -8,7 +8,7 @@ import { BecomeProModalComponent } from './modal/become-pro-modal/become-pro-mod
 import { ChangeStoreLocationModal } from './modal/change-store-location-modal/change-store-location-modal.component';
 import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe-modal.component';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
-import { VerificationEmailThanksModalComponent } from './modal/verification-email-thanks-modal/verification-email-thanks-modal.component';
+import { EmailThanksModalComponent } from './modal/email-thanks-modal/email-thanks-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from './services/verifications-n-security-tracking-events.service';
 import { EmailVerificationModule } from './modal/email-verification/email-verification.module';
 
@@ -31,7 +31,7 @@ import { EmailVerificationModule } from './modal/email-verification/email-verifi
     UnsubscribeModalComponent,
     BecomeProModalComponent,
     ChangeStoreLocationModal,
-    VerificationEmailThanksModalComponent,
+    EmailThanksModalComponent,
   ],
   providers: [VerificationsNSecurityTrackingEventsService],
 })

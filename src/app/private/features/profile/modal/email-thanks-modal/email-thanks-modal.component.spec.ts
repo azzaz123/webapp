@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { VerificationEmailThanksModalComponent } from './verification-email-thanks-modal.component';
+import { EmailThanksModalComponent } from './email-thanks-modal.component';
 
 @Component({
   selector: 'tsl-button',
@@ -17,25 +17,30 @@ class MockButtonComponent {}
 })
 class MockSvgIconComponent {}
 
-describe('VerificationEmailThanksModalComponent', () => {
-  let component: VerificationEmailThanksModalComponent;
-  let fixture: ComponentFixture<VerificationEmailThanksModalComponent>;
+describe('EmailThanksModalComponent', () => {
+  let component: EmailThanksModalComponent;
+  let fixture: ComponentFixture<EmailThanksModalComponent>;
   let activeModal: NgbActiveModal;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VerificationEmailThanksModalComponent, MockSvgIconComponent, MockButtonComponent],
+      declarations: [EmailThanksModalComponent, MockSvgIconComponent, MockButtonComponent],
       providers: [NgbActiveModal],
     }).compileComponents();
     activeModal = TestBed.inject(NgbActiveModal);
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VerificationEmailThanksModalComponent);
+    fixture = TestBed.createComponent(EmailThanksModalComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    component.copies = {
+      title: 'title',
+      description: 'description',
+      button: 'ok',
+    };
     spyOn(activeModal, 'dismiss').and.callThrough();
     spyOn(activeModal, 'close').and.callThrough();
+    fixture.detectChanges();
   });
 
   describe('when accept button is clicked', () => {
@@ -50,7 +55,7 @@ describe('VerificationEmailThanksModalComponent', () => {
 
   describe('when close button is clicked', () => {
     it('should dismiss modal', () => {
-      const closeButton: HTMLElement = fixture.debugElement.query(By.css('.VerificationEmailThanksModal__close')).nativeElement;
+      const closeButton: HTMLElement = fixture.debugElement.query(By.css('.EmailThanksModal__close')).nativeElement;
 
       closeButton.click();
 
