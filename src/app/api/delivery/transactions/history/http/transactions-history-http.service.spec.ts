@@ -6,7 +6,7 @@ import { TransactionsHistoryDto } from '../dtos/transactions-history-dto.interfa
 import { DELIVERY_TRANSACTIONS_HISTORY_ENDPOINT } from './endpoints';
 import { TransactionsHistoryHttpService } from './transactions-history-http.service';
 
-describe('TransactionsHistoryHttpServicensactionsHistoryHttpService', () => {
+describe('TransactionsHistoryHttpService', () => {
   let service: TransactionsHistoryHttpService;
   let httpMock: HttpTestingController;
   let queryParams: HttpParams;
