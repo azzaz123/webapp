@@ -1,8 +1,5 @@
+import { TransactionTrackingAnalytics, TransactionTrackingAnalyticsUserProperties } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingAnalyticsDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-analytics-dto.interface';
-import {
-  TransactionTrackingAnalytics,
-  TransactionTrackingAnalyticsUserProperties,
-} from '../interfaces/transaction-tracking-analytics.interface';
 
 export class TransactionTrackingAnalyticsModel implements TransactionTrackingAnalytics {
   buyer: TransactionTrackingAnalyticsUserProperties;

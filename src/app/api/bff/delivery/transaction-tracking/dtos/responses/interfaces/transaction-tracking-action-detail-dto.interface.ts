@@ -1,10 +1,10 @@
-import { TransactionTrackingActionTypeDto } from '../types/transaction-tracking-action-type-dto.type';
+import { TransactionTrackingActionTypeDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/types/transaction-tracking-action-type-dto.type';
 import {
   TransactionTrackingActionDetailPayloadDeeplinkDto,
   TransactionTrackingActionDetailPayloadUserActionDto,
   TransactionTrackingActionDetailPayloadDialogDto,
   TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto,
-} from './transaction-tracking-action-detail-payload-dtos.interface';
+} from '@api/bff/delivery/transaction-tracking/dtos/responses';
 
 export type TransactionTrackingActionDetailPayloadDto =
   | TransactionTrackingActionDetailPayloadDeeplinkDto

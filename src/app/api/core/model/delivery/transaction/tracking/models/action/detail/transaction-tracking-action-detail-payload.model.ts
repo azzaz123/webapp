@@ -1,24 +1,23 @@
-import { TransactionTrackingActionDetailPayloadDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-dto.interface';
+import { CUSTOMER_HELP_SITE_BASE } from '@core/external-links/customer-help/enums/customer-help-site.enum';
+import { HELP_LOCALE } from '@core/external-links/customer-help/types/help-locale';
+import {
+  TransactionTrackingActionDetail,
+  TransactionTrackingActionDetailModel,
+  TransactionTrackingActionDetailPayload,
+  TransactionTrackingActionDetailPayloadBanner,
+  TransactionTrackingActionDetailPayloadBannerModel,
+  TransactionTrackingActionDetailPayloadConfirmation,
+  TransactionTrackingActionDetailPayloadConfirmationModel,
+  TransactionTrackingActionDetailPayloadParameters,
+  TransactionTrackingActionDetailPayloadParametersModel,
+} from '@api/core/model/delivery/transaction/tracking';
 import {
   TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto,
   TransactionTrackingActionDetailPayloadDeeplinkDto,
   TransactionTrackingActionDetailPayloadDialogDto,
   TransactionTrackingActionDetailPayloadUserActionDto,
 } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-payload-dtos.interface';
-import { APP_LOCALE } from '@configs/subdomains.config';
-import { CUSTOMER_HELP_SITE_BASE } from '@core/external-links/customer-help/enums/customer-help-site.enum';
-import { HELP_LOCALE } from '@core/external-links/customer-help/types/help-locale';
-import {
-  TransactionTrackingActionDetail,
-  TransactionTrackingActionDetailPayload,
-  TransactionTrackingActionDetailPayloadBanner,
-  TransactionTrackingActionDetailPayloadConfirmation,
-  TransactionTrackingActionDetailPayloadParameters,
-} from '../../../interfaces/transaction-tracking-action-detail.interface';
-import { TransactionTrackingActionDetailPayloadBannerModel } from './transaction-tracking-action-detail-payload-banner.model';
-import { TransactionTrackingActionDetailPayloadConfirmationModel } from './transaction-tracking-action-detail-payload-confirmation.model';
-import { TransactionTrackingActionDetailPayloadParametersModel } from './transaction-tracking-action-detail-payload-parameters.model';
-import { TransactionTrackingActionDetailModel } from './transaction-tracking-action-detail.model';
+import { TransactionTrackingActionDetailPayloadDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-dto.interface';
 
 export class TransactionTrackingActionDetailPayloadModel implements TransactionTrackingActionDetailPayload {
   banner: TransactionTrackingActionDetailPayloadBanner;

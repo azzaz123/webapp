@@ -1,10 +1,10 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
-import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
-import { TRANSACTION_TRACKING_ENDPOINT } from './endpoints';
 
-import { TransactionTrackingHttpService } from './transaction-tracking-http.service';
+import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
+import { TRANSACTION_TRACKING_ENDPOINT } from '@api/bff/delivery/transaction-tracking/http/endpoints';
+import { TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 
 describe('TransactionTrackingHttpService', () => {
   let service: TransactionTrackingHttpService;

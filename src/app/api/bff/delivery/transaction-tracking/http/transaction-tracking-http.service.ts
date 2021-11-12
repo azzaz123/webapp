@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+
+import { TRANSACTION_TRACKING_ENDPOINT } from '@api/bff/delivery/transaction-tracking/http/endpoints';
 import { TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
-import { TRANSACTION_TRACKING_ENDPOINT } from './endpoints';
+
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class TransactionTrackingHttpService {

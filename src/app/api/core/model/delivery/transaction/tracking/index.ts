@@ -2,6 +2,7 @@ export * from './interfaces/transaction-tracking-action-detail.interface';
 export * from './interfaces/transaction-tracking-action.interface';
 export * from './interfaces/transaction-tracking-analytics.interface';
 export * from './interfaces/transaction-tracking-animation.interface';
+export * from './interfaces/transaction-tracking-header.interface';
 export * from './interfaces/transaction-tracking-shipping-status.interface';
 export * from './interfaces/transaction-tracking-state.interface';
 export * from './interfaces/transaction-tracking-status-info.interface';
@@ -20,6 +21,7 @@ export * from './models/shipping-status/transaction-tracking-shipping-status-ani
 export * from './models/status-info/transaction-tracking-status-info-icon-style.model';
 export * from './models/status-info/transaction-tracking-status-info-icon.model';
 export * from './models/transaction-tracking-analytics.model';
+export * from './models/transaction-tracking-header.model';
 export * from './models/transaction-tracking-shipping-status.model';
 export * from './models/transaction-tracking-state.model';
 export * from './models/transaction-tracking-status-info.model';

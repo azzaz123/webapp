@@ -1,11 +1,13 @@
+import {
+  TransactionTrackingAction,
+  TransactionTrackingActionDetail,
+  TransactionTrackingActionDetailModel,
+  TransactionTrackingActionStyleModel,
+  TransactionTrackingState,
+  TransactionTrackingStateModel,
+  TransactionTrackingStyle,
+} from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-dto.interface';
-import { TransactionTrackingActionDetail } from '../../interfaces/transaction-tracking-action-detail.interface';
-import { TransactionTrackingAction } from '../../interfaces/transaction-tracking-action.interface';
-import { TransactionTrackingActionStyleModel } from './transaction-tracking-action-style.model';
-import { TransactionTrackingState } from '../../interfaces/transaction-tracking-state.interface';
-import { TransactionTrackingStyle } from '../../interfaces/transaction-tracking-style.interface';
-import { TransactionTrackingStateModel } from '../transaction-tracking-state.model';
-import { TransactionTrackingActionDetailModel } from './detail/transaction-tracking-action-detail.model';
 
 export class TransactionTrackingActionModel implements TransactionTrackingAction {
   action: TransactionTrackingActionDetail;

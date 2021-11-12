@@ -1,11 +1,14 @@
 import {
+  TransactionTrackingActionDetail,
+  TransactionTrackingActionDetailModel,
+  TransactionTrackingStatusInfo,
+  TransactionTrackingStatusInfoIcon,
+  TransactionTrackingStatusInfoIconModel,
+} from '@api/core/model/delivery/transaction/tracking';
+import {
   TransactionTrackingActionIconDto,
   TransactionTrackingStatusInfoDto,
 } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-status-info-dto.interface';
-import { TransactionTrackingActionDetail } from '../interfaces/transaction-tracking-action-detail.interface';
-import { TransactionTrackingStatusInfo, TransactionTrackingStatusInfoIcon } from '../interfaces/transaction-tracking-status-info.interface';
-import { TransactionTrackingActionDetailModel } from './action/detail/transaction-tracking-action-detail.model';
-import { TransactionTrackingStatusInfoIconModel } from './status-info/transaction-tracking-status-info-icon.model';
 
 export class TransactionTrackingStatusInfoModel implements TransactionTrackingStatusInfo {
   action: TransactionTrackingActionDetail;

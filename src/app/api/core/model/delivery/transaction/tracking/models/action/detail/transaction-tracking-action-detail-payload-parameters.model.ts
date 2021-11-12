@@ -1,4 +1,4 @@
-import { TransactionTrackingActionDetailPayloadParameters } from '../../../interfaces/transaction-tracking-action-detail.interface';
+import { TransactionTrackingActionDetailPayloadParameters } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionDetailPayloadUserActionDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-payload-dtos.interface';
 
 export class TransactionTrackingActionDetailPayloadParametersModel implements TransactionTrackingActionDetailPayloadParameters {

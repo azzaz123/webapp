@@ -1,8 +1,8 @@
+import { TransactionTrackingAnimation } from '@api/core/model/delivery/transaction/tracking';
 import {
   TransactionTrackingAnimationDto,
   TransactionTrackingAnimationModeDto,
 } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-shipping-status-dto.interface';
-import { TransactionTrackingAnimation } from '../../interfaces/transaction-tracking-animation.interface';
 
 export class TransactionTrackingShippingStatusAnimationModel implements TransactionTrackingAnimation {
   isLoop: boolean;
