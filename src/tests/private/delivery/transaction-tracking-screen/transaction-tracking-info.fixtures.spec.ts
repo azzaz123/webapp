@@ -1,3 +1,4 @@
+// TODO: type it when we have the interface merged		Date: 2021/11/12
 export const MOCK_TRANSACTION_TRACKING_INFO: any = {
   analytics: { buyer: { country: 'IT' }, seller: { country: 'ES' } },
   header: {

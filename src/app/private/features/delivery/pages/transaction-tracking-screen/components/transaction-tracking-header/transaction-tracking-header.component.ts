@@ -17,6 +17,7 @@ export class TransactionTrackingHeaderComponent {
     this.location.back();
   }
 
+  // TODO: type it when we have the interface merged		Date: 2021/11/12
   public manageAction(action: any): void {
     this.transactionTrackingActionsService.manageAction(action);
   }

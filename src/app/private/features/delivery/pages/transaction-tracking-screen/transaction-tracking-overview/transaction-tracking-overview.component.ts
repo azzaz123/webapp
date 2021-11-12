@@ -20,6 +20,7 @@ export class TransactionTrackingOverviewComponent implements OnInit {
     this.transactionTrackingHeaderProperties$ = this.initializeHeaderProperties();
   }
 
+  // TODO: type it when we have the interface merged		Date: 2021/11/12
   public initializeHeaderProperties(): Observable<TransactionTrackingHeader> {
     return this.transactionTrackingInfo$.pipe(
       map((transactionTrackingInfo: any) => {
