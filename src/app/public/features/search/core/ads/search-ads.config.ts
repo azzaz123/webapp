@@ -86,7 +86,7 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
   },
   search4r: {
     name: '130868815/web/search3r',
-    id: 'sky-unit-search-right-bottom',
+    id: 'sky-unit-search-mobile-inline',
     sizes: AD_DESKTOP_VERTICAL_MAPPING,
     sizeMapping: {
       desktop: {
@@ -99,7 +99,7 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
       },
       mobile: {
         screenSize: AD_MOBILE_SCREEN_SIZE,
-        mapping: AD_MOBILE_MAPPING.big,
+        mapping: AD_MOBILE_MAPPING.medium,
       },
     },
     networkId: 6866,
