@@ -15,7 +15,7 @@ describe('WHEN there is payload', () => {
       });
 
       it('should return the url according with the specified language', () => {
-        expect(payload.getArticleUrl(locale)).toBe(`https://ayuda.wallapop.com/hc/${locale}/articles/360001796618`);
+        expect(payload.getHelpArticleUrl(locale)).toBe(`https://ayuda.wallapop.com/hc/${locale}/articles/360001796618`);
       });
     });
 
@@ -28,7 +28,7 @@ describe('WHEN there is payload', () => {
       });
 
       it('should not return any url', () => {
-        expect(payload.getArticleUrl(EN_HELP_LOCALE)).toBeFalsy();
+        expect(payload.getHelpArticleUrl(EN_HELP_LOCALE)).toBeFalsy();
       });
     });
 
@@ -41,7 +41,7 @@ describe('WHEN there is payload', () => {
       });
 
       it('should not return any url', () => {
-        expect(payload.getArticleUrl(EN_HELP_LOCALE)).toBeFalsy();
+        expect(payload.getHelpArticleUrl(EN_HELP_LOCALE)).toBeFalsy();
       });
     });
   });

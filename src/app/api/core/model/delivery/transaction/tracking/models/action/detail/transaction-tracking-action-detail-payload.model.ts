@@ -43,7 +43,7 @@ export class TransactionTrackingActionDetailPayloadModel implements TransactionT
     this.title = this.getTitleFromCarrierTrackingWebview(actionDetailPayloadDto) || this.getTitleFromDialog(actionDetailPayloadDto);
   }
 
-  public getArticleUrl(locale: HELP_LOCALE): string {
+  public getHelpArticleUrl(locale: HELP_LOCALE): string {
     const regExp: RegExp = new RegExp(/[?&]z=([^&]+).*$/);
     const matches = this.linkUrl.match(regExp);
     if (!!matches && matches.length >= 0 && matches[0].length >= 4) {
