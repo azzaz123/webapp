@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { TransactionWithCreationDate } from '@api/core/model';
+import { HistoricTransaction } from '@api/core/model';
 import { TransactionsHistoryApiService } from '@api/delivery/transactions/history/transactions-history-api.service';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { ReplaySubject, Observable } from 'rxjs';
-import { tap, finalize } from 'rxjs/operators';
-import { mapTransactionsWithCreationDateToHistoricList } from '../../mappers/transactions-with-creation-date-to-historic-list/transactions-with-creation-date-to-historic-list.mapper';
+import { finalize, tap } from 'rxjs/operators';
+import { mapHistoricTransactionsToHistoricList } from '../../mappers/historic-transactions-to-historic-list/historic-transactions-to-historic-list.mapper';
 
 @Injectable()
 export class StreamlineCompletedUIService {
   private initialLoad: boolean = true;
   private currentPage: number = 0;
   private nextPage: number = this.currentPage.valueOf() + 1;
-  private requestedTransactionsWithCreationDate: TransactionWithCreationDate[] = [];
+  private requestedHistoricTransactionsDate: HistoricTransaction[] = [];
   private _loading: boolean = false;
   private readonly _loading$: ReplaySubject<boolean> = new ReplaySubject(1);
   private readonly _historicList$: ReplaySubject<HistoricList> = new ReplaySubject(1);
@@ -57,23 +57,23 @@ export class StreamlineCompletedUIService {
       .pipe(
         tap((response) => {
           this.nextPage = this.calculateNextPage(response);
-          this.requestedTransactionsWithCreationDate = this.requestedTransactionsWithCreationDate.concat(response);
-          this.historicList = mapTransactionsWithCreationDateToHistoricList(this.requestedTransactionsWithCreationDate);
-        })
-      )
-      .subscribe({
-        next: () => {
+          this.requestedHistoricTransactionsDate = this.requestedHistoricTransactionsDate.concat(response);
+          this.historicList = mapHistoricTransactionsToHistoricList(this.requestedHistoricTransactionsDate);
+        }),
+        finalize(() => {
           this.initialLoad = false;
           this.loading = false;
-        },
-      });
+        })
+      )
+      .subscribe();
   }
 
   public reset(): void {
     this.historicList = null;
     this.initialLoad = true;
-    this.requestedTransactionsWithCreationDate = [];
+    this.requestedHistoricTransactionsDate = [];
     this.nextPage = null;
+    this.loading = false;
   }
 
   private calculateCurrentPage(): number {
@@ -83,7 +83,7 @@ export class StreamlineCompletedUIService {
     return this.nextPage?.valueOf();
   }
 
-  private calculateNextPage(response: TransactionWithCreationDate[]): number | null {
+  private calculateNextPage(response: HistoricTransaction[]): number | null {
     const isResponseEmpty: boolean = response.length === 0;
     return isResponseEmpty ? null : this.currentPage.valueOf() + 1;
   }

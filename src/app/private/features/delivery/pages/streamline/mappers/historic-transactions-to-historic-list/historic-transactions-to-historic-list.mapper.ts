@@ -1,15 +1,15 @@
-import { TransactionWithCreationDate } from '@api/core/model';
+import { HistoricTransaction } from '@api/core/model';
 import { ToDomainMapper } from '@api/core/utils/types';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import * as moment from 'moment';
 
-export const mapTransactionsWithCreationDateToHistoricList: ToDomainMapper<TransactionWithCreationDate[], HistoricList> = (
-  input: TransactionWithCreationDate[]
+export const mapHistoricTransactionsToHistoricList: ToDomainMapper<HistoricTransaction[], HistoricList> = (
+  input: HistoricTransaction[]
 ): HistoricList => {
   const result: HistoricList = { elements: [] };
 
-  input.forEach((transaction: TransactionWithCreationDate) => {
+  input.forEach((transaction: HistoricTransaction) => {
     const headerFromElement = getYearFromTransaction(transaction);
     const subtitleFromElement = getMonthFromTransaction(transaction);
 
@@ -35,15 +35,15 @@ export const mapTransactionsWithCreationDateToHistoricList: ToDomainMapper<Trans
   return result;
 };
 
-const getYearFromTransaction = (input: TransactionWithCreationDate): string => {
+const getYearFromTransaction = (input: HistoricTransaction): string => {
   return moment(input.creationDate).format('YYYY');
 };
 
-const getMonthFromTransaction = (input: TransactionWithCreationDate): string => {
+const getMonthFromTransaction = (input: HistoricTransaction): string => {
   return moment(input.creationDate).format('MMMM');
 };
 
-const mapTransactionToHistoricElement = (input: TransactionWithCreationDate): HistoricElement => {
+const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricElement => {
   const { id, item, moneyAmount } = input;
   const { imageUrl, title } = item;
   const description: string = 'Completed';

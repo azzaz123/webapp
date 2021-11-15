@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { TransactionWithCreationDate } from '@api/core/model';
+import { TestBed } from '@angular/core/testing';
+import { HistoricTransaction } from '@api/core/model';
 import { TransactionsHistoryApiService } from '@api/delivery/transactions/history/transactions-history-api.service';
-import { MOCK_TRANSACTIONS_WITH_CREATION_DATE } from '@api/fixtures/core/model/delivery/transaction/transaction-with-creation-date.fixtures.spec';
+import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
 import { MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { ReplaySubject } from 'rxjs';
@@ -11,7 +11,7 @@ import { StreamlineCompletedUIService } from './streamline-completed-ui.service'
 
 describe('StreamlineCompletedUIService', () => {
   let service: StreamlineCompletedUIService;
-  const requestsReplaySubject: ReplaySubject<TransactionWithCreationDate[]> = new ReplaySubject<TransactionWithCreationDate[]>(1);
+  const requestsReplaySubject: ReplaySubject<HistoricTransaction[]> = new ReplaySubject<HistoricTransaction[]>(1);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -48,7 +48,7 @@ describe('StreamlineCompletedUIService', () => {
     describe('and when server responses', () => {
       beforeEach(() => {
         service.reset();
-        requestsReplaySubject.next(MOCK_TRANSACTIONS_WITH_CREATION_DATE);
+        requestsReplaySubject.next(MOCK_HISTORIC_TRANSACTIONS);
       });
 
       it('should notify loading state ended', () => {
