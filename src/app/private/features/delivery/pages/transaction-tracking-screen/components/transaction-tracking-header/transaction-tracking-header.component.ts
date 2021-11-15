@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { TransactionTrackingAction, TransactionTrackingHeader } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionDetail, TransactionTrackingHeader } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class TransactionTrackingHeaderComponent {
     this.location.back();
   }
 
-  public manageAction(action: TransactionTrackingAction): void {
+  public manageAction(action: TransactionTrackingActionDetail): void {
     this.transactionTrackingActionsService.manageAction(action);
   }
 }

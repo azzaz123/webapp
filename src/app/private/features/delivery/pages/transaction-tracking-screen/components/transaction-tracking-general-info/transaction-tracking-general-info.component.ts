@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { TransactionTrackingAction, TransactionTrackingShippingStatus } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionDetail, TransactionTrackingShippingStatus } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class TransactionTrackingGeneralInfoComponent {
     this.descriptionByPass = this.sanitizer.bypassSecurityTrustHtml(this.shippingStatus.description);
   }
 
-  public manageAction(action: TransactionTrackingAction): void {
-    this.transactionTrackingActionsService.manageAction(action);
+  public manageAction(actionDetail: TransactionTrackingActionDetail): void {
+    this.transactionTrackingActionsService.manageAction(actionDetail);
   }
 }

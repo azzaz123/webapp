@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { MOCK_TRANSACTION_TRACKING_INFO } from '@fixtures/private/delivery/transaction-tracking-screen/transaction-tracking-info.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 
 import { TransactionTrackingActionsService } from './transaction-tracking-actions.service';
 
 describe('TransactionTrackingActionsService', () => {
-  const MOCK_DEEP_LINK_ACTION = MOCK_TRANSACTION_TRACKING_INFO.header.detail.action;
+  const MOCK_DEEP_LINK_ACTION = MOCK_TRANSACTION_TRACKING.header.detail.action;
   let service: TransactionTrackingActionsService;
 
   beforeEach(() => {

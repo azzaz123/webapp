@@ -79,7 +79,7 @@ describe('TransactionTrackingGeneralInfoComponent', () => {
             CTAButtonElement.nativeElement.click();
 
             expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledTimes(1);
-            expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledWith(action);
+            expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledWith(action.action);
           });
         });
       });
