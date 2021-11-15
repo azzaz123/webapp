@@ -5,9 +5,14 @@
 }
 
 .HashtagField {
+  &__form {
+    height: 100%;
+  }
+
   &__counter {
     color: $blue-grey-3;
   }
+
   &__suggested,
   &__search {
     flex: 1;

@@ -13,7 +13,7 @@ import { HashtagFieldModule } from './hashtag-field.module';
     CategoryId: {{ categoryId }}
     <form [formGroup]="formGroup">
       <h4 class="mt-4">Selected hashtags: {{ formGroup.value.hashtag }}</h4>
-      <tsl-hashtag-field [categoryId]="categoryId" formControlName="hashtag" [max]="max"></tsl-hashtag-field>
+      <tsl-hashtag-field [categoryId]="categoryId" formControlName="hashtag" [max]="max" style="height: 300px;"></tsl-hashtag-field>
     </form>
   `,
 })
