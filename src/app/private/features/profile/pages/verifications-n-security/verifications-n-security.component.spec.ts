@@ -105,12 +105,12 @@ describe('VerificationsNSecurityComponent', () => {
       it('should show Email title', () => {
         const title = component.titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.EMAIL];
 
-        expect(title).toBe($localize`:@@verification_and_security_all_users_verifications_email_label:Email`);
+        expect(title).toBe('Email');
       });
       it('should show Mobile phone title', () => {
         const title = component.titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.PHONE];
 
-        expect(title).toBe($localize`:@@verification_and_security_all_users_verifications_phone_label:Mobile phone`);
+        expect(title).toBe('Mobile phone');
       });
 
       describe('and the email is verified', () => {
@@ -130,7 +130,7 @@ describe('VerificationsNSecurityComponent', () => {
           });
           const text = component.verifiedTextButton[response.email.toString()];
 
-          expect(text).toBe($localize`:@@verification_and_security_all_users_change_button:Change`);
+          expect(text).toBe('Change');
         });
         it('should open the change email modal when button is clicked', () => {
           spyOn(modalService, 'open').and.callThrough();
@@ -155,7 +155,7 @@ describe('VerificationsNSecurityComponent', () => {
           });
           const text = component.verifiedTextButton[response.email.toString()];
 
-          expect(text).toBe($localize`:@@verification_and_security_all_users_verify_button:Verify`);
+          expect(text).toBe('Verify');
         });
         it('should open the email verification modal when button is clicked', () => {
           spyOn(modalService, 'open').and.callThrough();
@@ -190,7 +190,7 @@ describe('VerificationsNSecurityComponent', () => {
           });
           const text = component.verifiedTextButton[response.phone.toString()];
 
-          expect(text).toBe($localize`:@@verification_and_security_all_users_change_button:Change`);
+          expect(text).toBe('Change');
           expect(component.userPhone).toBe('+34 935 50 09 96');
         });
       });
@@ -211,7 +211,7 @@ describe('VerificationsNSecurityComponent', () => {
           });
           const text = component.verifiedTextButton[response.phone.toString()];
 
-          expect(text).toBe($localize`:@@verification_and_security_all_users_verify_button:Verify`);
+          expect(text).toBe('Verify');
           expect(component.userPhone).toBe('');
         });
 
