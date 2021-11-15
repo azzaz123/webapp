@@ -6,11 +6,12 @@ import { HashtagFieldComponent } from './hashtag-field.component';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
+import { ScrollModule } from '@shared/scroll/scroll.module';
 
 @NgModule({
   exports: [HashtagFieldComponent],
   declarations: [HashtagFieldComponent],
-  imports: [CommonModule, ReactiveFormsModule, MultiSelectFormModule, MultiselectSearchInputModule, CancelBubbleModule],
+  imports: [CommonModule, ReactiveFormsModule, MultiSelectFormModule, MultiselectSearchInputModule, CancelBubbleModule, ScrollModule],
   providers: [HashtagSuggesterApiService],
 })
 export class HashtagFieldModule {}

@@ -9,6 +9,7 @@ import { HashtagSuggesterApiService } from '../../core/services/hashtag-suggesti
 import { union } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
+import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 
 @Component({
   selector: 'tsl-hashtag-field',
@@ -27,30 +28,32 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
   @Input() categoryId: string;
   @Input() max: number;
 
-  @ViewChild(MultiSelectFormComponent) generalHashtagForm: MultiSelectFormComponent;
-  public page: number = 0;
-  public hashtagForm: FormGroup = new FormGroup({ search: new FormControl(), suggested: new FormControl() });
+  public hashtagForm: FormGroup = new FormGroup({ searched: new FormControl(), suggested: new FormControl() });
 
-  private optionsSubject = new BehaviorSubject<SelectFormOption<string>[]>([]);
+  private suggestedOptionsSubject = new BehaviorSubject<MultiSelectFormOption[]>([]);
+  private suggestedOptions: MultiSelectFormOption[] = [];
+  private suggestedOptionsPage;
 
   constructor(private hashtagSuggesterApiService: HashtagSuggesterApiService) {
     super();
   }
 
-  public get options$(): Observable<SelectFormOption<string>[]> {
-    return this.optionsSubject.asObservable();
+  public get suggestedOptions$(): Observable<MultiSelectFormOption[]> {
+    return this.suggestedOptionsSubject.asObservable();
   }
 
   ngOnInit() {
-    this.hashtagForm.valueChanges.subscribe((changes: { search: MultiSelectValue; suggested: MultiSelectValue }) => {
-      this.value = union(changes.search, changes.suggested);
+    this.hashtagForm.valueChanges.subscribe((changes: { searched: MultiSelectValue; suggested: MultiSelectValue }) => {
+      this.value = union(changes.searched, changes.suggested);
       this.onChange(this.value);
       this.isDisabled = this.value.length > this.max;
     });
 
-    this.hashtagSuggesterApiService.getHashtags(this.categoryId, '0').subscribe((n) => {
-      this.mapHashtagOptions(n);
-    });
+    this.getSuggestedOptions(0);
+  }
+
+  public suggestionsScrolled(): void {
+    this.getSuggestedOptions(this.suggestedOptionsPage);
   }
 
   public removeValue(valueString: string) {
@@ -58,13 +61,23 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     this.writeValue(this.value);
   }
 
+  private getSuggestedOptions(page: number): void {
+    if (page !== null) {
+      this.hashtagSuggesterApiService.getHashtags(this.categoryId, page.toString()).subscribe((n) => {
+        this.suggestedOptionsPage = n.paginationParameter;
+        this.mapHashtagOptions(n);
+      });
+    }
+  }
+
   private mapHashtagOptions(hashtags: PaginatedList<Hashtag>) {
-    let options: SelectFormOption<string>[] = [];
+    let suggestedOptions: SelectFormOption<string>[] = [];
 
     hashtags.list.forEach((hashtag: Hashtag) => {
-      options.push({ label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: hashtag.text });
+      suggestedOptions.push({ label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: hashtag.text });
     });
 
-    this.optionsSubject.next(options);
+    this.suggestedOptions = this.suggestedOptions.concat(suggestedOptions);
+    this.suggestedOptionsSubject.next(this.suggestedOptions);
   }
 }
