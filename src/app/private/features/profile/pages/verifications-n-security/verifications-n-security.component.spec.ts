@@ -127,7 +127,6 @@ describe('VerificationsNSecurityComponent', () => {
 
           component.userVerifications$.subscribe((userVerifications) => {
             response = userVerifications;
-            console.log(response);
           });
           const text = component.verifiedTextButton[response.email.toString()];
 
