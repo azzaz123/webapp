@@ -1,4 +1,5 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { HistoricList } from '../interfaces/historic-list.interface';
 import {
   MOCK_HISTORIC_ELEMENT,
@@ -89,6 +90,35 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
                 amount: { integer: 3, decimals: 0, total: 3 },
                 currency: { code: 'EUR', symbol: '€' },
               },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE: HistoricList = {
+  elements: [
+    {
+      label: '2021',
+      elements: [
+        {
+          label: 'October',
+          elements: [
+            {
+              id: '3b7560cc-b4f8-48bf-ba27-4d070952b3e8',
+              imageUrl: MOCK_ITEM.images[0].urls_by_size.original,
+              title: MOCK_ITEM.title,
+              description: 'Completed',
+              moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 19.75, currency: 'EUR' }),
+            },
+            {
+              id: '001cf831-d040-4e31-b4e7-aa50d2a3cadc',
+              imageUrl: MOCK_ITEM.images[0].urls_by_size.original,
+              title: MOCK_ITEM.title,
+              description: 'Completed',
+              moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 12, currency: 'EUR' }),
             },
           ],
         },
