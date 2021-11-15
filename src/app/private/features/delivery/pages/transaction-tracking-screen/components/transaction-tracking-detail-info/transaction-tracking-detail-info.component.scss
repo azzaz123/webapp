@@ -29,7 +29,7 @@
     pointer-events: none;
     flex: 1;
 
-    &--cursor {
+    &--clickable {
       ::ng-deep {
         span {
           pointer-events: initial;
