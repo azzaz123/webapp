@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { TransactionTrackingGeneralInfo } from '../../interfaces/TTS/transaction-tracking-general-info.interface';
+import { TransactionTrackingGeneralInfo } from '../../../../interfaces/TTS/transaction-tracking-general-info.interface';
 
 @Component({
   selector: 'tsl-transaction-tracking-general-info',
