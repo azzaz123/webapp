@@ -47,7 +47,6 @@ describe('StreamlineCompletedUIService', () => {
 
     describe('and when server responses', () => {
       beforeEach(() => {
-        service.reset();
         requestsReplaySubject.next(MOCK_HISTORIC_TRANSACTIONS);
       });
 

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HistoricTransaction } from '@api/core/model';
 import { TransactionsHistoryApiService } from '@api/delivery/transactions/history/transactions-history-api.service';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
-import { ReplaySubject, Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { ReplaySubject, Observable, Subscription } from 'rxjs';
+import { finalize, take, tap } from 'rxjs/operators';
 import { mapHistoricTransactionsToHistoricList } from '../../mappers/historic-transactions-to-historic-list/historic-transactions-to-historic-list.mapper';
 
 @Injectable()
@@ -13,6 +13,7 @@ export class StreamlineCompletedUIService {
   private nextPage: number = this.currentPage.valueOf() + 1;
   private requestedHistoricTransactionsDate: HistoricTransaction[] = [];
   private _loading: boolean = false;
+  private subscriptions: Subscription[] = [];
   private readonly _loading$: ReplaySubject<boolean> = new ReplaySubject(1);
   private readonly _historicList$: ReplaySubject<HistoricList> = new ReplaySubject(1);
 
@@ -52,9 +53,10 @@ export class StreamlineCompletedUIService {
     this.loading = true;
     this.currentPage = this.calculateCurrentPage();
 
-    this.transactionsHistoryApiService
+    const getRequest = this.transactionsHistoryApiService
       .get(this.currentPage)
       .pipe(
+        take(1),
         tap((response) => {
           this.nextPage = this.calculateNextPage(response);
           this.requestedHistoricTransactionsDate = this.requestedHistoricTransactionsDate.concat(response);
@@ -66,6 +68,8 @@ export class StreamlineCompletedUIService {
         })
       )
       .subscribe();
+
+    this.subscriptions.push(getRequest);
   }
 
   public reset(): void {
@@ -74,6 +78,7 @@ export class StreamlineCompletedUIService {
     this.requestedHistoricTransactionsDate = [];
     this.nextPage = null;
     this.loading = false;
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   private calculateCurrentPage(): number {
