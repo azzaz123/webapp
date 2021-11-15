@@ -65,12 +65,18 @@ describe('TransactionTrackingGeneralInfoComponent', () => {
       });
 
       MOCK_SHIPPING_STATUS.actions.forEach((action, index) => {
+        it('should have the received state', () => {
+          const CTAButtonElement: DebugElement = fixture.debugElement.queryAll(By.directive(ButtonComponent))[index];
+
+          expect(CTAButtonElement.componentInstance.disabled).toBe(action.state.isDisabled);
+        });
+
         describe('and we click on the CTA button', () => {
           it('should manage the provided action', () => {
             spyOn(transactionTrackingActionsService, 'manageAction');
-            const CTAButtonElement = fixture.debugElement.queryAll(By.directive(ButtonComponent))[index].nativeElement;
+            const CTAButtonElement: DebugElement = fixture.debugElement.queryAll(By.directive(ButtonComponent))[index];
 
-            CTAButtonElement.click();
+            CTAButtonElement.nativeElement.click();
 
             expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledTimes(1);
             expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledWith(action);
