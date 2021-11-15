@@ -1,4 +1,4 @@
-import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/pending-transactions-fixtures.spec';
+import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import {
   MOCK_HISTORIC_LIST_EMPTY,
   MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS,

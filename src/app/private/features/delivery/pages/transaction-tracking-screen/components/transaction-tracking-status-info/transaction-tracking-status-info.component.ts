@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TransactionTrackingInfo } from '@private/features/delivery/interfaces/tts/transaction-tracking-info.interface';
+import { TransactionTrackingInfo } from '../../interfaces/transaction-tracking-info.interface';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

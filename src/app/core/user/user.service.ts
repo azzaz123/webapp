@@ -148,10 +148,10 @@ export class UserService {
     }, interval);
   }
 
-  public get(id: string, noCache?: boolean): Observable<User> {
+  public get(id: string, cache: boolean = true): Observable<User> {
     const user = this._users.find((user) => user.id === id);
 
-    if (user) {
+    if (user && cache) {
       return of(user);
     }
 

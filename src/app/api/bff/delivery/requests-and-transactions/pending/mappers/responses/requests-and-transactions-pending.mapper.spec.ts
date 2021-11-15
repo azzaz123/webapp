@@ -1,5 +1,5 @@
 import { mapRequestsAndTransactionsPendingToPendingTransactions } from './requests-and-transactions-pending.mapper';
-import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/pending-transactions-fixtures.spec';
+import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import {
   MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_DTO_RESPONSE,
   MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_DTO_RESPONSE,
