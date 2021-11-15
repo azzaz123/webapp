@@ -1,5 +1,5 @@
-import { TransactionWithCreationDate } from '@api/core/model';
-import { MOCK_TRANSACTIONS_WITH_CREATION_DATE } from '@api/fixtures/core/model/delivery/transaction/transaction-with-creation-date.fixtures.spec';
+import { HistoricTransaction } from '@api/core/model';
+import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
 import { MOCK_TRANSACTIONS_HISTORY_DTO } from '@api/fixtures/delivery/transactions/history/transactions-history.fixtures.spec';
 import { MOCK_ITEM, MOCK_ITEM_FEATURED } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER, MOCK_USER_PRO } from '@fixtures/user.fixtures.spec';
@@ -8,8 +8,8 @@ import { mapTransactionsHistoryToTransactions } from './transactions-history.map
 describe('mapTransactionsHistoryToTransactions', () => {
   describe('when converting users, items and completed transactions to web context', () => {
     it('should map to web context', () => {
-      let result: TransactionWithCreationDate[];
-      const expectedResult = MOCK_TRANSACTIONS_WITH_CREATION_DATE;
+      let result: HistoricTransaction[];
+      const expectedResult = MOCK_HISTORIC_TRANSACTIONS;
 
       result = mapTransactionsHistoryToTransactions({
         currentUser: MOCK_USER_PRO,
