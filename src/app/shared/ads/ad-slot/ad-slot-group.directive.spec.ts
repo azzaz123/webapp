@@ -34,7 +34,11 @@ const adSlot3: AdSlotConfiguration = {
 };
 
 describe('AdSlotGroupDirective', () => {
-  const adsServiceMock: AdsService = { setSlots: () => {} } as unknown as AdsService;
+  const adsServiceMock: AdsService = {
+    setSlots: () => {},
+    setAdKeywords: () => {},
+    setTargetingByAdsKeywords: () => {},
+  } as unknown as AdsService;
 
   const experimentationServiceMock: ExperimentationService = {
     getOptimizeVariant: () => {},
