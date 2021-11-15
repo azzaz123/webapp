@@ -1,0 +1,24 @@
+import { Location } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
+
+@Component({
+  selector: 'tsl-transaction-tracking-header',
+  templateUrl: './transaction-tracking-header.component.html',
+  styleUrls: ['./transaction-tracking-header.component.scss'],
+})
+export class TransactionTrackingHeaderComponent {
+  // TODO: to be typed when we have the interface		Date: 2021/11/12
+  @Input() transactionTrackingHeader: any;
+
+  constructor(private location: Location, private transactionTrackingActionsService: TransactionTrackingActionsService) {}
+
+  public goBack(): void {
+    this.location.back();
+  }
+
+  // TODO: type it when we have the interface merged		Date: 2021/11/12
+  public manageAction(action: any): void {
+    this.transactionTrackingActionsService.manageAction(action);
+  }
+}

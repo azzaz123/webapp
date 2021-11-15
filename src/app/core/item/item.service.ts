@@ -68,6 +68,7 @@ export const USERS_API_URL = 'api/v3/users';
 export const PROTOOL_API_URL = 'api/v3/protool';
 export const V1_API_URL = 'shnm-portlet/api/v1';
 
+// FIXME: In order to follow the project architecture, this service should be provided in root
 @Injectable()
 export class ItemService {
   public selectedAction: string;

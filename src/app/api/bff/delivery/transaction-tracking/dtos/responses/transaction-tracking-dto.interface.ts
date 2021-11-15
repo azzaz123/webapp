@@ -1,7 +1,9 @@
-import { TransactionTrackingActionDto } from './interfaces/transaction-tracking-action-dto.interface';
-import { TransactionTrackingAnalyticsDto } from './interfaces/transaction-tracking-analytics-dto.interface';
-import { TransactionTrackingShippingStatusDto } from './interfaces/transaction-tracking-shipping-status-dto.interface';
-import { TransactionTrackingStatusInfoDto } from './interfaces/transaction-tracking-status-info-dto.interface';
+import {
+  TransactionTrackingActionDto,
+  TransactionTrackingAnalyticsDto,
+  TransactionTrackingShippingStatusDto,
+  TransactionTrackingStatusInfoDto,
+} from '@api/bff/delivery/transaction-tracking/dtos/responses';
 
 export interface TransactionTrackingDto {
   analytics?: TransactionTrackingAnalyticsDto;

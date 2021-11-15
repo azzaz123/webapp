@@ -2,6 +2,7 @@ import {
   TransactionTracking,
   TransactionTrackingAction,
   TransactionTrackingAnalytics,
+  TransactionTrackingHeader,
   TransactionTrackingShippingStatus,
   TransactionTrackingStatusInfo,
 } from '@api/core/model/delivery/transaction/tracking';
@@ -10,7 +11,7 @@ const MOCK_TRANSACTION_TRACKING_ANALYTICS_2: TransactionTrackingAnalytics = {
   buyer: { country: 'IT' },
   seller: { country: 'ES' },
 };
-const MOCK_TRANSACTION_TRACKING_HEADER_1: TransactionTrackingAction = {
+const MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_1: TransactionTrackingAction = {
   action: {
     analytics: {
       requestId: 'b7d11763-1c05-4cd8-9733-c3449807f644',
@@ -34,6 +35,10 @@ const MOCK_TRANSACTION_TRACKING_HEADER_1: TransactionTrackingAction = {
     className: 'btn btn-link',
   },
   title: '¿Dudas?',
+};
+const MOCK_TRANSACTION_TRACKING_HEADER_1: TransactionTrackingHeader = {
+  detail: MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_1,
+  title: 'Estado de tu compra',
 };
 const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1: TransactionTrackingShippingStatus = {
   actions: [
@@ -131,7 +136,7 @@ const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1: Transact
   },
   showCaret: false,
 };
-const MOCK_TRANSACTION_TRACKING_HEADER_2: TransactionTrackingAction = {
+const MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_2: TransactionTrackingAction = {
   action: {
     analytics: {
       requestId: '3d5d9154-1e52-4a99-87ee-bdedd7b1eb70',
@@ -151,6 +156,10 @@ const MOCK_TRANSACTION_TRACKING_HEADER_2: TransactionTrackingAction = {
   state: { isDisabled: false },
   style: { className: 'btn btn-link' },
   title: '¿Dudas?',
+};
+const MOCK_TRANSACTION_TRACKING_HEADER_2: TransactionTrackingHeader = {
+  detail: MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_2,
+  title: 'Estado de tu compra',
 };
 const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_2: TransactionTrackingShippingStatus = {
   actions: [
@@ -363,19 +372,16 @@ export const MOCK_TRANSACTION_TRACKING: TransactionTracking = {
   header: MOCK_TRANSACTION_TRACKING_HEADER_1,
   shippingStatus: MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1,
   statusInfo: [MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1, MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_1],
-  title: 'Estado de tu compra',
 };
 export const MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS: TransactionTracking = {
   analytics: MOCK_TRANSACTION_TRACKING_ANALYTICS_2,
   header: MOCK_TRANSACTION_TRACKING_HEADER_2,
   shippingStatus: MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_2,
   statusInfo: [MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_2, MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_2],
-  title: 'Estado de tu compra',
 };
 export const MOCK_TRANSACTION_TRACKING_WITH_SUCCESS: TransactionTracking = {
   analytics: MOCK_TRANSACTION_TRACKING_ANALYTICS_2,
   header: MOCK_TRANSACTION_TRACKING_HEADER_2,
   shippingStatus: MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_3,
   statusInfo: [MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_3, MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_3],
-  title: 'Estado de tu compra',
 };

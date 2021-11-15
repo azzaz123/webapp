@@ -1,12 +1,12 @@
 import { fakeAsync, flush, TestBed } from '@angular/core/testing';
-import { TransactionTracking } from '@api/core/model/delivery/transaction/tracking';
-import { TransactionTrackingModel } from '@api/core/model/delivery/transaction/tracking/models/transaction-tracking.model';
-import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
-import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
-import { of } from 'rxjs';
-import { TransactionTrackingHttpService } from './http/transaction-tracking-http.service';
 
-import { TransactionTrackingService } from './transaction-tracking.service';
+import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
+import { TransactionTracking } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
+import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+
+import { of } from 'rxjs';
 
 describe('TransactionTrackingService', () => {
   let service: TransactionTrackingService;

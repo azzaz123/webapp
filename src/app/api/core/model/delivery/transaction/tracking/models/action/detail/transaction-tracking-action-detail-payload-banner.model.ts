@@ -1,5 +1,5 @@
 import { TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-payload-dtos.interface';
-import { TransactionTrackingActionDetailPayloadBanner } from '../../../interfaces/transaction-tracking-action-detail.interface';
+import { TransactionTrackingActionDetailPayloadBanner } from '@api/core/model/delivery/transaction/tracking';
 
 export class TransactionTrackingActionDetailPayloadBannerModel implements TransactionTrackingActionDetailPayloadBanner {
   title: string;

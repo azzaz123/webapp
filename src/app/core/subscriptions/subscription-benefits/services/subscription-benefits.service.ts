@@ -33,8 +33,10 @@ export class SubscriptionBenefitsService {
       return of(this.subscriptionBenefits);
     }
     return of(subscriptionBenefits).pipe(
-      map((response) => this.mapBenefits(response)),
-      tap((benefits) => (this.subscriptionBenefits = this.mapBenefits(benefits)))
+      map((response) => {
+        this.subscriptionBenefits = this.mapBenefits(response);
+        return this.subscriptionBenefits;
+      })
     );
   }
 

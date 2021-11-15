@@ -7,7 +7,6 @@ const emptyTransactionTracking: TransactionTracking = {
   header: undefined,
   shippingStatus: undefined,
   statusInfo: undefined,
-  title: undefined,
 };
 export const mapTransactionTrackingDtoTransactionTracking: ToDomainMapper<TransactionTrackingDto, TransactionTracking> = (
   input: TransactionTrackingDto

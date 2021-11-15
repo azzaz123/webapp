@@ -1,12 +1,13 @@
-import { TransactionTrackingAction } from './transaction-tracking-action.interface';
-import { TransactionTrackingAnalytics } from './transaction-tracking-analytics.interface';
-import { TransactionTrackingShippingStatus } from './transaction-tracking-shipping-status.interface';
-import { TransactionTrackingStatusInfo } from './transaction-tracking-status-info.interface';
+import {
+  TransactionTrackingAnalytics,
+  TransactionTrackingHeader,
+  TransactionTrackingShippingStatus,
+  TransactionTrackingStatusInfo,
+} from '@api/core/model/delivery/transaction/tracking';
 
 export interface TransactionTracking {
   analytics?: TransactionTrackingAnalytics;
-  header: TransactionTrackingAction;
+  header: TransactionTrackingHeader;
   shippingStatus: TransactionTrackingShippingStatus;
   statusInfo: TransactionTrackingStatusInfo[];
-  title: string;
 }

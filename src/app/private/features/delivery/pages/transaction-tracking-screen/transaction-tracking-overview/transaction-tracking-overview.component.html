@@ -1,0 +1,3 @@
+<div *ngIf="transactionTrackingInfo$ | async as info">
+  <tsl-transaction-tracking-header [transactionTrackingHeader]="info.header"></tsl-transaction-tracking-header>
+</div>

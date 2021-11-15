@@ -1,4 +1,4 @@
-<div ngbDropdown class="d-inline-block dropdown" placement="bottom-right">
+<div ngbDropdown class="d-inline-block dropdown position-static" placement="bottom-right">
   <a ngbDropdownToggle class="dropdown-header">{{selected?.label}} <tsl-svg-icon src="/assets/icons/caret.svg"></tsl-svg-icon></a>
   <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
     <button class="dropdown-item" *ngFor="let item of items" (click)="selectItem(item)"

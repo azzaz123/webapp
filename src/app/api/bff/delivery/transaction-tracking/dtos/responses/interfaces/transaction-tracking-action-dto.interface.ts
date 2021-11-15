@@ -1,6 +1,8 @@
-import { TransactionTrackingActionStateDto } from '../types/transaction-tracking-action-state-dto.type';
-import { TransactionTrackingActionStyleDto } from '../types/transaction-tracking-action-style-dto.type';
-import { TransactionTrackingActionDetailDto } from './transaction-tracking-action-detail-dto.interface';
+import {
+  TransactionTrackingActionDetailDto,
+  TransactionTrackingActionStateDto,
+  TransactionTrackingActionStyleDto,
+} from '@api/bff/delivery/transaction-tracking/dtos/responses';
 
 export interface TransactionTrackingActionDto {
   action: TransactionTrackingActionDetailDto;
