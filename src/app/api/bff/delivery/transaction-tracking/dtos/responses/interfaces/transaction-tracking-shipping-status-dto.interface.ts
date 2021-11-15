@@ -1,0 +1,14 @@
+import { TransactionTrackingActionDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+
+export interface TransactionTrackingShippingStatusDto {
+  actions: TransactionTrackingActionDto[];
+  animation: TransactionTrackingAnimationDto;
+  description: string;
+  title: string;
+}
+
+export interface TransactionTrackingAnimationDto {
+  mode: TransactionTrackingAnimationModeDto;
+  url: string;
+}
+export type TransactionTrackingAnimationModeDto = 'normal' | 'loop' | 'loop_reverse';

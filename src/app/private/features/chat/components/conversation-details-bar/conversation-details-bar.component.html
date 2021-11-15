@@ -69,7 +69,7 @@
 
     <tsl-svg-icon class="menu-icon" src="/assets/icons/menu.svg" ngbDropdownToggle></tsl-svg-icon>
     <div ngbDropdownMenu>
-      <button *ngxPermissionsOnly="['isNormal']" class="dropdown-item" (click)="archiveConversation()"
+      <button *ngxPermissionsExcept="['isProfessional']" class="dropdown-item" (click)="archiveConversation()"
               i18n="@@web_delete_conversation" [hidden]="currentConversationIsArchived()">Delete conversation</button>
       <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="archiveConversation()"
               i18n="@@web_archive_conversation" [hidden]="currentConversationIsArchived()">Archive conversation</button>
