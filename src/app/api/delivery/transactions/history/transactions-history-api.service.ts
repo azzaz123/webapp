@@ -6,7 +6,7 @@ import { ItemService } from '@core/item/item.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { forkJoin, Observable, of } from 'rxjs';
-import { take, map, concatMap } from 'rxjs/operators';
+import { take, map, concatMap, defaultIfEmpty } from 'rxjs/operators';
 import { TransactionsHistoryDto } from './dtos/transactions-history-dto.interface';
 import { TransactionsHistoryHttpService } from './http/transactions-history-http.service';
 import { mapTransactionsHistoryFiltersToApi } from './mappers/requests/transactions-history-filter.mapper';
@@ -47,14 +47,14 @@ export class TransactionsHistoryApiService {
 
   private getAllUsers(response: TransactionsHistoryDto): Observable<User[]> {
     const allUserIds: string[] = this.getUserIds(response);
-    const userRequests = forkJoin(allUserIds.map((id) => this.getUser(id)));
+    const userRequests: Observable<User[]> = forkJoin(allUserIds.map((id) => this.getUser(id))).pipe(defaultIfEmpty(null));
     return userRequests;
   }
 
   private getAllItems(response: TransactionsHistoryDto): Observable<Item[]> {
     const allItemIds: string[] = this.getItemIds(response);
-    const itemRequests = forkJoin(allItemIds.map((id) => this.getItem(id)));
-    return itemRequests;
+    const itemRequests = forkJoin(allItemIds.map((id) => this.getItem(id))).pipe(defaultIfEmpty(null));
+    return allItemIds.length === 0 ? of([]) : itemRequests;
   }
 
   private getUser(userId: string): Observable<User> {
