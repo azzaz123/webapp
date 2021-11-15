@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TransactionTrackingGeneralInfoComponent } from './transaction-tracking-general-info.component';
 import { ButtonModule } from '@shared/button/button.module';
 import { LottieModule } from '@shared/lottie/lottie.module';
-import { MOCK_TRANSACTION_TRACKING_GENERAL_INFO } from '@fixtures/private/delivery/TTS/transaction-tracking-general-info.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 
 export default {
   title: 'Webapp/Private/Features/Delivery/Components/TransactionTrackingGeneralInfo',
@@ -20,11 +20,10 @@ const Template: Story<TransactionTrackingGeneralInfoComponent> = (args: Transact
     declarations: [TransactionTrackingGeneralInfoComponent],
     imports: [CommonModule, ButtonModule, LottieModule, HttpClientModule],
   },
-  template:
-    '<tsl-transaction-tracking-general-info [transactionTrackingGeneralInfo]="transactionTrackingGeneralInfo"></tsl-transaction-tracking-general-info>',
+  template: '<tsl-transaction-tracking-general-info [shippingStatus]="shippingStatus"></tsl-transaction-tracking-general-info>',
 });
 
 export const Default = Template.bind({});
 Default.args = {
-  transactionTrackingGeneralInfo: MOCK_TRANSACTION_TRACKING_GENERAL_INFO,
+  shippingStatus: MOCK_TRANSACTION_TRACKING.shippingStatus,
 };

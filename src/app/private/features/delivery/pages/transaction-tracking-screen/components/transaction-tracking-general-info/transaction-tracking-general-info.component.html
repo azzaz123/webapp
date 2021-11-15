@@ -1,4 +1,4 @@
-<div *ngIf="transactionTrackingGeneralInfo as info" class="TrackingGeneral d-flex flex-column text-center align-items-center">
+<div *ngIf="shippingStatus as info" class="TrackingGeneral d-flex flex-column text-center align-items-center">
   <div class="TrackingGeneral__lottieContainer mb-4">
     <tsl-lottie [src]="info.animation.url" [loop]="info.animation.isLoop"></tsl-lottie>
   </div>
@@ -9,7 +9,7 @@
     class="TrackingGeneral__actionButton"
     className="btn-block {{ action.style.className }}"
     [disabled]="action.state.isDisabled"
-    (click)="buttonClick.emit(action)"
+    (click)="manageAction(action)"
     >{{ action.title }}</tsl-button
   >
 </div>
