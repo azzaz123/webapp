@@ -7,7 +7,7 @@ import { ExperimentationService } from '@core/experimentation/services/experimen
 import { OPTIMIZE_EXPERIMENTS } from '@core/experimentation/vendors/optimize/resources/optimize-experiment-ids';
 import { AdSlotComponent } from '@shared/ads/ad-slot/ad-slot.component';
 import { combineLatest } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 
 @Directive({
   selector: '[tslAdSlotGroup]',
@@ -20,6 +20,7 @@ export class AdSlotGroupDirective implements AfterContentInit {
   public ngAfterContentInit(): void {
     combineLatest([this.experimentationService.experimentReady$, this.slotsQuery.changes.pipe(take(1))])
       .pipe(
+        filter(([experimentationReady, components]: [boolean, AdSlotComponent[]]) => experimentationReady),
         map(([_, components]: [boolean, AdSlotComponent[]]) => {
           return components;
         })
