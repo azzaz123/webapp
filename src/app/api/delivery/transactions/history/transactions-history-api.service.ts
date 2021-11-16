@@ -53,8 +53,8 @@ export class TransactionsHistoryApiService {
 
   private getAllItems(response: TransactionsHistoryDto): Observable<Item[]> {
     const allItemIds: string[] = this.getItemIds(response);
-    const itemRequests = forkJoin(allItemIds.map((id) => this.getItem(id))).pipe(defaultIfEmpty(null));
-    return allItemIds.length === 0 ? of([]) : itemRequests;
+    const itemRequests: Observable<Item[]> = forkJoin(allItemIds.map((id) => this.getItem(id))).pipe(defaultIfEmpty(null));
+    return itemRequests;
   }
 
   private getUser(userId: string): Observable<User> {
