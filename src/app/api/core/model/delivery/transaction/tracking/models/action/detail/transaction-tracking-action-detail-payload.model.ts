@@ -17,8 +17,6 @@ import {
   TransactionTrackingActionDetailPayloadUserActionDto,
 } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-payload-dtos.interface';
 import { TransactionTrackingActionDetailPayloadDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-dto.interface';
-import { APP_LOCALE } from '@configs/subdomains.config';
-import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
 
 export class TransactionTrackingActionDetailPayloadModel implements TransactionTrackingActionDetailPayload {
   banner: TransactionTrackingActionDetailPayloadBanner;
@@ -43,16 +41,6 @@ export class TransactionTrackingActionDetailPayloadModel implements TransactionT
     this.title = this.getTitleFromCarrierTrackingWebview(actionDetailPayloadDto) || this.getTitleFromDialog(actionDetailPayloadDto);
   }
 
-  public getHelpArticleUrl(locale: APP_LOCALE): string {
-    const HELP_LOCALE = HELP_LOCALE_BY_APP_LOCALE[locale];
-    const regExp: RegExp = new RegExp(/[?&]z=([^&]+).*$/);
-    const matches = this.linkUrl.match(regExp);
-    if (!!matches && matches.length >= 0 && matches[0].length >= 4) {
-      const article: string = matches[0].substring(3);
-      return `${CUSTOMER_HELP_SITE_BASE.DEFAULT}${HELP_LOCALE}/articles/${article}`;
-    }
-    return null;
-  }
   private getBanner(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): TransactionTrackingActionDetailPayloadBannerModel {
     const payload = actionDetailPayloadDto as TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto;
     return !!payload.banner ? new TransactionTrackingActionDetailPayloadBannerModel(payload) : undefined;
