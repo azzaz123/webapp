@@ -25,9 +25,16 @@ export const MOCK_USER_VERIFICATIONS_MAPPED: UserVerifications = {
   google_plus: false,
 };
 
-export const MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED: UserVerifications = {
+export const MOCK_USER_VERIFICATIONS_PHONE_VERIFIED: UserVerifications = {
   email: true,
   phone: true,
+  facebook: false,
+  google_plus: false,
+};
+
+export const MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED: UserVerifications = {
+  email: true,
+  phone: false,
   facebook: false,
   google_plus: false,
 };

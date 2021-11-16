@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+import { REDIRECT_SECRET } from '@core/user/logged.guard';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MODAL_ACTION, ProModalConfig } from './pro-modal.interface';
+import { MODAL_ACTION, ProModalConfig, REDIRECT_TYPE } from './pro-modal.interface';
 
 @Component({
   selector: 'tsl-pro-modal',
@@ -8,8 +9,9 @@ import { MODAL_ACTION, ProModalConfig } from './pro-modal.interface';
   styleUrls: ['./pro-modal.component.scss'],
 })
 export class ProModalComponent {
-  modalConfig: ProModalConfig;
+  public modalConfig: ProModalConfig;
   public readonly MODAL_ACTION = MODAL_ACTION;
+  public readonly REDIRECT_TYPE = REDIRECT_TYPE;
 
   constructor(private activeModal: NgbActiveModal) {}
 

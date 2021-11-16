@@ -17,6 +17,8 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Router } from '@angular/router';
 import { EventService } from '../../../core/event/event.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
+import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
 
 describe('CatalogItemActionsComponent', () => {
   let component: CatalogItemActionsComponent;
@@ -63,6 +65,10 @@ describe('CatalogItemActionsComponent', () => {
             useValue: {
               navigate() {},
             },
+          },
+          {
+            provide: ListingLimitService,
+            useClass: ListingLimitServiceMock,
           },
           EventService,
         ],

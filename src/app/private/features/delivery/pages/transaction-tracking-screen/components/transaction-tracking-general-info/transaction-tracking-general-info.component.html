@@ -1,0 +1,15 @@
+<div *ngIf="shippingStatus as info" class="TrackingGeneralInfo d-flex flex-column text-center align-items-center">
+  <div class="TrackingGeneralInfo__lottieContainer mb-4">
+    <tsl-lottie [src]="info.animation.url" [loop]="info.animation.isLoop"></tsl-lottie>
+  </div>
+  <span class="TrackingGeneralInfo__title TrackingGeneralInfo__text mb-3">{{ info.title }}</span>
+  <div id="shippingStatusDescription" class="TrackingGeneralInfo__text mb-3" [innerHTML]="descriptionByPass"></div>
+  <tsl-button
+    *ngFor="let action of info.actions"
+    class="TrackingGeneralInfo__actionButton"
+    className="btn-block {{ action.style.className }}"
+    [disabled]="action.state.isDisabled"
+    (click)="manageAction(action.action)"
+    >{{ action.title }}</tsl-button
+  >
+</div>

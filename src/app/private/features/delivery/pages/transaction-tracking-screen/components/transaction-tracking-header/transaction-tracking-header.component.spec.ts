@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MOCK_TRANSACTION_TRACKING_INFO } from '@fixtures/private/delivery/transaction-tracking-screen/transaction-tracking-info.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
@@ -31,7 +31,7 @@ describe('TransactionTrackingHeaderComponent', () => {
     transactionTrackingActionsService = TestBed.inject(TransactionTrackingActionsService);
     location = TestBed.inject(Location);
     de = fixture.debugElement;
-    component.transactionTrackingHeader = MOCK_TRANSACTION_TRACKING_INFO.header;
+    component.transactionTrackingHeader = MOCK_TRANSACTION_TRACKING.header;
     fixture.detectChanges();
   });
 
@@ -50,7 +50,7 @@ describe('TransactionTrackingHeaderComponent', () => {
       it('should have the receieved title', () => {
         const title: HTMLElement = de.query(By.css('#headerTitle')).nativeElement;
 
-        expect(title.textContent).toStrictEqual(MOCK_TRANSACTION_TRACKING_INFO.header.title);
+        expect(title.textContent).toStrictEqual(MOCK_TRANSACTION_TRACKING.header.title);
       });
 
       describe('and we click on the go back button...', () => {
@@ -66,11 +66,11 @@ describe('TransactionTrackingHeaderComponent', () => {
 
       describe('the action button...', () => {
         it('should have the received title', () => {
-          expect(headerActionButton.nativeElement.textContent).toEqual(MOCK_TRANSACTION_TRACKING_INFO.header.detail.title);
+          expect(headerActionButton.nativeElement.textContent).toEqual(MOCK_TRANSACTION_TRACKING.header.detail.title);
         });
 
         it('should have the received state', () => {
-          expect(headerActionButton.componentInstance.disabled).toBe(MOCK_TRANSACTION_TRACKING_INFO.header.detail.state.isDisabled);
+          expect(headerActionButton.componentInstance.disabled).toBe(MOCK_TRANSACTION_TRACKING.header.detail.state.isDisabled);
         });
       });
 
@@ -81,7 +81,7 @@ describe('TransactionTrackingHeaderComponent', () => {
           headerActionButton.nativeElement.click();
 
           expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledTimes(1);
-          expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING_INFO.header.detail.action);
+          expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING.header.detail.action);
         });
       });
     });
