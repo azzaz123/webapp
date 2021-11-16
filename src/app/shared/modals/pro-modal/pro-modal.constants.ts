@@ -10,6 +10,7 @@ export enum PRO_MODAL_TYPE {
   listing_limit_no_trial_no_discount,
   listing_limit_trial,
   listing_limit_discount,
+  profile_pro_fields,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -109,6 +110,25 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     buttons: {
       secondary: { text: $localize`:@@listing_limit_non_pro_users_discount_or_no_free_trial_modal_dismiss_button:Leave as inactive` },
       primary: { text: null, redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` } },
+    },
+  },
+  [PRO_MODAL_TYPE.profile_pro_fields]: {
+    img: '/assets/icons/pro/modals/pro-fields.svg',
+    title: $localize`:@@web_suggest_pro_modal_description_plans:Choose a plan and take advantage of Wallapop PRO benefits.`,
+    text1: null,
+    textList: [
+      $localize`:@@web_profile_modal_become_pro_231:Your products will be seen more: they will be in the first position of the searches`,
+      $localize`:@@web_profile_modal_become_pro_232:Buyers can save your shop/profile as a favorite`,
+      $localize`:@@web_profile_modal_become_pro_233:Buyers will be able to see your phone and website in your profile for easy contact`,
+      $localize`:@@web_profile_modal_become_pro_234:You will have a description of your store or service and its location`,
+      $localize`:@@web_profile_modal_become_pro_235:Your profile will have a different design and will stand out!`,
+      $localize`:@@web_profile_modal_become_pro_236:Your items won't expire`,
+    ],
+    buttons: {
+      primary: {
+        text: $localize`:@@web_see_plans:See plans`,
+        redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
+      },
     },
   },
 };
