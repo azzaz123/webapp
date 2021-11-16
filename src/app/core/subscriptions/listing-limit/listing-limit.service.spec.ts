@@ -388,7 +388,7 @@ describe('ListingLimitService', () => {
               expect(analyticsService.trackPageView).toBeCalledWith(event);
             });
           });
-          describe('and has not discount or free triel', () => {
+          describe('and has not discount or free trial', () => {
             beforeEach(() => {
               spyOn(subscriptionsService, 'getSubscriptionByCategory').and.returnValue(
                 MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS
