@@ -13,6 +13,7 @@ export const OTHER_USER_ID = 'qxkmav12tp8f';
 export const MICRO_NAME = 'String S.';
 export const ACCESS_TOKEN = 'bS7D7d26UordM5M0uy5o4IisuyrPz35mfxfpw7PLRqQfzouQGXGpQtyZWFRRDdRFFT5fJZ';
 export const USER_EMAIL = 'test@test.it';
+export const USER_PHONE = '+34935500996';
 
 export const IMAGE: Image = {
   id: '9jd7ryx5odjk',
@@ -123,6 +124,7 @@ export const USER_DATA: UserResponse = {
   email: USER_EMAIL,
   featured: true,
   extra_info: USER_EXTRA_INFO,
+  phone: USER_PHONE,
 };
 
 export const MOCK_NON_FEATURED_USER_RESPONSE: UserResponse = {
@@ -208,6 +210,33 @@ export const MOCK_OTHER_USER: User = new User(
 );
 
 export const MOCK_FULL_USER = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  USER_DATA.received_reports,
+  USER_DATA.web_slug,
+  USER_DATA.first_name,
+  USER_DATA.last_name,
+  USER_DATA.birth_date,
+  USER_DATA.gender,
+  USER_DATA.email,
+  USER_DATA.featured,
+  USER_DATA.extra_info,
+  null,
+  null,
+  USER_DATA.phone
+);
+
+export const MOCK_FULL_USER_WITHOUT_PHONE = new User(
   USER_DATA.id,
   USER_DATA.micro_name,
   USER_DATA.image,

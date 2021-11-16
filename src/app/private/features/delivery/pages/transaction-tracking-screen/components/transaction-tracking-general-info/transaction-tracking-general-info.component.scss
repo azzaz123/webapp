@@ -1,0 +1,25 @@
+@import '~style/common';
+
+.TrackingGeneralInfo {
+  background-color: $white;
+  padding: $spacer * 2;
+
+  &__lottieContainer {
+    border-radius: $border-radius * 2;
+    width: 224px;
+    height: 112px;
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__text {
+    color: $blue-grey-1;
+  }
+
+  &__actionButton {
+    width: 200px;
+  }
+}
