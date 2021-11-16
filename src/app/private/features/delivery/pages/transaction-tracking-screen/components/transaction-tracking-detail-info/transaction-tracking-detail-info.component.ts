@@ -21,4 +21,10 @@ export class TransactionTrackingDetailInfoComponent implements OnInit {
   ngOnInit() {
     this.descriptionByPass = this.sanitizer.bypassSecurityTrustHtml(this.transactionTrackingInfo.description);
   }
+
+  public emitActionClick(): void {
+    if (this.isClickableAction) {
+      this.actionClick.emit();
+    }
+  }
 }

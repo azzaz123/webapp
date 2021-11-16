@@ -15,7 +15,7 @@
     class="TrackingDetailInfo__descriptionWrapper overflow-hidden mr-3"
     [innerHTML]="descriptionByPass"
     [ngClass]="{ 'TrackingDetailInfo__descriptionWrapper--clickable': isClickableAction }"
-    (click)="actionClick.emit()"
+    (click)="emitActionClick()"
   ></div>
   <tsl-svg-icon
     *ngIf="info.showCaret"

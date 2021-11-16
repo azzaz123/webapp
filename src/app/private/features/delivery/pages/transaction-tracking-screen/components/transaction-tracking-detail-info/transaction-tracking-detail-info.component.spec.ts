@@ -98,6 +98,21 @@ describe('TransactionTrackingDetailInfoComponent', () => {
           shouldApplyCircleImageStyle(false);
         });
       });
+
+      describe('and we NOT specify any style', () => {
+        beforeEach(() => {
+          component.transactionTrackingInfo.iconClassName = 'none';
+          fixture.detectChanges();
+        });
+
+        it('should NOT apply icon round style', () => {
+          shouldApplyRoundedImageStyle(false);
+        });
+
+        it('should NOT apply icon circle style', () => {
+          shouldApplyCircleImageStyle(false);
+        });
+      });
     });
 
     describe('and we specify showing caret', () => {
@@ -131,41 +146,104 @@ describe('TransactionTrackingDetailInfoComponent', () => {
         shouldShowCaret(false);
       });
     });
+
+    describe('and we specify apply border bottom style', () => {
+      it('should apply border bottom style', () => {
+        component.isBorderBottom = true;
+
+        fixture.detectChanges();
+
+        shouldApplyBorderBottomStyle(true);
+      });
+    });
+
+    describe('and we specify NOT apply border bottom style', () => {
+      it('should NOT apply border bottom style', () => {
+        component.isBorderBottom = false;
+
+        fixture.detectChanges();
+
+        shouldApplyBorderBottomStyle(false);
+      });
+    });
+
+    describe('and the action is clickable', () => {
+      beforeEach(() => {
+        component.isClickableAction = true;
+
+        fixture.detectChanges();
+      });
+
+      it('should apply clickable style', () => {
+        shouldApplyClickableActionStyle(true);
+      });
+
+      describe('and we click on the action...', () => {
+        it('should emit click', () => {
+          expectActionClickEmited(true);
+        });
+      });
+    });
+
+    describe('and the action is NOT clickable', () => {
+      beforeEach(() => {
+        component.isClickableAction = false;
+
+        fixture.detectChanges();
+      });
+
+      it('should NOT apply clickable style', () => {
+        shouldApplyClickableActionStyle(false);
+      });
+
+      describe('and we click on the action...', () => {
+        it('should NOT emit click', () => {
+          expectActionClickEmited(false);
+        });
+      });
+    });
   });
 
   function shouldShowImage(shouldBeInTemplate: boolean): void {
-    const icon: DebugElement = de.query(By.css('.TrackingDetailInfo__icon'));
-    if (shouldBeInTemplate) {
-      expect(icon).toBeTruthy();
-    } else {
-      expect(icon).toBeFalsy();
-    }
+    checkIfStyleIsInTemplate('.TrackingDetailInfo__icon', shouldBeInTemplate);
   }
 
   function shouldShowCaret(shouldBeInTemplate: boolean): void {
-    const caretSvg: DebugElement = de.query(By.css('.TrackingDetailInfo__arrowRight'));
-    if (shouldBeInTemplate) {
-      expect(caretSvg).toBeTruthy();
-    } else {
-      expect(caretSvg).toBeFalsy();
-    }
+    checkIfStyleIsInTemplate('.TrackingDetailInfo__arrowRight', shouldBeInTemplate);
   }
 
   function shouldApplyRoundedImageStyle(shouldBeInTemplate: boolean): void {
-    const roundedImageStyles: DebugElement = de.query(By.css('.TrackingDetailInfo__icon--rounded'));
-    if (shouldBeInTemplate) {
-      expect(roundedImageStyles).toBeTruthy();
-    } else {
-      expect(roundedImageStyles).toBeFalsy();
-    }
+    checkIfStyleIsInTemplate('.TrackingDetailInfo__icon--rounded', shouldBeInTemplate);
   }
 
   function shouldApplyCircleImageStyle(shouldBeInTemplate: boolean): void {
-    const circleImageStyles: DebugElement = de.query(By.css('.TrackingDetailInfo__icon--circle'));
+    checkIfStyleIsInTemplate('.TrackingDetailInfo__icon--circle', shouldBeInTemplate);
+  }
+
+  function shouldApplyBorderBottomStyle(shouldBeInTemplate: boolean): void {
+    checkIfStyleIsInTemplate('.TrackingDetailInfo--borderBottom', shouldBeInTemplate);
+  }
+
+  function shouldApplyClickableActionStyle(shouldBeInTemplate: boolean): void {
+    checkIfStyleIsInTemplate('.TrackingDetailInfo__descriptionWrapper--clickable', shouldBeInTemplate);
+  }
+
+  function expectActionClickEmited(shouldBeEmitted: boolean): void {
+    spyOn(component.actionClick, 'emit');
+    const submitButton: HTMLElement = fixture.debugElement.query(By.css('.TrackingDetailInfo__descriptionWrapper')).nativeElement;
+
+    submitButton.click();
+
+    const expectedCalledTimes = shouldBeEmitted ? 1 : 0;
+    expect(component.actionClick.emit).toBeCalledTimes(expectedCalledTimes);
+  }
+
+  function checkIfStyleIsInTemplate(selector: string, shouldBeInTemplate: boolean): void {
+    const borderBottomStyles: DebugElement = de.query(By.css(selector));
     if (shouldBeInTemplate) {
-      expect(circleImageStyles).toBeTruthy();
+      expect(borderBottomStyles).toBeTruthy();
     } else {
-      expect(circleImageStyles).toBeFalsy();
+      expect(borderBottomStyles).toBeFalsy();
     }
   }
 });
