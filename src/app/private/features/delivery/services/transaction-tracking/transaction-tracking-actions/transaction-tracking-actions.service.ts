@@ -1,13 +1,21 @@
-import { Injectable } from '@angular/core';
-import { TransactionTrackingActionDetail } from '@api/core/model/delivery/transaction/tracking';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import {
+  TransactionTrackingActionDetail,
+  TransactionTrackingActionDetailPayloadModel,
+} from '@api/core/model/delivery/transaction/tracking';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 @Injectable()
 export class TransactionTrackingActionsService {
-  constructor() {}
+  constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE) {}
 
   public manageAction(action: TransactionTrackingActionDetail): void {
     if (action.isDeeplink) {
-      // this.navigateToAnExternalPage(action.payload.getArticleUrl(locale));
+      const deeplinkURLMapped = new TransactionTrackingActionDetailPayloadModel(action.payload).getHelpArticleUrl(this.locale);
+      this.navigateToAnExternalPage(deeplinkURLMapped);
+    }
+
+    if (action.isCarrierTrackingWebview) {
       this.navigateToAnExternalPage(action.payload.linkUrl);
     }
   }
