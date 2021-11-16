@@ -98,7 +98,7 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
   ],
 };
 
-export const MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE: HistoricList = {
+export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
   elements: [
     {
       label: '2021',

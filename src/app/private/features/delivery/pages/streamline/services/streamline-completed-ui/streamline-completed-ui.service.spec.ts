@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { HistoricTransaction } from '@api/core/model';
 import { TransactionsHistoryApiService } from '@api/delivery/transactions/history/transactions-history-api.service';
 import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
-import { MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
+import { MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { ReplaySubject } from 'rxjs';
 
@@ -63,7 +63,7 @@ describe('StreamlineCompletedUIService', () => {
 
         service.historicList$.subscribe((data) => (historicList = data));
 
-        expect(JSON.stringify(historicList)).toEqual(JSON.stringify(MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE));
+        expect(JSON.stringify(historicList)).toEqual(JSON.stringify(MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS));
       });
 
       describe('and when server notifies no more items', () => {

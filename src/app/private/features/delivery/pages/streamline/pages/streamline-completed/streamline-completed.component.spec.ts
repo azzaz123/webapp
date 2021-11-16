@@ -6,8 +6,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HistoricElementComponent } from '@shared/historic-list/components/historic-element/historic-element.component';
 import { HistoricListComponent } from '@shared/historic-list/components/historic-list/historic-list.component';
 import {
-  MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE,
   MOCK_HISTORIC_LIST_EMPTY,
+  MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS,
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
 import { HistoricListModule } from '@shared/historic-list/historic-list.module';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
@@ -83,7 +83,7 @@ describe('StreamlineCompletedComponent', () => {
   describe('when server respons with valid answer', () => {
     beforeEach(fakeAsync(() => {
       streamlineCompletedLoadingReplaySubject.next(false);
-      streamlineCompletedHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE);
+      streamlineCompletedHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS);
       tick();
       fixture.detectChanges();
     }));
@@ -95,7 +95,7 @@ describe('StreamlineCompletedComponent', () => {
     });
 
     it('should show as many movements as web context mapped from server', () => {
-      const expectedNumberOfElements: number = countHistoricElementsFromList(MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE);
+      const expectedNumberOfElements: number = countHistoricElementsFromList(MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS);
       const historyDetailsDebugElements = fixture.debugElement.queryAll(By.directive(HistoricElementComponent));
 
       expect(historyDetailsDebugElements.length).toBe(expectedNumberOfElements);
@@ -108,7 +108,7 @@ describe('StreamlineCompletedComponent', () => {
         streamlineCompletedUIServiceGetItemsSpy.calls.reset();
         historicListElement = fixture.debugElement.query(By.directive(HistoricListComponent));
         historicListElement.triggerEventHandler('scrolled', {});
-        streamlineCompletedHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE);
+        streamlineCompletedHistoricListReplaySubject.next(MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS);
         fixture.detectChanges();
       });
 
@@ -119,7 +119,7 @@ describe('StreamlineCompletedComponent', () => {
       it('should display all movements from the server', () => {
         const walletMovements = fixture.debugElement.queryAll(By.directive(HistoricElementComponent));
         const movementsComponentsLength = walletMovements.length;
-        const expectedLength = countHistoricElementsFromList(MOCK_HISTORIC_LIST_FROM_TRANSACTIONS_WITH_CREATION_DATE);
+        const expectedLength = countHistoricElementsFromList(MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS);
 
         expect(movementsComponentsLength).toEqual(expectedLength);
       });
