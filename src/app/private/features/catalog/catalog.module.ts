@@ -22,6 +22,7 @@ import { CatalogItemTrackingEventService } from './core/services/catalog-item-tr
 import { NavLinksModule } from '@shared/nav-links/nav-links.module';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
 import { CatalogManagerApiModule } from '@api/catalog-manager/catalog-manager-api.module';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 
 @NgModule({
   imports: [
@@ -37,7 +38,7 @@ import { CatalogManagerApiModule } from '@api/catalog-manager/catalog-manager-ap
     NavLinksModule,
     CatalogManagerApiModule,
   ],
-  providers: [BumpTutorialService, ItemRequiredDataService, CatalogItemTrackingEventService],
+  providers: [BumpTutorialService, ItemRequiredDataService, CatalogItemTrackingEventService, ListingLimitService],
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
