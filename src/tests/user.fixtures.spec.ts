@@ -310,7 +310,7 @@ export const MOCK_FULL_USER_NON_FEATURED = new User(
 );
 
 export const MOCK_USER_PRO: User = new User(
-  USER_DATA.id,
+  OTHER_USER_ID,
   USER_DATA.micro_name,
   USER_DATA.image,
   USER_DATA.location,
