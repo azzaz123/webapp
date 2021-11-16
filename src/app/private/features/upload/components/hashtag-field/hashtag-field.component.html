@@ -3,12 +3,11 @@
 <div [formGroup]="hashtagForm" class="d-flex HashtagField__form">
 	<div class="HashtagField__search p-3 mr-3" > 
 		<tsl-cancel-bubble *ngFor="let bubble of value" [text]="bubble" class="mr-1 mb-1" (clear)="removeValue(bubble)"></tsl-cancel-bubble>
-		<tsl-multiselect-search-input formControlName="searched" [categoryId]="categoryId" [disabled]="isDisabled"></tsl-multiselect-search-input>
+		<tsl-multiselect-search-input [formControlName]="HASHTAG_TYPE.SEARCHED" [categoryId]="categoryId" [disabled]="isDisabled"></tsl-multiselect-search-input>
 	</div>
 	<div class="HashtagField__suggested">
 		<span class="HashtagField__suggested__title">Sugeridos</span>
-		<tsl-multi-select-form scroll (scrolledToBottom)="suggestionsScrolled()" formControlName="suggested" [reseteable]="false" [options]="suggestedOptions$ | async" ></tsl-multi-select-form>
+		<tsl-multi-select-form scroll (scrolledToBottom)="suggestionsScrolled()" [formControlName]="HASHTAG_TYPE.SUGGESTED" [reseteable]="false" [options]="suggestedOptions$ | async" ></tsl-multi-select-form>
 	</div>
 </div>
-
 

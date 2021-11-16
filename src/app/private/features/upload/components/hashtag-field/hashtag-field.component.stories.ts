@@ -21,7 +21,7 @@ class StoryHashtagFieldComponent {
   @Input() disabled: boolean = false;
   public categoryId: string = '12465';
   public formGroup = new FormGroup({
-    hashtag: new FormControl(['aa', 'ss', 'design', 'airmax']),
+    hashtag: new FormControl(['aa', 'ss', 'zerowastefashion', 'airmax', 'minifalda']),
   });
 
   public options = this.formGroup.value.hashtag;
