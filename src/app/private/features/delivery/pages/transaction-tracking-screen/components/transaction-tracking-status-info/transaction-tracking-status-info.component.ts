@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TransactionTrackingActionDetail, TransactionTrackingStatusInfo } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { TransactionTrackingInfo } from '../../interfaces/transaction-tracking-info.interface';
+import { mapTransactionsTrackingInfo } from '../../mappers/transaction-tracking-info.mapper';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,15 +20,6 @@ export class TransactionTrackingStatusInfoComponent {
   }
 
   public get detailInfoSlots(): TransactionTrackingInfo[] {
-    const propertiesMapped: TransactionTrackingInfo[] = [];
-    this.transactionTrackingStatusInfo.forEach((slot: TransactionTrackingStatusInfo) => {
-      propertiesMapped.push({
-        description: slot.description,
-        iconSrc: slot.icon.url,
-        showCaret: slot.showCaret,
-        iconClassName: slot.icon.style.className,
-      });
-    });
-    return propertiesMapped;
+    return mapTransactionsTrackingInfo(this.transactionTrackingStatusInfo);
   }
 }
