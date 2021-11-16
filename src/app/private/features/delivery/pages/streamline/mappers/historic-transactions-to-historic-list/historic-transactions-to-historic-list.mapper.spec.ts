@@ -6,7 +6,7 @@ import {
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { mapHistoricTransactionsToHistoricList } from './historic-transactions-to-historic-list.mapper';
 
-describe('mapTransactionsWithCreationDateToHistoricList', () => {
+describe('mapHistoricTransactionsToHistoricList', () => {
   describe('when converting historic transactions date to UI web context', () => {
     it('should map to web context', () => {
       let result: HistoricList;
