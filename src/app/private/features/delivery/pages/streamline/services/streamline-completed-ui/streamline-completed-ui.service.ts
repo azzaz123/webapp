@@ -10,7 +10,7 @@ import { mapHistoricTransactionsToHistoricList } from '../../mappers/historic-tr
 export class StreamlineCompletedUIService {
   private initialLoad: boolean = true;
   private currentPage: number = 0;
-  private nextPage: number = this.currentPage.valueOf() + 1;
+  private nextPage: number = this.currentPage + 1;
   private requestedHistoricTransactionsDate: HistoricTransaction[] = [];
   private _loading: boolean = false;
   private subscriptions: Subscription[] = [];
@@ -90,6 +90,6 @@ export class StreamlineCompletedUIService {
 
   private calculateNextPage(response: HistoricTransaction[]): number | null {
     const isResponseEmpty: boolean = response.length === 0;
-    return isResponseEmpty ? null : this.currentPage.valueOf() + 1;
+    return isResponseEmpty ? null : this.currentPage + 1;
   }
 }
