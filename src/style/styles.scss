@@ -16,7 +16,7 @@
 @import './components/components';
 @import '~web-styleguide/scss/fonts';
 
-html { 
+html {
   height: 100%;
 }
 
@@ -94,14 +94,8 @@ body {
 }
 
 .page-content {
-  padding-left: $sidebar-width;
-  padding-top: $topbar-height;
   background: $main-background-color;
-  min-height: 100%;
-  @include media-breakpoint-down(md) {
-    padding-left: 0;
-    padding-bottom: $tabbar-height;
-  }
+  height: 100%;
   > .container {
     padding-top: $spacing-xl;
     padding-bottom: $spacing-xl;
@@ -138,10 +132,6 @@ textarea {
 .modal-transparent .modal-dialog .modal-content {
   background-color: transparent;
   box-shadow: none;
-}
-
-tsl-topbar {
-  position: sticky;
 }
 
 nav {
