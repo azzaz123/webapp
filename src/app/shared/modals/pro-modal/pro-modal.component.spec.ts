@@ -1,11 +1,13 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { ButtonComponent } from '@shared/button/button.component';
 
 import { ProModalComponent } from './pro-modal.component';
-import { MODAL_ACTION } from './pro-modal.interface';
+import { MODAL_ACTION, REDIRECT_TYPE } from './pro-modal.interface';
 
 @Component({
   selector: 'tsl-svg-icon',
@@ -35,6 +37,7 @@ describe('ProModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ProModalComponent, MockSvgIconComponent, ButtonComponent],
+      imports: [RouterTestingModule],
       providers: [
         {
           provide: NgbActiveModal,
@@ -103,7 +106,7 @@ describe('ProModalComponent', () => {
     it('should show primary button text ', () => {
       const button: HTMLElement = fixture.debugElement.query(By.css('.btn-primary')).nativeElement;
 
-      expect(button.textContent).toEqual(mockData.buttons.primary.text);
+      expect(button.textContent.trim()).toEqual(mockData.buttons.primary.text);
     });
     describe('and click on primary button', () => {
       beforeEach(() => {
@@ -113,6 +116,72 @@ describe('ProModalComponent', () => {
         button.click();
       });
       it('should close modal', () => {
+        expect(activeModal.close).toHaveBeenCalledTimes(1);
+        expect(activeModal.close).toHaveBeenCalledWith(MODAL_ACTION.PRIMARY_BUTTON);
+      });
+    });
+    describe('and has external link', () => {
+      beforeEach(() => {
+        spyOn(activeModal, 'close').and.callThrough();
+        component.modalConfig = {
+          ...mockData,
+          buttons: {
+            primary: {
+              text: 'primaryText',
+              redirect: {
+                type: REDIRECT_TYPE.href,
+                url: 'wallapop.com',
+              },
+            },
+          },
+        };
+        fixture.detectChanges();
+      });
+      it('should have link', () => {
+        const link = fixture.debugElement.query(By.css('a'));
+
+        expect(link.attributes['href']).toEqual(component.modalConfig.buttons.primary.redirect.url);
+      });
+
+      it('should close modal', () => {
+        const button: HTMLElement = fixture.debugElement.query(By.css('.btn-primary')).nativeElement;
+
+        button.click();
+
+        expect(activeModal.close).toHaveBeenCalledTimes(1);
+        expect(activeModal.close).toHaveBeenCalledWith(MODAL_ACTION.PRIMARY_BUTTON);
+      });
+    });
+
+    describe('and has internal link', () => {
+      beforeEach(() => {
+        spyOn(activeModal, 'close').and.callThrough();
+        component.modalConfig = {
+          ...mockData,
+          buttons: {
+            primary: {
+              text: 'primaryText',
+              redirect: {
+                type: REDIRECT_TYPE.routerLink,
+                url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
+              },
+            },
+          },
+        };
+
+        fixture.detectChanges();
+      });
+      it('should have link', () => {
+        const link = fixture.debugElement.query(By.css('a'));
+
+        expect(link.attributes['href']).toEqual(component.modalConfig.buttons.primary.redirect.url);
+      });
+
+      it('should close modal', () => {
+        const button: HTMLElement = fixture.debugElement.query(By.css('.btn-primary')).nativeElement;
+
+        button.click();
+
         expect(activeModal.close).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalledWith(MODAL_ACTION.PRIMARY_BUTTON);
       });
