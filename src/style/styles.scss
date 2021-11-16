@@ -93,13 +93,9 @@ body {
   display: block !important;
 }
 
-.page-content {
-  background: $main-background-color;
-  height: 100%;
-  > .container {
-    padding-top: $spacing-xl;
-    padding-bottom: $spacing-xl;
-  }
+.page-content > .container {
+  padding-top: $spacing-xl;
+  padding-bottom: $spacing-xl;
 }
 
 button,
