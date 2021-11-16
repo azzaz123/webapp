@@ -1,9 +1,13 @@
 @import '~style/common';
 
-.TabBar {
-  position: fixed;
-  display: flex;
+:host {
+  position: sticky;
   bottom: 0;
+  width: 100%;
+}
+
+.TabBar {
+  display: flex;
   background-color: $white;
   z-index: $tabbar-z-index;
   border-top: 1px solid $blue-grey-5;

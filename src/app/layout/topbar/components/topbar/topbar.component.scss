@@ -1,9 +1,9 @@
 @import '~style/common';
 
 :host {
+  position: sticky;
   height: $topbar-height;
   background-color: $white;
-  position: fixed;
   top: 0;
   border-bottom: 1px solid;
   border-color: transparentize($blue-grey-4, 0.5);
