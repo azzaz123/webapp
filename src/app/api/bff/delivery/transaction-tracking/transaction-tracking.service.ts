@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
+import { mapTransactionTrackingDetailsDtoTransactionTrackingDetails } from '@api/bff/delivery/transaction-tracking/mappers/responses/details/transaction-tracking-details.mapper';
 import { mapTransactionTrackingDtoTransactionTracking } from '@api/bff/delivery/transaction-tracking/mappers/responses/transaction-tracking.mapper';
-import { TransactionTracking } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 
 import { map } from 'rxjs/operators';
@@ -16,6 +17,6 @@ export class TransactionTrackingService {
   }
 
   public getDetails(requestId: string): Observable<TransactionTrackingDetails> {
-    return this.transactionTrackingHttpService.getDetails(requestId).pipe(map(mapTransactionTrackingDetails));
+    return this.transactionTrackingHttpService.getDetails(requestId).pipe(map(mapTransactionTrackingDetailsDtoTransactionTrackingDetails));
   }
 }

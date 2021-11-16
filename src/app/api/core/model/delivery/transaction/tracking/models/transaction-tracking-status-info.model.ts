@@ -17,7 +17,9 @@ export class TransactionTrackingStatusInfoModel implements TransactionTrackingSt
   showCaret: boolean;
 
   constructor(statusInfoDto: TransactionTrackingStatusInfoDto) {
-    this.action = new TransactionTrackingActionDetailModel(statusInfoDto.action);
+    if (statusInfoDto.action) {
+      this.action = new TransactionTrackingActionDetailModel(statusInfoDto.action);
+    }
     this.description = statusInfoDto.description;
     this.icon = new TransactionTrackingStatusInfoIconModel(statusInfoDto.icon);
     this.showCaret = this.isShowCaret(statusInfoDto.action_icon);
