@@ -22,7 +22,7 @@ export class UserCoverComponent implements OnChanges {
     if (changes && changes.imageCoverUrl && typeof changes.imageCoverUrl.currentValue === 'object') {
       this.uploadedCover = changes.imageCoverUrl.currentValue;
     } else if (this.user) {
-      this.avatar = this.user.coverImage ? this.user.coverImage.urls_by_size.medium : PLACEHOLDER_COVER;
+      this.avatar = this.user.coverImage ? this.user.coverImage.urls_by_size.xlarge : PLACEHOLDER_COVER;
       if (environment.production || environment.name === 'beta') {
         this.avatar = this.avatar.replace(/^http:\/\//i, 'https://');
       }
