@@ -16,10 +16,13 @@
 @import './components/components';
 @import '~web-styleguide/scss/fonts';
 
+html { 
+  height: 100%;
+}
+
 html,
 body {
   font-size: $font-size-base-walla;
-  height: 100%;
   &.blocked-page {
     overflow: hidden;
   }
@@ -29,6 +32,7 @@ body {
   font-family: $wallie, Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100%;
 
   & > iframe {
     display: none;
