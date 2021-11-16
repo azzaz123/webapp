@@ -1,6 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { of } from 'rxjs';
 
@@ -15,6 +17,27 @@ describe('TransactionTrackingOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingOverviewComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => '123',
+              },
+            },
+          },
+        },
+
+        {
+          provide: TransactionTrackingService,
+          useValue: {
+            get() {
+              return of(MOCK_TRANSACTION_TRACKING);
+            },
+          },
+        },
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
