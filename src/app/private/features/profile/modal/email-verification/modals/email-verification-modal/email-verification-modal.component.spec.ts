@@ -2,6 +2,7 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
+import { USER_EMAIL } from '@fixtures/user.fixtures.spec';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
@@ -21,6 +22,7 @@ describe('EmailVerificationModalComponent', () => {
   let activeModal: NgbActiveModal;
   let modalService: NgbModal;
   let verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService;
+  const componentInstance: any = {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -42,7 +44,7 @@ describe('EmailVerificationModalComponent', () => {
             open() {
               return {
                 result: Promise.resolve(),
-                componentInstance: {},
+                componentInstance: componentInstance,
               };
             },
           },
@@ -64,6 +66,7 @@ describe('EmailVerificationModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EmailVerificationModalComponent);
     component = fixture.componentInstance;
+    component.email = USER_EMAIL;
     fixture.detectChanges();
     spyOn(activeModal, 'close').and.callThrough();
     spyOn(activeModal, 'dismiss').and.callThrough();
@@ -104,12 +107,21 @@ describe('EmailVerificationModalComponent', () => {
         verifyButton.click();
         fixture.detectChanges();
       });
-      it('should close the current modal and open the thanks email modal', () => {
+      it('should close the current modal and open the thanks email modal  with the corresponding copies', () => {
+        component['modalRef'] = <any>{
+          componentInstance: componentInstance,
+        };
+
         expect(activeModal.close).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
         expect(modalService.open).toHaveBeenCalledWith(EmailThanksModalComponent, {
           windowClass: 'modal-standard',
         });
+        expect(component['modalRef'].componentInstance.copies.title).toBe('Thank you!');
+        expect(component['modalRef'].componentInstance.copies.description).toBe(
+          `We have sent a verification email to ${USER_EMAIL}. Access your mailbox and follow the steps to verify your email.`
+        );
+        expect(component['modalRef'].componentInstance.copies.button).toBe('Understood');
       });
       it('should track the start email verification process', () => {
         expect(verificationsNSecurityTrackingEventsService.trackStartEmailVerificationProcessEvent).toHaveBeenCalledTimes(1);

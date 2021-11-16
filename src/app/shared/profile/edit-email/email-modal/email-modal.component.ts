@@ -38,7 +38,7 @@ export class EmailModalComponent {
           });
           modalRef.componentInstance.copies = {
             title: $localize`:@@change_email_all_users_system_alert_how_to_verify_title:Thank you!`,
-            description: $localize`:@@change_email_all_users_system_alert_how_to_verify_description:We have sent a verification email to ${email}:INTERPOLATION:%. Access your mailbox and follow the steps to verify your email.`,
+            description: $localize`:@@change_email_all_users_system_alert_how_to_verify_description:We have sent a verification email to ${email}:INTERPOLATION:. Access your mailbox and follow the steps to verify your email.`,
             button: $localize`:@@change_email_all_users_system_alert_how_to_verify_button:Understood`,
           };
         },

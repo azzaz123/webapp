@@ -31,7 +31,7 @@ export class EmailVerificationModalComponent {
       const modalRef: NgbModalRef = this.openModal(EmailThanksModalComponent);
       modalRef.componentInstance.copies = {
         title: $localize`:@@email_verification_all_users_system_modal_title:Thank you!`,
-        description: $localize`:@@email_verification_all_users_system_modal_description:We have sent a verification email to ${this.email}:INTERPOLATION:%. Access your mailbox and follow the steps to verify your email.`,
+        description: $localize`:@@email_verification_all_users_system_modal_description:We have sent a verification email to ${this.email}:INTERPOLATION:. Access your mailbox and follow the steps to verify your email.`,
         button: $localize`:@@email_verification_all_users_system_modal_ok_button:Understood`,
       };
     });
