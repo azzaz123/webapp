@@ -79,8 +79,7 @@ export const MOCK_TRANSACTION_TRACKING_DTO_RESPONSE: TransactionTrackingDto = {
     },
     {
       icon: {
-        url:
-          'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
+        url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
         thumbnail_url:
           'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
         style: 'none',
@@ -121,8 +120,7 @@ export const MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS_DTO_RESPONSE: TransactionT
     description:
       'Tu compra te espera en el punto de recogida situado en <strong>Via XXIV Maggio 76, 03037, Pontecorvo</strong>.<br><br>La fecha límite de recogida es el <strong>04/09/2021</strong>. Superado el plazo, será devuelto al vendedor y la transacción se cancelará.',
     animation: {
-      url:
-        'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/shipping_status_available_for_the_recipient_carrier_office_delivery_buyer_animation.json',
+      url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/shipping_status_available_for_the_recipient_carrier_office_delivery_buyer_animation.json',
       mode: 'loop',
     },
     actions: [
@@ -182,8 +180,7 @@ export const MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS_DTO_RESPONSE: TransactionT
     },
     {
       icon: {
-        url:
-          'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
+        url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
         thumbnail_url:
           'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
         style: 'none',
@@ -228,8 +225,7 @@ export const MOCK_TRANSACTION_TRACKING_WITH_SUCCESS_DTO_RESPONSE: TransactionTra
     description:
       'Tu compra te espera en el punto de recogida situado en <strong>Via XXIV Maggio 76, 03037, Pontecorvo</strong>.<br><br>La fecha límite de recogida es el <strong>04/09/2021</strong>. Superado el plazo, será devuelto al vendedor y la transacción se cancelará.',
     animation: {
-      url:
-        'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/shipping_status_available_for_the_recipient_carrier_office_delivery_buyer_animation.json',
+      url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/shipping_status_available_for_the_recipient_carrier_office_delivery_buyer_animation.json',
       mode: 'loop',
     },
     actions: [
@@ -293,8 +289,7 @@ export const MOCK_TRANSACTION_TRACKING_WITH_SUCCESS_DTO_RESPONSE: TransactionTra
     },
     {
       icon: {
-        url:
-          'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
+        url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
         thumbnail_url:
           'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
         style: 'circle',

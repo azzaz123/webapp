@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -14,7 +14,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingDetailInfoComponent],
-      imports: [SvgIconModule, HttpClientModule],
+      imports: [SvgIconModule, HttpClientTestingModule],
     }).compileComponents();
   });
 

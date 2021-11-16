@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { TransactionTrackingActionDetail, TransactionTrackingHeader } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 
 @Component({
@@ -8,8 +9,7 @@ import { TransactionTrackingActionsService } from '@private/features/delivery/se
   styleUrls: ['./transaction-tracking-header.component.scss'],
 })
 export class TransactionTrackingHeaderComponent {
-  // TODO: to be typed when we have the interface		Date: 2021/11/12
-  @Input() transactionTrackingHeader: any;
+  @Input() transactionTrackingHeader: TransactionTrackingHeader;
 
   constructor(private location: Location, private transactionTrackingActionsService: TransactionTrackingActionsService) {}
 
@@ -17,8 +17,7 @@ export class TransactionTrackingHeaderComponent {
     this.location.back();
   }
 
-  // TODO: type it when we have the interface merged		Date: 2021/11/12
-  public manageAction(action: any): void {
+  public manageAction(action: TransactionTrackingActionDetail): void {
     this.transactionTrackingActionsService.manageAction(action);
   }
 }
