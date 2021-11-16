@@ -248,4 +248,8 @@ $vertical-padding: $spacing-ms;
   &--big {
     height: 50px;
   }
+
+  &--noPadding {
+    padding: 0;
+  }
 }
