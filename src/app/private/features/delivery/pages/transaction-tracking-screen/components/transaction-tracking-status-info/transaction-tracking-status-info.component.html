@@ -3,5 +3,5 @@
   isClickableAction="true"
   isBorderBottom="true"
   [transactionTrackingInfo]="infoSlot"
-  (actionClick)="manageSlotAction(index)"
+  (actionClick)="manageSlotAction(transactionTrackingStatusInfo[index].action)"
 ></tsl-transaction-tracking-detail-info>

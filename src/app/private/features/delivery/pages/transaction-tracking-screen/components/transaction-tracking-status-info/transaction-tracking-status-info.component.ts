@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TransactionTrackingActionDetail, TransactionTrackingStatusInfo } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { TransactionTrackingInfo } from '../../interfaces/transaction-tracking-info.interface';
 
 @Component({
@@ -8,19 +10,17 @@ import { TransactionTrackingInfo } from '../../interfaces/transaction-tracking-i
   styleUrls: ['./transaction-tracking-status-info.component.scss'],
 })
 export class TransactionTrackingStatusInfoComponent {
-  @Input() transactionTrackingStatusInfo: any[];
+  @Input() transactionTrackingStatusInfo: TransactionTrackingStatusInfo[];
 
-  constructor() {}
+  constructor(private transactionTrackingActionsService: TransactionTrackingActionsService) {}
 
-  public manageSlotAction(actionIndex: number): void {
-    // Call to actions service
-
-    console.log('action => ', this.transactionTrackingStatusInfo[actionIndex].action);
+  public manageSlotAction(action: TransactionTrackingActionDetail): void {
+    this.transactionTrackingActionsService.manageAction(action);
   }
 
   public get detailInfoSlots(): TransactionTrackingInfo[] {
     const propertiesMapped: TransactionTrackingInfo[] = [];
-    this.transactionTrackingStatusInfo.forEach((slot: any) => {
+    this.transactionTrackingStatusInfo.forEach((slot: TransactionTrackingStatusInfo) => {
       propertiesMapped.push({
         description: slot.description,
         iconSrc: slot.icon.url,
