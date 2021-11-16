@@ -34,7 +34,8 @@ export class User implements Model {
     private _featured = false,
     private _extraInfo?: UserExtrainfo,
     private _coverImage?: Image,
-    private _registerDate?: Date
+    private _registerDate?: Date,
+    private _phone?: string
   ) {
     this._type = this.mapType(this._type);
   }
@@ -225,6 +226,14 @@ export class User implements Model {
 
   set registerDate(value: Date) {
     this._registerDate = value;
+  }
+
+  get phone(): string {
+    return this._phone;
+  }
+
+  set phone(value: string) {
+    this._phone = value;
   }
 
   public setCoverImageUrl(url: string) {
