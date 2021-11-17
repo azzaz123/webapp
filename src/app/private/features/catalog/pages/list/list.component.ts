@@ -25,6 +25,7 @@ import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-r
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { SubscriptionsResponse, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
@@ -35,10 +36,11 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
-import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
-import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { MODAL_ACTION, ProModalConfig } from '@shared/modals/pro-modal/pro-modal.interface';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
@@ -103,7 +105,6 @@ export class ListComponent implements OnInit, OnDestroy {
   private firstItemLoad = true;
   private init = 0;
   private counters: Counters;
-  private tooManyItemsModalRef: NgbModalRef;
   private searchTerm: string;
   private page = 1;
   private pageSize = 20;
@@ -125,7 +126,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private deviceService: DeviceDetectorService,
     private analyticsService: AnalyticsService,
     private i18nService: I18nService,
-    private permissionService: NgxPermissionsService
+    private permissionService: NgxPermissionsService,
+    private listingLimitService: ListingLimitService
   ) {}
 
   public get itemsAmount() {
@@ -250,22 +252,8 @@ export class ListComponent implements OnInit, OnDestroy {
         } else if (params && params.updated) {
           this.errorService.i18nSuccess(TRANSLATION_KEY.ITEM_UPDATED);
         } else if (params && params.createdOnHold) {
-          this.tooManyItemsModalRef = this.modalService.open(TooManyItemsModalComponent, {
-            windowClass: 'modal-standard',
-          });
-          this.tooManyItemsModalRef.componentInstance.itemId = params.itemId;
-          this.tooManyItemsModalRef.componentInstance.type = params.onHoldType
-            ? parseInt(params.onHoldType, 10)
-            : SUBSCRIPTION_TYPES.stripe;
-          this.tooManyItemsModalRef.result.then(
-            (orderEvent: OrderEvent) => {
-              if (orderEvent) {
-                this.purchaseListingFee(orderEvent);
-              }
-              this.tooManyItemsModalRef = null;
-            },
-            () => {}
-          );
+          const type = params.onHoldType ? parseInt(params.onHoldType, 10) : SUBSCRIPTION_TYPES.stripe;
+          this.listingLimitService.showModal(params.itemId, type);
         } else if (params && params.sold && params.itemId) {
           this.itemService.get(params.itemId).subscribe((item: Item) => {
             this.soldButton.item = item;
@@ -723,18 +711,36 @@ export class ListComponent implements OnInit, OnDestroy {
     this.trackViewProExpiredItemsPopup(isFreeTrial, !!tierDiscount);
     this.userService.saveLocalStore(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, Date.now().toString());
 
-    const modalRef = this.modalService.open(SuggestProModalComponent, {
-      windowClass: 'modal-standard',
+    const modalRef = this.modalService.open(ProModalComponent, {
+      windowClass: 'pro-modal',
     });
 
-    modalRef.componentInstance.title = $localize`:@@web_suggest_pro_modal_title:If you were PRO your items wouldn’t become inactive. Sounds good, right?`;
-    modalRef.componentInstance.isFreeTrial = isFreeTrial;
-    modalRef.componentInstance.tierWithDiscount = tierDiscount;
+    modalRef.componentInstance.modalConfig = this.getProReactivationModalConfig(isFreeTrial, tierDiscount);
 
     modalRef.result.then(
-      () => this.router.navigate([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]),
+      (action: MODAL_ACTION) => {
+        if (action !== MODAL_ACTION.PRIMARY_BUTTON) {
+          this.reloadItem(reactivatedItem.id, index);
+        }
+      },
       () => this.reloadItem(reactivatedItem.id, index)
     );
+  }
+
+  private getProReactivationModalConfig(isFreeTrial: boolean, tierWithDiscount: Tier): ProModalConfig {
+    const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.reactivation];
+
+    if (isFreeTrial) {
+      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_free_trial_start_subscription_button:Start free trial`;
+      return config;
+    }
+
+    if (tierWithDiscount) {
+      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:Try with ${tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`;
+      return config;
+    }
+
+    return config;
   }
 
   private trackViewProExpiredItemsPopup(freeTrial: boolean, discount: boolean): void {
@@ -815,11 +821,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.parseActivation([itemId]);
       },
       () => {
-        const modalRef = this.modalService.open(TooManyItemsModalComponent, {
-          windowClass: 'modal-standard',
-        });
-        modalRef.componentInstance.type = subscriptionType;
-        modalRef.componentInstance.itemId = itemId;
+        this.listingLimitService.showModal(itemId, subscriptionType);
       }
     );
   }
@@ -831,9 +833,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this.parseActivation(items);
       },
       () => {
-        const modalRef = this.modalService.open(TooManyItemsModalComponent, {
-          windowClass: 'modal-standard',
-        });
         const itemsData: Item[] = [];
         let itemId: string;
         items.forEach((id: string) => {
@@ -844,8 +843,7 @@ export class ListComponent implements OnInit, OnDestroy {
         if (itemsData.every((item) => item.categoryId === itemsData[0].categoryId)) {
           itemId = itemsData[0].id;
         }
-        modalRef.componentInstance.type = subscriptionType;
-        modalRef.componentInstance.itemId = itemId;
+        this.listingLimitService.showModal(itemId, subscriptionType);
       }
     );
   }

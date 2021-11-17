@@ -46,7 +46,6 @@ import { MockSubscriptionService, TIER_WITH_DISCOUNT } from '@fixtures/subscript
 import { MOCK_USER, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
@@ -60,7 +59,6 @@ import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-m
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ListComponent } from './list.component';
-import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Counters } from '@core/user/user-stats.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -75,6 +73,9 @@ import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
 import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscription-slots.fixtures.spec';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
+import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -99,6 +100,7 @@ describe('ListComponent', () => {
   let permissionService: NgxPermissionsService;
   let i18nService: I18nService;
   let featureFlagService: FeatureFlagService;
+  let listingLimitService: ListingLimitService;
 
   const prosButtonSelector = '.List__button--pros';
   const deliveryButtonSelector = '.List__button--delivery';
@@ -271,6 +273,10 @@ describe('ListComponent', () => {
               },
             },
           },
+          {
+            provide: ListingLimitService,
+            useClass: ListingLimitServiceMock,
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -295,6 +301,7 @@ describe('ListComponent', () => {
     i18nService = TestBed.inject(I18nService);
     catalogManagerApiService = TestBed.inject(CatalogManagerApiService);
     featureFlagService = TestBed.inject(FeatureFlagService);
+    listingLimitService = TestBed.inject(ListingLimitService);
 
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -554,17 +561,17 @@ describe('ListComponent', () => {
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
-    it('should open the too many items modal if create is on hold', fakeAsync(() => {
+    it('should open listing limit modal if create is on hold', fakeAsync(() => {
+      spyOn(listingLimitService, 'showModal').and.callThrough();
       route.params = of({
         createdOnHold: true,
+        itemId: '123',
       });
 
       component.ngOnInit();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(TooManyItemsModalComponent, {
-        windowClass: 'modal-standard',
-      });
+      expect(listingLimitService.showModal).toHaveBeenCalledWith('123', SUBSCRIPTION_TYPES.stripe);
     }));
 
     it('should open disable wallacoins modal if has param disableWallacoinsModal', fakeAsync(() => {
@@ -1524,8 +1531,8 @@ describe('ListComponent', () => {
               action: ITEM_CHANGE_ACTION.REACTIVATED,
             });
 
-            expect(modalService.open).toHaveBeenCalledWith(SuggestProModalComponent, {
-              windowClass: 'modal-standard',
+            expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+              windowClass: 'pro-modal',
             });
           });
         }),
@@ -1541,8 +1548,8 @@ describe('ListComponent', () => {
                 action: ITEM_CHANGE_ACTION.REACTIVATED,
               });
 
-              expect(modalService.open).toHaveBeenCalledWith(SuggestProModalComponent, {
-                windowClass: 'modal-standard',
+              expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+                windowClass: 'pro-modal',
               });
             });
           }),
@@ -1558,8 +1565,8 @@ describe('ListComponent', () => {
                 action: ITEM_CHANGE_ACTION.REACTIVATED,
               });
 
-              expect(modalService.open).not.toHaveBeenCalledWith(SuggestProModalComponent, {
-                windowClass: 'modal-standard',
+              expect(modalService.open).not.toHaveBeenCalledWith(ProModalComponent, {
+                windowClass: 'pro-modal',
               });
             });
           }),
@@ -1577,24 +1584,6 @@ describe('ListComponent', () => {
               expect(userService.saveLocalStore).toHaveBeenCalledWith(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, FAKE_DATE_NOW.toString());
             });
           });
-        describe('and click cta button', () => {
-          it('should redirect to subscriptions', fakeAsync(() => {
-            modalSpy.and.returnValue({
-              result: Promise.resolve(true),
-              componentInstance: componentInstance,
-            });
-            const item = cloneDeep(component.items[3]);
-
-            component.itemChanged({
-              item: item,
-              action: ITEM_CHANGE_ACTION.REACTIVATED,
-            });
-            tick();
-
-            expect(router.navigate).toHaveBeenCalledTimes(1);
-            expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
-          }));
-        });
         describe('and click secondary button', () => {
           it('should refresh item', fakeAsync(() => {
             modalSpy.and.returnValue({

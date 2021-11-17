@@ -30,7 +30,6 @@ import {
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { of, throwError } from 'rxjs';
-import { BecomeProModalComponent } from '../../modal/become-pro-modal/become-pro-modal.component';
 import { ANALYTICS_FIELDS, BAD_USERNAME_ERROR_CODE, competitorLinks, ProfileInfoComponent } from './profile-info.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { VisibleDirectiveModule } from '@shared/directives/visible/visible.directive.module';
@@ -38,6 +37,7 @@ import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 
 @Component({
   selector: 'tsl-cover-upload',
@@ -560,8 +560,8 @@ describe('ProfileInfoComponent', () => {
 
         component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
 
-        expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {
-          windowClass: 'become-pro',
+        expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
         });
         expect(subscriptionsService.getSubscriptions).not.toHaveBeenCalled();
       });
@@ -570,23 +570,10 @@ describe('ProfileInfoComponent', () => {
         spyOn(subscriptionsService, 'getSubscriptions').and.callThrough();
         component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
 
-        expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {
-          windowClass: 'become-pro',
+        expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
         });
         expect(subscriptionsService.getSubscriptions).toHaveBeenCalledTimes(1);
-      });
-
-      describe('and click CTA', () => {
-        it('should redirect to subscriptions', fakeAsync(() => {
-          spyOn(router, 'navigate');
-
-          component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
-          tick();
-          fixture.detectChanges();
-
-          expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
-        }));
       });
     });
 
@@ -606,8 +593,8 @@ describe('ProfileInfoComponent', () => {
       it('should not open modal', () => {
         component.openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION);
 
-        expect(modalService.open).not.toHaveBeenCalledWith(BecomeProModalComponent, {
-          windowClass: 'become-pro',
+        expect(modalService.open).not.toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
         });
       });
     });

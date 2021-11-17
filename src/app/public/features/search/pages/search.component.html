@@ -48,6 +48,9 @@
         <ng-container inlineAdSlot *ngxPermissionsOnly="PERMISSIONS.showAds">
           <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.search2r"></tsl-sky>
         </ng-container>
+        <ng-container experimentInlineAdSlot *ngxPermissionsOnly="PERMISSIONS.showAds">
+          <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.search4r"></tsl-sky>
+      </ng-container>
       </tsl-public-item-card-list>
 
       <div class="Search__spinner d-flex align-items-center justify-content-center py-5" *ngIf="isLoadingPaginationResults$ | async">
