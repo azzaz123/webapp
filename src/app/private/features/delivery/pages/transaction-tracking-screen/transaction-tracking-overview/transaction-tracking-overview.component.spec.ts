@@ -8,6 +8,8 @@ import { TransactionTrackingOverviewComponent } from './transaction-tracking-ove
 
 describe('TransactionTrackingOverviewComponent', () => {
   const transactionTrackingHeaderSelector = 'tsl-transaction-tracking-header';
+  const shippingStatusSelector = 'tsl-transaction-tracking-general-info';
+
   let component: TransactionTrackingOverviewComponent;
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
   let de: DebugElement;
@@ -34,6 +36,10 @@ describe('TransactionTrackingOverviewComponent', () => {
   describe('when we have tracking info...', () => {
     it('should render the transaction tracking header ', () => {
       expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeTruthy();
+    });
+
+    it('should render the shipping status info ', () => {
+      expect(de.query(By.css(shippingStatusSelector))).toBeTruthy();
     });
   });
 });
