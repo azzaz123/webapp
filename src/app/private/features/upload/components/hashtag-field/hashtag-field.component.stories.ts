@@ -55,9 +55,3 @@ Default.args = {
   disabled: false,
   max: 6,
 };
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  disabled: true,
-  max: 6,
-};
