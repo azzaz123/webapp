@@ -9,4 +9,5 @@ export interface AdKeyWords {
   age?: string;
   latitude?: string;
   longitude?: string;
+  MwebSearchLayout?: string;
 }
