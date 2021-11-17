@@ -22,7 +22,7 @@ describe('TransactionTrackingGeneralInfoComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingGeneralInfoComponent],
       imports: [ButtonModule, LottieModule, HttpClientTestingModule],
-      providers: [TransactionTrackingActionsService],
+      providers: [{ provide: TransactionTrackingActionsService, useValue: { manageAction() {} } }],
     }).compileComponents();
   });
 

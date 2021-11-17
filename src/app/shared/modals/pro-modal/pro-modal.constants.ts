@@ -10,6 +10,7 @@ export enum PRO_MODAL_TYPE {
   listing_limit_no_trial_no_discount,
   listing_limit_trial,
   listing_limit_discount,
+  reactivation,
   profile_pro_fields,
 }
 
@@ -127,6 +128,19 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     buttons: {
       primary: {
         text: $localize`:@@web_see_plans:See plans`,
+        redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
+      },
+    },
+  },
+  [PRO_MODAL_TYPE.reactivation]: {
+    img: '/assets/icons/pro/modals/reactivation.svg',
+    title: $localize`:@@pro_after_reactivation_non_subscribed_user_title:Item reactivated!`,
+    text1: $localize`:@@pro_after_reactivation_non_subscribed_user_free_trial_description_1_2v:If you were PRO your items wouldn’t become inactive. Sounds good, right?`,
+    text2: $localize`:@@pro_after_reactivation_non_subscribed_user_description_2:Choose a plan and take advantage of Wallapop PRO benefits.`,
+    buttons: {
+      secondary: { text: $localize`:@@pro_after_reactivation_non_subscribed_user_reject_button:Not now thanks` },
+      primary: {
+        text: $localize`:@@pro_after_reactivation_non_subscribed_user_view_plans_button:View plans`,
         redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
       },
     },
