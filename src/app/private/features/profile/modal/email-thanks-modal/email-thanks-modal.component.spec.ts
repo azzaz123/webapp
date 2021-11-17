@@ -2,14 +2,9 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonComponent } from '@shared/button/button.component';
 
 import { EmailThanksModalComponent } from './email-thanks-modal.component';
-
-@Component({
-  selector: 'tsl-button',
-  template: '',
-})
-class MockButtonComponent {}
 
 @Component({
   selector: 'tsl-svg-icon',
@@ -24,7 +19,7 @@ describe('EmailThanksModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EmailThanksModalComponent, MockSvgIconComponent, MockButtonComponent],
+      declarations: [EmailThanksModalComponent, MockSvgIconComponent, ButtonComponent],
       providers: [NgbActiveModal],
     }).compileComponents();
     activeModal = TestBed.inject(NgbActiveModal);
@@ -45,7 +40,7 @@ describe('EmailThanksModalComponent', () => {
 
   describe('when accept button is clicked', () => {
     it('should close modal', () => {
-      const acceptButton: HTMLElement = fixture.debugElement.query(By.directive(MockButtonComponent)).nativeElement;
+      const acceptButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
       acceptButton.click();
 
@@ -60,6 +55,18 @@ describe('EmailThanksModalComponent', () => {
       closeButton.click();
 
       expect(activeModal.dismiss).toHaveBeenCalled();
+    });
+  });
+
+  describe('when modal is loaded', () => {
+    it('should shown the copies', () => {
+      const title: HTMLElement = fixture.debugElement.query(By.css('.EmailThanksModal__title')).nativeElement;
+      const description: HTMLElement = fixture.debugElement.query(By.css('.EmailThanksModal__subtitle')).nativeElement;
+      const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+      expect(title.innerHTML).toEqual('title');
+      expect(description.innerHTML).toEqual('description');
+      expect(button.textContent).toBe('ok');
     });
   });
 });
