@@ -53,11 +53,11 @@ const Template: Story<StoryHashtagFieldComponent> = (args) => ({
 export const Default = Template.bind({});
 Default.args = {
   disabled: false,
-  max: 5,
+  max: 6,
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
-  max: 5,
+  max: 6,
 };

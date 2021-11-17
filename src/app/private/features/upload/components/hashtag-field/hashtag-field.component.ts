@@ -46,6 +46,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
 
   public readonly HASHTAG_TYPE = HASHTAG_TYPE;
 
+  private maxReachedSubject = new BehaviorSubject<boolean>(false);
   private suggestedOptionsSubject = new BehaviorSubject<MultiSelectFormOption[]>([]);
   private suggestedOptions: MultiSelectFormOption[] = [];
   private suggestedOptionsPage;
@@ -61,8 +62,17 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     return this.suggestedOptionsSubject.asObservable();
   }
 
+  public get maxReached$(): Observable<boolean> {
+    return this.maxReachedSubject.asObservable();
+  }
+
   ngOnInit() {
     this.getSuggestedOptions(0);
+
+    this.maxReached$.pipe(filter((maxReached) => maxReached)).subscribe(() => {
+      this.searchedHashtags.emptyOptions();
+      this.searchedHashtags.searchValue = '';
+    });
 
     this.hashtagForm.controls[HASHTAG_TYPE.SEARCHED].valueChanges
       .pipe(distinctUntilChanged((prev, curr) => isEqual(prev, curr)))
@@ -100,6 +110,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
   public writeValue(value: MultiSelectValue): void {
     super.writeValue(value);
     this.hashtagForm.setValue({ [HASHTAG_TYPE.SUGGESTED]: this.value, [HASHTAG_TYPE.SEARCHED]: this.value }, { emitEvent: false });
+    this.updateMaxReached();
   }
 
   private manageFormChanges(extendedOptions: TemplateMultiSelectFormOption[], type: HASHTAG_TYPE) {
@@ -107,13 +118,13 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     this.value = this.mapExtendedOptionsToValue(extendedOptions);
     this.hashtagForm.controls[fieldToModify].setValue(this.value, { emitEvent: false });
     this.onChange(this.value);
+    this.updateMaxReached();
   }
 
   private mapExtendedOptionsToValue(extendedOptions: TemplateMultiSelectFormOption[]): string[] {
     let newValue: string[] = this.value;
     const valuesToAdd = extendedOptions.filter((opt) => opt.checked).map((opt) => opt.value);
     const valuesToRemove = extendedOptions.filter((opt) => !opt.checked).map((opt) => opt.value);
-
     newValue = union(newValue, valuesToAdd);
     newValue = newValue.filter((value) => !valuesToRemove.includes(value));
 
@@ -138,5 +149,9 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
 
     this.suggestedOptions = this.suggestedOptions.concat(suggestedOptions);
     this.suggestedOptionsSubject.next(this.suggestedOptions);
+  }
+
+  private updateMaxReached(): void {
+    this.maxReachedSubject.next(this.value.length === this.max);
   }
 }
