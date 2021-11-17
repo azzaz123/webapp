@@ -1,13 +1,13 @@
 <input
+#hashtagSuggesterInput
 type="text" 
+class="MultiselectSearchInput border-0"
 (keyup)="keyUp($event)"
-[placeholder]="hashtagPlaceholder" 
+[placeholder]="disabled ? '' : hashtagPlaceholder" 
 (focus)="focus()"
 (blur)="blur()"
 [(ngModel)]="searchValue"
-class="MultiselectSearchInput border-0"
 [disabled]="disabled"
-#hashtagSuggesterInput
 />
 
 <div [hidden]="!((options$ | async)?.length > 0)">
