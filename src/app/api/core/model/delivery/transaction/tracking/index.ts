@@ -13,7 +13,6 @@ export * from './models/action/detail/transaction-tracking-action-detail-payload
 export * from './models/action/detail/transaction-tracking-action-detail-payload-confirmation.model';
 export * from './models/action/detail/transaction-tracking-action-detail-payload-parameters.model';
 export * from './models/action/detail/transaction-tracking-action-detail-payload.model';
-export * from './models/action/detail/transaction-tracking-action-detail-payload.model.spec';
 export * from './models/action/detail/transaction-tracking-action-detail.model';
 export * from './models/action/transaction-tracking-action-style.model';
 export * from './models/action/transaction-tracking-action.model';

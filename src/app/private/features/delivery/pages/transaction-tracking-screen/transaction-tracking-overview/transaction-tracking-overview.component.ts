@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
+import { Observable } from 'rxjs';
 import { TransactionTracking } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -10,9 +12,12 @@ import { TransactionTracking } from '@api/core/model/delivery/transaction/tracki
   styleUrls: ['./transaction-tracking-overview.component.scss'],
 })
 export class TransactionTrackingOverviewComponent implements OnInit {
-  public transactionTrackingInfo$: Observable<TransactionTracking> = of(MOCK_TRANSACTION_TRACKING);
+  public transactionTracking$: Observable<TransactionTracking>;
 
-  constructor() {}
+  constructor(private route: ActivatedRoute, private transactionTrackingService: TransactionTrackingService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const transactionId = this.route.snapshot.paramMap.get(DELIVERY_PATH_PARAMS.ID);
+    this.transactionTracking$ = this.transactionTrackingService.get(transactionId);
+  }
 }
