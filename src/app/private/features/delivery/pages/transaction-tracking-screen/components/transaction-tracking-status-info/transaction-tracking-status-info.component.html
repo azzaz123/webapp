@@ -1,6 +1,6 @@
 <tsl-transaction-tracking-detail-info
   *ngFor="let infoSlot of detailInfoSlots; let index = index"
-  isClickableAction="true"
+  [isClickableAction]="transactionTrackingStatusInfo[index].action"
   isBorderBottom="true"
   [transactionTrackingInfo]="infoSlot"
   (actionClick)="manageSlotAction(transactionTrackingStatusInfo[index].action)"
