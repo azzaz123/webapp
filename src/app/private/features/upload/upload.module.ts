@@ -25,7 +25,6 @@ import { UploadProductComponent } from './pages/upload-product/upload-product.co
 import { UploadRealestateComponent } from './pages/upload-realestate/upload-realestate.component';
 import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
-import { HashtagSuggesterApiService } from './core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
 import { ShippingToggleService } from './pages/upload-product/services/shipping-toggle/shipping-toggle.service';
 import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
