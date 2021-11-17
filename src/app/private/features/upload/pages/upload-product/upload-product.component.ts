@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PaginatedList } from '@api/core/model';
 import { ShippingRulesPrice } from '@api/bff/delivery/rules/dtos/shipping-rules';
 import { CategoriesApiService } from '@api/categories/categories-api.service';
 import {
@@ -40,7 +39,6 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.interface';
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
@@ -50,10 +48,8 @@ import { debounceTime, map, take, tap } from 'rxjs/operators';
 import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
-import { Hashtag } from '../../core/models/hashtag.interface';
 import { UploadEvent } from '../../core/models/upload-event.interface';
 import { GeneralSuggestionsService } from '../../core/services/general-suggestions/general-suggestions.service';
-import { HashtagSuggesterApiService } from '../../core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { ItemReactivationService } from '../../core/services/item-reactivation/item-reactivation.service';
 import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
@@ -125,13 +121,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
   public lastSuggestedCategoryText: string;
-  public options: SelectFormOption<string>[] = [];
-  public searchedOptions: SelectFormOption<string>[] = [
-    { label: 'a', value: 'a' },
-    { label: 'ss', value: 'ss' },
-    { label: 'saa', value: 'saa' },
-  ];
-  public start: string = '0';
   public isProUser: boolean;
 
   public isShippabilityAllowed = false;
@@ -161,7 +150,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     private uploadService: UploadService,
     private subscriptionService: SubscriptionsService,
     private itemReactivationService: ItemReactivationService,
-    private hashtagSuggesterApiService: HashtagSuggesterApiService,
     private customerHelpService: CustomerHelpService,
     private shippingToggleService: ShippingToggleService,
     private uploadTrackingEventService: UploadTrackingEventService,
@@ -180,9 +168,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   ngOnInit() {
-    this.hashtagSuggesterApiService.getHashtags(this.categoryId, '0').subscribe((n) => {
-      this.mapHashtagOptions(n);
-    });
     this.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
 
@@ -227,11 +212,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     }
   }
 
-  public loadNextPage(page: string) {
-    this.start = page;
-    console.log('start', this.start);
-  }
-
   public getExtraInfo(): any {
     const objectTypeId = this.item.extraInfo?.object_type?.id;
     if (objectTypeId) {
@@ -250,7 +230,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onSubmit(): void {
-    console.log('upload', this.uploadForm);
     if (this.uploadForm.valid) {
       this.loading = true;
       this.proFeaturesComponent?.trackSubmit();
@@ -522,29 +501,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.uploadTrackingEventService.trackClickHelpTransactionalEvent(categoryId, this.userService.user?.id, price, this.item?.id);
   }
 
-  private mapHashtagOptions(hashtagList: PaginatedList<Hashtag>) {
-    /*   let { list } = hashtagList;
-    this.options = list.map((hashtag: Hashtag) => {
-      return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
-    }); */
-    //When PR need to remove
-    hashtagList = {
-      list: [
-        { text: 'd', occurrences: 1 },
-        { text: 'f', occurrences: 1 },
-        { text: 'faa', occurrences: 1 },
-        { text: 'saa', occurrences: 1 },
-        { text: 'dd', occurrences: 1 },
-        { text: 'ff', occurrences: 1 },
-        { text: 'cc', occurrences: 1 },
-      ],
-    };
-    let { list } = hashtagList;
-    this.options = list.map((hashtag: Hashtag) => {
-      return { label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: `#${hashtag.text}` };
-    });
-  }
-
   private fillForm(): void {
     this.uploadForm = this.fb.group({
       id: '',
@@ -564,10 +520,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
         longitude: ['', [Validators.required]],
-      }),
-      hashtags: this.fb.group({
-        hashtags: [[]],
-        searchedHashtags: [[]],
       }),
       extra_info: this.fb.group({
         object_type: this.fb.group({

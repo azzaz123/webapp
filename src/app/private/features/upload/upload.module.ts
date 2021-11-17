@@ -25,14 +25,12 @@ import { UploadProductComponent } from './pages/upload-product/upload-product.co
 import { UploadRealestateComponent } from './pages/upload-realestate/upload-realestate.component';
 import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
-import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { HashtagSuggesterApiService } from './core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
 import { ShippingToggleService } from './pages/upload-product/services/shipping-toggle/shipping-toggle.service';
 import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
 import { UploadTrackingEventService } from './pages/upload-product/upload-tracking-event/upload-tracking-event.service';
 import { CategoriesApiModule } from '@api/categories/categories-api.module';
-import { MultiselectSearchInputModule } from '@shared/form/components/multiselect-search-input/multiselect-search-input.module';
 import { ProFeaturesModule } from './components/pro-features/pro-features.module';
 
 @NgModule({
@@ -49,8 +47,6 @@ import { ProFeaturesModule } from './components/pro-features/pro-features.module
     NgbButtonsModule,
     DropdownModule,
     CustomCurrencyModule,
-    MultiSelectFormModule,
-    MultiselectSearchInputModule,
     CheckboxFormModule,
     DeliveryRulesApiModule, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
     CategoriesApiModule,
@@ -69,7 +65,6 @@ import { ProFeaturesModule } from './components/pro-features/pro-features.module
     UploadComponent,
   ],
   providers: [
-    HashtagSuggesterApiService,
     UploadService,
     CarKeysService,
     CarSuggestionsService,
