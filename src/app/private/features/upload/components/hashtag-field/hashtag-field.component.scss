@@ -19,9 +19,18 @@
   }
 
   &__search {
-    background-color: $white;
-    border-radius: 6px;
-    border: 1px solid $blue-grey-4;
+    &__box {
+      background-color: $white;
+      border-radius: 6px;
+      border: 1px solid $blue-grey-4;
+      height: 100%;
+    }
+
+    &__error {
+      color: $negative-main;
+      font-size: $font-size-s;
+      line-height: $line-height-ml;
+    }
   }
 
   &__suggested {

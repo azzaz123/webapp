@@ -45,6 +45,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
   });
 
   public readonly HASHTAG_TYPE = HASHTAG_TYPE;
+  public showSearchedErrorMessage = false;
 
   private maxReachedSubject = new BehaviorSubject<boolean>(false);
   private suggestedOptionsSubject = new BehaviorSubject<MultiSelectFormOption[]>([]);
@@ -95,6 +96,10 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     });
 
     this.cdr.detectChanges();
+  }
+
+  public searchedValidStatusChange(valid): void {
+    this.showSearchedErrorMessage = !valid;
   }
 
   public suggestionsScrolled(): void {
