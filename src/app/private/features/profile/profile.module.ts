@@ -4,7 +4,6 @@ import { NgbAccordionModule, NgbButtonsModule, NgbCarouselModule, NgbModalModule
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SharedModule } from '@shared/shared.module';
-import { BecomeProModalComponent } from './modal/become-pro-modal/become-pro-modal.component';
 import { ChangeStoreLocationModal } from './modal/change-store-location-modal/change-store-location-modal.component';
 import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe-modal.component';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
@@ -26,13 +25,7 @@ import { EmailVerificationModule } from './modal/email-verification/email-verifi
     CustomCurrencyModule,
     EmailVerificationModule,
   ],
-  declarations: [
-    profileRoutedComponents,
-    UnsubscribeModalComponent,
-    BecomeProModalComponent,
-    ChangeStoreLocationModal,
-    VerificationEmailThanksModalComponent,
-  ],
+  declarations: [profileRoutedComponents, UnsubscribeModalComponent, ChangeStoreLocationModal, VerificationEmailThanksModalComponent],
   providers: [VerificationsNSecurityTrackingEventsService],
 })
 export class ProfileModule {}
