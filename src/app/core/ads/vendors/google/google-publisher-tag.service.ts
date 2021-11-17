@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotShoppingBaseConfiguration } from '../../models';
+import { YieldBirdService } from '../yieldbird/yieldbird.service';
 import { GoogCsa } from './google-ads-sense-shopping';
 
 @Injectable({
@@ -22,7 +23,8 @@ export class GooglePublisherTagService {
     @Inject(WINDOW_TOKEN) private window: Window,
     private cookieService: CookieService,
     private adsKeywordsService: AdsKeywordsService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private yieldBirdService: YieldBirdService
   ) {}
 
   public isLibraryRefDefined(): boolean {
@@ -37,6 +39,7 @@ export class GooglePublisherTagService {
     const oldSlots: string[] = this.adSlotsNamesDefinedSubject.getValue();
     const newAdSlots: AdSlotConfiguration[] = adSlots.filter(({ name }: AdSlotConfiguration) => !oldSlots.includes(name));
     this.googletag.cmd.push(() => {
+      this.yieldBirdService.init();
       this.defineSlots(newAdSlots);
       this.onSlotsDefined();
     });
