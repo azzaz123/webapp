@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { TransactionInfo } from '../../interfaces/transaction-info.interface';
 
 @Component({
   selector: 'tsl-transaction-info',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./transaction-info.component.scss'],
 })
 export class TransactionInfoComponent implements OnInit {
+  @Input() transactionInfo: TransactionInfo;
+
   constructor() {}
 
   ngOnInit(): void {}

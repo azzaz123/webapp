@@ -1,0 +1,8 @@
+<div *ngIf="transactionInfo">
+  <img [src]="transactionInfo.item.imageSrc" alt="itemImage" class="TrackingDetailInfo__image--{{ transactionInfo.item.className }}" />
+  <div>
+    <span>{{ transactionInfo.item.name }}</span>
+    <span>{{ transactionInfo.item.price }}</span>
+  </div>
+  <img [src]="transactionInfo.user.imageSrc" alt="userImage" class="TrackingDetailInfo__image--{{ transactionInfo.user.className }}" />
+</div>
