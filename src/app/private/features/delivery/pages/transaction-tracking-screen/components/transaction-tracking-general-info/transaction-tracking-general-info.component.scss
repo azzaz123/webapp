@@ -3,6 +3,7 @@
 .TrackingGeneralInfo {
   background-color: $white;
   padding: $spacer * 2;
+  border-bottom: 1px solid $blue-grey-4;
 
   &__lottieContainer {
     border-radius: $border-radius * 2;
