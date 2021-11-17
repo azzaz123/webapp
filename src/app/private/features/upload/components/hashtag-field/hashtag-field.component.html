@@ -10,7 +10,7 @@
 
 </div>
 	<div class="HashtagField__suggested">
-		<span class="HashtagField__suggested__title">Sugeridos</span>
+		<span class="HashtagField__suggested__title" i18n="@@finding_suggested_hashtags_tab">Suggested</span>
 		<tsl-multi-select-form scroll (scrolledToBottom)="suggestionsScrolled()" [formControlName]="HASHTAG_TYPE.SUGGESTED" [reseteable]="false" [options]="suggestedOptions$ | async" [disabled]="maxReached$ | async"></tsl-multi-select-form>
 	</div>
 </div>
