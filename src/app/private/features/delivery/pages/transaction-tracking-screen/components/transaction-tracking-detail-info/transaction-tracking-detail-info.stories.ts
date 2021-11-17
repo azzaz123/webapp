@@ -19,7 +19,7 @@ const Template: Story<TransactionTrackingDetailInfoComponent> = (args: Transacti
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
   template:
-    '<tsl-transaction-tracking-detail-info [transactionTrackingInfo]="transactionTrackingInfo"></tsl-transaction-tracking-detail-info>',
+    '<tsl-transaction-tracking-detail-info [transactionTrackingInfo]="transactionTrackingInfo" [isClickableAction]="isClickableAction" [isBorderBottom]="isBorderBottom"></tsl-transaction-tracking-detail-info>',
 });
 
 export const ProductExample = Template.bind({});
@@ -50,4 +50,28 @@ PriceExample.args = {
     iconClassName: 'rounded',
     iconSrc: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
   },
+};
+
+export const ActionClickable = Template.bind({});
+ActionClickable.args = {
+  transactionTrackingInfo: {
+    description:
+      '<strong>Tu compra está protegida</strong> por Wallapop Protect, nuestra política de protección.<br><span style="color: #13C1AC">¿Quieres saber más?</span>',
+    showCaret: false,
+    iconClassName: 'rounded',
+    iconSrc:
+      'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/payment+status/Icons/Delivery/Bank+Account+Warranty%402x.png',
+  },
+  isClickableAction: true,
+};
+
+export const BorderBottom = Template.bind({});
+BorderBottom.args = {
+  transactionTrackingInfo: {
+    description: '<span style="color: #AFB6B6">Producto:</span><br>crayones',
+    showCaret: true,
+    iconClassName: 'rounded',
+    iconSrc: 'https://cdn-beta.wallapop.com/images/10420/35/gw/__/c10420p190584802/i421614104.jpg?pictureSize=W800',
+  },
+  isBorderBottom: true,
 };
