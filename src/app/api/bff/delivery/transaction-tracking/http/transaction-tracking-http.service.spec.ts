@@ -3,11 +3,18 @@ import { TestBed } from '@angular/core/testing';
 
 import { MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-details-dto.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-instructions-dto.fixtures.spec';
 import {
   TRANSACTION_TRACKING_DETAILS_ENDPOINT,
   TRANSACTION_TRACKING_ENDPOINT,
+  TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT,
 } from '@api/bff/delivery/transaction-tracking/http/endpoints';
-import { TransactionTrackingDetailsDto, TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+import {
+  TransactionTrackingActionTypeDto,
+  TransactionTrackingDetailsDto,
+  TransactionTrackingDto,
+  TransactionTrackingInstructionsDto,
+} from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 
 describe('TransactionTrackingHttpService', () => {
@@ -60,6 +67,24 @@ describe('TransactionTrackingHttpService', () => {
       expect(response).toEqual(MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE);
       expect(transactionTrackingDetailsRequest.request.url).toEqual(TRANSACTION_TRACKING_DETAILS_ENDPOINT);
       expect(transactionTrackingDetailsRequest.request.method).toBe('GET');
+    });
+
+    it('should get transaction tracking instructions info', () => {
+      const MOCK_REQUEST_ID = '123';
+      const MOCK_ACTION_TYPE: TransactionTrackingActionTypeDto = 'deeplink';
+      const EXPECTED_ENDPOINT = `${TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT}?requestId=${MOCK_REQUEST_ID}`;
+      let response: TransactionTrackingInstructionsDto;
+
+      service.getInstructions(MOCK_REQUEST_ID, MOCK_ACTION_TYPE).subscribe((properties: TransactionTrackingInstructionsDto) => {
+        response = properties;
+      });
+
+      const transactionTrackingInstructionsRequest: TestRequest = httpMock.expectOne(EXPECTED_ENDPOINT);
+      transactionTrackingInstructionsRequest.flush(MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE);
+
+      expect(response).toEqual(MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE);
+      expect(transactionTrackingInstructionsRequest.request.url).toEqual(TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT);
+      expect(transactionTrackingInstructionsRequest.request.method).toBe('GET');
     });
   });
 });

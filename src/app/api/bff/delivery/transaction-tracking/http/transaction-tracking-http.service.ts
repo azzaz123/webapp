@@ -4,8 +4,14 @@ import { Injectable } from '@angular/core';
 import {
   TRANSACTION_TRACKING_DETAILS_ENDPOINT,
   TRANSACTION_TRACKING_ENDPOINT,
+  TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT,
 } from '@api/bff/delivery/transaction-tracking/http/endpoints';
-import { TransactionTrackingDetailsDto, TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+import {
+  TransactionTrackingActionTypeDto,
+  TransactionTrackingDetailsDto,
+  TransactionTrackingDto,
+  TransactionTrackingInstructionsDto,
+} from '@api/bff/delivery/transaction-tracking/dtos/responses';
 
 import { Observable } from 'rxjs';
 
@@ -19,5 +25,11 @@ export class TransactionTrackingHttpService {
 
   public getDetails(requestId: string): Observable<TransactionTrackingDetailsDto> {
     return this.httpClient.get<TransactionTrackingDetailsDto>(TRANSACTION_TRACKING_DETAILS_ENDPOINT, { params: { requestId } });
+  }
+
+  public getInstructions(requestId: string, type: TransactionTrackingActionTypeDto): Observable<TransactionTrackingInstructionsDto> {
+    return this.httpClient.get<TransactionTrackingInstructionsDto>(TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT, {
+      params: { requestId, type },
+    });
   }
 }
