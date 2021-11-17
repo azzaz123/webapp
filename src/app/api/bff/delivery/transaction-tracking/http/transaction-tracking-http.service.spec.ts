@@ -5,6 +5,7 @@ import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delive
 import { TRANSACTION_TRACKING_ENDPOINT } from '@api/bff/delivery/transaction-tracking/http/endpoints';
 import { TransactionTrackingDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
+import { APP_VERSION } from '@environments/version';
 
 describe('TransactionTrackingHttpService', () => {
   let service: TransactionTrackingHttpService;
@@ -39,6 +40,7 @@ describe('TransactionTrackingHttpService', () => {
       expect(response).toEqual(MOCK_TRANSACTION_TRACKING_DTO_RESPONSE);
       expect(transactionTrackingInfoRequest.request.url).toEqual(TRANSACTION_TRACKING_ENDPOINT);
       expect(transactionTrackingInfoRequest.request.method).toBe('GET');
+      expect(transactionTrackingInfoRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
   });
 });

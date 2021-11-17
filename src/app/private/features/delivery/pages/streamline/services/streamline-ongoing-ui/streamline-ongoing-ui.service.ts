@@ -3,7 +3,7 @@ import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/request
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { Observable, ReplaySubject } from 'rxjs';
 import { tap, take, finalize } from 'rxjs/operators';
-import { mapPendingTransactionToHistoricList } from '../../mappers/pending-transactions-to-historic-list.mapper';
+import { mapPendingTransactionToHistoricList } from '../../mappers/pending-transactions-to-historic-list/pending-transactions-to-historic-list.mapper';
 
 @Injectable()
 export class StreamlineOngoingUIService {

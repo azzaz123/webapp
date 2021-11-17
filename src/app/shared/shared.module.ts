@@ -72,7 +72,6 @@ import { UploaderModule } from './uploader/uploader.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
-import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { HeaderModule } from './header/header.module';
@@ -172,7 +171,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     WallacoinsDisabledModalComponent,
     ButtonModule,
     DateCountDownModule,
-    SuggestProModalComponent,
     DeliveryDevelopmentDirective,
     ProfileFormModule,
     InfiniteScrollDirective,
@@ -231,7 +229,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     RouterLinkDirectiveStub,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
-    SuggestProModalComponent,
     DeliveryDevelopmentDirective,
     LocationSelectorModal,
   ],
