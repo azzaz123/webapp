@@ -22,10 +22,19 @@
     }
   }
 
-  &__text {
-    padding: $spacing-xl;
+  &__buttons {
+    bottom: 0;
+    background-color: rgba($white, 0.8);
+    padding: $spacing-ml 0 $spacing-xl 0;
     @include media-breakpoint-down(sm) {
-      padding: $spacing-ml;
+      padding: $spacing-ml 0;
+    }
+  }
+
+  &__text {
+    padding: $spacing-xl $spacing-xl 0 $spacing-xl;
+    @include media-breakpoint-down(sm) {
+      padding: $spacing-ml $spacing-ml 0 $spacing-ml;
     }
   }
 
@@ -36,6 +45,17 @@
 
   &__description {
     margin-top: $spacing-ms;
+
+    .list {
+      li {
+        text-align: left;
+        list-style: none;
+        margin-bottom: $spacing-ms;
+        background: url(/assets/icons/rounded-check.svg) no-repeat left center;
+        padding-left: $spacing-xxl;
+        background-size: 20px;
+      }
+    }
   }
 
   &__img {
