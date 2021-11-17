@@ -1,9 +1,10 @@
-import { TransactionTrackingActionDetailDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+import {
+  TransactionTrackingActionDetailDto,
+  TransactionTrackingInstructionDto,
+} from '@api/bff/delivery/transaction-tracking/dtos/responses';
 
-export interface TransactionTrackingStatusInfoDto {
-  action: TransactionTrackingActionDetailDto;
+export interface TransactionTrackingStatusInfoDto extends TransactionTrackingInstructionDto {
   action_icon: TransactionTrackingActionIconDto;
-  description: string;
   icon: TransactionTrackingIconDto;
 }
 
