@@ -109,6 +109,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
 
   public removeValue(valueString: string) {
     this.value = this.value.filter((value) => valueString !== value);
+    this.onChange(this.value);
     this.writeValue(this.value);
   }
 
