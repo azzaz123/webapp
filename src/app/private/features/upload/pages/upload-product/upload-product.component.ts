@@ -90,7 +90,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   MAX_DESCRIPTION_LENGTH = 640;
   MAX_TITLE_LENGTH = 50;
-  MAX_HASHTAGS_NUMBER = 5;
 
   public itemTypes: any = ITEM_TYPES;
   public currentCategory: CategoryOption;
