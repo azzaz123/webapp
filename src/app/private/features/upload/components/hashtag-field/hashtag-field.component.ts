@@ -6,7 +6,7 @@ import { MultiSelectValue } from '@shared/form/components/multi-select-form/inte
 import { SelectFormOption } from '@shared/form/components/select/interfaces/select-form-option.interface';
 import { Hashtag } from '../../core/models/hashtag.interface';
 import { HashtagSuggesterApiService } from '../../core/services/hashtag-suggestions/hashtag-suggester-api.service';
-import { union } from 'lodash-es';
+import { union, isEqual } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import {
@@ -14,6 +14,7 @@ import {
   TemplateMultiSelectFormOption,
 } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { MultiselectSearchInputComponent } from '@shared/form/components/multiselect-search-input/multiselect-search-input.component';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 export enum HASHTAG_TYPE {
   SEARCHED,
@@ -49,6 +50,9 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
   private suggestedOptions: MultiSelectFormOption[] = [];
   private suggestedOptionsPage;
 
+  private searchedExtendedOptions: TemplateMultiSelectFormOption[] = [];
+  private suggestedExtendedOptions: TemplateMultiSelectFormOption[] = [];
+
   constructor(private hashtagSuggesterApiService: HashtagSuggesterApiService, private cdr: ChangeDetectorRef) {
     super();
   }
@@ -59,15 +63,25 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
 
   ngOnInit() {
     this.getSuggestedOptions(0);
+
+    this.hashtagForm.controls[HASHTAG_TYPE.SEARCHED].valueChanges
+      .pipe(distinctUntilChanged((prev, curr) => isEqual(prev, curr)))
+      .subscribe(() => {
+        this.manageFormChanges(this.searchedExtendedOptions, HASHTAG_TYPE.SEARCHED);
+      });
+
+    this.hashtagForm.controls[HASHTAG_TYPE.SUGGESTED].valueChanges.subscribe(() => {
+      this.manageFormChanges(this.suggestedExtendedOptions, HASHTAG_TYPE.SUGGESTED);
+    });
   }
 
   ngAfterViewInit(): void {
-    this.suggestedHashtags.extendedOptions$.subscribe((extendedOptions: TemplateMultiSelectFormOption[]) => {
-      this.manageFormChanges(extendedOptions, HASHTAG_TYPE.SUGGESTED);
+    this.searchedHashtags.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions: TemplateMultiSelectFormOption[]) => {
+      this.searchedExtendedOptions = extendedOptions;
     });
 
-    this.searchedHashtags.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions: TemplateMultiSelectFormOption[]) => {
-      this.manageFormChanges(extendedOptions, HASHTAG_TYPE.SEARCHED);
+    this.suggestedHashtags.extendedOptions$.subscribe((extendedOptions: TemplateMultiSelectFormOption[]) => {
+      this.suggestedExtendedOptions = extendedOptions;
     });
 
     this.cdr.detectChanges();
