@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TransactionInfo } from '../../interfaces/transaction-info.interface';
 
 @Component({
@@ -6,10 +6,8 @@ import { TransactionInfo } from '../../interfaces/transaction-info.interface';
   templateUrl: './transaction-info.component.html',
   styleUrls: ['./transaction-info.component.scss'],
 })
-export class TransactionInfoComponent implements OnInit {
+export class TransactionInfoComponent {
   @Input() transactionInfo: TransactionInfo;
 
   constructor() {}
-
-  ngOnInit(): void {}
 }

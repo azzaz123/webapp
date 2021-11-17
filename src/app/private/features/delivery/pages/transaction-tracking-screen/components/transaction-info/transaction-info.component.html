@@ -8,7 +8,7 @@
     <span class="TrackingInfo__itemInfo TrackingInfo__itemInfo__price TrackingInfo__text text-truncate">{{
       transactionInfo.item.price
     }}</span>
-    <span class="TrackingInfo__text text-truncate">{{ transactionInfo.item.name }}</span>
+    <span id="itemName" class="TrackingInfo__text text-truncate">{{ transactionInfo.item.name }}</span>
   </div>
   <img
     [src]="transactionInfo.user.imageSrc"
