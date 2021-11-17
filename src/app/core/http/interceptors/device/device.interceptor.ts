@@ -19,7 +19,7 @@ export class DeviceInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const isWallapopRequest = request.url.startsWith(environment.baseUrl);
-    const isApiV3 = request.url.includes(API_V3) || request.url.includes(BFF);
+    const isApiV3 = request.url.startsWith(`${environment.baseUrl}${API_V3}`) || request.url.startsWith(`${environment.baseUrl}${BFF}`);
     const webDeviceOS = DEVICE_OS.WEB.toString();
 
     if (isWallapopRequest) {
