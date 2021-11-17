@@ -21,7 +21,7 @@ import { MultiselectSearchInputModule } from './multiselect-search-input.module'
         [disabled]="disabled"
         [categoryId]="categoryId"
         [max]="max"
-        (changeValidStatus)="showMessage($event)"
+        (changeValidStatus)="changeValidStatus($event)"
       ></tsl-multiselect-search-input>
     </form>
     <div *ngIf="showErrorNessage">Our hashtags are good with anything except special characters and spaces of course</div>
@@ -37,8 +37,8 @@ class StoryMultiselectSearchInputComponent {
   public options = this.formGroup.value.hashtag;
   public showErrorNessage: boolean = false;
 
-  public showMessage(event) {
-    this.showErrorNessage = event;
+  public changeValidStatus(valid) {
+    this.showErrorNessage = !valid;
   }
 }
 export default {

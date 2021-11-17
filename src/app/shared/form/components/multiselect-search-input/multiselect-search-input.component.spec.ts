@@ -59,7 +59,7 @@ describe('MultiselectSearchInputComponent', () => {
     it('should return the placeholder as initial', () => {
       inputElement.nativeElement.blur();
 
-      expect(inputElement.nativeElement.placeholder).toBe($localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`);
+      expect(inputElement.nativeElement.placeholder).toBe($localize`:@@finding_hashtags_hint:Find or create a hashtag`);
     });
   });
 

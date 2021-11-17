@@ -52,7 +52,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   public searchValue: string;
   public suggestions: MultiSelectValue = [];
   public isValid: boolean = true;
-  public hashtagPlaceholder: string = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
+  public hashtagPlaceholder: string = $localize`:@@finding_hashtags_hint:Find or create a hashtag`;
   public keyUpSubject = new Subject<KeyboardEvent>();
   private extendedOptions: TemplateMultiSelectFormOption[];
   private keyUp$: Observable<unknown>;
@@ -93,7 +93,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
       return;
     }
     if (!this.isValidKey()) {
-      this.changeValidStatus.emit(!this.isValid);
+      this.changeValidStatus.emit(this.isValid);
       this.emptyOptions();
       return;
     }
@@ -108,7 +108,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   public blur(): void {
-    this.hashtagPlaceholder = $localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`;
+    this.hashtagPlaceholder = $localize`:@@finding_hashtags_hint:Find or create a hashtag`;
   }
 
   public writeValue(value): void {
@@ -199,7 +199,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     } else {
       this.isValid = true;
     }
-    this.changeValidStatus.emit(!this.isValid);
+    this.changeValidStatus.emit(this.isValid);
     return this.isValid;
   }
 }
