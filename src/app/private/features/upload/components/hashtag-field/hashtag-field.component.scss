@@ -11,6 +11,8 @@
 
   &__counter {
     color: $blue-grey-3;
+    float: right;
+    font-size: $font-size-s;
   }
 
   &__suggested,
