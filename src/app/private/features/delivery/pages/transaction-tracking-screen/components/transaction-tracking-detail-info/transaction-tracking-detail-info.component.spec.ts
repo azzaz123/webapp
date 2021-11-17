@@ -239,11 +239,11 @@ describe('TransactionTrackingDetailInfoComponent', () => {
   }
 
   function checkIfStyleIsInTemplate(selector: string, shouldBeInTemplate: boolean): void {
-    const borderBottomStyles: DebugElement = de.query(By.css(selector));
+    const styles: DebugElement = de.query(By.css(selector));
     if (shouldBeInTemplate) {
-      expect(borderBottomStyles).toBeTruthy();
+      expect(styles).toBeTruthy();
     } else {
-      expect(borderBottomStyles).toBeFalsy();
+      expect(styles).toBeFalsy();
     }
   }
 });
