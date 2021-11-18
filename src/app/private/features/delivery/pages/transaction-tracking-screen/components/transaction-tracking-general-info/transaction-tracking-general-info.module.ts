@@ -9,5 +9,6 @@ import { TransactionTrackingActionsService } from '@private/features/delivery/se
   declarations: [TransactionTrackingGeneralInfoComponent],
   imports: [CommonModule, LottieModule, ButtonModule],
   providers: [TransactionTrackingActionsService],
+  exports: [TransactionTrackingGeneralInfoComponent],
 })
 export class TransactionTrackingGeneralInfoModule {}

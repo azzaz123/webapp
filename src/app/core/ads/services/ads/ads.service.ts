@@ -72,6 +72,10 @@ export class AdsService {
     this.googlePublisherTagService.setAdKeywords(adKeywords);
   }
 
+  public setTargetingByAdsKeywords(): void {
+    this.googlePublisherTagService.setTargetingByAdsKeywords();
+  }
+
   public adSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
     return this.googlePublisherTagService.isAdSlotLoaded$(adSlot);
   }

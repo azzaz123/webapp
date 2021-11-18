@@ -68,6 +68,7 @@ const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_2: TransactionTrackingStat
 };
 
 const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_NO_ACTION_1: TransactionTrackingStatusInfo = {
+  action: null,
   description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
   icon: {
     url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
@@ -80,6 +81,7 @@ const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_NO_ACTION_1: TransactionTrackingSta
   showCaret: false,
 };
 const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_NO_ACTION_2: TransactionTrackingStatusInfo = {
+  action: null,
   description: '<span style="color: #AFB6B6">Dirección de envío:</span><br>1234 No FLoor<br>08018 Barcelona',
   icon: {
     url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/shipping_address_element.png',
@@ -92,6 +94,7 @@ const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_NO_ACTION_2: TransactionTrackingSta
   showCaret: false,
 };
 const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_NO_ACTION_3: TransactionTrackingStatusInfo = {
+  action: null,
   description: '<span style="color: #AFB6B6">Método de cobro:</span><br>Monedero',
   icon: {
     url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/payment_method_wallet_element.png',

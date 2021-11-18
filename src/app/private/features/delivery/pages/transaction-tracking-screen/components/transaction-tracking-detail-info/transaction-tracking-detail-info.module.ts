@@ -6,5 +6,6 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 @NgModule({
   declarations: [TransactionTrackingDetailInfoComponent],
   imports: [CommonModule, SvgIconModule],
+  exports: [TransactionTrackingDetailInfoComponent],
 })
 export class TransactionTrackingDetailInfoModule {}

@@ -6,6 +6,7 @@ import { environment } from '@environments/environment';
 export const DEVICE_HEADER_NAME_API_V1 = 'DeviceOS';
 export const DEVICE_HEADER_NAME_API_V3 = 'X-DeviceOS';
 export const API_V3 = 'api/v3/';
+export const BFF = 'bff';
 
 export enum DEVICE_OS {
   WEB,
@@ -18,7 +19,7 @@ export class DeviceInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const isWallapopRequest = request.url.startsWith(environment.baseUrl);
-    const isApiV3 = request.url.includes(API_V3);
+    const isApiV3 = request.url.startsWith(`${environment.baseUrl}${API_V3}`) || request.url.startsWith(`${environment.baseUrl}${BFF}`);
     const webDeviceOS = DEVICE_OS.WEB.toString();
 
     if (isWallapopRequest) {

@@ -2,8 +2,7 @@ import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
-
-import { API_V3, DeviceInterceptor, DEVICE_HEADER_NAME_API_V1, DEVICE_HEADER_NAME_API_V3, DEVICE_OS } from './device.interceptor';
+import { API_V3, BFF, DeviceInterceptor, DEVICE_HEADER_NAME_API_V1, DEVICE_HEADER_NAME_API_V3, DEVICE_OS } from './device.interceptor';
 
 describe('DeviceInterceptor', () => {
   let http: HttpClient;
@@ -31,18 +30,24 @@ describe('DeviceInterceptor', () => {
 
   describe('when doing a request to wallapop server', () => {
     describe('and the request is to the api v3', () => {
-      it('should add the new device header and the old one', () => {
-        const expectedUrl = `${environment.baseUrl}${API_V3}random`;
-        const expectedHeaderValue = DEVICE_OS.WEB.toString();
+      describe('and the request is directly to v3', () => {
+        it('should add the new device header and the old one', () => {
+          const expectedUrl = `${environment.baseUrl}${API_V3}random`;
 
-        http.get(expectedUrl).subscribe();
-        const req: TestRequest = httpMock.expectOne(expectedUrl);
-        req.flush({});
+          http.get(expectedUrl).subscribe();
 
-        expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V1)).toBe(true);
-        expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V1)).toEqual(expectedHeaderValue);
-        expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V3)).toBe(true);
-        expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V3)).toEqual(expectedHeaderValue);
+          expectHeaderOldAndNewHeader(expectedUrl);
+        });
+      });
+
+      describe('and the request is directly to bff', () => {
+        it('should add the new device header and the old one', () => {
+          const expectedUrl = `${environment.baseUrl}${BFF}random`;
+
+          http.get(expectedUrl).subscribe();
+
+          expectHeaderOldAndNewHeader(expectedUrl);
+        });
       });
     });
 
@@ -76,4 +81,16 @@ describe('DeviceInterceptor', () => {
       expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V3)).toEqual(null);
     });
   });
+
+  function expectHeaderOldAndNewHeader(expectedUrl: string): void {
+    const expectedHeaderValue = DEVICE_OS.WEB.toString();
+
+    const req: TestRequest = httpMock.expectOne(expectedUrl);
+    req.flush({});
+
+    expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V1)).toBe(true);
+    expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V1)).toEqual(expectedHeaderValue);
+    expect(req.request.headers.has(DEVICE_HEADER_NAME_API_V3)).toBe(true);
+    expect(req.request.headers.get(DEVICE_HEADER_NAME_API_V3)).toEqual(expectedHeaderValue);
+  }
 });

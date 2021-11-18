@@ -7,4 +7,6 @@ export enum DELIVERY_PATHS {
   DISPUTE = 'dispute',
 }
 
-export enum DELIVERY_PATH_PARAMS {}
+export enum DELIVERY_PATH_PARAMS {
+  ID = 'id',
+}
