@@ -41,6 +41,7 @@ export class DropdownComponent implements OnInit {
   @Input() disabled: boolean = false;
   @Input() multiple: boolean = false;
   @Input() noFilter: number = 0;
+  @Input() optionTemplateProperty: string = '';
 
   // Text settings.
   @Input() notFoundMsg: string = 'No results found';
