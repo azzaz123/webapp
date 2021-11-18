@@ -72,7 +72,7 @@ describe('TransactionTrackingHttpService', () => {
     it('should get transaction tracking instructions info', () => {
       const MOCK_REQUEST_ID = '123';
       const MOCK_ACTION_TYPE: TransactionTrackingActionTypeDto = 'deeplink';
-      const EXPECTED_ENDPOINT = `${TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT}?requestId=${MOCK_REQUEST_ID}`;
+      const EXPECTED_ENDPOINT = `${TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT}?requestId=${MOCK_REQUEST_ID}&type=${MOCK_ACTION_TYPE}`;
       let response: TransactionTrackingInstructionsDto;
 
       service.getInstructions(MOCK_REQUEST_ID, MOCK_ACTION_TYPE).subscribe((properties: TransactionTrackingInstructionsDto) => {
