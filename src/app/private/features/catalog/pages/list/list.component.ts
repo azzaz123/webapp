@@ -511,7 +511,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onSearchInputChange(value: string) {
     this.searchTerm = value;
-    this.getItems();
+    this.getItems(null, true);
   }
 
   public setSortItems() {
@@ -523,7 +523,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onSortChange(value: any) {
     this.sortBy = value;
-    this.getItems();
+    this.getItems(null, true);
   }
 
   public onCloseTryProSlot(): void {
@@ -627,7 +627,7 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getItems(append?: boolean) {
+  private getItems(append?: boolean, cache?: boolean) {
     this.loading = true;
     this.end = false;
 
@@ -646,7 +646,8 @@ export class ListComponent implements OnInit, OnDestroy {
           this.selectedSubscriptionSlot.subscription.type,
           this.sortBy,
           this.selectedStatus as STATUS,
-          this.searchTerm
+          this.searchTerm,
+          cache
         )
         .subscribe((itemsByCategory) => {
           if (itemsByCategory) {

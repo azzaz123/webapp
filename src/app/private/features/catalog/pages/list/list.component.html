@@ -112,6 +112,7 @@
       [sortItems]="sortItems"
       (clickedLink)="filterByStatus($event)"
       (sortChanged)="onSortChange($event)"
+      [disabled]="loading"
       (searchChanged)="onSearchInputChange($event)"
     >
     </tsl-nav-links>
