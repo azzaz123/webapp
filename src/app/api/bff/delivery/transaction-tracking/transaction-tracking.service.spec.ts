@@ -4,11 +4,17 @@ import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/
 import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE } from '@api/fixtures/bff/delivery';
 import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
-import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
+import {
+  TransactionTracking,
+  TransactionTrackingDetails,
+  TransactionTrackingInstructions,
+} from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 import { of } from 'rxjs';
+import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-instructions.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-instructions-dto.fixtures.spec';
 
 describe('TransactionTrackingService', () => {
   let service: TransactionTrackingService;
@@ -26,6 +32,9 @@ describe('TransactionTrackingService', () => {
             },
             getDetails() {
               return of(MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE);
+            },
+            getInstructions() {
+              return of(MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE);
             },
           },
         },
@@ -98,6 +107,41 @@ describe('TransactionTrackingService', () => {
       let response: TransactionTrackingDetails;
 
       service.getDetails(requestId).subscribe((data) => {
+        response = data;
+
+        expect(JSON.stringify(response)).toEqual(JSON.stringify(expected));
+      });
+
+      flush();
+    }));
+  });
+
+  describe('WHEN they ask for the transaction tracking instructions info', () => {
+    const requestId = 'This is my request Id';
+    const type = 'dialog';
+    let spy: jasmine.Spy;
+
+    beforeEach(() => {
+      spy = spyOn(transactionTrackingHttpService, 'getInstructions').and.callThrough();
+    });
+
+    it('should call to get the information', () => {
+      service.getInstructions(requestId, type).subscribe();
+
+      expect(spy).toBeCalledTimes(1);
+    });
+
+    it('should call to get the information with the request id', () => {
+      service.getInstructions(requestId, type).subscribe();
+
+      expect(spy).toHaveBeenCalledWith(requestId, type);
+    });
+
+    it('should return the transation tracking instructions', fakeAsync(() => {
+      const expected = MOCK_TRANSACTION_TRACKING_INSTRUCTIONS;
+      let response: TransactionTrackingInstructions;
+
+      service.getInstructions(requestId, type).subscribe((data) => {
         response = data;
 
         expect(JSON.stringify(response)).toEqual(JSON.stringify(expected));
