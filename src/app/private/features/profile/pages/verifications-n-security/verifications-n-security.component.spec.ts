@@ -1,5 +1,6 @@
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
 import {
@@ -38,6 +39,7 @@ describe('VerificationsNSecurityComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [VerificationsNSecurityComponent, MockVerificationCardComponent],
       providers: [
+        FormBuilder,
         { provide: UserService, useClass: MockedUserService },
         {
           provide: UserVerificationsService,
@@ -101,8 +103,8 @@ describe('VerificationsNSecurityComponent', () => {
     });
   });
 
-  describe('verifications cards', () => {
-    describe('when the verifications service is loaded', () => {
+  describe('Verification cards', () => {
+    describe('when the verification service is loaded', () => {
       it('should show Email title', () => {
         const title = component.titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.EMAIL];
 
@@ -178,6 +180,7 @@ describe('VerificationsNSecurityComponent', () => {
 
       describe('and the phone is verified', () => {
         beforeEach(() => {
+          spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
           spyUserVerificationsService = jest
             .spyOn(userVerificationsService, 'userVerifications$', 'get')
             .mockReturnValue(of(MOCK_USER_VERIFICATIONS_PHONE_VERIFIED));
