@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TransactionTrackingActionDetail, TransactionTrackingStatusInfo } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
-import { TransactionTrackingInfo } from '../../interfaces/transaction-tracking-info.interface';
-import { mapTransactionsTrackingInfo } from '../../mappers/transaction-tracking-info.mapper';
+import { TransactionTrackingInfo } from '../../../interfaces/transaction-tracking-info.interface';
+import { mapTransactionsTrackingInfo } from '../../../mappers/transaction-tracking-info.mapper';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

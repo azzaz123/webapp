@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
-import { TransactionTrackingDetailInfoComponent } from '../transaction-tracking-detail-info/transaction-tracking-detail-info.component';
-import { mapTransactionsTrackingInfo } from '../../mappers/transaction-tracking-info.mapper';
+import { TransactionTrackingDetailInfoComponent } from '../../transaction-tracking-detail-info/transaction-tracking-detail-info.component';
+import { mapTransactionsTrackingInfo } from '../../../mappers/transaction-tracking-info.mapper';
 import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
 
 describe('TransactionTrackingStatusInfoComponent', () => {
