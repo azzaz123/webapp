@@ -124,9 +124,7 @@
       <tsl-catalog-item 
         *ngFor="let item of selectedSubscriptionSlot ? (items | slice:0:itemsAmount) : items"
         [item]="item"
-        (itemChange)="itemChanged($event)"
-        (purchaseListingFee)="purchaseListingFee($event)"
-      >
+        (itemChange)="itemChanged($event)">
       </tsl-catalog-item>
 
       <tsl-reviews *ngIf="selectedStatus === 'reviews'"></tsl-reviews>

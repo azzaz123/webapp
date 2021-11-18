@@ -19,7 +19,6 @@ import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/ca
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
-import { CountdownComponent } from './countdown/countdown.component';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { GeolocationModule } from './geolocation/geolocation.module';
@@ -146,7 +145,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     CatalogStatusNavbarComponent,
     CartComponent,
     ExitConfirmationModalComponent,
-    CountdownComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent,
@@ -206,7 +204,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     CatalogStatusNavbarComponent,
     CartComponent,
     ExitConfirmationModalComponent,
-    CountdownComponent,
     DeactivateItemsModalComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
