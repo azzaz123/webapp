@@ -2,7 +2,6 @@ import { AfterContentInit, Directive } from '@angular/core';
 import { ContentChildren, QueryList } from '@angular/core';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
-import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
 import { Variant } from '@core/experimentation/models';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { OPTIMIZE_EXPERIMENTS } from '@core/experimentation/vendors/optimize/resources/optimize-experiment-ids';
@@ -16,11 +15,7 @@ import { filter, map, take } from 'rxjs/operators';
 export class AdSlotGroupDirective implements AfterContentInit {
   @ContentChildren(AdSlotComponent, { descendants: true }) slotsQuery!: QueryList<AdSlotComponent>;
 
-  constructor(
-    private adsService: AdsService,
-    private adsTargetingService: AdsTargetingsService,
-    private experimentationService: ExperimentationService
-  ) {}
+  constructor(private adsService: AdsService, private experimentationService: ExperimentationService) {}
 
   public ngAfterContentInit(): void {
     combineLatest([this.experimentationService.experimentReady$, this.slotsQuery.changes.pipe(take(1))])
@@ -40,7 +35,6 @@ export class AdSlotGroupDirective implements AfterContentInit {
 
   private filterOnVariant(variant: Variant, configurations: AdSlotConfiguration[]): AdSlotConfiguration[] {
     this.setTargetingOnVariant(variant);
-    // this.adsService.setAdTargetings();
 
     if (variant === 'Baseline') {
       return configurations.filter((configuration) => !configuration.type.includes('variant'));
@@ -51,7 +45,7 @@ export class AdSlotGroupDirective implements AfterContentInit {
 
   private setTargetingOnVariant(variant: Variant): void {
     variant === 'Baseline'
-      ? this.adsTargetingService.setAdTargeting('MwebSearchLayout', 'old')
-      : this.adsTargetingService.setAdTargeting('MwebSearchLayout', 'new');
+      ? this.adsService.setAdKeywords({ MwebSearchLayout: 'old' })
+      : this.adsService.setAdKeywords({ MwebSearchLayout: 'new' });
   }
 }

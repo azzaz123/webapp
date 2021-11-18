@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
+import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
 import { DeviceService } from '@core/device/device.service';
@@ -24,7 +25,7 @@ export class GooglePublisherTagService {
     private cookieService: CookieService,
     private adsKeywordsService: AdsKeywordsService,
     private deviceService: DeviceService,
-    private adTargetingsService: AdsTargetingsService
+    private adsTargetingService: AdsTargetingsService
   ) {}
 
   public isLibraryRefDefined(): boolean {
@@ -73,15 +74,20 @@ export class GooglePublisherTagService {
     return this.adSlotsLoaded$.pipe(map((slotNames: string[]) => slotNames.includes(adSlot.name)));
   }
 
-  public setAdKeywords(adKeywords: AdKeyWords): void {
-    this.adsKeywordsService.saveCustomKeywords(adKeywords);
+  //KEY VALUE PAIR
+  // public setAdTargeting(key: string, value: string): void {
+  //   this.adsTargetingService.setAdTargeting(key, value)
+  // }
+
+  //AD TARGETINGS TYPE
+  public setAdTargeting(adTargetings: AdTargetings): void {
+    this.adsTargetingService.setAdTargeting(adTargetings);
   }
 
-  public pushAdTargetings(): void {
-    // this.adsKeywordsService.loadAdKeywords();
+  public setTargetingByAdsKeywords(): void {
+    this.adsTargetingService.setAdTargetings();
 
-    // const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
-    const adTargetings = this.adTargetingsService.adTargetings;
+    const adTargetings: AdTargetings = this.adsTargetingService.adTargetings;
     this.googletag.cmd.push(() => {
       for (const key in adTargetings) {
         if (adTargetings.hasOwnProperty(key) && adTargetings[key]) {
@@ -103,6 +109,10 @@ export class GooglePublisherTagService {
     });
   }
 
+  public refreshAdTargetings(): void {
+    this.adsTargetingService.refreshAdTargetings();
+  }
+
   public clearSlots(adSlotConfigurations: AdSlotConfiguration[]): void {
     this.googletag.cmd.push(() => {
       this.googletag.pubads().clear(this.getSlots(adSlotConfigurations));
@@ -110,9 +120,7 @@ export class GooglePublisherTagService {
   }
 
   public displayShopping(pageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration[]): void {
-    this.adsKeywordsService.loadAdKeywords();
-
-    const { content }: AdKeyWords = this.adsKeywordsService.adKeywords;
+    const { content }: AdTargetings = this.adsTargetingService.adTargetings;
     this.googCsa(GooglePublisherTagService.GOOGLE_ADS_SENSE_NAME, { ...pageOptions, query: content }, adSlotShopping);
   }
 

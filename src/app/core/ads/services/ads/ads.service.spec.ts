@@ -134,8 +134,8 @@ describe('AdsService', () => {
     });
   });
 
-  describe('when set ad keywords', () => {
-    it('should set ad keywords on google', () => {
+  describe('when set ad keyword', () => {
+    it('should set ad keyword on google', () => {
       spyOn(MockGooglePublisherTagService, 'setAdKeywords').and.callThrough();
 
       service.setAdKeywords(MockAdsKeywords);

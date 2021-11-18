@@ -7,6 +7,7 @@ import {
   AD_TABLET_MAPPING,
 } from '@core/ads/constants';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
+import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { of } from 'rxjs';
 
@@ -74,6 +75,19 @@ export const MockAdsKeywords: AdKeyWords = {
 export const MockAdsKeywordsService = {
   adKeywords: MockAdsKeywords,
   loadAdKeywords: () => {},
+};
+
+export const MockAdsTargetings: AdTargetings = {
+  userId: '124214',
+  brand: 'vinted',
+  content: 'contenido',
+};
+
+export const MockAdsTargetingsService = {
+  adTargetings: MockAdsTargetings,
+  setAdTargeting: () => {},
+  setAdTargetings: () => {},
+  refreshAdTargetings: () => {},
 };
 
 export const MockAdSlots: AdSlotConfiguration[] = [

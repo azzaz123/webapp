@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
+import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { DeviceService } from '@core/device/device.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { GooglePublisherTagService } from '../../vendors';
-import { AdsTargetingsService } from '../ads-targetings/ads-targetings.service';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 
 @Injectable({
@@ -32,6 +32,7 @@ export class AdsService {
     this.listenerToSetSlots();
     this.listenerToDisplaySlots();
     this.listenerToRefreshSlots();
+    this.listenerToSetTargetings();
   }
 
   public init(): void {
@@ -69,12 +70,22 @@ export class AdsService {
     this.googlePublisherTagService.clearSlots(adSlots);
   }
 
-  public setAdKeywords(adKeywords: AdKeyWords): void {
-    this.googlePublisherTagService.setAdKeywords(adKeywords);
+  //KEY VALUE PAIR
+  // public setAdKeywords(key: string, value: string): void {
+  //   this.googlePublisherTagService.setAdTargeting(key, value);
+  // }
+
+  //ADTARGETING TYPE
+  public setAdKeywords(adTargetings: AdTargetings): void {
+    this.googlePublisherTagService.setAdTargeting(adTargetings);
   }
 
-  public pushAdTargetings(): void {
-    this.googlePublisherTagService.pushAdTargetings();
+  public setTargetingByAdsKeywords(): void {
+    this.googlePublisherTagService.setTargetingByAdsKeywords();
+  }
+
+  public refreshTargetings(): void {
+    this.googlePublisherTagService.refreshAdTargetings();
   }
 
   public adSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
@@ -103,6 +114,12 @@ export class AdsService {
     return this.window['fetchHeaderBids'];
   }
 
+  private listenerToSetTargetings(): void {
+    this.adsReady$.pipe(filter((adsReady) => adsReady)).subscribe(() => {
+      this.googlePublisherTagService.setTargetingByAdsKeywords();
+    });
+  }
+
   private listenerToSetSlots(): void {
     combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
@@ -126,9 +143,9 @@ export class AdsService {
 
   private listenerToRefreshSlots(): void {
     combineLatest([this.allowSegmentation$, this.refreshSlotsSubject.asObservable()])
-      .pipe(map(([allowSegmentation, _]: [boolean, void]) => allowSegmentation))
+      .pipe(map(([allowSegmentation, refreshSlots]: [boolean, void]) => allowSegmentation))
       .subscribe((allowSegmentation: boolean) => {
-        this.refreshAdTargetings();
+        this.googlePublisherTagService.setTargetingByAdsKeywords();
         this.refreshHeaderBids(allowSegmentation);
       });
   }
@@ -151,9 +168,5 @@ export class AdsService {
     const definedSlots = this.googlePublisherTagService.getDefinedSlots();
 
     this.fetchHeaderBids(allowSegmentation, slots, definedSlots);
-  }
-
-  private refreshAdTargetings(): void {
-    this.pushAdTargetings();
   }
 }
