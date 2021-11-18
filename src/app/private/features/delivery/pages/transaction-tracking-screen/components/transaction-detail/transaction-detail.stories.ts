@@ -1,25 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
-import { TransactionTrackingDetailInfoComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-tracking-detail-info/transaction-tracking-detail-info.component';
+import { TransactionDetailComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-detail/transaction-detail.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { HttpClientModule } from '@angular/common/http';
 
 export default {
   title: 'Webapp/Private/Features/Delivery/Components/TransactionTrackingDetailInfo',
-  component: TransactionTrackingDetailInfoComponent,
+  component: TransactionDetailComponent,
   decorators: [styledWrapperDecorator('max-width: 375px;')],
 } as Meta;
 
-const Template: Story<TransactionTrackingDetailInfoComponent> = (args: TransactionTrackingDetailInfoComponent) => ({
-  component: TransactionTrackingDetailInfoComponent,
+const Template: Story<TransactionDetailComponent> = (args: TransactionDetailComponent) => ({
+  component: TransactionDetailComponent,
   props: args,
   moduleMetadata: {
-    declarations: [TransactionTrackingDetailInfoComponent],
+    declarations: [TransactionDetailComponent],
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
   template:
-    '<tsl-transaction-tracking-detail-info [transactionTrackingInfo]="transactionTrackingInfo" [isClickableAction]="isClickableAction" [isBorderBottom]="isBorderBottom"></tsl-transaction-tracking-detail-info>',
+    '<tsl-transaction-detail [transactionTrackingInfo]="transactionTrackingInfo" [isClickableAction]="isClickableAction" [isBorderBottom]="isBorderBottom"></tsl-transaction-detail>',
 });
 
 export const ProductExample = Template.bind({});
