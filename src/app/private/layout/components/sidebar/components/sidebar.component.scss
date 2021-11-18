@@ -1,146 +1,109 @@
 @import '~style/common';
 
+$collapse-btn-dimension: 24px;
+
 :host {
-  position: fixed;
-  width: $sidebar-width;
-  left: 0;
+  position: sticky;
   top: $topbar-height;
+  left: 0;
   bottom: 0;
-  background-color: $blue-grey-1;
-  padding-top: $spacing-m;
   height: calc(100vh - #{$topbar-height});
-  z-index: 99;
 }
 
-.chat-notification-pending {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 10px;
-  height: 10px;
-  background-color: $negative-main;
-  border-radius: 100%;
-  transform: translateX(100%);
-}
+.Sidebar {
+  width: $sidebar-width;
+  height: 100%;
+  background-color: $white;
+  transition: width 150ms ease-in-out;
+  border-right: 1px solid transparentize($blue-grey-4, 0.5);
 
-$sidebar-section-circle-size: 50px;
-$sidebar-section-circle-size-small: 32px;
-
-.sidebar-section-circle {
-  position: relative;
-  margin: 0 auto $spacing-ms auto;
-  width: $sidebar-section-circle-size;
-  height: $sidebar-section-circle-size;
-  background-color: rgba(lighten($blue-grey-1, 8%), 0.5);
-  transition: width 0.75s, height 0.75s;
-  .active & {
-    background-color: $walla-main !important;
-  }
-  border-radius: 50%;
-  .profile-item & {
-    background-color: transparent !important;
-  }
-}
-
-.sidebar-section {
-  tsl-svg-icon {
+  &__collapse {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateY(-50%) translateX(-50%);
-    @include square(34px);
-    transition: 0.15s background-color ease;
-    g g {
-      transition: 0.15s fill ease;
-    }
-  }
-  & ::ng-deep path {
-    fill: rgba($white, 0.5);
-  }
-  &.active,
-  &:hover {
+    opacity: 0;
+    right: -$collapse-btn-dimension * 0.5;
+    top: 112px;
+    border-radius: 50%;
+    background-color: $blue-grey-5;
+    appearance: none;
+    border: 0;
+    box-shadow: 0px 4px 4px rgba($blue-grey-1, 0.15);
+    z-index: 1;
+    transition: 150ms ease-in-out;
+    @include square($collapse-btn-dimension);
+
     tsl-svg-icon {
-      & ::ng-deep path {
-        fill: $white;
-      }
+      margin-left: -1px;
     }
-  }
-}
 
-h2 {
-  font-size: $font-size-xxs;
-  font-weight: $font-weight-chunky;
-  color: rgba($white, 0.5);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0;
-  padding: 0 $spacing-xs;
-  .active & {
-    color: $white;
+    &:hover {
+      background-color: $blue-grey-6;
+    }
+    &:active {
+      background-color: $blue-grey-4;
+    }
   }
-}
 
-.sidebar-section {
-  position: relative;
-  display: block;
-  padding: $spacing-ms 0;
-  text-align: center;
-  &:focus,
-  &:hover {
-    text-decoration: none;
-  }
-  &:hover {
-    .sidebar-section-circle {
-      background-color: lighten($blue-grey-1, 8%);
+  &__entry {
+    position: relative;
+    margin: 0 12px 4px;
+    min-height: 43px;
+    &:hover {
+      background-color: $blue-grey-5;
+      border-radius: 8px;
+      text-decoration: none;
     }
-    h2 {
-      color: $white;
-      transition: 0.15s color ease;
+
+    &:active {
+      background-color: $blue-grey-4;
     }
-  }
-  &.profile-item {
-    tsl-user-avatar {
-      opacity: 0.5;
-      transition: 0.15s opacity ease;
+
+    tsl-svg-icon {
+      padding-left: 8px;
     }
-    &:hover,
+
     &.active {
-      tsl-user-avatar {
-        opacity: 1;
+      span {
+        font-weight: bold;
+        color: $blue-grey-1;
       }
-    }
-  }
-}
-
-@media screen and (max-height: 900px) {
-  .sidebar-section-circle {
-    width: $sidebar-section-circle-size-small;
-    height: $sidebar-section-circle-size-small;
-    margin: 0 auto $spacing-s auto;
-  }
-  .sidebar-section {
-    tsl-svg-icon {
-      @include square(24px);
-      &::ng-deep svg {
-        width: 100%;
-        height: 100%;
-      }
-    }
-    &.profile-item {
-      tsl-user-avatar {
-        ::ng-deep .avatar-rounded {
-          transition: width 0.75s, height 0.75s;
-          width: $sidebar-section-circle-size-small;
-          height: $sidebar-section-circle-size-small;
+      tsl-svg-icon {
+        ::ng-deep path {
+          fill: $blue-grey-1;
         }
       }
     }
   }
+
+  &__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: $font-size-m;
+    white-space: nowrap;
+    color: $blue-grey-1;
+    padding-left: 12px;
+  }
+
+  &--collapsed {
+    width: $sidebar-collapsed-width;
+    span {
+      display: none;
+    }
+  }
+
+  &:hover {
+    .Sidebar__collapse {
+      opacity: 1;
+    }
+  }
 }
 
-.svg-icon-size {
-  ::ng-deep svg {
-    height: 100%;
-    width: 100%;
-  }
+.chat-notification-pending {
+  position: absolute;
+  top: 9px;
+  left: 25px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid $white;
+  background-color: $negative-main;
+  border-radius: 100%;
 }

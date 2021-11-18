@@ -31,6 +31,7 @@ export class SidebarComponent implements OnInit {
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
   public isClickedProSection: boolean;
+  public collapsed: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -44,6 +45,10 @@ export class SidebarComponent implements OnInit {
       this.isProfessional = value;
     });
     this.isClickedProSection = this.userService.isClickedProSection;
+  }
+
+  public toggleCollapse(): void {
+    this.collapsed = !this.collapsed;
   }
 
   public onClickedProSection(): void {
