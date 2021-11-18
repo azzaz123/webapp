@@ -9,6 +9,7 @@ import { format, parsePhoneNumber } from 'libphonenumber-js';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { EmailVerificationModalComponent } from '../../modal/email-verification/modals/email-verification-modal/email-verification-modal.component';
+import { PhoneVerificationModalComponent } from '../../modal/phone-verification/modals/phone-verification-modal/phone-verification-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
 
 export enum VERIFICATIONS_N_SECURITY_TYPES {
@@ -16,7 +17,10 @@ export enum VERIFICATIONS_N_SECURITY_TYPES {
   PHONE,
 }
 
-type EmailModal = typeof EmailModalComponent | typeof EmailVerificationModalComponent;
+type verificationModalComponent =
+  | typeof EmailModalComponent
+  | typeof EmailVerificationModalComponent
+  | typeof PhoneVerificationModalComponent;
 @Component({
   selector: 'tsl-verifications-n-security',
   templateUrl: './verifications-n-security.component.html',
@@ -55,9 +59,9 @@ export class VerificationsNSecurityComponent implements OnInit {
 
   public onClickVerifyEmail(isVerifiedEmail: boolean): void {
     let modalRef: NgbModalRef;
-    let modal: EmailModal = this.getEmailModal(isVerifiedEmail);
+    let modal: verificationModalComponent = this.getEmailModal(isVerifiedEmail);
 
-    modalRef = this.openEmailModal(modal);
+    modalRef = this.openModal(modal);
 
     if (isVerifiedEmail) {
       modalRef.componentInstance.currentEmail = this.user.email;
@@ -69,14 +73,16 @@ export class VerificationsNSecurityComponent implements OnInit {
   }
 
   public onClickVerifyPhone(): void {
+    this.openModal(PhoneVerificationModalComponent);
+
     this.verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent(VERIFICATION_METHOD.PHONE);
   }
 
-  private getEmailModal(isVerifiedEmail: boolean): EmailModal {
+  private getEmailModal(isVerifiedEmail: boolean): verificationModalComponent {
     return isVerifiedEmail ? EmailModalComponent : EmailVerificationModalComponent;
   }
 
-  private openEmailModal(modal: EmailModal): NgbModalRef {
+  private openModal(modal: verificationModalComponent): NgbModalRef {
     return this.modalService.open(modal, {
       windowClass: 'modal-standard',
     });
