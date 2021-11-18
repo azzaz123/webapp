@@ -1,7 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MOCK__TRANSACTION_INFO } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-info.fixtures.spec';
+import { MOCK_TRANSACTION_INFO } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-info.fixtures.spec';
 
 import { TransactionInfoComponent } from './transaction-info.component';
 
@@ -29,40 +29,40 @@ describe('TransactionInfoComponent', () => {
 
   describe('when we receive transaction info...', () => {
     beforeEach(() => {
-      component.transactionInfo = MOCK__TRANSACTION_INFO;
+      component.transactionInfo = MOCK_TRANSACTION_INFO;
       fixture.detectChanges();
     });
 
     describe('and the item image is defined...', () => {
       it('should show the provided item image src', () => {
-        expect(de.nativeElement.querySelector(`[src*="${MOCK__TRANSACTION_INFO.item.imageSrc}"]`)).toBeTruthy();
+        expect(de.nativeElement.querySelector(`[src*="${MOCK_TRANSACTION_INFO.item.imageSrc}"]`)).toBeTruthy();
       });
 
       it('should apply the provided style', () => {
-        checkIfStyleIsInTemplate(`.TrackingInfo__image--${MOCK__TRANSACTION_INFO.item.className}`, true);
+        checkIfStyleIsInTemplate(`.TrackingInfo__image--${MOCK_TRANSACTION_INFO.item.className}`, true);
       });
     });
 
     describe('and the user image is defined...', () => {
       it('should show the provided user image src', () => {
-        expect(de.nativeElement.querySelector(`[src*="${MOCK__TRANSACTION_INFO.user.imageSrc}"]`)).toBeTruthy();
+        expect(de.nativeElement.querySelector(`[src*="${MOCK_TRANSACTION_INFO.user.imageSrc}"]`)).toBeTruthy();
       });
 
       it('should apply the provided style', () => {
-        checkIfStyleIsInTemplate(`.TrackingInfo__image--${MOCK__TRANSACTION_INFO.user.className}`, true);
+        checkIfStyleIsInTemplate(`.TrackingInfo__image--${MOCK_TRANSACTION_INFO.user.className}`, true);
       });
     });
 
     it('should show the provided item name', () => {
       const itemPrice: HTMLElement = de.query(By.css('#itemName')).nativeElement.innerHTML;
 
-      expect(itemPrice).toEqual(MOCK__TRANSACTION_INFO.item.name);
+      expect(itemPrice).toEqual(MOCK_TRANSACTION_INFO.item.name);
     });
 
     it('should show the provided item price', () => {
       const itemPrice: HTMLElement = de.query(By.css('.TrackingInfo__itemInfo__price')).nativeElement.innerHTML;
 
-      expect(itemPrice).toEqual(MOCK__TRANSACTION_INFO.item.price);
+      expect(itemPrice).toEqual(MOCK_TRANSACTION_INFO.item.price);
     });
   });
 
