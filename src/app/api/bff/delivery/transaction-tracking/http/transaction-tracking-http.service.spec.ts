@@ -1,6 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
+import { APP_VERSION } from '@environments/version';
 import { MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-details-dto.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
 import {
@@ -43,6 +44,7 @@ describe('TransactionTrackingHttpService', () => {
       expect(response).toEqual(MOCK_TRANSACTION_TRACKING_DTO_RESPONSE);
       expect(transactionTrackingRequest.request.url).toEqual(TRANSACTION_TRACKING_ENDPOINT);
       expect(transactionTrackingRequest.request.method).toBe('GET');
+      expect(transactionTrackingRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
 
     it('should get transaction tracking details info', () => {
@@ -60,6 +62,7 @@ describe('TransactionTrackingHttpService', () => {
       expect(response).toEqual(MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE);
       expect(transactionTrackingDetailsRequest.request.url).toEqual(TRANSACTION_TRACKING_DETAILS_ENDPOINT);
       expect(transactionTrackingDetailsRequest.request.method).toBe('GET');
+      expect(transactionTrackingDetailsRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
   });
 });

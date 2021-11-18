@@ -59,7 +59,6 @@ import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-m
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ListComponent } from './list.component';
-import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Counters } from '@core/user/user-stats.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -76,6 +75,7 @@ import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-a
 import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscription-slots.fixtures.spec';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -1531,8 +1531,8 @@ describe('ListComponent', () => {
               action: ITEM_CHANGE_ACTION.REACTIVATED,
             });
 
-            expect(modalService.open).toHaveBeenCalledWith(SuggestProModalComponent, {
-              windowClass: 'modal-standard',
+            expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+              windowClass: 'pro-modal',
             });
           });
         }),
@@ -1548,8 +1548,8 @@ describe('ListComponent', () => {
                 action: ITEM_CHANGE_ACTION.REACTIVATED,
               });
 
-              expect(modalService.open).toHaveBeenCalledWith(SuggestProModalComponent, {
-                windowClass: 'modal-standard',
+              expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+                windowClass: 'pro-modal',
               });
             });
           }),
@@ -1565,8 +1565,8 @@ describe('ListComponent', () => {
                 action: ITEM_CHANGE_ACTION.REACTIVATED,
               });
 
-              expect(modalService.open).not.toHaveBeenCalledWith(SuggestProModalComponent, {
-                windowClass: 'modal-standard',
+              expect(modalService.open).not.toHaveBeenCalledWith(ProModalComponent, {
+                windowClass: 'pro-modal',
               });
             });
           }),
@@ -1584,24 +1584,6 @@ describe('ListComponent', () => {
               expect(userService.saveLocalStore).toHaveBeenCalledWith(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, FAKE_DATE_NOW.toString());
             });
           });
-        describe('and click cta button', () => {
-          it('should redirect to subscriptions', fakeAsync(() => {
-            modalSpy.and.returnValue({
-              result: Promise.resolve(true),
-              componentInstance: componentInstance,
-            });
-            const item = cloneDeep(component.items[3]);
-
-            component.itemChanged({
-              item: item,
-              action: ITEM_CHANGE_ACTION.REACTIVATED,
-            });
-            tick();
-
-            expect(router.navigate).toHaveBeenCalledTimes(1);
-            expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
-          }));
-        });
         describe('and click secondary button', () => {
           it('should refresh item', fakeAsync(() => {
             modalSpy.and.returnValue({

@@ -363,7 +363,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
 
     if (this.tierWithDiscount) {
-      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:Start with ${this.tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`;
+      config.buttons.primary.text = $localize`:@@pro_after_reactivation_non_subscribed_user_start_with_discount_button:Try with ${this.tierWithDiscount.discount.percentage}:INTERPOLATION:% discount`;
       return config;
     }
 

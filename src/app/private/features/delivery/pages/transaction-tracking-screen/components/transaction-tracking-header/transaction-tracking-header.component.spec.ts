@@ -20,7 +20,7 @@ describe('TransactionTrackingHeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TransactionTrackingActionsService],
+      providers: [{ provide: TransactionTrackingActionsService, useValue: { manageAction() {} } }],
       declarations: [TransactionTrackingHeaderComponent, ButtonComponent, SvgIconComponent],
     }).compileComponents();
   });

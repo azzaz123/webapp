@@ -9,7 +9,10 @@ import { TransactionTrackingInfo } from '../../interfaces/transaction-tracking-i
 })
 export class TransactionTrackingDetailInfoComponent implements OnInit {
   @Input() transactionTrackingInfo: TransactionTrackingInfo;
+  @Input() isClickableAction: boolean;
+  @Input() isBorderBottom: boolean;
   @Output() caretClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() actionClick: EventEmitter<void> = new EventEmitter<void>();
 
   public descriptionByPass: SafeHtml;
 
@@ -17,5 +20,11 @@ export class TransactionTrackingDetailInfoComponent implements OnInit {
 
   ngOnInit() {
     this.descriptionByPass = this.sanitizer.bypassSecurityTrustHtml(this.transactionTrackingInfo.description);
+  }
+
+  public emitActionClick(): void {
+    if (this.isClickableAction) {
+      this.actionClick.emit();
+    }
   }
 }
