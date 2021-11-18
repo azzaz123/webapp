@@ -19,12 +19,12 @@ const Template: Story<TransactionDetailComponent> = (args: TransactionDetailComp
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
   template:
-    '<tsl-transaction-detail [transactionTrackingInfo]="transactionTrackingInfo" [isClickableAction]="isClickableAction" [isBorderBottom]="isBorderBottom"></tsl-transaction-detail>',
+    '<tsl-transaction-detail [transactionDetail]="transactionDetail" [isClickableAction]="isClickableAction" [isBorderBottom]="isBorderBottom"></tsl-transaction-detail>',
 });
 
 export const ProductExample = Template.bind({});
 ProductExample.args = {
-  transactionTrackingInfo: {
+  transactionDetail: {
     description: '<span style="color: #AFB6B6">Producto:</span><br>crayones',
     showCaret: true,
     iconClassName: 'rounded',
@@ -34,7 +34,7 @@ ProductExample.args = {
 
 export const UserExample = Template.bind({});
 UserExample.args = {
-  transactionTrackingInfo: {
+  transactionDetail: {
     description: '<span style="color: #AFB6B6">Vendido por:</span><br>Coccofresco F.',
     showCaret: true,
     iconClassName: 'circle',
@@ -44,7 +44,7 @@ UserExample.args = {
 
 export const PriceExample = Template.bind({});
 PriceExample.args = {
-  transactionTrackingInfo: {
+  transactionDetail: {
     description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
     showCaret: false,
     iconClassName: 'rounded',
@@ -54,7 +54,7 @@ PriceExample.args = {
 
 export const ActionClickable = Template.bind({});
 ActionClickable.args = {
-  transactionTrackingInfo: {
+  transactionDetail: {
     description:
       '<strong>Tu compra está protegida</strong> por Wallapop Protect, nuestra política de protección.<br><span style="color: #13C1AC">¿Quieres saber más?</span>',
     showCaret: false,
@@ -67,7 +67,7 @@ ActionClickable.args = {
 
 export const BorderBottom = Template.bind({});
 BorderBottom.args = {
-  transactionTrackingInfo: {
+  transactionDetail: {
     description: '<span style="color: #AFB6B6">Producto:</span><br>crayones',
     showCaret: true,
     iconClassName: 'rounded',

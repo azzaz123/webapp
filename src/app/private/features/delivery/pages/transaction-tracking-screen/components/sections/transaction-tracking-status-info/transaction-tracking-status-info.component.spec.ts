@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { TransactionDetailComponent } from '../../transaction-detail/transaction-detail.component';
-import { mapTransactionsTrackingInfo } from '../../../mappers/transaction-tracking-info.mapper';
+import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mapper';
 import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
 
 describe('TransactionTrackingStatusInfoComponent', () => {
@@ -40,7 +40,7 @@ describe('TransactionTrackingStatusInfoComponent', () => {
 
     describe('and we get the detail info slots', () => {
       it('should return the transaction tracking status info mapped', () => {
-        expect(component.detailInfoSlots).toStrictEqual(mapTransactionsTrackingInfo(MOCK_STATUS_INFO));
+        expect(component.detailInfoSlots).toStrictEqual(mapTransactionsDetail(MOCK_STATUS_INFO));
       });
     });
 
