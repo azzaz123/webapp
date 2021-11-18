@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
-import { TransactionTrackingDetailInfoComponent } from '../../transaction-tracking-detail-info/transaction-tracking-detail-info.component';
+import { TransactionDetailComponent } from '../../transaction-detail/transaction-detail.component';
 import { mapTransactionsTrackingInfo } from '../../../mappers/transaction-tracking-info.mapper';
 import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
 
@@ -15,7 +15,7 @@ describe('TransactionTrackingStatusInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionTrackingStatusInfoComponent, TransactionTrackingDetailInfoComponent],
+      declarations: [TransactionTrackingStatusInfoComponent, TransactionDetailComponent],
       providers: [{ provide: TransactionTrackingActionsService, useValue: { manageAction() {} } }],
     }).compileComponents();
   });
@@ -34,7 +34,7 @@ describe('TransactionTrackingStatusInfoComponent', () => {
 
   describe('when getting transaction tracking status info...', () => {
     it('should have the same transaction tracking detail info as slots', () => {
-      const detailInfoSlots = fixture.debugElement.queryAll(By.directive(TransactionTrackingDetailInfoComponent));
+      const detailInfoSlots = fixture.debugElement.queryAll(By.directive(TransactionDetailComponent));
       expect(detailInfoSlots.length).toEqual(component.transactionTrackingStatusInfo.length);
     });
 
@@ -48,7 +48,7 @@ describe('TransactionTrackingStatusInfoComponent', () => {
       describe('and we click on the slot', () => {
         it('should manage the provided action', () => {
           spyOn(transactionTrackingActionsService, 'manageAction');
-          const slot: DebugElement = fixture.debugElement.queryAll(By.directive(TransactionTrackingDetailInfoComponent))[index];
+          const slot: DebugElement = fixture.debugElement.queryAll(By.directive(TransactionDetailComponent))[index];
 
           slot.triggerEventHandler('actionClick', component.transactionTrackingStatusInfo[index].action);
 
