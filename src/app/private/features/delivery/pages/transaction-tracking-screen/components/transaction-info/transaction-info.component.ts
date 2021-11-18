@@ -8,6 +8,4 @@ import { TransactionInfo } from '../../interfaces/transaction-info.interface';
 })
 export class TransactionInfoComponent {
   @Input() transactionInfo: TransactionInfo;
-
-  constructor() {}
 }

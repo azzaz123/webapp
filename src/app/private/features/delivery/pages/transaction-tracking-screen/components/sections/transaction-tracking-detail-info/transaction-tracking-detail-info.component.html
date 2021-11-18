@@ -1,0 +1,38 @@
+<ng-container *ngIf="!isMobile; else accordion">
+  <tsl-transaction-detail
+    *ngFor="let transactionDetail of transactionDetails; let index = index"
+    [ngClass]="{ 'TransactionTrackingDetailInfo--clickable': !!transactionTrackingDetails.info[index].action }"
+    [transactionDetail]="transactionDetail"
+    [isBorderBottom]="true"
+  ></tsl-transaction-detail>
+</ng-container>
+<ng-template #accordion>
+  <ngb-accordion>
+    <ngb-panel>
+      <ng-template ngbPanelHeader>
+        <div class="TransactionTrackingDetailInfo__containerWrapper d-flex justify-content-between">
+          <tsl-transaction-info
+            class="TransactionTrackingDetailInfo__transactionInfo"
+            [transactionInfo]="transactionInfo"
+          ></tsl-transaction-info>
+          <button
+            ngbPanelToggle
+            class="TransactionTrackingDetailInfo__toggle btn btn-link p-0 d-flex align-items-center justify-content-center"
+          >
+            <tsl-svg-icon src="/assets/icons/arrow-waterfall.svg"></tsl-svg-icon>
+          </button>
+        </div>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="TransactionTrackingDetailInfo__containerWrapper">
+          <span class="TransactionTrackingDetailInfo__title"> {{ transactionTrackingDetails.title }}</span>
+        </div>
+        <tsl-transaction-detail
+          *ngFor="let transactionDetail of transactionDetails"
+          [transactionDetail]="transactionDetail"
+          [isBorderBottom]="true"
+        ></tsl-transaction-detail>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</ng-template>
