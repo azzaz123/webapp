@@ -7,6 +7,7 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { GooglePublisherTagService } from '../../vendors';
+import { AdsTargetingsService } from '../ads-targetings/ads-targetings.service';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 
 @Injectable({
@@ -72,8 +73,8 @@ export class AdsService {
     this.googlePublisherTagService.setAdKeywords(adKeywords);
   }
 
-  public setTargetingByAdsKeywords(): void {
-    this.googlePublisherTagService.setTargetingByAdsKeywords();
+  public pushAdTargetings(): void {
+    this.googlePublisherTagService.pushAdTargetings();
   }
 
   public adSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
@@ -125,8 +126,9 @@ export class AdsService {
 
   private listenerToRefreshSlots(): void {
     combineLatest([this.allowSegmentation$, this.refreshSlotsSubject.asObservable()])
-      .pipe(map(([allowSegmentation, refreshSlots]: [boolean, void]) => allowSegmentation))
+      .pipe(map(([allowSegmentation, _]: [boolean, void]) => allowSegmentation))
       .subscribe((allowSegmentation: boolean) => {
+        this.refreshAdTargetings();
         this.refreshHeaderBids(allowSegmentation);
       });
   }
@@ -149,5 +151,9 @@ export class AdsService {
     const definedSlots = this.googlePublisherTagService.getDefinedSlots();
 
     this.fetchHeaderBids(allowSegmentation, slots, definedSlots);
+  }
+
+  private refreshAdTargetings(): void {
+    this.pushAdTargetings();
   }
 }

@@ -22,7 +22,7 @@ export class SearchAdsService {
   ) {}
 
   public init(): void {
-    this.subscription.add(this.setAdKeywordsObservable());
+    this.subscription.add(this.listenerToAdsRefresh());
   }
 
   public clearSlots(): void {
@@ -41,17 +41,41 @@ export class SearchAdsService {
     this.subscription.unsubscribe();
   }
 
-  private setAdKeywordsObservable(): Subscription {
-    return this.filterParameterStoreService.parameters$
-      .pipe(
-        skip(1),
-        map((filterParameters: FilterParameter[]) => filterParameters.find(({ key }) => key === FILTER_QUERY_PARAM_KEY.keywords))
-      )
-      .subscribe((filterKeyword: FilterParameter) => {
-        const content = filterKeyword?.value || null;
+  // private setAdKeywordsObservable(): Subscription {
+  //   return this.filterParameterStoreService.parameters$
+  //     .pipe(
+  //       skip(1),
+  //       map((filterParameters: FilterParameter[]) => filterParameters.find(({ key }) => key === FILTER_QUERY_PARAM_KEY.keywords))
+  //     )
+  //     .subscribe((filterKeyword: FilterParameter) => {
+  //       const content = filterKeyword?.value || null;
 
-        this.adsService.setAdKeywords({ content });
-        this.adsService.refreshAllSlots();
-      });
+  //       this.adsService.setAdKeywords({ content });
+  //       this.adsService.refreshAllSlots();
+  //     });
+  // }
+
+  // private setAdKeywordsObservable(): Subscription {
+  //   return this.filterParameterStoreService.parameters$
+  //     .pipe(
+  //       skip(1),
+  //       map((filterParameters: FilterParameter[]) =>{
+  //         return filterParameters.filter((param) => {
+  //           return param.key=== FILTER_QUERY_PARAM_KEY.keywords;
+  //         });
+  //       })
+  //     )
+  //     .subscribe((filterKeyword: FilterParameter[]) => {
+  //       const content = filterKeyword?.value || null;
+
+  //       this.adsService.setAdKeywords({ content });
+  //       this.adsService.refreshAllSlots();
+  //     });
+  // }
+
+  private listenerToAdsRefresh(): Subscription {
+    return this.filterParameterStoreService.parameters$.pipe(skip(1)).subscribe(() => {
+      this.adsService.refreshAllSlots();
+    });
   }
 }

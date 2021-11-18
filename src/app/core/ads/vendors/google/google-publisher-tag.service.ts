@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
+import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
@@ -22,7 +23,8 @@ export class GooglePublisherTagService {
     @Inject(WINDOW_TOKEN) private window: Window,
     private cookieService: CookieService,
     private adsKeywordsService: AdsKeywordsService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private adTargetingsService: AdsTargetingsService
   ) {}
 
   public isLibraryRefDefined(): boolean {
@@ -75,14 +77,15 @@ export class GooglePublisherTagService {
     this.adsKeywordsService.saveCustomKeywords(adKeywords);
   }
 
-  public setTargetingByAdsKeywords(): void {
-    this.adsKeywordsService.loadAdKeywords();
+  public pushAdTargetings(): void {
+    // this.adsKeywordsService.loadAdKeywords();
 
-    const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
+    // const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
+    const adTargetings = this.adTargetingsService.adTargetings;
     this.googletag.cmd.push(() => {
-      for (const key in adKeywords) {
-        if (adKeywords.hasOwnProperty(key) && adKeywords[key]) {
-          this.googletag.pubads().setTargeting(key, adKeywords[key]);
+      for (const key in adTargetings) {
+        if (adTargetings.hasOwnProperty(key) && adTargetings[key]) {
+          this.googletag.pubads().setTargeting(key, adTargetings[key]);
         }
       }
     });
