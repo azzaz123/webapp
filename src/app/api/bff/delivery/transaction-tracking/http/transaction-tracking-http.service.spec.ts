@@ -74,7 +74,7 @@ describe('TransactionTrackingHttpService', () => {
 
     it('should get transaction tracking instructions info', () => {
       const MOCK_REQUEST_ID = '123';
-      const MOCK_ACTION_TYPE: TransactionTrackingActionTypeDto = 'deeplink';
+      const MOCK_ACTION_TYPE: TransactionTrackingActionTypeDto = 'dialog';
       const EXPECTED_ENDPOINT = `${TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT}?requestId=${MOCK_REQUEST_ID}&type=${MOCK_ACTION_TYPE}`;
       let response: TransactionTrackingInstructionsDto;
 
@@ -88,6 +88,7 @@ describe('TransactionTrackingHttpService', () => {
       expect(response).toEqual(MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE);
       expect(transactionTrackingInstructionsRequest.request.url).toEqual(TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT);
       expect(transactionTrackingInstructionsRequest.request.method).toBe('GET');
+      expect(transactionTrackingInstructionsRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
   });
 });

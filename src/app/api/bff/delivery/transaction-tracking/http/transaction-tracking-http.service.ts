@@ -34,17 +34,18 @@ export class TransactionTrackingHttpService {
     });
   }
 
+  public getInstructions(requestId: string, type: TransactionTrackingActionTypeDto): Observable<TransactionTrackingInstructionsDto> {
+    return this.httpClient.get<TransactionTrackingInstructionsDto>(TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT, {
+      params: { requestId, type },
+      headers: this.getHeaders,
+    });
+  }
+
   private get getHeaders(): {
     [header: string]: string | string[];
   } {
     return {
       'X-AppVersion': APP_VERSION.replace(/\./g, ''),
     };
-  }
-
-  public getInstructions(requestId: string, type: TransactionTrackingActionTypeDto): Observable<TransactionTrackingInstructionsDto> {
-    return this.httpClient.get<TransactionTrackingInstructionsDto>(TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT, {
-      params: { requestId, type },
-    });
   }
 }
