@@ -35,7 +35,6 @@ export class AdSlotGroupDirective implements AfterContentInit {
 
   private filterOnVariant(variant: Variant, configurations: AdSlotConfiguration[]): AdSlotConfiguration[] {
     this.setTargetingOnVariant(variant);
-    this.adsService.setTargetingByAdsKeywords();
 
     if (variant === 'Baseline') {
       return configurations.filter((configuration) => !configuration.type.includes('variant'));
