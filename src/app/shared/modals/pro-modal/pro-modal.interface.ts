@@ -4,6 +4,7 @@ export interface ProModalConfig {
   img: string;
   text1: string;
   text2?: string;
+  textList?: string[];
   buttons: {
     primary: ButtonData;
     secondary?: ButtonData;

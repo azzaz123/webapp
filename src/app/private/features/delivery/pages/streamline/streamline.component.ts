@@ -12,7 +12,10 @@ import { STREAMLINE_PATHS } from './streamline.routing.constants';
 })
 export class StreamlineComponent implements OnInit {
   // TODO: Use valid copies when ready
-  public tabsBarElements: TabsBarElement<STREAMLINE_PATHS>[] = [{ value: STREAMLINE_PATHS.ONGOING, label: 'On going' }];
+  public tabsBarElements: TabsBarElement<STREAMLINE_PATHS>[] = [
+    { value: STREAMLINE_PATHS.ONGOING, label: 'On going' },
+    { value: STREAMLINE_PATHS.COMPLETED, label: 'Completed' },
+  ];
 
   constructor(private router: Router) {}
 

@@ -180,6 +180,4 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CONFIRM]: $localize`:@@pre_address_view_all_users_address_added_remove_confirmation_modal_confirm_button:Confirm`,
   [TRANSLATION_KEY.DELIVERY_ADDRESS_DELETE_CANCEL]: $localize`:@@pre_address_view_all_users_address_added_remove_confirmation_modal_back_button:Back`,
   [TRANSLATION_KEY.FINDING_MISSING_WEIGHT_ERROR]: $localize`:@@upload_shipping_toggle_snackbar_select_weight_description:To enable this item to be sent, select its weight range.`,
-  [TRANSLATION_KEY.REAL_ESTATE_HIGHEST_LIMIT_REACHED_DESCRIPTION]: $localize`:@@listing_limit_pro_user_real_estate_subscription_modal_description:It’s not possible to have so many Real Estate items for sale at the same time. The item will be listed to your catalog, but it will remain inactive.`,
-  [TRANSLATION_KEY.CONSUMER_GOODS_HIGHEST_LIMIT_REACHED_DESCRIPTION]: $localize`:@@listing_limit_pro_user_cg_subscription_modal_description:It’s not possible to have so many items for sale at the same time. The item will be listed to your catalog, but it will remain inactive.`,
 };
