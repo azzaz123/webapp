@@ -186,7 +186,7 @@ export class GooglePublisherTagService {
     return this.adSlotsLoadedSubject.asObservable();
   }
 
-  private getExperimentationTargeting() {
+  private getExperimentationTargeting(): AdTargetings | null {
     const value = this.googletag.pubads().getTargeting('MwebSearchLayout');
 
     return value.length > 0 ? { MwebSearchLayout: value[0] } : null;

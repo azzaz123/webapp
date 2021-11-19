@@ -5,7 +5,7 @@ import {
   FilterParameterStoreService,
   FILTER_PARAMETER_STORE_TOKEN,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
-import { combineLatest, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { skip, take } from 'rxjs/operators';
 import { AD_PUBLIC_SEARCH } from './search-ads.config';
 
@@ -24,6 +24,7 @@ export class SearchAdsService {
 
   public init(): void {
     this.subscriptionInit.add(this.listenerToAdsInit());
+    this.subscriptionRefresh.add(this.listenerToAdsRefresh());
   }
 
   public clearSlots(): void {
@@ -42,8 +43,6 @@ export class SearchAdsService {
     return this.filterParameterStoreService.parameters$.pipe(take(1)).subscribe((parameters) => {
       this.adsTargetingsService.setAdTargetings(parameters);
       this.adsService.init();
-      this.subscriptionInit.unsubscribe();
-      this.subscriptionRefresh.add(this.listenerToAdsRefresh());
     });
   }
 
