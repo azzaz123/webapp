@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionDetail, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { TransactionDetail } from '../../../interfaces/transaction-detail.interface';
 import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mapper';
 
@@ -12,9 +13,13 @@ import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mappe
 export class TransactionTrackingDetailInfoComponent {
   @Input() transactionTrackingDetails: TransactionTrackingDetails;
 
-  constructor() {}
+  constructor(private transactionTrackingActionsService: TransactionTrackingActionsService) {}
 
-  public get transactionDetails(): TransactionDetail[] {
+  public manageAction(action: TransactionTrackingActionDetail): void {
+    this.transactionTrackingActionsService.manageAction(action);
+  }
+
+  public get detailInfoSlots(): TransactionDetail[] {
     return mapTransactionsDetail(this.transactionTrackingDetails.info);
   }
 }
