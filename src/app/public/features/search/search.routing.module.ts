@@ -5,13 +5,11 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { SearchComponent } from './pages/search.component';
 import { SearchLocationResolver } from './resolvers/search-location.resolver';
 import { SearchCategoriesResolver } from './resolvers/search-categories.resolver';
-import { SearchAdsResolver } from './resolvers/search-ads.resolver';
 
 const SEARCH_ROUTE: ReusedRoute = {
   path: '',
   component: SearchComponent,
   resolve: {
-    ads: SearchAdsResolver,
     searchLocation: SearchLocationResolver,
     searchCategories: SearchCategoriesResolver,
   },

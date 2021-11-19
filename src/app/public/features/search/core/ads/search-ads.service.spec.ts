@@ -57,7 +57,7 @@ describe('SearchAdsService', () => {
       filterParametersSubject.next(queryParams);
       filterParametersSubject.next(queryParams);
 
-      expect(adsTargetingsMock.setAdTargetings).toHaveBeenCalledTimes(1);
+      expect(adsTargetingsMock.setAdTargetings).toHaveBeenCalledTimes(2);
       expect(adsTargetingsMock.setAdTargetings).toHaveBeenCalledWith(queryParams);
     });
   });

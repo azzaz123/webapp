@@ -147,6 +147,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.slotsConfig = this.deviceService.isMobile() ? SLOTS_CONFIG_MOBILE : SLOTS_CONFIG_DESKTOP;
 
     this.searchService.init();
+    this.searchAdsService.init();
 
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(this.restoreScrollAfterNavigationBack().subscribe());
