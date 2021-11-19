@@ -36,8 +36,8 @@ export enum HASHTAG_TYPE {
 export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
   @Input() categoryId: string;
   @Input() max: number;
-  @ViewChild(MultiSelectFormComponent, { static: true }) suggestedHashtags: MultiSelectFormComponent; // cambiar nombre
-  @ViewChild(MultiselectSearchInputComponent, { static: true }) searchedHashtags: MultiselectSearchInputComponent; // cambiar nombre
+  @ViewChild(MultiSelectFormComponent, { static: true }) suggestedHashtagsComponent: MultiSelectFormComponent; // cambiar nombre
+  @ViewChild(MultiselectSearchInputComponent, { static: true }) searchedHashtagsComponent: MultiselectSearchInputComponent; // cambiar nombre
 
   public hashtagForm: FormGroup = new FormGroup({
     [HASHTAG_TYPE.SEARCHED]: new FormControl(),
@@ -71,8 +71,8 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     this.getSuggestedOptions(0);
 
     this.maxReached$.pipe(filter((maxReached) => maxReached)).subscribe(() => {
-      this.searchedHashtags.emptyOptions();
-      this.searchedHashtags.searchValue = '';
+      this.searchedHashtagsComponent.emptyOptions();
+      this.searchedHashtagsComponent.searchValue = '';
     });
 
     this.hashtagForm.controls[HASHTAG_TYPE.SEARCHED].valueChanges
@@ -87,11 +87,13 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
   }
 
   ngAfterViewInit(): void {
-    this.searchedHashtags.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions: TemplateMultiSelectFormOption[]) => {
-      this.searchedExtendedOptions = extendedOptions;
-    });
+    this.searchedHashtagsComponent.multiSelectFormComponent.extendedOptions$.subscribe(
+      (extendedOptions: TemplateMultiSelectFormOption[]) => {
+        this.searchedExtendedOptions = extendedOptions;
+      }
+    );
 
-    this.suggestedHashtags.extendedOptions$.subscribe((extendedOptions: TemplateMultiSelectFormOption[]) => {
+    this.suggestedHashtagsComponent.extendedOptions$.subscribe((extendedOptions: TemplateMultiSelectFormOption[]) => {
       this.suggestedExtendedOptions = extendedOptions;
     });
 
