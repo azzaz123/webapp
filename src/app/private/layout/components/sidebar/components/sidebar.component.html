@@ -6,7 +6,7 @@
 
   <a class="Sidebar__entry my-5 mb-0 px-1 py-2 d-flex align-items-center" [routerLink]="['/profile']"
     routerLinkActive="active" [ngClass]="{active: isProfile}">
-    <tsl-user-avatar class="topbar-avatar" [size]="38" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
+    <tsl-user-avatar class="Sidebar__avatar" [size]="38" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
     </tsl-user-avatar>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_611">Profile</span>
   </a>

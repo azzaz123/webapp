@@ -12,8 +12,8 @@ $collapse-btn-dimension: 24px;
 }
 
 .Sidebar {
-  width: $sidebar-width;
   height: 100%;
+  width: $sidebar-width;
   background-color: $white;
   transition: width 150ms ease-in-out;
   border-right: 1px solid transparentize($blue-grey-4, 0.5);
@@ -32,14 +32,12 @@ $collapse-btn-dimension: 24px;
     transition: 150ms ease-in-out;
     @include square($collapse-btn-dimension);
 
-    tsl-svg-icon {
-      margin-left: -1px;
-    }
-
     &:hover {
       background-color: $blue-grey-6;
     }
+
     &:active {
+      box-shadow: none;
       background-color: $blue-grey-4;
     }
   }
@@ -48,6 +46,11 @@ $collapse-btn-dimension: 24px;
     position: relative;
     margin: 0 12px 4px;
     min-height: 43px;
+
+    tsl-svg-icon {
+      padding: 0 12px;
+    }
+
     &:hover {
       background-color: $blue-grey-5;
       border-radius: 8px;
@@ -58,12 +61,8 @@ $collapse-btn-dimension: 24px;
       background-color: $blue-grey-4;
     }
 
-    tsl-svg-icon {
-      padding: 0 12px;
-    }
-
     &.active {
-      span {
+      .Sidebar__label {
         font-weight: bold;
         color: $blue-grey-1;
       }
@@ -75,18 +74,27 @@ $collapse-btn-dimension: 24px;
     }
   }
 
+  &__avatar {
+    margin-right: 6px;
+  }
+
   &__label {
+    opacity: 1;
     overflow: hidden;
-    text-overflow: ellipsis;
     font-size: $font-size-m;
     white-space: nowrap;
     color: $blue-grey-1;
+    transition: opacity 100ms linear;
   }
 
   &--collapsed {
     width: $sidebar-collapsed-width;
-    span {
-      display: none;
+    .Sidebar__label {
+      opacity: 0;
+    }
+    .Sidebar__collapse tsl-svg-icon {
+      transition: transform 150ms ease;
+      transform: rotate(180deg);
     }
   }
 
