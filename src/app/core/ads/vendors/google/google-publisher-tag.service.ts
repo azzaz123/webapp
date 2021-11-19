@@ -77,7 +77,12 @@ export class GooglePublisherTagService {
   }
 
   public setTargetingByAdsKeywords(): void {
+    const experimentationTargeting = this.getExperimentationTargeting();
     this.googletag.pubads().clearTargeting();
+
+    if (experimentationTargeting) {
+      this.adsTargetingService.setAdTargeting(experimentationTargeting);
+    }
 
     const adTargetings: AdTargetings = this.adsTargetingService.adTargetings;
     this.googletag.cmd.push(() => {
@@ -179,5 +184,11 @@ export class GooglePublisherTagService {
 
   private get adSlotsLoaded$(): Observable<string[]> {
     return this.adSlotsLoadedSubject.asObservable();
+  }
+
+  private getExperimentationTargeting() {
+    const value = this.googletag.pubads().getTargeting('MwebSearchLayout');
+
+    return value.length > 0 ? { MwebSearchLayout: value[0] } : null;
   }
 }

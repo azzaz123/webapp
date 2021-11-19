@@ -39,6 +39,7 @@ export const MOCK_GOOGLE_PUBABDS = {
   clearTargeting() {},
   setRequestNonPersonalizedAds(num: number) {},
   addEventListener: (nameEvent: string, fn: (event) => void) => {},
+  getTargeting(key: string) {},
 };
 
 export const MOCK_GOOGLE_SIZE_MAPPING = {

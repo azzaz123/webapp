@@ -1,19 +1,20 @@
 import { Inject, Injectable } from '@angular/core';
 import { AdsService } from '@core/ads/services';
 import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
-import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import {
   FilterParameterStoreService,
   FILTER_PARAMETER_STORE_TOKEN,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { combineLatest, Subscription } from 'rxjs';
+import { skip, take } from 'rxjs/operators';
 import { AD_PUBLIC_SEARCH } from './search-ads.config';
 
 export const SEARCH_SLOTS = [AD_PUBLIC_SEARCH.search1, AD_PUBLIC_SEARCH.search2r, AD_PUBLIC_SEARCH.search3r];
 
 @Injectable()
 export class SearchAdsService {
-  private subscription: Subscription = new Subscription();
+  private subscriptionInit: Subscription = new Subscription();
+  private subscriptionRefresh: Subscription = new Subscription();
 
   constructor(
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService,
@@ -22,7 +23,7 @@ export class SearchAdsService {
   ) {}
 
   public init(): void {
-    this.subscription.add(this.listenerToAdsRefresh());
+    this.subscriptionInit.add(this.listenerToAdsInit());
   }
 
   public clearSlots(): void {
@@ -37,21 +38,19 @@ export class SearchAdsService {
     this.adsService.destroySlots(SEARCH_SLOTS);
   }
 
-  public close(): void {
-    this.subscription.unsubscribe();
+  private listenerToAdsInit(): Subscription {
+    return this.filterParameterStoreService.parameters$.pipe(take(1)).subscribe((parameters) => {
+      this.adsTargetingsService.setAdTargetings(parameters);
+      this.adsService.init();
+      this.subscriptionInit.unsubscribe();
+      this.subscriptionRefresh.add(this.listenerToAdsRefresh());
+    });
   }
 
   private listenerToAdsRefresh(): Subscription {
-    return combineLatest([this.filterParameterStoreService.parameters$, this.adsService.adsReady$]).subscribe(
-      ([parameters, adsReady]: [FilterParameter[], boolean]) => {
-        if (adsReady) {
-          this.adsTargetingsService.setAdTargetings(parameters);
-          this.adsService.refreshAllSlots();
-        } else {
-          this.adsTargetingsService.setAdTargetings(parameters);
-          this.adsService.init();
-        }
-      }
-    );
+    return this.filterParameterStoreService.parameters$.pipe(skip(1)).subscribe((parameters) => {
+      this.adsTargetingsService.setAdTargetings(parameters);
+      this.adsService.refreshAllSlots();
+    });
   }
 }
