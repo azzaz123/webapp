@@ -31,8 +31,8 @@ describe('MultiselectSearchInputComponent', () => {
     component = fixture.componentInstance;
     component.searchValue = '';
     hashtagSuggesterApiService = TestBed.inject(HashtagSuggesterApiService);
-    inputElement = fixture.debugElement.query(By.css('.MultiselectSearchInput'));
     fixture.detectChanges();
+    inputElement = fixture.debugElement.query(By.css('.MultiselectSearchInput'));
   });
 
   it('should create', () => {
