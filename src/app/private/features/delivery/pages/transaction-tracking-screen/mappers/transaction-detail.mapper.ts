@@ -11,9 +11,10 @@ export function mapTransactionsDetail(statusInfo: TransactionTrackingStatusInfo[
 }
 
 export function mapTransactionDetail(statusInfo: TransactionTrackingStatusInfo): TransactionDetail {
+  // preguntar thumbnailUrl
   return {
     description: statusInfo.description,
-    iconSrc: statusInfo.icon.url ?? FALLBACK_NOT_FOUND_SRC,
+    iconSrc: statusInfo.icon?.url ?? FALLBACK_NOT_FOUND_SRC,
     showCaret: statusInfo.showCaret,
     iconClassName: statusInfo.icon.style.className,
   };
