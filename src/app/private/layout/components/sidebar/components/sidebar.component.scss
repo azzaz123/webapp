@@ -59,7 +59,7 @@ $collapse-btn-dimension: 24px;
     }
 
     tsl-svg-icon {
-      padding-left: 8px;
+      padding: 0 12px;
     }
 
     &.active {
@@ -81,7 +81,6 @@ $collapse-btn-dimension: 24px;
     font-size: $font-size-m;
     white-space: nowrap;
     color: $blue-grey-1;
-    padding-left: 12px;
   }
 
   &--collapsed {
