@@ -6,7 +6,7 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { HttpClientModule } from '@angular/common/http';
 
 export default {
-  title: 'Webapp/Private/Features/Delivery/Components/TransactionTrackingDetailInfo',
+  title: 'Webapp/Private/Features/Delivery/Components/TransactionDetail',
   component: TransactionDetailComponent,
   decorators: [styledWrapperDecorator('max-width: 375px;')],
 } as Meta;
