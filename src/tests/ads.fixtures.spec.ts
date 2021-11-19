@@ -125,6 +125,7 @@ export const MockAdSlots: AdSlotConfiguration[] = [
         mapping: AD_MOBILE_MAPPING.big,
       },
     },
+    type: 'test',
     device: [DeviceType.DESKTOP],
   },
 ];
