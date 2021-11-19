@@ -18,6 +18,7 @@ describe('PhoneVerificationModalComponent', () => {
   let component: PhoneVerificationModalComponent;
   let fixture: ComponentFixture<PhoneVerificationModalComponent>;
   let activeModal: NgbActiveModal;
+  let userVerificationsService: UserVerificationsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,11 +42,13 @@ describe('PhoneVerificationModalComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PhoneVerificationModalComponent);
+    userVerificationsService = TestBed.inject(UserVerificationsService);
     activeModal = TestBed.inject(NgbActiveModal);
     component = fixture.componentInstance;
     fixture.detectChanges();
     spyOn(activeModal, 'close').and.callThrough();
     spyOn(activeModal, 'dismiss').and.callThrough();
+    spyOn(userVerificationsService, 'verifyPhone').and.callThrough();
   });
 
   describe('when close button is clicked', () => {
@@ -64,9 +67,10 @@ describe('PhoneVerificationModalComponent', () => {
         component.phoneVerificationForm.patchValue({ prefix: '+34', phone: '935500996' });
       });
 
-      it('should call the onSubmitPhone and close the modal', () => {
+      it('should call the verifyPhone and close the modal', () => {
         component.onSubmitPhone();
 
+        expect(userVerificationsService.verifyPhone).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
       });
     });
@@ -80,6 +84,7 @@ describe('PhoneVerificationModalComponent', () => {
       });
 
       it('should mark as dirty the invalid phone form control', () => {
+        expect(userVerificationsService.verifyPhone).not.toHaveBeenCalled();
         expect(component.phoneVerificationForm.get('phone').valid).toBe(false);
         expect(component.phoneVerificationForm.get('phone').dirty).toBe(true);
       });
