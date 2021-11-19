@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { TransactionTrackingActionTypeDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+import {
+  TransactionTrackingActionDetailPayloadUserActionNameDto,
+  TransactionTrackingActionTypeDto,
+} from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 import { mapTransactionTrackingDetailsDtoTransactionTrackingDetails } from '@api/bff/delivery/transaction-tracking/mappers/responses/details/transaction-tracking-details.mapper';
 import { mapTransactionTrackingInstructionsDtoTransactionTrackingInstructions } from '@api/bff/delivery/transaction-tracking/mappers/responses/instructions/transaction-tracking-instructions.mapper';
@@ -30,5 +33,27 @@ export class TransactionTrackingService {
     return this.transactionTrackingHttpService
       .getInstructions(requestId, actionType)
       .pipe(map(mapTransactionTrackingInstructionsDtoTransactionTrackingInstructions));
+  }
+
+  public sendUserAction(requestId: string, userAction: TransactionTrackingActionDetailPayloadUserActionNameDto): Observable<void> {
+    const action: Record<TransactionTrackingActionDetailPayloadUserActionNameDto, Observable<void>> = {
+      ['CANCEL_TRANSACTION']: this.sendCancelTransaction(requestId),
+      ['EXPIRE_CLAIM_PERIOD']: this.sendExpireClaimPeriod(requestId),
+      ['PACKAGE_ARRIVED']: this.sendPackageArrived(requestId),
+    };
+
+    return action[userAction];
+  }
+
+  private sendCancelTransaction(requestId: string): Observable<void> {
+    return this.transactionTrackingHttpService.sendCancelTransaction(requestId);
+  }
+
+  private sendExpireClaimPeriod(requestId: string): Observable<void> {
+    return this.transactionTrackingHttpService.sendExpireClaimPeriod(requestId);
+  }
+
+  private sendPackageArrived(requestId: string): Observable<void> {
+    return this.transactionTrackingHttpService.sendPackageArrived(requestId);
   }
 }
