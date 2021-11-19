@@ -32,7 +32,6 @@ export class AdsService {
     this.listenerToSetSlots();
     this.listenerToDisplaySlots();
     this.listenerToRefreshSlots();
-    this.listenerToSetTargetings();
   }
 
   public init(): void {
@@ -104,20 +103,16 @@ export class AdsService {
     return this.window['fetchHeaderBids'];
   }
 
-  private listenerToSetTargetings(): void {
-    this.adsReady$.pipe(filter((adsReady) => adsReady)).subscribe(() => {
-      this.googlePublisherTagService.setTargetingByAdsKeywords();
-    });
-  }
-
   private listenerToSetSlots(): void {
     combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
         filter(([adsReady, adSlots]: [boolean, AdSlotConfiguration[]]) => adsReady && adSlots.length > 0),
-        map(([_, adSlots]: [boolean, AdSlotConfiguration[]]) => adSlots),
-        tap((adSlots: AdSlotConfiguration[]) => this.googlePublisherTagService.setSlots(adSlots))
+        map(([_, adSlots]: [boolean, AdSlotConfiguration[]]) => adSlots)
       )
-      .subscribe();
+      .subscribe((adSlots: AdSlotConfiguration[]) => {
+        this.googlePublisherTagService.setTargetingByAdsKeywords();
+        this.googlePublisherTagService.setSlots(adSlots);
+      });
   }
 
   private listenerToDisplaySlots(): void {
