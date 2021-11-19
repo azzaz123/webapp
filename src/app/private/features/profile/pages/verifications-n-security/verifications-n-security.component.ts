@@ -17,7 +17,7 @@ export enum VERIFICATIONS_N_SECURITY_TYPES {
   PHONE,
 }
 
-type verificationModalComponent =
+type VerificationModalComponent =
   | typeof EmailModalComponent
   | typeof EmailVerificationModalComponent
   | typeof PhoneVerificationModalComponent;
@@ -59,7 +59,7 @@ export class VerificationsNSecurityComponent implements OnInit {
 
   public onClickVerifyEmail(isVerifiedEmail: boolean): void {
     let modalRef: NgbModalRef;
-    let modal: verificationModalComponent = this.getEmailModal(isVerifiedEmail);
+    let modal: VerificationModalComponent = this.getEmailModal(isVerifiedEmail);
 
     modalRef = this.openModal(modal);
 
@@ -78,11 +78,11 @@ export class VerificationsNSecurityComponent implements OnInit {
     this.verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent(VERIFICATION_METHOD.PHONE);
   }
 
-  private getEmailModal(isVerifiedEmail: boolean): verificationModalComponent {
+  private getEmailModal(isVerifiedEmail: boolean): VerificationModalComponent {
     return isVerifiedEmail ? EmailModalComponent : EmailVerificationModalComponent;
   }
 
-  private openModal(modal: verificationModalComponent): NgbModalRef {
+  private openModal(modal: VerificationModalComponent): NgbModalRef {
     return this.modalService.open(modal, {
       windowClass: 'modal-standard',
     });

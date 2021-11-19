@@ -4,6 +4,8 @@ import { UserVerificationsService } from '@api/user-verifications/user-verificat
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { take } from 'rxjs/operators';
 import { parsePhoneNumber } from 'libphonenumber-js';
+import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 @Component({
   selector: 'tsl-phone-verification-modal',
@@ -21,7 +23,12 @@ export class PhoneVerificationModalComponent implements OnInit {
   ];
   public phoneVerificationForm: FormGroup;
 
-  constructor(private fb: FormBuilder, public activeModal: NgbActiveModal, private userVerificationsService: UserVerificationsService) {}
+  constructor(
+    private fb: FormBuilder,
+    public activeModal: NgbActiveModal,
+    private userVerificationsService: UserVerificationsService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -33,9 +40,14 @@ export class PhoneVerificationModalComponent implements OnInit {
       this.userVerificationsService
         .verifyPhone(phone, prefix)
         .pipe(take(1))
-        .subscribe(() => {
-          this.activeModal.close();
-        });
+        .subscribe(
+          () => {
+            this.activeModal.close();
+          },
+          () => {
+            this.toastService.show(DEFAULT_ERROR_TOAST);
+          }
+        );
     } else {
       this.setPhoneErrorForm();
     }

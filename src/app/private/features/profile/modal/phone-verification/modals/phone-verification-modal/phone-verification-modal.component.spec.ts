@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { of } from 'rxjs';
@@ -27,6 +28,7 @@ describe('PhoneVerificationModalComponent', () => {
       providers: [
         NgbActiveModal,
         FormBuilder,
+        ToastService,
         {
           provide: UserVerificationsService,
           useValue: {

@@ -20,6 +20,5 @@ import { DropdownModule } from '@shared/dropdown/dropdown.module';
     PhoneVerificationRoutingModule,
   ],
   declarations: [PhoneVerificationRoutedComponents, PhoneVerificationModalComponent],
-  providers: [],
 })
 export class PhoneVerificationModule {}
