@@ -1,4 +1,4 @@
-<div class="PhoneVerificationModal text-center p-3">
+<div class="PhoneVerificationModal text-center px-md-3 py-3">
   <div class="PhoneVerificationModal__close position-fixed" (click)="activeModal.dismiss()">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
@@ -14,8 +14,8 @@
       Enter your phone number, tap the button and we'll send you a free SMS with a verification code.
     </div>
     <form class="col" [formGroup]="phoneVerificationForm" (submit)="onSubmitPhone()">
-      <div class="form-group row align-items-center mx-2">
-        <div class="col-4 align-self-start">
+      <div class="form-group row align-items-center mx-md-2">
+        <div class="col-5 col-md-4 align-self-start">
           <tsl-dropdown
             i18n-placeholder="@@phone_verification_all_users_number_input_prefix_placeholder"
             placeholder="Prefix"
@@ -30,7 +30,7 @@
             </ng-template>
           </tsl-dropdown>
         </div>
-        <div class="col-8 align-self-start">
+        <div class="col-7 col-md-8 align-self-start">
           <input
             type="tel"
             placeholder="Phone number"
@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      <div class="row mb-4 mx-2">
+      <div class="row mb-4 mx-md-2">
         <div class="col">
           <p class="PhoneVerificationModal__legend text-left" i18n="@@phone_verification_all_users_number_input_description">
             This phone number will be totally private and won't be visible on your profile. Wallapop won't use it to send commercial
