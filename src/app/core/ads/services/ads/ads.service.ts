@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
+import { AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
+import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { DeviceService } from '@core/device/device.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
@@ -31,6 +32,7 @@ export class AdsService {
     this.listenerToSetSlots();
     this.listenerToDisplaySlots();
     this.listenerToRefreshSlots();
+    this.listenerToSetTargetings();
   }
 
   public init(): void {
@@ -68,8 +70,8 @@ export class AdsService {
     this.googlePublisherTagService.clearSlots(adSlots);
   }
 
-  public setAdKeywords(adKeywords: AdKeyWords): void {
-    this.googlePublisherTagService.setAdKeywords(adKeywords);
+  public setAdKeywords(adTargetings: AdTargetings): void {
+    this.googlePublisherTagService.setAdTargeting(adTargetings);
   }
 
   public setTargetingByAdsKeywords(): void {
@@ -102,6 +104,12 @@ export class AdsService {
     return this.window['fetchHeaderBids'];
   }
 
+  private listenerToSetTargetings(): void {
+    this.adsReady$.pipe(filter((adsReady) => adsReady)).subscribe(() => {
+      this.googlePublisherTagService.setTargetingByAdsKeywords();
+    });
+  }
+
   private listenerToSetSlots(): void {
     combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
@@ -127,6 +135,7 @@ export class AdsService {
     combineLatest([this.allowSegmentation$, this.refreshSlotsSubject.asObservable()])
       .pipe(map(([allowSegmentation, refreshSlots]: [boolean, void]) => allowSegmentation))
       .subscribe((allowSegmentation: boolean) => {
+        this.googlePublisherTagService.setTargetingByAdsKeywords();
         this.refreshHeaderBids(allowSegmentation);
       });
   }
