@@ -36,6 +36,7 @@ export const MOCK_GOOGLE_PUBABDS = {
   setTargeting() {},
   refresh(adSlot?: googletag.Slot[]) {},
   clear(adSlot: googletag.Slot[]) {},
+  clearTargeting() {},
   setRequestNonPersonalizedAds(num: number) {},
   addEventListener: (nameEvent: string, fn: (event) => void) => {},
 };

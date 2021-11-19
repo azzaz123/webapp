@@ -6,9 +6,9 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import {
   MockAdShoppingPageOptions,
-  MockAdsKeywords,
   MockAdSlots,
   MockAdSlotShopping,
+  MockAdsTargetings,
   MockAmazonPublisherService,
   MockCriteoService,
   MockGooglePublisherTagService,
@@ -134,13 +134,13 @@ describe('AdsService', () => {
     });
   });
 
-  describe('when set ad keyword', () => {
-    it('should set ad keyword on google', () => {
-      spyOn(MockGooglePublisherTagService, 'setAdKeywords').and.callThrough();
+  describe('when set ad targeting', () => {
+    it('should set ad targeting on google', () => {
+      spyOn(MockGooglePublisherTagService, 'setAdTargeting').and.callThrough();
 
-      service.setAdKeywords(MockAdsKeywords);
+      service.setAdKeywords(MockAdsTargetings);
 
-      expect(MockGooglePublisherTagService.setAdKeywords).toHaveBeenCalledWith(MockAdsKeywords);
+      expect(MockGooglePublisherTagService.setAdTargeting).toHaveBeenCalledWith(MockAdsTargetings);
     });
   });
 

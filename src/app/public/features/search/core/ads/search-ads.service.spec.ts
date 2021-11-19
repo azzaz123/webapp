@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AdsService } from '@core/ads/services';
-import { MockAdsService } from '@fixtures/ads.fixtures.spec';
+import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
+import { MockAdsService, MockAdsTargetingsService } from '@fixtures/ads.fixtures.spec';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_PARAMETER_STORE_TOKEN } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
@@ -11,6 +12,7 @@ describe('SearchAdsService', () => {
   let service: SearchAdsService;
   let filterParametersStoreServiceMock;
   let adsServiceMock;
+  let adsTargetingsMock;
   const filterParametersSubject: Subject<FilterParameter[]> = new Subject<FilterParameter[]>();
 
   beforeEach(() => {
@@ -19,6 +21,7 @@ describe('SearchAdsService', () => {
     };
 
     adsServiceMock = { ...MockAdsService };
+    adsTargetingsMock = { ...MockAdsTargetingsService };
 
     TestBed.configureTestingModule({
       providers: [
@@ -31,6 +34,10 @@ describe('SearchAdsService', () => {
           provide: AdsService,
           useValue: adsServiceMock,
         },
+        {
+          provide: AdsTargetingsService,
+          useValue: adsTargetingsMock,
+        },
       ],
     });
 
@@ -42,30 +49,17 @@ describe('SearchAdsService', () => {
       service.init();
     });
 
-    it('should set ads keyword to null if it does not have keyword filter', () => {
-      spyOn(adsServiceMock, 'setAdKeywords').and.callThrough();
+    it('should set ads targetings when changing query params and pass it through', () => {
+      spyOn(adsTargetingsMock, 'setAdTargetings').and.callThrough();
       spyOn(adsServiceMock, 'refreshAllSlots').and.callThrough();
+      const queryParams = [{ key: FILTER_QUERY_PARAM_KEY.professional, value: 'anyValue' }];
 
-      filterParametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.professional, value: 'anyValue' }]);
-      filterParametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.professional, value: 'anyValue' }]);
+      filterParametersSubject.next(queryParams);
+      filterParametersSubject.next(queryParams);
 
-      expect(adsServiceMock.setAdKeywords).toHaveBeenCalledTimes(1);
-      expect(adsServiceMock.setAdKeywords).toHaveBeenCalledWith({ content: null });
-      expect(adsServiceMock.refreshAllSlots).toHaveBeenCalledTimes(1);
-      expect(adsServiceMock.refreshAllSlots).toHaveBeenCalledWith();
-    });
-
-    it('should set ads keywords and refresh if it has keyword filter', () => {
-      const keywordValue = 'keywordValueMock';
-      spyOn(adsServiceMock, 'setAdKeywords').and.callThrough();
-      spyOn(adsServiceMock, 'refreshAllSlots').and.callThrough();
-
-      filterParametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keywordValue }]);
-      filterParametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keywordValue }]);
-
-      expect(adsServiceMock.setAdKeywords).toHaveBeenCalledTimes(1);
-      expect(adsServiceMock.setAdKeywords).toHaveBeenCalledWith({ content: keywordValue });
-      expect(adsServiceMock.refreshAllSlots).toHaveBeenCalledTimes(1);
+      expect(adsTargetingsMock.setAdTargetings).toHaveBeenCalledTimes(2);
+      expect(adsTargetingsMock.setAdTargetings).toHaveBeenCalledWith(queryParams);
+      expect(adsServiceMock.refreshAllSlots).toHaveBeenCalledTimes(2);
       expect(adsServiceMock.refreshAllSlots).toHaveBeenCalledWith();
     });
   });

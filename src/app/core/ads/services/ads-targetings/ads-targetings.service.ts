@@ -1,17 +1,27 @@
 import * as moment from 'moment';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
-import { AD_TARGETINGS_KEY } from '@core/ads/constants/ad-targetings.enum';
 import { ActivatedRoute, Params } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdsTargetingsService {
   private _adTargetings: AdTargetings;
+
+  private readonly TARGETINGS_KEY_MAP = {
+    [FILTER_QUERY_PARAM_KEY.categoryId]: 'category',
+    [FILTER_QUERY_PARAM_KEY.keywords]: 'content',
+    [FILTER_QUERY_PARAM_KEY.minPrice]: 'minprice',
+    [FILTER_QUERY_PARAM_KEY.maxPrice]: 'maxprice',
+    [FILTER_QUERY_PARAM_KEY.brand]: 'brand',
+    [FILTER_QUERY_PARAM_KEY.latitude]: 'latitude',
+    [FILTER_QUERY_PARAM_KEY.longitude]: 'longitude',
+  };
 
   constructor(private userService: UserService, private route: ActivatedRoute) {
     this._adTargetings = {};
@@ -21,62 +31,35 @@ export class AdsTargetingsService {
     return this._adTargetings;
   }
 
-  // public setAdTargeting(key: string, value: string): void {
-  //   this._adTargetings[key] = value;
-  // }
-
   public setAdTargeting(adTargetings: AdTargetings): void {
-    for (const key in adTargetings) {
-      if (adTargetings.hasOwnProperty(key)) {
-        this._adTargetings = { ...this._adTargetings, ...{ key: adTargetings[key] } };
-        // this._adTargetings[key] = adTargetings[key]
-      }
-    }
+    this._adTargetings = { ...this._adTargetings, ...adTargetings };
   }
 
-  public setAdTargetings(): void {
-    this.setQueryParamsTargetings();
+  public setAdTargetings(parameters: FilterParameter[]): void {
+    this.cleanAdTargetings();
+    this.setQueryParamsTargetings(parameters);
     this.setUserTargetings();
   }
 
-  public refreshAdTargetings(): void {
-    this.resetAdTargetings();
-    this.setAdTargetings();
-  }
-
-  private resetAdTargetings(): void {
+  private cleanAdTargetings(): void {
     this._adTargetings = {};
   }
 
-  // private setQueryParamsTargetings(): void {
+  private setQueryParamsTargetings(filterParams: FilterParameter[]): void {
+    const TARGETINGS_KEYS = Object.keys(this.TARGETINGS_KEY_MAP);
 
-  //   this.route.queryParams.pipe(
-  //     map(params => Object.entries(params).map(([key, value]) => ({key, value})) )
-  //   ).subscribe((queryParams) => {
-  //     queryParams.forEach((param) => {
-  //       if (Object.values(AD_TARGETINGS_KEY).includes(param.key as string as AD_TARGETINGS_KEY)) {
-  //         const key = Object.keys(AD_TARGETINGS_KEY)[Object.values(AD_TARGETINGS_KEY).indexOf(param.key as string as AD_TARGETINGS_KEY)];
+    const targetingParams = filterParams.reduce((map, parameter) => {
+      const key = parameter.key;
+      const value = parameter.value;
 
-  //         this.setAdTargeting(key, param.value);
-  //       }
-  //     });
-  //   })
-  // }
+      if (TARGETINGS_KEYS.includes(key)) {
+        map[this.TARGETINGS_KEY_MAP[key]] = value;
+      }
 
-  private setQueryParamsTargetings(): void {
-    this.route.queryParams
-      .pipe(map((params) => Object.entries(params).map(([key, value]) => ({ key, value }))))
-      .subscribe((queryParams) => {
-        queryParams.forEach((param) => {
-          if (Object.values(AD_TARGETINGS_KEY).includes(param.key as string as AD_TARGETINGS_KEY)) {
-            const key = Object.keys(AD_TARGETINGS_KEY)[Object.values(AD_TARGETINGS_KEY).indexOf(param.key as string as AD_TARGETINGS_KEY)];
-            let adTargeting = {};
-            adTargeting[key] = param.value;
+      return map;
+    }, {});
 
-            this.setAdTargeting(adTargeting);
-          }
-        });
-      });
+    this.setAdTargeting(targetingParams);
   }
 
   private setUserTargetings(): void {

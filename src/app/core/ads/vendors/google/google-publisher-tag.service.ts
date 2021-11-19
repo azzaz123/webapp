@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
-import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -8,7 +7,7 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotShoppingBaseConfiguration } from '../../models';
+import { AdShoppingPageOptions, AdSlotConfiguration, AdSlotShoppingBaseConfiguration } from '../../models';
 import { GoogCsa } from './google-ads-sense-shopping';
 
 @Injectable({
@@ -23,7 +22,6 @@ export class GooglePublisherTagService {
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
     private cookieService: CookieService,
-    private adsKeywordsService: AdsKeywordsService,
     private deviceService: DeviceService,
     private adsTargetingService: AdsTargetingsService
   ) {}
@@ -74,18 +72,12 @@ export class GooglePublisherTagService {
     return this.adSlotsLoaded$.pipe(map((slotNames: string[]) => slotNames.includes(adSlot.name)));
   }
 
-  //KEY VALUE PAIR
-  // public setAdTargeting(key: string, value: string): void {
-  //   this.adsTargetingService.setAdTargeting(key, value)
-  // }
-
-  //AD TARGETINGS TYPE
   public setAdTargeting(adTargetings: AdTargetings): void {
     this.adsTargetingService.setAdTargeting(adTargetings);
   }
 
   public setTargetingByAdsKeywords(): void {
-    this.adsTargetingService.setAdTargetings();
+    this.googletag.pubads().clearTargeting();
 
     const adTargetings: AdTargetings = this.adsTargetingService.adTargetings;
     this.googletag.cmd.push(() => {
@@ -107,10 +99,6 @@ export class GooglePublisherTagService {
     this.googletag.cmd.push(() => {
       this.googletag.pubads().refresh();
     });
-  }
-
-  public refreshAdTargetings(): void {
-    this.adsTargetingService.refreshAdTargetings();
   }
 
   public clearSlots(adSlotConfigurations: AdSlotConfiguration[]): void {

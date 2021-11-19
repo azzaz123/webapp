@@ -42,7 +42,7 @@ export const MockGooglePublisherTagService = {
   setTargetingByAdsKeywords: () => {},
   setAdsSegmentation: () => {},
   setSlots: (slots: AdSlotConfiguration) => {},
-  setAdKeywords: (adKeywords: AdKeyWords) => {},
+  setAdTargeting: (adTargetings: AdTargetings) => {},
   displayShopping: (pageOption, adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
   isAdSlotLoaded$: () => of(true),
   isAdSlotsDefined$: of(true),
@@ -88,6 +88,15 @@ export const MockAdsTargetingsService = {
   setAdTargeting: () => {},
   setAdTargetings: () => {},
   refreshAdTargetings: () => {},
+};
+
+export const MockSearchAdsService = {
+  init: () => {},
+  clearSlots: () => {},
+  refreshSlots: () => {},
+  destroySlots: () => {},
+  close: () => {},
+  listenerToAdsRefresh: () => {},
 };
 
 export const MockAdSlots: AdSlotConfiguration[] = [

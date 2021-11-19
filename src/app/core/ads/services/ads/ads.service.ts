@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
+import { AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
@@ -70,22 +70,12 @@ export class AdsService {
     this.googlePublisherTagService.clearSlots(adSlots);
   }
 
-  //KEY VALUE PAIR
-  // public setAdKeywords(key: string, value: string): void {
-  //   this.googlePublisherTagService.setAdTargeting(key, value);
-  // }
-
-  //ADTARGETING TYPE
   public setAdKeywords(adTargetings: AdTargetings): void {
     this.googlePublisherTagService.setAdTargeting(adTargetings);
   }
 
   public setTargetingByAdsKeywords(): void {
     this.googlePublisherTagService.setTargetingByAdsKeywords();
-  }
-
-  public refreshTargetings(): void {
-    this.googlePublisherTagService.refreshAdTargetings();
   }
 
   public adSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {

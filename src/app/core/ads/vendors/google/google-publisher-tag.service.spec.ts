@@ -220,12 +220,12 @@ describe('GooglePublisherTagService', () => {
     });
 
     describe('when set targeting', () => {
-      it('should update ad keywords', () => {
-        spyOn(MockAdsTargetingsService, 'setAdTargetings').and.callThrough();
+      it('should clear ad targetings from googletag cmd queue', () => {
+        spyOn(MOCK_GOOGLE_PUBABDS, 'clearTargeting').and.callThrough();
 
         service.setTargetingByAdsKeywords();
 
-        expect(MockAdsTargetingsService.setAdTargetings).toHaveBeenCalledTimes(1);
+        expect(MOCK_GOOGLE_PUBABDS.clearTargeting).toHaveBeenCalledTimes(1);
       });
 
       it('should set targeting by ad keywords', () => {
