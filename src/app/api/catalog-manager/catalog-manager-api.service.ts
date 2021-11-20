@@ -11,9 +11,10 @@ import { STATUS } from '@private/features/catalog/components/selected-items/sele
 import { ItemBySubscriptionResponse } from './dtos/items-by-subscription/items-subscription-type.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 
+export const PAGE_SIZE = 1000;
 @Injectable()
 export class CatalogManagerApiService {
-  public items: Partial<Record<STATUS, Item[]>> = {
+  private items: Partial<Record<STATUS, Item[]>> = {
     [STATUS.ACTIVE]: [],
     [STATUS.INACTIVE]: [],
     [STATUS.SOLD]: [],
@@ -26,7 +27,6 @@ export class CatalogManagerApiService {
     );
   }
 
-  // TODO ADD UNIT TEST TO COVER ALL CASES [PQP-4363]
   public itemsBySubscriptionType(
     type: SUBSCRIPTION_CATEGORY_TYPES,
     sortByParam: string,
@@ -43,7 +43,7 @@ export class CatalogManagerApiService {
   }
 
   private fetchItems(type: SUBSCRIPTION_CATEGORY_TYPES, status: STATUS): Observable<Item[]> {
-    return this.recursiveItemsByCategory(0, 1000, type, status).pipe(
+    return this.recursiveItemsByCategory(0, PAGE_SIZE, type, status).pipe(
       map(mapItems),
       tap((res) => {
         this.items[status] = res;
