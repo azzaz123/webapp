@@ -66,8 +66,8 @@ export const MOCK_ITEM_BY_SUBSCRIPTION_TYPE_RESPONSE_2: ItemBySubscriptionRespon
   flags: { pending: false, sold: false, reserved: true, banned: false, expired: false, onhold: false },
   visibility_flags: { bumped: false, highlighted: false, country_bumped: false },
   web_slug: 'jarro-de-agua-189762805',
-  modified_date: 1632386322000,
-  publish_date: 1622461053000,
+  modified_date: 1632386342000,
+  publish_date: 1622461055000,
 };
 
 export const MOCK_ITEM_BY_SUBSCRIPTION_TYPE_2_MAPPED: Item = new Item(
