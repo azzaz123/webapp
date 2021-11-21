@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
+import { SORTS, SORT_KEYS } from '@api/catalog-manager/constants/sort.constants';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import {
   AnalyticsPageView,
@@ -56,14 +57,6 @@ import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-m
 import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
 import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 
-export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
-export const SORTS_TRANSLATION_KEYS: TRANSLATION_KEY[] = [
-  TRANSLATION_KEY.DATE_DESC,
-  TRANSLATION_KEY.DATE_ASC,
-  TRANSLATION_KEY.PRICE_DESC,
-  TRANSLATION_KEY.PRICE_ASC,
-];
-
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purchaseListingFeeWithCredits'];
 
 @Component({
@@ -88,7 +81,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public numberOfProducts: number;
   public searchPlaceholder: string;
   public sortItems: any[];
-  public sortBy: string;
+  public sortBy: SORT_KEYS;
   public normalNavLinks: NavLink[] = [];
   public subscriptionSelectedNavLinks: NavLink[] = [];
   public user: User;
@@ -467,7 +460,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (!subscription) {
       this.selectedStatus = STATUS.PUBLISHED;
       this.searchTerm = null;
-      this.sortBy = SORTS[0];
+      this.sortBy = SORTS[0].value;
       this.trackCloseSelectedSlot();
     } else {
       this.selectedStatus = STATUS.ACTIVE;
@@ -514,13 +507,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems(null, true);
   }
 
-  public setSortItems() {
-    this.sortItems = SORTS.map((value, i) => {
-      return { value, label: this.i18n.translate(SORTS_TRANSLATION_KEYS[i]) };
-    });
-    this.sortBy = SORTS[0];
-  }
-
   public onSortChange(value: any) {
     this.sortBy = value;
     this.getItems(null, true);
@@ -556,6 +542,10 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public navigateToProsModule(): void {
     this.router.navigate([PRO_PATHS.PRO_MANAGER]);
+  }
+
+  private setSortItems(): void {
+    this.sortItems = SORTS;
   }
 
   private setNormalLinks(): void {

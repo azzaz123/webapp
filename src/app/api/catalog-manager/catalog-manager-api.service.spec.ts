@@ -16,6 +16,7 @@ import {
   MOCK_ITEM_BY_SUBSCRIPTION_TYPE_RESPONSE_2,
 } from '@fixtures/items-subscription-type.fixtures.spec';
 import { Item } from '@core/item/item';
+import { SORT_KEYS } from './constants/sort.constants';
 
 describe('CatalogManagerApiService', () => {
   let service: CatalogManagerApiService;
@@ -75,16 +76,22 @@ describe('CatalogManagerApiService', () => {
         });
         it('should return data', () => {
           let response: Item[] = [];
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, true).subscribe((resp) => {
-            response = resp;
-          });
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, true).subscribe();
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true)
+            .subscribe((resp) => {
+              response = resp;
+            });
+          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true).subscribe();
 
           expect(response).toEqual([MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED, MOCK_ITEM_BY_SUBSCRIPTION_TYPE_2_MAPPED]);
         });
         it('should not make request twice', () => {
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, true).subscribe(() => {});
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, true).subscribe(() => {});
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true)
+            .subscribe(() => {});
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true)
+            .subscribe(() => {});
 
           expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledTimes(1);
           expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledWith(
@@ -103,14 +110,18 @@ describe('CatalogManagerApiService', () => {
         });
         it('should return data', () => {
           let response: Item[] = [];
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, true).subscribe((resp) => {
-            response = resp;
-          });
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true)
+            .subscribe((resp) => {
+              response = resp;
+            });
 
           expect(response).toEqual([MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED, MOCK_ITEM_BY_SUBSCRIPTION_TYPE_2_MAPPED]);
         });
         it('should not make twice', () => {
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, true).subscribe(() => {});
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true)
+            .subscribe(() => {});
 
           expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledTimes(1);
           expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledWith(
@@ -129,15 +140,21 @@ describe('CatalogManagerApiService', () => {
         });
         it('should return data', () => {
           let response: Item[] = [];
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, true).subscribe((resp) => {
-            response = resp;
-          });
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true)
+            .subscribe((resp) => {
+              response = resp;
+            });
 
           expect(response).toEqual([MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED]);
         });
         it('should make request always', () => {
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, true).subscribe(() => {});
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, false).subscribe(() => {});
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true)
+            .subscribe(() => {});
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, false)
+            .subscribe(() => {});
 
           expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledTimes(2);
           expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledWith(
@@ -154,15 +171,21 @@ describe('CatalogManagerApiService', () => {
         });
         it('should return data', () => {
           let response: Item[] = [];
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, true).subscribe((resp) => {
-            response = resp;
-          });
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true)
+            .subscribe((resp) => {
+              response = resp;
+            });
 
           expect(response).toEqual([MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED]);
         });
         it('should make request always', () => {
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, false).subscribe(() => {});
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, false).subscribe(() => {});
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, false)
+            .subscribe(() => {});
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, false)
+            .subscribe(() => {});
 
           expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledTimes(2);
           expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledWith(
@@ -180,7 +203,9 @@ describe('CatalogManagerApiService', () => {
             itemsBySubscriptionTypeSpy.and.returnValues(of(page1), of(page2), of(page3));
           });
           it('should make all request request', () => {
-            service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, false).subscribe(() => {});
+            service
+              .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, false)
+              .subscribe(() => {});
 
             expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledTimes(3);
             expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledWith(
@@ -207,7 +232,7 @@ describe('CatalogManagerApiService', () => {
             const expectedResult = new Array(PAGE_SIZE + PAGE_SIZE + PAGE_SIZE - 1).fill(MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED);
 
             service
-              .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, false)
+              .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, false)
               .subscribe((res) => (result = res));
             expect(result).toEqual(expectedResult);
           });
@@ -219,7 +244,9 @@ describe('CatalogManagerApiService', () => {
             itemsBySubscriptionTypeSpy.and.returnValues(of(page1), of(page2));
           });
           it('should make all request request', () => {
-            service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, false).subscribe(() => {});
+            service
+              .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, false)
+              .subscribe(() => {});
 
             expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledTimes(2);
             expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledWith(
@@ -240,7 +267,7 @@ describe('CatalogManagerApiService', () => {
             const expectedResult = new Array(PAGE_SIZE).fill(MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED);
 
             service
-              .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, false)
+              .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, false)
               .subscribe((res) => (result = res));
             expect(result).toEqual(expectedResult);
           });
@@ -251,7 +278,9 @@ describe('CatalogManagerApiService', () => {
             itemsBySubscriptionTypeSpy.and.returnValues(of(page1));
           });
           it('should make one request', () => {
-            service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, false).subscribe(() => {});
+            service
+              .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, false)
+              .subscribe(() => {});
 
             expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledTimes(1);
             expect(catalogManagerService.getItemsBySubscriptionType).toBeCalledWith(
@@ -266,7 +295,7 @@ describe('CatalogManagerApiService', () => {
             const expectedResult = new Array(PAGE_SIZE - 1).fill(MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED);
 
             service
-              .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, null, false)
+              .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, false)
               .subscribe((res) => (result = res));
             expect(result).toEqual(expectedResult);
           });
@@ -281,25 +310,31 @@ describe('CatalogManagerApiService', () => {
       });
       it('should return filtered data with the equal word', () => {
         let response: Item[] = [];
-        service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, 'agua', true).subscribe((resp) => {
-          response = resp;
-        });
+        service
+          .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, 'agua', true)
+          .subscribe((resp) => {
+            response = resp;
+          });
 
         expect(response).toEqual([MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED]);
       });
       it('should return filtered data without case sensitive ', () => {
         let response: Item[] = [];
-        service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, 'aGua', true).subscribe((resp) => {
-          response = resp;
-        });
+        service
+          .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, 'aGua', true)
+          .subscribe((resp) => {
+            response = resp;
+          });
 
         expect(response).toEqual([MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED]);
       });
       it('should return filtered data with spaces', () => {
         let response: Item[] = [];
-        service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, '', STATUS.ACTIVE, '   agua   ', true).subscribe((resp) => {
-          response = resp;
-        });
+        service
+          .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, '   agua   ', true)
+          .subscribe((resp) => {
+            response = resp;
+          });
 
         expect(response).toEqual([MOCK_ITEM_BY_SUBSCRIPTION_TYPE_MAPPED]);
       });
@@ -313,26 +348,8 @@ describe('CatalogManagerApiService', () => {
       describe('and is sorted by price', () => {
         it('should return desc sorted data', () => {
           let response: Item[] = [];
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, 'price_desc', STATUS.ACTIVE, null, true).subscribe((resp) => {
-            response = resp;
-          });
-
-          expect(response[0].salePrice).toBeGreaterThan(response[1].salePrice);
-        });
-        it('should return asc sorted data', () => {
-          let response: Item[] = [];
-          service.itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, 'price_asc', STATUS.ACTIVE, null, true).subscribe((resp) => {
-            response = resp;
-          });
-
-          expect(response[0].modifiedDate).toBeLessThan(response[1].modifiedDate);
-        });
-      });
-      describe('and is sorted by date', () => {
-        it('should return desc sorted data', () => {
-          let response: Item[] = [];
           service
-            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, 'modifiedDate_desc', STATUS.ACTIVE, null, true)
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.PRICE_DESC, STATUS.ACTIVE, null, true)
             .subscribe((resp) => {
               response = resp;
             });
@@ -342,7 +359,29 @@ describe('CatalogManagerApiService', () => {
         it('should return asc sorted data', () => {
           let response: Item[] = [];
           service
-            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, 'modifiedDate_asc', STATUS.ACTIVE, null, true)
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.PRICE_ASC, STATUS.ACTIVE, null, true)
+            .subscribe((resp) => {
+              response = resp;
+            });
+
+          expect(response[0].modifiedDate).toBeLessThan(response[1].modifiedDate);
+        });
+      });
+      describe('and is sorted by date', () => {
+        it('should return desc sorted data', () => {
+          let response: Item[] = [];
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_DESC, STATUS.ACTIVE, null, true)
+            .subscribe((resp) => {
+              response = resp;
+            });
+
+          expect(response[0].salePrice).toBeGreaterThan(response[1].salePrice);
+        });
+        it('should return asc sorted data', () => {
+          let response: Item[] = [];
+          service
+            .itemsBySubscriptionType(SUBSCRIPTION_CATEGORY_TYPES.CARS, SORT_KEYS.DATE_ASC, STATUS.ACTIVE, null, true)
             .subscribe((resp) => {
               response = resp;
             });

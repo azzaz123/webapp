@@ -10,6 +10,7 @@ import { mapFilter, mapItems, mapSort } from './mappers/items-mapper';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { ItemBySubscriptionResponse } from './dtos/items-by-subscription/items-subscription-type.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
+import { SORT_KEYS } from './constants/sort.constants';
 
 export const PAGE_SIZE = 1000;
 @Injectable()
@@ -29,7 +30,7 @@ export class CatalogManagerApiService {
 
   public itemsBySubscriptionType(
     type: SUBSCRIPTION_CATEGORY_TYPES,
-    sortByParam: string,
+    sortByParam: SORT_KEYS,
     status = STATUS.ACTIVE,
     term?: string,
     cache = false
