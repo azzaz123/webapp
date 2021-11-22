@@ -335,7 +335,13 @@ export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.images,
   ITEM_DATA.web_slug,
   ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info
+  ITEM_DATA.delivery_info,
+  null,
+  null,
+  null,
+  null,
+  null,
+  ['a', 'b', 'c']
 );
 
 export const MOCK_ITEM_FEATURED: Item = new Item(
