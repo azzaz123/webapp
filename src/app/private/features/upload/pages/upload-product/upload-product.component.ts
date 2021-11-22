@@ -176,7 +176,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.detectShippabilityAllowanceChanges();
       this.detectShippabilityChanges();
 
-      console.log('init', this.item);
       if (this.item) {
         this.initializeEditForm();
 
@@ -559,7 +558,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
       images: this.uploadService.convertImagesToFiles(this.item.images),
-      hashtags: this.item.hashtags,
+      hashtags: this.item.hashtags || [],
     });
     this.oldDeliveryValue = this.getDeliveryInfo();
   }
@@ -853,7 +852,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       title: item.title,
       shippingAllowed: !!item.sale_conditions?.supports_shipping,
       isPro: this.isProUser,
-      hashtags: item.hashtags.toString(),
+      hashtags: item.hashtags?.toString(),
     };
 
     if (item.extra_info) {
