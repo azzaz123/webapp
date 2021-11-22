@@ -45,6 +45,7 @@
       border-radius: 6px;
       border: 1px solid $blue-grey-4;
       height: 100%;
+      overflow: scroll;
 
       @include media-breakpoint-down(md) {
         min-height: 128px;
