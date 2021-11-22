@@ -2,7 +2,7 @@
 <span *ngIf="max" class="HashtagField__counter">{{value.length}}/{{max}}</span>
 <div [formGroup]="hashtagForm" class="d-flex HashtagField__form">
 <div class="HashtagField__search mr-3" >
-	<div class="HashtagField__search__box p-3 " > 
+	<div class="HashtagField__search__box p-2" > 
 		<tsl-cancel-bubble *ngFor="let bubble of value" [text]="bubble" class="mr-1 mb-1" (clear)="removeValue(bubble)"></tsl-cancel-bubble>
 		<tsl-multiselect-search-input [formControlName]="HASHTAG_TYPE.SEARCHED" [categoryId]="categoryId" [disabled]="maxReached$ | async" (changeValidStatus)="searchedValidStatusChange($event)"></tsl-multiselect-search-input>
 	</div>
