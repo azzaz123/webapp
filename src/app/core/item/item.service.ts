@@ -276,7 +276,11 @@ export class ItemService {
             },
             condition: content.extra_info.condition || null,
           }
-        : undefined
+        : undefined,
+      null,
+      null,
+      null,
+      content.hashtags
     );
   }
 
