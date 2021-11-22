@@ -42,18 +42,6 @@ tsl-spinner {
   }
 }
 
-tsl-selected-items {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  left: $sidebar-width;
-  z-index: 10;
-  @include media-breakpoint-down(md) {
-    bottom: $topbar-height;
-    left: 0;
-  }
-}
-
 #catalog-empty-state {
   padding: 0 $spacing-ms;
   width: 100%;
