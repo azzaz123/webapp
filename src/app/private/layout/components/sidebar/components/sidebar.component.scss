@@ -15,7 +15,6 @@ $collapse-btn-dimension: 24px;
   height: 100%;
   width: $sidebar-width;
   background-color: $white;
-  transition: width 150ms ease-in-out;
   border-right: 1px solid transparentize($blue-grey-4, 0.5);
 
   &__collapse {
@@ -93,6 +92,7 @@ $collapse-btn-dimension: 24px;
 
   &--collapsed {
     width: $sidebar-collapsed-width;
+    transition: width 150ms ease-in-out;
     .Sidebar__label {
       opacity: 0;
     }
