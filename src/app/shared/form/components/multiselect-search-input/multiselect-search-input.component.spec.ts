@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MOCK_HASHTAGS } from '@fixtures/hashtag.fixtures.spec';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
-import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { of } from 'rxjs';
@@ -32,8 +31,8 @@ describe('MultiselectSearchInputComponent', () => {
     component = fixture.componentInstance;
     component.searchValue = '';
     hashtagSuggesterApiService = TestBed.inject(HashtagSuggesterApiService);
-    inputElement = fixture.debugElement.query(By.css('.MultiselectSearchInput'));
     fixture.detectChanges();
+    inputElement = fixture.debugElement.query(By.css('.MultiselectSearchInput'));
   });
 
   it('should create', () => {
@@ -60,7 +59,7 @@ describe('MultiselectSearchInputComponent', () => {
     it('should return the placeholder as initial', () => {
       inputElement.nativeElement.blur();
 
-      expect(inputElement.nativeElement.placeholder).toBe($localize`:@@web_upload_hashtag_placeholder:Find or create a hashtag`);
+      expect(inputElement.nativeElement.placeholder).toBe($localize`:@@finding_hashtags_hint:Find or create a hashtag`);
     });
   });
 
@@ -122,8 +121,10 @@ describe('MultiselectSearchInputComponent', () => {
         tick(750);
         fixture.detectChanges();
 
-        expect(component.options[0].label).toBe(`#${inputValue}`);
-        expect(component.options[1].label).toBe(`#${MOCK_HASHTAGS[0].text}`);
+        component.options$.subscribe((options) => {
+          expect(options[0].label).toBe(`#${inputValue}`);
+          expect(options[1].label).toBe(`#${MOCK_HASHTAGS[0].text}`);
+        });
       }));
     });
 
@@ -143,29 +144,23 @@ describe('MultiselectSearchInputComponent', () => {
         tick(750);
         fixture.detectChanges();
 
-        expect(component.options[0].label).toBe(`#${inputValue}`);
-        expect(component.options.length).toBe(1);
+        component.options$.subscribe((options) => {
+          expect(options[0].label).toBe(`#${inputValue}`);
+          expect(options.length).toBe(1);
+        });
       }));
     });
   });
 
   describe('Select and unslect hashtag suggestions', () => {
     describe('when we change the input checkbox', () => {
-      it('should be able to update the value', fakeAsync(() => {
-        spyOn(component, 'handleSelectedOption').and.callThrough();
+      it('should be able to update the value', () => {
         spyOn(component, 'onChange');
-        spyOn(component.multiSelectFormComponent.extendedOptions$, 'subscribe').and.returnValue(of(HASHTAG_EXTENDED_OPTIONS));
-        component.value = [HASHTAG_OPTIONS[0].label, '#aa', '#bb'];
-        const form = fixture.debugElement.query(By.directive(MultiSelectFormComponent));
+        component.multiSelectFormComponent['extendedOptionsSubject'].next(HASHTAG_EXTENDED_OPTIONS);
+        const expextedValue = HASHTAG_EXTENDED_OPTIONS.filter((opt) => opt.checked).map((opt) => opt.value);
 
-        component.multiSelectFormComponent.extendedOptions$.subscribe();
-        tick(1000);
-        fixture.detectChanges();
-        form.triggerEventHandler('change', {});
-
-        expect(component.handleSelectedOption).toBeCalled();
-        expect(component.onChange).toHaveBeenCalledWith([HASHTAG_OPTIONS[0].label, '#aa', '#bb']);
-      }));
+        expect(component.onChange).toHaveBeenCalledWith(expextedValue);
+      });
     });
   });
 

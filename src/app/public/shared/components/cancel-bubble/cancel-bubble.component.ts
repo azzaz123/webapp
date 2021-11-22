@@ -6,11 +6,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./cancel-bubble.component.scss'],
 })
 export class CancelBubbleComponent {
-  @Input() bubbleText: string;
+  @Input() text: string;
   @Output() clear: EventEmitter<string> = new EventEmitter();
 
   public emitClear(event: MouseEvent): void {
     event.stopPropagation();
-    this.clear.emit(this.bubbleText);
+    this.clear.emit(this.text);
   }
 }

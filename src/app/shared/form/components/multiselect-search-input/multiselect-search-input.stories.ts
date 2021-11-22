@@ -13,12 +13,15 @@ import { MultiselectSearchInputModule } from './multiselect-search-input.module'
   template: `
     <form [formGroup]="formGroup">
       <h4 class="mt-4">Selected hashtags: {{ formGroup.value.hashtag }}</h4>
+      <h5 *ngIf="max">Max restriction set to: {{ max }}</h5>
+
       Get your hashtags:
       <tsl-multiselect-search-input
         formControlName="hashtag"
         [disabled]="disabled"
         [categoryId]="categoryId"
-        (showInvalidMessage)="showMessage($event)"
+        [max]="max"
+        (changeValidStatus)="changeValidStatus($event)"
       ></tsl-multiselect-search-input>
     </form>
     <div *ngIf="showErrorNessage">Our hashtags are good with anything except special characters and spaces of course</div>
@@ -26,20 +29,20 @@ import { MultiselectSearchInputModule } from './multiselect-search-input.module'
 })
 class StoryMultiselectSearchInputComponent {
   @Input() disabled: boolean = false;
-  @Input() categoryId: string = '1000';
+  @Input() categoryId: string = '12465';
   public formGroup = new FormGroup({
-    hashtag: new FormControl(['#aa', '#ss', '#design']),
+    hashtag: new FormControl(['a', 'ss', 'design']),
   });
 
   public options = this.formGroup.value.hashtag;
   public showErrorNessage: boolean = false;
 
-  public showMessage(event) {
-    this.showErrorNessage = event;
+  public changeValidStatus(valid) {
+    this.showErrorNessage = !valid;
   }
 }
 export default {
-  title: 'Webapp/Shared/MultiselectSearchInput',
+  title: 'Webapp/Shared/Form/Components/MultiselectSearchInput',
   component: StoryMultiselectSearchInputComponent,
   decorators: [
     moduleMetadata({
@@ -67,11 +70,17 @@ const Template: Story<StoryMultiselectSearchInputComponent> = (args) => ({
 export const Default = Template.bind({});
 Default.args = {
   disabled: false,
-  categoryId: '1000',
+  categoryId: '12465',
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
+  ...Default.args,
   disabled: true,
-  categoryId: '1000',
+};
+
+export const WithMaxRestriction = Template.bind({});
+WithMaxRestriction.args = {
+  ...Default.args,
+  max: 3,
 };

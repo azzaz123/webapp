@@ -3,40 +3,59 @@ $gradient-yellow: #bacc5b;
 $gradient-blue-1: #25c2a3;
 $gradient-blue-2: #2dacb6;
 $gradient-purple: #8762d8;
-$gradient-border-radius: 21px;
+$border-radius: 21px;
+$border-width: 1px;
+
+:host {
+  display: inline-block;
+}
 
 .CancelBubbleComponent {
   color: $blue-grey-1;
-  &__rounded_icon {
+  margin: $border-width;
+  border-radius: $border-radius;
+  overflow: hidden;
+
+  &::before {
+    background-color: $blue-grey-6;
+    border-radius: $border-radius;
+    content: '';
+    display: block;
+    height: calc(100% - #{$border-width * 2});
+    left: $border-width;
+    position: absolute;
+    width: calc(100% - #{$border-width * 2});
+    z-index: 0;
+  }
+
+  &__cancel,
+  span {
+    z-index: 1;
+  }
+
+  &__cancel {
     background-color: $white;
+    border: 1px solid $walla-main;
+    cursor: pointer;
+    margin-left: 8px;
     min-height: 20px;
     min-width: 20px;
-    border: 1px solid $walla-main;
     ::ng-deep svg path {
       fill: $walla-main;
     }
   }
-  @include rounded-gradient($gradient-border-radius, $blue-grey-6, transparent);
 }
 
 :host {
   &:nth-child(odd) {
     .CancelBubbleComponent {
-      @include rounded-gradient(
-        $gradient-border-radius,
-        $blue-grey-6,
-        linear-gradient(360deg, $gradient-yellow 0%, $gradient-blue-1 50.33%, $walla-main 100%)
-      );
+      background: linear-gradient(360deg, $gradient-yellow 0%, $gradient-blue-1 50.33%, $walla-main 100%);
     }
   }
 
   &:nth-child(even) {
     .CancelBubbleComponent {
-      @include rounded-gradient(
-        $gradient-border-radius,
-        $blue-grey-6,
-        linear-gradient(0deg, $gradient-purple 0%, $gradient-blue-2 50.33%, $walla-main 100%)
-      );
+      background: linear-gradient(0deg, $gradient-purple 0%, $gradient-blue-2 50.33%, $walla-main 100%);
     }
   }
 }
