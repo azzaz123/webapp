@@ -82,9 +82,6 @@ describe('CatalogItemComponent', () => {
               canDoAction() {
                 return of(true);
               },
-              getListingFeeInfo() {
-                return of(PRODUCT_RESPONSE);
-              },
             },
           },
           {
@@ -347,46 +344,6 @@ describe('CatalogItemComponent', () => {
 
         expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', facebookEvent);
       });
-    });
-  });
-
-  describe('showListingFee', () => {
-    it('should return true when listing fee expiration is more than current time', () => {
-      component.item.listingFeeExpiringDate = moment().add(2, 'seconds').valueOf();
-
-      expect(component.showListingFee()).toEqual(true);
-    });
-
-    it('should return false when listing fee expiration is less than current time', () => {
-      component.item.listingFeeExpiringDate = moment().subtract(2, 'seconds').valueOf();
-
-      expect(component.showListingFee()).toEqual(false);
-    });
-  });
-
-  describe('listingFeeFewDays', () => {
-    it('should return false when listing fee expiration is more than 3 days', () => {
-      component.item.listingFeeExpiringDate = moment().add(4, 'days').valueOf();
-
-      expect(component.listingFeeFewDays()).toEqual(false);
-    });
-
-    it('should return true when listing fee expiration is less than 3 days', () => {
-      component.item.listingFeeExpiringDate = moment().add(2, 'days').valueOf();
-
-      expect(component.listingFeeFewDays()).toEqual(true);
-    });
-  });
-
-  describe('publishItem', () => {
-    const item: Item = MOCK_ITEM;
-
-    it('should get the listing fee information related to the item', () => {
-      spyOn(itemService, 'getListingFeeInfo').and.returnValue(of(PRODUCT_RESPONSE));
-
-      component.publishItem();
-
-      expect(itemService.getListingFeeInfo).toHaveBeenCalledWith(item.id);
     });
   });
 

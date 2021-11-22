@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
+import { AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
+import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
 import { DeviceService } from '@core/device/device.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
@@ -68,8 +69,8 @@ export class AdsService {
     this.googlePublisherTagService.clearSlots(adSlots);
   }
 
-  public setAdKeywords(adKeywords: AdKeyWords): void {
-    this.googlePublisherTagService.setAdKeywords(adKeywords);
+  public setAdKeywords(adTargetings: AdTargetings): void {
+    this.googlePublisherTagService.setAdTargeting(adTargetings);
   }
 
   public setTargetingByAdsKeywords(): void {
@@ -106,10 +107,12 @@ export class AdsService {
     combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
         filter(([adsReady, adSlots]: [boolean, AdSlotConfiguration[]]) => adsReady && adSlots.length > 0),
-        map(([_, adSlots]: [boolean, AdSlotConfiguration[]]) => adSlots),
-        tap((adSlots: AdSlotConfiguration[]) => this.googlePublisherTagService.setSlots(adSlots))
+        map(([_, adSlots]: [boolean, AdSlotConfiguration[]]) => adSlots)
       )
-      .subscribe();
+      .subscribe((adSlots: AdSlotConfiguration[]) => {
+        this.googlePublisherTagService.setTargetingByAdsKeywords();
+        this.googlePublisherTagService.setSlots(adSlots);
+      });
   }
 
   private listenerToDisplaySlots(): void {
@@ -127,6 +130,7 @@ export class AdsService {
     combineLatest([this.allowSegmentation$, this.refreshSlotsSubject.asObservable()])
       .pipe(map(([allowSegmentation, refreshSlots]: [boolean, void]) => allowSegmentation))
       .subscribe((allowSegmentation: boolean) => {
+        this.googlePublisherTagService.setTargetingByAdsKeywords();
         this.refreshHeaderBids(allowSegmentation);
       });
   }

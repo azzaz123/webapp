@@ -97,6 +97,7 @@ export function FactoryAdAffiliationSlotConfiguration(deviceType: DeviceType): A
       name: deviceType === DeviceType.MOBILE ? AD_AFFILIATION_SLOT_MOBILE(index) : AD_AFFILIATION_SLOT_DESKTOP(index),
       sizes: [['fluid']],
       networkId: 6866,
+      type: 'item',
       device: deviceType === DeviceType.MOBILE ? [DeviceType.MOBILE] : [DeviceType.DESKTOP, DeviceType.TABLET],
     }));
 }

@@ -4,7 +4,7 @@ import {
   mappedFallbackShippingRulesFixture,
   mappedShippingRulesFixture,
   shippingRulesResponseFixture,
-} from '@api/fixtures/bff/delivery/rules/shipping-rules.fixtures';
+} from '@api/fixtures/bff/delivery/rules/shipping-rules.fixtures.spec';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';
 import { DeliveryRulesApiService } from './delivery-rules-api.service';
 import { SHIPPING_RULES_ENDPOINT } from './endpoints';

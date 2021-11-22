@@ -1,10 +1,11 @@
 import { CUSTOMER_HELP_SITE_BASE } from '@core/external-links/customer-help/enums/customer-help-site.enum';
+import { HELP_LOCALE } from '@core/external-links/customer-help/types/help-locale';
 import {
   TransactionTrackingActionDetail,
   TransactionTrackingActionDetailModel,
   TransactionTrackingActionDetailPayload,
-  TransactionTrackingActionDetailPayloadBanner,
-  TransactionTrackingActionDetailPayloadBannerModel,
+  TransactionTrackingBanner,
+  TransactionTrackingBannerModel,
   TransactionTrackingActionDetailPayloadConfirmation,
   TransactionTrackingActionDetailPayloadConfirmationModel,
   TransactionTrackingActionDetailPayloadParameters,
@@ -19,7 +20,7 @@ import {
 import { TransactionTrackingActionDetailPayloadDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-dto.interface';
 
 export class TransactionTrackingActionDetailPayloadModel implements TransactionTrackingActionDetailPayload {
-  banner: TransactionTrackingActionDetailPayloadBanner;
+  banner: TransactionTrackingBanner;
   description: string;
   linkUrl: string;
   name: string;
@@ -41,9 +42,9 @@ export class TransactionTrackingActionDetailPayloadModel implements TransactionT
     this.title = this.getTitleFromCarrierTrackingWebview(actionDetailPayloadDto) || this.getTitleFromDialog(actionDetailPayloadDto);
   }
 
-  private getBanner(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): TransactionTrackingActionDetailPayloadBannerModel {
+  private getBanner(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): TransactionTrackingBannerModel {
     const payload = actionDetailPayloadDto as TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto;
-    return !!payload.banner ? new TransactionTrackingActionDetailPayloadBannerModel(payload) : undefined;
+    return !!payload.banner ? new TransactionTrackingBannerModel(payload.banner) : undefined;
   }
   private getDescription(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): string {
     return (actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDialogDto).description_text ?? undefined;

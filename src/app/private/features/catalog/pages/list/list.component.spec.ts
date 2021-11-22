@@ -56,8 +56,6 @@ import { of, ReplaySubject } from 'rxjs';
 import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
-import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
-import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ListComponent } from './list.component';
 import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Counters } from '@core/user/user-stats.interface';
@@ -525,42 +523,6 @@ describe('ListComponent', () => {
       });
     });
 
-    it('should open the listing fee modal if transaction is set as purchaseListingFee', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFee');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-    }));
-
-    it('should open the listing fee modal if transaction is set as purchaseListingFeeWithCredits', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFeeWithCredits');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-    }));
-
     it('should open listing limit modal if create is on hold', fakeAsync(() => {
       spyOn(listingLimitService, 'showModal').and.callThrough();
       route.params = of({
@@ -605,19 +567,6 @@ describe('ListComponent', () => {
         backdrop: 'static',
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-    }));
-
-    it('should redirect to wallacoins if transaction is wallapack', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('wallapack');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: 200 }]);
     }));
 
     it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
@@ -923,50 +872,6 @@ describe('ListComponent', () => {
       it('should open error toast', () => {
         expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BULK_RESERVE_ERROR);
       });
-    });
-  });
-
-  describe('feature', () => {
-    const componentInstance: any = {};
-
-    it('should open modal', () => {
-      modalSpy.and.returnValue({
-        componentInstance: componentInstance,
-        result: Promise.resolve('success'),
-      });
-
-      component.feature(ORDER_EVENT, 'urgent');
-
-      expect(componentInstance.type).toBe('urgent');
-      expect(componentInstance.orderEvent).toBe(ORDER_EVENT);
-    });
-
-    describe('success', () => {
-      it('should redirect to success', fakeAsync(() => {
-        modalSpy.and.returnValue({
-          componentInstance: componentInstance,
-          result: Promise.resolve('success'),
-        });
-
-        component.feature(ORDER_EVENT, 'urgent');
-        tick();
-
-        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
-      }));
-    });
-
-    describe('error', () => {
-      it('should redirect to error', fakeAsync(() => {
-        modalSpy.and.returnValue({
-          componentInstance: componentInstance,
-          result: Promise.resolve('error'),
-        });
-
-        component.feature(ORDER_EVENT, 'urgent');
-        tick();
-
-        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: -1 }]);
-      }));
     });
   });
 
@@ -1283,16 +1188,6 @@ describe('ListComponent', () => {
       it('should reset item selection', () => {
         expect(component.items[0].flags['onhold']).toBe(true);
         expect(component.items[0].selected).toBe(false);
-      });
-    });
-  });
-
-  describe('purchaseListingFee', () => {
-    it('should open buy listing fee product modal', () => {
-      component.purchaseListingFee(MOCK_LISTING_FEE_ORDER);
-
-      expect(modalService.open).toHaveBeenCalledWith(BuyProductModalComponent, {
-        windowClass: 'modal-standard',
       });
     });
   });
