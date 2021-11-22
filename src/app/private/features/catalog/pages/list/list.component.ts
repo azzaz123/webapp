@@ -546,6 +546,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private setSortItems(): void {
     this.sortItems = SORTS;
+    this.sortBy = SORTS[0].value;
   }
 
   private setNormalLinks(): void {
