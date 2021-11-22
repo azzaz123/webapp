@@ -109,6 +109,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
 
   public blur(): void {
     this.hashtagPlaceholder = $localize`:@@finding_hashtags_hint:Find or create a hashtag`;
+    this.emptyOptions();
   }
 
   public writeValue(value): void {
@@ -144,6 +145,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
 
   public emptyOptions(): void {
     this.optionsSubject.next([]);
+    this.searchValue = '';
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag> | []> {
