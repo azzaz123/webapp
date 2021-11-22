@@ -86,6 +86,9 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
 
     if (!optionsList.contains(n.target)) {
       this.emptyOptions();
+      this.searchValue = '';
+      this.isValid = true;
+      this.changeValidStatus.emit(this.isValid);
     }
   }
 
@@ -145,7 +148,6 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   public emptyOptions(): void {
-    this.searchValue = '';
     this.optionsSubject.next([]);
   }
 
