@@ -31,6 +31,7 @@
   &__suggested,
   &__search {
     flex: 1;
+    max-width: 50%;
   }
 
   &__search {
@@ -52,7 +53,7 @@
     }
 
     &__error {
-      color: $negative-main;
+      color: $negative-main !important;
       font-size: $font-size-s;
       line-height: $line-height-ml;
     }
