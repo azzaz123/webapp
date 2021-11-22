@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { FALLBACK_NOT_FOUND_SRC } from '../../constants/fallback-images-src-constants';
 import { TransactionDetail } from '../../interfaces/transaction-detail.interface';
 @Component({
   selector: 'tsl-transaction-detail',
@@ -13,6 +14,7 @@ export class TransactionDetailComponent implements OnInit {
   @Output() caretClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() actionClick: EventEmitter<void> = new EventEmitter<void>();
 
+  public readonly FALLBACK_NOT_FOUND_SRC = FALLBACK_NOT_FOUND_SRC;
   public descriptionByPass: SafeHtml;
 
   constructor(private sanitizer: DomSanitizer) {}

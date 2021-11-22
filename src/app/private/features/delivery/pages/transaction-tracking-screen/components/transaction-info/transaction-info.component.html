@@ -3,7 +3,7 @@
     [src]="transactionInfo.item.imageSrc"
     alt="itemImage"
     class="TrackingInfo__image TrackingInfo__image--{{ transactionInfo.item.className }}"
-    onerror="src='/assets/images/delivery/transactional-tracking-screen/sock.jpg'"
+    [fallback]="FALLBACK_ITEM_SRC"
   />
   <div class="d-flex flex-column TrackingInfo__itemInfo mr-2">
     <span class="TrackingInfo__itemInfo TrackingInfo__itemInfo__price TrackingInfo__text text-truncate">{{
@@ -15,6 +15,6 @@
     [src]="transactionInfo.user.imageSrc"
     alt="userImage"
     class="TrackingInfo__image TrackingInfo__image--{{ transactionInfo.user.className }}"
-    onerror="src='/assets/images/delivery/transactional-tracking-screen/smile.jpg'"
+    [fallback]="FALLBACK_USER_SRC"
   />
 </div>

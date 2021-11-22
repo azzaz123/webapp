@@ -5,7 +5,7 @@
       [src]="info.iconSrc"
       alt="icon"
       class="TrackingDetailInfo__icon w-100 h-100 TrackingDetailInfo__icon--{{ info.iconClassName }}"
-      onerror="this.src='/assets/images/delivery/transactional-tracking-screen/not_found.jpg'"
+      [fallback]="FALLBACK_NOT_FOUND_SRC"
     />
   </div>
   <div

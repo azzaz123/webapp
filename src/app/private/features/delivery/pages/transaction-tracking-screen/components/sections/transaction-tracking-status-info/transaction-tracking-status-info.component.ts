@@ -12,14 +12,15 @@ import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mappe
 })
 export class TransactionTrackingStatusInfoComponent {
   @Input() transactionTrackingStatusInfo: TransactionTrackingStatusInfo[];
+  public detailInfoSlots: TransactionDetail[];
 
   constructor(private transactionTrackingActionsService: TransactionTrackingActionsService) {}
 
-  public manageSlotAction(action: TransactionTrackingActionDetail): void {
-    this.transactionTrackingActionsService.manageAction(action);
+  ngOnInit() {
+    this.detailInfoSlots = mapTransactionsDetail(this.transactionTrackingStatusInfo);
   }
 
-  public get detailInfoSlots(): TransactionDetail[] {
-    return mapTransactionsDetail(this.transactionTrackingStatusInfo);
+  public manageSlotAction(action: TransactionTrackingActionDetail): void {
+    this.transactionTrackingActionsService.manageAction(action);
   }
 }
