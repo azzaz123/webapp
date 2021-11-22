@@ -36,8 +36,8 @@ export enum HASHTAG_TYPE {
 export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
   @Input() categoryId: string;
   @Input() max: number;
-  @ViewChild(MultiSelectFormComponent, { static: true }) suggestedHashtagsComponent: MultiSelectFormComponent; // cambiar nombre
-  @ViewChild(MultiselectSearchInputComponent, { static: true }) searchedHashtagsComponent: MultiselectSearchInputComponent; // cambiar nombre
+  @ViewChild(MultiSelectFormComponent, { static: true }) suggestedHashtagsComponent: MultiSelectFormComponent;
+  @ViewChild(MultiselectSearchInputComponent, { static: true }) searchedHashtagsComponent: MultiselectSearchInputComponent;
 
   public hashtagForm: FormGroup = new FormGroup({
     [HASHTAG_TYPE.SEARCHED]: new FormControl(),
