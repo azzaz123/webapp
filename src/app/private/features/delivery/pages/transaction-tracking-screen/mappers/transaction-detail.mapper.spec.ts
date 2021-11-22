@@ -1,6 +1,5 @@
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
-import { FALLBACK_NOT_FOUND_SRC } from '../constants/fallback-src-images-constants';
-import { mapTransactionsDetail, mapTransactionDetail } from './transaction-detail.mapper';
+import { mapTransactionsDetail, mapTransactionDetail, FALLBACK_NOT_FOUND_SRC } from './transaction-detail.mapper';
 
 const MOCK_STATUS_INFO = MOCK_TRANSACTION_TRACKING.statusInfo[0];
 const MOCK_TRANSACTION_TRACKING_STATUS_INFO_WITHOUT_ICON = {

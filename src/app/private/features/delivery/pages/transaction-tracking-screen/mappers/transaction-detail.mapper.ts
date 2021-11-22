@@ -1,6 +1,7 @@
 import { TransactionTrackingStatusInfo } from '@api/core/model/delivery/transaction/tracking';
-import { FALLBACK_NOT_FOUND_SRC } from '@private/features/delivery/pages/transaction-tracking-screen/constants/fallback-src-images-constants';
 import { TransactionDetail } from '../interfaces/transaction-detail.interface';
+
+export const FALLBACK_NOT_FOUND_SRC = '/assets/images/delivery/transactional-tracking-screen/not_found.jpg';
 
 export function mapTransactionsDetail(statusInfo: TransactionTrackingStatusInfo[]): TransactionDetail[] {
   const propertiesMapped: TransactionDetail[] = [];
