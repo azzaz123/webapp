@@ -67,7 +67,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     return this.maxReachedSubject.asObservable();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getSuggestedOptions(0);
 
     this.maxReached$.pipe(filter((maxReached) => maxReached)).subscribe(() => {
@@ -107,7 +107,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     this.hashtagForm.controls[HASHTAG_TYPE.SUGGESTED].setValue(this.value, { emitEvent: false });
   }
 
-  public removeValue(valueString: string) {
+  public removeValue(valueString: string): void {
     this.value = this.value.filter((value) => valueString !== value);
     this.onChange(this.value);
     this.writeValue(this.value);
@@ -119,7 +119,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     this.updateMaxReached();
   }
 
-  private manageFormChanges(extendedOptions: TemplateMultiSelectFormOption[], type: HASHTAG_TYPE) {
+  private manageFormChanges(extendedOptions: TemplateMultiSelectFormOption[], type: HASHTAG_TYPE): void {
     const fieldToModify = type === HASHTAG_TYPE.SEARCHED ? HASHTAG_TYPE.SUGGESTED : HASHTAG_TYPE.SEARCHED;
     this.value = this.mapExtendedOptionsToValue(extendedOptions);
     this.hashtagForm.controls[fieldToModify].setValue(this.value, { emitEvent: false });
@@ -146,7 +146,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     }
   }
 
-  private mapHashtagOptions(hashtags: PaginatedList<Hashtag>) {
+  private mapHashtagOptions(hashtags: PaginatedList<Hashtag>): void {
     let suggestedOptions: SelectFormOption<string>[] = [];
 
     hashtags.list.forEach((hashtag: Hashtag) => {
