@@ -52,7 +52,6 @@ describe('HashtagFieldComponent', () => {
     expect(component).toBeTruthy();
   });
   describe('Multiselect behavior with two hashtagForms', () => {
-    beforeEach(() => {});
     describe('When we check general hashtag', () => {
       it('should also check in the same option in search hashtags', () => {
         const value = options[0].value;
