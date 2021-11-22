@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
@@ -55,7 +55,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
   private searchedExtendedOptions: TemplateMultiSelectFormOption[] = [];
   private suggestedExtendedOptions: TemplateMultiSelectFormOption[] = [];
 
-  constructor(private hashtagSuggesterApiService: HashtagSuggesterApiService, private cdr: ChangeDetectorRef) {
+  constructor(private hashtagSuggesterApiService: HashtagSuggesterApiService) {
     super();
   }
 
@@ -96,8 +96,6 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     this.suggestedHashtagsComponent.extendedOptions$.subscribe((extendedOptions: TemplateMultiSelectFormOption[]) => {
       this.suggestedExtendedOptions = extendedOptions;
     });
-
-    this.cdr.detectChanges();
   }
 
   public searchedValidStatusChange(valid): void {
