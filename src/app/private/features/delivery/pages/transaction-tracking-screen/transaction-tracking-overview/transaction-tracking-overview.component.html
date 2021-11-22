@@ -1,3 +1,7 @@
-<div *ngIf="transactionTrackingInfo$ | async as info">
-  <tsl-transaction-tracking-header [transactionTrackingHeader]="info.header"></tsl-transaction-tracking-header>
+<div *ngIf="transactionTracking$ | async as transactionTracking">
+  <tsl-transaction-tracking-header [transactionTrackingHeader]="transactionTracking.header"></tsl-transaction-tracking-header>
+  <tsl-transaction-tracking-general-info [shippingStatus]="transactionTracking.shippingStatus"> </tsl-transaction-tracking-general-info>
+  <tsl-transaction-tracking-status-info
+    [transactionTrackingStatusInfo]="transactionTracking.statusInfo"
+  ></tsl-transaction-tracking-status-info>
 </div>

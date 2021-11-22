@@ -17,6 +17,7 @@ const MOCK_BASE_ADSKEYWORDS = {
   longitude: undefined,
   maxprice: undefined,
   minprice: undefined,
+  MwebSearchLayout: undefined,
 };
 
 describe('AdsKeywordsService', () => {
@@ -74,6 +75,7 @@ describe('AdsKeywordsService', () => {
           category: 'category',
           minprice: 'minprice',
           maxprice: 'maxprice',
+          MwebSearchLayout: 'MwebSearchLayout',
         };
         spyOn(MockCookieService, 'get').and.callFake((key) => key);
 
