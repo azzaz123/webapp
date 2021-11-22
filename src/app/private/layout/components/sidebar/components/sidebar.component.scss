@@ -32,6 +32,10 @@ $collapse-btn-dimension: 24px;
     transition: 150ms ease-in-out;
     @include square($collapse-btn-dimension);
 
+    &--visible {
+      opacity: 1;
+    }
+
     &:hover {
       background-color: $blue-grey-6;
     }

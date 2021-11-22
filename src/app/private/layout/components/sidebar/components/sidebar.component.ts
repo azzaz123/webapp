@@ -16,6 +16,9 @@ import { UserStats } from '@core/user/user-stats.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { SidebarService } from '../core/services/sidebar.service';
+import { Observable } from 'rxjs';
+import { DeviceService } from '@core/device/device.service';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -30,13 +33,16 @@ export class SidebarComponent implements OnInit {
   public isProfessional: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
+  public readonly collapsed$: Observable<boolean> = this.sidebarService.sidebarCollapsed$;
+  public readonly isTouchDevice: boolean = this.deviceService.isTouchDevice();
   public isClickedProSection: boolean;
-  public collapsed: boolean = false;
 
   constructor(
+    private sidebarService: SidebarService,
     private userService: UserService,
     public unreadChatMessagesService: UnreadChatMessagesService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private deviceService: DeviceService
   ) {}
 
   ngOnInit() {
@@ -48,7 +54,7 @@ export class SidebarComponent implements OnInit {
   }
 
   public toggleCollapse(): void {
-    this.collapsed = !this.collapsed;
+    this.sidebarService.toggleCollapse();
   }
 
   public onClickedProSection(): void {

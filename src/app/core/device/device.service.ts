@@ -40,6 +40,10 @@ export class DeviceService {
     return this.deviceDetectorService.isDesktop();
   }
 
+  public isTouchDevice(): boolean {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+  }
+
   public getDeviceId(): string {
     let deviceId = this.cookieService.get(DeviceService.DEVICE_ID_COOKIE_NAME);
     if (!deviceId) {
