@@ -127,6 +127,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly DEFAULT_MAX_HASHTAGS = 5;
 
   private focused: boolean;
   private oldFormValue: any;
@@ -175,6 +176,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.detectShippabilityAllowanceChanges();
       this.detectShippabilityChanges();
 
+      console.log('init', this.item);
       if (this.item) {
         this.initializeEditForm();
 
@@ -535,6 +537,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         gender: [{ value: null, disabled: true }, [Validators.required]],
         condition: [null],
       }),
+      hashtags: '',
     });
   }
 
@@ -556,6 +559,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
       images: this.uploadService.convertImagesToFiles(this.item.images),
+      hashtags: this.item.hashtags,
     });
     this.oldDeliveryValue = this.getDeliveryInfo();
   }
@@ -849,6 +853,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       title: item.title,
       shippingAllowed: !!item.sale_conditions?.supports_shipping,
       isPro: this.isProUser,
+      hashtags: item.hashtags.toString(),
     };
 
     if (item.extra_info) {
