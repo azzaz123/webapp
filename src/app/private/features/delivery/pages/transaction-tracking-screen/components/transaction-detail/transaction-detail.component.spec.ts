@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 import { TransactionDetailComponent } from './transaction-detail.component';
@@ -14,7 +15,7 @@ describe('TransactionDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionDetailComponent],
-      imports: [SvgIconModule, HttpClientTestingModule],
+      imports: [SvgIconModule, HttpClientTestingModule, ImageFallbackModule],
     }).compileComponents();
   });
 

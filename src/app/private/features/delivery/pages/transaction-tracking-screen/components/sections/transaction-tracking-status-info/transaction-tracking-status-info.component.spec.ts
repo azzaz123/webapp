@@ -6,6 +6,7 @@ import { TransactionTrackingActionsService } from '@private/features/delivery/se
 import { TransactionDetailComponent } from '../../transaction-detail/transaction-detail.component';
 import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mapper';
 import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
+import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 
 describe('TransactionTrackingStatusInfoComponent', () => {
   const MOCK_STATUS_INFO = MOCK_TRANSACTION_TRACKING.statusInfo;
@@ -16,6 +17,7 @@ describe('TransactionTrackingStatusInfoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingStatusInfoComponent, TransactionDetailComponent],
+      imports: [ImageFallbackModule],
       providers: [{ provide: TransactionTrackingActionsService, useValue: { manageAction() {} } }],
     }).compileComponents();
   });
