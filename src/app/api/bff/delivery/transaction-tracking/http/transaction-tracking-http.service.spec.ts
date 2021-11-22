@@ -6,9 +6,12 @@ import { MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE } from '@api/fixtures/bf
 import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-instructions-dto.fixtures.spec';
 import {
+  TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT,
   TRANSACTION_TRACKING_DETAILS_ENDPOINT,
   TRANSACTION_TRACKING_ENDPOINT,
+  TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT,
   TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT,
+  TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT,
 } from '@api/bff/delivery/transaction-tracking/http/endpoints';
 import {
   TransactionTrackingActionTypeDto,
@@ -89,6 +92,54 @@ describe('TransactionTrackingHttpService', () => {
       expect(transactionTrackingInstructionsRequest.request.url).toEqual(TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT);
       expect(transactionTrackingInstructionsRequest.request.method).toBe('GET');
       expect(transactionTrackingInstructionsRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
+    });
+  });
+
+  describe('when canceling a transaction', () => {
+    it('should call to the corresponding cancelation endpoint', () => {
+      const MOCK_REQUEST_ID = '123';
+      const EXPECTED_ENDPOINT = TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT.replace(/\{0\}/g, MOCK_REQUEST_ID);
+
+      service.sendCancelTransaction(MOCK_REQUEST_ID).subscribe();
+
+      const cancelTransactionRequest: TestRequest = httpMock.expectOne(EXPECTED_ENDPOINT);
+      cancelTransactionRequest.flush(null);
+
+      expect(cancelTransactionRequest.request.url).toEqual(EXPECTED_ENDPOINT);
+      expect(cancelTransactionRequest.request.method).toBe('DELETE');
+      expect(cancelTransactionRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
+    });
+  });
+
+  describe('when expiring the claim period for a transaction', () => {
+    it('should call to the corresponding expiration claim period endpoint', () => {
+      const MOCK_REQUEST_ID = '123';
+      const EXPECTED_ENDPOINT = TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT.replace(/\{0\}/g, MOCK_REQUEST_ID);
+
+      service.sendExpireClaimPeriod(MOCK_REQUEST_ID).subscribe();
+
+      const expireClaimPeriodRequest: TestRequest = httpMock.expectOne(EXPECTED_ENDPOINT);
+      expireClaimPeriodRequest.flush(null);
+
+      expect(expireClaimPeriodRequest.request.url).toEqual(EXPECTED_ENDPOINT);
+      expect(expireClaimPeriodRequest.request.method).toBe('PATCH');
+      expect(expireClaimPeriodRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
+    });
+  });
+
+  describe('when arriving the package', () => {
+    it('should call to the corresponding package arrived endpoint', () => {
+      const MOCK_REQUEST_ID = '123';
+      const EXPECTED_ENDPOINT = TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT.replace(/\{0\}/g, MOCK_REQUEST_ID);
+
+      service.sendPackageArrived(MOCK_REQUEST_ID).subscribe();
+
+      const packageArrivedRequest: TestRequest = httpMock.expectOne(EXPECTED_ENDPOINT);
+      packageArrivedRequest.flush(null);
+
+      expect(packageArrivedRequest.request.url).toEqual(EXPECTED_ENDPOINT);
+      expect(packageArrivedRequest.request.method).toBe('POST');
+      expect(packageArrivedRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
   });
 });

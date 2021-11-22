@@ -14,7 +14,7 @@ import {
   TRANSACTION_TRACKING_ENDPOINT,
   TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT,
   TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT,
-  TRANSACTION_TRACKING_PACKAGE_RECEIVED_ENDPOINT,
+  TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT as TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT,
 } from '@api/bff/delivery/transaction-tracking/http/endpoints';
 
 import { Observable } from 'rxjs';
@@ -51,13 +51,13 @@ export class TransactionTrackingHttpService {
   }
 
   public sendExpireClaimPeriod(requestId: string): Observable<void> {
-    return this.httpClient.patch<void>(this.getEndpointFromRequestId(TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT, requestId), {
+    return this.httpClient.patch<void>(this.getEndpointFromRequestId(TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT, requestId), null, {
       headers: this.getHeaders,
     });
   }
 
   public sendPackageArrived(requestId: string): Observable<void> {
-    return this.httpClient.post<void>(this.getEndpointFromRequestId(TRANSACTION_TRACKING_PACKAGE_RECEIVED_ENDPOINT, requestId), {
+    return this.httpClient.post<void>(this.getEndpointFromRequestId(TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT, requestId), null, {
       headers: this.getHeaders,
     });
   }

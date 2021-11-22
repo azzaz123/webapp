@@ -6,4 +6,4 @@ export const TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT = `${environment.baseUrl
 
 export const TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT = `${environment.baseUrl}/delivery/transaction/{0}/cancel/by_seller`;
 export const TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT = `${environment.baseUrl}/delivery/transactions/{0}/claim_period/by_buyer`;
-export const TRANSACTION_TRACKING_PACKAGE_RECEIVED_ENDPOINT = `${environment.baseUrl}/delivery/transaction/{0}/shipping/delivery/manual_by_buyer`;
+export const TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT = `${environment.baseUrl}/delivery/transaction/{0}/shipping/delivery/manual_by_buyer`;
