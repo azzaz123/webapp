@@ -3,11 +3,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TransactionTrackingInfo } from '../../interfaces/transaction-tracking-info.interface';
 
 @Component({
-  selector: 'tsl-transaction-tracking-detail-info',
-  templateUrl: './transaction-tracking-detail-info.component.html',
-  styleUrls: ['./transaction-tracking-detail-info.component.scss'],
+  selector: 'tsl-transaction-detail',
+  templateUrl: './transaction-detail.component.html',
+  styleUrls: ['./transaction-detail.component.scss'],
 })
-export class TransactionTrackingDetailInfoComponent implements OnInit {
+export class TransactionDetailComponent implements OnInit {
   @Input() transactionTrackingInfo: TransactionTrackingInfo;
   @Input() isClickableAction: boolean;
   @Input() isBorderBottom: boolean;

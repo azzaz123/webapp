@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
+import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
@@ -10,6 +11,7 @@ import {
   MockAdsKeywordsService,
   MockAdSlots,
   MockAdSlotShopping,
+  MockAdsTargetingsService,
 } from '@fixtures/ads.fixtures.spec';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { random } from 'faker';
@@ -55,6 +57,10 @@ describe('GooglePublisherTagService', () => {
         {
           provide: DeviceService,
           useValue: deviceServiceMock,
+        },
+        {
+          provide: AdsTargetingsService,
+          useValue: MockAdsTargetingsService,
         },
       ],
     });
@@ -214,12 +220,12 @@ describe('GooglePublisherTagService', () => {
     });
 
     describe('when set targeting', () => {
-      it('should update ad keywords', () => {
-        spyOn(MockAdsKeywordsService, 'loadAdKeywords').and.callThrough();
+      it('should clear ad targetings from googletag cmd queue', () => {
+        spyOn(MOCK_GOOGLE_PUBABDS, 'clearTargeting').and.callThrough();
 
         service.setTargetingByAdsKeywords();
 
-        expect(MockAdsKeywordsService.loadAdKeywords).toHaveBeenCalledTimes(1);
+        expect(MOCK_GOOGLE_PUBABDS.clearTargeting).toHaveBeenCalledTimes(1);
       });
 
       it('should set targeting by ad keywords', () => {

@@ -1,12 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
-import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
+import { AdTargetings } from '@core/ads/models/ad-targetings';
+import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { CookieService } from 'ngx-cookie';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotShoppingBaseConfiguration } from '../../models';
+import { AdShoppingPageOptions, AdSlotConfiguration, AdSlotShoppingBaseConfiguration } from '../../models';
 import { GoogCsa } from './google-ads-sense-shopping';
 
 @Injectable({
@@ -21,8 +22,8 @@ export class GooglePublisherTagService {
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
     private cookieService: CookieService,
-    private adsKeywordsService: AdsKeywordsService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private adsTargetingService: AdsTargetingsService
   ) {}
 
   public isLibraryRefDefined(): boolean {
@@ -71,18 +72,23 @@ export class GooglePublisherTagService {
     return this.adSlotsLoaded$.pipe(map((slotNames: string[]) => slotNames.includes(adSlot.name)));
   }
 
-  public setAdKeywords(adKeywords: AdKeyWords): void {
-    this.adsKeywordsService.saveCustomKeywords(adKeywords);
+  public setAdTargeting(adTargetings: AdTargetings): void {
+    this.adsTargetingService.setAdTargeting(adTargetings);
   }
 
   public setTargetingByAdsKeywords(): void {
-    this.adsKeywordsService.loadAdKeywords();
+    const experimentationTargeting = this.getExperimentationTargeting();
+    this.googletag.pubads().clearTargeting();
 
-    const adKeywords: AdKeyWords = this.adsKeywordsService.adKeywords;
+    if (experimentationTargeting) {
+      this.adsTargetingService.setAdTargeting(experimentationTargeting);
+    }
+
+    const adTargetings: AdTargetings = this.adsTargetingService.adTargetings;
     this.googletag.cmd.push(() => {
-      for (const key in adKeywords) {
-        if (adKeywords.hasOwnProperty(key) && adKeywords[key]) {
-          this.googletag.pubads().setTargeting(key, adKeywords[key]);
+      for (const key in adTargetings) {
+        if (adTargetings.hasOwnProperty(key) && adTargetings[key]) {
+          this.googletag.pubads().setTargeting(key, adTargetings[key]);
         }
       }
     });
@@ -107,9 +113,7 @@ export class GooglePublisherTagService {
   }
 
   public displayShopping(pageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration[]): void {
-    this.adsKeywordsService.loadAdKeywords();
-
-    const { content }: AdKeyWords = this.adsKeywordsService.adKeywords;
+    const { content }: AdTargetings = this.adsTargetingService.adTargetings;
     this.googCsa(GooglePublisherTagService.GOOGLE_ADS_SENSE_NAME, { ...pageOptions, query: content }, adSlotShopping);
   }
 
@@ -180,5 +184,11 @@ export class GooglePublisherTagService {
 
   private get adSlotsLoaded$(): Observable<string[]> {
     return this.adSlotsLoadedSubject.asObservable();
+  }
+
+  private getExperimentationTargeting(): AdTargetings | null {
+    const value = this.googletag.pubads().getTargeting('MwebSearchLayout');
+
+    return value.length > 0 ? { MwebSearchLayout: value[0] } : null;
   }
 }
