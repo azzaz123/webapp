@@ -42,15 +42,6 @@ export class TransactionTrackingActionDetailPayloadModel implements TransactionT
     this.title = this.getTitleFromCarrierTrackingWebview(actionDetailPayloadDto) || this.getTitleFromDialog(actionDetailPayloadDto);
   }
 
-  public getHelpArticleUrl(locale: HELP_LOCALE): string {
-    const regExp: RegExp = new RegExp(/[?&]z=([^&]+).*$/);
-    const matches = this.linkUrl.match(regExp);
-    if (!!matches && matches.length >= 0 && matches[0].length >= 4) {
-      const article: string = matches[0].substring(3);
-      return `${CUSTOMER_HELP_SITE_BASE.DEFAULT}${locale}/articles/${article}`;
-    }
-    return null;
-  }
   private getBanner(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): TransactionTrackingBannerModel {
     const payload = actionDetailPayloadDto as TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto;
     return !!payload.banner ? new TransactionTrackingBannerModel(payload.banner) : undefined;
