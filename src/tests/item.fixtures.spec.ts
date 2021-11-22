@@ -335,13 +335,7 @@ export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.images,
   ITEM_DATA.web_slug,
   ITEM_DATA.published_date,
-  ITEM_DATA.delivery_info,
-  null,
-  null,
-  null,
-  null,
-  null,
-  ['a', 'b', 'c']
+  ITEM_DATA.delivery_info
 );
 
 export const MOCK_ITEM_FEATURED: Item = new Item(
@@ -1274,6 +1268,12 @@ export const MOCK_ITEM_V3: Item = new Item(
   undefined,
   ITEMS_DATA_V3[0].content.web_slug,
   ITEMS_DATA_V3[0].content.modified_date,
+  undefined,
+  ITEM_TYPES.CONSUMER_GOODS,
+  undefined,
+  null,
+  null,
+  null,
   undefined
 );
 
@@ -1302,6 +1302,12 @@ export const MOCK_ITEM_V3_2: Item = new Item(
   undefined,
   ITEMS_DATA_V3[1].content.web_slug,
   ITEMS_DATA_V3[1].content.modified_date,
+  undefined,
+  ITEM_TYPES.CONSUMER_GOODS,
+  undefined,
+  null,
+  null,
+  null,
   undefined
 );
 
