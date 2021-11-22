@@ -2,7 +2,6 @@
 
 :host {
   display: block;
-  position: relative;
 }
 
 .HashtagField {
@@ -11,14 +10,15 @@
 
     @include media-breakpoint-down(md) {
       flex-direction: column;
-      padding-top: $spacer * 2;
     }
   }
 
   &__counter {
     color: $blue-grey-3;
-    float: right;
     font-size: $font-size-s;
+    position: absolute;
+    right: 16px;
+    top: 0;
 
     @include media-breakpoint-down(md) {
       display: block;
