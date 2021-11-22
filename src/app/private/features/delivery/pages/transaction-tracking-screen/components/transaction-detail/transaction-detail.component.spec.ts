@@ -4,22 +4,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
-import { TransactionTrackingDetailInfoComponent } from './transaction-tracking-detail-info.component';
+import { TransactionDetailComponent } from './transaction-detail.component';
 
-describe('TransactionTrackingDetailInfoComponent', () => {
-  let component: TransactionTrackingDetailInfoComponent;
-  let fixture: ComponentFixture<TransactionTrackingDetailInfoComponent>;
+describe('TransactionDetailComponent', () => {
+  let component: TransactionDetailComponent;
+  let fixture: ComponentFixture<TransactionDetailComponent>;
   let de: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionTrackingDetailInfoComponent],
+      declarations: [TransactionDetailComponent],
       imports: [SvgIconModule, HttpClientTestingModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TransactionTrackingDetailInfoComponent);
+    fixture = TestBed.createComponent(TransactionDetailComponent);
     de = fixture.debugElement;
     component = fixture.componentInstance;
     component.transactionTrackingInfo = {

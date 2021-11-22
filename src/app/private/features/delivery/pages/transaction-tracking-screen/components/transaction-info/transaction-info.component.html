@@ -1,0 +1,18 @@
+<div *ngIf="transactionInfo" class="TrackingInfo d-flex align-items-center">
+  <img
+    [src]="transactionInfo.item.imageSrc"
+    alt="itemImage"
+    class="TrackingInfo__image TrackingInfo__image--{{ transactionInfo.item.className }}"
+  />
+  <div class="d-flex flex-column TrackingInfo__itemInfo mx-2">
+    <span class="TrackingInfo__itemInfo TrackingInfo__itemInfo__price TrackingInfo__text text-truncate">{{
+      transactionInfo.item.price
+    }}</span>
+    <span id="itemName" class="TrackingInfo__text text-truncate">{{ transactionInfo.item.name }}</span>
+  </div>
+  <img
+    [src]="transactionInfo.user.imageSrc"
+    alt="userImage"
+    class="TrackingInfo__image TrackingInfo__image--{{ transactionInfo.user.className }}"
+  />
+</div>
