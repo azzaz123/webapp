@@ -61,7 +61,8 @@ export class Item implements Model {
     private _extraInfo?: ItemExtraInfo,
     private _car_info?: KmInfo,
     private _km?: number,
-    private _bumpFlags?: ItemVisibilityFlags
+    private _bumpFlags?: ItemVisibilityFlags,
+    private _hashtags?: string[]
   ) {}
 
   get id(): string {
@@ -182,6 +183,14 @@ export class Item implements Model {
 
   get publishedDate(): number {
     return this._publishedDate;
+  }
+
+  get hashtags(): string[] {
+    return this._hashtags;
+  }
+
+  set hashtags(value: string[]) {
+    this._hashtags = value;
   }
 
   public setFakeImage(image: string) {
