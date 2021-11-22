@@ -12,15 +12,12 @@ import { SubscriptionsSlotItemComponent } from './components/subscriptions-slots
 import { SubscriptionsSlotsListComponent } from './components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { BumpTutorialService } from './core/services/bump-tutorial.service';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
-import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
-import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { CatalogItemTrackingEventService } from './core/services/catalog-item-tracking-event.service';
 import { NavLinksModule } from '@shared/nav-links/nav-links.module';
-import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
 import { CatalogManagerApiModule } from '@api/catalog-manager/catalog-manager-api.module';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 
@@ -48,10 +45,8 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     BumpConfirmationModalComponent,
     CheckoutItemComponent,
     BumpTutorialComponent,
-    BuyProductModalComponent,
-    ListingfeeConfirmationModalComponent,
     TryProSlotComponent,
   ],
-  entryComponents: [BumpConfirmationModalComponent, BuyProductModalComponent, ListingfeeConfirmationModalComponent],
+  entryComponents: [BumpConfirmationModalComponent],
 })
 export class CatalogModule {}

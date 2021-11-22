@@ -50,11 +50,9 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { Subscription } from 'rxjs';
 import { take, takeWhile } from 'rxjs/operators';
 import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
-import { OrderEvent, STATUS } from '../../components/selected-items/selected-product.interface';
+import { STATUS } from '../../components/selected-items/selected-product.interface';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
-import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
-import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 
 export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
 export const SORTS_TRANSLATION_KEYS: TRANSLATION_KEY[] = [
@@ -64,7 +62,7 @@ export const SORTS_TRANSLATION_KEYS: TRANSLATION_KEY[] = [
   TRANSLATION_KEY.PRICE_ASC,
 ];
 
-const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purchaseListingFeeWithCredits'];
+const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits'];
 
 @Component({
   selector: 'tsl-list',
@@ -194,28 +192,10 @@ export class ListComponent implements OnInit, OnDestroy {
         if (params && params.code) {
           const modals = {
             bump: BumpConfirmationModalComponent,
-            listingfee: ListingfeeConfirmationModalComponent,
           };
           const transactionType = localStorage.getItem('transactionType');
-          let modalType;
+          let modalType = transactionType === 'bumpWithCredits' ? 'bump' : transactionType;
           let modal;
-          switch (transactionType) {
-            case 'urgentWithCredits':
-              modalType = 'urgent';
-              break;
-            case 'bumpWithCredits':
-              modalType = 'bump';
-              break;
-            case 'wallapack':
-              this.router.navigate(['wallacoins', { code: params.code }]);
-              return;
-            case 'purchaseListingFee':
-            case 'purchaseListingFeeWithCredits':
-              modalType = 'listingfee';
-              break;
-            default:
-              modalType = transactionType;
-          }
 
           if (params.code === '-1') {
             modal = modals.bump;
@@ -391,41 +371,12 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public feature(orderEvent: OrderEvent, type?: string) {
-    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
-    modalRef.componentInstance.type = type;
-    modalRef.componentInstance.orderEvent = orderEvent;
-    modalRef.componentInstance.creditInfo = this.creditInfo;
-    modalRef.result.then((result: string) => {
-      if (result === 'success') {
-        this.router.navigate(['catalog/list', { code: 200 }]);
-      } else {
-        this.router.navigate(['catalog/list', { code: -1 }]);
-      }
-    });
-  }
-
   public getNumberOfProducts() {
     this.userService.getStats().subscribe((userStats: UserStats) => {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
       if (!this.selectedSubscriptionSlot) {
         this.activateNormalLinks();
-      }
-    });
-  }
-
-  public purchaseListingFee(orderEvent: OrderEvent) {
-    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
-    modalRef.componentInstance.type = 'listing-fee';
-    modalRef.componentInstance.orderEvent = orderEvent;
-    modalRef.componentInstance.creditInfo = this.creditInfo;
-    localStorage.setItem('transactionType', 'purchaseListingFee');
-    modalRef.result.then((result: string) => {
-      if (result === 'success') {
-        this.router.navigate(['catalog/list', { code: 200 }]);
-      } else {
-        this.router.navigate(['catalog/list', { code: -1 }]);
       }
     });
   }

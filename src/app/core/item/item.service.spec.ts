@@ -30,7 +30,6 @@ import {
   LATEST_ITEM_DATA,
   LATEST_ITEM_DATA_EMPTY,
   MOCK_ITEM_V3,
-  MOCK_LISTING_FEE_PRODUCT,
   ORDER,
   PRODUCTS_RESPONSE,
   PRODUCT_RESPONSE,
@@ -306,7 +305,6 @@ describe('ItemService', () => {
 
         expect(response.data[0].bumpExpiringDate).toBe(1510221655715);
         expect(response.data[0].flags.highlighted).toBeTruthy();
-        expect(response.data[0].listingFeeExpiringDate).toBe(1510221346789);
         expect(response.data[2].bumpExpiringDate).toBe(1509874085135);
         expect(response.data[2].flags.bumped).toBeTruthy();
       });
@@ -1165,21 +1163,6 @@ describe('ItemService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.body).toEqual(expectedBody);
       expect(req.request.method).toBe('PUT');
-    });
-  });
-
-  describe('getListingFeeInfo', () => {
-    it('should get the item listing fee information', () => {
-      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/${ITEM_ID}/listing-fee-info`;
-      let response: Product;
-
-      service.getListingFeeInfo(ITEM_ID).subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(MOCK_LISTING_FEE_PRODUCT);
-
-      expect(req.request.url).toEqual(expectedUrl);
-      expect(response).toEqual(MOCK_LISTING_FEE_PRODUCT.product_group.products[0]);
-      expect(req.request.method).toBe('GET');
     });
   });
 });

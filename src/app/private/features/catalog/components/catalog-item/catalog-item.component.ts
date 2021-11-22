@@ -2,8 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ItemService } from '@core/item/item.service';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
-import { Order, Product } from '@core/item/item-response.interface';
-import { OrderEvent } from '../selected-items/selected-product.interface';
 import { Item } from '@core/item/item';
 import { EventService } from '@core/event/event.service';
 import { Router } from '@angular/router';
@@ -25,7 +23,6 @@ export class CatalogItemComponent implements OnInit {
   @Input() item: Item;
   @Input() showPublishCTA = false;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
-  @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public readonly PERMISSIONS = PERMISSIONS;
   public link: string;
   public selectMode = false;
@@ -100,32 +97,6 @@ export class CatalogItemComponent implements OnInit {
       action: ITEM_CHANGE_ACTION.SOLD,
     });
     this.eventService.emit(EventService.ITEM_SOLD, item);
-  }
-
-  public showListingFee(): boolean {
-    return this.item.listingFeeExpiringDate > new Date().getTime();
-  }
-
-  public listingFeeFewDays(): boolean {
-    const threeDaysTime = 3 * 24 * 60 * 60 * 1000;
-    return this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime;
-  }
-
-  public publishItem(): void {
-    this.itemService.getListingFeeInfo(this.item.id).subscribe((response: Product) => {
-      const order: Order[] = [
-        {
-          item_id: this.item.id,
-          product_id: response.durations[0].id,
-        },
-      ];
-      const orderEvent: OrderEvent = {
-        order,
-        total: +response.durations[0].market_code,
-      };
-      localStorage.setItem('transactionType', 'purchaseListingFee');
-      this.purchaseListingFee.next(orderEvent);
-    });
   }
 
   public openItem() {
