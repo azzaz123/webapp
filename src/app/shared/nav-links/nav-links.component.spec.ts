@@ -7,6 +7,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FullScreenModalComponent } from '../modals/full-screen-menu/full-screen-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 describe('NavLinksComponent', () => {
   let component: NavLinksComponent;
@@ -198,5 +199,27 @@ describe('NavLinksComponent', () => {
       expect(componentInstance.items).toEqual([NAV_LINK]);
       expect(component.onClickNavLink).toHaveBeenCalledWith(NAV_LINK);
     }));
+  });
+  describe('disable nav links', () => {
+    describe('and is disable', () => {
+      it('should disable nav link', () => {
+        component.disabled = true;
+        fixture.detectChanges();
+
+        const disableNavLinks = fixture.debugElement.query(By.css('.NavLinks--disabled'));
+
+        expect(disableNavLinks).toBeTruthy();
+      });
+    });
+    describe('and is enable', () => {
+      it('should disable nav link', () => {
+        component.disabled = false;
+        fixture.detectChanges();
+
+        const disableNavLinks = fixture.debugElement.query(By.css('.NavLinks--disabled'));
+
+        expect(disableNavLinks).toBeFalsy();
+      });
+    });
   });
 });
