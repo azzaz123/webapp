@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PaginatedList } from '@api/core/model';
 import { MOCK_HASHTAGS } from '@fixtures/hashtag.fixtures.spec';
 import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { MultiselectSearchInputComponent } from '@shared/form/components/multiselect-search-input/multiselect-search-input.component';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { Hashtag } from '../../core/models/hashtag.interface';
 import { HashtagSuggesterApiService } from '../../core/services/hashtag-suggestions/hashtag-suggester-api.service';
 
 import { HashtagFieldComponent, HASHTAG_TYPE } from './hashtag-field.component';
@@ -23,12 +25,12 @@ describe('HashtagFieldComponent', () => {
         {
           provide: HashtagSuggesterApiService,
           useValue: {
-            getHashtags() {
+            getHashtags(): Observable<PaginatedList<Hashtag, string>> {
               return of({
                 list: MOCK_HASHTAGS,
               });
             },
-            getHashtagsByPrefix() {
+            getHashtagsByPrefix(): Observable<PaginatedList<Hashtag, string>> {
               return of({
                 list: MOCK_HASHTAGS,
               });
@@ -52,7 +54,6 @@ describe('HashtagFieldComponent', () => {
     expect(component).toBeTruthy();
   });
   describe('Multiselect behavior with two hashtagForms', () => {
-    beforeEach(() => {});
     describe('When we check general hashtag', () => {
       it('should also check in the same option in search hashtags', () => {
         const value = options[0].value;
