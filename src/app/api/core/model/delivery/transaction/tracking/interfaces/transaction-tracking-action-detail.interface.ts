@@ -1,3 +1,5 @@
+import { TransactionTrackingBanner } from '@api/core/model/delivery/transaction/tracking';
+
 export interface TransactionTrackingActionDetail {
   analytics?: TransactionTrackingActionDetailAnalytics;
   isCarrierTrackingWebview: boolean;
@@ -8,13 +10,15 @@ export interface TransactionTrackingActionDetail {
   isUserAction: boolean;
   payload: TransactionTrackingActionDetailPayload;
 }
+
 export interface TransactionTrackingActionDetailAnalytics {
   requestId: string;
   source: string;
   userId: string;
 }
+
 export interface TransactionTrackingActionDetailPayload {
-  banner?: TransactionTrackingActionDetailPayloadBanner;
+  banner?: TransactionTrackingBanner;
   description?: string;
   linkUrl?: string;
   name?: string;
@@ -24,14 +28,12 @@ export interface TransactionTrackingActionDetailPayload {
   success?: TransactionTrackingActionDetail;
   title?: string;
 }
-export interface TransactionTrackingActionDetailPayloadBanner {
-  title: string;
-  trackingCode: string;
-}
+
 export interface TransactionTrackingActionDetailPayloadConfirmation {
   action?: TransactionTrackingActionDetail;
   title: string;
 }
+
 export interface TransactionTrackingActionDetailPayloadParameters {
   transactionId: string;
 }

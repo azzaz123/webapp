@@ -1,4 +1,4 @@
-import { TransactionTrackingActionDetailDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+import { TransactionTrackingActionDetailDto, TransactionTrackingBannerDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 
 export type TransactionTrackingActionDetailPayloadUserActionNameDto = 'PACKAGE_ARRIVED' | 'CANCEL_TRANSACTION' | 'EXPIRE_CLAIM_PERIOD';
 
@@ -28,9 +28,6 @@ export interface TransactionTrackingActionDetailPayloadDialogDto {
 
 export interface TransactionTrackingActionDetailPayloadCarrierTrackingWebviewDto {
   title: string;
-  banner: {
-    title: string;
-    tracking_code: string;
-  };
+  banner: TransactionTrackingBannerDto;
   link_url: string;
 }
