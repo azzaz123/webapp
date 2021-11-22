@@ -82,7 +82,9 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   @HostListener('window:click', ['$event']) onWindowClick(n: Event) {
-    if ((n.target as HTMLElement).contains(this.hashtagSuggesterOptions.nativeElement)) {
+    const optionsList = this.hashtagSuggesterOptions.nativeElement.querySelector('tsl-multi-select-form');
+
+    if (!optionsList.contains(n.target)) {
       this.emptyOptions();
     }
   }
@@ -143,6 +145,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   public emptyOptions(): void {
+    this.searchValue = '';
     this.optionsSubject.next([]);
   }
 
