@@ -1,33 +1,26 @@
-import { Inject, Injectable } from '@angular/core';
-import { WINDOW_TOKEN } from '@core/window/window.token';
+import { Injectable } from '@angular/core';
+import { AdTargetings } from '@core/ads/models/ad-targetings';
 
 @Injectable({
   providedIn: 'root',
 })
 export class YieldBirdService {
-  constructor(@Inject(WINDOW_TOKEN) private window: Window) {}
+  constructor() {}
 
-  public init(): void {
-    this.googletag.cmd.push(() => {
-      var _YB = _YB || {
-        ab: () => {
-          return _YB.dool ? 'b' : 'a' + Math.floor(Math.random() * 10);
-        },
-        dool: Math.random() >= 0.1,
-      };
+  get targetings(): AdTargetings {
+    let _YB = {
+      ab: () => (_YB.dool ? 'b' : 'a' + Math.floor(Math.random() * 10)),
+      dool: Math.random() >= 0.1,
+    };
 
-      var yb_ab;
-      if (Math.random() <= 0.9) {
-        yb_ab = _YB.ab();
-      } else {
-        yb_ab = 'c';
-      }
+    let yb_ab;
 
-      this.googletag.pubads().setTargeting('yb_ab', yb_ab);
-    });
-  }
+    if (Math.random() <= 0.9) {
+      yb_ab = _YB.ab();
+    } else {
+      yb_ab = 'c';
+    }
 
-  get googletag(): googletag.Googletag {
-    return this.window['googletag'] || { cmd: [], apiReady: false };
+    return { yb_ab };
   }
 }
