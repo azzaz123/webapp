@@ -13,6 +13,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   const MOCK_TRANSACTION_TRACKING_ID = 'Laia';
 
   const transactionTrackingHeaderSelector = 'tsl-transaction-tracking-header';
+  const shippingStatusSelector = 'tsl-transaction-tracking-general-info';
   const transactionTrackingStatusInfoSelector = 'tsl-transaction-tracking-status-info';
 
   let component: TransactionTrackingOverviewComponent;
@@ -95,6 +96,10 @@ describe('TransactionTrackingOverviewComponent', () => {
     it('should NOT render the transaction tracking status info ', () => {
       expect(de.query(By.css(transactionTrackingStatusInfoSelector))).toBeFalsy();
     });
+
+    it('should NOT render the transaction tracking status info ', () => {
+      expect(de.query(By.css(transactionTrackingStatusInfoSelector))).toBeFalsy();
+    });
   });
 
   describe('when we receive tracking info...', () => {
@@ -106,6 +111,10 @@ describe('TransactionTrackingOverviewComponent', () => {
 
     it('should render the transaction tracking header ', () => {
       expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeTruthy();
+    });
+
+    it('should render the shipping status info ', () => {
+      expect(de.query(By.css(shippingStatusSelector))).toBeTruthy();
     });
 
     it('should render the transaction tracking status info ', () => {
