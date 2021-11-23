@@ -45,25 +45,21 @@ export class TransactionTrackingHttpService {
   }
 
   public sendCancelTransaction(requestId: string): Observable<void> {
-    return this.httpClient.delete<void>(this.getEndpointFromRequestId(TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT, requestId), {
+    return this.httpClient.delete<void>(TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT(requestId), {
       headers: this.getHeaders,
     });
   }
 
   public sendExpireClaimPeriod(requestId: string): Observable<void> {
-    return this.httpClient.patch<void>(this.getEndpointFromRequestId(TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT, requestId), null, {
+    return this.httpClient.patch<void>(TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT(requestId), null, {
       headers: this.getHeaders,
     });
   }
 
   public sendPackageArrived(requestId: string): Observable<void> {
-    return this.httpClient.post<void>(this.getEndpointFromRequestId(TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT, requestId), null, {
+    return this.httpClient.post<void>(TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT(requestId), null, {
       headers: this.getHeaders,
     });
-  }
-
-  private getEndpointFromRequestId(endpoint: string, requestId: string): string {
-    return endpoint.replace(/\{0\}/g, requestId);
   }
 
   private get getHeaders(): { [header: string]: string | string[] } {

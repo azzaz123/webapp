@@ -98,7 +98,7 @@ describe('TransactionTrackingHttpService', () => {
   describe('when canceling a transaction', () => {
     it('should call to the corresponding cancelation endpoint', () => {
       const MOCK_REQUEST_ID = '123';
-      const EXPECTED_ENDPOINT = TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT.replace(/\{0\}/g, MOCK_REQUEST_ID);
+      const EXPECTED_ENDPOINT = TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT(MOCK_REQUEST_ID);
 
       service.sendCancelTransaction(MOCK_REQUEST_ID).subscribe();
 
@@ -114,7 +114,7 @@ describe('TransactionTrackingHttpService', () => {
   describe('when expiring the claim period for a transaction', () => {
     it('should call to the corresponding expiration claim period endpoint', () => {
       const MOCK_REQUEST_ID = '123';
-      const EXPECTED_ENDPOINT = TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT.replace(/\{0\}/g, MOCK_REQUEST_ID);
+      const EXPECTED_ENDPOINT = TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT(MOCK_REQUEST_ID);
 
       service.sendExpireClaimPeriod(MOCK_REQUEST_ID).subscribe();
 
@@ -130,7 +130,7 @@ describe('TransactionTrackingHttpService', () => {
   describe('when arriving the package', () => {
     it('should call to the corresponding package arrived endpoint', () => {
       const MOCK_REQUEST_ID = '123';
-      const EXPECTED_ENDPOINT = TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT.replace(/\{0\}/g, MOCK_REQUEST_ID);
+      const EXPECTED_ENDPOINT = TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT(MOCK_REQUEST_ID);
 
       service.sendPackageArrived(MOCK_REQUEST_ID).subscribe();
 
