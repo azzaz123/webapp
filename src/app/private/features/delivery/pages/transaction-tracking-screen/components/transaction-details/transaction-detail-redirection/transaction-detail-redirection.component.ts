@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { UNAVAILABLE_DEEPLINKS_PREFIX } from '../../../constants/unavailable-deeplinks-prefix-constants';
 import { TransactionDetail } from '../../../interfaces/transaction-detail.interface';
 
 @Component({
@@ -13,4 +14,8 @@ export class TransactionDetailRedirectionComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  public isDeeplinkAvailable(deeplink: string): boolean {
+    return UNAVAILABLE_DEEPLINKS_PREFIX.some((unavailableDeeplink: string) => deeplink.startsWith(unavailableDeeplink));
+  }
 }
