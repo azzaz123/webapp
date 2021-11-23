@@ -1,0 +1,9 @@
+@import '~style/common';
+
+.DiscountBagde {
+  border-radius: 21px;
+  font-weight: $font-weight-chunky;
+  font-size: $font-size-xs;
+  background-color: $color-pro-discount;
+  color: $white;
+}

@@ -1,7 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickItemCategoryUpload,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CARS_CATEGORY } from '@core/item/item-categories';
-import { Product } from '@core/item/item-response.interface';
-import { ItemService } from '@core/item/item.service';
 import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
 import { UserService } from '@core/user/user.service';
@@ -12,11 +18,15 @@ import { UserService } from '@core/user/user.service';
   styleUrls: ['./upload.component.scss'],
 })
 export class UploadComponent implements OnInit {
-  public categoryId: string;
-  public urgentPrice: string = null;
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
 
-  constructor(private itemService: ItemService, private userService: UserService, private trustAndSafetyService: TrustAndSafetyService) {}
+  public categoryId: string;
+
+  constructor(
+    private userService: UserService,
+    private trustAndSafetyService: TrustAndSafetyService,
+    private analyticsService: AnalyticsService
+  ) {}
 
   ngOnInit() {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
@@ -30,24 +40,25 @@ export class UploadComponent implements OnInit {
 
   public setCategory(categoryId: string) {
     this.categoryId = categoryId;
-    if (categoryId !== '-1') {
-      this.getUrgentPrice(categoryId);
-    } else {
-      this.urgentPrice = null;
-    }
+    this.trackEvent();
   }
 
-  public onValidationError() {
+  public validationError() {
     this.scrollPanel.nativeElement.scrollTop = 0;
   }
 
-  public getUrgentPrice(categoryId: string): void {
-    if (categoryId !== '-1') {
-      this.itemService.getUrgentProductByCategoryId(categoryId).subscribe((product: Product) => {
-        this.urgentPrice = product.durations[0].market_code;
-      });
-    } else {
-      this.urgentPrice = null;
-    }
+  public trackEvent(): void {
+    const categorySelected = +this.categoryId;
+    const event: AnalyticsEvent<ClickItemCategoryUpload> = {
+      name: ANALYTICS_EVENT_NAMES.ClickItemCategoryUpload,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.Upload,
+        categoryId: categorySelected < 0 ? 0 : categorySelected,
+        isPro: this.userService.isPro,
+      },
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 }

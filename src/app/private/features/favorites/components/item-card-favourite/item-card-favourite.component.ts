@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ItemService } from '@core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
@@ -6,6 +6,7 @@ import { Item } from '@core/item/item';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { COLORS } from '@core/colors/colors-constants';
+import { FavouritesListTrackingEventsService } from '../../services/favourites-list-tracking-events.service';
 
 @Component({
   selector: 'tsl-item-card-favourite',
@@ -20,17 +21,13 @@ export class ItemCardFavouriteComponent implements OnInit {
     private itemService: ItemService,
     private modalService: NgbModal,
     private i18nService: I18nService,
-    @Inject('SUBDOMAIN') private subdomain: string
+    private favouritesListTrackingEventsService: FavouritesListTrackingEventsService
   ) {}
 
   ngOnInit() {}
 
-  goToItemDetail() {
-    const url = this.item.getUrl(this.subdomain);
-    window.open(url);
-  }
-
   removeFavoriteModal(e: Event) {
+    e.preventDefault();
     e.stopPropagation();
     const modalRef = this.modalService.open(ConfirmationModalComponent);
 
@@ -52,6 +49,7 @@ export class ItemCardFavouriteComponent implements OnInit {
   removeFavorite() {
     this.itemService.favoriteItem(this.item.id, false).subscribe(() => {
       this.item.favorited = false;
+      this.favouritesListTrackingEventsService.trackUnfavouriteItemEvent(this.item);
       this.onFavoriteChange.emit(this.item);
     });
   }

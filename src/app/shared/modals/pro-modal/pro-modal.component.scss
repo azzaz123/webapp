@@ -1,0 +1,95 @@
+@import '~style/common';
+
+.ProModal {
+  max-width: 625px;
+  min-height: 485px;
+
+  @include media-breakpoint-down(sm) {
+    max-width: 316px;
+  }
+
+  &__close {
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    tsl-svg-icon ::ng-deep path {
+      fill: $white;
+    }
+    &:hover {
+      tsl-svg-icon ::ng-deep path {
+        fill: $blue-grey-3;
+      }
+    }
+  }
+
+  &__buttons {
+    bottom: 0;
+    background-color: rgba($white, 0.8);
+    padding: $spacing-ml 0 $spacing-xl 0;
+    @include media-breakpoint-down(sm) {
+      padding: $spacing-ml 0;
+    }
+  }
+
+  &__text {
+    padding: $spacing-xl $spacing-xl 0 $spacing-xl;
+    @include media-breakpoint-down(sm) {
+      padding: $spacing-ml $spacing-ml 0 $spacing-ml;
+    }
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: bold;
+  }
+
+  &__description {
+    margin-top: $spacing-ms;
+
+    .list {
+      li {
+        text-align: left;
+        list-style: none;
+        margin-bottom: $spacing-ms;
+        background: url(/assets/icons/rounded-check.svg) no-repeat left center;
+        padding-left: $spacing-xxl;
+        background-size: 20px;
+      }
+    }
+  }
+
+  &__img {
+    padding: $spacing-xl;
+    background: $color-pro-main;
+
+    @include media-breakpoint-down(sm) {
+      background: linear-gradient(0deg, transparent 30%, $color-pro-main 30%);
+      padding: $spacing-ml 0 0 0;
+    }
+
+    img {
+      width: fit-content;
+    }
+  }
+
+  &--green {
+    .ProModal__close {
+      tsl-svg-icon ::ng-deep path {
+        fill: $blue-grey-1;
+      }
+      &:hover {
+        tsl-svg-icon ::ng-deep path {
+          fill: $blue-grey-3;
+        }
+      }
+    }
+
+    .ProModal__img {
+      background: $walla-soft;
+
+      @include media-breakpoint-down(sm) {
+        background: linear-gradient(0deg, transparent 30%, $walla-main 30%);
+      }
+    }
+  }
+}

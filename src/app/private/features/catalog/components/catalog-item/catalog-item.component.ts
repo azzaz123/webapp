@@ -1,9 +1,7 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ItemService } from '@core/item/item.service';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
-import { Order, Product } from '@core/item/item-response.interface';
-import { OrderEvent } from '../selected-items/selected-product.interface';
 import { Item } from '@core/item/item';
 import { EventService } from '@core/event/event.service';
 import { Router } from '@angular/router';
@@ -14,6 +12,7 @@ import { ItemRequiredDataService } from '@private/core/services/item-required-da
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -24,7 +23,6 @@ export class CatalogItemComponent implements OnInit {
   @Input() item: Item;
   @Input() showPublishCTA = false;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
-  @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public readonly PERMISSIONS = PERMISSIONS;
   public link: string;
   public selectMode = false;
@@ -42,11 +40,11 @@ export class CatalogItemComponent implements OnInit {
     private catalogItemTrackingEventService: CatalogItemTrackingEventService,
     private router: Router,
     private i18nService: I18nService,
-    @Inject('SUBDOMAIN') private subdomain: string
+    private itemDetailRoutePipe: ItemDetailRoutePipe
   ) {}
 
   ngOnInit() {
-    this.link = this.item.getUrl(this.subdomain);
+    this.link = this.itemDetailRoutePipe.transform(this.item.webSlug);
     this.itemService.selectedItems$.subscribe(() => {
       this.selectMode = this.itemService.selectedItems.length !== 0;
     });
@@ -79,24 +77,6 @@ export class CatalogItemComponent implements OnInit {
     this.reactivateItem(item);
   }
 
-  private reactivateItem(item: Item): void {
-    this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
-      this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
-      if (missingRequiredData) {
-        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
-      } else {
-        this.itemService.reactivateItem(item.id).subscribe(
-          () => {
-            this.itemChange.emit({
-              item,
-              action: ITEM_CHANGE_ACTION.REACTIVATED,
-            });
-          },
-          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: TOAST_TYPES.ERROR })
-        );
-      }
-    });
-  }
   public select(item: Item) {
     item.selected = !item.selected;
     this.itemService.selectedAction = this.itemService.selectedAction === 'feature' ? 'feature' : '';
@@ -119,33 +99,26 @@ export class CatalogItemComponent implements OnInit {
     this.eventService.emit(EventService.ITEM_SOLD, item);
   }
 
-  public showListingFee(): boolean {
-    return this.item.listingFeeExpiringDate > new Date().getTime();
-  }
-
-  public listingFeeFewDays(): boolean {
-    const threeDaysTime = 3 * 24 * 60 * 60 * 1000;
-    return this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime;
-  }
-
-  public publishItem(): void {
-    this.itemService.getListingFeeInfo(this.item.id).subscribe((response: Product) => {
-      const order: Order[] = [
-        {
-          item_id: this.item.id,
-          product_id: response.durations[0].id,
-        },
-      ];
-      const orderEvent: OrderEvent = {
-        order,
-        total: +response.durations[0].market_code,
-      };
-      localStorage.setItem('transactionType', 'purchaseListingFee');
-      this.purchaseListingFee.next(orderEvent);
-    });
-  }
-
   public openItem() {
     window.open(this.link);
+  }
+
+  private reactivateItem(item: Item): void {
+    this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
+      this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
+      if (missingRequiredData) {
+        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+      } else {
+        this.itemService.reactivateItem(item.id).subscribe(
+          () => {
+            this.itemChange.emit({
+              item,
+              action: ITEM_CHANGE_ACTION.REACTIVATED,
+            });
+          },
+          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: TOAST_TYPES.ERROR })
+        );
+      }
+    });
   }
 }

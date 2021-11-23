@@ -2,7 +2,7 @@ import { ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { FooterLinkSection, FooterIcon } from '../interfaces/footer.interface';
 
-export const FOOTER_LINKS: FooterLinkSection[] = [
+export const FOOTER_SECTIONS: FooterLinkSection[] = [
   {
     title: $localize`:@@web_footer_links_wallapop_title:wallapop`,
     links: [
@@ -11,16 +11,22 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
         href: $localize`:@@web_footer_links_about_href:https://about.wallapop.com/en`,
       },
       {
+        label: $localize`:@@web_footer_links_how_it_works_label:How it works`,
+        href: $localize`:@@web_footer_links_how_it_works_href:https://about.wallapop.com/como-funciona-wallapop`,
+        excludedLanguages: ['en'],
+      },
+      {
+        label: $localize`:@@web_footer_links_brandbook_label:Brand Book`,
+        href: $localize`:@@web_footer_links_brandbook_href:https://about.wallapop.com/brand-book`,
+        excludedLanguages: ['it', 'en'],
+      },
+      {
         label: $localize`:@@web_footer_links_press_label:Press`,
         href: $localize`:@@web_footer_links_press_href:https://about.wallapop.com/prensa`,
       },
       {
         label: $localize`:@@web_footer_links_jobs_label:Jobs`,
         href: $localize`:@@web_footer_links_jobs_href:https://apply.workable.com/wallapop`,
-      },
-      {
-        label: $localize`:@@web_footer_links_team_label:Team`,
-        href: $localize`:@@web_footer_links_team_href:https://about.wallapop.com/en/team`,
       },
     ],
   },
@@ -60,7 +66,7 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
   },
   {
     title: $localize`:@@web_footer_links_motor_title:Motor`,
-    excludedLanguages: ['en'],
+    excludedLanguages: ['en', 'it'],
     links: [
       {
         label: $localize`:@@web_footer_links_particular_label:Particular`,
@@ -75,6 +81,7 @@ export const FOOTER_LINKS: FooterLinkSection[] = [
   {
     title: $localize`:@@web_footer_links_wallapop_pro_title:Wallapop Pro`,
     permission: PERMISSIONS.subscriptions,
+    excludedLanguages: ['it'],
     links: [
       {
         label: $localize`:@@web_footer_links_landing_pro_label:Boost your business`,
@@ -93,8 +100,7 @@ export const FOOTER_APPS: FooterIcon[] = [
   },
   {
     label: 'AppGallery',
-    href:
-      'https://app.adjust.com/6lbll37_ce4bza8?redirect=https%3A%2F%2Fappgallery.huawei.com%2F%23%2Fapp%2FC102446799&_pid=web&_me=www&campaign=desktop_footer',
+    href: 'https://app.adjust.com/6lbll37_ce4bza8?redirect=https%3A%2F%2Fappgallery.huawei.com%2F%23%2Fapp%2FC102446799&_pid=web&_me=www&campaign=desktop_footer',
     iconSrc: '/assets/icons/footer/huawei.svg',
   },
   {

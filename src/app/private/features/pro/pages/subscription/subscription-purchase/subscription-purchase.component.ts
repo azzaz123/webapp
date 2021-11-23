@@ -10,22 +10,26 @@ import {
   SubscriptionPayConfirmation,
   SubscriptionPaymentButtonAvailable,
   ViewSubscriptionTier,
+  ViewSuccessSubscriptionPayment,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { translations } from '@core/i18n/translations/constants/translations';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { ScrollIntoViewService } from '@core/scroll-into-view/scroll-into-view';
 import { PaymentError, STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { StripeService, STRIPE_PAYMENT_RESPONSE_EVENT_KEY } from '@core/stripe/stripe.service';
+import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionResponse, SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, Tier } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { User } from '@core/user/user';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { PaymentSuccessModalComponent } from '@private/features/pro/modal/payment-success/payment-success-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { FinancialCard } from '@shared/payments-card-info/financial-card';
 import { COMPONENT_TYPE } from '@shared/profile-pro-billing/profile-pro-billing.component';
 import { filter, mergeMap } from 'rxjs/operators';
@@ -40,9 +44,11 @@ export const PAYMENT_SUCCESSFUL_CODE = 202;
 export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   @Input() subscription: SubscriptionsResponse;
   @Input() user: User;
-  @Output() purchaseSuccessful: EventEmitter<void> = new EventEmitter();
-  @Output() unselectSubcription: EventEmitter<void> = new EventEmitter();
+  @Input() editMode: boolean;
+  @Output() purchaseSuccessful: EventEmitter<string | void> = new EventEmitter();
+  @Output() unselectSubscription: EventEmitter<void> = new EventEmitter();
 
+  public showPurchaseSuccessful: boolean;
   public stripeCards: FinancialCard[];
   public selectedCard: FinancialCard;
   public isInvoiceRequired = false;
@@ -52,22 +58,33 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   public isLoading: boolean;
   public isRetryPayment = false;
   public INVOICE_COMPONENT_TYPE = COMPONENT_TYPE;
+  public basicTier: Tier;
+  public availableTiers: Tier[];
+  public helpPageUrl: string;
   private _invoiceId: string;
   private readonly errorTextConfig = {
     [STRIPE_ERROR.card_declined]: translations[TRANSLATION_KEY.CARD_NUMBER_INVALID],
     [STRIPE_ERROR.expired_card]: translations[TRANSLATION_KEY.CARD_DATE_INVALID],
     [STRIPE_ERROR.incorrect_cvc]: translations[TRANSLATION_KEY.CARD_CVC_INVALID],
   };
+  private readonly helpUrlMapper: Record<CATEGORY_SUBSCRIPTIONS_IDS, CUSTOMER_HELP_PAGE> = {
+    [CATEGORY_SUBSCRIPTIONS_IDS.CAR]: CUSTOMER_HELP_PAGE.CARS_SUBSCRIPTION,
+    [CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE]: CUSTOMER_HELP_PAGE.REAL_ESTATE_SUBSCRIPTION,
+    [CATEGORY_SUBSCRIPTIONS_IDS.MOTOR_ACCESSORIES]: CUSTOMER_HELP_PAGE.CAR_PARTS_SUBSCRIPTION,
+    [CATEGORY_SUBSCRIPTIONS_IDS.MOTORBIKE]: CUSTOMER_HELP_PAGE.MOTORBIKE_SUBSCRIPTION,
+    [CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS]: CUSTOMER_HELP_PAGE.EVERYTHING_ELSE_SUBSCRIPTION,
+  };
 
   constructor(
     private stripeService: StripeService,
     private errorService: ErrorsService,
     private subscriptionsService: SubscriptionsService,
-    private modalService: NgbModal,
     private scrollIntoViewService: ScrollIntoViewService,
     private eventService: EventService,
     private analyticsService: AnalyticsService,
-    private benefitsService: SubscriptionBenefitsService
+    private benefitsService: SubscriptionBenefitsService,
+    private customerHelpService: CustomerHelpService,
+    private modalService: NgbModal
   ) {}
 
   @HostListener('click') onClick() {
@@ -78,14 +95,15 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAllCards();
-    this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
     this.benefits = this.benefitsService.getBenefitsByCategory(this.subscription.category_id);
+    this.mapTiers();
     this.subscribeStripeEvents();
     this.trackViewSubscriptionTier();
+    this.helpPageUrl = this.customerHelpService.getPageUrl(this.helpUrlMapper[this.subscription.category_id]);
   }
 
-  public onChageSubscription(): void {
-    this.unselectSubcription.emit();
+  public onClearSubscription(): void {
+    this.unselectSubscription.emit();
   }
 
   get isSavedCard(): boolean {
@@ -147,13 +165,25 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
         tier: this.selectedTier.id,
         invoiceNeeded: this.isInvoiceRequired,
+        discount: !!this.selectedTier.discount,
       },
     };
     this.analyticsService.trackEvent(event);
   }
 
+  public openCategoriesModal(): void {
+    const modal = this.modalService.open(CategoryListingModalComponent, {
+      windowClass: 'category-listing',
+    });
+    modal.componentInstance.subscription = this.subscription;
+  }
+
   ngOnDestroy() {
     this.eventService.unsubscribeAll(STRIPE_PAYMENT_RESPONSE_EVENT_KEY);
+  }
+
+  public onRedirectTo(path: string): void {
+    this.purchaseSuccessful.emit(path);
   }
 
   private subscribeStripeEvents(): void {
@@ -276,7 +306,8 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
   private paymentSucceeded(): void {
     this.isLoading = false;
     this.isRetryPayment = false;
-    this.openPaymentSuccessModal();
+    this.showPurchaseSuccessful = true;
+    this.trackViewSuccessSubscriptionPayment();
   }
 
   private retrySubscription(paymentMethodId = this.selectedCard.id): void {
@@ -297,21 +328,6 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
       );
   }
 
-  private openPaymentSuccessModal(): void {
-    let modalRef: NgbModalRef = this.modalService.open(PaymentSuccessModalComponent, { windowClass: 'success' });
-    const modalComponent: PaymentSuccessModalComponent = modalRef.componentInstance;
-    modalComponent.tier = this.selectedTier.id;
-    modalComponent.isNewSubscriber = !this.user.featured;
-    modalComponent.isNewCard = !this.isSavedCard;
-    modalComponent.isInvoice = this.isInvoiceRequired;
-    modalComponent.subscriptionCategoryId = this.subscription.category_id as SUBSCRIPTION_CATEGORIES;
-
-    modalRef.result.then(
-      () => this.purchaseSuccessful.emit(),
-      () => this.purchaseSuccessful.emit()
-    );
-  }
-
   private requestNewPayment(error?: HttpErrorResponse): void {
     const errorResponse: PaymentError[] = error?.error;
     this.showError(errorResponse);
@@ -325,6 +341,7 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
         screenId: SCREEN_IDS.SubscriptionTier,
         freeTrial: this.subscriptionsService.hasTrial(this.subscription),
         subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        discount: !!this.selectedTier.discount,
       },
     };
     this.analyticsService.trackPageView(event);
@@ -343,8 +360,34 @@ export class SubscriptionPurchaseComponent implements OnInit, OnDestroy {
         discountPercent: this.selectedTier.discount?.percentage | 0,
         invoiceNeeded: this.isInvoiceRequired,
         freeTrial: this.subscriptionsService.hasTrial(this.subscription),
+        discount: !!this.selectedTier.discount,
       },
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  private trackViewSuccessSubscriptionPayment(): void {
+    const pageView: AnalyticsPageView<ViewSuccessSubscriptionPayment> = {
+      name: ANALYTICS_EVENT_NAMES.ViewSuccessSubscriptionPayment,
+      attributes: {
+        tier: this.selectedTier.id,
+        isNewSubscriber: !this.user.featured,
+        isNewCard: !this.isSavedCard,
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        screenId: SCREEN_IDS.ProfileSubscription,
+      },
+    };
+    this.analyticsService.trackPageView(pageView);
+  }
+
+  private mapTiers(): void {
+    this.basicTier = this.subscription.tiers.find((tier) => tier.is_basic);
+
+    if (this.basicTier) {
+      this.selectedTier = this.basicTier;
+      this.availableTiers = this.subscription.tiers.filter((tier) => !tier.is_basic);
+    } else {
+      this.selectedTier = this.subscription.tiers.find((tier) => tier.id === this.subscription.default_tier_id);
+    }
   }
 }

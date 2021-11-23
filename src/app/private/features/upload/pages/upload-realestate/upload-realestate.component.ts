@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -34,6 +34,8 @@ import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { forkJoin, Observable, of, Subscriber } from 'rxjs';
 import { LocationSelectorModal } from '@shared/modals/location-selector-modal/location-selector-modal.component';
+import { PERMISSIONS } from '@core/user/user-constants';
+import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -41,17 +43,16 @@ import { LocationSelectorModal } from '@shared/modals/location-selector-modal/lo
   styleUrls: ['./upload-realestate.component.scss'],
 })
 export class UploadRealestateComponent implements OnInit {
-  @Output() onValidationError: EventEmitter<any> = new EventEmitter();
-  @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
-  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+  @Output() validationError: EventEmitter<any> = new EventEmitter();
+  @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
   @Input() item: Realestate;
   @Input() isReactivation = false;
+  @ViewChild(ProFeaturesComponent) proFeaturesComponent: ProFeaturesComponent;
   public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
   public loading = false;
-  uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
-  private oldFormValue: any;
+  public uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
 
   public operations: Key[];
   public types: Key[];
@@ -63,6 +64,10 @@ export class UploadRealestateComponent implements OnInit {
   ];
   public uploadCompletedPercentage = 0;
   public pendingFiles: PendingFiles;
+  public readonly PERMISSIONS = PERMISSIONS;
+  public isProUser: boolean;
+
+  private oldFormValue: any;
 
   constructor(
     private fb: FormBuilder,
@@ -109,6 +114,7 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isProUser = this.userService.isProUser();
     this.getOptions().subscribe(() => {
       if (this.item && this.isReactivation) {
         this.itemReactivationService.reactivationValidation(this.uploadForm);
@@ -147,6 +153,102 @@ export class UploadRealestateComponent implements OnInit {
     }
   }
 
+  public emitLocation(): void {
+    this.coordinates = this.uploadForm.value.location;
+    if (this.item) {
+      this.updateLocation();
+    }
+  }
+
+  public onSubmit(): void {
+    if (this.uploadForm.valid) {
+      this.checkUserLocation().subscribe((readyToSave: boolean) => {
+        if (readyToSave) {
+          this.saveItem();
+        }
+      });
+    } else {
+      this.invalidForm();
+    }
+  }
+
+  public onUploaded(response: RealestateContent, action: UPLOAD_ACTION) {
+    this.formChanged.emit(false);
+    if (response.flags.onhold) {
+      action = UPLOAD_ACTION.createdOnHold;
+    }
+
+    const params: any = {
+      [action]: true,
+      itemId: response.id,
+    };
+    if (this.item && this.item.flags.onhold) {
+      params.onHold = true;
+    }
+
+    this.trackEditOrUpload(!!this.item, response);
+    this.router.navigate(['/catalog/list', params]);
+  }
+
+  public onError(error: HttpErrorResponse | any): void {
+    this.loading = false;
+    this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR, error.message ? error.message : '');
+  }
+
+  public hasErrorToShow(controlName: string): boolean {
+    const control: AbstractControl = this.uploadForm.get(controlName);
+    return control.invalid && control.touched;
+  }
+
+  public preview() {
+    const modalRef: NgbModalRef = this.modalService.open(PreviewModalComponent, {
+      windowClass: 'preview',
+    });
+    modalRef.componentInstance.itemPreview = this.uploadForm.value;
+    modalRef.result.then(
+      () => {
+        this.onSubmit();
+      },
+      () => {}
+    );
+  }
+
+  public updateUploadPercentage(percentage: number) {
+    this.uploadCompletedPercentage = Math.round(percentage);
+  }
+
+  public onDeleteImage(imageId: string): void {
+    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
+      () => this.removeFileFromForm(imageId),
+      (error: HttpErrorResponse) => this.onError(error)
+    );
+  }
+
+  public onOrderImages(): void {
+    const images = this.uploadForm.get('images').value;
+    this.uploadService.updateOrder(images, this.item.id).subscribe(
+      () => null,
+      (error: HttpErrorResponse) => this.onError(error)
+    );
+  }
+
+  public onAddImage(file: UploadFile): void {
+    if (this.item) {
+      this.uploadService.uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE).subscribe(
+        (value: UploadOutput) => {
+          if (value.type === OUTPUT_TYPE.done) {
+            this.errorsService.i18nSuccess(TRANSLATION_KEY.IMAGE_UPLOADED);
+            file.id = value.file.response;
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.removeFileFromForm(file.id);
+          this.onError(error);
+        }
+      );
+    }
+  }
+
   private getOptions(): Observable<void> {
     this.getTypes('rent');
     this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
@@ -169,14 +271,6 @@ export class UploadRealestateComponent implements OnInit {
   private handleOptionsError = () => {
     return of([]);
   };
-
-  public emitLocation(): void {
-    this.coordinates = this.uploadForm.value.location;
-    if (this.item) {
-      this.updateLocation();
-    }
-    this.locationSelected.emit(13000);
-  }
 
   private updateLocation() {
     this.itemService.updateRealEstateLocation(this.item.id, this.coordinates).subscribe();
@@ -211,7 +305,7 @@ export class UploadRealestateComponent implements OnInit {
           this.oldFormValue = value;
         } else {
           if (!isEqual(oldItemData, newItemData)) {
-            this.onFormChanged.emit(true);
+            this.formChanged.emit(true);
           }
         }
         this.oldFormValue = value;
@@ -219,20 +313,9 @@ export class UploadRealestateComponent implements OnInit {
     });
   }
 
-  public onSubmit(): void {
-    if (this.uploadForm.valid) {
-      this.checkUserLocation().subscribe((readyToSave: boolean) => {
-        if (readyToSave) {
-          this.saveItem();
-        }
-      });
-    } else {
-      this.invalidForm();
-    }
-  }
-
   private saveItem(): void {
     this.loading = true;
+    this.proFeaturesComponent?.trackSubmit();
     this.item ? this.updateItem() : this.createItem();
   }
 
@@ -246,7 +329,7 @@ export class UploadRealestateComponent implements OnInit {
       this.errorsService.i18nError(TRANSLATION_KEY.MISSING_IMAGE_ERROR);
     } else {
       this.errorsService.i18nError(TRANSLATION_KEY.FORM_FIELD_ERROR, '', TRANSLATION_KEY.FORM_FIELD_ERROR_TITLE);
-      this.onValidationError.emit();
+      this.validationError.emit();
     }
   }
 
@@ -294,53 +377,7 @@ export class UploadRealestateComponent implements OnInit {
     );
   }
 
-  onUploaded(response: RealestateContent, action: UPLOAD_ACTION) {
-    this.onFormChanged.emit(false);
-    if (response.flags.onhold) {
-      action = UPLOAD_ACTION.createdOnHold;
-    }
-
-    const params: any = {
-      [action]: true,
-      itemId: response.id,
-    };
-    if (this.item && this.item.flags.onhold) {
-      params.onHold = true;
-    }
-
-    this.trackEditOrUpload(!!this.item, response);
-    this.router.navigate(['/catalog/list', params]);
-  }
-
-  onError(error: HttpErrorResponse | any): void {
-    this.loading = false;
-    this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR, error.message ? error.message : '');
-  }
-
-  hasErrorToShow(controlName: string): boolean {
-    const control: AbstractControl = this.uploadForm.get(controlName);
-    return control.invalid && control.touched;
-  }
-
-  preview() {
-    const modalRef: NgbModalRef = this.modalService.open(PreviewModalComponent, {
-      windowClass: 'preview',
-    });
-    modalRef.componentInstance.itemPreview = this.uploadForm.value;
-    modalRef.result.then(
-      () => {
-        this.onSubmit();
-      },
-      () => {}
-    );
-  }
-
-  public updateUploadPercentage(percentage: number) {
-    this.uploadCompletedPercentage = Math.round(percentage);
-  }
-
   private trackEditOrUpload(isEdit: boolean, item: RealestateContent) {
-    const isPro = this.userService.isProUser();
     const baseEventAttrs: any = {
       itemId: item.id,
       categoryId: item.category_id,
@@ -351,7 +388,7 @@ export class UploadRealestateComponent implements OnInit {
       condition: item.condition,
       surface: item.surface || null,
       rooms: item.rooms || null,
-      isPro,
+      isPro: this.isProUser,
     };
 
     if (isEdit) {
@@ -379,41 +416,9 @@ export class UploadRealestateComponent implements OnInit {
     }
   }
 
-  public onDeleteImage(imageId: string): void {
-    this.uploadService.onDeleteImage(this.item.id, imageId).subscribe(
-      () => this.removeFileFromForm(imageId),
-      (error: HttpErrorResponse) => this.onError(error)
-    );
-  }
-
   private removeFileFromForm(imageId: string): void {
     const imagesControl: FormControl = this.uploadForm.get('images') as FormControl;
     const images: UploadFile[] = imagesControl.value;
     imagesControl.patchValue(images.filter((image) => image.id !== imageId));
-  }
-
-  public onOrderImages(): void {
-    const images = this.uploadForm.get('images').value;
-    this.uploadService.updateOrder(images, this.item.id).subscribe(
-      () => null,
-      (error: HttpErrorResponse) => this.onError(error)
-    );
-  }
-
-  public onAddImage(file: UploadFile): void {
-    if (this.item) {
-      this.uploadService.uploadSingleImage(file, this.item.id, ITEM_TYPES.REAL_ESTATE).subscribe(
-        (value: UploadOutput) => {
-          if (value.type === OUTPUT_TYPE.done) {
-            this.errorsService.i18nSuccess(TRANSLATION_KEY.IMAGE_UPLOADED);
-            file.id = value.file.response;
-          }
-        },
-        (error: HttpErrorResponse) => {
-          this.removeFileFromForm(file.id);
-          this.onError(error);
-        }
-      );
-    }
   }
 }

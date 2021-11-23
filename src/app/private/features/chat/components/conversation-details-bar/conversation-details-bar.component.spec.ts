@@ -4,12 +4,10 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
-import { User } from '@core/user/user';
 import { BlockUserXmppService } from '@private/features/chat/core/block-user/block-user-xmpp.service';
 import { BlockUserService } from '@private/features/chat/core/block-user/block-user.service';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
-import { MOCK_CONVERSATION } from '@fixtures/conversation.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { MOCK_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -22,6 +20,9 @@ import { ITEM_REPORT_REASONS } from '@core/trust-and-safety/report/constants/ite
 import { UserReportRequest } from '@core/trust-and-safety/report/interfaces/user/user-report-request.interface';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 
 class MockConversationService {
   public loadMoreMessages() {}
@@ -78,6 +79,11 @@ describe('ConversationDetailsBarComponent', () => {
             blockUser() {},
             unblockUser() {},
           },
+        },
+        ItemDetailRoutePipe,
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
         },
       ],
     }).compileComponents();

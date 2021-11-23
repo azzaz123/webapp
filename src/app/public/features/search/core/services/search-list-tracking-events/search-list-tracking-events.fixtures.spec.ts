@@ -7,10 +7,10 @@ import {
   SCREEN_IDS,
   UnfavoriteItem,
 } from '@core/analytics/analytics-constants';
+import { USER_TYPE } from '@core/user/user.service';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_OTHER_USER } from '@fixtures/user.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { FavouriteItemAnalyticsEvent } from '@public/features/public-profile/core/services/public-profile-tracking-events/public-profile-tracking-events.service';
 import { MOCK_ITEM_INDEX } from '../../../../item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 
 export const MOCK_SEARCH_ID = 'e72c12f7-c662-421a-a821-6ad54d110d76';
@@ -24,6 +24,7 @@ export const MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH: AnalyticsEvent<ClickItemCar
     screenId: SCREEN_IDS.Search,
     searchId: MOCK_SEARCH_ID,
     isPro: MOCK_OTHER_USER.featured,
+    isCarDealer: MOCK_OTHER_USER?.type === USER_TYPE.PROFESSIONAL,
     salePrice: MOCK_ITEM_CARD.salePrice,
     title: MOCK_ITEM_CARD.title,
     itemDistance: MOCK_ITEM_CARD.distance,

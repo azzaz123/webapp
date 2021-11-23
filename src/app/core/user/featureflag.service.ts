@@ -9,6 +9,7 @@ import { FeatureFlag, FEATURE_FLAGS_ENUM, featurePermissionConfig } from './feat
 import { PERMISSIONS } from './user-constants';
 
 export const FEATURE_FLAG_ENDPOINT = 'api/v3/featureflag';
+export const FEATURE_FLAG_ACCEPT_HEADER = 'application/vnd.featureflag-v2+json';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,7 @@ export class FeatureFlagService {
     } else {
       return this.http
         .get<FeatureFlag[]>(`${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`, {
+          headers: { Accept: FEATURE_FLAG_ACCEPT_HEADER },
           params: {
             featureFlags: name.toString(),
             timestamp: new Date().getTime().toString(), // Prevent browser cache with timestamp parameter
@@ -76,6 +78,7 @@ export class FeatureFlagService {
 
     return this.http
       .get<FeatureFlag[]>(`${environment.baseUrl}${FEATURE_FLAG_ENDPOINT}`, {
+        headers: { Accept: FEATURE_FLAG_ACCEPT_HEADER },
         params: {
           featureFlags: flagsToRequest,
           timestamp: new Date().getTime().toString(), // Prevent browser cache with timestamp parameter
@@ -106,7 +109,7 @@ export class FeatureFlagService {
   }
 
   private getDeliveryFeatureFlag(): boolean {
-    return isDevMode() || this.isExperimentalFeaturesEnabled();
+    return this.isExperimentalFeaturesEnabled();
   }
 
   private checkPermission(featureFlagName: FEATURE_FLAGS_ENUM, isFlagActive: boolean): void {

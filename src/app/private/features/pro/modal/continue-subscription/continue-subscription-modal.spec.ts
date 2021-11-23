@@ -4,7 +4,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
@@ -68,7 +68,7 @@ describe('ContinueSubscriptionModalComponent', () => {
     toastService = TestBed.inject(ToastService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     analyticsService = TestBed.inject(AnalyticsService);
-    component.subscription = MAPPED_SUBSCRIPTIONS[2];
+    component.subscription = MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED;
     fixture.detectChanges();
   });
 
@@ -88,9 +88,8 @@ describe('ContinueSubscriptionModalComponent', () => {
       spyOn(analyticsService, 'trackEvent');
     });
 
-    const tier = MAPPED_SUBSCRIPTIONS[2].selected_tier;
-
     it('should call the cancelsubscription service', () => {
+      const tier = component.subscription.selected_tier;
       component.continueSubscription();
 
       expect(component.subscriptionsService.continueSubscription).toHaveBeenCalledWith(tier.id);

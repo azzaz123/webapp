@@ -1,0 +1,17 @@
+<div class="mt-3">
+  <tsl-historic-list
+    *ngIf="historicList$ | async as historicList"
+    [historicList]="historicList"
+    [infiniteScrollDisabled]="infiniteScrollDisabled"
+    (scrolled)="getItems()"
+    (itemClicked)="onItemClick($event)"
+  ></tsl-historic-list>
+  <tsl-svg-icon
+    *ngIf="loading$ | async"
+    class="d-flex w-100 align-items-center justify-content-center spinner"
+    [src]="loadingIconSrc"
+    [width]="loadingIconSizePixels"
+    [height]="loadingIconSizePixels"
+  >
+  </tsl-svg-icon>
+</div>

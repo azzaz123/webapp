@@ -387,9 +387,9 @@
       (onError)="onError($event)"
       formControlName="images"
       [isUpdatingItem]="!!item"
-      (onOrderImages)="onOrderImages()"
-      (onDeleteImage)="onDeleteImage($event)"
-      (onAddImage)="onAddImage($event)"
+      (orderImages)="onOrderImages()"
+      (deleteImage)="onDeleteImage($event)"
+      (addImage)="onAddImage($event)"
     ></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n="@@web_upload_pages_car_420">
@@ -398,11 +398,16 @@
     </ng-template>
   </div>
 
+  <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+    <ng-container *ngxPermissionsExcept="PERMISSIONS.professional">
+        <tsl-pro-features *ngIf="isProUser" [categoryId]="uploadForm.controls['category_id'].value"></tsl-pro-features>
+    </ng-container>
+  </ng-container>
+
   <tsl-location-box
     *ngIf="!!uploadForm"
     [form]="uploadForm"
     name="location"
-    (locationSelected)="emitLocation()"
     title="Your car is in:"
     i18n-title="@@web_upload_pages_car_421"
   ></tsl-location-box>
@@ -414,9 +419,12 @@
           <span *ngIf="!isReactivation" i18n="@@web_upload_pages_car_605">Update</span>
           <span *ngIf="isReactivation" i18n="@@web_upload_seller_reactivation_button">Reactivate item</span>
         </ng-container>
-        <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading">Uploading... {{ uploadCompletedPercentage }}%</span>
+        <span *ngIf="loading && !pendingFiles" i18n="@@web_upload_product_submit_loading"
+          >Uploading... {{ uploadCompletedPercentage }}%</span
+        >
         <span *ngIf="loading && pendingFiles" i18n="@@web_upload_images_submit_loading"
-          >Uploading image... {{ pendingFiles.currentUploading }}/{{ pendingFiles.totalFiles }}</span >
+          >Uploading image... {{ pendingFiles.currentUploading }}/{{ pendingFiles.totalFiles }}</span
+        >
       </tsl-button>
     </div>
     <div class="col-md-3 d-none d-md-block">

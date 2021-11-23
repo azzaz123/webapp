@@ -1,10 +1,28 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { TransactionTrackingInstructionsModule } from './modals/transaction-tracking-instructions/transaction-tracking-instructions.module';
+import { TransactionTrackingOverviewModule } from './transaction-tracking-overview/transaction-tracking-overview.module';
+import { TRANSACTION_TRACKING_PATHS } from './transaction-tracking-screen-routing-constants';
+import { TransactionTrackingScreenComponent } from './transaction-tracking-screen.component';
 
-// TODO: Add TransactionTrackingScreenComponent when created		Date: 2021/04/22
 const routes: Route[] = [
   {
     path: '',
+    component: TransactionTrackingScreenComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => TransactionTrackingOverviewModule,
+      },
+      {
+        path: TRANSACTION_TRACKING_PATHS.INSTRUCTIONS,
+        loadChildren: () => TransactionTrackingInstructionsModule,
+      },
+      {
+        path: '**',
+        redirectTo: '',
+      },
+    ],
   },
 ];
 
@@ -14,4 +32,4 @@ const routes: Route[] = [
 })
 export class TransactionTrackingScreenRoutingModule {}
 
-export const transactionTrackingScreenRoutedComponents = [];
+export const transactionTrackingScreenRoutedComponents = [TransactionTrackingScreenComponent];

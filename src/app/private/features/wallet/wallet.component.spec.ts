@@ -1,22 +1,24 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { HeaderComponent } from '@shared/header/header.component';
 import { NavLinksComponent } from '@shared/nav-links/nav-links.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of } from 'rxjs';
-import { KYC_BANNER_TYPES } from './components/kyc-banner/kyc-banner-constants';
+import { KYC_BANNER_TYPES } from '@api/core/model/kyc-properties/constants/kyc-banner-constants';
 import { KYCBannerComponent } from './components/kyc-banner/kyc-banner.component';
-import { KYCBannerApiService } from './services/api/kyc-banner-api.service';
-import { KYCBannerService } from './services/kyc-banner/kyc-banner.service';
-
 import { WalletComponent } from './wallet.component';
 import { WALLET_PATHS } from './wallet.routing.constants';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { KYCPropertiesHttpService } from '@api/payments/kyc-properties/http/kyc-properties-http.service';
+import { MOCK_KYC_PENDING_PROPERTIES } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
+import { WalletTrackingEventService } from '@private/features/wallet/services/tracking-event/wallet-tracking-event.service';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 
 describe('WalletComponent', () => {
   const BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
@@ -25,9 +27,12 @@ describe('WalletComponent', () => {
   let component: WalletComponent;
   let fixture: ComponentFixture<WalletComponent>;
   let router: Router;
-  let kycBannerService: KYCBannerService;
+  let kycPropertiesService: KYCPropertiesService;
+  let walletTrackingEventService: WalletTrackingEventService;
+  let customerHelpService: CustomerHelpService;
 
   const walletHelpButtonSelector = 'a';
+  let MOCK_APP_LOCALE = 'es';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,18 +48,28 @@ describe('WalletComponent', () => {
           },
         },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
-        KYCBannerService,
-        KYCBannerApiService,
+        KYCPropertiesService,
+        KYCPropertiesHttpService,
+        CustomerHelpService,
+        {
+          provide: WalletTrackingEventService,
+          useValue: {
+            trackClickHelpWallet() {},
+            trackClickBankDetails() {},
+          },
+        },
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
+    TestBed.overrideProvider(LOCALE_ID, { useValue: MOCK_APP_LOCALE });
     fixture = TestBed.createComponent(WalletComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    kycBannerService = TestBed.inject(KYCBannerService);
-    fixture.detectChanges();
+    kycPropertiesService = TestBed.inject(KYCPropertiesService);
+    walletTrackingEventService = TestBed.inject(WalletTrackingEventService);
+    customerHelpService = TestBed.inject(CustomerHelpService);
   });
 
   it('should create', () => {
@@ -62,6 +77,10 @@ describe('WalletComponent', () => {
   });
 
   describe('when the user navigates through the nav links...', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
     it('should navigate to the specified URL', () => {
       const navLinksElement = fixture.debugElement.query(By.css('tsl-nav-links'));
       spyOn(router, 'navigate');
@@ -89,30 +108,30 @@ describe('WalletComponent', () => {
     });
   });
 
-  describe('when the wallet status for the user is not need', () => {
+  describe('when the KYC banner for the user is not need', () => {
     beforeEach(() => {
-      spyOn(kycBannerService, 'getSpecifications').and.returnValue(of(null));
+      jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(null));
+      spyOn(kycPropertiesService, 'getBannerSpecificationsFromProperties').and.returnValue(of(null));
 
-      component.ngOnInit();
       fixture.detectChanges();
     });
 
-    it('should not show the kyc banner', () => {
+    it('should not show the banner', () => {
       const banner = fixture.debugElement.query(By.directive(KYCBannerComponent));
 
       expect(banner).toBeFalsy();
     });
   });
 
-  describe('when the wallet status for the user is needed and defined', () => {
+  describe('when the KYC banner for the user is needed and defined', () => {
     beforeEach(() => {
-      spyOn(kycBannerService, 'getSpecifications').and.returnValue(of(KYC_BANNER_TYPES[0]));
+      jest.spyOn(kycPropertiesService, 'KYCProperties$', 'get').mockReturnValue(of(MOCK_KYC_PENDING_PROPERTIES));
+      spyOn(kycPropertiesService, 'getBannerSpecificationsFromProperties').and.returnValue(of(KYC_BANNER_TYPES[0]));
 
-      component.ngOnInit();
       fixture.detectChanges();
     });
 
-    it('should show the kyc banner', () => {
+    it('should show the banner', () => {
       const banner = fixture.debugElement.query(By.directive(KYCBannerComponent));
 
       expect(banner).toBeTruthy();
@@ -120,10 +139,38 @@ describe('WalletComponent', () => {
   });
 
   describe('when the user clicks the help button', () => {
-    it('should open the Wallet help page', () => {
-      const helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
+    let helpButtonRef: DebugElement;
 
-      expect(helpButtonRef.attributes['href']).toEqual(component.zendeskWalletHelpURL);
+    beforeEach(() => {
+      helpButtonRef = fixture.debugElement.query(By.css(walletHelpButtonSelector));
+      fixture.detectChanges();
+    });
+
+    it('should open the Wallet help page', () => {
+      expect(helpButtonRef.attributes['href']).toEqual(component.WALLET_HELP_URL);
+    });
+
+    it('should track the event', () => {
+      spyOn(walletTrackingEventService, 'trackClickHelpWallet');
+
+      helpButtonRef.nativeElement.click();
+
+      expect(walletTrackingEventService.trackClickHelpWallet).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe.each([
+    ['any url', 0],
+    [BANK_DETAILS_URL, 1],
+  ])('WHEN user clicks to the navigation link', (navLinkUrl, times) => {
+    it('should track the event for the bank details url', () => {
+      const navLinksElement = fixture.debugElement.query(By.css('tsl-nav-links'));
+      spyOn(router, 'navigate');
+      spyOn(walletTrackingEventService, 'trackClickBankDetails');
+
+      navLinksElement.triggerEventHandler('clickedLink', navLinkUrl);
+
+      expect(walletTrackingEventService.trackClickBankDetails).toHaveBeenCalledTimes(times);
     });
   });
 });

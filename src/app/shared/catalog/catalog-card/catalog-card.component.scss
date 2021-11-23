@@ -13,7 +13,7 @@ $feature-button-width: 170px;
     background-color: $blue-grey-2;
     font-family: $wallie;
     padding: $spacing-ms $spacing-m;
-    border-radius: $border-radius / 2;
+    border-radius: $border-radius * 0.5;
     font-size: $font-size-s;
   }
   .arrow:before {

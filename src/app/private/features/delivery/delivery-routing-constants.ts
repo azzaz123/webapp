@@ -2,9 +2,11 @@ export enum DELIVERY_PATHS {
   ADDRESS = 'address',
   PAYVIEW = 'payview',
   ACCEPT_SCREEN = 'accept',
-  TIMELINE = 'timeline',
-  SHIPMENT_TRACKING = 'shipments',
+  TRACKING = 'tracking',
+  STREAMLINE = 'my-shippings',
   DISPUTE = 'dispute',
 }
 
-export enum DELIVERY_PATH_PARAMS {}
+export enum DELIVERY_PATH_PARAMS {
+  ID = 'id',
+}

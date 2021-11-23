@@ -1,10 +1,9 @@
-import { MESSAGE_MAIN } from './message.fixtures.spec';
-import { CallResponse } from '../app/core/conversation/call-response.interface';
-import { SURVEY_RESPONSES } from './conversation.fixtures.spec';
+import { MESSAGE_MAIN, SURVEY_RESPONSES } from '@fixtures/chat';
+import { CallResponse } from '@core/conversation/call-response.interface';
 import { USER_ID } from './user.fixtures.spec';
-import { Call } from '../app/core/conversation/calls';
-import { User } from '../app/core/user/user';
-import { Item } from '../app/core/item/item';
+import { Call } from '@core/conversation/calls';
+import { User } from '@core/user/user';
+import { Item } from '@core/item/item';
 import { ITEM_ID, ITEM_LEGACY_ID } from './item.fixtures.spec';
 
 export const CALL_ID: string = MESSAGE_MAIN.thread;

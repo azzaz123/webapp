@@ -5,28 +5,41 @@
                 <div>
                     <b><span i18n="@@web_total">Total</span></b>
                 </div>
-                <div class="SubscriptionPurchaseFooter__amount">
-                    <b>{{priceText}}{{selectedTier.currency}}</b>
+                <div>
+                    <b><span class="SubscriptionPurchaseFooter__amount" [ngClass]="{'SubscriptionPurchaseFooter__amount--discounted': !subscription.trial_available && selectedTier.discount}">{{priceText}}{{selectedTier.currency}}</span>
+                        <span *ngIf="!subscription.trial_available && selectedTier.discount" class="SubscriptionPurchaseFooter__amount">
+                            {{selectedTier.discount.price}}{{selectedTier.currency}}
+                        </span>
+                    </b>
                 </div>
                 <div class="SubscriptionPurchaseFooter__description">
                     <ng-container *ngIf="subscription.trial_available; else noTrialDescription">
                         <b><span i18n="@@web_profile_pages_subscription_326">{{selectedTier.price}}{{selectedTier.currency}}/month</span>
-                        </b>&nbsp;<span i18n="@@web_price_after_free_days">at the end of free trial</span>
+                        </b><span ngPreserveWhitespaces> </span><span i18n="@@web_price_after_free_days">at the end of free trial</span>
                     </ng-container>
                     <ng-template #noTrialDescription>
-                        <span i18n="@@web_monthly_renewal_plan">The plan will be renewed monthly</span>
+                        <ng-container *ngIf="selectedTier.discount; else montlyRenewal">
+                            <b><span i18n="@@web_profile_pages_subscription_326">{{selectedTier.price}}{{selectedTier.currency}}/month</span></b><span ngPreserveWhitespaces> </span><span 
+                                i18n="@@pro_subscription_purchase_summary_start_period_web">starting from {{selectedTier.discount.no_discount_date |  date:'dd/MM/yy' }}</span>
+                            </ng-container>
+                        <ng-template #montlyRenewal>
+                            <span i18n="@@web_monthly_renewal_plan">The plan will be renewed monthly</span>
+                        </ng-template>
                     </ng-template>
                 </div>
             </div>
             <tsl-button className="btn btn-primary btn-primary--bold btn--big btn--width" [loading]="isLoading"
-                [disabled]="buttonDisable" (click)="onClickButton()">
-                {{buttonText}}
-            </tsl-button>
+                [disabled]="buttonDisable" (click)="onClickButton()">{{buttonText}}</tsl-button>
         </div>
-        <div>
-            <span class="SubscriptionPurchaseFooter__legal" i18n="@@web_stripe_card_element_513">By subscribing, you
-                accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
-                and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd</span>
+        <div class="SubscriptionPurchaseFooter__legal">
+            <ng-container *ngIf="isEdit; else newSubscriptionLegalInformation">
+                <span i18n="@@pro_subscriptions_purchase_summary_change_plan_policy_description">The change will be effective as of today. Remember that you can cancel your subscription any time, with any obligation.</span>
+            </ng-container>
+            <ng-template #newSubscriptionLegalInformation>
+                <span i18n="@@web_stripe_card_element_513">By subscribing, you
+                    accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
+                    and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd</span>
+            </ng-template>
         </div>
     </div>
 </div>

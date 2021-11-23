@@ -17,10 +17,8 @@ import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/cata
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
-import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
-import { CountdownComponent } from './countdown/countdown.component';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { GeolocationModule } from './geolocation/geolocation.module';
@@ -68,20 +66,20 @@ import { SpinnerModule } from './spinner/spinner.module';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsModule } from './stars/stars.module';
 import { StatusIconComponent } from './status-icon';
-import { SwitchComponent } from './switch/switch.component';
 import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.component';
 import { UploaderModule } from './uploader/uploader.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
-import { SuggestProModalComponent } from './catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { HeaderModule } from './header/header.module';
-import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
 import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
 import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
+import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
+import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 
 @NgModule({
   imports: [
@@ -110,6 +108,7 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     ProfileFormModule,
     HeaderModule,
     PaymentsCardInfoModule,
+    InfiniteScrollModule,
   ],
   exports: [
     SpinnerModule,
@@ -130,7 +129,6 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     ArchivableComponent,
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
-    SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
     SearchInputComponent,
@@ -147,7 +145,6 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     CatalogStatusNavbarComponent,
     CartComponent,
     ExitConfirmationModalComponent,
-    CountdownComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent,
@@ -172,7 +169,6 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     WallacoinsDisabledModalComponent,
     ButtonModule,
     DateCountDownModule,
-    SuggestProModalComponent,
     DeliveryDevelopmentDirective,
     ProfileFormModule,
     InfiniteScrollDirective,
@@ -191,12 +187,10 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
     ReviewModalComponent,
-    SwitchComponent,
     ReviewModalComponent,
     CheckboxComponent,
     SelectComponent,
     SearchInputComponent,
-    TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     RestrictInputNumberDirective,
     WallacoinComponent,
@@ -210,7 +204,6 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     CatalogStatusNavbarComponent,
     CartComponent,
     ExitConfirmationModalComponent,
-    CountdownComponent,
     DeactivateItemsModalComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
@@ -233,17 +226,14 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
     RouterLinkDirectiveStub,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
-    SuggestProModalComponent,
     DeliveryDevelopmentDirective,
-    InfiniteScrollDirective,
     LocationSelectorModal,
   ],
-  providers: [DecimalPipe, LinkTransformPipe],
+  providers: [DecimalPipe, LinkTransformPipe, ItemDetailRoutePipe, ListingLimitService],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,
     ReviewModalComponent,
-    TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     EmailModalComponent,
     PasswordModalComponent,

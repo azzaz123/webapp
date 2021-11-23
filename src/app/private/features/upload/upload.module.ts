@@ -25,6 +25,12 @@ import { UploadProductComponent } from './pages/upload-product/upload-product.co
 import { UploadRealestateComponent } from './pages/upload-realestate/upload-realestate.component';
 import { UploadComponent } from './pages/upload.component';
 import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.module';
+import { CheckboxFormModule } from '@shared/form/components/checkbox/checkbox-form.module';
+import { ShippingToggleService } from './pages/upload-product/services/shipping-toggle/shipping-toggle.service';
+import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-api.module';
+import { UploadTrackingEventService } from './pages/upload-product/upload-tracking-event/upload-tracking-event.service';
+import { CategoriesApiModule } from '@api/categories/categories-api.module';
+import { ProFeaturesModule } from './components/pro-features/pro-features.module';
 
 @NgModule({
   imports: [
@@ -40,6 +46,10 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.mo
     NgbButtonsModule,
     DropdownModule,
     CustomCurrencyModule,
+    CheckboxFormModule,
+    DeliveryRulesApiModule, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
+    CategoriesApiModule,
+    ProFeaturesModule,
   ],
   declarations: [
     uploadRoutedComponents,
@@ -62,6 +72,8 @@ import { uploadRoutedComponents, UploadRoutingModule } from './upload-routing.mo
     GeneralSuggestionsService,
     ItemReactivationService,
     EditTrackingEventService,
+    UploadTrackingEventService,
+    ShippingToggleService, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
   ],
   entryComponents: [RemoveConfirmModalComponent, PreviewModalComponent],
 })

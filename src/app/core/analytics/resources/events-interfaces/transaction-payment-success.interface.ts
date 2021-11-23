@@ -37,4 +37,8 @@ export interface TransactionPaymentSuccess {
    * ISO currency code of the price of the item
    */
   currency?: 'EUR';
+  /**
+   * Test group of the user
+   */
+  experiment?: 'payments_3dspopup_control' | 'payments_3dspopup_variant';
 }

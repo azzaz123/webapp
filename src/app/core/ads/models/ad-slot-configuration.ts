@@ -12,5 +12,5 @@ export interface AdSlotConfiguration {
   networkId: number;
   sizeMapping?: AdSizeMapping;
   device: DeviceType[];
-  type?: string;
+  type: string;
 }

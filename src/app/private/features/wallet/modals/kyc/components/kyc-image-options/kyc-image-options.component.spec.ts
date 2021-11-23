@@ -101,7 +101,9 @@ describe('KYCImageOptionsComponent', () => {
       const uploadOption: HTMLElement = de.query(By.css(shootImageOptionSelector)).nativeElement;
       const uploadOptionTitle = uploadOption.querySelector(titleOptionCopySelector).innerHTML;
 
-      expect(uploadOptionTitle).toStrictEqual($localize`:@@kyc_take_images_mobile:Take a picture with your camera`);
+      expect(uploadOptionTitle).toStrictEqual(
+        $localize`:@@kyc_take_or_upload_photo_selector_view_photo_option_description_web_specific:Take photo of the document`
+      );
     });
   });
 
@@ -141,7 +143,21 @@ describe('KYCImageOptionsComponent', () => {
       const uploadOption: HTMLElement = de.query(By.css(shootImageOptionSelector)).nativeElement;
       const uploadOptionTitle = uploadOption.querySelector(titleOptionCopySelector).innerHTML;
 
-      expect(uploadOptionTitle).toStrictEqual($localize`:@@kyc_take_images_desktop:Take a picture with your webcam`);
+      expect(uploadOptionTitle).toStrictEqual(
+        $localize`:@@kyc_take_or_upload_photo_selector_view_photo_option_description_web_specific:Take photo of the document`
+      );
+    });
+  });
+
+  describe('when we click on the cross button...', () => {
+    beforeEach(() => {
+      spyOn(component.closeModal, 'emit');
+
+      fixture.debugElement.query(By.css('.KYCImageOptions__cross')).nativeElement.click();
+    });
+
+    it('should close the modal', () => {
+      expect(component.closeModal.emit).toHaveBeenCalledTimes(1);
     });
   });
 });

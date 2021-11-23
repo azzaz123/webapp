@@ -57,7 +57,12 @@ export class GridSelectFormComponent extends AbstractFormComponent<string[]> imp
   }
 
   private setGridColumns(): void {
-    this.gridClasses = [`col-${this.columns}`];
+    if (this.columns) {
+      this.gridClasses = [`col-${this.columns}`];
+    } else {
+      this.gridClasses = ['col'];
+    }
+
     if (this.columnsSm) {
       this.gridClasses.push(`col-sm-${this.columnsSm}`);
     }

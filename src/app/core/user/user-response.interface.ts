@@ -22,6 +22,7 @@ export interface UserResponse extends ApiResponse {
   featured?: boolean;
   extra_info?: UserExtrainfo;
   register_date?: Date;
+  phone?: string;
 }
 
 export interface Image {
@@ -53,6 +54,7 @@ export interface UserLocation {
   longitude?: number;
   address?: string;
   postal_code?: string;
+  country_code?: string;
 }
 
 export interface UserStatsOld {

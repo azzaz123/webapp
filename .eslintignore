@@ -2,12 +2,6 @@
 # Please remove the directories from here once all the linting errors of the directory have been fixed
 
 # PROs
-/src/app/private/features/calls
-/src/app/private/features/catalog
-/src/app/private/features/catalog-pro
-/src/app/private/features/dashboard
-/src/app/private/features/help
-/src/app/private/features/wallacoins
 
 # WALLET-CHAT
 /src/app/private/features/chat
@@ -17,15 +11,19 @@
 
 # ENGAGEMENT
 /src/app/private/features/favorites
-/src/app/private/features/profile
+/src/app/private/features/profile/modal/become-pro-modal
+/src/app/private/features/profile/modal/change-store-location-modal
+/src/app/private/features/profile/modal/unsubscribe-modal
+/src/app/private/features/profile/pages/account
+/src/app/private/features/profile/pages/profile-info
+/src/app/private/features/profile/pipes
 /src/app/private/features/reviews
 /src/app/private/features/stats
 /src/app/public/features/item-detail
 /src/app/public/features/public-profile
 
 # FINDING
-/src/app/public/features/search
-/src/app/private/features/upload
+
 
 # T&S
 /src/app/public/features/register

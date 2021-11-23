@@ -1,0 +1,32 @@
+@import 'src/style/common';
+
+.MultiSelectOption {
+  &--disabled {
+    color: $blue-grey-2;
+
+    tsl-checkbox-form,
+    tsl-svg-icon {
+      opacity: 0.5;
+    }
+  }
+
+  &--with-children {
+    cursor: pointer;
+  }
+
+  &__label {
+    &__sub {
+      color: $blue-grey-2;
+    }
+  }
+
+  tsl-svg-icon {
+    @include square(24px);
+  }
+
+  &__selection {
+    color: $walla-main;
+    font-size: $font-size-xs;
+    line-height: $font-size-xs;
+  }
+}

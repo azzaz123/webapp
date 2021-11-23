@@ -36,10 +36,12 @@ import { UserService } from 'app/core/user/user.service';
 import { eq, includes, isEmpty } from 'lodash-es';
 import { CalendarSpec } from 'moment';
 import { of, Subscription } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
 import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -71,6 +73,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public isConversationChanged: boolean;
   public isTopBarExpanded = false;
   public chatRightAdSlot: AdSlotConfiguration = CHAT_AD_SLOTS;
+  public translateButtonCopies: TranslateButtonCopies = {
+    showTranslation: $localize`:@@chat_all_users_translate_button:Translate conversation`,
+  };
 
   public readonly PERMISSIONS = PERMISSIONS;
 
@@ -82,7 +87,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     private modalService: NgbModal,
     private userService: UserService,
     private analyticsService: AnalyticsService,
-    private momentCalendarSpecService: MomentCalendarSpecService
+    private momentCalendarSpecService: MomentCalendarSpecService,
+    private translationService: ChatTranslationService
   ) {}
 
   get emptyInbox(): boolean {
@@ -101,12 +107,20 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
         this.noMessages += 1;
         this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
       }
+
+      if (this.currentConversation.isAutomaticallyTranslatable) {
+        this.translateConversation();
+      }
     });
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED, (conversation: InboxConversation) => {
       this.isLoadingMoreMessages = false;
       this.isConversationChanged = false;
       this.currentConversation = conversation;
+
+      if (this.currentConversation.isAutomaticallyTranslatable) {
+        this.translateConversation();
+      }
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () =>
@@ -236,6 +250,20 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       .subscribe((id) => this.sendMetricMessageSendFailedByMessageId(id, `message is not send after ${this.MESSAGE_METRIC_DELAY}ms`));
   }
 
+  public translateConversation(): void {
+    if (!this.currentConversation.isTranslating && this.currentConversation.isTranslatable) {
+      const conversation = this.currentConversation;
+      conversation.isTranslating = true;
+      this.translationService
+        .translateConversation(this.currentConversation)
+        .pipe(take(1))
+        .subscribe(() => {
+          conversation.isTranslating = false;
+          conversation.isAutomaticallyTranslatable = true;
+        });
+    }
+  }
+
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
     if (!this.currentConversation) {
       return;
@@ -284,7 +312,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   private trackClickMaliciousModalCTAButton(): void {
     const event: AnalyticsEvent<ClickBannedUserChatPopUpExitButton> = {
       name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpExitButton,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: this.chatContext,
     };
     this.analyticsService.trackEvent(event);
@@ -293,7 +321,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   private trackDismissMaliciousModal(): void {
     const event: AnalyticsEvent<ClickBannedUserChatPopUpCloseButton> = {
       name: ANALYTICS_EVENT_NAMES.ClickBannedUserChatPopUpCloseButton,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: this.chatContext,
     };
     this.analyticsService.trackEvent(event);

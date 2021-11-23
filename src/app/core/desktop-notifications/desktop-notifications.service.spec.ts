@@ -1,7 +1,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
-import { createInboxConversationsArray } from '../../../tests/inbox.fixtures.spec';
+import { createInboxConversationsArray } from '@fixtures/chat';
 import { I18nService } from '../i18n/i18n.service';
 import { ASK_PERMISSIONS_TIMEOUT_MS, DesktopNotificationsService } from './desktop-notifications.service';
 

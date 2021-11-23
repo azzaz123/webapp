@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserAvatarComponent } from './user-avatar.component';
 import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-background.directive';
@@ -8,11 +6,9 @@ import { IMAGE, MICRO_NAME, USER_ID } from '../../../tests/user.fixtures.spec';
 import { StatusIconComponent } from '../status-icon';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
-import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
 
 describe('Component: UserAvatar', () => {
   let fixture: ComponentFixture<UserAvatarComponent>;
@@ -22,8 +18,8 @@ describe('Component: UserAvatar', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SvgIconModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
-      declarations: [UserAvatarComponent, SanitizedBackgroundDirective, StatusIconComponent],
+      imports: [NgxPermissionsModule.forRoot()],
+      declarations: [UserAvatarComponent, SanitizedBackgroundDirective, StatusIconComponent, ProBadgeComponent],
       providers: [UserAvatarComponent, NgxPermissionsService],
     });
   });
@@ -84,7 +80,7 @@ describe('Component: UserAvatar', () => {
         beforeEach(() => {
           component.showProBadge = true;
           fixture.detectChanges();
-          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+          proBadgeElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
         });
 
         it('should show PRO badge', () => {
@@ -96,7 +92,37 @@ describe('Component: UserAvatar', () => {
         beforeEach(() => {
           component.showProBadge = false;
           fixture.detectChanges();
-          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+          proBadgeElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
+        });
+
+        it('should NOT show PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
+      });
+      describe('and when PRO badge large should be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = false;
+          component.showProBadgeWide = true;
+          component.ngOnInit();
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
+        });
+
+        it('should show PRO badge', () => {
+          expect(proBadgeElement).toBeTruthy();
+        });
+
+        it('should be shown in defined position', () => {
+          expect(proBadgeElement.nativeElement.style._values).toEqual({ bottom: '4px', left: '54px' });
+        });
+      });
+
+      describe('and when PRO badge large should NOT be shown', () => {
+        beforeEach(() => {
+          component.showProBadge = false;
+          component.showProBadgeWide = false;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
         });
 
         it('should NOT show PRO badge', () => {
@@ -112,7 +138,7 @@ describe('Component: UserAvatar', () => {
         beforeEach(() => {
           component.showProBadge = true;
           fixture.detectChanges();
-          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+          proBadgeElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
         });
 
         it('should not show PRO badge', () => {
@@ -124,10 +150,34 @@ describe('Component: UserAvatar', () => {
         beforeEach(() => {
           component.showProBadge = false;
           fixture.detectChanges();
-          proBadgeElement = fixture.debugElement.query(By.directive(SvgIconComponent));
+          proBadgeElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
         });
 
         it('should NOT show PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
+      });
+
+      describe('and when wide PRO badge should be shown', () => {
+        beforeEach(() => {
+          component.showProBadgeWide = true;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
+        });
+
+        it('should not show wide PRO badge', () => {
+          expect(proBadgeElement).toBeFalsy();
+        });
+      });
+
+      describe('and when wide PRO badge should NOT be shown', () => {
+        beforeEach(() => {
+          component.showProBadgeWide = false;
+          fixture.detectChanges();
+          proBadgeElement = fixture.debugElement.query(By.directive(ProBadgeComponent));
+        });
+
+        it('should NOT show wide PRO badge', () => {
           expect(proBadgeElement).toBeFalsy();
         });
       });

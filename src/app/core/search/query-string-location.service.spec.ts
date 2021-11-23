@@ -37,23 +37,6 @@ describe('QueryStringLocationService', () => {
   });
 
   describe('when asked for correct location', () => {
-    describe('and querystring location present', () => {
-      it('should keep querystring location', () => {
-        spyOn(cookieService, 'get').and.returnValues('0', '0');
-        spyOn(localStorage, 'getItem').and.returnValues('10', '10');
-
-        const queryParamsLocation = {
-          [FILTER_QUERY_PARAM_KEY.latitude]: '0',
-          [FILTER_QUERY_PARAM_KEY.longitude]: '0',
-        };
-        const location = service.getLocationParameters(queryParamsLocation);
-
-        expect(location).toEqual(queryParamsLocation);
-        expect(cookieService.get).toHaveBeenCalledTimes(0);
-        expect(localStorage.getItem).toHaveBeenCalledTimes(0);
-      });
-    });
-
     describe('and no querystring location present', () => {
       describe('and cookie location present', () => {
         it('should keep cookie location', () => {

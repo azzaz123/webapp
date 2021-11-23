@@ -1,4 +1,11 @@
-@import '~web-styleguide/scss/colors';
+@import '~style/common';
+
+$image-block-width: 300px;
+$image-block-width--big: 360px;
+$image-block-width--small: 230px;
+$image-height: 200px;
+$image-height--big: 240px;
+$small-screen: 370px;
 
 .KYCUploadImages {
   &__back {
@@ -12,5 +19,73 @@
         opacity: 0.8;
       }
     }
+  }
+
+  &__title,
+  &__subtitle {
+    color: $blue-grey-1;
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__uploadImagesWrapper {
+    flex: 1;
+  }
+
+  &__buttonWrapper {
+    @media (max-width: $small-screen) {
+      margin-bottom: $spacing-ml;
+    }
+  }
+
+  &__imageLaterals {
+    padding: 0px $spacer * 2;
+  }
+
+  &__imageContainer {
+    overflow: hidden;
+    border: dashed 2px $blue-grey-5;
+    border-radius: $border-radius;
+    transform: translate3d(0, 0, 0);
+  }
+
+  &__imageContentWrapper {
+    flex: 1;
+  }
+
+  &__image {
+    height: $image-height;
+
+    @include media-breakpoint-up(sm) {
+      height: $image-height--big;
+    }
+  }
+
+  &__uploadImageContainer {
+    overflow: hidden;
+    box-sizing: content-box;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transform: translate3d(0, 0, 0);
+  }
+
+  &__imageBlock {
+    width: $image-block-width;
+
+    @media (max-width: $small-screen) {
+      width: $image-block-width--small;
+    }
+
+    @include media-breakpoint-up(sm) {
+      width: $image-block-width--big;
+    }
+  }
+
+  &__cross {
+    cursor: pointer;
   }
 }

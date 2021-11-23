@@ -27,7 +27,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -70,18 +69,25 @@
               "visibilityjs",
               "libphonenumber-js",
               "moment",
-              "hammerjs/hammer"
-            ]
+              "hammerjs/hammer",
+              "lottie-web"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "docker": {
+              "baseHref": "/",
               "budgets": [
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "8kb"
                 }
               ],
-              "sourceMap": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -91,6 +97,7 @@
               "localize": true
             },
             "beta": {
+              "baseHref": "/app/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -99,7 +106,6 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -116,11 +122,12 @@
                   "maximumError": "10kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json",
               "localize": true
             },
             "production": {
+              "baseHref": "/app/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -145,7 +152,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json",
               "localize": true
             },
@@ -159,7 +166,7 @@
                   "maximumWarning": "8kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             },
             "it": {
@@ -172,10 +179,11 @@
                   "maximumWarning": "8kb"
                 }
               ],
-              "serviceWorker": true,
+              "serviceWorker": false,
               "ngswConfigPath": "ngsw-config.json"
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

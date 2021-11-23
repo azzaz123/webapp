@@ -104,14 +104,14 @@ describe('DropAreaComponent', () => {
 
     it('should upload file if event addedToQueue and edit mode', () => {
       component.files = [UPLOAD_FILE, UPLOAD_FILE];
-      spyOn(component.onAddImage, 'emit');
+      spyOn(component.addImage, 'emit');
 
       component.onUploadOutput({
         type: OUTPUT_TYPE.addedToQueue,
         file: UPLOAD_FILE,
       });
 
-      expect(component.onAddImage.emit).toHaveBeenCalledWith(UPLOAD_FILE);
+      expect(component.addImage.emit).toHaveBeenCalledWith(UPLOAD_FILE);
 
       expect(component.files).toEqual([UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE]);
     });
@@ -175,7 +175,7 @@ describe('DropAreaComponent', () => {
 
     it('should open confirm dialog and then call deletePicture and removeImage if edit mode', fakeAsync(() => {
       spyOn(component, 'propagateChange');
-      spyOn(component.onDeleteImage, 'emit');
+      spyOn(component.deleteImage, 'emit');
       spyOn(modalService, 'open').and.callThrough();
       component.isUpdatingItem = true;
 
@@ -183,19 +183,19 @@ describe('DropAreaComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledWith(RemoveConfirmModalComponent);
-      expect(component.onDeleteImage.emit).toHaveBeenCalledWith(PICTURE_ID);
+      expect(component.deleteImage.emit).toHaveBeenCalledWith(PICTURE_ID);
     }));
   });
 
   describe('updateOrder', () => {
     it('should call updateOrder', () => {
-      spyOn(component.onOrderImages, 'emit');
+      spyOn(component.orderImages, 'emit');
       component.files = [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE];
       component.isUpdatingItem = true;
 
       component.updateOrder();
 
-      expect(component.onOrderImages.emit).toHaveBeenCalled();
+      expect(component.orderImages.emit).toHaveBeenCalled();
     });
   });
 });

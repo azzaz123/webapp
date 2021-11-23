@@ -1,80 +1,66 @@
-<div class="SubscriptionCard d-flex flex-column align-items-center justify-content-between" [ngClass]="{
-    'SubscriptionCard--subscribed': isSubscribed
+<div class="SubscriptionCard d-flex justify-content-between flex-md-row flex-column-reverse" (click)="onClickCard()" [ngClass]="{
+    'SubscriptionCard--subscribed': isSubscribed, 'SubscriptionCard--desktop': !isMobile
   }">
-    <div class="SubscriptionCard__banner text-center px-2 mb-3"
-        [ngClass]="{
-            'SubscriptionCard__banner--hidden': isSubscribed || (!hasTrialAvailable && !tierDiscount),
-            'SubscriptionCard__banner--trial': hasTrialAvailable,
-            'SubscriptionCard__banner--discount': tierDiscount && !hasTrialAvailable 
-        }">
-        <span *ngIf="tierDiscount; else trialLabel"  i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tierDiscount.discount.percentage}}% off!</span>
-        <ng-template #trialLabel>
-            <span i18n="@@web_subscription_price_discount_days_trial_free">{{subscription.trial_days}}-day trial for free</span>
-        </ng-template>
-    </div>
-    <div class="d-flex flex-column align-items-center w-100">
-        <div class="SubscriptionCard__icon">
-            <tsl-svg-icon [src]="iconSrc" class="image">
-            </tsl-svg-icon>
+    <div class="w-100 d-flex flex-column align-items-center align-items-md-start SubscriptionCard__content">
+        <tsl-discount-badge *ngIf="hasTrialAvailable || tierDiscount" class="mb-3">
+            <span *ngIf="tierDiscount; else trialLabel"  i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tierDiscount.discount.percentage}}% off!</span>
+            <ng-template #trialLabel>
+                <span i18n="@@web_subscription_price_discount_days_trial_free">{{subscription.trial_days}}-day trial for free</span>
+            </ng-template>
+        </tsl-discount-badge>
+        <div class="SubscriptionCard__title mb-1">{{subscription.category_name}}</div>
+        <div class="SubscriptionCard__subtitle mb-1">{{descriptionText}}
         </div>
-        <div class="SubscriptionCard__title text-center mb-2">{{subscription.category_name}}</div>
-        <div class="SubscriptionCard__subtitle d-flex align-items-center text-center mb-2" >
-            <span>{{descriptionText}}</span>
-        </div>
-        <div class="SubscriptionCard__price">
+        <div class="SubscriptionCard__price text-md-left mb-2">
             <ng-container *ngIf="!isSubscribed; else subscriptionPrice">
                 <tsl-subscription-price-discount [subscription]="subscription" [tierDiscount]="tierDiscount">
                 </tsl-subscription-price-discount>
             </ng-container>
             <ng-template #subscriptionPrice>
-                <span i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
+                <span
+                    i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.discount ? subscription.selected_tier.discount.price : subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
+                <span class="SubscriptionCard__price-description">
+                    <ng-container *ngIf="subscription.trial_available;else noFreeTrialDesc">
+                        <span ngPreserveWhitespaces> </span>
+                        <span i18n="@@web_price_after_free_days">at the end of free trial</span>
+                    </ng-container>
+                    <ng-template #noFreeTrialDesc>
+                        <span *ngIf="subscription.selected_tier.discount">
+                            <span ngPreserveWhitespaces>, </span>
+                            <span
+                                i18n="@@web_profile_pages_subscription_326">{{subscription.selected_tier.price}}{{subscription.selected_tier.currency}}/month</span>
+                            <span ngPreserveWhitespaces> </span>
+                            <span i18n="@@pro_subscription_purchase_summary_start_period_web">starting from
+                                {{subscription.selected_tier.discount.no_discount_date |  date:'longDate' }}</span>
+                        </span>
+                    </ng-template>
+                </span>
             </ng-template>
         </div>
-        <hr />
-    </div>
-    <div class="d-flex flex-column SubscriptionCard__info w-100 mb-2">
-        <ng-container *ngIf="!isSubscribed; else subscriptionBody">
-            <div class="d-flex flex-column text-left">
-                <div class="d-flex mb-2" *ngFor="let benefit of subscriptionBenefits">
-                    <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
-                    </tsl-svg-icon>
-                    <span>{{ benefit }}</span>
-                </div>
+        <ng-container *ngIf="isSubscribed">
+            <div class="SubscriptionCard__date mb-2">
+                <span i18n="@@web_profile_pages_subscription_329">Subscribed
+                    from <b>{{subscription.subscribed_from | date:'longDate' }}</b>
+                </span>
+            </div>
+            <div class="mb-2 text-md-left SubscriptionCard__endDate" *ngIf="subscription.subscribed_until">
+                <span i18n="@@pro_manage_subscriptions_view_cancel_plan_cancel_subscription_status_description">You
+                    requested subscription cancellation, the deactivation will be effective starting</span><b
+                    ngPreserveWhitespaces> {{subscription.subscribed_until | date:'longDate' }}</b>
             </div>
         </ng-container>
-        <ng-template #subscriptionBody>
-            <div class="d-flex flex-column mb-2 text-left w-100">
-                <div class="mb-2">
-                    <b><span i18n="@@web_your_current_plan">Your current plan</span></b>
-                </div>
-                <div class="d-flex">
-                    <tsl-svg-icon class="mr-1 mt-1 icon-check" src="assets/icons/check.svg">
-                    </tsl-svg-icon>
-                    <span class="mb-2">{{ subscriptionBodyText }}</span>
-                </div>
-            </div>
-            <span class="SubscriptionCard__date">
-                <ng-container *ngIf="subscription.subscribed_until; else noSubscriptionEnd">
-                    <span i18n="@@web_profile_pages_subscription_330"> Subscription ends on
-                        <b>
-                            {{subscription.subscribed_until | date:'dd/MM/yy' }}
-                        </b>
-                    </span>
-                </ng-container>
-                <ng-template #noSubscriptionEnd>
-                    <span i18n="@@web_profile_pages_subscription_329"> Subscribed
-                        from <b>{{subscription.subscribed_from | date:'dd/MM/yy' }}</b>
-                    </span>
-                </ng-template>
-            </span>
-        </ng-template>
+        <div class="mt-2">
+            <ng-container *ngIf="isSubscribed; else subscriptionButton">
+                <tsl-button className="btn-secondary" (click)="onClick()">
+                    {{textButton}}</tsl-button>
+            </ng-container>
+            <ng-template #subscriptionButton>
+                <tsl-button className="btn-primary btn-primary--bold" (click)="onClick()">
+                    {{textButton}}</tsl-button>
+            </ng-template>
+        </div>
     </div>
-    <ng-container *ngIf="isSubscribed; else subscriptionButton">
-        <tsl-button class="w-100" className="btn-secondary btn--width" (click)="onButtonClick()">
-            {{textButton}}</tsl-button>
-    </ng-container>
-    <ng-template #subscriptionButton>
-        <tsl-button class="w-100" className="btn-primary btn-primary--bold btn--width" (click)="onButtonClick()">
-            {{textButton}}</tsl-button>
-    </ng-template>
+    <div class="SubscriptionCard__icon">
+        <img [src]="iconSrc">
+    </div>
 </div>

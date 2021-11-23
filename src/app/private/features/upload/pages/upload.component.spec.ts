@@ -1,12 +1,19 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  AnalyticsEvent,
+  ANALYTICS_EVENT_NAMES,
+  ANALYTIC_EVENT_TYPES,
+  ClickItemCategoryUpload,
+  SCREEN_IDS,
+} from '@core/analytics/analytics-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CARS_CATEGORY } from '@core/item/item-categories';
-import { ItemService } from '@core/item/item.service';
 import { MockTrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.fixtures.spec';
 import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
 import { UserService } from '@core/user/user.service';
-import { ITEM_DATA_V3, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { UploadComponent } from './upload.component';
@@ -14,9 +21,9 @@ import { UploadComponent } from './upload.component';
 describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
-  let itemService: ItemService;
   let userService: UserService;
   let trustAndSafetyService: TrustAndSafetyService;
+  let analyticsService: AnalyticsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -26,14 +33,11 @@ describe('UploadComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           {
-            provide: ItemService,
-            useValue: {
-              getUrgentProductByCategoryId() {},
-            },
-          },
-          {
             provide: UserService,
             useValue: {
+              get isPro() {
+                return false;
+              },
               isProfessional() {
                 return of(false);
               },
@@ -43,6 +47,7 @@ describe('UploadComponent', () => {
             provide: TrustAndSafetyService,
             useValue: MockTrustAndSafetyService,
           },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
       }).compileComponents();
     })
@@ -50,9 +55,9 @@ describe('UploadComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);
-    itemService = TestBed.inject(ItemService);
     userService = TestBed.inject(UserService);
     trustAndSafetyService = TestBed.inject(TrustAndSafetyService);
+    analyticsService = TestBed.inject(AnalyticsService);
     component = fixture.componentInstance;
   });
 
@@ -89,7 +94,7 @@ describe('UploadComponent', () => {
 
   describe('setCategory', () => {
     beforeEach(() => {
-      spyOn(component, 'getUrgentPrice');
+      spyOn(analyticsService, 'trackEvent').and.callThrough();
     });
     it('should set categoryId', () => {
       const CATEGORY_ID = 123;
@@ -99,44 +104,55 @@ describe('UploadComponent', () => {
       expect(component.categoryId).toBe(CATEGORY_ID.toString());
     });
 
-    it('should not call getUrgentPrice if categoryId == -1', () => {
-      const CATEGORY_ID = -1;
+    describe('and category is less than 0', () => {
+      beforeEach(() => {
+        component.setCategory('-1');
+      });
 
-      component.setCategory(CATEGORY_ID.toString());
+      it('should emit event with category id 0', () => {
+        const expectedEvent: AnalyticsEvent<ClickItemCategoryUpload> = {
+          name: ANALYTICS_EVENT_NAMES.ClickItemCategoryUpload,
+          eventType: ANALYTIC_EVENT_TYPES.Navigation,
+          attributes: {
+            screenId: SCREEN_IDS.Upload,
+            categoryId: 0,
+            isPro: false,
+          },
+        };
 
-      expect(component.getUrgentPrice).not.toHaveBeenCalled();
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
     });
-    it('should call getUrgentPrice if categoryId != -1', () => {
-      const CATEGORY_ID = 123;
+    describe('and category is more than 0', () => {
+      beforeEach(() => {
+        component.setCategory('1');
+      });
 
-      component.setCategory(CATEGORY_ID.toString());
+      it('should emit event', () => {
+        const expectedEvent: AnalyticsEvent<ClickItemCategoryUpload> = {
+          name: ANALYTICS_EVENT_NAMES.ClickItemCategoryUpload,
+          eventType: ANALYTIC_EVENT_TYPES.Navigation,
+          attributes: {
+            screenId: SCREEN_IDS.Upload,
+            categoryId: 1,
+            isPro: false,
+          },
+        };
 
-      expect(component.getUrgentPrice).toHaveBeenCalledWith(CATEGORY_ID.toString());
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
     });
   });
 
-  describe('onValidationError', () => {
+  describe('validationError', () => {
     it('should set scrollTop to 0', () => {
       component.scrollPanel = {
         nativeElement: {},
       };
 
-      component.onValidationError();
+      component.validationError();
 
       expect(component.scrollPanel.nativeElement.scrollTop).toBe(0);
-    });
-  });
-
-  describe('get urgent price', () => {
-    it('should set the urgent price', () => {
-      spyOn(itemService, 'getUrgentProductByCategoryId').and.returnValue(of(PRODUCT_RESPONSE));
-
-      const categoryId = ITEM_DATA_V3.content.category_id;
-
-      component.getUrgentPrice(categoryId.toString());
-
-      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(categoryId.toString());
-      expect(component.urgentPrice).toEqual(PRODUCT_RESPONSE.durations[0].market_code);
     });
   });
 });

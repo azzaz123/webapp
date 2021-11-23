@@ -67,7 +67,6 @@ const Template: Story<ItemDetailHeaderComponent> = (args: ItemDetailHeaderCompon
       CheckSessionService,
       ItemCardService,
       NgxPermissionsService,
-      { provide: 'SUBDOMAIN', useValue: 'es' },
       { provide: APP_BASE_HREF, useValue: '/' },
       ItemDetailTrackEventsService,
     ],

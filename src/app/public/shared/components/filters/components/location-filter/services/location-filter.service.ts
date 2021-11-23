@@ -60,14 +60,14 @@ export class LocationFilterService {
     if (navigator.geolocation) {
       return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
-          (position: Position) => {
+          (position: GeolocationPosition) => {
             const latitude = `${position.coords.latitude}`;
             const longitude = `${position.coords.longitude}`;
             const location: SearchLocation = { latitude, longitude };
 
             resolve(location);
           },
-          (error: PositionError) => {
+          (error: GeolocationPositionError) => {
             reject(error);
           },
           GEOLOCATION_OPTIONS
@@ -85,7 +85,7 @@ export class LocationFilterService {
   private getSeoLocation(): LabeledSearchLocation {
     const latitude = this.cookieService.get(SEO_COOKIE_LOCATION_KEY.LATITUDE);
     const longitude = this.cookieService.get(SEO_COOKIE_LOCATION_KEY.LONGITUDE);
-    const label = this.cookieService.get(SEO_COOKIE_LOCATION_KEY.LABEL);
+    const label = decodeURIComponent(this.cookieService.get(SEO_COOKIE_LOCATION_KEY.LABEL));
 
     if (latitude && longitude && label) {
       return {
@@ -99,7 +99,7 @@ export class LocationFilterService {
   private getSearchLocation(): LabeledSearchLocation {
     const latitude = localStorage.getItem(SEARCH_LOCATION_KEY.LATITUDE);
     const longitude = localStorage.getItem(SEARCH_LOCATION_KEY.LONGITUDE);
-    const label = localStorage.getItem(SEARCH_LOCATION_KEY.LABEL);
+    const label = decodeURIComponent(localStorage.getItem(SEARCH_LOCATION_KEY.LABEL));
 
     if (latitude && longitude && label) {
       return {

@@ -52,6 +52,7 @@ describe('GridSelectFilterComponent', () => {
     type: FILTER_TYPES.GRID,
     isMultiselect: false,
     hasBigIcons: false,
+    gridColumns: 3,
   };
 
   const multiselectConfig: GridSelectFilterConfig = {

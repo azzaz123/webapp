@@ -1,20 +1,22 @@
-import { Injectable } from '@angular/core';
-import { AdKeyWords, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
+import { Inject, Injectable } from '@angular/core';
+import { AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
-import { AdSlotId } from '@core/ads/models/ad-slot-id';
+import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
-import { BehaviorSubject, combineLatest, merge, Observable, of, Subject } from 'rxjs';
-import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '../../vendors';
+import { DeviceService } from '@core/device/device.service';
+import { WINDOW_TOKEN } from '@core/window/window.token';
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
+import { catchError, filter, map, take, tap } from 'rxjs/operators';
+import { GooglePublisherTagService } from '../../vendors';
 import { LoadAdsService } from '../load-ads/load-ads.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdsService {
-  private readonly refreshEventSubject: Subject<void> = new Subject<void>();
   private readonly setSlotsSubject: BehaviorSubject<AdSlotConfiguration[]> = new BehaviorSubject<AdSlotConfiguration[]>([]);
   private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private readonly refreshSlotsSubject: Subject<void> = new Subject();
 
   public get adsReady$(): Observable<boolean> {
     return this._adsReady$.asObservable();
@@ -24,11 +26,12 @@ export class AdsService {
     private didomiService: DidomiService,
     private loadAdsService: LoadAdsService,
     private googlePublisherTagService: GooglePublisherTagService,
-    private criteoService: CriteoService,
-    private amazonPublisherService: AmazonPublisherService
+    private deviceService: DeviceService,
+    @Inject(WINDOW_TOKEN) private window: Window
   ) {
-    this.listenToSlots();
-    this.listenerToRefresh();
+    this.listenerToSetSlots();
+    this.listenerToDisplaySlots();
+    this.listenerToRefreshSlots();
   }
 
   public init(): void {
@@ -47,13 +50,7 @@ export class AdsService {
   }
 
   public setSlots(adSlots: AdSlotConfiguration[]): void {
-    this.googlePublisherTagService.reset();
     this.setSlotsSubject.next(adSlots);
-  }
-
-  public addSlots(adSlots: AdSlotConfiguration[]): void {
-    const actualSlots: AdSlotConfiguration[] = this.setSlotsSubject.getValue();
-    this.setSlotsSubject.next([...actualSlots, ...adSlots]);
   }
 
   public destroySlots(adSlots: AdSlotConfiguration[]): void {
@@ -65,36 +62,26 @@ export class AdsService {
   }
 
   public refreshAllSlots(): void {
-    this.googlePublisherTagService.refreshAllSlots();
+    this.refreshSlotsSubject.next();
   }
 
   public clearSlots(adSlots: AdSlotConfiguration[]): void {
     this.googlePublisherTagService.clearSlots(adSlots);
   }
 
-  public setAdKeywords(adKeywords: AdKeyWords): void {
-    this.googlePublisherTagService.setAdKeywords(adKeywords);
+  public setAdKeywords(adTargetings: AdTargetings): void {
+    this.googlePublisherTagService.setAdTargeting(adTargetings);
   }
 
-  public refresh(): void {
-    this.refreshEventSubject.next();
-  }
-
-  public displayAdBySlotId(slotId: AdSlotId): void {
-    this.adsReady$
-      .pipe(
-        filter((adsReady: boolean) => adsReady),
-        tap(() => this.googlePublisherTagService.displayAdBySlotId(slotId)),
-        take(1)
-      )
-      .subscribe();
+  public setTargetingByAdsKeywords(): void {
+    this.googlePublisherTagService.setTargetingByAdsKeywords();
   }
 
   public adSlotLoaded$(adSlot: AdSlotConfiguration): Observable<boolean> {
     return this.googlePublisherTagService.isAdSlotLoaded$(adSlot);
   }
 
-  public displayAdShopping(adShoppingPageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration): void {
+  public displayAdShopping(adShoppingPageOptions: AdShoppingPageOptions, adSlotShopping: AdSlotShoppingBaseConfiguration[]): void {
     this.adsReady$
       .pipe(
         filter((adsReady: boolean) => adsReady),
@@ -104,33 +91,67 @@ export class AdsService {
       .subscribe();
   }
 
-  private listenToSlots(): void {
+  private get adSlotsDefined$(): Observable<boolean> {
+    return this.googlePublisherTagService.isAdSlotsDefined$;
+  }
+
+  private get allowSegmentation$(): Observable<boolean> {
+    return this.didomiService.allowSegmentation$();
+  }
+
+  private get fetchHeaderBids(): Function {
+    return this.window['fetchHeaderBids'];
+  }
+
+  private listenerToSetSlots(): void {
     combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
         filter(([adsReady, adSlots]: [boolean, AdSlotConfiguration[]]) => adsReady && adSlots.length > 0),
-        map(([_, adSlots]: [boolean, AdSlotConfiguration[]]) => adSlots),
-        tap((adSlots: AdSlotConfiguration[]) => this.googlePublisherTagService.setSlots(adSlots)),
-        tap(() => this.refresh())
+        map(([_, adSlots]: [boolean, AdSlotConfiguration[]]) => adSlots)
       )
-      .subscribe();
+      .subscribe((adSlots: AdSlotConfiguration[]) => {
+        this.googlePublisherTagService.setTargetingByAdsKeywords();
+        this.googlePublisherTagService.setSlots(adSlots);
+      });
   }
 
-  private listenerToRefresh(): void {
-    combineLatest([this.adsReady$, this.didomiService.allowSegmentation$(), this.refreshEventSubject.asObservable()])
+  private listenerToDisplaySlots(): void {
+    combineLatest([this.adsReady$, this.adSlotsDefined$, this.allowSegmentation$])
       .pipe(
-        filter(([adsReady]: [boolean, boolean, void]) => adsReady),
-        map(([_, allowSegmentation]: [boolean, boolean, void]) => allowSegmentation),
-        tap((allowSegmentation: boolean) => {
-          this.googlePublisherTagService.setAdsSegmentation(allowSegmentation);
-          this.googlePublisherTagService.setTargetingByAdsKeywords(allowSegmentation);
-          this.googlePublisherTagService.refreshAllSlots();
-        }),
-        switchMap(() => this.fetchHeaderBids())
+        filter(([adsReady, adSlotsDefined]: [boolean, boolean, boolean]) => adsReady && adSlotsDefined),
+        map(([adsReady, adSlotsDefined, allowSegmentation]: [boolean, boolean, boolean]) => allowSegmentation)
       )
-      .subscribe();
+      .subscribe((allowSegmentation: boolean) => {
+        this.getHeaderBids(allowSegmentation);
+      });
   }
 
-  private fetchHeaderBids(): Observable<void> {
-    return merge(this.amazonPublisherService.requestBid(this.setSlotsSubject.getValue()), this.criteoService.requestBid());
+  private listenerToRefreshSlots(): void {
+    combineLatest([this.allowSegmentation$, this.refreshSlotsSubject.asObservable()])
+      .pipe(map(([allowSegmentation, refreshSlots]: [boolean, void]) => allowSegmentation))
+      .subscribe((allowSegmentation: boolean) => {
+        this.googlePublisherTagService.setTargetingByAdsKeywords();
+        this.refreshHeaderBids(allowSegmentation);
+      });
+  }
+
+  private getHeaderBids(allowSegmentation: boolean): void {
+    const slots = this.setSlotsSubject.getValue();
+    const definedSlots = this.googlePublisherTagService.getDefinedSlots();
+    const deviceType = this.deviceService.getDeviceType();
+
+    // This is needed for RichAudience initialization
+    this.window['deviceType'] = deviceType;
+
+    // RichAudience magic function
+    this.fetchHeaderBids(allowSegmentation, slots, definedSlots);
+    this.googlePublisherTagService.setPubAdsConfig();
+  }
+
+  private refreshHeaderBids(allowSegmentation: boolean): void {
+    const slots = this.setSlotsSubject.getValue();
+    const definedSlots = this.googlePublisherTagService.getDefinedSlots();
+
+    this.fetchHeaderBids(allowSegmentation, slots, definedSlots);
   }
 }

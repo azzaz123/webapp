@@ -9,6 +9,8 @@ import { SortByService } from './services/sort-by.service';
 import { SORT_BY_DISTANCE_OPTION, SORT_BY_RELEVANCE_OPTION } from './services/constants/sort-by-options-constants';
 import { SORT_BY } from '@api/core/model';
 
+/* eslint-disable  @typescript-eslint/member-ordering */
+
 @Component({
   selector: 'tsl-sort-filter',
   templateUrl: 'sort-filter.component.html',
@@ -17,13 +19,15 @@ import { SORT_BY } from '@api/core/model';
 })
 export class SortFilterComponent implements OnInit {
   private static KEY_PARAMETER: FILTER_QUERY_PARAM_KEY = FILTER_QUERY_PARAM_KEY.orderBy;
-  private defaultValue: SORT_BY = SORT_BY_DISTANCE_OPTION.value;
-  public options: SelectFormOption<SORT_BY>[] = [];
-  public formControl: FormControl = new FormControl(this.defaultValue);
-  public selected: SelectFormOption<SORT_BY>;
 
   @ViewChild(NgbDropdown, { static: false }) public dropdown: NgbDropdown;
   @Output() toggleBubble: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  public options: SelectFormOption<SORT_BY>[] = [];
+  public selected: SelectFormOption<SORT_BY>;
+
+  private defaultValue: SORT_BY = SORT_BY_DISTANCE_OPTION.value;
+  public formControl: FormControl = new FormControl(this.defaultValue);
 
   @Input() set value(value: SORT_BY) {
     const selected = this.getSelectedValue(value);
@@ -32,11 +36,6 @@ export class SortFilterComponent implements OnInit {
       this.formControl.setValue(value, { emitEvent: false });
     }
   }
-
-  private getSelectedValue(actualValue: string): SelectFormOption<SORT_BY> {
-    return this.options.find(({ value }) => value === actualValue);
-  }
-
   constructor(private searchNavigatorService: SearchNavigatorService, private sortByService: SortByService) {
     this.sortByService.options$.subscribe((options) => {
       this.options = options;
@@ -54,27 +53,31 @@ export class SortFilterComponent implements OnInit {
     this.initData();
   }
 
-  private initData() {
-    this.formControl = new FormControl(this.selected?.value || this.options[0]?.value);
-    this.selected = this.getSelectedValue(this.formControl.value);
-    this.formControl.valueChanges.subscribe((value: SORT_BY) => {
-      this.onChangeValue(value);
-    });
-  }
-
   public openChange(event: boolean): void {
     this.toggleBubble.emit(event);
   }
 
   public onChangeValue(newValue: string): void {
     this.selected = this.getSelectedValue(newValue);
-    this.searchNavigatorService.navigate([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }], FILTERS_SOURCE.QUICK_FILTERS, true);
+    this.searchNavigatorService.navigate([{ key: SortFilterComponent.KEY_PARAMETER, value: newValue }], FILTERS_SOURCE.QUICK_FILTERS);
 
     this.closeDropdown();
   }
 
   public cancel(): void {
     this.closeDropdown();
+  }
+
+  private getSelectedValue(actualValue: string): SelectFormOption<SORT_BY> {
+    return this.options.find(({ value }) => value === actualValue);
+  }
+
+  private initData() {
+    this.formControl = new FormControl(this.selected?.value || this.options[0]?.value);
+    this.selected = this.getSelectedValue(this.formControl.value);
+    this.formControl.valueChanges.subscribe((value: SORT_BY) => {
+      this.onChangeValue(value);
+    });
   }
 
   private closeDropdown(): void {

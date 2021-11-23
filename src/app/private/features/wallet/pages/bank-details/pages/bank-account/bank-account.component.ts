@@ -5,10 +5,8 @@ import { DELIVERY_INPUTS_MAX_LENGTH } from '@private/features/delivery/enums/del
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { EventService } from '@core/event/event.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { I18nService } from '@core/i18n/i18n.service';
 import { BankAccountService } from '@private/features/wallet/services/bank-account/bank-account.service';
-import { finalize } from 'rxjs/operators';
+import { distinctUntilChanged, finalize } from 'rxjs/operators';
 import { BankAccount } from '@private/features/wallet/interfaces/bank-account/bank-account-api.interface';
 import { Router } from '@angular/router';
 import { BankAccountFormErrorMessages } from '@private/features/wallet/interfaces/bank-account/bank-account-form-error-messages.interface';
@@ -25,6 +23,11 @@ import {
 } from '@private/features/wallet/errors/classes/bank-account';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
+import { KYCTrackingEventsService } from '@private/features/wallet/modals/kyc/services/kyc-tracking-events/kyc-tracking-events.service';
+import { BehaviorSubject } from 'rxjs';
+import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
+import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
+import { DeviceService } from '@core/device/device.service';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -37,12 +40,13 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   @Input() isKYC = false;
 
   @Output() bankAccountSaved: EventEmitter<void> = new EventEmitter();
+  @Output() closeModal: EventEmitter<void> = new EventEmitter();
 
+  public readonly loadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
-  public loading = false;
   public isNewForm = true;
-  public loadingButton = false;
   public maxLengthIBAN: number;
   public formErrorMessages: BankAccountFormErrorMessages = {
     iban: '',
@@ -57,18 +61,22 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     private uuidService: UuidService,
     private eventService: EventService,
     private toastService: ToastService,
-    private i18nService: I18nService,
     private router: Router,
     private bankAccountService: BankAccountService,
-    private location: Location
+    private location: Location,
+    private kycTrackingEventsService: KYCTrackingEventsService,
+    private separateWordByCharacterPipe: SeparateWordByCharacterPipe,
+    private deviceService: DeviceService
   ) {}
 
   ngOnInit(): void {
+    this.trackPageViewEventWhenIsKYC();
     this.generateIBANMaxLength();
     this.buildForm();
     this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
       this.onSubmit();
     });
+    this.formatIBANWhenChanges();
   }
 
   ngOnDestroy() {
@@ -80,7 +88,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       .get()
       .pipe(
         finalize(() => {
-          this.loading = false;
+          this.loading$.next(false);
         })
       )
       .subscribe(
@@ -101,11 +109,14 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    this.trackClickKYCConfirmBankAccountInfoEventWhenIsKYC();
+    if (this.loadingButton$.value) return;
+
     if (this.bankAccountForm.valid) {
       this.submitValidForm();
     } else {
       this.bankAccountForm.markAsPending();
-      this.showToast(TRANSLATION_KEY.BANK_ACCOUNT_MISSING_INFO_ERROR, TOAST_TYPES.ERROR);
+      this.showToast(BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR, TOAST_TYPES.ERROR);
       for (const control in this.bankAccountForm.controls) {
         if (this.bankAccountForm.controls.hasOwnProperty(control) && !this.bankAccountForm.controls[control].valid) {
           this.bankAccountForm.controls[control].markAsDirty();
@@ -118,8 +129,26 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  public canExit(): true | Promise<any> {
+    return this.isKYC ? true : this.formComponent.canExit();
+  }
+
+  // TODO: Formating IBAN on blur event only for Android due to an unknown behaviour from Android OS
+  public formatIbanOnAndroid(): void {
+    const deviceOSName = this.deviceService.getOSName();
+    const deviceIsNotAndroid = deviceOSName !== 'Android';
+    if (deviceIsNotAndroid) {
+      return;
+    }
+
+    const currentIBAN = this.bankAccountForm.get('iban').value;
+    const formattedIBAN = this.separateWordByCharacterPipe.transform(currentIBAN, 4, ' ');
+    this.bankAccountForm.patchValue({ iban: formattedIBAN });
+  }
+
   private submitValidForm(): void {
-    this.loadingButton = true;
+    this.loadingButton$.next(true);
+
     const subscription = this.isNewForm
       ? this.bankAccountService.create(this.bankAccountForm.getRawValue())
       : this.bankAccountService.update(this.bankAccountForm.getRawValue());
@@ -127,17 +156,16 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     subscription
       .pipe(
         finalize(() => {
-          this.loadingButton = false;
+          this.loadingButton$.next(false);
         })
       )
       .subscribe(
         () => {
-          const translationKey = this.isNewForm
-            ? TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_CREATE_SUCCESS
-            : TRANSLATION_KEY.DELIVERY_BANK_ACCOUNT_EDIT_SUCCESS;
+          const translationKey = this.isNewForm ? BANK_ACCOUNT_TRANSLATIONS.ADD_SUCCESS : BANK_ACCOUNT_TRANSLATIONS.EDIT_SUCCESS;
 
           this.showToast(translationKey, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
+          this.formComponent.initFormControl();
 
           if (this.isKYC) {
             this.bankAccountSaved.emit();
@@ -152,7 +180,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   }
 
   private handleBankAccountErrors(errors: BankAccountError[]): void {
-    let translationKey: TRANSLATION_KEY = TRANSLATION_KEY.FORM_FIELD_ERROR;
+    let toastText: string = BANK_ACCOUNT_TRANSLATIONS.MISSING_INFO_ERROR;
 
     errors.forEach((error: BankAccountError) => {
       if (error instanceof IbanCountryIsInvalidError || error instanceof IbanIsInvalidError) {
@@ -168,7 +196,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       }
 
       if (error instanceof PlatformResponseIsInvalidError || error instanceof UniqueBankAccountByUserError) {
-        translationKey = TRANSLATION_KEY.BANK_ACCOUNT_SAVE_GENERIC_ERROR;
+        toastText = BANK_ACCOUNT_TRANSLATIONS.SAVE_GENERIC_ERROR;
       }
 
       if (!(error instanceof PlatformResponseIsInvalidError) && !(error instanceof UniqueBankAccountByUserError)) {
@@ -176,7 +204,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.showToast(translationKey, TOAST_TYPES.ERROR);
+    this.showToast(toastText, TOAST_TYPES.ERROR);
   }
 
   private setIncorrectControlAndShowError(formControl: string, message: string): void {
@@ -194,6 +222,20 @@ export class BankAccountComponent implements OnInit, OnDestroy {
   private generateIBANMaxLength(): void {
     const spacingAllowed = IBAN_LENGTH / 4 - 1;
     this.maxLengthIBAN = IBAN_LENGTH + spacingAllowed;
+  }
+
+  private formatIBANWhenChanges(): void {
+    const isAndroidDevice = this.deviceService.getOSName() === 'Android';
+    if (isAndroidDevice) {
+      return;
+    }
+    this.bankAccountForm
+      .get('iban')
+      .valueChanges.pipe(distinctUntilChanged())
+      .subscribe((newIBAN: string) => {
+        const formattedIBAN = this.separateWordByCharacterPipe.transform(newIBAN, 4, ' ');
+        this.bankAccountForm.patchValue({ iban: formattedIBAN });
+      });
   }
 
   private patchFormValues(): void {
@@ -230,10 +272,22 @@ export class BankAccountComponent implements OnInit, OnDestroy {
     });
   }
 
-  private showToast(key: TRANSLATION_KEY, type: TOAST_TYPES): void {
+  private showToast(text: string, type: TOAST_TYPES): void {
     this.toastService.show({
-      text: `${this.i18nService.translate(key)}`,
+      text,
       type,
     });
+  }
+
+  private trackClickKYCConfirmBankAccountInfoEventWhenIsKYC(): void {
+    if (this.isKYC) {
+      this.kycTrackingEventsService.trackClickKYCConfirmBankAccountInfo();
+    }
+  }
+
+  private trackPageViewEventWhenIsKYC(): void {
+    if (this.isKYC) {
+      this.kycTrackingEventsService.trackViewKYCBankAccountInfoScreen();
+    }
   }
 }

@@ -44,6 +44,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.active = false;
   }
 
+  public openConversation(inboxConversation: InboxConversation): void {
+    this.inboxConversationService.openConversation(inboxConversation);
+    this.router.navigateByUrl(`/chat?conversationId=${inboxConversation.id}`);
+  }
+
+  public countTotalMessages(): number {
+    return !this.conversations
+      ? 0
+      : this.conversations
+          .filter((conversation, index) => !!conversation && index < 5)
+          .reduce((sum, current) => sum + (current.unreadCounter < 1 ? 1 : current.unreadCounter), 0);
+  }
+
+  public hasConversations(): boolean {
+    return this.conversations.length > 0;
+  }
+
+  public hasCalls(): boolean {
+    return this.calls.length > 0;
+  }
+
   private getData() {
     this.callService
       .getPage(1, false, null, 5)
@@ -64,26 +85,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.messagesTotal = this.countTotalMessages();
         this.hasMessagesOrCalls = this.phonesTotal + this.messagesTotal > 0;
       });
-  }
-
-  public openConversation(inboxConversation: InboxConversation): void {
-    this.inboxConversationService.openConversation(inboxConversation);
-    this.router.navigateByUrl(`/chat?conversationId=${inboxConversation.id}`);
-  }
-
-  public countTotalMessages(): number {
-    return this.conversations == null
-      ? 0
-      : this.conversations
-          .filter((conversation, index) => conversation != null && index < 5)
-          .reduce((sum, current) => sum + (current.unreadCounter < 1 ? 1 : current.unreadCounter), 0);
-  }
-
-  public hasConversations(): boolean {
-    return this.conversations.length > 0;
-  }
-
-  public hasCalls(): boolean {
-    return this.calls.length > 0;
   }
 }

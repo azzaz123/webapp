@@ -9,6 +9,10 @@
     }
   }
 
+  &__back {
+    cursor: pointer;
+  }
+
   @include media-breakpoint-down(md) {
     margin-bottom: $spacing-ml;
   }

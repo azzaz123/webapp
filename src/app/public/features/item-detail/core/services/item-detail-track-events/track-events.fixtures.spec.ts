@@ -16,6 +16,7 @@ import {
   ViewOthersItemREDetail,
   ViewOwnItemDetail,
 } from '@core/analytics/analytics-constants';
+import { USER_TYPE } from '@core/user/user.service';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_CAR_ITEM_DETAIL } from '@fixtures/item-detail.fixtures.spec';
@@ -37,6 +38,7 @@ export const MOCK_CLICK_CHAT_BUTTON_EVENT: AnalyticsEvent<ClickChatButton> = {
     screenId: SCREEN_IDS.ItemDetail,
     isPro: MOCK_USER.featured,
     isBumped: !!MOCK_ITEM.bumpFlags?.bumped,
+    shippingAllowed: null,
   },
 };
 
@@ -62,6 +64,7 @@ export const MOCK_VIEW_OTHERS_CG_DETAIL_EVENT: AnalyticsPageView<ViewOthersItemC
     title: MOCK_ITEM_GBP.title,
     isPro: MOCK_OTHER_USER.featured,
     screenId: SCREEN_IDS.ItemDetail,
+    sellerCountry: 'ES',
   },
 };
 
@@ -130,6 +133,7 @@ export const MOCK_CLICK_ITEM_CARD_EVENT: AnalyticsEvent<ClickItemCard> = {
     position: MOCK_ITEM_INDEX + 1,
     screenId: SCREEN_IDS.ItemDetailRecommendationSlider,
     isPro: MOCK_OTHER_USER.featured,
+    isCarDealer: MOCK_OTHER_USER?.type === USER_TYPE.PROFESSIONAL,
     salePrice: MOCK_ITEM_CARD.salePrice,
     title: MOCK_ITEM_CARD.title,
     itemSourceRecommendationId: MOCK_ITEM.id,
@@ -192,6 +196,7 @@ export const MOCK_VIEW_OTHERS_ITEM_RE_DETAIL_EVENT: AnalyticsPageView<ViewOthers
     rooms: MOCK_REALESTATE.rooms,
     isPro: MOCK_OTHER_USER.featured,
     screenId: SCREEN_IDS.ItemDetail,
+    sellerCountry: 'ES',
   },
 };
 
@@ -214,6 +219,7 @@ export const MOCK_VIEW_OTHERS_ITEM_CAR_DETAIL_EVENT: AnalyticsPageView<ViewOther
     isCarDealer: true,
     isPro: MOCK_CAR_ITEM_DETAIL.user.featured,
     screenId: SCREEN_IDS.ItemDetail,
+    sellerCountry: 'ES',
   },
 };
 

@@ -446,7 +446,7 @@ describe('SuggesterFilterComponent', () => {
         fixture.detectChanges();
 
         expect(optionService.getOptions).toHaveBeenCalledTimes(1);
-        expect(optionService.getOptions).toHaveBeenCalledWith(FASHION_CONFIGURATION_ID.BRAND, undefined);
+        expect(optionService.getOptions).toHaveBeenCalledWith(FASHION_CONFIGURATION_ID.BRAND);
       });
     });
 
@@ -638,8 +638,9 @@ describe('SuggesterFilterComponent', () => {
           formInstance.handleOptionClick('default_1');
           fixture.detectChanges();
 
-          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(By.directive(DrawerPlaceholderTemplateComponent))
-            .componentInstance;
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(
+            By.directive(DrawerPlaceholderTemplateComponent)
+          ).componentInstance;
 
           expect(component.value).toEqual([
             {

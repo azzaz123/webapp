@@ -64,6 +64,8 @@ import { PERMISSIONS } from './user-constants';
 import { LOCALE_ID } from '@angular/core';
 import { StoreLocation, StoreLocationResponse } from '@core/geolocation/address-response.interface';
 import { cloneDeep } from 'lodash-es';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 jest.mock('@mparticle/web-sdk', () => ({
   __esModule: true,
@@ -94,10 +96,6 @@ describe('Service: User', () => {
         UserService,
         I18nService,
         AccessTokenService,
-        {
-          provide: 'SUBDOMAIN',
-          useValue: 'www',
-        },
         {
           provide: ReleaseVersionService,
           useValue: {
@@ -130,6 +128,10 @@ describe('Service: User', () => {
           },
         },
         { provide: LOCALE_ID, useValue: 'en' },
+        {
+          provide: SITE_URL,
+          useValue: MOCK_SITE_URL,
+        },
       ],
     });
     service = TestBed.inject(UserService);
@@ -208,8 +210,8 @@ describe('Service: User', () => {
   });
 
   describe('get', () => {
-    describe('when there are no users stored', () => {
-      it('should ask backend and return user', () => {
+    describe('when there are no users in local cache', () => {
+      it('should get user from server', () => {
         let response: User;
 
         service.get(USER_ID).subscribe((r) => (response = r));
@@ -221,16 +223,32 @@ describe('Service: User', () => {
       });
     });
 
-    describe('when there are users stored', () => {
-      it('should not ask backend and return user from memory', () => {
-        let response: User;
-
+    describe('when there are users in local cache', () => {
+      beforeEach(() => {
         service.get(USER_ID).subscribe();
         httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`).flush(USER_DATA);
+      });
+
+      it('should get user from local cache', () => {
+        let response: User;
+
         service.get(USER_ID).subscribe((r) => (response = r));
         httpMock.expectNone(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
 
         expect(response).toEqual(MOCK_FULL_USER);
+      });
+
+      describe('and when specifying to not use local cache', () => {
+        it('should get user from server', () => {
+          let response: User;
+
+          service.get(USER_ID, false).subscribe((r) => (response = r));
+          const req = httpMock.expectOne(`${environment.baseUrl}${USER_BY_ID_ENDPOINT(USER_ID)}`);
+          req.flush(USER_DATA);
+
+          expect(req.request.method).toBe('GET');
+          expect(response).toEqual(MOCK_FULL_USER);
+        });
       });
     });
 
@@ -844,6 +862,35 @@ describe('Service: User', () => {
         const response = service.hasStoreLocation(user);
         expect(response).toBe(true);
       });
+    });
+  });
+
+  describe('Save local store', () => {
+    beforeEach(() => {
+      jest.spyOn(service, 'user', 'get').mockReturnValue(MOCK_USER);
+    });
+    it('should save data', () => {
+      spyOn(localStorage, 'setItem').and.callThrough();
+
+      service.saveLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION, 'true');
+
+      expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+      expect(localStorage.setItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`, 'true');
+    });
+  });
+
+  describe('Get local store', () => {
+    beforeEach(() => {
+      jest.spyOn(service, 'user', 'get').mockReturnValue(MOCK_USER);
+    });
+    it('should retrieve data', () => {
+      spyOn(localStorage, 'getItem').and.returnValue('true');
+
+      const value = service.getLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION);
+
+      expect(localStorage.getItem).toHaveBeenCalledTimes(1);
+      expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
+      expect(value).toEqual('true');
     });
   });
 });

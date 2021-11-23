@@ -1,7 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { LocationBoxComponent } from './location-box.component';
 import { UserService } from '../../../core/user/user.service';
-import { of } from 'rxjs';
 import { USER_LOCATION } from '@private/features/upload/pages/upload-product/upload-product.component.spec';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

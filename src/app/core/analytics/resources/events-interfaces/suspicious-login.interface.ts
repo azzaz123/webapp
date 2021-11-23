@@ -8,4 +8,9 @@
 /**
  * Users do a suspicious login
  */
-export interface SuspiciousLogin {}
+export interface SuspiciousLogin {
+  /**
+   * Name of the experiment or A/B testing applied to the user who has done the suspicious login. The default value would be 'baseline'
+   */
+  experiment?: string;
+}

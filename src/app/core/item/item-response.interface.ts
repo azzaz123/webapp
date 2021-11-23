@@ -86,36 +86,6 @@ export interface ItemProResponse {
   type: string;
 }
 
-export interface ItemByCategoryResponse {
-  id: string;
-  title: string;
-  main_image: {
-    id: string;
-    original_width: number;
-    original_height: number;
-    average_hex_color: string;
-    urls_by_size: {
-      small: string;
-      xmall: string;
-      original: string;
-      large: string;
-      xlarge: string;
-      medium: string;
-    };
-  };
-  modified_date: number;
-  publish_date: number;
-  sale_price: number;
-  currency_code: string;
-  active_item_purchase: any;
-  flags: ItemFlags;
-  visibility_flags: ItemVisibilityFlags;
-  web_slug: string;
-  car_info?: {
-    km: number;
-  };
-}
-
 export interface ItemVisibilityFlags {
   bumped: boolean;
   highlighted: boolean;
@@ -194,7 +164,7 @@ export interface ConversationUser {
 export interface Purchase {
   expiration_date: number;
   item_id: string;
-  purchase_name?: 'listingfee' | 'countrybump';
+  purchase_name?: 'countrybump';
   visibility_flags: {
     bumped: boolean;
     highlighted: boolean;
@@ -247,11 +217,7 @@ export interface ItemUploadForm {
   sale_price: number;
   currency_code: string;
   description?: string;
-  sale_conditions?: {
-    fix_price: boolean;
-    exchange_allowed: boolean;
-    shipping_allowed?: boolean;
-  };
+  sale_conditions?: ItemSaleConditions;
   delivery_info?: any;
   location?: {
     address: string;
@@ -360,6 +326,7 @@ export interface ItemSaleConditions {
   fix_price: boolean;
   exchange_allowed: boolean;
   shipping_allowed?: boolean;
+  supports_shipping?: boolean;
 }
 
 export interface ItemCounters {
@@ -422,10 +389,4 @@ export interface CarInfo {
   num_doors: number;
   num_seats: number;
   version: string;
-}
-
-export interface ListingFeeProductInfo {
-  limit_category: number;
-  limit_type: string;
-  product_group: AvailableProductsResponse;
 }

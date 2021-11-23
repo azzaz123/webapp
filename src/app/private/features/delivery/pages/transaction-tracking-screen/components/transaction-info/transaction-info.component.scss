@@ -1,0 +1,33 @@
+@import '~style/common';
+
+.TrackingInfo {
+  background-color: $white;
+
+  &__image {
+    margin-right: $spacer * 0.75;
+    @include square(48px);
+    object-fit: cover;
+
+    &--circle {
+      border-radius: 50%;
+    }
+
+    &--rounded {
+      border-radius: 5px;
+    }
+  }
+
+  &__itemInfo {
+    flex: 1;
+    overflow: hidden;
+
+    &__price {
+      font-size: $font-size-l;
+      font-weight: $font-weight-chunky;
+    }
+  }
+
+  &__text {
+    color: $blue-grey-1;
+  }
+}

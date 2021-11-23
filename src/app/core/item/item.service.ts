@@ -29,8 +29,6 @@ import {
   PurchaseProductsWithCreditsResponse,
   RealestateContent,
   SelectedItemsAction,
-  ListingFeeProductInfo,
-  ItemByCategoryResponse,
 } from './item-response.interface';
 import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
@@ -55,7 +53,6 @@ export const ITEM_STATUSES: any = {
 };
 
 export const PAYMENT_PROVIDER = 'STRIPE';
-export const MINES_BY_CATEGORY_ENDPOINT = 'api/v3/items/manageable-items/';
 export const ACTIVATE_ENDPOINT = 'activate';
 export enum ITEM_STATUS {
   SOLD = 'sold',
@@ -70,6 +67,7 @@ export const USERS_API_URL = 'api/v3/users';
 export const PROTOOL_API_URL = 'api/v3/protool';
 export const V1_API_URL = 'shnm-portlet/api/v1';
 
+// FIXME: In order to follow the project architecture, this service should be provided in root
 @Injectable()
 export class ItemService {
   public selectedAction: string;
@@ -82,7 +80,6 @@ export class ItemService {
   };
   public selectedItems: string[] = [];
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
-  private lastCategoryIdSearched: number;
 
   constructor(private http: HttpClient, private i18n: I18nService, private uuidService: UuidService, private eventService: EventService) {}
 
@@ -318,50 +315,6 @@ export class ItemService {
     );
   }
 
-  private mapItemByCategory(response: ItemByCategoryResponse, categoryId: number) {
-    const item = new Item(
-      response.id,
-      null,
-      null,
-      response.title,
-      null,
-      categoryId,
-      null,
-      response.sale_price,
-      response.currency_code,
-      response.modified_date,
-      null,
-      response.flags,
-      null,
-      null,
-      response.main_image,
-      null,
-      response.web_slug,
-      response.publish_date,
-      null,
-      null,
-      null,
-      response.car_info
-    );
-
-    if (response.active_item_purchase) {
-      if (response.active_item_purchase.listing_fee) {
-        item.listingFeeExpiringDate = new Date().getTime() + response.active_item_purchase.listing_fee.remaining_time_ms;
-      }
-
-      if (response.active_item_purchase.bump) {
-        item.purchases = {
-          bump_type: response.active_item_purchase.bump.type,
-          expiration_date: response.active_item_purchase.bump.remaining_time_ms,
-        };
-
-        item.bumpExpiringDate = new Date().getTime() + response.active_item_purchase.bump.remaining_time_ms;
-      }
-    }
-
-    return item;
-  }
-
   public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
     return this.http
       .get<HttpResponse<ItemResponse[]>>(`${environment.baseUrl}${url}`, {
@@ -408,9 +361,6 @@ export class ItemService {
                   id: purchase.item_id,
                 });
                 if (index !== -1) {
-                  if (purchase.purchase_name === 'listingfee') {
-                    itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
-                  }
                   if (this.bumpTypes.includes(purchase.purchase_name)) {
                     itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
                   }
@@ -440,7 +390,6 @@ export class ItemService {
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
-    this.lastCategoryIdSearched = null;
     return this.getPaginationItems(WEB_ITEMS_API_URL + '/mine/' + status, init, true);
   }
 
@@ -547,7 +496,7 @@ export class ItemService {
   }
 
   public get(id: string): Observable<Item> {
-    return this.http.get<Item>(`${environment.baseUrl}${ITEMS_API_URL}/${id}`).pipe(
+    return this.http.get<Item>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/vertical`).pipe(
       mapRx.map((r) => this.mapRecordData(r)),
       catchError(() => of(this.getFakeItem(id)))
     );
@@ -630,22 +579,6 @@ export class ItemService {
     return find(product.durations, { duration: duration });
   }
 
-  public getUrgentProducts(itemId: string): Observable<Product> {
-    return this.http
-      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/available-urgent-products`)
-      .pipe(mapRx.map((response: AvailableProductsResponse) => response.products[0]));
-  }
-
-  public getUrgentProductByCategoryId(categoryId: string): Observable<Product> {
-    return this.http
-      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/available-urgent-products`, {
-        params: {
-          categoryId,
-        },
-      })
-      .pipe(mapRx.map((response: AvailableProductsResponse) => response.products[0]));
-  }
-
   public mines(
     pageNumber: number,
     pageSize: number,
@@ -677,7 +610,6 @@ export class ItemService {
                 return item;
               });
             this.items[status] = items;
-            this.lastCategoryIdSearched = null;
             return items;
           }
           return [];
@@ -726,77 +658,6 @@ export class ItemService {
               map((res2: ItemProResponse[]) => {
                 return res.concat(res2);
               })
-            );
-          } else {
-            return of([]);
-          }
-        })
-      );
-  }
-
-  public minesByCategory(
-    pageNumber: number,
-    pageSize: number,
-    categoryId: number,
-    sortByParam: string,
-    status: string = 'active',
-    term?: string,
-    cache: boolean = true
-  ): Observable<Item[]> {
-    const init: number = (pageNumber - 1) * pageSize;
-    const end: number = init + pageSize;
-
-    // TODO: Propper condition with last category id searched and so
-    if (status === 'TODO' && this.lastCategoryIdSearched && this.lastCategoryIdSearched === categoryId && this.items[status] && cache) {
-      return of(this.items[status]);
-    } else {
-      return this.recursiveMinesByCategory(0, 20, categoryId, status).pipe(
-        map((responseArray) => {
-          if (responseArray.length > 0) {
-            const items = responseArray.map((i) => this.mapItemByCategory(i, categoryId));
-            this.items[status] = items;
-            this.lastCategoryIdSearched = categoryId;
-            return items;
-          }
-          return [];
-        }),
-        map((res) => {
-          term = term ? term.trim().toLowerCase() : '';
-          if (term !== '') {
-            return filter(res, (item: Item) => {
-              return item.title.toLowerCase().indexOf(term) !== -1;
-            });
-          }
-          return res;
-        }),
-        map((res) => {
-          const sort = sortByParam.split('_');
-          const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
-          const sorted: Item[] = sortBy(res, [field]);
-          if (sort[1] === 'desc') {
-            return reverse(sorted);
-          }
-          return sorted;
-        })
-      );
-    }
-  }
-
-  public recursiveMinesByCategory(init: number, offset: number, categoryId: number, status: string): Observable<ItemByCategoryResponse[]> {
-    return this.http
-      .get<any>(`${environment.baseUrl}${MINES_BY_CATEGORY_ENDPOINT}`, {
-        params: {
-          status,
-          init: init.toString(),
-          end: (init + offset).toString(),
-          category_id: categoryId.toString(),
-        },
-      })
-      .pipe(
-        mergeMap((res) => {
-          if (res.length > 0) {
-            return this.recursiveMinesByCategory(init + offset, offset, categoryId, status).pipe(
-              map((recursiveResult) => res.concat(recursiveResult))
             );
           } else {
             return of([]);
@@ -940,11 +801,5 @@ export class ItemService {
         version,
       },
     });
-  }
-
-  public getListingFeeInfo(itemId: string): Observable<Product> {
-    return this.http
-      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/listing-fee-info`)
-      .pipe(mapRx.map((response: ListingFeeProductInfo) => response.product_group.products[0]));
   }
 }

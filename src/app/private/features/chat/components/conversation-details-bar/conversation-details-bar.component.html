@@ -24,14 +24,14 @@
         'faded-item': currentConversation.item.notAvailable || currentConversation.item.unpublished}">
 
     <div class="avatar-container d-none d-sm-block">
-      <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
+      <a [href]="currentConversation?.item.itemSlug | itemDetailRoute" target="_blank" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
                          size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
       </a>
     </div>
 
     <div class="avatar-container d-block d-sm-none">
-      <a href="{{ currentConversation?.item.itemUrl }}" target="_blank" class="avatar">
+      <a [href]="currentConversation?.item.itemSlug | itemDetailRoute" target="_blank" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
       </a>
@@ -69,7 +69,7 @@
 
     <tsl-svg-icon class="menu-icon" src="/assets/icons/menu.svg" ngbDropdownToggle></tsl-svg-icon>
     <div ngbDropdownMenu>
-      <button *ngxPermissionsOnly="['isNormal']" class="dropdown-item" (click)="archiveConversation()"
+      <button *ngxPermissionsExcept="['isProfessional']" class="dropdown-item" (click)="archiveConversation()"
               i18n="@@web_delete_conversation" [hidden]="currentConversationIsArchived()">Delete conversation</button>
       <button *ngxPermissionsOnly="['isProfessional']" class="dropdown-item" (click)="archiveConversation()"
               i18n="@@web_archive_conversation" [hidden]="currentConversationIsArchived()">Archive conversation</button>

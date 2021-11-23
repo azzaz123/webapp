@@ -1,0 +1,36 @@
+@import '~style/common';
+
+$drawing-height: 130px;
+
+.KYCStatus {
+  &__containerLaterals {
+    padding: 0px $spacer * 2;
+  }
+
+  &__title,
+  &__description {
+    color: $blue-grey-1;
+  }
+
+  &__title {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-l;
+  }
+
+  &__drawing {
+    height: $drawing-height;
+  }
+
+  &__link {
+    color: $walla-main;
+  }
+
+  &__bottomContainer {
+    bottom: 0;
+    background-color: transparentize($white, 0.5);
+  }
+
+  &__cross {
+    cursor: pointer;
+  }
+}

@@ -38,7 +38,7 @@ describe('ItemApiService', () => {
       const languageParamKey = 'language';
       const languageParamValue = 'en';
       const expectedParams = new HttpParams().set(languageParamKey, languageParamValue);
-      const expectedUrl = `${GET_ITEM_ENDPOINT(ITEM_ID)}?${expectedParams.toString()}`;
+      const expectedUrl = `${GET_ITEM_ENDPOINT(ITEM_ID)}/vertical?${expectedParams.toString()}`;
 
       itemApiService.getItem(ITEM_ID).subscribe();
       const req = httpMock.expectOne(expectedUrl);

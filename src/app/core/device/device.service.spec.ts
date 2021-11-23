@@ -83,7 +83,7 @@ describe('DeviceService', () => {
 
         expect(deviceId).toEqual('newDeviceId');
         expect(cookieService.put).toHaveBeenCalledWith('device_id', 'newDeviceId', {
-          domain: 'localhost',
+          domain: expect.anything(),
           path: '/',
           expires: expect.any(Date),
         });
@@ -163,6 +163,17 @@ describe('DeviceService', () => {
 
         expect(languages).toBe(MOCK_LANGUAGES);
       });
+    });
+  });
+
+  describe('when asking for the OS', () => {
+    it('should get the OS', () => {
+      const expected = 'Aifone';
+      deviceDetectorService.os = expected;
+
+      const result = deviceService.getOSName();
+
+      expect(result).toBe(expected);
     });
   });
 });

@@ -1,22 +1,24 @@
-<div class="modal-close grey" (click)="activeModal.dismiss()">
-  <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
-</div>
-<div class="modal-body">
-  <h1 i18n="@@web_edit_email_modal_522">New email?</h1>
-  <p i18n="@@web_edit_email_modal_523">You can update it now</p>
-  <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label i18n="@@web_edit_email_modal_524">Current email</label>
-      <div id="qa-profile-edit-current-email" class="form-control">{{currentEmail}}</div>
-    </div>
-    <div class="form-group">
-      <label for="email" i18n="@@web_edit_email_modal_525">New email</label>
-      <input type="email" i18n-placeholder="@@web_edit_email_modal_631" placeholder="New email" class="form-control" id="email"
-        formControlName="email_address" maxlength="75" />
-    </div>
-    <tsl-button [type]="'submit'" id="qa-profile-edit-confirm-email" className="btn-primary btn-block" i18n="@@web_edit_email_modal_526">Change email
-    </tsl-button>
-  </form>
-  <p class="note" i18n="@@web_edit_email_modal_527">In order to update your email address you will need to confirm it. Go to your inbox to confirm
-    the updated information.</p>
+<div class="p-3">
+  <div class="modal-close-btn position-fixed" (click)="activeModal.dismiss()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+  <div class="modal-body">
+    <h1 i18n="@@web_edit_email_modal_522">New email?</h1>
+    <p i18n="@@web_edit_email_modal_523">You can update it now</p>
+    <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label i18n="@@web_edit_email_modal_524">Current email</label>
+        <div id="qa-profile-edit-current-email" class="form-control">{{currentEmail}}</div>
+      </div>
+      <div class="form-group">
+        <label for="email" i18n="@@web_edit_email_modal_525">New email</label>
+        <input type="email" i18n-placeholder="@@web_edit_email_modal_631" placeholder="New email" class="form-control" id="email"
+          formControlName="email_address" maxlength="75" />
+      </div>
+      <tsl-button [type]="'submit'" id="qa-profile-edit-confirm-email" className="btn-primary btn-block" i18n="@@web_edit_email_modal_526">Change email
+      </tsl-button>
+    </form>
+    <p class="note" i18n="@@web_edit_email_modal_527">In order to update your email address you will need to confirm it. Go to your inbox to confirm
+      the updated information.</p>
+  </div>
 </div>

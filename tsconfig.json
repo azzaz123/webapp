@@ -44,6 +44,9 @@
       ],
       "@tests/shared": [
         "tests/shared/index.ts"
+      ],
+      "@configs/*": [
+        "configs/*"
       ]
     },
     "outDir": "./dist/out-tsc",

@@ -39,6 +39,7 @@ export class AdsKeywordsService {
     const category = this.cookieService.get('category');
     const minprice = this.cookieService.get('minprice');
     const maxprice = this.cookieService.get('maxprice');
+    const MwebSearchLayout = this.cookieService.get('MwebSearchLayout');
 
     this._adKeywords = {
       brand,
@@ -46,6 +47,7 @@ export class AdsKeywordsService {
       category,
       minprice,
       maxprice,
+      MwebSearchLayout,
     };
   }
 

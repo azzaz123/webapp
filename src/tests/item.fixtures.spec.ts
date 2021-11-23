@@ -27,7 +27,6 @@ import {
   ItemVisibilityFlags,
   ItemWithProducts,
   LatestItemResponse,
-  ListingFeeProductInfo,
   Order,
   Product,
   ProductDurations,
@@ -36,7 +35,6 @@ import {
 } from '../app/core/item/item-response.interface';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
-import { MOCK_SUBSCRIPTION_SLOTS_RESPONSE } from './subscriptions.fixtures.spec';
 import { MOCK_USER, USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { MOCK_ITEM_VISIBILITY_FLAGS_BUMPED } from '@fixtures/item-detail-flags.fixtures.spec';
 import { ItemCondition } from '@core/item/item-condition';
@@ -129,6 +127,7 @@ export const ITEM_ACTIONS_ALLOWED: ItemActions = {
 export const ITEM_SALE_CONDITIONS: ItemSaleConditions = {
   fix_price: false,
   exchange_allowed: false,
+  supports_shipping: false,
 };
 
 export const ITEM_MAIN_IMAGE: Image = {
@@ -1084,53 +1083,6 @@ export const generateMockItemProResponses = (
   return result;
 };
 
-export const getMockedItemProResponses = (init, categoryId, status): ItemProResponse[] => {
-  let mockResponse: ItemProResponse[] = [];
-
-  MOCK_SUBSCRIPTION_SLOTS_RESPONSE.forEach((subscriptionSlot) => {
-    if (subscriptionSlot.category_id === categoryId) {
-      let type = '';
-      let image = '';
-
-      switch (categoryId) {
-        case 100:
-          type = 'cars';
-          image = 'http://cdn-dock146.wallapop.com/images/10420/22/__/c10420p96001/i112001.jpg';
-          break;
-        case 14000:
-          type = 'motorbikes';
-          image = 'http://cdn-dock146.wallapop.com/images/10420/2b/__/c10420p108001/i134001.jpg';
-          break;
-        case 12800:
-          type = 'motor&parts';
-          image = 'http://cdn-dock146.wallapop.com/images/10420/06/__/c10420p8017/i8022.jpg';
-          break;
-      }
-
-      let numMockItems = 0;
-
-      if (init !== 0) {
-        mockResponse = [];
-      } else {
-        switch (status) {
-          case 'active':
-            numMockItems = subscriptionSlot.limit - subscriptionSlot.available;
-            break;
-          case 'inactive':
-            numMockItems = 20;
-            break;
-          case 'sold':
-            numMockItems = 50;
-            break;
-        }
-        mockResponse = generateMockItemProResponses(numMockItems, type, image, categoryId, status);
-      }
-    }
-  });
-
-  return mockResponse;
-};
-
 export const ITEMS_DATA_V3 = [
   {
     id: '1',
@@ -1490,9 +1442,9 @@ export const PURCHASES: Purchase[] = [
     visibility_flags: { bumped: false, highlighted: true, urgent: false },
   },
   {
-    item_id: '1',
+    item_id: '2',
     expiration_date: 1510221346789,
-    purchase_name: 'listingfee',
+    purchase_name: 'countrybump',
     visibility_flags: { bumped: false, highlighted: true, urgent: false },
   },
   {
@@ -1944,29 +1896,6 @@ export const ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE: AllowedActionResponse[] 
 export const MOCK_LISTING_FEE_ORDER: OrderEvent = {
   order: [{ item_id: 'p4w67gxww6xq', product_id: '5p4w67dy6xqo' }],
   total: 14.99,
-};
-
-export const MOCK_LISTING_FEE_PRODUCT: ListingFeeProductInfo = {
-  limit_category: 100,
-  limit_type: 'no_sub',
-  product_group: {
-    default_product_id: 'elqnzxe6201v',
-    products: [
-      {
-        default_duration_index: 0,
-        id: 'elqnzxe6201v',
-        name: 'listingfee',
-        durations: [
-          {
-            duration: 1440,
-            id: '5p4w67dy6xqo',
-            market_code: '14.99',
-            original_market_code: '14.99',
-          },
-        ],
-      },
-    ],
-  },
 };
 
 export const MOCK_ITEM_RESPONSE_CONTENT: ItemContent = {

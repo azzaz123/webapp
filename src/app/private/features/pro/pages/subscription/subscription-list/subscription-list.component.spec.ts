@@ -3,14 +3,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
+import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import {
-  MAPPED_SUBSCRIPTIONS_ADDED,
   MockSubscriptionService,
+  MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+  SUBSCRIPTIONS,
   TIER_WITH_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { SpinnerComponent } from '@shared/spinner/spinner.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { SubscriptionListComponent } from './subscription-list.component';
 
 @Component({
@@ -22,6 +25,7 @@ class MockCardComponent {}
 describe('SubscriptionListComponent', () => {
   let component: SubscriptionListComponent;
   let fixture: ComponentFixture<SubscriptionListComponent>;
+  let deviceDetector: DeviceDetectorService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -29,6 +33,7 @@ describe('SubscriptionListComponent', () => {
       providers: [
         { provide: SubscriptionsService, useClass: MockSubscriptionService },
         { provide: SubscriptionBenefitsService, useClass: MockSubscriptionBenefitsService },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -36,6 +41,7 @@ describe('SubscriptionListComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SubscriptionListComponent);
+    deviceDetector = TestBed.inject(DeviceDetectorService);
     component = fixture.componentInstance;
   });
 
@@ -55,7 +61,7 @@ describe('SubscriptionListComponent', () => {
   });
   describe('when is not loading', () => {
     beforeEach(() => {
-      component.subscriptions = MAPPED_SUBSCRIPTIONS_ADDED;
+      component.subscriptions = SUBSCRIPTIONS;
       component.isLoading = false;
       fixture.detectChanges();
     });
@@ -73,7 +79,7 @@ describe('SubscriptionListComponent', () => {
       spyOn(component.clickButton, 'emit');
     });
     it('should emit to parent', () => {
-      const subscription = MAPPED_SUBSCRIPTIONS_ADDED[0];
+      const subscription = MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS;
       component.onClickButton(subscription);
 
       expect(component.clickButton.emit).toHaveBeenCalledTimes(1);
@@ -87,7 +93,7 @@ describe('SubscriptionListComponent', () => {
           spyOn(component, 'hasOneFreeSubscription').and.returnValue(true);
         });
         it('should show Free Trial text', () => {
-          const text = component.getTextButton(MAPPED_SUBSCRIPTIONS_ADDED[1]);
+          const text = component.getTextButton(MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS);
 
           expect(text).toBe($localize`:@@startFreeTrial:Start free trial`);
         });
@@ -99,7 +105,7 @@ describe('SubscriptionListComponent', () => {
         describe('and has no discounts', () => {
           describe('and has multiple tiers', () => {
             it('should show see plans text', () => {
-              const text = component.getTextButton(MAPPED_SUBSCRIPTIONS_ADDED[1]);
+              const text = component.getTextButton(MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS);
 
               expect(text).toBe($localize`:@@seePlans:See plans`);
             });
@@ -117,11 +123,39 @@ describe('SubscriptionListComponent', () => {
             spyOn(component, 'hasDiscount').and.returnValue(TIER_WITH_DISCOUNT);
           });
           it('should show see plans text', () => {
-            const text = component.getTextButton(MAPPED_SUBSCRIPTIONS_ADDED[1]);
+            const text = component.getTextButton(MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS);
 
             expect(text).toBe($localize`:@@pro_subscription_purchase_try_discount_button:Try with discount`);
           });
         });
+      });
+    });
+  });
+  describe('device detector', () => {
+    describe('when is desktop', () => {
+      beforeEach(() => {
+        spyOn(deviceDetector, 'isMobile').and.callThrough();
+        component.ngOnInit();
+      });
+      it('should call the service', () => {
+        expect(deviceDetector.isMobile).toBeCalledTimes(1);
+        expect(deviceDetector.isMobile).toHaveBeenCalledWith();
+      });
+      it('should set the value', () => {
+        expect(component.isMobile).toBe(false);
+      });
+    });
+    describe('when is mobile', () => {
+      beforeEach(() => {
+        spyOn(deviceDetector, 'isMobile').and.returnValue(true);
+        component.ngOnInit();
+      });
+      it('should call the service', () => {
+        expect(deviceDetector.isMobile).toBeCalledTimes(1);
+        expect(deviceDetector.isMobile).toHaveBeenCalledWith();
+      });
+      it('should set the value', () => {
+        expect(component.isMobile).toBe(true);
       });
     });
   });

@@ -1,10 +1,10 @@
 import { map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { ItemPlace } from './geolocation-response.interface';
 import { Coordinate } from './address-response.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { SITE_URL } from '@configs/site-url.config';
 
 export const MAPS_PLACES_API = 'maps/places';
 export const MAPS_PLACE_API = 'maps/here/place';
@@ -15,7 +15,7 @@ export const MAPS_REVERSE_GEOCODE = 'maps/here/reverseGeocode';
   providedIn: 'root',
 })
 export class GeolocationService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject(SITE_URL) private siteUrl: string) {}
 
   public search(query: string): Observable<ItemPlace[]> {
     const params: any = {
@@ -23,22 +23,20 @@ export class GeolocationService {
       provider: MAPS_PROVIDER,
     };
 
-    return this.http.get<ItemPlace[]>(`${environment.siteUrl}${MAPS_PLACES_API}`, { params });
+    return this.http.get<ItemPlace[]>(`${this.siteUrl}${MAPS_PLACES_API}`, { params });
   }
 
   public geocode(placeId: string): Observable<Coordinate> {
     const params: any = { placeId };
 
-    return this.http
-      .get<Coordinate>(`${environment.siteUrl}${MAPS_PLACE_API}`, { params })
-      .pipe(
-        map((res) => {
-          return {
-            ...res,
-            name: placeId,
-          };
-        })
-      );
+    return this.http.get<Coordinate>(`${this.siteUrl}${MAPS_PLACE_API}`, { params }).pipe(
+      map((res) => {
+        return {
+          ...res,
+          name: placeId,
+        };
+      })
+    );
   }
 
   public reverseGeocode(latitude: string, longitude: string): Observable<string> {
@@ -46,7 +44,7 @@ export class GeolocationService {
       fromObject: { latitude, longitude },
     });
     return this.http
-      .get<{ label: string }>(`${environment.siteUrl}${MAPS_REVERSE_GEOCODE}`, {
+      .get<{ label: string }>(`${this.siteUrl}${MAPS_REVERSE_GEOCODE}`, {
         params,
       })
       .pipe(

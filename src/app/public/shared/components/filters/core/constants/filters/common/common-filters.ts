@@ -1,7 +1,6 @@
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { AvailableFilterConfig } from '../../../types/available-filter-config.type';
 import { COMMON_CONFIGURATION_ID } from '../../../enums/configuration-ids/common-configuration-ids.enum';
-import { CATEGORY_OPTIONS } from '../../../../components/categories-filter/data/category_options';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 
 export const COMMON_FILTERS: AvailableFilterConfig[] = [
@@ -12,7 +11,7 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.categoryId,
     },
-    options: CATEGORY_OPTIONS,
+    options: [],
     type: FILTER_TYPES.CATEGORIES,
   },
   {
@@ -25,6 +24,7 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
     },
     hasBigIcons: true,
     isMultiselect: false,
+    gridColumns: 4,
   },
   {
     id: COMMON_CONFIGURATION_ID.PRICE,

@@ -1,4 +1,4 @@
-import { from, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
 
 import { catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
@@ -24,7 +24,8 @@ import { ReleaseVersionService } from '@core/release-version/release-version.ser
 
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { SITE_URL } from '@configs/site-url.config';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -55,6 +56,7 @@ export enum USER_TYPE {
 
 export const LOCAL_STORAGE_TRY_PRO_SLOT = 'try-pro-slot';
 export const LOCAL_STORAGE_CLICK_PRO_SECTION = 'click-pro-section';
+export const LOCAL_STORAGE_SUGGEST_PRO_SHOWN = 'suggest-pro-shown';
 
 @Injectable({
   providedIn: 'root',
@@ -64,6 +66,7 @@ export class UserService {
   private _users: User[] = [];
   private presenceInterval: any;
   private _isProSectionClicked: boolean;
+  private isProUserSubject = new BehaviorSubject(false);
 
   constructor(
     private http: HttpClient,
@@ -72,8 +75,8 @@ export class UserService {
     private cookieService: CookieService,
     private permissionService: NgxPermissionsService,
     private releaseVersionService: ReleaseVersionService,
-    @Inject('SUBDOMAIN') private subdomain: string,
-    @Inject(LOCALE_ID) private locale: APP_LOCALE
+    @Inject(LOCALE_ID) private locale: APP_LOCALE,
+    @Inject(SITE_URL) private siteUrl: string
   ) {}
 
   get user(): User {
@@ -84,8 +87,12 @@ export class UserService {
     return this._user && this._user.featured;
   }
 
+  get isProUser$(): Observable<boolean> {
+    return this.isProUserSubject.asObservable();
+  }
+
   public logoutLogic(redirect?: string): void {
-    const redirectUrl = redirect ? redirect : environment.siteUrl.replace('es', this.subdomain);
+    const redirectUrl = redirect ? redirect : this.siteUrl;
     const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove('publisherId', cookieOptions);
     this.cookieService.remove('creditName', cookieOptions);
@@ -141,10 +148,10 @@ export class UserService {
     }, interval);
   }
 
-  public get(id: string, noCache?: boolean): Observable<User> {
+  public get(id: string, cache: boolean = true): Observable<User> {
     const user = this._users.find((user) => user.id === id);
 
-    if (user) {
+    if (user && cache) {
       return of(user);
     }
 
@@ -264,7 +271,10 @@ export class UserService {
   public edit(data: UserData): Observable<User> {
     return this.http.post<UserResponse>(`${environment.baseUrl}${USER_ENDPOINT}`, data).pipe(
       map((response) => this.mapRecordData(response)),
-      tap((user) => (this._user = user))
+      tap((user) => {
+        this._user = user;
+        this.isProUserSubject.next(this.isPro);
+      })
     );
   }
 
@@ -316,13 +326,19 @@ export class UserService {
       data.gender,
       data.email,
       data.featured,
-      data.extra_info
+      data.extra_info,
+      null,
+      null,
+      data.phone
     );
   }
 
   public initializeUserWithPermissions(): Observable<boolean> {
     return this.getLoggedUserInformation().pipe(
-      tap((user) => (this._user = user)),
+      tap((user) => {
+        this._user = user;
+        this.isProUserSubject.next(this.isPro);
+      }),
       tap((user) => this.setPermission(user)),
       tap((user) => this.getStoredIsClickedProSection(user)),
       catchError((error) => {
@@ -335,7 +351,12 @@ export class UserService {
   //TODO: This is needed for the current subscriptions flow but this should handled in some other way when
   // the application is reactive to changes in the user object
   public getAndUpdateLoggedUser(): Observable<User> {
-    return this.getLoggedUserInformation().pipe(tap((user) => (this._user = user)));
+    return this.getLoggedUserInformation().pipe(
+      tap((user) => {
+        this._user = user;
+        this.isProUserSubject.next(this.isPro);
+      })
+    );
   }
 
   public setPermission(user: User): void {
@@ -385,12 +406,20 @@ export class UserService {
   }
 
   public setClickedProSection(): void {
-    localStorage.setItem(`${this.user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`, 'true');
+    this.saveLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION, 'true');
     this._isProSectionClicked = true;
   }
 
+  public saveLocalStore(key: string, value: string): void {
+    localStorage.setItem(`${this.user.id}-${key}`, value);
+  }
+
+  public getLocalStore(key: string): string {
+    return localStorage.getItem(`${this.user.id}-${key}`);
+  }
+
   private getStoredIsClickedProSection(user: User): void {
-    this._isProSectionClicked = !!localStorage.getItem(`${user.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
+    this._isProSectionClicked = !!this.getLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION);
   }
 
   public hasStoreLocation(user: User): boolean {

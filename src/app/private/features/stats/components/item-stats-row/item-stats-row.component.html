@@ -1,7 +1,7 @@
 <div class="item" [ngClass]="{'active': open}">
   <div class="row" (click)="changeExpandedState()">
     <div class="col-6 col-item-title">
-      <a href="{{link}}" target="_blank" class="image"><tsl-item-avatar [item]="item" size="medium" fallbackLight="true"></tsl-item-avatar></a>
+      <a [href]="item.webSlug | itemDetailRoute" target="_blank" class="image"><tsl-item-avatar [item]="item" size="medium" fallbackLight="true"></tsl-item-avatar></a>
       <div class="price">{{item.salePrice | customCurrency}}</div>
       <div class="title">{{item.title}}</div>
     </div>

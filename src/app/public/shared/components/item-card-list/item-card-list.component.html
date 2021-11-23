@@ -1,19 +1,25 @@
-<div class="ItemCardList w-100 m-auto grid-xs-{{columnsConfig.xs}} grid-sm-{{columnsConfig.sm}} grid-md-{{columnsConfig.md}} grid-lg-{{columnsConfig.lg}} grid-xl-{{columnsConfig.xl}}"
+<div tslAdSlotShopping
+    class="ItemCardList w-100 m-auto grid-xs-{{columnsConfig.xs}} grid-sm-{{columnsConfig.sm}} grid-md-{{columnsConfig.md}} grid-lg-{{columnsConfig.lg}} grid-xl-{{columnsConfig.xl}}"
     [class.ItemCardList--loading]="isLoading && !showPlaceholder">
     <ng-container *ngFor="let item of items; let i = index">
         <ng-container *ngxPermissionsOnly="PERMISSIONS.showAds">
-          <ng-container *ngIf="slotTemplate">
-              <div *ngIf="slotsConfig && (i | showSlot: slotsConfig)"
-                  class="ItemCardList__slot d-flex justify-content-center align-items-center"
-                  [class.ItemCardList__slot--wide]="cardType === cardTypes.WIDE">
-                  <ng-container *ngTemplateOutlet="slotTemplate;context: {$implicit: i}"></ng-container>
-              </div>
-          </ng-container>
-          <div class="ItemCardList__inline-slot d-sm-none"
-              [class.ItemCardList__inline-slot--wide]="cardType === cardTypes.WIDE"
-              *ngIf="inlineSlotTemplate && i === INLINE_SLOT_POSITION">
-              <ng-container *ngTemplateOutlet="inlineSlotTemplate;"></ng-container>
-          </div>
+            <div *ngIf="slotsConfig && (i | showSlot: slotsConfig) && showNativeAdSlots"
+                class="ItemCardList__slot d-flex justify-content-center align-items-center"
+                [class.ItemCardList__slot--wide]="cardType === cardTypes.WIDE">
+                <tsl-sky-shopping [index]="i" [cardType]="cardTypes"></tsl-sky-shopping>
+            </div>
+
+            <div class="ItemCardList__inline-slot d-sm-none"
+                [class.ItemCardList__inline-slot--wide]="cardType === cardTypes.WIDE"
+                *ngIf="i === INLINE_SLOT_POSITION">
+                <ng-content select="[inlineAdSlot]"></ng-content>
+            </div>
+
+            <div class="ItemCardList__inline-slot d-sm-none"
+                [class.ItemCardList__inline-slot--wide]="cardType === cardTypes.WIDE"
+                *ngIf="i === EXPERIMENT_INLINE_SLOT_POSITION">
+                <ng-content select="[experimentInlineAdSlot]"></ng-content>
+            </div>
         </ng-container>
         <a [href]="item.webSlug | itemDetailRoute" [title]="item.title" target="_blank" class="ItemCardList__item">
             <tsl-public-item-card *ngIf="cardType === cardTypes.REGULAR" [item]="item"

@@ -1,0 +1,10 @@
+@import '~web-styleguide/scss/text';
+
+.KYCBanner {
+  min-height: 65px;
+
+  &__description {
+    font-size: $font-size-s;
+    word-break: break-word;
+  }
+}

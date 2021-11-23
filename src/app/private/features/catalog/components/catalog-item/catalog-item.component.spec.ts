@@ -3,6 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { SITE_URL } from '@configs/site-url.config';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { EventService } from '@core/event/event.service';
@@ -14,12 +15,13 @@ import { UserService } from '@core/user/user.service';
 import { environment } from '@environments/environment';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
-import { CustomCurrencyPipe } from '@shared/pipes';
+import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject } from 'rxjs';
@@ -50,6 +52,7 @@ describe('CatalogItemComponent', () => {
           ToastService,
           ItemRequiredDataService,
           CatalogItemTrackingEventService,
+          ItemDetailRoutePipe,
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UserService, useClass: MockedUserService },
           {
@@ -79,9 +82,6 @@ describe('CatalogItemComponent', () => {
               canDoAction() {
                 return of(true);
               },
-              getListingFeeInfo() {
-                return of(PRODUCT_RESPONSE);
-              },
             },
           },
           {
@@ -101,8 +101,11 @@ describe('CatalogItemComponent', () => {
               i18nError() {},
             },
           },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
+          },
           I18nService,
-          { provide: 'SUBDOMAIN', useValue: 'es' },
         ],
         imports: [HttpClientTestingModule],
         schemas: [NO_ERRORS_SCHEMA],
@@ -128,7 +131,7 @@ describe('CatalogItemComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set link', () => {
-      expect(component.link).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
+      expect(component.link).toBe(MOCK_SITE_URL + 'item/' + ITEM_WEB_SLUG);
     });
 
     describe('selectMode', () => {
@@ -341,46 +344,6 @@ describe('CatalogItemComponent', () => {
 
         expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', facebookEvent);
       });
-    });
-  });
-
-  describe('showListingFee', () => {
-    it('should return true when listing fee expiration is more than current time', () => {
-      component.item.listingFeeExpiringDate = moment().add(2, 'seconds').valueOf();
-
-      expect(component.showListingFee()).toEqual(true);
-    });
-
-    it('should return false when listing fee expiration is less than current time', () => {
-      component.item.listingFeeExpiringDate = moment().subtract(2, 'seconds').valueOf();
-
-      expect(component.showListingFee()).toEqual(false);
-    });
-  });
-
-  describe('listingFeeFewDays', () => {
-    it('should return false when listing fee expiration is more than 3 days', () => {
-      component.item.listingFeeExpiringDate = moment().add(4, 'days').valueOf();
-
-      expect(component.listingFeeFewDays()).toEqual(false);
-    });
-
-    it('should return true when listing fee expiration is less than 3 days', () => {
-      component.item.listingFeeExpiringDate = moment().add(2, 'days').valueOf();
-
-      expect(component.listingFeeFewDays()).toEqual(true);
-    });
-  });
-
-  describe('publishItem', () => {
-    const item: Item = MOCK_ITEM;
-
-    it('should get the listing fee information related to the item', () => {
-      spyOn(itemService, 'getListingFeeInfo').and.returnValue(of(PRODUCT_RESPONSE));
-
-      component.publishItem();
-
-      expect(itemService.getListingFeeInfo).toHaveBeenCalledWith(item.id);
     });
   });
 

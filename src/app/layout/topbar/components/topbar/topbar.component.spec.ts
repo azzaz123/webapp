@@ -35,6 +35,8 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 import { SuggesterComponentStub } from '@fixtures/shared/components/suggester.component.stub';
+import { SITE_URL } from '@configs/site-url.config';
+import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -111,10 +113,6 @@ describe('TopbarComponent', () => {
             },
           },
           {
-            provide: 'SUBDOMAIN',
-            useValue: 'www',
-          },
-          {
             provide: CookieService,
             useValue: {
               put(key, value) {},
@@ -150,6 +148,10 @@ describe('TopbarComponent', () => {
           {
             provide: SuggesterService,
             useValue: {},
+          },
+          {
+            provide: SITE_URL,
+            useValue: MOCK_SITE_URL,
           },
         ],
         declarations: [SuggesterComponentStub, TopbarComponent, CustomCurrencyPipe],
@@ -333,40 +335,6 @@ describe('TopbarComponent', () => {
           );
         });
       });
-
-      describe('and the experimental features flag is enabled', () => {
-        it('should navigate to the new search page', () => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
-          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
-          spyOn(navigator, 'navigate');
-
-          searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_VALUE);
-
-          expect(navigator.navigate).toHaveBeenCalledWith(
-            [
-              { key: 'keywords', value: 'iphone' },
-              { key: 'category_ids', value: '16000' },
-            ],
-            FILTERS_SOURCE.SEARCH_BOX,
-            true
-          );
-        });
-      });
-
-      describe('and the experimental features flag is not enabled', () => {
-        it('should redirect to the old search page', () => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
-          const { category_ids, keywords } = MOCK_SEARCH_BOX_VALUE;
-          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.categoryId}=${category_ids}&${FILTER_QUERY_PARAM_KEY.keywords}=${keywords}&${FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE}=${FILTERS_SOURCE.SEARCH_BOX}`;
-          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
-          spyOn(router, 'navigate');
-
-          searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_VALUE);
-
-          expect(router.navigate).not.toHaveBeenCalled();
-          expect(window.location.href).toEqual(expectedUrl);
-        });
-      });
     });
 
     describe('when a search has been canceled from the search box', () => {
@@ -374,29 +342,6 @@ describe('TopbarComponent', () => {
         [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone',
         [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
       };
-
-      describe('and the experimental features flag is enabled', () => {
-        beforeEach(() => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
-          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(true);
-          spyOn(navigator, 'navigate');
-          spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
-
-          searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
-        });
-
-        it('should navigate to the new search page', () => {
-          expect(navigator.navigate).toHaveBeenCalledWith(
-            [{ key: FILTER_QUERY_PARAM_KEY.keywords, value: '' }],
-            FILTERS_SOURCE.SEARCH_BOX,
-            true
-          );
-        });
-
-        it('should send cancel search event', () => {
-          expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
-        });
-      });
 
       describe('and the experimental features flag is not enabled', () => {
         beforeEach(() => {

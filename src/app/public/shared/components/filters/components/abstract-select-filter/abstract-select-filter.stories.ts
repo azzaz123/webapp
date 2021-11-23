@@ -86,7 +86,7 @@ const Template: Story<StoryAbstractSelectFilterComponent> = (args) => ({
 });
 
 const defaultConfig: AbstractSelectFilterConfig<Record<string, FILTER_QUERY_PARAM_KEY>> = {
-  id: COMMON_CONFIGURATION_ID.OBJECT_TYPE,
+  id: COMMON_CONFIGURATION_ID.CATEGORIES,
   type: null,
   mapKey: {},
   title: 'Condition',

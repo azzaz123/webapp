@@ -1,7 +1,7 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -26,12 +26,11 @@ import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { SubscriptionsService, SUBSCRIPTION_TYPES } from '@core/subscriptions/subscriptions.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
+import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { TryProSlotComponent } from '@private/features/catalog/components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import {
   createItemsArray,
   ITEMS_BULK_RESPONSE,
@@ -43,25 +42,21 @@ import {
   ORDER_EVENT,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import { MockSubscriptionService, MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscriptions.fixtures.spec';
+import { MockSubscriptionService, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TooManyItemsModalComponent } from '@shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ItemSoldDirective } from '@shared/modals/sold-modal/item-sold.directive';
 import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { find, cloneDeep } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { of, ReplaySubject, Subject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
-import { BuyProductModalComponent } from '../../modals/buy-product-modal/buy-product-modal.component';
-import { ListingfeeConfirmationModalComponent } from '../../modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { ListComponent } from './list.component';
-import { SuggestProModalComponent } from '@shared/catalog/modals/suggest-pro-modal/suggest-pro-modal.component';
 import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Counters } from '@core/user/user-stats.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -69,6 +64,16 @@ import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ButtonComponent } from '@shared/button/button.component';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
+import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
+import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
+import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscription-slots.fixtures.spec';
+import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
+import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -76,14 +81,13 @@ describe('ListComponent', () => {
   let itemService: ItemService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
-  let toastService: ToastService;
   let itemerviceSpy: jasmine.Spy;
   let paymentService: PaymentService;
   let route: ActivatedRoute;
   let router: Router;
+  let catalogManagerApiService: CatalogManagerApiService;
   let errorService: ErrorsService;
   const componentInstance: any = {
-    urgentPrice: jasmine.createSpy('urgentPrice'),
     trackUploaded: jasmine.createSpy('trackUploaded'),
   };
   let modalSpy: jasmine.Spy;
@@ -93,7 +97,13 @@ describe('ListComponent', () => {
   let analyticsService: AnalyticsService;
   let permissionService: NgxPermissionsService;
   let i18nService: I18nService;
-  const routerEvents: Subject<any> = new Subject();
+  let featureFlagService: FeatureFlagService;
+  let listingLimitService: ListingLimitService;
+
+  const prosButtonSelector = '.List__button--pros';
+  const deliveryButtonSelector = '.List__button--delivery';
+  const walletButtonSelector = '.List__button--wallet';
+
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
   const mockCounters: Partial<Counters> = {
@@ -101,11 +111,29 @@ describe('ListComponent', () => {
     publish: 12,
     onHold: 5,
   };
+  const FAKE_DATE_NOW = 1627743615459;
+  const FAKE_DATE_LESS_24 = 1627722294000;
+  const FAKE_DATE_MORE_24 = 1627635894000;
+  const MOCK_LIST_ROUTES: Route[] = [
+    { path: '', component: ListComponent },
+    { path: PRO_PATHS.PRO_MANAGER, component: ListComponent, children: [{ path: '', component: ListComponent }] },
+    {
+      path: `${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
+      component: ListComponent,
+      children: [{ path: '', component: ListComponent }],
+    },
+    { path: `${PRIVATE_PATHS.CATALOG}/list`, component: ListComponent },
+    { path: `${PRIVATE_PATHS.CATALOG}/checkout`, component: ListComponent },
+    { path: `wallacoins`, component: ListComponent },
+    { path: PRIVATE_PATHS.DELIVERY, component: ListComponent },
+    { path: PRIVATE_PATHS.WALLET, component: ListComponent },
+  ];
+  const localFlagSubject = new ReplaySubject<boolean>(1);
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpModule, NgxPermissionsModule.forRoot()],
+        imports: [HttpModule, NgxPermissionsModule.forRoot(), RouterTestingModule.withRoutes(MOCK_LIST_ROUTES)],
         declarations: [
           ListComponent,
           ItemSoldDirective,
@@ -113,6 +141,8 @@ describe('ListComponent', () => {
           SubscriptionsSlotItemComponent,
           TryProSlotComponent,
           ProBadgeComponent,
+          DeliveryDevelopmentDirective,
+          ButtonComponent,
         ],
         providers: [
           I18nService,
@@ -204,13 +234,6 @@ describe('ListComponent', () => {
             },
           },
           {
-            provide: Router,
-            useValue: {
-              navigate() {},
-              events: routerEvents,
-            },
-          },
-          {
             provide: UserService,
             useValue: {
               user: MOCK_USER,
@@ -231,6 +254,8 @@ describe('ListComponent', () => {
               getInfo() {
                 return of(USER_INFO_RESPONSE);
               },
+              getLocalStore() {},
+              saveLocalStore() {},
             },
           },
           {
@@ -238,6 +263,18 @@ describe('ListComponent', () => {
             useClass: DeviceDetectorServiceMock,
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          {
+            provide: CatalogManagerApiService,
+            useValue: {
+              getSlots() {
+                return of([]);
+              },
+            },
+          },
+          {
+            provide: ListingLimitService,
+            useClass: ListingLimitServiceMock,
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -250,7 +287,6 @@ describe('ListComponent', () => {
     itemService = TestBed.inject(ItemService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     modalService = TestBed.inject(NgbModal);
-    toastService = TestBed.inject(ToastService);
     route = TestBed.inject(ActivatedRoute);
     paymentService = TestBed.inject(PaymentService);
     router = TestBed.inject(Router);
@@ -261,11 +297,18 @@ describe('ListComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     permissionService = TestBed.inject(NgxPermissionsService);
     i18nService = TestBed.inject(I18nService);
+    catalogManagerApiService = TestBed.inject(CatalogManagerApiService);
+    featureFlagService = TestBed.inject(FeatureFlagService);
+    listingLimitService = TestBed.inject(ListingLimitService);
+
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
+
+    spyOn(router, 'navigate').and.callThrough();
     spyOn(errorService, 'i18nError');
     spyOn(analyticsService, 'trackPageView');
     spyOn(analyticsService, 'trackEvent');
+    spyOn(featureFlagService, 'getLocalFlag').and.returnValue(localFlagSubject.asObservable());
     fixture.detectChanges();
   });
 
@@ -321,7 +364,6 @@ describe('ListComponent', () => {
     });
 
     it('should open bump confirmation modal', fakeAsync(() => {
-      spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
       spyOn(localStorage, 'removeItem');
       component.ngOnInit();
@@ -340,20 +382,68 @@ describe('ListComponent', () => {
       component.end = true;
       component.ngOnInit();
       tick();
-      routerEvents.next(new NavigationEnd(1, 'url', 'url2'));
+      router.navigate(['']);
+      tick();
       expect(component.scrollTop).toBe(0);
       expect(component['init']).toBe(0);
       expect(component.end).toBeFalsy();
       expect(component['getItems']).toHaveBeenCalledTimes(2);
     }));
 
-    describe('if it`s a mobile device', () => {
+    describe('when using smaller screen such a mobile phone', () => {
+      let walletButton: DebugElement;
+      let deliveryButton: DebugElement;
+
+      beforeEach(() => {
+        walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+      });
+
       it('should not open upload confirmation modal', () => {
         spyOn(deviceService, 'isMobile').and.returnValue(true);
 
         component.ngOnInit();
 
         expect(modalService.open).not.toHaveBeenCalled();
+      });
+
+      it('should show a wallet button', () => {
+        expect(walletButton).toBeTruthy();
+      });
+
+      it('should point to the wallet path', () => {
+        expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
+      });
+
+      describe('and when delivery feature flag is enabled', () => {
+        beforeEach(() => {
+          localFlagSubject.next(true);
+          fixture.detectChanges();
+
+          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
+        });
+
+        it('should show a delivery button', () => {
+          expect(deliveryButton).toBeTruthy();
+        });
+
+        describe('and when clicking the delivery button', () => {
+          it('should navigate to delivery', () => {
+            expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
+          });
+        });
+      });
+
+      describe('and when delivery feature flag is NOT enabled', () => {
+        beforeEach(() => {
+          localFlagSubject.next(false);
+          fixture.detectChanges();
+
+          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
+        });
+
+        it('should NOT show a delivery button', () => {
+          expect(deliveryButton).toBeFalsy();
+        });
       });
     });
 
@@ -393,7 +483,6 @@ describe('ListComponent', () => {
             result: Promise.resolve({ redirect: true }),
             componentInstance: { item: null },
           });
-          spyOn(router, 'navigate');
           component.ngOnInit();
           tick();
 
@@ -406,7 +495,6 @@ describe('ListComponent', () => {
             result: Promise.resolve({ redirect: false }),
             componentInstance: { item: null },
           });
-          spyOn(router, 'navigate');
           component.ngOnInit();
           tick();
 
@@ -435,53 +523,17 @@ describe('ListComponent', () => {
       });
     });
 
-    it('should open the listing fee modal if transaction is set as purchaseListingFee', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFee');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-    }));
-
-    it('should open the listing fee modal if transaction is set as purchaseListingFeeWithCredits', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFeeWithCredits');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-    }));
-
-    it('should open the too many items modal if create is on hold', fakeAsync(() => {
+    it('should open listing limit modal if create is on hold', fakeAsync(() => {
+      spyOn(listingLimitService, 'showModal').and.callThrough();
       route.params = of({
         createdOnHold: true,
+        itemId: '123',
       });
 
       component.ngOnInit();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(TooManyItemsModalComponent, {
-        windowClass: 'modal-standard',
-      });
+      expect(listingLimitService.showModal).toHaveBeenCalledWith('123', SUBSCRIPTION_TYPES.stripe);
     }));
 
     it('should open disable wallacoins modal if has param disableWallacoinsModal', fakeAsync(() => {
@@ -515,20 +567,6 @@ describe('ListComponent', () => {
         backdrop: 'static',
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-    }));
-
-    it('should redirect to wallacoins if transaction is wallapack', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('wallapack');
-      spyOn(router, 'navigate');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: 200 }]);
     }));
 
     it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
@@ -585,7 +623,7 @@ describe('ListComponent', () => {
           permissionService.addPermission(PERMISSIONS.subscriptions);
         });
         it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
-          spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
+          spyOn(catalogManagerApiService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
 
           component.ngOnInit();
           tick();
@@ -601,7 +639,7 @@ describe('ListComponent', () => {
           permissionService.removePermission(PERMISSIONS.subscriptions);
         });
         it('should show one catalog management card for each subscription slot from backend', fakeAsync(() => {
-          spyOn(subscriptionsService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
+          spyOn(catalogManagerApiService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS));
 
           component.ngOnInit();
           tick();
@@ -616,7 +654,7 @@ describe('ListComponent', () => {
 
   describe('logout', () => {
     it('should logout after clicking logout button', () => {
-      spyOn(userService, 'logout');
+      spyOn(userService, 'logout').and.returnValue(of());
       const logoutButton = fixture.debugElement.query(By.css('.logout')).nativeNode;
 
       logoutButton.click();
@@ -837,52 +875,6 @@ describe('ListComponent', () => {
     });
   });
 
-  describe('feature', () => {
-    const componentInstance: any = {};
-
-    it('should open modal', () => {
-      modalSpy.and.returnValue({
-        componentInstance: componentInstance,
-        result: Promise.resolve('success'),
-      });
-
-      component.feature(ORDER_EVENT, 'urgent');
-
-      expect(componentInstance.type).toBe('urgent');
-      expect(componentInstance.orderEvent).toBe(ORDER_EVENT);
-    });
-
-    describe('success', () => {
-      it('should redirect to success', fakeAsync(() => {
-        modalSpy.and.returnValue({
-          componentInstance: componentInstance,
-          result: Promise.resolve('success'),
-        });
-        spyOn(router, 'navigate');
-
-        component.feature(ORDER_EVENT, 'urgent');
-        tick();
-
-        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
-      }));
-    });
-
-    describe('error', () => {
-      it('should redirect to error', fakeAsync(() => {
-        modalSpy.and.returnValue({
-          componentInstance: componentInstance,
-          result: Promise.resolve('error'),
-        });
-        spyOn(router, 'navigate');
-
-        component.feature(ORDER_EVENT, 'urgent');
-        tick();
-
-        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: -1 }]);
-      }));
-    });
-  });
-
   describe('getNumberOfProducts', () => {
     beforeEach(() => {
       spyOn(component, 'getNumberOfProducts').and.callThrough();
@@ -1027,7 +1019,7 @@ describe('ListComponent', () => {
     describe('update counters', () => {
       beforeEach(() => {
         component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
-        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
+        component.subscriptionSlots[0].subscription.category_ids = [ITEM_CATEGORY_ID];
       });
 
       it('should update if there is not selected a subscription slot', fakeAsync(() => {
@@ -1141,7 +1133,7 @@ describe('ListComponent', () => {
     describe('update counters', () => {
       beforeEach(() => {
         component.subscriptionSlots = [cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS)];
-        component.subscriptionSlots[0].category.category_id = ITEM_CATEGORY_ID;
+        component.subscriptionSlots[0].subscription.category_ids = [ITEM_CATEGORY_ID];
       });
 
       it('should update if there is not selected a subscription slot', fakeAsync(() => {
@@ -1196,16 +1188,6 @@ describe('ListComponent', () => {
       it('should reset item selection', () => {
         expect(component.items[0].flags['onhold']).toBe(true);
         expect(component.items[0].selected).toBe(false);
-      });
-    });
-  });
-
-  describe('purchaseListingFee', () => {
-    it('should open buy listing fee product modal', () => {
-      component.purchaseListingFee(MOCK_LISTING_FEE_ORDER);
-
-      expect(modalService.open).toHaveBeenCalledWith(BuyProductModalComponent, {
-        windowClass: 'modal-standard',
       });
     });
   });
@@ -1295,8 +1277,6 @@ describe('ListComponent', () => {
       });
       describe('when click CTA button', () => {
         it('should redirect to subscriptions', () => {
-          spyOn(router, 'navigate');
-
           component.onClickTryProSlot();
 
           expect(router.navigate).toBeCalledTimes(1);
@@ -1304,6 +1284,7 @@ describe('ListComponent', () => {
         });
 
         it('should track ClickProSubscription event', () => {
+          spyOn(subscriptionsService, 'hasSomeSubscriptionDiscount').and.returnValue(true);
           component.hasTrialAvailable = true;
           const event: AnalyticsEvent<ClickProSubscription> = {
             name: ANALYTICS_EVENT_NAMES.ClickProSubscription,
@@ -1311,6 +1292,7 @@ describe('ListComponent', () => {
             attributes: {
               screenId: SCREEN_IDS.MyCatalog,
               freeTrial: component.hasTrialAvailable,
+              discount: true,
             },
           };
 
@@ -1356,14 +1338,12 @@ describe('ListComponent', () => {
       });
     });
     describe('and is not pro user', () => {
-      beforeEach(() => {
-        spyOn(router, 'navigate');
-      });
       describe('and has subscription permissions', () => {
         beforeEach(() => {
           permissionService.addPermission(PERMISSIONS.subscriptions);
+          spyOn(Date, 'now').and.returnValue(FAKE_DATE_NOW);
         });
-        describe('and open modal', () => {
+        describe('modal is shown', () => {
           describe('and has free trial category', () => {
             beforeEach(() => {
               spyOn(subscriptionsService, 'hasFreeTrialByCategoryId').and.returnValue(true);
@@ -1374,6 +1354,7 @@ describe('ListComponent', () => {
                 attributes: {
                   screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
                   freeTrial: true,
+                  discount: false,
                 },
               };
               const item = cloneDeep(component.items[3]);
@@ -1397,6 +1378,31 @@ describe('ListComponent', () => {
                 attributes: {
                   screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
                   freeTrial: false,
+                  discount: false,
+                },
+              };
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
+              expect(analyticsService.trackPageView).toHaveBeenCalledWith(expectedEvent);
+            });
+          });
+          describe('and has discount', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'tierDiscountByCategoryId').and.returnValue(TIER_WITH_DISCOUNT);
+            });
+            it('should track modal', () => {
+              const expectedEvent: AnalyticsPageView<ViewProExpiredItemsPopup> = {
+                name: ANALYTICS_EVENT_NAMES.ViewProExpiredItemsPopup,
+                attributes: {
+                  screenId: SCREEN_IDS.ProSubscriptionExpiredItemsPopup,
+                  freeTrial: true,
+                  discount: true,
                 },
               };
               const item = cloneDeep(component.items[3]);
@@ -1411,24 +1417,68 @@ describe('ListComponent', () => {
             });
           });
         });
-        describe('and click cta button', () => {
-          it('should redirect to subscriptions', fakeAsync(() => {
-            modalSpy.and.returnValue({
-              result: Promise.resolve(true),
-              componentInstance: componentInstance,
-            });
+        describe('and modal was not shown before', () => {
+          it('should open modal', () => {
             const item = cloneDeep(component.items[3]);
 
             component.itemChanged({
               item: item,
               action: ITEM_CHANGE_ACTION.REACTIVATED,
             });
-            tick();
 
-            expect(router.navigate).toHaveBeenCalledTimes(1);
-            expect(router.navigate).toHaveBeenCalledWith([`${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`]);
-          }));
-        });
+            expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+              windowClass: 'pro-modal',
+            });
+          });
+        }),
+          describe('and modal was shown more than 24hs before', () => {
+            beforeEach(() => {
+              spyOn(userService, 'getLocalStore').and.returnValue(FAKE_DATE_MORE_24.toString());
+            });
+            it('should open modal', () => {
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+                windowClass: 'pro-modal',
+              });
+            });
+          }),
+          describe('and modal was shown less than 24hs before', () => {
+            beforeEach(() => {
+              spyOn(userService, 'getLocalStore').and.returnValue(FAKE_DATE_LESS_24.toString());
+            });
+            it('should open modal', () => {
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(modalService.open).not.toHaveBeenCalledWith(ProModalComponent, {
+                windowClass: 'pro-modal',
+              });
+            });
+          }),
+          describe('and open modal', () => {
+            it('should save date', () => {
+              spyOn(userService, 'saveLocalStore').and.callThrough();
+              const item = cloneDeep(component.items[3]);
+
+              component.itemChanged({
+                item: item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+
+              expect(userService.saveLocalStore).toHaveBeenCalledTimes(1);
+              expect(userService.saveLocalStore).toHaveBeenCalledWith(LOCAL_STORAGE_SUGGEST_PRO_SHOWN, FAKE_DATE_NOW.toString());
+            });
+          });
         describe('and click secondary button', () => {
           it('should refresh item', fakeAsync(() => {
             modalSpy.and.returnValue({
@@ -1509,24 +1559,28 @@ describe('ListComponent', () => {
       }));
     });
   });
+
   describe('Pro button', () => {
+    let proButton: DebugElement;
+
     describe('and has subscriptions permission', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         permissionService.addPermission(PERMISSIONS.subscriptions);
-        fixture.detectChanges();
+
+        await fixture.whenStable();
+
+        proButton = fixture.debugElement.query(By.css(prosButtonSelector));
       });
 
       it('should show button', () => {
-        const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
-
         expect(proButton).toBeTruthy();
       });
 
       it('should redirect to pro section', () => {
-        const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
-        fixture.detectChanges();
+        proButton.nativeElement.click();
 
-        expect(proButton.routerLink).toEqual(`/${PRO_PATHS.PRO_MANAGER}`);
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([PRO_PATHS.PRO_MANAGER]);
       });
 
       describe('and is not pro user', () => {
@@ -1553,15 +1607,17 @@ describe('ListComponent', () => {
         });
       });
     });
+
     describe('and has not subscriptions permission', () => {
       beforeEach(() => {
         permissionService.removePermission(PERMISSIONS.subscriptions);
+
         fixture.detectChanges();
+
+        proButton = fixture.debugElement.query(By.css(prosButtonSelector));
       });
 
       it('should not show button', () => {
-        const proButton = fixture.debugElement.nativeElement.querySelector('#qa-list-pro-button');
-
         expect(proButton).toBeFalsy();
       });
     });

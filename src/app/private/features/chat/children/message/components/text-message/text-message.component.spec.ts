@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
 import { LinkTransformPipe } from '@shared/pipes/link-transform';
 import { TextMessageComponent } from './text-message.component';
 

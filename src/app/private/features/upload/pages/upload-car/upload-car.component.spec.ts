@@ -53,6 +53,8 @@ import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { UploadCarComponent } from './upload-car.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -68,6 +70,7 @@ describe('UploadCarComponent', () => {
   let uploadService: UploadService;
   let itemReactivationService: ItemReactivationService;
   let HTMLElement: DebugElement;
+  let permissionService: NgxPermissionsService;
   const componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType'),
   };
@@ -75,10 +78,11 @@ describe('UploadCarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgbPopoverModule],
+        imports: [NgbPopoverModule, NgxPermissionsModule.forRoot()],
         providers: [
           FormBuilder,
           NgbPopoverConfig,
+          NgxPermissionsService,
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UploadService, useClass: MockUploadService },
 
@@ -179,6 +183,7 @@ describe('UploadCarComponent', () => {
     itemService = TestBed.inject(ItemService);
     uploadService = TestBed.inject(UploadService);
     itemReactivationService = TestBed.inject(ItemReactivationService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     HTMLElement = fixture.debugElement;
   });
 
@@ -883,20 +888,6 @@ describe('UploadCarComponent', () => {
     });
   });
 
-  describe('Emit Location', () => {
-    let categoryId: number;
-
-    it('should emit location updated event', () => {
-      component.locationSelected.subscribe((s: number) => {
-        categoryId = s;
-      });
-
-      component.emitLocation();
-
-      expect(categoryId).toBe(100);
-    });
-  });
-
   describe('when selecting a custom make', () => {
     it('should reset brand, model and year values', () => {
       component.uploadForm.patchValue({
@@ -1062,6 +1053,62 @@ describe('UploadCarComponent', () => {
         const submitButtonTextElement: HTMLElement = fixture.debugElement.query(By.css('tsl-button span')).nativeElement;
 
         expect(submitButtonTextElement.innerHTML).toEqual('Reactivate item');
+      });
+    });
+
+    describe('Pro aditional services', () => {
+      describe('And has subscription permissions', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.subscriptions);
+        });
+        describe('and is not car dealer', () => {
+          describe('and is pro user', () => {
+            beforeEach(() => {
+              component.isProUser = true;
+              fixture.detectChanges();
+            });
+            it('Should show section', fakeAsync(() => {
+              tick();
+              fixture.detectChanges();
+
+              const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+              expect(prosFeatures).toBeTruthy();
+            }));
+          });
+          describe('and is not pro user', () => {
+            it('Should not show section', fakeAsync(() => {
+              tick();
+              fixture.detectChanges();
+
+              const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+              expect(prosFeatures).toBeFalsy();
+            }));
+          });
+        });
+        describe('and is car dealer', () => {
+          beforeEach(() => {
+            permissionService.addPermission(PERMISSIONS.professional);
+            component.isProUser = true;
+            fixture.detectChanges();
+          });
+          it('Should not show section', fakeAsync(() => {
+            tick();
+            fixture.detectChanges();
+
+            const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+            expect(prosFeatures).toBeFalsy();
+          }));
+        });
+      });
+      describe('And has not subscription permissions', () => {
+        it('Should not show section', () => {
+          const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+          expect(prosFeatures).toBeFalsy();
+        });
       });
     });
   });

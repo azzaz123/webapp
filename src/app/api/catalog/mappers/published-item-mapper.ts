@@ -10,13 +10,13 @@ export function mapPublishedItemsToItemCards(publishedItems: PublishedItem[], us
 }
 
 function mapPublishedItemToItemCard(item: PublishedItem, userId: string, favoriteIds: string[]): ItemCard {
-  const { id, category_id, title, description, price, images = [], attributes = [], slug, reserved, bump } = item;
+  const { id, category_id, title, description, price, images = [], type_attributes = {}, slug, reserved, bump } = item;
 
   return {
     id,
     title,
     categoryId: Number.parseInt(category_id),
-    description: formatDescription(getItemType(category_id), description, attributes),
+    description: formatDescription(getItemType(category_id), description, type_attributes),
     salePrice: price.amount,
     currencyCode: price.currency,
     webSlug: slug,

@@ -30,7 +30,6 @@ import {
   LATEST_ITEM_DATA,
   LATEST_ITEM_DATA_EMPTY,
   MOCK_ITEM_V3,
-  MOCK_LISTING_FEE_PRODUCT,
   ORDER,
   PRODUCTS_RESPONSE,
   PRODUCT_RESPONSE,
@@ -50,7 +49,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { UserService } from '../user/user.service';
 import { UuidService } from '../uuid/uuid.service';
 import { Car } from './car';
-import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
+import { Item, ITEM_TYPES } from './item';
 import {
   CarInfo,
   CheapestProducts,
@@ -283,7 +282,6 @@ describe('ItemService', () => {
           average_hex_color: '',
           urls_by_size: ITEMS_DATA_V3[0].content.image,
         });
-        expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
         expect(item.bumpExpiringDate).toBeUndefined();
         expect(response.init).toBe(INIT + 10);
       });
@@ -307,7 +305,6 @@ describe('ItemService', () => {
 
         expect(response.data[0].bumpExpiringDate).toBe(1510221655715);
         expect(response.data[0].flags.highlighted).toBeTruthy();
-        expect(response.data[0].listingFeeExpiringDate).toBe(1510221346789);
         expect(response.data[2].bumpExpiringDate).toBe(1509874085135);
         expect(response.data[2].flags.bumped).toBeTruthy();
       });
@@ -630,7 +627,7 @@ describe('ItemService', () => {
 
   describe('get', () => {
     it('should get item information', () => {
-      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
+      const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/vertical`;
       let response: Item;
 
       service.get(ITEM_ID).subscribe((r) => (response = r));
@@ -644,7 +641,7 @@ describe('ItemService', () => {
 
     describe('with backend errors', () => {
       it('should return a fake item', () => {
-        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/${ITEM_ID}/vertical`;
         let response: Item;
 
         service.get(ITEM_ID).subscribe((r) => (response = r));
@@ -732,37 +729,6 @@ describe('ItemService', () => {
 
       expect(req.request.url).toEqual(expectedUrl);
       expect(response).toBe(false);
-      expect(req.request.method).toBe('GET');
-    });
-  });
-
-  describe('getUrgentProducts', () => {
-    it('should return the urgent product information', () => {
-      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/${ITEM_ID}/available-urgent-products`;
-      let response: Product;
-
-      service.getUrgentProducts(ITEM_ID).subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(PRODUCTS_RESPONSE);
-
-      expect(req.request.url).toEqual(expectedUrl);
-      expect(response).toBe(PRODUCT_RESPONSE);
-      expect(req.request.method).toBe('GET');
-    });
-  });
-
-  describe('getUrgentProductByCategoryId', () => {
-    it('should return the urgent product information by category', () => {
-      const expectedUrlParams = `categoryId=${ITEM_CATEGORY_ID.toString()}`;
-      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-urgent-products?${expectedUrlParams}`;
-      let response: Product;
-
-      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID.toString()).subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(PRODUCTS_RESPONSE);
-
-      expect(req.request.urlWithParams).toEqual(expectedUrl);
-      expect(response).toBe(PRODUCT_RESPONSE);
       expect(req.request.method).toBe('GET');
     });
   });
@@ -1199,21 +1165,6 @@ describe('ItemService', () => {
       expect(req.request.method).toBe('PUT');
     });
   });
-
-  describe('getListingFeeInfo', () => {
-    it('should get the item listing fee information', () => {
-      const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/${ITEM_ID}/listing-fee-info`;
-      let response: Product;
-
-      service.getListingFeeInfo(ITEM_ID).subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(MOCK_LISTING_FEE_PRODUCT);
-
-      expect(req.request.url).toEqual(expectedUrl);
-      expect(response).toEqual(MOCK_LISTING_FEE_PRODUCT.product_group.products[0]);
-      expect(req.request.method).toBe('GET');
-    });
-  });
 });
 
 function checkItemResponse(item: Item) {
@@ -1230,5 +1181,4 @@ function checkItemResponse(item: Item) {
   expect(item.saleConditions).toEqual(ITEM_DATA_V3.content.sale_conditions);
   expect(item.mainImage).toEqual(ITEM_DATA_V3.content.images[0]);
   expect(item.images).toEqual(ITEM_DATA_V3.content.images);
-  expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEM_DATA_V3.content.web_slug);
 }

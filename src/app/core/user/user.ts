@@ -2,7 +2,6 @@ import { Model } from '../resource/model.interface';
 import { UserExtrainfo, UserLocation, UserStatsOld, UserValidations, Image } from './user-response.interface';
 import { Item } from '../item/item';
 
-export const USER_BASE_PATH = 'http://es.wallapop.com/user/';
 export const PLACEHOLDER_AVATAR = '/assets/images/user.png';
 export const PLACEHOLDER_COVER = '/assets/images/cover.svg';
 
@@ -35,7 +34,8 @@ export class User implements Model {
     private _featured = false,
     private _extraInfo?: UserExtrainfo,
     private _coverImage?: Image,
-    private _registerDate?: Date
+    private _registerDate?: Date,
+    private _phone?: string
   ) {
     this._type = this.mapType(this._type);
   }
@@ -226,6 +226,14 @@ export class User implements Model {
 
   set registerDate(value: Date) {
     this._registerDate = value;
+  }
+
+  get phone(): string {
+    return this._phone;
+  }
+
+  set phone(value: string) {
+    this._phone = value;
   }
 
   public setCoverImageUrl(url: string) {

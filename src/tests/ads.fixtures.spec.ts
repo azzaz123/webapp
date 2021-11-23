@@ -7,6 +7,7 @@ import {
   AD_TABLET_MAPPING,
 } from '@core/ads/constants';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
+import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { of } from 'rxjs';
 
@@ -14,13 +15,13 @@ export const MockAdsService = {
   adsReady$: of(true),
   init: () => {},
   refresh: () => {},
-  displayAdBySlotId: (adSlotId) => {},
   setSlots: (adSlots) => {},
   setAdKeywords: (adKeywords: AdKeyWords) => {},
   displayAdShopping: (adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
   adSlotLoaded$: () => of(true),
   clearSlots: () => {},
   refreshSlots: () => {},
+  refreshAllSlots: () => {},
   destroySlots: () => {},
 };
 
@@ -40,17 +41,19 @@ export const MockGooglePublisherTagService = {
   init: () => {},
   setTargetingByAdsKeywords: () => {},
   setAdsSegmentation: () => {},
-  displayAdBySlotId: (id: AdSlotId) => {},
   setSlots: (slots: AdSlotConfiguration) => {},
-  setAdKeywords: (adKeywords: AdKeyWords) => {},
+  setAdTargeting: (adTargetings: AdTargetings) => {},
   displayShopping: (pageOption, adSlotShopping: AdSlotGroupShoppingConfiguration) => {},
   isAdSlotLoaded$: () => of(true),
+  isAdSlotsDefined$: of(true),
   reset: () => {},
   getSlots: (adSlots: AdSlotConfiguration[]) => {},
   refreshSlots: (adSots: googletag.Slot[]) => {},
   clearSlots: (adSots: googletag.Slot[]) => {},
   destroySlots: (adSots: googletag.Slot[]) => {},
   refreshAllSlots: () => {},
+  setPubAdsConfig: () => {},
+  getDefinedSlots: () => {},
 };
 
 export const MockLoadAdsService = {
@@ -74,10 +77,32 @@ export const MockAdsKeywordsService = {
   loadAdKeywords: () => {},
 };
 
+export const MockAdsTargetings: AdTargetings = {
+  userId: '124214',
+  brand: 'vinted',
+  content: 'contenido',
+};
+
+export const MockAdsTargetingsService = {
+  adTargetings: MockAdsTargetings,
+  setAdTargeting: () => {},
+  setAdTargetings: () => {},
+  refreshAdTargetings: () => {},
+};
+
+export const MockSearchAdsService = {
+  init: () => {},
+  clearSlots: () => {},
+  refreshSlots: () => {},
+  destroySlots: () => {},
+  close: () => {},
+  listenerToAdsRefresh: () => {},
+};
+
 export const MockAdSlots: AdSlotConfiguration[] = [
   {
     id: 'div-gpt-ad-1508490196308-0',
-    name: '/130868815/chat_right',
+    name: '130868815/web/chat_right',
     sizes: [
       [120, 600],
       [160, 600],
@@ -100,6 +125,7 @@ export const MockAdSlots: AdSlotConfiguration[] = [
         mapping: AD_MOBILE_MAPPING.big,
       },
     },
+    type: 'test',
     device: [DeviceType.DESKTOP],
   },
 ];

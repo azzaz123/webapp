@@ -1,0 +1,12 @@
+.TTS {
+  &__back {
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+      &,
+      tsl-svg-icon {
+        opacity: 0.8;
+      }
+    }
+  }
+}

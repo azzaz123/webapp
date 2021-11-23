@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
+import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
@@ -10,6 +11,7 @@ import {
   MockAdsKeywordsService,
   MockAdSlots,
   MockAdSlotShopping,
+  MockAdsTargetingsService,
 } from '@fixtures/ads.fixtures.spec';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { random } from 'faker';
@@ -55,6 +57,10 @@ describe('GooglePublisherTagService', () => {
         {
           provide: DeviceService,
           useValue: deviceServiceMock,
+        },
+        {
+          provide: AdsTargetingsService,
+          useValue: MockAdsTargetingsService,
         },
       ],
     });
@@ -125,6 +131,16 @@ describe('GooglePublisherTagService', () => {
       });
     });
 
+    it('should notifiy that ad slots have been defined', () => {
+      service.isAdSlotsDefined$.subscribe((slotsDefined: boolean) => {
+        expect(slotsDefined).toEqual(true);
+      });
+
+      service.setSlots(MockAdSlots);
+    });
+  });
+
+  describe('when setting pubads configuration', () => {
     it('should set pubads', () => {
       const publisherId = 'publisherId';
       spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
@@ -134,7 +150,7 @@ describe('GooglePublisherTagService', () => {
       spyOn(MOCK_GOOGLE_PUBABDS, 'setPublisherProvidedId').and.callThrough();
       spyOn(MockCookieService, 'get').and.returnValue(publisherId);
 
-      service.setSlots(MockAdSlots);
+      service.setPubAdsConfig();
 
       expect(MOCK_GOOGLE_PUBABDS.enableSingleRequest).toHaveBeenCalledTimes(1);
       expect(MOCK_GOOGLE_PUBABDS.collapseEmptyDivs).toHaveBeenCalledTimes(1);
@@ -145,7 +161,7 @@ describe('GooglePublisherTagService', () => {
     it('should enable services', () => {
       spyOn(windowMock.googletag, 'enableServices').and.callThrough();
 
-      service.setSlots(MockAdSlots);
+      service.setPubAdsConfig();
 
       expect(windowMock.googletag.enableServices).toHaveBeenCalledTimes(1);
     });
@@ -155,7 +171,7 @@ describe('GooglePublisherTagService', () => {
         fn({ slot: { getAdUnitPath: () => MockAdSlots[0].name } });
       });
       let expectLoaded = false;
-      service.setSlots(MockAdSlots);
+      service.setPubAdsConfig();
 
       service.isAdSlotLoaded$(MockAdSlots[0]).subscribe((loaded: boolean) => {
         expectLoaded = loaded;
@@ -166,7 +182,7 @@ describe('GooglePublisherTagService', () => {
 
     it('should get if ad slot is not loaded in a subscribe', () => {
       let expectLoaded = false;
-      service.setSlots(MockAdSlots);
+      service.setPubAdsConfig();
 
       service.isAdSlotLoaded$(MockAdSlots[0]).subscribe((loaded: boolean) => {
         expectLoaded = loaded;
@@ -193,30 +209,6 @@ describe('GooglePublisherTagService', () => {
   });
 
   describe('when set segmentation', () => {
-    it('should add the configuration of google', () => {
-      spyOn(windowMock.googletag.cmd, 'push').and.callThrough();
-
-      service.setAdsSegmentation();
-
-      expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(jasmine.any(Function));
-    });
-
-    it('should update the pubabs', () => {
-      spyOn(MOCK_GOOGLE_PUBABDS, 'setRequestNonPersonalizedAds').and.callThrough();
-
-      service.setAdsSegmentation();
-
-      expect(MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds).toHaveBeenCalledWith(1);
-    });
-
-    it('should update the pubabs with segmentation', () => {
-      spyOn(MOCK_GOOGLE_PUBABDS, 'setRequestNonPersonalizedAds').and.callThrough();
-
-      service.setAdsSegmentation(true);
-
-      expect(MOCK_GOOGLE_PUBABDS.setRequestNonPersonalizedAds).toHaveBeenCalledWith(0);
-    });
-
     describe('when we want to refresh ads', () => {
       it('show refresh on google', () => {
         spyOn(MOCK_GOOGLE_PUBABDS, 'refresh').and.callThrough();
@@ -228,12 +220,12 @@ describe('GooglePublisherTagService', () => {
     });
 
     describe('when set targeting', () => {
-      it('should update ad keywords', () => {
-        spyOn(MockAdsKeywordsService, 'loadAdKeywords').and.callThrough();
+      it('should clear ad targetings from googletag cmd queue', () => {
+        spyOn(MOCK_GOOGLE_PUBABDS, 'clearTargeting').and.callThrough();
 
         service.setTargetingByAdsKeywords();
 
-        expect(MockAdsKeywordsService.loadAdKeywords).toHaveBeenCalledTimes(1);
+        expect(MOCK_GOOGLE_PUBABDS.clearTargeting).toHaveBeenCalledTimes(1);
       });
 
       it('should set targeting by ad keywords', () => {
@@ -247,41 +239,6 @@ describe('GooglePublisherTagService', () => {
           }
         }
       });
-
-      it('should set targeting by segmentation', () => {
-        spyOn(MOCK_GOOGLE_PUBABDS, 'setTargeting').and.callThrough();
-
-        service.setTargetingByAdsKeywords();
-
-        expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'false');
-      });
-
-      it('should set targeting by segmentation to true', () => {
-        spyOn(MOCK_GOOGLE_PUBABDS, 'setTargeting').and.callThrough();
-
-        service.setTargetingByAdsKeywords(true);
-
-        expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'true');
-      });
-    });
-  });
-
-  describe('when we want to display by slot ', () => {
-    it('should add on command', () => {
-      spyOn(windowMock.googletag.cmd, 'push').and.callThrough();
-
-      service.displayAdBySlotId(MockAdSlots[0].id);
-
-      expect(windowMock.googletag.cmd.push).toHaveBeenCalledWith(jasmine.any(Function));
-    });
-
-    it('should display by slot id', () => {
-      const id = '512512';
-      spyOn(MOCK_GOOGLE_TAG, 'display').and.callThrough();
-
-      service.displayAdBySlotId(id);
-
-      expect(MOCK_GOOGLE_TAG.display).toHaveBeenCalledWith(id);
     });
   });
 
@@ -289,13 +246,11 @@ describe('GooglePublisherTagService', () => {
     it('should set page options and slot shopping to lib', () => {
       spyOn(windowMock, '_googCsa').and.callThrough();
 
-      service.displayShopping(MockAdShoppingPageOptions, MockAdSlotShopping);
+      service.displayShopping(MockAdShoppingPageOptions, [MockAdSlotShopping]);
 
-      expect(windowMock._googCsa).toHaveBeenCalledWith(
-        'plas',
-        { ...MockAdShoppingPageOptions, query: MockAdsKeywords.content },
-        MockAdSlotShopping
-      );
+      expect(windowMock._googCsa).toHaveBeenCalledWith('plas', { ...MockAdShoppingPageOptions, query: MockAdsKeywords.content }, [
+        MockAdSlotShopping,
+      ]);
     });
   });
 

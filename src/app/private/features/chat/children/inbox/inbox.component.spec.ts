@@ -16,7 +16,7 @@ import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import { InboxConversation, InboxItem, InboxUser } from '@private/features/chat/core/model';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '@fixtures/inbox.fixtures.spec';
+import { CREATE_MOCK_INBOX_CONVERSATION, createInboxConversationsArray } from '@fixtures/chat';
 import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { DateCalendarPipe } from '@shared/pipes';
@@ -192,6 +192,9 @@ describe('Component: InboxComponent', () => {
           itemId: conversation.item.id,
           conversationId: conversation.id,
           screenId: SCREEN_IDS.Chat,
+          translationAllowed: null,
+          buyerUserId: null,
+          sellerUserId: null,
         },
       };
 

@@ -9,7 +9,7 @@ import * as coreLibrary from '@angular/core';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { MockPermissionsService } from '@fixtures/permissions.fixtures';
 import { FeatureFlag, FEATURE_FLAGS_ENUM } from './featureflag-constants';
-import { FeatureFlagService, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
+import { FeatureFlagService, FEATURE_FLAG_ACCEPT_HEADER, FEATURE_FLAG_ENDPOINT } from './featureflag.service';
 import { PERMISSIONS } from './user-constants';
 
 const isDevMode = jasmine.createSpy().and.returnValue(true);
@@ -72,6 +72,7 @@ describe('FeatureFlagService', () => {
       expect(req.request.url).toBe(expectedUrlWithEndpoint);
       expect(req.request.urlWithParams.toString()).toBe(expectedUrlWithEndpointAndParams);
       expect(req.request.method).toBe('GET');
+      expect(req.request.headers.get('Accept')).toBe(FEATURE_FLAG_ACCEPT_HEADER);
     });
 
     it('should not do extra HTTP request when feature flag was already fetched', () => {
@@ -112,39 +113,26 @@ describe('FeatureFlagService', () => {
       describe('and the experimentalFeatures are enabled...', () => {
         it('should return true', () => {
           spyOn(localStorage, 'getItem').and.returnValue(true);
-          isDevMode.and.returnValue(false);
           let dataResponse: boolean;
 
           service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
 
           expect(dataResponse).toBe(true);
-        });
-      });
-
-      describe('and is dev mode...', () => {
-        it('should return true', () => {
-          spyOn(localStorage, 'getItem').and.returnValue(false);
-          isDevMode.and.returnValue(true);
-          let dataResponse: boolean;
-
-          service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
-
-          expect(dataResponse).toBe(true);
-        });
-      });
-
-      describe('and is NOT dev mode and the experimentalFeatures are not enabled...', () => {
-        it('should return false', () => {
-          spyOn(localStorage, 'getItem').and.returnValue(false);
-          isDevMode.and.returnValue(false);
-          let dataResponse: boolean;
-
-          service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
-
-          expect(dataResponse).toBe(false);
         });
       });
     });
+
+    describe('and the experimentalFeatures are not enabled...', () => {
+      it('should return false', () => {
+        spyOn(localStorage, 'getItem').and.returnValue(false);
+        let dataResponse: boolean;
+
+        service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
+
+        expect(dataResponse).toBe(false);
+      });
+    });
+
     describe('Permissions', () => {
       beforeEach(() => {
         spyOn(permissionService, 'addPermission').and.callThrough();
@@ -232,6 +220,7 @@ describe('FeatureFlagService', () => {
         expect(req.request.url).toBe(expectedUrlWithEndpoint);
         expect(req.request.urlWithParams.toString()).toBe(expectedUrlWithEndpointAndParams);
         expect(req.request.method).toBe('GET');
+        expect(req.request.headers.get('Accept')).toBe(FEATURE_FLAG_ACCEPT_HEADER);
       });
     });
 

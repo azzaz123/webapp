@@ -1,0 +1,19 @@
+@import '~style/common';
+
+.SubscriptionEdit {
+  margin-bottom: $subscription-footer-height;
+
+  > .GenericCard {
+    &:not(:last-child) {
+      margin-bottom: $spacing-ml;
+    }
+  }
+
+  &__back {
+    cursor: pointer;
+  }
+
+  @include media-breakpoint-down(md) {
+    margin-bottom: $spacing-ml;
+  }
+}

@@ -9,7 +9,7 @@ import { DELIVERY_PATHS } from '../delivery-routing-constants';
 import { DeliveryComponent } from './delivery.component';
 
 describe('DeliveryComponent', () => {
-  const URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SHIPMENT_TRACKING}`;
+  const URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`;
   let component: DeliveryComponent;
   let fixture: ComponentFixture<DeliveryComponent>;
   let router: Router;

@@ -41,6 +41,8 @@ import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.
 import { UploadRealestateComponent } from './upload-realestate.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { LocationSelectorModal } from '@shared/modals/location-selector-modal/location-selector-modal.component';
+import { PERMISSIONS } from '@core/user/user-constants';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -54,6 +56,7 @@ describe('UploadRealestateComponent', () => {
   let uploadService: UploadService;
   let userService: UserService;
   let itemReactivationService: ItemReactivationService;
+  let permissionService: NgxPermissionsService;
   const RESPONSE: Key[] = [{ id: 'test', icon_id: 'test', text: 'test' }];
   const RESPONSE_OPTION: IOption[] = [{ value: 'test', label: 'test' }];
   const componentInstance: any = {};
@@ -61,11 +64,12 @@ describe('UploadRealestateComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgbPopoverModule],
+        imports: [NgbPopoverModule, NgxPermissionsModule.forRoot()],
         declarations: [UploadRealestateComponent],
         providers: [
           FormBuilder,
           NgbPopoverConfig,
+          NgxPermissionsService,
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UploadService, useClass: MockUploadService },
           {
@@ -152,6 +156,7 @@ describe('UploadRealestateComponent', () => {
     uploadService = TestBed.inject(UploadService);
     itemReactivationService = TestBed.inject(ItemReactivationService);
     userService = TestBed.inject(UserService);
+    permissionService = TestBed.inject(NgxPermissionsService);
     fixture.detectChanges();
   });
 
@@ -232,7 +237,7 @@ describe('UploadRealestateComponent', () => {
       it('should emit changed event if form values changes', () => {
         let formChanged: boolean;
         component.item = MOCK_REALESTATE;
-        component.onFormChanged.subscribe((value: boolean) => {
+        component.formChanged.subscribe((value: boolean) => {
           formChanged = value;
         });
         component.ngOnInit();
@@ -533,16 +538,6 @@ describe('UploadRealestateComponent', () => {
 
       expect(itemService.updateRealEstateLocation).toHaveBeenCalledWith(MOCK_REALESTATE.id, USER_LOCATION_COORDINATES);
     });
-
-    it('should emit location updated event', () => {
-      component.locationSelected.subscribe((s: number) => {
-        categoryId = s;
-      });
-
-      component.emitLocation();
-
-      expect(categoryId).toBe(13000);
-    });
   });
 
   describe('preview', () => {
@@ -744,6 +739,62 @@ describe('UploadRealestateComponent', () => {
         component.onSubmit();
 
         expect(uploadService.createItem).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('Pro aditional services', () => {
+    describe('And has subscription permissions', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.subscriptions);
+      });
+      describe('and is not car dealer', () => {
+        describe('and is pro user', () => {
+          beforeEach(() => {
+            component.isProUser = true;
+            fixture.detectChanges();
+          });
+          it('Should show section', fakeAsync(() => {
+            tick();
+            fixture.detectChanges();
+
+            const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+            expect(prosFeatures).toBeTruthy();
+          }));
+        });
+        describe('and is not pro user', () => {
+          it('Should not show section', fakeAsync(() => {
+            tick();
+            fixture.detectChanges();
+
+            const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+            expect(prosFeatures).toBeFalsy();
+          }));
+        });
+      });
+      describe('and is car dealer', () => {
+        beforeEach(() => {
+          permissionService.addPermission(PERMISSIONS.professional);
+          component.isProUser = true;
+          fixture.detectChanges();
+        });
+        it('Should not show section', fakeAsync(() => {
+          tick();
+          fixture.detectChanges();
+
+          const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+          expect(prosFeatures).toBeFalsy();
+        }));
+      });
+    });
+    describe('And has not subscription permissions', () => {
+      it('Should not show section', () => {
+        const prosFeatures = fixture.debugElement.query(By.css('tsl-pro-features'));
+
+        expect(prosFeatures).toBeFalsy();
       });
     });
   });
