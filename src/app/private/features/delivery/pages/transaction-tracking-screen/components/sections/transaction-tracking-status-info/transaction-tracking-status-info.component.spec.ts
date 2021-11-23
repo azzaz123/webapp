@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
-import { TransactionDetailComponent } from '../../transaction-detail/transaction-detail.component';
+import { TransactionDetailComponent } from '../../transaction-details/transaction-detail/transaction-detail.component';
 import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mapper';
 import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
