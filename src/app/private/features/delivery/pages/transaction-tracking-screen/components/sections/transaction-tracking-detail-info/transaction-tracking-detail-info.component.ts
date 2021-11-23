@@ -13,6 +13,7 @@ import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mappe
 export class TransactionTrackingDetailInfoComponent implements OnInit {
   @Input() transactionTrackingDetails: TransactionTrackingDetails;
   public detailInfoSlots: TransactionDetail[];
+  public readonly isBorderBottom = true;
 
   constructor(private transactionTrackingActionsService: TransactionTrackingActionsService) {}
 

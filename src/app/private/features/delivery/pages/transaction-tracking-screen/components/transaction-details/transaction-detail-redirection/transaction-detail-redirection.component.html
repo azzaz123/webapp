@@ -1,3 +1,3 @@
-<tsl-transaction-detail [transactionDetail]="transactionDetail">
+<tsl-transaction-detail [transactionDetail]="transactionDetail" [isBorderBottom]="isBorderBottom">
   <a [href]="transactionDetail.action.payload.linkUrl" [innerHTML]="transactionDetail.description | bypassHTML" target="_blank"></a>
 </tsl-transaction-detail>

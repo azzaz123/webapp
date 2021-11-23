@@ -8,6 +8,7 @@ import { TransactionDetail } from '../../../interfaces/transaction-detail.interf
 })
 export class TransactionDetailRedirectionComponent implements OnInit {
   @Input() transactionDetail: TransactionDetail;
+  @Input() isBorderBottom: boolean;
 
   constructor() {}
 

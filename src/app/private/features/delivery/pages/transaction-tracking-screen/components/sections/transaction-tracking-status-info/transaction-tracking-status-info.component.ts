@@ -12,6 +12,7 @@ import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mappe
 export class TransactionTrackingStatusInfoComponent {
   @Input() transactionTrackingStatusInfo: TransactionTrackingStatusInfo[];
   public detailInfoSlots: TransactionDetail[];
+  public readonly isBorderBottom = true;
 
   constructor() {}
 
