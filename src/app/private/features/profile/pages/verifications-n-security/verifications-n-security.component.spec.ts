@@ -1,5 +1,6 @@
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
 import {
@@ -14,6 +15,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { Observable, of } from 'rxjs';
 import { EmailVerificationModalComponent } from '../../modal/email-verification/modals/email-verification-modal/email-verification-modal.component';
+import { PhoneVerificationModalComponent } from '../../modal/phone-verification/modals/phone-verification-modal/phone-verification-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
 import { VerificationsNSecurityComponent, VERIFICATIONS_N_SECURITY_TYPES } from './verifications-n-security.component';
 
@@ -37,6 +39,7 @@ describe('VerificationsNSecurityComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [VerificationsNSecurityComponent, MockVerificationCardComponent],
       providers: [
+        FormBuilder,
         { provide: UserService, useClass: MockedUserService },
         {
           provide: UserVerificationsService,
@@ -100,13 +103,14 @@ describe('VerificationsNSecurityComponent', () => {
     });
   });
 
-  describe('verifications text', () => {
-    describe('when the verifications service is loaded', () => {
+  describe('Verification cards', () => {
+    describe('when the verification service is loaded', () => {
       it('should show Email title', () => {
         const title = component.titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.EMAIL];
 
         expect(title).toBe('Email');
       });
+
       it('should show Mobile phone title', () => {
         const title = component.titleVerifications[VERIFICATIONS_N_SECURITY_TYPES.PHONE];
 
@@ -176,6 +180,7 @@ describe('VerificationsNSecurityComponent', () => {
 
       describe('and the phone is verified', () => {
         beforeEach(() => {
+          spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
           spyUserVerificationsService = jest
             .spyOn(userVerificationsService, 'userVerifications$', 'get')
             .mockReturnValue(of(MOCK_USER_VERIFICATIONS_PHONE_VERIFIED));
@@ -192,6 +197,19 @@ describe('VerificationsNSecurityComponent', () => {
 
           expect(text).toBe('Change');
           expect(component.userPhone).toBe('+34 935 50 09 96');
+        });
+
+        it('should open the phone verification modal when button is clicked', () => {
+          spyOn(modalService, 'open').and.callThrough();
+          component.onClickVerifyPhone();
+
+          expect(modalService.open).toHaveBeenCalledWith(PhoneVerificationModalComponent, {
+            windowClass: 'modal-standard',
+          });
+          expect(verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent).toHaveBeenCalledTimes(1);
+          expect(verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent).toHaveBeenCalledWith(
+            VERIFICATION_METHOD.PHONE
+          );
         });
       });
       describe('and the phone is not verified', () => {
@@ -215,9 +233,13 @@ describe('VerificationsNSecurityComponent', () => {
           expect(component.userPhone).toBe('');
         });
 
-        it('should track the phone when button is clicked', () => {
+        it('should open the phone verification modal when button is clicked', () => {
+          spyOn(modalService, 'open').and.callThrough();
           component.onClickVerifyPhone();
 
+          expect(modalService.open).toHaveBeenCalledWith(PhoneVerificationModalComponent, {
+            windowClass: 'modal-standard',
+          });
           expect(verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent).toHaveBeenCalledTimes(1);
           expect(verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent).toHaveBeenCalledWith(
             VERIFICATION_METHOD.PHONE
