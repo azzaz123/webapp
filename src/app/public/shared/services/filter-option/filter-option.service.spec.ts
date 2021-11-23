@@ -99,8 +99,8 @@ describe('FilterOptionService', () => {
       ],
     });
     service = TestBed.inject(FilterOptionService);
-    filterOptionsApiService = (TestBed.inject(FilterOptionsApiService) as unknown) as MockFilterOptionApiService;
-    filterOptionsMapperService = (TestBed.inject(FilterOptionsMapperService) as unknown) as MockFilterOptionMapperService;
+    filterOptionsApiService = TestBed.inject(FilterOptionsApiService) as unknown as MockFilterOptionApiService;
+    filterOptionsMapperService = TestBed.inject(FilterOptionsMapperService) as unknown as MockFilterOptionMapperService;
   });
 
   it('should be created', () => {

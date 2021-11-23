@@ -29,7 +29,6 @@ import {
   PurchaseProductsWithCreditsResponse,
   RealestateContent,
   SelectedItemsAction,
-  ListingFeeProductInfo,
 } from './item-response.interface';
 import { find, findIndex, reverse, without, map as lodashMap, filter, sortBy } from 'lodash-es';
 import { I18nService } from '../i18n/i18n.service';
@@ -362,9 +361,6 @@ export class ItemService {
                   id: purchase.item_id,
                 });
                 if (index !== -1) {
-                  if (purchase.purchase_name === 'listingfee') {
-                    itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
-                  }
                   if (this.bumpTypes.includes(purchase.purchase_name)) {
                     itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
                   }
@@ -805,11 +801,5 @@ export class ItemService {
         version,
       },
     });
-  }
-
-  public getListingFeeInfo(itemId: string): Observable<Product> {
-    return this.http
-      .get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/${itemId}/listing-fee-info`)
-      .pipe(mapRx.map((response: ListingFeeProductInfo) => response.product_group.products[0]));
   }
 }

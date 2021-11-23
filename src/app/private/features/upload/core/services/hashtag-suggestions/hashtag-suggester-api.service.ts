@@ -16,20 +16,16 @@ export class HashtagSuggesterApiService {
 
   constructor(private http: HttpClient) {}
 
-  public getHashtagsByPrefix(category_id: string, start: string, prefix: string): Observable<PaginatedList<Hashtag>> {
+  public getHashtagsByPrefix(category_id: string, prefix: string): Observable<PaginatedList<Hashtag>> {
     const url = `${environment.baseUrl}${GENERAL_HASHTAG_SUGGESTERS_API}`;
-    const httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix, start } });
-    return this.getResults(
-      this.http.get<HttpResponse<HashtagResponse>>(url, { params: httpParams, observe: 'response' as 'body' })
-    );
+    const httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix } });
+    return this.getResults(this.http.get<HttpResponse<HashtagResponse>>(url, { params: httpParams, observe: 'response' as 'body' }));
   }
 
   public getHashtags(category_id: string, start: string): Observable<PaginatedList<Hashtag>> {
     const url = `${environment.baseUrl}${HASHTAG_SUGGESTERS_API}`;
-    let httpParams: HttpParams = new HttpParams({ fromObject: { category_id, prefix: null, start } });
-    return this.getResults(
-      this.http.get<HttpResponse<HashtagResponse>>(url, { params: httpParams, observe: 'response' as 'body' })
-    );
+    let httpParams: HttpParams = new HttpParams({ fromObject: { category_id, start } });
+    return this.getResults(this.http.get<HttpResponse<HashtagResponse>>(url, { params: httpParams, observe: 'response' as 'body' }));
   }
 
   private getResults(endpointSubscribable: Observable<HttpResponse<HashtagResponse>>): Observable<PaginatedList<Hashtag>> {

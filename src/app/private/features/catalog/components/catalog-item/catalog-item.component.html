@@ -3,8 +3,8 @@
   <div class="col-1 d-flex align-items-center justify-content-center">
     <button class="CatalogItem__checkbox" (click)="select(item)" [ngClass]="{
       'CatalogItem__checkbox--selected': item.selected,
-      'CatalogItem__checkbox--disabled': item.flags.pending || (!item.flags.onhold && item.listingFeeExpiringDate)
-    }" [disabled]="item.flags.pending || (!item.flags.onhold && item.listingFeeExpiringDate)">
+      'CatalogItem__checkbox--disabled': item.flags.pending
+    }" [disabled]="item.flags.pending">
       <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
     </button>
   </div>
@@ -48,14 +48,6 @@
                 <span class="subtitle subtitle--onHold" i18n="@@web_catalog_components_item_105">Inactive</span>
             </div>
             </ng-template>
-          </div>
-
-          <div class="col-1 d-none d-md-block item-info clickable" [ngClass]="{'clickable--onHold': item.flags.onhold }" *ngIf="showListingFee() || item.listingFeeExpiringDate"
-            (click)="openItem()">
-            <div *ngIf="showListingFee()" i18n="@@web_catalog_components_item_106">Active</div>
-            <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="subtitle"
-              [ngClass]="{'few-days': listingFeeFewDays()}" [value]="item.listingFeeExpiringDate" format="listingFee">
-            </tsl-countdown>
           </div>
 
           <div class="col-3 ml-auto d-none d-md-flex align-items-center justify-content-center" *ngIf="item.flags.onhold">

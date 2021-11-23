@@ -1,0 +1,75 @@
+<div class="PhoneVerificationModal text-center px-md-3 py-3">
+  <div class="PhoneVerificationModal__close position-absolute" (click)="activeModal.dismiss()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+  <div class="PhoneVerificationModal__container mt-5">
+    <tsl-svg-icon
+      class="d-inline-flex"
+      width="63"
+      height="62"
+      src="/assets/icons/verifications-n-security/phone-verification.svg"
+    ></tsl-svg-icon>
+    <div class="PhoneVerificationModal__title my-2" i18n="@@phone_verification_all_users_title">Phone</div>
+    <div class="PhoneVerificationModal__subtitle mb-5 mx-4" i18n="@@phone_verification_all_users_description">
+      Enter your phone number, tap the button and we'll send you a free SMS with a verification code.
+    </div>
+    <form class="col" [formGroup]="phoneVerificationForm" (submit)="onSubmitPhone()">
+      <div class="form-group row align-items-center mx-md-2">
+        <div class="col-5 col-md-4 align-self-start">
+          <tsl-dropdown
+            i18n-placeholder="@@phone_verification_all_users_number_input_prefix_placeholder"
+            placeholder="Prefix"
+            class="form-control"
+            formControlName="prefix"
+            id="prefix"
+            [options]="prefixes"
+            [optionTemplateProperty]="'label'"
+          >
+            <ng-template #optionTemplate let-option="option">
+              <div>{{ option.country + ' ' + option.label }}</div>
+            </ng-template>
+          </tsl-dropdown>
+        </div>
+        <div class="col-7 col-md-8 align-self-start">
+          <input
+            type="tel"
+            placeholder="Phone number"
+            i18n-placeholder="@@phone_verification_all_users_number_input_number_placeholder"
+            class="form-control"
+            id="phone"
+            formControlName="phone"
+          />
+          <div
+            *ngIf="phoneVerificationForm.controls.phone.invalid && phoneVerificationForm.pending"
+            class="PhoneVerificationModal__message PhoneVerificationModal__message--error"
+          >
+            <ng-container *ngIf="phoneVerificationForm.controls.phone.errors">
+              <span i18n="@@phone_verification_all_users_snackbar_not_valid_number_error_message"
+                >The phone number isn't valid. Review it or try other.</span
+              >
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-4 mx-md-2">
+        <div class="col">
+          <p class="PhoneVerificationModal__legend text-left" i18n="@@phone_verification_all_users_number_input_description">
+            This phone number will be totally private and won't be visible on your profile. Wallapop won't use it to send commercial
+            communications nor will it be shared with third parties.
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <tsl-button
+            class="PhoneVerificationModal__verify-btn w-100"
+            className="btn-primary btn-primary--bold w-100"
+            [type]="'submit'"
+            i18n="@@phone_verification_all_users_send_sms_button"
+            >Send free SMS</tsl-button
+          >
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

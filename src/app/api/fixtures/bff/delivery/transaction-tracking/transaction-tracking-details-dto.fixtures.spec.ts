@@ -60,8 +60,7 @@ export const MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE: TransactionTracking
     },
     {
       icon: {
-        url:
-          'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/shipping_address_element.png',
+        url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/shipping_address_element.png',
         thumbnail_url:
           'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/shipping_address_element.png?size=medium',
         style: 'none',
@@ -72,8 +71,7 @@ export const MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE: TransactionTracking
     },
     {
       icon: {
-        url:
-          'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/payment_method_wallet_element.png',
+        url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/payment_method_wallet_element.png',
         thumbnail_url:
           'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/payment_method_wallet_element.png?size=medium',
         style: 'none',
