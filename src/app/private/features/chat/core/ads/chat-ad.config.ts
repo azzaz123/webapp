@@ -29,5 +29,6 @@ export const CHAT_AD_SLOTS: AdSlotConfiguration = {
     },
   },
   networkId: AD_SLOT_NETWORK_ID,
+  type: 'chat',
   device: [DeviceType.TABLET, DeviceType.DESKTOP],
 };

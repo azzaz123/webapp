@@ -10,6 +10,7 @@ import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes'
 import { EmailThanksModalComponent } from './modal/email-thanks-modal/email-thanks-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from './services/verifications-n-security-tracking-events.service';
 import { EmailVerificationModule } from './modal/email-verification/email-verification.module';
+import { PhoneVerificationModule } from './modal/phone-verification/phone-verification.module';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { EmailVerificationModule } from './modal/email-verification/email-verifi
     NgbModalModule,
     CustomCurrencyModule,
     EmailVerificationModule,
+    PhoneVerificationModule,
   ],
   declarations: [profileRoutedComponents, UnsubscribeModalComponent, ChangeStoreLocationModal, EmailThanksModalComponent],
   providers: [VerificationsNSecurityTrackingEventsService],
