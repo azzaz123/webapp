@@ -14,7 +14,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, concat, interval, Observable, of, Subject, throwError } from 'rxjs';
 import { finalize, mergeMap, retry, takeUntil } from 'rxjs/operators';
 
-export const HERE_MAPS_VERSION = '3.1.26.0'; // latest
+export const HERE_MAPS_VERSION = '3.1.30.3'; // latest
 export const HERE_MAPS_CORE_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-core.js`;
 export const HERE_MAPS_CORE_LEGACY_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-core-legacy.js`;
 export const HERE_MAPS_SERVICE_URL = `https://js.api.here.com/v3/${HERE_MAPS_VERSION}/mapsjs-service.js`;
@@ -33,7 +33,7 @@ export const HERE_MAPS_EVENTS_REF_ID = 'src-here-maps-events';
 
 export const GEO_APP_ID = 'RgPrXX1bXt123UgUFc7B';
 export const GEO_APP_CODE = 'HtfX0DsqZ2Y0x-44GfujFA';
-export const GEO_APP_API_KEY = '';
+export const GEO_APP_API_KEY = 'BahNm8hsF8d2ciBJL12Fa_Asp6QeJi6aPjD_I6lu49E';
 
 export const CHECK_INTERVAL_MS = 100;
 export const RETRY_AMOUNT = 12;
@@ -92,14 +92,22 @@ export class HereMapsService {
       mergeMap(() => {
         const coreScriptRef = document.getElementById(HERE_MAPS_CORE_REF_ID);
         const coreScriptLegacyRef = document.getElementById(HERE_MAPS_CORE_LEGACY_REF_ID);
+
+        if (coreScriptRef && !coreScriptLegacyRef) {
+          this.appendCoreLegacyToDOM();
+        }
+
         if (coreScriptRef && coreScriptLegacyRef && window['H']) {
           isReady$.next(true);
           return of(true);
         }
+
         this.appendCoreToDOM();
+
         if (!window['H']) {
           return throwError(null);
         }
+
         return of(false);
       }),
       retry(RETRY_AMOUNT),
@@ -109,6 +117,9 @@ export class HereMapsService {
 
   private appendCoreToDOM(): void {
     this.appendScriptToDOM(HERE_MAPS_CORE_REF_ID, HERE_MAPS_CORE_URL);
+  }
+
+  private appendCoreLegacyToDOM(): void {
     this.appendScriptToDOM(HERE_MAPS_CORE_LEGACY_REF_ID, HERE_MAPS_CORE_LEGACY_URL);
   }
 
@@ -118,14 +129,22 @@ export class HereMapsService {
       mergeMap(() => {
         const serviceScriptRef = document.getElementById(HERE_MAPS_SERVICE_REF_ID);
         const serviceScriptLegacyRef = document.getElementById(HERE_MAPS_SERVICE_LEGACY_REF_ID);
+
+        if (serviceScriptRef && !serviceScriptLegacyRef) {
+          this.appendServiceLegacyToDOM();
+        }
+
         if (serviceScriptRef && serviceScriptLegacyRef && H.service) {
           isReady$.next(true);
           return of(true);
         }
+
         this.appendServiceToDOM();
+
         if (!H.service) {
           return throwError(null);
         }
+
         return of(false);
       }),
       retry(RETRY_AMOUNT),
@@ -135,6 +154,9 @@ export class HereMapsService {
 
   private appendServiceToDOM(): void {
     this.appendScriptToDOM(HERE_MAPS_SERVICE_REF_ID, HERE_MAPS_SERVICE_URL);
+  }
+
+  private appendServiceLegacyToDOM(): void {
     this.appendScriptToDOM(HERE_MAPS_SERVICE_LEGACY_REF_ID, HERE_MAPS_SERVICE_LEGACY_URL);
   }
 

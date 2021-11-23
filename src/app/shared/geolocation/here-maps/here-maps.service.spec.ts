@@ -83,16 +83,16 @@ describe('HereMapsService', () => {
       expect(isReady).toBe(false);
 
       tick(CHECK_INTERVAL_MS);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(1 * 2);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(1);
+      expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
+
+      tick(CHECK_INTERVAL_MS * 3);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(2 * 2);
       expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
       expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreLegacyScript);
+      expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
 
-      tick(CHECK_INTERVAL_MS * 2);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(2 * 2);
-      expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceScript);
-      expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceLegacyScript);
-
-      tick(CHECK_INTERVAL_MS);
+      tick(CHECK_INTERVAL_MS * 4);
       expect(window['H'].service.Platform).toHaveBeenCalledTimes(1);
       expect(window['H'].service.Platform).toHaveBeenCalledWith(expectedParams);
       expect(isReady).toBeTruthy();
@@ -134,7 +134,7 @@ describe('HereMapsService', () => {
 
       tick(CHECK_INTERVAL_MS * 8);
       expect(H.service.Platform).toHaveBeenCalledTimes(1);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(2 * 2);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(2);
       expect(isReady).toBeTruthy();
       expect(isLoading).toBe(false);
 
@@ -165,7 +165,7 @@ describe('HereMapsService', () => {
       tick(CHECK_INTERVAL_MS + CHECK_INTERVAL_MS * RETRY_AMOUNT);
       expect(isReady).toBe(false);
       expect(isLoading).toBe(false);
-      expect(document.head.appendChild).toHaveBeenCalledTimes((1 + RETRY_AMOUNT) * 2);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(1 + RETRY_AMOUNT);
 
       scriptSubscription.unsubscribe();
       loadingSubscription.unsubscribe();
@@ -192,7 +192,7 @@ describe('HereMapsService', () => {
       tick(CHECK_INTERVAL_MS * 2 + CHECK_INTERVAL_MS + CHECK_INTERVAL_MS * RETRY_AMOUNT);
       expect(isReady).toBe(false);
       expect(isLoading).toBe(false);
-      expect(document.head.appendChild).toHaveBeenCalledTimes((1 + 1 + RETRY_AMOUNT) * 2);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(1 + 1 + RETRY_AMOUNT);
 
       scriptSubscription.unsubscribe();
       loadingSubscription.unsubscribe();
