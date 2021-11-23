@@ -1,14 +1,11 @@
-<div
-  *ngIf="transactionTrackingInfo as info"
-  class="TrackingDetailInfo d-flex"
-  [ngClass]="{ 'TrackingDetailInfo--borderBottom': isBorderBottom }"
->
+<div *ngIf="transactionDetail as info" class="TrackingDetailInfo d-flex" [ngClass]="{ 'TrackingDetailInfo--borderBottom': isBorderBottom }">
   <div class="TrackingDetailInfo__iconWrapper d-flex align-items-center justify-content-center">
     <img
       *ngIf="info.iconSrc"
       [src]="info.iconSrc"
       alt="icon"
       class="TrackingDetailInfo__icon w-100 h-100 TrackingDetailInfo__icon--{{ info.iconClassName }}"
+      [fallback]="FALLBACK_NOT_FOUND_SRC"
     />
   </div>
   <div

@@ -4,7 +4,8 @@
   background-color: $white;
 
   &__image {
-    @include square(38px);
+    margin-right: $spacer * 0.75;
+    @include square(48px);
     object-fit: cover;
 
     &--circle {

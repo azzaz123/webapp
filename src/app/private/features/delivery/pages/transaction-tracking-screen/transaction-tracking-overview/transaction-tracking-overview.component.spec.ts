@@ -3,7 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import { TransactionTracking } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
+import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { of } from 'rxjs';
 
@@ -15,6 +16,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   const transactionTrackingHeaderSelector = 'tsl-transaction-tracking-header';
   const shippingStatusSelector = 'tsl-transaction-tracking-general-info';
   const transactionTrackingStatusInfoSelector = 'tsl-transaction-tracking-status-info';
+  const transactionTrackingDetailInfoSelector = 'tsl-transaction-tracking-detail-info';
 
   let component: TransactionTrackingOverviewComponent;
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
@@ -42,6 +44,9 @@ describe('TransactionTrackingOverviewComponent', () => {
             get() {
               return of(MOCK_TRANSACTION_TRACKING);
             },
+            getDetails() {
+              return of(MOCK_TRANSACTION_TRACKING_DETAILS);
+            },
           },
         },
       ],
@@ -63,6 +68,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   describe('when we initialize the component...', () => {
     beforeEach(() => {
       spyOn(transactionTrackingService, 'get').and.returnValue(of(MOCK_TRANSACTION_TRACKING));
+      spyOn(transactionTrackingService, 'getDetails').and.returnValue(of(MOCK_TRANSACTION_TRACKING_DETAILS));
 
       fixture.detectChanges();
     });
@@ -72,6 +78,11 @@ describe('TransactionTrackingOverviewComponent', () => {
       expect(transactionTrackingService.get).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING_ID);
     });
 
+    it('should request the transaction tracking details with the id param', () => {
+      expect(transactionTrackingService.getDetails).toHaveBeenCalledTimes(1);
+      expect(transactionTrackingService.getDetails).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING_ID);
+    });
+
     it('should save the requested transaction tracking', () => {
       let transactionTrackingExpected: TransactionTracking;
       component.transactionTracking$.subscribe((transactionTrackingReceived: TransactionTracking) => {
@@ -79,6 +90,15 @@ describe('TransactionTrackingOverviewComponent', () => {
       });
 
       expect(transactionTrackingExpected).toStrictEqual(MOCK_TRANSACTION_TRACKING);
+    });
+
+    it('should save the requested transaction tracking details', () => {
+      let transactionTrackingDetailsExpected: TransactionTrackingDetails;
+      component.transactionTrackingDetails$.subscribe((transactionTrackingDetailsReceived: TransactionTrackingDetails) => {
+        transactionTrackingDetailsExpected = transactionTrackingDetailsReceived;
+      });
+
+      expect(transactionTrackingDetailsExpected).toStrictEqual(MOCK_TRANSACTION_TRACKING_DETAILS);
     });
   });
 
@@ -102,6 +122,18 @@ describe('TransactionTrackingOverviewComponent', () => {
     });
   });
 
+  describe('when we NOT receive tracking details info', () => {
+    beforeEach(() => {
+      spyOn(transactionTrackingService, 'getDetails').and.returnValue(of(null));
+
+      fixture.detectChanges();
+    });
+
+    it('should NOT render the transaction tracking detail info ', () => {
+      expect(de.query(By.css(transactionTrackingDetailInfoSelector))).toBeFalsy();
+    });
+  });
+
   describe('when we receive tracking info...', () => {
     beforeEach(() => {
       spyOn(transactionTrackingService, 'get').and.returnValue(of(MOCK_TRANSACTION_TRACKING));
@@ -119,6 +151,18 @@ describe('TransactionTrackingOverviewComponent', () => {
 
     it('should render the transaction tracking status info ', () => {
       expect(de.query(By.css(transactionTrackingStatusInfoSelector))).toBeTruthy();
+    });
+  });
+
+  describe('when we receive tracking details info...', () => {
+    beforeEach(() => {
+      spyOn(transactionTrackingService, 'getDetails').and.returnValue(of(MOCK_TRANSACTION_TRACKING_DETAILS));
+
+      fixture.detectChanges();
+    });
+
+    it('should render the transaction tracking detail info ', () => {
+      expect(de.query(By.css(transactionTrackingDetailInfoSelector))).toBeTruthy();
     });
   });
 });
