@@ -11,10 +11,12 @@ import { HistoricElementComponent } from './historic-element.component';
 
 @Component({
   selector: 'tsl-test-wrapper-historic-element',
-  template: '<tsl-historic-element [historicElement]="historicElement" (clicked)="onClick($event)"></tsl-historic-element>',
+  template:
+    '<tsl-historic-element [historicElement]="historicElement" [clickable]="clickable" (clicked)="onClick($event)"></tsl-historic-element>',
 })
 export class TestWrapperHistoricElementComponent {
   @Input() historicElement: HistoricElement;
+  @Input() clickable: boolean;
   onClick(historicElement: HistoricElement): void {}
 }
 
@@ -28,6 +30,7 @@ describe('HistoricElementComponent', () => {
   const moneyAmountSelector = `${historicElementSelector}__money-amount`;
   const descriptionSelector = `${historicElementSelector}__description`;
   const subDescriptionSelector = `${historicElementSelector}__subDescription`;
+  const clickableSelector = `${historicElementSelector}--clickable`;
   const iconSelector = 'tsl-svg-icon';
 
   beforeEach(async () => {
@@ -146,6 +149,30 @@ describe('HistoricElementComponent', () => {
 
         expect(wrapperComponent.onClick).toHaveBeenCalledTimes(1);
         expect(wrapperComponent.onClick).toHaveBeenCalledWith(MOCK_HISTORIC_ELEMENT);
+      });
+    });
+
+    describe('and when element is clickable', () => {
+      beforeEach(() => {
+        wrapperComponent.clickable = true;
+        fixture.detectChanges();
+      });
+
+      it('should apply clickable styles', () => {
+        const historicElement = fixture.debugElement.query(By.css(clickableSelector));
+        expect(historicElement).toBeTruthy();
+      });
+    });
+
+    describe('and when element is NOT clickable', () => {
+      beforeEach(() => {
+        wrapperComponent.clickable = false;
+        fixture.detectChanges();
+      });
+
+      it('should apply clickable styles', () => {
+        const historicElement = fixture.debugElement.query(By.css(clickableSelector));
+        expect(historicElement).toBeFalsy();
       });
     });
   });

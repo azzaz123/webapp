@@ -1,4 +1,4 @@
-<div class="HistoricElement d-flex justify-content-between" (click)="onItemClick()">
+<div class="HistoricElement d-flex justify-content-between" [ngClass]="{ 'HistoricElement--clickable': clickable }" (click)="onItemClick()">
   <div class="HistoricElement__image">
     <img [src]="historicElement.imageUrl" [alt]="historicElement.title" loading="lazy" />
     <div *ngIf="historicElement.iconUrl" class="HistoricElement__icon">

@@ -9,6 +9,7 @@ import { HistoricElement } from '@shared/historic-list/interfaces/historic-eleme
 })
 export class HistoricElementComponent {
   @Input() historicElement: HistoricElement;
+  @Input() clickable: boolean = false;
   @Output() clicked: EventEmitter<HistoricElement> = new EventEmitter<HistoricElement>();
 
   public onItemClick(): void {
