@@ -5,8 +5,7 @@ import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/tran
 import { MOCK_TRANSACTION_DETAILS } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-details.fixtures.spec';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
-import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mapper';
-import { TransactionDetailComponent } from '../../transaction-detail/transaction-detail.component';
+import { TransactionDetailComponent } from '../../transaction-details/transaction-detail/transaction-detail.component';
 
 import { TransactionTrackingDetailInfoComponent } from './transaction-tracking-detail-info.component';
 

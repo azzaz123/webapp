@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TransactionDetailModule } from '../../transaction-detail/transaction-detail.module';
 import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
+import {
+  TransactionDetailModalModule,
+  TransactionDetailRedirectionModule,
+  TransactionDetailWithoutActionModule,
+} from '../../transaction-details';
 
 @NgModule({
   declarations: [TransactionTrackingStatusInfoComponent],
-  imports: [CommonModule, TransactionDetailModule],
+  imports: [CommonModule, TransactionDetailWithoutActionModule, TransactionDetailRedirectionModule, TransactionDetailModalModule],
   exports: [TransactionTrackingStatusInfoComponent],
 })
 export class TransactionTrackingStatusInfoModule {}
