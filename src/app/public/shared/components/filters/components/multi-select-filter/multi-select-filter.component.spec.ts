@@ -110,8 +110,8 @@ describe('MultiSelectFilterComponent', () => {
       });
 
       it('should set label to drawer placeholder', () => {
-        const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-          .componentInstance;
+        const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+          debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
 
         expect(drawerPlaceholderTemplate.placeholderLabel).toEqual(basicConfig.drawerPlaceholder);
       });
@@ -276,8 +276,8 @@ describe('MultiSelectFilterComponent', () => {
       describe('and value changes', () => {
         it('should emit changes', () => {
           spyOn(component.valueChange, 'emit');
-          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-            .componentInstance;
+          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+            debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
           const value = [
             {
               key: FILTER_QUERY_PARAM_KEY.objectType,
@@ -299,8 +299,8 @@ describe('MultiSelectFilterComponent', () => {
           fixture.detectChanges();
         });
         it('should restart values', () => {
-          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-            .componentInstance;
+          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+            debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
           expect(component.value).toEqual([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: OPTIONS[0].value }]);
 
           drawerPlaceholderTemplate.clear.emit();
@@ -309,8 +309,8 @@ describe('MultiSelectFilterComponent', () => {
         });
 
         it('should restart label', () => {
-          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-            .componentInstance;
+          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+            debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
           expect(drawerPlaceholderTemplate.placeholderLabel).toEqual(OPTIONS[0].label);
 
           drawerPlaceholderTemplate.clear.emit();
@@ -321,8 +321,8 @@ describe('MultiSelectFilterComponent', () => {
 
         it('should emit value changes', () => {
           spyOn(component.valueChange, 'emit');
-          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(drawerPlaceholderTemplatePredicate)
-            .componentInstance;
+          const drawerPlaceholderTemplate: DrawerPlaceholderTemplateComponent =
+            debugElement.query(drawerPlaceholderTemplatePredicate).componentInstance;
 
           drawerPlaceholderTemplate.clear.emit();
 

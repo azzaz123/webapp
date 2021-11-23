@@ -67,7 +67,7 @@ export class FilterOptionsMapperService {
   public formatCarsBrandModel(response: unknown, params: QueryParams): FilterOption[];
   public formatCarsBrandModel(brandModels: BrandModel[]): FilterOption[] {
     return brandModels.map((brandModel) => ({
-      value: (brandModel as unknown) as Record<string, string>,
+      value: brandModel as unknown as Record<string, string>,
       label: this.getBrandModelLabel(brandModel),
     }));
   }
