@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TransactionDetail } from '../../interfaces/transaction-detail.interface';
 
 @Component({
@@ -9,11 +8,8 @@ import { TransactionDetail } from '../../interfaces/transaction-detail.interface
 })
 export class TransactionDetailWithoutActionComponent implements OnInit {
   @Input() transactionDetail: TransactionDetail;
-  public descriptionByPass: SafeHtml;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor() {}
 
-  ngOnInit() {
-    this.descriptionByPass = this.sanitizer.bypassSecurityTrustHtml(this.transactionDetail.description);
-  }
+  ngOnInit() {}
 }
