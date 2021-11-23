@@ -263,8 +263,9 @@ describe('SelectFilterComponent', () => {
           formInstance.handleOptionClick('male');
           fixture.detectChanges();
 
-          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(By.directive(DrawerPlaceholderTemplateComponent))
-            .componentInstance;
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(
+            By.directive(DrawerPlaceholderTemplateComponent)
+          ).componentInstance;
           const formDebugElement = debugElement.query(selectFormPredicate);
           const parent = debugElement.query(placeholderPredicate);
 

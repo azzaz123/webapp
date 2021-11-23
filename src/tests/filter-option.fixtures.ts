@@ -99,7 +99,7 @@ export const formattedPhoneBrandNModel: FilterOption = {
 };
 
 export const formattedCarBrandNModel: FilterOption = {
-  value: (brandNModel as unknown) as Record<string, string>,
+  value: brandNModel as unknown as Record<string, string>,
   label: calcBrandModelLabel(brandNModel),
 };
 
