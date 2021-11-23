@@ -1,6 +1,8 @@
 <ng-container *ngFor="let infoSlot of detailInfoSlots; let index = index">
+  <tsl-transaction-detail-without-action *ngIf="!infoSlot.action" [transactionDetail]="infoSlot"></tsl-transaction-detail-without-action>
+  <tsl-transaction-detail-modal *ngIf="!!infoSlot.action?.isDialog" [transactionDetail]="infoSlot"> </tsl-transaction-detail-modal>
   <tsl-transaction-detail-redirection
-    *ngIf="infoSlot.action.isCarrierTrackingWebview"
+    *ngIf="infoSlot.action?.isCarrierTrackingWebview || infoSlot.action?.isDeeplink"
     [transactionDetail]="infoSlot"
   ></tsl-transaction-detail-redirection>
 </ng-container>

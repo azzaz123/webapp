@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TransactionDetail } from '../../interfaces/transaction-detail.interface';
+import { TransactionDetail } from '../../../interfaces/transaction-detail.interface';
 
 @Component({
   selector: 'tsl-transaction-detail-without-action',
