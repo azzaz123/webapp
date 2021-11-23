@@ -1,7 +1,6 @@
 import { Item } from '@core/item/item';
 import { Image } from '@core/user/user-response.interface';
 import { reverse, filter, sortBy } from 'lodash-es';
-import { SORT_KEYS } from '../constants/sort.constants';
 import { ImageItemBySubscription, ItemBySubscriptionResponse } from '../dtos/items-by-subscription/items-subscription-type.interface';
 
 export function mapItems(items: ItemBySubscriptionResponse[]): Item[] {
@@ -18,7 +17,7 @@ export function mapFilter(term: string, res: Item[]): Item[] {
   return res;
 }
 
-export function mapSort(sortByParam: SORT_KEYS, res: Item[]): Item[] {
+export function mapSort(sortByParam: string, res: Item[]): Item[] {
   const sort = sortByParam.split('_');
   const field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
   const sorted: Item[] = sortBy(res, [field]);

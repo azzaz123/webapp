@@ -16,7 +16,7 @@ import {
   MOCK_ITEM_BY_SUBSCRIPTION_TYPE_RESPONSE_2,
 } from '@fixtures/items-subscription-type.fixtures.spec';
 import { Item } from '@core/item/item';
-import { SORT_KEYS } from './constants/sort.constants';
+import { SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
 
 describe('CatalogManagerApiService', () => {
   let service: CatalogManagerApiService;

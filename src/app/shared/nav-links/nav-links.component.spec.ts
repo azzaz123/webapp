@@ -212,7 +212,7 @@ describe('NavLinksComponent', () => {
       });
     });
     describe('and is enable', () => {
-      it('should disable nav link', () => {
+      it('should enable nav link', () => {
         component.disabled = false;
         fixture.detectChanges();
 

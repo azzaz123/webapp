@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
-import { SORTS, SORT_KEYS } from '@api/catalog-manager/constants/sort.constants';
+import { ISort, SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import {
   AnalyticsPageView,
@@ -56,6 +56,24 @@ import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.inte
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purchaseListingFeeWithCredits'];
+export const SORTS: ISort[] = [
+  {
+    value: SORT_KEYS.DATE_DESC,
+    label: $localize`:@@web_catalog_filter_date_desc:Date: from recent to old`,
+  },
+  {
+    value: SORT_KEYS.DATE_ASC,
+    label: $localize`:@@web_catalog_filter_date_asc:Date: from old to recent`,
+  },
+  {
+    value: SORT_KEYS.PRICE_DESC,
+    label: $localize`:@@web_catalog_filter_price_desc:Price: from high to low`,
+  },
+  {
+    value: SORT_KEYS.PRICE_ASC,
+    label: $localize`:@@web_catalog_filter_price_asc:Price: from low to high`,
+  },
+];
 
 @Component({
   selector: 'tsl-list',
