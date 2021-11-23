@@ -1,0 +1,10 @@
+<div class="EmailThanksModal text-center">
+  <div class="EmailThanksModal__close position-fixed" (click)="activeModal.dismiss()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+  <div class="EmailThanksModal__container">
+    <div class="EmailThanksModal__title my-3">{{ copies.title }}</div>
+    <div class="EmailThanksModal__subtitle mb-4">{{ copies.description }}</div>
+    <tsl-button class="w-100" className="btn-primary w-100" (click)="activeModal.close()">{{ copies.button }}</tsl-button>
+  </div>
+</div>

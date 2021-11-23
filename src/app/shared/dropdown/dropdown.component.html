@@ -8,10 +8,18 @@
       <ng-container *ngIf="value; else noValue">
         <div class="value">
           <ng-container *ngIf="optionList?.hasSelected; else showValue">
-            <ng-container
-              *ngTemplateOutlet="optionTemplate; context:{option: optionList.selection[0].wrappedOption, onDeselectOptionClick: onDeselectOptionClick}">
-            </ng-container>
-            <span *ngIf="!optionTemplate">{{optionList.selection[0].label}}</span>
+            <ng-container *ngIf="optionTemplateProperty; then templateProperty else noTemplateProperty"></ng-container>
+            <ng-template #templateProperty>
+              <span >{{optionList.selection[0][optionTemplateProperty]}}</span>
+            </ng-template>
+            <ng-template #noTemplateProperty>
+              <ng-container
+                *ngTemplateOutlet="optionTemplate; context:{option: optionList.selection[0].wrappedOption, onDeselectOptionClick: onDeselectOptionClick}">
+              </ng-container>
+            </ng-template>
+          </ng-container>
+          <ng-container>
+            <span *ngIf="!optionTemplate">{{optionList.selection[0]?.label}}</span>
           </ng-container>
           <ng-template #showValue>
             <span>{{value}}</span>

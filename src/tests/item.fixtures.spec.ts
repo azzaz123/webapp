@@ -27,7 +27,6 @@ import {
   ItemVisibilityFlags,
   ItemWithProducts,
   LatestItemResponse,
-  ListingFeeProductInfo,
   Order,
   Product,
   ProductDurations,
@@ -1455,9 +1454,9 @@ export const PURCHASES: Purchase[] = [
     visibility_flags: { bumped: false, highlighted: true, urgent: false },
   },
   {
-    item_id: '1',
+    item_id: '2',
     expiration_date: 1510221346789,
-    purchase_name: 'listingfee',
+    purchase_name: 'countrybump',
     visibility_flags: { bumped: false, highlighted: true, urgent: false },
   },
   {
@@ -1909,29 +1908,6 @@ export const ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE: AllowedActionResponse[] 
 export const MOCK_LISTING_FEE_ORDER: OrderEvent = {
   order: [{ item_id: 'p4w67gxww6xq', product_id: '5p4w67dy6xqo' }],
   total: 14.99,
-};
-
-export const MOCK_LISTING_FEE_PRODUCT: ListingFeeProductInfo = {
-  limit_category: 100,
-  limit_type: 'no_sub',
-  product_group: {
-    default_product_id: 'elqnzxe6201v',
-    products: [
-      {
-        default_duration_index: 0,
-        id: 'elqnzxe6201v',
-        name: 'listingfee',
-        durations: [
-          {
-            duration: 1440,
-            id: '5p4w67dy6xqo',
-            market_code: '14.99',
-            original_market_code: '14.99',
-          },
-        ],
-      },
-    ],
-  },
 };
 
 export const MOCK_ITEM_RESPONSE_CONTENT: ItemContent = {

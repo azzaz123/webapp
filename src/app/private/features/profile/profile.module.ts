@@ -7,9 +7,10 @@ import { SharedModule } from '@shared/shared.module';
 import { ChangeStoreLocationModal } from './modal/change-store-location-modal/change-store-location-modal.component';
 import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe-modal.component';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
-import { VerificationEmailThanksModalComponent } from './modal/verification-email-thanks-modal/verification-email-thanks-modal.component';
+import { EmailThanksModalComponent } from './modal/email-thanks-modal/email-thanks-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from './services/verifications-n-security-tracking-events.service';
 import { EmailVerificationModule } from './modal/email-verification/email-verification.module';
+import { PhoneVerificationModule } from './modal/phone-verification/phone-verification.module';
 
 @NgModule({
   imports: [
@@ -24,8 +25,9 @@ import { EmailVerificationModule } from './modal/email-verification/email-verifi
     NgbModalModule,
     CustomCurrencyModule,
     EmailVerificationModule,
+    PhoneVerificationModule,
   ],
-  declarations: [profileRoutedComponents, UnsubscribeModalComponent, ChangeStoreLocationModal, VerificationEmailThanksModalComponent],
+  declarations: [profileRoutedComponents, UnsubscribeModalComponent, ChangeStoreLocationModal, EmailThanksModalComponent],
   providers: [VerificationsNSecurityTrackingEventsService],
 })
 export class ProfileModule {}

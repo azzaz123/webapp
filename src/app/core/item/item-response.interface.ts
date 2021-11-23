@@ -165,7 +165,7 @@ export interface ConversationUser {
 export interface Purchase {
   expiration_date: number;
   item_id: string;
-  purchase_name?: 'listingfee' | 'countrybump';
+  purchase_name?: 'countrybump';
   visibility_flags: {
     bumped: boolean;
     highlighted: boolean;
@@ -390,10 +390,4 @@ export interface CarInfo {
   num_doors: number;
   num_seats: number;
   version: string;
-}
-
-export interface ListingFeeProductInfo {
-  limit_category: number;
-  limit_type: string;
-  product_group: AvailableProductsResponse;
 }

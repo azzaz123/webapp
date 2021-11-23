@@ -34,9 +34,6 @@ export class Item implements Model {
   private _favorited: boolean;
   private _selected = false;
   private _bumpExpiringDate: number;
-  private _listingFeeExpiringDate: number;
-  private _bumpLast24h: boolean;
-  private _plannedStartsToday: boolean;
   constructor(
     private _id: string,
     private _legacyId: number,
@@ -248,14 +245,6 @@ export class Item implements Model {
 
   set bumpExpiringDate(value: number) {
     this._bumpExpiringDate = value;
-  }
-
-  get listingFeeExpiringDate(): number {
-    return this._listingFeeExpiringDate;
-  }
-
-  set listingFeeExpiringDate(value: number) {
-    this._listingFeeExpiringDate = value;
   }
 
   get bumpLast24h() {
