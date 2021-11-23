@@ -296,7 +296,7 @@ describe('UploadProductComponent', () => {
         extra_info: {
           condition: null,
         },
-        hashtags: MOCK_ITEM.hashtags,
+        hashtags: [],
       });
     });
 
