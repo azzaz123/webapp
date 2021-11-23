@@ -21,7 +21,7 @@ $collapse-btn-dimension: 24px;
     position: absolute;
     opacity: 0;
     right: -$collapse-btn-dimension * 0.5;
-    top: 112px;
+    top: 72px;
     border-radius: 50%;
     background-color: $blue-grey-5;
     appearance: none;
@@ -47,11 +47,12 @@ $collapse-btn-dimension: 24px;
 
   &__entry {
     position: relative;
-    margin: 0 12px 4px;
-    min-height: 43px;
+    margin: 0 8px 4px;
+    min-height: 48px;
 
+    tsl-user-avatar,
     tsl-svg-icon {
-      padding: 0 12px;
+      padding: 0 8px;
     }
 
     &.active,
@@ -72,10 +73,6 @@ $collapse-btn-dimension: 24px;
     }
   }
 
-  &__avatar {
-    margin-right: 6px;
-  }
-
   &__label {
     opacity: 1;
     overflow: hidden;
@@ -83,6 +80,7 @@ $collapse-btn-dimension: 24px;
     white-space: nowrap;
     color: $blue-grey-1;
     transition: opacity 100ms linear;
+    margin-left: 8px;
   }
 
   &--collapsed {

@@ -5,22 +5,22 @@
     <tsl-svg-icon src="/assets/icons/sidebar/sidebar_arrow.svg"></tsl-svg-icon>
   </button>
 
-  <a class="Sidebar__entry my-5 mb-0 px-1 py-2 d-flex align-items-center" [routerLink]="['/profile']"
-    routerLinkActive="active" [ngClass]="{active: isProfile}">
-    <tsl-user-avatar class="Sidebar__avatar" [size]="38" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
+  <a class="Sidebar__entry my-4 d-flex align-items-center" [routerLink]="['/profile']" routerLinkActive="active"
+    [ngClass]="{active: isProfile}">
+    <tsl-user-avatar class="Sidebar__avatar" [size]="32" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
     </tsl-user-avatar>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_611">Profile</span>
   </a>
 
   <a *ngxPermissionsOnly="PERMISSIONS.professional" class="Sidebar__entry d-flex align-items-center"
     [routerLink]="['/pro/dashboard']" routerLinkActive="active">
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_stats.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_stats.svg"></tsl-svg-icon>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_447">Dashboard</span>
   </a>
 
   <a class="Sidebar__entry d-flex align-items-center" [routerLink]="['/catalog/list']" (click)="trackClickToCatalog()"
     [ngClass]="{active: isProducts}">
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_label.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_label.svg"></tsl-svg-icon>
     <span class="Sidebar__label" *ngxPermissionsExcept="PERMISSIONS.professional"
       i18n="@@web_components_sidebar_612">Products</span>
     <span class="Sidebar__label" *ngxPermissionsOnly="PERMISSIONS.professional"
@@ -29,37 +29,37 @@
 
   <a class="Sidebar__entry d-flex align-items-center" [routerLink]="['/chat']" routerLinkActive="active">
     <div class="chat-notification-pending" *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0"></div>
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_message.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_message.svg"></tsl-svg-icon>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_679">Messages</span>
   </a>
 
   <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry d-flex align-items-center"
     [routerLink]="['/favorites']" routerLinkActive="active">
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_heart.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_heart.svg"></tsl-svg-icon>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_680">Favorites</span>
   </a>
 
   <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry d-flex align-items-center"
     [routerLink]="['/reviews']" routerLinkActive="active">
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_star.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_star.svg"></tsl-svg-icon>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_449">Reviews</span>
   </a>
 
   <a *ngxPermissionsOnly="PERMISSIONS.professional" class="Sidebar__entry d-flex align-items-center"
     [routerLink]="['/pro/calls']" routerLinkActive="active">
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_phone.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_phone.svg"></tsl-svg-icon>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_613">Phones</span>
   </a>
 
   <a *ngxPermissionsOnly="PERMISSIONS.professional" class="Sidebar__entry d-flex align-items-center"
     [routerLink]="['/pro/help']" routerLinkActive="active">
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_help.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_help.svg"></tsl-svg-icon>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_450">Help</span>
   </a>
 
   <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry d-flex align-items-center"
     [routerLink]="['/stats']" routerLinkActive="active">
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_stats.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_stats.svg"></tsl-svg-icon>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_614">Stats</span>
   </a>
 
@@ -67,7 +67,7 @@
     <a class="Sidebar__entry d-flex align-items-center" (click)="onClickedProSection()"
       routerLink="/{{PRO_PATHS.PRO_MANAGER}}" routerLinkActive="active">
       <div class="chat-notification-pending" *ngIf="!isClickedProSection"></div>
-      <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_badge.svg"></tsl-svg-icon>
+      <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_badge.svg"></tsl-svg-icon>
       <span class="Sidebar__label" i18n="@@web_sidebar_wallapop_pro_label">Wallapop PRO</span>
     </a>
   </ng-container>
@@ -75,20 +75,20 @@
   <ng-container *tslDeliveryDevelopment>
     <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry d-flex align-items-center"
       [routerLink]="[PRIVATE_PATHS.DELIVERY]" routerLinkActive="active">
-      <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_box.svg"></tsl-svg-icon>
+      <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_box.svg"></tsl-svg-icon>
       <span class="Sidebar__label" i18n="@@web_sidebar_delivery">Delivery</span>
     </a>
   </ng-container>
 
   <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry d-flex align-items-center"
     [routerLink]="[PRIVATE_PATHS.WALLET]" (click)="trackClickToWallet()" routerLinkActive="active">
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_wallet.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_wallet.svg"></tsl-svg-icon>
     <span class="Sidebar__label" i18n="@@wallet_view_top_bar_title">Wallet</span>
   </a>
 
   <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry d-flex align-items-center mt-auto mb-4"
     href="https://ayuda.wallapop.com/" target="_blank" routerLinkActive="active">
-    <tsl-svg-icon [width]="24" [height]="24" src="/assets/icons/sidebar/sidebar_help.svg"></tsl-svg-icon>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_help.svg"></tsl-svg-icon>
     <span class="Sidebar__label" i18n="@@web_components_sidebar_449">Ayuda</span>
   </a>
 </div>
