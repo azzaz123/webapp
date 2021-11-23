@@ -17,6 +17,9 @@ import {
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
+export type TransactionTrackingActionType = TransactionTrackingActionTypeDto;
+export type TransactionTrackingUserAction = TransactionTrackingActionDetailPayloadUserActionNameDto;
+
 @Injectable()
 export class TransactionTrackingService {
   constructor(private transactionTrackingHttpService: TransactionTrackingHttpService) {}
@@ -29,14 +32,14 @@ export class TransactionTrackingService {
     return this.transactionTrackingHttpService.getDetails(requestId).pipe(map(mapTransactionTrackingDetailsDtoTransactionTrackingDetails));
   }
 
-  public getInstructions(requestId: string, actionType: TransactionTrackingActionTypeDto): Observable<TransactionTrackingInstructions> {
+  public getInstructions(requestId: string, actionType: TransactionTrackingActionType): Observable<TransactionTrackingInstructions> {
     return this.transactionTrackingHttpService
       .getInstructions(requestId, actionType)
       .pipe(map(mapTransactionTrackingInstructionsDtoTransactionTrackingInstructions));
   }
 
-  public sendUserAction(requestId: string, userAction: TransactionTrackingActionDetailPayloadUserActionNameDto): Observable<void> {
-    const action: Record<TransactionTrackingActionDetailPayloadUserActionNameDto, Observable<void>> = {
+  public sendUserAction(requestId: string, userAction: TransactionTrackingUserAction): Observable<void> {
+    const action: Record<TransactionTrackingUserAction, Observable<void>> = {
       ['CANCEL_TRANSACTION']: this.sendCancelTransaction(requestId),
       ['EXPIRE_CLAIM_PERIOD']: this.sendExpireClaimPeriod(requestId),
       ['PACKAGE_ARRIVED']: this.sendPackageArrived(requestId),
