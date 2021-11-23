@@ -1,7 +1,8 @@
-<tsl-transaction-detail
-  *ngFor="let transactionDetail of detailInfoSlots; let index = index"
-  [ngClass]="{ 'TransactionTrackingDetailInfo--clickable': !!transactionTrackingDetails.info[index].action }"
-  (click)="manageAction(transactionTrackingDetails.info[index].action)"
-  [transactionDetail]="transactionDetail"
-  [isBorderBottom]="true"
-></tsl-transaction-detail>
+<ng-container *ngFor="let infoSlot of detailInfoSlots; let index = index">
+  <tsl-transaction-detail-without-action *ngIf="!infoSlot.action" [transactionDetail]="infoSlot"></tsl-transaction-detail-without-action>
+  <tsl-transaction-detail-modal *ngIf="!!infoSlot.action?.isDialog" [transactionDetail]="infoSlot"> </tsl-transaction-detail-modal>
+  <tsl-transaction-detail-redirection
+    *ngIf="infoSlot.action?.isCarrierTrackingWebview || infoSlot.action?.isDeeplink"
+    [transactionDetail]="infoSlot"
+  ></tsl-transaction-detail-redirection>
+</ng-container>
