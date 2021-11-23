@@ -44,7 +44,7 @@
     &__box {
       background-color: $white;
       border-radius: 6px;
-      border: 1px solid $blue-grey-4;
+      border: 1px solid $blue-grey-5;
       height: 100%;
 
       @include media-breakpoint-down(md) {
@@ -53,7 +53,7 @@
     }
 
     &__error {
-      color: $negative-main !important;
+      color: $negative-main;
       font-size: $font-size-s;
       line-height: $line-height-ml;
     }
