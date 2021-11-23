@@ -6,7 +6,7 @@
 		<tsl-cancel-bubble *ngFor="let bubble of value" [text]="bubble" class="mr-1 mb-1" (clear)="removeValue(bubble)"></tsl-cancel-bubble>
 		<tsl-multiselect-search-input [formControlName]="HASHTAG_TYPE.SEARCHED" [categoryId]="categoryId" [disabled]="maxReached$ | async" (changeValidStatus)="searchedValidStatusChange($event)"></tsl-multiselect-search-input>
 	</div>
-	<p *ngIf="showSearchedErrorMessage" class="HashtagField__search__error mt-2" i18n="@@finding_hashtags_invalid">Our hashtags are good with anything except special characters and spaces of course.</p>
+	<span *ngIf="showSearchedErrorMessage" class="HashtagField__search__error mt-2 d-block" i18n="@@finding_hashtags_invalid">Our hashtags are good with anything except special characters and spaces of course.</span>
 
 </div>
 	<div class="HashtagField__suggested">
