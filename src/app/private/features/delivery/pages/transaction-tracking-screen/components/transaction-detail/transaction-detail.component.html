@@ -8,18 +8,12 @@
       [fallback]="FALLBACK_NOT_FOUND_SRC"
     />
   </div>
-  <div
-    class="TrackingDetailInfo__descriptionWrapper mr-3"
-    [innerHTML]="descriptionByPass"
-    [ngClass]="{ 'TrackingDetailInfo__descriptionWrapper--clickable': isClickableAction }"
-    (click)="emitActionClick()"
-  ></div>
+  <ng-content></ng-content>
   <tsl-svg-icon
     *ngIf="info.showCaret"
     src="/assets/icons/arrow-right.svg"
-    (click)="caretClick.emit()"
     width="5"
     height="10"
-    class="TrackingDetailInfo__arrowRight d-flex align-items-center mr-4"
+    class="TrackingDetailInfo__arrowRight d-flex align-items-center ml-3 mr-4"
   ></tsl-svg-icon>
 </div>
