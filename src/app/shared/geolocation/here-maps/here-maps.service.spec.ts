@@ -2,11 +2,16 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_HERE_MAPS } from '../../../../configs/jest/global-mocks.fixtures.spec';
 import {
   CHECK_INTERVAL_MS,
+  GEO_APP_API_KEY,
   GEO_APP_CODE,
   GEO_APP_ID,
   HereMapsService,
+  HERE_MAPS_CORE_LEGACY_REF_ID,
+  HERE_MAPS_CORE_LEGACY_URL,
   HERE_MAPS_CORE_REF_ID,
   HERE_MAPS_CORE_URL,
+  HERE_MAPS_SERVICE_LEGACY_REF_ID,
+  HERE_MAPS_SERVICE_LEGACY_URL,
   HERE_MAPS_SERVICE_REF_ID,
   HERE_MAPS_SERVICE_URL,
   RETRY_AMOUNT,
@@ -39,15 +44,26 @@ describe('HereMapsService', () => {
       expectedCoreScript.setAttribute('type', 'text/javascript');
       expectedCoreScript.setAttribute('charset', 'utf-8');
 
+      const expectedCoreLegacyScript = document.createElement('script');
+      expectedCoreLegacyScript.setAttribute('id', HERE_MAPS_CORE_LEGACY_REF_ID);
+      expectedCoreLegacyScript.setAttribute('src', HERE_MAPS_CORE_LEGACY_URL);
+      expectedCoreLegacyScript.setAttribute('type', 'text/javascript');
+      expectedCoreLegacyScript.setAttribute('charset', 'utf-8');
+
       const expectedServiceScript = document.createElement('script');
       expectedServiceScript.setAttribute('id', HERE_MAPS_SERVICE_REF_ID);
       expectedServiceScript.setAttribute('src', HERE_MAPS_SERVICE_URL);
       expectedServiceScript.setAttribute('type', 'text/javascript');
       expectedServiceScript.setAttribute('charset', 'utf-8');
 
+      const expectedServiceLegacyScript = document.createElement('script');
+      expectedServiceLegacyScript.setAttribute('id', HERE_MAPS_SERVICE_LEGACY_REF_ID);
+      expectedServiceLegacyScript.setAttribute('src', HERE_MAPS_SERVICE_LEGACY_URL);
+      expectedServiceLegacyScript.setAttribute('type', 'text/javascript');
+      expectedServiceLegacyScript.setAttribute('charset', 'utf-8');
+
       const expectedParams = {
-        app_id: GEO_APP_ID,
-        app_code: GEO_APP_CODE,
+        apikey: GEO_APP_API_KEY,
         useCIT: true,
         useHTTPS: true,
       };
@@ -67,12 +83,14 @@ describe('HereMapsService', () => {
       expect(isReady).toBe(false);
 
       tick(CHECK_INTERVAL_MS);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(1);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(1 * 2);
       expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
+      expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreLegacyScript);
 
       tick(CHECK_INTERVAL_MS * 2);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(2);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(2 * 2);
       expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceScript);
+      expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceLegacyScript);
 
       tick(CHECK_INTERVAL_MS);
       expect(window['H'].service.Platform).toHaveBeenCalledTimes(1);
@@ -116,7 +134,7 @@ describe('HereMapsService', () => {
 
       tick(CHECK_INTERVAL_MS * 8);
       expect(H.service.Platform).toHaveBeenCalledTimes(1);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(2);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(2 * 2);
       expect(isReady).toBeTruthy();
       expect(isLoading).toBe(false);
 
@@ -147,7 +165,7 @@ describe('HereMapsService', () => {
       tick(CHECK_INTERVAL_MS + CHECK_INTERVAL_MS * RETRY_AMOUNT);
       expect(isReady).toBe(false);
       expect(isLoading).toBe(false);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(1 + RETRY_AMOUNT);
+      expect(document.head.appendChild).toHaveBeenCalledTimes((1 + RETRY_AMOUNT) * 2);
 
       scriptSubscription.unsubscribe();
       loadingSubscription.unsubscribe();
@@ -174,7 +192,7 @@ describe('HereMapsService', () => {
       tick(CHECK_INTERVAL_MS * 2 + CHECK_INTERVAL_MS + CHECK_INTERVAL_MS * RETRY_AMOUNT);
       expect(isReady).toBe(false);
       expect(isLoading).toBe(false);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(1 + 1 + RETRY_AMOUNT);
+      expect(document.head.appendChild).toHaveBeenCalledTimes((1 + 1 + RETRY_AMOUNT) * 2);
 
       scriptSubscription.unsubscribe();
       loadingSubscription.unsubscribe();
