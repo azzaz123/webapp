@@ -10,13 +10,10 @@ import { TransactionTrackingActionsService } from '@private/features/delivery/se
 })
 export class TransactionTrackingGeneralInfoComponent {
   @Input() shippingStatus: TransactionTrackingShippingStatus;
-  public descriptionByPass: SafeHtml;
 
-  constructor(private sanitizer: DomSanitizer, private transactionTrackingActionsService: TransactionTrackingActionsService) {}
+  constructor(private transactionTrackingActionsService: TransactionTrackingActionsService) {}
 
-  ngOnInit() {
-    this.descriptionByPass = this.sanitizer.bypassSecurityTrustHtml(this.shippingStatus.description);
-  }
+  ngOnInit() {}
 
   public manageAction(actionDetail: TransactionTrackingActionDetail): void {
     this.transactionTrackingActionsService.manageAction(actionDetail);

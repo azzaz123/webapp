@@ -3,7 +3,7 @@
     <tsl-lottie [src]="info.animation.url" [loop]="info.animation.isLoop"></tsl-lottie>
   </div>
   <span class="TrackingGeneralInfo__title TrackingGeneralInfo__text mb-3">{{ info.title }}</span>
-  <div id="shippingStatusDescription" class="TrackingGeneralInfo__text mb-3" [innerHTML]="descriptionByPass"></div>
+  <div id="shippingStatusDescription" class="TrackingGeneralInfo__text mb-3" [innerHTML]="info.description | bypassHTML"></div>
   <tsl-button
     *ngFor="let action of info.actions"
     class="TrackingGeneralInfo__actionButton"

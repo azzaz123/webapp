@@ -4,10 +4,11 @@ import { TransactionTrackingGeneralInfoComponent } from './transaction-tracking-
 import { LottieModule } from '@shared/lottie/lottie.module';
 import { ButtonModule } from '@shared/button/button.module';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
+import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
 
 @NgModule({
   declarations: [TransactionTrackingGeneralInfoComponent],
-  imports: [CommonModule, LottieModule, ButtonModule],
+  imports: [CommonModule, LottieModule, ButtonModule, BypassHTMLModule],
   providers: [TransactionTrackingActionsService],
   exports: [TransactionTrackingGeneralInfoComponent],
 })
