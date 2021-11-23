@@ -54,6 +54,7 @@ $collapse-btn-dimension: 24px;
       padding: 0 12px;
     }
 
+    &.active,
     &:hover {
       background-color: $blue-grey-5;
       border-radius: 8px;
@@ -62,18 +63,12 @@ $collapse-btn-dimension: 24px;
 
     &:active {
       background-color: $blue-grey-4;
+      transition: background-color 100ms ease-in;
     }
 
-    &.active {
-      .Sidebar__label {
-        font-weight: bold;
-        color: $blue-grey-1;
-      }
-      tsl-svg-icon {
-        ::ng-deep path {
-          fill: $blue-grey-1;
-        }
-      }
+    &.active .Sidebar__label {
+      font-weight: bold;
+      color: $blue-grey-1;
     }
   }
 
