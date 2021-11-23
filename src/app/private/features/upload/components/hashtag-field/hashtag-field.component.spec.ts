@@ -31,7 +31,6 @@ describe('HashtagFieldComponent', () => {
               });
             },
             getHashtagsByPrefix(): Observable<PaginatedList<Hashtag, string>> {
-              console.log('getHashtagsByPrefix');
               return of({
                 list: MOCK_HASHTAGS,
               });
