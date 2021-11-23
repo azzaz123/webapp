@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 import { TransactionDetailComponent } from './transaction-detail.component';
@@ -14,7 +15,7 @@ describe('TransactionDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionDetailComponent],
-      imports: [SvgIconModule, HttpClientTestingModule],
+      imports: [SvgIconModule, HttpClientTestingModule, ImageFallbackModule],
     }).compileComponents();
   });
 
@@ -22,7 +23,7 @@ describe('TransactionDetailComponent', () => {
     fixture = TestBed.createComponent(TransactionDetailComponent);
     de = fixture.debugElement;
     component = fixture.componentInstance;
-    component.transactionTrackingInfo = {
+    component.transactionDetail = {
       description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
       iconSrc: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
       iconClassName: 'rounded',
@@ -39,7 +40,7 @@ describe('TransactionDetailComponent', () => {
       fixture.detectChanges();
       const descriptionSanitized: HTMLElement = de.query(By.css('.TrackingDetailInfo__descriptionWrapper')).nativeElement.innerHTML;
 
-      expect(descriptionSanitized).toEqual(component.transactionTrackingInfo.description);
+      expect(descriptionSanitized).toEqual(component.transactionDetail.description);
     });
 
     describe('and the icon src is defined...', () => {
@@ -52,12 +53,12 @@ describe('TransactionDetailComponent', () => {
       });
 
       it('should have the provided src', () => {
-        expect(de.nativeElement.querySelector(`[src*="${component.transactionTrackingInfo.iconSrc}"]`)).toBeTruthy();
+        expect(de.nativeElement.querySelector(`[src*="${component.transactionDetail.iconSrc}"]`)).toBeTruthy();
       });
 
       describe('and we specify rounded icon style', () => {
         beforeEach(() => {
-          component.transactionTrackingInfo.iconClassName = 'rounded';
+          component.transactionDetail.iconClassName = 'rounded';
           fixture.detectChanges();
         });
 
@@ -68,7 +69,7 @@ describe('TransactionDetailComponent', () => {
 
       describe('and we NOT specify rounded icon style', () => {
         beforeEach(() => {
-          component.transactionTrackingInfo.iconClassName = 'circle';
+          component.transactionDetail.iconClassName = 'circle';
           fixture.detectChanges();
         });
 
@@ -79,7 +80,7 @@ describe('TransactionDetailComponent', () => {
 
       describe('and we specify circle icon style', () => {
         beforeEach(() => {
-          component.transactionTrackingInfo.iconClassName = 'circle';
+          component.transactionDetail.iconClassName = 'circle';
           fixture.detectChanges();
         });
 
@@ -90,7 +91,7 @@ describe('TransactionDetailComponent', () => {
 
       describe('and we NOT specify circle icon style', () => {
         beforeEach(() => {
-          component.transactionTrackingInfo.iconClassName = 'rounded';
+          component.transactionDetail.iconClassName = 'rounded';
           fixture.detectChanges();
         });
 
@@ -101,7 +102,7 @@ describe('TransactionDetailComponent', () => {
 
       describe('and we NOT specify any style', () => {
         beforeEach(() => {
-          component.transactionTrackingInfo.iconClassName = 'none';
+          component.transactionDetail.iconClassName = 'none';
           fixture.detectChanges();
         });
 
@@ -138,7 +139,7 @@ describe('TransactionDetailComponent', () => {
 
     describe('and we specify not showing caret', () => {
       beforeEach(() => {
-        component.transactionTrackingInfo.showCaret = false;
+        component.transactionDetail.showCaret = false;
         fixture.detectChanges();
       });
 
