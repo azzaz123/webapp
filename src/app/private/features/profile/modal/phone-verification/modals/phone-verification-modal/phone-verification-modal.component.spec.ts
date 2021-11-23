@@ -1,5 +1,5 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
@@ -51,6 +51,16 @@ describe('PhoneVerificationModalComponent', () => {
     spyOn(activeModal, 'close').and.callThrough();
     spyOn(activeModal, 'dismiss').and.callThrough();
     spyOn(userVerificationsService, 'verifyPhone').and.callThrough();
+  });
+
+  describe('when modal is loaded', () => {
+    it('should show prefix field and phone number input', () => {
+      const prefixNumber: HTMLElement = fixture.debugElement.query(By.css('tsl-dropdown[formControlname="prefix"]')).nativeElement;
+      const phoneNumber: HTMLElement = fixture.debugElement.query(By.css('input[formControlname="phone"]')).nativeElement;
+
+      expect(prefixNumber).toBeTruthy();
+      expect(phoneNumber).toBeTruthy();
+    });
   });
 
   describe('when close button is clicked', () => {

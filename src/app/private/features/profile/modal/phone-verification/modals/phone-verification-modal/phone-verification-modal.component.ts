@@ -6,6 +6,8 @@ import { take } from 'rxjs/operators';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
+import { PHONE_PREFIXES } from '../../constants/phone-prefixies-constants';
 
 @Component({
   selector: 'tsl-phone-verification-modal',
@@ -14,13 +16,8 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 })
 export class PhoneVerificationModalComponent implements OnInit {
   @Input() email: string;
-  public prefixes = [
-    {
-      country: 'España',
-      label: '(+34)',
-      value: '+34',
-    },
-  ];
+
+  public prefixes: PhonePrefixOption[] = PHONE_PREFIXES;
   public phoneVerificationForm: FormGroup;
 
   constructor(
