@@ -10,9 +10,10 @@ import { MultiSelectFormModule } from './multi-select-form.module';
   selector: 'tsl-story-multi-select-form',
   template: `
     <h4 class="mt-4">MultiSelect FormGroup: {{ formGroup.value.select }}</h4>
+    <h5 *ngIf="max">Max restriction set to: {{ max }}</h5>
     <div style="background: white;background: white;height: 300px;">
       <form [formGroup]="formGroup" style="height:100%">
-        <tsl-multi-select-form formControlName="select" [options]="options" [disabled]="disabled"></tsl-multi-select-form>
+        <tsl-multi-select-form formControlName="select" [options]="options" [disabled]="disabled" [max]="max"></tsl-multi-select-form>
       </form>
     </div>
 
@@ -20,11 +21,12 @@ import { MultiSelectFormModule } from './multi-select-form.module';
   `,
 })
 class StoryMultiSelectFormFormComponent {
-  @Input() options;
+  @Input() options: MultiSelectFormOption[];
   @Input() disabled: boolean = false;
   public formGroup = new FormGroup({
     select: new FormControl(['9568']),
   });
+
   public onClick() {
     this.formGroup.get('select').setValue(['9577']);
   }
@@ -45,13 +47,18 @@ const Template: Story<StoryMultiSelectFormFormComponent> = (args) => ({
   props: args,
   template: `
         <tsl-story-multi-select-form [disabled]="disabled" [options]="options"></tsl-story-multi-select-form>
-        
       `,
 });
 
 export const Default = Template.bind({});
 Default.args = {
   options: SUBCATEGORIES_MOCK,
+};
+
+export const WithMaxRestriction = Template.bind({});
+WithMaxRestriction.args = {
+  options: SUBCATEGORIES_MOCK,
+  max: 4,
 };
 
 export const WithNestedOptions = Template.bind({});

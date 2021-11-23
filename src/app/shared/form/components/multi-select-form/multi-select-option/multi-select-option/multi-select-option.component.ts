@@ -8,7 +8,7 @@ import { TemplateMultiSelectFormOption } from '../../interfaces/multi-select-for
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiSelectOptionComponent {
-  @Input() isDisabled: boolean;
+  @Input() isDisabled = false;
   @Output() toggleOnChange = new EventEmitter();
   @Input() set option(value: TemplateMultiSelectFormOption) {
     this.data = value;

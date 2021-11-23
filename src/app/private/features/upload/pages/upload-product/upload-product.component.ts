@@ -115,7 +115,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public deliveryInfo = DELIVERY_INFO;
   public categories: CategoryOption[] = [];
   public loading: boolean;
-  uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
+  public uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   public selectedRawCategory: CategoryResponse;
   public cellPhonesCategoryId = CATEGORY_IDS.CELL_PHONES_ACCESSORIES;
   public fashionCategoryId = CATEGORY_IDS.FASHION_ACCESSORIES;
