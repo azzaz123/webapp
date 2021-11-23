@@ -124,17 +124,6 @@ describe('TransactionDetailComponent', () => {
       it('should show caret svg', () => {
         shouldShowCaret(true);
       });
-
-      describe('and we click in caret...', () => {
-        it('should emit the click to the parent', () => {
-          spyOn(component.caretClick, 'emit');
-          const caretIcon = fixture.debugElement.query(By.css('.TrackingDetailInfo__arrowRight')).nativeElement;
-
-          caretIcon.click();
-
-          expect(component.caretClick.emit).toBeCalledTimes(1);
-        });
-      });
     });
 
     describe('and we specify not showing caret', () => {
@@ -167,42 +156,6 @@ describe('TransactionDetailComponent', () => {
         shouldApplyBorderBottomStyle(false);
       });
     });
-
-    describe('and the action is clickable', () => {
-      beforeEach(() => {
-        component.isClickableAction = true;
-
-        fixture.detectChanges();
-      });
-
-      it('should apply clickable style', () => {
-        shouldApplyClickableActionStyle(true);
-      });
-
-      describe('and we click on the action...', () => {
-        it('should emit click', () => {
-          expectActionClickEmited(true);
-        });
-      });
-    });
-
-    describe('and the action is NOT clickable', () => {
-      beforeEach(() => {
-        component.isClickableAction = false;
-
-        fixture.detectChanges();
-      });
-
-      it('should NOT apply clickable style', () => {
-        shouldApplyClickableActionStyle(false);
-      });
-
-      describe('and we click on the action...', () => {
-        it('should NOT emit click', () => {
-          expectActionClickEmited(false);
-        });
-      });
-    });
   });
 
   function shouldShowImage(shouldBeInTemplate: boolean): void {
@@ -223,20 +176,6 @@ describe('TransactionDetailComponent', () => {
 
   function shouldApplyBorderBottomStyle(shouldBeInTemplate: boolean): void {
     checkIfStyleIsInTemplate('.TrackingDetailInfo--borderBottom', shouldBeInTemplate);
-  }
-
-  function shouldApplyClickableActionStyle(shouldBeInTemplate: boolean): void {
-    checkIfStyleIsInTemplate('.TrackingDetailInfo__descriptionWrapper--clickable', shouldBeInTemplate);
-  }
-
-  function expectActionClickEmited(shouldBeEmitted: boolean): void {
-    spyOn(component.actionClick, 'emit');
-    const submitButton: HTMLElement = fixture.debugElement.query(By.css('.TrackingDetailInfo__descriptionWrapper')).nativeElement;
-
-    submitButton.click();
-
-    const expectedCalledTimes = shouldBeEmitted ? 1 : 0;
-    expect(component.actionClick.emit).toBeCalledTimes(expectedCalledTimes);
   }
 
   function checkIfStyleIsInTemplate(selector: string, shouldBeInTemplate: boolean): void {

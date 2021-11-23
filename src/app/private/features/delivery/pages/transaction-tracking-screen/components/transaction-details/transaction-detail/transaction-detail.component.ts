@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { FALLBACK_NOT_FOUND_SRC } from '../../constants/fallback-images-src-constants';
-import { TransactionDetail } from '../../interfaces/transaction-detail.interface';
+import { FALLBACK_NOT_FOUND_SRC } from '../../../constants/fallback-images-src-constants';
+import { TransactionDetail } from '../../../interfaces/transaction-detail.interface';
 @Component({
   selector: 'tsl-transaction-detail',
   templateUrl: './transaction-detail.component.html',

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
-import { TransactionDetailComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-detail/transaction-detail.component';
+import { TransactionDetailComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-details/transaction-detail/transaction-detail.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { HttpClientModule } from '@angular/common/http';
 
