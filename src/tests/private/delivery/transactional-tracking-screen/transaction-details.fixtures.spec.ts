@@ -1,6 +1,6 @@
 import { TransactionDetail } from '@private/features/delivery/pages/transaction-tracking-screen/interfaces/transaction-detail.interface';
 
-export const MOCK_TRANSACTION_TRACKING_DETAILS_TO_TRANSACTIONS_DETAIL: TransactionDetail[] = [
+export const MOCK_TRANSACTION_DETAILS: TransactionDetail[] = [
   {
     description: '<span style="color: #AFB6B6">Producto:</span><br>crayones',
     iconClassName: 'rounded',

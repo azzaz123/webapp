@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
-import { MOCK_TRANSACTION_TRACKING_DETAILS_TO_TRANSACTIONS_DETAIL } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-details.fixtures.spec';
+import { MOCK_TRANSACTION_DETAILS } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-details.fixtures.spec';
 import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mapper';
@@ -44,7 +44,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
 
     describe('and we get the detail info slots', () => {
       it('should return the transaction tracking status info mapped', () => {
-        expect(component.detailInfoSlots).toStrictEqual(MOCK_TRANSACTION_TRACKING_DETAILS_TO_TRANSACTIONS_DETAIL);
+        expect(component.detailInfoSlots).toStrictEqual(MOCK_TRANSACTION_DETAILS);
       });
     });
 
