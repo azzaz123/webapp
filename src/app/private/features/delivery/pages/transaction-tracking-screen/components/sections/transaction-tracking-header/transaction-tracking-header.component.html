@@ -6,6 +6,7 @@
     <span id="headerTitle">{{ header.title }}</span>
   </div>
   <tsl-button
+    *ngIf="!!header.detail"
     class="TTS__buttonHeader"
     className="{{ header.detail.style.className }} btn--noPadding"
     [disabled]="header.detail.state.isDisabled"
