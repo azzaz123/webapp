@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TransactionTrackingActionDetail, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
-import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
+import { TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionDetail } from '../../../interfaces/transaction-detail.interface';
 import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mapper';
 
@@ -15,13 +14,9 @@ export class TransactionTrackingDetailInfoComponent implements OnInit {
   public detailInfoSlots: TransactionDetail[];
   public readonly isBorderBottom = true;
 
-  constructor(private transactionTrackingActionsService: TransactionTrackingActionsService) {}
+  constructor() {}
 
   ngOnInit() {
     this.detailInfoSlots = mapTransactionsDetail(this.transactionTrackingDetails.info);
-  }
-
-  public manageAction(action: TransactionTrackingActionDetail): void {
-    this.transactionTrackingActionsService.manageAction(action);
   }
 }

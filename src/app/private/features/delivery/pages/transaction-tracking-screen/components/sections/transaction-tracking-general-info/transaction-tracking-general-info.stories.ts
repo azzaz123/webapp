@@ -6,7 +6,6 @@ import { ButtonModule } from '@shared/button/button.module';
 import { LottieModule } from '@shared/lottie/lottie.module';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 
 export default {
   title: 'Webapp/Private/Features/Delivery/Components/TransactionTrackingGeneralInfo',
@@ -20,7 +19,7 @@ const Template: Story<TransactionTrackingGeneralInfoComponent> = (args: Transact
   moduleMetadata: {
     declarations: [TransactionTrackingGeneralInfoComponent],
     imports: [CommonModule, ButtonModule, LottieModule, HttpClientTestingModule],
-    providers: [TransactionTrackingActionsService],
+    providers: [],
   },
   template: '<tsl-transaction-tracking-general-info [shippingStatus]="shippingStatus"></tsl-transaction-tracking-general-info>',
 });
