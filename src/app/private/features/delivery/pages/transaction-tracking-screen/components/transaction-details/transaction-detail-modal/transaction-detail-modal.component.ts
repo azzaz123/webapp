@@ -17,7 +17,7 @@ import { TransactionDetail } from '../../../interfaces/transaction-detail.interf
 })
 export class TransactionDetailModalComponent implements OnInit {
   @Input() transactionDetail: TransactionDetail;
-  @Input() isBorderBottom: boolean;
+  @Input() hasBorderBottom: boolean;
 
   constructor(private modalService: NgbModal, private transactionTrackingService: TransactionTrackingService) {}
 

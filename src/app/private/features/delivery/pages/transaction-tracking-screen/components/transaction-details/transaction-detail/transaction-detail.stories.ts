@@ -19,7 +19,7 @@ const Template: Story<TransactionDetailComponent> = (args: TransactionDetailComp
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
   template:
-    '<tsl-transaction-detail [transactionDetail]="transactionDetail" [isClickableAction]="isClickableAction" [isBorderBottom]="isBorderBottom"></tsl-transaction-detail>',
+    '<tsl-transaction-detail [transactionDetail]="transactionDetail" [isClickableAction]="isClickableAction" [hasBorderBottom]="hasBorderBottom"></tsl-transaction-detail>',
 });
 
 export const ProductExample = Template.bind({});
@@ -73,5 +73,5 @@ BorderBottom.args = {
     iconClassName: 'rounded',
     iconSrc: 'https://cdn-beta.wallapop.com/images/10420/35/gw/__/c10420p190584802/i421614104.jpg?pictureSize=W800',
   },
-  isBorderBottom: true,
+  hasBorderBottom: true,
 };

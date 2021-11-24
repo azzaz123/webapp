@@ -133,7 +133,7 @@ describe('TransactionDetailComponent', () => {
 
     describe('and we specify apply border bottom style', () => {
       it('should apply border bottom style', () => {
-        component.isBorderBottom = true;
+        component.hasBorderBottom = true;
 
         fixture.detectChanges();
 
@@ -143,7 +143,7 @@ describe('TransactionDetailComponent', () => {
 
     describe('and we specify NOT apply border bottom style', () => {
       it('should NOT apply border bottom style', () => {
-        component.isBorderBottom = false;
+        component.hasBorderBottom = false;
 
         fixture.detectChanges();
 

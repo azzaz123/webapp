@@ -8,7 +8,7 @@ import { TransactionDetail } from '../../../interfaces/transaction-detail.interf
 })
 export class TransactionDetailComponent {
   @Input() transactionDetail: TransactionDetail;
-  @Input() isBorderBottom: boolean;
+  @Input() hasBorderBottom: boolean;
 
   public readonly FALLBACK_NOT_FOUND_SRC = FALLBACK_NOT_FOUND_SRC;
 

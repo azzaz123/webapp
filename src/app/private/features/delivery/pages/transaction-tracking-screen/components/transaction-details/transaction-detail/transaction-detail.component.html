@@ -1,4 +1,8 @@
-<div *ngIf="transactionDetail as info" class="TrackingDetailInfo d-flex" [ngClass]="{ 'TrackingDetailInfo--borderBottom': isBorderBottom }">
+<div
+  *ngIf="transactionDetail as info"
+  class="TrackingDetailInfo d-flex"
+  [ngClass]="{ 'TrackingDetailInfo--borderBottom': hasBorderBottom }"
+>
   <div class="TrackingDetailInfo__iconWrapper d-flex align-items-center justify-content-center">
     <img
       *ngIf="info.iconSrc"

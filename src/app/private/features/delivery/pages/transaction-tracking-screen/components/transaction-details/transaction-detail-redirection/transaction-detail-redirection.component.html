@@ -1,4 +1,4 @@
-<tsl-transaction-detail [transactionDetail]="transactionDetail" [isBorderBottom]="isBorderBottom">
+<tsl-transaction-detail [transactionDetail]="transactionDetail" [hasBorderBottom]="hasBorderBottom">
   <a
     [href]="transactionDetail.action.payload.linkUrl | transactionTrackingDeeplink"
     [innerHTML]="transactionDetail.description | bypassHTML"

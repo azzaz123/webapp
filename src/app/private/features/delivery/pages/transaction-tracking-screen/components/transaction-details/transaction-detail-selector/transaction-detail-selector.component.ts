@@ -8,7 +8,7 @@ import { TransactionDetail } from '../../../interfaces/transaction-detail.interf
 })
 export class TransactionDetailSelectorComponent {
   @Input() transactionDetail: TransactionDetail;
-  @Input() isBorderBottom = true;
+  @Input() hasBorderBottom = true;
 
   constructor() {}
 }

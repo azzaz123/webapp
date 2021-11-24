@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TransactionDetail } from '../../../interfaces/transaction-detail.interface';
 
 @Component({
@@ -6,11 +6,9 @@ import { TransactionDetail } from '../../../interfaces/transaction-detail.interf
   templateUrl: './transaction-detail-without-action.component.html',
   styleUrls: ['./transaction-detail-without-action.component.scss'],
 })
-export class TransactionDetailWithoutActionComponent implements OnInit {
+export class TransactionDetailWithoutActionComponent {
   @Input() transactionDetail: TransactionDetail;
-  @Input() isBorderBottom: boolean;
+  @Input() hasBorderBottom: boolean;
 
   constructor() {}
-
-  ngOnInit() {}
 }
