@@ -28,6 +28,7 @@ describe('TransactionDetailComponent', () => {
       iconSrc: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
       iconClassName: 'rounded',
       showCaret: true,
+      action: null,
     };
   });
 
@@ -36,13 +37,6 @@ describe('TransactionDetailComponent', () => {
   });
 
   describe('when we have the properties defined...', () => {
-    it('should show the provided description', () => {
-      fixture.detectChanges();
-      const descriptionSanitized: HTMLElement = de.query(By.css('.TrackingDetailInfo__descriptionWrapper')).nativeElement.innerHTML;
-
-      expect(descriptionSanitized).toEqual(component.transactionDetail.description);
-    });
-
     describe('and the icon src is defined...', () => {
       beforeEach(() => {
         fixture.detectChanges();
