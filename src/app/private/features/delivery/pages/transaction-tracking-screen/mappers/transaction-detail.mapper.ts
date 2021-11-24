@@ -16,5 +16,6 @@ export function mapTransactionDetail(statusInfo: TransactionTrackingStatusInfo):
     iconSrc: statusInfo.icon?.url ?? FALLBACK_NOT_FOUND_SRC,
     showCaret: statusInfo.showCaret,
     iconClassName: statusInfo.icon.style.className,
+    action: statusInfo.action,
   };
 }

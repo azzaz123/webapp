@@ -45,6 +45,6 @@ export class TransactionTrackingDeeplinkPipe implements PipeTransform {
       mappedURL = this.userProfileRoutePipe.transform('', id);
     }
 
-    return mappedURL;
+    return mappedURL ?? deeplink;
   }
 }
