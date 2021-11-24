@@ -18,7 +18,6 @@ export enum FEATURE_FLAGS_ENUM {
   STRIPE = 'web_stripe',
   BUMPS = 'EnableVisibility',
   SUBSCRIPTIONS = 'EnablePros',
-  SORT_BY_RELEVANCE = 'SortByRelevance',
   HIDE_ADS = 'NoAds',
 }
 
