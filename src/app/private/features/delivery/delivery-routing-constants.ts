@@ -9,4 +9,5 @@ export enum DELIVERY_PATHS {
 
 export enum DELIVERY_PATH_PARAMS {
   ID = 'id',
+  TYPE = 'type',
 }
