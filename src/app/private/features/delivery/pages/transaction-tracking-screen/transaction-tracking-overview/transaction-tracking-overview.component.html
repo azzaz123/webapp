@@ -7,5 +7,5 @@
 </div>
 <tsl-transaction-tracking-detail-info
   *ngIf="transactionTrackingDetails$ | async as transactionTrackingDetails"
-  [transactionTrackingDetails]="transactionTrackingDetails"
+  [transactionTrackingDetails]="transactionTrackingDetails.info"
 ></tsl-transaction-tracking-detail-info>

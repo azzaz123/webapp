@@ -21,7 +21,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TransactionTrackingDetailInfoComponent);
     component = fixture.componentInstance;
-    component.transactionTrackingDetails = MOCK_TRANSACTION_TRACKING_DETAILS;
+    component.transactionTrackingDetails = MOCK_TRANSACTION_TRACKING_DETAILS.info;
     fixture.detectChanges();
   });
 

@@ -5,5 +5,7 @@ export interface TransactionDetail {
   iconSrc: string;
   showCaret: boolean;
   iconClassName: string;
-  action?: TransactionTrackingActionDetail;
+  action: TransactionTrackingActionDetail | null;
 }
+
+// delete it when refactor sttus info
