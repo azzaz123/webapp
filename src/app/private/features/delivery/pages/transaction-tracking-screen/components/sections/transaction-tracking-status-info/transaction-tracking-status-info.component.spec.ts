@@ -1,11 +1,10 @@
-import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
-import { TransactionDetailComponent } from '../../transaction-details/transaction-detail/transaction-detail.component';
 import { mapTransactionsDetail } from '../../../mappers/transaction-detail.mapper';
 import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
+import { TransactionDetailSelectorComponent } from '../../transaction-details/transaction-detail-selector/transaction-detail-selector.component';
 
 describe('TransactionTrackingStatusInfoComponent', () => {
   const MOCK_STATUS_INFO = MOCK_TRANSACTION_TRACKING.statusInfo;
@@ -14,7 +13,7 @@ describe('TransactionTrackingStatusInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionTrackingStatusInfoComponent, TransactionDetailComponent],
+      declarations: [TransactionTrackingStatusInfoComponent, TransactionDetailSelectorComponent],
       imports: [ImageFallbackModule],
       providers: [],
     }).compileComponents();
@@ -33,7 +32,7 @@ describe('TransactionTrackingStatusInfoComponent', () => {
 
   describe('when getting transaction tracking status info...', () => {
     it('should have the same transaction tracking detail info as slots', () => {
-      const detailInfoSlots = fixture.debugElement.queryAll(By.directive(TransactionDetailComponent));
+      const detailInfoSlots = fixture.debugElement.queryAll(By.directive(TransactionDetailSelectorComponent));
       expect(detailInfoSlots.length).toEqual(component.transactionTrackingStatusInfo.length);
     });
 
