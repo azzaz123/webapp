@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 
 @Component({
@@ -7,12 +8,28 @@ import { HistoricElement } from '@shared/historic-list/interfaces/historic-eleme
   styleUrls: ['./historic-element.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HistoricElementComponent {
+export class HistoricElementComponent implements OnChanges {
   @Input() historicElement: HistoricElement;
   @Input() clickable: boolean = false;
   @Output() clicked: EventEmitter<HistoricElement> = new EventEmitter<HistoricElement>();
 
+  public subDescriptionClassname: string = null;
+
+  private readonly mapSubDescriptionTypeToString: Record<HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE, string> = {
+    [HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL]: '',
+    [HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.PENDING]: 'HistoricElement__subDescription--pending',
+    [HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.ERROR]: 'HistoricElement__subDescription--error',
+  };
+
+  ngOnChanges() {
+    this.subDescriptionClassname = this.getSubdescriptionClassname();
+  }
+
   public onItemClick(): void {
     this.clicked.emit(this.historicElement);
+  }
+
+  private getSubdescriptionClassname(): string | null {
+    return this.mapSubDescriptionTypeToString[this.historicElement.subDescription?.type];
   }
 }

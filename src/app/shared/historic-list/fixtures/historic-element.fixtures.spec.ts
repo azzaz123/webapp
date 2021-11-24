@@ -23,6 +23,22 @@ export const MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION: HistoricElement = {
   },
 };
 
+export const MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_PENDING: HistoricElement = {
+  ...MOCK_HISTORIC_ELEMENT,
+  subDescription: {
+    text: 'In your bank before 1 Oct',
+    type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.PENDING,
+  },
+};
+
+export const MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_ERROR: HistoricElement = {
+  ...MOCK_HISTORIC_ELEMENT,
+  subDescription: {
+    text: 'In your bank before 1 Oct',
+    type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.ERROR,
+  },
+};
+
 export const MOCK_HISTORIC_ELEMENT_SALE: HistoricElement = {
   id: '7cd4ef9a-6fb9-427d-a26c-7a3b742be019',
   imageUrl: 'https://cdn-beta.wallapop.com/images/10420/35/gw/__/c10420p190584802/i421614104.jpg?pictureSize=W800',

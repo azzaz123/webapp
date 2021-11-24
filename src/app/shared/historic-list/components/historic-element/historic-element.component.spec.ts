@@ -1,10 +1,13 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
 import {
   MOCK_HISTORIC_ELEMENT,
   MOCK_HISTORIC_ELEMENT_WITH_ICON,
   MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION,
+  MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_ERROR,
+  MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_PENDING,
 } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricElementComponent } from './historic-element.component';
@@ -30,6 +33,8 @@ describe('HistoricElementComponent', () => {
   const moneyAmountSelector = `${historicElementSelector}__money-amount`;
   const descriptionSelector = `${historicElementSelector}__description`;
   const subDescriptionSelector = `${historicElementSelector}__subDescription`;
+  const subDescriptionPendingSelector = `${historicElementSelector}__subDescription--pending`;
+  const subDescriptionErrorSelector = `${historicElementSelector}__subDescription--error`;
   const clickableSelector = `${historicElementSelector}--clickable`;
   const iconSelector = 'tsl-svg-icon';
 
@@ -124,6 +129,42 @@ describe('HistoricElementComponent', () => {
         const expectedsubDescription = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION.subDescription.text;
 
         expect(subDescription).toEqual(expectedsubDescription);
+      });
+
+      describe('and when subdescription is normal', () => {
+        it('should NOT add extra styling', () => {
+          const subDescriptionPendingElement = fixture.debugElement.query(By.css(subDescriptionPendingSelector));
+          const subDescriptionErrorElement = fixture.debugElement.query(By.css(subDescriptionPendingSelector));
+
+          expect(subDescriptionPendingElement).toBeFalsy();
+          expect(subDescriptionErrorElement).toBeFalsy();
+        });
+      });
+
+      describe('and when subdescription is pending', () => {
+        beforeEach(() => {
+          wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_PENDING;
+          fixture.detectChanges();
+        });
+
+        it('should add subdescription pending style', () => {
+          const subDescriptionPendingElement = fixture.debugElement.query(By.css(subDescriptionPendingSelector));
+
+          expect(subDescriptionPendingElement).toBeTruthy();
+        });
+      });
+
+      describe('and when subdescription is error', () => {
+        beforeEach(() => {
+          wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_ERROR;
+          fixture.detectChanges();
+        });
+
+        it('should add subdescription error style', () => {
+          const subDescriptionErrorElement = fixture.debugElement.query(By.css(subDescriptionErrorSelector));
+
+          expect(subDescriptionErrorElement).toBeTruthy();
+        });
       });
     });
 

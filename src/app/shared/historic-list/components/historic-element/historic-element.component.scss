@@ -35,6 +35,14 @@
   &__subDescription {
     color: $blue-grey-2;
     font-size: $font-size-xs;
+
+    &--pending {
+      color: $walla-main;
+    }
+
+    &--error {
+      color: $negative-main;
+    }
   }
 
   &--clickable {
