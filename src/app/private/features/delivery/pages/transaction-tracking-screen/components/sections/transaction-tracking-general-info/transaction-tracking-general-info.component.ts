@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TransactionTrackingActionDetail, TransactionTrackingShippingStatus } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingShippingStatus } from '@api/core/model/delivery/transaction/tracking';
 
 @Component({
   selector: 'tsl-transaction-tracking-general-info',

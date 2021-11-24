@@ -1,14 +1,3 @@
 <ng-container *ngFor="let infoSlot of detailInfoSlots; let index = index">
-  <tsl-transaction-detail-without-action
-    *ngIf="!infoSlot.action"
-    [transactionDetail]="infoSlot"
-    [isBorderBottom]="isBorderBottom"
-  ></tsl-transaction-detail-without-action>
-  <tsl-transaction-detail-modal *ngIf="!!infoSlot.action?.isDialog" [transactionDetail]="infoSlot" [isBorderBottom]="isBorderBottom">
-  </tsl-transaction-detail-modal>
-  <tsl-transaction-detail-redirection
-    *ngIf="infoSlot.action?.isCarrierTrackingWebview || infoSlot.action?.isDeeplink"
-    [isBorderBottom]="isBorderBottom"
-    [transactionDetail]="infoSlot"
-  ></tsl-transaction-detail-redirection>
+  <tsl-transaction-detail-selector [transactionDetail]="infoSlot"></tsl-transaction-detail-selector>
 </ng-container>
