@@ -1,3 +1,4 @@
 <div *ngIf="transactionTrackingInstructions$ | async as transactionTrackingInstructions">
   <tsl-transaction-tracking-header [transactionTrackingHeader]="transactionTrackingInstructions.header"></tsl-transaction-tracking-header>
+  <tsl-transaction-banner [banner]="transactionTrackingInstructions.body.banner"></tsl-transaction-banner>
 </div>

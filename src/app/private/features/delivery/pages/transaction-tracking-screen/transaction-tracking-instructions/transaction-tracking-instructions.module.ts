@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { TransactionTrackingBannerModule } from '@private/features/delivery/pages/transaction-tracking-screen';
 import {
   transactionTrackingInstructionsRoutedComponents,
   TransactionTrackingInstructionsRoutingModule,
@@ -11,7 +12,7 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
 
 @NgModule({
   declarations: [transactionTrackingInstructionsRoutedComponents],
-  imports: [CommonModule, TransactionTrackingHeaderModule, TransactionTrackingInstructionsRoutingModule],
+  imports: [CommonModule, TransactionTrackingBannerModule, TransactionTrackingHeaderModule, TransactionTrackingInstructionsRoutingModule],
   providers: [TransactionTrackingService, TransactionTrackingHttpService],
 })
 export class TransactionTrackingInstructionsModule {}
