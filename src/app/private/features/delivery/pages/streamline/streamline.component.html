@@ -1,4 +1,6 @@
-<div class="Streamline">
-  <tsl-tabs-bar [tabsBarElements]="tabsBarElements" (onChange)="onTabsBarChange($event)"></tsl-tabs-bar>
-  <router-outlet></router-outlet>
+<div class="Streamline row box mx-0 py-3 mt-3">
+  <div class="col">
+    <tsl-tabs-bar [tabsBarElements]="tabsBarElements" (onChange)="onTabsBarChange($event)"></tsl-tabs-bar>
+    <router-outlet></router-outlet>
+  </div>
 </div>
