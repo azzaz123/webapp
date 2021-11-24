@@ -1,3 +1,4 @@
+export * from './components/banner/transaction-tracking-banner.module';
 export * from './components/transaction-detail/transaction-detail.module';
 export * from './components/transaction-info/transaction-info.module';
 export * from './transaction-tracking-instructions/transaction-tracking-instructions.component';

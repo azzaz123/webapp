@@ -1,0 +1,23 @@
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/spacing';
+@import '~web-styleguide/scss/text';
+
+.TransactionTrackingBanner {
+  margin-top: $spacing-l;
+
+  &__titleWrapper {
+    overflow: hidden;
+    pointer-events: none;
+    flex: 1;
+
+    ::ng-deep {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  &__trackingCodeWrapper {
+    color: $walla-main;
+    font-weight: $font-weight-chunky;
+  }
+}
