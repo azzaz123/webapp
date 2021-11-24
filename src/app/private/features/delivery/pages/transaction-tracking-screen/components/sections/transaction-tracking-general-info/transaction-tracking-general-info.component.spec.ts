@@ -7,6 +7,7 @@ import { ButtonComponent } from '@shared/button/button.component';
 import { ButtonModule } from '@shared/button/button.module';
 import { LottieComponent } from '@shared/lottie/lottie.component';
 import { LottieModule } from '@shared/lottie/lottie.module';
+import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
 
 import { TransactionTrackingGeneralInfoComponent } from './transaction-tracking-general-info.component';
 
@@ -19,7 +20,7 @@ describe('TransactionTrackingGeneralInfoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingGeneralInfoComponent],
-      imports: [ButtonModule, LottieModule, HttpClientTestingModule],
+      imports: [ButtonModule, LottieModule, HttpClientTestingModule, BypassHTMLModule],
       providers: [],
     }).compileComponents();
   });
