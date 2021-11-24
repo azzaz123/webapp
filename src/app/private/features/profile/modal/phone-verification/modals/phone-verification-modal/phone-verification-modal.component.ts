@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { take } from 'rxjs/operators';
-import { parsePhoneNumber } from 'libphonenumber-js';
+import { CountryCode, parsePhoneNumber } from 'libphonenumber-js';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
@@ -15,9 +15,7 @@ import { PHONE_PREFIXES } from '../../constants/phone-prefixies-constants';
   styleUrls: ['./phone-verification-modal.component.scss'],
 })
 export class PhoneVerificationModalComponent implements OnInit {
-  @Input() email: string;
-
-  public prefixes: PhonePrefixOption[] = PHONE_PREFIXES;
+  public prefixes: PhonePrefixOption[];
   public phoneVerificationForm: FormGroup;
 
   constructor(
@@ -29,6 +27,7 @@ export class PhoneVerificationModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
+    this.setPhonePrefixes();
   }
 
   public onSubmitPhone(): void {
@@ -71,5 +70,15 @@ export class PhoneVerificationModalComponent implements OnInit {
     this.phoneVerificationForm.get('phone').setErrors({ invalid: true });
     this.phoneVerificationForm.get('phone').markAsDirty();
     this.phoneVerificationForm.markAsPending();
+  }
+
+  private setPhonePrefixes(): void {
+    this.prefixes = PHONE_PREFIXES.map((e) => {
+      return {
+        country_code: <CountryCode>e.country_code,
+        value: e.prefix,
+        label: `${e.country} (${e.prefix})`,
+      };
+    });
   }
 }
