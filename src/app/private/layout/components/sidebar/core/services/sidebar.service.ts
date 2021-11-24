@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { DeviceService } from '@core/device/device.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 const SIDEBAR_COLLAPSED_PREFERENCE_KEY = 'sidebarCollapsed';
 
@@ -8,7 +8,7 @@ const SIDEBAR_COLLAPSED_PREFERENCE_KEY = 'sidebarCollapsed';
 export class SidebarService {
   private readonly _sidebarCollapsed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.getCollapsedPreference());
 
-  constructor(private deviceService: DeviceDetectorService) {}
+  constructor(private deviceService: DeviceService) {}
 
   get sidebarCollapsed$(): Observable<boolean> {
     return this._sidebarCollapsed$.asObservable();
@@ -37,9 +37,12 @@ export class SidebarService {
     if (collapsed === null && this.deviceService.isTablet()) {
       return true;
     }
-    if (!collapsed) {
+    if (collapsed === 'true') {
+      return true;
+    }
+    if (collapsed === 'false') {
       return false;
     }
-    return JSON.parse(collapsed);
+    return false;
   }
 }
