@@ -1,4 +1,4 @@
-<nav class="NavLinks" [ngClass]="{'NavLinks--marginless': marginless}">
+<nav class="NavLinks" [ngClass]="{'NavLinks--marginless': marginless, 'NavLinks--disabled': disabled}">
 
   <div class="NavLinks__search-input" *ngIf="showSearchInput" (click)="onClickSearch()">
     <tsl-search-input [ngClass]="{opened: searchClicked, closed: !searchClicked}"
