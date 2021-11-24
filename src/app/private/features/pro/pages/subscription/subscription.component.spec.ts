@@ -371,7 +371,7 @@ describe('SubscriptionComponent', () => {
         spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(false);
 
         component.manageSubscription(SUBSCRIPTIONS[0]);
-        component.onunselectSubscription();
+        component.onUnselectSubscription();
         fixture.detectChanges();
       });
       it('should clear data', () => {
@@ -429,7 +429,7 @@ describe('SubscriptionComponent', () => {
         spyOn(subscriptionsService, 'isStripeSubscription').and.returnValue(true);
 
         component.manageSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED);
-        component.onunselectSubscription();
+        component.onUnselectSubscription();
         fixture.detectChanges();
       });
       it('should clear data', () => {
@@ -444,7 +444,7 @@ describe('SubscriptionComponent', () => {
     });
   });
 
-  describe('and purchase is succesful', () => {
+  describe('and purchase is successful', () => {
     describe('and the user is pro', () => {
       beforeEach(() => {
         component.user.featured = true;
@@ -478,7 +478,7 @@ describe('SubscriptionComponent', () => {
     });
   });
 
-  describe('and purchase is succesful', () => {
+  describe('and purchase is successful', () => {
     describe('and the user not pro', () => {
       beforeEach(() => {
         component.user.featured = false;
