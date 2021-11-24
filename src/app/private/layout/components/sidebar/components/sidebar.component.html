@@ -5,7 +5,7 @@
     <tsl-svg-icon src="/assets/icons/sidebar/sidebar_arrow.svg"></tsl-svg-icon>
   </button>
 
-  <a class="Sidebar__entry mx-2 my-4 d-flex align-items-center" [routerLink]="['/profile']" routerLinkActive="active"
+  <a id="sidebar-profile" class="Sidebar__entry mx-2 my-4 d-flex align-items-center" [routerLink]="['/profile']" routerLinkActive="active"
     [ngClass]="{active: isProfile}">
     <tsl-user-avatar class="Sidebar__avatar" [size]="32" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
     </tsl-user-avatar>
@@ -18,7 +18,7 @@
     <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_447">Dashboard</span>
   </a>
 
-  <a class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/catalog/list']" (click)="trackClickToCatalog()"
+  <a id="sidebar-catalog" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/catalog/list']" (click)="trackClickToCatalog()"
     [ngClass]="{active: isProducts}">
     <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_label.svg"></tsl-svg-icon>
     <span class="Sidebar__label ml-2" *ngxPermissionsExcept="PERMISSIONS.professional"
@@ -64,7 +64,7 @@
   </a>
 
   <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-    <a class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" (click)="onClickedProSection()"
+    <a id="sidebar-pro" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" (click)="onClickedProSection()"
       routerLink="/{{PRO_PATHS.PRO_MANAGER}}" routerLinkActive="active">
       <div class="Sidebar__notification" *ngIf="!isClickedProSection"></div>
       <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_badge.svg"></tsl-svg-icon>
@@ -80,7 +80,7 @@
     </a>
   </ng-container>
 
-  <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+  <a id="sidebar-wallet" *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
     [routerLink]="[PRIVATE_PATHS.WALLET]" (click)="trackClickToWallet()" routerLinkActive="active">
     <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_wallet.svg"></tsl-svg-icon>
     <span class="Sidebar__label ml-2" i18n="@@wallet_view_top_bar_title">Wallet</span>
