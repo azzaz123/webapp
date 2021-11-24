@@ -1,6 +1,7 @@
-import { Route, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { TransactionTrackingInstructionsComponent } from './transaction-tracking-instructions.component';
+import { Route, RouterModule } from '@angular/router';
+
+import { TransactionTrackingInstructionsComponent } from '@private/features/delivery/pages/transaction-tracking-screen';
 
 const routes: Route[] = [
   {
@@ -8,7 +9,7 @@ const routes: Route[] = [
     component: TransactionTrackingInstructionsComponent,
   },
   {
-    path: '*',
+    path: '**',
     redirectTo: '',
   },
 ];
@@ -19,4 +20,4 @@ const routes: Route[] = [
 })
 export class TransactionTrackingInstructionsRoutingModule {}
 
-export const TransactionTrackingInstructionsRoutedComponents = [TransactionTrackingInstructionsComponent];
+export const transactionTrackingInstructionsRoutedComponents = [TransactionTrackingInstructionsComponent];

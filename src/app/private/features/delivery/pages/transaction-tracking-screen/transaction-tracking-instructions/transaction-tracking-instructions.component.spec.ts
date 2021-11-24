@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TransactionTrackingInstructionsComponent } from './transaction-tracking-instructions.component';
+import { TransactionTrackingInstructionsComponent } from '@private/features/delivery/pages/transaction-tracking-screen';
 
 describe('TransactionTrackingInstructionsComponent', () => {
   let component: TransactionTrackingInstructionsComponent;
