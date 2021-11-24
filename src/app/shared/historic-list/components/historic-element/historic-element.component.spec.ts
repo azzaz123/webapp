@@ -112,16 +112,16 @@ describe('HistoricElementComponent', () => {
       });
     });
 
-    describe('and when movement has sub description', () => {
+    describe('and when movement has subdescription', () => {
       beforeEach(() => {
         wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION;
         fixture.detectChanges();
       });
 
-      it('should show the estimated payout description', () => {
+      it('should show the subdescription text', () => {
         const subDescriptionElement = fixture.debugElement.query(By.css(subDescriptionSelector));
         const subDescription = subDescriptionElement.nativeElement.innerHTML.trim();
-        const expectedsubDescription = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION.subDescription;
+        const expectedsubDescription = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION.subDescription.text;
 
         expect(subDescription).toEqual(expectedsubDescription);
       });

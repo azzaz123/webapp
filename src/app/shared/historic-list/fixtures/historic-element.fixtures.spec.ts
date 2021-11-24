@@ -1,4 +1,5 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
+import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '../interfaces/historic-element.interface';
 
 export const MOCK_HISTORIC_ELEMENT: HistoricElement = {
@@ -16,7 +17,10 @@ export const MOCK_HISTORIC_ELEMENT_WITH_ICON: HistoricElement = {
 
 export const MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION: HistoricElement = {
   ...MOCK_HISTORIC_ELEMENT,
-  subDescription: 'In your bank before 1 Oct',
+  subDescription: {
+    text: 'In your bank before 1 Oct',
+    type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
+  },
 };
 
 export const MOCK_HISTORIC_ELEMENT_SALE: HistoricElement = {
@@ -44,7 +48,10 @@ export const MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT: HistoricElemen
   title: 'ES91••••1332',
   description: 'Withdrawal · 17 Sep',
   moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: -288, currency: 'EUR' }),
-  subDescription: 'In your bank before 22 Sep',
+  subDescription: {
+    text: 'In your bank before 22 Sep',
+    type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
+  },
 };
 
 export const MOCK_HISTORIC_ELEMENT_WITH_ID: HistoricElement = {
