@@ -6,8 +6,7 @@
   z-index: 10;
   background-color: $white;
   color: $blue-grey-1;
-  border-top: 1px solid;
-  border-color: transparentize($blue-grey-4, 0.5);
+  border-top: 1px solid transparentize($blue-grey-4, 0.5);
   height: 100px;
   @include media-breakpoint-down(md) {
     height: 70px;

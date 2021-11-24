@@ -47,12 +47,11 @@ $collapse-btn-dimension: 24px;
 
   &__entry {
     position: relative;
-    margin: 0 8px 4px;
     min-height: 48px;
 
     tsl-user-avatar,
     tsl-svg-icon {
-      padding: 0 8px;
+      padding: 0 $spacer * 0.5;
     }
 
     &.active,
@@ -80,7 +79,17 @@ $collapse-btn-dimension: 24px;
     white-space: nowrap;
     color: $blue-grey-1;
     transition: opacity 100ms linear;
-    margin-left: 8px;
+  }
+
+  &__notification {
+    position: absolute;
+    top: 9px;
+    left: 28px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid $white;
+    background-color: $negative-main;
+    border-radius: 100%;
   }
 
   &--collapsed {
@@ -95,20 +104,7 @@ $collapse-btn-dimension: 24px;
     }
   }
 
-  &:hover {
-    .Sidebar__collapse {
-      opacity: 1;
-    }
+  &:hover .Sidebar__collapse {
+    opacity: 1;
   }
-}
-
-.chat-notification-pending {
-  position: absolute;
-  top: 9px;
-  left: 28px;
-  width: 10px;
-  height: 10px;
-  border: 2px solid $white;
-  background-color: $negative-main;
-  border-radius: 100%;
 }
