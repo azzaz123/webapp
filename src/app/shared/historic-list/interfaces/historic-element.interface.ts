@@ -1,8 +1,8 @@
 import { Money } from '@api/core/model/money.interface';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-subdescription-type.enum';
 
-export interface HistoricElement<T = string> {
-  id: T;
+export interface HistoricElement<T = Object> {
+  id: string;
   imageUrl: string;
   iconUrl?: string;
   title: string;
@@ -12,4 +12,5 @@ export interface HistoricElement<T = string> {
     type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE;
   };
   moneyAmount: Money;
+  payload?: T;
 }
