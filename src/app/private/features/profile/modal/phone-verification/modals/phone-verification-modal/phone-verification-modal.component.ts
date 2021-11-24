@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { take } from 'rxjs/operators';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { SmsCodeVerificationModalComponent } from '../sms-code-verification-modal/sms-code-verification-modal.component';
 
 @Component({
   selector: 'tsl-phone-verification-modal',
@@ -27,7 +28,8 @@ export class PhoneVerificationModalComponent implements OnInit {
     private fb: FormBuilder,
     public activeModal: NgbActiveModal,
     private userVerificationsService: UserVerificationsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +45,9 @@ export class PhoneVerificationModalComponent implements OnInit {
         .subscribe(
           () => {
             this.activeModal.close();
+            this.modalService.open(SmsCodeVerificationModalComponent, {
+              windowClass: 'modal-standard',
+            });
           },
           () => {
             this.toastService.show(DEFAULT_ERROR_TOAST);
