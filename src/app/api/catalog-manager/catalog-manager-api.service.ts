@@ -11,7 +11,7 @@ import { STATUS } from '@private/features/catalog/components/selected-items/sele
 import { ItemBySubscriptionResponse } from './dtos/items-by-subscription/items-subscription-type.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import { SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
-import { SORT_KEYS_DTOS } from './dtos/items-by-subscription/sort.interface';
+import { SORT_KEYS_MAPPER } from './dtos/items-by-subscription/sort.interface';
 
 export const PAGE_SIZE = 1000;
 @Injectable()
@@ -40,7 +40,7 @@ export class CatalogManagerApiService {
 
     return itemsSource.pipe(
       map((res) => mapFilter(term, res)),
-      map((res) => mapSort(SORT_KEYS_DTOS[sortByParam], res))
+      map((res) => mapSort(SORT_KEYS_MAPPER[sortByParam], res))
     );
   }
 
