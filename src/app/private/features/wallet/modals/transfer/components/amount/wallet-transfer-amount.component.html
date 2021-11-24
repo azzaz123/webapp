@@ -3,7 +3,7 @@
   <div class="WalletTransferAmount__question">
     <span i18n="@@make_transfer_view_how_much_description">How much do you want to transfer?</span>
   </div>
-  <div class="WalletTransferAmount__square py-3 box profile-box">
+  <div class="WalletTransferAmount__square py-3 box">
     <div class="row">
       <div class="col">
         <div
@@ -15,7 +15,15 @@
 
         <div *ngIf="showBalance">
           <div
-            class="WalletTransferAmount__figure w-100 h-100 d-flex flex-column align-content-center align-items-center justify-content-center"
+            class="
+              WalletTransferAmount__figure
+              w-100
+              h-100
+              d-flex
+              flex-column
+              align-content-center align-items-center
+              justify-content-center
+            "
           >
             <div class="d-flex w-100 h-100 align-items-start justify-content-center">
               <input
