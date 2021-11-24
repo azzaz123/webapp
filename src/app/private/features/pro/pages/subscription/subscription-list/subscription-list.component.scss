@@ -3,8 +3,8 @@
 .SubscriptionList {
   &__title {
     color: $blue-grey-1;
-    font-size: 32px;
-    font-weight: bold;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-chunky;
   }
 
   .box-content {
@@ -14,7 +14,7 @@
     h4 {
       color: $blue-grey-1;
       font-size: $font-size-l;
-      font-weight: bold;
+      font-weight: $font-weight-chunky;
     }
   }
 
