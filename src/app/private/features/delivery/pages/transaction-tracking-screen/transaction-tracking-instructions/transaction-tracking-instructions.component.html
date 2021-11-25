@@ -1,4 +1,19 @@
-<div *ngIf="transactionTrackingInstructions$ | async as transactionTrackingInstructions">
+<div
+  *ngIf="transactionTrackingInstructions$ | async as transactionTrackingInstructions"
+  class="TransactionTrackingInstructions d-flex w-100 flex-column"
+>
   <tsl-transaction-tracking-header [transactionTrackingHeader]="transactionTrackingInstructions.header"></tsl-transaction-tracking-header>
-  <tsl-transaction-banner [banner]="transactionTrackingInstructions.body.banner"></tsl-transaction-banner>
+  <div class="TransactionTrackingInstructions__bodyWrapper">
+    <tsl-transaction-tracking-banner [banner]="transactionTrackingInstructions.body.banner"></tsl-transaction-tracking-banner>
+    <div class="TransactionTrackingInstructions__titleWrapper align-self-start">{{ transactionTrackingInstructions.body.title }}</div>
+    <div class="TransactionTrackingInstructions__instructionsWrapper">
+      <div
+        *ngFor="let instruction of transactionTrackingInstructions; index as index"
+        class="TransactionTrackingInstructions__instruction d-flex align-items-start"
+      >
+        <div class="TransactionTrackingInstructions__instruction__index">{{ index + 1 }}</div>
+        <div class="TransactionTrackingInstructions__instruction__description">PENDING</div>
+      </div>
+    </div>
+  </div>
 </div>

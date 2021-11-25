@@ -1,0 +1,16 @@
+@import '~web-styleguide/scss/spacing';
+@import '~web-styleguide/scss/text';
+
+$spacing-14: 14px;
+
+.TransactionTrackingInstructions {
+  &__bodyWrapper {
+    padding: $spacing-14 $spacing-ml;
+  }
+  &__titleWrapper {
+    font-weight: $font-weight-chunky;
+    margin-top: $spacing-xl;
+  }
+  &__instructionsWrapper {
+  }
+}
