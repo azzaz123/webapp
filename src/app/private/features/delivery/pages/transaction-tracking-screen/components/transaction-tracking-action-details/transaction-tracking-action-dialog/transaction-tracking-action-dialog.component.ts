@@ -11,7 +11,7 @@ import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirma
   styleUrls: ['./transaction-tracking-action-dialog.component.scss'],
 })
 export class TransactionTrackingActionDialogComponent implements OnInit {
-  @Input() modalAction: any;
+  @Input() dialogAction: any;
   @Input() hasBorderBottom: boolean;
 
   constructor(private modalService: NgbModal) {}
@@ -21,7 +21,7 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
   public openModal(): void {
     // TODO: tendremos que cambiar el modal a uno que incorpore acciones		Date: 2021/11/25
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
-    const payloadAction: TransactionTrackingActionDetailPayload = this.modalAction.payload;
+    const payloadAction: TransactionTrackingActionDetailPayload = this.dialogAction.payload;
 
     modalRef.componentInstance.properties = this.getModalProperties(payloadAction);
 

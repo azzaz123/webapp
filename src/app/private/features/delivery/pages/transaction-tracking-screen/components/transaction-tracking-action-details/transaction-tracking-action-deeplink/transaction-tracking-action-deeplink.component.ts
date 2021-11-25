@@ -8,7 +8,7 @@ import { UNAVAILABLE_DEEPLINKS_PREFIX } from '../../../constants/unavailable-dee
 })
 export class TransactionTrackingActionDeeplinkComponent implements OnInit {
   @Input() deeplinkAction: any;
-  public isDeeplinkAvailable: boolean;
+  public isDeeplinkUnavailable: boolean;
 
   constructor() {}
 
@@ -17,7 +17,7 @@ export class TransactionTrackingActionDeeplinkComponent implements OnInit {
   }
 
   public stopRedirectWhenNotAvailable(event: Event): void {
-    if (!this.isDeeplinkAvailable) {
+    if (this.isDeeplinkUnavailable) {
       event.preventDefault();
       alert('This deeplink is not available');
     }
@@ -25,6 +25,8 @@ export class TransactionTrackingActionDeeplinkComponent implements OnInit {
 
   private initializeIsDeeplinkAvailable(): void {
     const deeplink = this.deeplinkAction.payload.linkUrl;
-    this.isDeeplinkAvailable = UNAVAILABLE_DEEPLINKS_PREFIX.some((unavailableDeeplink: string) => deeplink.startsWith(unavailableDeeplink));
+    this.isDeeplinkUnavailable = UNAVAILABLE_DEEPLINKS_PREFIX.some((unavailableDeeplink: string) =>
+      deeplink.startsWith(unavailableDeeplink)
+    );
   }
 }

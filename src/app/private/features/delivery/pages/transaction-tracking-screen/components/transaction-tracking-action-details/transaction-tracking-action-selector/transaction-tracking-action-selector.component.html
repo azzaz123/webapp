@@ -1,16 +1,16 @@
 <!-- Deeplinks -->
 <tsl-transaction-tracking-action-deeplink *ngIf="actionDetail.isDeeplink" [deeplinkAction]="actionDetail">
-  <ng-content></ng-content>
+  <ng-content select="[slot=content]"></ng-content>
 </tsl-transaction-tracking-action-deeplink>
 <!-- Dialogs -->
-<tsl-transaction-tracking-action-dialog *ngIf="actionDetail.isDialog" [deeplinkAction]="actionDetail">
-  <ng-content></ng-content>
+<tsl-transaction-tracking-action-dialog *ngIf="actionDetail.isDialog" [modalAction]="actionDetail">
+  <ng-content select="[slot=content]"></ng-content>
 </tsl-transaction-tracking-action-dialog>
 <!-- TrackingWebview -->
-<tsl-transaction-tracking-action-tracking-webview *ngIf="actionDetail.isCarrierTrackingWebview" [transactionDetail]="transactionDetail">
-  <ng-content></ng-content>
+<tsl-transaction-tracking-action-tracking-webview *ngIf="actionDetail.isCarrierTrackingWebview" [trackingWebviewAction]="actionDetail">
+  <ng-content select="[slot=content]"></ng-content>
 </tsl-transaction-tracking-action-tracking-webview>
 <!-- UserAction -->
-<tsl-transaction-tracking-action-user-action *ngIf="actionDetail.isUserAction" [transactionDetail]="transactionDetail">
-  <ng-content></ng-content>
+<tsl-transaction-tracking-action-user-action *ngIf="actionDetail.isUserAction" [userAction]="actionDetail">
+  <ng-content select="[slot=content]"></ng-content>
 </tsl-transaction-tracking-action-user-action>

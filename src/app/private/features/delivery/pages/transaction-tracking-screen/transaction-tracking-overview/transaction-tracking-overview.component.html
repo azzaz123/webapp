@@ -2,10 +2,10 @@
   <tsl-transaction-tracking-header [transactionTrackingHeader]="transactionTracking.header"></tsl-transaction-tracking-header>
   <tsl-transaction-tracking-general-info [shippingStatus]="transactionTracking.shippingStatus"> </tsl-transaction-tracking-general-info>
   <tsl-transaction-tracking-status-info-wrapper
-    [transactionTrackingStatusInfo]="transactionTracking.statusInfo"
+    [transactionTrackingsStatusInfo]="transactionTracking.statusInfo"
   ></tsl-transaction-tracking-status-info-wrapper>
 </div>
 <tsl-transaction-tracking-status-info-wrapper
   *ngIf="transactionTrackingDetails$ | async as transactionTrackingDetails"
-  [transactionTrackingDetails]="transactionTrackingDetails.info"
+  [transactionTrackingsStatusInfo]="transactionTrackingDetails.info"
 ></tsl-transaction-tracking-status-info-wrapper>
