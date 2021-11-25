@@ -22,7 +22,7 @@ const MOCK_TRANSACTION_TRACKING_DETAILS_USER: TransactionTrackingDetailsUser = {
   },
 };
 
-const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_1: TransactionTrackingStatusInfo = {
+export const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_1: TransactionTrackingStatusInfo = {
   action: {
     isCarrierTrackingWebview: false,
     isDeeplink: true,

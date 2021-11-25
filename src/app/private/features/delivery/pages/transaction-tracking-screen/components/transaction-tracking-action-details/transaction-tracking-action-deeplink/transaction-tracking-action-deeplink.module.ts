@@ -10,4 +10,4 @@ import { TransactionTrackingActionDeeplinkComponent } from './transaction-tracki
   imports: [CommonModule, TransactionTrackingDeeplinkModule, ItemDetailRouteModule, UserProfileRouteModule],
   exports: [TransactionTrackingActionDeeplinkComponent],
 })
-export class TransactionDetailRedirectionModule {}
+export class TransactionTrackingActionDeeplinkModule {}

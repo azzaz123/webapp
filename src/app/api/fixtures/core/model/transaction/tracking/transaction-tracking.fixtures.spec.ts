@@ -40,7 +40,7 @@ const MOCK_TRANSACTION_TRACKING_HEADER_1: TransactionTrackingHeader = {
   detail: MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_1,
   title: 'Estado de tu compra',
 };
-const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1: TransactionTrackingShippingStatus = {
+export const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1: TransactionTrackingShippingStatus = {
   actions: [
     {
       action: {
