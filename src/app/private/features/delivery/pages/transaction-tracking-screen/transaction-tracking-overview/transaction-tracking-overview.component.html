@@ -5,3 +5,7 @@
     [transactionTrackingStatusInfo]="transactionTracking.statusInfo"
   ></tsl-transaction-tracking-status-info>
 </div>
+<tsl-transaction-tracking-detail-info
+  *ngIf="transactionTrackingDetails$ | async as transactionTrackingDetails"
+  [transactionTrackingDetails]="transactionTrackingDetails"
+></tsl-transaction-tracking-detail-info>

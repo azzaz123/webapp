@@ -10,4 +10,5 @@ export interface AdTargetings {
   latitude?: string;
   longitude?: string;
   MwebSearchLayout?: string;
+  yb_ab?: string;
 }

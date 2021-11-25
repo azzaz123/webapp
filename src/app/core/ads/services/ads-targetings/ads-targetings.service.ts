@@ -6,6 +6,7 @@ import { User } from '@core/user/user';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { YieldBirdService } from '@core/ads/vendors/yieldbird/yieldbird.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class AdsTargetingsService {
     [FILTER_QUERY_PARAM_KEY.longitude]: 'longitude',
   };
 
-  constructor(private userService: UserService, private route: ActivatedRoute) {
+  constructor(private userService: UserService, private yieldBirdService: YieldBirdService) {
     this._adTargetings = {};
   }
 
@@ -39,6 +40,7 @@ export class AdsTargetingsService {
     this.cleanAdTargetings();
     this.setQueryParamsTargetings(parameters);
     this.setUserTargetings();
+    this.setVendorsTargetings();
   }
 
   private cleanAdTargetings(): void {
@@ -78,6 +80,14 @@ export class AdsTargetingsService {
     if (!this._adTargetings.longitude && this.userService.user.location) {
       this._adTargetings.longitude = this.userService.user.location.approximated_longitude.toString();
     }
+  }
+
+  private setVendorsTargetings(): void {
+    const vendorsTargetings = {
+      ...this.yieldBirdService.targetings,
+    };
+
+    this.setAdTargeting(vendorsTargetings);
   }
 
   private getUserAge(user: User): string {
