@@ -1,16 +1,18 @@
 @import '~style/common';
 .SubscriptionTierSelector {
   .Card {
-    border: solid 2px $blue-grey-5;
+    cursor: pointer;
 
     @include media-breakpoint-down(sm) {
       margin-right: 0 !important;
       margin-bottom: $spacing-s;
     }
-    cursor: pointer;
 
     &__title {
-      color: $blue-grey-2;
+      &--large {
+        font-size: 32px;
+        font-weight: bold;
+      }
     }
 
     &__description {
@@ -50,10 +52,15 @@
     }
 
     &--selected {
-      border: solid 2px $blue-grey-2;
+      border-color: $color-pro-main;
+      background-color: $color-pro-main;
+      color: $white;
+      .GenericCard__subtitle,
+      .Card__description,
       .Card__title,
-      .Card__description {
-        color: $blue-grey-1;
+      .Card__description--discounted,
+      .Card__footer {
+        color: $white !important;
       }
     }
   }
