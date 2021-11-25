@@ -16,7 +16,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   const transactionTrackingHeaderSelector = 'tsl-transaction-tracking-header';
   const shippingStatusSelector = 'tsl-transaction-tracking-general-info';
   const transactionTrackingStatusInfoSelector = 'tsl-transaction-tracking-status-info';
-  const transactionTrackingDetailInfoSelector = 'tsl-transaction-tracking-detail-info';
+  const transactionTrackingDetailInfoSelector = 'tsl-transaction-tracking-status-info-wrapper';
 
   let component: TransactionTrackingOverviewComponent;
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
