@@ -1,12 +1,14 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { of } from 'rxjs';
+import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
 import { PhoneVerificationModalComponent } from './phone-verification-modal.component';
 
 @Component({
@@ -51,6 +53,25 @@ describe('PhoneVerificationModalComponent', () => {
     spyOn(activeModal, 'close').and.callThrough();
     spyOn(activeModal, 'dismiss').and.callThrough();
     spyOn(userVerificationsService, 'verifyPhone').and.callThrough();
+  });
+
+  describe('when modal is loaded', () => {
+    it('should show prefix field and phone number input', () => {
+      const prefixNumber: HTMLElement = fixture.debugElement.query(By.css('tsl-dropdown[formControlname="prefix"]')).nativeElement;
+      const phoneNumber: HTMLElement = fixture.debugElement.query(By.css('input[formControlname="phone"]')).nativeElement;
+
+      expect(prefixNumber).toBeTruthy();
+      expect(phoneNumber).toBeTruthy();
+    });
+
+    it('should show prefix options with correct format', () => {
+      const dropdown: DropdownComponent = fixture.debugElement.query(By.directive(DropdownComponent)).componentInstance;
+      const option = dropdown.options.find((e: PhonePrefixOption) => {
+        return e.value === '+34';
+      });
+
+      expect(option).toStrictEqual({ country_code: 'ES', value: '+34', label: 'Spain (+34)' });
+    });
   });
 
   describe('when close button is clicked', () => {
