@@ -1,9 +1,0 @@
-<tsl-transaction-detail [transactionDetail]="transactionDetail" [hasBorderBottom]="hasBorderBottom">
-  <a
-    id="transactionDetailContentWrapper"
-    (click)="stopRedirectWhenNotAvailable($event)"
-    [href]="transactionDetail.action.payload.linkUrl | transactionTrackingDeeplink"
-    [innerHTML]="transactionDetail.description | bypassHTML"
-    target="_blank"
-  ></a>
-</tsl-transaction-detail>

@@ -1,15 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UNAVAILABLE_DEEPLINKS_PREFIX } from '../../../constants/unavailable-deeplinks-prefix-constants';
-import { TransactionDetail } from '../../../interfaces/transaction-detail.interface';
 
 @Component({
-  selector: 'tsl-transaction-detail-redirection',
-  templateUrl: './transaction-detail-redirection.component.html',
-  styleUrls: ['./transaction-detail-redirection.component.scss'],
+  selector: 'tsl-transaction-tracking-action-deeplink',
+  templateUrl: './transaction-tracking-action-deeplink.component.html',
+  styleUrls: ['./transaction-tracking-action-deeplink.component.scss'],
 })
-export class TransactionDetailRedirectionComponent implements OnInit {
-  @Input() transactionDetail: TransactionDetail;
-  @Input() hasBorderBottom: boolean;
+export class TransactionTrackingActionDeeplinkComponent implements OnInit {
+  @Input() deeplinkAction: any;
   public isDeeplinkAvailable: boolean;
 
   constructor() {}
@@ -26,7 +24,7 @@ export class TransactionDetailRedirectionComponent implements OnInit {
   }
 
   private initializeIsDeeplinkAvailable(): void {
-    const deeplink = this.transactionDetail.action.payload.linkUrl;
+    const deeplink = this.deeplinkAction.payload.linkUrl;
     this.isDeeplinkAvailable = UNAVAILABLE_DEEPLINKS_PREFIX.some((unavailableDeeplink: string) => deeplink.startsWith(unavailableDeeplink));
   }
 }
