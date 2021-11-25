@@ -65,7 +65,7 @@ export class FeatureFlagService {
     const flagsToRequest: FEATURE_FLAGS_ENUM[] = [];
     names.forEach((name) => {
       const storedFeatureFlag = this.getStoredFlag(name);
-      if (storedFeatureFlag !== null || (storedFeatureFlag !== undefined && cache)) {
+      if (!!storedFeatureFlag && cache) {
         featureFlags.push(storedFeatureFlag);
       } else {
         flagsToRequest.push(name);

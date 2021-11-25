@@ -140,7 +140,7 @@ export class PaymentService {
         return this.getProducts().pipe(
           map((products: Products) => {
             perks.forEach((perk: PerkResponse) => {
-              if (products[perk.product_id] !== null || products[perk.product_id] !== undefined) {
+              if (!!products[perk.product_id]) {
                 const name: string = products[perk.product_id].name;
                 if (name === 'NATIONAL_BUMP') {
                   if (perk.subscription_id !== null) {
