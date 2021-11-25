@@ -1,1 +1,3 @@
-<a (click)="stopRedirectWhenNotAvailable($event)" [href]="deeplinkAction.payload.linkUrl | transactionTrackingDeeplink" target="_blank"></a>
+<a (click)="stopRedirectWhenNotAvailable($event)" [href]="deeplinkAction.payload.linkUrl | transactionTrackingDeeplink" target="_blank">
+  <ng-content></ng-content>
+</a>

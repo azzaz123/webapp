@@ -17,7 +17,7 @@ export class TransactionTrackingActionDeeplinkComponent implements OnInit {
   }
 
   public stopRedirectWhenNotAvailable(event: Event): void {
-    if (this.isDeeplinkAvailable) {
+    if (!this.isDeeplinkAvailable) {
       event.preventDefault();
       alert('This deeplink is not available');
     }
