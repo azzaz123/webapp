@@ -1,7 +1,7 @@
 import {
   TransactionTrackingActionDetail,
-  TransactionTrackingActionDetailAnalytics,
-  TransactionTrackingActionDetailAnalyticsModel,
+  TransactionTrackingActionDetailAnalytics as TransactionTrackingActionAnalytics,
+  TransactionTrackingActionAnalyticsModel,
   TransactionTrackingActionDetailPayload,
   TransactionTrackingActionDetailPayloadModel,
 } from '@api/core/model/delivery/transaction/tracking';
@@ -9,7 +9,7 @@ import { TransactionTrackingActionDetailDto } from '@api/bff/delivery/transactio
 import { TransactionTrackingActionTypeDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/types/transaction-tracking-action-type-dto.type';
 
 export class TransactionTrackingActionDetailModel implements TransactionTrackingActionDetail {
-  analytics: TransactionTrackingActionDetailAnalytics;
+  analytics: TransactionTrackingActionAnalytics;
   isCarrierTrackingWebview: boolean;
   isDeeplink: boolean;
   isDialog: boolean;
@@ -20,7 +20,7 @@ export class TransactionTrackingActionDetailModel implements TransactionTracking
 
   constructor(actionDetailDto: TransactionTrackingActionDetailDto) {
     if (!!actionDetailDto.analytics) {
-      this.analytics = new TransactionTrackingActionDetailAnalyticsModel(actionDetailDto.analytics);
+      this.analytics = new TransactionTrackingActionAnalyticsModel(actionDetailDto.analytics);
     }
     this.isCarrierTrackingWebview = this.isActionType(actionDetailDto.action_type, 'carrier_tracking_webview');
     this.isDeeplink = this.isActionType(actionDetailDto.action_type, 'deeplink');
