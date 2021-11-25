@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 import { mapSlotsResponseToSlots } from './mappers/slots-mapper';
 import { CatalogManagerHttpService } from './http/catalog-manager-http.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -10,9 +10,17 @@ import { mapFilter, mapItems, mapSort } from './mappers/items-mapper';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { ItemBySubscriptionResponse } from './dtos/items-by-subscription/items-subscription-type.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
+import { SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
+import { SORT_KEYS_MAPPER } from './dtos/items-by-subscription/sort.interface';
 
+export const PAGE_SIZE = 1000;
 @Injectable()
 export class CatalogManagerApiService {
+  private items: Partial<Record<STATUS, Item[]>> = {
+    [STATUS.ACTIVE]: [],
+    [STATUS.INACTIVE]: [],
+    [STATUS.SOLD]: [],
+  };
   constructor(private catalogManagerService: CatalogManagerHttpService, private subscriptionsService: SubscriptionsService) {}
 
   public getSlots(): Observable<SubscriptionSlot[]> {
@@ -21,17 +29,27 @@ export class CatalogManagerApiService {
     );
   }
 
-  // TODO ADD UNIT TEST TO COVER ALL CASES [PQP-4363]
   public itemsBySubscriptionType(
     type: SUBSCRIPTION_CATEGORY_TYPES,
-    sortByParam: string,
+    sortByParam: SORT_KEYS,
     status = STATUS.ACTIVE,
-    term?: string
+    term?: string,
+    cache = false
   ): Observable<Item[]> {
-    return this.recursiveItemsByCategory(0, 20, type, status).pipe(
-      map(mapItems),
+    const itemsSource = cache && this.items[status]?.length ? of(this.items[status]) : this.fetchItems(type, status);
+
+    return itemsSource.pipe(
       map((res) => mapFilter(term, res)),
-      map((res) => mapSort(sortByParam, res))
+      map((res) => mapSort(SORT_KEYS_MAPPER[sortByParam], res))
+    );
+  }
+
+  private fetchItems(type: SUBSCRIPTION_CATEGORY_TYPES, status: STATUS): Observable<Item[]> {
+    return this.recursiveItemsByCategory(0, PAGE_SIZE, type, status).pipe(
+      map(mapItems),
+      tap((res) => {
+        this.items[status] = res;
+      })
     );
   }
 

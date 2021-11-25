@@ -18,6 +18,7 @@ export class NavLinksComponent implements OnInit, OnChanges {
   @Input() showSortItems = false;
   @Input() subscriptionSelectedNavLinks: any[];
   @Input() marginless = false;
+  @Input() disabled = false;
   @Output() clickedLink = new EventEmitter<string>();
   @Output() searchChanged = new EventEmitter<string>();
   @Output() sortChanged = new EventEmitter<string>();

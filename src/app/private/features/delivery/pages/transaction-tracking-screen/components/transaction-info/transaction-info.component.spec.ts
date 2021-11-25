@@ -2,6 +2,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_INFO } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-info.fixtures.spec';
+import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 
 import { TransactionInfoComponent } from './transaction-info.component';
 
@@ -13,6 +14,7 @@ describe('TransactionInfoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionInfoComponent],
+      imports: [ImageFallbackModule],
     }).compileComponents();
   });
 

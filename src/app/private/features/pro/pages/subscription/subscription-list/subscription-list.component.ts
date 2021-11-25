@@ -13,6 +13,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 export class SubscriptionListComponent implements OnInit {
   @Input() isLoading: boolean;
   @Input() subscriptions: SubscriptionsResponse[];
+  @Input() isPro: boolean;
   @Output() clickButton: EventEmitter<SubscriptionsResponse> = new EventEmitter();
   public isMobile: boolean;
   private readonly rowOrder = [
