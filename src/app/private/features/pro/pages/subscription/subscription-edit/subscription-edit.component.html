@@ -12,15 +12,11 @@
             </div>
         </div>
         <div class="GenericCard text-md-left text-center">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <div class="GenericCard__title" i18n="@@web_wallapop_pro_subscription_title">Boost your online business
-                        with Wallapop PRO</div>
-                    <div class="GenericCard__subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your sales to the next level</div>
-                </div>
+            <div class="d-flex justify-content-between mb-3 align-items-center">
+                <div class="GenericCard__title" i18n="@@pro_subscription_flow_all_users_subscription_info_title_web_specific">Your subscription</div>
                 <tsl-button class="d-md-inline d-none" className="btn-secondary" (click)="cancelSubscription()" i18n="@@pro_manage_subscriptions_view_cancel_subscription_button">Cancel subscription</tsl-button>
             </div>
-            <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits" (clickLink)="openCategoriesModal()">
+            <tsl-subscription-purchase-header [subscription]="subscription" (clickLink)="openCategoriesModal()">
             </tsl-subscription-purchase-header>
             <tsl-button class="d-md-none mt-3" className="btn-secondary" (click)="cancelSubscription()" i18n="@@pro_manage_subscriptions_view_cancel_subscription_button">Cancel subscription</tsl-button>
         </div>
