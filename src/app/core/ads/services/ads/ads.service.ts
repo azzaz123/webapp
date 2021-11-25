@@ -103,6 +103,10 @@ export class AdsService {
     return this.window['fetchHeaderBids'];
   }
 
+  private get refreshHeaderBids(): Function {
+    return this.window['refreshHeaderBids'];
+  }
+
   private listenerToSetSlots(): void {
     combineLatest([this.adsReady$, this.setSlotsSubject.asObservable()])
       .pipe(
@@ -131,7 +135,7 @@ export class AdsService {
       .pipe(map(([allowSegmentation, refreshSlots]: [boolean, void]) => allowSegmentation))
       .subscribe((allowSegmentation: boolean) => {
         this.googlePublisherTagService.setTargetingByAdsKeywords();
-        this.refreshHeaderBids(allowSegmentation);
+        this.getRefreshHeaderBids(allowSegmentation);
       });
   }
 
@@ -148,10 +152,10 @@ export class AdsService {
     this.googlePublisherTagService.setPubAdsConfig();
   }
 
-  private refreshHeaderBids(allowSegmentation: boolean): void {
+  private getRefreshHeaderBids(allowSegmentation: boolean): void {
     const slots = this.setSlotsSubject.getValue();
     const definedSlots = this.googlePublisherTagService.getDefinedSlots();
 
-    this.fetchHeaderBids(allowSegmentation, slots, definedSlots);
+    this.refreshHeaderBids(allowSegmentation, slots, definedSlots);
   }
 }
