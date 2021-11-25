@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
 import { MOCK_TRANSACTION_DETAILS } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-details.fixtures.spec';
-import { TransactionDetailSelectorComponent } from '../../transaction-details/transaction-detail-selector/transaction-detail-selector.component';
+import { TransactionTrackingActionSelectorComponent } from '../../transaction-tracking-action-details/transaction-tracking-action-selector/transaction-tracking-action-selector.component';
 
 import { TransactionTrackingDetailInfoComponent } from './transaction-tracking-detail-info.component';
 
@@ -13,7 +13,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionTrackingDetailInfoComponent, TransactionDetailSelectorComponent],
+      declarations: [TransactionTrackingDetailInfoComponent, TransactionTrackingActionSelectorComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
@@ -38,7 +38,7 @@ describe('TransactionTrackingDetailInfoComponent', () => {
 
     describe('and we show the slots', () => {
       it('should show the same slots as details', () => {
-        const slots = fixture.debugElement.queryAll(By.directive(TransactionDetailSelectorComponent)).length;
+        const slots = fixture.debugElement.queryAll(By.directive(TransactionTrackingActionSelectorComponent)).length;
         expect(slots).toEqual(MOCK_TRANSACTION_DETAILS.length);
       });
     });
