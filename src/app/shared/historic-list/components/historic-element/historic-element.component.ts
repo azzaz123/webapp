@@ -17,7 +17,7 @@ export class HistoricElementComponent implements OnChanges {
 
   private readonly mapSubDescriptionTypeToString: Record<HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE, string> = {
     [HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL]: '',
-    [HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.PENDING]: 'HistoricElement__subDescription--pending',
+    [HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.VALID]: 'HistoricElement__subDescription--valid',
     [HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.ERROR]: 'HistoricElement__subDescription--error',
   };
 

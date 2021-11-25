@@ -7,7 +7,7 @@ import {
   MOCK_HISTORIC_ELEMENT_WITH_ICON,
   MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION,
   MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_ERROR,
-  MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_PENDING,
+  MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_VALID,
 } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricElementComponent } from './historic-element.component';
@@ -33,7 +33,7 @@ describe('HistoricElementComponent', () => {
   const moneyAmountSelector = `${historicElementSelector}__money-amount`;
   const descriptionSelector = `${historicElementSelector}__description`;
   const subDescriptionSelector = `${historicElementSelector}__subDescription`;
-  const subDescriptionPendingSelector = `${historicElementSelector}__subDescription--pending`;
+  const subDescriptionValidSelector = `${historicElementSelector}__subDescription--valid`;
   const subDescriptionErrorSelector = `${historicElementSelector}__subDescription--error`;
   const clickableSelector = `${historicElementSelector}--clickable`;
   const iconSelector = 'tsl-svg-icon';
@@ -133,24 +133,24 @@ describe('HistoricElementComponent', () => {
 
       describe('and when subdescription is normal', () => {
         it('should NOT add extra styling', () => {
-          const subDescriptionPendingElement = fixture.debugElement.query(By.css(subDescriptionPendingSelector));
-          const subDescriptionErrorElement = fixture.debugElement.query(By.css(subDescriptionPendingSelector));
+          const subDescriptionValidElement = fixture.debugElement.query(By.css(subDescriptionValidSelector));
+          const subDescriptionErrorElement = fixture.debugElement.query(By.css(subDescriptionValidSelector));
 
-          expect(subDescriptionPendingElement).toBeFalsy();
+          expect(subDescriptionValidElement).toBeFalsy();
           expect(subDescriptionErrorElement).toBeFalsy();
         });
       });
 
-      describe('and when subdescription is pending', () => {
+      describe('and when subdescription is valid', () => {
         beforeEach(() => {
-          wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_PENDING;
+          wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_VALID;
           fixture.detectChanges();
         });
 
-        it('should add subdescription pending style', () => {
-          const subDescriptionPendingElement = fixture.debugElement.query(By.css(subDescriptionPendingSelector));
+        it('should add subdescription valid style', () => {
+          const subDescriptionValidElement = fixture.debugElement.query(By.css(subDescriptionValidSelector));
 
-          expect(subDescriptionPendingElement).toBeTruthy();
+          expect(subDescriptionValidElement).toBeTruthy();
         });
       });
 

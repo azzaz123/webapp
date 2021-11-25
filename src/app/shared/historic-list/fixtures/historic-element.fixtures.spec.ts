@@ -23,11 +23,11 @@ export const MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION: HistoricElement = {
   },
 };
 
-export const MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_PENDING: HistoricElement = {
+export const MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_VALID: HistoricElement = {
   ...MOCK_HISTORIC_ELEMENT,
   subDescription: {
     text: 'In your bank before 1 Oct',
-    type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.PENDING,
+    type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.VALID,
   },
 };
 
