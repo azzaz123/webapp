@@ -15,6 +15,8 @@ import {
   MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1,
   MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1,
 } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
+import { TransactionTrackingActionUserActionComponent } from '../transaction-tracking-action-user-action/transaction-tracking-action-user-action.component';
+import { TransactionTrackingActionTrackingWebviewComponent } from '../transaction-tracking-action-tracking-webview/transaction-tracking-action-tracking-webview.component';
 
 describe('TransactionTrackingActionSelectorComponent', () => {
   let component: TransactionTrackingActionSelectorComponent;
@@ -56,12 +58,20 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should show the transaction detail modal component', () => {
-        isTransactionDetailModalInTemplate(true);
+      it('should show the transaction action type dialog', () => {
+        isTransactionTrackingActionDialog(true);
       });
 
-      it('should NOT show the transaction detail redirection component', () => {
-        isTransactionDetailRedirectionTemplate(false);
+      it('should NOT show the transaction action type deeplink', () => {
+        isTransactionTrackingActionDeeplink(false);
+      });
+
+      it('should NOT show the transaction action type tracking webview', () => {
+        isTransactionTrackingActionTrackingWebview(false);
+      });
+
+      it('should NOT show the transaction action type user action', () => {
+        isTransactionTrackingActionUserAction(false);
       });
     });
 
@@ -71,12 +81,20 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should NOT show the transaction detail modal component', () => {
-        isTransactionDetailModalInTemplate(false);
+      it('should NOT show the transaction action type dialog', () => {
+        isTransactionTrackingActionDialog(false);
       });
 
-      it('should  show the transaction detail redirection component', () => {
-        isTransactionDetailRedirectionTemplate(true);
+      it('should NOT show the transaction action type deeplink', () => {
+        isTransactionTrackingActionDeeplink(false);
+      });
+
+      it('should show the transaction action type tracking webview', () => {
+        isTransactionTrackingActionTrackingWebview(true);
+      });
+
+      it('should NOT show the transaction action type user action', () => {
+        isTransactionTrackingActionUserAction(false);
       });
     });
 
@@ -86,37 +104,63 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should NOT show the transaction detail modal component', () => {
-        isTransactionDetailModalInTemplate(false);
+      it('should NOT show the transaction action type dialog', () => {
+        isTransactionTrackingActionDialog(false);
       });
 
-      it('should  show the transaction detail redirection component', () => {
-        isTransactionDetailRedirectionTemplate(true);
+      it('should show the transaction action type deeplink', () => {
+        isTransactionTrackingActionDeeplink(true);
+      });
+
+      it('should NOT show the transaction action type tracking webview', () => {
+        isTransactionTrackingActionTrackingWebview(false);
+      });
+
+      it('should NOT show the transaction action type user action', () => {
+        isTransactionTrackingActionUserAction(false);
+      });
+    });
+
+    describe('and the action is a user action', () => {
+      beforeEach(() => {
+        component.actionDetail = MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1.actions[0].action.payload.positive.action;
+        fixture.detectChanges();
+      });
+
+      it('should NOT show the transaction action type dialog', () => {
+        isTransactionTrackingActionDialog(false);
+      });
+
+      it('should NOT show the transaction action type deeplink', () => {
+        isTransactionTrackingActionDeeplink(false);
+      });
+
+      it('should NOT show the transaction action type tracking webview', () => {
+        isTransactionTrackingActionTrackingWebview(false);
+      });
+
+      it('should show the transaction action type user action', () => {
+        isTransactionTrackingActionUserAction(true);
       });
     });
   });
 
-  describe(`and we don't receive any action`, () => {
-    beforeEach(() => {
-      component.actionDetail = null;
-      fixture.detectChanges();
-    });
-
-    it('should  NOT show the transaction detail modal component', () => {
-      isTransactionDetailModalInTemplate(false);
-    });
-
-    it('should NOT show the transaction detail redirection component', () => {
-      isTransactionDetailRedirectionTemplate(false);
-    });
-  });
-
-  function isTransactionDetailModalInTemplate(shouldShow: boolean) {
+  function isTransactionTrackingActionDialog(shouldShow: boolean) {
     shouldShowComponent(TransactionTrackingActionDialogComponent, shouldShow);
   }
-  function isTransactionDetailRedirectionTemplate(shouldShow: boolean) {
+
+  function isTransactionTrackingActionDeeplink(shouldShow: boolean) {
     shouldShowComponent(TransactionTrackingActionDeeplinkComponent, shouldShow);
   }
+
+  function isTransactionTrackingActionTrackingWebview(shouldShow: boolean) {
+    shouldShowComponent(TransactionTrackingActionTrackingWebviewComponent, shouldShow);
+  }
+
+  function isTransactionTrackingActionUserAction(shouldShow: boolean) {
+    shouldShowComponent(TransactionTrackingActionUserActionComponent, shouldShow);
+  }
+
   function shouldShowComponent(componentSelector: Type<unknown>, shouldShowIt: boolean): void {
     const component = fixture.debugElement.query(By.directive(componentSelector));
 

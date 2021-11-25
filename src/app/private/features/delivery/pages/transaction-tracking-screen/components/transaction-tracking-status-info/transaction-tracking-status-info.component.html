@@ -12,8 +12,9 @@
       [fallback]="FALLBACK_NOT_FOUND_SRC"
     />
   </div>
-  <!-- aqui irá el action selector -->
-  <ng-content></ng-content>
+  <tsl-transaction-tracking-action-selector *ngIf="transactionTrackingStatusInfo.action">
+    {{ info.description | bypassHTML }}
+  </tsl-transaction-tracking-action-selector>
   <tsl-svg-icon
     *ngIf="info.showCaret"
     src="/assets/icons/arrow-right.svg"

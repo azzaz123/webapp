@@ -7,4 +7,4 @@ import { TransactionTrackingActionDialogComponent } from './transaction-tracking
   imports: [CommonModule],
   exports: [TransactionTrackingActionDialogComponent],
 })
-export class TransactionDetailModalModule {}
+export class TransactionTrackingActionDialogModule {}
