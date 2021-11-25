@@ -2,10 +2,12 @@ import { PendingTransaction } from '@api/core/model';
 import { ToDomainMapper } from '@api/core/utils/types';
 import { deliveryStatusTranslationsAsBuyer } from '@private/features/delivery/translations/delivery-status-as-buyer.translations';
 import { deliveryStatusTranslationsAsSeller } from '@private/features/delivery/translations/delivery-status-as-seller.translations';
+import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricListHeader } from '@shared/historic-list/interfaces/historic-list-header.interface';
 import { HistoricListSubtitle } from '@shared/historic-list/interfaces/historic-list-subtitle.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
+import { mapTransactionStatusToSubDescriptionType } from '../transaction-status-to-subdescription-type.mapper';
 
 export const mapPendingTransactionToHistoricList: ToDomainMapper<PendingTransaction[], HistoricList> = (
   input: PendingTransaction[]
@@ -37,14 +39,16 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
 
   input.forEach((pendingTransaction: PendingTransaction) => {
     const { id, item, moneyAmount } = pendingTransaction;
-    const description = getTranslatedDescription(pendingTransaction);
+    const subDescription = getSubDescription(pendingTransaction);
 
     const historicElement: HistoricElement = {
       id,
       imageUrl: item.imageUrl,
-      title: item.title,
-      description,
+      title: moneyAmount.toString(),
+      description: item.title,
       moneyAmount,
+      subDescription,
+      payload: pendingTransaction,
     };
 
     historicElements.push(historicElement);
@@ -54,13 +58,22 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
   return result;
 };
 
-const getTranslatedDescription = (input: PendingTransaction): string => {
-  const { status, seller } = input;
+const getSubDescription = (input: PendingTransaction): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } => {
+  const { status } = input;
   const { delivery: deliveryStatus } = status;
-  let result: string = '';
+  const text: string = isCurrentUserSeller()
+    ? deliveryStatusTranslationsAsSeller[deliveryStatus]
+    : deliveryStatusTranslationsAsBuyer[deliveryStatus];
 
-  // TODO: seller.id === user.id
-  const isSeller = true;
-  result = isSeller ? deliveryStatusTranslationsAsSeller[deliveryStatus] : deliveryStatusTranslationsAsBuyer[deliveryStatus];
-  return result;
+  const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = mapTransactionStatusToSubDescriptionType[status.delivery];
+
+  return {
+    text,
+    type,
+  };
+};
+
+// TODO: Move this to transaction domain & do proper logic
+const isCurrentUserSeller = (): boolean => {
+  return true;
 };
