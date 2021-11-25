@@ -10,12 +10,23 @@ import { TransactionDetail } from '../../../interfaces/transaction-detail.interf
 export class TransactionDetailRedirectionComponent implements OnInit {
   @Input() transactionDetail: TransactionDetail;
   @Input() hasBorderBottom: boolean;
+  public isDeeplinkAvailable: boolean;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.initializeIsDeeplinkAvailable();
+  }
 
-  public isDeeplinkAvailable(deeplink: string): boolean {
-    return UNAVAILABLE_DEEPLINKS_PREFIX.some((unavailableDeeplink: string) => deeplink.startsWith(unavailableDeeplink));
+  public stopRedirectWhenNotAvailable(event: Event): void {
+    if (this.isDeeplinkAvailable) {
+      event.preventDefault();
+      alert('This deeplink is not available');
+    }
+  }
+
+  private initializeIsDeeplinkAvailable(): void {
+    const deeplink = this.transactionDetail.action.payload.linkUrl;
+    this.isDeeplinkAvailable = UNAVAILABLE_DEEPLINKS_PREFIX.some((unavailableDeeplink: string) => deeplink.startsWith(unavailableDeeplink));
   }
 }
