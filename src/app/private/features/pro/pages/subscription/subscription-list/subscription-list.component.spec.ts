@@ -52,10 +52,12 @@ describe('SubscriptionListComponent', () => {
     });
     it('should show spinner', () => {
       const spinner: HTMLElement = fixture.debugElement.query(By.directive(SpinnerComponent)).nativeElement;
+
       expect(spinner).toBeTruthy();
     });
     it('should not show cards', () => {
       const card: DebugElement = fixture.debugElement.query(By.directive(MockCardComponent));
+
       expect(card).toBeFalsy();
     });
   });
@@ -67,10 +69,12 @@ describe('SubscriptionListComponent', () => {
     });
     it('should not show spinner', () => {
       const spinner: DebugElement = fixture.debugElement.query(By.directive(SpinnerComponent));
+
       expect(spinner).toBeFalsy();
     });
     it('should show subscriptions cards', () => {
       const cards: DebugElement[] = fixture.debugElement.queryAll(By.directive(MockCardComponent));
+
       expect(cards).toHaveLength(component.subscriptions.length);
     });
   });
@@ -93,6 +97,7 @@ describe('SubscriptionListComponent', () => {
         const cards: DebugElement[] = fixture.debugElement
           .queryAll(By.css('.SubscriptionList__container'))[0]
           .queryAll(By.directive(MockCardComponent));
+
         expect(cards).toHaveLength(component.subscriptions.length);
       });
     });
@@ -110,12 +115,14 @@ describe('SubscriptionListComponent', () => {
         const cards: DebugElement[] = fixture.debugElement
           .queryAll(By.css('.SubscriptionList__container'))[0]
           .queryAll(By.directive(MockCardComponent));
+
         expect(cards).toHaveLength(component.subscriptions.filter((subscription) => subscription.subscribed_from).length);
       });
       it('should show not subscribed cards', () => {
         const cards: DebugElement[] = fixture.debugElement
           .queryAll(By.css('.SubscriptionList__container'))[1]
           .queryAll(By.directive(MockCardComponent));
+
         expect(cards).toHaveLength(component.subscriptions.filter((subscription) => !subscription.subscribed_from).length);
       });
     });
