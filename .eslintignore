@@ -29,8 +29,8 @@
 /src/app/public/features/register
 
 # TRANSVERSAL 
-/src/app/api
-/src/app/core
+# /src/app/api
+# /src/app/core
 /src/app/public/core
 /src/app/private/core
 /src/app/shared

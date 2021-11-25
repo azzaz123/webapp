@@ -43,21 +43,6 @@ export class GooglePublisherTagService {
     });
   }
 
-  private getSlots(adSlots: AdSlotConfiguration[]): googletag.Slot[] {
-    const slots: googletag.Slot[] = [];
-
-    adSlots.forEach((slotConfig) => {
-      const slot = this.googletag
-        .pubads()
-        .getSlots()
-        .find((slot) => slot.getAdUnitPath() === slotConfig.name);
-
-      slots.push(slot);
-    });
-
-    return slots;
-  }
-
   public getDefinedSlots(): googletag.Slot[] {
     return googletag.pubads().getSlots();
   }
@@ -160,6 +145,21 @@ export class GooglePublisherTagService {
           this.adSlotsNamesDefinedSubject.next([...slotsDefined, slot.name]);
         }
       });
+  }
+
+  private getSlots(adSlots: AdSlotConfiguration[]): googletag.Slot[] {
+    const slots: googletag.Slot[] = [];
+
+    adSlots.forEach((slotConfig) => {
+      const slot = this.googletag
+        .pubads()
+        .getSlots()
+        .find((slot) => slot.getAdUnitPath() === slotConfig.name);
+
+      slots.push(slot);
+    });
+
+    return slots;
   }
 
   private onSlotLoad(event: googletag.events.Event): void {

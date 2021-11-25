@@ -44,6 +44,14 @@ export class SubscriptionBenefitsService {
     return of(subscriptionsHeaderBenefits);
   }
 
+  public getBenefitsByCategory(id: number): string[] {
+    const customBenefit =
+      id !== CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS
+        ? $localize`:@@web_subscription_benefit_title_limit:Set your listing limit`
+        : $localize`:@@web_subscription_benefit_title_branding:Boost your branding`;
+    return [customBenefit, ...GENERIC_BENEFITS];
+  }
+
   private mapBenefits(benefits: SubscriptionBenefit[]): SubscriptionBenefit[] {
     return benefits.map((benefit) => this.mapBenefit(benefit));
   }
@@ -55,13 +63,5 @@ export class SubscriptionBenefitsService {
       ...benefit,
       iconPath: `${SUBSCRIPTION_IMAGES_FOLDER}/${locale}/${benefit.iconPath}`,
     };
-  }
-
-  public getBenefitsByCategory(id: number): string[] {
-    const customBenefit =
-      id !== CATEGORY_SUBSCRIPTIONS_IDS.CONSUMER_GOODS
-        ? $localize`:@@web_subscription_benefit_title_limit:Set your listing limit`
-        : $localize`:@@web_subscription_benefit_title_branding:Boost your branding`;
-    return [customBenefit, ...GENERIC_BENEFITS];
   }
 }

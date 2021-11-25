@@ -132,10 +132,6 @@ export class User implements Model {
     this._online = value;
   }
 
-  private mapType(type: string) {
-    return type ? type : 'inactive';
-  }
-
   get sellingItem(): Item {
     return this._sellingItem;
   }
@@ -258,5 +254,9 @@ export class User implements Model {
       this._coverImage.urls_by_size.medium = url;
       this._coverImage.urls_by_size.xlarge = url;
     }
+  }
+
+  private mapType(type: string) {
+    return type ? type : 'inactive';
   }
 }
