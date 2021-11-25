@@ -9,6 +9,11 @@
     margin: 0;
   }
 
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   div {
     margin-right: $spacing-xl;
     @media (max-width: 768px) {
