@@ -2,34 +2,28 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1 } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
 
-import { TransactionDetailComponent } from './transaction-detail.component';
-
-describe('TransactionDetailComponent', () => {
-  let component: TransactionDetailComponent;
-  let fixture: ComponentFixture<TransactionDetailComponent>;
+describe('TransactionTrackingStatusInfoComponent', () => {
+  let component: TransactionTrackingStatusInfoComponent;
+  let fixture: ComponentFixture<TransactionTrackingStatusInfoComponent>;
   let de: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionDetailComponent],
+      declarations: [TransactionTrackingStatusInfoComponent],
       imports: [SvgIconModule, HttpClientTestingModule, ImageFallbackModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TransactionDetailComponent);
+    fixture = TestBed.createComponent(TransactionTrackingStatusInfoComponent);
     de = fixture.debugElement;
     component = fixture.componentInstance;
-    component.transactionDetail = {
-      description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
-      iconSrc: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/transaction_tracking_details/price_element.png',
-      iconClassName: 'rounded',
-      showCaret: true,
-      action: null,
-    };
+    component.transactionTrackingStatusInfo = MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1;
   });
 
   it('should create', () => {
@@ -47,12 +41,12 @@ describe('TransactionDetailComponent', () => {
       });
 
       it('should have the provided src', () => {
-        expect(de.nativeElement.querySelector(`[src*="${component.transactionDetail.iconSrc}"]`)).toBeTruthy();
+        expect(de.nativeElement.querySelector(`[src*="${component.transactionTrackingStatusInfo.icon.url}"]`)).toBeTruthy();
       });
 
       describe('and we specify rounded icon style', () => {
         beforeEach(() => {
-          component.transactionDetail.iconClassName = 'rounded';
+          component.transactionTrackingStatusInfo.icon.style.className = 'rounded';
           fixture.detectChanges();
         });
 
@@ -63,7 +57,7 @@ describe('TransactionDetailComponent', () => {
 
       describe('and we NOT specify rounded icon style', () => {
         beforeEach(() => {
-          component.transactionDetail.iconClassName = 'circle';
+          component.transactionTrackingStatusInfo.icon.style.className = 'circle';
           fixture.detectChanges();
         });
 
@@ -74,7 +68,7 @@ describe('TransactionDetailComponent', () => {
 
       describe('and we specify circle icon style', () => {
         beforeEach(() => {
-          component.transactionDetail.iconClassName = 'circle';
+          component.transactionTrackingStatusInfo.icon.style.className = 'circle';
           fixture.detectChanges();
         });
 
@@ -85,7 +79,7 @@ describe('TransactionDetailComponent', () => {
 
       describe('and we NOT specify circle icon style', () => {
         beforeEach(() => {
-          component.transactionDetail.iconClassName = 'rounded';
+          component.transactionTrackingStatusInfo.icon.style.className = 'rounded';
           fixture.detectChanges();
         });
 
@@ -96,7 +90,7 @@ describe('TransactionDetailComponent', () => {
 
       describe('and we NOT specify any style', () => {
         beforeEach(() => {
-          component.transactionDetail.iconClassName = 'none';
+          component.transactionTrackingStatusInfo.icon.style.className = 'none';
           fixture.detectChanges();
         });
 
@@ -122,7 +116,7 @@ describe('TransactionDetailComponent', () => {
 
     describe('and we specify not showing caret', () => {
       beforeEach(() => {
-        component.transactionDetail.showCaret = false;
+        component.transactionTrackingStatusInfo.showCaret = false;
         fixture.detectChanges();
       });
 
@@ -153,23 +147,23 @@ describe('TransactionDetailComponent', () => {
   });
 
   function shouldShowImage(shouldBeInTemplate: boolean): void {
-    checkIfStyleIsInTemplate('.TrackingDetailInfo__icon', shouldBeInTemplate);
+    checkIfStyleIsInTemplate('.TransactionTrackingStatusInfo__icon', shouldBeInTemplate);
   }
 
   function shouldShowCaret(shouldBeInTemplate: boolean): void {
-    checkIfStyleIsInTemplate('.TrackingDetailInfo__arrowRight', shouldBeInTemplate);
+    checkIfStyleIsInTemplate('.TransactionTrackingStatusInfo__arrowRight', shouldBeInTemplate);
   }
 
   function shouldApplyRoundedImageStyle(shouldBeInTemplate: boolean): void {
-    checkIfStyleIsInTemplate('.TrackingDetailInfo__icon--rounded', shouldBeInTemplate);
+    checkIfStyleIsInTemplate('.TransactionTrackingStatusInfo__icon--rounded', shouldBeInTemplate);
   }
 
   function shouldApplyCircleImageStyle(shouldBeInTemplate: boolean): void {
-    checkIfStyleIsInTemplate('.TrackingDetailInfo__icon--circle', shouldBeInTemplate);
+    checkIfStyleIsInTemplate('.TransactionTrackingStatusInfo__icon--circle', shouldBeInTemplate);
   }
 
   function shouldApplyBorderBottomStyle(shouldBeInTemplate: boolean): void {
-    checkIfStyleIsInTemplate('.TrackingDetailInfo--borderBottom', shouldBeInTemplate);
+    checkIfStyleIsInTemplate('.TransactionTrackingStatusInfo--borderBottom', shouldBeInTemplate);
   }
 
   function checkIfStyleIsInTemplate(selector: string, shouldBeInTemplate: boolean): void {

@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TransactionDetailComponent } from './transaction-detail.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
+import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
 
 @NgModule({
-  declarations: [TransactionDetailComponent],
+  declarations: [TransactionTrackingStatusInfoComponent],
   imports: [CommonModule, SvgIconModule, ImageFallbackModule],
-  exports: [TransactionDetailComponent],
+  exports: [TransactionTrackingStatusInfoComponent],
 })
-export class TransactionDetailModule {}
+export class TransactionTrackingStatusInfoModule {}

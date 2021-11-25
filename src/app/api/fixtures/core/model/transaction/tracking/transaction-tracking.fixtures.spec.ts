@@ -113,7 +113,7 @@ const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_1: TransactionTrackingStatu
   },
   showCaret: false,
 };
-const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1: TransactionTrackingStatusInfo = {
+export const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1: TransactionTrackingStatusInfo = {
   action: {
     isCarrierTrackingWebview: true,
     isDeeplink: false,
