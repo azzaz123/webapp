@@ -1,22 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import {
-  TransactionTrackingActionDetailPayload,
-  TransactionTrackingActionDetailPayloadConfirmation,
-} from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionDetailPayload } from '@api/core/model/delivery/transaction/tracking';
 import { COLORS } from '@core/colors/colors-constants';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
-import { TransactionDetail } from '../../../interfaces/transaction-detail.interface';
 
 @Component({
-  selector: 'tsl-transaction-detail-modal',
-  templateUrl: './transaction-detail-modal.component.html',
-  styleUrls: ['./transaction-detail-modal.component.scss'],
+  selector: 'tsl-transaction-tracking-action-dialog',
+  templateUrl: './transaction-tracking-action-dialog.component.html',
+  styleUrls: ['./transaction-tracking-action-dialog.component.scss'],
 })
-export class TransactionDetailModalComponent implements OnInit {
-  @Input() transactionDetail: TransactionDetail;
+export class TransactionTrackingActionDialogComponent implements OnInit {
+  @Input() modalAction: any;
   @Input() hasBorderBottom: boolean;
 
   constructor(private modalService: NgbModal, private transactionTrackingService: TransactionTrackingService) {}
@@ -25,13 +21,13 @@ export class TransactionDetailModalComponent implements OnInit {
 
   public openModal(): void {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
-    const payloadAction: TransactionTrackingActionDetailPayload = this.transactionDetail.action.payload;
+    const payloadAction: TransactionTrackingActionDetailPayload = this.modalAction.payload;
 
     modalRef.componentInstance.properties = this.getModalProperties(payloadAction);
 
     modalRef.result.then(
       () => {
-        if (this.transactionDetail.action.isUserAction && payloadAction.positive.action) {
+        if (payloadAction.positive.action?.isUserAction) {
           this.requestUserAction(payloadAction.positive.action.payload);
         }
       },
