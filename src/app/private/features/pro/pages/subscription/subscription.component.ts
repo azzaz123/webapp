@@ -22,6 +22,7 @@ import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
 import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
+import { Observable } from 'rxjs';
 
 export type SubscriptionModal = typeof CancelSubscriptionModalComponent | typeof ContinueSubscriptionModalComponent;
 
@@ -53,7 +54,11 @@ export class SubscriptionsComponent implements OnInit {
     this.trackParamEvents();
   }
 
-  public onunselectSubscription(): void {
+  public get isPro$(): Observable<boolean> {
+    return this.userService.isProUser$;
+  }
+
+  public onUnselectSubscription(): void {
     this.newSubscription = null;
     this.editSubscription = null;
     this.benefitsService.showHeaderBenefits = true;
@@ -74,7 +79,7 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public subscriptionChangeSuccessful(redirect?: string): void {
-    this.onunselectSubscription();
+    this.onUnselectSubscription();
     this.loading = true;
     this.user.featured ? this.isSubscriptionUpdated(redirect) : this.isUserUpdated(redirect);
   }
@@ -146,7 +151,7 @@ export class SubscriptionsComponent implements OnInit {
         repeatWhen((completed) =>
           completed.pipe(
             delay(1000),
-            takeWhile(() => !this.isUserUpdated)
+            takeWhile(() => !isUserUpdated)
           )
         ),
         take(30),
