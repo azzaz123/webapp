@@ -5,31 +5,27 @@
         <div class="mt-2 SubscriptionList__title text-xl-left"
           i18n="@@pro_manage_subscriptions_view_active_subscriptions_title">Currently active
         </div>
-        <div class="d-flex justify-content-center SubscriptionList__container">
-          <div class="w-100">
-            <ng-container *ngFor="let subscription of subscriptionsOrdered">
-              <tsl-subscription-card (buttonClick)="onClickButton(subscription)"
-                [isSubscribed]="isSubscribed(subscription)" [subscription]="subscription"
-                [textButton]="getTextButton(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
-                [tierDiscount]="hasDiscount(subscription)" [subscriptionBenefits]="getBenefits(subscription)"
-                [isMobile]="isMobile" *ngIf="subscription?.subscribed_from">
-              </tsl-subscription-card>
-            </ng-container>
-          </div>
+        <div class="w-100 SubscriptionList__container">
+          <ng-container *ngFor="let subscription of subscriptionsOrdered">
+            <tsl-subscription-card (buttonClick)="onClickButton(subscription)"
+              [isSubscribed]="isSubscribed(subscription)" [subscription]="subscription"
+              [textButton]="getTextButton(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
+              [tierDiscount]="hasDiscount(subscription)" [subscriptionBenefits]="getBenefits(subscription)"
+              [isMobile]="isMobile" *ngIf="subscription?.subscribed_from">
+            </tsl-subscription-card>
+          </ng-container>
         </div>
         <div class="mt-4 pt-2 SubscriptionList__title text-xl-left"
           i18n="@@pro_manage_subscriptions_view_non_active_subscriptions_title">Other available</div>
-        <div class="d-flex justify-content-center SubscriptionList__container">
-          <div class="w-100">
-            <ng-container *ngFor="let subscription of subscriptionsOrdered">
-              <tsl-subscription-card (buttonClick)="onClickButton(subscription)"
-                [isSubscribed]="isSubscribed(subscription)" [subscription]="subscription"
-                [textButton]="getTextButton(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
-                [tierDiscount]="hasDiscount(subscription)" [subscriptionBenefits]="getBenefits(subscription)"
-                [isMobile]="isMobile" *ngIf="subscription && !subscription.subscribed_from">
-              </tsl-subscription-card>
-            </ng-container>
-          </div>
+        <div class="w-100 SubscriptionList__container">
+          <ng-container *ngFor="let subscription of subscriptionsOrdered">
+            <tsl-subscription-card (buttonClick)="onClickButton(subscription)"
+              [isSubscribed]="isSubscribed(subscription)" [subscription]="subscription"
+              [textButton]="getTextButton(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
+              [tierDiscount]="hasDiscount(subscription)" [subscriptionBenefits]="getBenefits(subscription)"
+              [isMobile]="isMobile" *ngIf="subscription && !subscription.subscribed_from">
+            </tsl-subscription-card>
+          </ng-container>
         </div>
       </ng-container>
       <ng-template #noProView>
@@ -37,17 +33,15 @@
           business with Wallapop PRO</h4>
         <p class="section-subtitle text-center" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription
           to take your sales to the next level</p>
-        <div class="d-flex justify-content-center SubscriptionList__container">
-          <div class="w-100">
-            <ng-container *ngFor="let subscription of subscriptionsOrdered">
-              <tsl-subscription-card (buttonClick)="onClickButton(subscription)"
-                [isSubscribed]="isSubscribed(subscription)" [subscription]="subscription"
-                [textButton]="getTextButton(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
-                [tierDiscount]="hasDiscount(subscription)" [subscriptionBenefits]="getBenefits(subscription)"
-                [isMobile]="isMobile" *ngIf="subscription">
-              </tsl-subscription-card>
-            </ng-container>
-          </div>
+        <div class="w-100 SubscriptionList__container">
+          <ng-container *ngFor="let subscription of subscriptionsOrdered">
+            <tsl-subscription-card (buttonClick)="onClickButton(subscription)"
+              [isSubscribed]="isSubscribed(subscription)" [subscription]="subscription"
+              [textButton]="getTextButton(subscription)" [hasTrialAvailable]="hasOneFreeSubscription(subscription)"
+              [tierDiscount]="hasDiscount(subscription)" [subscriptionBenefits]="getBenefits(subscription)"
+              [isMobile]="isMobile" *ngIf="subscription">
+            </tsl-subscription-card>
+          </ng-container>
         </div>
       </ng-template>
     </div>
