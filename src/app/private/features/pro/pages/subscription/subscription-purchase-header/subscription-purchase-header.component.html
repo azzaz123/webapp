@@ -4,8 +4,10 @@
             class="mb-2 d-block d-md-flex flex-wrap justify-content-center justify-content-md-start align-items-center">
             <span class="GenericCard__title mr-md-3">{{subscription.category_name}}</span>
             <span *ngIf="subscription.trial_available" class="d-block d-md-inline">
-                <tsl-discount-badge i18n="@@web_subscription_price_discount_days_trial_free">
-                    {{subscription.trial_days}}-day trial for free</tsl-discount-badge>
+                <tsl-discount-badge>
+                    <span i18n="@@web_subscription_price_discount_days_trial_free">{{subscription.trial_days}}-day trial
+                        for free</span>
+                </tsl-discount-badge>
             </span>
             <span *ngIf="subscription.category_ids.length > 1" class="d-block d-md-inline">
                 <span i18n="@@pro_subscription_purchase_categories_type_clarification_label"
