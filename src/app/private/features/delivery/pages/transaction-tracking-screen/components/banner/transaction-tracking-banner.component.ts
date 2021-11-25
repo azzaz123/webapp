@@ -1,11 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 import { TransactionTrackingBanner } from '@api/core/model/delivery/transaction/tracking';
 
 @Component({
   selector: 'tsl-transaction-tracking-banner',
   templateUrl: './transaction-tracking-banner.component.html',
   styleUrls: ['./transaction-tracking-banner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionTrackingBannerComponent implements OnInit {
   @Input()

@@ -3,7 +3,7 @@
 @import '~web-styleguide/scss/text';
 
 .TransactionTrackingBanner {
-  margin-top: $spacing-l;
+  padding: $spacing-ms;
 
   &__titleWrapper {
     overflow: hidden;
