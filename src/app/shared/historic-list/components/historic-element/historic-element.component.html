@@ -1,4 +1,8 @@
-<div class="HistoricElement d-flex justify-content-between align-items-center" [ngClass]="{ 'HistoricElement--clickable': clickable }" (click)="onItemClick()">
+<div
+  class="HistoricElement d-flex justify-content-between align-items-center"
+  [ngClass]="{ 'HistoricElement--clickable': clickable }"
+  (click)="onItemClick()"
+>
   <div class="HistoricElement__image">
     <img [src]="historicElement.imageUrl" [alt]="historicElement.title" loading="lazy" />
     <div *ngIf="historicElement.iconUrl" class="HistoricElement__icon d-flex justify-content-center align-items-center">
@@ -13,7 +17,12 @@
     </div>
 
     <div class="d-flex flex-column justify-content-center">
-      <div class="HistoricElement__description">{{ historicElement.description }}</div>
+      <div class="HistoricElement__description d-flex align-items-center">
+        <span class="m-1" *ngIf="historicElement.description.iconUrl as descIconUrl">
+          <tsl-svg-icon [src]="descIconUrl" width="16" height="16"></tsl-svg-icon>
+        </span>
+        <span>{{ historicElement.description.text }}</span>
+      </div>
       <div *ngIf="historicElement.subDescription" class="HistoricElement__subDescription" [ngClass]="subDescriptionClassname">
         {{ historicElement.subDescription.text }}
       </div>

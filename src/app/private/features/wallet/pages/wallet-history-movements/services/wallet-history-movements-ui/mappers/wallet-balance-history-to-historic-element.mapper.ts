@@ -56,7 +56,9 @@ const mapWalletBalanceHistoryElementToHistoricElement = (input: WalletMovementHi
     imageUrl,
     iconUrl,
     title,
-    description,
+    description: {
+      text: description,
+    },
     moneyAmount,
   };
 

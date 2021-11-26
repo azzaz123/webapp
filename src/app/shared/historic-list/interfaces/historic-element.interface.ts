@@ -6,7 +6,10 @@ export interface HistoricElement<T = Object> {
   imageUrl: string;
   iconUrl: string;
   title: string;
-  description: string;
+  description: {
+    text: string;
+    iconUrl?: string;
+  };
   subDescription?: {
     text: string;
     type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE;

@@ -39,13 +39,16 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
 
   input.forEach((pendingTransaction: PendingTransaction) => {
     const { id, item, moneyAmount } = pendingTransaction;
+    const description = getDescription(pendingTransaction);
     const subDescription = getSubDescription(pendingTransaction);
+    const iconUrl = getIconUrl(pendingTransaction);
 
     const historicElement: HistoricElement = {
       id,
       imageUrl: item.imageUrl,
-      title: moneyAmount.toString(),
-      description: item.title,
+      iconUrl,
+      title: item.title,
+      description,
       moneyAmount,
       subDescription,
       payload: pendingTransaction,
@@ -56,6 +59,13 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
 
   const result: HistoricListSubtitle = { elements: historicElements };
   return result;
+};
+
+const getDescription = (input: PendingTransaction): { text: string; iconUrl: string } => {
+  return {
+    text: 'Via shipping',
+    iconUrl: 'assets/icons/box.svg',
+  };
 };
 
 const getSubDescription = (input: PendingTransaction): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } => {
@@ -71,6 +81,11 @@ const getSubDescription = (input: PendingTransaction): { text: string; type: HIS
     text,
     type,
   };
+};
+
+const getIconUrl = (input: PendingTransaction): string => {
+  const { buyer, seller } = input;
+  return isCurrentUserSeller ? buyer.imageUrl : seller.imageUrl;
 };
 
 // TODO: Move this to transaction domain & do proper logic

@@ -1,10 +1,9 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
 import {
   MOCK_HISTORIC_ELEMENT,
-  MOCK_HISTORIC_ELEMENT_WITH_ICON,
+  MOCK_HISTORIC_ELEMENT_WITH_ICON_IN_DESCRIPTION,
   MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION,
   MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_ERROR,
   MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_VALID,
@@ -32,7 +31,8 @@ describe('HistoricElementComponent', () => {
   const iconSelector = `${historicElementSelector}__icon > img`;
   const titleSelector = `${historicElementSelector}__title > div`;
   const moneyAmountSelector = `${historicElementSelector}__money-amount`;
-  const descriptionSelector = `${historicElementSelector}__description`;
+  const descriptionSelector = `${historicElementSelector}__description > span:last-child`;
+  const descriptionIconSelector = `tsl-svg-icon`;
   const subDescriptionSelector = `${historicElementSelector}__subDescription`;
   const subDescriptionValidSelector = `${historicElementSelector}__subDescription--valid`;
   const subDescriptionErrorSelector = `${historicElementSelector}__subDescription--error`;
@@ -65,6 +65,14 @@ describe('HistoricElementComponent', () => {
       expect(imageUrl).toEqual(expectedImageUrl);
     });
 
+    it('should display the icon', () => {
+      const iconElement = fixture.debugElement.query(By.css(iconSelector));
+      const iconUrl = iconElement.nativeNode.src;
+      const expectedIconUrl = MOCK_HISTORIC_ELEMENT.iconUrl;
+
+      expect(iconUrl).toEqual(expectedIconUrl);
+    });
+
     it('should show the title', () => {
       const titleElement = fixture.debugElement.query(By.css(titleSelector));
       const title = titleElement.nativeElement.innerHTML;
@@ -84,40 +92,36 @@ describe('HistoricElementComponent', () => {
     it('should show the description', () => {
       const descriptionElement = fixture.debugElement.query(By.css(descriptionSelector));
       const description = descriptionElement.nativeElement.innerHTML.trim();
-      const expectedDescription = MOCK_HISTORIC_ELEMENT.description;
+      const expectedDescription = MOCK_HISTORIC_ELEMENT.description.text;
 
       expect(description).toEqual(expectedDescription);
     });
 
-    describe('and when icon URL is defined', () => {
+    describe('and when description has icon', () => {
       beforeEach(() => {
-        wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_ICON;
-        fixture.detectChanges();
+        wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_ICON_IN_DESCRIPTION;
       });
 
-      it('should display the icon', () => {
-        const iconElement = fixture.debugElement.query(By.css(iconSelector));
-        const iconUrl = iconElement.nativeNode.src;
-        const expectedIconUrl = MOCK_HISTORIC_ELEMENT_WITH_ICON.iconUrl;
+      it('should show the icon', () => {
+        const descriptionIconElement = fixture.debugElement.query(By.css(descriptionIconSelector));
 
-        expect(iconUrl).toEqual(expectedIconUrl);
+        expect(descriptionIconElement).toBeTruthy();
       });
     });
 
-    describe('and when icon URL is NOT defined', () => {
+    describe('and when description does not have icon', () => {
       beforeEach(() => {
         wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT;
-        fixture.detectChanges();
       });
 
-      it('should NOT display the icon', () => {
-        const iconElement = fixture.debugElement.query(By.css(iconSelector));
+      it('should show the icon', () => {
+        const descriptionIconElement = fixture.debugElement.query(By.css(descriptionIconSelector));
 
-        expect(iconElement).toBeFalsy();
+        expect(descriptionIconElement).toBeFalsy();
       });
     });
 
-    describe('and when movement has subdescription', () => {
+    describe('and when element has subdescription', () => {
       beforeEach(() => {
         wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION;
         fixture.detectChanges();

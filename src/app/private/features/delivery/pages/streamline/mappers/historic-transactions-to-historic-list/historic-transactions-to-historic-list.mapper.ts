@@ -46,16 +46,29 @@ const getMonthFromTransaction = (input: HistoricTransaction): string => {
 const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricElement => {
   const { id, item, moneyAmount } = input;
   const { imageUrl, title } = item;
-  const description: string = 'Completed';
+  const iconUrl = getIconUrlFromHistoricTransaction(input);
+  const description = getDescriptionFromHistoricTransaction(input);
 
   const historicElement: HistoricElement = {
     id,
     imageUrl,
-    iconUrl: '',
+    iconUrl,
     title,
     description,
     moneyAmount,
   };
 
   return historicElement;
+};
+
+const getIconUrlFromHistoricTransaction = (input: HistoricTransaction): string => {
+  const isCurrentUserTheSeller = true; // TODO: Map to transaction model
+  return isCurrentUserTheSeller ? input.buyer.imageUrl : input.seller.imageUrl;
+};
+
+const getDescriptionFromHistoricTransaction = (input: HistoricTransaction): { text: string; iconUrl: string } => {
+  return {
+    text: 'Via shipping',
+    iconUrl: 'assets/icons/box.svg',
+  };
 };
