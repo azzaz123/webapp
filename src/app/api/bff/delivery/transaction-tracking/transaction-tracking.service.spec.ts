@@ -4,17 +4,18 @@ import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/
 import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING_DETAILS_DTO_RESPONSE } from '@api/fixtures/bff/delivery';
 import { MOCK_TRANSACTION_TRACKING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-instructions.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-instructions-dto.fixtures.spec';
 import {
   TransactionTracking,
   TransactionTrackingDetails,
   TransactionTrackingInstructions,
 } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionDetailPayloadUserActionNameDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 import { of } from 'rxjs';
-import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-instructions.fixtures.spec';
-import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-instructions-dto.fixtures.spec';
 
 describe('TransactionTrackingService', () => {
   let service: TransactionTrackingService;
@@ -35,6 +36,15 @@ describe('TransactionTrackingService', () => {
             },
             getInstructions() {
               return of(MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE);
+            },
+            sendCancelTransaction() {
+              return of();
+            },
+            sendExpireClaimPeriod() {
+              return of();
+            },
+            sendPackageArrived() {
+              return of();
             },
           },
         },
@@ -149,5 +159,26 @@ describe('TransactionTrackingService', () => {
 
       flush();
     }));
+  });
+
+  describe.each([['sendCancelTransaction', 'CANCEL_TRANSACTION']])('WHEN they send an user action', (serverMethod, userAction) => {
+    const requestId = 'This is my request Id';
+    let spy: jasmine.Spy;
+
+    beforeEach(() => {
+      spy = spyOn(transactionTrackingHttpService, serverMethod as keyof TransactionTrackingHttpService).and.callThrough();
+    });
+
+    it('should call to cancel the transaction', () => {
+      service.sendUserAction(requestId, userAction as TransactionTrackingActionDetailPayloadUserActionNameDto).subscribe();
+
+      expect(spy).toBeCalledTimes(1);
+    });
+
+    it('should call to cancel the transaction with the request id', () => {
+      service.sendUserAction(requestId, userAction as TransactionTrackingActionDetailPayloadUserActionNameDto).subscribe();
+
+      expect(spy).toHaveBeenCalledWith(requestId);
+    });
   });
 });

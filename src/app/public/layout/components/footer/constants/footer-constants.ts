@@ -100,8 +100,7 @@ export const FOOTER_APPS: FooterIcon[] = [
   },
   {
     label: 'AppGallery',
-    href:
-      'https://app.adjust.com/6lbll37_ce4bza8?redirect=https%3A%2F%2Fappgallery.huawei.com%2F%23%2Fapp%2FC102446799&_pid=web&_me=www&campaign=desktop_footer',
+    href: 'https://app.adjust.com/6lbll37_ce4bza8?redirect=https%3A%2F%2Fappgallery.huawei.com%2F%23%2Fapp%2FC102446799&_pid=web&_me=www&campaign=desktop_footer',
     iconSrc: '/assets/icons/footer/huawei.svg',
   },
   {
