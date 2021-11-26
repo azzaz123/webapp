@@ -8,12 +8,17 @@
                     <tsl-discount-badge i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tier.discount.percentage}}% off!</tsl-discount-badge>
                 </div>
                 <ng-container *ngIf="tier.is_basic; else noBasicTitle">
-                    <div class="GenericCard__title Card__title">{{ getTitleText(tier) }}</div>
+                    <div class="GenericCard__title Card__title Card__title--small">
+                        <span i18n="@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_title">Basic</span>
+                    </div>
                     <div class="GenericCard__subtitle mb-1">{{ getLimitText(tier) }}</div>
                 </ng-container>
                 <ng-template #noBasicTitle>
                     <div>
-                        <span class="Card__title Card__title--large">{{tier.limit}}</span><span ngPreserveWhitespaces> </span><span i18n="@@pro_subscription_purchase_tier_list_items_number_label">items</span>
+                        <ng-container *ngIf="tier.limit">
+                            <span class="Card__title Card__title--large">{{tier.limit}}</span><span ngPreserveWhitespaces> </span><span i18n="@@pro_subscription_purchase_tier_list_items_number_label">items</span>
+                        </ng-container>
+                        <span *ngIf="!tier.limit" class="GenericCard__title Card__title" i18n="@@web_profile_pages_subscription_586">List without limits</span>
                     </div>
                 </ng-template>
                 <div class="Card__description">
