@@ -4,7 +4,7 @@ import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-
 export interface HistoricElement<T = Object> {
   id: string;
   imageUrl: string;
-  iconUrl?: string;
+  iconUrl: string;
   title: string;
   description: string;
   subDescription?: {

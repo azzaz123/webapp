@@ -51,6 +51,7 @@ const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricEl
   const historicElement: HistoricElement = {
     id,
     imageUrl,
+    iconUrl: '',
     title,
     description,
     moneyAmount,
