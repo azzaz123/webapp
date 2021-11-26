@@ -1,6 +1,6 @@
 import {
   TransactionTrackingCta,
-  TransactionTrackingActionModel,
+  TransactionTrackingCtaModel,
   TransactionTrackingAnimation,
   TransactionTrackingShippingStatus,
   TransactionTrackingShippingStatusAnimationModel,
@@ -24,7 +24,7 @@ export class TransactionTrackingShippingStatusModel implements TransactionTracki
   private getActions(actions: TransactionTrackingActionDto[]): TransactionTrackingCta[] {
     let result: TransactionTrackingCta[] = [];
     actions.forEach((action) => {
-      result.push(new TransactionTrackingActionModel(action));
+      result.push(new TransactionTrackingCtaModel(action));
     });
     return result;
   }

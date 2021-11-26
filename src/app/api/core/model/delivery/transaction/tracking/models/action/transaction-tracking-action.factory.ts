@@ -4,7 +4,6 @@ import {
   TransactionTrackingActionDetail,
   TransactionTrackingActionDialogModel,
   TransactionTrackingActionDismissModel,
-  TransactionTrackingActionReloadModel,
   TransactionTrackingActionUserActionModel,
 } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionDetailDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-dto.interface';
@@ -23,7 +22,6 @@ export class TransactionTrackingActionFactory {
       deeplink: new TransactionTrackingActionDeeplinkModel(this.action),
       dialog: new TransactionTrackingActionDialogModel(this.action),
       dismiss: new TransactionTrackingActionDismissModel(this.action),
-      reload: new TransactionTrackingActionReloadModel(this.action),
       user_action: new TransactionTrackingActionUserActionModel(this.action),
     };
     return actions[this.action.action_type];
