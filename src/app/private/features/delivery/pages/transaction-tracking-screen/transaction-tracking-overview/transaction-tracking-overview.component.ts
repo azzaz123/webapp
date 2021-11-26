@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'tsl-transaction-tracking-overview',
   templateUrl: './transaction-tracking-overview.component.html',
   styleUrls: ['./transaction-tracking-overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionTrackingOverviewComponent implements OnInit {
   public transactionTracking$: Observable<TransactionTracking>;

@@ -10,31 +10,38 @@ import { TransactionTrackingDeeplinkModule } from '../../../pipes/transaction-tr
 import { TransactionTrackingActionDialogComponent } from '../transaction-tracking-action-dialog/transaction-tracking-action-dialog.component';
 import { TransactionTrackingActionDeeplinkComponent } from '../transaction-tracking-action-deeplink/transaction-tracking-action-deeplink.component';
 import { TransactionTrackingActionSelectorComponent } from './transaction-tracking-action-selector.component';
-import { MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_1 } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
-import {
-  MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1,
-  MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1,
-} from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { TransactionTrackingActionUserActionComponent } from '../transaction-tracking-action-user-action/transaction-tracking-action-user-action.component';
 import { TransactionTrackingActionTrackingWebviewComponent } from '../transaction-tracking-action-tracking-webview/transaction-tracking-action-tracking-webview.component';
+import {
+  MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK,
+  MOCK_TRANSACTION_TRACKING_ACTION_DIALOG,
+  MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION,
+  MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW,
+} from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
+import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 describe('TransactionTrackingActionSelectorComponent', () => {
   let component: TransactionTrackingActionSelectorComponent;
   let fixture: ComponentFixture<TransactionTrackingActionSelectorComponent>;
 
-  // TODO: rename all test		Date: 2021/11/25
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         TransactionTrackingActionSelectorComponent,
         TransactionTrackingActionDialogComponent,
         TransactionTrackingActionDeeplinkComponent,
+        TransactionTrackingActionTrackingWebviewComponent,
+        TransactionTrackingActionUserActionComponent,
       ],
       imports: [ImageFallbackModule, TransactionTrackingDeeplinkModule, ItemDetailRouteModule, UserProfileRouteModule, BypassHTMLModule],
       providers: [
         {
           provide: SITE_URL,
           useValue: MOCK_SITE_URL,
+        },
+        {
+          provide: TransactionTrackingService,
+          useValue: {},
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -44,7 +51,6 @@ describe('TransactionTrackingActionSelectorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TransactionTrackingActionSelectorComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -54,7 +60,7 @@ describe('TransactionTrackingActionSelectorComponent', () => {
   describe('when we receive the action', () => {
     describe('and the action is a dialog', () => {
       beforeEach(() => {
-        component.actionDetail = MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1.actions[0].action;
+        component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG;
         fixture.detectChanges();
       });
 
@@ -77,7 +83,7 @@ describe('TransactionTrackingActionSelectorComponent', () => {
 
     describe('and the action is a carrier tracking webview', () => {
       beforeEach(() => {
-        component.actionDetail = MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1.action;
+        component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW;
         fixture.detectChanges();
       });
 
@@ -100,7 +106,7 @@ describe('TransactionTrackingActionSelectorComponent', () => {
 
     describe('and the action is a deeplink', () => {
       beforeEach(() => {
-        component.actionDetail = MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_1.action;
+        component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK;
         fixture.detectChanges();
       });
 
@@ -123,7 +129,7 @@ describe('TransactionTrackingActionSelectorComponent', () => {
 
     describe('and the action is a user action', () => {
       beforeEach(() => {
-        component.actionDetail = MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1.actions[0].action.payload.positive.action;
+        component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION;
         fixture.detectChanges();
       });
 

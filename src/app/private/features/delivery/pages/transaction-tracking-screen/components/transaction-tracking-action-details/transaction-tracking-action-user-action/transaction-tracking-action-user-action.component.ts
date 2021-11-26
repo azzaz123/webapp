@@ -14,9 +14,11 @@ export class TransactionTrackingActionUserActionComponent implements OnInit {
   ngOnInit(): void {}
 
   public requestUserAction(): void {
-    // this.transactionTrackingService.sendUserAction(payload.parameters.transactionId, payload.name).subscribe(
-    //   () => {},
-    //   () => {}
-    // );
+    this.transactionTrackingService
+      .sendUserAction(this.userAction.payload.parameters.transactionId, this.userAction.payload.name)
+      .subscribe(
+        () => {},
+        () => {}
+      );
   }
 }
