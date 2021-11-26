@@ -1267,6 +1267,12 @@ export const MOCK_ITEM_V3: Item = new Item(
   undefined,
   ITEMS_DATA_V3[0].content.web_slug,
   ITEMS_DATA_V3[0].content.modified_date,
+  undefined,
+  ITEM_TYPES.CONSUMER_GOODS,
+  undefined,
+  null,
+  null,
+  null,
   undefined
 );
 
@@ -1295,6 +1301,12 @@ export const MOCK_ITEM_V3_2: Item = new Item(
   undefined,
   ITEMS_DATA_V3[1].content.web_slug,
   ITEMS_DATA_V3[1].content.modified_date,
+  undefined,
+  ITEM_TYPES.CONSUMER_GOODS,
+  undefined,
+  null,
+  null,
+  null,
   undefined
 );
 

@@ -843,7 +843,7 @@ export class ListComponent implements OnInit, OnDestroy {
       activeNavLink.counter.currentVal += items.length;
     }
 
-    if (!selectedSlot) {
+    if (!selectedSlot || typeof selectedSlot.available !== 'number') {
       return;
     }
 
@@ -856,7 +856,9 @@ export class ListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.selectedSubscriptionSlot.available += numDeactivatedItems;
+    if (typeof this.selectedSubscriptionSlot.available === 'number') {
+      this.selectedSubscriptionSlot.available += numDeactivatedItems;
+    }
 
     const inactiveNavLink = this.getNavLinkById(STATUS.INACTIVE);
     if (inactiveNavLink.counter) {

@@ -52,10 +52,12 @@ describe('SubscriptionListComponent', () => {
     });
     it('should show spinner', () => {
       const spinner: HTMLElement = fixture.debugElement.query(By.directive(SpinnerComponent)).nativeElement;
+
       expect(spinner).toBeTruthy();
     });
     it('should not show cards', () => {
       const card: DebugElement = fixture.debugElement.query(By.directive(MockCardComponent));
+
       expect(card).toBeFalsy();
     });
   });
@@ -67,11 +69,62 @@ describe('SubscriptionListComponent', () => {
     });
     it('should not show spinner', () => {
       const spinner: DebugElement = fixture.debugElement.query(By.directive(SpinnerComponent));
+
       expect(spinner).toBeFalsy();
     });
     it('should show subscriptions cards', () => {
       const cards: DebugElement[] = fixture.debugElement.queryAll(By.directive(MockCardComponent));
+
       expect(cards).toHaveLength(component.subscriptions.length);
+    });
+  });
+  describe('Show subscription cards', () => {
+    beforeEach(() => {
+      component.subscriptions = SUBSCRIPTIONS;
+      component.isLoading = false;
+    });
+    describe('and is not a pro user', () => {
+      beforeEach(() => {
+        component.isPro = false;
+        fixture.detectChanges();
+      });
+      it('should show a single subscription list', () => {
+        const subscriptionList: DebugElement[] = fixture.debugElement.queryAll(By.css('.SubscriptionList__container'));
+
+        expect(subscriptionList).toHaveLength(1);
+      });
+      it('should show subscriptions cards together', () => {
+        const cards: DebugElement[] = fixture.debugElement
+          .queryAll(By.css('.SubscriptionList__container'))[0]
+          .queryAll(By.directive(MockCardComponent));
+
+        expect(cards).toHaveLength(component.subscriptions.length);
+      });
+    });
+    describe('and is pro user', () => {
+      beforeEach(() => {
+        component.isPro = true;
+        fixture.detectChanges();
+      });
+      it('should show a two subscription list', () => {
+        const subscriptionList: DebugElement[] = fixture.debugElement.queryAll(By.css('.SubscriptionList__container'));
+
+        expect(subscriptionList).toHaveLength(2);
+      });
+      it('should show subscribed cards', () => {
+        const cards: DebugElement[] = fixture.debugElement
+          .queryAll(By.css('.SubscriptionList__container'))[0]
+          .queryAll(By.directive(MockCardComponent));
+
+        expect(cards).toHaveLength(component.subscriptions.filter((subscription) => subscription.subscribed_from).length);
+      });
+      it('should show not subscribed cards', () => {
+        const cards: DebugElement[] = fixture.debugElement
+          .queryAll(By.css('.SubscriptionList__container'))[1]
+          .queryAll(By.directive(MockCardComponent));
+
+        expect(cards).toHaveLength(component.subscriptions.filter((subscription) => !subscription.subscribed_from).length);
+      });
     });
   });
   describe('card events', () => {
