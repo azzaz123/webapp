@@ -13,7 +13,7 @@
     />
   </div>
   <tsl-transaction-tracking-action-selector *ngIf="info.action" [actionDetail]="info.action">
-    <span [innerHTML]="info.description | bypassHTML" slot="content"></span>
+    <span [innerHTML]="info.description | bypassHTML"></span>
   </tsl-transaction-tracking-action-selector>
   <span *ngIf="!info.action" [innerHTML]="info.description | bypassHTML"> </span>
   <tsl-svg-icon
