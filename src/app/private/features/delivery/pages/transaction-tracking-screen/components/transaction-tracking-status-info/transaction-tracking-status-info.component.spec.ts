@@ -1,21 +1,25 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1 } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
+import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { TransactionTrackingActionSelectorComponent } from '../transaction-tracking-action-details/transaction-tracking-action-selector/transaction-tracking-action-selector.component';
 import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
 
 describe('TransactionTrackingStatusInfoComponent', () => {
+  const safeDescriptionSelector = '#safeDescription';
   let component: TransactionTrackingStatusInfoComponent;
   let fixture: ComponentFixture<TransactionTrackingStatusInfoComponent>;
   let de: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionTrackingStatusInfoComponent],
-      imports: [SvgIconModule, HttpClientTestingModule, ImageFallbackModule],
+      declarations: [TransactionTrackingStatusInfoComponent, TransactionTrackingActionSelectorComponent],
+      imports: [SvgIconModule, HttpClientTestingModule, ImageFallbackModule, BypassHTMLModule],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -104,8 +108,40 @@ describe('TransactionTrackingStatusInfoComponent', () => {
       });
     });
 
+    describe('and the information comes with action', () => {
+      beforeEach(() => {
+        fixture.detectChanges();
+      });
+
+      it('should show the action selector component', () => {
+        shouldShowActionSelector(true);
+      });
+
+      it('should NOT show the info description directly', () => {
+        checkIfStyleIsInTemplate(safeDescriptionSelector, false);
+      });
+    });
+
+    describe('and the information does NOT comes with action', () => {
+      beforeEach(() => {
+        component.transactionTrackingStatusInfo.action = null;
+        fixture.detectChanges();
+      });
+
+      it('should NOT show the action selector component', () => {
+        shouldShowActionSelector(false);
+      });
+
+      it('should show the info description directly', () => {
+        const descriptionSanitized: HTMLElement = de.query(By.css(safeDescriptionSelector)).nativeElement.innerHTML;
+
+        expect(descriptionSanitized).toEqual(component.transactionTrackingStatusInfo.description);
+      });
+    });
+
     describe('and we specify showing caret', () => {
       beforeEach(() => {
+        component.transactionTrackingStatusInfo.showCaret = true;
         fixture.detectChanges();
       });
 
@@ -145,6 +181,15 @@ describe('TransactionTrackingStatusInfoComponent', () => {
       });
     });
   });
+
+  function shouldShowActionSelector(shouldBeInTemplate: boolean): void {
+    const actionSelector: DebugElement = de.query(By.directive(TransactionTrackingActionSelectorComponent));
+    if (shouldBeInTemplate) {
+      expect(actionSelector).toBeTruthy();
+    } else {
+      expect(actionSelector).toBeFalsy();
+    }
+  }
 
   function shouldShowImage(shouldBeInTemplate: boolean): void {
     checkIfStyleIsInTemplate('.TransactionTrackingStatusInfo__icon', shouldBeInTemplate);

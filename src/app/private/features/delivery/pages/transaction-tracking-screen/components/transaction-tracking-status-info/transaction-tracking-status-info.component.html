@@ -8,14 +8,14 @@
       *ngIf="info.icon"
       [src]="info.icon.url"
       alt="icon"
-      class="TransactionTrackingStatusInfo__icon w-100 h-100 TransactionTrackingStatusInfo__icon--{{ info.iconClassName }}"
+      class="TransactionTrackingStatusInfo__icon w-100 h-100 TransactionTrackingStatusInfo__icon--{{ info.icon.style.className }}"
       [fallback]="FALLBACK_NOT_FOUND_SRC"
     />
   </div>
   <tsl-transaction-tracking-action-selector *ngIf="info.action" [actionDetail]="info.action">
     <span [innerHTML]="info.description | bypassHTML"></span>
   </tsl-transaction-tracking-action-selector>
-  <span *ngIf="!info.action" [innerHTML]="info.description | bypassHTML"> </span>
+  <span *ngIf="!info.action" id="safeDescription" [innerHTML]="info.description | bypassHTML"> </span>
   <tsl-svg-icon
     *ngIf="info.showCaret"
     src="/assets/icons/arrow-right.svg"
