@@ -1,6 +1,6 @@
 import {
   TransactionTracking,
-  TransactionTrackingAction,
+  TransactionTrackingCta,
   TransactionTrackingAnalytics,
   TransactionTrackingHeader,
   TransactionTrackingShippingStatus,
@@ -11,22 +11,15 @@ const MOCK_TRANSACTION_TRACKING_ANALYTICS_2: TransactionTrackingAnalytics = {
   buyer: { country: 'IT' },
   seller: { country: 'ES' },
 };
-const MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_1: TransactionTrackingAction = {
+const MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_1: TransactionTrackingCta = {
   action: {
+    isDeeplink: true,
     analytics: {
       requestId: 'b7d11763-1c05-4cd8-9733-c3449807f644',
       source: 'Help General Doubts',
       userId: '77605037',
     },
-    isCarrierTrackingWebview: false,
-    isDeeplink: true,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      linkUrl: 'wallapop://customerSupport/faq/article?z=360013447218',
-    },
+    linkUrl: 'wallapop://customerSupport/faq/article?z=360013447218',
   },
   state: {
     isDisabled: false,
@@ -44,36 +37,23 @@ const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1: TransactionTrackingShippingSt
   actions: [
     {
       action: {
-        isCarrierTrackingWebview: false,
-        isDeeplink: false,
         isDialog: true,
-        isDismiss: false,
-        isReload: false,
-        isUserAction: false,
-        payload: {
-          description: 'El envío ha ido más rápido de lo esperado... ¡a veces ocurre!',
-          negative: {
-            title: 'Cancelar',
-          },
-          positive: {
-            action: {
-              isCarrierTrackingWebview: false,
-              isDeeplink: false,
-              isDialog: false,
-              isDismiss: false,
-              isReload: false,
-              isUserAction: true,
-              payload: {
-                name: 'PACKAGE_ARRIVED',
-                parameters: {
-                  transactionId: '10514fe3-8cd5-4fd5-a85e-8a068b6ba9af',
-                },
-              },
-            },
-            title: 'Confirmar',
-          },
-          title: '¿Confirmas que ya has recibido el producto?',
+        description: 'El envío ha ido más rápido de lo esperado... ¡a veces ocurre!',
+        negative: {
+          title: 'Cancelar',
         },
+        positive: {
+          title: 'Confirmar',
+          action: {
+            isUserAction: true,
+            name: 'PACKAGE_ARRIVED',
+            success: {
+              isDismiss: true,
+            },
+            transactionId: '10514fe3-8cd5-4fd5-a85e-8a068b6ba9af',
+          },
+        },
+        title: '¿Confirmas que ya has recibido el producto?',
       },
       state: { isDisabled: false },
       style: { className: 'btn btn-primary' },
@@ -91,15 +71,8 @@ const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1: TransactionTrackingShippingSt
 };
 const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_1: TransactionTrackingStatusInfo = {
   action: {
-    isCarrierTrackingWebview: false,
     isDeeplink: true,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      linkUrl: 'wallapop://customerSupport/faq/article?z=360001796618',
-    },
+    linkUrl: 'wallapop://customerSupport/faq/article?z=360001796618',
   },
   description:
     '<strong>Tu compra está protegida</strong> por Wallapop Protect, nuestra política de protección.<br><span style="color: #13C1AC">¿Quieres saber más?</span>',
@@ -116,16 +89,8 @@ const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_1: TransactionTrackingStatu
 const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1: TransactionTrackingStatusInfo = {
   action: {
     isCarrierTrackingWebview: true,
-    isDeeplink: false,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      banner: { title: 'Código de envío', trackingCode: 'PK55Z20727923640108018P' },
-      linkUrl: 'https://www.correos.es/es/es/herramientas/localizador/envios/detalle?tracking-number=PK55Z20727923640108018P',
-      title: 'Sigue tu envío',
-    },
+    linkUrl: 'https://www.correos.es/es/es/herramientas/localizador/envios/detalle?tracking-number=PK55Z20727923640108018P',
+    title: 'Sigue tu envío',
   },
   description: 'Código de envío<br><strong>PK55Z20727923640108018P</strong><br><span style="color: #13C1AC">Hacer seguimiento</span>',
   icon: {
@@ -135,22 +100,15 @@ const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1: Transact
   },
   showCaret: false,
 };
-const MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_2: TransactionTrackingAction = {
+const MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_2: TransactionTrackingCta = {
   action: {
     analytics: {
       requestId: '3d5d9154-1e52-4a99-87ee-bdedd7b1eb70',
       source: 'Help General Doubts',
       userId: '81497033',
     },
-    isCarrierTrackingWebview: false,
     isDeeplink: true,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      linkUrl: 'wallapop://customerSupport/faq/article?z=360013447218',
-    },
+    linkUrl: 'wallapop://customerSupport/faq/article?z=360013447218',
   },
   state: { isDisabled: false },
   style: { className: 'btn btn-link' },
@@ -164,34 +122,19 @@ const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_2: TransactionTrackingShippingSt
   actions: [
     {
       action: {
-        isCarrierTrackingWebview: false,
-        isDeeplink: false,
         isDialog: true,
-        isDismiss: false,
-        isReload: false,
-        isUserAction: false,
-        payload: {
-          description: 'El envío ha ido más rápido de lo esperado... ¡a veces ocurre!',
-          negative: { title: 'Cancelar' },
-          positive: {
-            action: {
-              isCarrierTrackingWebview: false,
-              isDeeplink: false,
-              isDialog: false,
-              isDismiss: false,
-              isReload: false,
-              isUserAction: true,
-              payload: {
-                name: 'PACKAGE_ARRIVED',
-                parameters: {
-                  transactionId: '21b4ab82-320f-4c93-bdfe-15f3970494b9',
-                },
-              },
-            },
-            title: 'Confirmar',
+        description: 'El envío ha ido más rápido de lo esperado... ¡a veces ocurre!',
+        negative: { title: 'Cancelar' },
+        positive: {
+          title: 'Confirmar',
+          action: {
+            isUserAction: true,
+            name: 'PACKAGE_ARRIVED',
+            success: { isDismiss: true },
+            transactionId: '21b4ab82-320f-4c93-bdfe-15f3970494b9',
           },
-          title: '¿Confirmas que ya has recogido el producto?',
         },
+        title: '¿Confirmas que ya has recogido el producto?',
       },
       state: { isDisabled: false },
       style: { className: 'btn btn-primary' },
@@ -212,43 +155,21 @@ const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_3: TransactionTrackingShippingSt
   actions: [
     {
       action: {
-        isCarrierTrackingWebview: false,
-        isDeeplink: false,
         isDialog: true,
-        isDismiss: false,
-        isReload: false,
-        isUserAction: false,
-        payload: {
-          description: 'El envío ha ido más rápido de lo esperado... ¡a veces ocurre!',
-          negative: { title: 'Cancelar' },
-          positive: {
-            action: {
-              isCarrierTrackingWebview: false,
-              isDeeplink: false,
-              isDialog: false,
-              isDismiss: false,
-              isReload: false,
-              isUserAction: true,
-              payload: {
-                name: 'PACKAGE_ARRIVED',
-                parameters: {
-                  transactionId: '21b4ab82-320f-4c93-bdfe-15f3970494b9',
-                },
-                success: {
-                  isCarrierTrackingWebview: false,
-                  isDeeplink: false,
-                  isDialog: false,
-                  isDismiss: true,
-                  isReload: false,
-                  isUserAction: false,
-                  payload: {},
-                },
-              },
+        description: 'El envío ha ido más rápido de lo esperado... ¡a veces ocurre!',
+        negative: { title: 'Cancelar' },
+        positive: {
+          action: {
+            isUserAction: true,
+            name: 'PACKAGE_ARRIVED',
+            success: {
+              isDismiss: true,
             },
-            title: 'Confirmar',
+            transactionId: '21b4ab82-320f-4c93-bdfe-15f3970494b9',
           },
-          title: '¿Confirmas que ya has recogido el producto?',
+          title: 'Confirmar',
         },
+        title: '¿Confirmas que ya has recogido el producto?',
       },
       state: { isDisabled: false },
       style: { className: 'btn btn-primary' },
@@ -267,15 +188,8 @@ const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_3: TransactionTrackingShippingSt
 };
 const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_2: TransactionTrackingStatusInfo = {
   action: {
-    isCarrierTrackingWebview: false,
     isDeeplink: true,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      linkUrl: 'wallapop://customerSupport/faq/article?z=360001796618',
-    },
+    linkUrl: 'wallapop://customerSupport/faq/article?z=360001796618',
   },
   description:
     '<strong>Tu compra está protegida</strong> por Wallapop Protect, nuestra política de protección.<br><span style="color: #13C1AC">¿Quieres saber más?</span>',
@@ -290,20 +204,9 @@ const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_2: TransactionTrackingStatu
 const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_2: TransactionTrackingStatusInfo = {
   action: {
     isCarrierTrackingWebview: true,
-    isDeeplink: false,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      banner: {
-        title: 'Código de envío',
-        trackingCode: 'WALLA82U5I7Z',
-      },
-      linkUrl:
-        'https://www.seur.com/livetracking/pages/seguimiento-online-busqueda.do?faces-redirect=true&includeViewParams=true&&segOnlineIdentificador=WALLA82U5I7Z',
-      title: 'Sigue tu envío',
-    },
+    linkUrl:
+      'https://www.seur.com/livetracking/pages/seguimiento-online-busqueda.do?faces-redirect=true&includeViewParams=true&&segOnlineIdentificador=WALLA82U5I7Z',
+    title: 'Sigue tu envío',
   },
   description: 'Código de envío<br><strong>WALLA82U5I7Z</strong><br><span style="color: #13C1AC">Hacer seguimiento</span>',
   icon: {
@@ -316,15 +219,8 @@ const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_2: Transact
 
 const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_3: TransactionTrackingStatusInfo = {
   action: {
-    isCarrierTrackingWebview: false,
     isDeeplink: true,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      linkUrl: 'wallapop://customerSupport/faq/article?z=360001796618',
-    },
+    linkUrl: 'wallapop://customerSupport/faq/article?z=360001796618',
   },
   description:
     '<strong>Tu compra está protegida</strong> por Wallapop Protect, nuestra política de protección.<br><span style="color: #13C1AC">¿Quieres saber más?</span>',
@@ -339,20 +235,9 @@ const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_3: TransactionTrackingStatu
 const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_3: TransactionTrackingStatusInfo = {
   action: {
     isCarrierTrackingWebview: true,
-    isDeeplink: false,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      banner: {
-        title: 'Código de envío',
-        trackingCode: 'WALLA82U5I7Z',
-      },
-      linkUrl:
-        'https://www.seur.com/livetracking/pages/seguimiento-online-busqueda.do?faces-redirect=true&includeViewParams=true&&segOnlineIdentificador=WALLA82U5I7Z',
-      title: 'Sigue tu envío',
-    },
+    linkUrl:
+      'https://www.seur.com/livetracking/pages/seguimiento-online-busqueda.do?faces-redirect=true&includeViewParams=true&&segOnlineIdentificador=WALLA82U5I7Z',
+    title: 'Sigue tu envío',
   },
   description: 'Código de envío<br><strong>WALLA82U5I7Z</strong><br><span style="color: #13C1AC">Hacer seguimiento</span>',
   icon: {
