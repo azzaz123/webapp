@@ -88,12 +88,12 @@ export class PhoneVerificationModalComponent implements OnInit {
     });
   }
 
-  private openSmsCodeVerificationModal(phone: string, prefix: string): void {
+  private openSmsCodeVerificationModal(prefix: string, phone: string): void {
     const modalRef: NgbModalRef = this.modalService.open(SmsCodeVerificationModalComponent, {
       windowClass: 'modal-standard',
     });
 
-    modalRef.componentInstance.phone = phone;
     modalRef.componentInstance.prefix = prefix;
+    modalRef.componentInstance.phone = phone;
   }
 }

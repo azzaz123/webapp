@@ -75,7 +75,6 @@ describe('PhoneVerificationModalComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     spyOn(activeModal, 'close').and.callThrough();
-    spyOn(activeModal, 'dismiss').and.callThrough();
     spyOn(userVerificationsService, 'verifyPhone').and.callThrough();
   });
 
@@ -99,12 +98,12 @@ describe('PhoneVerificationModalComponent', () => {
   });
 
   describe('when close button is clicked', () => {
-    it('should dismiss the modal', () => {
+    it('should close the modal', () => {
       const closeButton: HTMLElement = fixture.debugElement.query(By.css('.PhoneVerificationModal__close')).nativeElement;
 
       closeButton.click();
 
-      expect(activeModal.dismiss).toHaveBeenCalled();
+      expect(activeModal.close).toHaveBeenCalled();
     });
   });
 
