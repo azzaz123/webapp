@@ -43,13 +43,7 @@ export class PhoneVerificationModalComponent implements OnInit {
         .subscribe(
           () => {
             this.activeModal.close();
-            const modalRef: NgbModalRef = this.modalService.open(SmsCodeVerificationModalComponent, {
-              windowClass: 'modal-standard',
-            });
-
-            modalRef.componentInstance.phone = phone;
-            modalRef.componentInstance.prefix = prefix;
-
+            this.openSmsCodeVerificationModal(prefix, phone);
             this.verificationsNSecurityTrackingEventsService.trackStartPhoneVerificationProcessEvent();
           },
           () => {
@@ -92,5 +86,14 @@ export class PhoneVerificationModalComponent implements OnInit {
         label: `${e.country} (${e.prefix})`,
       };
     });
+  }
+
+  private openSmsCodeVerificationModal(phone: string, prefix: string): void {
+    const modalRef: NgbModalRef = this.modalService.open(SmsCodeVerificationModalComponent, {
+      windowClass: 'modal-standard',
+    });
+
+    modalRef.componentInstance.phone = phone;
+    modalRef.componentInstance.prefix = prefix;
   }
 }

@@ -41,11 +41,7 @@ export class SmsCodeVerificationModalComponent implements OnInit {
       .pipe(take(1))
       .subscribe(
         () => {
-          this.toastService.show({
-            text: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_title:Now your phone makes your Wallapop experience even safer.`,
-            title: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_description:Phone verified!`,
-            type: TOAST_TYPES.SUCCESS,
-          });
+          this.showSuccessToast();
           this.activeModal.close();
         },
         () => {
@@ -90,5 +86,13 @@ export class SmsCodeVerificationModalComponent implements OnInit {
       .subscribe((sec: number) => {
         this.timer = timeLeft - (sec + 1);
       });
+  }
+
+  private showSuccessToast(): void {
+    this.toastService.show({
+      text: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_title:Now your phone makes your Wallapop experience even safer.`,
+      title: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_description:Phone verified!`,
+      type: TOAST_TYPES.SUCCESS,
+    });
   }
 }
