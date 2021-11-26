@@ -1,12 +1,12 @@
 import { TransactionTrackingActionDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import {
-  TransactionTrackingAction,
+  TransactionTrackingCta,
   TransactionTrackingActionModel,
   TransactionTrackingHeader,
 } from '@api/core/model/delivery/transaction/tracking';
 
 export class TransactionTrackingHeaderModel implements TransactionTrackingHeader {
-  detail: TransactionTrackingAction;
+  detail: TransactionTrackingCta;
   title: string;
 
   constructor(action: TransactionTrackingActionDto, title: string) {
