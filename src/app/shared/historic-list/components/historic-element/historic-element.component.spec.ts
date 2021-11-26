@@ -100,6 +100,7 @@ describe('HistoricElementComponent', () => {
     describe('and when description has icon', () => {
       beforeEach(() => {
         wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_ICON_IN_DESCRIPTION;
+        fixture.detectChanges();
       });
 
       it('should show the icon', () => {
@@ -112,6 +113,7 @@ describe('HistoricElementComponent', () => {
     describe('and when description does not have icon', () => {
       beforeEach(() => {
         wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT;
+        fixture.detectChanges();
       });
 
       it('should show the icon', () => {
