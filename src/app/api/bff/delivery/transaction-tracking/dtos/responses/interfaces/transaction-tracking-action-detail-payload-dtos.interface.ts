@@ -1,6 +1,8 @@
-import { TransactionTrackingActionDetailDto, TransactionTrackingBannerDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
-
-export type TransactionTrackingActionDetailPayloadUserActionNameDto = 'PACKAGE_ARRIVED' | 'CANCEL_TRANSACTION' | 'EXPIRE_CLAIM_PERIOD';
+import {
+  TransactionTrackingActionDetailDto,
+  TransactionTrackingActionDetailPayloadUserActionNameDto,
+  TransactionTrackingBannerDto,
+} from '@api/bff/delivery/transaction-tracking/dtos/responses';
 
 export interface TransactionTrackingActionDetailPayloadDeeplinkDto {
   link_url: string;

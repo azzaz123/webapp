@@ -2,11 +2,16 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_HERE_MAPS } from '../../../../configs/jest/global-mocks.fixtures.spec';
 import {
   CHECK_INTERVAL_MS,
+  GEO_APP_API_KEY,
   GEO_APP_CODE,
   GEO_APP_ID,
   HereMapsService,
+  HERE_MAPS_CORE_LEGACY_REF_ID,
+  HERE_MAPS_CORE_LEGACY_URL,
   HERE_MAPS_CORE_REF_ID,
   HERE_MAPS_CORE_URL,
+  HERE_MAPS_SERVICE_LEGACY_REF_ID,
+  HERE_MAPS_SERVICE_LEGACY_URL,
   HERE_MAPS_SERVICE_REF_ID,
   HERE_MAPS_SERVICE_URL,
   RETRY_AMOUNT,
@@ -39,15 +44,26 @@ describe('HereMapsService', () => {
       expectedCoreScript.setAttribute('type', 'text/javascript');
       expectedCoreScript.setAttribute('charset', 'utf-8');
 
+      const expectedCoreLegacyScript = document.createElement('script');
+      expectedCoreLegacyScript.setAttribute('id', HERE_MAPS_CORE_LEGACY_REF_ID);
+      expectedCoreLegacyScript.setAttribute('src', HERE_MAPS_CORE_LEGACY_URL);
+      expectedCoreLegacyScript.setAttribute('type', 'text/javascript');
+      expectedCoreLegacyScript.setAttribute('charset', 'utf-8');
+
       const expectedServiceScript = document.createElement('script');
       expectedServiceScript.setAttribute('id', HERE_MAPS_SERVICE_REF_ID);
       expectedServiceScript.setAttribute('src', HERE_MAPS_SERVICE_URL);
       expectedServiceScript.setAttribute('type', 'text/javascript');
       expectedServiceScript.setAttribute('charset', 'utf-8');
 
+      const expectedServiceLegacyScript = document.createElement('script');
+      expectedServiceLegacyScript.setAttribute('id', HERE_MAPS_SERVICE_LEGACY_REF_ID);
+      expectedServiceLegacyScript.setAttribute('src', HERE_MAPS_SERVICE_LEGACY_URL);
+      expectedServiceLegacyScript.setAttribute('type', 'text/javascript');
+      expectedServiceLegacyScript.setAttribute('charset', 'utf-8');
+
       const expectedParams = {
-        app_id: GEO_APP_ID,
-        app_code: GEO_APP_CODE,
+        apikey: GEO_APP_API_KEY,
         useCIT: true,
         useHTTPS: true,
       };
@@ -70,11 +86,13 @@ describe('HereMapsService', () => {
       expect(document.head.appendChild).toHaveBeenCalledTimes(1);
       expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
 
-      tick(CHECK_INTERVAL_MS * 2);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(2);
-      expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceScript);
+      tick(CHECK_INTERVAL_MS * 3);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(2 * 2);
+      expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
+      expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreLegacyScript);
+      expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreScript);
 
-      tick(CHECK_INTERVAL_MS);
+      tick(CHECK_INTERVAL_MS * 4);
       expect(window['H'].service.Platform).toHaveBeenCalledTimes(1);
       expect(window['H'].service.Platform).toHaveBeenCalledWith(expectedParams);
       expect(isReady).toBeTruthy();

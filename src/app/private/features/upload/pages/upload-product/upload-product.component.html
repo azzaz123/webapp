@@ -272,6 +272,15 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <label for="tellUs" i18n="@@finding_item_hashtags_section_hint">Hashtags</label>
+          <tsl-hashtag-field class="mb-5" formControlName="hashtags" [categoryId]="uploadForm.controls.category_id.value" [max]="DEFAULT_MAX_HASHTAGS"></tsl-hashtag-field>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="box product-photos" [ngbPopover]="coachmarkPictures" [autoClose]="false" triggers="mouseenter:mouseleave">

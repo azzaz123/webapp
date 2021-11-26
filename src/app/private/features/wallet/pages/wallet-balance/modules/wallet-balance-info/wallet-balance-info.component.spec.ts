@@ -333,8 +333,9 @@ describe('WalletBalanceInfoComponent', () => {
               result: Promise.resolve(),
             });
             spyOn(balanceTrackingEventService, 'trackClickTransferBankAccount');
-            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
-              .nativeElement;
+            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(
+              By.css(walletBalanceInfoCtaButtonSelector)
+            ).nativeElement;
 
             (buttonComponentRef as HTMLButtonElement).click();
           });
@@ -387,8 +388,9 @@ describe('WalletBalanceInfoComponent', () => {
           });
 
           it('should open the modal view', () => {
-            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
-              .nativeElement;
+            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(
+              By.css(walletBalanceInfoCtaButtonSelector)
+            ).nativeElement;
 
             (buttonComponentRef as HTMLButtonElement).click();
 
@@ -396,8 +398,9 @@ describe('WalletBalanceInfoComponent', () => {
           });
 
           it('should retrieve the wallet balance', () => {
-            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(By.css(walletBalanceInfoCtaButtonSelector))
-              .nativeElement;
+            const buttonComponentRef: HTMLButtonElement = fixture.debugElement.query(
+              By.css(walletBalanceInfoCtaButtonSelector)
+            ).nativeElement;
 
             (buttonComponentRef as HTMLButtonElement).click();
 

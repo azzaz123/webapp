@@ -1,20 +1,23 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import {
-  TRANSACTION_TRACKING_DETAILS_ENDPOINT,
-  TRANSACTION_TRACKING_ENDPOINT,
-  TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT,
-} from '@api/bff/delivery/transaction-tracking/http/endpoints';
+import { APP_VERSION } from '@environments/version';
 import {
   TransactionTrackingActionTypeDto,
   TransactionTrackingDetailsDto,
   TransactionTrackingDto,
   TransactionTrackingInstructionsDto,
 } from '@api/bff/delivery/transaction-tracking/dtos/responses';
+import {
+  TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT,
+  TRANSACTION_TRACKING_DETAILS_ENDPOINT,
+  TRANSACTION_TRACKING_ENDPOINT,
+  TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT,
+  TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT,
+  TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT as TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT,
+} from '@api/bff/delivery/transaction-tracking/http/endpoints';
 
 import { Observable } from 'rxjs';
-import { APP_VERSION } from '@environments/version';
 
 @Injectable()
 export class TransactionTrackingHttpService {
@@ -41,11 +44,25 @@ export class TransactionTrackingHttpService {
     });
   }
 
-  private get getHeaders(): {
-    [header: string]: string | string[];
-  } {
-    return {
-      'X-AppVersion': APP_VERSION.replace(/\./g, ''),
-    };
+  public sendCancelTransaction(requestId: string): Observable<void> {
+    return this.httpClient.delete<void>(TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT(requestId), {
+      headers: this.getHeaders,
+    });
+  }
+
+  public sendExpireClaimPeriod(requestId: string): Observable<void> {
+    return this.httpClient.patch<void>(TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT(requestId), null, {
+      headers: this.getHeaders,
+    });
+  }
+
+  public sendPackageArrived(requestId: string): Observable<void> {
+    return this.httpClient.post<void>(TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT(requestId), null, {
+      headers: this.getHeaders,
+    });
+  }
+
+  private get getHeaders(): { [header: string]: string | string[] } {
+    return { 'X-AppVersion': APP_VERSION.replace(/\./g, '') };
   }
 }

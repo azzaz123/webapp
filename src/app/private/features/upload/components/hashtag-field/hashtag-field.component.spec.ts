@@ -44,6 +44,7 @@ describe('HashtagFieldComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HashtagFieldComponent);
     component = fixture.componentInstance;
+    component.categoryId = '';
     fixture.detectChanges();
     component.suggestedOptions$.subscribe((opts) => {
       options = opts;
@@ -54,7 +55,7 @@ describe('HashtagFieldComponent', () => {
     expect(component).toBeTruthy();
   });
   describe('Multiselect behavior with two hashtagForms', () => {
-    describe('When we check general hashtag', () => {
+    describe('When we check suggested hashtag', () => {
       it('should also check in the same option in search hashtags', () => {
         const value = options[0].value;
         component.hashtagForm.controls[HASHTAG_TYPE.SUGGESTED].setValue([value]);
