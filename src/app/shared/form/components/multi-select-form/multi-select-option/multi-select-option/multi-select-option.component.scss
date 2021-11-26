@@ -14,7 +14,16 @@
     cursor: pointer;
   }
 
+  &__container {
+    max-width: calc(100% - 24px);
+  }
+
   &__label {
+    max-width: 95%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
     &__sub {
       color: $blue-grey-2;
     }

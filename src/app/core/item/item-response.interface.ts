@@ -68,6 +68,7 @@ export interface ItemContent {
   publish_date?: number;
   km?: number;
   user?: User;
+  hashtags?: string[];
 }
 
 export interface ItemImagesURLs {

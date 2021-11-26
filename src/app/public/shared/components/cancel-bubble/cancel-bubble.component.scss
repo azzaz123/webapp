@@ -8,6 +8,7 @@ $border-width: 1px;
 
 :host {
   display: inline-block;
+  max-width: 100%;
 }
 
 .CancelBubbleComponent {
