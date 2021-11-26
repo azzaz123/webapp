@@ -9,7 +9,7 @@ import {
 } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-dto.interface';
 
-export class TransactionTrackingActionModel implements TransactionTrackingCta {
+export class TransactionTrackingCtaModel implements TransactionTrackingCta {
   action: TransactionTrackingActionDetail;
   state: TransactionTrackingState;
   style: TransactionTrackingStyle;

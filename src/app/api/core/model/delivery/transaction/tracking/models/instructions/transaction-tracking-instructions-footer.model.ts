@@ -1,7 +1,7 @@
 import { TransactionTrackingActionDto, TransactionTrackingInstructionsDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import {
   TransactionTrackingCta,
-  TransactionTrackingActionModel,
+  TransactionTrackingCtaModel,
   TransactionTrackingInstructionsFooter,
 } from '@api/core/model/delivery/transaction/tracking';
 
@@ -17,7 +17,7 @@ export class TransactionTrackingInstructionsFooterModel implements TransactionTr
   private getActions(transactionTrackingActionDtos: TransactionTrackingActionDto[]): TransactionTrackingCta[] {
     let actions: TransactionTrackingCta[] = [];
     transactionTrackingActionDtos.forEach((action) => {
-      actions.push(new TransactionTrackingActionModel(action));
+      actions.push(new TransactionTrackingCtaModel(action));
     });
     return actions;
   }
