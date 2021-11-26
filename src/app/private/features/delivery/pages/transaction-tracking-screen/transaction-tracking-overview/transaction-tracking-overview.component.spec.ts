@@ -14,9 +14,9 @@ describe('TransactionTrackingOverviewComponent', () => {
   const MOCK_TRANSACTION_TRACKING_ID = 'Laia';
 
   const transactionTrackingHeaderSelector = 'tsl-transaction-tracking-header';
-  const shippingStatusSelector = 'tsl-transaction-tracking-general-info';
-  const transactionTrackingStatusInfoSelector = 'tsl-transaction-tracking-status-info';
-  const transactionTrackingDetailInfoSelector = 'tsl-transaction-tracking-status-info-wrapper';
+  const generalInfoSelector = 'tsl-transaction-tracking-general-info';
+  const transactionTrackingStatusInfoWrapperSelector = '#transactionTrackingStatusInfoWrapper';
+  const transactionTrackingDetailsStatusInfoWrapperSelector = '#transactionTrackingDetailsStatusInfoWrapper';
 
   let component: TransactionTrackingOverviewComponent;
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
@@ -113,12 +113,12 @@ describe('TransactionTrackingOverviewComponent', () => {
       expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeFalsy();
     });
 
-    it('should NOT render the transaction tracking status info ', () => {
-      expect(de.query(By.css(transactionTrackingStatusInfoSelector))).toBeFalsy();
+    it('should NOT render the general info ', () => {
+      expect(de.query(By.css(generalInfoSelector))).toBeFalsy();
     });
 
     it('should NOT render the transaction tracking status info ', () => {
-      expect(de.query(By.css(transactionTrackingStatusInfoSelector))).toBeFalsy();
+      expect(de.query(By.css(transactionTrackingStatusInfoWrapperSelector))).toBeFalsy();
     });
   });
 
@@ -129,8 +129,8 @@ describe('TransactionTrackingOverviewComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should NOT render the transaction tracking detail info ', () => {
-      expect(de.query(By.css(transactionTrackingDetailInfoSelector))).toBeFalsy();
+    it('should NOT render the transaction tracking status info ', () => {
+      expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeFalsy();
     });
   });
 
@@ -145,12 +145,12 @@ describe('TransactionTrackingOverviewComponent', () => {
       expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeTruthy();
     });
 
-    it('should render the shipping status info ', () => {
-      expect(de.query(By.css(shippingStatusSelector))).toBeTruthy();
+    it('should render the general info ', () => {
+      expect(de.query(By.css(generalInfoSelector))).toBeTruthy();
     });
 
     it('should render the transaction tracking status info ', () => {
-      expect(de.query(By.css(transactionTrackingStatusInfoSelector))).toBeTruthy();
+      expect(de.query(By.css(transactionTrackingStatusInfoWrapperSelector))).toBeTruthy();
     });
   });
 
@@ -161,8 +161,8 @@ describe('TransactionTrackingOverviewComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should render the transaction tracking detail info ', () => {
-      expect(de.query(By.css(transactionTrackingDetailInfoSelector))).toBeTruthy();
+    it('should render the transaction tracking status info ', () => {
+      expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeTruthy();
     });
   });
 });
