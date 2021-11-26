@@ -1,4 +1,5 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
+import { environment } from '@environments/environment';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '../interfaces/historic-element.interface';
 
@@ -12,7 +13,7 @@ export const MOCK_HISTORIC_ELEMENT: HistoricElement = {
 
 export const MOCK_HISTORIC_ELEMENT_WITH_ICON: HistoricElement = {
   ...MOCK_HISTORIC_ELEMENT,
-  iconUrl: 'path/to/icon/thumbsup.svg',
+  iconUrl: `${environment.baseUrl}path/to/icon/thumbsup.svg`,
 };
 
 export const MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION: HistoricElement = {

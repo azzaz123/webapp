@@ -1,5 +1,11 @@
 @import '~style/common';
 
+$historic-element-image-container-size: 48px;
+$historic-element-image-size: 48px;
+$historic-element-icon-container-size: 25px;
+$historic-element-icon-size: 22px;
+$historic-element-icon-margin: 6px;
+
 .HistoricElement {
   padding: $spacing-m 0;
   color: $blue-grey-1;
@@ -8,23 +14,32 @@
   font-size: $font-size-m;
 
   &__image {
-    @include square(48px);
+    @include square($historic-element-image-container-size);
     position: relative;
     margin-right: 14px;
 
     img {
       border-radius: 5px;
       object-fit: cover;
-      @include square(48px);
+      @include square($historic-element-image-size);
     }
   }
 
   &__icon {
     position: absolute;
-
-    bottom: -2px;
-    right: -2px;
+    bottom: -1 * $historic-element-icon-margin;
+    right: -1 * $historic-element-icon-margin;
     z-index: 1;
+
+    background-color: $white;
+
+    @include square($historic-element-icon-container-size);
+    border-radius: 50%;
+
+    img {
+      @include square($historic-element-icon-size);
+      border-radius: 50%;
+    }
   }
 
   &__money-amount {

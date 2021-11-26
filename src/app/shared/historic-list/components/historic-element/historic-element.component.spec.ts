@@ -20,7 +20,7 @@ import { HistoricElementComponent } from './historic-element.component';
 export class TestWrapperHistoricElementComponent {
   @Input() historicElement: HistoricElement;
   @Input() clickable: boolean;
-  onClick(historicElement: HistoricElement): void {}
+  onClick(_historicElement: HistoricElement): void {}
 }
 
 describe('HistoricElementComponent', () => {
@@ -29,6 +29,7 @@ describe('HistoricElementComponent', () => {
 
   const historicElementSelector = '.HistoricElement';
   const imageSelector = `${historicElementSelector}__image > img`;
+  const iconSelector = `${historicElementSelector}__icon > img`;
   const titleSelector = `${historicElementSelector}__title > div`;
   const moneyAmountSelector = `${historicElementSelector}__money-amount`;
   const descriptionSelector = `${historicElementSelector}__description`;
@@ -36,7 +37,6 @@ describe('HistoricElementComponent', () => {
   const subDescriptionValidSelector = `${historicElementSelector}__subDescription--valid`;
   const subDescriptionErrorSelector = `${historicElementSelector}__subDescription--error`;
   const clickableSelector = `${historicElementSelector}--clickable`;
-  const iconSelector = 'tsl-svg-icon';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
