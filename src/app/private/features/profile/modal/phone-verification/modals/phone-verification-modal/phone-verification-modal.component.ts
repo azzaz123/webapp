@@ -9,6 +9,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { SmsCodeVerificationModalComponent } from '../sms-code-verification-modal/sms-code-verification-modal.component';
 import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
 import { PHONE_PREFIXES } from '../../constants/phone-prefixies-constants';
+import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 
 @Component({
   selector: 'tsl-phone-verification-modal',
@@ -24,7 +25,8 @@ export class PhoneVerificationModalComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private userVerificationsService: UserVerificationsService,
     private toastService: ToastService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +49,8 @@ export class PhoneVerificationModalComponent implements OnInit {
 
             modalRef.componentInstance.phone = phone;
             modalRef.componentInstance.prefix = prefix;
+
+            this.verificationsNSecurityTrackingEventsService.trackStartPhoneVerificationProcessEvent();
           },
           () => {
             this.toastService.show(DEFAULT_ERROR_TOAST);

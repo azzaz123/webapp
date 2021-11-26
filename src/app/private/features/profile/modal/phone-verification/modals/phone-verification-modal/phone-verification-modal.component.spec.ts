@@ -6,6 +6,7 @@ import { MOCK_PHONE_NUMBER, MOCK_PREFIX_PHONE } from '@api/fixtures/user-verific
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { of } from 'rxjs';
 import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
@@ -24,6 +25,7 @@ describe('PhoneVerificationModalComponent', () => {
   let activeModal: NgbActiveModal;
   let userVerificationsService: UserVerificationsService;
   let modalService: NgbModal;
+  let verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService;
   let componentInstance: any = {};
 
   beforeEach(async () => {
@@ -53,6 +55,12 @@ describe('PhoneVerificationModalComponent', () => {
             },
           },
         },
+        {
+          provide: VerificationsNSecurityTrackingEventsService,
+          useValue: {
+            trackStartPhoneVerificationProcessEvent() {},
+          },
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -63,6 +71,7 @@ describe('PhoneVerificationModalComponent', () => {
     userVerificationsService = TestBed.inject(UserVerificationsService);
     modalService = TestBed.inject(NgbModal);
     activeModal = TestBed.inject(NgbActiveModal);
+    verificationsNSecurityTrackingEventsService = TestBed.inject(VerificationsNSecurityTrackingEventsService);
     component = fixture.componentInstance;
     fixture.detectChanges();
     spyOn(activeModal, 'close').and.callThrough();
@@ -104,14 +113,14 @@ describe('PhoneVerificationModalComponent', () => {
       beforeEach(() => {
         component.phoneVerificationForm.patchValue({ prefix: MOCK_PREFIX_PHONE, phone: MOCK_PHONE_NUMBER });
         spyOn(modalService, 'open').and.callThrough();
+        spyOn(verificationsNSecurityTrackingEventsService, 'trackStartPhoneVerificationProcessEvent');
         component['modalRef'] = <any>{
           componentInstance: componentInstance,
         };
+        component.onSubmitPhone();
       });
 
       it('should call the verifyPhone, close the modal and open the sms code modal', () => {
-        component.onSubmitPhone();
-
         expect(userVerificationsService.verifyPhone).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
         expect(modalService.open).toHaveBeenCalledWith(SmsCodeVerificationModalComponent, {
@@ -119,6 +128,11 @@ describe('PhoneVerificationModalComponent', () => {
         });
         expect(component['modalRef'].componentInstance.phone).toBe(MOCK_PHONE_NUMBER);
         expect(component['modalRef'].componentInstance.prefix).toBe(MOCK_PREFIX_PHONE);
+      });
+
+      it('should track the start phone verification process', () => {
+        expect(verificationsNSecurityTrackingEventsService.trackStartPhoneVerificationProcessEvent).toHaveBeenCalledTimes(1);
+        expect(verificationsNSecurityTrackingEventsService.trackStartPhoneVerificationProcessEvent).toHaveBeenCalled();
       });
     });
 
