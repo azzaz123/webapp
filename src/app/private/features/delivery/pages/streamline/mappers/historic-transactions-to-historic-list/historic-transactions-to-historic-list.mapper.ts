@@ -1,8 +1,12 @@
 import { HistoricTransaction } from '@api/core/model';
 import { ToDomainMapper } from '@api/core/utils/types';
+import { deliveryStatusTranslationsAsBuyer } from '@private/features/delivery/translations/delivery-status-as-buyer.translations';
+import { deliveryStatusTranslationsAsSeller } from '@private/features/delivery/translations/delivery-status-as-seller.translations';
+import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import * as moment from 'moment';
+import { mapTransactionStatusToSubDescriptionType } from '../transaction-status-to-subdescription-type.mapper';
 
 export const mapHistoricTransactionsToHistoricList: ToDomainMapper<HistoricTransaction[], HistoricList> = (
   input: HistoricTransaction[]
@@ -48,6 +52,7 @@ const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricEl
   const { imageUrl, title } = item;
   const iconUrl = getIconUrlFromHistoricTransaction(input);
   const description = getDescriptionFromHistoricTransaction(input);
+  const subDescription = getSubDescriptionFromHistoricTransaction(input);
 
   const historicElement: HistoricElement = {
     id,
@@ -55,20 +60,40 @@ const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricEl
     iconUrl,
     title,
     description,
+    subDescription,
     moneyAmount,
   };
 
   return historicElement;
 };
 
+// TODO: Move to domain
+const isCurrentUserTheSeller = (input: HistoricTransaction): boolean => {
+  return true;
+};
+
 const getIconUrlFromHistoricTransaction = (input: HistoricTransaction): string => {
-  const isCurrentUserTheSeller = true; // TODO: Map to transaction model
-  return isCurrentUserTheSeller ? input.buyer.imageUrl : input.seller.imageUrl;
+  const isSeller = isCurrentUserTheSeller(input);
+  return isSeller ? input.buyer.imageUrl : input.seller.imageUrl;
 };
 
 const getDescriptionFromHistoricTransaction = (input: HistoricTransaction): { text: string; iconUrl: string } => {
   return {
     text: 'Via shipping',
     iconUrl: 'assets/icons/box.svg',
+  };
+};
+
+const getSubDescriptionFromHistoricTransaction = (
+  input: HistoricTransaction
+): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } => {
+  const formattedDate: string = moment(input.creationDate).format('DD MMM');
+  const text: string = `Completed on ${formattedDate}`;
+
+  const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL;
+
+  return {
+    text,
+    type,
   };
 };

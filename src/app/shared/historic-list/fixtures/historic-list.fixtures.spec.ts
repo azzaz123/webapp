@@ -90,7 +90,7 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
               title: MOCK_PENDING_TRANSACTIONS[0].item.title,
               description: {
                 text: 'Via shipping',
-                iconUrl: 'TBD',
+                iconUrl: 'assets/icons/box.svg',
               },
               moneyAmount: MOCK_PENDING_TRANSACTIONS[0].moneyAmount,
               subDescription: { text: 'IN_TRANSIT', type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.VALID },
@@ -117,7 +117,12 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
               iconUrl: MOCK_USER.image.urls_by_size.original,
               title: MOCK_ITEM.title,
               description: {
-                text: 'Completed',
+                text: 'Via shipping',
+                iconUrl: 'assets/icons/box.svg',
+              },
+              subDescription: {
+                text: 'Completed on 22 Oct',
+                type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
               },
               moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 19.75, currency: 'EUR' }),
             },
@@ -127,7 +132,12 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
               iconUrl: MOCK_USER.image.urls_by_size.original,
               title: MOCK_ITEM.title,
               description: {
-                text: 'Completed',
+                text: 'Via shipping',
+                iconUrl: 'assets/icons/box.svg',
+              },
+              subDescription: {
+                text: 'Completed on 22 Oct',
+                type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
               },
               moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 12, currency: 'EUR' }),
             },
