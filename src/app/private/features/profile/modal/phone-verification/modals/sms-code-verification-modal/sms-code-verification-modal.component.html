@@ -29,8 +29,8 @@
             class="SmsCodeVerificationModal__message SmsCodeVerificationModal__message--error"
           >
             <ng-container *ngIf="codeVerificationForm.controls.code.errors">
-              <span i18n="@@phone_verification_all_users_snackbar_not_valid_number_error_message"
-                >The phone number isn't valid. Review it or try other.</span
+              <span i18n="@@phone_verification_insert_code_all_users_snackbar_verification_code_error_message"
+                >This verification code is not valid. Check it or try another one.</span
               >
             </ng-container>
           </div>
@@ -47,6 +47,8 @@
         class="SmsCodeVerificationModal__resend-btn w-100 mb-1"
         className="basic btn-text w-100"
         i18n="@@phone_verification_insert_code_all_users_resend_sms_button"
+        (click)="resendSMS()"
+        [disabled]="timer > 0"
         >Resend SMS</tsl-button
       >
       <tsl-button

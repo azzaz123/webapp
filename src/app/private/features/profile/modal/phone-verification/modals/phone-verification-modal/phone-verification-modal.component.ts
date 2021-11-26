@@ -41,9 +41,12 @@ export class PhoneVerificationModalComponent implements OnInit {
         .subscribe(
           () => {
             this.activeModal.close();
-            this.modalService.open(SmsCodeVerificationModalComponent, {
+            const modalRef: NgbModalRef = this.modalService.open(SmsCodeVerificationModalComponent, {
               windowClass: 'modal-standard',
             });
+
+            modalRef.componentInstance.phone = phone;
+            modalRef.componentInstance.prefix = prefix;
           },
           () => {
             this.toastService.show(DEFAULT_ERROR_TOAST);

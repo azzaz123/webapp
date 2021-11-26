@@ -1,14 +1,15 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { MOCK_PHONE_NUMBER, MOCK_PREFIX_PHONE } from '@api/fixtures/user-verifications/phone-verification.fixtures.spec';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
-import { IOption } from '@shared/dropdown/utils/option.interface';
 import { of } from 'rxjs';
 import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
+import { SmsCodeVerificationModalComponent } from '../sms-code-verification-modal/sms-code-verification-modal.component';
 import { PhoneVerificationModalComponent } from './phone-verification-modal.component';
 
 @Component({
@@ -22,6 +23,8 @@ describe('PhoneVerificationModalComponent', () => {
   let fixture: ComponentFixture<PhoneVerificationModalComponent>;
   let activeModal: NgbActiveModal;
   let userVerificationsService: UserVerificationsService;
+  let modalService: NgbModal;
+  let componentInstance: any = {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -39,6 +42,17 @@ describe('PhoneVerificationModalComponent', () => {
             },
           },
         },
+        {
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                result: Promise.resolve(),
+                componentInstance: componentInstance,
+              };
+            },
+          },
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -47,6 +61,7 @@ describe('PhoneVerificationModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PhoneVerificationModalComponent);
     userVerificationsService = TestBed.inject(UserVerificationsService);
+    modalService = TestBed.inject(NgbModal);
     activeModal = TestBed.inject(NgbActiveModal);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -87,14 +102,23 @@ describe('PhoneVerificationModalComponent', () => {
   describe('onSubmitPhone', () => {
     describe('when the phone number is valid', () => {
       beforeEach(() => {
-        component.phoneVerificationForm.patchValue({ prefix: '+34', phone: '935500996' });
+        component.phoneVerificationForm.patchValue({ prefix: MOCK_PREFIX_PHONE, phone: MOCK_PHONE_NUMBER });
+        spyOn(modalService, 'open').and.callThrough();
+        component['modalRef'] = <any>{
+          componentInstance: componentInstance,
+        };
       });
 
-      it('should call the verifyPhone and close the modal', () => {
+      it('should call the verifyPhone, close the modal and open the sms code modal', () => {
         component.onSubmitPhone();
 
         expect(userVerificationsService.verifyPhone).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
+        expect(modalService.open).toHaveBeenCalledWith(SmsCodeVerificationModalComponent, {
+          windowClass: 'modal-standard',
+        });
+        expect(component['modalRef'].componentInstance.phone).toBe(MOCK_PHONE_NUMBER);
+        expect(component['modalRef'].componentInstance.prefix).toBe(MOCK_PREFIX_PHONE);
       });
     });
 

@@ -2,8 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { interval, timer } from 'rxjs';
+import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 
 @Component({
   selector: 'tsl-sms-code-verification-modal',
@@ -11,8 +14,13 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
   styleUrls: ['./sms-code-verification-modal.component.scss'],
 })
 export class SmsCodeVerificationModalComponent implements OnInit {
+  @Input() phone: string;
+  @Input() prefix: string;
+
   public codeVerificationForm: FormGroup;
-  public timer: number = 0;
+  public timer: number;
+  public readonly INTERVAL_RESEND_SMS_SEC = 59;
+
   constructor(
     private fb: FormBuilder,
     public activeModal: NgbActiveModal,
@@ -22,6 +30,7 @@ export class SmsCodeVerificationModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
+    this.setTimerToResendSMS();
   }
 
   public onSubmitCode(): void {
@@ -32,11 +41,29 @@ export class SmsCodeVerificationModalComponent implements OnInit {
       .pipe(take(1))
       .subscribe(
         () => {
+          this.toastService.show({
+            text: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_title:Now your phone makes your Wallapop experience even safer.`,
+            title: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_description:Phone verified!`,
+            type: TOAST_TYPES.SUCCESS,
+          });
           this.activeModal.close();
         },
-        (err) => {
-          console.log(err);
+        () => {
           this.setCodeErrorForm();
+        }
+      );
+  }
+
+  public resendSMS(): void {
+    this.userVerificationsService
+      .verifyPhone(this.phone, this.prefix)
+      .pipe(take(1))
+      .subscribe(
+        () => {
+          this.setTimerToResendSMS();
+        },
+        () => {
+          this.toastService.show(DEFAULT_ERROR_TOAST);
         }
       );
   }
@@ -52,5 +79,16 @@ export class SmsCodeVerificationModalComponent implements OnInit {
     this.codeVerificationForm.get('code').setErrors({ invalid: true });
     this.codeVerificationForm.get('code').markAsDirty();
     this.codeVerificationForm.markAsPending();
+  }
+
+  private setTimerToResendSMS(): void {
+    const timeLeft: number = this.INTERVAL_RESEND_SMS_SEC;
+    this.timer = timeLeft;
+
+    interval(1000)
+      .pipe(takeUntil(timer((this.INTERVAL_RESEND_SMS_SEC + 1) * 1000)))
+      .subscribe((sec: number) => {
+        this.timer = timeLeft - (sec + 1);
+      });
   }
 }
