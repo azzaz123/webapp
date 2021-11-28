@@ -3,7 +3,7 @@
 .SelectedItems {
   position: sticky;
   bottom: 0;
-  z-index: 10;
+  z-index: $tabbar-z-index + 1;
   background-color: $white;
   color: $blue-grey-1;
   border-top: 1px solid transparentize($blue-grey-4, 0.5);
