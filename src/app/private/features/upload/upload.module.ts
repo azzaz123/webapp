@@ -31,6 +31,7 @@ import { DeliveryRulesApiModule } from '@api/bff/delivery/rules/delivery-rules-a
 import { UploadTrackingEventService } from './pages/upload-product/upload-tracking-event/upload-tracking-event.service';
 import { CategoriesApiModule } from '@api/categories/categories-api.module';
 import { ProFeaturesModule } from './components/pro-features/pro-features.module';
+import { HashtagFieldModule } from './components/hashtag-field/hashtag-field.module';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { ProFeaturesModule } from './components/pro-features/pro-features.module
     DeliveryRulesApiModule, // todo extract to upload product, needs to prepare modules for each upload form (maybe need a shared one for them)
     CategoriesApiModule,
     ProFeaturesModule,
+    HashtagFieldModule,
   ],
   declarations: [
     uploadRoutedComponents,

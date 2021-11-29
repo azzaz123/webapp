@@ -34,7 +34,10 @@ export enum HASHTAG_TYPE {
   ],
 })
 export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
-  @Input() categoryId: string;
+  @Input() set categoryId(value: string) {
+    this._categoryId = value;
+    this.getSuggestedOptions(0);
+  }
   @Input() max: number;
   @ViewChild(MultiSelectFormComponent, { static: true }) suggestedHashtagsComponent: MultiSelectFormComponent;
   @ViewChild(MultiselectSearchInputComponent, { static: true }) searchedHashtagsComponent: MultiselectSearchInputComponent;
@@ -51,6 +54,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
   private suggestedOptionsSubject = new BehaviorSubject<MultiSelectFormOption[]>([]);
   private suggestedOptions: MultiSelectFormOption[] = [];
   private suggestedOptionsPage;
+  private _categoryId: string;
 
   private searchedExtendedOptions: TemplateMultiSelectFormOption[] = [];
   private suggestedExtendedOptions: TemplateMultiSelectFormOption[] = [];
@@ -59,6 +63,9 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     super();
   }
 
+  public get categoryId(): string {
+    return this._categoryId;
+  }
   public get suggestedOptions$(): Observable<MultiSelectFormOption[]> {
     return this.suggestedOptionsSubject.asObservable();
   }
@@ -67,9 +74,7 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
     return this.maxReachedSubject.asObservable();
   }
 
-  ngOnInit(): void {
-    this.getSuggestedOptions(0);
-
+  ngOnInit() {
     this.maxReached$.pipe(filter((maxReached) => maxReached)).subscribe(() => {
       this.searchedHashtagsComponent.emptyOptions();
       this.searchedHashtagsComponent.searchValue = '';
@@ -139,22 +144,22 @@ export class HashtagFieldComponent extends AbstractFormComponent<MultiSelectValu
 
   private getSuggestedOptions(page: number): void {
     if (page !== null) {
-      this.hashtagSuggesterApiService.getHashtags(this.categoryId, page.toString()).subscribe((n) => {
+      this.hashtagSuggesterApiService.getHashtags(this._categoryId, page.toString()).subscribe((n) => {
         this.suggestedOptionsPage = n.paginationParameter;
-        this.mapHashtagOptions(n);
+        const options = this.mapHashtagOptions(n);
+        this.suggestedOptions = page ? this.suggestedOptions.concat(options) : options;
+        this.suggestedOptionsSubject.next(this.suggestedOptions);
       });
     }
   }
 
-  private mapHashtagOptions(hashtags: PaginatedList<Hashtag>): void {
+  private mapHashtagOptions(hashtags: PaginatedList<Hashtag>): MultiSelectFormOption[] {
     let suggestedOptions: SelectFormOption<string>[] = [];
 
     hashtags.list.forEach((hashtag: Hashtag) => {
       suggestedOptions.push({ label: `#${hashtag.text}`, sublabel: hashtag.occurrences.toString(), value: hashtag.text });
     });
-
-    this.suggestedOptions = this.suggestedOptions.concat(suggestedOptions);
-    this.suggestedOptionsSubject.next(this.suggestedOptions);
+    return suggestedOptions;
   }
 
   private updateMaxReached(): void {

@@ -1,0 +1,63 @@
+<div class="SmsCodeVerificationModal text-center px-md-3 py-3">
+  <div class="SmsCodeVerificationModal__close position-absolute" (click)="activeModal.close()">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
+  </div>
+  <div class="SmsCodeVerificationModal__container mt-5">
+    <tsl-svg-icon
+      class="d-inline-flex"
+      width="63"
+      height="62"
+      src="/assets/icons/verifications-n-security/phone-verification.svg"
+    ></tsl-svg-icon>
+    <div class="SmsCodeVerificationModal__title my-2" i18n="@@phone_verification_insert_code_all_users_title">Verification code</div>
+    <div class="SmsCodeVerificationModall__subtitle mb-4 mx-4" i18n="@@phone_verification_insert_code_all_users_description">
+      Enter the verification code we have sent you by SMS.
+    </div>
+    <form class="col" [formGroup]="codeVerificationForm" (submit)="onSubmitCode()">
+      <div class="form-group row justify-content-center">
+        <div class="col-6 col-md-4">
+          <input
+            type="tel"
+            placeholder="Verification code"
+            i18n-placeholder="@@phone_verification_insert_code_all_users_code_field_placeholder"
+            class="form-control"
+            id="code"
+            formControlName="code"
+          />
+          <div
+            *ngIf="codeVerificationForm.controls.code.invalid && codeVerificationForm.pending"
+            class="SmsCodeVerificationModal__message SmsCodeVerificationModal__message--error"
+          >
+            <ng-container *ngIf="codeVerificationForm.controls.code.errors">
+              <span i18n="@@phone_verification_insert_code_all_users_snackbar_verification_code_error_message"
+                >This verification code is not valid. Check it or try another one.</span
+              >
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-4 justify-content-center">
+        <div class="col-md-8 col-10">
+          <p class="SmsCodeVerificationModal__legend text-center" i18n="@@phone_verification_insert_code_all_users_resend_sms_description">
+            If you need another code, wait until the counter reaches zero and press "Resend SMS": {{ timer }}(s). Easy!
+          </p>
+        </div>
+      </div>
+      <tsl-button
+        class="SmsCodeVerificationModal__resend-btn w-100 mb-1"
+        className="basic btn-text w-100"
+        i18n="@@phone_verification_insert_code_all_users_resend_sms_button"
+        (click)="resendSMS()"
+        [disabled]="timer > 0"
+        >Resend SMS</tsl-button
+      >
+      <tsl-button
+        class="SmsCodeVerificationModal__verify-btn w-100"
+        className="btn-primary btn-primary--bold w-100"
+        [type]="'submit'"
+        i18n="@@phone_verification_insert_code_all_users_verify_button"
+        >Verify</tsl-button
+      >
+    </form>
+  </div>
+</div>

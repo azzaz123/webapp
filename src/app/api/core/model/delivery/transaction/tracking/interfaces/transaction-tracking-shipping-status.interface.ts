@@ -1,8 +1,7 @@
-import { TransactionTrackingAction } from './transaction-tracking-action.interface';
-import { TransactionTrackingAnimation } from './transaction-tracking-animation.interface';
+import { TransactionTrackingAnimation, TransactionTrackingCta } from '@api/core/model/delivery/transaction/tracking';
 
 export interface TransactionTrackingShippingStatus {
-  actions: TransactionTrackingAction[];
+  actions: TransactionTrackingCta[];
   animation: TransactionTrackingAnimation;
   description: string;
   title: string;

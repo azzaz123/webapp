@@ -199,10 +199,10 @@
 
     <div class="row" formGroupName="extra_info" *ngIf="!!selectedRawCategory?.fields">
       <div
-        class="col-12 col-md-6 mt-3"
+        class="col-12 col-md-6"
         *ngIf="!!selectedRawCategory?.fields.brand && selectedRawCategory.category_id === cellPhonesCategoryId"
       >
-        <div class="form-group last">
+        <div class="form-group">
           <label for="brand" i18n="@@web_upload_product_brand">Brand</label>
           <tsl-keyword-suggester
             [form]="uploadForm.controls.extra_info"
@@ -216,10 +216,10 @@
         </div>
       </div>
       <div
-        class="col-12 col-md-6 mt-3"
+        class="col-12 col-md-6"
         *ngIf="!!selectedRawCategory?.fields.brand && selectedRawCategory.category_id === fashionCategoryId"
       >
-        <div class="form-group last">
+        <div class="form-group">
           <label for="brand" i18n="@@web_upload_product_brand">Brand</label>
           <tsl-keyword-suggester
             [form]="uploadForm.controls.extra_info"
@@ -231,8 +231,8 @@
           </tsl-keyword-suggester>
         </div>
       </div>
-      <div class="col-12 col-md-6 mt-3" *ngIf="!!selectedRawCategory?.fields.model">
-        <div class="form-group last">
+      <div class="col-12 col-md-6 " *ngIf="!!selectedRawCategory?.fields.model">
+        <div class="form-group">
           <label for="model" i18n="@@web_upload_product_model">Model</label>
           <tsl-keyword-suggester
             [form]="uploadForm.controls.extra_info"
@@ -244,8 +244,8 @@
           </tsl-keyword-suggester>
         </div>
       </div>
-      <div class="col-md-3 mt-3" *ngIf="!!selectedRawCategory?.fields.gender && genders">
-        <div class="form-group last">
+      <div class="col-md-3" *ngIf="!!selectedRawCategory?.fields.gender && genders">
+        <div class="form-group">
           <label for="gender" i18n="@@web_upload_product_select_gender">Gender</label>
           <tsl-dropdown
             class="form-control"
@@ -257,8 +257,8 @@
           ></tsl-dropdown>
         </div>
       </div>
-      <div class="col-md-3 mt-3" *ngIf="!!selectedRawCategory?.fields.size">
-        <div class="form-group last" formGroupName="size">
+      <div class="col-md-3" *ngIf="!!selectedRawCategory?.fields.size">
+        <div class="form-group" formGroupName="size">
           <label for="size" i18n="@@web_upload_product_select_size">Size</label>
           <tsl-dropdown
             class="form-control"
@@ -269,6 +269,15 @@
             [options]="sizes"
             noFilter="10"
           ></tsl-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <label for="tellUs" i18n="@@finding_item_hashtags_section_hint">Hashtags</label>
+          <tsl-hashtag-field class="mb-5" formControlName="hashtags" [categoryId]="uploadForm.controls.category_id.value" [max]="DEFAULT_MAX_HASHTAGS"></tsl-hashtag-field>
         </div>
       </div>
     </div>

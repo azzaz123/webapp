@@ -1,5 +1,5 @@
 <div class="MultiSelectOption d-flex align-items-center w-100 position-relative p-3" [class.MultiSelectOption--disabled]="isDisabled" [class.MultiSelectOption--with-children]="hasChildren">
-  <div class="w-100 align-items-center d-flex justify-content-between">
+  <div class="MultiSelectOption__container w-100 align-items-center d-flex justify-content-between">
     <p class="MultiSelectOption__label m-0"> 
       {{ data.label }}
       <span class="MultiSelectOption__selection d-block" *ngIf="selectedChildrenCount">
