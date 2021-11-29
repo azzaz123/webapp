@@ -14,11 +14,11 @@
                     <div class="GenericCard__subtitle mb-1">{{ getLimitText(tier) }}</div>
                 </ng-container>
                 <ng-template #noBasicTitle>
-                    <div>
+                    <div class="Card__title">
                         <ng-container *ngIf="tier.limit">
-                            <span class="Card__title Card__title--large">{{tier.limit}}</span><span ngPreserveWhitespaces> </span><span i18n="@@pro_subscription_purchase_tier_list_items_number_label">items</span>
+                            <span class="Card__title--large">{{tier.limit}}</span><span ngPreserveWhitespaces> </span><span i18n="@@pro_subscription_purchase_tier_list_items_number_label">items</span>
                         </ng-container>
-                        <span *ngIf="!tier.limit" class="GenericCard__title Card__title" i18n="@@web_profile_pages_subscription_586">List without limits</span>
+                        <span *ngIf="!tier.limit" class="GenericCard__title" i18n="@@web_profile_pages_subscription_586">List without limits</span>
                     </div>
                 </ng-template>
                 <div class="Card__description">
