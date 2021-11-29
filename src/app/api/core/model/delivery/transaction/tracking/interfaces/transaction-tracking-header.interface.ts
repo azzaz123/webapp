@@ -1,6 +1,6 @@
-import { TransactionTrackingAction } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingCta } from '@api/core/model/delivery/transaction/tracking';
 
 export interface TransactionTrackingHeader {
-  detail?: TransactionTrackingAction;
+  detail?: TransactionTrackingCta;
   title: string;
 }
