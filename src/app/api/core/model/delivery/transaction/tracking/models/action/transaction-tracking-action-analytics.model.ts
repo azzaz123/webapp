@@ -1,10 +1,10 @@
+import { TransactionTrackingActionDetailAnalytics as TransactionTrackingActionAnalytics } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionDetailAnalyticsDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-action-detail-dto.interface';
-import { TransactionTrackingActionDetailAnalytics } from '@api/core/model/delivery/transaction/tracking';
 
-export class TransactionTrackingActionDetailAnalyticsModel implements TransactionTrackingActionDetailAnalytics {
-  requestId: string;
-  source: string;
-  userId: string;
+export class TransactionTrackingActionAnalyticsModel implements TransactionTrackingActionAnalytics {
+  public requestId: string;
+  public source: string;
+  public userId: string;
 
   constructor(actionDetailAnalyticsDto: TransactionTrackingActionDetailAnalyticsDto) {
     this.requestId = actionDetailAnalyticsDto.request_id;
