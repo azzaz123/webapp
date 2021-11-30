@@ -13,14 +13,11 @@ import {
 } from '@core/analytics/analytics-constants';
 import { VerificationsNSecurityTrackingEventsService } from './verifications-n-security-tracking-events.service';
 import { MOCK_USER_VERIFICATIONS_MAPPED } from '@api/fixtures/user-verifications/user-verifications.fixtures.spec';
-import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
-import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
-import { Observable, of } from 'rxjs';
+import { VERIFICATION_METHOD } from '@api/core/model/verifications';
 
 describe('VerificationsNSecurityTrackingEventsService', () => {
   let service: VerificationsNSecurityTrackingEventsService;
   let analyticsService: AnalyticsService;
-  let mockUserVerifications$: Observable<UserVerifications> = of(MOCK_USER_VERIFICATIONS_MAPPED);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,7 +35,7 @@ describe('VerificationsNSecurityTrackingEventsService', () => {
     });
 
     it('should track the page view', () => {
-      service.verificationsNSecurityPageView(mockUserVerifications$);
+      service.verificationsNSecurityPageView(MOCK_USER_VERIFICATIONS_MAPPED);
 
       const MOCK_PAGE_VIEW: AnalyticsPageView<ViewVerificationsAndSecurityScreen> = {
         name: ANALYTICS_EVENT_NAMES.ViewVerificationsandSecurityScreen,
