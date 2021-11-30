@@ -53,7 +53,7 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
   },
   {
     id: COMMON_CONFIGURATION_ID.CONDITION,
-    type: FILTER_TYPES.SELECT,
+    type: FILTER_TYPES.MULTISELECT,
     title: $localize`:@@web_filter_condition_title:Item condition`,
     bubblePlaceholder: $localize`:@@web_filter_condition_bubble_placeholder:Item condition`,
     drawerPlaceholder: $localize`:@@web_filter_condition_drawer_placeholder:Any item condition`,
