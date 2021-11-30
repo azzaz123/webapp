@@ -27,8 +27,8 @@ $historic-element-icon-margin: 6px;
 
   &__icon {
     position: absolute;
-    bottom: -1 * $historic-element-icon-margin;
-    right: -1 * $historic-element-icon-margin;
+    bottom: -#{$historic-element-icon-margin};
+    right: -#{$historic-element-icon-margin};
     z-index: 1;
 
     background-color: $white;
