@@ -135,13 +135,16 @@
   </div>
 </div>
 
-<tsl-selected-items *ngIf="items.length"
-  [items]="items"
-  [selectedSubscriptionSlot]="selectedSubscriptionSlot"
-  [selectedStatus]="selectedStatus"
-  (selectedAction)="onAction($event)"
->
-</tsl-selected-items>
+<div class="List__selectedItems">
+  <tsl-selected-items *ngIf="items.length"
+    [items]="items"
+    [selectedSubscriptionSlot]="selectedSubscriptionSlot"
+    [selectedStatus]="selectedStatus"
+    (selectedAction)="onAction($event)"
+  >
+  </tsl-selected-items>
+</div>
+
 
 <tsl-bump-tutorial></tsl-bump-tutorial>
 <button [hidden]="true" tslItemSold></button>

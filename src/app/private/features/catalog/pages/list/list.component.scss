@@ -59,3 +59,9 @@ tsl-spinner {
 .logout {
   color: $blue-grey-2 !important;
 }
+
+.List__selectedItems {
+  position: sticky;
+  bottom: 0;
+  z-index: $tabbar-z-index + 1;
+}
