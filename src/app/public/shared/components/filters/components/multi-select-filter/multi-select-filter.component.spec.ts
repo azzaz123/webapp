@@ -19,6 +19,7 @@ import { MultiSelectFilterModule } from './multi-select-filter.module';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { SUBCATEGORIES_WITH_CHILDREN_MOCK } from '@fixtures/subcategories.fixtures';
+import { MULTISELECT_FILTER_BUBBLE_VARIANT } from './enum/multi-select-filter-bubble-variant.enum';
 
 @Component({
   selector: 'tsl-test-wrapper',
@@ -50,6 +51,7 @@ describe('MultiSelectFilterComponent', () => {
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
     },
+    bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.MULTIPLE,
   };
   const OPTIONS = SUBCATEGORIES_WITH_CHILDREN_MOCK;
   const selectedOption1 = OPTIONS[0];

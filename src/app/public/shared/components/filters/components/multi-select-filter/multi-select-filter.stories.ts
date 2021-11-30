@@ -13,6 +13,7 @@ import { MultiSelectFilterConfig } from './interfaces/multi-select-filter-config
 import { MultiSelectFilterModule } from './multi-select-filter.module';
 import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { SUBCATEGORIES_WITH_CHILDREN_MOCK } from '@fixtures/subcategories.fixtures';
+import { MULTISELECT_FILTER_BUBBLE_VARIANT } from './enum/multi-select-filter-bubble-variant.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -85,6 +86,7 @@ const conditionConfig: MultiSelectFilterConfig = {
     parameterKey: FILTER_QUERY_PARAM_KEY.condition,
   },
   type: FILTER_TYPES.MULTISELECT,
+  bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.MULTIPLE,
 };
 
 const subcategoryConfig: MultiSelectFilterConfig = {
@@ -98,6 +100,7 @@ const subcategoryConfig: MultiSelectFilterConfig = {
     parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
   },
   type: FILTER_TYPES.MULTISELECT,
+  bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.MULTIPLE,
 };
 
 export const Default = Template.bind({});
