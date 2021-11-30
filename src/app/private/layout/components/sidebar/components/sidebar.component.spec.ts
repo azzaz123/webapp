@@ -359,7 +359,7 @@ describe('SidebarComponent', () => {
     });
 
     describe('when the collapsed state is collapsed', () => {
-      it('should have the collapsed class', () => {
+      it('should have the collapsed style', () => {
         collapsedSubject.next(true);
 
         fixture.detectChanges();
