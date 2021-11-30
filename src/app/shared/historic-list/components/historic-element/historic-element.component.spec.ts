@@ -1,6 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import {
   MOCK_HISTORIC_ELEMENT,
   MOCK_HISTORIC_ELEMENT_WITH_ICON_IN_DESCRIPTION,
@@ -40,6 +41,7 @@ describe('HistoricElementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ImageFallbackModule],
       declarations: [HistoricElementComponent, TestWrapperHistoricElementComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

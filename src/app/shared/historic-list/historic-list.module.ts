@@ -4,9 +4,10 @@ import { InfiniteScrollModule } from '@shared/infinite-scroll/infinite-scroll.mo
 import { HistoricElementComponent } from './components/historic-element/historic-element.component';
 import { HistoricListComponent } from './components/historic-list/historic-list.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 
 @NgModule({
-  imports: [CommonModule, InfiniteScrollModule, SvgIconModule],
+  imports: [CommonModule, InfiniteScrollModule, SvgIconModule, ImageFallbackModule],
   declarations: [HistoricElementComponent, HistoricListComponent],
   exports: [HistoricListComponent],
 })
