@@ -65,7 +65,7 @@ $historic-element-icon-margin: 6px;
     transition: all 100ms ease;
 
     &:hover {
-      box-shadow: $item-card-hover-box-shadow;
+      background-color: $blue-grey-5;
     }
   }
 }
