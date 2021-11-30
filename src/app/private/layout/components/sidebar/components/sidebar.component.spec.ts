@@ -170,7 +170,7 @@ describe('SidebarComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(element.className).toContain('active');
+      expect(element.className).toContain('Sidebar__entry--active');
     });
 
     it('should be shown profile icon as "active" when is in profile url route', fakeAsync(() => {
@@ -180,7 +180,7 @@ describe('SidebarComponent', () => {
 
         tick();
         var activeLinks = fixture.debugElement
-          .queryAll(By.css('.active'))
+          .queryAll(By.css('.Sidebar__entry--active'))
           .map((element) => element.injector.get(RouterLinkDirectiveStub) as RouterLinkDirectiveStub);
 
         expect(activeLinks.length).toBe(1);
@@ -195,7 +195,7 @@ describe('SidebarComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(element.className).toContain('active');
+      expect(element.className).toContain('Sidebar__entry--active');
     });
 
     it('should be shown chat icon as "active" when is in chat url route', fakeAsync(() => {
@@ -204,7 +204,7 @@ describe('SidebarComponent', () => {
 
         tick();
         var activeLinks = fixture.debugElement
-          .queryAll(By.css('.active'))
+          .queryAll(By.css('.Sidebar__entry--active'))
           .map((element) => element.injector.get(RouterLinkDirectiveStub) as RouterLinkDirectiveStub);
 
         expect(activeLinks.length).toBe(1);
