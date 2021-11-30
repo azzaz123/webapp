@@ -7,4 +7,5 @@ export interface MultiSelectFilterConfig extends AbstractSelectFilterConfig<Mult
   type: FILTER_TYPES.MULTISELECT;
   hasContentPlaceholder: true;
   bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT;
+  singleBubbleValueLabel?: string;
 }
