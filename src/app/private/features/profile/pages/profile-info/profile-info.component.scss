@@ -2,13 +2,6 @@
 
 $right-gutter: 35px;
 
-form {
-  @include media-breakpoint-down(sm) {
-    padding-left: $spacing-s;
-    padding-right: $spacing-s;
-  }
-}
-
 #description {
   min-height: 90px;
 }
