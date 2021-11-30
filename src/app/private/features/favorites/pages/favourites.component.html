@@ -3,7 +3,7 @@
   <div class="container">
     <tsl-header>
       <div class="row mb-3">
-        <div class="col-9 col-md-11">
+        <div class="col-9">
           <div class="header-row">
             <h1 class="header-title" i18n="@@web_favorites_pages_201">Your favorites</h1>
           </div>
@@ -12,7 +12,7 @@
             <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n="@@web_wallapop_profiles_like_most">These are the Wallapop profiles that you like the most</h4>
           </div>
         </div>
-        <div class="col-3 col-md-1 header-numbers">
+        <div class="col-2 offset-1 header-numbers">
           <p class="header-numbers-top">{{numberOfFavorites}}</p>
           <p class="header-numbers-bottom">
             <span *ngIf="numberOfFavorites > 1 || numberOfFavorites === 0" i18n="@@web_favorites_pages_202">favorites</span>

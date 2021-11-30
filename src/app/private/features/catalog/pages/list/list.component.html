@@ -32,7 +32,7 @@
 
       <div class="d-none d-lg-block">
         <div class="row">
-          <div class="col-7">
+          <div class="col-6">
             <div class="row">
               <div class="col">
                   <h1 class="header-title">
@@ -51,13 +51,13 @@
               </div>
             </div>
           </div>
-          <div class="col info d-none d-md-flex">
+          <div class="col-4 info d-none d-md-flex">
             <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
               <tsl-svg-icon src="/assets/icons/feature.svg" class="wing-size"></tsl-svg-icon>
               <a (click)="bumpTutorial.show()" i18n="@@web_catalog_pages_list_648">What can features do for you?</a>
             </ng-container>
           </div>
-          <div class="col-md-1 header-numbers d-none d-md-flex flex-column">
+          <div class="col-2 header-numbers d-none d-md-flex flex-column">
             <p class="header-numbers-top">
               <span *ngIf="numberOfProducts === 0 && loading">--</span>
               <span *ngIf="!loading">{{numberOfProducts}}</span>
