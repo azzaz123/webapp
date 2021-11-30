@@ -19,6 +19,8 @@ import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { SidebarService } from '../core/services/sidebar.service';
 import { Observable } from 'rxjs';
 import { DeviceService } from '@core/device/device.service';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -36,6 +38,7 @@ export class SidebarComponent implements OnInit {
   public readonly PRO_PATHS = PRO_PATHS;
   public readonly collapsed$: Observable<boolean> = this.sidebarService.sidebarCollapsed$;
   public readonly isTouchDevice: boolean = this.deviceService.isTouchDevice();
+  public readonly helpUrl = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.HOME);
   public isClickedProSection: boolean;
 
   constructor(
@@ -43,7 +46,8 @@ export class SidebarComponent implements OnInit {
     private userService: UserService,
     public unreadChatMessagesService: UnreadChatMessagesService,
     private analyticsService: AnalyticsService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    private customerHelpService: CustomerHelpService
   ) {}
 
   ngOnInit() {

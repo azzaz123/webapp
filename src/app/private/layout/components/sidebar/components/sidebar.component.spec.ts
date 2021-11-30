@@ -28,6 +28,7 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
 import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 import { SidebarService } from '../core/services/sidebar.service';
 import { DeviceService } from '@core/device/device.service';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 
 @Component({
   template: '',
@@ -119,6 +120,12 @@ describe('SidebarComponent', () => {
               isTouchDevice() {
                 return false;
               },
+            },
+          },
+          {
+            provide: CustomerHelpService,
+            useValue: {
+              getPageUrl() {},
             },
           },
         ],
