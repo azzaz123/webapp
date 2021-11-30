@@ -27,13 +27,6 @@ export class SubscriptionTierSelectorComponent {
     return tier.limit ? this.getTextWithLimit(tier) : $localize`:@@web_profile_pages_subscription_586:List without limits`;
   }
 
-  public getTitleText(tier: Tier): string {
-    if (tier.is_basic) {
-      return $localize`:@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_title:Basic`;
-    }
-    return this.getLimitText(tier);
-  }
-
   private getTextWithLimit(tier: Tier): string {
     if (tier.is_basic) {
       return $localize`:@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_description:List up to ${tier.limit}:INTERPOLATION: items and boost your sales`;

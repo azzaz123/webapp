@@ -1,4 +1,5 @@
-<div class="DeliveryAddress container">
+<!-- TODO: Remove `profile-box` class by improving `tsl-profile-form` component-->
+<div class="DeliveryAddress box mt-3 p-3 container profile-box">
   <tsl-profile-form class="row" [profileForm]="deliveryAddressForm" (onInit)="initForm()">
     <form class="col" *ngIf="!loading; else loadingState" [formGroup]="deliveryAddressForm" (submit)="onSubmit()">
       <div class="row">

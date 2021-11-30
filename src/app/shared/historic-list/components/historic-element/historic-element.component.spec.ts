@@ -3,19 +3,23 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
   MOCK_HISTORIC_ELEMENT,
-  MOCK_HISTORIC_ELEMENT_WITH_ICON,
+  MOCK_HISTORIC_ELEMENT_WITH_ICON_IN_DESCRIPTION,
   MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION,
+  MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_ERROR,
+  MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_VALID,
 } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricElementComponent } from './historic-element.component';
 
 @Component({
   selector: 'tsl-test-wrapper-historic-element',
-  template: '<tsl-historic-element [historicElement]="historicElement" (clicked)="onClick($event)"></tsl-historic-element>',
+  template:
+    '<tsl-historic-element [historicElement]="historicElement" [clickable]="clickable" (clicked)="onClick($event)"></tsl-historic-element>',
 })
 export class TestWrapperHistoricElementComponent {
   @Input() historicElement: HistoricElement;
-  onClick(historicElement: HistoricElement): void {}
+  @Input() clickable: boolean;
+  onClick(_historicElement: HistoricElement): void {}
 }
 
 describe('HistoricElementComponent', () => {
@@ -23,12 +27,16 @@ describe('HistoricElementComponent', () => {
   let fixture: ComponentFixture<TestWrapperHistoricElementComponent>;
 
   const historicElementSelector = '.HistoricElement';
-  const imageSelector = `${historicElementSelector}__image > img`;
+  const imageSelector = `${historicElementSelector}__image`;
+  const iconSelector = `${historicElementSelector}__icon`;
   const titleSelector = `${historicElementSelector}__title > div`;
   const moneyAmountSelector = `${historicElementSelector}__money-amount`;
-  const descriptionSelector = `${historicElementSelector}__description`;
+  const descriptionSelector = `${historicElementSelector}__description > span:last-child`;
+  const descriptionIconSelector = `tsl-svg-icon`;
   const subDescriptionSelector = `${historicElementSelector}__subDescription`;
-  const iconSelector = 'tsl-svg-icon';
+  const subDescriptionValidSelector = `${historicElementSelector}__subDescription--valid`;
+  const subDescriptionErrorSelector = `${historicElementSelector}__subDescription--error`;
+  const clickableSelector = `${historicElementSelector}--clickable`;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -57,6 +65,14 @@ describe('HistoricElementComponent', () => {
       expect(imageUrl).toEqual(expectedImageUrl);
     });
 
+    it('should display the icon', () => {
+      const iconElement = fixture.debugElement.query(By.css(iconSelector));
+      const iconUrl = iconElement.nativeNode.src;
+      const expectedIconUrl = MOCK_HISTORIC_ELEMENT.iconUrl;
+
+      expect(iconUrl).toEqual(expectedIconUrl);
+    });
+
     it('should show the title', () => {
       const titleElement = fixture.debugElement.query(By.css(titleSelector));
       const title = titleElement.nativeElement.innerHTML;
@@ -76,51 +92,85 @@ describe('HistoricElementComponent', () => {
     it('should show the description', () => {
       const descriptionElement = fixture.debugElement.query(By.css(descriptionSelector));
       const description = descriptionElement.nativeElement.innerHTML.trim();
-      const expectedDescription = MOCK_HISTORIC_ELEMENT.description;
+      const expectedDescription = MOCK_HISTORIC_ELEMENT.description.text;
 
       expect(description).toEqual(expectedDescription);
     });
 
-    describe('and when icon URL is defined', () => {
+    describe('and when description has icon', () => {
       beforeEach(() => {
-        wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_ICON;
+        wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_ICON_IN_DESCRIPTION;
         fixture.detectChanges();
       });
 
-      it('should display the icon', () => {
-        const iconElement = fixture.debugElement.query(By.css(iconSelector));
-        const iconUrl = iconElement.nativeNode.src;
-        const expectedIconUrl = MOCK_HISTORIC_ELEMENT_WITH_ICON.iconUrl;
+      it('should show the icon', () => {
+        const descriptionIconElement = fixture.debugElement.query(By.css(descriptionIconSelector));
 
-        expect(iconUrl).toEqual(expectedIconUrl);
+        expect(descriptionIconElement).toBeTruthy();
       });
     });
 
-    describe('and when icon URL is NOT defined', () => {
+    describe('and when description does not have icon', () => {
       beforeEach(() => {
         wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT;
         fixture.detectChanges();
       });
 
-      it('should NOT display the icon', () => {
-        const iconElement = fixture.debugElement.query(By.css(iconSelector));
+      it('should show the icon', () => {
+        const descriptionIconElement = fixture.debugElement.query(By.css(descriptionIconSelector));
 
-        expect(iconElement).toBeFalsy();
+        expect(descriptionIconElement).toBeFalsy();
       });
     });
 
-    describe('and when movement has sub description', () => {
+    describe('and when element has subdescription', () => {
       beforeEach(() => {
         wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION;
         fixture.detectChanges();
       });
 
-      it('should show the estimated payout description', () => {
+      it('should show the subdescription text', () => {
         const subDescriptionElement = fixture.debugElement.query(By.css(subDescriptionSelector));
         const subDescription = subDescriptionElement.nativeElement.innerHTML.trim();
-        const expectedsubDescription = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION.subDescription;
+        const expectedsubDescription = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION.subDescription.text;
 
         expect(subDescription).toEqual(expectedsubDescription);
+      });
+
+      describe('and when subdescription is normal', () => {
+        it('should NOT add extra styling', () => {
+          const subDescriptionValidElement = fixture.debugElement.query(By.css(subDescriptionValidSelector));
+          const subDescriptionErrorElement = fixture.debugElement.query(By.css(subDescriptionValidSelector));
+
+          expect(subDescriptionValidElement).toBeFalsy();
+          expect(subDescriptionErrorElement).toBeFalsy();
+        });
+      });
+
+      describe('and when subdescription is valid', () => {
+        beforeEach(() => {
+          wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_VALID;
+          fixture.detectChanges();
+        });
+
+        it('should add subdescription valid style', () => {
+          const subDescriptionValidElement = fixture.debugElement.query(By.css(subDescriptionValidSelector));
+
+          expect(subDescriptionValidElement).toBeTruthy();
+        });
+      });
+
+      describe('and when subdescription is error', () => {
+        beforeEach(() => {
+          wrapperComponent.historicElement = MOCK_HISTORIC_ELEMENT_WITH_SUB_DESCRIPTION_ERROR;
+          fixture.detectChanges();
+        });
+
+        it('should add subdescription error style', () => {
+          const subDescriptionErrorElement = fixture.debugElement.query(By.css(subDescriptionErrorSelector));
+
+          expect(subDescriptionErrorElement).toBeTruthy();
+        });
       });
     });
 
@@ -146,6 +196,30 @@ describe('HistoricElementComponent', () => {
 
         expect(wrapperComponent.onClick).toHaveBeenCalledTimes(1);
         expect(wrapperComponent.onClick).toHaveBeenCalledWith(MOCK_HISTORIC_ELEMENT);
+      });
+    });
+
+    describe('and when element is clickable', () => {
+      beforeEach(() => {
+        wrapperComponent.clickable = true;
+        fixture.detectChanges();
+      });
+
+      it('should apply clickable styles', () => {
+        const historicElement = fixture.debugElement.query(By.css(clickableSelector));
+        expect(historicElement).toBeTruthy();
+      });
+    });
+
+    describe('and when element is NOT clickable', () => {
+      beforeEach(() => {
+        wrapperComponent.clickable = false;
+        fixture.detectChanges();
+      });
+
+      it('should apply clickable styles', () => {
+        const historicElement = fixture.debugElement.query(By.css(clickableSelector));
+        expect(historicElement).toBeFalsy();
       });
     });
   });
