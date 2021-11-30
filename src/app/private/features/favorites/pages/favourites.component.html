@@ -13,11 +13,15 @@
           </div>
         </div>
         <div class="col-2 offset-1 header-numbers">
-          <p class="header-numbers-top">{{numberOfFavorites}}</p>
-          <p class="header-numbers-bottom">
-            <span *ngIf="numberOfFavorites > 1 || numberOfFavorites === 0" i18n="@@web_favorites_pages_202">favorites</span>
-            <span *ngIf="numberOfFavorites === 1" i18n="@@web_favorites_pages_203">favorite</span>
-          </p>
+          <div class="d-flex align-items-center justify-content-end">
+            <div class="text-center">
+              <p class="header-numbers-top">{{numberOfFavorites}}</p>
+              <p class="header-numbers-bottom">
+                <span *ngIf="numberOfFavorites > 1 || numberOfFavorites === 0" i18n="@@web_favorites_pages_202">favorites</span>
+                <span *ngIf="numberOfFavorites === 1" i18n="@@web_favorites_pages_203">favorite</span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </tsl-header>

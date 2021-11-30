@@ -19,10 +19,12 @@
           <p i18n="@@web_reviews_pages_334">Your average</p>
           <tsl-stars class="header-rating" [stars]="this.userScore" [normalized]="false"></tsl-stars>
         </div>
-        <div class="user-number-reviews text-center col-2">
-          <p>{{ numberOfReviews }}</p>
-          <p *ngIf="numberOfReviews > 1 || numberOfReviews === 0" i18n="@@web_reviews_pages_588">reviews</p>
-          <p *ngIf="numberOfReviews === 1" i18n="@@web_reviews_pages_335">review</p>
+        <div class="user-number-reviews col-2 d-flex align-items-center justify-content-end">
+          <div class="text-center">
+            <p>{{ numberOfReviews }}</p>
+            <p *ngIf="numberOfReviews > 1 || numberOfReviews === 0" i18n="@@web_reviews_pages_588">reviews</p>
+            <p *ngIf="numberOfReviews === 1" i18n="@@web_reviews_pages_335">review</p>
+          </div>
         </div>
       </div>
     </tsl-header>

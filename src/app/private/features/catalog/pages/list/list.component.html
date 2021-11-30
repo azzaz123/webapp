@@ -58,14 +58,18 @@
             </ng-container>
           </div>
           <div class="col-2 header-numbers d-none d-md-flex flex-column">
-            <p class="header-numbers-top">
-              <span *ngIf="numberOfProducts === 0 && loading">--</span>
-              <span *ngIf="!loading">{{numberOfProducts}}</span>
-            </p>
-            <p class="header-numbers-bottom">
-              <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n="@@web_catalog_pages_list_150">products</span>
-              <span *ngIf="numberOfProducts === 1" i18n="@@web_catalog_pages_list_151">product</span>
-            </p>
+            <div class="d-flex align-items-center justify-content-end">
+              <div class="text-center">
+                <p class="header-numbers-top">
+                  <span *ngIf="numberOfProducts === 0 && loading">--</span>
+                  <span *ngIf="!loading">{{numberOfProducts}}</span>
+                </p>
+                <p class="header-numbers-bottom">
+                  <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n="@@web_catalog_pages_list_150">products</span>
+                  <span *ngIf="numberOfProducts === 1" i18n="@@web_catalog_pages_list_151">product</span>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
