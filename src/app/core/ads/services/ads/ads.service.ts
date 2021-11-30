@@ -126,7 +126,7 @@ export class AdsService {
         map(([adsReady, adSlotsDefined, allowSegmentation]: [boolean, boolean, boolean]) => allowSegmentation)
       )
       .subscribe((allowSegmentation: boolean) => {
-        this.getHeaderBids(allowSegmentation);
+        this.callFetchHeaderBids(allowSegmentation);
       });
   }
 
@@ -135,11 +135,11 @@ export class AdsService {
       .pipe(map(([allowSegmentation, refreshSlots]: [boolean, void]) => allowSegmentation))
       .subscribe((allowSegmentation: boolean) => {
         this.googlePublisherTagService.setTargetingByAdsKeywords();
-        this.getRefreshHeaderBids(allowSegmentation);
+        this.callRefreshHeaderBids(allowSegmentation);
       });
   }
 
-  private getHeaderBids(allowSegmentation: boolean): void {
+  private callFetchHeaderBids(allowSegmentation: boolean): void {
     const slots = this.setSlotsSubject.getValue();
     const definedSlots = this.googlePublisherTagService.getDefinedSlots();
     const deviceType = this.deviceService.getDeviceType();
@@ -152,7 +152,7 @@ export class AdsService {
     this.googlePublisherTagService.setPubAdsConfig();
   }
 
-  private getRefreshHeaderBids(allowSegmentation: boolean): void {
+  private callRefreshHeaderBids(allowSegmentation: boolean): void {
     const slots = this.setSlotsSubject.getValue();
     const definedSlots = this.googlePublisherTagService.getDefinedSlots();
 
