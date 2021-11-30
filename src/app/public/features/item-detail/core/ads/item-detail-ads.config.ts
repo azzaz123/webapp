@@ -11,14 +11,16 @@ import { AdSlotConfiguration } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
 export interface ItemDetailAdSlotsConfiguration {
-  item1: AdSlotConfiguration;
-  item2l: AdSlotConfiguration;
-  item3r: AdSlotConfiguration;
+  itemTop: AdSlotConfiguration;
+  itemLeft: AdSlotConfiguration;
+  itemRight: AdSlotConfiguration;
+  itemMobilePos1: AdSlotConfiguration;
+  itemMobilePos2: AdSlotConfiguration;
 }
 
 export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
-  item1: {
-    name: '130868815/web/item1',
+  itemTop: {
+    name: '130868815/Desktop_Itemdetail/Topbanner',
     id: 'sky-unit-item-top-1',
     sizes: AD_DESKTOP_MAPPING,
     sizeMapping: {
@@ -37,10 +39,10 @@ export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
     },
     networkId: 6866,
     type: 'item',
-    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
+    device: [DeviceType.DESKTOP, DeviceType.TABLET],
   },
-  item2l: {
-    name: '130868815/web/item2l',
+  itemLeft: {
+    name: '130868815/Desktop_Itemdetail/Left',
     id: 'sky-unit-item-left-2',
     sizes: AD_DESKTOP_VERTICAL_MAPPING,
     sizeMapping: {
@@ -59,10 +61,10 @@ export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
     },
     networkId: 6866,
     type: 'item',
-    device: [DeviceType.DESKTOP, DeviceType.TABLET, DeviceType.MOBILE],
+    device: [DeviceType.DESKTOP, DeviceType.TABLET],
   },
-  item3r: {
-    name: '130868815/web/item3r',
+  itemRight: {
+    name: '130868815/Desktop_Itemdetail/Right',
     id: 'sky-unit-item-right-3',
     sizes: AD_DESKTOP_VERTICAL_MAPPING,
     sizeMapping: {
@@ -81,7 +83,51 @@ export const ADS_ITEM_DETAIL: ItemDetailAdSlotsConfiguration = {
     },
     networkId: 6866,
     type: 'item',
-    device: [DeviceType.DESKTOP],
+    device: [DeviceType.DESKTOP, DeviceType.TABLET],
+  },
+  itemMobilePos1: {
+    name: '130868815/Web_Mobile_Itemdetail/Pos1',
+    id: 'sky-unit-item-top-1',
+    sizes: AD_DESKTOP_MAPPING,
+    sizeMapping: {
+      desktop: {
+        screenSize: AD_DESKTOP_SCREEN_SIZE,
+        mapping: AD_DESKTOP_MAPPING,
+      },
+      tablet: {
+        screenSize: AD_TABLET_SCREEN_SIZE,
+        mapping: AD_TABLET_MAPPING,
+      },
+      mobile: {
+        screenSize: AD_MOBILE_SCREEN_SIZE,
+        mapping: AD_MOBILE_MAPPING.medium,
+      },
+    },
+    networkId: 6866,
+    type: 'item',
+    device: [DeviceType.MOBILE],
+  },
+  itemMobilePos2: {
+    name: '130868815/Web_Mobile_Itemdetail/Pos2',
+    id: 'sky-unit-item-left-2',
+    sizes: AD_DESKTOP_VERTICAL_MAPPING,
+    sizeMapping: {
+      desktop: {
+        screenSize: AD_DESKTOP_SCREEN_SIZE,
+        mapping: AD_DESKTOP_VERTICAL_MAPPING,
+      },
+      tablet: {
+        screenSize: AD_TABLET_SCREEN_SIZE,
+        mapping: AD_MOBILE_MAPPING.medium,
+      },
+      mobile: {
+        screenSize: AD_MOBILE_SCREEN_SIZE,
+        mapping: AD_MOBILE_MAPPING.big,
+      },
+    },
+    networkId: 6866,
+    type: 'item',
+    device: [DeviceType.MOBILE],
   },
 };
 
