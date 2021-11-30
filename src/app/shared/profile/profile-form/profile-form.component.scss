@@ -1,11 +1,8 @@
 @import '~style/common';
 
-$right-gutter: 35px;
-
 ::ng-deep {
   .profile-box {
-    padding-top: $spacing-m;
-    padding-bottom: $spacing-m;
+    padding: $spacer;
     h3 {
       font-size: $font-size-s;
       font-weight: $font-weight-chunky;
