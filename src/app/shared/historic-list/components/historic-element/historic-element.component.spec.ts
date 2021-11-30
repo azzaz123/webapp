@@ -27,8 +27,8 @@ describe('HistoricElementComponent', () => {
   let fixture: ComponentFixture<TestWrapperHistoricElementComponent>;
 
   const historicElementSelector = '.HistoricElement';
-  const imageSelector = `${historicElementSelector}__image > img`;
-  const iconSelector = `${historicElementSelector}__icon > img`;
+  const imageSelector = `${historicElementSelector}__image`;
+  const iconSelector = `${historicElementSelector}__icon`;
   const titleSelector = `${historicElementSelector}__title > div`;
   const moneyAmountSelector = `${historicElementSelector}__money-amount`;
   const descriptionSelector = `${historicElementSelector}__description > span:last-child`;

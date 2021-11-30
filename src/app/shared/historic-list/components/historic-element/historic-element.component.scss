@@ -15,31 +15,20 @@ $historic-element-icon-margin: 6px;
 
   &__image {
     @include square($historic-element-image-container-size);
-    position: relative;
-    margin-right: 14px;
-
-    img {
-      border-radius: 5px;
-      object-fit: cover;
-      @include square($historic-element-image-size);
-    }
+    border-radius: 5px;
+    object-fit: cover;
   }
 
   &__icon {
+    @include square($historic-element-icon-container-size);
     position: absolute;
     bottom: -#{$historic-element-icon-margin};
     right: -#{$historic-element-icon-margin};
     z-index: 1;
 
     background-color: $white;
-
-    @include square($historic-element-icon-container-size);
+    border: 2px solid $white;
     border-radius: 50%;
-
-    img {
-      @include square($historic-element-icon-size);
-      border-radius: 50%;
-    }
   }
 
   &__money-amount {
