@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
@@ -24,6 +24,7 @@ import { DeviceService } from '@core/device/device.service';
   selector: 'tsl-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent implements OnInit {
   public readonly PRIVATE_PATHS = PRIVATE_PATHS;
