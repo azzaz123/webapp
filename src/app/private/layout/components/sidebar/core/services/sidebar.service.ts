@@ -10,7 +10,7 @@ export class SidebarService {
 
   constructor(private deviceService: DeviceService) {}
 
-  get sidebarCollapsed$(): Observable<boolean> {
+  public get sidebarCollapsed$(): Observable<boolean> {
     return this._sidebarCollapsed$.asObservable();
   }
 
