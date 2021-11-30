@@ -17,6 +17,7 @@ export const MOCK_HISTORIC_TRANSACTIONS: HistoricTransaction[] = [
       delivery: TRANSACTION_DELIVERY_STATUS.NONE,
       payment: TRANSACTION_PAYMENT_STATUS.NONE,
     },
+    isCurrentUserTheSeller: true,
   },
   {
     id: '001cf831-d040-4e31-b4e7-aa50d2a3cadc',
@@ -30,5 +31,6 @@ export const MOCK_HISTORIC_TRANSACTIONS: HistoricTransaction[] = [
       delivery: TRANSACTION_DELIVERY_STATUS.NONE,
       payment: TRANSACTION_PAYMENT_STATUS.NONE,
     },
+    isCurrentUserTheSeller: true,
   },
 ];

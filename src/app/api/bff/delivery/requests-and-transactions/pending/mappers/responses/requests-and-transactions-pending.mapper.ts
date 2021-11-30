@@ -11,16 +11,18 @@ import { InnerType, ToDomainMapper } from '@api/core/utils/types';
 import { RequestsAndTransactionsPendingDto } from '../../dtos/responses';
 
 type TransactionPendingApi = InnerType<RequestsAndTransactionsPendingDto, 'transactions'>;
+type TransactionDtoResponseWithCurrentUserId = { dtoResponse: RequestsAndTransactionsPendingDto; currentUserId: string };
 
 export const mapRequestsAndTransactionsPendingToPendingTransactions: ToDomainMapper<
-  RequestsAndTransactionsPendingDto,
+  TransactionDtoResponseWithCurrentUserId,
   PendingTransaction[]
-> = (input: RequestsAndTransactionsPendingDto): PendingTransaction[] => {
+> = (input: TransactionDtoResponseWithCurrentUserId): PendingTransaction[] => {
   if (!input) {
     return [];
   }
 
-  const { transactions } = input;
+  const { dtoResponse, currentUserId } = input;
+  const { transactions } = dtoResponse;
   const mappedTransactions = [];
 
   transactions.forEach((rawTransaction: TransactionPendingApi) => {
@@ -45,6 +47,7 @@ export const mapRequestsAndTransactionsPendingToPendingTransactions: ToDomainMap
     const transactionStatus = mapTransactionStatusApiToModel(status);
     const deliveryStatus = mapTransactionDeliveryStatusApiToModel(delivery_status);
     const paymentStatus = mapTransactionPaymentStatusApiToModel(payment_status);
+    const isCurrentUserTheSeller = currentUserId === sellerId;
 
     const mappedTransaction: PendingTransaction = {
       id,
@@ -69,6 +72,7 @@ export const mapRequestsAndTransactionsPendingToPendingTransactions: ToDomainMap
         payment: paymentStatus,
       },
       moneyAmount: mapNumberAndCurrencyCodeToMoney({ number, currency: typedCurrency }),
+      isCurrentUserTheSeller,
     };
     mappedTransactions.push(mappedTransaction);
   });

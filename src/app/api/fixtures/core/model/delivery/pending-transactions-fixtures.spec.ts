@@ -37,5 +37,6 @@ export const MOCK_PENDING_TRANSACTIONS: PendingTransaction[] = [
       },
       toString: () => '',
     },
+    isCurrentUserTheSeller: false,
   },
 ];

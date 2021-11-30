@@ -39,6 +39,7 @@ const mapToTransactions = (input: TransactionsHistoryWithUserAndItem): HistoricT
       currency: transaction.amount.currency as CurrencyCode,
     });
     const creationDate: Date = new Date(transaction.created_at);
+    const isCurrentUserTheSeller = currentUser.id === seller.id;
 
     return {
       id: transaction.id,
@@ -52,6 +53,7 @@ const mapToTransactions = (input: TransactionsHistoryWithUserAndItem): HistoricT
         delivery: TRANSACTION_DELIVERY_STATUS.NONE,
         payment: TRANSACTION_PAYMENT_STATUS.NONE,
       },
+      isCurrentUserTheSeller,
     };
   });
 
