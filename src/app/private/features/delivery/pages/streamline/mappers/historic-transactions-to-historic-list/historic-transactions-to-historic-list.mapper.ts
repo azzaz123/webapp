@@ -67,14 +67,9 @@ const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricEl
   return historicElement;
 };
 
-// TODO: Move to domain
-const isCurrentUserTheSeller = (input: HistoricTransaction): boolean => {
-  return true;
-};
-
 const getIconUrlFromHistoricTransaction = (input: HistoricTransaction): string => {
-  const isSeller = isCurrentUserTheSeller(input);
-  return isSeller ? input.buyer.imageUrl : input.seller.imageUrl;
+  const { buyer, seller, isCurrentUserTheSeller } = input;
+  return isCurrentUserTheSeller ? buyer.imageUrl : seller.imageUrl;
 };
 
 const getDescriptionFromHistoricTransaction = (input: HistoricTransaction): { text: string; iconUrl: string } => {
