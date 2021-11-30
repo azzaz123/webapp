@@ -3,6 +3,7 @@
     *ngIf="historicList$ | async as historicList"
     [historicList]="historicList"
     [infiniteScrollDisabled]="infiniteScrollDisabled"
+    [clickableElements]="true"
     (scrolled)="getItems()"
     (itemClicked)="onItemClick($event)"
   ></tsl-historic-list>
