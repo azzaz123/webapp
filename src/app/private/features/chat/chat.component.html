@@ -1,5 +1,5 @@
-<div class="page-content">
-  <div id="left-panel" [ngClass]="{'active-conversation': !!inboxConversationService.currentConversation}">
+<div class="Chat d-flex">
+  <div id="left-panel" class="h-100" [ngClass]="{'active-conversation': !!inboxConversationService.currentConversation}">
     <tsl-connection-alert></tsl-connection-alert>
     <tsl-inbox (loadingEvent)="onLoad($event)" (loadingError)="onChangeInboxOrArchivedDropdown($event)"></tsl-inbox>
   </div>
