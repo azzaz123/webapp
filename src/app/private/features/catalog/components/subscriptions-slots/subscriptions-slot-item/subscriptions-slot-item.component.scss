@@ -1,10 +1,29 @@
 @import '~style/common';
 
-:host {
-  width: 100%;
+.SubscriptionsSlotItem {
+  background-color: white;
+  border: solid 1px $blue-grey-5;
+  border-radius: $spacing-ms;
+  padding: 16px;
+
+  &__title {
+    color: #13c1ac;
+    span {
+      font-weight: $font-weight-chunky;
+    }
+  }
+
+  &__icon {
+    @include square(48px);
+
+    img {
+      object-fit: cover;
+      width: 100%;
+    }
+  }
 }
 
-.SubscriptionsSlotItem {
+.SubscriptionsSlotItem1 {
   display: flex;
   align-items: center;
   align-content: center;

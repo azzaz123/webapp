@@ -1,20 +1,18 @@
-<div class="SubscriptionsSlotItem" 
-  (click)="onClick(subscriptionSlot, $event)"
-  [ngClass]="{
+<div class="SubscriptionsSlotItem d-flex align-items-center" (click)="onClick(subscriptionSlot, $event)" [ngClass]="{
     'SubscriptionsSlotItem--selected': isSelected(),
-    'SubscriptionsSlotItem--not-selected': selectedSubscriptionSlot && !isSelected(),
-    'SubscriptionsSlotItem--single': subscriptionSlotsLength === 1
+    'SubscriptionsSlotItem--not-selected': selectedSubscriptionSlot && !isSelected()
   }">
 
-  <div class="SubscriptionsSlotItem__icon">
-    <tsl-svg-icon src="/assets/icons/categories/normal/{{subscriptionSlot.subscription.category_icon}}.svg"></tsl-svg-icon>
+  <div class="SubscriptionsSlotItem__icon mr-3 d-flex justify-content-center align-items-center">
+    <img src="/assets/images/subscriptions/types/{{subscriptionSlot.subscription.category_icon}}.svg">
   </div>
 
   <div class="SubscriptionsSlotItem__info">
-    <div class="SubscriptionsSlotItem__info-title">
+    <div class="SubscriptionsSlotItem__title">
       <span i18n="@@web_manage_catalog_subscription">Manage {{subscriptionSlot.subscription.category_name}}</span>
     </div>
-    <div class="SubscriptionsSlotItem__info-description" i18n="@@web_subscriptions_slot_item_publish_more">You can list <b>{{subscriptionSlot.available}}</b> more {{subscriptionSlot.subscription.category_name}}</div>
+    <div class="SubscriptionsSlotItem__info-description" i18n="@@web_subscriptions_slot_item_publish_more">You can list
+      <b>{{subscriptionSlot.available}}</b> more {{''}}</div>
   </div>
 
   <div class="SubscriptionsSlotItem__deselect" (click)="onClick(undefined, $event)">
