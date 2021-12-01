@@ -84,28 +84,10 @@ describe('SubscriptionTierSelectorComponent', () => {
       });
     });
     describe('has limits', () => {
-      describe('and is real estate', () => {
-        beforeEach(() => {
-          component.subscription = MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED;
-          fixture.detectChanges();
-        });
-        it('should show title', () => {
-          const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
+      it('should show limit into title', () => {
+        const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
 
-          expect(tierTitle.textContent).toBe(
-            $localize`:@@web_profile_pages_subscription_332:List up to ${component.subscription.selected_tier.limit} real estate`
-          );
-        });
-      });
-
-      describe('and is not real estate', () => {
-        it('should show title', () => {
-          const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__title')).nativeElement;
-
-          expect(tierTitle.textContent).toBe(
-            $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.tiers[0].limit} items`
-          );
-        });
+        expect(tierTitle.textContent).toContain(component.subscription.tiers[0].limit);
       });
     });
 

@@ -1,12 +1,12 @@
 import { TransactionTrackingActionDto, TransactionTrackingInstructionsDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import {
-  TransactionTrackingAction,
-  TransactionTrackingActionModel,
+  TransactionTrackingCta,
+  TransactionTrackingCtaModel,
   TransactionTrackingInstructionsFooter,
 } from '@api/core/model/delivery/transaction/tracking';
 
 export class TransactionTrackingInstructionsFooterModel implements TransactionTrackingInstructionsFooter {
-  actions: TransactionTrackingAction[];
+  actions: TransactionTrackingCta[];
   description: string;
 
   constructor(transactionTrackingInstructionsDto: TransactionTrackingInstructionsDto) {
@@ -14,10 +14,10 @@ export class TransactionTrackingInstructionsFooterModel implements TransactionTr
     this.actions = this.getActions(transactionTrackingInstructionsDto.actions);
   }
 
-  private getActions(transactionTrackingActionDtos: TransactionTrackingActionDto[]): TransactionTrackingAction[] {
-    let actions: TransactionTrackingAction[] = [];
+  private getActions(transactionTrackingActionDtos: TransactionTrackingActionDto[]): TransactionTrackingCta[] {
+    let actions: TransactionTrackingCta[] = [];
     transactionTrackingActionDtos.forEach((action) => {
-      actions.push(new TransactionTrackingActionModel(action));
+      actions.push(new TransactionTrackingCtaModel(action));
     });
     return actions;
   }

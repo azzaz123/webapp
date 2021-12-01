@@ -1,7 +1,7 @@
 import { TransactionTrackingInstructionDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import {
   TransactionTrackingActionDetail,
-  TransactionTrackingActionDetailModel,
+  TransactionTrackingActionFactory,
   TransactionTrackingInstruction,
 } from '@api/core/model/delivery/transaction/tracking';
 
@@ -11,7 +11,7 @@ export class TransactionTrackingInstructionModel implements TransactionTrackingI
 
   constructor(instructionDto: TransactionTrackingInstructionDto) {
     if (!!instructionDto.action) {
-      this.action = new TransactionTrackingActionDetailModel(instructionDto.action);
+      this.action = new TransactionTrackingActionFactory(instructionDto.action).getAction();
     }
     this.description = instructionDto.description;
   }

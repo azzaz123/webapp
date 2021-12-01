@@ -52,7 +52,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   public searchValue: string;
   public suggestions: MultiSelectValue = [];
   public isValid: boolean = true;
-  public hashtagPlaceholder: string = $localize`:@@finding_hashtags_hint:Find or create a hashtag`;
+  public hashtagPlaceholder: string = $localize`:@@hashtags_view_search_bar_placeholder:Find or create a hashtag`;
   public keyUpSubject = new Subject<KeyboardEvent>();
   private extendedOptions: TemplateMultiSelectFormOption[];
   private keyUp$: Observable<unknown>;
@@ -113,7 +113,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   public blur(): void {
-    this.hashtagPlaceholder = $localize`:@@finding_hashtags_hint:Find or create a hashtag`;
+    this.hashtagPlaceholder = $localize`:@@hashtags_view_search_bar_placeholder:Find or create a hashtag`;
   }
 
   public writeValue(value): void {

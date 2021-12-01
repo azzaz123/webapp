@@ -13,13 +13,10 @@
         </div>
         <div class="GenericCard">
             <div class="d-flex justify-content-between">
-                <span class="GenericCard__title" i18n="@@web_wallapop_pro_subscription_title">Boost your online business with
-                    Wallapop PRO</span>
-                </div>
-                <div class="GenericCard__subtitle" i18n="@@web_wallapop_pro_subscription_sub_title">Choose a subscription to take your
-                    sales to the next level</div>
-                    <tsl-subscription-purchase-header [subscription]="subscription" [benefits]="benefits" (clickLink)="openCategoriesModal()"> </tsl-subscription-purchase-header>
-    </div>
+                <span class="GenericCard__title mb-3" i18n="@@pro_subscription_flow_all_users_subscription_info_title_web_specific">Your subscription</span>
+            </div>
+            <tsl-subscription-purchase-header [subscription]="subscription" (clickLink)="openCategoriesModal()"> </tsl-subscription-purchase-header>
+        </div>
     <div *ngIf="subscription.tiers.length > 1" class="GenericCard">
         <ng-container *ngIf="basicTier; else noBasicTierSelector">
             <div class="GenericCard__title mb-3" i18n="@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_header">The plan you need to start becoming PRO!</div>

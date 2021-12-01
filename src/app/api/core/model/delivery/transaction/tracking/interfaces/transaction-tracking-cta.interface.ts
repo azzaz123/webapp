@@ -2,7 +2,7 @@ import { TransactionTrackingActionDetail } from './transaction-tracking-action-d
 import { TransactionTrackingState } from './transaction-tracking-state.interface';
 import { TransactionTrackingStyle } from './transaction-tracking-style.interface';
 
-export interface TransactionTrackingAction {
+export interface TransactionTrackingCta {
   action: TransactionTrackingActionDetail;
   state: TransactionTrackingState;
   style: TransactionTrackingStyle;
