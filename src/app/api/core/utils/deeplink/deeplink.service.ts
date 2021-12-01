@@ -64,20 +64,6 @@ export class DeeplinkService {
     return this.getDeeplinkType(deeplink) === 'barcodeLabel';
   }
 
-  public isExternalNavigation(deeplink: string): boolean {
-    const deeplinks: Record<deeplinkType, boolean> = {
-      barcodeLabel: false,
-      instructions: false,
-      item: true,
-      printableLabel: true,
-      unknown: false,
-      userProfile: true,
-      zendeskArticle: true,
-      zendeskForm: true,
-    };
-    return deeplinks[this.getDeeplinkType(deeplink)];
-  }
-
   public isInstructionsDeeplink(deeplink: string): boolean {
     return this.getDeeplinkType(deeplink) === 'instructions';
   }
@@ -196,6 +182,20 @@ export class DeeplinkService {
     const HELP_LOCALE = HELP_LOCALE_BY_APP_LOCALE[this.locale];
     const formId = deeplink.split('f=').pop();
     return !!formId ? getTicketFormUrl(formId as unknown as EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID, HELP_LOCALE) : null;
+  }
+
+  private isExternalNavigation(deeplink: string): boolean {
+    const deeplinks: Record<deeplinkType, boolean> = {
+      barcodeLabel: false,
+      instructions: false,
+      item: true,
+      printableLabel: true,
+      unknown: false,
+      userProfile: true,
+      zendeskArticle: true,
+      zendeskForm: true,
+    };
+    return deeplinks[this.getDeeplinkType(deeplink)];
   }
 
   private navigateToRoute(deeplink: string): void {
