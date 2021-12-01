@@ -1,6 +1,6 @@
 import { ONGOING_TRANSACTION_TRACKING_STATUS } from '@api/core/model/delivery/transaction/status';
 
-export const ongoingTransactionTrackingStatusAsSellerTranslations: Record<ONGOING_TRANSACTION_TRACKING_STATUS, string> = {
+export const ongoingTransactionTrackingStatusAsBuyerTranslations: Record<ONGOING_TRANSACTION_TRACKING_STATUS, string> = {
   [ONGOING_TRANSACTION_TRACKING_STATUS.REQUEST_CREATED]: $localize`:@@purchases_view_buyer_all_all_request_created_ongoing_tab_shipping_status_label:Purchase made`,
   [ONGOING_TRANSACTION_TRACKING_STATUS.TRANSACTION_CREATED]: $localize`:@@purchases_view_buyer_all_all_transaction_created_ongoing_tab_shipping_status_label:Purchase accepted`,
   [ONGOING_TRANSACTION_TRACKING_STATUS.ITEM_DELIVERED_TO_CARRIER]: $localize`:@@purchases_view_buyer_all_all_item_delivered_to_carrier_ongoing_tab_shipping_status_label:The courier company already has the package`,

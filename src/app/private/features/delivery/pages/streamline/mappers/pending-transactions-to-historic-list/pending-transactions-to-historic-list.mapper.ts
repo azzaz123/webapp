@@ -1,7 +1,6 @@
 import { PendingTransaction } from '@api/core/model';
 import { ToDomainMapper } from '@api/core/utils/types';
-import { deliveryStatusTranslationsAsBuyer } from '@private/features/delivery/translations/delivery-status-as-buyer.translations';
-import { deliveryStatusTranslationsAsSeller } from '@private/features/delivery/translations/delivery-status-as-seller.translations';
+import { ongoingTransactionTrackingStatusAsBuyerTranslations } from '@private/features/delivery/translations/ongoing-transaction-tracking-status-as-buyer.translations';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricListHeader } from '@shared/historic-list/interfaces/historic-list-header.interface';
@@ -72,8 +71,8 @@ const getSubDescription = (input: PendingTransaction): { text: string; type: HIS
   const { status, isCurrentUserTheSeller } = input;
   const { delivery: deliveryStatus } = status;
   const text: string = isCurrentUserTheSeller
-    ? deliveryStatusTranslationsAsSeller[deliveryStatus]
-    : deliveryStatusTranslationsAsBuyer[deliveryStatus];
+    ? ongoingTransactionTrackingStatusAsBuyerTranslations[deliveryStatus]
+    : ongoingTransactionTrackingStatusAsBuyerTranslations[deliveryStatus];
 
   const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = mapTransactionStatusToSubDescriptionType[status.delivery];
 

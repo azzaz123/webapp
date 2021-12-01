@@ -7,6 +7,7 @@ import {
 import { CurrencyCode } from '@api/core/model/currency.interface';
 import { PendingTransaction } from '@api/core/model/delivery/transaction';
 import { TRANSACTION_STATUS } from '@api/core/model/delivery/transaction/status';
+import { mapContextToOngoingTransactionTrackingStatus } from '@api/core/model/delivery/transaction/status/mappers/ongoing-transaction-tracking-status.mapper';
 import { InnerType, ToDomainMapper } from '@api/core/utils/types';
 import { RequestsAndTransactionsPendingDto } from '../../dtos/responses';
 
@@ -48,6 +49,7 @@ export const mapRequestsAndTransactionsPendingToPendingTransactions: ToDomainMap
     const deliveryStatus = mapTransactionDeliveryStatusApiToModel(delivery_status);
     const paymentStatus = mapTransactionPaymentStatusApiToModel(payment_status);
     const isCurrentUserTheSeller = currentUserId === sellerId;
+    const trackingStatus = mapContextToOngoingTransactionTrackingStatus();
 
     const mappedTransaction: PendingTransaction = {
       id,
@@ -70,6 +72,7 @@ export const mapRequestsAndTransactionsPendingToPendingTransactions: ToDomainMap
         transaction: transactionStatus as TRANSACTION_STATUS.PENDING,
         delivery: deliveryStatus,
         payment: paymentStatus,
+        tracking: trackingStatus,
       },
       moneyAmount: mapNumberAndCurrencyCodeToMoney({ number, currency: typedCurrency }),
       isCurrentUserTheSeller,
