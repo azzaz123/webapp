@@ -64,7 +64,8 @@ export const COMMON_FILTERS: AvailableFilterConfig[] = [
     },
     isClearable: true,
     hasContentPlaceholder: true,
-    bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.MULTIPLE,
+    bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE,
+    singleBubbleValueLabel: $localize`:@@quick_filter_n_conditions:conditions`,
   },
   {
     id: COMMON_CONFIGURATION_ID.LOCATION,
