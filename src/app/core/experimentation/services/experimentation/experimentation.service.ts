@@ -10,9 +10,9 @@ import { OPTIMIZE_EXPERIMENTS } from '@core/experimentation/vendors/optimize/res
   providedIn: 'root',
 })
 export class ExperimentationService {
-  constructor(private loadExternalLibService: LoadExternalLibsService, private optimizeService: OptimizeService) {}
-
   private readonly _experimentReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  constructor(private loadExternalLibService: LoadExternalLibsService, private optimizeService: OptimizeService) {}
 
   public get experimentReady$(): Observable<boolean> {
     return this._experimentReady$.asObservable();

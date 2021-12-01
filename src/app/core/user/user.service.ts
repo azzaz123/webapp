@@ -91,61 +91,12 @@ export class UserService {
     return this.isProUserSubject.asObservable();
   }
 
-  public logoutLogic(redirect?: string): void {
-    const redirectUrl = redirect ? redirect : this.siteUrl;
-    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
-    this.cookieService.remove('publisherId', cookieOptions);
-    this.cookieService.remove('creditName', cookieOptions);
-    this.cookieService.remove('creditQuantity', cookieOptions);
-    this.accessTokenService.deleteAccessToken();
-    this.permissionService.flushPermissions();
-    this.logoutMParticle(this.event.emit(EventService.USER_LOGOUT, redirectUrl));
-  }
-
-  private logoutMParticle(callback: any): void {
-    const identityCallback = (result: any) => {
-      if (result.getUser()) {
-        return callback;
-      }
-    };
-    mParticle.Identity.logout({}, identityCallback);
-  }
-
-  public logout(redirect?: string): Observable<any> {
-    const headers: HttpHeaders = new HttpHeaders({
-      DeviceAccessToken: this.accessTokenService.deviceAccessToken,
-      AppBuild: this.releaseVersionService.getReleaseVersion(APP_VERSION),
-      DeviceOS: '0',
-    });
-    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
-      take(1),
-      finalize(() => {
-        this.logoutLogic(redirect);
-      })
-    );
+  get isClickedProSection(): boolean {
+    return this._isProSectionClicked;
   }
 
   public get isLogged(): boolean {
     return !!this.accessTokenService.accessToken;
-  }
-
-  public isCurrentUser(userId: string): boolean {
-    return this.isLogged && this.user?.id === userId;
-  }
-
-  private sendUserPresence() {
-    return this.http.post(`${environment.baseUrl}${USER_ONLINE_ENDPOINT}`, null).subscribe();
-  }
-
-  public sendUserPresenceInterval(interval: number) {
-    this.sendUserPresence();
-    this.presenceInterval = setInterval(() => {
-      if (this.isLogged) {
-        this.sendUserPresence();
-      } else {
-        clearInterval(this.presenceInterval);
-      }
-    }, interval);
   }
 
   public get(id: string, cache: boolean = true): Observable<User> {
@@ -160,6 +111,21 @@ export class UserService {
       tap((user) => this._users.push(user)),
       catchError(() => of(this.getFakeUser(id)))
     );
+  }
+
+  public logoutLogic(redirect?: string): void {
+    const redirectUrl = redirect ? redirect : this.siteUrl;
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    this.cookieService.remove('publisherId', cookieOptions);
+    this.cookieService.remove('creditName', cookieOptions);
+    this.cookieService.remove('creditQuantity', cookieOptions);
+    this.accessTokenService.deleteAccessToken();
+    this.permissionService.flushPermissions();
+    this.logoutMParticle(this.event.emit(EventService.USER_LOGOUT, redirectUrl));
+  }
+
+  public isCurrentUser(userId: string): boolean {
+    return this.isLogged && this.user?.id === userId;
   }
 
   public getFakeUser(id: string): User {
@@ -300,39 +266,6 @@ export class UserService {
     return this.http.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
   }
 
-  private mapRecordData(data: UserResponse): User {
-    if (!data || !data.id) {
-      return null;
-    }
-
-    return new User(
-      data.id,
-      data.micro_name,
-      data.image,
-      data.location,
-      data.stats,
-      data.validations,
-      data.verification_level,
-      data.scoring_stars,
-      data.scoring_starts,
-      data.response_rate,
-      data.online,
-      data.type,
-      data.received_reports,
-      data.web_slug,
-      data.first_name,
-      data.last_name,
-      data.birth_date,
-      data.gender,
-      data.email,
-      data.featured,
-      data.extra_info,
-      null,
-      null,
-      data.phone
-    );
-  }
-
   public initializeUserWithPermissions(): Observable<boolean> {
     return this.getLoggedUserInformation().pipe(
       tap((user) => {
@@ -379,6 +312,97 @@ export class UserService {
     return this.user.featured;
   }
 
+  public suggestPro(): boolean {
+    return !this.isPro && !localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
+  }
+
+  public setClickedProSection(): void {
+    this.saveLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION, 'true');
+    this._isProSectionClicked = true;
+  }
+
+  public saveLocalStore(key: string, value: string): void {
+    localStorage.setItem(`${this.user.id}-${key}`, value);
+  }
+
+  public getLocalStore(key: string): string {
+    return localStorage.getItem(`${this.user.id}-${key}`);
+  }
+
+  public hasStoreLocation(user: User): boolean {
+    return !!(user.extraInfo && user.extraInfo.address?.length > 0 && (user.extraInfo.latitude || user.extraInfo.longitude));
+  }
+  public logout(redirect?: string): Observable<any> {
+    const headers: HttpHeaders = new HttpHeaders({
+      DeviceAccessToken: this.accessTokenService.deviceAccessToken,
+      AppBuild: this.releaseVersionService.getReleaseVersion(APP_VERSION),
+      DeviceOS: '0',
+    });
+    return this.http.post(`${environment.baseUrl}${LOGOUT_ENDPOINT}`, null, { headers }).pipe(
+      take(1),
+      finalize(() => {
+        this.logoutLogic(redirect);
+      })
+    );
+  }
+
+  public sendUserPresenceInterval(interval: number) {
+    this.sendUserPresence();
+    this.presenceInterval = setInterval(() => {
+      if (this.isLogged) {
+        this.sendUserPresence();
+      } else {
+        clearInterval(this.presenceInterval);
+      }
+    }, interval);
+  }
+
+  private logoutMParticle(callback: any): void {
+    const identityCallback = (result: any) => {
+      if (result.getUser()) {
+        return callback;
+      }
+    };
+    mParticle.Identity.logout({}, identityCallback);
+  }
+
+  private sendUserPresence() {
+    return this.http.post(`${environment.baseUrl}${USER_ONLINE_ENDPOINT}`, null).subscribe();
+  }
+
+  private mapRecordData(data: UserResponse): User {
+    if (!data || !data.id) {
+      return null;
+    }
+
+    return new User(
+      data.id,
+      data.micro_name,
+      data.image,
+      data.location,
+      data.stats,
+      data.validations,
+      data.verification_level,
+      data.scoring_stars,
+      data.scoring_starts,
+      data.response_rate,
+      data.online,
+      data.type,
+      data.received_reports,
+      data.web_slug,
+      data.first_name,
+      data.last_name,
+      data.birth_date,
+      data.gender,
+      data.email,
+      data.featured,
+      data.extra_info,
+      null,
+      null,
+      data.phone
+    );
+  }
+
   private getDistanceInKilometers(coord1: Coordinate, coord2: Coordinate): number {
     const distance = this.getDistance(coord1, coord2);
     return 6371 * distance;
@@ -397,32 +421,7 @@ export class UserService {
     return (value * Math.PI) / 180;
   }
 
-  public suggestPro(): boolean {
-    return !this.isPro && !localStorage.getItem(`${this.user.id}-${LOCAL_STORAGE_TRY_PRO_SLOT}`);
-  }
-
-  get isClickedProSection(): boolean {
-    return this._isProSectionClicked;
-  }
-
-  public setClickedProSection(): void {
-    this.saveLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION, 'true');
-    this._isProSectionClicked = true;
-  }
-
-  public saveLocalStore(key: string, value: string): void {
-    localStorage.setItem(`${this.user.id}-${key}`, value);
-  }
-
-  public getLocalStore(key: string): string {
-    return localStorage.getItem(`${this.user.id}-${key}`);
-  }
-
   private getStoredIsClickedProSection(user: User): void {
     this._isProSectionClicked = !!this.getLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION);
-  }
-
-  public hasStoreLocation(user: User): boolean {
-    return !!(user.extraInfo && user.extraInfo.address?.length > 0 && (user.extraInfo.latitude || user.extraInfo.longitude));
   }
 }

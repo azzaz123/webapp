@@ -130,7 +130,13 @@ export class StripeService {
       this.eventService.emit(type, response);
     }
   };
+  public mapResponse(res: PaymentMethodResponse): FinancialCard {
+    return new FinancialCard(`${res.card.exp_month}/${res.card.exp_year}`, res.id, res.card.last4, null, null, res.card);
+  }
 
+  public createToken(param: any) {
+    return this.lib.createToken(param);
+  }
   private async payment(token, card) {
     return await this.handleCardPayment(token, card, {
       save_payment_method: true,
@@ -143,10 +149,6 @@ export class StripeService {
 
   private async savedPayment(clientSecret) {
     return await this.handleCardPayment(clientSecret);
-  }
-
-  public mapResponse(res: PaymentMethodResponse): FinancialCard {
-    return new FinancialCard(`${res.card.exp_month}/${res.card.exp_year}`, res.id, res.card.last4, null, null, res.card);
   }
 
   private mapPaymentMethodCard(stripeCard: PaymentMethodCardResponse[]): FinancialCard[] {
@@ -171,10 +173,6 @@ export class StripeService {
         }
       );
     });
-  }
-
-  public createToken(param: any) {
-    return this.lib.createToken(param);
   }
 
   private isBadToken(clientSecret: string): boolean {
