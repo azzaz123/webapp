@@ -32,7 +32,6 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
     fixture = TestBed.createComponent(SubscriptionPurchaseHeaderComponent);
     component = fixture.componentInstance;
     component.subscription = SUBSCRIPTIONS[0];
-    component.benefits = ['benefit1', 'benefit2'];
   });
 
   describe('has subscription', () => {
@@ -40,17 +39,9 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
       fixture.detectChanges();
     });
     it('should show subscription name', () => {
-      const titleElement: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__title')).nativeElement;
+      const titleElement: HTMLElement = fixture.debugElement.query(By.css('.GenericCard__title')).nativeElement;
 
       expect(titleElement.textContent).toContain(component.subscription.category_name);
-    });
-
-    it('should show image', () => {
-      const element = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__icon')).query(By.directive(MockSvgIconComponent));
-      expect(element).toBeTruthy();
-
-      const child: MockSvgIconComponent = element.componentInstance;
-      expect(child.src).toBe(component.iconSrc);
     });
   });
 
@@ -72,20 +63,6 @@ describe('SubscriptionPurchaseHeaderComponent', () => {
       const trialBanner = fixture.debugElement.query(By.directive(DiscountBadgeComponent));
 
       expect(trialBanner).toBeFalsy();
-    });
-  });
-
-  describe('has benefits', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-    it('should show benefits', () => {
-      const benefits = fixture.debugElement.query(By.css('.SubscriptionPurchaseHeader__benefits')).children[0];
-
-      expect(benefits.children.length).toEqual(component.benefits.length);
-      benefits.children.forEach((benefit, index) => {
-        expect(benefit.nativeElement.textContent).toContain(component.benefits[index]);
-      });
     });
   });
 

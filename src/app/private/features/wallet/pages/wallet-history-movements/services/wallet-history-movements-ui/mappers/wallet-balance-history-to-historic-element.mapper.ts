@@ -1,5 +1,6 @@
 import { Money } from '@api/core/model/money.interface';
 import { WalletMovementHistoryDetail, WALLET_HISTORY_MOVEMENT_TYPE } from '@api/core/model/wallet/history/movement-history-detail';
+import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import * as moment from 'moment';
@@ -55,12 +56,17 @@ const mapWalletBalanceHistoryElementToHistoricElement = (input: WalletMovementHi
     imageUrl,
     iconUrl,
     title,
-    description,
+    description: {
+      text: description,
+    },
     moneyAmount,
   };
 
   if (subDescription) {
-    historicElement.subDescription = subDescription;
+    historicElement.subDescription = {
+      text: subDescription,
+      type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
+    };
   }
 
   return historicElement;
