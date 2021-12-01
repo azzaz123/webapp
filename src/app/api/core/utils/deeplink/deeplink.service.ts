@@ -3,6 +3,15 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { APP_LOCALE } from '@configs/subdomains.config';
+import {
+  barcodeLabelDeeplinkPrefix,
+  checkDeliveryInstructionsDeeplinkPrefix,
+  createDisputeZendeskFormDeeplinkPrefix,
+  itemDeeplinkPrefix,
+  printableLabelDeeplinkPrefix,
+  userProfileDeeplinkPrefix,
+  zendeskArticleDeeplinkPrefix,
+} from '@api/core/utils/deeplink/deeplink-prefixes';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID } from '@core/external-links/customer-help/enums/external-customer-ticket-form-page-id.enum';
 import { getCustomerHelpUrl, UNIFIED_EXTERNAL_CUSTOMER_HELP_PAGE_ID } from '@core/external-links/customer-help/get-customer-help-url';
@@ -11,15 +20,6 @@ import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/co
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
-
-const barcodeLabelDeeplink = 'wallapop://delivery/barcode?b=';
-const checkDeliveryInstructionsDeeplink = 'wallapop://shipping/transactiontracking/instructions?';
-const createDisputeZendeskFormDeeplink = 'wallapop://customerSupport/form?f=';
-const itemDeeplink = 'wallapop://i/';
-const packagingInstructionsDeeplink = 'wallapop://shipping/transactiontracking/instructions?';
-const printableLabelDeeplink = 'wallapop://trackinglabel?url=';
-const userProfileDeeplink = 'wallapop://p/';
-const zendeskArticleDeeplink = 'wallapop://customerSupport/faq/article?z=';
 
 type deeplinkType =
   | 'unknown'
@@ -47,14 +47,14 @@ export class DeeplinkService {
 
   public isAvailable(deeplink: string): boolean {
     const availabilities: Record<deeplinkType, boolean> = {
-      barcodeLabel: true,
+      barcodeLabel: false,
       instructions: true,
       item: true,
       printableLabel: true,
       unknown: false,
       userProfile: false,
       zendeskArticle: true,
-      zendeskForm: false,
+      zendeskForm: true,
     };
 
     return availabilities[this.getDeeplinkType(deeplink)];
@@ -62,6 +62,20 @@ export class DeeplinkService {
 
   public isBarcodeLabelDeeplink(deeplink: string): boolean {
     return this.getDeeplinkType(deeplink) === 'barcodeLabel';
+  }
+
+  public isExternalNavigation(deeplink: string): boolean {
+    const deeplinks: Record<deeplinkType, boolean> = {
+      barcodeLabel: false,
+      instructions: false,
+      item: true,
+      printableLabel: true,
+      unknown: false,
+      userProfile: true,
+      zendeskArticle: true,
+      zendeskForm: true,
+    };
+    return deeplinks[this.getDeeplinkType(deeplink)];
   }
 
   public isInstructionsDeeplink(deeplink: string): boolean {
@@ -89,30 +103,10 @@ export class DeeplinkService {
   }
 
   public navigate(deeplink: string): void {
-    if (this.isInstructionsDeeplink(deeplink)) {
-      this.navigateToRoute(deeplink);
+    if (!this.isAvailable(deeplink)) {
       return;
     }
-    if (this.isItemDeeplink(deeplink)) {
-      this.navigateToUrl(deeplink);
-      return;
-    }
-    if (this.isPrintableLabelDeeplink(deeplink)) {
-      this.navigateToUrl(deeplink);
-      return;
-    }
-    if (this.isUserProfileDeeplink(deeplink)) {
-      this.navigateToRoute(deeplink);
-      return;
-    }
-    if (this.isZendeskArticleDeeplink(deeplink)) {
-      this.navigateToUrl(deeplink);
-      return;
-    }
-    if (this.isZendeskCreateDisputeFormDeeplink(deeplink)) {
-      this.navigateToUrl(deeplink);
-      return;
-    }
+    this.isExternalNavigation(deeplink) ? this.navigateToUrl(deeplink) : this.navigateToRoute(deeplink);
   }
 
   public toWebLink(deeplink: string): string {
@@ -121,7 +115,7 @@ export class DeeplinkService {
     }
 
     const deeplinkMappers: Record<deeplinkType, string> = {
-      barcodeLabel: this.getBarcodeLabelWebLink(deeplink),
+      barcodeLabel: this.getBarcodeLabel(deeplink),
       instructions: this.getInstructionsWebLink(deeplink),
       item: this.getItemWebLink(deeplink),
       printableLabel: this.getPrintableLabelWebLink(deeplink),
@@ -133,30 +127,30 @@ export class DeeplinkService {
     return deeplinkMappers[this.getDeeplinkType(deeplink)];
   }
 
-  private getBarcodeLabelWebLink(deeplink: string): string {
-    return deeplink.split(barcodeLabelDeeplink).pop();
+  private getBarcodeLabel(deeplink: string): string {
+    return deeplink.split(barcodeLabelDeeplinkPrefix).pop();
   }
 
   private getDeeplinkType(deeplink: string): deeplinkType {
-    if (deeplink.startsWith(barcodeLabelDeeplink)) {
+    if (deeplink.startsWith(barcodeLabelDeeplinkPrefix)) {
       return 'barcodeLabel';
     }
-    if (deeplink.startsWith(checkDeliveryInstructionsDeeplink)) {
+    if (deeplink.startsWith(checkDeliveryInstructionsDeeplinkPrefix)) {
       return 'instructions';
     }
-    if (deeplink.startsWith(itemDeeplink)) {
+    if (deeplink.startsWith(itemDeeplinkPrefix)) {
       return 'item';
     }
-    if (deeplink.startsWith(userProfileDeeplink)) {
+    if (deeplink.startsWith(userProfileDeeplinkPrefix)) {
       return 'userProfile';
     }
-    if (deeplink.startsWith(printableLabelDeeplink)) {
+    if (deeplink.startsWith(printableLabelDeeplinkPrefix)) {
       return 'printableLabel';
     }
-    if (deeplink.startsWith(zendeskArticleDeeplink)) {
+    if (deeplink.startsWith(zendeskArticleDeeplinkPrefix)) {
       return 'zendeskArticle';
     }
-    if (deeplink.startsWith(createDisputeZendeskFormDeeplink)) {
+    if (deeplink.startsWith(createDisputeZendeskFormDeeplinkPrefix)) {
       return 'zendeskForm';
     }
     return 'unknown';
@@ -173,16 +167,16 @@ export class DeeplinkService {
   }
 
   private getItemWebLink(deeplink: string): string {
-    const id = deeplink.split(itemDeeplink).pop();
+    const id = deeplink.split(itemDeeplinkPrefix).pop();
     return !!id ? this.itemDetailRoutePipe.transform(id) : null;
   }
 
   private getPrintableLabelWebLink(deeplink: string): string {
-    return deeplink.split(printableLabelDeeplink).pop();
+    return deeplink.split(printableLabelDeeplinkPrefix).pop();
   }
 
   private getUserProfileWebLink(deeplink: string): string {
-    const userId = deeplink.split(userProfileDeeplink).pop();
+    const userId = deeplink.split(userProfileDeeplinkPrefix).pop();
     const webSlug = null;
 
     // TODO -> 2021-11-30

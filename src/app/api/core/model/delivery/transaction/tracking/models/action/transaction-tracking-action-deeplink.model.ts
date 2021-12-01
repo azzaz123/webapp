@@ -1,6 +1,3 @@
-import { Injector } from '@angular/core';
-
-import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 import {
   TransactionTrackingActionAnalyticsModel,
   TransactionTrackingActionDeeplink,

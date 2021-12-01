@@ -395,14 +395,14 @@ describe(`DeeplinkService`, () => {
 
   describe(`WHEN asking about the availability`, () => {
     describe.each([
-      [barcodeDeeplink, true],
+      [barcodeDeeplink, false],
       [checkDeliveryInstructionDeeplink, true],
       [packagingInstructionsDeeplink, true],
       [itemDeeplink, true],
       [printableLabelDeeplink, true],
       [userProfileDeeplink, false],
       [zendeskArticleDeeplink, true],
-      [zendeskCreateDisputeFormDeeplink, false],
+      [zendeskCreateDisputeFormDeeplink, true],
     ])(`WHEN asking whether a deeplink is available for navigation`, (deeplink, expected) => {
       it(`should correctly check the availability`, () => {
         expect(service.isAvailable(deeplink)).toBe(expected);
@@ -432,18 +432,32 @@ describe(`DeeplinkService`, () => {
     }
   );
 
-  describe.each([[checkDeliveryInstructionDeeplink], [packagingInstructionsDeeplink], [userProfileDeeplink]])(
-    `WHEN navigate to an internal route`,
+  describe.each([[checkDeliveryInstructionDeeplink], [packagingInstructionsDeeplink]])(`WHEN navigate to an internal route`, (deeplink) => {
+    beforeEach(() => {
+      spyOn(router, `navigate`);
+    });
+
+    it(`should navigate to an angular route`, () => {
+      service.navigate(deeplink);
+
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith([service.toWebLink(deeplink)]);
+    });
+  });
+
+  describe.each([[barcodeDeeplink], ['some-unknown-url'], [userProfileDeeplink]])(
+    `WHEN navigate to an unavailable deeplink`,
     (deeplink) => {
       beforeEach(() => {
-        spyOn(router, `navigate`);
+        spyOn(window, `open`);
+        spyOn(router, 'navigate');
       });
 
-      it(`should navigate to an angular route`, () => {
+      it(`should not navigate`, () => {
         service.navigate(deeplink);
 
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([service.toWebLink(deeplink)]);
+        expect(window.open).toHaveBeenCalledTimes(0);
+        expect(router.navigate).toHaveBeenCalledTimes(0);
       });
     }
   );
