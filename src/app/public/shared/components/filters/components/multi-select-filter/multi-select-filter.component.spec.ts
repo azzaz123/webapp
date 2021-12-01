@@ -52,6 +52,7 @@ describe('MultiSelectFilterComponent', () => {
       parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
     },
     bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.MULTIPLE,
+    singleBubbleValueLabel: 'singleBubbleValueLabel',
   };
   const OPTIONS = SUBCATEGORIES_WITH_CHILDREN_MOCK;
   const selectedOption1 = OPTIONS[0];
@@ -246,6 +247,79 @@ describe('MultiSelectFilterComponent', () => {
 
           expect(component.valueChange.emit).toHaveBeenCalledTimes(1);
           expect(component.valueChange.emit).toHaveBeenCalledWith([{ key: FILTER_QUERY_PARAM_KEY.objectType, value: '' }]);
+        });
+      });
+
+      describe('and has multiple values', () => {
+        const bubbleSelector = By.css('tsl-bubble');
+        const bubbleTextSelector = '.Bubble__content';
+        beforeEach(() => {
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.objectType, value: `${OPTIONS[0].value},${OPTIONS[1].value}` }];
+          fixture.detectChanges();
+        });
+
+        describe('and is multiple bubble variant', () => {
+          it('should has as many bubbles as values', () => {
+            const bubbles = debugElement.queryAll(bubbleSelector);
+
+            expect(bubbles.length).toEqual(2);
+          });
+        });
+
+        describe('and is single bubble variant', () => {
+          const newConfig = { ...basicConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE };
+
+          beforeEach(() => {
+            testComponent.config = newConfig;
+            fixture.detectChanges();
+          });
+
+          it('should has only 1 bubble', () => {
+            const bubbles = debugElement.queryAll(bubbleSelector);
+
+            expect(bubbles.length).toEqual(1);
+          });
+
+          it('should has the expected text', () => {
+            const bubbles = debugElement.queryAll(bubbleSelector);
+            const bubbleText = bubbles[0].nativeElement.querySelector(bubbleTextSelector).innerHTML;
+            const expectedBubbleText = `2 ${component.config.singleBubbleValueLabel}`;
+
+            expect(bubbleText.trim()).toEqual(expectedBubbleText);
+          });
+        });
+      });
+
+      describe('and has single value', () => {
+        const bubbleSelector = By.css('tsl-bubble');
+        const bubbleTextSelector = '.Bubble__content';
+
+        beforeEach(() => {
+          testComponent.value = [{ key: FILTER_QUERY_PARAM_KEY.objectType, value: `${OPTIONS[0].value}` }];
+          fixture.detectChanges();
+        });
+
+        describe('and is single bubble variant', () => {
+          const newConfig = { ...basicConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE };
+
+          beforeEach(() => {
+            testComponent.config = newConfig;
+            fixture.detectChanges();
+          });
+
+          it('should has only 1 bubble', () => {
+            const bubbles = debugElement.queryAll(bubbleSelector);
+
+            expect(bubbles.length).toEqual(1);
+          });
+
+          it('should has the expected text', () => {
+            const bubbles = debugElement.queryAll(bubbleSelector);
+            const bubbleText = bubbles[0].nativeElement.querySelector(bubbleTextSelector).innerHTML;
+            const expectedBubbleText = OPTIONS[0].label;
+
+            expect(bubbleText.trim()).toEqual(expectedBubbleText);
+          });
         });
       });
     });

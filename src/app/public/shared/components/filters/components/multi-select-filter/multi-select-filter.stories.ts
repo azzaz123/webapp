@@ -132,23 +132,23 @@ WithNestedOptionsAndDefaultValue.args = {
 
 export const SingleBubble = Template.bind({});
 SingleBubble.args = {
-  config: { ...conditionConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'pepe' },
+  config: { ...conditionConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'conditions' },
 };
 
 export const SingleBubbleWithNestedOptions = Template.bind({});
 SingleBubbleWithNestedOptions.args = {
-  config: { ...subcategoryConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'pepe' },
+  config: { ...subcategoryConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'subcategories' },
 };
 
 export const SingleBubbleWithDefaultValue = Template.bind({});
 SingleBubbleWithDefaultValue.args = {
-  config: { ...conditionConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'pepe' },
+  config: { ...conditionConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'conditions' },
   value: [{ key: FILTER_QUERY_PARAM_KEY.condition, value: 'un_opened' }],
 };
 
 export const SingleBubbleWithNestedOptionsAndDefaultValue = Template.bind({});
 SingleBubbleWithNestedOptionsAndDefaultValue.args = {
-  config: { ...subcategoryConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'pepe' },
+  config: { ...subcategoryConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'subcategories' },
   value: [
     {
       key: FILTER_QUERY_PARAM_KEY.objectType,

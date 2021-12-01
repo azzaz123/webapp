@@ -12,6 +12,9 @@ import { FilterOptionService } from '@public/shared/services/filter-option/filte
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
+import { MULTISELECT_FILTER_BUBBLE_VARIANT } from './enum/multi-select-filter-bubble-variant.enum';
+import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
+import { SelectOption } from '@shared/select/select.interface';
 
 @Component({
   selector: 'tsl-multi-select-filter',
@@ -42,8 +45,9 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   public label$ = this.labelSubject.asObservable();
   public placeholderIcon$ = this.labelSubject.asObservable();
-
   public multiValue$ = this.multiValueSubject.asObservable();
+
+  public readonly MULTISELECT_FILTER_BUBBLE_VARIANT = MULTISELECT_FILTER_BUBBLE_VARIANT;
 
   public constructor(private optionService: FilterOptionService) {
     super();
@@ -63,7 +67,15 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     super.ngOnInit();
   }
 
-  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+  public buildSingleBubbleLabel(hasValue: boolean, value: SelectOption[]): string {
+    return hasValue
+      ? value.length === 1
+        ? value[0].label
+        : `${value.length} ${this.config.singleBubbleValueLabel}`
+      : this.config.bubblePlaceholder;
+  }
+
+  public onValueChange(): void {
     this.updateValueFromParent();
     this.updateLabel();
   }
