@@ -9,7 +9,6 @@ import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 })
 export class TransactionTrackingActionDeeplinkComponent implements OnInit {
   @Input() deeplinkAction: TransactionTrackingActionDeeplink;
-  public isDeeplinkUnavailable: boolean;
 
   constructor(private deeplinkService: DeeplinkService) {}
 

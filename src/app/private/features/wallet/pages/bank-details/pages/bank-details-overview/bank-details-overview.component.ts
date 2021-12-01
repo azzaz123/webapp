@@ -16,16 +16,16 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 
-import { catchError, take } from 'rxjs/operators';
-import { combineLatest, Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'tsl-bank-details-overview',
   templateUrl: './bank-details-overview.component.html',
   styleUrls: ['./bank-details-overview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BankDetailsOverviewComponent implements OnInit {
   public readonly CREDIT_CARD_FORM_LINK = `${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}/${WALLET_PATHS.CREDIT_CARD}`;
