@@ -6,9 +6,9 @@ import { User } from '../user/user';
 
 @Injectable()
 export class TutorialService {
-  private _step = 0;
-  public maxSteps;
   localStorageName = '-tutorial';
+  public maxSteps;
+  private _step = 0;
 
   constructor(private userService: UserService) {
     userService.isProfessional().subscribe((isPro: boolean) => {

@@ -12,6 +12,13 @@ export const REDIRECT_SECRET = 'redirectSecretBRUH';
 export class LoggedGuard implements CanActivate, CanLoad {
   constructor(private accessTokenService: AccessTokenService, @Inject(SITE_URL) private siteUrl: string) {}
 
+  public canActivate() {
+    return this._loggedGuardLogic();
+  }
+
+  public canLoad() {
+    return this._loggedGuardLogic();
+  }
   private _getEncryptedAndEncodedRedirect(): string {
     const encryptedCurrentUrl = CryptoJSAES.encrypt(window.location.href, REDIRECT_SECRET).toString();
     const encryptedAndEncoded = encodeURIComponent(encryptedCurrentUrl);
@@ -25,13 +32,5 @@ export class LoggedGuard implements CanActivate, CanLoad {
       return false;
     }
     return true;
-  }
-
-  public canActivate() {
-    return this._loggedGuardLogic();
-  }
-
-  public canLoad() {
-    return this._loggedGuardLogic();
   }
 }
