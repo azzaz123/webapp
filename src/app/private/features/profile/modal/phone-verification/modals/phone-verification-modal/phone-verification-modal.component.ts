@@ -1,13 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { take } from 'rxjs/operators';
 import { CountryCode, parsePhoneNumber } from 'libphonenumber-js';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import { ToastService } from '@layout/toast/core/services/toast.service';
+import { SmsCodeVerificationModalComponent } from '../sms-code-verification-modal/sms-code-verification-modal.component';
 import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
 import { PHONE_PREFIXES } from '../../constants/phone-prefixies-constants';
+import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 
 @Component({
   selector: 'tsl-phone-verification-modal',
@@ -22,7 +24,9 @@ export class PhoneVerificationModalComponent implements OnInit {
     private fb: FormBuilder,
     public activeModal: NgbActiveModal,
     private userVerificationsService: UserVerificationsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private modalService: NgbModal,
+    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +43,8 @@ export class PhoneVerificationModalComponent implements OnInit {
         .subscribe(
           () => {
             this.activeModal.close();
+            this.openSmsCodeVerificationModal(prefix, phone);
+            this.verificationsNSecurityTrackingEventsService.trackStartPhoneVerificationProcessEvent();
           },
           () => {
             this.toastService.show(DEFAULT_ERROR_TOAST);
@@ -80,5 +86,14 @@ export class PhoneVerificationModalComponent implements OnInit {
         label: `${e.country} (${e.prefix})`,
       };
     });
+  }
+
+  private openSmsCodeVerificationModal(prefix: string, phone: string): void {
+    const modalRef: NgbModalRef = this.modalService.open(SmsCodeVerificationModalComponent, {
+      windowClass: 'modal-standard',
+    });
+
+    modalRef.componentInstance.prefix = prefix;
+    modalRef.componentInstance.phone = phone;
   }
 }

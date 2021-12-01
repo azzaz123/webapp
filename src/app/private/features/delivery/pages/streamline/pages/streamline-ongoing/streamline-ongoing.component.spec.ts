@@ -28,7 +28,7 @@ describe('StreamlineOngoingComponent', () => {
   let loadingReplaySubject: ReplaySubject<boolean> = new ReplaySubject(1);
   let historicListReplaySubject: ReplaySubject<HistoricList> = new ReplaySubject(1);
 
-  let spinnerSelector: string = 'tsl-svg-icon';
+  let spinnerSelector: string = '.spinner';
   let emptyStateSelector: string = '.HistoricList__no-results';
 
   beforeEach(async () => {

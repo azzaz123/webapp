@@ -1029,22 +1029,45 @@ describe('ListComponent', () => {
         expect(component.subscriptionSlots[0].available).toBe(1);
       }));
 
-      it('should update if there is selected a subscription slot', fakeAsync(() => {
-        component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
-        component.navLinks = [
-          {
-            id: STATUS.INACTIVE,
-            display: 'navLink',
-            counter: { currentVal: 0 },
-          },
-          { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
-        ];
+      describe('and there is a selected subscription slot', () => {
+        describe('and has limit', () => {
+          it('should update counters', fakeAsync(() => {
+            component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
+            component.navLinks = [
+              {
+                id: STATUS.INACTIVE,
+                display: 'navLink',
+                counter: { currentVal: 0 },
+              },
+              { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
+            ];
 
-        component.activate();
-        tick();
+            component.activate();
+            tick();
 
-        expect(component.selectedSubscriptionSlot.available).toBe(1);
-      }));
+            expect(component.selectedSubscriptionSlot.available).toBe(1);
+          }));
+        });
+        describe('and has no limit', () => {
+          it('should not update counters', fakeAsync(() => {
+            component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
+            component.selectedSubscriptionSlot.available = null;
+            component.navLinks = [
+              {
+                id: STATUS.INACTIVE,
+                display: 'navLink',
+                counter: { currentVal: 0 },
+              },
+              { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
+            ];
+
+            component.activate();
+            tick();
+
+            expect(component.selectedSubscriptionSlot.available).toBe(null);
+          }));
+        });
+      });
     });
   });
 
@@ -1143,22 +1166,45 @@ describe('ListComponent', () => {
         expect(component.subscriptionSlots[0].available).toBe(2);
       }));
 
-      it('should update if there is selected a subscription slot', fakeAsync(() => {
-        component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
-        component.navLinks = [
-          {
-            id: STATUS.INACTIVE,
-            display: 'navLink',
-            counter: { currentVal: 0 },
-          },
-          { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
-        ];
+      describe('and there is a selected subscription slot', () => {
+        describe('and has limit', () => {
+          it('should update counters', fakeAsync(() => {
+            component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
+            component.navLinks = [
+              {
+                id: STATUS.INACTIVE,
+                display: 'navLink',
+                counter: { currentVal: 0 },
+              },
+              { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
+            ];
 
-        component.activate(SUBSCRIPTION_TYPES.stripe, '1');
-        tick();
+            component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+            tick();
 
-        expect(component.selectedSubscriptionSlot.available).toBe(2);
-      }));
+            expect(component.selectedSubscriptionSlot.available).toBe(2);
+          }));
+        });
+        describe('and has no limit', () => {
+          it('should not update counters', fakeAsync(() => {
+            component.selectedSubscriptionSlot = cloneDeep(MOCK_SUBSCRIPTION_SLOT_CARS);
+            component.selectedSubscriptionSlot.available = null;
+            component.navLinks = [
+              {
+                id: STATUS.INACTIVE,
+                display: 'navLink',
+                counter: { currentVal: 0 },
+              },
+              { id: STATUS.ACTIVE, display: 'navLink', counter: { currentVal: 0 } },
+            ];
+
+            component.activate(SUBSCRIPTION_TYPES.stripe, '1');
+            tick();
+
+            expect(component.selectedSubscriptionSlot.available).toBe(null);
+          }));
+        });
+      });
     });
   });
 

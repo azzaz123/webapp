@@ -6,9 +6,9 @@
       i18n="@@web_no_results_found"
       >No results found</span
     >
-  <div class="HistoricList__header" [ngClass]="{ 'HistoricList__header--marginless': !header.label }" *ngFor="let header of historicList.elements; let firstHeader = first">
+  <div class="HistoricList__header" [ngClass]="{ 'm-0': !header.label }" *ngFor="let header of historicList.elements; let firstHeader = first">
     {{ header.label }}
-    <div class="HistoricList__subtitle" [ngClass]="{ 'HistoricList__subtitle--marginless': !subtitle.label }" *ngFor="let subtitle of header.elements; let firstSubtitle = first">
+    <div class="HistoricList__subtitle" [ngClass]="{ 'm-0': !subtitle.label }" *ngFor="let subtitle of header.elements; let firstSubtitle = first">
       <div class="d-flex justify-content-between">
         <div>{{ subtitle.label }}</div>
         <div
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="HistoricList__element" *ngFor="let historicElement of subtitle.elements">
-        <tsl-historic-element [historicElement]="historicElement" (clicked)="onItemClick($event)"></tsl-historic-element>
+        <tsl-historic-element [historicElement]="historicElement" [clickable]="clickableElements" (clicked)="onItemClick($event)"></tsl-historic-element>
       </div>
     </div>
   </div>

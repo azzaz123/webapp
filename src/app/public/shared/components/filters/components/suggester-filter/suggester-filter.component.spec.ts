@@ -638,8 +638,9 @@ describe('SuggesterFilterComponent', () => {
           formInstance.handleOptionClick('default_1');
           fixture.detectChanges();
 
-          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(By.directive(DrawerPlaceholderTemplateComponent))
-            .componentInstance;
+          const selectTemplate: DrawerPlaceholderTemplateComponent = debugElement.query(
+            By.directive(DrawerPlaceholderTemplateComponent)
+          ).componentInstance;
 
           expect(component.value).toEqual([
             {

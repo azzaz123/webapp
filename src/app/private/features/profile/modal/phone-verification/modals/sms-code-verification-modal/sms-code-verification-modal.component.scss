@@ -1,0 +1,35 @@
+@import '~style/common';
+
+.SmsCodeVerificationModal {
+  &__title {
+    font-size: $font-size-l;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__subtitle {
+    font-size: $font-size-m;
+  }
+
+  &__close {
+    cursor: pointer;
+    top: $spacing-ml;
+    right: $spacing-ml;
+  }
+
+  &__legend {
+    color: $blue-grey-3;
+    font-size: $font-size-xs;
+  }
+
+  &__message {
+    font-size: $font-size-s;
+
+    &--error {
+      color: $negative-main;
+    }
+  }
+
+  &__resend-btn {
+    color: $walla-main;
+  }
+}

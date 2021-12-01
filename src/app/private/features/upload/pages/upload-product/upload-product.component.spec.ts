@@ -296,6 +296,7 @@ describe('UploadProductComponent', () => {
         extra_info: {
           condition: null,
         },
+        hashtags: [],
       });
     });
 
@@ -328,6 +329,7 @@ describe('UploadProductComponent', () => {
             id: MOCK_OBJECT_TYPES_WITH_CHILDREN[0].children[0].id,
           },
         },
+        hashtags: [],
       };
 
       component.ngOnInit();
@@ -363,6 +365,7 @@ describe('UploadProductComponent', () => {
           brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
           model: MOCK_ITEM_CELLPHONES.extraInfo.model,
         },
+        hashtags: [],
       };
 
       component.ngOnInit();
@@ -398,6 +401,7 @@ describe('UploadProductComponent', () => {
           brand: MOCK_ITEM_CELLPHONES.extraInfo.brand,
           model: MOCK_ITEM_CELLPHONES.extraInfo.model,
         },
+        hashtags: [],
       };
 
       component.ngOnInit();
@@ -446,6 +450,7 @@ describe('UploadProductComponent', () => {
               gender: MOCK_ITEM_FASHION.extraInfo.gender,
               condition: null,
             },
+            hashtags: [],
           });
         });
 
@@ -497,6 +502,7 @@ describe('UploadProductComponent', () => {
               model: MOCK_ITEM_CELLPHONES.extraInfo.model,
               condition: null,
             },
+            hashtags: [],
           });
         });
       });
@@ -845,6 +851,7 @@ describe('UploadProductComponent', () => {
         sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
+        hashtags: '',
       };
 
       component.onSubmit();
@@ -870,6 +877,7 @@ describe('UploadProductComponent', () => {
         extra_info: {
           object_type: { id: 1 },
         },
+        hashtags: '',
       });
       component.uploadForm.get('extra_info').get('object_type').enable();
 
@@ -894,6 +902,7 @@ describe('UploadProductComponent', () => {
         sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
+        hashtags: '',
       };
 
       component.onSubmit();
@@ -1446,6 +1455,7 @@ describe('UploadProductComponent', () => {
         extra_info: {
           condition: null,
         },
+        hashtags: '',
       });
     });
 

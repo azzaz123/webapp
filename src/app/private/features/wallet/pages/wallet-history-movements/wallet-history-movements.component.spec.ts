@@ -244,8 +244,9 @@ describe('WalletHistoryMovementsComponent', () => {
         });
 
         it('should disable scrolling', () => {
-          const historicListComponent: HistoricListComponent = fixture.debugElement.query(By.directive(HistoricListComponent))
-            .componentInstance;
+          const historicListComponent: HistoricListComponent = fixture.debugElement.query(
+            By.directive(HistoricListComponent)
+          ).componentInstance;
 
           expect(historicListComponent.infiniteScrollDisabled).toBe(true);
         });

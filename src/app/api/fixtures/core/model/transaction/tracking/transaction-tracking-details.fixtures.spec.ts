@@ -24,15 +24,8 @@ const MOCK_TRANSACTION_TRACKING_DETAILS_USER: TransactionTrackingDetailsUser = {
 
 const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_1: TransactionTrackingStatusInfo = {
   action: {
-    isCarrierTrackingWebview: false,
     isDeeplink: true,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      linkUrl: 'wallapop://i/190584802',
-    },
+    linkUrl: 'wallapop://i/190584802',
   },
   description: '<span style="color: #AFB6B6">Producto:</span><br>crayones',
   icon: {
@@ -46,15 +39,8 @@ const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_1: TransactionTrackingStat
 };
 const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_2: TransactionTrackingStatusInfo = {
   action: {
-    isCarrierTrackingWebview: false,
     isDeeplink: true,
-    isDialog: false,
-    isDismiss: false,
-    isReload: false,
-    isUserAction: false,
-    payload: {
-      linkUrl: 'wallapop://p/76921033',
-    },
+    linkUrl: 'wallapop://p/76921033',
   },
   description: '<span style="color: #AFB6B6">Vendido por:</span><br>Coccofresco F.',
   icon: {

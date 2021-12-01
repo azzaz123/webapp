@@ -1,6 +1,6 @@
 import {
-  TransactionTrackingAction,
-  TransactionTrackingActionModel,
+  TransactionTrackingCta,
+  TransactionTrackingCtaModel,
   TransactionTrackingAnimation,
   TransactionTrackingShippingStatus,
   TransactionTrackingShippingStatusAnimationModel,
@@ -9,7 +9,7 @@ import { TransactionTrackingActionDto } from '@api/bff/delivery/transaction-trac
 import { TransactionTrackingShippingStatusDto } from '@api/bff/delivery/transaction-tracking/dtos/responses/interfaces/transaction-tracking-shipping-status-dto.interface';
 
 export class TransactionTrackingShippingStatusModel implements TransactionTrackingShippingStatus {
-  actions: TransactionTrackingAction[];
+  actions: TransactionTrackingCta[];
   animation: TransactionTrackingAnimation;
   description: string;
   title: string;
@@ -21,10 +21,10 @@ export class TransactionTrackingShippingStatusModel implements TransactionTracki
     this.title = transactionTrackingShippingStatusDto.title;
   }
 
-  private getActions(actions: TransactionTrackingActionDto[]): TransactionTrackingAction[] {
-    let result: TransactionTrackingAction[] = [];
+  private getActions(actions: TransactionTrackingActionDto[]): TransactionTrackingCta[] {
+    let result: TransactionTrackingCta[] = [];
     actions.forEach((action) => {
-      result.push(new TransactionTrackingActionModel(action));
+      result.push(new TransactionTrackingCtaModel(action));
     });
     return result;
   }

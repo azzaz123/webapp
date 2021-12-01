@@ -12,6 +12,7 @@ import { HistoricList } from '@shared/historic-list/interfaces/historic-list.int
 export class HistoricListComponent implements OnChanges {
   @Input() infiniteScrollDisabled: boolean = false;
   @Input() historicList: HistoricList;
+  @Input() clickableElements: boolean = false;
   @Input() showTotalBalance: boolean = false;
   @Output() scrolled: EventEmitter<void> = new EventEmitter();
   @Output() itemClicked: EventEmitter<HistoricElement> = new EventEmitter<HistoricElement>();

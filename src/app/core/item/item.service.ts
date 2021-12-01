@@ -79,6 +79,7 @@ export class ItemService {
     sold: [],
     featured: [],
   };
+
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
 
   constructor(private http: HttpClient, private i18n: I18nService, private uuidService: UuidService, private eventService: EventService) {}
@@ -585,7 +586,6 @@ export class ItemService {
       })
     );
   }
-
   protected mapRecordData(response: any): Item {
     const data: ItemResponse = <ItemResponse>response;
     const content: ItemContent = data.content;
@@ -601,6 +601,56 @@ export class ItemService {
     const data: ItemProResponse = <ItemProResponse>response;
     const content: ItemProContent = data.content;
     return this.mapItemPro(content);
+  }
+  private getPurchases(): Observable<Purchase[]> {
+    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
+  }
+
+  private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
+    return this.http.get<AllowedActionResponse[]>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/actions-allowed`);
+  }
+
+  private getProductDurations(productList: Product[]): ProductDurations {
+    const durations: number[] = lodashMap(productList[0].durations, 'duration');
+    const types: string[] = lodashMap(productList, 'name');
+    const productDurations = {};
+    durations.forEach((duration: number) => {
+      productDurations[duration] = {};
+      types.forEach((type: string) => {
+        productDurations[duration][type] = this.findDuration(productList, duration, type);
+      });
+    });
+    return productDurations;
+  }
+
+  private findDuration(productList: Product[], duration: number, type: string): Duration {
+    const product: Product = find(productList, { name: type });
+    return find(product.durations, { duration: duration });
+  }
+
+  private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
+    return this.http
+      .get<any>(`${environment.baseUrl}${PROTOOL_API_URL}/mines`, {
+        params: {
+          status: ITEM_STATUSES[status],
+          init,
+          end: init + offset,
+          newVersion: true,
+        } as any,
+      })
+      .pipe(
+        mergeMap((res) => {
+          if (res.length > 0) {
+            return this.recursiveMines(init + offset, offset, status).pipe(
+              map((res2: ItemProResponse[]) => {
+                return res.concat(res2);
+              })
+            );
+          } else {
+            return of([]);
+          }
+        })
+      );
   }
 
   private mapCar(content: CarContent): Car {
@@ -712,7 +762,11 @@ export class ItemService {
             },
             condition: content.extra_info.condition || null,
           }
-        : undefined
+        : undefined,
+      null,
+      null,
+      null,
+      content.hashtags
     );
   }
 
@@ -750,56 +804,5 @@ export class ItemService {
       content.publish_date,
       null
     );
-  }
-
-  private getPurchases(): Observable<Purchase[]> {
-    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
-  }
-
-  private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
-    return this.http.get<AllowedActionResponse[]>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/actions-allowed`);
-  }
-
-  private getProductDurations(productList: Product[]): ProductDurations {
-    const durations: number[] = lodashMap(productList[0].durations, 'duration');
-    const types: string[] = lodashMap(productList, 'name');
-    const productDurations = {};
-    durations.forEach((duration: number) => {
-      productDurations[duration] = {};
-      types.forEach((type: string) => {
-        productDurations[duration][type] = this.findDuration(productList, duration, type);
-      });
-    });
-    return productDurations;
-  }
-
-  private findDuration(productList: Product[], duration: number, type: string): Duration {
-    const product: Product = find(productList, { name: type });
-    return find(product.durations, { duration: duration });
-  }
-
-  private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
-    return this.http
-      .get<any>(`${environment.baseUrl}${PROTOOL_API_URL}/mines`, {
-        params: {
-          status: ITEM_STATUSES[status],
-          init,
-          end: init + offset,
-          newVersion: true,
-        } as any,
-      })
-      .pipe(
-        mergeMap((res) => {
-          if (res.length > 0) {
-            return this.recursiveMines(init + offset, offset, status).pipe(
-              map((res2: ItemProResponse[]) => {
-                return res.concat(res2);
-              })
-            );
-          } else {
-            return of([]);
-          }
-        })
-      );
   }
 }

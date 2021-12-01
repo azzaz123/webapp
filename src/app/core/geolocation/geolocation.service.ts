@@ -29,16 +29,14 @@ export class GeolocationService {
   public geocode(placeId: string): Observable<Coordinate> {
     const params: any = { placeId };
 
-    return this.http
-      .get<Coordinate>(`${this.siteUrl}${MAPS_PLACE_API}`, { params })
-      .pipe(
-        map((res) => {
-          return {
-            ...res,
-            name: placeId,
-          };
-        })
-      );
+    return this.http.get<Coordinate>(`${this.siteUrl}${MAPS_PLACE_API}`, { params }).pipe(
+      map((res) => {
+        return {
+          ...res,
+          name: placeId,
+        };
+      })
+    );
   }
 
   public reverseGeocode(latitude: string, longitude: string): Observable<string> {
