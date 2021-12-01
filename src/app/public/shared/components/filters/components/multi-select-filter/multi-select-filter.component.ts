@@ -13,7 +13,6 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { MULTISELECT_FILTER_BUBBLE_VARIANT } from './enum/multi-select-filter-bubble-variant.enum';
-import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { SelectOption } from '@shared/select/select.interface';
 
 @Component({
