@@ -1,7 +1,12 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { TransactionItem, TransactionUser } from '@api/core/model';
 import { CurrencyCode } from '@api/core/model/currency.interface';
-import { TRANSACTION_DELIVERY_STATUS, TRANSACTION_PAYMENT_STATUS, TRANSACTION_STATUS } from '@api/core/model/delivery/transaction/status';
+import {
+  COMPLETED_TRANSACTION_TRACKING_STATUS,
+  TRANSACTION_DELIVERY_STATUS,
+  TRANSACTION_PAYMENT_STATUS,
+  TRANSACTION_STATUS,
+} from '@api/core/model/delivery/transaction/status';
 import { HistoricTransaction } from '@api/core/model/delivery/transaction/';
 import { Money } from '@api/core/model/money.interface';
 import { ToDomainMapper, Unpacked } from '@api/core/utils/types';
@@ -41,7 +46,11 @@ const mapToTransactions = (input: TransactionsHistoryWithUserAndItem): HistoricT
     const creationDate: Date = new Date(transaction.created_at);
     const isCurrentUserTheSeller = currentUser.id === seller.id;
 
-    return {
+    // TODO: Assuming tracking status for historic transactions
+    // Implement proper mapping when streamline project kicks in webapp
+    const tracking: COMPLETED_TRANSACTION_TRACKING_STATUS = COMPLETED_TRANSACTION_TRACKING_STATUS.MONEY_TRANSFERRED;
+
+    const historicTransaction: HistoricTransaction = {
       id: transaction.id,
       creationDate,
       item: mappedItem,
@@ -52,9 +61,12 @@ const mapToTransactions = (input: TransactionsHistoryWithUserAndItem): HistoricT
         transaction: TRANSACTION_STATUS.SUCCEEDED,
         delivery: TRANSACTION_DELIVERY_STATUS.NONE,
         payment: TRANSACTION_PAYMENT_STATUS.NONE,
+        tracking,
       },
       isCurrentUserTheSeller,
     };
+
+    return historicTransaction;
   });
 
   return mappedTransactions;

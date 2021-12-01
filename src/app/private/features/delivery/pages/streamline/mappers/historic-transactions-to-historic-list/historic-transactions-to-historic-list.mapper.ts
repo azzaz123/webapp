@@ -1,12 +1,11 @@
 import { HistoricTransaction } from '@api/core/model';
 import { ToDomainMapper } from '@api/core/utils/types';
-import { deliveryStatusTranslationsAsBuyer } from '@private/features/delivery/translations/delivery-status-as-buyer.translations';
-import { deliveryStatusTranslationsAsSeller } from '@private/features/delivery/translations/delivery-status-as-seller.translations';
+import { completedTransactionTrackingStatusAsBuyerTranslations } from '@private/features/delivery/translations/completed-transaction-tracking-status-as-buyer.translations';
+import { completedTransactionTrackingStatusAsSellerTranslations } from '@private/features/delivery/translations/completed-transaction-tracking-status-as-seller.translations';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import * as moment from 'moment';
-import { mapTransactionStatusToSubDescriptionType } from '../transaction-status-to-subdescription-type.mapper';
 
 export const mapHistoricTransactionsToHistoricList: ToDomainMapper<HistoricTransaction[], HistoricList> = (
   input: HistoricTransaction[]
@@ -82,8 +81,12 @@ const getDescriptionFromHistoricTransaction = (input: HistoricTransaction): { te
 const getSubDescriptionFromHistoricTransaction = (
   input: HistoricTransaction
 ): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } => {
-  const formattedDate: string = moment(input.creationDate).format('DD MMM');
-  const text: string = `Completed on ${formattedDate}`;
+  const { creationDate, isCurrentUserTheSeller, status } = input;
+  const { tracking: trackingStatus } = status;
+  const formattedDate: string = moment(creationDate).format('DD MMM');
+  const text: string = isCurrentUserTheSeller
+    ? completedTransactionTrackingStatusAsSellerTranslations(trackingStatus, formattedDate)
+    : completedTransactionTrackingStatusAsBuyerTranslations(trackingStatus, formattedDate);
 
   const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL;
 
