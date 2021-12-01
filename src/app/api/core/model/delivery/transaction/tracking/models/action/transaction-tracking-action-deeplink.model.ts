@@ -17,27 +17,14 @@ export class TransactionTrackingActionDeeplinkModel implements TransactionTracki
   public isDeeplink: boolean = true;
   public linkUrl: string;
 
-  private deeplinkService: DeeplinkService;
-
   constructor(actionDetailDto: TransactionTrackingActionDetailDto) {
     if (!!actionDetailDto.analytics) {
       this.analytics = new TransactionTrackingActionAnalyticsModel(actionDetailDto.analytics);
     }
-    this.createDeeplinkService();
     this.linkUrl = this.getLinkUrl(actionDetailDto.payload);
   }
 
-  private createDeeplinkService(): void {
-    const injector = Injector.create({
-      providers: [{ provide: DeeplinkService }],
-    });
-
-    this.deeplinkService = injector.get(DeeplinkService);
-  }
-
   private getLinkUrl(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): string {
-    return (
-      this.deeplinkService.toWebLink((actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDeeplinkDto).link_url) ?? undefined
-    );
+    return (actionDetailPayloadDto as TransactionTrackingActionDetailPayloadDeeplinkDto).link_url ?? undefined;
   }
 }
