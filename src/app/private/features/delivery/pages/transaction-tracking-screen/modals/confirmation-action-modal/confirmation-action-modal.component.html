@@ -1,0 +1,12 @@
+<div class="modal-body">
+  <h2 *ngIf="properties.title as title">{{ title }}</h2>
+  <p>{{ properties.description }}</p>
+</div>
+<div class="modal-footer">
+  <button type="button" id="cancelButton" class="btn" (click)="activeModal.dismiss()">{{ properties.cancelMessage }}</button>
+  <tsl-transaction-tracking-action-selector [actionDetail]="properties.positiveAction">
+    <button type="button" id="confirmButton" [style.color]="properties.confirmColor" class="btn btn-warn">
+      {{ properties.confirmMessage }}
+    </button>
+  </tsl-transaction-tracking-action-selector>
+</div>

@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TransactionTrackingActionDetailPayload } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionDialog } from '@api/core/model/delivery/transaction/tracking';
 import { COLORS } from '@core/colors/colors-constants';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
-import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
+import { ConfirmationActionModalComponent } from '../../../modals/confirmation-action-modal/confirmation-action-modal.component';
+import { ConfirmationActionModalProperties } from '../../../modals/confirmation-action-modal/confirmation-action-modal.interface';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-dialog',
@@ -11,7 +11,7 @@ import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirma
   styleUrls: ['./transaction-tracking-action-dialog.component.scss'],
 })
 export class TransactionTrackingActionDialogComponent implements OnInit {
-  @Input() dialogAction: any;
+  @Input() dialogAction: TransactionTrackingActionDialog;
   @Input() hasBorderBottom: boolean;
 
   constructor(private modalService: NgbModal) {}
@@ -19,11 +19,9 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   public openModal(): void {
-    // TODO: tendremos que cambiar el modal a uno que incorpore acciones		Date: 2021/11/25
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
-    const payloadAction: TransactionTrackingActionDetailPayload = this.dialogAction.payload;
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationActionModalComponent);
 
-    modalRef.componentInstance.properties = this.getModalProperties(payloadAction);
+    modalRef.componentInstance.properties = this.modalProperties;
 
     modalRef.result.then(
       () => {},
@@ -31,13 +29,14 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
     );
   }
 
-  private getModalProperties(payload: TransactionTrackingActionDetailPayload): ConfirmationModalProperties {
+  private get modalProperties(): ConfirmationActionModalProperties {
     return {
-      title: payload.title,
-      description: payload.description,
-      confirmMessage: payload.positive.title,
-      cancelMessage: payload.negative?.title,
+      title: this.dialogAction.title,
+      description: this.dialogAction.description,
+      confirmMessage: this.dialogAction.positive.title,
+      cancelMessage: this.dialogAction.negative?.title,
       confirmColor: COLORS.WALLA_MAIN,
+      positiveAction: this.dialogAction.positive.action,
     };
   }
 }
