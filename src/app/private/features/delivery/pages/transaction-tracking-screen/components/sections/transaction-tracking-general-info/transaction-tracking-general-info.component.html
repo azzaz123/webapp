@@ -4,12 +4,14 @@
   </div>
   <span class="TrackingGeneralInfo__title TrackingGeneralInfo__text mb-3">{{ info.title }}</span>
   <div id="shippingStatusDescription" class="TrackingGeneralInfo__text mb-3" [innerHTML]="info.description | bypassHTML"></div>
-  <tsl-button
-    *ngFor="let action of info.actions"
-    class="TrackingGeneralInfo__actionButton"
-    className="btn-block {{ action.style.className }}"
-    [disabled]="action.state.isDisabled"
-    (click)="manageAction(action.action)"
-    >{{ action.title }}</tsl-button
-  >
+  <ng-container *ngFor="let action of info.actions">
+    <tsl-transaction-tracking-action-selector [actionDetail]="action">
+      <tsl-button
+        class="TrackingGeneralInfo__actionButton"
+        className="btn-block {{ action.style.className }}"
+        [disabled]="action.state.isDisabled"
+        >{{ action.title }}</tsl-button
+      >
+    </tsl-transaction-tracking-action-selector>
+  </ng-container>
 </div>

@@ -10,6 +10,4 @@ export class TransactionTrackingGeneralInfoComponent {
   @Input() shippingStatus: TransactionTrackingShippingStatus;
 
   constructor() {}
-
-  ngOnInit() {}
 }
