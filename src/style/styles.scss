@@ -93,9 +93,13 @@ body {
   display: block !important;
 }
 
-.page-content > .container {
-  padding-top: $spacing-xl;
-  padding-bottom: $spacing-xl;
+// TODO: This class should be removed
+.page-content {
+  min-height: 100%;
+  > .container {
+    padding-top: $spacing-xl;
+    padding-bottom: $spacing-xl;
+  }
 }
 
 button,

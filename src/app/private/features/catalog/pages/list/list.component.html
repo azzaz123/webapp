@@ -1,4 +1,4 @@
-<div class="page-content"
+<div class="page-content d-flex flex-column"
      tslInfiniteScroll
      [infiniteScrollDistance]="1"
      [infiniteScrollDisabled]="!items.length || end || loading"
@@ -137,18 +137,17 @@
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </div>
-</div>
 
-<div class="List__selectedItems">
-  <tsl-selected-items *ngIf="items.length"
-    [items]="items"
-    [selectedSubscriptionSlot]="selectedSubscriptionSlot"
-    [selectedStatus]="selectedStatus"
-    (selectedAction)="onAction($event)"
-  >
-  </tsl-selected-items>
+  <div class="List__selectedItems mt-auto">
+    <tsl-selected-items *ngIf="items.length"
+      [items]="items"
+      [selectedSubscriptionSlot]="selectedSubscriptionSlot"
+      [selectedStatus]="selectedStatus"
+      (selectedAction)="onAction($event)"
+    >
+    </tsl-selected-items>
+  </div>
 </div>
-
 
 <tsl-bump-tutorial></tsl-bump-tutorial>
 <button [hidden]="true" tslItemSold></button>
