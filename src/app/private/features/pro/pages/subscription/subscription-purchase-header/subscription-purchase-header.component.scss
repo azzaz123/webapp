@@ -1,17 +1,6 @@
 @import '~style/common';
 
 .SubscriptionPurchaseHeader {
-  &__icon {
-    @include square(80px);
-    padding: 15px;
-    border-radius: 50%;
-    background-color: $blue-grey-5;
-  }
-
-  &__title {
-    font-size: $font-size-l;
-  }
-
   &__subtitle {
     color: $blue-grey-2;
   }
@@ -22,7 +11,7 @@
 
   &__link {
     cursor: pointer;
-    color: $walla-dark;
+    color: $walla-main;
   }
 
   &__benefits {
@@ -35,11 +24,5 @@
     color: $white;
     border-radius: 2px;
     white-space: nowrap;
-  }
-
-  &__iconCheck {
-    ::ng-deep svg path {
-      fill: $blue-grey-2;
-    }
   }
 }

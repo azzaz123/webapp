@@ -34,7 +34,7 @@ export class TestWrapperHistoricListComponent {
   @Input() showTotalBalance = true;
 
   public handleScroll(): void {}
-  public onItemClick(historicElement: HistoricElement): void {}
+  public onItemClick(_historicElement: HistoricElement): void {}
 }
 
 describe('HistoricListComponent', () => {
@@ -44,8 +44,7 @@ describe('HistoricListComponent', () => {
 
   const emptyStateSelector = '.HistoricList__no-results';
   const totalBalanceSelector = '.HistoricList__total-balance';
-  const marginlessHeaderSelector = '.HistoricList__header--marginless';
-  const marginlessSubtitleSelector = '.HistoricList__header--marginless';
+  const marginlessSelector = '.m-0';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -189,16 +188,11 @@ describe('HistoricListComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should apply marginless style to the empty header', () => {
-        const marginlessHeaderElement = fixture.debugElement.query(By.css(marginlessHeaderSelector));
+      it('should apply marginless style to the empty header and subtitle', () => {
+        const marginlessHeaderElements = fixture.debugElement.queryAll(By.css(marginlessSelector));
 
-        expect(marginlessHeaderElement).toBeTruthy();
-      });
-
-      it('should apply marginless style to the empty subtitle', () => {
-        const marginlessSubtitleElement = fixture.debugElement.query(By.css(marginlessSubtitleSelector));
-
-        expect(marginlessSubtitleElement).toBeTruthy();
+        expect(marginlessHeaderElements).toBeTruthy();
+        expect(marginlessHeaderElements.length).toEqual(2);
       });
     });
   });

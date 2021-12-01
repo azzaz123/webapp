@@ -7,6 +7,7 @@ import { PhoneVerificationModalComponent } from './modals/phone-verification-mod
 import { PhoneVerificationRoutedComponents, PhoneVerificationRoutingModule } from './phone-verification.routing.module';
 import { UserVerificationsModule } from '@api/user-verifications/user-verifications.module';
 import { DropdownModule } from '@shared/dropdown/dropdown.module';
+import { SmsCodeVerificationModalComponent } from './modals/sms-code-verification-modal/sms-code-verification-modal.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { DropdownModule } from '@shared/dropdown/dropdown.module';
     UserVerificationsModule,
     PhoneVerificationRoutingModule,
   ],
-  declarations: [PhoneVerificationRoutedComponents, PhoneVerificationModalComponent],
+  declarations: [PhoneVerificationRoutedComponents, PhoneVerificationModalComponent, SmsCodeVerificationModalComponent],
 })
 export class PhoneVerificationModule {}
