@@ -20,6 +20,24 @@ export class TrustAndSafetyService {
 
   constructor(private http: HttpClient, private uuidService: UuidService) {}
 
+  public submitProfile(location: SessionProfileDataLocation): void {
+    this.initializeSessionId();
+    this.initializeLibrary();
+
+    const profile: SessionProfileData = {
+      id: this.sessionId,
+      location,
+      platform: SessionProfileDataPlatform.WEB,
+    };
+
+    this.profileSentToThreatMetrix.pipe(take(1)).subscribe((profileSent) => {
+      if (!profileSent) {
+        profile.status = TMXStatusCode.TMX_INTERNAL_ERROR;
+      }
+      this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
+    });
+  }
+
   private initializeSessionId(): void {
     if (!this.sessionId) {
       this.sessionId = this.uuidService.getUUID();
@@ -80,23 +98,5 @@ export class TrustAndSafetyService {
 
   private canSubmitProfile(): boolean {
     return this.sessionId && this.threatMetrixRef && this.isThreatMetrixProfilingStarted();
-  }
-
-  public submitProfile(location: SessionProfileDataLocation): void {
-    this.initializeSessionId();
-    this.initializeLibrary();
-
-    const profile: SessionProfileData = {
-      id: this.sessionId,
-      location,
-      platform: SessionProfileDataPlatform.WEB,
-    };
-
-    this.profileSentToThreatMetrix.pipe(take(1)).subscribe((profileSent) => {
-      if (!profileSent) {
-        profile.status = TMXStatusCode.TMX_INTERNAL_ERROR;
-      }
-      this.http.post(USER_STARTER_ENDPOINT, profile).subscribe();
-    });
   }
 }
