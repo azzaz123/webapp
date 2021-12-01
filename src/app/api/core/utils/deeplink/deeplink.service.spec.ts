@@ -131,6 +131,15 @@ describe(`DeeplinkService`, () => {
     });
   });
 
+  describe(`WHEN there is no deeplink`, () => {
+    it(`should not return the url`, () => {
+      const deeplink = null;
+      const expected = null;
+
+      expect(service.toWebLink(deeplink)).toEqual(expected);
+    });
+  });
+
   describe(`WHEN the deeplink is a barcode deeplink`, () => {
     it(`should return the url`, () => {
       const deeplink = `${barcodeBaseDeeplink}?b=https://my-barcode-url`;

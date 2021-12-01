@@ -144,9 +144,6 @@ export class DeeplinkService {
     if (deeplink.startsWith(checkDeliveryInstructionsDeeplink)) {
       return 'instructions';
     }
-    if (deeplink.startsWith(packagingInstructionsDeeplink)) {
-      return 'instructions';
-    }
     if (deeplink.startsWith(itemDeeplink)) {
       return 'item';
     }
@@ -197,13 +194,13 @@ export class DeeplinkService {
 
   private getZendeskArticleWebLink(deeplink: string): string {
     const HELP_LOCALE = HELP_LOCALE_BY_APP_LOCALE[this.locale];
-    const articleId = deeplink.split('z=').pop() ?? null;
+    const articleId = deeplink.split('z=').pop();
     return !!articleId ? getCustomerHelpUrl(articleId as unknown as UNIFIED_EXTERNAL_CUSTOMER_HELP_PAGE_ID, HELP_LOCALE) : null;
   }
 
   private getZendeskCreateDisputeFormWebLink(deeplink: string): string {
     const HELP_LOCALE = HELP_LOCALE_BY_APP_LOCALE[this.locale];
-    const formId = deeplink.split('f=').pop() ?? null;
+    const formId = deeplink.split('f=').pop();
     return !!formId ? getTicketFormUrl(formId as unknown as EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID, HELP_LOCALE) : null;
   }
 
