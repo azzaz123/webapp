@@ -7,7 +7,7 @@ import { HistoricElement } from '@shared/historic-list/interfaces/historic-eleme
 import { HistoricListHeader } from '@shared/historic-list/interfaces/historic-list-header.interface';
 import { HistoricListSubtitle } from '@shared/historic-list/interfaces/historic-list-subtitle.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
-import { mapTransactionStatusToSubDescriptionType } from '../transaction-status-to-subdescription-type.mapper';
+import { mapOngoingTransactionTrackingStatusToSubDescriptionType } from './ongoing-transaction-tracking-status-to-subdescription-type.mapper';
 
 export const mapPendingTransactionToHistoricList: ToDomainMapper<PendingTransaction[], HistoricList> = (
   input: PendingTransaction[]
@@ -70,12 +70,12 @@ const getDescription = (): { text: string; iconUrl: string } => {
 
 const getSubDescription = (input: PendingTransaction): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } => {
   const { status, isCurrentUserTheSeller } = input;
-  const { delivery: deliveryStatus } = status;
+  const { tracking: trackingStatus } = status;
   const text: string = isCurrentUserTheSeller
-    ? ongoingTransactionTrackingStatusAsSellerTranslations[deliveryStatus]
-    : ongoingTransactionTrackingStatusAsBuyerTranslations[deliveryStatus];
+    ? ongoingTransactionTrackingStatusAsSellerTranslations[trackingStatus]
+    : ongoingTransactionTrackingStatusAsBuyerTranslations[trackingStatus];
 
-  const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = mapTransactionStatusToSubDescriptionType[status.delivery];
+  const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = mapOngoingTransactionTrackingStatusToSubDescriptionType[trackingStatus];
 
   return {
     text,
