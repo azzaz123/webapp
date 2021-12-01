@@ -1,4 +1,6 @@
-import { Injectable, Injector } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
@@ -10,118 +12,206 @@ import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 
-const checkDeliveryInstructionsPrefix = 'wallapop://shipping/transactiontracking/instructions?'; // request_id=$requestId&type=${Packaging.asString()}';
-const customerSupportArticlePrefix = 'wallapop://customerSupport/faq/article?z=';
-const customerSupportFormPrefix = 'wallapop://customerSupport/form?f=';
-const itemDeeplinkPrefix = 'wallapop://i/';
-const packagingInstructionsPrefix = 'wallapop://shipping/transactiontracking/instructions?'; // request_id=$requestId&type=${Packaging.asString()}';
-const printableLabelPrefix = 'wallapop://trackinglabel?url=';
-const userProfileDeeplinkPrefix = 'wallapop://p/';
+const barcodeLabelDeeplink = 'wallapop://delivery/barcode?b=';
+const checkDeliveryInstructionsDeeplink = 'wallapop://shipping/transactiontracking/instructions?';
+const createDisputeZendeskFormDeeplink = 'wallapop://customerSupport/form?f=';
+const itemDeeplink = 'wallapop://i/';
+const packagingInstructionsDeeplink = 'wallapop://shipping/transactiontracking/instructions?';
+const printableLabelDeeplink = 'wallapop://trackinglabel?url=';
+const userProfileDeeplink = 'wallapop://p/';
+const zendeskArticleDeeplink = 'wallapop://customerSupport/faq/article?z=';
 
-/*
-Done -> ItemDeeplink -> "wallapop://i/$itemId"
-Done -> UserProfileDeeplink -> "wallapop://p/$userId"
-3th iteration -> OpenDisputeDeeplink -> "wallapop://selfservice/dispute/create/select-issue?t=$transactionId"
-Done -> PrintableLabelDeeplink ->"wallapop://trackinglabel?url=${printableTagUrl.value}"
-Pending -> BarcodeLabelDeeplink -> "wallapop://delivery/barcode?b=${deliveryTag.asString()}"
-Done -> PackagingInstructionsDeeplink -> "wallapop://shipping/transactiontracking/instructions?request_id=$requestId&type=${Packaging.asString()}"
-Done -> CheckDeliveryInstructionsDeeplink -> "wallapop://shipping/transactiontracking/instructions?request_id=$requestId&type=${CheckDelivery.asString()}"
-3th iteration -> CheckoutDeeplink -> "wallapop://delivery/checkout?i=$itemHash"
-4th iteration -> BuyerManageDisputeDeeplink -> "wallapop://selfservice/dispute?t=$transactionId&d=$disputeId&b=true"
-4th iteration -> SellerManageDisputeDeeplink -> "wallapop://selfservice/dispute?t=$transactionId&d=$disputeId&b=false"
-4th iteration -> CreateDisputeZendeskFormDeepLink -> "wallapop://customerSupport/form?f=360003316777"
-4th iteration -> TransactionExperienceRatingDeeplink - > "wallapop://delivery/transaction/experience-rating?transaction_id=${transactionId.asString()}"
-Donet -> ZendeskArticleDeeplink -> "wallapop://customerSupport/faq/article?z=%s"
-
-*/
-
-type deeplinkType = 'unknown' | 'instructions' | 'item' | 'printable' | 'supportArticle' | 'supportForm' | 'userProfile';
+type deeplinkType =
+  | 'unknown'
+  | 'barcodeLabel'
+  | 'instructions'
+  | 'item'
+  | 'printableLabel'
+  | 'userProfile'
+  | 'zendeskArticle'
+  | 'zendeskForm';
 
 @Injectable()
 export class DeeplinkService {
-  private itemDetailRoutePipe: ItemDetailRoutePipe;
-  private userProfileRoutePipe: UserProfileRoutePipe;
+  private window: Window;
 
-  constructor() {
-    const injector: Injector = Injector.create({ providers: [{ provide: ItemDetailRoutePipe }, { provide: UserProfileRoutePipe }] });
-    this.itemDetailRoutePipe = injector.get(ItemDetailRoutePipe);
-    this.userProfileRoutePipe = injector.get(UserProfileRoutePipe);
+  constructor(
+    @Inject(LOCALE_ID) private locale: APP_LOCALE,
+    @Inject(DOCUMENT) document: Document,
+    private itemDetailRoutePipe: ItemDetailRoutePipe,
+    private userProfileRoutePipe: UserProfileRoutePipe,
+    private router: Router
+  ) {
+    this.window = document.defaultView;
   }
 
-  public toWebLink(deeplink: string, locale: APP_LOCALE): string {
+  public isAvailable(deeplink: string): boolean {
+    const availabilities: Record<deeplinkType, boolean> = {
+      barcodeLabel: true,
+      instructions: true,
+      item: true,
+      printableLabel: true,
+      unknown: false,
+      userProfile: false,
+      zendeskArticle: true,
+      zendeskForm: false,
+    };
+
+    return availabilities[this.getDeeplinkType(deeplink)];
+  }
+
+  public isBarcodeLabelDeeplink(deeplink: string): boolean {
+    return this.getDeeplinkType(deeplink) === 'barcodeLabel';
+  }
+
+  public isInstructionsDeeplink(deeplink: string): boolean {
+    return this.getDeeplinkType(deeplink) === 'instructions';
+  }
+
+  public isItemDeeplink(deeplink: string): boolean {
+    return this.getDeeplinkType(deeplink) === 'item';
+  }
+
+  public isPrintableLabelDeeplink(deeplink: string): boolean {
+    return this.getDeeplinkType(deeplink) === 'printableLabel';
+  }
+
+  public isUserProfileDeeplink(deeplink: string): boolean {
+    return this.getDeeplinkType(deeplink) === 'userProfile';
+  }
+
+  public isZendeskArticleDeeplink(deeplink: string): boolean {
+    return this.getDeeplinkType(deeplink) === 'zendeskArticle';
+  }
+
+  public isZendeskCreateDisputeFormDeeplink(deeplink: string): boolean {
+    return this.getDeeplinkType(deeplink) === 'zendeskForm';
+  }
+
+  public navigate(deeplink: string): void {
+    if (this.isInstructionsDeeplink(deeplink)) {
+      this.navigateToRoute(deeplink);
+      return;
+    }
+    if (this.isItemDeeplink(deeplink)) {
+      this.navigateToUrl(deeplink);
+      return;
+    }
+    if (this.isPrintableLabelDeeplink(deeplink)) {
+      this.navigateToUrl(deeplink);
+      return;
+    }
+    if (this.isUserProfileDeeplink(deeplink)) {
+      this.navigateToRoute(deeplink);
+      return;
+    }
+    if (this.isZendeskArticleDeeplink(deeplink)) {
+      this.navigateToUrl(deeplink);
+      return;
+    }
+    if (this.isZendeskCreateDisputeFormDeeplink(deeplink)) {
+      this.navigateToUrl(deeplink);
+      return;
+    }
+  }
+
+  public toWebLink(deeplink: string): string {
     if (!deeplink) {
       return null;
     }
 
     const deeplinkMappers: Record<deeplinkType, string> = {
+      barcodeLabel: this.getBarcodeLabelWebLink(deeplink),
       instructions: this.getInstructionsWebLink(deeplink),
       item: this.getItemWebLink(deeplink),
-      printable: this.getPrintableWebLink(deeplink),
-      supportArticle: this.getSupportArticleWebLink(deeplink, locale),
-      supportForm: this.getSupportFormWebLink(deeplink, locale),
+      printableLabel: this.getPrintableLabelWebLink(deeplink),
       userProfile: this.getUserProfileWebLink(deeplink),
+      zendeskArticle: this.getZendeskArticleWebLink(deeplink),
+      zendeskForm: this.getZendeskCreateDisputeFormWebLink(deeplink),
       unknown: null,
     };
     return deeplinkMappers[this.getDeeplinkType(deeplink)];
   }
 
+  private getBarcodeLabelWebLink(deeplink: string): string {
+    return deeplink.split(barcodeLabelDeeplink).pop();
+  }
+
   private getDeeplinkType(deeplink: string): deeplinkType {
-    if (deeplink.startsWith(checkDeliveryInstructionsPrefix)) {
+    if (deeplink.startsWith(barcodeLabelDeeplink)) {
+      return 'barcodeLabel';
+    }
+    if (deeplink.startsWith(checkDeliveryInstructionsDeeplink)) {
       return 'instructions';
     }
-    if (deeplink.startsWith(packagingInstructionsPrefix)) {
+    if (deeplink.startsWith(packagingInstructionsDeeplink)) {
       return 'instructions';
     }
-    if (deeplink.startsWith(itemDeeplinkPrefix)) {
+    if (deeplink.startsWith(itemDeeplink)) {
       return 'item';
     }
-    if (deeplink.startsWith(userProfileDeeplinkPrefix)) {
+    if (deeplink.startsWith(userProfileDeeplink)) {
       return 'userProfile';
     }
-    if (deeplink.startsWith(printableLabelPrefix)) {
-      return 'printable';
+    if (deeplink.startsWith(printableLabelDeeplink)) {
+      return 'printableLabel';
     }
-    if (deeplink.startsWith(customerSupportArticlePrefix)) {
-      return 'supportArticle';
+    if (deeplink.startsWith(zendeskArticleDeeplink)) {
+      return 'zendeskArticle';
     }
-    if (deeplink.startsWith(customerSupportFormPrefix)) {
-      return 'supportForm';
+    if (deeplink.startsWith(createDisputeZendeskFormDeeplink)) {
+      return 'zendeskForm';
     }
     return 'unknown';
   }
 
   private getInstructionsWebLink(deeplink: string): string {
     const regExp: RegExp = new RegExp(/\w+=\w+/g);
-    const id = deeplink.match(regExp);
-    const request_id = !!id && !!id[0] ? id[0].split('=')[1] : null;
-    const type = !!id && !!id[1] ? id[1].split('=')[1] : null;
-    return `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${TRANSACTION_TRACKING_PATHS.INSTRUCTIONS}/${request_id}/${type}`;
+    const params = deeplink.match(regExp);
+    const request_id = !!params && !!params[0] ? params[0].split('=').pop() : null;
+    const type = !!params && !!params[1] ? params[1].split('=').pop() : null;
+    return !!request_id && !!type
+      ? `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${TRANSACTION_TRACKING_PATHS.INSTRUCTIONS}/${request_id}/${type}`
+      : null;
   }
 
   private getItemWebLink(deeplink: string): string {
-    const id = deeplink.split(itemDeeplinkPrefix)[1];
-    return this.itemDetailRoutePipe.transform(id);
+    const id = deeplink.split(itemDeeplink).pop();
+    return !!id ? this.itemDetailRoutePipe.transform(id) : null;
   }
 
-  private getPrintableWebLink(deeplink: string): string {
-    return deeplink.split(printableLabelPrefix)[1];
-  }
-
-  private getSupportArticleWebLink(deeplink: string, locale: APP_LOCALE): string {
-    const HELP_LOCALE = HELP_LOCALE_BY_APP_LOCALE[locale];
-    const articleId = deeplink.split('z=')[1] ?? null;
-    return !!articleId ? getCustomerHelpUrl(articleId as unknown as UNIFIED_EXTERNAL_CUSTOMER_HELP_PAGE_ID, HELP_LOCALE) : null;
-  }
-
-  private getSupportFormWebLink(deeplink: string, locale: APP_LOCALE): string {
-    const HELP_LOCALE = HELP_LOCALE_BY_APP_LOCALE[locale];
-    const formId = deeplink.split('f=')[1] ?? null;
-    return !!formId ? getTicketFormUrl(formId as unknown as EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID, HELP_LOCALE) : null;
+  private getPrintableLabelWebLink(deeplink: string): string {
+    return deeplink.split(printableLabelDeeplink).pop();
   }
 
   private getUserProfileWebLink(deeplink: string): string {
-    const id = deeplink.split(userProfileDeeplinkPrefix)[1];
-    // TODO -> Ask for webSlug parameter
-    return this.userProfileRoutePipe.transform('', id);
+    const userId = deeplink.split(userProfileDeeplink).pop();
+    const webSlug = null;
+
+    // TODO -> 2021-11-30
+    //         In order to avoid calling backend for the webSlug,
+    //         we have to ask Camilla to include the webSlug in the response
+
+    return !!userId && !!webSlug ? this.userProfileRoutePipe.transform(webSlug, userId) : null;
+  }
+
+  private getZendeskArticleWebLink(deeplink: string): string {
+    const HELP_LOCALE = HELP_LOCALE_BY_APP_LOCALE[this.locale];
+    const articleId = deeplink.split('z=').pop() ?? null;
+    return !!articleId ? getCustomerHelpUrl(articleId as unknown as UNIFIED_EXTERNAL_CUSTOMER_HELP_PAGE_ID, HELP_LOCALE) : null;
+  }
+
+  private getZendeskCreateDisputeFormWebLink(deeplink: string): string {
+    const HELP_LOCALE = HELP_LOCALE_BY_APP_LOCALE[this.locale];
+    const formId = deeplink.split('f=').pop() ?? null;
+    return !!formId ? getTicketFormUrl(formId as unknown as EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID, HELP_LOCALE) : null;
+  }
+
+  private navigateToRoute(deeplink: string): void {
+    this.router.navigate([this.toWebLink(deeplink)]);
+  }
+
+  private navigateToUrl(deeplink: string): void {
+    this.window.open(this.toWebLink(deeplink), '_blank');
   }
 }
