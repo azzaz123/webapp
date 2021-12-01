@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UNAVAILABLE_DEEPLINKS_PREFIX } from '../../../constants/unavailable-deeplinks-prefix-constants';
+import { TransactionTrackingActionDeeplink } from '@api/core/model/delivery/transaction/tracking';
+import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-deeplink',
@@ -7,26 +8,19 @@ import { UNAVAILABLE_DEEPLINKS_PREFIX } from '../../../constants/unavailable-dee
   styleUrls: ['./transaction-tracking-action-deeplink.component.scss'],
 })
 export class TransactionTrackingActionDeeplinkComponent implements OnInit {
-  @Input() deeplinkAction: any;
+  @Input() deeplinkAction: TransactionTrackingActionDeeplink;
   public isDeeplinkUnavailable: boolean;
 
-  constructor() {}
+  constructor(private deeplinkService: DeeplinkService) {}
 
-  ngOnInit(): void {
-    this.initializeIsDeeplinkAvailable();
-  }
+  ngOnInit(): void {}
 
-  public stopRedirectWhenNotAvailable(event: Event): void {
-    if (this.isDeeplinkUnavailable) {
-      event.preventDefault();
+  public navigate(): void {
+    if (this.deeplinkService.isAvailable(this.deeplinkAction.linkUrl)) {
+      this.deeplinkService.navigate(this.deeplinkAction.linkUrl);
+    } else {
+      // TODO: Show modal when created		Date: 2021/12/01
       alert('This deeplink is not available');
     }
-  }
-
-  private initializeIsDeeplinkAvailable(): void {
-    const deeplink = this.deeplinkAction.payload.linkUrl;
-    this.isDeeplinkUnavailable = UNAVAILABLE_DEEPLINKS_PREFIX.some((unavailableDeeplink: string) =>
-      deeplink.startsWith(unavailableDeeplink)
-    );
   }
 }
