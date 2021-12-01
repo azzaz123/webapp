@@ -140,7 +140,7 @@ export class PaymentService {
         return this.getProducts().pipe(
           map((products: Products) => {
             perks.forEach((perk: PerkResponse) => {
-              if (products[perk.product_id] != null) {
+              if (!!products[perk.product_id]) {
                 const name: string = products[perk.product_id].name;
                 if (name === 'NATIONAL_BUMP') {
                   if (perk.subscription_id !== null) {
@@ -210,7 +210,8 @@ export class PaymentService {
           const benefitsId: string = Object.keys(pack.benefits)[0];
           const name: string = PACKS_TYPES[products[benefitsId].name] ? PACKS_TYPES[products[benefitsId].name] : '';
           const baseQuantity = mins[benefitsId];
-          const responsePrice: number = packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
+          const responsePrice: number =
+            packsResponse[name][0] === null || packsResponse[name][0] === undefined ? +pack.price : packsResponse[name][0].price;
           const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
           const formattedPack: Pack = new Pack(pack.id, pack.benefits[benefitsId], +pack.price, pack.currency, name);
           if (pack.original_price) {

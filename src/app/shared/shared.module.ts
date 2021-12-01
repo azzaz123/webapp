@@ -42,8 +42,8 @@ import {
   DateUntilDayPipe,
   LinkTransformPipe,
   WebSlugConverterPipe,
-  ItemDetailRouteModule,
-  UserProfileRouteModule,
+  UserProfileRoutePipe,
+  ItemDetailRoutePipe,
 } from './pipes';
 import { CustomCurrencyModule } from './pipes/custom-currency/custom-currency.module';
 import { PreventDoubleClickDirective } from './prevent-double-click/prevent-double-click.directive';
@@ -109,8 +109,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     HeaderModule,
     PaymentsCardInfoModule,
     InfiniteScrollModule,
-    ItemDetailRouteModule,
-    UserProfileRouteModule,
   ],
   exports: [
     SpinnerModule,
@@ -158,6 +156,8 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     StripeCardSelectionComponent,
     LinkTransformPipe,
     WebSlugConverterPipe,
+    UserProfileRoutePipe,
+    ItemDetailRoutePipe,
     PreventDoubleClickDirective,
     ProBadgeModule,
     DateUntilDayPipe,
@@ -174,8 +174,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     InfiniteScrollDirective,
     VisibleDirectiveModule,
     PaymentsCardInfoModule,
-    ItemDetailRouteModule,
-    UserProfileRouteModule,
   ],
   declarations: [
     ConfirmationModalComponent,
@@ -218,6 +216,8 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     StripeCardSelectionComponent,
     LinkTransformPipe,
     WebSlugConverterPipe,
+    UserProfileRoutePipe,
+    ItemDetailRoutePipe,
     PreventDoubleClickDirective,
     DateUntilDayPipe,
     DateCalendarPipe,
@@ -229,7 +229,7 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     DeliveryDevelopmentDirective,
     LocationSelectorModal,
   ],
-  providers: [DecimalPipe, LinkTransformPipe, ListingLimitService],
+  providers: [DecimalPipe, LinkTransformPipe, ItemDetailRoutePipe, ListingLimitService],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,

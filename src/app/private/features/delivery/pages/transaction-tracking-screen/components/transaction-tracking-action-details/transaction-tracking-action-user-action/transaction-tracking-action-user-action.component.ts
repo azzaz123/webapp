@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+import { TransactionTrackingActionUserAction } from '@api/core/model/delivery/transaction/tracking';
+import { ErrorsService } from '@core/errors/errors.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-user-action',
@@ -7,18 +10,17 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
   styleUrls: ['./transaction-tracking-action-user-action.component.scss'],
 })
 export class TransactionTrackingActionUserActionComponent implements OnInit {
-  @Input() userAction: any;
+  @Input() userAction: TransactionTrackingActionUserAction;
 
-  constructor(private transactionTrackingService: TransactionTrackingService) {}
+  constructor(private transactionTrackingService: TransactionTrackingService, private errorsService: ErrorsService) {}
 
   ngOnInit(): void {}
 
   public requestUserAction(): void {
-    this.transactionTrackingService
-      .sendUserAction(this.userAction.payload.parameters.transactionId, this.userAction.payload.name)
-      .subscribe(
-        () => {},
-        () => {}
-      );
+    this.transactionTrackingService.sendUserAction(this.userAction.transactionId, this.userAction.name).subscribe({
+      error() {
+        this.errorsService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+      },
+    });
   }
 }

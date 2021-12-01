@@ -1,11 +1,6 @@
 import { TransactionTrackingActionDetail } from '@api/core/model/delivery/transaction/tracking';
-import { COLORS } from '@core/colors/colors-constants';
+import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 
-export interface ConfirmationActionModalProperties {
-  title?: string;
-  description: string;
-  confirmMessage: string;
-  cancelMessage?: string;
-  confirmColor: COLORS.WALLA_MAIN | COLORS.NEGATIVE_MAIN;
+export interface ConfirmationActionModalProperties extends ConfirmationModalProperties {
   positiveAction: TransactionTrackingActionDetail;
 }

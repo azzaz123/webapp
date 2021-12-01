@@ -14,12 +14,6 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
   providedIn: 'root',
 })
 export class SearchNavigatorService {
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private queryStringService: SearchQueryStringService,
-    private locationService: QueryStringLocationService
-  ) {}
   private notAutomaticallyCleanableParams: FILTER_QUERY_PARAM_KEY[] = [
     FILTER_QUERY_PARAM_KEY.keywords,
     FILTER_QUERY_PARAM_KEY.latitude,
@@ -27,6 +21,13 @@ export class SearchNavigatorService {
     FILTER_QUERY_PARAM_KEY.distance,
     FILTER_QUERY_PARAM_KEY.orderBy,
   ];
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private queryStringService: SearchQueryStringService,
+    private locationService: QueryStringLocationService
+  ) {}
 
   public navigateWithLocationParams(currentParams: Params) {
     const locationParams = this.locationService.getLocationParameters();

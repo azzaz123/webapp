@@ -6,7 +6,6 @@ import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { ItemDetailRouteModule, UserProfileRouteModule } from '@shared/pipes';
 import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
-import { TransactionTrackingDeeplinkModule } from '../../../pipes/transaction-tracking-deeplink.module';
 import { TransactionTrackingActionDialogComponent } from '../transaction-tracking-action-dialog/transaction-tracking-action-dialog.component';
 import { TransactionTrackingActionDeeplinkComponent } from '../transaction-tracking-action-deeplink/transaction-tracking-action-deeplink.component';
 import { TransactionTrackingActionSelectorComponent } from './transaction-tracking-action-selector.component';
@@ -33,7 +32,7 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         TransactionTrackingActionTrackingWebviewComponent,
         TransactionTrackingActionUserActionComponent,
       ],
-      imports: [ImageFallbackModule, TransactionTrackingDeeplinkModule, ItemDetailRouteModule, UserProfileRouteModule, BypassHTMLModule],
+      imports: [ImageFallbackModule, ItemDetailRouteModule, UserProfileRouteModule, BypassHTMLModule],
       providers: [
         {
           provide: SITE_URL,

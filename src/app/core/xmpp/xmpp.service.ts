@@ -21,13 +21,13 @@ import { StanzaIO } from './xmpp.provider';
 
 @Injectable()
 export class XmppService {
+  public blockedUsers: string[];
   private client: XMPPClient;
   private _clientConnected = false;
   private blockedListAvailable = false;
   private self: JID;
   private resource: string;
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
-  public blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private realtimeQ: Array<XmppBodyMessage> = [];
   private canProcessRealtime = false;
@@ -35,6 +35,15 @@ export class XmppService {
 
   constructor(private eventService: EventService, private remoteConsoleService: RemoteConsoleService) {
     this.clientConnected$.next(false);
+  }
+
+  get clientConnected(): boolean {
+    return this._clientConnected;
+  }
+
+  set clientConnected(value: boolean) {
+    this._clientConnected = value;
+    this.clientConnected$.next(value);
   }
 
   public connect$(userId: string, accessToken: string): Observable<boolean> {
@@ -70,21 +79,6 @@ export class XmppService {
     this.client.sendMessage(xmppBodyMessage);
   }
 
-  private createXmppMessage(conversation: InboxConversation, id: string, body: string): XmppBodyMessage {
-    const message: XmppBodyMessage = {
-      id: id,
-      to: this.createJid(conversation.user.id),
-      from: this.self,
-      thread: conversation.id,
-      type: 'chat',
-      request: {
-        xmlns: 'urn:xmpp:receipts',
-      },
-      body: body,
-    };
-    return message;
-  }
-
   public sendConversationStatus(userId: string, thread: string) {
     this.client.sendMessage({
       to: this.createJid(userId),
@@ -107,17 +101,66 @@ export class XmppService {
     return of(true);
   }
 
-  get clientConnected(): boolean {
-    return this._clientConnected;
-  }
-
-  set clientConnected(value: boolean) {
-    this._clientConnected = value;
-    this.clientConnected$.next(value);
-  }
-
   public debug() {
     this.client.on('*', (k, v) => console.debug(k, v));
+  }
+
+  public reconnectClient() {
+    if (this.client && !this.clientConnected) {
+      this.client.connect();
+    }
+  }
+
+  public sendMessageDeliveryReceipt(toId: string, id: string, thread: string) {
+    this.client.sendMessage({
+      to: this.createJid(toId),
+      type: 'chat',
+      thread: thread,
+      received: {
+        xmlns: 'urn:xmpp:receipts',
+        id: id,
+      },
+    });
+  }
+
+  public blockUser(user: User | InboxUser): Observable<any> {
+    this.blockedUsers.push(user.id);
+    return this.setPrivacyList(this.blockedUsers).pipe(
+      mergeMap(() => {
+        if (this.blockedUsers.length === 1) {
+          return this.setDefaultPrivacyList();
+        }
+        return of({});
+      }),
+      tap(() => {
+        user.blocked = true;
+        this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+      })
+    );
+  }
+
+  public unblockUser(user: User | InboxUser): Observable<any> {
+    remove(this.blockedUsers, (userId) => userId === user.id);
+    return this.setPrivacyList(this.blockedUsers).pipe(
+      tap(() => {
+        user.blocked = false;
+        this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
+      })
+    );
+  }
+  private createXmppMessage(conversation: InboxConversation, id: string, body: string): XmppBodyMessage {
+    const message: XmppBodyMessage = {
+      id: id,
+      to: this.createJid(conversation.user.id),
+      from: this.self,
+      thread: conversation.id,
+      type: 'chat',
+      request: {
+        xmlns: 'urn:xmpp:receipts',
+      },
+      body: body,
+    };
+    return message;
   }
 
   private createClient(accessToken: string): void {
@@ -134,12 +177,6 @@ export class XmppService {
     this.client.use(this.mamPlugin);
     this.client.use(this.privacyPlugin);
     this.client.use(this.thirdVoicePlugin);
-  }
-
-  public reconnectClient() {
-    if (this.client && !this.clientConnected) {
-      this.client.connect();
-    }
   }
 
   private bindEvents(): void {
@@ -275,18 +312,6 @@ export class XmppService {
     );
   }
 
-  public sendMessageDeliveryReceipt(toId: string, id: string, thread: string) {
-    this.client.sendMessage({
-      to: this.createJid(toId),
-      type: 'chat',
-      thread: thread,
-      received: {
-        xmlns: 'urn:xmpp:receipts',
-        id: id,
-      },
-    });
-  }
-
   private setDefaultPrivacyList(): Observable<any> {
     return from(
       this.client
@@ -324,33 +349,6 @@ export class XmppService {
       })
     );
   }
-
-  public blockUser(user: User | InboxUser): Observable<any> {
-    this.blockedUsers.push(user.id);
-    return this.setPrivacyList(this.blockedUsers).pipe(
-      mergeMap(() => {
-        if (this.blockedUsers.length === 1) {
-          return this.setDefaultPrivacyList();
-        }
-        return of({});
-      }),
-      tap(() => {
-        user.blocked = true;
-        this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-      })
-    );
-  }
-
-  public unblockUser(user: User | InboxUser): Observable<any> {
-    remove(this.blockedUsers, (userId) => userId === user.id);
-    return this.setPrivacyList(this.blockedUsers).pipe(
-      tap(() => {
-        user.blocked = false;
-        this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, this.blockedUsers);
-      })
-    );
-  }
-
   private onPrivacyListChange(iq: any) {
     if (iq.type === 'set' && iq.privacy) {
       this.getPrivacyList().subscribe((ids: string[]) => {
