@@ -21,16 +21,7 @@ const adSlot2: AdSlotConfiguration = {
   device: [],
   networkId: 0,
   sizes: [],
-  type: 'search/baseline',
-};
-
-const adSlot3: AdSlotConfiguration = {
-  id: 'slot-3',
-  name: 'slot-3',
-  device: [],
-  networkId: 0,
-  sizes: [],
-  type: 'search/variant',
+  type: 'search',
 };
 
 describe('AdSlotGroupDirective', () => {
@@ -51,7 +42,7 @@ describe('AdSlotGroupDirective', () => {
 
     const directive = new AdSlotGroupDirective(adsServiceMock, experimentationServiceMock);
     directive.slotsQuery = {
-      changes: of([{ adSlot: adSlot1 }, { adSlot: adSlot2 }, { adSlot: adSlot3 }]),
+      changes: of([{ adSlot: adSlot1 }, { adSlot: adSlot2 }]),
     } as unknown as QueryList<AdSlotComponent>;
 
     directive.ngAfterContentInit();
@@ -60,18 +51,34 @@ describe('AdSlotGroupDirective', () => {
     expect(adsServiceMock.setSlots).toHaveBeenCalledWith([adSlot1, adSlot2]);
   });
 
-  it('should set correct slots when variant is Variant and ask for display on the first one', () => {
-    spyOn(adsServiceMock, 'setSlots');
-    spyOn(experimentationServiceMock, 'getOptimizeVariant').and.returnValue('Variant');
+  it('should set the correct targeting when variant is Baseline', () => {
+    spyOn(adsServiceMock, 'setAdKeywords');
+    spyOn(experimentationServiceMock, 'getOptimizeVariant').and.returnValue('Baseline');
 
-    const directive = new AdSlotGroupDirective(adsServiceMock, experimentationServiceMock);
-    directive.slotsQuery = {
-      changes: of([{ adSlot: adSlot1 }, { adSlot: adSlot2 }, { adSlot: adSlot3 }]),
-    } as unknown as QueryList<AdSlotComponent>;
+    setUpDirective(adsServiceMock, experimentationServiceMock);
 
-    directive.ngAfterContentInit();
+    expect(adsServiceMock.setAdKeywords).toHaveBeenCalledTimes(1);
+    expect(adsServiceMock.setAdKeywords).toHaveBeenCalledWith({ MwebSearchTest: 'baseline' });
+  });
 
-    expect(adsServiceMock.setSlots).toHaveBeenCalledTimes(1);
-    expect(adsServiceMock.setSlots).toHaveBeenCalledWith([adSlot1, adSlot3]);
+  it('should set the correct targeting when variant is Variant', () => {
+    spyOn(adsServiceMock, 'setAdKeywords');
+    spyOn(experimentationServiceMock, 'getOptimizeVariant').and.returnValue('Variant-1');
+
+    // const directive = new AdSlotGroupDirective(adsServiceMock, experimentationServiceMock);
+    // directive.slotsQuery = ({ changes: of([{ adSlot: adSlot1 }, { adSlot: adSlot2 }]) } as unknown) as QueryList<AdSlotComponent>;
+
+    // directive.ngAfterContentInit();
+    setUpDirective(adsServiceMock, experimentationServiceMock);
+
+    expect(adsServiceMock.setAdKeywords).toHaveBeenCalledTimes(1);
+    expect(adsServiceMock.setAdKeywords).toHaveBeenCalledWith({ MwebSearchTest: 'variant' });
   });
 });
+
+const setUpDirective = (adsMock: AdsService, experimentsMock: ExperimentationService): void => {
+  const directive = new AdSlotGroupDirective(adsMock, experimentsMock);
+  directive.slotsQuery = { changes: of([{ adSlot: adSlot1 }, { adSlot: adSlot2 }]) } as unknown as QueryList<AdSlotComponent>;
+
+  directive.ngAfterContentInit();
+};
