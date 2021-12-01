@@ -18,6 +18,5 @@ export class ItemCardListComponentStub {
   @Input() cardType: CARD_TYPES;
   @Input() isLoading: boolean;
   @Input() showPlaceholder: boolean;
-  @Input() showNativeAdSlots: boolean;
   @Output() toggleFavouriteEvent: EventEmitter<ItemCard> = new EventEmitter<ItemCard>();
 }
