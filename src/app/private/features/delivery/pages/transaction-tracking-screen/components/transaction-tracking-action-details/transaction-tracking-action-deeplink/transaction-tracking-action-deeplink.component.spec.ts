@@ -4,7 +4,6 @@ import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { ItemDetailRouteModule, UserProfileRouteModule } from '@shared/pipes';
-import { TransactionTrackingDeeplinkModule } from '../../../pipes/transaction-tracking-deeplink.module';
 
 import { TransactionTrackingActionDeeplinkComponent } from './transaction-tracking-action-deeplink.component';
 
@@ -15,7 +14,7 @@ describe('TransactionTrackingActionDeeplinkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransactionTrackingDeeplinkModule, ItemDetailRouteModule, UserProfileRouteModule, ImageFallbackModule],
+      imports: [ItemDetailRouteModule, UserProfileRouteModule, ImageFallbackModule],
       declarations: [TransactionTrackingActionDeeplinkComponent],
       providers: [
         {
