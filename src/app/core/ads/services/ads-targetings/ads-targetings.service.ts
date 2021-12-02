@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
-import { ActivatedRoute, Params } from '@angular/router';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { YieldBirdService } from '@core/ads/vendors/yieldbird/yieldbird.service';
