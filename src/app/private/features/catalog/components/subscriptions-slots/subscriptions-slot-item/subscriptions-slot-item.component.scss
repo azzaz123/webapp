@@ -41,6 +41,7 @@
   }
 
   &:hover {
+    transition: 0.2s;
     border-color: $color-pro-main;
     cursor: pointer;
   }

@@ -11,7 +11,7 @@ export class SubscriptionsSlotsListComponent {
   @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
   @Output() subscriptionSlotSelected: EventEmitter<SubscriptionSlot> = new EventEmitter();
 
-  onSelectSubscriptionSlot(subscriptionSlot: SubscriptionSlot) {
+  public onSelectSubscriptionSlot(subscriptionSlot: SubscriptionSlot): void {
     this.subscriptionSlotSelected.emit(subscriptionSlot);
   }
 }
