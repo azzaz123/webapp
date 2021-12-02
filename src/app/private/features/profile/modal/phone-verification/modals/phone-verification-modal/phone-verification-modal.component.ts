@@ -36,14 +36,15 @@ export class PhoneVerificationModalComponent implements OnInit {
 
   public onSubmitPhone(): void {
     const { prefix, phone } = this.phoneVerificationForm.getRawValue();
-    if (this.isCorrectPhone(prefix, phone)) {
+    const phoneNumber = prefix + phone;
+    if (this.isCorrectPhone(phoneNumber)) {
       this.userVerificationsService
-        .verifyPhone(phone, prefix)
+        .verifyPhone(phoneNumber)
         .pipe(take(1))
         .subscribe(
           () => {
             this.activeModal.close();
-            this.openSmsCodeVerificationModal(prefix, phone);
+            this.openSmsCodeVerificationModal(phoneNumber);
             this.verificationsNSecurityTrackingEventsService.trackStartPhoneVerificationProcessEvent();
           },
           () => {
@@ -62,10 +63,10 @@ export class PhoneVerificationModalComponent implements OnInit {
     });
   }
 
-  private isCorrectPhone(prefix: string, phone: string): boolean {
+  private isCorrectPhone(phoneNumber: string): boolean {
     try {
-      const phoneNumber = parsePhoneNumber(prefix + phone);
-      return phoneNumber.isValid();
+      const parsePhone = parsePhoneNumber(phoneNumber);
+      return parsePhone.isValid();
     } catch (error) {
       return false;
     }
@@ -88,12 +89,11 @@ export class PhoneVerificationModalComponent implements OnInit {
     });
   }
 
-  private openSmsCodeVerificationModal(prefix: string, phone: string): void {
+  private openSmsCodeVerificationModal(phoneNumber: string): void {
     const modalRef: NgbModalRef = this.modalService.open(SmsCodeVerificationModalComponent, {
       windowClass: 'modal-standard',
     });
 
-    modalRef.componentInstance.prefix = prefix;
-    modalRef.componentInstance.phone = phone;
+    modalRef.componentInstance.phoneNumber = phoneNumber;
   }
 }
