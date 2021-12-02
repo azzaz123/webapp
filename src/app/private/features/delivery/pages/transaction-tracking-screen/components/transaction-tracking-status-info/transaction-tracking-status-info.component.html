@@ -13,9 +13,9 @@
     />
   </div>
   <tsl-transaction-tracking-action-selector *ngIf="info.action" [actionDetail]="info.action">
-    <span [innerHTML]="info.description | bypassHTML"></span>
+    <div [innerHTML]="info.description | bypassHTML"></div>
   </tsl-transaction-tracking-action-selector>
-  <span *ngIf="!info.action" id="safeDescription" [innerHTML]="info.description | bypassHTML"> </span>
+  <div *ngIf="!info.action" id="safeDescription" [innerHTML]="info.description | bypassHTML"></div>
   <tsl-svg-icon
     *ngIf="info.showCaret"
     src="/assets/icons/arrow-right.svg"
