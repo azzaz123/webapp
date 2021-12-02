@@ -6,8 +6,6 @@ import { Observable, ReplaySubject } from 'rxjs';
   providedIn: 'root',
 })
 export class ExternalCommsService {
-  constructor() {}
-
   private readonly _brazeReady$: ReplaySubject<void> = new ReplaySubject<void>();
 
   public get brazeReady$(): Observable<void> {

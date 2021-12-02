@@ -75,22 +75,22 @@ describe('UserVerificationsService', () => {
 
   describe('when request to send the phone to verify', () => {
     let phone = MOCK_PHONE_NUMBER;
-    let code = MOCK_PREFIX_PHONE;
+    let prefix = MOCK_PREFIX_PHONE;
 
     beforeEach(() => {
       spyOn(userVerificationsHttpService, 'sendVerifyPhone').and.returnValue(of(MOCK_PHONE_VERIFICATION_API_RESPONSE));
     });
 
     it('should call the post verify phone ', () => {
-      service.verifyPhone(phone, code).subscribe();
+      service.verifyPhone(prefix + phone).subscribe();
 
-      expect(userVerificationsHttpService.sendVerifyPhone).toHaveBeenCalledWith(phone, code);
+      expect(userVerificationsHttpService.sendVerifyPhone).toHaveBeenCalledWith(prefix + phone);
     });
 
     it('should map server response to web context', () => {
       let response: VERIFICATION_STATUS;
 
-      service.verifyPhone(phone, code).subscribe((data) => (response = data));
+      service.verifyPhone(prefix + phone).subscribe((data) => (response = data));
 
       expect(response).toEqual(VERIFICATION_STATUS.SENT);
     });

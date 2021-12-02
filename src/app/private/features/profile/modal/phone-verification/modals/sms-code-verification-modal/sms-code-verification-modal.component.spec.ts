@@ -133,8 +133,7 @@ describe('SmsCodeVerificationModalComponent', () => {
       describe('and verifyPhone service return success', () => {
         beforeEach(() => {
           spyOn(userVerificationsService, 'verifyPhone').and.callThrough();
-          component.phone = MOCK_PHONE_NUMBER;
-          component.prefix = MOCK_PREFIX_PHONE;
+          component.phoneNumber = MOCK_PREFIX_PHONE + MOCK_PHONE_NUMBER;
           component.resendSMS();
           fixture.detectChanges();
         });
@@ -143,7 +142,7 @@ describe('SmsCodeVerificationModalComponent', () => {
           const resendButton = fixture.debugElement.query(By.css('.SmsCodeVerificationModal__resend-btn')).nativeNode;
 
           expect(userVerificationsService.verifyPhone).toHaveBeenCalledTimes(1);
-          expect(userVerificationsService.verifyPhone).toHaveBeenCalledWith(component.phone, component.prefix);
+          expect(userVerificationsService.verifyPhone).toHaveBeenCalledWith(component.phoneNumber);
           expect(resendButton.disabled).toBe(true);
         });
       });

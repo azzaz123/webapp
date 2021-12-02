@@ -8,6 +8,8 @@ class ScriptElementStub {
   src: string;
   async: boolean;
   defer: boolean;
+  onload: () => void;
+  onerror: () => void;
 
   constructor(fakeError = false) {
     setTimeout(() => {
@@ -17,9 +19,6 @@ class ScriptElementStub {
       this.onload();
     }, 100);
   }
-
-  onload: () => void;
-  onerror: () => void;
 }
 
 const TextScriptMock = `

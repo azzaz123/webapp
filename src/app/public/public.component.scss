@@ -1,11 +1,11 @@
 @import '~style/common';
 
-:host {
-  display: block;
-  padding-top: $topbar-height;
+.PublicLayout {
   background-color: $main-background-color;
+  min-height: 100vh;
 
-  @include media-breakpoint-down(md) {
-    padding-bottom: $tabbar-height;
+  &__content {
+    max-width: 100%;
+    flex: 1;
   }
 }

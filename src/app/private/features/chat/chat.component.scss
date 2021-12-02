@@ -1,48 +1,52 @@
 @import '~style/common';
 
-:host {
-  display: block;
-  overflow: hidden;
-  height: 100%;
-}
-
-.page-content {
-  height: 100%;
-}
-
-#left-panel {
-  position: relative;
-  float: left;
-  background-color: $white;
-  width: $left-panel-width;
-  border-right: 1px solid $blue-grey-4;
-  height: 100%;
+.Chat {
+  height: calc(100vh - #{$topbar-height});
   @include media-breakpoint-down(md) {
-    width: 100%;
-    &.active-conversation {
+    height: calc(100vh - #{$topbar-height} - #{$tabbar-height});
+  }
+
+  &__inbox {
+    position: relative;
+    background-color: $white;
+    width: $left-panel-width;
+    border-right: 1px solid $blue-grey-4;
+    @include media-breakpoint-down(md) {
+      width: 100%;
+      &--active {
+        display: none;
+      }
+    }
+  }
+
+  &__conversation {
+    flex: 1;
+    background-color: $white;
+    position: relative;
+
+    tsl-current-conversation {
+      height: 100%;
+    }
+
+    @include media-breakpoint-down(md) {
       display: none;
+      margin-left: 0;
+      width: 100%;
+      &--active {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        z-index: #{$topbar-z-index} + 1;
+      }
     }
   }
-}
 
-#center-panel {
-  height: 100%;
-  margin-left: $left-panel-width;
-  background-color: $white;
-  position: relative;
-
-  tsl-current-conversation {
-    height: 100%;
-  }
-
-  @include media-breakpoint-down(md) {
-    display: none;
-    margin-left: 0;
-    width: 100%;
-    &.active-conversation {
-      display: block;
-      height: calc(100% + #{$tabbar-height});
-      z-index: 21;
-    }
+  &__loading {
+    flex: 1;
+    background-color: $white;
   }
 }

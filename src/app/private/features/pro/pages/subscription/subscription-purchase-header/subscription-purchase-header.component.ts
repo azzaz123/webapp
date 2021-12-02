@@ -9,12 +9,7 @@ import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interfa
 })
 export class SubscriptionPurchaseHeaderComponent {
   @Input() subscription: SubscriptionsResponse;
-  @Input() benefits: string[];
   @Output() clickLink: EventEmitter<void> = new EventEmitter();
-
-  get iconSrc(): string {
-    return `/assets/icons/categories/normal/${this.subscription.category_icon}.svg`;
-  }
 
   public onClickLink(): void {
     this.clickLink.emit();
