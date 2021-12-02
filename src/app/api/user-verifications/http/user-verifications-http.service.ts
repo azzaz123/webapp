@@ -20,8 +20,8 @@ export class UserVerificationsHttpService {
     return this.httpClient.post<EmailVerificationApi>(SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_EMAIL_BODY);
   }
 
-  public sendVerifyPhone(mobileNumber: string, code: string, type = VERIFICATION_TYPE.PHONE): Observable<PhoneVerificationApi> {
-    const body: PhoneVerificationBodyRequest = { mobileNumber, code, type };
+  public sendVerifyPhone(phoneNumber: string, type = VERIFICATION_TYPE.PHONE, code = null): Observable<PhoneVerificationApi> {
+    const body: PhoneVerificationBodyRequest = { mobileNumber: phoneNumber, code, type };
 
     return this.httpClient.post<PhoneVerificationApi>(SEND_VERIFY_PHONE_ENDPOINT, body);
   }

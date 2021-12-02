@@ -10,6 +10,7 @@ const baseHelpPages = generateBaseHelpPagesByLocale(IT_HELP_LOCALE);
 
 export const itCustomerHelpPages: CustomerHelpPages = {
   ...baseHelpPages,
+  [CUSTOMER_HELP_PAGE.HOME]: CUSTOMER_HELP_SITE_BASE.ITALIAN,
   [CUSTOMER_HELP_PAGE.WALLET_HELP]: getCustomerHelpUrl(
     EXTERNAL_ITALIAN_CUSTOMER_HELP_PAGE_ID.WALLET_HELP,
     IT_HELP_LOCALE,
