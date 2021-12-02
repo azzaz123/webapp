@@ -9,6 +9,6 @@ export interface AdTargetings {
   age?: string;
   latitude?: string;
   longitude?: string;
-  MwebSearchLayout?: string;
+  MwebSearchTest?: string;
   yb_ab?: string;
 }
