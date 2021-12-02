@@ -18,7 +18,7 @@ export class TransactionTrackingActionUserActionComponent implements OnInit {
 
   public requestUserAction(): void {
     this.transactionTrackingService.sendUserAction(this.userAction.transactionId, this.userAction.name).subscribe({
-      error() {
+      error: () => {
         this.errorsService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
       },
     });

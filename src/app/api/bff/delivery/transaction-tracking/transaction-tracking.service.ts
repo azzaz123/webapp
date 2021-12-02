@@ -30,7 +30,6 @@ export class TransactionTrackingService {
   constructor(private transactionTrackingHttpService: TransactionTrackingHttpService) {}
 
   public get(requestId: string): Observable<TransactionTracking> {
-    debugger;
     return of(MOCK_TRANSACTION_TRACKING);
     return this.transactionTrackingHttpService.get(requestId).pipe(map(mapTransactionTrackingDtoTransactionTracking));
   }
