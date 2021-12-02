@@ -9,12 +9,10 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
   templateUrl: './transaction-tracking-action-user-action.component.html',
   styleUrls: ['./transaction-tracking-action-user-action.component.scss'],
 })
-export class TransactionTrackingActionUserActionComponent implements OnInit {
+export class TransactionTrackingActionUserActionComponent {
   @Input() userAction: TransactionTrackingActionUserAction;
 
   constructor(private transactionTrackingService: TransactionTrackingService, private errorsService: ErrorsService) {}
-
-  ngOnInit(): void {}
 
   public requestUserAction(): void {
     this.transactionTrackingService.sendUserAction(this.userAction.transactionId, this.userAction.name).subscribe({

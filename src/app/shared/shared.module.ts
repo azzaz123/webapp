@@ -18,7 +18,6 @@ import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/de
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
-import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { GeolocationModule } from './geolocation/geolocation.module';
@@ -80,6 +79,7 @@ import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.
 import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
+import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal.module';
 
 @NgModule({
   imports: [
@@ -111,6 +111,7 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     InfiniteScrollModule,
     ItemDetailRouteModule,
     UserProfileRouteModule,
+    ConfirmationModalModule,
   ],
   exports: [
     SpinnerModule,
@@ -176,9 +177,9 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     InfiniteScrollDirective,
     VisibleDirectiveModule,
     PaymentsCardInfoModule,
+    ConfirmationModalModule,
   ],
   declarations: [
-    ConfirmationModalComponent,
     RestrictInputDirective,
     SoldModalComponent,
     ItemSoldDirective,
@@ -231,7 +232,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
   ],
   providers: [DecimalPipe, LinkTransformPipe, ListingLimitService],
   entryComponents: [
-    ConfirmationModalComponent,
     SoldModalComponent,
     ReviewModalComponent,
     AlreadyFeaturedModalComponent,

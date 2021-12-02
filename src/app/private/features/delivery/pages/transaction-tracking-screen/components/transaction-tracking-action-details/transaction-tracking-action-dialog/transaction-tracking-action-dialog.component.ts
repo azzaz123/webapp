@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { TransactionTrackingActionDialog, TransactionTrackingActionUserAction } from '@api/core/model/delivery/transaction/tracking';
 import { COLORS } from '@core/colors/colors-constants';
@@ -13,7 +13,7 @@ import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirma
   templateUrl: './transaction-tracking-action-dialog.component.html',
   styleUrls: ['./transaction-tracking-action-dialog.component.scss'],
 })
-export class TransactionTrackingActionDialogComponent implements OnInit {
+export class TransactionTrackingActionDialogComponent {
   @Input() dialogAction: TransactionTrackingActionDialog;
   @Input() hasBorderBottom: boolean;
 
@@ -22,8 +22,6 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
     private transactionTrackingService: TransactionTrackingService,
     private errorsService: ErrorsService
   ) {}
-
-  ngOnInit(): void {}
 
   public openModal(): void {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);

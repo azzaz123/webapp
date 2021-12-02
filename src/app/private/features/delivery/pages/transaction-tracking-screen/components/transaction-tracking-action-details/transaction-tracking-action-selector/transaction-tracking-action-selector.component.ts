@@ -16,8 +16,6 @@ import {
 export class TransactionTrackingActionSelectorComponent {
   @Input() actionDetail: TransactionTrackingActionDetail;
 
-  constructor() {}
-
   public get isCarrierTrackingWebview(): boolean {
     return (this.actionDetail as TransactionTrackingActionCarrierTrackingWebview).isCarrierTrackingWebview;
   }

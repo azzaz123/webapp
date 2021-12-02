@@ -9,6 +9,4 @@ import { TransactionTrackingStatusInfo } from '@api/core/model/delivery/transact
 export class TransactionTrackingStatusInfoWrapperComponent {
   @Input() transactionTrackingsStatusInfo: TransactionTrackingStatusInfo[];
   @Input() hasBorderBottom: boolean = true;
-
-  constructor() {}
 }
