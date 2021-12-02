@@ -68,6 +68,7 @@ $feature-button-width: 170px;
       opacity: 0.6;
       z-index: 1;
       border-radius: $border-radius;
+      max-width: calc(100% - 30px); // TODO: The layout and strategy should be changed for this veil
     }
   }
   .onHold {

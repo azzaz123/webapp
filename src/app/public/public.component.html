@@ -1,5 +1,10 @@
 <tsl-toast aria-live="polite" aria-atomic="true"></tsl-toast>
-<tsl-topbar></tsl-topbar>
-<public-router-outlet></public-router-outlet>
-<tsl-tabbar class="d-flex d-lg-none"></tsl-tabbar>
-<tsl-footer *ngIf="showFooter$ | async"></tsl-footer>
+
+<div class="PublicLayout d-flex flex-column w-100">
+  <tsl-topbar></tsl-topbar>
+  <div class="PublicLayout__content">
+    <public-router-outlet></public-router-outlet>
+  </div>
+  <tsl-footer *ngIf="showFooter$ | async"></tsl-footer>
+  <tsl-tabbar class="d-flex d-lg-none"></tsl-tabbar>
+</div>

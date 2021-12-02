@@ -1,39 +1,45 @@
 <tsl-profile-form [profileForm]="profileForm" (onInit)="initForm()">
   <form [formGroup]="profileForm" (submit)="onSubmit()">
-    <div class="row box profile-box">
-      <div class="col-12 col-md-11 offset-md-1">
-        <div class="row mb-2 mb-md-4">
-          <div class="col-12">
-            <h3 i18n="@@web_profile_pages_account_280">Personal info</h3>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="birth_date" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_account_281">Date of birth</label>
-          <div class="col-12 col-md-6 offset-md-1">
-            <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_account_282">Gender</label>
-          <div class="col-12 col-md-4 offset-md-1">
-            <div class="gender-form" ngbRadioGroup name="radioBasic" formControlName="gender">
-              <label ngbButtonLabel class="btn select">
-                <input ngbButton type="radio" value="M">
-                <tsl-svg-icon class="d-none d-md-flex" src="/assets/icons/male.svg"></tsl-svg-icon>
-                <div i18n="@@web_profile_pages_account_283">Male</div>
-              </label>
-              <label ngbButtonLabel class="btn select">
-                <input ngbButton type="radio" value="F">
-                <tsl-svg-icon class="d-none d-md-flex" src="/assets/icons/female.svg"></tsl-svg-icon>
-                <div i18n="@@web_profile_pages_account_284">Female</div>
-              </label>
+    <div class="row">
+      <div class="col-12">
+        <div class="box profile-box">
+          <div class="row">
+            <div class="col-12 col-md-11 offset-md-1">
+              <div class="row mb-2 mb-md-4">
+                <div class="col-12">
+                  <h3 i18n="@@web_profile_pages_account_280">Personal info</h3>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="birth_date" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_account_281">Date of birth</label>
+                <div class="col-12 col-md-6 offset-md-1">
+                  <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_account_282">Gender</label>
+                <div class="col-12 col-md-4 offset-md-1">
+                  <div class="gender-form" ngbRadioGroup name="radioBasic" formControlName="gender">
+                    <label ngbButtonLabel class="btn select">
+                      <input ngbButton type="radio" value="M">
+                      <tsl-svg-icon class="d-none d-md-flex" src="/assets/icons/male.svg"></tsl-svg-icon>
+                      <div i18n="@@web_profile_pages_account_283">Male</div>
+                    </label>
+                    <label ngbButtonLabel class="btn select">
+                      <input ngbButton type="radio" value="F">
+                      <tsl-svg-icon class="d-none d-md-flex" src="/assets/icons/female.svg"></tsl-svg-icon>
+                      <div i18n="@@web_profile_pages_account_284">Female</div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 text-center">
+                  <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big"
+                    [disabled]="!formComponent.hasNotSavedChanges" i18n="@@web_profile_pages_account_285">Save</tsl-button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 text-center">
-            <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big"
-              [disabled]="!formComponent.hasNotSavedChanges" i18n="@@web_profile_pages_account_285">Save</tsl-button>
           </div>
         </div>
       </div>
@@ -43,28 +49,34 @@
       <tsl-stripe-cards></tsl-stripe-cards>
     </ng-container>
 
-    <div class="row box profile-box">
-      <div class="col-12 col-md-11 offset-md-1">
-        <div class="row mb-2 mb-md-4">
-          <div class="col-12">
-            <h3 i18n="@@web_profile_pages_account_286">Account info</h3>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_account_287">Email</label>
-          <div class="col-12 col-md-6 offset-md-1">
-            <tsl-edit-email [email]="user?.email"></tsl-edit-email>
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_account_288">Password</label>
-          <div class="col-12 col-md-6 offset-md-1">
-            <tsl-edit-password></tsl-edit-password>
-          </div>
-        </div>
-        <div class="row d-none d-md-block">
-          <div class="col-12 col-md-11 unsubscribe-section">
-            <a (click)="openUnsubscribeModal()" i18n="@@web_profile_pages_account_289">Close account</a>
+    <div class="row">
+      <div class="col-12">
+        <div class="box profile-box">
+          <div class="row">
+            <div class="col-12 col-md-11 offset-md-1">
+              <div class="row mb-2 mb-md-4">
+                <div class="col-12">
+                  <h3 i18n="@@web_profile_pages_account_286">Account info</h3>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_account_287">Email</label>
+                <div class="col-12 col-md-6 offset-md-1">
+                  <tsl-edit-email [email]="user?.email"></tsl-edit-email>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_account_288">Password</label>
+                <div class="col-12 col-md-6 offset-md-1">
+                  <tsl-edit-password></tsl-edit-password>
+                </div>
+              </div>
+              <div class="row d-none d-md-block">
+                <div class="col-12 col-md-11 unsubscribe-section">
+                  <a (click)="openUnsubscribeModal()" i18n="@@web_profile_pages_account_289">Close account</a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
