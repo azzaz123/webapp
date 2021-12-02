@@ -36,7 +36,7 @@ describe('AdSlotGroupDirective', () => {
     experimentReady$: of(true),
   } as unknown as ExperimentationService;
 
-  it('should set correct slots when variant is Baseline and ask for display on the first one', () => {
+  it('should set correct slots', () => {
     spyOn(adsServiceMock, 'setSlots');
     spyOn(experimentationServiceMock, 'getOptimizeVariant').and.returnValue('Baseline');
 
@@ -65,10 +65,6 @@ describe('AdSlotGroupDirective', () => {
     spyOn(adsServiceMock, 'setAdKeywords');
     spyOn(experimentationServiceMock, 'getOptimizeVariant').and.returnValue('Variant-1');
 
-    // const directive = new AdSlotGroupDirective(adsServiceMock, experimentationServiceMock);
-    // directive.slotsQuery = ({ changes: of([{ adSlot: adSlot1 }, { adSlot: adSlot2 }]) } as unknown) as QueryList<AdSlotComponent>;
-
-    // directive.ngAfterContentInit();
     setUpDirective(adsServiceMock, experimentationServiceMock);
 
     expect(adsServiceMock.setAdKeywords).toHaveBeenCalledTimes(1);
