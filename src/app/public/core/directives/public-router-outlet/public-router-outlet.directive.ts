@@ -9,6 +9,7 @@ export interface OnDetach {
 }
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'public-router-outlet',
 })
 export class PublicRouterOutletDirective extends RouterOutlet {
