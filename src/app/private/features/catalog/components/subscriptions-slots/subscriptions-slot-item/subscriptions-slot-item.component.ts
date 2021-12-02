@@ -22,14 +22,14 @@ export class SubscriptionsSlotItemComponent {
 
   constructor(private analyticsService: AnalyticsService) {}
 
-  isSelected() {
+  public isSelected(): boolean {
     if (!this.selectedSubscriptionSlot) {
       return false;
     }
     return this.subscriptionSlot.subscription.type === this.selectedSubscriptionSlot.subscription.type;
   }
 
-  onClick(subscriptionSlot: SubscriptionSlot, e: any) {
+  public onClick(subscriptionSlot: SubscriptionSlot, e: any): void {
     if (!subscriptionSlot || subscriptionSlot === this.selectedSubscriptionSlot) {
       e.stopPropagation();
       this.selected.emit(null);

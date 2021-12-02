@@ -6,6 +6,39 @@
   border-radius: $spacing-ms;
   padding: 16px;
 
+  @media (max-width: 768px) {
+    min-width: 381px;
+  }
+
+  @media (max-width: 560px) {
+    min-width: auto;
+  }
+
+  &__deselect {
+    @include square($spacing-ms);
+    margin: $spacing-m;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    tsl-svg-icon {
+      @include square($spacing-ms);
+
+      ::ng-deep svg path {
+        fill: $blue-grey-3;
+      }
+    }
+  }
+
+  &--selected {
+    border: solid 2px $color-pro-main;
+  }
+
+  &:hover {
+    border: solid 2px $color-pro-main;
+    cursor: pointer;
+  }
+
   &__title {
     color: #13c1ac;
     span {
@@ -19,133 +52,6 @@
     img {
       object-fit: cover;
       width: 100%;
-    }
-  }
-}
-
-.SubscriptionsSlotItem1 {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  position: relative;
-  transition: all 0.25s ease;
-  width: 100%;
-  height: 80px;
-  padding: $spacing-m;
-  background-color: transparentize($white, 0.5);
-  border: solid 1px $blue-grey-5;
-  border-radius: $spacing-ms;
-  cursor: pointer;
-
-  div {
-    margin-right: $spacing-m;
-  }
-
-  &--single {
-    .SubscriptionsSlotItem__info {
-      display: flex;
-
-      tsl-svg-icon {
-        opacity: 1;
-      }
-    }
-  }
-
-  &:hover {
-    border: solid 1px $walla-main;
-  }
-}
-
-.SubscriptionsSlotItem__icon {
-  @include square(48px);
-
-  tsl-svg-icon {
-    @include square(48px);
-    opacity: 0.3;
-  }
-}
-
-.SubscriptionsSlotItem__info-title {
-  color: $blue-grey-1;
-  span {
-    font-weight: $font-weight-chunky;
-  }
-}
-
-.SubscriptionsSlotItem__info-description {
-  color: $blue-grey-2;
-}
-
-.SubscriptionsSlotItem__deselect {
-  @include square($spacing-ms);
-  margin: $spacing-m;
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  tsl-svg-icon {
-    @include square($spacing-ms);
-
-    ::ng-deep svg path {
-      fill: $blue-grey-3;
-    }
-  }
-}
-
-.SubscriptionsSlotItem--selected {
-  transition: 0.2s;
-  border: solid 1px $walla-main;
-
-  .SubscriptionsSlotItem__icon {
-    tsl-svg-icon {
-      opacity: 1;
-    }
-  }
-
-  .SubscriptionsSlotItem__info {
-    .SubscriptionsSlotItem__info-title {
-      color: $walla-main;
-      @media (max-width: 768px) {
-        display: flex;
-        align-items: center;
-        word-break: break-word;
-      }
-    }
-
-    .SubscriptionsSlotItem__info-description {
-      color: $blue-grey-1;
-      @media (max-width: 768px) {
-        margin-right: 0;
-      }
-    }
-  }
-}
-
-.SubscriptionsSlotItem--not-selected {
-  .SubscriptionsSlotItem__info {
-    .SubscriptionsSlotItem__info-title {
-      color: $blue-grey-2;
-    }
-  }
-}
-
-.SubscriptionsSlotItem--not-selected,
-.SubscriptionsSlotItem--single {
-  .SubscriptionsSlotItem__info {
-    .SubscriptionsSlotItem__info-title {
-      color: $blue-grey-2;
-      @media (max-width: 768px) {
-        display: flex;
-        align-items: center;
-        word-break: break-word;
-      }
-    }
-    .SubscriptionsSlotItem__info-description {
-      color: $blue-grey-1;
-      @media (max-width: 768px) {
-        margin-right: 0;
-      }
     }
   }
 }
