@@ -4,7 +4,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
   selector: 'img[fallback]',
 })
 export class ImageFallbackDirective {
-  @Input('fallback') fallback: string;
+  @Input() fallback: string;
 
   constructor(private elementRef: ElementRef) {}
 
