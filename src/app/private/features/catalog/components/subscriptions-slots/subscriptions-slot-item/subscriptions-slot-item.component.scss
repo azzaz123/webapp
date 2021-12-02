@@ -1,20 +1,27 @@
 @import '~style/common';
 
 .SubscriptionsSlotItem {
-  background-color: white;
+  background-color: $white;
   border: solid 1px $blue-grey-5;
   border-radius: $spacing-ms;
-  padding: 16px;
+  padding: $spacing-m;
 
-  @media (max-width: 768px) {
-    min-width: 381px;
+  @include media-breakpoint-down(sm) {
+    &__description,
+    &__title {
+      white-space: nowrap;
+    }
+
+    &__cancel {
+      margin: $spacing-ms;
+    }
+
+    &__info {
+      padding-right: $spacing-ms;
+    }
   }
 
-  @media (max-width: 560px) {
-    min-width: auto;
-  }
-
-  &__deselect {
+  &__cancel {
     @include square($spacing-ms);
     margin: $spacing-m;
     position: absolute;
@@ -23,7 +30,6 @@
 
     tsl-svg-icon {
       @include square($spacing-ms);
-
       ::ng-deep svg path {
         fill: $blue-grey-3;
       }
@@ -31,24 +37,21 @@
   }
 
   &--selected {
-    border: solid 2px $color-pro-main;
+    border-color: $color-pro-main;
   }
 
   &:hover {
-    border: solid 2px $color-pro-main;
+    border-color: $color-pro-main;
     cursor: pointer;
   }
 
   &__title {
-    color: #13c1ac;
-    span {
-      font-weight: $font-weight-chunky;
-    }
+    color: $walla-main;
+    font-weight: $font-weight-chunky;
   }
 
   &__icon {
     @include square(48px);
-
     img {
       object-fit: cover;
       width: 100%;

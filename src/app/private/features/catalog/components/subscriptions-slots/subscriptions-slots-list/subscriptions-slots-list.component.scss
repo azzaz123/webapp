@@ -3,7 +3,7 @@ $background: #f4f6f7;
 
 .SubscriptionsSlotsList {
   &__container {
-    @media (max-width: 768px) {
+    @include media-breakpoint-down(sm) {
       width: 100%;
       align-items: center;
       position: relative;
@@ -44,7 +44,7 @@ $background: #f4f6f7;
   }
 
   &__wrapper {
-    @media (max-width: 768px) {
+    @include media-breakpoint-down(sm) {
       padding: 0 26px;
       flex-wrap: nowrap;
       flex-grow: 1;
@@ -54,7 +54,6 @@ $background: #f4f6f7;
       scrollbar-width: none;
       overflow-x: scroll;
       scroll-behavior: smooth;
-      display: flex;
       -ms-overflow-style: none;
       scrollbar-width: none;
       &::-webkit-scrollbar {
@@ -62,7 +61,4 @@ $background: #f4f6f7;
       }
     }
   }
-}
-
-.SubscriptionsSlotsList1 {
 }

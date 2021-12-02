@@ -3,7 +3,7 @@
     'SubscriptionsSlotItem--selected': isSelected()
   }">
 
-  <div class="SubscriptionsSlotItem__icon mr-3 d-flex justify-content-center align-items-center">
+  <div class="SubscriptionsSlotItem__icon mr-3 d-sm-flex justify-content-center align-items-center d-none">
     <img src="/assets/images/subscriptions/types/{{subscriptionSlot.subscription.category_icon}}.svg">
   </div>
 
@@ -11,15 +11,15 @@
     <div class="SubscriptionsSlotItem__title">
       <span i18n="@@web_manage_catalog_subscription">Manage {{subscriptionSlot.subscription.category_name}}</span>
     </div>
-    <div class="SubscriptionsSlotItem__info-description">
+    <div class="SubscriptionsSlotItem__description">
       <span i18n="@@web_subscriptions_slot_item_publish_more_without_category_name">You can list
         <b>{{subscriptionSlot.available}}</b> more
       </span>
     </div>
   </div>
 
-  <div class="SubscriptionsSlotItem__deselect" (click)="onClick(undefined, $event)">
-    <tsl-svg-icon [hidden]="!isSelected()" src="/assets/icons/cross.svg"></tsl-svg-icon>
+  <div class="SubscriptionsSlotItem__cancel" *ngIf="isSelected()" (click)="onClick(undefined, $event)">
+    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
 
 </div>
