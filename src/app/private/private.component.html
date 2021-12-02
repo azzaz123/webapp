@@ -1,6 +1,13 @@
 <tsl-toast aria-live="polite" aria-atomic="true"></tsl-toast>
-<tsl-topbar [isMyZone]="isMyZone"></tsl-topbar>
-<tsl-sidebar class="d-none d-lg-block" [isProducts]="isProducts" [isProfile]="isProfile"></tsl-sidebar>
-<tsl-tabbar class="d-flex d-lg-none"></tsl-tabbar>
-<router-outlet></router-outlet>
 <tsl-mobile-blocker (viewIsBlocked)="onViewIsBlocked()"></tsl-mobile-blocker>
+
+<div class="PrivateLayout d-flex flex-column w-100">
+  <tsl-topbar [isMyZone]="isMyZone"></tsl-topbar>
+  <div class="PrivateLayout__wrapper d-flex">
+    <tsl-sidebar class="d-none d-lg-block" [isProducts]="isProducts" [isProfile]="isProfile"></tsl-sidebar>
+    <div class="PrivateLayout__content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <tsl-tabbar class="d-flex d-lg-none"></tsl-tabbar>
+</div>

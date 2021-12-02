@@ -40,6 +40,38 @@ export class ProfileService {
     }
   }
 
+  public myFavorites(init: number): Observable<ProfilesData> {
+    return this.getPaginationItems(`${environment.baseUrl}${this.API_URL}/me/users/favorites`, init).pipe(
+      map((profilesData: ProfilesData) => {
+        profilesData.data = profilesData.data.map((profile: Profile) => {
+          profile.favorited = true;
+          return profile;
+        });
+        return profilesData;
+      })
+    );
+  }
+
+  public favoriteItem(id: string, favorited: boolean): Observable<any> {
+    return this.httpClient.put(`${environment.baseUrl}${this.API_URL}/${id}/favorite`, {
+      favorited: favorited,
+    });
+  }
+
+  protected mapRecordData(data: ProfileResponse): Profile {
+    return new Profile(
+      data.id,
+      data.item_images,
+      data.micro_name,
+      data.num_total_items,
+      data.scoring_stars,
+      data.user_image,
+      data.favorited,
+      data.is_professional,
+      data.screen_name
+    );
+  }
+
   private addToStore(model: Model, id: string): Model {
     if (model) {
       this.store[id] = model;
@@ -80,37 +112,5 @@ export class ProfileService {
           };
         })
       );
-  }
-
-  public myFavorites(init: number): Observable<ProfilesData> {
-    return this.getPaginationItems(`${environment.baseUrl}${this.API_URL}/me/users/favorites`, init).pipe(
-      map((profilesData: ProfilesData) => {
-        profilesData.data = profilesData.data.map((profile: Profile) => {
-          profile.favorited = true;
-          return profile;
-        });
-        return profilesData;
-      })
-    );
-  }
-
-  public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.httpClient.put(`${environment.baseUrl}${this.API_URL}/${id}/favorite`, {
-      favorited: favorited,
-    });
-  }
-
-  protected mapRecordData(data: ProfileResponse): Profile {
-    return new Profile(
-      data.id,
-      data.item_images,
-      data.micro_name,
-      data.num_total_items,
-      data.scoring_stars,
-      data.user_image,
-      data.favorited,
-      data.is_professional,
-      data.screen_name
-    );
   }
 }

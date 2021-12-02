@@ -14,8 +14,7 @@ import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts
   styleUrls: ['./sms-code-verification-modal.component.scss'],
 })
 export class SmsCodeVerificationModalComponent implements OnInit {
-  @Input() phone: string;
-  @Input() prefix: string;
+  @Input() phoneNumber: string;
 
   public codeVerificationForm: FormGroup;
   public timer: number;
@@ -52,7 +51,7 @@ export class SmsCodeVerificationModalComponent implements OnInit {
 
   public resendSMS(): void {
     this.userVerificationsService
-      .verifyPhone(this.phone, this.prefix)
+      .verifyPhone(this.phoneNumber)
       .pipe(take(1))
       .subscribe(
         () => {
@@ -90,8 +89,8 @@ export class SmsCodeVerificationModalComponent implements OnInit {
 
   private showSuccessToast(): void {
     this.toastService.show({
-      text: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_title:Now your phone makes your Wallapop experience even safer.`,
-      title: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_description:Phone verified!`,
+      text: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_description:Now your phone makes your Wallapop experience even safer.`,
+      title: $localize`:@@phone_verification_insert_code_all_users_verification_success_system_modal_title:Phone verified!`,
       type: TOAST_TYPES.SUCCESS,
     });
   }

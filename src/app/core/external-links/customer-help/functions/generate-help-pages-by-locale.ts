@@ -1,4 +1,5 @@
 import { CUSTOMER_HELP_PAGE } from '../enums/customer-help-page.enum';
+import { CUSTOMER_HELP_SITE_BASE } from '../enums/customer-help-site.enum';
 import { EXTERNAL_CUSTOMER_HELP_PAGE_ID } from '../enums/external-customer-help-page-id.enum';
 import { getCustomerHelpUrl } from '../get-customer-help-url';
 import { CustomerHelpPages } from '../types/customer-help-pages.type';
@@ -6,6 +7,7 @@ import { HELP_LOCALE } from '../types/help-locale';
 
 export function generateBaseHelpPagesByLocale(locale: HELP_LOCALE): CustomerHelpPages {
   return {
+    [CUSTOMER_HELP_PAGE.HOME]: CUSTOMER_HELP_SITE_BASE.DEFAULT,
     [CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING]: getCustomerHelpUrl(
       EXTERNAL_CUSTOMER_HELP_PAGE_ID.SHIPPING_SELL_WITH_SHIPPING,
       locale

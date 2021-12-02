@@ -2,9 +2,8 @@ import { of, throwError, forkJoin, Observable } from 'rxjs';
 
 import { retryWhen, delay, take, mergeMap, map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { SUBSCRIPTION_MARKETS } from './subscriptions.interface';
 import { UserService } from '../user/user.service';
-import { SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
+import { SUBSCRIPTION_MARKETS, SubscriptionResponse, SubscriptionsResponse, Tier } from './subscriptions.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { UuidService } from '../uuid/uuid.service';

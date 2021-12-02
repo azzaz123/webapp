@@ -21,6 +21,7 @@ export const SEARCHID_STORAGE_NAME = 'searchId';
 
 @Injectable()
 export class RealTimeService {
+  private ongoingRetry: boolean;
   constructor(
     private xmpp: XmppService,
     private eventService: EventService,
@@ -32,8 +33,6 @@ export class RealTimeService {
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
   }
-
-  private ongoingRetry: boolean;
 
   public connect(userId: string, accessToken: string) {
     if (this.connectionService.isConnected && !this.xmpp.clientConnected) {
@@ -63,26 +62,6 @@ export class RealTimeService {
     }
   }
 
-  private recursiveReconnect() {
-    this.ongoingRetry = true;
-    const operation = retry.operation({
-      minTimeout: 5 * 1000,
-      maxTimeout: 5 * 60 * 1000,
-      forever: true,
-    });
-    operation.attempt(() => {
-      this.xmpp.reconnectClient();
-      this.xmpp.disconnectError().subscribe(
-        () => (this.ongoingRetry = false),
-        (err) => {
-          if (operation.retry(err)) {
-            return;
-          }
-        }
-      );
-    });
-  }
-
   public sendMessage(conversation: InboxConversation, body: string): string {
     return this.xmpp.sendMessage(conversation, body);
   }
@@ -103,6 +82,26 @@ export class RealTimeService {
   public addPhoneNumberMessageToConversation(conversation: InboxConversation, phone: string) {
     const message = `${this.i18n.translate(TRANSLATION_KEY.CHAT_MY_PHONE_NUMBER)} ${phone}`;
     this.sendMessage(conversation, message);
+  }
+
+  private recursiveReconnect() {
+    this.ongoingRetry = true;
+    const operation = retry.operation({
+      minTimeout: 5 * 1000,
+      maxTimeout: 5 * 60 * 1000,
+      forever: true,
+    });
+    operation.attempt(() => {
+      this.xmpp.reconnectClient();
+      this.xmpp.disconnectError().subscribe(
+        () => (this.ongoingRetry = false),
+        (err) => {
+          if (operation.retry(err)) {
+            return;
+          }
+        }
+      );
+    });
   }
 
   private subscribeEventMessageSent() {

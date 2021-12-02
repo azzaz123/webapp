@@ -1,96 +1,108 @@
 <tsl-profile-form [profileForm]="profileForm" (onInit)="initForm()">
   <form [formGroup]="profileForm" (submit)="onSubmit()" *ngIf="user">
-    <div class="row box profile-box">
-      <div class="col-12 col-md-11 offset-md-1">
-        <tsl-picture-upload [user]="user"></tsl-picture-upload>
-        <tsl-cover-upload *ngxPermissionsOnly="PERMISSIONS.subscriptions" (clickNotPro)="openBecomeProModal(ANALYTICS_FIELDS.HEADER_PHOTO)" [user]="user" [isPro]="isPro"></tsl-cover-upload>
+    <div class="row">
+      <div class="col-12">
+        <div class="box profile-box">
+          <div class="row">
+            <div class="col-12 col-md-11 offset-md-1">
+              <tsl-picture-upload [user]="user"></tsl-picture-upload>
+              <tsl-cover-upload *ngxPermissionsOnly="PERMISSIONS.subscriptions" (clickNotPro)="openBecomeProModal(ANALYTICS_FIELDS.HEADER_PHOTO)" [user]="user" [isPro]="isPro"></tsl-cover-upload>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row box profile-box">
-      <div class="col-12 col-md-11 offset-md-1">
-        <div class="row mb-2 mb-md-4">
-          <div class="col-12">
-            <h3 i18n="@@web_profile_pages_info_290">Public information</h3>
-          </div>
-        </div>
-        <div class="form-group row align-items-center" *ngIf="!isPro">
-          <label for="first_name" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_291">First name</label>
-          <div class="col-12 col-md-6 offset-md-1">
-            <input type="text" class="form-control" id="first_name" formControlName="first_name" tslRestrictInput
-              maxlength="50" />
-          </div>
-        </div>
-        <div class="form-group row align-items-center" *ngIf="!isPro">
-          <label for="last_name" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_292">Last name</label>
-          <div class="col-12 col-md-6 offset-md-1">
-            <input type="text" class="form-control" id="last_name" formControlName="last_name" tslRestrictInput
-              maxlength="50" />
-          </div>
-        </div>
-        <div class="form-group row align-items-center" *ngIf="isPro">
-          <label for="name" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_293">Name</label>
-          <div class="col-12 col-md-6 offset-md-1 d-flex">
-            <input type="text" class="form-control ProfileInfo__first-name" id="name" formControlName="first_name" tslRestrictInput
-              maxlength="50" />
-            <input type="text" class="form-control" formControlName="last_name" tslRestrictInput maxlength="50" />
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_294">Product location</label>
-          <div class="col-12 col-md-6 offset-md-1" tslVisible (visible)="onMapContainerVisible()">
-            <tsl-location-box *ngIf="renderMap" [location]="user.location" [form]="profileForm" name="location"
-              [updateLocation]="updateLocationWhenSearching" [isIncorrectAddress]="isIncorrectAddress"></tsl-location-box>
-          </div>
-        </div>
-        <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-        <div class="pro-section" [class.not-pro]="!isPro">
-          <div class="form-group row">
-            <label for="description" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_295">Description</label>
-            <div class="col-12 col-md-6 offset-md-1">
-              <span class="chars-counter">{{profileForm.value?.description?.length}}/250</span>
-              <textarea (click)="openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION)" class="form-control" id="description"
-                formControlName="description" maxlength="250" [readonly]="!isPro"></textarea>
+    <div class="row">
+      <div class="col-12">
+        <div class="box profile-box">
+          <div class="row">
+            <div class="col-12 col-md-11 offset-md-1">
+              <div class="row mb-2 mb-md-4">
+                <div class="col-12">
+                  <h3 i18n="@@web_profile_pages_info_290">Public information</h3>
+                </div>
+              </div>
+              <div class="form-group row align-items-center" *ngIf="!isPro">
+                <label for="first_name" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_291">First name</label>
+                <div class="col-12 col-md-6 offset-md-1">
+                  <input type="text" class="form-control" id="first_name" formControlName="first_name" tslRestrictInput
+                    maxlength="50" />
+                </div>
+              </div>
+              <div class="form-group row align-items-center" *ngIf="!isPro">
+                <label for="last_name" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_292">Last name</label>
+                <div class="col-12 col-md-6 offset-md-1">
+                  <input type="text" class="form-control" id="last_name" formControlName="last_name" tslRestrictInput
+                    maxlength="50" />
+                </div>
+              </div>
+              <div class="form-group row align-items-center" *ngIf="isPro">
+                <label for="name" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_293">Name</label>
+                <div class="col-12 col-md-6 offset-md-1 d-flex">
+                  <input type="text" class="form-control ProfileInfo__first-name" id="name" formControlName="first_name" tslRestrictInput
+                    maxlength="50" />
+                  <input type="text" class="form-control" formControlName="last_name" tslRestrictInput maxlength="50" />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_294">Product location</label>
+                <div class="col-12 col-md-6 offset-md-1" tslVisible (visible)="onMapContainerVisible()">
+                  <tsl-location-box *ngIf="renderMap" [location]="user.location" [form]="profileForm" name="location"
+                    [updateLocation]="updateLocationWhenSearching" [isIncorrectAddress]="isIncorrectAddress"></tsl-location-box>
+                </div>
+              </div>
+              <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+              <div class="pro-section" [class.not-pro]="!isPro">
+                <div class="form-group row">
+                  <label for="description" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_295">Description</label>
+                  <div class="col-12 col-md-6 offset-md-1">
+                    <span class="chars-counter">{{profileForm.value?.description?.length}}/250</span>
+                    <textarea (click)="openBecomeProModal(ANALYTICS_FIELDS.DESCRIPTION)" class="form-control" id="description"
+                      formControlName="description" maxlength="250" [readonly]="!isPro"></textarea>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="opening_hours" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_296">Opening Hours</label>
+                  <div class="col-12 col-md-6 offset-md-1">
+                    <span class="chars-counter">{{profileForm.value?.opening_hours?.length}}/250</span>
+                    <textarea (click)="openBecomeProModal(ANALYTICS_FIELDS.OPENING_HOURS)" class="form-control" id="opening_hours"
+                      formControlName="opening_hours" maxlength="250" [readonly]="!isPro"></textarea>
+                  </div>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label for="phone_number" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_297">Telephone</label>
+                  <div class="col-12 col-md-6 offset-md-1">
+                    <input (click)="openBecomeProModal(ANALYTICS_FIELDS.PHONE)" type="text" class="form-control" id="phone_number"
+                      formControlName="phone_number" [readonly]="!isPro" />
+                    <span class="tracking-phone-info" *ngxPermissionsOnly="PERMISSIONS.professional" i18n="@@web_profile_pages_info_298">This telephone number will never be public, we will
+                      assign you a tracking number and it will be what customers will see.</span>
+                  </div>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label for="link" class="col-12 col-md-3 text-md-right">Web</label>
+                  <div class="col-12 col-md-6 offset-md-1">
+                    <input type="text" (click)="openBecomeProModal(ANALYTICS_FIELDS.WEB)" class="form-control" id="link" formControlName="link"
+                      pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
+                      [readonly]="!isPro" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_299">Shop address</label>
+                  <div class="col-12 col-md-6 offset-md-1" tslVisible (visible)="onMapContainerVisible()">
+                    <tsl-location-box *ngIf="renderMap" [form]="profileForm" name="storeLocation" 
+                      [disableFooter]="true" [disablePopover]="true" [disableInput]="!isPro" (click)="openBecomeProModal(ANALYTICS_FIELDS.SHOP_ADDRESS)" [defaultUserLocation]="false"
+                      [updateLocation]="updateLocationWhenSearching" [isIncorrectAddress]="isIncorrectAddress"></tsl-location-box>
+                  </div>
+                </div>
+              </div>
+              </ng-container>
+              <div class="row">
+                <div class="col-12 text-center">
+                  <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big btn--big"
+                    [disabled]="!formComponent.hasNotSavedChanges" i18n="@@web_profile_pages_info_580">Save</tsl-button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="form-group row">
-            <label for="opening_hours" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_296">Opening Hours</label>
-            <div class="col-12 col-md-6 offset-md-1">
-              <span class="chars-counter">{{profileForm.value?.opening_hours?.length}}/250</span>
-              <textarea (click)="openBecomeProModal(ANALYTICS_FIELDS.OPENING_HOURS)" class="form-control" id="opening_hours"
-                formControlName="opening_hours" maxlength="250" [readonly]="!isPro"></textarea>
-            </div>
-          </div>
-          <div class="form-group row align-items-center">
-            <label for="phone_number" class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_297">Telephone</label>
-            <div class="col-12 col-md-6 offset-md-1">
-              <input (click)="openBecomeProModal(ANALYTICS_FIELDS.PHONE)" type="text" class="form-control" id="phone_number"
-                formControlName="phone_number" [readonly]="!isPro" />
-              <span class="tracking-phone-info" *ngxPermissionsOnly="PERMISSIONS.professional" i18n="@@web_profile_pages_info_298">This telephone number will never be public, we will
-                assign you a tracking number and it will be what customers will see.</span>
-            </div>
-          </div>
-          <div class="form-group row align-items-center">
-            <label for="link" class="col-12 col-md-3 text-md-right">Web</label>
-            <div class="col-12 col-md-6 offset-md-1">
-              <input type="text" (click)="openBecomeProModal(ANALYTICS_FIELDS.WEB)" class="form-control" id="link" formControlName="link"
-                pattern="^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
-                [readonly]="!isPro" />
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-12 col-md-3 text-md-right" i18n="@@web_profile_pages_info_299">Shop address</label>
-            <div class="col-12 col-md-6 offset-md-1" tslVisible (visible)="onMapContainerVisible()">
-              <tsl-location-box *ngIf="renderMap" [form]="profileForm" name="storeLocation" 
-                [disableFooter]="true" [disablePopover]="true" [disableInput]="!isPro" (click)="openBecomeProModal(ANALYTICS_FIELDS.SHOP_ADDRESS)" [defaultUserLocation]="false"
-                [updateLocation]="updateLocationWhenSearching" [isIncorrectAddress]="isIncorrectAddress"></tsl-location-box>
-            </div>
-          </div>
-        </div>
-      </ng-container>
-        <div class="row">
-          <div class="col-12 text-center">
-            <tsl-button [type]="'submit'" [loading]="loading" className="btn-primary btn-big btn--big"
-              [disabled]="!formComponent.hasNotSavedChanges" i18n="@@web_profile_pages_info_580">Save</tsl-button>
           </div>
         </div>
       </div>
