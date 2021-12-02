@@ -1,8 +1,12 @@
 @import '~style/common';
 
-.PublicLayout {
+.PrivateLayout {
   background-color: $main-background-color;
   min-height: 100vh;
+
+  &__wrapper {
+    flex: 1;
+  }
 
   &__content {
     max-width: 100%;

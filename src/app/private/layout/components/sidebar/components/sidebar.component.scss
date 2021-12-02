@@ -1,146 +1,113 @@
 @import '~style/common';
 
+$collapse-btn-dimension: 24px;
+
 :host {
-  position: fixed;
-  width: $sidebar-width;
-  left: 0;
+  position: sticky;
   top: $topbar-height;
+  left: 0;
   bottom: 0;
-  background-color: $blue-grey-1;
-  padding-top: $spacing-m;
   height: calc(100vh - #{$topbar-height});
-  z-index: 99;
+  z-index: 1;
 }
 
-.chat-notification-pending {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 10px;
-  height: 10px;
-  background-color: $negative-main;
-  border-radius: 100%;
-  transform: translateX(100%);
-}
+.Sidebar {
+  height: 100%;
+  width: $sidebar-width;
+  background-color: $white;
+  border-right: 1px solid transparentize($blue-grey-4, 0.5);
 
-$sidebar-section-circle-size: 50px;
-$sidebar-section-circle-size-small: 32px;
-
-.sidebar-section-circle {
-  position: relative;
-  margin: 0 auto $spacing-ms auto;
-  width: $sidebar-section-circle-size;
-  height: $sidebar-section-circle-size;
-  background-color: rgba(lighten($blue-grey-1, 8%), 0.5);
-  transition: width 0.75s, height 0.75s;
-  .active & {
-    background-color: $walla-main !important;
-  }
-  border-radius: 50%;
-  .profile-item & {
-    background-color: transparent !important;
-  }
-}
-
-.sidebar-section {
-  tsl-svg-icon {
+  &__collapse {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateY(-50%) translateX(-50%);
-    @include square(34px);
-    transition: 0.15s background-color ease;
-    g g {
-      transition: 0.15s fill ease;
+    opacity: 0;
+    right: -$collapse-btn-dimension * 0.5;
+    top: 72px;
+    border-radius: 50%;
+    background-color: $blue-grey-5;
+    appearance: none;
+    border: 0;
+    box-shadow: 0px 4px 4px rgba($blue-grey-1, 0.15);
+    z-index: 1;
+    transition: 150ms ease-in-out;
+    @include square($collapse-btn-dimension);
+
+    &--visible {
+      opacity: 1;
+    }
+
+    &:hover {
+      background-color: $blue-grey-6;
+    }
+
+    &:active {
+      box-shadow: none;
+      background-color: $blue-grey-4;
     }
   }
-  & ::ng-deep path {
-    fill: rgba($white, 0.5);
-  }
-  &.active,
-  &:hover {
+
+  &__entry {
+    position: relative;
+    min-height: 48px;
+
+    tsl-user-avatar,
     tsl-svg-icon {
-      & ::ng-deep path {
-        fill: $white;
-      }
+      padding: 0 $spacer * 0.5;
     }
-  }
-}
 
-h2 {
-  font-size: $font-size-xxs;
-  font-weight: $font-weight-chunky;
-  color: rgba($white, 0.5);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0;
-  padding: 0 $spacing-xs;
-  .active & {
-    color: $white;
-  }
-}
+    &--active,
+    &:hover {
+      background-color: $blue-grey-5;
+      border-radius: 8px;
+      text-decoration: none;
+    }
 
-.sidebar-section {
-  position: relative;
-  display: block;
-  padding: $spacing-ms 0;
-  text-align: center;
-  &:focus,
-  &:hover {
-    text-decoration: none;
-  }
-  &:hover {
-    .sidebar-section-circle {
-      background-color: lighten($blue-grey-1, 8%);
+    &:active {
+      background-color: $blue-grey-4;
+      transition: background-color 100ms ease-in;
     }
-    h2 {
-      color: $white;
-      transition: 0.15s color ease;
-    }
-  }
-  &.profile-item {
-    tsl-user-avatar {
-      opacity: 0.5;
-      transition: 0.15s opacity ease;
-    }
-    &:hover,
-    &.active {
-      tsl-user-avatar {
-        opacity: 1;
-      }
-    }
-  }
-}
 
-@media screen and (max-height: 900px) {
-  .sidebar-section-circle {
-    width: $sidebar-section-circle-size-small;
-    height: $sidebar-section-circle-size-small;
-    margin: 0 auto $spacing-s auto;
-  }
-  .sidebar-section {
-    tsl-svg-icon {
-      @include square(24px);
-      &::ng-deep svg {
-        width: 100%;
-        height: 100%;
-      }
-    }
-    &.profile-item {
-      tsl-user-avatar {
-        ::ng-deep .avatar-rounded {
-          transition: width 0.75s, height 0.75s;
-          width: $sidebar-section-circle-size-small;
-          height: $sidebar-section-circle-size-small;
-        }
-      }
+    &--active .Sidebar__label {
+      font-weight: bold;
+      color: $blue-grey-1;
     }
   }
-}
 
-.svg-icon-size {
-  ::ng-deep svg {
-    height: 100%;
-    width: 100%;
+  &__label {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 100ms linear;
+    overflow: hidden;
+    font-size: $font-size-m;
+    white-space: nowrap;
+    color: $blue-grey-1;
+  }
+
+  &__notification {
+    position: absolute;
+    top: 9px;
+    left: 28px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid $white;
+    background-color: $negative-main;
+    border-radius: 100%;
+  }
+
+  &--collapsed {
+    width: $sidebar-collapsed-width;
+    transition: width 150ms ease-in-out;
+    .Sidebar__label {
+      opacity: 0;
+      visibility: hidden;
+      transition: visibility 0s 100ms, opacity 100ms linear;
+    }
+    .Sidebar__collapse tsl-svg-icon {
+      transition: transform 150ms ease;
+      transform: rotate(180deg);
+    }
+  }
+
+  &:hover .Sidebar__collapse {
+    opacity: 1;
   }
 }

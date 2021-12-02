@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 import { DeviceType } from '@core/device/deviceType.enum';
 import { environment } from '@environments/environment';
 import { CookieService } from 'ngx-cookie';
 import { UuidService } from '@core/uuid/uuid.service';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 
 @Injectable({ providedIn: 'root' })
 export class DeviceService {
@@ -13,7 +14,8 @@ export class DeviceService {
   constructor(
     private deviceDetectorService: DeviceDetectorService,
     private cookieService: CookieService,
-    private uuidService: UuidService
+    private uuidService: UuidService,
+    @Inject(WINDOW_TOKEN) private window: Window
   ) {}
 
   public getDeviceType(): DeviceType {
@@ -38,6 +40,10 @@ export class DeviceService {
 
   public isDesktop(): boolean {
     return this.deviceDetectorService.isDesktop();
+  }
+
+  public isTouchDevice(): boolean {
+    return 'ontouchstart' in this.window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
   }
 
   public getDeviceId(): string {

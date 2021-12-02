@@ -64,16 +64,16 @@ describe('UserVerificationsHttpService', () => {
   describe('when asking to send the phone to verify', () => {
     it('should retrieve the phone verification response', () => {
       let response: PhoneVerificationApi;
-      const mobileNumber = MOCK_PHONE_NUMBER;
-      const code = MOCK_PREFIX_PHONE;
+      const phone = MOCK_PHONE_NUMBER;
+      const prefix = MOCK_PREFIX_PHONE;
 
-      service.sendVerifyPhone(mobileNumber, code).subscribe((data) => (response = data));
+      service.sendVerifyPhone(prefix + phone).subscribe((data) => (response = data));
       const req: TestRequest = httpMock.expectOne(SEND_VERIFY_PHONE_ENDPOINT);
       req.flush(MOCK_PHONE_VERIFICATION_API_RESPONSE);
 
       expect(req.request.method).toBe('POST');
       expect(response).toEqual(MOCK_PHONE_VERIFICATION_API_RESPONSE);
-      expect(req.request.body).toEqual({ mobileNumber, code, type: VERIFICATION_TYPE.PHONE });
+      expect(req.request.body).toEqual({ mobileNumber: prefix + phone, code: null, type: VERIFICATION_TYPE.PHONE });
     });
   });
 
