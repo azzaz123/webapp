@@ -17,6 +17,11 @@ import {
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
+import { of } from 'rxjs';
+import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-instructions.fixtures.spec';
+
 export type TransactionTrackingActionType = TransactionTrackingActionTypeDto;
 export type TransactionTrackingUserAction = TransactionTrackingActionDetailPayloadUserActionNameDto;
 
@@ -25,14 +30,17 @@ export class TransactionTrackingService {
   constructor(private transactionTrackingHttpService: TransactionTrackingHttpService) {}
 
   public get(requestId: string): Observable<TransactionTracking> {
+    return of(MOCK_TRANSACTION_TRACKING);
     return this.transactionTrackingHttpService.get(requestId).pipe(map(mapTransactionTrackingDtoTransactionTracking));
   }
 
   public getDetails(requestId: string): Observable<TransactionTrackingDetails> {
+    return of(MOCK_TRANSACTION_TRACKING_DETAILS);
     return this.transactionTrackingHttpService.getDetails(requestId).pipe(map(mapTransactionTrackingDetailsDtoTransactionTrackingDetails));
   }
 
   public getInstructions(requestId: string, actionType: TransactionTrackingActionType): Observable<TransactionTrackingInstructions> {
+    return of(MOCK_TRANSACTION_TRACKING_INSTRUCTIONS);
     return this.transactionTrackingHttpService
       .getInstructions(requestId, actionType)
       .pipe(map(mapTransactionTrackingInstructionsDtoTransactionTrackingInstructions));

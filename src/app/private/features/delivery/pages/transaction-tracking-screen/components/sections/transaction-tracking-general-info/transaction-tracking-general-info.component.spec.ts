@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
@@ -21,7 +21,7 @@ describe('TransactionTrackingGeneralInfoComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingGeneralInfoComponent],
       imports: [ButtonModule, LottieModule, HttpClientTestingModule, BypassHTMLModule],
-      providers: [],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -57,8 +57,10 @@ describe('TransactionTrackingGeneralInfoComponent', () => {
     });
 
     describe('and we have actions', () => {
-      it('should have the same buttons as actions', () => {
-        const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
+      it('should have the same action rows as actions', () => {
+        const buttons = fixture.debugElement.queryAll(
+          By.css('tsl-transaction-tracking-action-selector > .TrackingGeneralInfo__actionButton')
+        );
         expect(buttons.length).toEqual(component.shippingStatus.actions.length);
       });
 

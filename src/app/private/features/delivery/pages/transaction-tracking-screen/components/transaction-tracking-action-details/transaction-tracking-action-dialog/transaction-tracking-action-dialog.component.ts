@@ -32,15 +32,22 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
 
     modalRef.result.then(
       () => {
-        const userAction = this.dialogAction.positive.action as TransactionTrackingActionUserAction;
-        this.transactionTrackingService.sendUserAction(userAction.transactionId, userAction.name).subscribe({
-          error: () => {
-            this.errorsService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
-          },
-        });
+        if (this.dialogAction.positive) {
+          this.sendUserAction();
+        }
       },
       () => {}
     );
+  }
+
+  private sendUserAction(): void {
+    const userAction = this.dialogAction.positive.action as TransactionTrackingActionUserAction;
+    this.transactionTrackingService.sendUserAction(userAction.transactionId, userAction.name).subscribe({
+      error: () => {
+        // TODO: Error management states should be improved by cases		Date: 2021/12/02
+        this.errorsService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+      },
+    });
   }
 
   private get modalProperties(): ConfirmationModalProperties {

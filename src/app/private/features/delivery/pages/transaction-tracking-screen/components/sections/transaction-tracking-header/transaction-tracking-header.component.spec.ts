@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
@@ -18,7 +18,7 @@ describe('TransactionTrackingHeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [TransactionTrackingHeaderComponent, ButtonComponent, SvgIconComponent],
     }).compileComponents();
   });
@@ -62,6 +62,12 @@ describe('TransactionTrackingHeaderComponent', () => {
       });
 
       describe('the action button...', () => {
+        it('should be wrapped inside an action selector ', () => {
+          const actionWrapper = fixture.debugElement.query(By.css('tsl-transaction-tracking-action-selector > .TTS__buttonHeader'));
+
+          expect(actionWrapper).toBeTruthy();
+        });
+
         it('should have the received title', () => {
           expect(headerActionButton.nativeElement.textContent).toEqual(MOCK_TRANSACTION_TRACKING.header.detail.title);
         });

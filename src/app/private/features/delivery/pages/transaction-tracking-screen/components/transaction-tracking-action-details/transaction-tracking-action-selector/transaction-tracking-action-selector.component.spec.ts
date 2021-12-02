@@ -18,6 +18,9 @@ import {
   MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW,
 } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { MockErrorService } from '@fixtures/error.fixtures.spec';
+import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 
 describe('TransactionTrackingActionSelectorComponent', () => {
   let component: TransactionTrackingActionSelectorComponent;
@@ -41,6 +44,14 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         {
           provide: TransactionTrackingService,
           useValue: {},
+        },
+        {
+          provide: DeeplinkService,
+          useValue: {},
+        },
+        {
+          provide: ErrorsService,
+          useValue: MockErrorService,
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
