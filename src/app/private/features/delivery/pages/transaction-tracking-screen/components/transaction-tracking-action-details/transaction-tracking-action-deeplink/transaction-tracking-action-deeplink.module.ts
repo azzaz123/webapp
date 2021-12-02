@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionTrackingActionDeeplinkComponent } from './transaction-tracking-action-deeplink.component';
-import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
+import { DeeplinkServiceModule } from '@api/core/utils/deeplink/deeplink.module';
 
 @NgModule({
   declarations: [TransactionTrackingActionDeeplinkComponent],
-  imports: [CommonModule],
+  imports: [CommonModule, DeeplinkServiceModule],
   exports: [TransactionTrackingActionDeeplinkComponent],
-  providers: [DeeplinkService],
 })
 export class TransactionTrackingActionDeeplinkModule {}
