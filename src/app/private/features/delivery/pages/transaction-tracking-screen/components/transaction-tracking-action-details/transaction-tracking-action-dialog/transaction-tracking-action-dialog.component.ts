@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TransactionTrackingActionDialog } from '@api/core/model/delivery/transaction/tracking';
 import { COLORS } from '@core/colors/colors-constants';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationActionModalComponent } from '../../../modals/confirmation-action-modal/confirmation-action-modal.component';
-import { ConfirmationActionModalProperties } from '../../../modals/confirmation-action-modal/confirmation-action-modal.interface';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-dialog',
@@ -19,7 +19,7 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   public openModal(): void {
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationActionModalComponent);
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
 
     modalRef.componentInstance.properties = this.modalProperties;
 
@@ -29,14 +29,13 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
     );
   }
 
-  private get modalProperties(): ConfirmationActionModalProperties {
+  private get modalProperties(): ConfirmationModalProperties {
     return {
       title: this.dialogAction.title,
       description: this.dialogAction.description,
       confirmMessage: this.dialogAction.positive.title,
       cancelMessage: this.dialogAction.negative?.title,
       confirmColor: COLORS.WALLA_MAIN,
-      positiveAction: this.dialogAction.positive.action,
     };
   }
 }
