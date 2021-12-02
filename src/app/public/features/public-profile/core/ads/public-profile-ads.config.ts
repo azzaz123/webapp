@@ -10,7 +10,7 @@ import { AdSlotConfiguration } from '@core/ads/models';
 import { DeviceType } from '@core/device/deviceType.enum';
 
 export const PUBLIC_PROFILE_AD: AdSlotConfiguration = {
-  name: '130868815/web/user1',
+  name: '130868815/Web_Mobile_User/Pos1',
   id: 'sky-unit-user-1',
   sizes: AD_DESKTOP_MAPPING,
   sizeMapping: {
