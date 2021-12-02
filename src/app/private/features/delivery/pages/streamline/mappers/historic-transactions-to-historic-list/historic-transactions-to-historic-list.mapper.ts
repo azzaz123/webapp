@@ -6,6 +6,7 @@ import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enum
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import * as moment from 'moment';
+import { mapCompletedTransactionTrackingStatusToSubDescription } from './completed-transaction-tracking-status-to-subdescription-type.mapper';
 
 export const mapHistoricTransactionsToHistoricList: ToDomainMapper<HistoricTransaction[], HistoricList> = (
   input: HistoricTransaction[]
@@ -88,7 +89,7 @@ const getSubDescriptionFromHistoricTransaction = (
     ? completedTransactionTrackingStatusAsSellerTranslations(trackingStatus, formattedDate)
     : completedTransactionTrackingStatusAsBuyerTranslations(trackingStatus, formattedDate);
 
-  const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL;
+  const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = mapCompletedTransactionTrackingStatusToSubDescription[trackingStatus];
 
   return {
     text,
