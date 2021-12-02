@@ -26,22 +26,13 @@ export const COMMON_MPARTICLE_CONFIG = {
   providedIn: 'root',
 })
 export class AnalyticsService {
+  private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
   constructor(
     private userService: UserService,
     private deviceService: DeviceService,
     @Inject(MARKET_PROVIDER) private _market: Market,
     @Inject(LOCALE_ID) private _localeId: APP_LOCALE
   ) {}
-
-  get market(): Market {
-    return this._market;
-  }
-
-  get appLocale(): APP_LOCALE {
-    return this._localeId;
-  }
-
-  private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
 
   public get mParticleReady$(): Observable<void> {
     return this._mParticleReady$.asObservable();
@@ -61,6 +52,22 @@ export class AnalyticsService {
 
       this.initializeMParticleSDK(mParticleNotLoggedConfig);
     }
+  }
+
+  public trackEvent<T>(event: AnalyticsEvent<T>) {
+    mParticle.logEvent(event.name, event.eventType, event.attributes);
+  }
+
+  public trackPageView<T>(page: AnalyticsPageView<T>) {
+    mParticle.logPageView(page.name, page.attributes, page.flags);
+  }
+
+  get market(): Market {
+    return this._market;
+  }
+
+  get appLocale(): APP_LOCALE {
+    return this._localeId;
   }
 
   private mParticleIdentityCallback(result) {
@@ -95,13 +102,5 @@ export class AnalyticsService {
     };
 
     return mParticleConfig;
-  }
-
-  public trackEvent<T>(event: AnalyticsEvent<T>) {
-    mParticle.logEvent(event.name, event.eventType, event.attributes);
-  }
-
-  public trackPageView<T>(page: AnalyticsPageView<T>) {
-    mParticle.logPageView(page.name, page.attributes, page.flags);
   }
 }

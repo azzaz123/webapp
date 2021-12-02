@@ -1,5 +1,4 @@
-import { TransactionTrackingActionDetail } from './transaction-tracking-action-detail.interface';
-import { TransactionTrackingStyle } from './transaction-tracking-style.interface';
+import { TransactionTrackingActionDetail, TransactionTrackingStyle } from '@api/core/model/delivery/transaction/tracking';
 
 export interface TransactionTrackingStatusInfo {
   action: TransactionTrackingActionDetail;

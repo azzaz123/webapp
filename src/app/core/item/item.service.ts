@@ -72,13 +72,14 @@ export const V1_API_URL = 'shnm-portlet/api/v1';
 export class ItemService {
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
+  public selectedItems: string[] = [];
   protected items: ItemsStore = {
     active: [],
     pending: [],
     sold: [],
     featured: [],
   };
-  public selectedItems: string[] = [];
+
   private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
 
   constructor(private http: HttpClient, private i18n: I18nService, private uuidService: UuidService, private eventService: EventService) {}
@@ -147,172 +148,6 @@ export class ItemService {
     if (this.selectedItems.length === 0) {
       this.selectedAction = null;
     }
-  }
-
-  protected mapRecordData(response: any): Item {
-    const data: ItemResponse = <ItemResponse>response;
-    const content: ItemContent = data.content;
-    if (data.type === 'cars') {
-      return this.mapCar(content);
-    } else if (data.type === 'real_estate') {
-      return this.mapRealEstate(content);
-    }
-    return this.mapItem(content);
-  }
-
-  protected mapRecordDataPro(response: ItemProResponse): Item {
-    const data: ItemProResponse = <ItemProResponse>response;
-    const content: ItemProContent = data.content;
-    return this.mapItemPro(content);
-  }
-
-  private mapCar(content: CarContent): Car {
-    return new Car(
-      content.id,
-      content.seller_id,
-      content.title,
-      content.storytelling,
-      content.sale_price === undefined ? content.price : content.sale_price,
-      content.currency_code || content.currency,
-      content.modified_date,
-      content.url,
-      content.flags,
-      content.sale_conditions,
-      content.images,
-      content.web_slug,
-      content.brand,
-      content.model,
-      content.year,
-      content.gearbox,
-      content.engine,
-      content.color,
-      content.horsepower,
-      content.body_type,
-      content.num_doors,
-      content.extras,
-      content.warranty,
-      content.num_seats,
-      content.condition,
-      content.version,
-      content.financed_price,
-      content.publish_date,
-      content.image,
-      content.km
-    );
-  }
-
-  private mapRealEstate(content: RealestateContent): Realestate {
-    return new Realestate(
-      content.id,
-      content.seller_id,
-      content.title,
-      content.storytelling,
-      content.location,
-      content.sale_price,
-      content.currency_code,
-      content.modified_date,
-      content.url,
-      content.flags,
-      content.images,
-      content.web_slug,
-      content.operation,
-      content.type,
-      content.condition,
-      content.surface,
-      content.bathrooms,
-      content.rooms,
-      content.garage,
-      content.terrace,
-      content.elevator,
-      content.pool,
-      content.garden,
-      content.image,
-      content.publish_date
-    );
-  }
-
-  private mapItem(content: ItemContent): Item {
-    return new Item(
-      content.id,
-      null,
-      content.seller_id,
-      content.title,
-      content.description,
-      content.category_id,
-      null,
-      content.sale_price === undefined ? content.price : content.sale_price,
-      content.currency_code || content.currency,
-      content.modified_date,
-      content.url,
-      content.flags,
-      null,
-      content.sale_conditions,
-      content.images
-        ? content.images[0]
-        : {
-            id: this.uuidService.getUUID(),
-            original_width: content.image ? content.image.original_width : null,
-            original_height: content.image ? content.image.original_height : null,
-            average_hex_color: '',
-            urls_by_size: content.image,
-          },
-      content.images,
-      content.web_slug,
-      content.publish_date,
-      content.delivery_info,
-      ITEM_TYPES.CONSUMER_GOODS,
-      content.extra_info
-        ? {
-            object_type: {
-              id: content.extra_info.object_type && content.extra_info.object_type.id ? content.extra_info.object_type.id.toString() : null,
-              name: content.extra_info.object_type && content.extra_info.object_type.name ? content.extra_info.object_type.name : null,
-            },
-            brand: content.extra_info.brand,
-            model: content.extra_info.model,
-            gender: content.extra_info.gender,
-            size: {
-              id: content.extra_info.size && content.extra_info.size.id ? content.extra_info.size.id.toString() : null,
-            },
-            condition: content.extra_info.condition || null,
-          }
-        : undefined
-    );
-  }
-
-  private mapItemPro(content: ItemProContent): Item {
-    return new Item(
-      content.id,
-      null,
-      content.seller_id,
-      content.title,
-      content.description,
-      content.category_id,
-      null,
-      content.price,
-      content.currency,
-      content.modified_date,
-      null,
-      content.flags,
-      null,
-      null,
-      {
-        id: this.uuidService.getUUID(),
-        original_width: content.image ? content.image.original_width : null,
-        original_height: content.image ? content.image.original_height : null,
-        average_hex_color: '',
-        urls_by_size: {
-          original: content.image.original,
-          small: content.image.small,
-          large: content.image.large,
-          medium: content.image.medium,
-          xlarge: content.image.xlarge,
-        },
-      },
-      content.images,
-      content.web_slug,
-      content.publish_date,
-      null
-    );
   }
 
   public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
@@ -445,10 +280,6 @@ export class ItemService {
       .pipe(mapRx.map((response: AvailableProductsResponse) => response.products[0]));
   }
 
-  private getPurchases(): Observable<Purchase[]> {
-    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
-  }
-
   public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
     const headers: HttpHeaders = new HttpHeaders({
       'X-PaymentProvider': PAYMENT_PROVIDER,
@@ -545,10 +376,6 @@ export class ItemService {
       );
   }
 
-  private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
-    return this.http.get<AllowedActionResponse[]>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/actions-allowed`);
-  }
-
   public canDoAction(action: string, id: string): Observable<boolean> {
     return this.getActionsAllowed(id).pipe(
       mapRx.map((actions: AllowedActionResponse[]) => {
@@ -559,111 +386,6 @@ export class ItemService {
         return false;
       })
     );
-  }
-
-  private getProductDurations(productList: Product[]): ProductDurations {
-    const durations: number[] = lodashMap(productList[0].durations, 'duration');
-    const types: string[] = lodashMap(productList, 'name');
-    const productDurations = {};
-    durations.forEach((duration: number) => {
-      productDurations[duration] = {};
-      types.forEach((type: string) => {
-        productDurations[duration][type] = this.findDuration(productList, duration, type);
-      });
-    });
-    return productDurations;
-  }
-
-  private findDuration(productList: Product[], duration: number, type: string): Duration {
-    const product: Product = find(productList, { name: type });
-    return find(product.durations, { duration: duration });
-  }
-
-  public mines(
-    pageNumber: number,
-    pageSize: number,
-    sortByParam: string,
-    status: string = 'active',
-    term?: string,
-    cache: boolean = true
-  ): Observable<Item[]> {
-    let init: number = (pageNumber - 1) * pageSize;
-    let end: number = init + pageSize;
-    let endStatus: string = status === 'featured' ? 'active' : status;
-    let observable: Observable<Item[]>;
-
-    if (this.items[status].length && cache) {
-      observable = of(this.items[status]);
-    } else {
-      observable = this.recursiveMines(0, 300, endStatus).pipe(
-        map((res: ItemProResponse[]) => {
-          if (res.length > 0) {
-            let items: Item[] = res
-              .filter((res) => (res.content.purchases && status === 'featured') || status !== 'featured')
-              .map((i: ItemProResponse) => {
-                const item: Item = this.mapRecordDataPro(i);
-                item.views = i.content.views;
-                item.favorites = i.content.favorites;
-                item.conversations = i.content.conversations;
-                item.purchases = i.content.purchases ? i.content.purchases : null;
-                item.km = i.content.km ? i.content.km : null;
-                return item;
-              });
-            this.items[status] = items;
-            return items;
-          }
-          return [];
-        })
-      );
-    }
-    return observable.pipe(
-      map((res: Item[]) => {
-        term = term ? term.trim().toLowerCase() : '';
-        if (term !== '') {
-          return filter(res, (item: Item) => {
-            return item.title.toLowerCase().indexOf(term) !== -1 || item.description.toLowerCase().indexOf(term) !== -1;
-          });
-        }
-        return res;
-      }),
-      map((res: Item[]) => {
-        let sort: string[] = sortByParam.split('_');
-        let field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
-        let sorted: Item[] = sortBy(res, [field]);
-        if (sort[1] === 'desc') {
-          return reverse(sorted);
-        }
-        return sorted;
-      }),
-      map((res: Item[]) => {
-        return res.slice(init, end);
-      })
-    );
-  }
-
-  private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
-    return this.http
-      .get<any>(`${environment.baseUrl}${PROTOOL_API_URL}/mines`, {
-        params: {
-          status: ITEM_STATUSES[status],
-          init,
-          end: init + offset,
-          newVersion: true,
-        } as any,
-      })
-      .pipe(
-        mergeMap((res) => {
-          if (res.length > 0) {
-            return this.recursiveMines(init + offset, offset, status).pipe(
-              map((res2: ItemProResponse[]) => {
-                return res.concat(res2);
-              })
-            );
-          } else {
-            return of([]);
-          }
-        })
-      );
   }
 
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {
@@ -801,5 +523,286 @@ export class ItemService {
         version,
       },
     });
+  }
+
+  public mines(
+    pageNumber: number,
+    pageSize: number,
+    sortByParam: string,
+    status: string = 'active',
+    term?: string,
+    cache: boolean = true
+  ): Observable<Item[]> {
+    let init: number = (pageNumber - 1) * pageSize;
+    let end: number = init + pageSize;
+    let endStatus: string = status === 'featured' ? 'active' : status;
+    let observable: Observable<Item[]>;
+
+    if (this.items[status].length && cache) {
+      observable = of(this.items[status]);
+    } else {
+      observable = this.recursiveMines(0, 300, endStatus).pipe(
+        map((res: ItemProResponse[]) => {
+          if (res.length > 0) {
+            let items: Item[] = res
+              .filter((res) => (res.content.purchases && status === 'featured') || status !== 'featured')
+              .map((i: ItemProResponse) => {
+                const item: Item = this.mapRecordDataPro(i);
+                item.views = i.content.views;
+                item.favorites = i.content.favorites;
+                item.conversations = i.content.conversations;
+                item.purchases = i.content.purchases ? i.content.purchases : null;
+                item.km = i.content.km ? i.content.km : null;
+                return item;
+              });
+            this.items[status] = items;
+            return items;
+          }
+          return [];
+        })
+      );
+    }
+    return observable.pipe(
+      map((res: Item[]) => {
+        term = term ? term.trim().toLowerCase() : '';
+        if (term !== '') {
+          return filter(res, (item: Item) => {
+            return item.title.toLowerCase().indexOf(term) !== -1 || item.description.toLowerCase().indexOf(term) !== -1;
+          });
+        }
+        return res;
+      }),
+      map((res: Item[]) => {
+        let sort: string[] = sortByParam.split('_');
+        let field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
+        let sorted: Item[] = sortBy(res, [field]);
+        if (sort[1] === 'desc') {
+          return reverse(sorted);
+        }
+        return sorted;
+      }),
+      map((res: Item[]) => {
+        return res.slice(init, end);
+      })
+    );
+  }
+  protected mapRecordData(response: any): Item {
+    const data: ItemResponse = <ItemResponse>response;
+    const content: ItemContent = data.content;
+    if (data.type === 'cars') {
+      return this.mapCar(content);
+    } else if (data.type === 'real_estate') {
+      return this.mapRealEstate(content);
+    }
+    return this.mapItem(content);
+  }
+
+  protected mapRecordDataPro(response: ItemProResponse): Item {
+    const data: ItemProResponse = <ItemProResponse>response;
+    const content: ItemProContent = data.content;
+    return this.mapItemPro(content);
+  }
+  private getPurchases(): Observable<Purchase[]> {
+    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
+  }
+
+  private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
+    return this.http.get<AllowedActionResponse[]>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/actions-allowed`);
+  }
+
+  private getProductDurations(productList: Product[]): ProductDurations {
+    const durations: number[] = lodashMap(productList[0].durations, 'duration');
+    const types: string[] = lodashMap(productList, 'name');
+    const productDurations = {};
+    durations.forEach((duration: number) => {
+      productDurations[duration] = {};
+      types.forEach((type: string) => {
+        productDurations[duration][type] = this.findDuration(productList, duration, type);
+      });
+    });
+    return productDurations;
+  }
+
+  private findDuration(productList: Product[], duration: number, type: string): Duration {
+    const product: Product = find(productList, { name: type });
+    return find(product.durations, { duration: duration });
+  }
+
+  private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
+    return this.http
+      .get<any>(`${environment.baseUrl}${PROTOOL_API_URL}/mines`, {
+        params: {
+          status: ITEM_STATUSES[status],
+          init,
+          end: init + offset,
+          newVersion: true,
+        } as any,
+      })
+      .pipe(
+        mergeMap((res) => {
+          if (res.length > 0) {
+            return this.recursiveMines(init + offset, offset, status).pipe(
+              map((res2: ItemProResponse[]) => {
+                return res.concat(res2);
+              })
+            );
+          } else {
+            return of([]);
+          }
+        })
+      );
+  }
+
+  private mapCar(content: CarContent): Car {
+    return new Car(
+      content.id,
+      content.seller_id,
+      content.title,
+      content.storytelling,
+      content.sale_price === undefined ? content.price : content.sale_price,
+      content.currency_code || content.currency,
+      content.modified_date,
+      content.url,
+      content.flags,
+      content.sale_conditions,
+      content.images,
+      content.web_slug,
+      content.brand,
+      content.model,
+      content.year,
+      content.gearbox,
+      content.engine,
+      content.color,
+      content.horsepower,
+      content.body_type,
+      content.num_doors,
+      content.extras,
+      content.warranty,
+      content.num_seats,
+      content.condition,
+      content.version,
+      content.financed_price,
+      content.publish_date,
+      content.image,
+      content.km
+    );
+  }
+
+  private mapRealEstate(content: RealestateContent): Realestate {
+    return new Realestate(
+      content.id,
+      content.seller_id,
+      content.title,
+      content.storytelling,
+      content.location,
+      content.sale_price,
+      content.currency_code,
+      content.modified_date,
+      content.url,
+      content.flags,
+      content.images,
+      content.web_slug,
+      content.operation,
+      content.type,
+      content.condition,
+      content.surface,
+      content.bathrooms,
+      content.rooms,
+      content.garage,
+      content.terrace,
+      content.elevator,
+      content.pool,
+      content.garden,
+      content.image,
+      content.publish_date
+    );
+  }
+
+  private mapItem(content: ItemContent): Item {
+    return new Item(
+      content.id,
+      null,
+      content.seller_id,
+      content.title,
+      content.description,
+      content.category_id,
+      null,
+      content.sale_price === undefined ? content.price : content.sale_price,
+      content.currency_code || content.currency,
+      content.modified_date,
+      content.url,
+      content.flags,
+      null,
+      content.sale_conditions,
+      content.images
+        ? content.images[0]
+        : {
+            id: this.uuidService.getUUID(),
+            original_width: content.image ? content.image.original_width : null,
+            original_height: content.image ? content.image.original_height : null,
+            average_hex_color: '',
+            urls_by_size: content.image,
+          },
+      content.images,
+      content.web_slug,
+      content.publish_date,
+      content.delivery_info,
+      ITEM_TYPES.CONSUMER_GOODS,
+      content.extra_info
+        ? {
+            object_type: {
+              id: content.extra_info.object_type && content.extra_info.object_type.id ? content.extra_info.object_type.id.toString() : null,
+              name: content.extra_info.object_type && content.extra_info.object_type.name ? content.extra_info.object_type.name : null,
+            },
+            brand: content.extra_info.brand,
+            model: content.extra_info.model,
+            gender: content.extra_info.gender,
+            size: {
+              id: content.extra_info.size && content.extra_info.size.id ? content.extra_info.size.id.toString() : null,
+            },
+            condition: content.extra_info.condition || null,
+          }
+        : undefined,
+      null,
+      null,
+      null,
+      content.hashtags
+    );
+  }
+
+  private mapItemPro(content: ItemProContent): Item {
+    return new Item(
+      content.id,
+      null,
+      content.seller_id,
+      content.title,
+      content.description,
+      content.category_id,
+      null,
+      content.price,
+      content.currency,
+      content.modified_date,
+      null,
+      content.flags,
+      null,
+      null,
+      {
+        id: this.uuidService.getUUID(),
+        original_width: content.image ? content.image.original_width : null,
+        original_height: content.image ? content.image.original_height : null,
+        average_hex_color: '',
+        urls_by_size: {
+          original: content.image.original,
+          small: content.image.small,
+          large: content.image.large,
+          medium: content.image.medium,
+          xlarge: content.image.xlarge,
+        },
+      },
+      content.images,
+      content.web_slug,
+      content.publish_date,
+      null
+    );
   }
 }

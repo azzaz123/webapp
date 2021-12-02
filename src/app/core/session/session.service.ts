@@ -5,17 +5,16 @@ import { Observable, ReplaySubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
-  private _newSession$: ReplaySubject<void> = new ReplaySubject<void>();
-
   private static SESSION_COOKIE_NAME = 'wallapop_keep_session';
   private static SESSION_TRACK_INTERVAL = 60000;
   private static SESSION_TIMEOUT = 15 * 60000;
+  private _newSession$: ReplaySubject<void> = new ReplaySubject<void>();
+
+  constructor(private cookieService: CookieService) {}
 
   public get newSession$(): Observable<void> {
     return this._newSession$.asObservable();
   }
-
-  constructor(private cookieService: CookieService) {}
 
   public initSession(): void {
     const isNewSession = this.cookieService.get(SessionService.SESSION_COOKIE_NAME) !== 'true';

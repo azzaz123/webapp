@@ -5,7 +5,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonComponent } from '@shared/button/button.component';
 import { MOCK_TRANSACTION_TRACKING_INSTRUCTIONS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-instructions.fixtures.spec';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
-import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { TransactionTrackingBannerComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/banner/transaction-tracking-banner.component';
 import { TransactionTrackingHeaderComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/sections';
 import { TransactionTrackingInstructionsComponent } from '@private/features/delivery/pages/transaction-tracking-screen';
@@ -46,7 +45,6 @@ describe('TransactionTrackingInstructionsComponent', () => {
             },
           },
         },
-        { provide: TransactionTrackingActionsService, useValue: { manageAction() {} } },
       ],
     }).compileComponents();
   });

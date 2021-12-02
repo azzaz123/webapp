@@ -23,4 +23,5 @@ export enum ITEM_DATA_FIELD {
   ADDRESS = 'address',
   LATITUDE = 'latitude',
   LONGITUDE = 'longitude',
+  SURFACE = 'surface',
 }

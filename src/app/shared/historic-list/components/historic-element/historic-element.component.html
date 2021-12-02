@@ -1,21 +1,28 @@
-<div class="HistoricElement d-flex justify-content-between" (click)="onItemClick()">
-  <div class="HistoricElement__image">
-    <img [src]="historicElement.imageUrl" [alt]="historicElement.title" loading="lazy" />
-    <div *ngIf="historicElement.iconUrl" class="HistoricElement__icon">
-      <tsl-svg-icon [src]="historicElement.iconUrl"></tsl-svg-icon>
-    </div>
+<div
+  class="HistoricElement d-flex justify-content-between align-items-center"
+  [ngClass]="{ 'HistoricElement--clickable': clickable }"
+  (click)="onItemClick()"
+>
+  <div class="position-relative mr-3">
+    <img class="HistoricElement__image" [src]="historicElement.imageUrl" [alt]="historicElement.title" loading="lazy" />
+    <img class="HistoricElement__icon" [src]="historicElement.iconUrl" [alt]="historicElement.description" loading="lazy" />
   </div>
 
-  <div class="HistoricElement__text w-100 d-flex flex-column justify-content-center">
+  <div class="d-flex flex-column w-100 justify-content-center">
     <div class="HistoricElement__title w-100 d-flex justify-content-between">
       <div>{{ historicElement.title }}</div>
       <div class="HistoricElement__money-amount">{{ historicElement.moneyAmount.toString() }}</div>
     </div>
 
     <div class="d-flex flex-column justify-content-center">
-      <div class="HistoricElement__description">{{ historicElement.description }}</div>
-      <div *ngIf="historicElement.subDescription" class="HistoricElement__subDescription">
-        {{ historicElement.subDescription }}
+      <div class="HistoricElement__description d-flex align-items-center">
+        <span class="m-1" *ngIf="historicElement.description.iconUrl as descIconUrl">
+          <tsl-svg-icon [src]="descIconUrl" width="16" height="16"></tsl-svg-icon>
+        </span>
+        <span>{{ historicElement.description.text }}</span>
+      </div>
+      <div *ngIf="historicElement.subDescription" class="HistoricElement__subDescription" [ngClass]="subDescriptionClassname">
+        {{ historicElement.subDescription.text }}
       </div>
     </div>
   </div>

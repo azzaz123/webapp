@@ -2,7 +2,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { UserVerifications, VERIFICATION_STATUS } from '@api/core/model/verifications';
 import { MOCK_EMAIL_VERIFICATION_API_RESPONSE } from '@api/fixtures/user-verifications/email-verification.fixtures.spec';
-import { MOCK_PHONE_VERIFICATION_API_RESPONSE } from '@api/fixtures/user-verifications/phone-verification.fixtures.spec';
+import {
+  MOCK_PHONE_NUMBER,
+  MOCK_PHONE_VERIFICATION_API_RESPONSE,
+  MOCK_PREFIX_PHONE,
+} from '@api/fixtures/user-verifications/phone-verification.fixtures.spec';
 import {
   MOCK_USER_VERIFICATIONS_MAPPED,
   MOCK_USER_VERIFICATIONS_API_RESPONSE,
@@ -70,23 +74,23 @@ describe('UserVerificationsService', () => {
   });
 
   describe('when request to send the phone to verify', () => {
-    let phone = '44444';
-    let code = '+34';
+    let phone = MOCK_PHONE_NUMBER;
+    let prefix = MOCK_PREFIX_PHONE;
 
     beforeEach(() => {
       spyOn(userVerificationsHttpService, 'sendVerifyPhone').and.returnValue(of(MOCK_PHONE_VERIFICATION_API_RESPONSE));
     });
 
     it('should call the post verify phone ', () => {
-      service.verifyPhone(phone, code).subscribe();
+      service.verifyPhone(prefix + phone).subscribe();
 
-      expect(userVerificationsHttpService.sendVerifyPhone).toHaveBeenCalledWith(phone, code);
+      expect(userVerificationsHttpService.sendVerifyPhone).toHaveBeenCalledWith(prefix + phone);
     });
 
     it('should map server response to web context', () => {
       let response: VERIFICATION_STATUS;
 
-      service.verifyPhone(phone, code).subscribe((data) => (response = data));
+      service.verifyPhone(prefix + phone).subscribe((data) => (response = data));
 
       expect(response).toEqual(VERIFICATION_STATUS.SENT);
     });

@@ -93,7 +93,7 @@ export class UploadRealestateComponent implements OnInit {
       operation: ['', [Validators.required]],
       type: ['', [Validators.required]],
       condition: ['', [Validators.required]],
-      surface: '',
+      surface: ['', [Validators.required]],
       rooms: '',
       bathrooms: '',
       garage: false,

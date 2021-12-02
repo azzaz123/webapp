@@ -1,5 +1,5 @@
 <div class="PhoneVerificationModal text-center px-md-3 py-3">
-  <div class="PhoneVerificationModal__close position-absolute" (click)="activeModal.dismiss()">
+  <div class="PhoneVerificationModal__close position-absolute" (click)="activeModal.close()">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
   <div class="PhoneVerificationModal__container mt-5">
@@ -23,10 +23,10 @@
             formControlName="prefix"
             id="prefix"
             [options]="prefixes"
-            [optionTemplateProperty]="'label'"
+            [optionTemplateProperty]="'value'"
           >
             <ng-template #optionTemplate let-option="option">
-              <div>{{ option.country + ' ' + option.label }}</div>
+              <div>{{ option.label }}</div>
             </ng-template>
           </tsl-dropdown>
         </div>

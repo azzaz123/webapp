@@ -1,93 +1,94 @@
-<a class="sidebar-section profile-item" id="qa-sidebar-profile" [routerLink]="['/profile']" routerLinkActive="active"
-  [ngClass]="{active: isProfile}">
-  <div class="sidebar-section-circle">
-    <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
+<div class="Sidebar d-flex flex-column" [ngClass]="{ 'Sidebar--collapsed': collapsed$ | async }">
+
+  <button class="Sidebar__collapse d-flex align-items-center justify-content-center"
+    [ngClass]="{ 'Sidebar__collapse--visible': isTouchDevice }" (click)="toggleCollapse()">
+    <tsl-svg-icon src="/assets/icons/sidebar/sidebar_arrow.svg"></tsl-svg-icon>
+  </button>
+
+  <a id="sidebar-profile" class="Sidebar__entry mx-2 my-4 d-flex align-items-center" [routerLink]="['/profile']" routerLinkActive="Sidebar__entry--active"
+    [ngClass]="{'Sidebar__entry--active': isProfile}">
+    <tsl-user-avatar class="Sidebar__avatar" [size]="32" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
     </tsl-user-avatar>
-  </div>
-  <h2 i18n="@@web_components_sidebar_611">Profile</h2>
-</a>
-
-<a *ngxPermissionsOnly="PERMISSIONS.professional" id="qa-sidebar-dashboard" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active">
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_dashboard.svg"></tsl-svg-icon>
-  </div>
-  <h2 i18n="@@web_components_sidebar_447">Dashboard</h2>
-</a>
-
-<a class="sidebar-section" id="qa-sidebar-catalog" [routerLink]="['/catalog/list']" (click)="trackClickToCatalog()" [ngClass]="{active: isProducts}">
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_catalog.svg"></tsl-svg-icon>
-  </div>
-  <h2 *ngxPermissionsExcept="PERMISSIONS.professional" i18n="@@web_components_sidebar_612">Products</h2>
-  <h2 *ngxPermissionsOnly="PERMISSIONS.professional" i18n="@@web_components_sidebar_448">Catalog</h2>
-</a>
-
-<a class="sidebar-section" id="qa-sidebar-messages" [routerLink]="['/chat']" routerLinkActive="active">
-  <div class="chat-notification-pending" *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0"></div>
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_messages.svg"></tsl-svg-icon>
-  </div>
-  <h2 i18n="@@web_components_sidebar_679">Messages</h2>
-</a>
-
-<a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-favorites" class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active">
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_favorites.svg"></tsl-svg-icon>
-  </div>
-  <h2 i18n="@@web_components_sidebar_680">Favorites</h2>
-</a>
-
-<a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-reviews" class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active">
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_reviews.svg"></tsl-svg-icon>
-  </div>
-  <h2 i18n="@@web_components_sidebar_449">Reviews</h2>
-</a>
-
-<a *ngxPermissionsOnly="PERMISSIONS.professional" id="qa-sidebar-phones" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active">
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_phones.svg" class="svg-icon-size"></tsl-svg-icon>
-  </div>
-  <h2 i18n="@@web_components_sidebar_613">Phones</h2>
-</a>
-
-<a *ngxPermissionsOnly="PERMISSIONS.professional" id="qa-sidebar-help" class="sidebar-section" [routerLink]="['/pro/help']" routerLinkActive="active">
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_help.svg"></tsl-svg-icon>
-  </div>
-  <h2 i18n="@@web_components_sidebar_450">Help</h2>
-</a>
-
-<a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-stats" class="sidebar-section" [routerLink]="['/stats']" routerLinkActive="active">
-  <div class="sidebar-section-circle">
-    <tsl-svg-icon src="/assets/icons/navigation_dashboard.svg"></tsl-svg-icon>
-  </div>
-  <h2 i18n="@@web_components_sidebar_614">Stats</h2>
-</a>
-
-<ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-  <a id="qa-sidebar-pro" class="sidebar-section" (click)="onClickedProSection()" routerLink="/{{PRO_PATHS.PRO_MANAGER}}" routerLinkActive="active">
-    <div class="chat-notification-pending" *ngIf="!isClickedProSection"></div>
-    <div class="sidebar-section-circle">
-      <tsl-svg-icon src="/assets/icons/navigation_pro.svg"></tsl-svg-icon>
-    </div>
-    <h2 i18n="@@web_sidebar_wallapop_pro_label">Wallapop PRO</h2>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_611">Profile</span>
   </a>
-</ng-container>
 
-<span *tslDeliveryDevelopment>
-  <a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-delivery" class="sidebar-section" [routerLink]="[PRIVATE_PATHS.DELIVERY]" routerLinkActive="active">
-    <div class="sidebar-section-circle">
-      <tsl-svg-icon src="/assets/icons/navigation_delivery.svg"></tsl-svg-icon>
-    </div>
-    <h2 i18n="@@web_sidebar_delivery">Delivery</h2>
+  <a *ngxPermissionsOnly="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+    [routerLink]="['/pro/dashboard']" routerLinkActive="Sidebar__entry--active">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_stats.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_447">Dashboard</span>
   </a>
-</span>
-<span>
-  <a *ngxPermissionsExcept="PERMISSIONS.professional" id="qa-sidebar-wallet" class="sidebar-section" [routerLink]="[PRIVATE_PATHS.WALLET]" (click)="trackClickToWallet()" routerLinkActive="active">
-    <div class="sidebar-section-circle">
-      <tsl-svg-icon src="/assets/icons/wallet.svg"></tsl-svg-icon>
-    </div>
-    <h2 i18n="@@wallet_view_top_bar_title">Wallet</h2>
+
+  <a id="sidebar-catalog" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/catalog/list']" (click)="trackClickToCatalog()"
+    [ngClass]="{'Sidebar__entry--active': isProducts}">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_label.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" *ngxPermissionsExcept="PERMISSIONS.professional"
+      i18n="@@web_components_sidebar_612">Products</span>
+    <span class="Sidebar__label ml-2" *ngxPermissionsOnly="PERMISSIONS.professional"
+      i18n="@@web_components_sidebar_448">Catalog</span>
   </a>
-</span>
+
+  <a class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/chat']" routerLinkActive="Sidebar__entry--active">
+    <div class="Sidebar__notification" *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0"></div>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_message.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_679">Messages</span>
+  </a>
+
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+    [routerLink]="['/favorites']" routerLinkActive="Sidebar__entry--active">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_heart.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_680">Favorites</span>
+  </a>
+
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+    [routerLink]="['/reviews']" routerLinkActive="Sidebar__entry--active">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_star.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_449">Reviews</span>
+  </a>
+
+  <a *ngxPermissionsOnly="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+    [routerLink]="['/pro/calls']" routerLinkActive="Sidebar__entry--active">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_phone.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_613">Phones</span>
+  </a>
+
+  <a *ngxPermissionsOnly="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+    [routerLink]="['/pro/help']" routerLinkActive="Sidebar__entry--active">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_help.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_450">Help</span>
+  </a>
+
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+    [routerLink]="['/stats']" routerLinkActive="Sidebar__entry--active">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_stats.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_614">Stats</span>
+  </a>
+
+  <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+    <a id="sidebar-pro" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" (click)="onClickedProSection()"
+      routerLink="/{{PRO_PATHS.PRO_MANAGER}}" routerLinkActive="Sidebar__entry--active">
+      <div class="Sidebar__notification" *ngIf="!isClickedProSection"></div>
+      <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_badge.svg"></tsl-svg-icon>
+      <span class="Sidebar__label ml-2" i18n="@@web_sidebar_wallapop_pro_label">Wallapop PRO</span>
+    </a>
+  </ng-container>
+
+  <ng-container *tslDeliveryDevelopment>
+    <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+      [routerLink]="[PRIVATE_PATHS.DELIVERY]" routerLinkActive="Sidebar__entry--active">
+      <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_box.svg"></tsl-svg-icon>
+      <span class="Sidebar__label ml-2" i18n="@@web_sidebar_delivery">Delivery</span>
+    </a>
+  </ng-container>
+
+  <a id="sidebar-wallet" *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+    [routerLink]="[PRIVATE_PATHS.WALLET]" (click)="trackClickToWallet()" routerLinkActive="Sidebar__entry--active">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_wallet.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@wallet_view_top_bar_title">Wallet</span>
+  </a>
+
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center mt-auto mb-4"
+    [href]="helpUrl" target="_blank" routerLinkActive="Sidebar__entry--active">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_help.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_450">Help</span>
+  </a>
+</div>

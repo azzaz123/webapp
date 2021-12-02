@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
+import { ISort, SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import {
   AnalyticsPageView,
@@ -54,15 +55,25 @@ import { STATUS } from '../../components/selected-items/selected-product.interfa
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 
-export const SORTS = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
-export const SORTS_TRANSLATION_KEYS: TRANSLATION_KEY[] = [
-  TRANSLATION_KEY.DATE_DESC,
-  TRANSLATION_KEY.DATE_ASC,
-  TRANSLATION_KEY.PRICE_DESC,
-  TRANSLATION_KEY.PRICE_ASC,
+const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purchaseListingFeeWithCredits'];
+export const SORTS: ISort[] = [
+  {
+    value: SORT_KEYS.DATE_DESC,
+    label: $localize`:@@web_catalog_filter_date_desc:Date: from recent to old`,
+  },
+  {
+    value: SORT_KEYS.DATE_ASC,
+    label: $localize`:@@web_catalog_filter_date_asc:Date: from old to recent`,
+  },
+  {
+    value: SORT_KEYS.PRICE_DESC,
+    label: $localize`:@@web_catalog_filter_price_desc:Price: from high to low`,
+  },
+  {
+    value: SORT_KEYS.PRICE_ASC,
+    label: $localize`:@@web_catalog_filter_price_asc:Price: from low to high`,
+  },
 ];
-
-const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits'];
 
 @Component({
   selector: 'tsl-list',
@@ -86,7 +97,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public numberOfProducts: number;
   public searchPlaceholder: string;
   public sortItems: any[];
-  public sortBy: string;
+  public sortBy: SORT_KEYS;
   public normalNavLinks: NavLink[] = [];
   public subscriptionSelectedNavLinks: NavLink[] = [];
   public user: User;
@@ -418,7 +429,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (!subscription) {
       this.selectedStatus = STATUS.PUBLISHED;
       this.searchTerm = null;
-      this.sortBy = SORTS[0];
+      this.sortBy = SORTS[0].value;
       this.trackCloseSelectedSlot();
     } else {
       this.selectedStatus = STATUS.ACTIVE;
@@ -462,19 +473,12 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public onSearchInputChange(value: string) {
     this.searchTerm = value;
-    this.getItems();
-  }
-
-  public setSortItems() {
-    this.sortItems = SORTS.map((value, i) => {
-      return { value, label: this.i18n.translate(SORTS_TRANSLATION_KEYS[i]) };
-    });
-    this.sortBy = SORTS[0];
+    this.getItems(null, true);
   }
 
   public onSortChange(value: any) {
     this.sortBy = value;
-    this.getItems();
+    this.getItems(null, true);
   }
 
   public onCloseTryProSlot(): void {
@@ -507,6 +511,11 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public navigateToProsModule(): void {
     this.router.navigate([PRO_PATHS.PRO_MANAGER]);
+  }
+
+  private setSortItems(): void {
+    this.sortItems = SORTS;
+    this.sortBy = SORTS[0].value;
   }
 
   private setNormalLinks(): void {
@@ -578,7 +587,7 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getItems(append?: boolean) {
+  private getItems(append?: boolean, cache?: boolean) {
     this.loading = true;
     this.end = false;
 
@@ -597,7 +606,8 @@ export class ListComponent implements OnInit, OnDestroy {
           this.selectedSubscriptionSlot.subscription.type,
           this.sortBy,
           this.selectedStatus as STATUS,
-          this.searchTerm
+          this.searchTerm,
+          cache
         )
         .subscribe((itemsByCategory) => {
           if (itemsByCategory) {
@@ -833,7 +843,7 @@ export class ListComponent implements OnInit, OnDestroy {
       activeNavLink.counter.currentVal += items.length;
     }
 
-    if (!selectedSlot) {
+    if (!selectedSlot || typeof selectedSlot.available !== 'number') {
       return;
     }
 
@@ -846,7 +856,9 @@ export class ListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.selectedSubscriptionSlot.available += numDeactivatedItems;
+    if (typeof this.selectedSubscriptionSlot.available === 'number') {
+      this.selectedSubscriptionSlot.available += numDeactivatedItems;
+    }
 
     const inactiveNavLink = this.getNavLinkById(STATUS.INACTIVE);
     if (inactiveNavLink.counter) {

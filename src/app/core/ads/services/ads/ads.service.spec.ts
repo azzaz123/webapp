@@ -27,6 +27,7 @@ describe('AdsService', () => {
 
   windowMock = {
     fetchHeaderBids: () => {},
+    refreshHeaderBids: () => {},
   };
 
   beforeEach(() => {
@@ -196,11 +197,11 @@ describe('AdsService', () => {
 
   describe('when refreshing all slots', () => {
     it('should call RichAudience magic function to fetch new bidders and refresh slots', () => {
-      spyOn(windowMock, 'fetchHeaderBids').and.callThrough();
+      spyOn(windowMock, 'refreshHeaderBids').and.callThrough();
 
       service.refreshAllSlots();
 
-      expect(windowMock.fetchHeaderBids).toHaveBeenCalled();
+      expect(windowMock.refreshHeaderBids).toHaveBeenCalled();
     });
   });
 });

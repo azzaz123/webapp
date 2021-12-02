@@ -8,7 +8,7 @@
     <div class="TransactionTrackingInstructions__titleWrapper align-self-start">{{ transactionTrackingInstructions.body.title }}</div>
     <div class="TransactionTrackingInstructions__instructionsWrapper">
       <div
-        *ngFor="let instruction of transactionTrackingInstructions; index as index"
+        *ngFor="let instruction of transactionTrackingInstructions.body.instructions; index as index"
         class="TransactionTrackingInstructions__instruction d-flex align-items-start"
       >
         <div class="TransactionTrackingInstructions__instruction__index">{{ index + 1 }}</div>

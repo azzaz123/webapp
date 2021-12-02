@@ -52,7 +52,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   public searchValue: string;
   public suggestions: MultiSelectValue = [];
   public isValid: boolean = true;
-  public hashtagPlaceholder: string = $localize`:@@finding_hashtags_hint:Find or create a hashtag`;
+  public hashtagPlaceholder: string = $localize`:@@hashtags_view_search_bar_placeholder:Find or create a hashtag`;
   public keyUpSubject = new Subject<KeyboardEvent>();
   private extendedOptions: TemplateMultiSelectFormOption[];
   private keyUp$: Observable<unknown>;
@@ -82,8 +82,13 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   @HostListener('window:click', ['$event']) onWindowClick(n: Event) {
-    if ((n.target as HTMLElement).contains(this.hashtagSuggesterOptions.nativeElement)) {
+    const optionsList = this.hashtagSuggesterOptions.nativeElement.querySelector('tsl-multi-select-form');
+
+    if (!optionsList.contains(n.target)) {
       this.emptyOptions();
+      this.searchValue = '';
+      this.isValid = true;
+      this.changeValidStatus.emit(this.isValid);
     }
   }
 
@@ -108,7 +113,7 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   }
 
   public blur(): void {
-    this.hashtagPlaceholder = $localize`:@@finding_hashtags_hint:Find or create a hashtag`;
+    this.hashtagPlaceholder = $localize`:@@hashtags_view_search_bar_placeholder:Find or create a hashtag`;
   }
 
   public writeValue(value): void {

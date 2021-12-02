@@ -108,8 +108,8 @@ export class HereMapsComponent implements AfterViewInit, OnChanges, OnDestroy {
     };
   }
 
-  public createMap(defaultLayers) {
-    return new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
+  public createMap(defaultLayers: H.service.DefaultLayers) {
+    return new H.Map(this.mapEl.nativeElement, defaultLayers.vector.normal.map);
   }
 
   public createIcon(icon: string) {

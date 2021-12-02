@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { TransactionTrackingHeaderComponent } from './transaction-tracking-header.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ButtonModule } from '@shared/button/button.module';
-import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
+import { TransactionTrackingActionSelectorModule } from '../../transaction-tracking-action-details/transaction-tracking-action-selector/transaction-tracking-action-selector.module';
 
 @NgModule({
   declarations: [TransactionTrackingHeaderComponent],
   exports: [TransactionTrackingHeaderComponent],
-  imports: [CommonModule, SvgIconModule, ButtonModule],
-  providers: [TransactionTrackingActionsService],
+  imports: [CommonModule, SvgIconModule, ButtonModule, TransactionTrackingActionSelectorModule],
+  providers: [],
 })
 export class TransactionTrackingHeaderModule {}

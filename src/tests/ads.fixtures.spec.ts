@@ -8,6 +8,7 @@ import {
 } from '@core/ads/constants';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
+import { YieldBirdService } from '@core/ads/vendors/yieldbird/yieldbird.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { of } from 'rxjs';
 
@@ -145,4 +146,8 @@ export const MockAdShoppingPageOptions: AdShoppingPageOptions = {
   channel: '',
   hl: '',
   adLoadedCallback: () => {},
+};
+
+export const MockYieldBirdService: YieldBirdService = {
+  targetings: { yb_ab: 'test' },
 };

@@ -4,7 +4,6 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
-import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
@@ -13,14 +12,13 @@ import { TransactionTrackingHeaderComponent } from './transaction-tracking-heade
 describe('TransactionTrackingHeaderComponent', () => {
   let component: TransactionTrackingHeaderComponent;
   let fixture: ComponentFixture<TransactionTrackingHeaderComponent>;
-  let transactionTrackingActionsService: TransactionTrackingActionsService;
   let de: DebugElement;
   let location: Location;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{ provide: TransactionTrackingActionsService, useValue: { manageAction() {} } }],
+      providers: [],
       declarations: [TransactionTrackingHeaderComponent, ButtonComponent, SvgIconComponent],
     }).compileComponents();
   });
@@ -28,7 +26,6 @@ describe('TransactionTrackingHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TransactionTrackingHeaderComponent);
     component = fixture.componentInstance;
-    transactionTrackingActionsService = TestBed.inject(TransactionTrackingActionsService);
     location = TestBed.inject(Location);
     de = fixture.debugElement;
     component.transactionTrackingHeader = MOCK_TRANSACTION_TRACKING.header;
@@ -71,17 +68,6 @@ describe('TransactionTrackingHeaderComponent', () => {
 
         it('should have the received state', () => {
           expect(headerActionButton.componentInstance.disabled).toBe(MOCK_TRANSACTION_TRACKING.header.detail.state.isDisabled);
-        });
-      });
-
-      describe('and we click on the action button...', () => {
-        it('should call the transaction tracking actions service', () => {
-          spyOn(transactionTrackingActionsService, 'manageAction');
-
-          headerActionButton.nativeElement.click();
-
-          expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledTimes(1);
-          expect(transactionTrackingActionsService.manageAction).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING.header.detail.action);
         });
       });
     });
