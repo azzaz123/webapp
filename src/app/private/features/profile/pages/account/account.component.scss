@@ -1,12 +1,5 @@
 @import '~style/common';
 
-form {
-  @include media-breakpoint-down(sm) {
-    padding-left: $spacing-s;
-    padding-right: $spacing-s;
-  }
-}
-
 .unsubscribe-section {
   padding-top: $spacing-xl;
   padding-bottom: $spacing-l;

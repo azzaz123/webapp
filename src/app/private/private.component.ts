@@ -21,6 +21,7 @@ import { APP_LOCALE } from 'configs/subdomains.config';
 @Component({
   selector: 'tsl-private',
   templateUrl: './private.component.html',
+  styleUrls: ['./private.component.scss'],
 })
 export class PrivateComponent implements OnInit {
   public isMyZone: boolean;
