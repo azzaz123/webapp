@@ -7,9 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { RouterLinkDirectiveStub } from '@shared/router-link-directive-stub';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
-import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { SidebarComponent } from './sidebar.component';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -27,6 +26,9 @@ import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
+import { SidebarService } from '../core/services/sidebar.service';
+import { DeviceService } from '@core/device/device.service';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 
 @Component({
   template: '',
@@ -58,6 +60,9 @@ describe('SidebarComponent', () => {
   let router: Router;
   let analyticsService: AnalyticsService;
   let permissionService: NgxPermissionsService;
+  let sidebarService: SidebarService;
+
+  const collapsedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   beforeEach(
     waitForAsync(() => {
@@ -102,6 +107,27 @@ describe('SidebarComponent', () => {
               },
             },
           },
+          {
+            provide: SidebarService,
+            useValue: {
+              sidebarCollapsed$: collapsedSubject.asObservable(),
+              toggleCollapse() {},
+            },
+          },
+          {
+            provide: DeviceService,
+            useValue: {
+              isTouchDevice() {
+                return false;
+              },
+            },
+          },
+          {
+            provide: CustomerHelpService,
+            useValue: {
+              getPageUrl() {},
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -114,6 +140,7 @@ describe('SidebarComponent', () => {
     userService = TestBed.inject(UserService);
     analyticsService = TestBed.inject(AnalyticsService);
     permissionService = TestBed.inject(NgxPermissionsService);
+    sidebarService = TestBed.inject(SidebarService);
     spyOn(analyticsService, 'trackPageView');
     spyOn(analyticsService, 'trackEvent');
     router = TestBed.get(Router);
@@ -138,12 +165,12 @@ describe('SidebarComponent', () => {
   describe('Sidebar icons', () => {
     it('should be shown profile icon as "active" when is in a profile section', () => {
       component.isProfile = true;
-      const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-profile');
+      const element: HTMLElement = fixture.nativeElement.querySelector('#sidebar-profile');
 
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(element.className).toContain('active');
+      expect(element.className).toContain('Sidebar__entry--active');
     });
 
     it('should be shown profile icon as "active" when is in profile url route', fakeAsync(() => {
@@ -153,7 +180,7 @@ describe('SidebarComponent', () => {
 
         tick();
         var activeLinks = fixture.debugElement
-          .queryAll(By.css('.active'))
+          .queryAll(By.css('.Sidebar__entry--active'))
           .map((element) => element.injector.get(RouterLinkDirectiveStub) as RouterLinkDirectiveStub);
 
         expect(activeLinks.length).toBe(1);
@@ -163,12 +190,12 @@ describe('SidebarComponent', () => {
 
     it('should be shown catalog icon as "active" when it is in a product section', () => {
       component.isProducts = true;
-      const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
+      const element: HTMLElement = fixture.nativeElement.querySelector('#sidebar-catalog');
 
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(element.className).toContain('active');
+      expect(element.className).toContain('Sidebar__entry--active');
     });
 
     it('should be shown chat icon as "active" when is in chat url route', fakeAsync(() => {
@@ -177,7 +204,7 @@ describe('SidebarComponent', () => {
 
         tick();
         var activeLinks = fixture.debugElement
-          .queryAll(By.css('.active'))
+          .queryAll(By.css('.Sidebar__entry--active'))
           .map((element) => element.injector.get(RouterLinkDirectiveStub) as RouterLinkDirectiveStub);
 
         expect(activeLinks.length).toBe(1);
@@ -193,7 +220,7 @@ describe('SidebarComponent', () => {
 
         describe('and has not to show pro banner', () => {
           it('should track event', () => {
-            const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
+            const element: HTMLElement = fixture.nativeElement.querySelector('#sidebar-catalog');
             const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
               name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
               attributes: {
@@ -213,7 +240,7 @@ describe('SidebarComponent', () => {
         describe('and has to show pro banner', () => {
           it('should track event', () => {
             spyOn(userService, 'suggestPro').and.returnValue(true);
-            const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
+            const element: HTMLElement = fixture.nativeElement.querySelector('#sidebar-catalog');
             const expectedEvent: AnalyticsPageView<ViewOwnSaleItems> = {
               name: ANALYTICS_EVENT_NAMES.ViewOwnSaleItems,
               attributes: {
@@ -233,7 +260,7 @@ describe('SidebarComponent', () => {
       describe('and is cardealer', () => {
         it('should not track event', () => {
           component.isProfessional = true;
-          const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-catalog');
+          const element: HTMLElement = fixture.nativeElement.querySelector('#sidebar-catalog');
 
           element.click();
 
@@ -248,12 +275,12 @@ describe('SidebarComponent', () => {
           fixture.detectChanges();
         });
         it('should show button', () => {
-          const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+          const proButton = fixture.debugElement.nativeElement.querySelector('#sidebar-pro');
 
           expect(proButton).toBeTruthy();
         });
         it('should redirect to pro section', () => {
-          const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+          const proButton = fixture.debugElement.nativeElement.querySelector('#sidebar-pro');
           fixture.detectChanges();
 
           expect(proButton.href).toContain([`/${PRO_PATHS.PRO_MANAGER}`]);
@@ -263,7 +290,7 @@ describe('SidebarComponent', () => {
             spyOn(userService, 'setClickedProSection').and.callThrough();
           });
           it('should save click', () => {
-            const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+            const proButton = fixture.debugElement.nativeElement.querySelector('#sidebar-pro');
             proButton.click();
 
             expect(userService.setClickedProSection).toHaveBeenCalledTimes(1);
@@ -278,8 +305,8 @@ describe('SidebarComponent', () => {
               fixture.detectChanges();
             });
             it('should show icon', () => {
-              const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
-              const notification = proButton.querySelector('.chat-notification-pending');
+              const proButton = fixture.debugElement.nativeElement.querySelector('#sidebar-pro');
+              const notification = proButton.querySelector('.Sidebar__notification');
 
               expect(notification).toBeTruthy();
             });
@@ -291,8 +318,8 @@ describe('SidebarComponent', () => {
               fixture.detectChanges();
             });
             it('should save click', () => {
-              const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
-              const notification = proButton.querySelector('.chat-notification-pending');
+              const proButton = fixture.debugElement.nativeElement.querySelector('#sidebar-pro');
+              const notification = proButton.querySelector('.Sidebar__notification');
 
               expect(notification).toBeFalsy();
             });
@@ -306,7 +333,7 @@ describe('SidebarComponent', () => {
         });
         it('should not show button', () => {
           fixture.detectChanges();
-          const proButton = fixture.debugElement.nativeElement.querySelector('#qa-sidebar-pro');
+          const proButton = fixture.debugElement.nativeElement.querySelector('#sidebar-pro');
 
           expect(proButton).toBeFalsy();
         });
@@ -315,7 +342,7 @@ describe('SidebarComponent', () => {
 
     describe('WHEN click on wallet', () => {
       it('should track the event', () => {
-        const element: HTMLElement = fixture.nativeElement.querySelector('#qa-sidebar-wallet');
+        const element: HTMLElement = fixture.nativeElement.querySelector('#sidebar-wallet');
         const expectedEvent: AnalyticsEvent<ClickWallet> = {
           name: ANALYTICS_EVENT_NAMES.ClickWallet,
           eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -328,6 +355,39 @@ describe('SidebarComponent', () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+      });
+    });
+
+    describe('when the collapsed state is collapsed', () => {
+      it('should have the collapsed style', () => {
+        collapsedSubject.next(true);
+
+        fixture.detectChanges();
+        const sidebarElement: HTMLElement = fixture.debugElement.query(By.css('.Sidebar')).nativeElement;
+
+        expect(sidebarElement.classList).toContain('Sidebar--collapsed');
+      });
+    });
+
+    describe('when the collapsed state is uncollapsed', () => {
+      it('should not have the collapsed class', () => {
+        collapsedSubject.next(false);
+
+        fixture.detectChanges();
+        const sidebarElement: HTMLElement = fixture.debugElement.query(By.css('.Sidebar')).nativeElement;
+
+        expect(sidebarElement.classList).not.toContain('Sidebar--collapsed');
+      });
+    });
+
+    describe('when clicking on the collapse button', () => {
+      it('should toggle the sidebar collapsed state', () => {
+        const collapseBtn: HTMLElement = fixture.debugElement.query(By.css('.Sidebar__collapse')).nativeElement;
+        spyOn(sidebarService, 'toggleCollapse');
+
+        collapseBtn.click();
+
+        expect(sidebarService.toggleCollapse).toHaveBeenCalledTimes(1);
       });
     });
   });

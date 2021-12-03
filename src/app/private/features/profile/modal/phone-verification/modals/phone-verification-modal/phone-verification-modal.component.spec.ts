@@ -125,8 +125,7 @@ describe('PhoneVerificationModalComponent', () => {
         expect(modalService.open).toHaveBeenCalledWith(SmsCodeVerificationModalComponent, {
           windowClass: 'modal-standard',
         });
-        expect(component['modalRef'].componentInstance.phone).toBe(MOCK_PHONE_NUMBER);
-        expect(component['modalRef'].componentInstance.prefix).toBe(MOCK_PREFIX_PHONE);
+        expect(component['modalRef'].componentInstance.phoneNumber).toBe(MOCK_PREFIX_PHONE + MOCK_PHONE_NUMBER);
       });
 
       it('should track the start phone verification process', () => {

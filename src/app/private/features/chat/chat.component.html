@@ -1,18 +1,18 @@
-<div class="page-content">
-  <div id="left-panel" [ngClass]="{'active-conversation': !!inboxConversationService.currentConversation}">
+<div class="Chat d-flex">
+  <div class="Chat__inbox h-100" [ngClass]="{'Chat__inbox--active': !!inboxConversationService.currentConversation}">
     <tsl-connection-alert></tsl-connection-alert>
     <tsl-inbox (loadingEvent)="onLoad($event)" (loadingError)="onChangeInboxOrArchivedDropdown($event)"></tsl-inbox>
   </div>
-  <div id="center-panel" *ngIf="!conversationsLoading" [ngClass]="{'active-conversation': !!inboxConversationService.currentConversation}">
+  <div class="Chat__conversation" *ngIf="!conversationsLoading" [ngClass]="{'Chat__conversation--active': !!inboxConversationService.currentConversation}">
     <tsl-current-conversation [currentConversation]="inboxConversationService.currentConversation"
                               [conversationsTotal]="conversationsTotal"
                               [connectionError]="connectionError"
                               [loadingError]="loadingError"></tsl-current-conversation>
   </div>
 
-  <div id="loading-state" *ngIf="conversationsLoading">
-    <div class="content">
+  <ng-container *ngIf="conversationsLoading">
+    <div class="Chat__loading d-flex align-items-center justify-content-center">
       <tsl-spinner [firstLoad]="firstLoad"></tsl-spinner>
     </div>
-  </div>
+  </ng-container>
 </div>
