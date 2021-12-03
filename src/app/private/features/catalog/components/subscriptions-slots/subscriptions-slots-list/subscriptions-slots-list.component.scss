@@ -4,9 +4,7 @@ $background: #f4f6f7;
 .SubscriptionsSlotsList {
   &__container {
     @include media-breakpoint-down(sm) {
-      width: 100%;
       position: relative;
-      overflow: hidden;
 
       &::before,
       &::after {
@@ -44,20 +42,10 @@ $background: #f4f6f7;
 
   &__wrapper {
     @include media-breakpoint-down(sm) {
+      @include hide-scroll-bars;
       padding: 0 26px;
       flex-wrap: nowrap;
-      flex-grow: 1;
-      overflow-y: hidden;
-      position: relative;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      overflow-x: scroll;
-      scroll-behavior: smooth;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-      &::-webkit-scrollbar {
-        display: none;
-      }
+      overflow-x: auto;
     }
   }
 }
