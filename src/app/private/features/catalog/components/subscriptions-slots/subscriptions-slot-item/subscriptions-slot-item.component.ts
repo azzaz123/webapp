@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
   AnalyticsEvent,
@@ -13,10 +13,11 @@ import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscripti
   selector: 'tsl-subscriptions-slot-item',
   templateUrl: './subscriptions-slot-item.component.html',
   styleUrls: ['./subscriptions-slot-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubscriptionsSlotItemComponent implements OnChanges {
   @Input() subscriptionSlot: SubscriptionSlot;
-  @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
+  @Input() selectedSubscriptionSlot: SubscriptionSlot;
   @Output() selected: EventEmitter<SubscriptionSlot> = new EventEmitter();
 
   public isSelected: boolean;
