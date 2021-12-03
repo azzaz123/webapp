@@ -187,8 +187,8 @@ export class GooglePublisherTagService {
   }
 
   private getExperimentationTargeting(): AdTargetings | null {
-    const value = this.googletag.pubads().getTargeting('MwebSearchLayout');
+    const value = this.googletag.pubads().getTargeting('MwebSearchTest');
 
-    return value.length > 0 ? { MwebSearchLayout: value[0] } : null;
+    return value.length > 0 ? { MwebSearchTest: value[0] } : null;
   }
 }
