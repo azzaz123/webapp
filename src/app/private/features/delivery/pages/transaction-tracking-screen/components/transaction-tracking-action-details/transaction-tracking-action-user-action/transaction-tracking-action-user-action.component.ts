@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { TransactionTrackingActionUserAction } from '@api/core/model/delivery/transaction/tracking';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -7,7 +7,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 @Component({
   selector: 'tsl-transaction-tracking-action-user-action',
   templateUrl: './transaction-tracking-action-user-action.component.html',
-  styleUrls: ['./transaction-tracking-action-user-action.component.scss'],
+  styleUrls: ['../styles/transaction-tracking-action.scss'],
 })
 export class TransactionTrackingActionUserActionComponent {
   @Input() userAction: TransactionTrackingActionUserAction;
