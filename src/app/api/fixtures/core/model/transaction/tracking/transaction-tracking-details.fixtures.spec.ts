@@ -22,7 +22,7 @@ const MOCK_TRANSACTION_TRACKING_DETAILS_USER: TransactionTrackingDetailsUser = {
   },
 };
 
-const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_1: TransactionTrackingStatusInfo = {
+export const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_1: TransactionTrackingStatusInfo = {
   action: {
     isDeeplink: true,
     linkUrl: 'wallapop://i/190584802',
@@ -37,7 +37,7 @@ const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_1: TransactionTrackingStat
   },
   showCaret: true,
 };
-const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_2: TransactionTrackingStatusInfo = {
+export const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_2: TransactionTrackingStatusInfo = {
   action: {
     isDeeplink: true,
     linkUrl: 'wallapop://p/76921033',
@@ -53,7 +53,7 @@ const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_DEEPLINK_2: TransactionTrackingStat
   showCaret: true,
 };
 
-const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_NO_ACTION_1: TransactionTrackingStatusInfo = {
+export const MOCK_TRANSACTION_TRACKING_DETAILS_INFO_NO_ACTION_1: TransactionTrackingStatusInfo = {
   action: null,
   description: '<span style="color: #AFB6B6">Total:</span><br>5.90€',
   icon: {

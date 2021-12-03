@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { TransactionTrackingActionDetail, TransactionTrackingHeader } from '@api/core/model/delivery/transaction/tracking';
-import { TransactionTrackingActionsService } from '@private/features/delivery/services/transaction-tracking/transaction-tracking-actions/transaction-tracking-actions.service';
+import { TransactionTrackingHeader } from '@api/core/model/delivery/transaction/tracking';
 
 @Component({
   selector: 'tsl-transaction-tracking-header',
@@ -11,13 +10,9 @@ import { TransactionTrackingActionsService } from '@private/features/delivery/se
 export class TransactionTrackingHeaderComponent {
   @Input() transactionTrackingHeader: TransactionTrackingHeader;
 
-  constructor(private location: Location, private transactionTrackingActionsService: TransactionTrackingActionsService) {}
+  constructor(private location: Location) {}
 
   public goBack(): void {
     this.location.back();
-  }
-
-  public manageAction(action: TransactionTrackingActionDetail): void {
-    this.transactionTrackingActionsService.manageAction(action);
   }
 }

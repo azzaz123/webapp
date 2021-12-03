@@ -1,0 +1,14 @@
+<tsl-transaction-tracking-action-deeplink *ngIf="isDeeplink" [deeplinkAction]="actionDetail">
+  <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
+</tsl-transaction-tracking-action-deeplink>
+<tsl-transaction-tracking-action-dialog *ngIf="isDialog" [dialogAction]="actionDetail">
+  <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
+</tsl-transaction-tracking-action-dialog>
+<tsl-transaction-tracking-action-tracking-webview *ngIf="isCarrierTrackingWebview" [trackingWebviewAction]="actionDetail">
+  <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
+</tsl-transaction-tracking-action-tracking-webview>
+<tsl-transaction-tracking-action-user-action *ngIf="isUserAction" [userAction]="actionDetail">
+  <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
+</tsl-transaction-tracking-action-user-action>
+
+<ng-template #contentTmp><ng-content></ng-content></ng-template>

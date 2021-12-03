@@ -3,13 +3,15 @@
     <tsl-lottie [src]="info.animation.url" [loop]="info.animation.isLoop"></tsl-lottie>
   </div>
   <span class="TrackingGeneralInfo__title TrackingGeneralInfo__text mb-3">{{ info.title }}</span>
-  <div id="shippingStatusDescription" class="TrackingGeneralInfo__text mb-3" [innerHTML]="descriptionByPass"></div>
-  <tsl-button
-    *ngFor="let action of info.actions"
-    class="TrackingGeneralInfo__actionButton"
-    className="btn-block {{ action.style.className }}"
-    [disabled]="action.state.isDisabled"
-    (click)="manageAction(action.action)"
-    >{{ action.title }}</tsl-button
-  >
+  <div id="shippingStatusDescription" class="TrackingGeneralInfo__text mb-3" [innerHTML]="info.description | bypassHTML"></div>
+  <ng-container *ngFor="let actionCTA of info.actions">
+    <tsl-transaction-tracking-action-selector [actionDetail]="actionCTA.action">
+      <tsl-button
+        class="TrackingGeneralInfo__actionButton"
+        className="btn-block {{ actionCTA.style.className }}"
+        [disabled]="actionCTA.state.isDisabled"
+        >{{ actionCTA.title }}</tsl-button
+      >
+    </tsl-transaction-tracking-action-selector>
+  </ng-container>
 </div>
