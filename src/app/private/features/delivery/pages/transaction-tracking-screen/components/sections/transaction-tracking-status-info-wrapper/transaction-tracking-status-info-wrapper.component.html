@@ -1,6 +1,5 @@
-<ng-container *ngFor="let infoSlot of transactionTrackingsStatusInfo">
-  <tsl-transaction-tracking-status-info
-    [transactionTrackingStatusInfo]="infoSlot"
-    [hasBorderBottom]="hasBorderBottom"
-  ></tsl-transaction-tracking-status-info>
-</ng-container>
+<tsl-transaction-tracking-status-info
+  *ngFor="let infoSlot of transactionTrackingsStatusInfo"
+  [transactionTrackingStatusInfo]="infoSlot"
+  [hasBorderBottom]="hasBorderBottom"
+></tsl-transaction-tracking-status-info>

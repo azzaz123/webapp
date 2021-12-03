@@ -45,48 +45,50 @@ describe('TransactionTrackingActionUserActionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('and the request fails...', () => {
-    beforeEach(() => {
-      spyOn(errorsService, 'i18nError');
-      spyOn(transactionTrackingService, 'sendUserAction').and.returnValue(throwError('error! :P'));
+  describe('when the user clicks on action', () => {
+    describe('and the request fails...', () => {
+      beforeEach(() => {
+        spyOn(errorsService, 'i18nError');
+        spyOn(transactionTrackingService, 'sendUserAction').and.returnValue(throwError('error! :P'));
 
-      fixture.debugElement.query(By.css('div')).nativeElement.click();
-      fixture.detectChanges();
+        fixture.debugElement.query(By.css('div')).nativeElement.click();
+        fixture.detectChanges();
+      });
+
+      it('should send the request user action petition', () => {
+        expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
+        expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(
+          MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.transactionId,
+          MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.name
+        );
+      });
+
+      it('should show an error', () => {
+        expect(errorsService.i18nError).toHaveBeenCalledTimes(1);
+        expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+      });
     });
 
-    it('should send the request user action petition', () => {
-      expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
-      expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(
-        MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.transactionId,
-        MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.name
-      );
-    });
+    describe('and the request succeed...', () => {
+      beforeEach(() => {
+        spyOn(errorsService, 'i18nError');
+        spyOn(transactionTrackingService, 'sendUserAction').and.returnValue(of(''));
 
-    it('should show an error', () => {
-      expect(errorsService.i18nError).toHaveBeenCalledTimes(1);
-      expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
-    });
-  });
+        fixture.debugElement.query(By.css('div')).nativeElement.click();
+        fixture.detectChanges();
+      });
 
-  describe('and the request succeed...', () => {
-    beforeEach(() => {
-      spyOn(errorsService, 'i18nError');
-      spyOn(transactionTrackingService, 'sendUserAction').and.returnValue(of(''));
+      it('should send the request user action petition', () => {
+        expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
+        expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(
+          MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.transactionId,
+          MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.name
+        );
+      });
 
-      fixture.debugElement.query(By.css('div')).nativeElement.click();
-      fixture.detectChanges();
-    });
-
-    it('should send the request user action petition', () => {
-      expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
-      expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(
-        MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.transactionId,
-        MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.name
-      );
-    });
-
-    it('should NOT show an error', () => {
-      expect(errorsService.i18nError).not.toHaveBeenCalled();
+      it('should NOT show an error', () => {
+        expect(errorsService.i18nError).not.toHaveBeenCalled();
+      });
     });
   });
 });

@@ -11,6 +11,4 @@ export class TransactionTrackingStatusInfoComponent {
   @Input() hasBorderBottom: boolean;
 
   public readonly FALLBACK_NOT_FOUND_SRC = FALLBACK_NOT_FOUND_SRC;
-
-  constructor() {}
 }

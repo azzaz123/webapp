@@ -42,6 +42,7 @@ describe('TransactionTrackingActionTrackingWebviewComponent', () => {
       const anchor = fixture.debugElement.query(By.css('a'));
 
       expect(anchor.attributes.href).toEqual(MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW.linkUrl);
+      expect(anchor.attributes.target).toEqual('_blank');
     });
   });
 });
