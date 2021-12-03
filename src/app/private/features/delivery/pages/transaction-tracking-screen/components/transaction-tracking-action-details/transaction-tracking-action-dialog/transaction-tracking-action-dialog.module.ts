@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionTrackingActionDialogComponent } from './transaction-tracking-action-dialog.component';
-import { SharedModule } from '@shared/shared.module';
 import { ErrorsService } from '@core/errors/errors.service';
+import { ConfirmationModalModule } from '@shared/confirmation-modal/confirmation-modal.module';
 
 @NgModule({
   declarations: [TransactionTrackingActionDialogComponent],
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, ConfirmationModalModule],
   providers: [ErrorsService],
   exports: [TransactionTrackingActionDialogComponent],
 })

@@ -9,6 +9,5 @@ import { TransactionTrackingActionSelectorModule } from '../../transaction-track
   declarations: [TransactionTrackingHeaderComponent],
   exports: [TransactionTrackingHeaderComponent],
   imports: [CommonModule, SvgIconModule, ButtonModule, TransactionTrackingActionSelectorModule],
-  providers: [],
 })
 export class TransactionTrackingHeaderModule {}

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { TransactionTrackingActionDialog, TransactionTrackingActionUserAction } from '@api/core/model/delivery/transaction/tracking';
 import { COLORS } from '@core/colors/colors-constants';
@@ -13,7 +13,7 @@ import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirma
   templateUrl: './transaction-tracking-action-dialog.component.html',
   styleUrls: ['./transaction-tracking-action-dialog.component.scss'],
 })
-export class TransactionTrackingActionDialogComponent implements OnInit {
+export class TransactionTrackingActionDialogComponent {
   @Input() dialogAction: TransactionTrackingActionDialog;
   @Input() hasBorderBottom: boolean;
 
@@ -23,8 +23,6 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
     private errorsService: ErrorsService
   ) {}
 
-  ngOnInit(): void {}
-
   public openModal(): void {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
 
@@ -32,15 +30,22 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
 
     modalRef.result.then(
       () => {
-        const userAction = this.dialogAction.positive.action as TransactionTrackingActionUserAction;
-        this.transactionTrackingService.sendUserAction(userAction.transactionId, userAction.name).subscribe({
-          error: () => {
-            this.errorsService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
-          },
-        });
+        if (this.dialogAction.positive) {
+          this.sendUserAction();
+        }
       },
       () => {}
     );
+  }
+
+  private sendUserAction(): void {
+    const userAction = this.dialogAction.positive.action as TransactionTrackingActionUserAction;
+    this.transactionTrackingService.sendUserAction(userAction.transactionId, userAction.name).subscribe({
+      error: () => {
+        // TODO: Error management states should be improved by cases		Date: 2021/12/02
+        this.errorsService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+      },
+    });
   }
 
   private get modalProperties(): ConfirmationModalProperties {

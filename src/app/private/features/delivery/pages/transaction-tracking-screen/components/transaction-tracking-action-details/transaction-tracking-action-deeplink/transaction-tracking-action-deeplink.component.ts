@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TransactionTrackingActionDeeplink } from '@api/core/model/delivery/transaction/tracking';
 import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 
@@ -7,12 +7,10 @@ import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
   templateUrl: './transaction-tracking-action-deeplink.component.html',
   styleUrls: ['./transaction-tracking-action-deeplink.component.scss'],
 })
-export class TransactionTrackingActionDeeplinkComponent implements OnInit {
+export class TransactionTrackingActionDeeplinkComponent {
   @Input() deeplinkAction: TransactionTrackingActionDeeplink;
 
   constructor(private deeplinkService: DeeplinkService) {}
-
-  ngOnInit(): void {}
 
   public navigate(): void {
     if (this.deeplinkService.isAvailable(this.deeplinkAction.linkUrl)) {

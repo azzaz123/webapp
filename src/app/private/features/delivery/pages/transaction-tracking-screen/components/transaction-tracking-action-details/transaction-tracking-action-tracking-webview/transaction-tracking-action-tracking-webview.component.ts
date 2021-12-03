@@ -8,6 +8,4 @@ import { TransactionTrackingActionCarrierTrackingWebview } from '@api/core/model
 })
 export class TransactionTrackingActionTrackingWebviewComponent {
   @Input() trackingWebviewAction: TransactionTrackingActionCarrierTrackingWebview;
-
-  constructor() {}
 }

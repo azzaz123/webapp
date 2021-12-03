@@ -8,6 +8,4 @@ import { TransactionTrackingShippingStatus } from '@api/core/model/delivery/tran
 })
 export class TransactionTrackingGeneralInfoComponent {
   @Input() shippingStatus: TransactionTrackingShippingStatus;
-
-  constructor() {}
 }

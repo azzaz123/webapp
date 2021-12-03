@@ -9,7 +9,6 @@ import { TransactionTrackingActionSelectorModule } from '../../transaction-track
 @NgModule({
   declarations: [TransactionTrackingGeneralInfoComponent],
   imports: [CommonModule, LottieModule, ButtonModule, BypassHTMLModule, TransactionTrackingActionSelectorModule],
-  providers: [],
   exports: [TransactionTrackingGeneralInfoComponent],
 })
 export class TransactionTrackingGeneralInfoModule {}
