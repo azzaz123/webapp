@@ -3,6 +3,7 @@
 @import '~web-styleguide/scss/text';
 
 .TransactionTrackingBanner {
+  background-color: $blue-grey-6;
   padding: $spacing-ms;
 
   &__titleWrapper {
