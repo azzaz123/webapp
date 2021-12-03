@@ -54,8 +54,7 @@ export class VerificationsNSecurityComponent implements OnInit {
     this.userVerifications$ = this.userVerificationsService.userVerifications$.pipe(
       take(1),
       tap((userVerifications: UserVerifications) => {
-        this.userPhone = this.getUserPhone(userVerifications.phone);
-        this.verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView(userVerifications);
+        this.subscribeUserVerifications(userVerifications);
       })
     );
   }
@@ -92,10 +91,11 @@ export class VerificationsNSecurityComponent implements OnInit {
   }
 
   private getUserPhone(isVerifiedPhone: boolean): string {
-    if (isVerifiedPhone) {
-      return parsePhoneNumber(this.user.phone).format('INTERNATIONAL');
-    }
+    return isVerifiedPhone ? parsePhoneNumber(this.user.phone).format('INTERNATIONAL') : '';
+  }
 
-    return '';
+  private subscribeUserVerifications(userVerifications: UserVerifications): void {
+    this.userPhone = this.getUserPhone(userVerifications.phone);
+    this.verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView(userVerifications);
   }
 }
