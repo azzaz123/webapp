@@ -31,6 +31,7 @@ describe('MonitoringService', () => {
     const MOCK_SENTRY_CONFIG = {
       environment: expect.anything(),
       dsn: expect.anything(),
+      integrations: expect.anything(),
       tracesSampleRate: expect.anything(),
       allowUrls: expect.anything(),
     };
