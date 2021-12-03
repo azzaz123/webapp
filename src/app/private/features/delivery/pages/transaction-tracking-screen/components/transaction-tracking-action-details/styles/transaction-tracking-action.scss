@@ -1,3 +1,10 @@
+@import '~web-styleguide/scss/colors';
+
 .TransactionTrackingAction {
   display: inherit;
+  color: $blue-grey-1;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
