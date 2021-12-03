@@ -6,21 +6,6 @@
   border-radius: $spacing-ms;
   padding: $spacing-m;
 
-  @include media-breakpoint-down(sm) {
-    &__description,
-    &__title {
-      white-space: nowrap;
-    }
-
-    &__cancel {
-      margin: $spacing-ms;
-    }
-
-    &__info {
-      padding-right: $spacing-ms;
-    }
-  }
-
   &__cancel {
     @include square($spacing-ms);
     margin: $spacing-m;
@@ -56,6 +41,21 @@
     img {
       object-fit: cover;
       width: 100%;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    &__description,
+    &__title {
+      white-space: nowrap;
+    }
+
+    &__cancel {
+      margin: $spacing-ms;
+    }
+
+    &__info {
+      padding-right: $spacing-ms;
     }
   }
 }

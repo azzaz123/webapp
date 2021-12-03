@@ -50,6 +50,7 @@ export class SubscriptionsSlotItemComponent implements OnChanges {
   private checkIsSelected(): void {
     if (!this.selectedSubscriptionSlot) {
       this.isSelected = false;
+      return;
     }
     this.isSelected = this.subscriptionSlot.subscription.type === this.selectedSubscriptionSlot.subscription.type;
   }
