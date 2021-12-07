@@ -59,9 +59,16 @@ export class DeliveryAddressComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
-  public INPUTS_MAX_LENGTH: DeliveryAddressInputsMaxLength;
+  public INPUTS_MAX_LENGTH: DeliveryAddressInputsMaxLength = {
+    full_name: 35,
+    street: 30,
+    flat_and_floor: 9,
+    postal_code: 5,
+    phone_number: 20,
+  };
+
   public readonly DELIVERY_ADDRESS_LINKS = DELIVERY_ADDRESS_LINKS;
-  public countries: IOption[] = [];
+  public countries: DeliveryAddressCountryOption[] = [];
   public cities: IOption[] = [];
   public deliveryAddressForm: FormGroup;
   public loading = true;
@@ -97,7 +104,9 @@ export class DeliveryAddressComponent implements OnInit {
     this.comesFromPayView =
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
+
     this.buildForm();
+    this.changeValidatorsWhenCountryChanges();
     this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
       this.onSubmit();
     });
@@ -196,6 +205,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public canExit(): true | Promise<any> {
+    // TODO: comentar validadores		Date: 2021/12/07
     return this.formComponent.canExit();
   }
 
@@ -437,10 +447,14 @@ export class DeliveryAddressComponent implements OnInit {
       if (isNewForm) {
         this.deliveryAddressForm.get('country_iso_code').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
       }
-      const selectedCountry: DeliveryAddressCountryOption = countryOptionsAndDefault.countryOptions.find(
-        (countryOption: DeliveryAddressCountryOption) => countryOption.value === this.deliveryAddressForm.get('country_iso_code').value
+    });
+  }
+
+  private changeValidatorsWhenCountryChanges(): void {
+    this.deliveryAddressForm.get('country_iso_code').valueChanges.subscribe((newCountry: string) => {
+      const selectedCountry: DeliveryAddressCountryOption = this.countries.find(
+        (countryOption: DeliveryAddressCountryOption) => countryOption.value === newCountry
       );
-      this.defineInputsMaxLength(selectedCountry.addressFormRestrictions);
     });
   }
 
@@ -488,23 +502,6 @@ export class DeliveryAddressComponent implements OnInit {
       postal_code: ['', [Validators.required]],
       city: ['', [Validators.required]],
       phone_number: ['', [Validators.required]],
-    });
-  }
-
-  private defineInputsMaxLength(restrictions: AddressFormRestrictions): void {
-    this.INPUTS_MAX_LENGTH = {
-      full_name: restrictions.name,
-      street: restrictions.street,
-      flat_and_floor: restrictions.flat_and_floor,
-      postal_code: 5,
-      phone_number: 20,
-    };
-
-    Object.keys(this.INPUTS_MAX_LENGTH).forEach((formControl: string) => {
-      const maxLenght: number = this.INPUTS_MAX_LENGTH[formControl];
-      const validators: ValidatorFn[] =
-        formControl === 'flat_and_floor' ? [Validators.maxLength(maxLenght)] : [Validators.required, Validators.maxLength(maxLenght)];
-      this.deliveryAddressForm.get(formControl).setValidators(validators);
     });
   }
 

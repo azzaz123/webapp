@@ -1,7 +1,7 @@
 <!-- TODO: Remove `profile-box` class by improving `tsl-profile-form` component-->
 <div class="DeliveryAddress box mt-3 p-3 container profile-box">
   <tsl-profile-form class="row" [profileForm]="deliveryAddressForm" (onInit)="initForm()">
-    <form class="col" *ngIf="!loading; else loadingState" [formGroup]="deliveryAddressForm" (submit)="onSubmit()">
+    <form class="col" *ngIf="!loading && countries; else loadingState" [formGroup]="deliveryAddressForm" (submit)="onSubmit()">
       <div class="row">
         <div class="col-md-11 offset-md-1">
           <h3 *ngIf="isNewForm" i18n="@@address_view_all_users_top_bar_add_title">Add your address</h3>
