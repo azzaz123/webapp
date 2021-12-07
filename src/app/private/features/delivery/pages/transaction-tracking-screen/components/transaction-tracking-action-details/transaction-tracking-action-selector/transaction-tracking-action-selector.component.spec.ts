@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Type } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SITE_URL } from '@configs/site-url.config';
@@ -13,18 +13,25 @@ import { TransactionTrackingActionUserActionComponent } from '../transaction-tra
 import { TransactionTrackingActionTrackingWebviewComponent } from '../transaction-tracking-action-tracking-webview/transaction-tracking-action-tracking-webview.component';
 import {
   MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK,
+  MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK_WITH_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG,
+  MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION,
+  MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW,
+  MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW_WITH_ANALYTICS,
 } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
 import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
+import { TransactionTrackingScreenTrackingEventsService } from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 
 describe('TransactionTrackingActionSelectorComponent', () => {
   let component: TransactionTrackingActionSelectorComponent;
   let fixture: ComponentFixture<TransactionTrackingActionSelectorComponent>;
+  let de: DebugElement;
+  let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -53,6 +60,12 @@ describe('TransactionTrackingActionSelectorComponent', () => {
           provide: ErrorsService,
           useValue: MockErrorService,
         },
+        {
+          provide: TransactionTrackingScreenTrackingEventsService,
+          useValue: {
+            trackClickActionTTS() {},
+          },
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -60,6 +73,8 @@ describe('TransactionTrackingActionSelectorComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TransactionTrackingActionSelectorComponent);
+    de = fixture.debugElement;
+    transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
     component = fixture.componentInstance;
   });
 
@@ -89,6 +104,35 @@ describe('TransactionTrackingActionSelectorComponent', () => {
       it('should NOT show the transaction action type user action', () => {
         isTransactionTrackingActionUserAction(false);
       });
+
+      describe('and we click on the action', () => {
+        beforeEach(() => {
+          spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
+        });
+
+        describe('and the action has analytics', () => {
+          it('should track the event', () => {
+            component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS;
+            fixture.detectChanges();
+
+            de.query(By.directive(TransactionTrackingActionDialogComponent)).nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledWith(
+              MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS.analytics.requestId,
+              MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS.analytics.source
+            );
+          });
+        });
+
+        describe('and the action has NOT analytics', () => {
+          it('should NOT track the event', () => {
+            de.query(By.directive(TransactionTrackingActionDialogComponent)).nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).not.toHaveBeenCalled();
+          });
+        });
+      });
     });
 
     describe('and the action is a carrier tracking webview', () => {
@@ -111,6 +155,35 @@ describe('TransactionTrackingActionSelectorComponent', () => {
 
       it('should NOT show the transaction action type user action', () => {
         isTransactionTrackingActionUserAction(false);
+      });
+
+      describe('and we click on the action', () => {
+        beforeEach(() => {
+          spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
+        });
+
+        describe('and the action has analytics', () => {
+          it('should track the event', () => {
+            component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW_WITH_ANALYTICS;
+            fixture.detectChanges();
+
+            de.query(By.directive(TransactionTrackingActionTrackingWebviewComponent)).nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledWith(
+              MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW_WITH_ANALYTICS.analytics.requestId,
+              MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW_WITH_ANALYTICS.analytics.source
+            );
+          });
+        });
+
+        describe('and the action has NOT analytics', () => {
+          it('should NOT track the event', () => {
+            de.query(By.directive(TransactionTrackingActionTrackingWebviewComponent)).nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).not.toHaveBeenCalled();
+          });
+        });
       });
     });
 
@@ -135,6 +208,35 @@ describe('TransactionTrackingActionSelectorComponent', () => {
       it('should NOT show the transaction action type user action', () => {
         isTransactionTrackingActionUserAction(false);
       });
+
+      describe('and we click on the action', () => {
+        beforeEach(() => {
+          spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
+        });
+
+        describe('and the action has analytics', () => {
+          it('should track the event', () => {
+            component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK_WITH_ANALYTICS;
+            fixture.detectChanges();
+
+            de.query(By.directive(TransactionTrackingActionDeeplinkComponent)).nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledWith(
+              MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK_WITH_ANALYTICS.analytics.requestId,
+              MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK_WITH_ANALYTICS.analytics.source
+            );
+          });
+        });
+
+        describe('and the action has NOT analytics', () => {
+          it('should NOT track the event', () => {
+            de.query(By.directive(TransactionTrackingActionDeeplinkComponent)).nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).not.toHaveBeenCalled();
+          });
+        });
+      });
     });
 
     describe('and the action is a user action', () => {
@@ -158,6 +260,35 @@ describe('TransactionTrackingActionSelectorComponent', () => {
       it('should show the transaction action type user action', () => {
         isTransactionTrackingActionUserAction(true);
       });
+
+      describe('and we click on the action', () => {
+        beforeEach(() => {
+          spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
+        });
+
+        describe('and the action has analytics', () => {
+          it('should track the event', () => {
+            component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS;
+            fixture.detectChanges();
+
+            de.query(By.directive(TransactionTrackingActionUserActionComponent)).nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledWith(
+              MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS.analytics.requestId,
+              MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS.analytics.source
+            );
+          });
+        });
+
+        describe('and the action has NOT analytics', () => {
+          it('should NOT track the event', () => {
+            de.query(By.directive(TransactionTrackingActionUserActionComponent)).nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).not.toHaveBeenCalled();
+          });
+        });
+      });
     });
   });
 
@@ -178,7 +309,7 @@ describe('TransactionTrackingActionSelectorComponent', () => {
   }
 
   function shouldShowComponent(componentSelector: Type<unknown>, shouldShowIt: boolean): void {
-    const component = fixture.debugElement.query(By.directive(componentSelector));
+    const component = de.query(By.directive(componentSelector));
 
     if (shouldShowIt) {
       expect(component).toBeTruthy();

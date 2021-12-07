@@ -1,13 +1,16 @@
-<tsl-transaction-tracking-action-deeplink *ngIf="isDeeplink" [deeplinkAction]="actionDetail">
+<tsl-transaction-tracking-action-deeplink *ngIf="isDeeplink" [deeplinkAction]="actionDetail" (click)="trackEvent()">
   <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
 </tsl-transaction-tracking-action-deeplink>
-<tsl-transaction-tracking-action-dialog *ngIf="isDialog" [dialogAction]="actionDetail">
+<tsl-transaction-tracking-action-dialog *ngIf="isDialog" [dialogAction]="actionDetail" (click)="trackEvent()">
   <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
 </tsl-transaction-tracking-action-dialog>
-<tsl-transaction-tracking-action-tracking-webview *ngIf="isCarrierTrackingWebview" [trackingWebviewAction]="actionDetail">
-  <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
+<tsl-transaction-tracking-action-tracking-webview
+  *ngIf="isCarrierTrackingWebview"
+  [trackingWebviewAction]="actionDetail"
+  (click)="trackEvent()"
+  ><ng-container *ngTemplateOutlet="contentTmp"></ng-container>
 </tsl-transaction-tracking-action-tracking-webview>
-<tsl-transaction-tracking-action-user-action *ngIf="isUserAction" [userAction]="actionDetail">
+<tsl-transaction-tracking-action-user-action *ngIf="isUserAction" [userAction]="actionDetail" (click)="trackEvent()">
   <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
 </tsl-transaction-tracking-action-user-action>
 

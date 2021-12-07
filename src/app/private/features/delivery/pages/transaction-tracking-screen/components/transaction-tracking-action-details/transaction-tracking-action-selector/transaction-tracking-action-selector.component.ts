@@ -6,6 +6,10 @@ import {
   TransactionTrackingActionDialog,
   TransactionTrackingActionUserAction,
 } from '@api/core/model/delivery/transaction/tracking';
+import {
+  ActionNameAnalytics,
+  TransactionTrackingScreenTrackingEventsService,
+} from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-selector',
@@ -15,6 +19,18 @@ import {
 })
 export class TransactionTrackingActionSelectorComponent {
   @Input() actionDetail: TransactionTrackingActionDetail;
+
+  constructor(private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService) {}
+
+  public trackEvent(): void {
+    const analyticsEvent = this.actionDetail.analytics;
+    if (analyticsEvent) {
+      this.transactionTrackingScreenTrackingEventsService.trackClickActionTTS(
+        analyticsEvent.requestId,
+        analyticsEvent.source as ActionNameAnalytics
+      );
+    }
+  }
 
   public get isCarrierTrackingWebview(): boolean {
     return (this.actionDetail as TransactionTrackingActionCarrierTrackingWebview).isCarrierTrackingWebview;
