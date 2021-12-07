@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
   CountryOptionsAndDefault,
+  DeliveryAddressCountryOption,
   DeliveryCountriesApi,
   DeliveryCountryApi,
 } from '../../../interfaces/delivery-countries/delivery-countries-api.interface';
@@ -41,10 +41,15 @@ export class DeliveryCountriesService {
     };
   }
 
-  private toSelectOptions(values: DeliveryCountriesApi): IOption[] {
+  private toSelectOptions(values: DeliveryCountriesApi): DeliveryAddressCountryOption[] {
     return values.countries.map((country: DeliveryCountryApi) => ({
       value: country.iso_code,
       label: country.label,
+      addressFormRestrictions: {
+        name: country.address_restrictions.name,
+        street: country.address_restrictions.street,
+        flat_and_floor: country.address_restrictions.flat_and_floor,
+      },
     }));
   }
 }

@@ -37,7 +37,7 @@
       <div class="form-group row align-items-center">
         <label for="full_name" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_form_textfield_name_label">Name and surname</label>
         <div class="col-sm-12 col-md-5">
-          <input type="text" class="form-control" id="full_name" formControlName="full_name" />
+          <input type="text" class="form-control" id="full_name" formControlName="full_name" [maxlength]="INPUTS_MAX_LENGTH.full_name" />
           <div
             *ngIf="deliveryAddressForm.controls.full_name.invalid && deliveryAddressForm.pending"
             class="DeliveryAddress__message DeliveryAddress__message--error"
@@ -58,7 +58,7 @@
           >Street name and number</label
         >
         <div class="col-sm-12 col-md-5">
-          <input type="text" class="form-control" id="street" formControlName="street" [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.STREET" />
+          <input type="text" class="form-control" id="street" formControlName="street" [maxlength]="INPUTS_MAX_LENGTH.street" />
           <div
             *ngIf="deliveryAddressForm.controls.street.invalid && deliveryAddressForm.pending"
             class="DeliveryAddress__message DeliveryAddress__message--error"
@@ -84,7 +84,7 @@
             class="form-control"
             id="flat_and_floor"
             formControlName="flat_and_floor"
-            [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.FLAT_AND_FLOOR"
+            [maxlength]="INPUTS_MAX_LENGTH.flat_and_floor"
           />
           <div
             *ngIf="deliveryAddressForm.controls.flat_and_floor.invalid && deliveryAddressForm.pending"
@@ -107,7 +107,7 @@
             class="form-control"
             id="postal_code"
             formControlName="postal_code"
-            [maxlength]="DELIVERY_INPUTS_MAX_LENGTH.POSTAL_CODE"
+            [maxlength]="INPUTS_MAX_LENGTH.postal_code"
             tslNumbersOnly
           />
           <div
@@ -157,7 +157,7 @@
             class="form-control"
             id="phone_number"
             formControlName="phone_number"
-            [maxLength]="DELIVERY_INPUTS_MAX_LENGTH.PHONE_NUMBER"
+            [maxLength]="INPUTS_MAX_LENGTH.PHONE_NUMBER"
           />
           <div
             *ngIf="deliveryAddressForm.controls.phone_number.invalid && deliveryAddressForm.pending"

@@ -1,5 +1,5 @@
 import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
@@ -18,7 +18,11 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
-import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
+import {
+  AddressFormRestrictions,
+  CountryOptionsAndDefault,
+  DeliveryAddressCountryOption,
+} from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
@@ -37,13 +41,13 @@ import {
   PostalCodeIsInvalidError,
   PostalCodeIsNotAllowedError,
 } from '../../errors/classes/postal-codes';
-import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { DELIVERY_ADDRESS_LINKS } from '../../enums/delivery-address-links.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { DeliveryAddressInputsMaxLength } from './interfaces/delivery-address-inputs-max-length.interface';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -55,7 +59,7 @@ export class DeliveryAddressComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
-  public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
+  public INPUTS_MAX_LENGTH: DeliveryAddressInputsMaxLength;
   public readonly DELIVERY_ADDRESS_LINKS = DELIVERY_ADDRESS_LINKS;
   public countries: IOption[] = [];
   public cities: IOption[] = [];
@@ -433,6 +437,10 @@ export class DeliveryAddressComponent implements OnInit {
       if (isNewForm) {
         this.deliveryAddressForm.get('country_iso_code').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
       }
+      const selectedCountry: DeliveryAddressCountryOption = countryOptionsAndDefault.countryOptions.find(
+        (countryOption: DeliveryAddressCountryOption) => countryOption.value === this.deliveryAddressForm.get('country_iso_code').value
+      );
+      this.defineInputsMaxLength(selectedCountry.addressFormRestrictions);
     });
   }
 
@@ -480,6 +488,23 @@ export class DeliveryAddressComponent implements OnInit {
       postal_code: ['', [Validators.required]],
       city: ['', [Validators.required]],
       phone_number: ['', [Validators.required]],
+    });
+  }
+
+  private defineInputsMaxLength(restrictions: AddressFormRestrictions): void {
+    this.INPUTS_MAX_LENGTH = {
+      full_name: restrictions.name,
+      street: restrictions.street,
+      flat_and_floor: restrictions.flat_and_floor,
+      postal_code: 5,
+      phone_number: 20,
+    };
+
+    Object.keys(this.INPUTS_MAX_LENGTH).forEach((formControl: string) => {
+      const maxLenght: number = this.INPUTS_MAX_LENGTH[formControl];
+      const validators: ValidatorFn[] =
+        formControl === 'flat_and_floor' ? [Validators.maxLength(maxLenght)] : [Validators.required, Validators.maxLength(maxLenght)];
+      this.deliveryAddressForm.get(formControl).setValidators(validators);
     });
   }
 
