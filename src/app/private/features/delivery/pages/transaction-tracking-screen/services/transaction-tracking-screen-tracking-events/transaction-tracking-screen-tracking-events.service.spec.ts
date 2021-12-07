@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
+  MOCK_ACTION_NAME_EVENT,
+  MOCK_CLICK_ACTION_TTS_EVENT,
   MOCK_REQUEST_ID_TTS_EVENT,
   MOCK_TRACKING_VIEW_TTS_EVENT,
 } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-events.fixtures.spec';
@@ -32,6 +34,17 @@ describe('TransactionTrackingScreenTrackingEventsService', () => {
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_TRACKING_VIEW_TTS_EVENT);
+    });
+  });
+
+  describe('when tracking click action TTS event', () => {
+    it('should track the event ', () => {
+      spyOn(analyticsService, 'trackEvent');
+
+      service.trackClickActionTTS(MOCK_REQUEST_ID_TTS_EVENT, MOCK_ACTION_NAME_EVENT);
+
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ACTION_TTS_EVENT);
     });
   });
 });
