@@ -29,7 +29,6 @@
 /src/app/public/features/register
 
 # TRANSVERSAL 
-/src/app/private/core
 /src/app/shared
 /src/app/public/shared
 /src/app/layout
