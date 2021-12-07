@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ContentChild,
   ElementRef,
@@ -7,6 +8,7 @@ import {
   forwardRef,
   HostListener,
   Input,
+  OnChanges,
   OnInit,
   Output,
   SimpleChanges,
@@ -33,7 +35,7 @@ export const SELECT_VALUE_ACCESSOR: ExistingProvider = {
   providers: [SELECT_VALUE_ACCESSOR],
   encapsulation: ViewEncapsulation.None,
 })
-export class DropdownComponent implements OnInit {
+export class DropdownComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() options: Array<IOption> = [];
   @Input() isLoading: boolean;
 
@@ -64,8 +66,6 @@ export class DropdownComponent implements OnInit {
 
   @ContentChild('optionTemplate', { static: false })
   optionTemplate: TemplateRef<any>;
-
-  private _value: Array<any> = [];
   optionList: OptionList;
 
   // View state variables.
@@ -75,37 +75,32 @@ export class DropdownComponent implements OnInit {
 
   filterEnabled: boolean = true;
   filterInputWidth: number = 1;
-  private isDisabled: boolean = false;
+
   placeholderView: string = '';
-
-  private clearClicked: boolean = false;
-  private selectContainerClicked: boolean = false;
-  private optionListClicked: boolean = false;
-  private optionClicked: boolean = false;
-
   // Width and position for the dropdown container.
   width: number;
   top: number;
   left: number;
 
-  private onChange = (_: any) => {};
-  private onTouched = () => {};
+  private _value: Array<any> = [];
+  private isDisabled: boolean = false;
+  private clearClicked: boolean = false;
+  private selectContainerClicked: boolean = false;
+  private optionListClicked: boolean = false;
+  private optionClicked: boolean = false;
+  /** Keys. **/
+
+  private KEYS: any = {
+    BACKSPACE: 8,
+    TAB: 9,
+    ENTER: 13,
+    ESC: 27,
+    SPACE: 32,
+    UP: 38,
+    DOWN: 40,
+  };
 
   constructor(private hostElement: ElementRef) {}
-
-  /** Event handlers. **/
-
-  ngOnInit() {
-    this.placeholderView = this.placeholder;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.handleInputChanges(changes);
-  }
-
-  ngAfterViewInit() {
-    this.updateState();
-  }
 
   @HostListener('window:blur')
   onWindowBlur() {
@@ -129,6 +124,17 @@ export class DropdownComponent implements OnInit {
   @HostListener('window:resize')
   onWindowResize() {
     this.updateWidth();
+  }
+
+  ngOnInit() {
+    this.placeholderView = this.placeholder;
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    this.handleInputChanges(changes);
+  }
+
+  ngAfterViewInit() {
+    this.updateState();
   }
 
   onSelectContainerClick(event: any) {
@@ -227,6 +233,28 @@ export class DropdownComponent implements OnInit {
   setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
   }
+  /** View. **/
+
+  _blur() {
+    if (this.hasFocus) {
+      this.hasFocus = false;
+      this.onTouched();
+      this.blur.emit(null);
+    }
+  }
+
+  _focus() {
+    if (!this.hasFocus) {
+      this.hasFocus = true;
+      this.focus.emit(null);
+    }
+  }
+
+  _focusSelectContainer() {
+    this.selectionSpan.nativeElement.focus();
+  }
+  private onChange = (_: any) => {};
+  private onTouched = () => {};
 
   /** Input change handling. **/
 
@@ -416,18 +444,6 @@ export class DropdownComponent implements OnInit {
     }
   }
 
-  /** Keys. **/
-
-  private KEYS: any = {
-    BACKSPACE: 8,
-    TAB: 9,
-    ENTER: 13,
-    ESC: 27,
-    SPACE: 32,
-    UP: 38,
-    DOWN: 40,
-  };
-
   private handleSelectContainerKeydown(event: any) {
     let key = event.which;
 
@@ -486,27 +502,6 @@ export class DropdownComponent implements OnInit {
     if (key === this.KEYS.ESC || key === this.KEYS.TAB || key === this.KEYS.UP || key === this.KEYS.DOWN || key === this.KEYS.ENTER) {
       this.handleSelectContainerKeydown(event);
     }
-  }
-
-  /** View. **/
-
-  _blur() {
-    if (this.hasFocus) {
-      this.hasFocus = false;
-      this.onTouched();
-      this.blur.emit(null);
-    }
-  }
-
-  _focus() {
-    if (!this.hasFocus) {
-      this.hasFocus = true;
-      this.focus.emit(null);
-    }
-  }
-
-  _focusSelectContainer() {
-    this.selectionSpan.nativeElement.focus();
   }
 
   private updateWidth() {

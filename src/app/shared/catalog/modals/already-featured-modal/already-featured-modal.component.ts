@@ -7,8 +7,6 @@ import { ItemService } from '../../../../core/item/item.service';
   templateUrl: './already-featured-modal.component.html',
   styleUrls: ['./already-featured-modal.component.scss'],
 })
-export class AlreadyFeaturedModalComponent implements OnInit {
+export class AlreadyFeaturedModalComponent {
   constructor(public activeModal: NgbActiveModal, public itemService: ItemService) {}
-
-  ngOnInit() {}
 }
