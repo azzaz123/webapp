@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
+import { PaginatedList } from '@api/core/model';
 import { ISort, SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
+import { MeApiService } from '@api/me/me-api.service';
 import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
@@ -22,7 +24,7 @@ import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { Item } from '@core/item/item';
-import { CheapestProducts, ItemBulkResponse, ItemsData } from '@core/item/item-response.interface';
+import { CheapestProducts, ItemBulkResponse } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
@@ -112,7 +114,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private bumpSuggestionModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
-  private init = 0;
+  private init: number | string = 0;
   private counters: Counters;
   private searchTerm: string;
   private page = 1;
@@ -136,7 +138,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private analyticsService: AnalyticsService,
     private i18nService: I18nService,
     private permissionService: NgxPermissionsService,
-    private listingLimitService: ListingLimitService
+    private listingLimitService: ListingLimitService,
+    private meApiService: MeApiService
   ) {}
 
   public get itemsAmount() {
@@ -618,9 +621,9 @@ export class ListComponent implements OnInit, OnDestroy {
           this.loading = false;
         });
     } else {
-      this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
-        const items = itemsData.data;
-        this.init = itemsData.init;
+      this.meApiService.getItems(this.init, status as STATUS).subscribe((itemList: PaginatedList<Item>) => {
+        const items = itemList.list;
+        this.init = itemList.paginationParameter;
         this.items = append ? this.items.concat(items) : items;
         this.end = !this.init;
         if (this.bumpSuggestionModalRef) {
