@@ -2,12 +2,14 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
 
 export interface DeliveryCountriesApi {
   countries: DeliveryCountryApi[];
-  default: DeliveryCountryApi;
+  default: DeliveryCountryDefaultApi;
 }
 
-export interface DeliveryCountryApi {
+export interface DeliveryCountryDefaultApi {
   iso_code: string;
-  label?: string;
+}
+export interface DeliveryCountryApi extends DeliveryCountryDefaultApi {
+  label: string;
   address_restrictions: AddressRestrictionsApi;
 }
 
@@ -19,7 +21,11 @@ export interface AddressRestrictionsApi {
 
 export interface CountryOptionsAndDefault {
   countryOptions: DeliveryAddressCountryOption[];
-  defaultCountry: DeliveryCountryApi;
+  defaultCountry: DeliveryCountryDefault;
+}
+
+export interface DeliveryCountryDefault {
+  isoCode: string;
 }
 
 export interface DeliveryAddressCountryOption extends IOption {
