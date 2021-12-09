@@ -1405,6 +1405,7 @@
     "web_filter_condition_title": "Stato del prodotto",
     "web_filter_condition_bubble_placeholder": "Condizione dell'articolo",
     "web_filter_condition_drawer_placeholder": "Qualsiasi stato",
+    "quick_filter_n_conditions": "conditions",
     "web_filter_location_title": "Dove?",
     "web_filter_location_bubble_placeholder": "Posizione",
     "web_filter_location_drawer_placeholder": "Qualsiasi posizione",
