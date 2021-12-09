@@ -6,10 +6,10 @@ import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routin
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'tsl-transaction-tracking-overview',
   templateUrl: './transaction-tracking-overview.component.html',
   styleUrls: ['./transaction-tracking-overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionTrackingOverviewComponent implements OnInit {
   public transactionTracking$: Observable<TransactionTracking>;
