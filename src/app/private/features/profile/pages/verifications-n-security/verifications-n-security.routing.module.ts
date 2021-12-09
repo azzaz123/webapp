@@ -17,6 +17,11 @@ const routes: Route[] = [
         path: VERIFICATIONS_N_SECURITY_PATHS.CHANGE_EMAIL,
         loadChildren: () => import('@private/features/profile/modal/change-email/change-email.module').then((m) => m.ChangeEmailModule),
       },
+      {
+        path: VERIFICATIONS_N_SECURITY_PATHS.VERIFY_PHONE,
+        loadChildren: () =>
+          import('@private/features/profile/modal/phone-verification/phone-verification.module').then((m) => m.PhoneVerificationModule),
+      },
     ],
   },
 ];
