@@ -114,7 +114,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private bumpSuggestionModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
-  private init: number | string = 0;
+  private init: string;
   private counters: Counters;
   private searchTerm: string;
   private page = 1;
@@ -198,7 +198,7 @@ export class ListComponent implements OnInit, OnDestroy {
           return;
         }
         this.scrollTop = 0;
-        this.init = 0;
+        this.init = null;
         this.end = false;
         this.getItems();
       });
@@ -290,7 +290,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
-      this.init = 0;
+      this.init = null;
       this.getItems();
       this.getNumberOfProducts();
     }
@@ -595,7 +595,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.end = false;
 
     if (!append) {
-      this.init = 0;
+      this.init = null;
       this.page = 1;
       this.items = [];
     } else {

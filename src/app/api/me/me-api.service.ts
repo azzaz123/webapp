@@ -12,6 +12,7 @@ import { mapSoldItemsToLegacyItem } from './mappers/item-mapper';
 import { SoldItemResponseDto } from './dtos/sold/response/sold-response-dto';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { ItemService } from '@core/item/item.service';
+import { SoldItemsQueryParams } from './dtos/sold/request/sold-query-params';
 
 @Injectable()
 export class MeApiService {
@@ -37,11 +38,12 @@ export class MeApiService {
     );
   }
 
-  public getItems(paginationParameter: string | number, status: STATUS): Observable<PaginatedList<Item>> {
+  public getItems(paginationParameter: string, status: STATUS): Observable<PaginatedList<Item>> {
     if (status in this.requestConfig) {
-      return this.requestConfig[status](paginationParameter as string);
+      return this.requestConfig[status](paginationParameter);
     }
-    return this.itemService.mine(paginationParameter as number, status).pipe(
+    return this.itemService.mine(+paginationParameter, status).pipe(
+      // TODO remove when all request were migrated
       map((response) => {
         return {
           list: response.data,
@@ -52,7 +54,7 @@ export class MeApiService {
   }
 
   private getSoldItems(paginationParameter?: string): Observable<PaginatedList<Item>> {
-    let parameters: QueryParams<FavouritesQueryParams>;
+    let parameters: QueryParams<SoldItemsQueryParams>;
     if (paginationParameter) {
       parameters = {
         since: paginationParameter,
