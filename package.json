@@ -50,7 +50,7 @@
     "@mparticle/web-sdk": "^2.12.3",
     "@ng-bootstrap/ng-bootstrap": "6.0.3",
     "@sentry/angular": "^6.8.0",
-    "@sentry/tracing": "^6.8.0",
+    "@sentry/tracing": "^6.15.0",
     "@types/faker": "^5.1.5",
     "bootstrap": "4.0.0",
     "crypto-js": "^3.1.9-1",

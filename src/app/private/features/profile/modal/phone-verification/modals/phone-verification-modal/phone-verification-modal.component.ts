@@ -10,6 +10,7 @@ import { SmsCodeVerificationModalComponent } from '../sms-code-verification-moda
 import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
 import { PHONE_PREFIXES } from '../../constants/phone-prefixies-constants';
 import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 @Component({
   selector: 'tsl-phone-verification-modal',
@@ -44,6 +45,7 @@ export class PhoneVerificationModalComponent implements OnInit {
         .subscribe(
           () => {
             this.activeModal.close();
+            this.showSuccessSMSToast(phoneNumber);
             this.openSmsCodeVerificationModal(phoneNumber);
             this.verificationsNSecurityTrackingEventsService.trackStartPhoneVerificationProcessEvent();
           },
@@ -95,5 +97,13 @@ export class PhoneVerificationModalComponent implements OnInit {
     });
 
     modalRef.componentInstance.phoneNumber = phoneNumber;
+  }
+
+  private showSuccessSMSToast(phoneNumber: string): void {
+    this.toastService.show({
+      title: $localize`:@@phone_verification_all_users_sms_sent_system_modal_title:Many thanks`,
+      text: $localize`:@@phone_verification_all_users_sms_sent_system_modal_description:We have sent an SMS to the number ${phoneNumber}:INTERPOLATION: with a verification code. Please enter the code to verify your phone.`,
+      type: TOAST_TYPES.SUCCESS,
+    });
   }
 }
