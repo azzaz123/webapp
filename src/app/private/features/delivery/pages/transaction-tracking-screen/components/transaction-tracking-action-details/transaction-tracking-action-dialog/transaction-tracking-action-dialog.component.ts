@@ -11,7 +11,7 @@ import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirma
 @Component({
   selector: 'tsl-transaction-tracking-action-dialog',
   templateUrl: './transaction-tracking-action-dialog.component.html',
-  styleUrls: ['./transaction-tracking-action-dialog.component.scss'],
+  styleUrls: ['../styles/transaction-tracking-action.scss'],
 })
 export class TransactionTrackingActionDialogComponent {
   @Input() dialogAction: TransactionTrackingActionDialog;

@@ -1,5 +1,5 @@
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
@@ -93,14 +93,14 @@ describe('VerificationsNSecurityComponent', () => {
       expect(cards).toHaveLength(2);
     });
 
-    it('should track page view event', fakeAsync(() => {
-      spyOn(verificationsNSecurityTrackingEventsService, 'verificationsNSecurityPageView').and.callThrough();
+    it('should track page view event', () => {
+      spyOn(verificationsNSecurityTrackingEventsService, 'verificationsNSecurityPageView');
 
-      component.ngOnInit();
-      tick();
-      expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledTimes(1);
-      expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledWith(mockUserVerifications$);
-    }));
+      component.userVerifications$.subscribe((result) => {
+        expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledTimes(1);
+        expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledWith(result);
+      });
+    });
   });
 
   describe('Verification cards', () => {

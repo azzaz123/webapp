@@ -1,76 +1,116 @@
 <div class="MultiSelectFilter" [class.MultiSelectFilter--bubble]="variant | isBubble">
-  <ng-container *ngIf="(variant | isBubble); else isDrawer">
-    <tsl-filter-template
-    #filterTemplateComponent
-    *ngFor="let value of multiValue$ | async"
-    [hasApply]="true"
-    [isBubble]="variant | isBubble"
-    [isDropdown]="true"
-    [isClearable]="true"
-    [title]="config.title"
-    [icon]="config.icon"
-    [label]="value?.label || value"
-    [hasValue]="hasValue$ | async"
-    (apply)="handleApply()"
-    (clear)="handleMultiValueClear(value.value)"
-    (openStateChange)="filterTemplateOpenStateChange($event)"
-    (cancel)="handleCancel()"
-    class="MultiSelectFilter__template"
-    [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
-  >
-    <tsl-drawer-placeholder-template
-      #selectFilterTemplateComponent
-      [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
-      [placeholderLabel]="value.label"
-      [placeholderIcon]="placeholderIcon$ | async"
-      [contentTitle]="contentTitle"
-      [isClearable]="hasValue$ | async"
-      (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
-      (clear)="handleClear()"
-    >
-      <div [class.MultiSelectFilter__bubble]="variant | isBubble">
-        <form [formGroup]="formGroup" class="MultiSelectFilter__form">
-          <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
-        </form>
-      </div>
-    </tsl-drawer-placeholder-template>
-  </tsl-filter-template>
+  <ng-container *ngIf="variant | isBubble; else isDrawer">
+    <ng-container *ngIf="config.bubbleVariant === MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE; else multiBubble">
+      <tsl-filter-template
+        #filterTemplateComponent
+        [hasApply]="true"
+        [isBubble]="variant | isBubble"
+        [isDropdown]="true"
+        [isClearable]="true"
+        [title]="config.title"
+        [icon]="config.icon"
+        [label]="buildSingleBubbleLabel(hasValue$ | async, multiValue$ | async)"
+        [hasValue]="hasValue$ | async"
+        (apply)="handleApply()"
+        (clear)="handleClear()"
+        (openStateChange)="filterTemplateOpenStateChange($event)"
+        (cancel)="handleCancel()"
+        class="MultiSelectFilter__template"
+        [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
+      >
+        <tsl-drawer-placeholder-template
+          #selectFilterTemplateComponent
+          [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
+          [placeholderLabel]="value.label"
+          [placeholderIcon]="placeholderIcon$ | async"
+          [contentTitle]="contentTitle"
+          [isClearable]="hasValue$ | async"
+          (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
+          (clear)="handleClear()"
+        >
+          <div [class.MultiSelectFilter__bubble]="variant | isBubble">
+            <form [formGroup]="formGroup" class="MultiSelectFilter__form">
+              <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
+            </form>
+          </div>
+        </tsl-drawer-placeholder-template>
+      </tsl-filter-template>
+    </ng-container>
   </ng-container>
-  
+
   <ng-template #isDrawer>
     <tsl-filter-template
-    #filterTemplateComponent
-    [hasApply]="true"
-    [isBubble]="variant | isBubble"
-    [isDropdown]="true"
-    [isClearable]="true"
-    [title]="config.title"
-    [icon]="config.icon"
-    [label]="label$ | async"
-    [hasValue]="hasValue$ | async"s
-    (apply)="handleApply()"
-    (clear)="handleClear()"
-    (openStateChange)="filterTemplateOpenStateChange($event)"
-    (cancel)="handleCancel()"
-    class="MultiSelectFilter__template"
-    [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
-  >
-    <tsl-drawer-placeholder-template
-      #selectFilterTemplateComponent
-      [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
-      [placeholderLabel]="label$ | async"
-      [placeholderIcon]="placeholderIcon$ | async"
-      [contentTitle]="contentTitle"
-      [isClearable]="hasValue$ | async"
-      (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
+      #filterTemplateComponent
+      [hasApply]="true"
+      [isBubble]="variant | isBubble"
+      [isDropdown]="true"
+      [isClearable]="true"
+      [title]="config.title"
+      [icon]="config.icon"
+      [label]="label$ | async"
+      [hasValue]="hasValue$ | async"
+      s
+      (apply)="handleApply()"
       (clear)="handleClear()"
+      (openStateChange)="filterTemplateOpenStateChange($event)"
+      (cancel)="handleCancel()"
+      class="MultiSelectFilter__template"
+      [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
     >
-      <div [class.MultiSelectFilter__bubble]="variant | isBubble">
-        <form [formGroup]="formGroup" class="MultiSelectFilter__form">
-          <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
-        </form>
-      </div>
-    </tsl-drawer-placeholder-template>
-  </tsl-filter-template>
+      <tsl-drawer-placeholder-template
+        #selectFilterTemplateComponent
+        [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
+        [placeholderLabel]="label$ | async"
+        [placeholderIcon]="placeholderIcon$ | async"
+        [contentTitle]="contentTitle"
+        [isClearable]="hasValue$ | async"
+        (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
+        (clear)="handleClear()"
+      >
+        <div [class.MultiSelectFilter__bubble]="variant | isBubble">
+          <form [formGroup]="formGroup" class="MultiSelectFilter__form">
+            <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
+          </form>
+        </div>
+      </tsl-drawer-placeholder-template>
+    </tsl-filter-template>
+  </ng-template>
+
+  <ng-template #multiBubble>
+    <tsl-filter-template
+      #filterTemplateComponent
+      *ngFor="let value of multiValue$ | async"
+      [hasApply]="true"
+      [isBubble]="variant | isBubble"
+      [isDropdown]="true"
+      [isClearable]="true"
+      [title]="config.title"
+      [icon]="config.icon"
+      [label]="value?.label || value"
+      [hasValue]="hasValue$ | async"
+      (apply)="handleApply()"
+      (clear)="handleMultiValueClear(value.value)"
+      (openStateChange)="filterTemplateOpenStateChange($event)"
+      (cancel)="handleCancel()"
+      class="MultiSelectFilter__template"
+      [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
+    >
+      <tsl-drawer-placeholder-template
+        #selectFilterTemplateComponent
+        [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
+        [placeholderLabel]="value.label"
+        [placeholderIcon]="placeholderIcon$ | async"
+        [contentTitle]="contentTitle"
+        [isClearable]="hasValue$ | async"
+        (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
+        (clear)="handleClear()"
+      >
+        <div [class.MultiSelectFilter__bubble]="variant | isBubble">
+          <form [formGroup]="formGroup" class="MultiSelectFilter__form">
+            <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
+          </form>
+        </div>
+      </tsl-drawer-placeholder-template>
+    </tsl-filter-template>
   </ng-template>
 </div>

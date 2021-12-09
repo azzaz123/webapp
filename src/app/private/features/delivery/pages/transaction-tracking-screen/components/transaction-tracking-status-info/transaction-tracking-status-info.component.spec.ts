@@ -6,6 +6,7 @@ import { MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1 } from
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { TransactionTrackingScreenTrackingEventsService } from '../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingActionSelectorComponent } from '../transaction-tracking-action-details/transaction-tracking-action-selector/transaction-tracking-action-selector.component';
 import { TransactionTrackingStatusInfoComponent } from './transaction-tracking-status-info.component';
 
@@ -19,6 +20,7 @@ describe('TransactionTrackingStatusInfoComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingStatusInfoComponent, TransactionTrackingActionSelectorComponent],
       imports: [SvgIconModule, HttpClientTestingModule, ImageFallbackModule, BypassHTMLModule],
+      providers: [{ provide: TransactionTrackingScreenTrackingEventsService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
