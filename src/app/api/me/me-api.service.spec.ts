@@ -7,6 +7,8 @@ import { Item } from '@core/item/item';
 import { of } from 'rxjs';
 import { favouriteResponseFixture, mappedFavouriteResponseFixture } from '@api/fixtures/me/favourites/favourite-response.fixture';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ItemService } from '@core/item/item.service';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 
 describe('MeApiService', () => {
   let service: MeApiService;
@@ -14,7 +16,18 @@ describe('MeApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MeApiService, MeHttpService],
+      providers: [
+        MeApiService,
+        MeHttpService,
+        {
+          provide: ItemService,
+          useValue: {
+            mine() {
+              return of({ data: [MOCK_ITEM, MOCK_ITEM], init: '20' });
+            },
+          },
+        },
+      ],
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(MeApiService);

@@ -114,7 +114,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private bumpSuggestionModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
-  private init: string;
+  private nextPage: string;
   private counters: Counters;
   private searchTerm: string;
   private page = 1;
@@ -198,7 +198,7 @@ export class ListComponent implements OnInit, OnDestroy {
           return;
         }
         this.scrollTop = 0;
-        this.init = null;
+        this.nextPage = null;
         this.end = false;
         this.getItems();
       });
@@ -290,7 +290,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
-      this.init = null;
+      this.nextPage = null;
       this.getItems();
       this.getNumberOfProducts();
     }
@@ -595,7 +595,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.end = false;
 
     if (!append) {
-      this.init = null;
+      this.nextPage = null;
       this.page = 1;
       this.items = [];
     } else {
@@ -621,11 +621,11 @@ export class ListComponent implements OnInit, OnDestroy {
           this.loading = false;
         });
     } else {
-      this.meApiService.getItems(this.init, status as STATUS).subscribe((itemList: PaginatedList<Item>) => {
+      this.meApiService.getItems(this.nextPage, status as STATUS).subscribe((itemList: PaginatedList<Item>) => {
         const items = itemList.list;
-        this.init = itemList.paginationParameter;
+        this.nextPage = itemList.paginationParameter;
         this.items = append ? this.items.concat(items) : items;
-        this.end = !this.init;
+        this.end = !this.nextPage;
         if (this.bumpSuggestionModalRef) {
           this.bumpSuggestionModalRef.componentInstance.item = this.items[0];
         }
