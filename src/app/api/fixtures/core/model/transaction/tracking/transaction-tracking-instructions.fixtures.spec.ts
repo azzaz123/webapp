@@ -32,6 +32,15 @@ const MOCK_TRANSACTION_TRACKING_INSTRUCTION_3: TransactionTrackingInstruction = 
     '<strong>Descarga e imprime la etiqueta de envío</strong> cuando se haya generado. Pégala o adjúntala con el paquete. ¡No lo olvides!<br><br><span style="color: #13C1AC">Ver etiqueta de envío</span>',
 };
 
+const MOCK_TRANSACTION_TRACKING_INSTRUCTION_4: TransactionTrackingInstruction = {
+  action: {
+    isDeeplink: true,
+    linkUrl: 'wallapop://delivery/barcode?b=PK7NAY0713506140108500D',
+  },
+  description:
+    '<strong>Muestra el código de barras</strong> en la oficina de correos cuando te lo requieran.<br><br><span style="color: #13C1AC">Ver código de barras</span>',
+};
+
 const MOCK_TRANSACTION_TRACKING_ADDITIONAL_INFO_1: TransactionTrackingAdditionalInfo = {
   description: 'Aquí va la descripción de la información extra que queremos mostrar',
   title: 'Este es el título de la información extra',
@@ -46,13 +55,23 @@ const MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_BODY_1: TransactionTrackingInstruct
 const MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_BODY_2: TransactionTrackingInstructionsBody = {
   additionalInfo: MOCK_TRANSACTION_TRACKING_ADDITIONAL_INFO_1,
   banner: MOCK_TRANSACTION_TRACKING_BANNER_1,
-  instructions: [MOCK_TRANSACTION_TRACKING_INSTRUCTION_1, MOCK_TRANSACTION_TRACKING_INSTRUCTION_2, MOCK_TRANSACTION_TRACKING_INSTRUCTION_3],
+  instructions: [
+    MOCK_TRANSACTION_TRACKING_INSTRUCTION_1,
+    MOCK_TRANSACTION_TRACKING_INSTRUCTION_2,
+    MOCK_TRANSACTION_TRACKING_INSTRUCTION_3,
+    MOCK_TRANSACTION_TRACKING_INSTRUCTION_4,
+  ],
   title: '¿Qué debes hacer ahora?',
 };
 const MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_BODY_WITHOUT_BANNER: TransactionTrackingInstructionsBody = {
   additionalInfo: MOCK_TRANSACTION_TRACKING_ADDITIONAL_INFO_1,
   banner: null,
-  instructions: [MOCK_TRANSACTION_TRACKING_INSTRUCTION_1, MOCK_TRANSACTION_TRACKING_INSTRUCTION_2, MOCK_TRANSACTION_TRACKING_INSTRUCTION_3],
+  instructions: [
+    MOCK_TRANSACTION_TRACKING_INSTRUCTION_1,
+    MOCK_TRANSACTION_TRACKING_INSTRUCTION_2,
+    MOCK_TRANSACTION_TRACKING_INSTRUCTION_3,
+    MOCK_TRANSACTION_TRACKING_INSTRUCTION_4,
+  ],
   title: '¿Qué debes hacer ahora?',
 };
 
