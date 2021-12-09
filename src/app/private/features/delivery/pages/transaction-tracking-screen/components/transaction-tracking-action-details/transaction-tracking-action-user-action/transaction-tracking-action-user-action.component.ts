@@ -11,7 +11,7 @@ import {
 @Component({
   selector: 'tsl-transaction-tracking-action-user-action',
   templateUrl: './transaction-tracking-action-user-action.component.html',
-  styleUrls: ['./transaction-tracking-action-user-action.component.scss'],
+  styleUrls: ['../styles/transaction-tracking-action.scss'],
 })
 export class TransactionTrackingActionUserActionComponent {
   @Input() userAction: TransactionTrackingActionUserAction;
