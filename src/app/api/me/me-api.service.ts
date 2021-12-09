@@ -53,7 +53,7 @@ export class MeApiService {
     );
   }
 
-  private getSoldItems(paginationParameter?: string): Observable<PaginatedList<Item>> {
+  private getSoldItems(paginationParameter: string): Observable<PaginatedList<Item>> {
     let parameters: QueryParams<SoldItemsQueryParams>;
     if (paginationParameter) {
       parameters = {
