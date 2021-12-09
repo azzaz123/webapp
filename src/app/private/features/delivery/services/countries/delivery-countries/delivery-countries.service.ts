@@ -46,7 +46,7 @@ export class DeliveryCountriesService {
       value: deliveryCountryApi.iso_code,
       label: deliveryCountryApi.label,
       addressFormRestrictions: {
-        name: deliveryCountryApi.address_restrictions.name,
+        full_name: deliveryCountryApi.address_restrictions.name,
         street: deliveryCountryApi.address_restrictions.street,
         flat_and_floor: deliveryCountryApi.address_restrictions.flat_and_floor,
       },

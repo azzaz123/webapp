@@ -33,7 +33,7 @@ export interface DeliveryAddressCountryOption extends IOption {
 }
 
 export interface AddressFormRestrictions {
-  name: number;
+  full_name: number;
   street: number;
   flat_and_floor: number;
 }
