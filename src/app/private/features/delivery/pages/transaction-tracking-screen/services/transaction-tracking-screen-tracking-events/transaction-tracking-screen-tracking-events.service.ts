@@ -9,8 +9,8 @@ import {
   ViewTransactionalTimeline,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { ActionNameAnalytics } from './action-name-analytics-type';
 
-export type ActionNameAnalytics = 'Help General Doubts' | 'Help Packet On Hold' | 'Help Packet Delivered' | 'Tracer';
 @Injectable()
 export class TransactionTrackingScreenTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}

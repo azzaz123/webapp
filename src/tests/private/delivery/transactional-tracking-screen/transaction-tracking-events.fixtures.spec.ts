@@ -7,7 +7,7 @@ import {
   SCREEN_IDS,
   ViewTransactionalTimeline,
 } from '@core/analytics/analytics-constants';
-import { ActionNameAnalytics } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { ActionNameAnalytics } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/action-name-analytics-type';
 
 export const MOCK_REQUEST_ID_TTS_EVENT = '123';
 export const MOCK_ACTION_NAME_EVENT: ActionNameAnalytics = 'Help General Doubts';

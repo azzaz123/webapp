@@ -111,10 +111,12 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         });
 
         describe('and the action has analytics', () => {
-          it('should track the event', () => {
+          beforeEach(() => {
             component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS;
             fixture.detectChanges();
+          });
 
+          it('should track the event', () => {
             de.query(By.directive(TransactionTrackingActionDialogComponent)).nativeElement.click();
 
             expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);
@@ -163,10 +165,12 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         });
 
         describe('and the action has analytics', () => {
-          it('should track the event', () => {
+          beforeEach(() => {
             component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW_WITH_ANALYTICS;
             fixture.detectChanges();
+          });
 
+          it('should track the event', () => {
             de.query(By.directive(TransactionTrackingActionTrackingWebviewComponent)).nativeElement.click();
 
             expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);
@@ -215,10 +219,12 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         });
 
         describe('and the action has analytics', () => {
-          it('should track the event', () => {
+          beforeEach(() => {
             component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK_WITH_ANALYTICS;
             fixture.detectChanges();
+          });
 
+          it('should track the event', () => {
             de.query(By.directive(TransactionTrackingActionDeeplinkComponent)).nativeElement.click();
 
             expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);
@@ -267,10 +273,12 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         });
 
         describe('and the action has analytics', () => {
-          it('should track the event', () => {
+          beforeEach(() => {
             component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS;
             fixture.detectChanges();
+          });
 
+          it('should track the event', () => {
             de.query(By.directive(TransactionTrackingActionUserActionComponent)).nativeElement.click();
 
             expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);

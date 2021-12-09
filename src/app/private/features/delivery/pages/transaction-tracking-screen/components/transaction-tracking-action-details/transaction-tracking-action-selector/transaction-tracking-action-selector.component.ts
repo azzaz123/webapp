@@ -6,10 +6,8 @@ import {
   TransactionTrackingActionDialog,
   TransactionTrackingActionUserAction,
 } from '@api/core/model/delivery/transaction/tracking';
-import {
-  ActionNameAnalytics,
-  TransactionTrackingScreenTrackingEventsService,
-} from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { ActionNameAnalytics } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/action-name-analytics-type';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-selector',
