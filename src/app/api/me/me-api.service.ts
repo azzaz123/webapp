@@ -8,7 +8,7 @@ import { FavouritesResponseDto } from './dtos/favourites/response/favourites-res
 import { mapFavouriteItemsToLegacyItem } from './mappers/favourite-item-mapper';
 import { QueryParams } from '@api/core/utils/types';
 import { FavouritesQueryParams } from '@api/me/dtos/favourites/request/favourites-query-params';
-import { mapSoldItemsToLegacyItem } from './mappers/item-mapper';
+import { mapSoldItemsToLegacyItem } from './mappers/sold-item-mapper';
 import { SoldItemResponseDto } from './dtos/sold/response/sold-response-dto';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { ItemService } from '@core/item/item.service';
