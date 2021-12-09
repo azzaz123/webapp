@@ -13,7 +13,6 @@ import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscripti
   selector: 'tsl-subscriptions-slot-item',
   templateUrl: './subscriptions-slot-item.component.html',
   styleUrls: ['./subscriptions-slot-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubscriptionsSlotItemComponent implements OnChanges {
   @Input() subscriptionSlot: SubscriptionSlot;
