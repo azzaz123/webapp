@@ -10,7 +10,7 @@ const routes: Route[] = [
     component: DeliveryAddressComponent,
     canDeactivate: [ExitConfirmGuard],
     resolve: {
-      hero: DeliveryAddressResolver,
+      countries: DeliveryAddressResolver,
     },
   },
 ];

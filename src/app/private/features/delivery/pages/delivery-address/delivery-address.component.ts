@@ -1,4 +1,3 @@
-import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
@@ -22,6 +21,7 @@ import {
   AddressFormRestrictions,
   CountryOptionsAndDefault,
   DeliveryAddressCountryOption,
+  DeliveryCountryDefault,
 } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
@@ -48,6 +48,7 @@ import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirma
 import { DELIVERY_ADDRESS_LINKS } from '../../enums/delivery-address-links.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { DeliveryAddressInputsMaxLength } from './interfaces/delivery-address-inputs-max-length.interface';
+import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -85,11 +86,11 @@ export class DeliveryAddressComponent implements OnInit {
   };
   public comesFromPayView: boolean;
   private subscriptions: Subscription = new Subscription();
+  private defaultCountry: DeliveryCountryDefault;
 
   constructor(
     private fb: FormBuilder,
     private deliveryAddressService: DeliveryAddressService,
-    private deliveryCountriesService: DeliveryCountriesService,
     private eventService: EventService,
     private toastService: ToastService,
     private uuidService: UuidService,
@@ -97,8 +98,14 @@ export class DeliveryAddressComponent implements OnInit {
     private deliveryLocationsService: DeliveryLocationsService,
     private router: Router,
     private i18nService: I18nService,
+    private deliveryCountriesStoreService: DeliveryCountriesStoreService,
     private deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService
-  ) {}
+  ) {
+    this.deliveryCountriesStoreService.deliveryCountriesAndDefault$.subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
+      this.countries = countryOptionsAndDefault.countryOptions;
+      this.defaultCountry = countryOptionsAndDefault.defaultCountry;
+    });
+  }
 
   ngOnInit() {
     this.comesFromPayView =
@@ -282,8 +289,10 @@ export class DeliveryAddressComponent implements OnInit {
 
   private prepareFormAndInitializeCountries(isNewForm: boolean): void {
     this.isNewForm = isNewForm;
+    if (isNewForm) {
+      this.initializeDefaultCountry();
+    }
     this.formComponent.initFormControl();
-    this.initializeCountries(isNewForm);
     this.patchFormValues();
   }
 
@@ -441,20 +450,28 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private initializeCountries(isNewForm = true): void {
-    this.deliveryCountriesService.getCountriesAsOptionsAndDefault().subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
-      this.countries = countryOptionsAndDefault.countryOptions;
-      if (isNewForm) {
-        this.deliveryAddressForm.get('country_iso_code').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
-      }
-    });
+  private initializeDefaultCountry(): void {
+    this.deliveryAddressForm.get('country_iso_code').setValue(this.defaultCountry.isoCode, { emitEvent: false });
   }
 
   private changeValidatorsWhenCountryChanges(): void {
     this.deliveryAddressForm.get('country_iso_code').valueChanges.subscribe((newCountry: string) => {
-      const selectedCountry: DeliveryAddressCountryOption = this.countries.find(
+      const addressRestrictions: AddressFormRestrictions = this.countries.find(
         (countryOption: DeliveryAddressCountryOption) => countryOption.value === newCountry
-      );
+      ).addressFormRestrictions;
+
+      Object.keys(this.INPUTS_MAX_LENGTH).forEach((input: string) => {
+        if (addressRestrictions[input]) {
+          this.INPUTS_MAX_LENGTH[input] = addressRestrictions[input];
+        }
+
+        const newValidators: ValidatorFn[] =
+          input === 'flat_and_floor'
+            ? [Validators.maxLength(this.INPUTS_MAX_LENGTH[input])]
+            : [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH[input])];
+        this.deliveryAddressForm.get(input).setValidators(newValidators);
+        this.deliveryAddressForm.controls[input].updateValueAndValidity();
+      });
     });
   }
 

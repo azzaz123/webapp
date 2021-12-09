@@ -11,13 +11,11 @@ import {
 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
-import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { FormBuilder } from '@angular/forms';
 import { DeliveryAddressComponent } from './delivery-address.component';
 import { DeliveryCountriesApiService } from '../../services/api/delivery-countries-api/delivery-countries-api.service';
 import { DeliveryLocationsApiService } from '../../services/api/delivery-locations-api/delivery-locations-api.service';
-import { DeliveryAddressApiService } from '../../services/api/delivery-address-api/delivery-address-api.service';
 import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -51,7 +49,6 @@ describe('DeliveryAddressComponent', () => {
   let fixture: ComponentFixture<DeliveryAddressComponent>;
   let deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService;
   let deliveryLocationsService: DeliveryLocationsService;
-  let deliveryCountriesService: DeliveryCountriesService;
   let deliveryAddressService: DeliveryAddressService;
   let toastService: ToastService;
   let i18nService: I18nService;
@@ -66,9 +63,7 @@ describe('DeliveryAddressComponent', () => {
         FormBuilder,
         I18nService,
         ToastService,
-        DeliveryCountriesService,
-        DeliveryCountriesStoreService,
-        DeliveryAddressApiService,
+
         DeliveryCountriesApiService,
         DeliveryLocationsApiService,
         {
@@ -91,6 +86,14 @@ describe('DeliveryAddressComponent', () => {
           useValue: {
             initFormControl() {},
             canExit() {},
+          },
+        },
+        {
+          provide: DeliveryCountriesStoreService,
+          useValue: {
+            get deliveryCountriesAndDefault$() {
+              return of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
+            },
           },
         },
         {
@@ -123,9 +126,9 @@ describe('DeliveryAddressComponent', () => {
     toastService = TestBed.inject(ToastService);
     deliveryAddressService = TestBed.inject(DeliveryAddressService);
     deliveryLocationsService = TestBed.inject(DeliveryLocationsService);
-    deliveryCountriesService = TestBed.inject(DeliveryCountriesService);
     deliveryAddressTrackEventsService = TestBed.inject(DeliveryAddressTrackEventsService);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
@@ -134,9 +137,7 @@ describe('DeliveryAddressComponent', () => {
       describe('and we have a delivery address...', () => {
         beforeEach(() => {
           spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
-          spyOn(deliveryCountriesService, 'getCountriesAsOptionsAndDefault').and.returnValue(
-            of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT)
-          );
+
           spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
           spyOn(component.formComponent, 'initFormControl');
 
@@ -183,9 +184,6 @@ describe('DeliveryAddressComponent', () => {
 
       describe(`and we don't have a delivery address...`, () => {
         beforeEach(() => {
-          spyOn(deliveryCountriesService, 'getCountriesAsOptionsAndDefault').and.returnValue(
-            of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT)
-          );
           spyOn(deliveryAddressService, 'get').and.returnValue(of(null));
           spyOn(component.formComponent, 'initFormControl');
 
@@ -208,7 +206,7 @@ describe('DeliveryAddressComponent', () => {
 
         it('should set the default country value...', () => {
           expect(component.deliveryAddressForm.get('country_iso_code').value).toBe(
-            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.iso_code
+            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.isoCode
           );
         });
 
@@ -229,7 +227,6 @@ describe('DeliveryAddressComponent', () => {
 
     describe('and the petition fails...', () => {
       beforeEach(() => {
-        spyOn(deliveryCountriesService, 'getCountriesAsOptionsAndDefault').and.returnValue(of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT));
         spyOn(deliveryAddressService, 'get').and.returnValue(throwError('network error!'));
         spyOn(component.formComponent, 'initFormControl');
 
@@ -252,7 +249,7 @@ describe('DeliveryAddressComponent', () => {
 
       it('should set the default country value...', () => {
         expect(component.deliveryAddressForm.get('country_iso_code').value).toBe(
-          MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.iso_code
+          MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.isoCode
         );
       });
     });
@@ -778,7 +775,7 @@ describe('DeliveryAddressComponent', () => {
           expect(component.isNewForm).toBe(true);
           expect(component.formComponent.initFormControl).toHaveBeenCalled();
           expect(component.deliveryAddressForm.get('country_iso_code').value).toBe(
-            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.iso_code
+            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.isoCode
           );
         }));
 
