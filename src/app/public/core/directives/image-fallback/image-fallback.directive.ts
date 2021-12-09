@@ -1,10 +1,10 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'img[fallback]',
 })
 export class ImageFallbackDirective {
-  @Input('fallback') fallback: string;
+  @Input() fallback: string;
 
   constructor(private elementRef: ElementRef) {}
 
