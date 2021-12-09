@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Input, OnDestroy, Self } from '@angular/core';
-import { FormControl, NgControl, NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MultiSelectFormOption, TemplateMultiSelectFormOption } from './interfaces/multi-select-form-option.interface';
@@ -40,14 +40,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public maxLengthReached: boolean = false;
   public maxLength: number;
-
-  constructor(private elementRef: ElementRef) {
-    super();
-
-    this.shownChildrenOptionId$.subscribe((shownChildrenOptionId) => {
-      this.elementRef.nativeElement.scrollTo(0, 0);
-    });
-  }
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
