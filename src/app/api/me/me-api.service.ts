@@ -13,10 +13,12 @@ import { SoldItemResponseDto } from './dtos/sold/response/sold-response-dto';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { ItemService } from '@core/item/item.service';
 
-export const MIGRATED_ENDPOINTS = [STATUS.SOLD];
-
 @Injectable()
 export class MeApiService {
+  public requestConfig: Partial<Record<STATUS, Function>> = {
+    [STATUS.SOLD]: (params: string) => this.getSoldItems(params),
+  };
+
   public constructor(private httpService: MeHttpService, private itemService: ItemService) {}
 
   public getFavourites(paginationParameter?: string): Observable<PaginatedList<Item>> {
@@ -36,8 +38,8 @@ export class MeApiService {
   }
 
   public getItems(paginationParameter: string | number, status: STATUS): Observable<PaginatedList<Item>> {
-    if (MIGRATED_ENDPOINTS.includes(status)) {
-      return this.getSoldItems(paginationParameter as string);
+    if (status in this.requestConfig) {
+      return this.requestConfig[status](paginationParameter as string);
     }
     return this.itemService.mine(paginationParameter as number, status).pipe(
       map((response) => {
@@ -49,7 +51,7 @@ export class MeApiService {
     );
   }
 
-  public getSoldItems(paginationParameter?: string): Observable<PaginatedList<Item>> {
+  private getSoldItems(paginationParameter?: string): Observable<PaginatedList<Item>> {
     let parameters: QueryParams<FavouritesQueryParams>;
     if (paginationParameter) {
       parameters = {
