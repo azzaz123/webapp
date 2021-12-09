@@ -47,7 +47,7 @@ export class DeeplinkService {
 
   public isAvailable(deeplink: string): boolean {
     const availabilities: Record<deeplinkType, boolean> = {
-      barcodeLabel: false,
+      barcodeLabel: true,
       instructions: true,
       item: true,
       printableLabel: true,
@@ -101,7 +101,7 @@ export class DeeplinkService {
     }
 
     const deeplinkMappers: Record<deeplinkType, string> = {
-      barcodeLabel: this.getBarcodeLabel(deeplink),
+      barcodeLabel: this.getBarcodeWebLink(deeplink),
       instructions: this.getInstructionsWebLink(deeplink),
       item: this.getItemWebLink(deeplink),
       printableLabel: this.getPrintableLabelWebLink(deeplink),
@@ -113,8 +113,10 @@ export class DeeplinkService {
     return deeplinkMappers[this.getDeeplinkType(deeplink)];
   }
 
-  private getBarcodeLabel(deeplink: string): string {
-    return deeplink.split(barcodeLabelDeeplinkPrefix).pop();
+  private getBarcodeWebLink(deeplink: string): string {
+    const params = this.getParams(deeplink);
+    const barcode = !!params && !!params[0] ? params[0].split('=').pop() : null;
+    return !!barcode ? `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${TRANSACTION_TRACKING_PATHS.BARCODE}/${barcode}` : null;
   }
 
   private getDeeplinkType(deeplink: string): deeplinkType {
@@ -143,8 +145,7 @@ export class DeeplinkService {
   }
 
   private getInstructionsWebLink(deeplink: string): string {
-    const regExp: RegExp = new RegExp(/\w+=\w+/g);
-    const params = deeplink.match(regExp);
+    const params = this.getParams(deeplink);
     const request_id = !!params && !!params[0] ? params[0].split('=').pop() : null;
     const type = !!params && !!params[1] ? params[1].split('=').pop() : null;
     return !!request_id && !!type
@@ -155,6 +156,11 @@ export class DeeplinkService {
   private getItemWebLink(deeplink: string): string {
     const id = deeplink.split(itemDeeplinkPrefix).pop();
     return !!id ? this.itemDetailRoutePipe.transform(id) : null;
+  }
+
+  private getParams(deeplink: string): string[] {
+    const regExp: RegExp = new RegExp(/\w+=\w+/g);
+    return deeplink.match(regExp);
   }
 
   private getPrintableLabelWebLink(deeplink: string): string {
