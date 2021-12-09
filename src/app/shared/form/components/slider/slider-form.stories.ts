@@ -34,12 +34,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
   `,
 })
 class StorySliderFormComponent {
-  formGroup = new FormGroup({
-    slider: new FormControl([20, 200]),
-  });
-
-  slider = 80;
-
   @Input() min = 0;
   @Input() max = 5000;
   @Input() units: string;
@@ -47,6 +41,12 @@ class StorySliderFormComponent {
   @Input() valueTooltip = true;
   @Input() limitTooltip = true;
   @Input() limitless = false;
+
+  formGroup = new FormGroup({
+    slider: new FormControl([20, 200]),
+  });
+
+  slider = 80;
 }
 
 export default {

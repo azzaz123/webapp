@@ -55,8 +55,8 @@ export class DropdownComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() closed = new EventEmitter<null>();
   @Output() selected = new EventEmitter<IOption>();
   @Output() deselected = new EventEmitter<IOption | IOption[]>();
-  @Output() focus = new EventEmitter<null>();
-  @Output() blur = new EventEmitter<null>();
+  @Output() handleFocus = new EventEmitter<null>();
+  @Output() handleBlur = new EventEmitter<null>();
   @Output() noOptionsFound = new EventEmitter<string>();
   @Output() filterInputChanged = new EventEmitter<string>();
 
@@ -239,14 +239,14 @@ export class DropdownComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.hasFocus) {
       this.hasFocus = false;
       this.onTouched();
-      this.blur.emit(null);
+      this.handleBlur.emit(null);
     }
   }
 
   _focus() {
     if (!this.hasFocus) {
       this.hasFocus = true;
-      this.focus.emit(null);
+      this.handleBlur.emit(null);
     }
   }
 

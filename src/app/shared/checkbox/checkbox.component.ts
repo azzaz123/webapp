@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class CheckboxComponent {
   @Input() checked = false;
   @Output() checkedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   constructor() {}
 

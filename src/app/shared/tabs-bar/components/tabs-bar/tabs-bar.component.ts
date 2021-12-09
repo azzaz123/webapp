@@ -14,7 +14,7 @@ export class TabsBarComponent<T> {
     this.setFirstElementAsSelected(newTabsBarElements);
     this._tabsBarElements$.next(newTabsBarElements);
   }
-  @Output() onChange: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
+  @Output() handleOnClick: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
 
   private selectedTabBarElement: TabsBarElement<T>;
   private readonly _tabsBarElements$: ReplaySubject<TabsBarElement<T>[]> = new ReplaySubject<TabsBarElement<T>[]>(1);
@@ -23,7 +23,7 @@ export class TabsBarComponent<T> {
   }
 
   public handleClick(tabBarElement: TabsBarElement<T>): void {
-    this.onChange.emit(tabBarElement);
+    this.handleOnClick.emit(tabBarElement);
     this.selectedTabBarElement = tabBarElement;
   }
 

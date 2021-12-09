@@ -16,7 +16,7 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
   @Input() placeholder: string;
   @Input() suggestions: Subject<KeywordSuggestion[]>;
   @Output() inputChange: EventEmitter<string> = new EventEmitter();
-  @Output() onSuggestionSelect: EventEmitter<any> = new EventEmitter();
+  @Output() handleSuggestionSelect: EventEmitter<any> = new EventEmitter();
 
   public keywordSuggestions: KeywordSuggestion[];
   public suggestionsOpened = false;
@@ -51,7 +51,7 @@ export class KeywordSuggesterComponent implements OnInit, OnChanges {
     if (this.controlName) {
       this.form.get(String(this.controlName)).patchValue(suggestion.suggestion);
     }
-    this.onSuggestionSelect.emit(suggestion.value);
+    this.handleSuggestionSelect.emit(suggestion.value);
     this.suggestionsOpened = false;
   }
 

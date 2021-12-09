@@ -16,6 +16,6 @@
           <span class="status">{{call.callStatus | callStatusLabel}}</span>
         </div>
     </div>
-    <tsl-archive-button [lead]="call" (click)="archived = true"></tsl-archive-button>
+    <tsl-archive-button [lead]="call" (handleClick="archived = true"></tsl-archive-button>
   </div>
 </tsl-archivable>

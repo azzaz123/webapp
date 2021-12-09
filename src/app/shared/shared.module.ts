@@ -75,7 +75,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { HeaderModule } from './header/header.module';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
-import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
+import { LocationSelectorModalComponent } from './modals/location-selector-modal/location-selector-modal.component';
 import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
 import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
@@ -227,7 +227,7 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
     DeliveryDevelopmentDirective,
-    LocationSelectorModal,
+    LocationSelectorModalComponent,
   ],
   providers: [DecimalPipe, LinkTransformPipe, ItemDetailRoutePipe, ListingLimitService],
   entryComponents: [

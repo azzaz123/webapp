@@ -81,12 +81,12 @@ describe('StripeCardElementComponent', () => {
     });
 
     it('should emit stripe response when creating card', fakeAsync(() => {
-      spyOn(component.onStripeCardCreate, 'emit').and.callThrough();
+      spyOn(component.handleStripeCardCreate, 'emit').and.callThrough();
 
       component.createNewCard();
       tick();
 
-      expect(component.onStripeCardCreate.emit).toHaveBeenCalledWith(PAYMENT_METHOD_CARD_RESPONSE[0]);
+      expect(component.handleStripeCardCreate.emit).toHaveBeenCalledWith(PAYMENT_METHOD_CARD_RESPONSE[0]);
     }));
   });
 
@@ -106,19 +106,19 @@ describe('StripeCardElementComponent', () => {
     });
 
     it('should emit stripe response when creating card', fakeAsync(() => {
-      spyOn(component.onStripeSetDefaultCard, 'emit').and.callThrough();
+      spyOn(component.handleStripeSetDefaultCard, 'emit').and.callThrough();
       spyOn(stripeService, 'createDefaultCard').and.callThrough();
 
       component.setDefaultCard();
       tick();
 
-      expect(component.onStripeSetDefaultCard.emit).toHaveBeenCalledWith(SETUP_INTENT_DATA.setupIntent);
+      expect(component.handleStripeSetDefaultCard.emit).toHaveBeenCalledWith(SETUP_INTENT_DATA.setupIntent);
     }));
   });
 
   describe('showUseSavedCard', () => {
-    it('should emit onClickUseSavedCard true when clicking on element', () => {
-      spyOn(component.onClickUseSavedCard, 'emit').and.callThrough();
+    it('should emit handleClickUseSavedCard true when clicking on element', () => {
+      spyOn(component.handleClickUseSavedCard, 'emit').and.callThrough();
       component.showUseSavedCard = true;
       component.type = 'subscription';
       fixture.detectChanges();
@@ -126,7 +126,7 @@ describe('StripeCardElementComponent', () => {
 
       useSavedCardButton.click();
 
-      expect(component.onClickUseSavedCard.emit).toHaveBeenCalledWith(true);
+      expect(component.handleClickUseSavedCard.emit).toHaveBeenCalledWith(true);
     });
   });
 

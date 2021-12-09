@@ -31,15 +31,13 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   }
   @Input() disabled: boolean = false;
   @Input() reseteable: boolean = true;
-
-  private extendedOptions: TemplateMultiSelectFormOption[] = [];
-  private extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
-  private shownChildrenOptionIdSubject: BehaviorSubject<string> = new BehaviorSubject(null);
-  public extendedOptions$: Observable<TemplateMultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
-  public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
-
   public maxLengthReached: boolean = false;
   public maxLength: number;
+  public extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
+  public shownChildrenOptionIdSubject: BehaviorSubject<string> = new BehaviorSubject(null);
+  public extendedOptions$: Observable<TemplateMultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
+  public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
+  private extendedOptions: TemplateMultiSelectFormOption[] = [];
 
   constructor(private elementRef: ElementRef) {
     super();

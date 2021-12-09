@@ -26,7 +26,7 @@ export class OptionList {
   }
 
   constructor(options: Array<IOption>) {
-    this._hasValues = options != null;
+    this._hasValues = !!options;
 
     if (!this.hasValues) {
       options = [];

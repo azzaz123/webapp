@@ -11,6 +11,12 @@ import { PLACEHOLDER_AVATAR, User } from '../../core/user/user';
   styleUrls: ['./user-avatar.component.scss'],
 })
 export class UserAvatarComponent implements OnInit, OnChanges {
+  @Input() user: User | InboxUser;
+  @Input() size = 40;
+  @Input() imageUrl: string;
+  @Input() showProBadge = false;
+  @Input() showProBadgeWide = false;
+
   public avatar: string;
   public uploadedAvatar;
   public fallback: string;
@@ -18,12 +24,6 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   public badgeStyles = {};
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly ICON_TYPE = ICON_TYPE;
-
-  @Input() user: User | InboxUser;
-  @Input() size = 40;
-  @Input() imageUrl: string;
-  @Input() showProBadge = false;
-  @Input() showProBadgeWide = false;
 
   ngOnInit(): void {
     this.checkPROBadgeProperties();

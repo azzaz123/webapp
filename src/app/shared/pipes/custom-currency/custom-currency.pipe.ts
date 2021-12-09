@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { CurrencyCode } from '@api/core/model/currency.interface';
-import { currencySymbolByCode } from '@api/core/model/currency.interface';
+import { CurrencyCode, currencySymbolByCode } from '@api/core/model/currency.interface';
 
 @Pipe({
   name: 'customCurrency',

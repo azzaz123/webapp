@@ -5,7 +5,7 @@
   <h4 *ngIf="showCard && hasSavedCard" i18n="@@web_catalog_pro_modals_credit_card_modal_65">Feature for {{total | number:'1.2-2'}} Euros</h4>
   <form>
     <div>
-      <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+      <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (handleSelectExistingCard)="setSavedCard($event)"
                                  (hasCard)="hasCard($event)"
       ></tsl-stripe-card-selection>
       <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n="@@web_catalog_pro_modals_credit_card_modal_545">+ Add another credit card</div>

@@ -16,10 +16,10 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
   ],
 })
 export class ToggleFormComponent extends AbstractFormComponent<boolean> {
+  public id = this.uuidService.getUUID();
   constructor(private uuidService: UuidService, private cdr: ChangeDetectorRef) {
     super();
   }
-  public id = this.uuidService.getUUID();
 
   writeValue(value: any) {
     super.writeValue(value);
