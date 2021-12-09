@@ -5,7 +5,7 @@ import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 @Component({
   selector: 'tsl-transaction-tracking-action-deeplink',
   templateUrl: './transaction-tracking-action-deeplink.component.html',
-  styleUrls: ['./transaction-tracking-action-deeplink.component.scss'],
+  styleUrls: ['../styles/transaction-tracking-action.scss'],
 })
 export class TransactionTrackingActionDeeplinkComponent {
   @Input() deeplinkAction: TransactionTrackingActionDeeplink;

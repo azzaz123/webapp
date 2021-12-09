@@ -11,6 +11,7 @@ import {
   TransactionTrackingHeaderModule,
   TransactionTrackingStatusInfoWrapperModule,
 } from '../components/sections';
+import { TransactionTrackingScreenTrackingEventsService } from '../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 
 @NgModule({
   declarations: [transactionTrackingOverviewRoutedComponents],
@@ -21,6 +22,6 @@ import {
     TransactionTrackingGeneralInfoModule,
     TransactionTrackingStatusInfoWrapperModule,
   ],
-  providers: [TransactionTrackingService, TransactionTrackingHttpService],
+  providers: [TransactionTrackingService, TransactionTrackingHttpService, TransactionTrackingScreenTrackingEventsService],
 })
 export class TransactionTrackingOverviewModule {}

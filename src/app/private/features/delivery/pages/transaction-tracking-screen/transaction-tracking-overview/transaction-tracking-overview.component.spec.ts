@@ -7,6 +7,7 @@ import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model
 import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { of } from 'rxjs';
+import { TransactionTrackingScreenTrackingEventsService } from '../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 
 import { TransactionTrackingOverviewComponent } from './transaction-tracking-overview.component';
 
@@ -22,11 +23,18 @@ describe('TransactionTrackingOverviewComponent', () => {
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
   let de: DebugElement;
   let transactionTrackingService: TransactionTrackingService;
+  let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingOverviewComponent],
       providers: [
+        {
+          provide: TransactionTrackingScreenTrackingEventsService,
+          useValue: {
+            trackViewTTSScreen() {},
+          },
+        },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -59,18 +67,25 @@ describe('TransactionTrackingOverviewComponent', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
+    transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when we initialize the component...', () => {
+  describe('when we enter the TTS page', () => {
     beforeEach(() => {
       spyOn(transactionTrackingService, 'get').and.returnValue(of(MOCK_TRANSACTION_TRACKING));
       spyOn(transactionTrackingService, 'getDetails').and.returnValue(of(MOCK_TRANSACTION_TRACKING_DETAILS));
+      spyOn(transactionTrackingScreenTrackingEventsService, 'trackViewTTSScreen');
 
       fixture.detectChanges();
+    });
+
+    it('should track the view TTS screen event', () => {
+      expect(transactionTrackingScreenTrackingEventsService.trackViewTTSScreen).toHaveBeenCalledTimes(1);
+      expect(transactionTrackingScreenTrackingEventsService.trackViewTTSScreen).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING_ID);
     });
 
     it('should request the transaction tracking with the id param', () => {
