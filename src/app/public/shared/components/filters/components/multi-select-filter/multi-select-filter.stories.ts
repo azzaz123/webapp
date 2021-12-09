@@ -13,6 +13,7 @@ import { MultiSelectFilterConfig } from './interfaces/multi-select-filter-config
 import { MultiSelectFilterModule } from './multi-select-filter.module';
 import { FASHION_CONFIGURATION_ID } from '../../core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { SUBCATEGORIES_WITH_CHILDREN_MOCK } from '@fixtures/subcategories.fixtures';
+import { MULTISELECT_FILTER_BUBBLE_VARIANT } from './enum/multi-select-filter-bubble-variant.enum';
 
 @Component({
   selector: 'tsl-filters',
@@ -85,6 +86,7 @@ const conditionConfig: MultiSelectFilterConfig = {
     parameterKey: FILTER_QUERY_PARAM_KEY.condition,
   },
   type: FILTER_TYPES.MULTISELECT,
+  bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.MULTIPLE,
 };
 
 const subcategoryConfig: MultiSelectFilterConfig = {
@@ -98,6 +100,7 @@ const subcategoryConfig: MultiSelectFilterConfig = {
     parameterKey: FILTER_QUERY_PARAM_KEY.objectType,
   },
   type: FILTER_TYPES.MULTISELECT,
+  bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.MULTIPLE,
 };
 
 export const Default = Template.bind({});
@@ -107,7 +110,7 @@ Default.args = {
 
 export const WithDefaultValue = Template.bind({});
 WithDefaultValue.args = {
-  config: subcategoryConfig,
+  config: conditionConfig,
   value: [{ key: FILTER_QUERY_PARAM_KEY.condition, value: 'un_opened' }],
 };
 
@@ -119,6 +122,33 @@ WithNestedOptions.args = {
 export const WithNestedOptionsAndDefaultValue = Template.bind({});
 WithNestedOptionsAndDefaultValue.args = {
   config: subcategoryConfig,
+  value: [
+    {
+      key: FILTER_QUERY_PARAM_KEY.objectType,
+      value: `${SUBCATEGORIES_WITH_CHILDREN_MOCK[0].value},${SUBCATEGORIES_WITH_CHILDREN_MOCK[1].children[2].value}`,
+    },
+  ],
+};
+
+export const SingleBubble = Template.bind({});
+SingleBubble.args = {
+  config: { ...conditionConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'conditions' },
+};
+
+export const SingleBubbleWithNestedOptions = Template.bind({});
+SingleBubbleWithNestedOptions.args = {
+  config: { ...subcategoryConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'subcategories' },
+};
+
+export const SingleBubbleWithDefaultValue = Template.bind({});
+SingleBubbleWithDefaultValue.args = {
+  config: { ...conditionConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'conditions' },
+  value: [{ key: FILTER_QUERY_PARAM_KEY.condition, value: 'un_opened' }],
+};
+
+export const SingleBubbleWithNestedOptionsAndDefaultValue = Template.bind({});
+SingleBubbleWithNestedOptionsAndDefaultValue.args = {
+  config: { ...subcategoryConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'subcategories' },
   value: [
     {
       key: FILTER_QUERY_PARAM_KEY.objectType,

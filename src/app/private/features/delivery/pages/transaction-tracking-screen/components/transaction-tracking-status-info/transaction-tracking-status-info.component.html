@@ -12,10 +12,19 @@
       [fallback]="FALLBACK_NOT_FOUND_SRC"
     />
   </div>
-  <tsl-transaction-tracking-action-selector *ngIf="info.action" [actionDetail]="info.action">
+  <tsl-transaction-tracking-action-selector
+    *ngIf="info.action"
+    [actionDetail]="info.action"
+    class="TransactionTrackingStatusInfo__descriptionWrapper TransactionTrackingStatusInfo__descriptionWrapper--clickable"
+  >
     <div [innerHTML]="info.description | bypassHTML"></div>
   </tsl-transaction-tracking-action-selector>
-  <div *ngIf="!info.action" id="safeDescription" [innerHTML]="info.description | bypassHTML"></div>
+  <div
+    *ngIf="!info.action"
+    id="safeDescription"
+    [innerHTML]="info.description | bypassHTML"
+    class="TransactionTrackingStatusInfo__descriptionWrapper"
+  ></div>
   <tsl-svg-icon
     *ngIf="info.showCaret"
     src="/assets/icons/arrow-right.svg"

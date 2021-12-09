@@ -2,6 +2,7 @@ import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '../../../enums/configura
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { AvailableFilterConfig } from '../../../types/available-filter-config.type';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { MULTISELECT_FILTER_BUBBLE_VARIANT } from '@public/shared/components/filters/components/multi-select-filter/enum/multi-select-filter-bubble-variant.enum';
 
 export const CONSUMER_GOODS_FILTERS: AvailableFilterConfig[] = [
   {
@@ -41,5 +42,6 @@ export const CONSUMER_GOODS_FILTERS: AvailableFilterConfig[] = [
     },
     isClearable: true,
     hasContentPlaceholder: true,
+    bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.MULTIPLE,
   },
 ];
