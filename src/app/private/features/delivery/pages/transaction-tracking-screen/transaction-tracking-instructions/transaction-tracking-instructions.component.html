@@ -49,7 +49,12 @@
           class="TransactionTrackingInstructions__footer__action d-flex align-items-center justify-content-center"
         >
           <tsl-transaction-tracking-action-selector *ngIf="!!footerAction.action" [actionDetail]="footerAction.action">
-            <span [innerHTML]="footerAction.title | bypassHTML"></span>
+            <tsl-button
+              class="TransactionTrackingInstructions__actionButton"
+              className="btn-block {{ footerAction.style.className }}"
+              [disabled]="footerAction.state.isDisabled"
+              >{{ footerAction.title }}</tsl-button
+            >
           </tsl-transaction-tracking-action-selector>
         </div>
       </div>
