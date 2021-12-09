@@ -27,22 +27,10 @@
 
   &__descriptionWrapper {
     overflow: hidden;
-    pointer-events: none;
     flex: 1;
 
-    ::ng-deep {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
     &--clickable {
-      ::ng-deep {
-        span {
-          pointer-events: initial;
-          cursor: pointer;
-        }
-      }
+      cursor: pointer;
     }
   }
 
