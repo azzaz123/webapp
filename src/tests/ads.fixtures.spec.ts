@@ -67,17 +67,6 @@ export const MockDidomiService = {
   isLibraryRefDefined: () => true,
 };
 
-export const MockAdsKeywords: AdKeyWords = {
-  userId: '124214',
-  brand: 'vinted',
-  content: 'contenido',
-};
-
-export const MockAdsKeywordsService = {
-  adKeywords: MockAdsKeywords,
-  loadAdKeywords: () => {},
-};
-
 export const MockAdsTargetings: AdTargetings = {
   userId: '124214',
   brand: 'vinted',

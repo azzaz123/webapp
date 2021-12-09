@@ -33,7 +33,7 @@ const MOCK_TRANSACTION_TRACKING_HEADER_1: TransactionTrackingHeader = {
   detail: MOCK_TRANSACTION_TRACKING_HEADER_DETAIL_1,
   title: 'Estado de tu compra',
 };
-const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1: TransactionTrackingShippingStatus = {
+export const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1: TransactionTrackingShippingStatus = {
   actions: [
     {
       action: {
@@ -86,7 +86,7 @@ const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_1: TransactionTrackingStatu
   },
   showCaret: false,
 };
-const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1: TransactionTrackingStatusInfo = {
+export const MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1: TransactionTrackingStatusInfo = {
   action: {
     isCarrierTrackingWebview: true,
     linkUrl: 'https://www.correos.es/es/es/herramientas/localizador/envios/detalle?tracking-number=PK55Z20727923640108018P',
@@ -186,7 +186,7 @@ const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_3: TransactionTrackingShippingSt
     'Tu compra te espera en el punto de recogida situado en <strong>Via XXIV Maggio 76, 03037, Pontecorvo</strong>.<br><br>La fecha límite de recogida es el <strong>04/09/2021</strong>. Superado el plazo, será devuelto al vendedor y la transacción se cancelará.',
   title: '¡Paquete listo para recoger!',
 };
-const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_2: TransactionTrackingStatusInfo = {
+export const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_2: TransactionTrackingStatusInfo = {
   action: {
     isDeeplink: true,
     linkUrl: 'wallapop://customerSupport/faq/article?z=360001796618',

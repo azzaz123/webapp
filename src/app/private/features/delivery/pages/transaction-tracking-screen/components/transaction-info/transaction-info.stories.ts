@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
 import { TransactionInfoComponent } from './transaction-info.component';
+import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 
 export default {
   title: 'Webapp/Private/Features/Delivery/Components/TransactionInfo',
@@ -14,7 +15,7 @@ const Template: Story<TransactionInfoComponent> = (args: TransactionInfoComponen
   props: args,
   moduleMetadata: {
     declarations: [TransactionInfoComponent],
-    imports: [CommonModule],
+    imports: [CommonModule, ImageFallbackModule],
   },
   template: '<tsl-transaction-info [transactionInfo]="transactionInfo"></tsl-transaction-info>',
 });

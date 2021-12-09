@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
 import { MonitoringService, SENTRY_DSN, TRACES_SAMPLE_RATE, WALLAPOP_DOMAIN_REGEX } from './monitoring.service';
-import * as Sentry from '@sentry/angular';
+import * as Sentry from '@sentry/browser';
 import { environment } from '@environments/environment';
 
-jest.mock('@sentry/angular', () => ({
+jest.mock('@sentry/browser', () => ({
   init: () => {},
 }));
 
@@ -31,6 +31,7 @@ describe('MonitoringService', () => {
     const MOCK_SENTRY_CONFIG = {
       environment: expect.anything(),
       dsn: expect.anything(),
+      integrations: expect.anything(),
       tracesSampleRate: expect.anything(),
       allowUrls: expect.anything(),
     };

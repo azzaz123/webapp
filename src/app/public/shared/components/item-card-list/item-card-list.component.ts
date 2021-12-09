@@ -37,7 +37,6 @@ export class ItemCardListComponent {
 
   public cardTypes = CARD_TYPES;
   public readonly INLINE_SLOT_POSITION = 6;
-  public readonly EXPERIMENT_INLINE_SLOT_POSITION = 17;
   public readonly PERMISSIONS = PERMISSIONS;
   private static DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS = 15;
 
