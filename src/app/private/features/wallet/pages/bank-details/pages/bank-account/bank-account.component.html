@@ -23,7 +23,8 @@
       </div>
     </div>
   </div>
-  <tsl-profile-form class="BankAccount__form row" [profileForm]="bankAccountForm" (onInit)="initForm()">
+  <!-- TODO: Remove `profile-box` class by improving `tsl-profile-form` component-->
+  <tsl-profile-form class="BankAccount__form row profile-box" [profileForm]="bankAccountForm" (onInit)="initForm()">
     <form
       class="col d-flex flex-column"
       *ngIf="(loading$ | async) === false; else loadingState"
