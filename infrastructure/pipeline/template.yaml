@@ -51,16 +51,6 @@ Resources:
         EnvironmentVariables:
           - Name: HOSTING_BUCKET_FUNCTIONAL_WEBAPP
             Value: !Ref BucketNameFunctionalWebapp
-      VpcConfig:
-        SecurityGroupIds:
-          - Fn::ImportValue:
-              !Sub "Core-${EnvName}-SSHSecurityGroup"
-        VpcId:
-          Fn::ImportValue:
-            !Sub "${EnvName}-vpc"
-        Subnets:
-          - Fn::ImportValue:
-              !Sub "${EnvName}-public-subnet-a"
       Tags:
         - Key: Env
           Value: !Ref EnvName
@@ -97,16 +87,6 @@ Resources:
         EnvironmentVariables:
           - Name: FUNCTIONAL_WEBAPP_DISTRIBUTION_ID
             Value: !Ref FunctionalWebappDistributionID
-      VpcConfig:
-        SecurityGroupIds:
-          - Fn::ImportValue:
-              !Sub "Core-${EnvName}-SSHSecurityGroup"
-        VpcId:
-          Fn::ImportValue:
-            !Sub "${EnvName}-vpc"
-        Subnets:
-          - Fn::ImportValue:
-              !Sub "${EnvName}-private-subnet-a"
       Tags:
         - Key: Env
           Value: !Ref EnvName
