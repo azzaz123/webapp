@@ -495,14 +495,17 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when clicking in the countries dropdown...', () => {
     beforeEach(() => {
-      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
       spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
-
-      component.initForm();
-      fixture.detectChanges();
     });
 
     describe('and the form is not a new one... ', () => {
+      beforeEach(() => {
+        spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+
+        component.initForm();
+        fixture.detectChanges();
+      });
+
       describe('and the user did not accept the terms yet...', () => {
         beforeEach(() => {
           component.countries = MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.countryOptions;
@@ -566,6 +569,13 @@ describe('DeliveryAddressComponent', () => {
     });
 
     describe('and the form is a new one... ', () => {
+      beforeEach(() => {
+        spyOn(deliveryAddressService, 'get').and.returnValue(of(null));
+
+        component.initForm();
+        fixture.detectChanges();
+      });
+
       it('should open the dropdown', fakeAsync(() => {
         spyOn(component.countriesDropdown, 'open');
         component.isNewForm = true;
@@ -573,7 +583,7 @@ describe('DeliveryAddressComponent', () => {
         fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
         tick();
 
-        expect(component.isCountryEditable).toBe(false);
+        expect(component.isCountryEditable).toBe(true);
         expect(component.countriesDropdown.open).not.toHaveBeenCalled();
       }));
     });

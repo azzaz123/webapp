@@ -9,7 +9,7 @@ export const MOCK_DELIVERY_ADDRESS: DeliveryAddressApi = {
   region: 'Barcelona',
   country_iso_code: 'ES',
   phone_number: '677594321',
-  flat_and_floor: 'Quinto tercera',
+  flat_and_floor: '4 2',
 };
 
 export const MOCK_INVALID_DELIVERY_ADDRESS: DeliveryAddressApi = {
@@ -21,7 +21,7 @@ export const MOCK_INVALID_DELIVERY_ADDRESS: DeliveryAddressApi = {
   region: 'Barcelona',
   country_iso_code: 'ES',
   phone_number: '',
-  flat_and_floor: 'Quinto tercera',
+  flat_and_floor: '1 5',
 };
 
 export const MOCK_DELIVERY_ADDRESS_EMPTY: DeliveryAddressApi = {
@@ -57,5 +57,5 @@ export const MOCK_DELIVERY_ADDRESS_2: DeliveryAddressApi = {
   region: 'Barcelona',
   country_iso_code: 'ES',
   phone_number: '677594321',
-  flat_and_floor: 'Segundo segunda',
+  flat_and_floor: '6 7',
 };
