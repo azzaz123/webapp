@@ -1,4 +1,4 @@
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, LOCALE_ID, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -9,8 +9,8 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { of } from 'rxjs';
-import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
 import { SmsCodeVerificationModalComponent } from '../sms-code-verification-modal/sms-code-verification-modal.component';
 import { PhoneVerificationModalComponent } from './phone-verification-modal.component';
 
@@ -63,6 +63,10 @@ describe('PhoneVerificationModalComponent', () => {
             trackStartPhoneVerificationProcessEvent() {},
           },
         },
+        {
+          provide: LOCALE_ID,
+          useValue: 'en',
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -93,11 +97,11 @@ describe('PhoneVerificationModalComponent', () => {
 
     it('should show prefix options with correct format', () => {
       const dropdown: DropdownComponent = fixture.debugElement.query(By.directive(DropdownComponent)).componentInstance;
-      const option = dropdown.options.find((e: PhonePrefixOption) => {
+      const option = dropdown.options.find((e: IOption) => {
         return e.value === '+34';
       });
 
-      expect(option).toStrictEqual({ country_code: 'ES', value: '+34', label: 'Spain (+34)' });
+      expect(option).toStrictEqual({ value: '+34', label: 'Spain (+34)' });
     });
   });
 

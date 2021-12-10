@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { take } from 'rxjs/operators';
-import { CountryCode, parsePhoneNumber } from 'libphonenumber-js';
+import { parsePhoneNumber } from 'libphonenumber-js';
 import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { SmsCodeVerificationModalComponent } from '../sms-code-verification-modal/sms-code-verification-modal.component';
-import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
 import { PHONE_PREFIXES } from '../../constants/phone-prefixies-constants';
 import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { IOption } from '@shared/dropdown/utils/option.interface';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { PhonePrefix } from '../../interfaces/phone-prefix.interface';
 
 @Component({
   selector: 'tsl-phone-verification-modal',
@@ -18,7 +20,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
   styleUrls: ['./phone-verification-modal.component.scss'],
 })
 export class PhoneVerificationModalComponent implements OnInit {
-  public prefixes: PhonePrefixOption[];
+  public prefixes: IOption[];
   public phoneVerificationForm: FormGroup;
 
   constructor(
@@ -27,7 +29,8 @@ export class PhoneVerificationModalComponent implements OnInit {
     private userVerificationsService: UserVerificationsService,
     private toastService: ToastService,
     private modalService: NgbModal,
-    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService
+    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService,
+    @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
   ngOnInit(): void {
@@ -82,9 +85,8 @@ export class PhoneVerificationModalComponent implements OnInit {
   }
 
   private setPhonePrefixes(): void {
-    this.prefixes = PHONE_PREFIXES.map((e) => {
+    this.prefixes = PHONE_PREFIXES[this.locale].map((e: PhonePrefix) => {
       return {
-        country_code: <CountryCode>e.country_code,
         value: e.prefix,
         label: `${e.country} (${e.prefix})`,
       };
