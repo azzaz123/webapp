@@ -33,7 +33,6 @@ import { UserService } from 'app/core/user/user.service';
 import { of } from 'rxjs';
 import { SubscriptionsComponent } from './subscription.component';
 import { By } from '@angular/platform-browser';
-import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
 import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { PRO_PATHS } from '../../pro-routing-constants';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';

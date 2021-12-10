@@ -22,7 +22,6 @@ import { SubscriptionBenefitComponent } from './components/subscription-benefits
 import { SubscriptionsComponent } from './pages/subscription/subscription.component';
 import { InvoiceComponent } from './pages/invoice/invoice.component';
 import { ProfileProSubscriptionComponent } from './pages/profile-pro-subscription/profile-pro-subscription.component';
-import { CancelSubscriptionModalComponent } from './modal/cancel-subscription/cancel-subscription-modal.component';
 import { ContinueSubscriptionModalComponent } from './modal/continue-subscription/continue-subscription-modal.component';
 import { VisibilityProductsModalComponent } from './modal/visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from '../profile/pipes/subscription-icon.pipe';
@@ -60,7 +59,6 @@ import { ProHeaderComponent } from './components/pro-header/pro-header.component
     SubscriptionCardSelectorComponent,
     SubscriptionPurchaseFooterComponent,
     VisibilityProductsModalComponent,
-    CancelSubscriptionModalComponent,
     ContinueSubscriptionModalComponent,
     SubscriptionIconPipe,
     SubscriptionBenefitsComponent,
