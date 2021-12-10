@@ -1405,6 +1405,7 @@
     "web_filter_condition_title": "Item condition",
     "web_filter_condition_bubble_placeholder": "Item condition",
     "web_filter_condition_drawer_placeholder": "Any item condition",
+    "quick_filter_n_conditions": "{$INTERPOLATION} conditions",
     "web_filter_location_title": "Where?",
     "web_filter_location_bubble_placeholder": "Location",
     "web_filter_location_drawer_placeholder": "Any location",

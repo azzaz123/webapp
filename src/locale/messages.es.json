@@ -1405,6 +1405,7 @@
     "web_filter_condition_title": "Estado del producto",
     "web_filter_condition_bubble_placeholder": "Estado del producto",
     "web_filter_condition_drawer_placeholder": "Cualquier estado",
+    "quick_filter_n_conditions": "{$INTERPOLATION} estados",
     "web_filter_location_title": "¿Dónde?",
     "web_filter_location_bubble_placeholder": "Ubicación",
     "web_filter_location_drawer_placeholder": "Sin ubicación",
