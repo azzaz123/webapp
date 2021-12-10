@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
   AnalyticsEvent,
@@ -14,22 +14,20 @@ import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscripti
   templateUrl: './subscriptions-slot-item.component.html',
   styleUrls: ['./subscriptions-slot-item.component.scss'],
 })
-export class SubscriptionsSlotItemComponent {
+export class SubscriptionsSlotItemComponent implements OnChanges {
   @Input() subscriptionSlot: SubscriptionSlot;
-  @Input() subscriptionSlotsLength = 1;
-  @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
+  @Input() selectedSubscriptionSlot: SubscriptionSlot;
   @Output() selected: EventEmitter<SubscriptionSlot> = new EventEmitter();
+
+  public isSelected: boolean;
 
   constructor(private analyticsService: AnalyticsService) {}
 
-  isSelected() {
-    if (!this.selectedSubscriptionSlot) {
-      return false;
-    }
-    return this.subscriptionSlot.subscription.type === this.selectedSubscriptionSlot.subscription.type;
+  ngOnChanges() {
+    this.checkIsSelected();
   }
 
-  onClick(subscriptionSlot: SubscriptionSlot, e: any) {
+  public onClick(subscriptionSlot: SubscriptionSlot, e: any): void {
     if (!subscriptionSlot || subscriptionSlot === this.selectedSubscriptionSlot) {
       e.stopPropagation();
       this.selected.emit(null);
@@ -46,5 +44,13 @@ export class SubscriptionsSlotItemComponent {
 
       this.analyticsService.trackEvent(event);
     }
+  }
+
+  private checkIsSelected(): void {
+    if (!this.selectedSubscriptionSlot) {
+      this.isSelected = false;
+      return;
+    }
+    this.isSelected = this.subscriptionSlot.subscription.type === this.selectedSubscriptionSlot.subscription.type;
   }
 }
