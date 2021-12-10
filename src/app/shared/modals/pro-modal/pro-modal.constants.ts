@@ -12,6 +12,7 @@ export enum PRO_MODAL_TYPE {
   listing_limit_discount,
   reactivation,
   profile_pro_fields,
+  cancel_subscription,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -143,6 +144,16 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
         text: $localize`:@@pro_after_reactivation_non_subscribed_user_view_plans_button:View plans`,
         redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
       },
+    },
+  },
+  [PRO_MODAL_TYPE.cancel_subscription]: {
+    img: '/assets/icons/pro/modals/cancel-subscription.svg',
+    title: null,
+    text1: $localize`:@@web_profile_modal_cancel_subscription_238:It’s sad that you are leaving us. You can return whenever you want, we’ll be waiting for you!`,
+    style: MODAL_STYLE.GREEN,
+    buttons: {
+      secondary: { text: $localize`:@@web_profile_modal_cancel_subscription_240:No, I want to keep my subscription.` },
+      primary: { text: $localize`:@@web_profile_modal_cancel_subscription_239:Yes, I want to cancel my subscription.` },
     },
   },
 };

@@ -86,6 +86,9 @@ export class MockSubscriptionService {
   public editSubscription(): Observable<unknown> {
     return of({});
   }
+  public cancelSubscription(): Observable<unknown> {
+    return of({});
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [

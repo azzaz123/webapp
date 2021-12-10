@@ -3,6 +3,7 @@ import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ClickConfirmCloseSubscription,
   ClickSubscriptionPlanDone,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
@@ -18,9 +19,10 @@ import { User } from '@core/user/user';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
-import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { MODAL_ACTION } from '@shared/modals/pro-modal/pro-modal.interface';
 import { finalize } from 'rxjs/operators';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
@@ -70,18 +72,17 @@ export class SubscriptionEditComponent implements OnInit {
   }
 
   public cancelSubscription(): void {
-    const modalRef: NgbModalRef = this.modalService.open(CancelSubscriptionModalComponent, {
-      windowClass: 'review',
+    const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
+      windowClass: 'pro-modal',
     });
-    modalRef.componentInstance.subscription = this.subscription;
-    modalRef.result.then(
-      (result: ModalStatuses) => {
-        if (result === ModalStatuses.SUCCESS) {
-          this.editSuccesful.emit();
-        }
-      },
-      () => {}
-    );
+
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.cancel_subscription];
+    modalRef.componentInstance.modalConfig.title = $localize`:@@web_profile_modal_cancel_subscription_237:${this.subscription.category_name}:INTERPOLATION:?`;
+    modalRef.result.then((result: MODAL_ACTION) => {
+      if (result === MODAL_ACTION.PRIMARY_BUTTON) {
+        this.confirmCancelSubscription();
+      }
+    });
   }
 
   public onRedirectTo(path: string): void {
@@ -103,10 +104,18 @@ export class SubscriptionEditComponent implements OnInit {
           if (response.status === PAYMENT_SUCCESSFUL_CODE) {
             this.showEditSuccessful = true;
           } else {
-            this.showToastError();
+            this.showToastError(
+              this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE),
+              this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)
+            );
           }
         },
-        () => this.showToastError()
+        () => {
+          this.showToastError(
+            this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE),
+            this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)
+          );
+        }
       );
   }
 
@@ -125,10 +134,10 @@ export class SubscriptionEditComponent implements OnInit {
     this.isEqualTier = this.selectedTier?.id === this.subscribedTier?.id;
   }
 
-  private showToastError(): void {
+  private showToastError(title: string, text: string): void {
     this.toastService.show({
-      title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE)}`,
-      text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)}`,
+      title,
+      text,
       type: TOAST_TYPES.ERROR,
     });
   }
@@ -144,6 +153,55 @@ export class SubscriptionEditComponent implements OnInit {
         screenId: SCREEN_IDS.SubscriptionManagement,
       },
     };
+    this.analyticsService.trackEvent(event);
+  }
+
+  private confirmCancelSubscription(): void {
+    this.isLoading = true;
+    this.trackClickConfirmCloseSubscription();
+    this.subscriptionsService
+      .cancelSubscription(this.subscription.selected_tier_id)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe(
+        (response) => {
+          if (response.status === PAYMENT_SUCCESSFUL_CODE) {
+            this.toastService.show({
+              title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_TITLE),
+              text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_BODY),
+              type: TOAST_TYPES.SUCCESS,
+            });
+            this.editSuccesful.emit();
+          } else {
+            this.showToastError(
+              this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_TITLE),
+              this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_BODY)
+            );
+          }
+        },
+        () => {
+          this.showToastError(
+            this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_TITLE),
+            this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_BODY)
+          );
+        }
+      );
+  }
+
+  private trackClickConfirmCloseSubscription() {
+    const event: AnalyticsEvent<ClickConfirmCloseSubscription> = {
+      name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+        tier: this.subscription.selected_tier_id,
+        screenId: SCREEN_IDS.ProfileSubscription,
+      },
+    };
+
     this.analyticsService.trackEvent(event);
   }
 }

@@ -1,16 +1,19 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { LOCALE_ID, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ClickConfirmCloseSubscription,
   ClickSubscriptionPlanDone,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -18,12 +21,14 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import { MockSubscriptionService, MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
-import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { MODAL_ACTION } from '@shared/modals/pro-modal/pro-modal.interface';
 import { of, throwError } from 'rxjs';
 import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
 import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
@@ -38,6 +43,7 @@ describe('SubscriptionEditComponent', () => {
   let modalService: NgbModal;
   let modalSpy: jasmine.Spy;
   let customerHelpService: CustomerHelpService;
+  let i18nService: I18nService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -51,6 +57,11 @@ describe('SubscriptionEditComponent', () => {
         {
           provide: SubscriptionBenefitsService,
           useClass: MockSubscriptionBenefitsService,
+        },
+        I18nService,
+        {
+          provide: LOCALE_ID,
+          useValue: 'es',
         },
         {
           provide: NgbModal,
@@ -88,6 +99,7 @@ describe('SubscriptionEditComponent', () => {
     modalService = TestBed.inject(NgbModal);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
     customerHelpService = TestBed.inject(CustomerHelpService);
+    i18nService = TestBed.inject(I18nService);
     fixture.detectChanges();
   });
 
@@ -132,30 +144,104 @@ describe('SubscriptionEditComponent', () => {
       component.cancelSubscription();
 
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(CancelSubscriptionModalComponent, {
-        windowClass: 'review',
+      expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+        windowClass: 'pro-modal',
       });
     });
-    describe('and modal return success', () => {
-      it('should emit successful', fakeAsync(() => {
+    describe('and click CTA', () => {
+      beforeEach(() => {
+        modalSpy.and.returnValue({ result: Promise.resolve(MODAL_ACTION.PRIMARY_BUTTON), componentInstance: {} });
+        spyOn(analyticsService, 'trackEvent').and.callThrough();
+      });
+      it('should track event', fakeAsync(() => {
+        const expectedEvent: AnalyticsEvent<ClickConfirmCloseSubscription> = {
+          name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            subscription: component.subscription.category_id as SUBSCRIPTION_CATEGORIES,
+            tier: component.subscription.selected_tier_id,
+            screenId: SCREEN_IDS.ProfileSubscription,
+          },
+        };
+
         component.cancelSubscription();
 
         tick();
         fixture.detectChanges;
 
-        expect(component.editSuccesful.emit).toHaveBeenCalledTimes(1);
-        expect(component.editSuccesful.emit).toHaveBeenLastCalledWith();
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       }));
+      it('should make the request', fakeAsync(() => {
+        spyOn(subscriptionsService, 'cancelSubscription').and.callThrough();
+
+        component.cancelSubscription();
+        tick();
+
+        expect(subscriptionsService.cancelSubscription).toHaveBeenCalledWith(component.subscription.selected_tier_id);
+      }));
+
+      describe('and request is successful', () => {
+        beforeEach(() => {
+          spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(of({ status: 202 }));
+          spyOn(toastService, 'show').and.callThrough();
+        });
+        it('should emit event', fakeAsync(() => {
+          component.cancelSubscription();
+          tick();
+
+          expect(component.editSuccesful.emit).toHaveBeenCalledTimes(1);
+          expect(component.editSuccesful.emit).toHaveBeenCalledWith();
+        }));
+        it('should show success toast', fakeAsync(() => {
+          component.cancelSubscription();
+          tick();
+
+          expect(toastService.show).toHaveBeenCalledTimes(1);
+          expect(toastService.show).toHaveBeenCalledWith({
+            title: `${i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_TITLE)}`,
+            text: `${i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_BODY)}`,
+            type: TOAST_TYPES.SUCCESS,
+          });
+        }));
+      });
+
+      describe('and request fail', () => {
+        beforeEach(() => {
+          spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(throwError('error'));
+          spyOn(toastService, 'show').and.callThrough();
+        });
+        it('should not emit event', fakeAsync(() => {
+          component.cancelSubscription();
+          tick();
+
+          expect(component.editSuccesful.emit).not.toHaveBeenCalled();
+        }));
+        it('should show error toast', fakeAsync(() => {
+          component.cancelSubscription();
+          tick();
+
+          expect(toastService.show).toHaveBeenCalledTimes(1);
+          expect(toastService.show).toHaveBeenCalledWith({
+            title: `${i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_TITLE)}`,
+            text: `${i18nService.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_BODY)}`,
+            type: TOAST_TYPES.ERROR,
+          });
+        }));
+      });
     });
-    describe('and modal not return success', () => {
-      it('should emit successful', fakeAsync(() => {
-        modalSpy.and.returnValue({ result: Promise.resolve(ModalStatuses.FAIL), componentInstance: {} });
+    describe('and click secondary button', () => {
+      beforeEach(() => {
+        modalSpy.and.returnValue({ result: Promise.resolve(MODAL_ACTION.SECONDARY_BUTON), componentInstance: {} });
+        spyOn(analyticsService, 'trackEvent').and.callThrough();
+      });
+      it('should not track event', fakeAsync(() => {
         component.cancelSubscription();
 
         tick();
         fixture.detectChanges;
 
-        expect(component.editSuccesful.emit).not.toHaveBeenCalled();
+        expect(analyticsService.trackEvent).not.toHaveBeenCalled();
       }));
     });
   });
