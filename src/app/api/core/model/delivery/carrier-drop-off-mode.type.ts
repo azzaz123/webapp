@@ -1,0 +1,4 @@
+export enum CARRIER_DROP_OFF_MODE {
+  POST_OFFICE,
+  HOME_PICK_UP,
+}
