@@ -85,7 +85,9 @@ export class PhoneVerificationModalComponent implements OnInit {
   }
 
   private setPhonePrefixes(): void {
-    this.prefixes = PHONE_PREFIXES[this.locale].map((e: PhonePrefix) => {
+    const phonePrefixes = PHONE_PREFIXES[this.locale] || PHONE_PREFIXES.en;
+
+    this.prefixes = phonePrefixes.map((e: PhonePrefix) => {
       return {
         value: e.prefix,
         label: `${e.country} (${e.prefix})`,

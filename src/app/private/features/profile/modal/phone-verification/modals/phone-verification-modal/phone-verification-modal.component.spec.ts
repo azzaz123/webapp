@@ -65,7 +65,7 @@ describe('PhoneVerificationModalComponent', () => {
         },
         {
           provide: LOCALE_ID,
-          useValue: 'en',
+          useValue: 'pr',
         },
       ],
       schemas: [NO_ERRORS_SCHEMA],
