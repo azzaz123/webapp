@@ -576,7 +576,7 @@ describe('DeliveryAddressComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should open the dropdown', fakeAsync(() => {
+      it('should NOT open the dropdown directly', fakeAsync(() => {
         spyOn(component.countriesDropdown, 'open');
         component.isNewForm = true;
 

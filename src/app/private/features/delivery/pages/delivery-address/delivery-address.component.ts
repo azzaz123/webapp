@@ -101,10 +101,13 @@ export class DeliveryAddressComponent implements OnInit {
     private deliveryCountriesStoreService: DeliveryCountriesStoreService,
     private deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService
   ) {
-    this.deliveryCountriesStoreService.deliveryCountriesAndDefault$.subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
-      this.countries = countryOptionsAndDefault.countryOptions;
-      this.defaultCountry = countryOptionsAndDefault.defaultCountry;
-    });
+    const subscription = this.deliveryCountriesStoreService.deliveryCountriesAndDefault$.subscribe(
+      (countryOptionsAndDefault: CountryOptionsAndDefault) => {
+        this.countries = countryOptionsAndDefault.countryOptions;
+        this.defaultCountry = countryOptionsAndDefault.defaultCountry;
+      }
+    );
+    this.subscriptions.add(subscription);
   }
 
   ngOnInit() {
@@ -113,7 +116,6 @@ export class DeliveryAddressComponent implements OnInit {
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
 
     this.buildForm();
-    this.changeValidatorsWhenCountryChanges();
     this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
       this.onSubmit();
     });
@@ -212,21 +214,31 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   public canExit(): true | Promise<any> {
-    // TODO: comentar validadores		Date: 2021/12/07
     return this.formComponent.canExit();
   }
 
   private clearFormAndResetLocationsWhenCountryChange(): void {
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
-    const subscription = countryISOCode.valueChanges.subscribe(() => {
+    const subscription = countryISOCode.valueChanges.subscribe((newCountry: string) => {
+      this.updateFormValidators(newCountry);
       if (countryISOCode.dirty) {
-        this.resetCitiesAndLocations();
         this.clearForm(false);
+        this.resetCitiesAndLocations();
       }
     });
 
     this.subscriptions.add(subscription);
+  }
+
+  private updateFormValidators(newCountry: string): void {
+    const addressRestrictions: AddressFormRestrictions = this.countries.find(
+      (countryOption: DeliveryAddressCountryOption) => countryOption.value === newCountry
+    ).addressFormRestrictions;
+
+    this.INPUTS_MAX_LENGTH.flat_and_floor = addressRestrictions.flat_and_floor;
+    this.INPUTS_MAX_LENGTH.full_name = addressRestrictions.full_name;
+    this.INPUTS_MAX_LENGTH.street = addressRestrictions.street;
   }
 
   private clearForm(isNewForm: boolean): void {
@@ -238,6 +250,19 @@ export class DeliveryAddressComponent implements OnInit {
       id,
       country_iso_code,
     });
+    this.updateDeliveryAddressValidators();
+  }
+
+  private updateDeliveryAddressValidators(): void {
+    this.deliveryAddressForm.get('full_name').setValidators([Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.full_name)]);
+    this.deliveryAddressForm.get('street').setValidators([Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.street)]);
+    this.deliveryAddressForm.get('flat_and_floor').setValidators([Validators.maxLength(this.INPUTS_MAX_LENGTH.flat_and_floor)]);
+    this.deliveryAddressForm
+      .get('postal_code')
+      .setValidators([Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.postal_code)]);
+    this.deliveryAddressForm
+      .get('phone_number')
+      .setValidators([Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.phone_number)]);
   }
 
   private requestLocationsWhenPostalCodeChange(): void {
@@ -270,7 +295,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private handleExistingForm(deliveryAddress: DeliveryAddressApi): void {
-    this.initializeCitiesAsOptions(deliveryAddress.postal_code, deliveryAddress.country_iso_code)
+    const subscription = this.initializeCitiesAsOptions(deliveryAddress.postal_code, deliveryAddress.country_iso_code)
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -280,6 +305,8 @@ export class DeliveryAddressComponent implements OnInit {
 
     this.patchCurrentForm(deliveryAddress);
     this.prepareFormAndInitializeCountries(false);
+
+    this.subscriptions.add(subscription);
   }
 
   private handleNewForm(): void {
@@ -405,7 +432,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private getLocationsAndHandlePostalCode(postalCode: string, countryISOCode: string): void {
-    this.deliveryLocationsService
+    const subscription = this.deliveryLocationsService
       .getLocationsByPostalCodeAndCountry(postalCode, countryISOCode)
       .pipe(
         tap((locations: DeliveryLocationApi[]) => {
@@ -420,6 +447,8 @@ export class DeliveryAddressComponent implements OnInit {
         },
         (errors: DeliveryPostalCodesError[]) => this.handlePostalCodesErrors(errors)
       );
+
+    this.subscriptions.add(subscription);
   }
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
@@ -452,27 +481,6 @@ export class DeliveryAddressComponent implements OnInit {
 
   private initializeDefaultCountry(): void {
     this.deliveryAddressForm.get('country_iso_code').setValue(this.defaultCountry.isoCode, { emitEvent: false });
-  }
-
-  private changeValidatorsWhenCountryChanges(): void {
-    this.deliveryAddressForm.get('country_iso_code').valueChanges.subscribe((newCountry: string) => {
-      const addressRestrictions: AddressFormRestrictions = this.countries.find(
-        (countryOption: DeliveryAddressCountryOption) => countryOption.value === newCountry
-      ).addressFormRestrictions;
-
-      Object.keys(this.INPUTS_MAX_LENGTH).forEach((input: string) => {
-        if (addressRestrictions[input]) {
-          this.INPUTS_MAX_LENGTH[input] = addressRestrictions[input];
-        }
-
-        const newValidators: ValidatorFn[] =
-          input === 'flat_and_floor'
-            ? [Validators.maxLength(this.INPUTS_MAX_LENGTH[input])]
-            : [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH[input])];
-        this.deliveryAddressForm.get(input).setValidators(newValidators);
-        this.deliveryAddressForm.controls[input].updateValueAndValidity();
-      });
-    });
   }
 
   private initializeCitiesAsOptions(postalCode: string, countryISOCode: string): Observable<DeliveryLocationApi[]> {
@@ -513,12 +521,12 @@ export class DeliveryAddressComponent implements OnInit {
       id: this.uuidService.getUUID(),
       country_iso_code: ['', [Validators.required]],
       region: ['', [Validators.required]],
-      full_name: ['', [Validators.required]],
-      street: ['', [Validators.required]],
-      flat_and_floor: [''],
-      postal_code: ['', [Validators.required]],
+      full_name: ['', [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.full_name)]],
+      street: ['', [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.street)]],
+      flat_and_floor: ['', [Validators.maxLength(this.INPUTS_MAX_LENGTH.flat_and_floor)]],
+      postal_code: ['', [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.postal_code)]],
       city: ['', [Validators.required]],
-      phone_number: ['', [Validators.required]],
+      phone_number: ['', [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.phone_number)]],
     });
   }
 
