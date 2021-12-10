@@ -132,6 +132,24 @@ describe('DeliveryAddressComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should have input max lenght fallback', () => {
+    expect(component.INPUTS_MAX_LENGTH).toStrictEqual({
+      full_name: 35,
+      street: 30,
+      flat_and_floor: 9,
+      postal_code: 5,
+      phone_number: 20,
+    });
+  });
+
+  it('should define the countries', () => {
+    expect(component.countries).toStrictEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.countryOptions);
+  });
+
+  it('should define the default country', () => {
+    expect(component['defaultCountry']).toStrictEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry);
+  });
+
   describe('initForm when init...', () => {
     describe('and the petition succeed...', () => {
       describe('and we have a delivery address...', () => {
@@ -617,6 +635,15 @@ describe('DeliveryAddressComponent', () => {
 
     it('should reset the cities', () => {
       expect(component.cities).toStrictEqual([]);
+    });
+
+    it('should update the input form validators', () => {
+      const SELECTED_COUNTRY_RESTRICTIONS = MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.countryOptions.find(
+        (country) => country.value === component.deliveryAddressForm.get('country_iso_code').value
+      ).addressFormRestrictions;
+      expect(component.INPUTS_MAX_LENGTH.flat_and_floor).toStrictEqual(SELECTED_COUNTRY_RESTRICTIONS.flat_and_floor);
+      expect(component.INPUTS_MAX_LENGTH.full_name).toStrictEqual(SELECTED_COUNTRY_RESTRICTIONS.full_name);
+      expect(component.INPUTS_MAX_LENGTH.street).toStrictEqual(SELECTED_COUNTRY_RESTRICTIONS.street);
     });
   });
 
