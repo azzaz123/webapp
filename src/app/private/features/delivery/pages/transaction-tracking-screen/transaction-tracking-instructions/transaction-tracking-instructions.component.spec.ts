@@ -31,6 +31,7 @@ import {
 } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 import { of } from 'rxjs';
+import { environment } from '@environments/environment.beta';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -88,7 +89,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
             },
           },
         },
-        { provide: SITE_URL, useValue: 'localhost' },
+        { provide: SITE_URL, useValue: environment.baseUrl },
         {
           provide: TransactionTrackingService,
           useValue: {
