@@ -23,10 +23,10 @@ describe('GIVEN mapTransactionTrackingDetailsDtoTransactionTrackingDetails', () 
 
   describe('WHEN there is a TransactionTrackingDetailsDto with extra info', () => {
     it('should map to TransactionTrackingDetails', () => {
-      const expected = MOCK_TRANSACTION_TRACKING_INSTRUCTIONS;
+      const expected = MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_WITH_ADDITIONAL_INFO;
 
       const response = mapTransactionTrackingInstructionsDtoTransactionTrackingInstructions(
-        MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_DTO_RESPONSE
+        MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_WITH_EXTRA_INFO_DTO_RESPONSE
       );
 
       expect(JSON.stringify(response)).toEqual(JSON.stringify(expected));

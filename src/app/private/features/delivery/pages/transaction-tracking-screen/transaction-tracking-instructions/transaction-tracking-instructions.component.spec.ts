@@ -31,6 +31,7 @@ import {
 } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 import { of } from 'rxjs';
+import { UserService } from '@core/user/user.service';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -101,6 +102,14 @@ describe('TransactionTrackingInstructionsComponent', () => {
         ErrorsService,
         ItemDetailRoutePipe,
         UserProfileRoutePipe,
+        {
+          provide: UserService,
+          useValue: {
+            user: {
+              webSlug: 'this_is_a_web_slug',
+            },
+          },
+        },
       ],
     }).compileComponents();
   });
