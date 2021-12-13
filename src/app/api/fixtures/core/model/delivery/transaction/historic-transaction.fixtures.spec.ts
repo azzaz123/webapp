@@ -1,6 +1,11 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { HistoricTransaction } from '@api/core/model';
-import { TRANSACTION_DELIVERY_STATUS, TRANSACTION_PAYMENT_STATUS, TRANSACTION_STATUS } from '@api/core/model/delivery/transaction/status';
+import {
+  COMPLETED_TRANSACTION_TRACKING_STATUS,
+  TRANSACTION_DELIVERY_STATUS,
+  TRANSACTION_PAYMENT_STATUS,
+  TRANSACTION_STATUS,
+} from '@api/core/model/delivery/transaction/status';
 import { MOCK_TRANSACTION_ITEM_1, MOCK_TRANSACTION_ITEM_2 } from './transaction-item.fixtures.spec';
 import { MOCK_TRANSACTION_USER_1, MOCK_TRANSACTION_USER_2 } from './transaction-user.fixtures.spec';
 
@@ -16,6 +21,7 @@ export const MOCK_HISTORIC_TRANSACTIONS: HistoricTransaction[] = [
       transaction: TRANSACTION_STATUS.SUCCEEDED,
       delivery: TRANSACTION_DELIVERY_STATUS.NONE,
       payment: TRANSACTION_PAYMENT_STATUS.NONE,
+      tracking: COMPLETED_TRANSACTION_TRACKING_STATUS.MONEY_TRANSFERRED,
     },
     isCurrentUserTheSeller: true,
   },
@@ -30,6 +36,7 @@ export const MOCK_HISTORIC_TRANSACTIONS: HistoricTransaction[] = [
       transaction: TRANSACTION_STATUS.SUCCEEDED,
       delivery: TRANSACTION_DELIVERY_STATUS.NONE,
       payment: TRANSACTION_PAYMENT_STATUS.NONE,
+      tracking: COMPLETED_TRANSACTION_TRACKING_STATUS.MONEY_TRANSFERRED,
     },
     isCurrentUserTheSeller: true,
   },

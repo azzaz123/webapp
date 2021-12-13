@@ -93,7 +93,7 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
                 iconUrl: 'assets/icons/box.svg',
               },
               moneyAmount: MOCK_PENDING_TRANSACTIONS[0].moneyAmount,
-              subDescription: { text: 'IN_TRANSIT', type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.VALID },
+              subDescription: null,
               payload: MOCK_PENDING_TRANSACTIONS[0],
             },
           ],
