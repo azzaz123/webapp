@@ -1,132 +1,61 @@
 @import '~style/common';
 
-:host {
-  width: 100%;
-}
-
 .SubscriptionsSlotItem {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  position: relative;
-  transition: all 0.25s ease;
-  width: 100%;
-  height: 80px;
-  padding: $spacing-m;
-  background-color: transparentize($white, 0.5);
+  background-color: $white;
   border: solid 1px $blue-grey-5;
   border-radius: $spacing-ms;
-  cursor: pointer;
+  padding: $spacing-m;
 
-  div {
-    margin-right: $spacing-m;
-  }
+  &__cancel {
+    @include square($spacing-ms);
+    margin: $spacing-m;
+    position: absolute;
+    top: 0;
+    right: 0;
 
-  &--single {
-    .SubscriptionsSlotItem__info {
-      display: flex;
-
-      tsl-svg-icon {
-        opacity: 1;
+    tsl-svg-icon {
+      @include square($spacing-ms);
+      ::ng-deep svg path {
+        fill: $blue-grey-3;
       }
     }
+  }
+
+  &--selected {
+    border-color: $color-pro-main;
   }
 
   &:hover {
-    border: solid 1px $walla-main;
+    transition: 0.2s;
+    border-color: $color-pro-main;
+    cursor: pointer;
   }
-}
 
-.SubscriptionsSlotItem__icon {
-  @include square(48px);
-
-  tsl-svg-icon {
-    @include square(48px);
-    opacity: 0.3;
-  }
-}
-
-.SubscriptionsSlotItem__info-title {
-  color: $blue-grey-1;
-  span {
+  &__title {
+    color: $walla-main;
     font-weight: $font-weight-chunky;
   }
-}
 
-.SubscriptionsSlotItem__info-description {
-  color: $blue-grey-2;
-}
-
-.SubscriptionsSlotItem__deselect {
-  @include square($spacing-ms);
-  margin: $spacing-m;
-  position: absolute;
-  top: 0;
-  right: 0;
-
-  tsl-svg-icon {
-    @include square($spacing-ms);
-
-    ::ng-deep svg path {
-      fill: $blue-grey-3;
-    }
-  }
-}
-
-.SubscriptionsSlotItem--selected {
-  transition: 0.2s;
-  border: solid 1px $walla-main;
-
-  .SubscriptionsSlotItem__icon {
-    tsl-svg-icon {
-      opacity: 1;
+  &__icon {
+    @include square(48px);
+    img {
+      object-fit: cover;
+      width: 100%;
     }
   }
 
-  .SubscriptionsSlotItem__info {
-    .SubscriptionsSlotItem__info-title {
-      color: $walla-main;
-      @media (max-width: 768px) {
-        display: flex;
-        align-items: center;
-        word-break: break-word;
-      }
+  @include media-breakpoint-down(sm) {
+    &__description,
+    &__title {
+      white-space: nowrap;
     }
 
-    .SubscriptionsSlotItem__info-description {
-      color: $blue-grey-1;
-      @media (max-width: 768px) {
-        margin-right: 0;
-      }
+    &__cancel {
+      margin: $spacing-ms;
     }
-  }
-}
 
-.SubscriptionsSlotItem--not-selected {
-  .SubscriptionsSlotItem__info {
-    .SubscriptionsSlotItem__info-title {
-      color: $blue-grey-2;
-    }
-  }
-}
-
-.SubscriptionsSlotItem--not-selected,
-.SubscriptionsSlotItem--single {
-  .SubscriptionsSlotItem__info {
-    .SubscriptionsSlotItem__info-title {
-      color: $blue-grey-2;
-      @media (max-width: 768px) {
-        display: flex;
-        align-items: center;
-        word-break: break-word;
-      }
-    }
-    .SubscriptionsSlotItem__info-description {
-      color: $blue-grey-1;
-      @media (max-width: 768px) {
-        margin-right: 0;
-      }
+    &__info {
+      padding-right: $spacing-ms;
     }
   }
 }
