@@ -11,7 +11,9 @@ describe('UserProfileRoutePipe', () => {
   it('should convert the user slug into a valid user profile route', () => {
     const pipe = new UserProfileRoutePipe();
     const expectedPermalink = `${slugName}${hashId}`;
-    const expectedRoute = `/${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${expectedPermalink}`;
+    const expectedRoute = !!APP_PATHS.PUBLIC
+      ? `/${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${expectedPermalink}`
+      : `/${PUBLIC_PATHS.USER_DETAIL}/${expectedPermalink}`;
 
     const userProfileRoute = pipe.transform(slug, hashId);
 
