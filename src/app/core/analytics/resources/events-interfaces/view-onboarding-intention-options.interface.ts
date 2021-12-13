@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * User views the screen with the onboarding intention options
  */
-export interface ClickHelpWallet {
+export interface ViewOnboardingIntentionOptions {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281 | 287;
+  screenId: 296;
 }

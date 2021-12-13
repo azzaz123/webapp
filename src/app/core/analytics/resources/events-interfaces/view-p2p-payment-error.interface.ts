@@ -16,5 +16,5 @@ export interface ViewP2PPaymentError {
   /**
    * Error type for P2P payment
    */
-  errorType: 'code generation failed' | 'code expired' | 'code invalid' | 'payment failed';
+  errorType: 'code generation failed' | 'code expired' | 'code invalid' | 'payment failed' | 'incorrect seller' | 'cancelled by seller';
 }

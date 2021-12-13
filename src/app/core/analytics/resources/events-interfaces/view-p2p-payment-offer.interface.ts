@@ -6,23 +6,23 @@
  */
 
 /**
- * Seller views P2P Payment success screen
+ * Buyer views P2P payment success screen
  */
-export interface ViewP2PPaymentSuccessSeller {
+export interface ViewP2PPaymentOffer {
   /**
-   * Identifier of QR code screen
+   * Identifier of P2P Payment Offer screen
    */
-  screenId: 280;
+  screenId: 299;
   /**
-   * Amount the seller received
+   * Payment amount offered
    */
   paymentAmount: number;
   /**
-   * Hashed Id of the buyer
+   * Hashed id of the item
    */
-  itemId?: string;
+  itemId: string;
   /**
-   * Hashed Id of the buyer
+   * Hashed id of the buyer
    */
-  buyerUserId?: string;
+  buyerUserId: string;
 }

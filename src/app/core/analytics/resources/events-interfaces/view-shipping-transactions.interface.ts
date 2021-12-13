@@ -6,11 +6,11 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * User views shipping transactions
  */
-export interface ClickHelpWallet {
+export interface ViewShippingTransactions {
   /**
-   * Identifier of the screen where the click is done
+   * Identifier of the shipping transactions screen
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281 | 287;
+  screenId: 309;
 }

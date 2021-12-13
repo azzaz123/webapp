@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * User clicks on an item to select it
  */
-export interface ClickHelpWallet {
+export interface ClickSelectP2PItem {
   /**
-   * Identifier of the screen where the click is done
+   * Identifier of the item selection screen
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281 | 287;
+  screenId: 287;
+  /**
+   * Hashed identifier of the item the user selects for payment
+   */
+  itemId: string;
 }
