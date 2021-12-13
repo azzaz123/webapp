@@ -164,12 +164,21 @@ export class DeliveryAddressComponent implements OnInit {
         if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
           this.deliveryAddressForm.controls[control].markAsDirty();
           if (this.deliveryAddressForm.controls[control].errors.maxlength) {
-            // TODO: Change for a generic too long copy when we have it		Date: 2021/12/13
-            this.formErrorMessages[control] = DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT;
+            this.defineFormControlMaxLengthMessage(control);
           }
         }
       }
     }
+  }
+
+  private defineFormControlMaxLengthMessage(formControlName: string): void {
+    let maxLengthErrorMessage: Record<string, string> = {
+      street: DeliveryAddressErrorTranslations.ADDRESS_TOO_LONG_HINT,
+      flat_and_floor: DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT,
+      full_name: DeliveryAddressErrorTranslations.NAME_TOO_LONG_HINT,
+    };
+
+    this.formErrorMessages[formControlName] = maxLengthErrorMessage[formControlName];
   }
 
   public handleShowWarningCountry(): void {

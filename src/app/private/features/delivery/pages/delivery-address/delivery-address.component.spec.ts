@@ -489,11 +489,9 @@ describe('DeliveryAddressComponent', () => {
 
         it('should show invalid max length input error message', () => {
           // TODO: Change for a generic too long copy when we have it		Date: 2021/12/13
-          expect(component.formErrorMessages['street']).toStrictEqual(DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT);
+          expect(component.formErrorMessages['street']).toStrictEqual(DeliveryAddressErrorTranslations.ADDRESS_TOO_LONG_HINT);
           expect(component.formErrorMessages['full_name']).toStrictEqual(DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT);
-          expect(component.formErrorMessages['flat_and_floor']).toStrictEqual(
-            DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT
-          );
+          expect(component.formErrorMessages['flat_and_floor']).toStrictEqual(DeliveryAddressErrorTranslations.NAME_TOO_LONG_HINT);
         });
 
         it('should show a toast with a form field error message', () => {

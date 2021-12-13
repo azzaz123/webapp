@@ -604,6 +604,7 @@
     "address_view_all_users_form_textfield_phone_not_valid_inline_error": "Questo numero di telefono non è valido",
     "address_view_all_users_form_textfield_street_too_long_info_inline_error": "Troppi caratteri... Cerca di essere più breve",
     "address_view_all_users_form_textfield_door_too_long_info_inline_error": "Troppi caratteri... Cerca di essere più breve",
+    "address_view_all_users_form_textfield_name_surname_too_long_info_inline_error": "Troppi caratteri... Cerca di essere più breve",
     "address_view_all_users_top_bar_add_title": "Aggiungi il tuo indirizzo",
     "address_view_all_users_top_bar_edit_title": "Modifica il tuo indirizzo",
     "address_view_all_users_form_plain_text_sender_need_explanation_text": "Abbiamo bisogno del tuo indirizzo come mittente in caso di reso",
