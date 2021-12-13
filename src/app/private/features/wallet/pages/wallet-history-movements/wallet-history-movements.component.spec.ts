@@ -183,7 +183,7 @@ describe('WalletHistoryMovementsComponent', () => {
           const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
 
           filtersDebugElement.triggerEventHandler(
-            'onChange',
+            'handleOnClick',
             component.tabBarElements.find((te) => te.value === WALLET_HISTORY_FILTERS.IN)
           );
           fixture.detectChanges();
@@ -203,7 +203,7 @@ describe('WalletHistoryMovementsComponent', () => {
         const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
 
         filtersDebugElement.triggerEventHandler(
-          'onChange',
+          'handleOnClick',
           component.tabBarElements.find((te) => te.value === WALLET_HISTORY_FILTERS.IN)
         );
 
