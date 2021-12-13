@@ -24,6 +24,18 @@ export const MOCK_INVALID_DELIVERY_ADDRESS: DeliveryAddressApi = {
   flat_and_floor: '1 5',
 };
 
+export const MOCK_INVALID_MAX_LENGTH_DELIVERY_ADDRESS: DeliveryAddressApi = {
+  id: '23234',
+  full_name: 'LalliLalliLalliLalliLalliLalliLalliLalliLalliLalliLalliLalliLalliLalliLalli',
+  street: 'LongStreetLongStreetLongStreetLongStreetLongStreetLongStreetLongStreetLongStreetLongStreetLongStreet',
+  postal_code: '08027',
+  city: 'Barcelona',
+  region: 'Barcelona',
+  country_iso_code: 'ES',
+  phone_number: '633485768',
+  flat_and_floor: '5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555',
+};
+
 export const MOCK_DELIVERY_ADDRESS_EMPTY: DeliveryAddressApi = {
   city: '',
   country_iso_code: 'ES',

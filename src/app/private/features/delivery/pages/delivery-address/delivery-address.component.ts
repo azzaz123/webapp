@@ -26,7 +26,10 @@ import {
 
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
-import { DeliveryPostalCodesErrorTranslations } from '@private/features/delivery/errors/constants/delivery-error-translations';
+import {
+  DeliveryAddressErrorTranslations,
+  DeliveryPostalCodesErrorTranslations,
+} from '@private/features/delivery/errors/constants/delivery-error-translations';
 import {
   DeliveryAddressError,
   PhoneNumberIsInvalidError,
@@ -160,6 +163,10 @@ export class DeliveryAddressComponent implements OnInit {
       for (const control in this.deliveryAddressForm.controls) {
         if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
           this.deliveryAddressForm.controls[control].markAsDirty();
+          if (this.deliveryAddressForm.controls[control].errors.maxlength) {
+            // TODO: Change for a generic too long copy when we have it		Date: 2021/12/13
+            this.formErrorMessages[control] = DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT;
+          }
         }
       }
     }

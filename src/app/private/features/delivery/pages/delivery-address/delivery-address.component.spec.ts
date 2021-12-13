@@ -8,6 +8,7 @@ import {
   MOCK_DELIVERY_ADDRESS_EMPTY,
   MOCK_DELIVERY_ADDRESS_2,
   MOCK_DELIVERY_ADDRESS_RESET,
+  MOCK_INVALID_MAX_LENGTH_DELIVERY_ADDRESS,
 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
@@ -40,6 +41,7 @@ import { DeliveryAddressTrackEventsService } from '../../services/address/delive
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { DeliveryAddressErrorTranslations } from '../../errors/constants/delivery-error-translations';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -428,31 +430,78 @@ describe('DeliveryAddressComponent', () => {
         spyOn(toastService, 'show');
         spyOn(deliveryAddressTrackEventsService, 'trackClickSaveButton');
         spyOn(component, 'onSubmit').and.callThrough();
-        component.deliveryAddressForm.patchValue(MOCK_INVALID_DELIVERY_ADDRESS);
-
-        component.onSubmit();
       });
 
-      it('should call the event track save click event ', () => {
-        expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalled();
-      });
+      describe('and the form have invalid values', () => {
+        beforeEach(() => {
+          component.deliveryAddressForm.patchValue(MOCK_INVALID_DELIVERY_ADDRESS);
 
-      it('should show a toast with a form field error message', () => {
-        expect(toastService.show).toHaveBeenCalledWith({
-          text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
-          type: TOAST_TYPES.ERROR,
+          component.onSubmit();
+        });
+
+        it('should call the event track save click event ', () => {
+          expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalledTimes(1);
+        });
+
+        it('should show a toast with a form field error message', () => {
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
+            type: TOAST_TYPES.ERROR,
+          });
+        });
+
+        it('should mark as dirty the invalid form controls', () => {
+          expect(component.deliveryAddressForm.get('street').valid).toBe(false);
+          expect(component.deliveryAddressForm.get('street').dirty).toBe(true);
+
+          expect(component.deliveryAddressForm.get('phone_number').valid).toBe(false);
+          expect(component.deliveryAddressForm.get('phone_number').dirty).toBe(true);
+
+          expect(component.deliveryAddressForm.get('postal_code').valid).toBe(false);
+          expect(component.deliveryAddressForm.get('postal_code').dirty).toBe(true);
         });
       });
 
-      it('should mark as dirty the invalid form controls', () => {
-        expect(component.deliveryAddressForm.get('street').valid).toBe(false);
-        expect(component.deliveryAddressForm.get('street').dirty).toBe(true);
+      describe('and the form have max length error values', () => {
+        beforeEach(() => {
+          component.deliveryAddressForm.patchValue(MOCK_INVALID_MAX_LENGTH_DELIVERY_ADDRESS);
 
-        expect(component.deliveryAddressForm.get('phone_number').valid).toBe(false);
-        expect(component.deliveryAddressForm.get('phone_number').dirty).toBe(true);
+          component.onSubmit();
+        });
 
-        expect(component.deliveryAddressForm.get('postal_code').valid).toBe(false);
-        expect(component.deliveryAddressForm.get('postal_code').dirty).toBe(true);
+        it('should call the event track save click event ', () => {
+          expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalledTimes(1);
+        });
+
+        it('should mark the input invalid', () => {
+          expect(component.deliveryAddressForm.get('street').valid).toBe(false);
+          expect(component.deliveryAddressForm.get('street').dirty).toBe(true);
+          expect(component.deliveryAddressForm.get('street').errors.maxlength).toBeTruthy();
+
+          expect(component.deliveryAddressForm.get('full_name').valid).toBe(false);
+          expect(component.deliveryAddressForm.get('full_name').dirty).toBe(true);
+          expect(component.deliveryAddressForm.get('full_name').errors.maxlength).toBeTruthy();
+
+          expect(component.deliveryAddressForm.get('flat_and_floor').valid).toBe(false);
+          expect(component.deliveryAddressForm.get('flat_and_floor').dirty).toBe(true);
+          expect(component.deliveryAddressForm.get('flat_and_floor').errors.maxlength).toBeTruthy();
+        });
+
+        it('should show invalid max length input error message', () => {
+          // TODO: Change for a generic too long copy when we have it		Date: 2021/12/13
+          expect(component.formErrorMessages['street']).toStrictEqual(DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT);
+          expect(component.formErrorMessages['full_name']).toStrictEqual(DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT);
+          expect(component.formErrorMessages['flat_and_floor']).toStrictEqual(
+            DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT
+          );
+        });
+
+        it('should show a toast with a form field error message', () => {
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
+            type: TOAST_TYPES.ERROR,
+          });
+        });
       });
     });
   });
