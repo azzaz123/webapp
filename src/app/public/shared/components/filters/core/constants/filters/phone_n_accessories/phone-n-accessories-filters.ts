@@ -3,6 +3,7 @@ import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { FILTER_QUERY_PARAM_KEY } from '../../../../enums/filter-query-param-key.enum';
 import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 import { PHONE_N_ACCESORIES_CONFIGURATION_ID } from '../../../enums/configuration-ids/phone-n-accessories-ids.enum';
+import { MULTISELECT_FILTER_BUBBLE_VARIANT } from '@public/shared/components/filters/components/multi-select-filter/enum/multi-select-filter-bubble-variant.enum';
 
 export const PHONE_N_ACCESSORIES_FILTERS: AvailableFilterConfig[] = [
   {
@@ -33,5 +34,6 @@ export const PHONE_N_ACCESSORIES_FILTERS: AvailableFilterConfig[] = [
     },
     isClearable: true,
     hasContentPlaceholder: true,
+    bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.MULTIPLE,
   },
 ];

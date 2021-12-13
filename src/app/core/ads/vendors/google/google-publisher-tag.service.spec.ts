@@ -1,14 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { AdSlotConfiguration } from '@core/ads/models';
-import { AdsKeywordsService } from '@core/ads/services/ads-keywords/ads-keywords.service';
 import { AdsTargetingsService } from '@core/ads/services/ads-targetings/ads-targetings.service';
 import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import {
   MockAdShoppingPageOptions,
-  MockAdsKeywords,
-  MockAdsKeywordsService,
+  MockAdsTargetings,
   MockAdSlots,
   MockAdSlotShopping,
   MockAdsTargetingsService,
@@ -49,10 +47,6 @@ describe('GooglePublisherTagService', () => {
         {
           provide: CookieService,
           useValue: MockCookieService,
-        },
-        {
-          provide: AdsKeywordsService,
-          useValue: MockAdsKeywordsService,
         },
         {
           provide: DeviceService,
@@ -233,9 +227,9 @@ describe('GooglePublisherTagService', () => {
 
         service.setTargetingByAdsKeywords();
 
-        for (const key in MockAdsKeywords) {
-          if (MockAdsKeywords.hasOwnProperty(key)) {
-            expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith(key, MockAdsKeywords[key]);
+        for (const key in MockAdsTargetings) {
+          if (MockAdsTargetings.hasOwnProperty(key)) {
+            expect(MOCK_GOOGLE_PUBABDS.setTargeting).toHaveBeenCalledWith(key, MockAdsTargetings[key]);
           }
         }
       });
@@ -248,7 +242,7 @@ describe('GooglePublisherTagService', () => {
 
       service.displayShopping(MockAdShoppingPageOptions, [MockAdSlotShopping]);
 
-      expect(windowMock._googCsa).toHaveBeenCalledWith('plas', { ...MockAdShoppingPageOptions, query: MockAdsKeywords.content }, [
+      expect(windowMock._googCsa).toHaveBeenCalledWith('plas', { ...MockAdShoppingPageOptions, query: MockAdsTargetings.content }, [
         MockAdSlotShopping,
       ]);
     });

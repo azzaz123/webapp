@@ -5,8 +5,8 @@ export const TRANSACTION_TRACKING_ENDPOINT = `${environment.baseUrl}bff/delivery
 export const TRANSACTION_TRACKING_INSTRUCTIONS_ENDPOINT = `${environment.baseUrl}bff/delivery/transaction-tracking/instructions`;
 
 export const TRANSACTION_TRACKING_CANCEL_TRANSACTION_ENDPOINT = (requestId) =>
-  `${environment.baseUrl}/delivery/transaction/${requestId}/cancel/by_seller`;
+  `${environment.baseUrl}api/v3/delivery/transaction/${requestId}/cancel/by_seller`;
 export const TRANSACTION_TRACKING_EXPIRE_CLAIM_PERIOD_ENDPOINT = (requestId) =>
-  `${environment.baseUrl}/delivery/transactions/${requestId}/claim_period/by_buyer`;
+  `${environment.baseUrl}api/v3/delivery/transactions/${requestId}/claim_period/by_buyer`;
 export const TRANSACTION_TRACKING_PACKAGE_ARRIVED_ENDPOINT = (requestId) =>
-  `${environment.baseUrl}/delivery/transaction/${requestId}/shipping/delivery/manual_by_buyer`;
+  `${environment.baseUrl}api/v3/delivery/transaction/${requestId}/shipping/delivery/manual_by_buyer`;

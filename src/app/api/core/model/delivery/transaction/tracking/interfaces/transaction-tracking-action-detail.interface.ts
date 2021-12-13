@@ -1,4 +1,4 @@
-import { TransactionTrackingBanner } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionDetailPayloadUserActionNameDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 
 export type TransactionTrackingActionDetail =
   | TransactionTrackingActionCarrierTrackingWebview
@@ -33,7 +33,7 @@ export interface TransactionTrackingActionDialog extends TransactionTrackingActi
 
 export interface TransactionTrackingActionUserAction extends TransactionTrackingActionBase {
   isUserAction: boolean;
-  name: string;
+  name: TransactionTrackingActionDetailPayloadUserActionNameDto;
   success: TransactionTrackingActionDetail;
   transactionId: string;
 }

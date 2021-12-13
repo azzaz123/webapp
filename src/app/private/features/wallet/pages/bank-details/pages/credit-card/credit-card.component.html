@@ -3,7 +3,8 @@
     <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="align-self-center"></tsl-svg-icon>
     <span i18n="@@credit_card_form_back_button_web_specific" class="ml-3">Back</span>
   </a>
-  <tsl-profile-form class="row" [profileForm]="creditCardForm" (handleOnInit)="initForm()">
+  <!-- TODO: Remove `profile-box` class by improving `tsl-profile-form` component-->
+  <tsl-profile-form class="row profile-box" [profileForm]="creditCardForm" (handleOnInit)="initForm()">
     <form class="col" *ngIf="!loading; else loadingState" [formGroup]="creditCardForm" (submit)="onSubmit()">
       <div class="row">
         <div class="col-md-11 offset-md-1">

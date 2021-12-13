@@ -7,11 +7,11 @@ import { CommonModule } from '@angular/common';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 import {
-  TransactionTrackingDetailInfoModule,
   TransactionTrackingGeneralInfoModule,
   TransactionTrackingHeaderModule,
-  TransactionTrackingStatusInfoModule,
+  TransactionTrackingStatusInfoWrapperModule,
 } from '../components/sections';
+import { TransactionTrackingScreenTrackingEventsService } from '../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 
 @NgModule({
   declarations: [transactionTrackingOverviewRoutedComponents],
@@ -20,9 +20,8 @@ import {
     CommonModule,
     TransactionTrackingHeaderModule,
     TransactionTrackingGeneralInfoModule,
-    TransactionTrackingStatusInfoModule,
-    TransactionTrackingDetailInfoModule,
+    TransactionTrackingStatusInfoWrapperModule,
   ],
-  providers: [TransactionTrackingService, TransactionTrackingHttpService],
+  providers: [TransactionTrackingService, TransactionTrackingHttpService, TransactionTrackingScreenTrackingEventsService],
 })
 export class TransactionTrackingOverviewModule {}

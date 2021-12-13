@@ -97,7 +97,7 @@
         (clickClose)="onCloseTryProSlot()"
         >
       </tsl-try-pro-slot>
-      <tsl-subscriptions-slots-list
+      <tsl-subscriptions-slots-list *ngIf="subscriptionSlots.length"
         class="mt-3 d-block"
         [subscriptionsSlots]="subscriptionSlots"
         [selectedSubscriptionSlot]="selectedSubscriptionSlot"
