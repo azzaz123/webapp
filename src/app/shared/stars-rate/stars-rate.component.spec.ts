@@ -100,7 +100,7 @@ describe('Component: Stars Rate', () => {
     });
     it('should emit change event', fakeAsync(() => {
       let score: number;
-      component.onChange.subscribe((s: number) => {
+      component.handleOnChange.subscribe((s: number) => {
         score = s;
       });
       component.setScore(3);

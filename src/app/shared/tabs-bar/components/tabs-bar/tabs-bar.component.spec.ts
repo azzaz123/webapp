@@ -59,7 +59,7 @@ describe('TabsBarComponent', () => {
     const secondTab = MOCK_TABS_BAR_ELEMENTS[1];
 
     beforeEach(() => {
-      spyOn(component.onChange, 'emit');
+      spyOn(component.handleOnClick, 'emit');
 
       const secondTabInDOM: TabComponent<number> = fixture.debugElement.queryAll(By.directive(TabComponent))[1].componentInstance;
       secondTabInDOM.handleClick();
@@ -67,8 +67,8 @@ describe('TabsBarComponent', () => {
     });
 
     it('should notify the click', () => {
-      expect(component.onChange.emit).toHaveBeenCalledTimes(1);
-      expect(component.onChange.emit).toHaveBeenCalledWith(secondTab);
+      expect(component.handleOnClick.emit).toHaveBeenCalledTimes(1);
+      expect(component.handleOnClick.emit).toHaveBeenCalledWith(secondTab);
     });
 
     it('should mark the clicked tab as selected', () => {

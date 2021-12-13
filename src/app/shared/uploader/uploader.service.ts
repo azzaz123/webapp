@@ -7,8 +7,8 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 
 @Injectable()
 export class UploaderService {
-  private serviceEvents = new Subject<UploadOutput>();
-  private serviceEvents$ = this.serviceEvents.asObservable();
+  public serviceEvents = new Subject<UploadOutput>();
+  public serviceEvents$ = this.serviceEvents.asObservable();
 
   constructor(private sanitizer: DomSanitizer) {}
 
