@@ -20,6 +20,10 @@ import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/co
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
+import { UserService } from '@core/user/user.service';
+import { User } from '@core/user/user';
+import { Observable, of, Subscriber } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 type deeplinkType =
   | 'unknown'
@@ -40,7 +44,8 @@ export class DeeplinkService {
     @Inject(DOCUMENT) document: Document,
     private itemDetailRoutePipe: ItemDetailRoutePipe,
     private userProfileRoutePipe: UserProfileRoutePipe,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {
     this.window = document.defaultView;
   }
@@ -52,7 +57,7 @@ export class DeeplinkService {
       item: true,
       printableLabel: true,
       unknown: false,
-      userProfile: false,
+      userProfile: true,
       zendeskArticle: true,
       zendeskForm: true,
     };
@@ -95,22 +100,25 @@ export class DeeplinkService {
     this.isExternalNavigation(deeplink) ? this.navigateToUrl(deeplink) : this.navigateToRoute(deeplink);
   }
 
-  public toWebLink(deeplink: string): string {
+  public toWebLink(deeplink: string): Observable<string> {
     if (!deeplink) {
-      return null;
+      return of(null);
     }
 
+    if (this.getDeeplinkType(deeplink) === 'userProfile') {
+      return this.getUserProfileWebLink(deeplink);
+    }
     const deeplinkMappers: Record<deeplinkType, string> = {
       barcodeLabel: this.getBarcodeWebLink(deeplink),
       instructions: this.getInstructionsWebLink(deeplink),
       item: this.getItemWebLink(deeplink),
       printableLabel: this.getPrintableLabelWebLink(deeplink),
-      userProfile: this.getUserProfileWebLink(deeplink),
+      userProfile: null,
       zendeskArticle: this.getZendeskArticleWebLink(deeplink),
       zendeskForm: this.getZendeskCreateDisputeFormWebLink(deeplink),
       unknown: null,
     };
-    return deeplinkMappers[this.getDeeplinkType(deeplink)];
+    return of(deeplinkMappers[this.getDeeplinkType(deeplink)]);
   }
 
   private getBarcodeWebLink(deeplink: string): string {
@@ -167,15 +175,26 @@ export class DeeplinkService {
     return deeplink.split(printableLabelDeeplinkPrefix).pop();
   }
 
-  private getUserProfileWebLink(deeplink: string): string {
+  private getUserProfileWebLink(deeplink: string): Observable<string> {
     const userId = deeplink.split(userProfileDeeplinkPrefix).pop();
-    const webSlug = null;
 
-    // TODO -> 2021-11-30
-    //         In order to avoid calling backend for the webSlug,
-    //         we have to ask Camilla to include the webSlug in the response
+    if (!userId) {
+      return of(null);
+    }
 
-    return !!userId && !!webSlug ? this.userProfileRoutePipe.transform(webSlug, userId) : null;
+    return new Observable((observer: Subscriber<string>) => {
+      this.userService.get(userId, false).subscribe({
+        next: (user: User) => {
+          observer.next(!!user.webSlug ? this.userProfileRoutePipe.transform(user.webSlug, userId) : null);
+        },
+        error: (error: HttpErrorResponse) => {
+          observer.next(null);
+        },
+        complete: () => {
+          observer.complete();
+        },
+      });
+    });
   }
 
   private getZendeskArticleWebLink(deeplink: string): string {
@@ -205,10 +224,14 @@ export class DeeplinkService {
   }
 
   private navigateToRoute(deeplink: string): void {
-    this.router.navigate([this.toWebLink(deeplink)]);
+    this.toWebLink(deeplink).subscribe((webLink: string) => {
+      this.router.navigate([webLink]);
+    });
   }
 
   private navigateToUrl(deeplink: string): void {
-    this.window.open(this.toWebLink(deeplink), '_blank');
+    this.toWebLink(deeplink).subscribe((webLink: string) => {
+      this.window.open(webLink, '_blank');
+    });
   }
 }
