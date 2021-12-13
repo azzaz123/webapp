@@ -30,7 +30,11 @@ describe('TransactionTrackingScreenTrackingEventsService', () => {
     it('should track the page view event ', () => {
       spyOn(analyticsService, 'trackPageView');
 
-      service.trackViewTTSScreen(MOCK_REQUEST_ID_TTS_EVENT);
+      service.trackViewTTSScreen(
+        MOCK_REQUEST_ID_TTS_EVENT,
+        MOCK_TRACKING_VIEW_TTS_EVENT.attributes.buyerCountry,
+        MOCK_TRACKING_VIEW_TTS_EVENT.attributes.sellerCountry
+      );
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_TRACKING_VIEW_TTS_EVENT);

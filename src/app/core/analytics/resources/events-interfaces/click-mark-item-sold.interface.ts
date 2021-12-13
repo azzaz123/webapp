@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * User clicks to mark the item as sold
  */
-export interface ClickHelpWallet {
+export interface ClickMarkItemSold {
   /**
-   * Identifier of the screen where the click is done
+   * Hashed id of the item the user wants to mark as sold
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281 | 287;
+  itemId: string;
+  /**
+   * Identifier of the page where the user starts the mark as sold flow
+   */
+  screenId: 114;
 }

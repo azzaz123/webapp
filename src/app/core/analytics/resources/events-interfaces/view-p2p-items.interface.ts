@@ -6,23 +6,15 @@
  */
 
 /**
- * Seller views P2P Payment success screen
+ * Buyer views items with chats to select an item for payment
  */
-export interface ViewP2PPaymentSuccessSeller {
+export interface ViewP2PItems {
   /**
    * Identifier of QR code screen
    */
-  screenId: 280;
+  screenId: 287;
   /**
-   * Amount the seller received
+   * Whether the page is an empty state
    */
-  paymentAmount: number;
-  /**
-   * Hashed Id of the buyer
-   */
-  itemId?: string;
-  /**
-   * Hashed Id of the buyer
-   */
-  buyerUserId?: string;
+  emptyState: boolean;
 }

@@ -6,11 +6,15 @@
  */
 
 /**
- * User clicks to access FAQs on wallet
+ * User clicks on View my wall on the activation flow for buyers
  */
-export interface ClickHelpWallet {
+export interface ClickViewMyWall {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 235 | 276 | 277 | 278 | 279 | 280 | 281 | 287;
+  screenId: 297;
+  /**
+   * Categories selected by the user separated by comma
+   */
+  categories: string;
 }
