@@ -2,6 +2,7 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 
+import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
 import { TransactionTrackingBannerComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/banner/transaction-tracking-banner.component';
 
 describe('TransactionTrackingBannerComponent', () => {
@@ -12,7 +13,7 @@ describe('TransactionTrackingBannerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingBannerComponent],
-      imports: [],
+      imports: [BypassHTMLModule],
     }).compileComponents();
   });
 
@@ -21,7 +22,7 @@ describe('TransactionTrackingBannerComponent', () => {
     de = fixture.debugElement;
     component = fixture.componentInstance;
     component.banner = {
-      title: 'Código de envío',
+      title: '<b><i><strong>Código de envío</strong></i></b>',
       trackingCode: '1234567890',
     };
   });

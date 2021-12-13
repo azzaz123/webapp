@@ -1,10 +1,11 @@
+@import '~style/common';
 @import '~web-styleguide/scss/colors';
 @import '~web-styleguide/scss/spacing';
 @import '~web-styleguide/scss/text';
 
-$spacing-10: 10px;
-$spacing-14: 14px;
-$spacing-23: 23px;
+$spacing-10: 10px / 16px * $spacer;
+$spacing-14: 14px / 16px * $spacer;
+$spacing-23: 23px / 16px * $spacer;
 
 .TransactionTrackingInstructions {
   &__content {
