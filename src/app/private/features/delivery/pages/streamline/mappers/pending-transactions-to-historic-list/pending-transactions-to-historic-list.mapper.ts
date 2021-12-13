@@ -63,12 +63,12 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
 
 const getDescription = (): { text: string; iconUrl: string } => {
   return {
-    text: 'Via shipping',
+    text: $localize`:@@shipping_transaction_type_label:Via shipping`,
     iconUrl: 'assets/icons/box.svg',
   };
 };
 
-const getSubDescription = (input: PendingTransaction): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } => {
+const getSubDescription = (input: PendingTransaction): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } | null => {
   const { status, isCurrentUserTheSeller } = input;
   const { tracking: trackingStatus } = status;
   const text: string = isCurrentUserTheSeller
@@ -77,10 +77,17 @@ const getSubDescription = (input: PendingTransaction): { text: string; type: HIS
 
   const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = mapOngoingTransactionTrackingStatusToSubDescriptionType[trackingStatus];
 
-  return {
-    text,
-    type,
-  };
+  // TODO: Review when streamline is implemented
+  const isStreamlineActive = false;
+
+  if (isStreamlineActive) {
+    return {
+      text,
+      type,
+    };
+  }
+
+  return null;
 };
 
 const getIconUrl = (input: PendingTransaction): string => {
