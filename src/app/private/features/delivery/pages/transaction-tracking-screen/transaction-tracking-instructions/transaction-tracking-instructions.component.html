@@ -15,7 +15,11 @@
     >
       <div class="TransactionTrackingInstructions__instruction-index">{{ index + 1 }}</div>
       <div class="TransactionTrackingInstructions__instruction-description">
-        <span [innerHTML]="instruction.description | bypassHTML" *ngIf="!instruction.action"></span>
+        <span
+          class="TransactionTrackingInstructions__instruction-action"
+          [innerHTML]="instruction.description | bypassHTML"
+          *ngIf="!instruction.action"
+        ></span>
         <tsl-transaction-tracking-action-selector *ngIf="!!instruction.action" [actionDetail]="instruction.action">
           <span [innerHTML]="instruction.description | bypassHTML"></span>
         </tsl-transaction-tracking-action-selector>
@@ -32,7 +36,11 @@
       ></div>
     </div>
     <div *ngIf="!!instructions.footer" class="TransactionTrackingInstructions__footer">
-      <div *ngIf="!!instructions.footer?.description" [innerHTML]="instructions.footer.description | bypassHTML"></div>
+      <div
+        *ngIf="!!instructions.footer?.description"
+        class="TransactionTrackingInstructions__footer-description"
+        [innerHTML]="instructions.footer.description | bypassHTML"
+      ></div>
       <div *ngIf="!!instructions.footer?.actions">
         <div
           *ngFor="let footerAction of instructions.footer.actions"
