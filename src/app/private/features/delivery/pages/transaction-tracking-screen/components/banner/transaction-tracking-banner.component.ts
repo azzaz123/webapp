@@ -9,6 +9,5 @@ import { TransactionTrackingBanner } from '@api/core/model/delivery/transaction/
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionTrackingBannerComponent {
-  @Input()
-  public banner: TransactionTrackingBanner;
+  @Input() banner: TransactionTrackingBanner;
 }
