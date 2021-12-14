@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+
 import {
   transactionTrackingScreenRoutedComponents,
   TransactionTrackingScreenRoutingModule,
-} from './transaction-tracking-screen.routing.module';
+} from '@private/features/delivery/pages/transaction-tracking-screen';
 
 @NgModule({
-  imports: [TransactionTrackingScreenRoutingModule, CommonModule],
+  imports: [CommonModule, TransactionTrackingScreenRoutingModule],
   declarations: [transactionTrackingScreenRoutedComponents],
 })
 export class TransactionTrackingScreenModule {}

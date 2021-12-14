@@ -70,7 +70,8 @@
               "libphonenumber-js",
               "moment",
               "hammerjs/hammer",
-              "lottie-web"
+              "lottie-web",
+              "jsbarcode"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
