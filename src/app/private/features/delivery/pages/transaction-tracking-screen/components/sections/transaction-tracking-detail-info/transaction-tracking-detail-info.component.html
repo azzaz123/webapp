@@ -1,7 +1,0 @@
-<tsl-transaction-detail
-  *ngFor="let transactionDetail of detailInfoSlots; let index = index"
-  [ngClass]="{ 'TransactionTrackingDetailInfo--clickable': !!transactionTrackingDetails.info[index].action }"
-  (click)="manageAction(transactionTrackingDetails.info[index].action)"
-  [transactionDetail]="transactionDetail"
-  [isBorderBottom]="true"
-></tsl-transaction-detail>

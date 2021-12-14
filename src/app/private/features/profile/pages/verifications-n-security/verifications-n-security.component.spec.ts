@@ -96,10 +96,10 @@ describe('VerificationsNSecurityComponent', () => {
     it('should track page view event', () => {
       spyOn(verificationsNSecurityTrackingEventsService, 'verificationsNSecurityPageView');
 
-      component.ngOnInit();
-
-      expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledTimes(1);
-      expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledWith(component.userVerifications$);
+      component.userVerifications$.subscribe((result) => {
+        expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledTimes(1);
+        expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledWith(result);
+      });
     });
   });
 

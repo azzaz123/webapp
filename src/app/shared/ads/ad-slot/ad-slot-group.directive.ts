@@ -24,28 +24,18 @@ export class AdSlotGroupDirective implements AfterContentInit {
         map(([_, components]: [boolean, AdSlotComponent[]]) => components)
       )
       .subscribe((components) => {
-        const variant: Variant = this.experimentationService.getOptimizeVariant(OPTIMIZE_EXPERIMENTS.SearchPage3rdSlotPosition);
+        const variant: Variant = this.experimentationService.getOptimizeVariant(OPTIMIZE_EXPERIMENTS.AdsABTestReliability);
         const configurations: AdSlotConfiguration[] = components.map((component) => component.adSlot);
 
-        const filteredConfigurations: AdSlotConfiguration[] = this.filterOnVariant(variant, configurations);
+        this.setTargetingOnVariant(variant);
 
-        this.adsService.setSlots(filteredConfigurations);
+        this.adsService.setSlots(configurations);
       });
-  }
-
-  private filterOnVariant(variant: Variant, configurations: AdSlotConfiguration[]): AdSlotConfiguration[] {
-    this.setTargetingOnVariant(variant);
-
-    if (variant === 'Baseline') {
-      return configurations.filter((configuration) => !configuration.type.includes('variant'));
-    }
-
-    return configurations.filter((configuration) => !configuration.type.includes('baseline'));
   }
 
   private setTargetingOnVariant(variant: Variant): void {
     variant === 'Baseline'
-      ? this.adsService.setAdKeywords({ MwebSearchLayout: 'old' })
-      : this.adsService.setAdKeywords({ MwebSearchLayout: 'new' });
+      ? this.adsService.setAdKeywords({ MwebSearchTest: 'baseline' })
+      : this.adsService.setAdKeywords({ MwebSearchTest: 'variant' });
   }
 }

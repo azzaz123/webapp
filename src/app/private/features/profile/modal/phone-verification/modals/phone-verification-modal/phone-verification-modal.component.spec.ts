@@ -1,15 +1,16 @@
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, LOCALE_ID, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MOCK_PHONE_NUMBER, MOCK_PREFIX_PHONE } from '@api/fixtures/user-verifications/phone-verification.fixtures.spec';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
+import { IOption } from '@shared/dropdown/utils/option.interface';
 import { of } from 'rxjs';
-import { PhonePrefixOption } from '../../interfaces/phone-prefix-option.interface';
 import { SmsCodeVerificationModalComponent } from '../sms-code-verification-modal/sms-code-verification-modal.component';
 import { PhoneVerificationModalComponent } from './phone-verification-modal.component';
 
@@ -27,6 +28,7 @@ describe('PhoneVerificationModalComponent', () => {
   let modalService: NgbModal;
   let verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService;
   let componentInstance: any = {};
+  let toastService: ToastService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -61,6 +63,10 @@ describe('PhoneVerificationModalComponent', () => {
             trackStartPhoneVerificationProcessEvent() {},
           },
         },
+        {
+          provide: LOCALE_ID,
+          useValue: 'pr',
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -71,11 +77,13 @@ describe('PhoneVerificationModalComponent', () => {
     userVerificationsService = TestBed.inject(UserVerificationsService);
     modalService = TestBed.inject(NgbModal);
     activeModal = TestBed.inject(NgbActiveModal);
+    toastService = TestBed.inject(ToastService);
     verificationsNSecurityTrackingEventsService = TestBed.inject(VerificationsNSecurityTrackingEventsService);
     component = fixture.componentInstance;
     fixture.detectChanges();
     spyOn(activeModal, 'close').and.callThrough();
     spyOn(userVerificationsService, 'verifyPhone').and.callThrough();
+    spyOn(toastService, 'show');
   });
 
   describe('when modal is loaded', () => {
@@ -89,11 +97,11 @@ describe('PhoneVerificationModalComponent', () => {
 
     it('should show prefix options with correct format', () => {
       const dropdown: DropdownComponent = fixture.debugElement.query(By.directive(DropdownComponent)).componentInstance;
-      const option = dropdown.options.find((e: PhonePrefixOption) => {
+      const option = dropdown.options.find((e: IOption) => {
         return e.value === '+34';
       });
 
-      expect(option).toStrictEqual({ country_code: 'ES', value: '+34', label: 'Spain (+34)' });
+      expect(option).toStrictEqual({ value: '+34', label: 'Spain (+34)' });
     });
   });
 
@@ -119,13 +127,28 @@ describe('PhoneVerificationModalComponent', () => {
         component.onSubmitPhone();
       });
 
-      it('should call the verifyPhone, close the modal and open the sms code modal', () => {
+      it('should call the verifyPhone and close the modal', () => {
         expect(userVerificationsService.verifyPhone).toHaveBeenCalledTimes(1);
         expect(activeModal.close).toHaveBeenCalled();
+      });
+
+      it('should close the modal and open the sms code modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(SmsCodeVerificationModalComponent, {
           windowClass: 'modal-standard',
         });
         expect(component['modalRef'].componentInstance.phoneNumber).toBe(MOCK_PREFIX_PHONE + MOCK_PHONE_NUMBER);
+      });
+
+      it('should display the success toast', () => {
+        expect(toastService.show).toHaveBeenCalledWith({
+          text:
+            'We have sent an SMS to the number ' +
+            MOCK_PREFIX_PHONE +
+            MOCK_PHONE_NUMBER +
+            ' with a verification code. Please enter the code to verify your phone.',
+          title: 'Many thanks',
+          type: TOAST_TYPES.SUCCESS,
+        });
       });
 
       it('should track the start phone verification process', () => {

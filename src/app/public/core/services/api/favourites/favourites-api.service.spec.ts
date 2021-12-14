@@ -1,7 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { CHECK_FAVOURITES_ENDPOINT } from './favourites-api.service';
-import { FavouritesApiService } from './favourites-api.service';
+import { CHECK_FAVOURITES_ENDPOINT, FavouritesApiService } from './favourites-api.service';
 
 describe('FavouritesApiService', () => {
   const MOCK_IDS = ['23bu382', 'sbdsu82329sd'];

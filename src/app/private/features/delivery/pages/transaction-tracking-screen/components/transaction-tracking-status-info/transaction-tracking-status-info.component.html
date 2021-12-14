@@ -1,0 +1,35 @@
+<div
+  *ngIf="transactionTrackingStatusInfo as info"
+  class="TransactionTrackingStatusInfo d-flex"
+  [ngClass]="{ 'TransactionTrackingStatusInfo--borderBottom': hasBorderBottom }"
+>
+  <div class="TransactionTrackingStatusInfo__iconWrapper d-flex align-items-center justify-content-center">
+    <img
+      *ngIf="info.icon"
+      [src]="info.icon.url"
+      alt="icon"
+      class="TransactionTrackingStatusInfo__icon w-100 h-100 TransactionTrackingStatusInfo__icon--{{ info.icon.style.className }}"
+      [fallback]="FALLBACK_NOT_FOUND_SRC"
+    />
+  </div>
+  <tsl-transaction-tracking-action-selector
+    *ngIf="info.action"
+    [actionDetail]="info.action"
+    class="TransactionTrackingStatusInfo__descriptionWrapper TransactionTrackingStatusInfo__descriptionWrapper--clickable"
+  >
+    <div [innerHTML]="info.description | bypassHTML"></div>
+  </tsl-transaction-tracking-action-selector>
+  <div
+    *ngIf="!info.action"
+    id="safeDescription"
+    [innerHTML]="info.description | bypassHTML"
+    class="TransactionTrackingStatusInfo__descriptionWrapper"
+  ></div>
+  <tsl-svg-icon
+    *ngIf="info.showCaret"
+    src="/assets/icons/arrow-right.svg"
+    width="5"
+    height="10"
+    class="TransactionTrackingStatusInfo__arrowRight d-flex align-items-center ml-3 mr-4"
+  ></tsl-svg-icon>
+</div>

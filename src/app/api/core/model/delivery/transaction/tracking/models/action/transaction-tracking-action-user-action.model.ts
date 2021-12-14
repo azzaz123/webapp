@@ -10,12 +10,13 @@ import {
   TransactionTrackingActionDetailDto,
   TransactionTrackingActionDetailPayloadDto,
   TransactionTrackingActionDetailPayloadUserActionDto,
+  TransactionTrackingActionDetailPayloadUserActionNameDto,
 } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 
 export class TransactionTrackingActionUserActionModel implements TransactionTrackingActionUserAction {
   public analytics?: TransactionTrackingActionDetailAnalytics;
   public isUserAction: boolean = true;
-  public name: string;
+  public name: TransactionTrackingActionDetailPayloadUserActionNameDto;
   public success: TransactionTrackingActionDetail;
   public transactionId: string;
 
@@ -28,7 +29,9 @@ export class TransactionTrackingActionUserActionModel implements TransactionTrac
     this.transactionId = this.getTransactionId(actionDetailDto.payload);
   }
 
-  private getName(actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto): string {
+  private getName(
+    actionDetailPayloadDto: TransactionTrackingActionDetailPayloadDto
+  ): TransactionTrackingActionDetailPayloadUserActionNameDto {
     return (actionDetailPayloadDto as TransactionTrackingActionDetailPayloadUserActionDto).name ?? undefined;
   }
 
