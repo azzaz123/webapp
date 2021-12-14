@@ -88,7 +88,9 @@ describe('DeliveryAddressComponent', () => {
           provide: ProfileFormComponent,
           useValue: {
             initFormControl() {},
-            canExit() {},
+            canExit() {
+              return Promise.resolve();
+            },
           },
         },
         {
