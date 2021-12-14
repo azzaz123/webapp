@@ -2,6 +2,8 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 
+import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
+import { MOCK_TRANSACTION_TRACKING_BANNER_2 } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-instructions.fixtures.spec';
 import { TransactionTrackingBannerComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/banner/transaction-tracking-banner.component';
 
 describe('TransactionTrackingBannerComponent', () => {
@@ -12,28 +14,23 @@ describe('TransactionTrackingBannerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingBannerComponent],
-      imports: [],
+      imports: [BypassHTMLModule],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TransactionTrackingBannerComponent);
-    de = fixture.debugElement;
-    component = fixture.componentInstance;
-    component.banner = {
-      title: 'Código de envío',
-      trackingCode: '1234567890',
-    };
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('when we have the properties defined...', () => {
     beforeEach(() => {
+      fixture = TestBed.createComponent(TransactionTrackingBannerComponent);
+      de = fixture.debugElement;
+      component = fixture.componentInstance;
+      component.banner = MOCK_TRANSACTION_TRACKING_BANNER_2;
       fixture.detectChanges();
     });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
     it('should show the provided title', () => {
       const descriptionSanitized: HTMLElement = de.query(By.css('.TransactionTrackingBanner__titleWrapper')).nativeElement.innerHTML;
 

@@ -1,22 +1,22 @@
 <div
-  *ngIf="transactionTrackingInstructions$ | async as transactionTrackingInstructions"
-  class="TransactionTrackingInstructions d-flex w-100 flex-column box mt-3 p-3 container profile-box"
+  *ngIf="transactionTrackingInstructions$ | async as instructions"
+  class="TransactionTrackingInstructions d-flex w-100 flex-column box mt-3 p-3 container"
 >
-  <tsl-transaction-tracking-header [transactionTrackingHeader]="transactionTrackingInstructions.header"></tsl-transaction-tracking-header>
+  <tsl-transaction-tracking-header [transactionTrackingHeader]="instructions.header"></tsl-transaction-tracking-header>
   <div class="TransactionTrackingInstructions__content">
     <tsl-transaction-tracking-banner
-      *ngIf="!!transactionTrackingInstructions.body.banner"
-      [banner]="transactionTrackingInstructions.body.banner"
+      *ngIf="!!instructions.body.banner"
+      [banner]="instructions.body.banner"
     ></tsl-transaction-tracking-banner>
-    <div class="TransactionTrackingInstructions__title align-self-start">{{ transactionTrackingInstructions.body.title }}</div>
+    <div class="TransactionTrackingInstructions__title align-self-start">{{ instructions.body.title }}</div>
     <div
-      *ngFor="let instruction of transactionTrackingInstructions.body.instructions; index as index"
+      *ngFor="let instruction of instructions.body.instructions; index as index"
       class="TransactionTrackingInstructions__instruction d-flex align-items-start"
     >
-      <div class="TransactionTrackingInstructions__instruction__index">{{ index + 1 }}</div>
-      <div class="TransactionTrackingInstructions__instruction__description">
+      <div class="TransactionTrackingInstructions__instruction-index">{{ index + 1 }}</div>
+      <div class="TransactionTrackingInstructions__instruction-description">
         <span
-          class="TransactionTrackingInstructions__instruction__action"
+          class="TransactionTrackingInstructions__instruction-action"
           [innerHTML]="instruction.description | bypassHTML"
           *ngIf="!instruction.action"
         ></span>
@@ -25,28 +25,26 @@
         </tsl-transaction-tracking-action-selector>
       </div>
     </div>
-    <div *ngIf="!!transactionTrackingInstructions.body.additionalInfo" class="TransactionTrackingInstructions__additionalInfo">
-      <span
-        *ngIf="!!transactionTrackingInstructions.body.additionalInfo?.title"
-        class="TransactionTrackingInstructions__additionalInfo__title"
-        >{{ transactionTrackingInstructions.body.additionalInfo.title }}</span
-      >
+    <div *ngIf="!!instructions.body.additionalInfo" class="TransactionTrackingInstructions__additionalInfo">
+      <span *ngIf="!!instructions.body.additionalInfo?.title" class="TransactionTrackingInstructions__additionalInfo-title">{{
+        instructions.body.additionalInfo.title
+      }}</span>
       <div
-        *ngIf="!!transactionTrackingInstructions.body.additionalInfo?.description"
-        class="TransactionTrackingInstructions__additionalInfo__description"
-        [innerHTML]="transactionTrackingInstructions.body.additionalInfo.description | bypassHTML"
+        *ngIf="!!instructions.body.additionalInfo?.description"
+        class="TransactionTrackingInstructions__additionalInfo-description"
+        [innerHTML]="instructions.body.additionalInfo.description | bypassHTML"
       ></div>
     </div>
-    <div *ngIf="!!transactionTrackingInstructions.footer" class="TransactionTrackingInstructions__footer">
+    <div *ngIf="!!instructions.footer" class="TransactionTrackingInstructions__footer">
       <div
-        *ngIf="!!transactionTrackingInstructions.footer?.description"
-        class="TransactionTrackingInstructions__footer__description"
-        [innerHTML]="transactionTrackingInstructions.footer.description | bypassHTML"
+        *ngIf="!!instructions.footer?.description"
+        class="TransactionTrackingInstructions__footer-description"
+        [innerHTML]="instructions.footer.description | bypassHTML"
       ></div>
-      <div *ngIf="!!transactionTrackingInstructions.footer?.actions">
+      <div *ngIf="!!instructions.footer?.actions">
         <div
-          *ngFor="let footerAction of transactionTrackingInstructions.footer.actions"
-          class="TransactionTrackingInstructions__footer__action d-flex align-items-center justify-content-center"
+          *ngFor="let footerAction of instructions.footer.actions"
+          class="TransactionTrackingInstructions__footer-action d-flex align-items-center justify-content-center"
         >
           <tsl-transaction-tracking-action-selector *ngIf="!!footerAction.action" [actionDetail]="footerAction.action">
             <tsl-button

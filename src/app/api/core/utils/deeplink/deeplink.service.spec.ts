@@ -168,7 +168,7 @@ describe(`DeeplinkService`, () => {
   describe(`WHEN the deeplink is a check delivery instructions deeplink`, () => {
     it(`should return the url`, () => {
       const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=deeplink`;
-      const expected = `delivery/tracking/instructions/123/deeplink`;
+      const expected = `delivery/tracking/123/instructions/deeplink`;
 
       expect(service.toWebLink(deeplink)).toEqual(expected);
     });
@@ -201,7 +201,7 @@ describe(`DeeplinkService`, () => {
   describe(`WHEN the deeplink is a packaging instructions deeplink`, () => {
     it(`should return the url`, () => {
       const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=deeplink`;
-      const expected = `delivery/tracking/instructions/123/deeplink`;
+      const expected = `delivery/tracking/123/instructions/deeplink`;
 
       expect(service.toWebLink(deeplink)).toEqual(expected);
     });

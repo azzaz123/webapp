@@ -31,6 +31,7 @@ import {
 } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 import { of } from 'rxjs';
+import { environment } from '@environments/environment.beta';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -39,16 +40,16 @@ const transactionTrackingInstructionsHeaderSelector = `${transactionTrackingInst
 const transactionTrackingInstructionsBannerSelector = `${transactionTrackingInstructionsSelector} tsl-transaction-tracking-banner`;
 const transactionTrackingInstructionsTitleSelector = `${transactionTrackingInstructionsSelector}__title`;
 const transactionTrackingInstructionsInstructionSelector = `${transactionTrackingInstructionsSelector}__instruction`;
-const transactionTrackingInstructionsInstructionIndexSelector = `${transactionTrackingInstructionsInstructionSelector}__index`;
-const transactionTrackingInstructionsInstructionDescriptionSelector = `${transactionTrackingInstructionsInstructionSelector}__description`;
-const transactionTrackingInstructionsInstructionActionSelector = `${transactionTrackingInstructionsInstructionSelector}__action`;
+const transactionTrackingInstructionsInstructionIndexSelector = `${transactionTrackingInstructionsInstructionSelector}-index`;
+const transactionTrackingInstructionsInstructionDescriptionSelector = `${transactionTrackingInstructionsInstructionSelector}-description`;
+const transactionTrackingInstructionsInstructionActionSelector = `${transactionTrackingInstructionsInstructionSelector}-action`;
 const transactionTrackingInstructionsInstructionDescriptionActionSelector = `${transactionTrackingInstructionsInstructionDescriptionSelector} tsl-transaction-tracking-action-selector`;
 const transactionTrackingInstructionsAdditionalInfoSelector = `${transactionTrackingInstructionsSelector}__additionalInfo`;
-const transactionTrackingInstructionsAdditionalInfoTitleSelector = `${transactionTrackingInstructionsAdditionalInfoSelector}__title`;
-const transactionTrackingInstructionsAdditionalInfoDescriptionSelector = `${transactionTrackingInstructionsAdditionalInfoSelector}__description`;
+const transactionTrackingInstructionsAdditionalInfoTitleSelector = `${transactionTrackingInstructionsAdditionalInfoSelector}-title`;
+const transactionTrackingInstructionsAdditionalInfoDescriptionSelector = `${transactionTrackingInstructionsAdditionalInfoSelector}-description`;
 const transactionTrackingInstructionsFooterSelector = `${transactionTrackingInstructionsSelector}__footer`;
-const transactionTrackingInstructionsFooterDescriptionSelector = `${transactionTrackingInstructionsFooterSelector}__description`;
-const transactionTrackingInstructionsFooterActionSelector = `${transactionTrackingInstructionsFooterSelector}__action`;
+const transactionTrackingInstructionsFooterDescriptionSelector = `${transactionTrackingInstructionsFooterSelector}-description`;
+const transactionTrackingInstructionsFooterActionSelector = `${transactionTrackingInstructionsFooterSelector}-action`;
 
 describe('TransactionTrackingInstructionsComponent', () => {
   let component: TransactionTrackingInstructionsComponent;
@@ -88,7 +89,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
             },
           },
         },
-        { provide: SITE_URL, useValue: 'localhost' },
+        { provide: SITE_URL, useValue: environment.baseUrl },
         {
           provide: TransactionTrackingService,
           useValue: {

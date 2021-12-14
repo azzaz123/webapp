@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { TransactionTrackingBanner } from '@api/core/model/delivery/transaction/tracking';
 
@@ -9,15 +8,7 @@ import { TransactionTrackingBanner } from '@api/core/model/delivery/transaction/
   styleUrls: ['./transaction-tracking-banner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TransactionTrackingBannerComponent implements OnInit {
+export class TransactionTrackingBannerComponent {
   @Input()
   public banner: TransactionTrackingBanner;
-
-  public titleByPass: SafeHtml;
-
-  constructor(private sanitizer: DomSanitizer) {}
-
-  ngOnInit() {
-    this.titleByPass = this.sanitizer.bypassSecurityTrustHtml(this.banner.title);
-  }
 }
