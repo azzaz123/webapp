@@ -24,9 +24,23 @@ export class FilterHostComponent implements OnInit, OnChanges, OnDestroy {
   private filter: AbstractFilter<unknown>;
 
   private drawerSeparatorVisibilitySubject = new BehaviorSubject<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public drawerSeparatorVisibility$ = this.drawerSeparatorVisibilitySubject.asObservable();
 
   public constructor(private visibilityService: HostVisibilityService) {}
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    const { values } = changes;
+    if (this.filter && values && !values.isFirstChange()) {
+      this.filter.value = values.currentValue;
+    }
+  }
+
+  public ngOnDestroy(): void {
+    this.clearFilter(false);
+    this.visibilitySubscription.unsubscribe();
+    this.visibilityService.detach(this);
+  }
 
   public ngOnInit(): void {
     this.visibilitySubscription.add(this.visibilityService.attach(this).subscribe(this.handleVisibilityChange.bind(this)));
@@ -54,19 +68,6 @@ export class FilterHostComponent implements OnInit, OnChanges, OnDestroy {
     if (this.filterSubscription) {
       this.filterSubscription.unsubscribe();
     }
-  }
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    const { values } = changes;
-    if (this.filter && values && !values.isFirstChange()) {
-      this.filter.value = values.currentValue;
-    }
-  }
-
-  public ngOnDestroy(): void {
-    this.clearFilter(false);
-    this.visibilitySubscription.unsubscribe();
-    this.visibilityService.detach(this);
   }
 
   private handleVisibilityChange(isVisible: boolean): void {
