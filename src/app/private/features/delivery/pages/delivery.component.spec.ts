@@ -67,6 +67,21 @@ describe('DeliveryComponent', () => {
     });
   });
 
+  describe('when we click the help button', () => {
+    beforeEach(() => {
+      fixture.debugElement.query(By.css('a')).nativeElement.click();
+    });
+
+    it('should open the TRX Awareness Modal', () => {
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+    });
+
+    it('should NOT save the user view in the local store', () => {
+      expect(userService.saveLocalStore).not.toHaveBeenCalled();
+    });
+  });
+
   describe('when the user has not previously viewed the TRX Awareness Modal', () => {
     beforeEach(() => {
       spyOn(userService, 'getLocalStore').and.returnValue(false);
