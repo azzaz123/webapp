@@ -17,7 +17,7 @@ export class DeliveryComponent implements OnInit {
   public navLinks: NavLink[] = [
     {
       id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
-      display: $localize`:@@web_delivery_streamline_title:Shippings`,
+      display: $localize`:@@web_delivery_shippings_title:Shippings`,
     },
     {
       id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
@@ -36,21 +36,21 @@ export class DeliveryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.showTRXAwarenessModal();
+    if (this.shouldShowTRXAwarenessModal) {
+      this.userService.saveLocalStore(LOCAL_STORAGE_TRX_AWARENESS, Date.now().toString());
+      this.openTRXAwarenessModal();
+    }
   }
 
   public onNavLinkClicked(navLinkId: string): void {
     this.router.navigate([navLinkId]);
   }
 
-  private showTRXAwarenessModal(): void {
-    if (this.shouldShowTRXAwarenessModal) {
-      this.userService.saveLocalStore(LOCAL_STORAGE_TRX_AWARENESS, Date.now().toString());
-      this.modalService.open(TRXAwarenessModalComponent).result.then(
-        () => {},
-        () => {}
-      );
-    }
+  public openTRXAwarenessModal(): void {
+    this.modalService.open(TRXAwarenessModalComponent).result.then(
+      () => {},
+      () => {}
+    );
   }
 
   private get shouldShowTRXAwarenessModal(): boolean {
