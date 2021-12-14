@@ -5,7 +5,7 @@
     </a>
     <span id="headerTitle">{{ header.title }}</span>
   </div>
-  <tsl-transaction-tracking-action-selector [actionDetail]="header.detail.action">
+  <tsl-transaction-tracking-action-selector [actionDetail]="header.detail.action" *ngIf="!!header.detail">
     <tsl-button
       class="TTS__buttonHeader"
       className="{{ header.detail.style.className }} btn--noPadding"

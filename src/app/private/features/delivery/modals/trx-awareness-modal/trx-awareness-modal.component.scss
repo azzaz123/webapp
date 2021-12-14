@@ -1,0 +1,12 @@
+@import '~style/common';
+
+.TRXAwarenessModal {
+  &__title {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-l;
+  }
+
+  span {
+    color: $blue-grey-1;
+  }
+}

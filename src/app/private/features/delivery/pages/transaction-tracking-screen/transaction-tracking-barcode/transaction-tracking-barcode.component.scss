@@ -1,0 +1,11 @@
+@import '~web-styleguide/scss/spacing';
+
+.TransactionTrackingBarcode {
+  &__content {
+    padding: $spacing-l $spacing-xs;
+
+    img {
+      max-width: 100%;
+    }
+  }
+}

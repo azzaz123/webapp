@@ -14,6 +14,6 @@ export class UserProfileRoutePipe extends WebSlugConverterPipe implements PipeTr
   transform(webSlug: string, hashId: string): string {
     const slug = super.transform(webSlug, hashId);
 
-    return `/${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${slug}`;
+    return !!APP_PATHS.PUBLIC ? `/${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.USER_DETAIL}/${slug}` : `/${PUBLIC_PATHS.USER_DETAIL}/${slug}`;
   }
 }
