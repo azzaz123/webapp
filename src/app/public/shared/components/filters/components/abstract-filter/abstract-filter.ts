@@ -36,12 +36,8 @@ export abstract class AbstractFilter<T extends Record<keyof T, FILTER_QUERY_PARA
   protected _value: FilterParameter[] = [];
 
   protected hasValueSubject = new BehaviorSubject<boolean>(false);
-
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public hasValue$ = this.hasValueSubject.asObservable();
-
-  protected _hasValue(): boolean {
-    return this._value.some((parameter) => !!parameter.value);
-  }
 
   public ngOnInit(): void {
     this.label = this.config.bubblePlaceholder;
@@ -75,6 +71,10 @@ export abstract class AbstractFilter<T extends Record<keyof T, FILTER_QUERY_PARA
 
   public getValue(key: keyof T): string {
     return this._value?.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
+  }
+
+  protected _hasValue(): boolean {
+    return this._value.some((parameter) => !!parameter.value);
   }
 
   protected hasValueChanged(previous: FilterParameter[], current: FilterParameter[]): boolean {
