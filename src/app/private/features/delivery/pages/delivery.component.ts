@@ -36,21 +36,21 @@ export class DeliveryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.showTRXAwarenessModal();
+    if (this.shouldShowTRXAwarenessModal) {
+      this.showTRXAwarenessModal();
+    }
   }
 
   public onNavLinkClicked(navLinkId: string): void {
     this.router.navigate([navLinkId]);
   }
 
-  private showTRXAwarenessModal(): void {
-    if (this.shouldShowTRXAwarenessModal) {
-      this.userService.saveLocalStore(LOCAL_STORAGE_TRX_AWARENESS, Date.now().toString());
-      this.modalService.open(TRXAwarenessModalComponent).result.then(
-        () => {},
-        () => {}
-      );
-    }
+  public showTRXAwarenessModal(): void {
+    this.userService.saveLocalStore(LOCAL_STORAGE_TRX_AWARENESS, Date.now().toString());
+    this.modalService.open(TRXAwarenessModalComponent).result.then(
+      () => {},
+      () => {}
+    );
   }
 
   private get shouldShowTRXAwarenessModal(): boolean {

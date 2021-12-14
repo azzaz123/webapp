@@ -1,0 +1,15 @@
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/text';
+
+.Delivery__title {
+  a {
+    font-weight: normal;
+    color: $walla-main;
+    font-size: $font-size-m;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}

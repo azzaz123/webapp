@@ -4,7 +4,14 @@
       <div class="row mb-3">
         <div class="col">
           <div class="header-row">
-            <h1 class="header-title" i18n="@@web_delivery_info_title">Your shipping info</h1>
+            <h1 class="Delivery__title w-100 header-title">
+              <div class="w-100 d-flex justify-content-between">
+                <div i18n="@@web_delivery_info_title">Your shipping info</div>
+                <div>
+                  <a (click)="showTRXAwarenessModal()" i18n="@@web_catalog_pages_checkout_563">Help</a>
+                </div>
+              </div>
+            </h1>
           </div>
           <div class="header-row">
             <h4 class="header-subtitle" i18n="@@web_delivery_info_subtitle">Here you will find information about your shippments.</h4>
