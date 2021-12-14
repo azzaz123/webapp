@@ -4,8 +4,12 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
-import { MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
+import {
+  MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION,
+  MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS,
+} from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
 import { of, throwError } from 'rxjs';
+import { TransactionTrackingScreenTrackingEventsService } from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingActionUserActionComponent } from './transaction-tracking-action-user-action.component';
 
 describe('TransactionTrackingActionUserActionComponent', () => {
@@ -13,6 +17,7 @@ describe('TransactionTrackingActionUserActionComponent', () => {
   let fixture: ComponentFixture<TransactionTrackingActionUserActionComponent>;
   let transactionTrackingService: TransactionTrackingService;
   let errorsService: ErrorsService;
+  let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -21,12 +26,20 @@ describe('TransactionTrackingActionUserActionComponent', () => {
         {
           provide: TransactionTrackingService,
           useValue: {
-            sendUserAction() {},
+            sendUserAction() {
+              return of();
+            },
           },
         },
         {
           provide: ErrorsService,
           useClass: MockErrorService,
+        },
+        {
+          provide: TransactionTrackingScreenTrackingEventsService,
+          useValue: {
+            trackClickActionTTS() {},
+          },
         },
       ],
     }).compileComponents();
@@ -37,6 +50,7 @@ describe('TransactionTrackingActionUserActionComponent', () => {
     component = fixture.componentInstance;
     component.userAction = MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION;
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
+    transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
     errorsService = TestBed.inject(ErrorsService);
     fixture.detectChanges();
   });
@@ -46,6 +60,34 @@ describe('TransactionTrackingActionUserActionComponent', () => {
   });
 
   describe('when the user clicks on action', () => {
+    describe('and the action has analytics...', () => {
+      it('should track the event', () => {
+        spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
+        component.userAction = MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION;
+
+        fixture.debugElement.query(By.css('div')).nativeElement.click();
+        fixture.detectChanges();
+
+        expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and the action has NOT analytics...', () => {
+      it('should NOT track the event', () => {
+        spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
+        component.userAction = MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS;
+
+        fixture.debugElement.query(By.css('div')).nativeElement.click();
+        fixture.detectChanges();
+
+        expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);
+        expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledWith(
+          MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS.analytics.requestId,
+          MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS.analytics.source
+        );
+      });
+    });
+
     describe('and the request fails...', () => {
       beforeEach(() => {
         spyOn(errorsService, 'i18nError');

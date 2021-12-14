@@ -96,6 +96,10 @@ export const MOCK_TRANSACTION_TRACKING_DTO_RESPONSE: TransactionTrackingDto = {
       },
     },
   ],
+  analytics: {
+    seller_country: 'ES',
+    buyer_country: 'IT',
+  },
 };
 export const MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS_DTO_RESPONSE: TransactionTrackingDto = {
   title: 'Estado de tu compra',

@@ -2,45 +2,10 @@
 $background: #f4f6f7;
 
 .SubscriptionsSlotsList {
-  display: block;
-  margin: $spacing-l 0;
-  width: 1246px;
-  max-width: 100%;
-  margin: 0 auto;
-
-  &--single {
-    display: block;
-  }
-
-  &--many {
-    display: flex;
-
-    tsl-subscriptions-slot-item {
-      width: 100%;
-      @media (max-width: 768px) {
-        min-width: 285px;
-      }
-
-      &:not(:first-child):not(:last-child) {
-        margin: 0 $spacing-s;
-      }
-
-      &:first-child {
-        margin-right: $spacing-s;
-      }
-
-      &:last-child {
-        margin-left: $spacing-s;
-      }
-    }
-  }
-
   &__container {
-    width: 100%;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    @media (max-width: 768px) {
+    @include media-breakpoint-down(sm) {
+      position: relative;
+
       &::before,
       &::after {
         z-index: 2;
@@ -76,19 +41,11 @@ $background: #f4f6f7;
   }
 
   &__wrapper {
-    flex-grow: 1;
-    overflow-y: hidden;
-    position: relative;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    overflow-x: scroll;
-    scroll-behavior: smooth;
-    display: flex;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    width: 100%;
-    &::-webkit-scrollbar {
-      display: none;
+    @include media-breakpoint-down(sm) {
+      @include hide-scroll-bars;
+      padding: 0 26px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
     }
   }
 }

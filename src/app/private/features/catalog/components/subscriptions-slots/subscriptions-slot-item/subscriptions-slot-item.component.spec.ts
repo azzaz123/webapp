@@ -44,12 +44,14 @@ describe('SubscriptionsSlotItemComponent', () => {
 
   describe('isSelected', () => {
     it('should return true when selected slot and own subscription are the same', () => {
-      expect(component.isSelected()).toBe(true);
+      component.ngOnChanges();
+      expect(component.isSelected).toBe(true);
     });
 
     it('should return false when selected slot and own subscription are different', () => {
       component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_REAL_ESTATE;
-      expect(component.isSelected()).toBe(false);
+      component.ngOnChanges();
+      expect(component.isSelected).toBe(false);
     });
   });
 

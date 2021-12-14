@@ -37,4 +37,12 @@ export interface ImpressionAdCreativeLoadTime {
    * Identifies the source to which the ad belongs
    */
   advertiser?: string;
+  /**
+   * Identifier of the screen that the ad was showed from
+   */
+  screenId?: 110 | 111;
+  /**
+   * Identifier of the ad position if is needed
+   */
+  position?: number;
 }
