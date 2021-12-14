@@ -46,6 +46,10 @@ describe('DeliveryComponent', () => {
     modalService = TestBed.inject(NgbModal);
 
     fixture.detectChanges();
+
+    spyOn(Date, 'now').and.returnValue(FAKE_DATE_NOW);
+    spyOn(userService, 'saveLocalStore');
+    spyOn(modalService, 'open').and.callThrough();
   });
 
   it('should create', () => {
@@ -66,9 +70,6 @@ describe('DeliveryComponent', () => {
   describe('when the user has not previously viewed the TRX Awareness Modal', () => {
     beforeEach(() => {
       spyOn(userService, 'getLocalStore').and.returnValue(false);
-      spyOn(userService, 'saveLocalStore');
-      spyOn(modalService, 'open').and.callThrough();
-      spyOn(Date, 'now').and.returnValue(FAKE_DATE_NOW);
 
       component.ngOnInit();
     });
@@ -87,18 +88,16 @@ describe('DeliveryComponent', () => {
   describe('wwhen the user has previously viewed the TRX Awareness Modal', () => {
     beforeEach(() => {
       spyOn(userService, 'getLocalStore').and.returnValue(true);
-      spyOn(userService, 'saveLocalStore');
-      spyOn(modalService, 'open');
 
       component.ngOnInit();
     });
 
     it('should NOT open the TRX Awareness Modal', () => {
-      expect(modalService.open).toHaveBeenCalledTimes(0);
+      expect(modalService.open).not.toHaveBeenCalled();
     });
 
     it('should NOT save the user view in the local store', () => {
-      expect(userService.saveLocalStore).toHaveBeenCalledTimes(0);
+      expect(userService.saveLocalStore).not.toHaveBeenCalled();
     });
   });
 });
