@@ -38,8 +38,6 @@ import {
   ITEM_CATEGORY_ID,
   MOCK_ITEM,
   MOCK_ITEM_V3,
-  MOCK_LISTING_FEE_ORDER,
-  ORDER_EVENT,
 } from '@fixtures/item.fixtures.spec';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
 import { MockSubscriptionService, TIER_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
@@ -74,6 +72,7 @@ import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { MeApiService } from '@api/me/me-api.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -81,7 +80,7 @@ describe('ListComponent', () => {
   let itemService: ItemService;
   let subscriptionsService: SubscriptionsService;
   let modalService: NgbModal;
-  let itemerviceSpy: jasmine.Spy;
+  let meApiServiceSpy: jasmine.Spy;
   let paymentService: PaymentService;
   let route: ActivatedRoute;
   let router: Router;
@@ -99,6 +98,7 @@ describe('ListComponent', () => {
   let i18nService: I18nService;
   let featureFlagService: FeatureFlagService;
   let listingLimitService: ListingLimitService;
+  let meApiService: MeApiService;
 
   const prosButtonSelector = '.List__button--pros';
   const deliveryButtonSelector = '.List__button--delivery';
@@ -166,9 +166,6 @@ describe('ListComponent', () => {
           {
             provide: ItemService,
             useValue: {
-              mine() {
-                return of({ data: [MOCK_ITEM, MOCK_ITEM], init: 20 });
-              },
               deselectItems() {},
               bulkDelete() {},
               bulkReserve() {},
@@ -275,6 +272,14 @@ describe('ListComponent', () => {
             provide: ListingLimitService,
             useClass: ListingLimitServiceMock,
           },
+          {
+            provide: MeApiService,
+            useValue: {
+              getItems() {
+                return of({ list: [MOCK_ITEM, MOCK_ITEM], paginationParameter: '20' });
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -300,8 +305,8 @@ describe('ListComponent', () => {
     catalogManagerApiService = TestBed.inject(CatalogManagerApiService);
     featureFlagService = TestBed.inject(FeatureFlagService);
     listingLimitService = TestBed.inject(ListingLimitService);
-
-    itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
+    meApiService = TestBed.inject(MeApiService);
+    meApiServiceSpy = spyOn(meApiService, 'getItems').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
 
     spyOn(router, 'navigate').and.callThrough();
@@ -378,14 +383,14 @@ describe('ListComponent', () => {
 
     it('should reset page on router event', fakeAsync(() => {
       spyOn<any>(component, 'getItems');
-      component['init'] = 40;
+      component['nextPage'] = '40';
       component.end = true;
       component.ngOnInit();
       tick();
       router.navigate(['']);
       tick();
       expect(component.scrollTop).toBe(0);
-      expect(component['init']).toBe(0);
+      expect(component['nextPage']).toBe(null);
       expect(component.end).toBeFalsy();
       expect(component['getItems']).toHaveBeenCalledTimes(2);
     }));
@@ -665,15 +670,15 @@ describe('ListComponent', () => {
 
   describe('getItems', () => {
     it('should call mine with default values and set items', () => {
-      expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
+      expect(meApiService.getItems).toHaveBeenCalledWith(null, STATUS.PUBLISHED);
       expect(component.items.length).toBe(2);
     });
 
     it('should set init', () => {
-      expect(component['init']).toBe(20);
+      expect(component['nextPage']).toBe('20');
     });
     it('should set end true if no init', () => {
-      itemerviceSpy.and.returnValue(of({ data: [MOCK_ITEM, MOCK_ITEM], init: null }));
+      meApiServiceSpy.and.returnValue(of({ list: [MOCK_ITEM, MOCK_ITEM], paginationParameter: null }));
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
@@ -691,25 +696,25 @@ describe('ListComponent', () => {
 
   describe('filterByStatus', () => {
     beforeEach(() => {
-      itemerviceSpy.calls.reset();
+      meApiServiceSpy.calls.reset();
     });
     it('should call mine with filtering and reset page', () => {
-      component['init'] = 20;
-      component.filterByStatus('sold');
-      expect(itemService.mine).toHaveBeenCalledWith(0, 'sold');
+      component['nextPage'] = '20';
+      component.filterByStatus(STATUS.SOLD);
+      expect(meApiService.getItems).toHaveBeenCalledWith(null, STATUS.SOLD);
     });
     it('should not call mine if filter is the same', () => {
-      component.selectedStatus = 'sold';
-      component.filterByStatus('sold');
-      expect(itemService.mine).not.toHaveBeenCalled();
+      component.selectedStatus = STATUS.SOLD;
+      component.filterByStatus(STATUS.SOLD);
+      expect(meApiService.getItems).not.toHaveBeenCalled();
     });
   });
 
   describe('loadMore', () => {
     it('should call mine with new page and append items', () => {
-      component['init'] = 20;
+      component['nextPage'] = '20';
       component.loadMore();
-      expect(itemService.mine).toHaveBeenCalledWith(20, 'published');
+      expect(meApiService.getItems).toHaveBeenCalledWith('20', STATUS.PUBLISHED);
       expect(component.items.length).toBe(4);
     });
   });
