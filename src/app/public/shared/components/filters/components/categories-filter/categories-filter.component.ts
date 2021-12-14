@@ -21,23 +21,21 @@ import { CategoriesApiService } from '@api/categories/categories-api.service';
 })
 export class CategoriesFilterComponent extends AbstractFilter<CategoriesFilterParams> implements OnInit, OnDestroy {
   @Input() config: CategoriesFilterConfig;
-
-  constructor(private categoriesApiService: CategoriesApiService) {
-    super();
-  }
+  @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
+  @ViewChild(DrawerPlaceholderTemplateComponent) placeholderTemplate: DrawerPlaceholderTemplateComponent;
 
   public VARIANT = FILTER_VARIANT;
   public formGroup = new FormGroup({
     select: new FormControl([]),
   });
-
-  @ViewChild(FilterTemplateComponent) filterTemplate: FilterTemplateComponent;
-  @ViewChild(DrawerPlaceholderTemplateComponent) placeholderTemplate: DrawerPlaceholderTemplateComponent;
-
   private iconSubject = new BehaviorSubject('');
   private placeholderIconSubject = new BehaviorSubject('');
   private labelSubject = new BehaviorSubject('');
   private subscriptions = new Subscription();
+
+  constructor(private categoriesApiService: CategoriesApiService) {
+    super();
+  }
 
   public get icon$(): Observable<string> {
     return this.iconSubject.asObservable();
