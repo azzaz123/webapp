@@ -14,7 +14,7 @@ const specialCharacters: SpecialCharacters[] = [
     original: '%%',
     replace: '%'
   }
-]
+];
 
 interface SpecialCharacters {
   original: string,
@@ -211,7 +211,7 @@ class I18nHelper {
     });
   }
 
-  public async mergeTranslationsWithLocal(): Promise<void> {
+  private async mergeTranslationsWithLocal(): Promise<void> {
     const originalTranslationSets = this.getCurrentTranslationSets();
     const locales = await this.getPhraseLocales();
     const phraseTranslationSets = this.getFormattedTranslationSets(locales);
