@@ -141,9 +141,9 @@ describe(`DeeplinkService`, () => {
   });
 
   describe(`WHEN the deeplink is a barcode deeplink`, () => {
-    it(`should return the url`, () => {
-      const deeplink = `${barcodeBaseDeeplink}?b=https://my-barcode-url`;
-      const expected = `https://my-barcode-url`;
+    it(`should return the route`, () => {
+      const deeplink = `${barcodeBaseDeeplink}?b=AB123BA`;
+      const expected = `delivery/tracking/barcode/AB123BA`;
 
       expect(service.toWebLink(deeplink)).toEqual(expected);
     });
@@ -395,7 +395,7 @@ describe(`DeeplinkService`, () => {
 
   describe(`WHEN asking about the availability`, () => {
     describe.each([
-      [barcodeDeeplink, false],
+      [barcodeDeeplink, true],
       [checkDeliveryInstructionDeeplink, true],
       [packagingInstructionsDeeplink, true],
       [itemDeeplink, true],
@@ -445,7 +445,7 @@ describe(`DeeplinkService`, () => {
     });
   });
 
-  describe.each([[barcodeDeeplink], ['some-unknown-url'], [userProfileDeeplink]])(
+  describe.each([['some_kind_of_strange_deeplink'], ['some-unknown-url'], [userProfileDeeplink]])(
     `WHEN navigate to an unavailable deeplink`,
     (deeplink) => {
       beforeEach(() => {

@@ -9,6 +9,7 @@ import { ButtonComponent } from '@shared/button/button.component';
 import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
 import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
+import { environment } from '@environments/environment';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import {
@@ -22,16 +23,16 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { TransactionTrackingActionDeeplinkComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-tracking-action-details/transaction-tracking-action-deeplink/transaction-tracking-action-deeplink.component';
 import { TransactionTrackingActionDialogComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-tracking-action-details/transaction-tracking-action-dialog/transaction-tracking-action-dialog.component';
 import { TransactionTrackingActionSelectorComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-tracking-action-details/transaction-tracking-action-selector/transaction-tracking-action-selector.component';
-import { TransactionTrackingBannerComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/banner/transaction-tracking-banner.component';
-import { TransactionTrackingHeaderComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/sections';
-import { TransactionTrackingInstructionsComponent } from '@private/features/delivery/pages/transaction-tracking-screen';
 import {
   TransactionTrackingActionType,
   TransactionTrackingService,
 } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+import { TransactionTrackingBannerComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/banner/transaction-tracking-banner.component';
+import { TransactionTrackingHeaderComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/sections';
+import { TransactionTrackingInstructionsComponent } from '@private/features/delivery/pages/transaction-tracking-screen';
+import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 
 import { of } from 'rxjs';
-import { environment } from '@environments/environment.beta';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -96,6 +97,12 @@ describe('TransactionTrackingInstructionsComponent', () => {
             getInstructions() {
               return of(MOCK_TRANSACTION_TRACKING_INSTRUCTIONS);
             },
+          },
+        },
+        {
+          provide: TransactionTrackingScreenTrackingEventsService,
+          useValue: {
+            trackClickActionTTS() {},
           },
         },
         DeeplinkService,

@@ -42,4 +42,7 @@ $spacing-23: 23px / 16px * $spacer;
   &__footer-action {
     margin-top: $spacing-ml;
   }
+  &__actionButton {
+    width: 200px;
+  }
 }
