@@ -1,10 +1,8 @@
-@import '~web-styleguide/scss/colors';
-@import '~web-styleguide/scss/spacing';
-@import '~web-styleguide/scss/text';
+@import '~style/common';
 
-$spacing-10: 10px;
-$spacing-14: 14px;
-$spacing-23: 23px;
+$spacing-10: 10px / 16px * $spacer;
+$spacing-14: 14px / 16px * $spacer;
+$spacing-23: 23px / 16px * $spacer;
 
 .TransactionTrackingInstructions {
   &__content {
@@ -17,31 +15,34 @@ $spacing-23: 23px;
   &__instruction {
     border-bottom: 1px solid $blue-grey-4;
     padding: $spacing-23 0;
-    &__index {
-      font-weight: $font-weight-chunky;
-      padding: 0 $spacing-s;
-    }
-    &__description {
-      padding-left: $spacing-10;
-    }
+  }
+  &__instruction-index {
+    font-weight: $font-weight-chunky;
+    padding: 0 $spacing-s;
+  }
+  &__instruction-description {
+    padding-left: $spacing-10;
   }
   &__additionalInfo {
     background-color: $blue-grey-5;
     border-radius: 10px;
     margin-top: $spacing-ml;
     padding: $spacing-ms;
-    &__title {
-      font-weight: $font-weight-chunky;
-    }
-    &__description {
-      margin-top: $spacing-10;
-    }
+  }
+  &__additionalInfo-title {
+    font-weight: $font-weight-chunky;
+  }
+  &__additionalInfo-description {
+    margin-top: $spacing-10;
   }
   &__footer {
     margin-top: $spacing-ml;
     padding: $spacing-ml 0;
-    &__action {
-      margin-top: $spacing-ml;
-    }
+  }
+  &__footer-action {
+    margin-top: $spacing-ml;
+  }
+  &__actionButton {
+    width: 200px;
   }
 }

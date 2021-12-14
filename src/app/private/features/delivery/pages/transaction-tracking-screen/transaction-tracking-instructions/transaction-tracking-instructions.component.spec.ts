@@ -9,6 +9,7 @@ import { ButtonComponent } from '@shared/button/button.component';
 import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
 import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
+import { environment } from '@environments/environment';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import {
@@ -29,9 +30,9 @@ import {
   TransactionTrackingActionType,
   TransactionTrackingService,
 } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+import { UserService } from '@core/user/user.service';
 
 import { of } from 'rxjs';
-import { UserService } from '@core/user/user.service';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -40,16 +41,16 @@ const transactionTrackingInstructionsHeaderSelector = `${transactionTrackingInst
 const transactionTrackingInstructionsBannerSelector = `${transactionTrackingInstructionsSelector} tsl-transaction-tracking-banner`;
 const transactionTrackingInstructionsTitleSelector = `${transactionTrackingInstructionsSelector}__title`;
 const transactionTrackingInstructionsInstructionSelector = `${transactionTrackingInstructionsSelector}__instruction`;
-const transactionTrackingInstructionsInstructionIndexSelector = `${transactionTrackingInstructionsInstructionSelector}__index`;
-const transactionTrackingInstructionsInstructionDescriptionSelector = `${transactionTrackingInstructionsInstructionSelector}__description`;
-const transactionTrackingInstructionsInstructionActionSelector = `${transactionTrackingInstructionsInstructionSelector}__action`;
+const transactionTrackingInstructionsInstructionIndexSelector = `${transactionTrackingInstructionsInstructionSelector}-index`;
+const transactionTrackingInstructionsInstructionDescriptionSelector = `${transactionTrackingInstructionsInstructionSelector}-description`;
+const transactionTrackingInstructionsInstructionActionSelector = `${transactionTrackingInstructionsInstructionSelector}-action`;
 const transactionTrackingInstructionsInstructionDescriptionActionSelector = `${transactionTrackingInstructionsInstructionDescriptionSelector} tsl-transaction-tracking-action-selector`;
 const transactionTrackingInstructionsAdditionalInfoSelector = `${transactionTrackingInstructionsSelector}__additionalInfo`;
-const transactionTrackingInstructionsAdditionalInfoTitleSelector = `${transactionTrackingInstructionsAdditionalInfoSelector}__title`;
-const transactionTrackingInstructionsAdditionalInfoDescriptionSelector = `${transactionTrackingInstructionsAdditionalInfoSelector}__description`;
+const transactionTrackingInstructionsAdditionalInfoTitleSelector = `${transactionTrackingInstructionsAdditionalInfoSelector}-title`;
+const transactionTrackingInstructionsAdditionalInfoDescriptionSelector = `${transactionTrackingInstructionsAdditionalInfoSelector}-description`;
 const transactionTrackingInstructionsFooterSelector = `${transactionTrackingInstructionsSelector}__footer`;
-const transactionTrackingInstructionsFooterDescriptionSelector = `${transactionTrackingInstructionsFooterSelector}__description`;
-const transactionTrackingInstructionsFooterActionSelector = `${transactionTrackingInstructionsFooterSelector}__action`;
+const transactionTrackingInstructionsFooterDescriptionSelector = `${transactionTrackingInstructionsFooterSelector}-description`;
+const transactionTrackingInstructionsFooterActionSelector = `${transactionTrackingInstructionsFooterSelector}-action`;
 
 describe('TransactionTrackingInstructionsComponent', () => {
   let component: TransactionTrackingInstructionsComponent;
@@ -89,7 +90,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
             },
           },
         },
-        { provide: SITE_URL, useValue: 'localhost' },
+        { provide: SITE_URL, useValue: environment.baseUrl },
         {
           provide: TransactionTrackingService,
           useValue: {

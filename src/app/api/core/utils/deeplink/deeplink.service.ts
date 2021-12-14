@@ -157,7 +157,7 @@ export class DeeplinkService {
     const request_id = !!params && !!params[0] ? params[0].split('=').pop() : null;
     const type = !!params && !!params[1] ? params[1].split('=').pop() : null;
     return !!request_id && !!type
-      ? `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${TRANSACTION_TRACKING_PATHS.INSTRUCTIONS}/${request_id}/${type}`
+      ? `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${request_id}/${TRANSACTION_TRACKING_PATHS.INSTRUCTIONS}/${type}`
       : null;
   }
 

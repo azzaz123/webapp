@@ -10,6 +10,10 @@ import {
 } from '@api/core/model/delivery/transaction/tracking';
 
 const MOCK_TRANSACTION_TRACKING_BANNER_1: TransactionTrackingBanner = { title: 'Código de envío', trackingCode: 'WALLAQBGG5RG' };
+export const MOCK_TRANSACTION_TRACKING_BANNER_2: TransactionTrackingBanner = {
+  title: '<b><i><strong>Código de envío</strong></i></b>',
+  trackingCode: '1234567890',
+};
 
 const MOCK_TRANSACTION_TRACKING_INSTRUCTION_1: TransactionTrackingInstruction = {
   action: {
