@@ -7,13 +7,7 @@ import { AdsService } from '@core/ads/services';
   templateUrl: 'ad-slot-group-shopping.component.html',
   styleUrls: ['./ad-slot-group-shopping.component.scss'],
 })
-export class AdSlotGroupShoppingComponent implements AfterViewInit {
+export class AdSlotGroupShoppingComponent {
   @Input() adShoppingPageOptions: AdShoppingPageOptions;
   @Input() adSlotShoppingConfiguration: AdSlotGroupShoppingConfiguration;
-
-  constructor(private adsService: AdsService) {}
-
-  ngAfterViewInit(): void {
-    this.adsService.displayAdShopping(this.adShoppingPageOptions, [this.adSlotShoppingConfiguration]);
-  }
 }

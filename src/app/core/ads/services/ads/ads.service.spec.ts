@@ -203,5 +203,17 @@ describe('AdsService', () => {
 
       expect(windowMock.refreshHeaderBids).toHaveBeenCalled();
     });
+
+    it('should call display shopping when refreshing all slots', () => {
+      spyOn(MockGooglePublisherTagService, 'displayShopping').and.callThrough();
+
+      service.setShoppingSlots({
+        pageOptions: MockAdShoppingPageOptions,
+        slotConfig: [MockAdSlotShopping],
+      });
+      service.refreshAllSlots();
+
+      expect(MockGooglePublisherTagService.displayShopping).toHaveBeenCalled();
+    });
   });
 });
