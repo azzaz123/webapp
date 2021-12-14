@@ -158,10 +158,9 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     },
   },
   [PRO_MODAL_TYPE.confirm_change_card]: {
-    img: '/assets/icons/pro/modals/remove-card.svg',
+    img: '/assets/icons/pro/modals/confirm-change-card.svg',
     title: $localize`:@@web_confirm_payment_method:Confirm payment method`,
-    text1: $localize`:@@web_missing_payment_method_subtitle:Without a card linked to your subscriptions, you won't be able to renew them and you will lose the benefits of being PRO. Is that what you want?`,
-    style: MODAL_STYLE.GREEN,
+    text1: $localize`:@@web_charge_this_card:The card linked to your subscriptions will be`,
     buttons: {
       secondary: { text: $localize`:@@web_cancel:Cancel` },
       primary: { text: $localize`:@@web_confirm_payment_method_yes:Confirm payment method` },
