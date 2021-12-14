@@ -37,7 +37,8 @@ export class DeliveryComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.shouldShowTRXAwarenessModal) {
-      this.showTRXAwarenessModal();
+      this.userService.saveLocalStore(LOCAL_STORAGE_TRX_AWARENESS, Date.now().toString());
+      this.openTRXAwarenessModal();
     }
   }
 
@@ -45,8 +46,7 @@ export class DeliveryComponent implements OnInit {
     this.router.navigate([navLinkId]);
   }
 
-  public showTRXAwarenessModal(): void {
-    this.userService.saveLocalStore(LOCAL_STORAGE_TRX_AWARENESS, Date.now().toString());
+  public openTRXAwarenessModal(): void {
     this.modalService.open(TRXAwarenessModalComponent).result.then(
       () => {},
       () => {}
