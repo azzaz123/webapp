@@ -106,7 +106,7 @@ export class StripeCardsComponent implements OnInit {
     modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.remove_card];
 
     modalRef.result.then((action: MODAL_ACTION) => {
-      if ((action = MODAL_ACTION.PRIMARY_BUTTON)) {
+      if (action === MODAL_ACTION.PRIMARY_BUTTON) {
         this.deleteCard(financialCardID);
       }
     });
