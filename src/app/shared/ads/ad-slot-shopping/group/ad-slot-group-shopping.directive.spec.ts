@@ -1,9 +1,7 @@
 import { AdSlotGroupShoppingDirective } from './ad-slot-group-shopping.directive';
-import { AdShoppingPageOptions, AdSlotConfiguration, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
+import { AdShoppingPageOptions, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
-import { of } from 'rxjs/internal/observable/of';
-import { QueryList } from '@angular/core';
-import { AdSlotGroupShoppingComponent } from './ad-slot-group-shopping.component';
+import { AdSlotGroupShoppingComponentStub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 
 const slotConfig1: AdSlotGroupShoppingConfiguration = {
   slotId: 'test',
@@ -29,11 +27,10 @@ describe('AdSlotGroupShoppingDirective', () => {
 
   it('should set correct slots', () => {
     spyOn(adsServiceMock, 'setShoppingSlots');
-
-    const directive = new AdSlotGroupShoppingDirective(adsServiceMock);
-    directive.slotsQuery = {
-      changes: of([{ adShoppingPageOptions: pageOptions, adSlotShoppingConfiguration: slotConfig1 }]),
-    } as unknown as QueryList<AdSlotGroupShoppingComponent>;
+    const adSlotGroupShoppingComponent = new AdSlotGroupShoppingComponentStub();
+    adSlotGroupShoppingComponent.adShoppingPageOptions = pageOptions;
+    adSlotGroupShoppingComponent.adSlotShoppingConfiguration = slotConfig1;
+    const directive = new AdSlotGroupShoppingDirective(adSlotGroupShoppingComponent, adsServiceMock);
 
     directive.ngAfterContentInit();
 

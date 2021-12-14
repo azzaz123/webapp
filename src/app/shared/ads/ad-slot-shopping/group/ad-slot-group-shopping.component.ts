@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AdShoppingPageOptions, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
-import { AdsService } from '@core/ads/services';
 
 @Component({
   selector: 'tsl-sky-slot-group-shopping',
