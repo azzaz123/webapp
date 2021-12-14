@@ -21,4 +21,12 @@ export interface ClickSelectP2PPaymentAmount {
    * Amount that the user wants to pay to the seller
    */
   paymentAmount: number;
+  /**
+   * Hashed identifier of the item the user selects for payment
+   */
+  itemId: string;
+  /**
+   * Item price in the listing
+   */
+  itemPrice: number;
 }
