@@ -7,11 +7,11 @@ import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscripti
   styleUrls: ['./subscriptions-slots-list.component.scss'],
 })
 export class SubscriptionsSlotsListComponent {
-  @Input() subscriptionsSlots: SubscriptionSlot[] = [];
-  @Input() selectedSubscriptionSlot: SubscriptionSlot = null;
+  @Input() subscriptionsSlots: SubscriptionSlot[];
+  @Input() selectedSubscriptionSlot: SubscriptionSlot;
   @Output() subscriptionSlotSelected: EventEmitter<SubscriptionSlot> = new EventEmitter();
 
-  onSelectSubscriptionSlot(subscriptionSlot: SubscriptionSlot) {
+  public onSelectSubscriptionSlot(subscriptionSlot: SubscriptionSlot): void {
     this.subscriptionSlotSelected.emit(subscriptionSlot);
   }
 }

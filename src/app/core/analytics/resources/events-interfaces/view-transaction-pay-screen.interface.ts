@@ -49,4 +49,8 @@ export interface ViewTransactionPayScreen {
    * Indicates whether wallet toggle is switched on
    */
   useWallet?: boolean;
+  /**
+   * Country of the item/seller (e.g.: ES, IT, etc.) using 2-digit ISO Code
+   */
+  sellerCountry: string;
 }
