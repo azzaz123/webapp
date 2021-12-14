@@ -16,7 +16,7 @@ const routes: Route[] = [
     component: DeliveryComponent,
     children: [
       {
-        path: `${DELIVERY_PATHS.TRACKING}/:${DELIVERY_PATH_PARAMS.ID}`,
+        path: `${DELIVERY_PATHS.TRACKING}`,
         loadChildren: () => TransactionTrackingScreenModule,
       },
       {

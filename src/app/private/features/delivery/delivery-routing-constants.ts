@@ -8,5 +8,7 @@ export enum DELIVERY_PATHS {
 }
 
 export enum DELIVERY_PATH_PARAMS {
+  BARCODE = 'barcode',
   ID = 'id',
+  TYPE = 'type',
 }

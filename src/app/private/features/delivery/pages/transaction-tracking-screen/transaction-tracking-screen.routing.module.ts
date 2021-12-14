@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { TransactionTrackingInstructionsModule } from './modals/transaction-tracking-instructions/transaction-tracking-instructions.module';
-import { TransactionTrackingOverviewModule } from './transaction-tracking-overview/transaction-tracking-overview.module';
-import { TRANSACTION_TRACKING_PATHS } from './transaction-tracking-screen-routing-constants';
-import { TransactionTrackingScreenComponent } from './transaction-tracking-screen.component';
+
+import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
+import {
+  TransactionTrackingBarcodeModule,
+  TransactionTrackingInstructionsModule,
+  TransactionTrackingOverviewModule,
+  TransactionTrackingScreenComponent,
+  TRANSACTION_TRACKING_PATHS,
+} from '@private/features/delivery/pages/transaction-tracking-screen';
 
 const routes: Route[] = [
   {
@@ -11,12 +16,16 @@ const routes: Route[] = [
     component: TransactionTrackingScreenComponent,
     children: [
       {
-        path: '',
-        loadChildren: () => TransactionTrackingOverviewModule,
+        path: `${TRANSACTION_TRACKING_PATHS.BARCODE}/:${DELIVERY_PATH_PARAMS.BARCODE}`,
+        loadChildren: () => TransactionTrackingBarcodeModule,
       },
       {
-        path: TRANSACTION_TRACKING_PATHS.INSTRUCTIONS,
+        path: `:${DELIVERY_PATH_PARAMS.ID}/${TRANSACTION_TRACKING_PATHS.INSTRUCTIONS}/:${DELIVERY_PATH_PARAMS.TYPE}`,
         loadChildren: () => TransactionTrackingInstructionsModule,
+      },
+      {
+        path: `:${DELIVERY_PATH_PARAMS.ID}`,
+        loadChildren: () => TransactionTrackingOverviewModule,
       },
       {
         path: '**',
