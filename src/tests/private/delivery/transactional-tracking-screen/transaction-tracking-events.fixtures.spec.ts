@@ -18,6 +18,8 @@ export const MOCK_TRACKING_VIEW_TTS_EVENT: AnalyticsPageView<ViewTransactionalTi
     screenId: SCREEN_IDS.ShippingTimeline,
     requestId: MOCK_REQUEST_ID_TTS_EVENT,
     source: 'N/A',
+    buyerCountry: 'ES',
+    sellerCountry: 'IT',
   },
 };
 

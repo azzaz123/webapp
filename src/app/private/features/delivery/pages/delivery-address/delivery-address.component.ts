@@ -114,6 +114,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.deliveryAddressTrackEventsService.trackViewShippingAddressScreen();
     this.comesFromPayView =
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;

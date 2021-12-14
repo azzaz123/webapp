@@ -72,6 +72,7 @@ describe('DeliveryAddressComponent', () => {
           provide: DeliveryAddressTrackEventsService,
           useValue: {
             trackClickSaveButton() {},
+            trackViewShippingAddressScreen() {},
           },
         },
         {
@@ -153,6 +154,14 @@ describe('DeliveryAddressComponent', () => {
   });
 
   describe('initForm when init...', () => {
+    it('should track the page view event', () => {
+      spyOn(deliveryAddressTrackEventsService, 'trackViewShippingAddressScreen');
+
+      component.ngOnInit();
+
+      expect(deliveryAddressTrackEventsService.trackViewShippingAddressScreen).toBeCalledTimes(1);
+    });
+
     describe('and the petition succeed...', () => {
       describe('and we have a delivery address...', () => {
         beforeEach(() => {

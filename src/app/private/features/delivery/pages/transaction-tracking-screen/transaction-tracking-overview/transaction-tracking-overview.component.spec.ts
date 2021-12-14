@@ -85,7 +85,11 @@ describe('TransactionTrackingOverviewComponent', () => {
 
     it('should track the view TTS screen event', () => {
       expect(transactionTrackingScreenTrackingEventsService.trackViewTTSScreen).toHaveBeenCalledTimes(1);
-      expect(transactionTrackingScreenTrackingEventsService.trackViewTTSScreen).toHaveBeenCalledWith(MOCK_TRANSACTION_TRACKING_ID);
+      expect(transactionTrackingScreenTrackingEventsService.trackViewTTSScreen).toHaveBeenCalledWith(
+        MOCK_TRANSACTION_TRACKING_ID,
+        MOCK_TRANSACTION_TRACKING.analytics.buyer.country,
+        MOCK_TRANSACTION_TRACKING.analytics.seller.country
+      );
     });
 
     it('should request the transaction tracking with the id param', () => {

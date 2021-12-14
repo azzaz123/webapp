@@ -21,4 +21,12 @@ export interface ViewTransactionalTimeline {
    * From where the user accesses the TRACER screen
    */
   source?: 'tracer-push' | 'mail' | 'N/A';
+  /**
+   * Country of the item/seller (e.g.: ES, IT, etc.) using 2-digit ISO Code
+   */
+  sellerCountry: string;
+  /**
+   * Real country of the buyer's shipping address (using 2-digit ISO Code)
+   */
+  buyerCountry: string;
 }

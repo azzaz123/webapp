@@ -5,6 +5,7 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
 import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
 import { ActivatedRoute } from '@angular/router';
 import { TransactionTrackingScreenTrackingEventsService } from '../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-transaction-tracking-overview',
@@ -24,9 +25,16 @@ export class TransactionTrackingOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     const requestId = this.route.snapshot.paramMap.get(DELIVERY_PATH_PARAMS.ID);
-    this.transactionTracking$ = this.transactionTrackingService.get(requestId);
-    this.transactionTrackingDetails$ = this.transactionTrackingService.getDetails(requestId);
+    this.transactionTracking$ = this.transactionTrackingService.get(requestId).pipe(
+      tap((transactionTracking: TransactionTracking) => {
+        this.transactionTrackingScreenTrackingEventsService.trackViewTTSScreen(
+          requestId,
+          transactionTracking.analytics.buyer.country,
+          transactionTracking.analytics.seller.country
+        );
+      })
+    );
 
-    this.transactionTrackingScreenTrackingEventsService.trackViewTTSScreen(requestId);
+    this.transactionTrackingDetails$ = this.transactionTrackingService.getDetails(requestId);
   }
 }
