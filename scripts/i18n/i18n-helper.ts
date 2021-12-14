@@ -124,6 +124,9 @@ class I18nHelper {
     regex: /<a(?: .*?>|>)(.+?)<\/a>/,
     replacer: '$1'
   }, {
+    regex: /<br>/,
+    replacer: ''
+  }, {
     regex: /%(\d+?)\$s/,
     replacer: () => this.interpolationReplacer()
   }];
