@@ -29,6 +29,7 @@ describe('DeliveryAddressTrackEventsService', () => {
 
       service.trackViewShippingAddressScreen();
 
+      expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_SHIPPING_ADDRESS_SCREEN_EVENT);
     });
   });
@@ -39,6 +40,7 @@ describe('DeliveryAddressTrackEventsService', () => {
 
       service.trackClickSaveButton();
 
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_SAVE_DELIVERY_ADDRESS_EVENT);
     });
   });
