@@ -15,13 +15,15 @@ import { ActionNameAnalytics } from './action-name-analytics-type';
 export class TransactionTrackingScreenTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
-  public trackViewTTSScreen(requestId: string): void {
+  public trackViewTTSScreen(requestId: string, buyerCountry: string, sellerCountry: string): void {
     const pageViewEvent: AnalyticsPageView<ViewTransactionalTimeline> = {
       name: ANALYTICS_EVENT_NAMES.ViewTransactionalTimeline,
       attributes: {
         screenId: SCREEN_IDS.ShippingTimeline,
         requestId,
         source: 'N/A',
+        buyerCountry,
+        sellerCountry,
       },
     };
 

@@ -17,4 +17,12 @@ export interface ViewP2PPaymentSuccessBuyer {
    * Amount the user paid
    */
   paymentAmount: number;
+  /**
+   * Hashed id of the item
+   */
+  itemId?: string;
+  /**
+   * Hashed id of the seller
+   */
+  sellerUserId?: string;
 }

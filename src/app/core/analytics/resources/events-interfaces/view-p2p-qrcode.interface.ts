@@ -17,4 +17,8 @@ export interface ViewP2PQRCode {
    * Amount the user wants to pay
    */
   paymentAmount: number;
+  /**
+   * Hashed Id of the item
+   */
+  itemId?: string;
 }

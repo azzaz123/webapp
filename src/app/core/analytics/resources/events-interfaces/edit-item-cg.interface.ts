@@ -6,7 +6,7 @@
  */
 
 /**
- * User edits an uploaded product (in consumer goods). If the screen is 115, it's because in the item detail, the user has edited the weight
+ * User edits an uploaded product (in consumer goods)
  */
 export interface EditItemCG {
   /**
@@ -44,7 +44,7 @@ export interface EditItemCG {
   /**
    * Identifier of the screen that the item was edited from
    */
-  screenId: 162 | 115;
+  screenId: 162 | 115 | 292;
   /**
    * Hashtags
    */
@@ -69,4 +69,8 @@ export interface EditItemCG {
    * Change in the sale price
    */
   salePriceChange: number;
+  /**
+   * The source from which the edit item comes
+   */
+  source?: 'item_detail' | 'chat' | 'deeplink' | 'edit_screen' | 'reactivation_item';
 }
