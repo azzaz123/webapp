@@ -604,6 +604,7 @@
     "address_view_all_users_form_textfield_phone_not_valid_inline_error": "Questo numero di telefono non è valido",
     "address_view_all_users_form_textfield_street_too_long_info_inline_error": "Troppi caratteri... Cerca di essere più breve",
     "address_view_all_users_form_textfield_door_too_long_info_inline_error": "Troppi caratteri... Cerca di essere più breve",
+    "address_view_all_users_form_textfield_name_surname_too_long_info_inline_error": "Troppi caratteri... Cerca di essere più breve",
     "trx_on_web_modal_title_web_specific": "Wallapop Spedizioni sul web!",
     "trx_on_web_modal_part1_description_web_specific": "Presto il nostro servizio di spedizione sarà disponibile sul web. Ecco perché puoi già controllare o modificare i tuoi dati di spedizione.",
     "trx_on_web_modal_part2_description_web_specific": "Non vedi l'ora di usare il servizio di spedizione? Per ora, continua a usare l'app, che funziona benissimo.",

@@ -8,16 +8,15 @@ import {
   MOCK_DELIVERY_ADDRESS_EMPTY,
   MOCK_DELIVERY_ADDRESS_2,
   MOCK_DELIVERY_ADDRESS_RESET,
+  MOCK_INVALID_MAX_LENGTH_DELIVERY_ADDRESS,
 } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
-import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { FormBuilder } from '@angular/forms';
 import { DeliveryAddressComponent } from './delivery-address.component';
 import { DeliveryCountriesApiService } from '../../services/api/delivery-countries-api/delivery-countries-api.service';
 import { DeliveryLocationsApiService } from '../../services/api/delivery-locations-api/delivery-locations-api.service';
-import { DeliveryAddressApiService } from '../../services/api/delivery-address-api/delivery-address-api.service';
 import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -42,6 +41,7 @@ import { DeliveryAddressTrackEventsService } from '../../services/address/delive
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { DeliveryAddressErrorTranslations } from '../../errors/constants/delivery-error-translations';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -51,7 +51,6 @@ describe('DeliveryAddressComponent', () => {
   let fixture: ComponentFixture<DeliveryAddressComponent>;
   let deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService;
   let deliveryLocationsService: DeliveryLocationsService;
-  let deliveryCountriesService: DeliveryCountriesService;
   let deliveryAddressService: DeliveryAddressService;
   let toastService: ToastService;
   let i18nService: I18nService;
@@ -66,9 +65,7 @@ describe('DeliveryAddressComponent', () => {
         FormBuilder,
         I18nService,
         ToastService,
-        DeliveryCountriesService,
-        DeliveryCountriesStoreService,
-        DeliveryAddressApiService,
+
         DeliveryCountriesApiService,
         DeliveryLocationsApiService,
         {
@@ -91,7 +88,17 @@ describe('DeliveryAddressComponent', () => {
           provide: ProfileFormComponent,
           useValue: {
             initFormControl() {},
-            canExit() {},
+            canExit() {
+              return Promise.resolve();
+            },
+          },
+        },
+        {
+          provide: DeliveryCountriesStoreService,
+          useValue: {
+            get deliveryCountriesAndDefault$() {
+              return of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
+            },
           },
         },
         {
@@ -124,10 +131,28 @@ describe('DeliveryAddressComponent', () => {
     toastService = TestBed.inject(ToastService);
     deliveryAddressService = TestBed.inject(DeliveryAddressService);
     deliveryLocationsService = TestBed.inject(DeliveryLocationsService);
-    deliveryCountriesService = TestBed.inject(DeliveryCountriesService);
     deliveryAddressTrackEventsService = TestBed.inject(DeliveryAddressTrackEventsService);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
+  });
+
+  it('should have input max length fallback', () => {
+    expect(component.INPUTS_MAX_LENGTH).toStrictEqual({
+      full_name: 35,
+      street: 30,
+      flat_and_floor: 9,
+      postal_code: 5,
+      phone_number: 20,
+    });
+  });
+
+  it('should define the countries', () => {
+    expect(component.countries).toStrictEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.countryOptions);
+  });
+
+  it('should define the default country', () => {
+    expect(component['defaultCountry']).toStrictEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry);
   });
 
   describe('initForm when init...', () => {
@@ -143,9 +168,7 @@ describe('DeliveryAddressComponent', () => {
       describe('and we have a delivery address...', () => {
         beforeEach(() => {
           spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
-          spyOn(deliveryCountriesService, 'getCountriesAsOptionsAndDefault').and.returnValue(
-            of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT)
-          );
+
           spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
           spyOn(component.formComponent, 'initFormControl');
 
@@ -192,9 +215,6 @@ describe('DeliveryAddressComponent', () => {
 
       describe(`and we don't have a delivery address...`, () => {
         beforeEach(() => {
-          spyOn(deliveryCountriesService, 'getCountriesAsOptionsAndDefault').and.returnValue(
-            of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT)
-          );
           spyOn(deliveryAddressService, 'get').and.returnValue(of(null));
           spyOn(component.formComponent, 'initFormControl');
 
@@ -217,7 +237,7 @@ describe('DeliveryAddressComponent', () => {
 
         it('should set the default country value...', () => {
           expect(component.deliveryAddressForm.get('country_iso_code').value).toBe(
-            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.iso_code
+            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.isoCode
           );
         });
 
@@ -238,7 +258,6 @@ describe('DeliveryAddressComponent', () => {
 
     describe('and the petition fails...', () => {
       beforeEach(() => {
-        spyOn(deliveryCountriesService, 'getCountriesAsOptionsAndDefault').and.returnValue(of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT));
         spyOn(deliveryAddressService, 'get').and.returnValue(throwError('network error!'));
         spyOn(component.formComponent, 'initFormControl');
 
@@ -261,7 +280,7 @@ describe('DeliveryAddressComponent', () => {
 
       it('should set the default country value...', () => {
         expect(component.deliveryAddressForm.get('country_iso_code').value).toBe(
-          MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.iso_code
+          MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.isoCode
         );
       });
     });
@@ -422,31 +441,66 @@ describe('DeliveryAddressComponent', () => {
         spyOn(toastService, 'show');
         spyOn(deliveryAddressTrackEventsService, 'trackClickSaveButton');
         spyOn(component, 'onSubmit').and.callThrough();
-        component.deliveryAddressForm.patchValue(MOCK_INVALID_DELIVERY_ADDRESS);
-
-        component.onSubmit();
       });
 
-      it('should call the event track save click event ', () => {
-        expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalled();
-      });
+      describe('and the form has invalid values', () => {
+        beforeEach(() => {
+          component.deliveryAddressForm.patchValue(MOCK_INVALID_DELIVERY_ADDRESS);
 
-      it('should show a toast with a form field error message', () => {
-        expect(toastService.show).toHaveBeenCalledWith({
-          text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
-          type: TOAST_TYPES.ERROR,
+          component.onSubmit();
+        });
+
+        it('should call the event track save click event ', () => {
+          expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalledTimes(1);
+        });
+
+        it('should show a toast with a form field error message', () => {
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
+            type: TOAST_TYPES.ERROR,
+          });
+        });
+
+        describe.each(['street', 'phone_number', 'postal_code'])('the form control...', (controlName: string) => {
+          it(`should mark ${controlName} as dirty and invalid `, () => {
+            expect(component.deliveryAddressForm.get(controlName).valid).toBe(false);
+            expect(component.deliveryAddressForm.get(controlName).dirty).toBe(true);
+          });
         });
       });
 
-      it('should mark as dirty the invalid form controls', () => {
-        expect(component.deliveryAddressForm.get('street').valid).toBe(false);
-        expect(component.deliveryAddressForm.get('street').dirty).toBe(true);
+      describe('and the form has max length error values', () => {
+        beforeEach(() => {
+          component.deliveryAddressForm.patchValue(MOCK_INVALID_MAX_LENGTH_DELIVERY_ADDRESS);
 
-        expect(component.deliveryAddressForm.get('phone_number').valid).toBe(false);
-        expect(component.deliveryAddressForm.get('phone_number').dirty).toBe(true);
+          component.onSubmit();
+        });
 
-        expect(component.deliveryAddressForm.get('postal_code').valid).toBe(false);
-        expect(component.deliveryAddressForm.get('postal_code').dirty).toBe(true);
+        it('should call the event track save click event ', () => {
+          expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalledTimes(1);
+        });
+
+        describe.each(['street', 'full_name', 'flat_and_floor'])('the form input...', (controlName: string) => {
+          it(`should mark ${controlName} invalid`, () => {
+            expect(component.deliveryAddressForm.get(controlName).valid).toBe(false);
+            expect(component.deliveryAddressForm.get(controlName).dirty).toBe(true);
+            expect(component.deliveryAddressForm.get(controlName).errors.maxlength).toBeTruthy();
+          });
+        });
+
+        it('should show invalid max length input error message', () => {
+          // TODO: Change for a generic too long copy when we have it		Date: 2021/12/13
+          expect(component.formErrorMessages['street']).toStrictEqual(DeliveryAddressErrorTranslations.ADDRESS_TOO_LONG_HINT);
+          expect(component.formErrorMessages['full_name']).toStrictEqual(DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT);
+          expect(component.formErrorMessages['flat_and_floor']).toStrictEqual(DeliveryAddressErrorTranslations.NAME_TOO_LONG_HINT);
+        });
+
+        it('should show a toast with a form field error message', () => {
+          expect(toastService.show).toHaveBeenCalledWith({
+            text: i18nService.translate(TRANSLATION_KEY.DELIVERY_ADDRESS_MISSING_INFO_ERROR),
+            type: TOAST_TYPES.ERROR,
+          });
+        });
       });
     });
   });
@@ -507,14 +561,17 @@ describe('DeliveryAddressComponent', () => {
 
   describe('when clicking in the countries dropdown...', () => {
     beforeEach(() => {
-      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
       spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
-
-      component.initForm();
-      fixture.detectChanges();
     });
 
     describe('and the form is not a new one... ', () => {
+      beforeEach(() => {
+        spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+
+        component.initForm();
+        fixture.detectChanges();
+      });
+
       describe('and the user did not accept the terms yet...', () => {
         beforeEach(() => {
           component.countries = MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.countryOptions;
@@ -578,14 +635,21 @@ describe('DeliveryAddressComponent', () => {
     });
 
     describe('and the form is a new one... ', () => {
-      it('should open the dropdown', fakeAsync(() => {
+      beforeEach(() => {
+        spyOn(deliveryAddressService, 'get').and.returnValue(of(null));
+
+        component.initForm();
+        fixture.detectChanges();
+      });
+
+      it('should NOT open the dropdown directly', fakeAsync(() => {
         spyOn(component.countriesDropdown, 'open');
         component.isNewForm = true;
 
         fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
         tick();
 
-        expect(component.isCountryEditable).toBe(false);
+        expect(component.isCountryEditable).toBe(true);
         expect(component.countriesDropdown.open).not.toHaveBeenCalled();
       }));
     });
@@ -619,6 +683,15 @@ describe('DeliveryAddressComponent', () => {
 
     it('should reset the cities', () => {
       expect(component.cities).toStrictEqual([]);
+    });
+
+    it('should update the input form validators', () => {
+      const SELECTED_COUNTRY_RESTRICTIONS = MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.countryOptions.find(
+        (country) => country.value === component.deliveryAddressForm.get('country_iso_code').value
+      ).addressFormRestrictions;
+      expect(component.INPUTS_MAX_LENGTH.flat_and_floor).toStrictEqual(SELECTED_COUNTRY_RESTRICTIONS.flat_and_floor);
+      expect(component.INPUTS_MAX_LENGTH.full_name).toStrictEqual(SELECTED_COUNTRY_RESTRICTIONS.full_name);
+      expect(component.INPUTS_MAX_LENGTH.street).toStrictEqual(SELECTED_COUNTRY_RESTRICTIONS.street);
     });
   });
 
@@ -787,7 +860,7 @@ describe('DeliveryAddressComponent', () => {
           expect(component.isNewForm).toBe(true);
           expect(component.formComponent.initFormControl).toHaveBeenCalled();
           expect(component.deliveryAddressForm.get('country_iso_code').value).toBe(
-            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.iso_code
+            MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry.isoCode
           );
         }));
 
