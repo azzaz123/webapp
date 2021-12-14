@@ -25,10 +25,8 @@ import { ItemAvatarModule } from './item-avatar/item-avatar.module';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ChangeCardModalComponent } from './modals/change-card-modal/change-card-modal.component';
-import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-card-modal.component';
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
-import { NoCardModalComponent } from './modals/no-card-modal/no-card-modal.component';
 import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
@@ -152,8 +150,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
-    NoCardModalComponent,
-    ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
     LinkTransformPipe,
@@ -211,8 +207,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
-    NoCardModalComponent,
-    ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
     LinkTransformPipe,
@@ -237,8 +231,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     ExitConfirmationModalComponent,
     DeactivateItemsModalComponent,
     NewCardModalComponent,
-    NoCardModalComponent,
-    ConfirmCardModalComponent,
     ChangeCardModalComponent,
     FullScreenModalComponent,
     WallacoinsDisabledModalComponent,
