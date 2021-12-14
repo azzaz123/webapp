@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
+import { StreamlineTrackingEventsService } from './services/streamline-tracking-events/streamline-tracking-events.service';
 import { STREAMLINE_PATHS } from './streamline.routing.constants';
 
 @Component({
@@ -16,10 +17,11 @@ export class StreamlineComponent implements OnInit {
     { value: STREAMLINE_PATHS.COMPLETED, label: $localize`:@@purchases_view_finished_tab_title:Completed` },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private streamlineTrackingEventsService: StreamlineTrackingEventsService) {}
 
   ngOnInit() {
     const firstTabsBarElementValue = this.tabsBarElements[0].value;
+    this.streamlineTrackingEventsService.trackViewStreamlineScreen();
     this.redirect(firstTabsBarElementValue);
   }
 
