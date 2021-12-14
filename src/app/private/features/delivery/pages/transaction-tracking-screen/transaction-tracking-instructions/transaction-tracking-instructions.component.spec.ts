@@ -27,6 +27,7 @@ import {
   TransactionTrackingActionType,
   TransactionTrackingService,
 } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+import { UserService } from '@core/user/user.service';
 import { TransactionTrackingBannerComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/banner/transaction-tracking-banner.component';
 import { TransactionTrackingHeaderComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/sections';
 import { TransactionTrackingInstructionsComponent } from '@private/features/delivery/pages/transaction-tracking-screen';
@@ -109,6 +110,14 @@ describe('TransactionTrackingInstructionsComponent', () => {
         ErrorsService,
         ItemDetailRoutePipe,
         UserProfileRoutePipe,
+        {
+          provide: UserService,
+          useValue: {
+            user: {
+              webSlug: 'this_is_a_web_slug',
+            },
+          },
+        },
       ],
     }).compileComponents();
   });

@@ -1,12 +1,15 @@
+import { fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { TestBed } from '@angular/core/testing';
 
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { SITE_URL } from '@configs/site-url.config';
+import { UserService } from '@core/user/user.service';
+
+import { of, throwError } from 'rxjs';
 
 const allLanguages: APP_LOCALE[] = [`es`, `en`, `it`];
 const barcodeBaseDeeplink: string = `wallapop://delivery/barcode`;
@@ -25,6 +28,15 @@ const zendeskArticleBaseDeeplink: string = `wallapop://customerSupport/faq/artic
 const zendeskArticleDeeplink: string = `${zendeskArticleBaseDeeplink}?z=%s`;
 const zendeskCreateDisputeFormBaseDeeplink: string = `wallapop://customerSupport/form`;
 const zendeskCreateDisputeFormDeeplink: string = `${zendeskCreateDisputeFormBaseDeeplink}?f=360003316777`;
+
+const fakeUserId = 'this_is_a_fake_user_id';
+const fakeUsername = 'this_is_a_fake_username';
+const fakeWebSlug = `${fakeUsername}-1234567890`;
+const fakeUser = {
+  id: fakeUserId,
+  firstName: fakeUsername,
+  webSlug: fakeWebSlug,
+};
 
 describe(`DeeplinkService`, () => {
   let router: Router;
@@ -53,6 +65,14 @@ describe(`DeeplinkService`, () => {
             navigate() {},
           },
         },
+        {
+          provide: UserService,
+          useValue: {
+            get: () => {
+              return of(fakeUser);
+            },
+          },
+        },
       ],
     });
   });
@@ -73,28 +93,40 @@ describe(`DeeplinkService`, () => {
         window = document.defaultView;
       });
 
-      it(`should return the url according with the specified language`, () => {
+      it(`should return the url according with the specified language`, fakeAsync(() => {
         const deeplink = `${zendeskArticleBaseDeeplink}?z=360001796618`;
         const expected = `https://ayuda.wallapop.com/hc/${HELP_LOCALE_BY_APP_LOCALE[locale]}/articles/360001796618`;
 
-        expect(service.toWebLink(deeplink)).toEqual(expected);
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toEqual(expected);
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the corresponding parameter`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = zendeskArticleBaseDeeplink;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the article`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${zendeskArticleBaseDeeplink}?z=`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
   });
 
@@ -106,202 +138,300 @@ describe(`DeeplinkService`, () => {
         service = TestBed.inject(DeeplinkService);
       });
 
-      it(`should return the url according with the specified language`, () => {
+      it(`should return the url according with the specified language`, fakeAsync(() => {
         const deeplink = zendeskCreateDisputeFormDeeplink;
         const expected = `https://ayuda.wallapop.com/hc/${HELP_LOCALE_BY_APP_LOCALE[locale]}/requests/new?ticket_form_id=360003316777`;
 
-        expect(service.toWebLink(deeplink)).toEqual(expected);
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toEqual(expected);
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the corresponding parameter`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = zendeskCreateDisputeFormBaseDeeplink;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the article`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${zendeskCreateDisputeFormBaseDeeplink}?f=`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
   });
 
   describe(`WHEN there is no deeplink`, () => {
-    it(`should not return the url`, () => {
+    it(`should not return the url`, fakeAsync(() => {
       const deeplink = null;
       const expected = null;
 
-      expect(service.toWebLink(deeplink)).toEqual(expected);
-    });
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(webLink).toEqual(expected);
+      });
+
+      flush();
+    }));
   });
 
   describe(`WHEN the deeplink is a barcode deeplink`, () => {
-    it(`should return the route`, () => {
+    it(`should return the route`, fakeAsync(() => {
       const deeplink = `${barcodeBaseDeeplink}?b=AB123BA`;
       const expected = `delivery/tracking/barcode/AB123BA`;
 
-      expect(service.toWebLink(deeplink)).toEqual(expected);
-    });
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(webLink).toEqual(expected);
+      });
+
+      flush();
+    }));
 
     describe(`WHEN the deeplink does not have the corresponding parameter`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = barcodeBaseDeeplink;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the barcode`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${barcodeBaseDeeplink}?b=`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
   });
 
   describe(`WHEN the deeplink is a check delivery instructions deeplink`, () => {
-    it(`should return the url`, () => {
+    it(`should return the url`, fakeAsync(() => {
       const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=deeplink`;
       const expected = `delivery/tracking/123/instructions/deeplink`;
 
-      expect(service.toWebLink(deeplink)).toEqual(expected);
-    });
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(webLink).toEqual(expected);
+      });
+
+      flush();
+    }));
 
     describe(`WHEN the deeplink does not have the corresponding parameters`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = checkDeliveryInstructionBaseDeeplink;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the request id`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the type`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
   });
 
   describe(`WHEN the deeplink is a packaging instructions deeplink`, () => {
-    it(`should return the url`, () => {
+    it(`should return the url`, fakeAsync(() => {
       const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=deeplink`;
       const expected = `delivery/tracking/123/instructions/deeplink`;
 
-      expect(service.toWebLink(deeplink)).toEqual(expected);
-    });
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(webLink).toEqual(expected);
+      });
+
+      flush();
+    }));
 
     describe(`WHEN the deeplink does not have the corresponding parameters`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = checkDeliveryInstructionBaseDeeplink;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the request id`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the type`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
   });
 
   describe(`WHEN the deeplink is a item deeplink`, () => {
-    it(`should return the url`, () => {
+    it(`should return the url`, fakeAsync(() => {
       const deeplink = `${itemBaseDeeplink}/my-item-id`;
       const expected = `${siteUrlMock}item/my-item-id`;
 
-      expect(service.toWebLink(deeplink)).toEqual(expected);
-    });
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(webLink).toEqual(expected);
+      });
+
+      flush();
+    }));
 
     describe(`WHEN the deeplink does not have the corresponding parameter`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = itemBaseDeeplink;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the item id`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${itemBaseDeeplink}/`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
   });
 
   describe(`WHEN the deeplink is a printable label deeplink`, () => {
-    it(`should return the url`, () => {
+    it(`should return the url`, fakeAsync(() => {
       const deeplink = `${printableLabelBaseDeeplink}?url=my-printable-url`;
       const expected = `my-printable-url`;
 
-      expect(service.toWebLink(deeplink)).toEqual(expected);
-    });
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(webLink).toEqual(expected);
+      });
+
+      flush();
+    }));
 
     describe(`WHEN the deeplink does not have the corresponding parameter`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = printableLabelBaseDeeplink;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the item id`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${printableLabelBaseDeeplink}?url=`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
   });
 
   describe(`WHEN the deeplink is a user profile deeplink`, () => {
-    it(`should return the url`, () => {
-      const deeplink = `${userProfileBaseDeeplink}/user-id`;
+    it(`should return the url`, fakeAsync(() => {
+      const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
+      const expected = `/user/${fakeUsername}-${fakeUserId}`;
 
-      expect(service.toWebLink(deeplink)).toBeFalsy();
-    });
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(webLink).toBeTruthy();
+        expect(webLink).toBe(expected);
+      });
+
+      flush();
+    }));
 
     describe(`WHEN the deeplink does not have the corresponding parameter`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = userProfileBaseDeeplink;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
 
     describe(`WHEN the deeplink does not have the user id`, () => {
-      it(`should not return any url`, () => {
+      it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${userProfileBaseDeeplink}/`;
 
-        expect(service.toWebLink(deeplink)).toBeFalsy();
-      });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
     });
   });
 
@@ -400,7 +530,7 @@ describe(`DeeplinkService`, () => {
       [packagingInstructionsDeeplink, true],
       [itemDeeplink, true],
       [printableLabelDeeplink, true],
-      [userProfileDeeplink, false],
+      [userProfileDeeplink, true],
       [zendeskArticleDeeplink, true],
       [zendeskCreateDisputeFormDeeplink, true],
     ])(`WHEN asking whether a deeplink is available for navigation`, (deeplink, expected) => {
@@ -416,49 +546,107 @@ describe(`DeeplinkService`, () => {
     });
   });
 
-  describe.each([[itemDeeplink], [printableLabelDeeplink], [zendeskArticleDeeplink], [zendeskCreateDisputeFormDeeplink]])(
-    `WHEN navigate to an external url`,
-    (deeplink) => {
-      beforeEach(() => {
-        spyOn(window, `open`);
-      });
+  describe.each([
+    [itemDeeplink],
+    [printableLabelDeeplink],
+    [userProfileDeeplink],
+    [zendeskArticleDeeplink],
+    [zendeskCreateDisputeFormDeeplink],
+  ])(`WHEN navigate to an external url`, (deeplink) => {
+    beforeEach(() => {
+      spyOn(window, `open`);
+    });
 
-      it(`should open a new tab`, () => {
-        service.navigate(deeplink);
+    it(`should open a new tab`, fakeAsync(() => {
+      service.navigate(deeplink);
 
+      service.toWebLink(deeplink).subscribe((webLink) => {
         expect(window.open).toHaveBeenCalledTimes(1);
-        expect(window.open).toHaveBeenCalledWith(service.toWebLink(deeplink), `_blank`);
+        expect(window.open).toHaveBeenCalledWith(webLink, `_blank`);
       });
-    }
-  );
+
+      flush();
+    }));
+  });
 
   describe.each([[checkDeliveryInstructionDeeplink], [packagingInstructionsDeeplink]])(`WHEN navigate to an internal route`, (deeplink) => {
     beforeEach(() => {
       spyOn(router, `navigate`);
     });
 
-    it(`should navigate to an angular route`, () => {
+    it(`should navigate to an angular route`, fakeAsync(() => {
       service.navigate(deeplink);
 
-      expect(router.navigate).toHaveBeenCalledTimes(1);
-      expect(router.navigate).toHaveBeenCalledWith([service.toWebLink(deeplink)]);
-    });
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([webLink]);
+      });
+
+      flush();
+    }));
   });
 
-  describe.each([['some_kind_of_strange_deeplink'], ['some-unknown-url'], [userProfileDeeplink]])(
-    `WHEN navigate to an unavailable deeplink`,
-    (deeplink) => {
+  describe.each([['some_kind_of_strange_deeplink'], ['some-unknown-url']])(`WHEN navigate to an unavailable deeplink`, (deeplink) => {
+    beforeEach(() => {
+      spyOn(window, `open`);
+      spyOn(router, 'navigate');
+    });
+
+    it(`should not navigate`, fakeAsync(() => {
+      service.navigate(deeplink);
+
+      expect(window.open).toHaveBeenCalledTimes(0);
+      expect(router.navigate).toHaveBeenCalledTimes(0);
+
+      flush();
+    }));
+  });
+
+  describe('WHEN the deeplink is an user profile', () => {
+    describe(`WHEN the user service crashes`, () => {
       beforeEach(() => {
-        spyOn(window, `open`);
-        spyOn(router, 'navigate');
+        TestBed.overrideProvider(UserService, {
+          useValue: {
+            get: () => {
+              return throwError('unexpected error');
+            },
+          },
+        });
+        service = TestBed.inject(DeeplinkService);
       });
 
-      it(`should not navigate`, () => {
-        service.navigate(deeplink);
+      it(`should not return any url`, fakeAsync(() => {
+        const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
 
-        expect(window.open).toHaveBeenCalledTimes(0);
-        expect(router.navigate).toHaveBeenCalledTimes(0);
+        service.toWebLink(deeplink).subscribe((webLink: string) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
+    });
+
+    describe(`WHEN the user service does not return any user`, () => {
+      beforeEach(() => {
+        TestBed.overrideProvider(UserService, {
+          useValue: {
+            get: () => {
+              return of({ webSlug: null });
+            },
+          },
+        });
+        service = TestBed.inject(DeeplinkService);
       });
-    }
-  );
+
+      it(`should not return any url`, fakeAsync(() => {
+        const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
+
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
+    });
+  });
 });
