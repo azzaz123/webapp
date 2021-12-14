@@ -17,6 +17,7 @@ import { DeliveryAddressStoreService } from '../../services/address/delivery-add
 import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numbers-only.directive.module';
+import { DeliveryAddressResolver } from './resolvers/delivery-address.resolver';
 
 @NgModule({
   imports: [
@@ -41,6 +42,7 @@ import { NumbersOnlyDirectiveModule } from '@shared/directives/numbers-only/numb
     DeliveryLocationsApiService,
     ErrorsService,
     DeliveryAddressTrackEventsService,
+    DeliveryAddressResolver,
   ],
 })
 export class DeliveryAddressModule {}

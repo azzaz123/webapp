@@ -604,6 +604,7 @@
     "address_view_all_users_form_textfield_phone_not_valid_inline_error": "This phone number isn't valid",
     "address_view_all_users_form_textfield_street_too_long_info_inline_error": "Too many characters... Try to shorten the text",
     "address_view_all_users_form_textfield_door_too_long_info_inline_error": "Too many characters... Try to shorten the text",
+    "address_view_all_users_form_textfield_name_surname_too_long_info_inline_error": "Too many characters... Try to shorten the text",
     "address_view_all_users_top_bar_add_title": "Add your address",
     "address_view_all_users_top_bar_edit_title": "Edit your address",
     "address_view_all_users_form_plain_text_sender_need_explanation_text": "We need your address to be the sender in case of return",
