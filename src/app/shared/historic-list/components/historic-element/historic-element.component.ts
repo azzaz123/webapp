@@ -13,6 +13,7 @@ export class HistoricElementComponent implements OnChanges {
   @Input() clickable: boolean = false;
   @Output() clicked: EventEmitter<HistoricElement> = new EventEmitter<HistoricElement>();
 
+  public readonly imageFallback = '/assets/icons/picture.svg';
   public subDescriptionClassname: string = null;
 
   private readonly mapSubDescriptionTypeToString: Record<HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE, string> = {

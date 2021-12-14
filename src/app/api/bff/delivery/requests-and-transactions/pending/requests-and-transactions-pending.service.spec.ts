@@ -4,6 +4,8 @@ import { RequestsAndTransactionsPendingHttpService } from './http/requests-and-t
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { of } from 'rxjs';
 import { MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_DTO_RESPONSE } from '@api/fixtures/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.fixtures.spec';
+import { UserService } from '@core/user/user.service';
+import { MockUserService } from '@fixtures/user.fixtures.spec';
 
 describe('GIVEN the RequestsAndTransactionsPendingService', () => {
   class MockTransactionsService {
@@ -22,6 +24,10 @@ describe('GIVEN the RequestsAndTransactionsPendingService', () => {
           {
             provide: RequestsAndTransactionsPendingHttpService,
             useValue: mockTransactionsService,
+          },
+          {
+            provide: UserService,
+            useValue: MockUserService,
           },
         ],
       });
