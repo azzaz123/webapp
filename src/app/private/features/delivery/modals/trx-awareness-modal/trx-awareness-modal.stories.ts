@@ -5,6 +5,7 @@ import { TRXAwarenessModalComponent } from './trx-awareness-modal.component';
 import { LottieModule } from '@shared/lottie/lottie.module';
 import { ButtonModule } from '@shared/button/button.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 export default {
   title: 'Webapp/Private/Features/Delivery/Modals/TRXAwarenessModal',
@@ -17,6 +18,7 @@ const Template: Story<TRXAwarenessModalComponent> = (args: TRXAwarenessModalComp
   props: args,
   moduleMetadata: {
     declarations: [TRXAwarenessModalComponent],
+    providers: [NgbActiveModal],
     imports: [CommonModule, LottieModule, ButtonModule, HttpClientModule],
   },
   template: '<tsl-trx-awareness-modal></tsl-trx-awareness-modal>',
