@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class DeliveryAddressResolver implements Resolve<CountryOptionsAndDefault> {
   constructor(private deliveryCountries: DeliveryCountriesService) {}
 
-  resolve(): Observable<CountryOptionsAndDefault> {
+  public resolve(): Observable<CountryOptionsAndDefault> {
     return this.deliveryCountries.getCountriesAsOptionsAndDefault();
   }
 }

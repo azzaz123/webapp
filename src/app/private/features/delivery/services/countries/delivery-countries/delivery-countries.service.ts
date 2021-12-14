@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import {
   CountryOptionsAndDefault,
   DeliveryAddressCountryOption,
@@ -19,11 +19,9 @@ export class DeliveryCountriesService {
 
   public getCountriesAsOptionsAndDefault(): Observable<CountryOptionsAndDefault> {
     return this.deliveryCountriesApiService.get().pipe(
-      map((countries: DeliveryCountriesApi) => {
-        const mappedCountries = this.mapCountryOptionsAndDefaultCountry(countries);
+      map((countries: DeliveryCountriesApi) => this.mapCountryOptionsAndDefaultCountry(countries)),
+      tap((mappedCountries: CountryOptionsAndDefault) => {
         this.deliveryCountriesStoreService.deliveryCountriesAndDefault = mappedCountries;
-
-        return mappedCountries;
       })
     );
   }

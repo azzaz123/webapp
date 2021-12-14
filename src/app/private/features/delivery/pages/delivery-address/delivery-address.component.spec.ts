@@ -135,7 +135,7 @@ describe('DeliveryAddressComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should have input max lenght fallback', () => {
+  it('should have input max length fallback', () => {
     expect(component.INPUTS_MAX_LENGTH).toStrictEqual({
       full_name: 35,
       street: 30,
@@ -441,7 +441,7 @@ describe('DeliveryAddressComponent', () => {
         spyOn(component, 'onSubmit').and.callThrough();
       });
 
-      describe('and the form have invalid values', () => {
+      describe('and the form has invalid values', () => {
         beforeEach(() => {
           component.deliveryAddressForm.patchValue(MOCK_INVALID_DELIVERY_ADDRESS);
 
@@ -459,19 +459,15 @@ describe('DeliveryAddressComponent', () => {
           });
         });
 
-        it('should mark as dirty the invalid form controls', () => {
-          expect(component.deliveryAddressForm.get('street').valid).toBe(false);
-          expect(component.deliveryAddressForm.get('street').dirty).toBe(true);
-
-          expect(component.deliveryAddressForm.get('phone_number').valid).toBe(false);
-          expect(component.deliveryAddressForm.get('phone_number').dirty).toBe(true);
-
-          expect(component.deliveryAddressForm.get('postal_code').valid).toBe(false);
-          expect(component.deliveryAddressForm.get('postal_code').dirty).toBe(true);
+        describe.each(['street', 'phone_number', 'postal_code'])('the form control...', (controlName: string) => {
+          it(`should mark ${controlName} as dirty and invalid `, () => {
+            expect(component.deliveryAddressForm.get(controlName).valid).toBe(false);
+            expect(component.deliveryAddressForm.get(controlName).dirty).toBe(true);
+          });
         });
       });
 
-      describe('and the form have max length error values', () => {
+      describe('and the form has max length error values', () => {
         beforeEach(() => {
           component.deliveryAddressForm.patchValue(MOCK_INVALID_MAX_LENGTH_DELIVERY_ADDRESS);
 
@@ -482,18 +478,12 @@ describe('DeliveryAddressComponent', () => {
           expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalledTimes(1);
         });
 
-        it('should mark the input invalid', () => {
-          expect(component.deliveryAddressForm.get('street').valid).toBe(false);
-          expect(component.deliveryAddressForm.get('street').dirty).toBe(true);
-          expect(component.deliveryAddressForm.get('street').errors.maxlength).toBeTruthy();
-
-          expect(component.deliveryAddressForm.get('full_name').valid).toBe(false);
-          expect(component.deliveryAddressForm.get('full_name').dirty).toBe(true);
-          expect(component.deliveryAddressForm.get('full_name').errors.maxlength).toBeTruthy();
-
-          expect(component.deliveryAddressForm.get('flat_and_floor').valid).toBe(false);
-          expect(component.deliveryAddressForm.get('flat_and_floor').dirty).toBe(true);
-          expect(component.deliveryAddressForm.get('flat_and_floor').errors.maxlength).toBeTruthy();
+        describe.each(['street', 'full_name', 'flat_and_floor'])('the form input...', (controlName: string) => {
+          it(`should mark ${controlName} invalid`, () => {
+            expect(component.deliveryAddressForm.get(controlName).valid).toBe(false);
+            expect(component.deliveryAddressForm.get(controlName).dirty).toBe(true);
+            expect(component.deliveryAddressForm.get(controlName).errors.maxlength).toBeTruthy();
+          });
         });
 
         it('should show invalid max length input error message', () => {
