@@ -11,10 +11,12 @@ import { ChangeCardModalComponent } from 'app/shared/modals/change-card-modal/ch
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { I18nService } from 'app/core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { NoCardModalComponent } from '@shared/modals/no-card-modal/no-card-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { MODAL_ACTION } from '@shared/modals/pro-modal/pro-modal.interface';
 
 @Component({
   selector: 'tsl-stripe-cards',
@@ -98,12 +100,13 @@ export class StripeCardsComponent implements OnInit {
   }
 
   private openInvoicesDefaultModalAndDeleteCard(financialCardID: string): void {
-    const modalRef: NgbModalRef = this.modalService.open(NoCardModalComponent, {
-      windowClass: 'review',
+    const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
+      windowClass: 'pro-modal',
     });
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.remove_card];
 
-    modalRef.result.then((action: string) => {
-      if (action === 'deleteCardModal') {
+    modalRef.result.then((action: MODAL_ACTION) => {
+      if ((action = MODAL_ACTION.PRIMARY_BUTTON)) {
         this.deleteCard(financialCardID);
       }
     });
