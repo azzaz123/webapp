@@ -44,7 +44,9 @@ const getYearFromTransaction = (input: HistoricTransaction): string => {
 };
 
 const getMonthFromTransaction = (input: HistoricTransaction): string => {
-  return moment(input.creationDate).format('MMMM');
+  const formattedMonth = moment(input.creationDate).format('MMMM');
+  const capitalizedFormattedMonth = `${formattedMonth[0].toUpperCase()}${formattedMonth.slice(1)}`;
+  return capitalizedFormattedMonth;
 };
 
 const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricElement => {
