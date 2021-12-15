@@ -10,6 +10,9 @@ import { SITE_URL } from '@configs/site-url.config';
 import { UserService } from '@core/user/user.service';
 
 import { of, throwError } from 'rxjs';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 
 const fakeBarcode = 'abcZYW123908';
 const fakeInstructionsType = 'packaging';
@@ -46,6 +49,7 @@ describe(`DeeplinkService`, () => {
   let router: Router;
   let service: DeeplinkService;
   let window: Window;
+  let toastService: ToastService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -76,6 +80,10 @@ describe(`DeeplinkService`, () => {
               return of(fakeUser);
             },
           },
+        },
+        {
+          provide: ToastService,
+          useClass: MockToastService,
         },
       ],
     });
@@ -140,6 +148,7 @@ describe(`DeeplinkService`, () => {
         TestBed.overrideProvider(LOCALE_ID, { useValue: locale });
         router = TestBed.inject(Router);
         service = TestBed.inject(DeeplinkService);
+        toastService = TestBed.inject(ToastService);
       });
 
       it(`should return the url according with the specified language`, fakeAsync(() => {
@@ -594,11 +603,23 @@ describe(`DeeplinkService`, () => {
     beforeEach(() => {
       spyOn(window, `open`);
       spyOn(router, 'navigate');
+      spyOn(toastService, 'show');
+
+      service.navigate(deeplink);
     });
 
-    it(`should not navigate`, fakeAsync(() => {
-      service.navigate(deeplink);
+    it('should show an error toast', fakeAsync(() => {
+      expect(toastService.show).toHaveBeenCalledTimes(1);
+      expect(toastService.show).toHaveBeenCalledWith({
+        title: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_title_web_specific:Feature not available`,
+        text: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_description_web_specific:We are working on it... We appreciate your patience!`,
+        type: TOAST_TYPES.ERROR,
+      });
 
+      flush();
+    }));
+
+    it(`should not navigate`, fakeAsync(() => {
       expect(window.open).toHaveBeenCalledTimes(0);
       expect(router.navigate).toHaveBeenCalledTimes(0);
 
