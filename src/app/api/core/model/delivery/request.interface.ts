@@ -1,4 +1,4 @@
-import { TransactionItem, TransactionUser } from '..';
+import { TransactionItem, TransactionUser } from './transaction';
 import { Money } from '../money.interface';
 
 export interface Request {
