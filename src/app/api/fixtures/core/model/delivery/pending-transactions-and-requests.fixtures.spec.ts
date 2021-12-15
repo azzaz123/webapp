@@ -6,3 +6,8 @@ export const MOCK_PENDING_TRANSACTIONS_AND_REQUESTS: PendingTransactionsAndReque
   requests: [MOCK_PENDING_REQUEST],
   transactions: MOCK_PENDING_TRANSACTIONS,
 };
+
+export const MOCK_EMPTY_PENDING_TRANSACTIONS_AND_REQUESTS: PendingTransactionsAndRequests = {
+  requests: [],
+  transactions: [],
+};
