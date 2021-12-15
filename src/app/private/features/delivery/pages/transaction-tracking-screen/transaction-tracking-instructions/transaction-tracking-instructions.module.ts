@@ -11,6 +11,7 @@ import {
   transactionTrackingInstructionsRoutedComponents,
   TransactionTrackingInstructionsRoutingModule,
 } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-instructions/transaction-tracking-instructions.routing.module';
+import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 @NgModule({
@@ -24,6 +25,6 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
     TransactionTrackingHeaderModule,
     TransactionTrackingInstructionsRoutingModule,
   ],
-  providers: [TransactionTrackingService, TransactionTrackingHttpService],
+  providers: [TransactionTrackingService, TransactionTrackingHttpService, TransactionTrackingScreenTrackingEventsService],
 })
 export class TransactionTrackingInstructionsModule {}
