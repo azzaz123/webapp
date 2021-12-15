@@ -167,7 +167,7 @@ export class DeeplinkService {
   }
 
   private getParams(deeplink: string): string[] {
-    const regExp: RegExp = new RegExp(/\w+=\w+/g);
+    const regExp: RegExp = new RegExp(/\w+=[\w\-]+/g);
     return deeplink.match(regExp);
   }
 

@@ -1,8 +1,9 @@
+@use 'sass:math';
 @import '~style/common';
 
-$spacing-10: 10px / 16px * $spacer;
-$spacing-14: 14px / 16px * $spacer;
-$spacing-23: 23px / 16px * $spacer;
+$spacing-10: math.div(10px, 16px) * $spacer;
+$spacing-14: math.div(14px, 16px) * $spacer;
+$spacing-23: math.div(23px, 16px) * $spacer;
 
 .TransactionTrackingInstructions {
   &__content {
