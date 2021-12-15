@@ -1,4 +1,4 @@
-import { mapRequestsAndTransactionsPendingToPendingTransactions } from './requests-and-transactions-pending.mapper';
+import { mapRequestsAndTransactionsPendingToPendingTransactionsAndRequests } from './requests-and-transactions-pending.mapper';
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import {
   MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_DTO_RESPONSE,
@@ -9,9 +9,12 @@ import { MockUser } from '@fixtures/user.fixtures.spec';
 describe('mapRequestsAndTransactionsPendingToPendingTransactions', () => {
   describe('when mapping requests and transactions response from server', () => {
     it('should convert data into web context', () => {
-      const expected = MOCK_PENDING_TRANSACTIONS;
+      const expected = {
+        requests: [],
+        transactions: MOCK_PENDING_TRANSACTIONS,
+      };
 
-      const result = mapRequestsAndTransactionsPendingToPendingTransactions({
+      const result = mapRequestsAndTransactionsPendingToPendingTransactionsAndRequests({
         dtoResponse: MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_DTO_RESPONSE,
         currentUserId: MockUser.id,
       });
@@ -22,9 +25,12 @@ describe('mapRequestsAndTransactionsPendingToPendingTransactions', () => {
 
   describe('when mapping requests and transactions (pending as a seller) response from server', () => {
     it('should convert data into web context', () => {
-      const expected = MOCK_PENDING_TRANSACTIONS;
+      const expected = {
+        requests: [],
+        transactions: MOCK_PENDING_TRANSACTIONS,
+      };
 
-      const result = mapRequestsAndTransactionsPendingToPendingTransactions({
+      const result = mapRequestsAndTransactionsPendingToPendingTransactionsAndRequests({
         dtoResponse: MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_AS_SELLER_DTO_RESPONSE,
         currentUserId: MockUser.id,
       });
@@ -35,9 +41,9 @@ describe('mapRequestsAndTransactionsPendingToPendingTransactions', () => {
 
   describe('when mapping an undefined value from server', () => {
     it('should map to an empty collection', () => {
-      const expected = [];
+      const expected = { requests: [], transactions: [] };
 
-      const result = mapRequestsAndTransactionsPendingToPendingTransactions(null);
+      const result = mapRequestsAndTransactionsPendingToPendingTransactionsAndRequests(null);
 
       expect(result).toEqual(expected);
     });

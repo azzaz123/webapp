@@ -12,12 +12,16 @@ import { WalletSharedErrorActionService } from '@private/features/wallet/shared/
 
 import { By } from '@angular/platform-browser';
 import { Observable, of, throwError } from 'rxjs';
+import { Request } from '@api/core/model/delivery/request.interface';
 
 describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let component: WalletPendingTransactionsComponent;
   let errorActionService: WalletSharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
-  let mockpendingTransactionsAsSeller: Observable<PendingTransaction[]> = of(MOCK_PENDING_TRANSACTIONS);
+  let mockpendingTransactionsAsSeller: Observable<{ requests: Request[]; transactions: PendingTransaction[] }> = of({
+    requests: [],
+    transactions: MOCK_PENDING_TRANSACTIONS,
+  });
   let service: RequestsAndTransactionsPendingService;
   let spyTransactionsPendingService;
   const walletPendingTransactionsSelector = '.WalletPendingTransactions';
@@ -98,7 +102,9 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
 
     describe('WHEN there are no pending transactions', () => {
       beforeEach(() => {
-        spyTransactionsPendingService = jest.spyOn(service, 'pendingTransactionsAsSeller', 'get').mockReturnValue(of([]));
+        spyTransactionsPendingService = jest
+          .spyOn(service, 'pendingTransactionsAsSeller', 'get')
+          .mockReturnValue(of({ requests: [], transactions: [] }));
         fixture = TestBed.createComponent(WalletPendingTransactionsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

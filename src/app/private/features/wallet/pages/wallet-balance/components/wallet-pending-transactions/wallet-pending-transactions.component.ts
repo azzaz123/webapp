@@ -4,7 +4,7 @@ import { PendingTransaction } from '@api/core/model';
 import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
 import { throwError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-wallet-pending-transactions',
@@ -19,6 +19,7 @@ export class WalletPendingTransactionsComponent {
     private errorActionService: WalletSharedErrorActionService
   ) {
     this.pendingTransactionsAsSeller = this.requestsAndTransactionsPendingService.pendingTransactionsAsSeller.pipe(
+      map((response) => response.transactions),
       catchError((error: unknown) => {
         this.errorActionService.show(error);
         return throwError(error);
