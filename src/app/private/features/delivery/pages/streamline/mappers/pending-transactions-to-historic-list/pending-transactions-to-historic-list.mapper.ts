@@ -1,4 +1,5 @@
 import { PendingTransaction } from '@api/core/model';
+import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
 import { Request } from '@api/core/model/delivery/request.interface';
 import { ToDomainMapper } from '@api/core/utils/types';
 import { ongoingTransactionTrackingStatusAsBuyerTranslations } from '@private/features/delivery/translations/ongoing-transaction-tracking-status-as-buyer.translations';
@@ -9,8 +10,6 @@ import { HistoricListHeader } from '@shared/historic-list/interfaces/historic-li
 import { HistoricListSubtitle } from '@shared/historic-list/interfaces/historic-list-subtitle.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { mapOngoingTransactionTrackingStatusToSubDescriptionType } from './ongoing-transaction-tracking-status-to-subdescription-type.mapper';
-
-type PendingTransactionsAndRequests = { transactions: PendingTransaction[]; requests: Request[] };
 
 export const mapPendingTransactionToHistoricList: ToDomainMapper<PendingTransactionsAndRequests, HistoricList> = (
   input: PendingTransactionsAndRequests

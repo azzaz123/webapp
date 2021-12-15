@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { RequestAndTransactionsPendingModule } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.module';
 import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { PendingTransaction } from '@api/core/model';
+import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
 import { Request } from '@api/core/model/delivery/request.interface';
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { MOCK_PENDING_REQUEST } from '@api/fixtures/core/model/delivery/requests.fixtures.spec';
@@ -16,10 +17,7 @@ describe('StreamlineOngoingUIService', () => {
   let service: StreamlineOngoingUIService;
   let requestsAndTransactionsPendingService: RequestsAndTransactionsPendingService;
 
-  const requestsReplaySubject: ReplaySubject<{ requests: Request[]; transactions: PendingTransaction[] }> = new ReplaySubject<{
-    requests: Request[];
-    transactions: PendingTransaction[];
-  }>(1);
+  const requestsReplaySubject: ReplaySubject<PendingTransactionsAndRequests> = new ReplaySubject<PendingTransactionsAndRequests>(1);
 
   class MockRequestsAndTransactionsPendingService {
     get pendingTransactionsAndRequests() {

@@ -2,7 +2,6 @@ import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testi
 
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
-import { PendingTransaction } from '@api/core/model';
 import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
@@ -12,13 +11,13 @@ import { WalletSharedErrorActionService } from '@private/features/wallet/shared/
 
 import { By } from '@angular/platform-browser';
 import { Observable, of, throwError } from 'rxjs';
-import { Request } from '@api/core/model/delivery/request.interface';
+import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
 
 describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let component: WalletPendingTransactionsComponent;
   let errorActionService: WalletSharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
-  let mockpendingTransactionsAsSeller: Observable<{ requests: Request[]; transactions: PendingTransaction[] }> = of({
+  let mockpendingTransactionsAsSeller: Observable<PendingTransactionsAndRequests> = of({
     requests: [],
     transactions: MOCK_PENDING_TRANSACTIONS,
   });

@@ -5,6 +5,7 @@ import {
   mapTransactionStatusApiToModel,
 } from '@api/core/mappers/delivery/status';
 import { CurrencyCode } from '@api/core/model/currency.interface';
+import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off-mode.type';
 import { Request } from '@api/core/model/delivery/request.interface';
 import { PendingTransaction } from '@api/core/model/delivery/transaction';
@@ -17,7 +18,6 @@ type TransactionPendingApi = InnerType<RequestsAndTransactionsPendingDto, 'trans
 type RequestPendingApi = InnerType<RequestsAndTransactionsPendingDto, 'requests'>;
 type TransactionPendingCarrierDropOffModeApi = TransactionPendingApi['carrier_drop_off_mode'];
 type TransactionDtoResponseWithCurrentUserId = { dtoResponse: RequestsAndTransactionsPendingDto; currentUserId: string };
-type PendingTransactionsAndRequests = { requests: Request[]; transactions: PendingTransaction[] };
 
 export const mapRequestsAndTransactionsPendingToPendingTransactionsAndRequests: ToDomainMapper<
   TransactionDtoResponseWithCurrentUserId,
