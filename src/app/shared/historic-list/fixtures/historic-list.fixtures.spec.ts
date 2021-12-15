@@ -1,5 +1,6 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
+import { MOCK_PENDING_REQUEST } from '@api/fixtures/core/model/delivery/requests.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-subdescription-type.enum';
@@ -84,8 +85,21 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
         {
           elements: [
             {
-              id: '81891bfa-9df3-41f9-9411-0cd85d1daf9e',
-              imageUrl: 'http://cdn-beta.wallapop.com/images/10420/34/ow/__/c10420p189278801/i420098101.jpg?pictureSize=W800',
+              id: MOCK_PENDING_REQUEST.id,
+              imageUrl: MOCK_PENDING_REQUEST.item.imageUrl,
+              iconUrl: MOCK_PENDING_REQUEST.seller.imageUrl,
+              title: MOCK_PENDING_REQUEST.item.title,
+              description: {
+                text: 'Via shipping',
+                iconUrl: 'assets/icons/box.svg',
+              },
+              moneyAmount: MOCK_PENDING_REQUEST.moneyAmount,
+              subDescription: null,
+              payload: MOCK_PENDING_REQUEST,
+            },
+            {
+              id: MOCK_PENDING_TRANSACTIONS[0].id,
+              imageUrl: MOCK_PENDING_TRANSACTIONS[0].item.imageUrl,
               iconUrl: MOCK_PENDING_TRANSACTIONS[0].seller.imageUrl,
               title: MOCK_PENDING_TRANSACTIONS[0].item.title,
               description: {
