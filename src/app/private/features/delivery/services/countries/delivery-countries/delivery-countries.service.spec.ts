@@ -30,62 +30,19 @@ describe('DeliveryCountriesService', () => {
   });
 
   describe('when getting countries as options and the default one...', () => {
-    describe('when we have the cache active...', () => {
-      describe('and the countries are already stored...', () => {
-        beforeEach(() => {
-          jest.spyOn(deliveryCountriesStoreService, 'deliveryCountries', 'get').mockReturnValue(MOCK_DELIVERY_COUNTRIES_API);
-          spyOn(deliveryCountriesApiService, 'get');
-        });
-
-        it(`shouldn't make a new request`, () => {
-          service.getCountriesAsOptionsAndDefault().subscribe();
-
-          expect(deliveryCountriesApiService.get).not.toHaveBeenCalled();
-        });
-
-        it('should return the stored countries mapped', () => {
-          service.getCountriesAsOptionsAndDefault().subscribe((mappedCountries) => {
-            expect(mappedCountries).toStrictEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
-          });
-        });
-      });
-
-      describe('and the countries are NOT already stored...', () => {
-        beforeEach(() => {
-          jest.spyOn(deliveryCountriesStoreService, 'deliveryCountries', 'get').mockReturnValue(null);
-          spyOn(deliveryCountriesApiService, 'get').and.returnValue(of(MOCK_DELIVERY_COUNTRIES_API));
-        });
-
-        it('should make a new request', () => {
-          service.getCountriesAsOptionsAndDefault().subscribe();
-
-          expect(deliveryCountriesApiService.get).toHaveBeenCalled();
-        });
-
-        it('should return the requested countries mapped', () => {
-          service.getCountriesAsOptionsAndDefault().subscribe((mappedCountries) => {
-            expect(mappedCountries).toStrictEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
-          });
-        });
-      });
+    beforeEach(() => {
+      spyOn(deliveryCountriesApiService, 'get').and.returnValue(of(MOCK_DELIVERY_COUNTRIES_API));
     });
 
-    describe(`when we don't have the cache active...`, () => {
-      beforeEach(() => {
-        jest.spyOn(deliveryCountriesStoreService, 'deliveryCountries', 'get').mockReturnValue(MOCK_DELIVERY_COUNTRIES_API);
-        spyOn(deliveryCountriesApiService, 'get').and.returnValue(of(MOCK_DELIVERY_COUNTRIES_API));
-      });
+    it('should request the countries', () => {
+      service.getCountriesAsOptionsAndDefault().subscribe();
 
-      it('should make a new request', () => {
-        service.getCountriesAsOptionsAndDefault(false).subscribe();
+      expect(deliveryCountriesApiService.get).toHaveBeenCalled();
+    });
 
-        expect(deliveryCountriesApiService.get).toHaveBeenCalled();
-      });
-
-      it('should return the requested countries mapped', () => {
-        service.getCountriesAsOptionsAndDefault(false).subscribe((mappedCountries) => {
-          expect(mappedCountries).toStrictEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
-        });
+    it('should return the requested countries mapped', () => {
+      service.getCountriesAsOptionsAndDefault().subscribe((mappedCountries) => {
+        expect(mappedCountries).toStrictEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
       });
     });
   });

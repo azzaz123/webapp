@@ -9,6 +9,7 @@ import { TabsBarComponent } from '@shared/tabs-bar/components/tabs-bar/tabs-bar.
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
 import { DELIVERY_PATHS } from '../../delivery-routing-constants';
+import { StreamlineTrackingEventsService } from './services/streamline-tracking-events/streamline-tracking-events.service';
 
 import { StreamlineComponent } from './streamline.component';
 import { STREAMLINE_PATHS } from './streamline.routing.constants';
@@ -17,10 +18,19 @@ describe('StreamlineComponent', () => {
   let component: StreamlineComponent;
   let fixture: ComponentFixture<StreamlineComponent>;
   let router: Router;
+  let streamlineTrackingEventsService: StreamlineTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, TabsBarModule],
+      providers: [
+        {
+          provide: StreamlineTrackingEventsService,
+          useValue: {
+            trackViewStreamlineScreen() {},
+          },
+        },
+      ],
       declarations: [StreamlineComponent],
     }).compileComponents();
   });
@@ -28,7 +38,10 @@ describe('StreamlineComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamlineComponent);
     router = TestBed.inject(Router);
+    streamlineTrackingEventsService = TestBed.inject(StreamlineTrackingEventsService);
     component = fixture.componentInstance;
+
+    spyOn(streamlineTrackingEventsService, 'trackViewStreamlineScreen');
     fixture.detectChanges();
 
     spyOn(router, 'navigate');
@@ -39,6 +52,10 @@ describe('StreamlineComponent', () => {
   });
 
   describe('when user enters page', () => {
+    it('should track the page view event', () => {
+      expect(streamlineTrackingEventsService.trackViewStreamlineScreen).toHaveBeenCalledTimes(1);
+    });
+
     it('should show all filters', () => {
       const tabsDebugElements = fixture.debugElement.queryAll(By.directive(TabComponent));
       const expectedNumberOfFilters = Object.values(STREAMLINE_PATHS).filter((v) => typeof v === 'string').length;

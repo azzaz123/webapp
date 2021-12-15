@@ -16,10 +16,18 @@ describe('StreamlineOngoingUIService', () => {
 
   const requestsReplaySubject: ReplaySubject<PendingTransaction[]> = new ReplaySubject<PendingTransaction[]>(1);
 
+  class MockRequestsAndTransactionsPendingService {
+    get pendingTransactions() {
+      return requestsReplaySubject.asObservable();
+    }
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RequestAndTransactionsPendingModule],
-      providers: [StreamlineOngoingUIService],
+      providers: [
+        StreamlineOngoingUIService,
+        { provide: RequestsAndTransactionsPendingService, useClass: MockRequestsAndTransactionsPendingService },
+      ],
     });
     service = TestBed.inject(StreamlineOngoingUIService);
     requestsAndTransactionsPendingService = TestBed.inject(RequestsAndTransactionsPendingService);
@@ -31,7 +39,6 @@ describe('StreamlineOngoingUIService', () => {
 
   describe('when getting elements', () => {
     beforeEach(() => {
-      jest.spyOn(requestsAndTransactionsPendingService, 'pendingTransactions', 'get').mockReturnValue(requestsReplaySubject.asObservable());
       service.getItems();
     });
 

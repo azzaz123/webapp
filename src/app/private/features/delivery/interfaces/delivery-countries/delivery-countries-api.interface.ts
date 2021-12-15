@@ -2,15 +2,38 @@ import { IOption } from '@shared/dropdown/utils/option.interface';
 
 export interface DeliveryCountriesApi {
   countries: DeliveryCountryApi[];
-  default: DeliveryCountryApi;
+  default: DeliveryCountryDefaultApi;
 }
 
-export interface DeliveryCountryApi {
+export interface DeliveryCountryDefaultApi {
   iso_code: string;
-  label?: string;
+}
+export interface DeliveryCountryApi extends DeliveryCountryDefaultApi {
+  label: string;
+  address_restrictions: AddressRestrictionsApi;
+}
+
+export interface AddressRestrictionsApi {
+  name: number;
+  street: number;
+  flat_and_floor: number;
 }
 
 export interface CountryOptionsAndDefault {
-  countryOptions: IOption[];
-  defaultCountry: DeliveryCountryApi;
+  countryOptions: DeliveryAddressCountryOption[];
+  defaultCountry: DeliveryCountryDefault;
+}
+
+export interface DeliveryCountryDefault {
+  isoCode: string;
+}
+
+export interface DeliveryAddressCountryOption extends IOption {
+  addressFormRestrictions: AddressFormRestrictions;
+}
+
+export interface AddressFormRestrictions {
+  full_name: number;
+  street: number;
+  flat_and_floor: number;
 }

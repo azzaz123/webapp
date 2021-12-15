@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { DeliveryCountriesStoreService } from './delivery-countries-store.service';
-import { MOCK_DELIVERY_COUNTRIES_API } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
-import { DeliveryCountriesApi } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
+import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
+import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 
 describe('DeliveryCountriesStoreService', () => {
   let service: DeliveryCountriesStoreService;
@@ -19,16 +19,16 @@ describe('DeliveryCountriesStoreService', () => {
 
   describe('when setting the delivery countries...', () => {
     beforeEach(() => {
-      service.deliveryCountries = MOCK_DELIVERY_COUNTRIES_API;
+      service.deliveryCountriesAndDefault = MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT;
     });
 
     it('should update the delivery countries', () => {
-      expect(service.deliveryCountries).toEqual(MOCK_DELIVERY_COUNTRIES_API);
+      expect(service.deliveryCountriesAndDefault).toEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
     });
 
     it('should update the delivery countries observable', () => {
-      service.deliveryCountries$.subscribe((deliveryCountries: DeliveryCountriesApi) => {
-        expect(deliveryCountries).toEqual(MOCK_DELIVERY_COUNTRIES_API);
+      service.deliveryCountriesAndDefault$.subscribe((deliveryCountries: CountryOptionsAndDefault) => {
+        expect(deliveryCountries).toEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
       });
     });
   });

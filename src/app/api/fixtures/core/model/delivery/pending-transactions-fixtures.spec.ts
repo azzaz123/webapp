@@ -1,5 +1,11 @@
 import { PendingTransaction } from '@api/core/model';
-import { TRANSACTION_DELIVERY_STATUS, TRANSACTION_PAYMENT_STATUS, TRANSACTION_STATUS } from '@api/core/model/delivery/transaction/status';
+import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off-mode.type';
+import {
+  ONGOING_TRANSACTION_TRACKING_STATUS,
+  TRANSACTION_DELIVERY_STATUS,
+  TRANSACTION_PAYMENT_STATUS,
+  TRANSACTION_STATUS,
+} from '@api/core/model/delivery/transaction/status';
 
 export const MOCK_PENDING_TRANSACTIONS: PendingTransaction[] = [
   {
@@ -23,6 +29,7 @@ export const MOCK_PENDING_TRANSACTIONS: PendingTransaction[] = [
       transaction: TRANSACTION_STATUS.PENDING,
       delivery: TRANSACTION_DELIVERY_STATUS.IN_TRANSIT,
       payment: TRANSACTION_PAYMENT_STATUS.PAY_IN_SUCCEEDED,
+      tracking: ONGOING_TRANSACTION_TRACKING_STATUS.IN_TRANSIT,
     },
     moneyAmount: {
       amount: {
@@ -37,5 +44,7 @@ export const MOCK_PENDING_TRANSACTIONS: PendingTransaction[] = [
       },
       toString: () => '',
     },
+    isCurrentUserTheSeller: false,
+    carrierDropOffMode: CARRIER_DROP_OFF_MODE.POST_OFFICE,
   },
 ];

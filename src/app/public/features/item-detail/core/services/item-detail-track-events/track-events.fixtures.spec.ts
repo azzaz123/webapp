@@ -16,6 +16,7 @@ import {
   ViewOthersItemREDetail,
   ViewOwnItemDetail,
   ViewShippingAddress,
+  ViewShippingTransactions,
 } from '@core/analytics/analytics-constants';
 import { USER_TYPE } from '@core/user/user.service';
 import { MOCK_CAR } from '@fixtures/car.fixtures.spec';
@@ -258,6 +259,14 @@ export const MOCK_VIEW_SHIPPING_ADDRESS_SCREEN_EVENT: AnalyticsPageView<ViewShip
     screenId: SCREEN_IDS.MyShippingAddress,
   },
 };
+
+export const MOCK_VIEW_STREAMLINE_SCREEN_EVENT: AnalyticsPageView<ViewShippingTransactions> = {
+  name: ANALYTICS_EVENT_NAMES.ViewShippingTransactions,
+  attributes: {
+    screenId: SCREEN_IDS.MyShippingTransactions,
+  },
+};
+
 export class MockItemdDetailTrackEventService {
   trackFavouriteOrUnfavouriteEvent() {}
   trackClickChatButton() {}

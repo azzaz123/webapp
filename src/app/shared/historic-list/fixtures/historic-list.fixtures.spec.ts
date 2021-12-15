@@ -86,14 +86,14 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
             {
               id: '81891bfa-9df3-41f9-9411-0cd85d1daf9e',
               imageUrl: 'http://cdn-beta.wallapop.com/images/10420/34/ow/__/c10420p189278801/i420098101.jpg?pictureSize=W800',
-              iconUrl: MOCK_PENDING_TRANSACTIONS[0].buyer.imageUrl,
+              iconUrl: MOCK_PENDING_TRANSACTIONS[0].seller.imageUrl,
               title: MOCK_PENDING_TRANSACTIONS[0].item.title,
               description: {
                 text: 'Via shipping',
                 iconUrl: 'assets/icons/box.svg',
               },
               moneyAmount: MOCK_PENDING_TRANSACTIONS[0].moneyAmount,
-              subDescription: { text: 'IN_TRANSIT', type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.VALID },
+              subDescription: null,
               payload: MOCK_PENDING_TRANSACTIONS[0],
             },
           ],

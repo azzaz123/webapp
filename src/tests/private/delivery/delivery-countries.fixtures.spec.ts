@@ -8,10 +8,20 @@ export const MOCK_DELIVERY_COUNTRIES_API: DeliveryCountriesApi = {
     {
       iso_code: 'ES',
       label: 'Spain',
+      address_restrictions: {
+        name: 35,
+        street: 30,
+        flat_and_floor: 9,
+      },
     },
     {
       iso_code: 'IT',
       label: 'Italy',
+      address_restrictions: {
+        name: 45,
+        street: 40,
+        flat_and_floor: 19,
+      },
     },
   ],
   default: {
@@ -24,13 +34,23 @@ export const MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT: CountryOptionsAndDefau
     {
       label: 'Spain',
       value: 'ES',
+      addressFormRestrictions: {
+        full_name: 35,
+        street: 30,
+        flat_and_floor: 9,
+      },
     },
     {
       label: 'Italy',
       value: 'IT',
+      addressFormRestrictions: {
+        full_name: 45,
+        street: 40,
+        flat_and_floor: 19,
+      },
     },
   ],
   defaultCountry: {
-    iso_code: 'ES',
+    isoCode: 'ES',
   },
 };

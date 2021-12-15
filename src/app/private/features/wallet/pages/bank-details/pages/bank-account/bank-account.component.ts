@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
-import { DELIVERY_INPUTS_MAX_LENGTH } from '@private/features/delivery/enums/delivery-inputs-length.enum';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { EventService } from '@core/event/event.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -28,6 +27,7 @@ import { BehaviorSubject } from 'rxjs';
 import { BANK_ACCOUNT_TRANSLATIONS } from '@private/features/wallet/translations/bank-account.translations';
 import { SeparateWordByCharacterPipe } from '@shared/pipes/separate-word-by-character/separate-word-by-character.pipe';
 import { DeviceService } from '@core/device/device.service';
+import { BANK_ACCOUNT_INPUTS_MAX_LENGTH } from '@private/features/delivery/enums/bank-account-inputs-length.enum';
 
 export const IBAN_LENGTH = 40;
 @Component({
@@ -44,7 +44,7 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
   public readonly loadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
+  public readonly BANK_ACCOUNT_INPUTS_MAX_LENGTH = BANK_ACCOUNT_INPUTS_MAX_LENGTH;
   public bankAccountForm: FormGroup;
   public isNewForm = true;
   public maxLengthIBAN: number;

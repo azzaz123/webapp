@@ -1,0 +1,3 @@
+export enum BANK_ACCOUNT_INPUTS_MAX_LENGTH {
+  FLAT_AND_FLOOR = 15,
+}

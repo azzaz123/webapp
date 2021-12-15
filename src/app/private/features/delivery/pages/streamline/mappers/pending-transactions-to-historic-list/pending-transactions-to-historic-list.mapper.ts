@@ -1,13 +1,13 @@
 import { PendingTransaction } from '@api/core/model';
 import { ToDomainMapper } from '@api/core/utils/types';
-import { deliveryStatusTranslationsAsBuyer } from '@private/features/delivery/translations/delivery-status-as-buyer.translations';
-import { deliveryStatusTranslationsAsSeller } from '@private/features/delivery/translations/delivery-status-as-seller.translations';
+import { ongoingTransactionTrackingStatusAsBuyerTranslations } from '@private/features/delivery/translations/ongoing-transaction-tracking-status-as-buyer.translations';
+import { ongoingTransactionTrackingStatusAsSellerTranslations } from '@private/features/delivery/translations/ongoing-transaction-tracking-status-as-seller.translations';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricListHeader } from '@shared/historic-list/interfaces/historic-list-header.interface';
 import { HistoricListSubtitle } from '@shared/historic-list/interfaces/historic-list-subtitle.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
-import { mapTransactionStatusToSubDescriptionType } from '../transaction-status-to-subdescription-type.mapper';
+import { mapOngoingTransactionTrackingStatusToSubDescriptionType } from './ongoing-transaction-tracking-status-to-subdescription-type.mapper';
 
 export const mapPendingTransactionToHistoricList: ToDomainMapper<PendingTransaction[], HistoricList> = (
   input: PendingTransaction[]
@@ -39,7 +39,7 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
 
   input.forEach((pendingTransaction: PendingTransaction) => {
     const { id, item, moneyAmount } = pendingTransaction;
-    const description = getDescription(pendingTransaction);
+    const description = getDescription();
     const subDescription = getSubDescription(pendingTransaction);
     const iconUrl = getIconUrl(pendingTransaction);
 
@@ -61,34 +61,36 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransaction[]
   return result;
 };
 
-const getDescription = (input: PendingTransaction): { text: string; iconUrl: string } => {
+const getDescription = (): { text: string; iconUrl: string } => {
   return {
-    text: 'Via shipping',
+    text: $localize`:@@shipping_transaction_type_label:Via shipping`,
     iconUrl: 'assets/icons/box.svg',
   };
 };
 
-const getSubDescription = (input: PendingTransaction): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } => {
-  const { status } = input;
-  const { delivery: deliveryStatus } = status;
-  const text: string = isCurrentUserSeller()
-    ? deliveryStatusTranslationsAsSeller[deliveryStatus]
-    : deliveryStatusTranslationsAsBuyer[deliveryStatus];
+const getSubDescription = (input: PendingTransaction): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } | null => {
+  const { status, isCurrentUserTheSeller } = input;
+  const { tracking: trackingStatus } = status;
+  const text: string = isCurrentUserTheSeller
+    ? ongoingTransactionTrackingStatusAsSellerTranslations[trackingStatus]
+    : ongoingTransactionTrackingStatusAsBuyerTranslations[trackingStatus];
 
-  const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = mapTransactionStatusToSubDescriptionType[status.delivery];
+  const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = mapOngoingTransactionTrackingStatusToSubDescriptionType[trackingStatus];
 
-  return {
-    text,
-    type,
-  };
+  // TODO: Review when streamline is implemented
+  const isStreamlineActive = false;
+
+  if (isStreamlineActive) {
+    return {
+      text,
+      type,
+    };
+  }
+
+  return null;
 };
 
 const getIconUrl = (input: PendingTransaction): string => {
-  const { buyer, seller } = input;
-  return isCurrentUserSeller ? buyer.imageUrl : seller.imageUrl;
-};
-
-// TODO: Move this to transaction domain & do proper logic
-const isCurrentUserSeller = (): boolean => {
-  return true;
+  const { buyer, seller, isCurrentUserTheSeller } = input;
+  return isCurrentUserTheSeller ? buyer.imageUrl : seller.imageUrl;
 };
