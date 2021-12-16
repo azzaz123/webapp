@@ -1,15 +1,17 @@
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
-import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
-import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
-import { of } from 'rxjs';
-import { TransactionTrackingScreenTrackingEventsService } from '../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { By } from '@angular/platform-browser';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 
-import { TransactionTrackingOverviewComponent } from './transaction-tracking-overview.component';
+import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
+import { SharedErrorActionService } from '@shared/error-action';
+import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingOverviewComponent } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-overview/transaction-tracking-overview.component';
+import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+
+import { of } from 'rxjs';
 
 describe('TransactionTrackingOverviewComponent', () => {
   const MOCK_TRANSACTION_TRACKING_ID = 'Laia';
@@ -45,7 +47,6 @@ describe('TransactionTrackingOverviewComponent', () => {
             },
           },
         },
-
         {
           provide: TransactionTrackingService,
           useValue: {
@@ -57,6 +58,7 @@ describe('TransactionTrackingOverviewComponent', () => {
             },
           },
         },
+        SharedErrorActionService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
