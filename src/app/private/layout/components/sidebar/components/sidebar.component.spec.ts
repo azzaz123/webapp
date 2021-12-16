@@ -25,7 +25,6 @@ import {
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 import { SidebarService } from '../core/services/sidebar.service';
 import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
@@ -67,7 +66,7 @@ describe('SidebarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent, DeliveryDevelopmentDirective],
+        declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent],
         imports: [NgxPermissionsModule.forRoot(), RouterTestingModule.withRoutes(routes)],
         providers: [
           {

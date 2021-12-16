@@ -72,13 +72,11 @@
     </a>
   </ng-container>
 
-  <ng-container *tslDeliveryDevelopment>
-    <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
-      [routerLink]="[PRIVATE_PATHS.DELIVERY]" routerLinkActive="Sidebar__entry--active">
-      <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_box.svg"></tsl-svg-icon>
-      <span class="Sidebar__label ml-2" i18n="@@web_sidebar_delivery">Delivery</span>
-    </a>
-  </ng-container>
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+    [routerLink]="[PRIVATE_PATHS.DELIVERY]" routerLinkActive="Sidebar__entry--active">
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_box.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_sidebar_delivery">Delivery</span>
+  </a>
 
   <a id="sidebar-wallet" *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
     [routerLink]="[PRIVATE_PATHS.WALLET]" (click)="trackClickToWallet()" routerLinkActive="Sidebar__entry--active">
