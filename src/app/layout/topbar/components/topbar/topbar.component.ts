@@ -12,7 +12,7 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
@@ -21,6 +21,7 @@ import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { SITE_URL } from '@configs/site-url.config';
 import { APP_LOCALE } from '@configs/subdomains.config';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
 
 @Component({
   selector: 'tsl-topbar',
@@ -35,6 +36,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public wallacoins = 0;
   public currencyName: string;
   public isLogged: boolean;
+  public readonly standalone$: Observable<boolean> = this.standaloneService.standalone$;
 
   @Input() isMyZone: boolean;
 
@@ -49,6 +51,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private searchNavigator: SearchNavigatorService,
     private topbarTrackingEventsService: TopbarTrackingEventsService,
+    private standaloneService: StandaloneService,
     @Inject(SITE_URL) private siteUrl: string,
     @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
