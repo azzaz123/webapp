@@ -34,19 +34,18 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
   },
   {
     id: FASHION_CONFIGURATION_ID.BRAND,
-    type: FILTER_TYPES.SUGGESTER,
+    type: FILTER_TYPES.MULTISELECT,
     title: $localize`:@@web_filter_fashion_brand_title:Brand`,
     bubblePlaceholder: $localize`:@@web_filter_fashion_brand_bubble_placeholder:Brand`,
     drawerPlaceholder: $localize`:@@web_filter_fashion_brand_drawer_placeholder:Select brand`,
-    suggesterPlaceholder: $localize`:@@web_filter_fashion_brand_suggester_placeholder:Search brand`,
     icon: '/assets/icons/filters/fashion_brand.svg',
     mapKey: {
       parameterKey: FILTER_QUERY_PARAM_KEY.brand,
     },
-    hasOptionsOnInit: true,
     isClearable: true,
     hasContentPlaceholder: true,
-    isLabelInValue: true,
+    bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE,
+    singleBubbleValueLabel: 'Marcas (OJO TIRAR DE MIQUEL)',
   },
   {
     id: FASHION_CONFIGURATION_ID.SIZE,
