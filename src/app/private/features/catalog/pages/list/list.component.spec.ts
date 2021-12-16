@@ -66,7 +66,6 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent } from '@shared/button/button.component';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
-import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
 import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscription-slots.fixtures.spec';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
@@ -141,7 +140,6 @@ describe('ListComponent', () => {
           SubscriptionsSlotItemComponent,
           TryProSlotComponent,
           ProBadgeComponent,
-          DeliveryDevelopmentDirective,
           ButtonComponent,
         ],
         providers: [
@@ -401,6 +399,7 @@ describe('ListComponent', () => {
 
       beforeEach(() => {
         walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+        deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
       });
 
       it('should not open upload confirmation modal', () => {
@@ -415,40 +414,12 @@ describe('ListComponent', () => {
         expect(walletButton).toBeTruthy();
       });
 
+      it('should show a delivery button', () => {
+        expect(deliveryButton).toBeTruthy();
+      });
+
       it('should point to the wallet path', () => {
         expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
-      });
-
-      describe('and when delivery feature flag is enabled', () => {
-        beforeEach(() => {
-          localFlagSubject.next(true);
-          fixture.detectChanges();
-
-          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
-        });
-
-        it('should show a delivery button', () => {
-          expect(deliveryButton).toBeTruthy();
-        });
-
-        describe('and when clicking the delivery button', () => {
-          it('should navigate to delivery', () => {
-            expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
-          });
-        });
-      });
-
-      describe('and when delivery feature flag is NOT enabled', () => {
-        beforeEach(() => {
-          localFlagSubject.next(false);
-          fixture.detectChanges();
-
-          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
-        });
-
-        it('should NOT show a delivery button', () => {
-          expect(deliveryButton).toBeFalsy();
-        });
       });
     });
 
