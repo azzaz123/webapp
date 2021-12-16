@@ -190,7 +190,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
     this.detectTitleKeyboardChanges();
 
-    this.updateShippingToggleStatus();
+    this.updateShippingToggleStatus(this.isShippabilityAllowed);
     this.isProUser = this.userService.isProUser();
   }
 
@@ -917,7 +917,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 
-  private updateShippingToggleStatus(): void {
+  private updateShippingToggleStatus(previousIsShippabilityAllowed: boolean): void {
     const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
     const subcategoryId = this.getSubcategoryId();
     const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
@@ -928,7 +928,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
 
       if (!this.isShippabilityAllowed) {
-        this.clearShippingToggleFormData();
+        this.restartShippingToggleFormData(false);
+      } else if (!previousIsShippabilityAllowed) {
+        this.restartShippingToggleFormData(true);
       }
     });
   }
@@ -940,31 +942,31 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return objectTypeLvl2 || objectTypeLvl1;
   }
 
-  private clearShippingToggleFormData(): void {
-    this.uploadForm.get('sale_conditions').get('supports_shipping').setValue(false);
+  private restartShippingToggleFormData(shippingToggleResetValue: boolean): void {
+    this.uploadForm.get('sale_conditions').get('supports_shipping').setValue(shippingToggleResetValue);
     this.uploadForm.get('delivery_info').setValue(null);
   }
 
   private detectShippabilityAllowanceChanges(): void {
     this.uploadForm.get('category_id').valueChanges.subscribe(() => {
-      this.updateShippingToggleStatus();
+      this.updateShippingToggleStatus(this.isShippabilityAllowed);
     });
     this.uploadForm
       .get('extra_info')
       .get('object_type')
       .get('id')
       .valueChanges.subscribe(() => {
-        this.updateShippingToggleStatus();
+        this.updateShippingToggleStatus(this.isShippabilityAllowed);
       });
     this.uploadForm
       .get('extra_info')
       .get('object_type_2')
       .get('id')
       .valueChanges.subscribe(() => {
-        this.updateShippingToggleStatus();
+        this.updateShippingToggleStatus(this.isShippabilityAllowed);
       });
     this.uploadForm.get('sale_price').valueChanges.subscribe((price) => {
-      this.updateShippingToggleStatus();
+      this.updateShippingToggleStatus(this.isShippabilityAllowed);
     });
   }
 }

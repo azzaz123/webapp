@@ -1548,6 +1548,54 @@ describe('UploadProductComponent', () => {
 
       expect(component.uploadForm.value.category_id).toEqual(`${CATEGORY_IDS.GAMES_CONSOLES}`);
     });
+
+    describe('and the previous category was not shippable', () => {
+      beforeAll(() => {
+        spyOn(shippingToggleService, 'isAllowed').and.returnValue(
+          of({
+            category: false,
+            subcategory: false,
+            price: false,
+          })
+        );
+      });
+
+      it('should set the item as shippable by default', () => {
+        component.ngOnChanges({
+          categoryId: new SimpleChange(null, 1, true),
+        });
+
+        fixture.detectChanges();
+
+        expect(component.uploadForm.value.sale_conditions.supports_shipping).toBeTruthy();
+      });
+    });
+
+    describe('and the previous category was shippable', () => {
+      let itemShippability: boolean;
+
+      beforeAll(() => {
+        itemShippability = component.uploadForm.value.sale_conditions.supports_shipping;
+
+        spyOn(shippingToggleService, 'isAllowed').and.returnValue(
+          of({
+            category: true,
+            subcategory: true,
+            price: true,
+          })
+        );
+      });
+
+      it('should not modify item shippability', () => {
+        component.ngOnChanges({
+          categoryId: new SimpleChange(null, 1, true),
+        });
+
+        fixture.detectChanges();
+
+        expect(component.uploadForm.value.sale_conditions.supports_shipping).toEqual(itemShippability);
+      });
+    });
   });
 
   describe('when the category is a hero category', () => {

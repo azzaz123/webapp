@@ -24,6 +24,8 @@ import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
 import { Observable, of, Subscriber } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 
 type deeplinkType =
   | 'unknown'
@@ -45,7 +47,8 @@ export class DeeplinkService {
     private itemDetailRoutePipe: ItemDetailRoutePipe,
     private userProfileRoutePipe: UserProfileRoutePipe,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: ToastService
   ) {
     this.window = document.defaultView;
   }
@@ -95,6 +98,7 @@ export class DeeplinkService {
 
   public navigate(deeplink: string): void {
     if (!this.isAvailable(deeplink)) {
+      this.showNotAvailableFeatureToast();
       return;
     }
     this.isExternalNavigation(deeplink) ? this.navigateToUrl(deeplink) : this.navigateToRoute(deeplink);
@@ -232,6 +236,14 @@ export class DeeplinkService {
   private navigateToUrl(deeplink: string): void {
     this.toWebLink(deeplink).subscribe((webLink: string) => {
       this.window.open(webLink, '_blank');
+    });
+  }
+
+  private showNotAvailableFeatureToast(): void {
+    this.toastService.show({
+      title: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_title_web_specific:Feature not available`,
+      text: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_description_web_specific:We are working on it... We appreciate your patience!`,
+      type: TOAST_TYPES.ERROR,
     });
   }
 }

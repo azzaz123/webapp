@@ -13,11 +13,6 @@ export class TransactionTrackingActionDeeplinkComponent {
   constructor(private deeplinkService: DeeplinkService) {}
 
   public navigate(): void {
-    if (this.deeplinkService.isAvailable(this.deeplinkAction.linkUrl)) {
-      this.deeplinkService.navigate(this.deeplinkAction.linkUrl);
-    } else {
-      // TODO: Show modal when created		Date: 2021/12/01
-      alert('This deeplink is not available');
-    }
+    this.deeplinkService.navigate(this.deeplinkAction.linkUrl);
   }
 }
