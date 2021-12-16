@@ -38,7 +38,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MonitoringModule } from './monitoring/monitoring.module';
 import { LottieService } from './lottie/lottie.service';
 import { ExperimentationService } from './experimentation/services/experimentation/experimentation.service';
-import { StandaloneService } from './standalone/standalone.service';
+import { StandaloneService } from './standalone/services/standalone.service';
 
 @NgModule({
   imports: [
