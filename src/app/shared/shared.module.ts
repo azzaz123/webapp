@@ -70,7 +70,6 @@ import { UploaderModule } from './uploader/uploader.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
-import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { HeaderModule } from './header/header.module';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
@@ -172,7 +171,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     WallacoinsDisabledModalComponent,
     ButtonModule,
     DateCountDownModule,
-    DeliveryDevelopmentDirective,
     ProfileFormModule,
     InfiniteScrollDirective,
     VisibleDirectiveModule,
@@ -227,7 +225,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     RouterLinkDirectiveStub,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
-    DeliveryDevelopmentDirective,
     LocationSelectorModal,
   ],
   providers: [DecimalPipe, LinkTransformPipe, ListingLimitService],

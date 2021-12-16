@@ -25,10 +25,10 @@ import {
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 import { SidebarService } from '../core/services/sidebar.service';
 import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 @Component({
   template: '',
@@ -46,6 +46,8 @@ const routes: Route[] = [
   { path: 'pro/calls', component: MockComponent },
   { path: 'pro/help', component: MockComponent },
   { path: 'pro/stats', component: MockComponent },
+  { path: 'wallet', component: MockComponent },
+  { path: 'delivery', component: MockComponent },
 ];
 
 const mockCounters = {
@@ -63,11 +65,13 @@ describe('SidebarComponent', () => {
   let sidebarService: SidebarService;
 
   const collapsedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  const walletButtonSelector = '#sidebar-wallet';
+  const deliveryButtonSelector = '.Sidebar__deliveryButton';
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent, DeliveryDevelopmentDirective],
+        declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent],
         imports: [NgxPermissionsModule.forRoot(), RouterTestingModule.withRoutes(routes)],
         providers: [
           {
@@ -340,24 +344,6 @@ describe('SidebarComponent', () => {
       });
     });
 
-    describe('WHEN click on wallet', () => {
-      it('should track the event', () => {
-        const element: HTMLElement = fixture.nativeElement.querySelector('#sidebar-wallet');
-        const expectedEvent: AnalyticsEvent<ClickWallet> = {
-          name: ANALYTICS_EVENT_NAMES.ClickWallet,
-          eventType: ANALYTIC_EVENT_TYPES.Navigation,
-          attributes: {
-            screenId: SCREEN_IDS.MyProfileMenu,
-          },
-        };
-
-        element.click();
-
-        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-      });
-    });
-
     describe('when the collapsed state is collapsed', () => {
       it('should have the collapsed style', () => {
         collapsedSubject.next(true);
@@ -388,6 +374,78 @@ describe('SidebarComponent', () => {
         collapseBtn.click();
 
         expect(sidebarService.toggleCollapse).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('when the user is cardealer...', () => {
+      beforeEach(() => {
+        permissionService.addPermission(PERMISSIONS.professional);
+        fixture.detectChanges();
+      });
+
+      it('should not show the wallet button', () => {
+        const walletButton: HTMLElement = fixture.nativeElement.querySelector(walletButtonSelector);
+
+        expect(walletButton).toBeFalsy();
+      });
+
+      it('should not show the delivery button', () => {
+        const deliveryButton: HTMLElement = fixture.nativeElement.querySelector(deliveryButtonSelector);
+
+        expect(deliveryButton).toBeFalsy();
+      });
+    });
+
+    describe('when the user is not cardealer...', () => {
+      beforeEach(() => {
+        permissionService.removePermission(PERMISSIONS.professional);
+        fixture.detectChanges();
+      });
+
+      it('should show the wallet button', () => {
+        const walletButton: HTMLElement = fixture.nativeElement.querySelector(walletButtonSelector);
+
+        expect(walletButton).toBeTruthy();
+      });
+
+      it('should show the delivery button', () => {
+        const deliveryButton: HTMLElement = fixture.nativeElement.querySelector(deliveryButtonSelector);
+
+        expect(deliveryButton).toBeTruthy();
+      });
+
+      describe('and we click on the wallet button', () => {
+        it('should redirect to the wallet page', () => {
+          const walletURL = `/${PRIVATE_PATHS.WALLET}`;
+          const walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+
+          expect(walletButton.nativeElement.getAttribute('href')).toEqual(walletURL);
+        });
+
+        it('should track the event', () => {
+          const element: HTMLElement = fixture.nativeElement.querySelector(walletButtonSelector);
+          const expectedEvent: AnalyticsEvent<ClickWallet> = {
+            name: ANALYTICS_EVENT_NAMES.ClickWallet,
+            eventType: ANALYTIC_EVENT_TYPES.Navigation,
+            attributes: {
+              screenId: SCREEN_IDS.MyProfileMenu,
+            },
+          };
+
+          element.click();
+
+          expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+          expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
+        });
+      });
+
+      describe('and we click on the delivery button', () => {
+        it('should redirect to the delivery page', () => {
+          const deliveryURL = `/${PRIVATE_PATHS.DELIVERY}`;
+          const deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
+
+          expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(deliveryURL);
+        });
       });
     });
   });

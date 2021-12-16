@@ -26,7 +26,7 @@ describe('NavLinksComponent', () => {
         imports: [],
         declarations: [NavLinksComponent, SearchInputComponent, SelectComponent],
         providers: [
-          { provide: DeviceDetectorService, useClass: DeviceDetectorService },
+          DeviceDetectorService,
           {
             provide: NgbModal,
             useValue: {
