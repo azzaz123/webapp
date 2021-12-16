@@ -663,6 +663,21 @@ describe('SearchComponent', () => {
         expect(component['sortBySubject'].next).toHaveBeenCalledWith(SORT_BY.DISTANCE);
       });
     });
+
+    describe('and the search is a wall (without searchId)', () => {
+      beforeEach(() => {
+        spyOn(searchTrackingEventsService, 'trackSearchEvent');
+        searchResponseExtraDataSubject.next({ searchId: null, sortBy: SORT_BY.DISTANCE });
+      });
+
+      it('should NOT send search event', () => {
+        expect(searchTrackingEventsService.trackSearchEvent).not.toHaveBeenCalled();
+      });
+
+      it('should set searchId reset status', () => {
+        expect(component['resetSearchId']).toBeTruthy();
+      });
+    });
   });
 
   describe('when the user has permissions to view ads', () => {
