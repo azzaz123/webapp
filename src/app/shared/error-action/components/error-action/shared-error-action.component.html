@@ -1,8 +1,8 @@
-<div *ngIf="showError" class="WalletSharedErrorAction">
+<div *ngIf="showError" class="SharedErrorAction">
   <tsl-banner [specifications]="bannerConfiguration">
     <div class="d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center">
-        <div class="WalletSharedErrorAction__icon">
+        <div class="SharedErrorAction__icon">
           <tsl-svg-icon [src]="bannerConfiguration.iconPath"></tsl-svg-icon>
         </div>
         <span>{{ bannerConfiguration.description }}</span>
@@ -16,6 +16,6 @@
     </div>
   </div>
 </div>
-<div *ngIf="showContent" class="WalletSharedErrorAction__content">
+<div *ngIf="showContent" class="SharedErrorAction__content">
   <ng-content></ng-content>
 </div>

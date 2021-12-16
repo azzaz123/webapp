@@ -2,25 +2,26 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy
 import { Router } from '@angular/router';
 
 import { BANNER_TYPES } from '@shared/banner/banner-types.enum';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { WalletSharedErrorActionService } from './../../services/wallet-shared-error-action.service';
-import { WalletSharedErrorActionBannerConfigurationInterface } from './../../interfaces/wallet-shared-error-action-banner-configuration.interface';
+import { SharedErrorActionService } from '@shared/error-action/services/shared-error-action.service';
+import { SharedErrorActionBannerConfigurationInterface } from '@shared/error-action/interfaces/shared-error-action-banner-configuration.interface';
 
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'tsl-wallet-shared-error-action',
-  templateUrl: './wallet-shared-error-action.component.html',
-  styleUrls: ['./wallet-shared-error-action.component.scss'],
-  providers: [WalletSharedErrorActionService],
+  selector: 'tsl-shared-error-action',
+  templateUrl: './shared-error-action.component.html',
+  styleUrls: ['./shared-error-action.component.scss'],
+  providers: [SharedErrorActionService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
+export class SharedErrorActionComponent implements OnDestroy, OnInit {
+  @Input() retryUrl: string;
+
   errorAction: unknown;
   private errorActionSubscription: Subscription;
 
   constructor(
-    private errorActionService: WalletSharedErrorActionService,
+    private errorActionService: SharedErrorActionService,
     private changeDetectionRef: ChangeDetectorRef,
     private router: Router
   ) {}
@@ -33,7 +34,7 @@ export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
     this.unsubscribe();
   }
 
-  public get bannerConfiguration(): WalletSharedErrorActionBannerConfigurationInterface {
+  public get bannerConfiguration(): SharedErrorActionBannerConfigurationInterface {
     return {
       buttonText: $localize`:@@wallet_view_snackbar_generic_error_retry_button:Retry`,
       description: $localize`:@@wallet_view_snackbar_generic_error_description:¡Oops! Something has gone wrong. Please try again.`,
@@ -47,7 +48,10 @@ export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
   public doAction(): void {
     this.errorAction = null;
     const currentUrl = this.router.url;
-    this.router.navigateByUrl(`${PRIVATE_PATHS.WALLET}/refresh`, { skipLocationChange: true }).then(() => {
+    const root: string = currentUrl.split('/').filter(Boolean).reverse().pop();
+    const retryUrl: string = this.retryUrl ?? root;
+
+    this.router.navigateByUrl(retryUrl, { skipLocationChange: true }).then(() => {
       this.router.navigate([currentUrl]);
     });
   }
@@ -66,12 +70,14 @@ export class WalletSharedErrorActionComponent implements OnDestroy, OnInit {
   }
 
   private subscribe(): void {
+    debugger;
     this.errorActionSubscription = this.errorActionService.errorObserver.subscribe((errorAction: unknown) => {
       this.processErrorAction(errorAction);
     });
   }
 
   private unsubscribe(): void {
+    debugger;
     this.errorActionSubscription?.unsubscribe();
     this.errorActionSubscription = null;
   }
