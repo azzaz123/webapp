@@ -16,12 +16,16 @@ export const LOCAL_STORAGE_TRX_AWARENESS = 'trx-awareness';
   styleUrls: ['./delivery.component.scss'],
 })
 export class DeliveryComponent implements OnInit {
-  public navLinks: NavLink[] = [
-    {
-      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
-      display: $localize`:@@web_delivery_shipping_address:Address`,
-    },
-  ];
+  readonly myShippingsNavLink: NavLink = {
+    id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
+    display: $localize`:@@web_delivery_shippings_title:Shippings`,
+  };
+  readonly deliveryAddressNavLink: NavLink = {
+    id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
+    display: $localize`:@@web_delivery_shipping_address:Address`,
+  };
+
+  public navLinks: NavLink[] = [this.deliveryAddressNavLink];
 
   public selectedNavLinkId: string;
 
@@ -57,10 +61,7 @@ export class DeliveryComponent implements OnInit {
   private showMyShippingsWhenDeliveryFeatureFlagEnabled(): void {
     this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
       if (isActive) {
-        this.navLinks.unshift({
-          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
-          display: $localize`:@@web_delivery_shippings_title:Shippings`,
-        });
+        this.navLinks = [this.myShippingsNavLink, this.deliveryAddressNavLink];
       }
     });
   }
