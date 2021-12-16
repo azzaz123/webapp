@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -14,20 +16,25 @@ export const LOCAL_STORAGE_TRX_AWARENESS = 'trx-awareness';
   styleUrls: ['./delivery.component.scss'],
 })
 export class DeliveryComponent implements OnInit {
-  public navLinks: NavLink[] = [
-    {
-      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
-      display: $localize`:@@web_delivery_shippings_title:Shippings`,
-    },
-    {
-      id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
-      display: $localize`:@@web_delivery_shipping_address:Address`,
-    },
-  ];
+  readonly myShippingsNavLink: NavLink = {
+    id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
+    display: $localize`:@@web_delivery_shippings_title:Shippings`,
+  };
+  readonly deliveryAddressNavLink: NavLink = {
+    id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
+    display: $localize`:@@web_delivery_shipping_address:Address`,
+  };
+
+  public navLinks: NavLink[] = [this.deliveryAddressNavLink];
 
   public selectedNavLinkId: string;
 
-  constructor(private router: Router, private userService: UserService, private modalService: NgbModal) {
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private modalService: NgbModal,
+    private featureflagService: FeatureFlagService
+  ) {
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         this.selectedNavLinkId = this.navLinks.find((link) => e.url.startsWith(link.id))?.id;
@@ -36,10 +43,8 @@ export class DeliveryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.shouldShowTRXAwarenessModal) {
-      this.userService.saveLocalStore(LOCAL_STORAGE_TRX_AWARENESS, Date.now().toString());
-      this.openTRXAwarenessModal();
-    }
+    this.showMyShippingsWhenDeliveryFeatureFlagEnabled();
+    this.showTRXAwarenessModalForFirstTime();
   }
 
   public onNavLinkClicked(navLinkId: string): void {
@@ -51,6 +56,21 @@ export class DeliveryComponent implements OnInit {
       () => {},
       () => {}
     );
+  }
+
+  private showMyShippingsWhenDeliveryFeatureFlagEnabled(): void {
+    this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
+      if (isActive) {
+        this.navLinks = [this.myShippingsNavLink, this.deliveryAddressNavLink];
+      }
+    });
+  }
+
+  private showTRXAwarenessModalForFirstTime(): void {
+    if (this.shouldShowTRXAwarenessModal) {
+      this.userService.saveLocalStore(LOCAL_STORAGE_TRX_AWARENESS, Date.now().toString());
+      this.openTRXAwarenessModal();
+    }
   }
 
   private get shouldShowTRXAwarenessModal(): boolean {
