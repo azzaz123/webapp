@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ViewOwnItemDetail } from '@core/analytics/analytics-constants';
 import { BUBBLE_VARIANT } from '@public/shared/components/bubble/bubble.enum';
 
 @Component({
@@ -21,6 +22,7 @@ export class FilterTemplateComponent {
   @Output() clear: EventEmitter<void> = new EventEmitter();
   @Output() click: EventEmitter<void> = new EventEmitter();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() scrolledToBottom: EventEmitter<ViewOwnItemDetail> = new EventEmitter();
   @ViewChild('scrollableContainer') private scrollableContainer: ElementRef;
 
   constructor(private elementRef: ElementRef) {}

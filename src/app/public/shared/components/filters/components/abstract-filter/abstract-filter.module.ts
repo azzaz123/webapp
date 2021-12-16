@@ -5,9 +5,10 @@ import { FilterTemplateComponent } from '@public/shared/components/filters/compo
 import { ButtonModule } from '@shared/button/button.module';
 import { FilterDropdownDirective } from './filter-template/directives/filter-dropdown.directive';
 import { IsBubblePipe } from './pipes/is-bubble.pipe';
+import { ScrollModule } from '@shared/scroll/scroll.module';
 
 @NgModule({
-  imports: [CommonModule, BubbleModule, ButtonModule],
+  imports: [CommonModule, BubbleModule, ButtonModule, ScrollModule],
   declarations: [FilterTemplateComponent, FilterDropdownDirective, IsBubblePipe],
   exports: [FilterTemplateComponent, IsBubblePipe],
 })
