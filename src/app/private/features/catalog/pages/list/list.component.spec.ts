@@ -414,8 +414,20 @@ describe('ListComponent', () => {
         expect(walletButton).toBeTruthy();
       });
 
+      describe('and when clicking the wallet button', () => {
+        it('should navigate to wallet', () => {
+          expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
+        });
+      });
+
       it('should show a delivery button', () => {
         expect(deliveryButton).toBeTruthy();
+      });
+
+      describe('and when clicking the delivery button', () => {
+        it('should navigate to delivery', () => {
+          expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
+        });
       });
 
       it('should point to the wallet path', () => {
