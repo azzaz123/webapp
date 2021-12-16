@@ -37,6 +37,4 @@ export const environment: Environment = {
   threatMetrixProfilingDomain: 'clear.wallapop.com',
 };
 
-export const localesWithNewSearchEnabled: APP_LOCALE[] = ['it', 'en', 'es'];
-
 export const isSWEnabled = false;
