@@ -38,14 +38,14 @@ describe('AcceptScreenAwarenessModalComponent', () => {
 
   it('should show the information title', () => {
     const title = de.query(By.css('.AcceptScreenAwarenessModal__title')).nativeElement.innerHTML;
-    const expectedTitle = $localize`:@@trx_on_web_modal_title_web_specific:Wallapop Shipping on web!`;
+    const expectedTitle = $localize`:@@sale_made_modal_title_web_specific:You've made a sale!`;
 
     expect(title).toBe(expectedTitle);
   });
 
   it('should show the description message', () => {
     const description = de.query(By.css('#AcceptScreenAwarenessModalDescription')).nativeElement.innerHTML;
-    const expectedDescription = $localize`:@@trx_on_web_modal_part1_description_web_specific:Soon our shipping service will be available on the web. That's why you can already check or edit your shipping data.`;
+    const expectedDescription = $localize`:@@sale_made_modal_part1_description_web_specific:To complete the process, access the app and decide how to ship the item. It's going to be easy, you'll see.`;
 
     expect(description).toBe(expectedDescription);
   });
@@ -59,7 +59,7 @@ describe('AcceptScreenAwarenessModalComponent', () => {
 
   it('should show the button text', () => {
     const understoodButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-    expect(understoodButton.textContent).toEqual($localize`:@@trx_on_web_modal_understood_button_web_specific:Understood`);
+    expect(understoodButton.textContent).toEqual($localize`:@@sale_made_modal_understood_button_web_specific:Understood`);
   });
 
   describe('and we click on the button', () => {
