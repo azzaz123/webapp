@@ -1,7 +1,21 @@
 import { AdSlotGroupShoppingDirective } from './ad-slot-group-shopping.directive';
 import { AdShoppingPageOptions, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
-import { AdSlotGroupShoppingComponentStub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
+@Component({
+  template: `<div
+    tslAdSlotGroupShopping
+    [id]="adSlotShoppingConfiguration.container"
+    [adSlotShoppingConfiguration]="adSlotShoppingConfiguration"
+    [adShoppingPageOptions]="adShoppingPageOptions"
+  ></div>`,
+})
+class TestComponent {
+  adSlotShoppingConfiguration: AdSlotGroupShoppingConfiguration;
+  adShoppingPageOptions: AdShoppingPageOptions;
+}
 
 const slotConfig1: AdSlotGroupShoppingConfiguration = {
   slotId: 'test',
@@ -21,20 +35,41 @@ const pageOptions: AdShoppingPageOptions = {
 };
 
 describe('AdSlotGroupShoppingDirective', () => {
-  const adsServiceMock: AdsService = {
-    setShoppingSlots: () => {},
-  } as unknown as AdsService;
+  let fixture: ComponentFixture<TestComponent>;
+  let component: TestComponent;
+  let adsService: AdsService;
+
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AdSlotGroupShoppingDirective, TestComponent],
+        providers: [
+          {
+            provide: AdsService,
+            useValue: {
+              setShoppingSlots() {},
+            },
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    component = fixture.componentInstance;
+    adsService = TestBed.inject(AdsService);
+  });
 
   it('should set correct slots', () => {
-    spyOn(adsServiceMock, 'setShoppingSlots');
-    const adSlotGroupShoppingComponent = new AdSlotGroupShoppingComponentStub();
-    adSlotGroupShoppingComponent.adShoppingPageOptions = pageOptions;
-    adSlotGroupShoppingComponent.adSlotShoppingConfiguration = slotConfig1;
-    const directive = new AdSlotGroupShoppingDirective(adSlotGroupShoppingComponent, adsServiceMock);
+    spyOn(adsService, 'setShoppingSlots');
+    component.adSlotShoppingConfiguration = slotConfig1;
+    component.adShoppingPageOptions = pageOptions;
 
-    directive.ngAfterContentInit();
+    fixture.detectChanges();
 
-    expect(adsServiceMock.setShoppingSlots).toHaveBeenCalledTimes(1);
-    expect(adsServiceMock.setShoppingSlots).toHaveBeenCalledWith({ pageOptions, slotConfig: [slotConfig1] });
+    expect(adsService.setShoppingSlots).toHaveBeenCalledTimes(1);
+    expect(adsService.setShoppingSlots).toHaveBeenCalledWith({ pageOptions, slotConfig: [slotConfig1] });
   });
 });
