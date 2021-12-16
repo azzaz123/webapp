@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { QParam } from '@core/constants/queryParams.enum';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Status } from '@core/constants/status.enum';
+import { STANDALONE_STATUS } from '@core/standalone/enums/standalone-status.enum';
+
+const STANDALONE_QUERY_PARAM: string = 'standalone';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StandaloneService {
-  private readonly _standalone$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.checkStandaloneQParam());
+  private readonly _standalone$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.standaloneStatus);
 
   constructor(private route: ActivatedRoute) {}
 
@@ -16,8 +17,8 @@ export class StandaloneService {
     return this._standalone$.asObservable();
   }
 
-  private checkStandaloneQParam(): boolean {
-    const isStandalone = this.route.snapshot.queryParamMap.get(QParam.Standalone) === Status.True;
+  private get standaloneStatus(): boolean {
+    const isStandalone = this.route.snapshot.queryParamMap.get(STANDALONE_QUERY_PARAM) === STANDALONE_STATUS.ENABLED;
     if (isStandalone) return true;
     return false;
   }
