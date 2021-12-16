@@ -72,7 +72,7 @@
     </a>
   </ng-container>
 
-  <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
+  <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry Sidebar__deliveryButton mx-2 mb-1 d-flex align-items-center"
     [routerLink]="[PRIVATE_PATHS.DELIVERY]" routerLinkActive="Sidebar__entry--active">
     <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_box.svg"></tsl-svg-icon>
     <span class="Sidebar__label ml-2" i18n="@@web_sidebar_delivery">Delivery</span>
