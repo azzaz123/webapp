@@ -1,21 +1,21 @@
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
-import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { PendingTransaction } from '@api/core/model';
 import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsComponent } from './wallet-pending-transactions.component';
 import { WalletPendingTransactionsListComponent } from '../wallet-pending-transactions-list/wallet-pending-transactions-list.component';
-import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { SharedErrorActionService } from '@shared/error-action';
 
 import { By } from '@angular/platform-browser';
 import { Observable, of, throwError } from 'rxjs';
 
 describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let component: WalletPendingTransactionsComponent;
-  let errorActionService: WalletSharedErrorActionService;
+  let errorActionService: SharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
   let mockpendingTransactionsAsSeller: Observable<PendingTransaction[]> = of(MOCK_PENDING_TRANSACTIONS);
   let service: RequestsAndTransactionsPendingService;
@@ -42,13 +42,13 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
           },
         },
         {
-          provide: WalletSharedErrorActionService,
-          useValue: MockWalletSharedErrorActionService,
+          provide: SharedErrorActionService,
+          useValue: MockSharedErrorActionService,
         },
       ],
     }).compileComponents();
     service = TestBed.inject(RequestsAndTransactionsPendingService);
-    errorActionService = TestBed.inject(WalletSharedErrorActionService);
+    errorActionService = TestBed.inject(SharedErrorActionService);
   });
 
   beforeEach(() => {
@@ -132,7 +132,7 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
 // FIXME: This could be
 describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let component: WalletPendingTransactionsComponent;
-  let errorActionService: WalletSharedErrorActionService;
+  let errorActionService: SharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
   let service: RequestsAndTransactionsPendingService;
   let spyTransactionsPendingService: jest.SpyInstance;
@@ -155,13 +155,13 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
           },
         },
         {
-          provide: WalletSharedErrorActionService,
-          useValue: MockWalletSharedErrorActionService,
+          provide: SharedErrorActionService,
+          useValue: MockSharedErrorActionService,
         },
       ],
     }).compileComponents();
     service = TestBed.inject(RequestsAndTransactionsPendingService);
-    errorActionService = TestBed.inject(WalletSharedErrorActionService);
+    errorActionService = TestBed.inject(SharedErrorActionService);
   });
 
   beforeEach(() => {
