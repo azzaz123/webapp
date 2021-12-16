@@ -17,8 +17,6 @@ export class UserCoverComponent implements OnChanges {
   public uploadedCover;
   public fallback: string;
 
-  constructor() {}
-
   ngOnChanges(changes?: any) {
     if (changes && changes.imageCoverUrl && typeof changes.imageCoverUrl.currentValue === 'object') {
       this.uploadedCover = changes.imageCoverUrl.currentValue;

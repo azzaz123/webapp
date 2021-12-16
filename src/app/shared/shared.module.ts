@@ -17,7 +17,6 @@ import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/cata
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
-import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { GeolocationModule } from './geolocation/geolocation.module';
@@ -191,7 +190,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     UnarchiveButtonComponent,
     ReviewModalComponent,
     ReviewModalComponent,
-    CheckboxComponent,
     SelectComponent,
     SearchInputComponent,
     AlreadyFeaturedModalComponent,

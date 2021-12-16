@@ -7,6 +7,4 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SpinnerComponent {
   @Input() firstLoad: boolean;
-
-  constructor() {}
 }
