@@ -4,6 +4,8 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   MOCK_CLICK_KYC_CONFIRM_BANK_ACCOUNT_INFO_EVENT,
   MOCK_CLICK_KYC_FINISH_IDENTITY_VERIFICATION_EVENT,
+  MOCK_CLICK_KYC_SELECT_IMAGE_METHOD_CAMERA_EVENT,
+  MOCK_CLICK_KYC_SELECT_IMAGE_METHOD_UPLOAD_EVENT,
   MOCK_CLICK_KYC_START_VERIFICATION_EVENT,
   MOCK_VIEW_KYC_BANK_ACCOUNT_INFO_SCREEN_EVENT,
   MOCK_VIEW_KYC_DOCUMENTATION_TYPE_SCREEN_EVENT,
@@ -13,6 +15,7 @@ import {
   MOCK_VIEW_KYC_UPLOAD_IDENTITY_VERIFICATION_SCREEN_EVENT,
   MOCK_VIEW_KYC_VERIFYING_IDENTITY_SCREEN_EVENT,
 } from '@fixtures/private/wallet/kyc/kyc-tracking-events.fixtures.spec';
+import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
 import { KYCTrackingEventsService } from './kyc-tracking-events.service';
 
 describe('KYCTrackingEventsService', () => {
@@ -138,6 +141,30 @@ describe('KYCTrackingEventsService', () => {
 
       expect(analyticsService.trackPageView).toHaveBeenCalledTimes(1);
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(MOCK_VIEW_KYC_VERIFYING_IDENTITY_SCREEN_EVENT);
+    });
+  });
+
+  describe('when tracking click KYC select image method', () => {
+    describe('and the selected image method is shoot', () => {
+      it('should track the event with camera method', () => {
+        spyOn(analyticsService, 'trackEvent');
+
+        service.trackClickKycSelectImageMethod(KYC_TAKE_IMAGE_OPTIONS.SHOOT);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_KYC_SELECT_IMAGE_METHOD_CAMERA_EVENT);
+      });
+    });
+
+    describe('and the selected image method is upload', () => {
+      it('should track the event with upload method', () => {
+        spyOn(analyticsService, 'trackEvent');
+
+        service.trackClickKycSelectImageMethod(KYC_TAKE_IMAGE_OPTIONS.UPLOAD);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_KYC_SELECT_IMAGE_METHOD_UPLOAD_EVENT);
+      });
     });
   });
 });

@@ -5,6 +5,7 @@ import {
   ANALYTIC_EVENT_TYPES,
   ClickKYCConfirmBankAccountInfo,
   ClickKYCFinishIdentityVerification,
+  ClickKYCSelectImageMethod,
   ClickKYCStartVerification,
   SCREEN_IDS,
   ViewKYCBankAccountInfoScreen,
@@ -90,5 +91,23 @@ export const MOCK_VIEW_KYC_VERIFYING_IDENTITY_SCREEN_EVENT: AnalyticsPageView<Vi
   name: ANALYTICS_EVENT_NAMES.ViewKYCVerifyingIdentityScreen,
   attributes: {
     screenId: SCREEN_IDS.KYCVerifyingIdentity,
+  },
+};
+
+export const MOCK_CLICK_KYC_SELECT_IMAGE_METHOD_UPLOAD_EVENT: AnalyticsEvent<ClickKYCSelectImageMethod> = {
+  name: ANALYTICS_EVENT_NAMES.ClickKYCSelectImageMethod,
+  eventType: ANALYTIC_EVENT_TYPES.Navigation,
+  attributes: {
+    screenId: SCREEN_IDS.KYCSelectImage,
+    method: 'upload',
+  },
+};
+
+export const MOCK_CLICK_KYC_SELECT_IMAGE_METHOD_CAMERA_EVENT: AnalyticsEvent<ClickKYCSelectImageMethod> = {
+  name: ANALYTICS_EVENT_NAMES.ClickKYCSelectImageMethod,
+  eventType: ANALYTIC_EVENT_TYPES.Navigation,
+  attributes: {
+    screenId: SCREEN_IDS.KYCSelectImage,
+    method: 'camera',
   },
 };
