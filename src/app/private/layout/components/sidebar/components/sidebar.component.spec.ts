@@ -46,6 +46,8 @@ const routes: Route[] = [
   { path: 'pro/calls', component: MockComponent },
   { path: 'pro/help', component: MockComponent },
   { path: 'pro/stats', component: MockComponent },
+  { path: 'wallet', component: MockComponent },
+  { path: 'delivery', component: MockComponent },
 ];
 
 const mockCounters = {
@@ -413,6 +415,13 @@ describe('SidebarComponent', () => {
       });
 
       describe('and we click on the wallet button', () => {
+        it('should redirect to the wallet page', () => {
+          const walletURL = `/${PRIVATE_PATHS.WALLET}`;
+          const walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+
+          expect(walletButton.nativeElement.getAttribute('href')).toEqual(walletURL);
+        });
+
         it('should track the event', () => {
           const element: HTMLElement = fixture.nativeElement.querySelector(walletButtonSelector);
           const expectedEvent: AnalyticsEvent<ClickWallet> = {
@@ -427,13 +436,6 @@ describe('SidebarComponent', () => {
 
           expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
           expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
-        });
-
-        it('should redirect to the wallet page', () => {
-          const walletURL = `/${PRIVATE_PATHS.WALLET}`;
-          const walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
-
-          expect(walletButton.nativeElement.getAttribute('href')).toEqual(walletURL);
         });
       });
 
