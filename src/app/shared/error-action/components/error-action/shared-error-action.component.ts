@@ -70,14 +70,12 @@ export class SharedErrorActionComponent implements OnDestroy, OnInit {
   }
 
   private subscribe(): void {
-    debugger;
     this.errorActionSubscription = this.errorActionService.errorObserver.subscribe((errorAction: unknown) => {
       this.processErrorAction(errorAction);
     });
   }
 
   private unsubscribe(): void {
-    debugger;
     this.errorActionSubscription?.unsubscribe();
     this.errorActionSubscription = null;
   }
