@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -34,7 +34,8 @@ import { TransactionTrackingInstructionsComponent } from '@private/features/deli
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { UserService } from '@core/user/user.service';
 
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -58,6 +59,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
   let component: TransactionTrackingInstructionsComponent;
   let fixture: ComponentFixture<TransactionTrackingInstructionsComponent>;
   let debugElement: DebugElement;
+  let errorActionService: SharedErrorActionService;
   let transactionTrackingService: TransactionTrackingService;
 
   beforeEach(async () => {
@@ -110,7 +112,10 @@ describe('TransactionTrackingInstructionsComponent', () => {
         DeeplinkService,
         ErrorsService,
         ItemDetailRoutePipe,
-        SharedErrorActionService,
+        {
+          provide: SharedErrorActionService,
+          useValue: MockSharedErrorActionService,
+        },
         UserProfileRoutePipe,
         {
           provide: UserService,
@@ -127,6 +132,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
   describe('WHEN we have the instructions properties defined...', () => {
     beforeEach(() => {
       transactionTrackingService = TestBed.inject(TransactionTrackingService);
+      errorActionService = TestBed.inject(SharedErrorActionService);
       fixture = TestBed.createComponent(TransactionTrackingInstructionsComponent);
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
@@ -306,5 +312,27 @@ describe('TransactionTrackingInstructionsComponent', () => {
 
       expect(footer).toBeFalsy();
     });
+  });
+
+  describe('WHEN there is an error retrieving the instructions list', () => {
+    let errorActionSpy;
+
+    beforeEach(() => {
+      transactionTrackingService = TestBed.inject(TransactionTrackingService);
+      spyOn(transactionTrackingService, 'getInstructions').and.returnValue(throwError('The server is broken'));
+      fixture = TestBed.createComponent(TransactionTrackingInstructionsComponent);
+      component = fixture.componentInstance;
+      debugElement = fixture.debugElement;
+      fixture.detectChanges();
+      errorActionSpy = spyOn(errorActionService, 'show');
+    });
+
+    it('should show the generic error catcher', fakeAsync(() => {
+      expect(() => {
+        component.transactionTrackingInstructions$.subscribe();
+        tick();
+      }).toThrowError();
+      expect(errorActionSpy).toHaveBeenCalledTimes(1);
+    }));
   });
 });
