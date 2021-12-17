@@ -44,7 +44,9 @@ const getYearFromHistoryElement = (input: WalletMovementHistoryDetail): string =
 };
 
 const getMonthFromHistoryElement = (input: WalletMovementHistoryDetail): string => {
-  return moment(input.date).format('MMMM');
+  const formattedMonth = moment(input.date).format('MMMM');
+  const capitalizedFormattedMonth = `${formattedMonth[0].toUpperCase()}${formattedMonth.slice(1)}`;
+  return capitalizedFormattedMonth;
 };
 
 const mapWalletBalanceHistoryElementToHistoricElement = (input: WalletMovementHistoryDetail): HistoricElement => {

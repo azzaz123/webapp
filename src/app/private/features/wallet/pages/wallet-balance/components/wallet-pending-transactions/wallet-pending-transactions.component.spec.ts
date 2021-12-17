@@ -2,7 +2,6 @@ import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testi
 
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
-import { PendingTransaction } from '@api/core/model';
 import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
@@ -12,12 +11,17 @@ import { SharedErrorActionService } from '@shared/error-action';
 
 import { By } from '@angular/platform-browser';
 import { Observable, of, throwError } from 'rxjs';
+import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
+import {
+  MOCK_EMPTY_PENDING_TRANSACTIONS_AND_REQUESTS,
+  MOCK_PENDING_TRANSACTIONS_AND_REQUESTS,
+} from '@api/fixtures/core/model/delivery/pending-transactions-and-requests.fixtures.spec';
 
 describe('GIVEN the WalletPendingTransactionsComponent', () => {
   let component: WalletPendingTransactionsComponent;
   let errorActionService: SharedErrorActionService;
   let fixture: ComponentFixture<WalletPendingTransactionsComponent>;
-  let mockpendingTransactionsAsSeller: Observable<PendingTransaction[]> = of(MOCK_PENDING_TRANSACTIONS);
+  let mockpendingTransactionsAsSeller: Observable<PendingTransactionsAndRequests> = of(MOCK_PENDING_TRANSACTIONS_AND_REQUESTS);
   let service: RequestsAndTransactionsPendingService;
   let spyTransactionsPendingService;
   const walletPendingTransactionsSelector = '.WalletPendingTransactions';
@@ -98,7 +102,9 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
 
     describe('WHEN there are no pending transactions', () => {
       beforeEach(() => {
-        spyTransactionsPendingService = jest.spyOn(service, 'pendingTransactionsAsSeller', 'get').mockReturnValue(of([]));
+        spyTransactionsPendingService = jest
+          .spyOn(service, 'pendingTransactionsAsSeller', 'get')
+          .mockReturnValue(of(MOCK_EMPTY_PENDING_TRANSACTIONS_AND_REQUESTS));
         fixture = TestBed.createComponent(WalletPendingTransactionsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

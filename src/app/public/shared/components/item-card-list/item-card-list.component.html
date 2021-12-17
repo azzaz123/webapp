@@ -6,7 +6,7 @@
             <div *ngIf="slotsConfig && (i | showSlot: slotsConfig) && showNativeAdSlots"
                 class="ItemCardList__slot d-flex justify-content-center align-items-center"
                 [class.ItemCardList__slot--wide]="cardType === cardTypes.WIDE">
-                <tsl-sky-shopping [index]="i" [cardType]="cardTypes"></tsl-sky-shopping>
+                <tsl-sky-shopping [index]="i" [cardType]="cardType"></tsl-sky-shopping>
             </div>
 
             <div class="ItemCardList__inline-slot d-sm-none"
