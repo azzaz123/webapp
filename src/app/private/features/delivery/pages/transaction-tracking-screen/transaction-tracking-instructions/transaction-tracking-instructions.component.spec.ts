@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -315,24 +315,23 @@ describe('TransactionTrackingInstructionsComponent', () => {
   });
 
   describe('WHEN there is an error retrieving the instructions list', () => {
-    let errorActionSpy;
+    const MOCK_INSTRUCTIONS_ERROR = 'The server is broken';
 
     beforeEach(() => {
       transactionTrackingService = TestBed.inject(TransactionTrackingService);
-      spyOn(transactionTrackingService, 'getInstructions').and.returnValue(throwError('The server is broken'));
+      spyOn(transactionTrackingService, 'getInstructions').and.returnValue(throwError(MOCK_INSTRUCTIONS_ERROR));
+      spyOn(errorActionService, 'show');
+
       fixture = TestBed.createComponent(TransactionTrackingInstructionsComponent);
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
+
       fixture.detectChanges();
-      errorActionSpy = spyOn(errorActionService, 'show');
     });
 
-    it('should show the generic error catcher', fakeAsync(() => {
-      expect(() => {
-        component.transactionTrackingInstructions$.subscribe();
-        tick();
-      }).toThrowError();
-      expect(errorActionSpy).toHaveBeenCalledTimes(1);
-    }));
+    it('should show the generic error catcher', () => {
+      expect(errorActionService.show).toHaveBeenCalledWith(MOCK_INSTRUCTIONS_ERROR);
+      expect(errorActionService.show).toHaveBeenCalledTimes(1);
+    });
   });
 });
