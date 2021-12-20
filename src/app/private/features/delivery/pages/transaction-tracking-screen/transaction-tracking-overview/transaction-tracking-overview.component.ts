@@ -34,7 +34,7 @@ export class TransactionTrackingOverviewComponent implements OnInit {
     this.transactionTrackingDetails$ = this.getTransactionTrackingDetails(requestId);
   }
 
-  private getTransactionTracking(requestId: string): Observable<TransactionTracking> {
+  private getTransactionTracking(requestId: string): Observable<TransactionTracking | never> {
     return this.transactionTrackingService.get(requestId).pipe(
       tap((transactionTracking: TransactionTracking) => {
         this.transactionTrackingScreenTrackingEventsService.trackViewTTSScreen(
@@ -50,7 +50,7 @@ export class TransactionTrackingOverviewComponent implements OnInit {
     );
   }
 
-  private getTransactionTrackingDetails(requestId: string): Observable<TransactionTrackingDetails> {
+  private getTransactionTrackingDetails(requestId: string): Observable<TransactionTrackingDetails | never> {
     return this.transactionTrackingService.getDetails(requestId).pipe(
       catchError((error: unknown) => {
         this.errorActionService.show(error);
