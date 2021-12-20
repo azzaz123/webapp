@@ -6,7 +6,8 @@
     font-size: $font-size-l;
   }
 
-  p {
+  &__title,
+  &__description {
     color: $blue-grey-1;
   }
 }
