@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { BannerModule } from '@shared/banner/banner.module';
 import { ButtonModule } from '@shared/button/button.module';
+import { SharedErrorActionComponent } from '@shared/error-action/components/error-action/shared-error-action.component';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { WalletSharedErrorActionComponent } from './components/error-action/wallet-shared-error-action.component';
 
 @NgModule({
-  declarations: [WalletSharedErrorActionComponent],
+  declarations: [SharedErrorActionComponent],
   imports: [BannerModule, ButtonModule, CommonModule, SvgIconModule],
-  exports: [WalletSharedErrorActionComponent],
+  exports: [SharedErrorActionComponent],
 })
-export class WalletSharedErrorActionModule {}
+export class SharedErrorActionModule {}

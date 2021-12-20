@@ -9,28 +9,29 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BannerComponent } from '@shared/banner/banner.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { SharedErrorActionComponent } from '@shared/error-action/components/error-action/shared-error-action.component';
+import { SharedErrorActionService } from '@shared/error-action/services/shared-error-action.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
-import { WalletSharedErrorActionComponent } from './wallet-shared-error-action.component';
-import { WalletSharedErrorActionService } from './../../services/wallet-shared-error-action.service';
+
+const fakeUrl = 'this is a fake url';
 
 @Component({
   selector: 'tsl-fake-component',
-  templateUrl: './wallet-shared-error-action.component.html',
+  templateUrl: './shared-error-action.component.html',
 })
-class FakeComponent extends WalletSharedErrorActionComponent {
-  constructor(errorActionService: WalletSharedErrorActionService, changeDetectorRef: ChangeDetectorRef, router: Router) {
+class FakeComponent extends SharedErrorActionComponent {
+  constructor(errorActionService: SharedErrorActionService, changeDetectorRef: ChangeDetectorRef, router: Router) {
     super(errorActionService, changeDetectorRef, router);
   }
 }
 
-describe('GIVEN WalletSharedErrorActionComponent', () => {
-  let component: WalletSharedErrorActionComponent;
-  let fixture: ComponentFixture<WalletSharedErrorActionComponent>;
+describe('GIVEN SharedErrorActionComponent', () => {
+  let component: SharedErrorActionComponent;
+  let fixture: ComponentFixture<SharedErrorActionComponent>;
   let router: Router;
-  let service: WalletSharedErrorActionService;
-  const walletSharedErrorActionSelector = '.WalletSharedErrorAction';
-  const walletSharedErrorActionContentSelector = `${walletSharedErrorActionSelector}__content`;
+  let service: SharedErrorActionService;
+  const SharedErrorActionSelector = '.SharedErrorAction';
+  const SharedErrorActionContentSelector = `${SharedErrorActionSelector}__content`;
 
   let errorActionSpy;
 
@@ -45,15 +46,15 @@ describe('GIVEN WalletSharedErrorActionComponent', () => {
             navigate: jasmine.createSpy('navigate'),
             navigateByUrl: jasmine.createSpy('navigateByUrl').and.returnValue(Promise.resolve()),
             get url() {
-              return 'this is a fake url';
+              return fakeUrl;
             },
           },
         },
-        WalletSharedErrorActionService,
+        SharedErrorActionService,
       ],
     }).compileComponents();
     router = TestBed.inject(Router);
-    service = TestBed.inject(WalletSharedErrorActionService);
+    service = TestBed.inject(SharedErrorActionService);
   });
 
   beforeEach(() => {
@@ -72,12 +73,12 @@ describe('GIVEN WalletSharedErrorActionComponent', () => {
       expect(errorActionSpy).toHaveBeenCalledTimes(1);
     });
     it('should not show the block corresponding to error', () => {
-      const target = fixture.debugElement.query(By.css(walletSharedErrorActionSelector));
+      const target = fixture.debugElement.query(By.css(SharedErrorActionSelector));
 
       expect(target).toBeFalsy();
     });
     it('should show the block corresponding to the content', () => {
-      const target = fixture.debugElement.query(By.css(walletSharedErrorActionContentSelector));
+      const target = fixture.debugElement.query(By.css(SharedErrorActionContentSelector));
 
       expect(target).toBeTruthy();
     });
@@ -89,12 +90,12 @@ describe('GIVEN WalletSharedErrorActionComponent', () => {
       });
 
       it('should show the block corresponding to error', () => {
-        const target = fixture.debugElement.query(By.css(walletSharedErrorActionSelector));
+        const target = fixture.debugElement.query(By.css(SharedErrorActionSelector));
 
         expect(target).toBeTruthy();
       });
       it('should not show the block corresponding to content', () => {
-        const target = fixture.debugElement.query(By.css(walletSharedErrorActionContentSelector));
+        const target = fixture.debugElement.query(By.css(SharedErrorActionContentSelector));
 
         expect(target).toBeFalsy();
       });
@@ -121,14 +122,28 @@ describe('GIVEN WalletSharedErrorActionComponent', () => {
         expect(target.nativeElement.innerHTML).toContain(component.bannerConfiguration.buttonText);
       });
       describe('WHEN the user click over the button', () => {
-        it('should navigate to the refresh page', fakeAsync(() => {
-          const buttonComponent = fixture.debugElement.query(By.directive(ButtonComponent));
-          const button = buttonComponent.query(By.css('button'));
+        describe('AND WHEN the retryUrl has been reported', () => {
+          it('should navigate to the refresh page', fakeAsync(() => {
+            component.retryUrl = 'fake_url';
+            const buttonComponent = fixture.debugElement.query(By.directive(ButtonComponent));
+            const button = buttonComponent.query(By.css('button'));
 
-          button.nativeNode.click();
+            button.nativeNode.click();
 
-          expect(router.navigateByUrl).toHaveBeenCalledWith(`${PRIVATE_PATHS.WALLET}/refresh`, { skipLocationChange: true });
-        }));
+            expect(router.navigateByUrl).toHaveBeenCalledWith(`${component.retryUrl}`, { skipLocationChange: true });
+          }));
+        });
+        describe('AND WHEN the retryUrl has not been reported', () => {
+          it('should navigate to the root page', fakeAsync(() => {
+            component.retryUrl = null;
+            const buttonComponent = fixture.debugElement.query(By.directive(ButtonComponent));
+            const button = buttonComponent.query(By.css('button'));
+
+            button.nativeNode.click();
+
+            expect(router.navigateByUrl).toHaveBeenCalledWith(fakeUrl, { skipLocationChange: true });
+          }));
+        });
         it('should navigate to previous page', fakeAsync(() => {
           const buttonComponent = fixture.debugElement.query(By.directive(ButtonComponent));
           const button = buttonComponent.query(By.css('button'));
@@ -136,7 +151,7 @@ describe('GIVEN WalletSharedErrorActionComponent', () => {
           button.nativeNode.click();
           tick();
 
-          expect(router.navigate).toHaveBeenCalledWith(['this is a fake url']);
+          expect(router.navigate).toHaveBeenCalledWith([fakeUrl]);
         }));
       });
     });
@@ -147,7 +162,7 @@ describe('GIVEN WalletSharedErrorActionComponent', () => {
       });
 
       it('should not show the block corresponding to error even if there is an error', () => {
-        const target = fixture.debugElement.query(By.css(walletSharedErrorActionSelector));
+        const target = fixture.debugElement.query(By.css(SharedErrorActionSelector));
 
         expect(target).toBeFalsy();
       });

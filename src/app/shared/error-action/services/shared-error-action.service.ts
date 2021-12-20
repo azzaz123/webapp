@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 const NotFound: number = 404;
 
 @Injectable()
-export class WalletSharedErrorActionService {
+export class SharedErrorActionService {
   private errorSubject: Subject<unknown> = new Subject<unknown>();
 
   public get errorObserver(): Observable<unknown> {
