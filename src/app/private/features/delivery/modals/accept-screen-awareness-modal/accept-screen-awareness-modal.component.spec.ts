@@ -43,13 +43,6 @@ describe('AcceptScreenAwarenessModalComponent', () => {
     expect(title).toBe(expectedTitle);
   });
 
-  it('should show the description message', () => {
-    const description = de.query(By.css('.AcceptScreenAwarenessModal__description')).nativeElement.innerHTML;
-    const expectedDescription = $localize`:@@sale_made_modal_part1_description_web_specific:To complete the process, access the app and decide how to ship the item. It's going to be easy, you'll see.`;
-
-    expect(description).toBe(expectedDescription);
-  });
-
   it('should show the lottie', () => {
     const lottie = de.query(By.directive(LottieComponent));
 
