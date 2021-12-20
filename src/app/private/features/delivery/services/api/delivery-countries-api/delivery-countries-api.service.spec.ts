@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { APP_VERSION } from '@environments/version';
 import { MOCK_DELIVERY_COUNTRIES_API } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
 import { DeliveryCountriesApi } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 
@@ -35,6 +36,7 @@ describe('DeliveryCountriesApiService', () => {
       expect(response).toEqual(MOCK_DELIVERY_COUNTRIES_API);
       expect(req.request.url).toEqual(DELIVERY_COUNTRIES_API_URL);
       expect(req.request.method).toBe('GET');
+      expect(req.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
   });
 });

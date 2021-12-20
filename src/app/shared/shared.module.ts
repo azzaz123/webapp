@@ -69,7 +69,6 @@ import { UploaderModule } from './uploader/uploader.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
-import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { HeaderModule } from './header/header.module';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
@@ -79,6 +78,7 @@ import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal.module';
+import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 
 @NgModule({
   imports: [
@@ -171,7 +171,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     WallacoinsDisabledModalComponent,
     ButtonModule,
     DateCountDownModule,
-    DeliveryDevelopmentDirective,
     ProfileFormModule,
     InfiniteScrollDirective,
     VisibleDirectiveModule,

@@ -1,21 +1,35 @@
 import { Injectable } from '@angular/core';
-import { PendingTransaction } from '@api/core/model';
+import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
+import { UserService } from '@core/user/user.service';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { RequestsAndTransactionsPendingHttpService } from './http/requests-and-transactions-pending-http.service';
-import { mapRequestsAndTransactionsPendingToPendingTransactions } from './mappers/responses/requests-and-transactions-pending.mapper';
+import { mapRequestsAndTransactionsPendingToPendingTransactionsAndRequests } from './mappers/responses/requests-and-transactions-pending.mapper';
 
 @Injectable()
 export class RequestsAndTransactionsPendingService {
-  constructor(private requestsAndTransactionsPendingHttpService: RequestsAndTransactionsPendingHttpService) {}
+  private readonly currentUserId = this.userService.user.id;
 
-  public get pendingTransactions(): Observable<PendingTransaction[]> {
-    return this.requestsAndTransactionsPendingHttpService.get().pipe(take(1), map(mapRequestsAndTransactionsPendingToPendingTransactions));
+  constructor(
+    private requestsAndTransactionsPendingHttpService: RequestsAndTransactionsPendingHttpService,
+    private userService: UserService
+  ) {}
+
+  public get pendingTransactionsAndRequests(): Observable<PendingTransactionsAndRequests> {
+    return this.requestsAndTransactionsPendingHttpService.get().pipe(
+      take(1),
+      map((dtoResponse) => {
+        return mapRequestsAndTransactionsPendingToPendingTransactionsAndRequests({ dtoResponse, currentUserId: this.currentUserId });
+      })
+    );
   }
 
-  public get pendingTransactionsAsSeller(): Observable<PendingTransaction[]> {
-    return this.requestsAndTransactionsPendingHttpService
-      .getAsSeller()
-      .pipe(take(1), map(mapRequestsAndTransactionsPendingToPendingTransactions));
+  public get pendingTransactionsAsSeller(): Observable<PendingTransactionsAndRequests> {
+    return this.requestsAndTransactionsPendingHttpService.getAsSeller().pipe(
+      take(1),
+      map((dtoResponse) => {
+        return mapRequestsAndTransactionsPendingToPendingTransactionsAndRequests({ dtoResponse, currentUserId: this.currentUserId });
+      })
+    );
   }
 }

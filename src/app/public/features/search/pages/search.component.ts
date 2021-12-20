@@ -130,14 +130,17 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.subscription.add(this.currentCategoryId$.pipe(distinctUntilChanged()).subscribe(() => this.loadMoreProductsSubject.next(false)));
     this.subscription.add(
       this.newSearch$.pipe(skip(1)).subscribe((searchResponseExtraData: SearchResponseExtraData) => {
-        if (this.resetSearchId) {
-          this.searchId = searchResponseExtraData.searchId;
-          this.resetSearchId = false;
+        if (searchResponseExtraData.searchId) {
+          if (this.resetSearchId) {
+            this.searchId = searchResponseExtraData.searchId;
+            this.resetSearchId = false;
+          }
+          this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
+        } else {
+          this.resetSearchId = true;
         }
 
         this.handleSearchResponseExtraData(searchResponseExtraData);
-
-        this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
       })
     );
   }

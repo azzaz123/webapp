@@ -42,9 +42,16 @@ describe('TRXAwarenessModalComponent', () => {
     expect(title).toBe(expectedTitle);
   });
 
-  it('should show the description', () => {
-    const description = de.query(By.css('#TRXAwarenessModalDescription')).nativeElement.innerHTML;
-    const expectedDescription = $localize`:@@trx_on_web_modal_description_web_specific:Soon our shipping service will be available on the web. That's why you can already check or edit your shipping data. Can't wait to use the shipping service? For now, keep using the app, which also works great.`;
+  it('should show the first description message', () => {
+    const description = de.query(By.css('#TRXAwarenessModalFirstDescription')).nativeElement.innerHTML;
+    const expectedDescription = $localize`:@@trx_on_web_modal_part1_description_web_specific:Soon our shipping service will be available on the web. That's why you can already check or edit your shipping data.`;
+
+    expect(description).toBe(expectedDescription);
+  });
+
+  it('should show the second description message', () => {
+    const description = de.query(By.css('#TRXAwarenessModalSecondDescription')).nativeElement.innerHTML;
+    const expectedDescription = $localize`:@@trx_on_web_modal_part2_description_web_specific:Can't wait to use the shipping service? For now, keep using the app, which also works great.`;
 
     expect(description).toBe(expectedDescription);
   });

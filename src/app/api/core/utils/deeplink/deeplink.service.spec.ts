@@ -10,25 +10,14 @@ import { SITE_URL } from '@configs/site-url.config';
 import { UserService } from '@core/user/user.service';
 
 import { of, throwError } from 'rxjs';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 
-const allLanguages: APP_LOCALE[] = [`es`, `en`, `it`];
-const barcodeBaseDeeplink: string = `wallapop://delivery/barcode`;
-const barcodeDeeplink: string = `${barcodeBaseDeeplink}?b=\${deliveryTag.asString()}`;
-const checkDeliveryInstructionBaseDeeplink: string = `wallapop://shipping/transactiontracking/instructions`;
-const checkDeliveryInstructionDeeplink: string = `${checkDeliveryInstructionBaseDeeplink}?request_id=$requestId&type=\${CheckDelivery.asString()}`;
-const itemBaseDeeplink: string = `wallapop://i`;
-const itemDeeplink: string = `${itemBaseDeeplink}/$itemId`;
-const packagingInstructionsDeeplink: string = `${checkDeliveryInstructionBaseDeeplink}?request_id=$requestId&type=\${Packaging.asString()}`;
-const printableLabelBaseDeeplink: string = `wallapop://trackinglabel`;
-const printableLabelDeeplink: string = `${printableLabelBaseDeeplink}?url=\${printableTagUrl.value}`;
-const siteUrlMock: string = 'https://localhost/';
-const userProfileBaseDeeplink: string = `wallapop://p`;
-const userProfileDeeplink: string = `${userProfileBaseDeeplink}/$userId`;
-const zendeskArticleBaseDeeplink: string = `wallapop://customerSupport/faq/article`;
-const zendeskArticleDeeplink: string = `${zendeskArticleBaseDeeplink}?z=%s`;
-const zendeskCreateDisputeFormBaseDeeplink: string = `wallapop://customerSupport/form`;
-const zendeskCreateDisputeFormDeeplink: string = `${zendeskCreateDisputeFormBaseDeeplink}?f=360003316777`;
-
+const fakeBarcode = 'abcZYW123908';
+const fakeInstructionsType = 'packaging';
+const fakePrintableUrl = 'http://fake.url.fake';
+const fakeRequestId = '123-456-789-000';
 const fakeUserId = 'this_is_a_fake_user_id';
 const fakeUsername = 'this_is_a_fake_username';
 const fakeWebSlug = `${fakeUsername}-1234567890`;
@@ -38,10 +27,29 @@ const fakeUser = {
   webSlug: fakeWebSlug,
 };
 
+const allLanguages: APP_LOCALE[] = [`es`, `en`, `it`];
+const barcodeBaseDeeplink: string = `wallapop://delivery/barcode`;
+const barcodeDeeplink: string = `${barcodeBaseDeeplink}?b=${fakeBarcode}`;
+const checkDeliveryInstructionBaseDeeplink: string = `wallapop://shipping/transactiontracking/instructions`;
+const checkDeliveryInstructionDeeplink: string = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=${fakeInstructionsType}`;
+const itemBaseDeeplink: string = `wallapop://i`;
+const itemDeeplink: string = `${itemBaseDeeplink}/$itemId`;
+const packagingInstructionsDeeplink: string = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=${fakeInstructionsType}`;
+const printableLabelBaseDeeplink: string = `wallapop://trackinglabel`;
+const printableLabelDeeplink: string = `${printableLabelBaseDeeplink}?url=${fakePrintableUrl}`;
+const siteUrlMock: string = 'https://localhost/';
+const userProfileBaseDeeplink: string = `wallapop://p`;
+const userProfileDeeplink: string = `${userProfileBaseDeeplink}/$userId`;
+const zendeskArticleBaseDeeplink: string = `wallapop://customerSupport/faq/article`;
+const zendeskArticleDeeplink: string = `${zendeskArticleBaseDeeplink}?z=%s`;
+const zendeskCreateDisputeFormBaseDeeplink: string = `wallapop://customerSupport/form`;
+const zendeskCreateDisputeFormDeeplink: string = `${zendeskCreateDisputeFormBaseDeeplink}?f=360003316777`;
+
 describe(`DeeplinkService`, () => {
   let router: Router;
   let service: DeeplinkService;
   let window: Window;
+  let toastService: ToastService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -72,6 +80,10 @@ describe(`DeeplinkService`, () => {
               return of(fakeUser);
             },
           },
+        },
+        {
+          provide: ToastService,
+          useClass: MockToastService,
         },
       ],
     });
@@ -136,6 +148,7 @@ describe(`DeeplinkService`, () => {
         TestBed.overrideProvider(LOCALE_ID, { useValue: locale });
         router = TestBed.inject(Router);
         service = TestBed.inject(DeeplinkService);
+        toastService = TestBed.inject(ToastService);
       });
 
       it(`should return the url according with the specified language`, fakeAsync(() => {
@@ -227,8 +240,8 @@ describe(`DeeplinkService`, () => {
 
   describe(`WHEN the deeplink is a check delivery instructions deeplink`, () => {
     it(`should return the url`, fakeAsync(() => {
-      const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=deeplink`;
-      const expected = `delivery/tracking/123/instructions/deeplink`;
+      const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=${fakeInstructionsType}`;
+      const expected = `delivery/tracking/${fakeRequestId}/instructions/${fakeInstructionsType}`;
 
       service.toWebLink(deeplink).subscribe((webLink) => {
         expect(webLink).toEqual(expected);
@@ -263,7 +276,7 @@ describe(`DeeplinkService`, () => {
 
     describe(`WHEN the deeplink does not have the type`, () => {
       it(`should not return any url`, fakeAsync(() => {
-        const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=`;
+        const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=`;
 
         service.toWebLink(deeplink).subscribe((webLink) => {
           expect(webLink).toBeFalsy();
@@ -276,8 +289,8 @@ describe(`DeeplinkService`, () => {
 
   describe(`WHEN the deeplink is a packaging instructions deeplink`, () => {
     it(`should return the url`, fakeAsync(() => {
-      const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=deeplink`;
-      const expected = `delivery/tracking/123/instructions/deeplink`;
+      const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=${fakeInstructionsType}`;
+      const expected = `delivery/tracking/${fakeRequestId}/instructions/${fakeInstructionsType}`;
 
       service.toWebLink(deeplink).subscribe((webLink) => {
         expect(webLink).toEqual(expected);
@@ -312,7 +325,7 @@ describe(`DeeplinkService`, () => {
 
     describe(`WHEN the deeplink does not have the type`, () => {
       it(`should not return any url`, fakeAsync(() => {
-        const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=123&type=`;
+        const deeplink = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=`;
 
         service.toWebLink(deeplink).subscribe((webLink) => {
           expect(webLink).toBeFalsy();
@@ -362,8 +375,8 @@ describe(`DeeplinkService`, () => {
 
   describe(`WHEN the deeplink is a printable label deeplink`, () => {
     it(`should return the url`, fakeAsync(() => {
-      const deeplink = `${printableLabelBaseDeeplink}?url=my-printable-url`;
-      const expected = `my-printable-url`;
+      const deeplink = `${printableLabelBaseDeeplink}?url=${fakePrintableUrl}`;
+      const expected = fakePrintableUrl;
 
       service.toWebLink(deeplink).subscribe((webLink) => {
         expect(webLink).toEqual(expected);
@@ -449,7 +462,7 @@ describe(`DeeplinkService`, () => {
   describe(`WHEN asking whether the deeplink is a check delivery instructions deeplink`, () => {
     describe.each([
       [checkDeliveryInstructionDeeplink, true],
-      [`wallapop://no-shipping/transactiontracking/instructions?request_id=$requestId&type=\${CheckDelivery.asString()}`, false],
+      [`wallapop://no-shipping/transactiontracking/instructions?request_id=${fakeRequestId}&type=${fakeInstructionsType}`, false],
     ])(`WHEN`, (deeplink, expected) => {
       it(`should correctly check the deeplink `, () => {
         expect(service.isInstructionsDeeplink(deeplink)).toBe(expected);
@@ -471,7 +484,7 @@ describe(`DeeplinkService`, () => {
   describe(`WHEN asking whether the deeplink is a packaging instructions deeplink`, () => {
     describe.each([
       [packagingInstructionsDeeplink, true],
-      [`wallapop://no-shipping/transactiontracking/instructions?request_id=$requestId&type=\${Packaging.asString()}`, false],
+      [`wallapop://no-shipping/transactiontracking/instructions?request_id=${fakeRequestId}&type=${fakeInstructionsType}`, false],
     ])(`WHEN`, (deeplink, expected) => {
       it(`should correctly check the deeplink `, () => {
         expect(service.isInstructionsDeeplink(deeplink)).toBe(expected);
@@ -590,11 +603,23 @@ describe(`DeeplinkService`, () => {
     beforeEach(() => {
       spyOn(window, `open`);
       spyOn(router, 'navigate');
+      spyOn(toastService, 'show');
+
+      service.navigate(deeplink);
     });
 
-    it(`should not navigate`, fakeAsync(() => {
-      service.navigate(deeplink);
+    it('should show an error toast', fakeAsync(() => {
+      expect(toastService.show).toHaveBeenCalledTimes(1);
+      expect(toastService.show).toHaveBeenCalledWith({
+        title: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_title_web_specific:Feature not available`,
+        text: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_description_web_specific:We are working on it... We appreciate your patience!`,
+        type: TOAST_TYPES.ERROR,
+      });
 
+      flush();
+    }));
+
+    it(`should not navigate`, fakeAsync(() => {
       expect(window.open).toHaveBeenCalledTimes(0);
       expect(router.navigate).toHaveBeenCalledTimes(0);
 

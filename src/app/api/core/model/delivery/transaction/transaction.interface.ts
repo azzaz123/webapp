@@ -13,4 +13,5 @@ export interface Transaction {
     delivery: TRANSACTION_DELIVERY_STATUS;
     payment: TRANSACTION_PAYMENT_STATUS;
   };
+  isCurrentUserTheSeller: boolean;
 }

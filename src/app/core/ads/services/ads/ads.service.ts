@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
+import { AdShoppingGroupSlotData, AdShoppingPageOptions, AdSlotShoppingBaseConfiguration } from '@core/ads/models';
 import { AdSlotConfiguration } from '@core/ads/models/ad-slot-configuration';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
@@ -18,6 +18,8 @@ export class AdsService {
   private readonly _adsReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private readonly refreshSlotsSubject: Subject<void> = new Subject();
 
+  private readonly setShoppingSlotSubject: BehaviorSubject<AdShoppingGroupSlotData> = new BehaviorSubject<AdShoppingGroupSlotData>(null);
+
   public get adsReady$(): Observable<boolean> {
     return this._adsReady$.asObservable();
   }
@@ -30,6 +32,7 @@ export class AdsService {
     @Inject(WINDOW_TOKEN) private window: Window
   ) {
     this.listenerToSetSlots();
+    this.listenerToShoppingSetSlots();
     this.listenerToDisplaySlots();
     this.listenerToRefreshSlots();
   }
@@ -47,6 +50,10 @@ export class AdsService {
           this._adsReady$.next(true);
         });
     }
+  }
+
+  public setShoppingSlots(adShoppingGroupSlotData: AdShoppingGroupSlotData): void {
+    this.setShoppingSlotSubject.next(adShoppingGroupSlotData);
   }
 
   public setSlots(adSlots: AdSlotConfiguration[]): void {
@@ -119,6 +126,25 @@ export class AdsService {
       });
   }
 
+  private listenerToShoppingSetSlots(): void {
+    combineLatest([this.adsReady$, this.setShoppingSlotSubject.asObservable()])
+      .pipe(
+        filter(([adsReady, adShoppingGroupSlotData]: [boolean, AdShoppingGroupSlotData]) => {
+          const slotConfig = adShoppingGroupSlotData?.slotConfig;
+
+          return adsReady && slotConfig.length > 0;
+        }),
+        map(([_, adShoppingGroupSlotData]: [boolean, AdShoppingGroupSlotData]) => [adShoppingGroupSlotData])
+      )
+      .subscribe((adShoppingGroupSlotData: [AdShoppingGroupSlotData]) => {
+        const slotData = adShoppingGroupSlotData[0];
+        const { slotConfig, pageOptions } = slotData;
+
+        this.googlePublisherTagService.setTargetingByAdsKeywords();
+        this.googlePublisherTagService.displayShopping(pageOptions, slotConfig);
+      });
+  }
+
   private listenerToDisplaySlots(): void {
     combineLatest([this.adsReady$, this.adSlotsDefined$, this.allowSegmentation$])
       .pipe(
@@ -136,6 +162,7 @@ export class AdsService {
       .subscribe((allowSegmentation: boolean) => {
         this.googlePublisherTagService.setTargetingByAdsKeywords();
         this.callRefreshHeaderBids(allowSegmentation);
+        this.refreshAdShopping();
       });
   }
 
@@ -157,5 +184,12 @@ export class AdsService {
     const definedSlots = this.googlePublisherTagService.getDefinedSlots();
 
     this.refreshHeaderBids(allowSegmentation, slots, definedSlots);
+  }
+
+  private refreshAdShopping(): void {
+    const slotData = this.setShoppingSlotSubject.getValue();
+    const { slotConfig, pageOptions } = slotData;
+
+    this.googlePublisherTagService.displayShopping(pageOptions, slotConfig);
   }
 }

@@ -1,7 +1,11 @@
 <div class="box mx-0 p-3 mt-3">
   <div class="row">
     <div class="col">
-      <tsl-tabs-bar [tabsBarElements]="tabsBarElements" (handleOnClick)="onTabsBarChange($event)"></tsl-tabs-bar>
+      <tsl-tabs-bar
+        [tabsBarElements]="tabsBarElements"
+        [initialSelectedTabBarElement]="selectedTabsBarElement"
+        (onChange)="onTabsBarChange($event)"
+      ></tsl-tabs-bar>
       <router-outlet></router-outlet>
     </div>
   </div>

@@ -1,5 +1,4 @@
-import { DeliveryCountriesService } from '../../services/countries/delivery-countries/delivery-countries.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
@@ -18,11 +17,19 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { finalize, map, tap } from 'rxjs/operators';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Router } from '@angular/router';
-import { CountryOptionsAndDefault } from '../../interfaces/delivery-countries/delivery-countries-api.interface';
+import {
+  AddressFormRestrictions,
+  CountryOptionsAndDefault,
+  DeliveryAddressCountryOption,
+  DeliveryCountryDefault,
+} from '../../interfaces/delivery-countries/delivery-countries-api.interface';
 
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
-import { DeliveryPostalCodesErrorTranslations } from '@private/features/delivery/errors/constants/delivery-error-translations';
+import {
+  DeliveryAddressErrorTranslations,
+  DeliveryPostalCodesErrorTranslations,
+} from '@private/features/delivery/errors/constants/delivery-error-translations';
 import {
   DeliveryAddressError,
   PhoneNumberIsInvalidError,
@@ -37,13 +44,14 @@ import {
   PostalCodeIsInvalidError,
   PostalCodeIsNotAllowedError,
 } from '../../errors/classes/postal-codes';
-import { DELIVERY_INPUTS_MAX_LENGTH } from '../../enums/delivery-inputs-length.enum';
 import { DeliveryAddressTrackEventsService } from '../../services/address/delivery-address-track-events/delivery-address-track-events.service';
 import { DeliveryAddressFormErrorMessages } from '../../interfaces/delivery-address/delivery-address-form-error-messages.interface';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-previous-pages.enum';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { DELIVERY_ADDRESS_LINKS } from '../../enums/delivery-address-links.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { DeliveryAddressInputsMaxLength } from './interfaces/delivery-address-inputs-max-length.interface';
+import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -55,9 +63,16 @@ export class DeliveryAddressComponent implements OnInit {
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
-  public readonly DELIVERY_INPUTS_MAX_LENGTH = DELIVERY_INPUTS_MAX_LENGTH;
+  public INPUTS_MAX_LENGTH: DeliveryAddressInputsMaxLength = {
+    full_name: 35,
+    street: 30,
+    flat_and_floor: 9,
+    postal_code: 5,
+    phone_number: 20,
+  };
+
   public readonly DELIVERY_ADDRESS_LINKS = DELIVERY_ADDRESS_LINKS;
-  public countries: IOption[] = [];
+  public countries: DeliveryAddressCountryOption[] = [];
   public cities: IOption[] = [];
   public deliveryAddressForm: FormGroup;
   public loading = true;
@@ -74,11 +89,11 @@ export class DeliveryAddressComponent implements OnInit {
   };
   public comesFromPayView: boolean;
   private subscriptions: Subscription = new Subscription();
+  private defaultCountry: DeliveryCountryDefault;
 
   constructor(
     private fb: FormBuilder,
     private deliveryAddressService: DeliveryAddressService,
-    private deliveryCountriesService: DeliveryCountriesService,
     private eventService: EventService,
     private toastService: ToastService,
     private uuidService: UuidService,
@@ -86,14 +101,24 @@ export class DeliveryAddressComponent implements OnInit {
     private deliveryLocationsService: DeliveryLocationsService,
     private router: Router,
     private i18nService: I18nService,
+    private deliveryCountriesStoreService: DeliveryCountriesStoreService,
     private deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService
-  ) {}
+  ) {
+    const subscription = this.deliveryCountriesStoreService.deliveryCountriesAndDefault$.subscribe(
+      (countryOptionsAndDefault: CountryOptionsAndDefault) => {
+        this.countries = countryOptionsAndDefault.countryOptions;
+        this.defaultCountry = countryOptionsAndDefault.defaultCountry;
+      }
+    );
+    this.subscriptions.add(subscription);
+  }
 
   ngOnInit() {
     this.deliveryAddressTrackEventsService.trackViewShippingAddressScreen();
     this.comesFromPayView =
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
       this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
+
     this.buildForm();
     this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
       this.onSubmit();
@@ -139,9 +164,22 @@ export class DeliveryAddressComponent implements OnInit {
       for (const control in this.deliveryAddressForm.controls) {
         if (this.deliveryAddressForm.controls.hasOwnProperty(control) && !this.deliveryAddressForm.controls[control].valid) {
           this.deliveryAddressForm.controls[control].markAsDirty();
+          if (this.deliveryAddressForm.controls[control].errors.maxlength) {
+            this.defineFormControlMaxLengthMessage(control);
+          }
         }
       }
     }
+  }
+
+  private defineFormControlMaxLengthMessage(formControlName: string): void {
+    let maxLengthErrorMessage: Record<string, string> = {
+      street: DeliveryAddressErrorTranslations.ADDRESS_TOO_LONG_HINT,
+      flat_and_floor: DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT,
+      full_name: DeliveryAddressErrorTranslations.NAME_TOO_LONG_HINT,
+    };
+
+    this.formErrorMessages[formControlName] = maxLengthErrorMessage[formControlName];
   }
 
   public handleShowWarningCountry(): void {
@@ -199,14 +237,25 @@ export class DeliveryAddressComponent implements OnInit {
   private clearFormAndResetLocationsWhenCountryChange(): void {
     const countryISOCode = this.deliveryAddressForm.get('country_iso_code');
 
-    const subscription = countryISOCode.valueChanges.subscribe(() => {
+    const subscription = countryISOCode.valueChanges.subscribe((newCountry: string) => {
+      this.updateFormValidators(newCountry);
       if (countryISOCode.dirty) {
-        this.resetCitiesAndLocations();
         this.clearForm(false);
+        this.resetCitiesAndLocations();
       }
     });
 
     this.subscriptions.add(subscription);
+  }
+
+  private updateFormValidators(newCountry: string): void {
+    const addressRestrictions: AddressFormRestrictions = this.countries.find(
+      (countryOption: DeliveryAddressCountryOption) => countryOption.value === newCountry
+    ).addressFormRestrictions;
+
+    this.INPUTS_MAX_LENGTH.flat_and_floor = addressRestrictions.flat_and_floor;
+    this.INPUTS_MAX_LENGTH.full_name = addressRestrictions.full_name;
+    this.INPUTS_MAX_LENGTH.street = addressRestrictions.street;
   }
 
   private clearForm(isNewForm: boolean): void {
@@ -218,6 +267,19 @@ export class DeliveryAddressComponent implements OnInit {
       id,
       country_iso_code,
     });
+    this.updateDeliveryAddressValidators();
+  }
+
+  private updateDeliveryAddressValidators(): void {
+    this.deliveryAddressForm.get('full_name').setValidators([Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.full_name)]);
+    this.deliveryAddressForm.get('street').setValidators([Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.street)]);
+    this.deliveryAddressForm.get('flat_and_floor').setValidators([Validators.maxLength(this.INPUTS_MAX_LENGTH.flat_and_floor)]);
+    this.deliveryAddressForm
+      .get('postal_code')
+      .setValidators([Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.postal_code)]);
+    this.deliveryAddressForm
+      .get('phone_number')
+      .setValidators([Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.phone_number)]);
   }
 
   private requestLocationsWhenPostalCodeChange(): void {
@@ -250,7 +312,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private handleExistingForm(deliveryAddress: DeliveryAddressApi): void {
-    this.initializeCitiesAsOptions(deliveryAddress.postal_code, deliveryAddress.country_iso_code)
+    const subscription = this.initializeCitiesAsOptions(deliveryAddress.postal_code, deliveryAddress.country_iso_code)
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -260,6 +322,8 @@ export class DeliveryAddressComponent implements OnInit {
 
     this.patchCurrentForm(deliveryAddress);
     this.prepareFormAndInitializeCountries(false);
+
+    this.subscriptions.add(subscription);
   }
 
   private handleNewForm(): void {
@@ -269,8 +333,10 @@ export class DeliveryAddressComponent implements OnInit {
 
   private prepareFormAndInitializeCountries(isNewForm: boolean): void {
     this.isNewForm = isNewForm;
+    if (isNewForm) {
+      this.initializeDefaultCountry();
+    }
     this.formComponent.initFormControl();
-    this.initializeCountries(isNewForm);
     this.patchFormValues();
   }
 
@@ -383,7 +449,7 @@ export class DeliveryAddressComponent implements OnInit {
   }
 
   private getLocationsAndHandlePostalCode(postalCode: string, countryISOCode: string): void {
-    this.deliveryLocationsService
+    const subscription = this.deliveryLocationsService
       .getLocationsByPostalCodeAndCountry(postalCode, countryISOCode)
       .pipe(
         tap((locations: DeliveryLocationApi[]) => {
@@ -398,6 +464,8 @@ export class DeliveryAddressComponent implements OnInit {
         },
         (errors: DeliveryPostalCodesError[]) => this.handlePostalCodesErrors(errors)
       );
+
+    this.subscriptions.add(subscription);
   }
 
   private handleLocationsResponse(locations: DeliveryLocationApi[]): void {
@@ -428,13 +496,8 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private initializeCountries(isNewForm = true): void {
-    this.deliveryCountriesService.getCountriesAsOptionsAndDefault().subscribe((countryOptionsAndDefault: CountryOptionsAndDefault) => {
-      this.countries = countryOptionsAndDefault.countryOptions;
-      if (isNewForm) {
-        this.deliveryAddressForm.get('country_iso_code').setValue(countryOptionsAndDefault.defaultCountry.iso_code);
-      }
-    });
+  private initializeDefaultCountry(): void {
+    this.deliveryAddressForm.get('country_iso_code').setValue(this.defaultCountry.isoCode, { emitEvent: false });
   }
 
   private initializeCitiesAsOptions(postalCode: string, countryISOCode: string): Observable<DeliveryLocationApi[]> {
@@ -475,12 +538,12 @@ export class DeliveryAddressComponent implements OnInit {
       id: this.uuidService.getUUID(),
       country_iso_code: ['', [Validators.required]],
       region: ['', [Validators.required]],
-      full_name: ['', [Validators.required]],
-      street: ['', [Validators.required]],
-      flat_and_floor: [''],
-      postal_code: ['', [Validators.required]],
+      full_name: ['', [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.full_name)]],
+      street: ['', [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.street)]],
+      flat_and_floor: ['', [Validators.maxLength(this.INPUTS_MAX_LENGTH.flat_and_floor)]],
+      postal_code: ['', [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.postal_code)]],
       city: ['', [Validators.required]],
-      phone_number: ['', [Validators.required]],
+      phone_number: ['', [Validators.required, Validators.maxLength(this.INPUTS_MAX_LENGTH.phone_number)]],
     });
   }
 

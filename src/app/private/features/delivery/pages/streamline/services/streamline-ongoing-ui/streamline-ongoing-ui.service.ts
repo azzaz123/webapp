@@ -42,7 +42,7 @@ export class StreamlineOngoingUIService {
 
     this.loading = true;
 
-    this.requestsAndTransactionsPendingService.pendingTransactions
+    this.requestsAndTransactionsPendingService.pendingTransactionsAndRequests
       .pipe(
         tap((response) => {
           this.historicList = mapPendingTransactionToHistoricList(response);

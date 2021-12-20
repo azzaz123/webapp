@@ -33,14 +33,4 @@ describe('AdSlotGroupShoppingComponent', () => {
   it('should set div element id', () => {
     elementRef = fixture.debugElement.query(By.css(`#${MockAdSlotShopping.container}`)).nativeElement;
   });
-
-  describe('when the view init', () => {
-    it('should display ad shopping', () => {
-      spyOn(MockAdsService, 'displayAdShopping').and.callThrough();
-
-      component.ngAfterViewInit();
-
-      expect(MockAdsService.displayAdShopping).toHaveBeenCalledWith(MockAdShoppingPageOptions, [MockAdSlotShopping]);
-    });
-  });
 });

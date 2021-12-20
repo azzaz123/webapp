@@ -1,5 +1,5 @@
 <nav class="TabsBar">
-  <ul class="d-flex" *ngIf="tabsBarElements$ | async as tabsBarElements">
+  <ul class="d-flex" *ngIf="tabsBarElements">
     <li class="TabsBar__element" *ngFor="let tabsBarElement of tabsBarElements">
       <tsl-tab [tabsBarElement]="tabsBarElement" [isSelected]="isTabBarSelected(tabsBarElement)" (handleOnClick)="handleClick(tabsBarElement)"></tsl-tab>
     </li>
