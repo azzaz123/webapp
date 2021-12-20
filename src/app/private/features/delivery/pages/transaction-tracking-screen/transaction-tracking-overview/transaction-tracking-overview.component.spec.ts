@@ -1,15 +1,18 @@
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
-import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
-import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
-import { of } from 'rxjs';
-import { TransactionTrackingScreenTrackingEventsService } from '../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { By } from '@angular/platform-browser';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 
-import { TransactionTrackingOverviewComponent } from './transaction-tracking-overview.component';
+import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { SharedErrorActionService } from '@shared/error-action';
+import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingOverviewComponent } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-overview/transaction-tracking-overview.component';
+import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+
+import { of, throwError } from 'rxjs';
 
 describe('TransactionTrackingOverviewComponent', () => {
   const MOCK_TRANSACTION_TRACKING_ID = 'Laia';
@@ -24,6 +27,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   let de: DebugElement;
   let transactionTrackingService: TransactionTrackingService;
   let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
+  let errorActionService: SharedErrorActionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,7 +49,6 @@ describe('TransactionTrackingOverviewComponent', () => {
             },
           },
         },
-
         {
           provide: TransactionTrackingService,
           useValue: {
@@ -56,6 +59,10 @@ describe('TransactionTrackingOverviewComponent', () => {
               return of(MOCK_TRANSACTION_TRACKING_DETAILS);
             },
           },
+        },
+        {
+          provide: SharedErrorActionService,
+          useValue: MockSharedErrorActionService,
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -182,6 +189,49 @@ describe('TransactionTrackingOverviewComponent', () => {
 
     it('should render the transaction tracking status info ', () => {
       expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeTruthy();
+    });
+  });
+
+  describe('WHEN there is an error retrieving data', () => {
+    let errorActionSpy;
+
+    beforeEach(() => {
+      errorActionService = TestBed.inject(SharedErrorActionService);
+      errorActionSpy = spyOn(errorActionService, 'show');
+    });
+
+    describe('WHEN there is an error retrieving the transaction tracking', () => {
+      beforeEach(() => {
+        transactionTrackingService = TestBed.inject(TransactionTrackingService);
+        spyOn(transactionTrackingService, 'get').and.returnValue(throwError('The server is broken'));
+
+        fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
+        component = fixture.componentInstance;
+        de = fixture.debugElement;
+
+        fixture.detectChanges();
+      });
+
+      it('should show the generic error catcher', fakeAsync(() => {
+        expect(errorActionSpy).toHaveBeenCalledTimes(1);
+      }));
+    });
+
+    describe('WHEN there is an error retrieving the transaction tracking details', () => {
+      beforeEach(() => {
+        transactionTrackingService = TestBed.inject(TransactionTrackingService);
+        spyOn(transactionTrackingService, 'getDetails').and.returnValue(throwError('The server is broken'));
+
+        fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
+        component = fixture.componentInstance;
+        de = fixture.debugElement;
+
+        fixture.detectChanges();
+      });
+
+      it('should show the generic error catcher', fakeAsync(() => {
+        expect(errorActionSpy).toHaveBeenCalledTimes(1);
+      }));
     });
   });
 });

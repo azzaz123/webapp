@@ -14,7 +14,7 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants';
-import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { SharedErrorActionService } from '@shared/error-action/';
 
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
@@ -40,7 +40,7 @@ export class BankDetailsOverviewComponent implements OnInit {
     private paymentsCreditCardService: PaymentsCreditCardService,
     private modalService: NgbModal,
     private toastService: ToastService,
-    private errorActionService: WalletSharedErrorActionService,
+    private errorActionService: SharedErrorActionService,
     private bankAccountTrackingEventsService: BankAccountTrackingEventsService
   ) {}
 

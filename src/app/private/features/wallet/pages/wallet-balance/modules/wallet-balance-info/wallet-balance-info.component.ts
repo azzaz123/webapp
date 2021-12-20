@@ -9,7 +9,7 @@ import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.s
 import { Toast, TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/wallet-balance-tracking-event.service';
-import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { SharedErrorActionService } from '@shared/error-action';
 import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
 import { WalletTransferError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-error';
 import { WalletTransferMainComponent } from '@private/features/wallet/modals/transfer/components/main/wallet-transfer-main.component';
@@ -42,7 +42,7 @@ export class WalletBalanceInfoComponent implements OnInit {
     private paymentsWalletsService: PaymentsWalletsService,
     private toastService: ToastService,
     private kycPropertiesService: KYCPropertiesService,
-    private errorActionService: WalletSharedErrorActionService,
+    private errorActionService: SharedErrorActionService,
     private changeDetectorRef: ChangeDetectorRef,
     private modalService: NgbModal,
     private walletTransferService: WalletTransferService,

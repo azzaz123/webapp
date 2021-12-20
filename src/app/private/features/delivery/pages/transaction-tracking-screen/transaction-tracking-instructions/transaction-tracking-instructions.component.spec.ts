@@ -18,6 +18,7 @@ import {
   MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_WITHOUT_FOOTER,
   MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_WITH_ADDITIONAL_INFO,
 } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-instructions.fixtures.spec';
+import { SharedErrorActionService } from '@shared/error-action';
 import { SITE_URL } from '@configs/site-url.config';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { TransactionTrackingActionDeeplinkComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-tracking-action-details/transaction-tracking-action-deeplink/transaction-tracking-action-deeplink.component';
@@ -27,13 +28,14 @@ import {
   TransactionTrackingActionType,
   TransactionTrackingService,
 } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import { UserService } from '@core/user/user.service';
 import { TransactionTrackingBannerComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/banner/transaction-tracking-banner.component';
 import { TransactionTrackingHeaderComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/sections';
 import { TransactionTrackingInstructionsComponent } from '@private/features/delivery/pages/transaction-tracking-screen';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { UserService } from '@core/user/user.service';
 
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -57,6 +59,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
   let component: TransactionTrackingInstructionsComponent;
   let fixture: ComponentFixture<TransactionTrackingInstructionsComponent>;
   let debugElement: DebugElement;
+  let errorActionService: SharedErrorActionService;
   let transactionTrackingService: TransactionTrackingService;
 
   beforeEach(async () => {
@@ -109,6 +112,10 @@ describe('TransactionTrackingInstructionsComponent', () => {
         DeeplinkService,
         ErrorsService,
         ItemDetailRoutePipe,
+        {
+          provide: SharedErrorActionService,
+          useValue: MockSharedErrorActionService,
+        },
         UserProfileRoutePipe,
         {
           provide: UserService,
@@ -125,6 +132,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
   describe('WHEN we have the instructions properties defined...', () => {
     beforeEach(() => {
       transactionTrackingService = TestBed.inject(TransactionTrackingService);
+      errorActionService = TestBed.inject(SharedErrorActionService);
       fixture = TestBed.createComponent(TransactionTrackingInstructionsComponent);
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
@@ -136,7 +144,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
     });
 
     it('should call to the service with the corresponding parameters', () => {
-      spyOn(transactionTrackingService, 'getInstructions');
+      spyOn(transactionTrackingService, 'getInstructions').and.callThrough();
 
       component.ngOnInit();
 
@@ -303,6 +311,27 @@ describe('TransactionTrackingInstructionsComponent', () => {
       const footer: DebugElement = debugElement.query(By.css(transactionTrackingInstructionsFooterSelector));
 
       expect(footer).toBeFalsy();
+    });
+  });
+
+  describe('WHEN there is an error retrieving the instructions list', () => {
+    const MOCK_INSTRUCTIONS_ERROR = 'The server is broken';
+
+    beforeEach(() => {
+      transactionTrackingService = TestBed.inject(TransactionTrackingService);
+      spyOn(transactionTrackingService, 'getInstructions').and.returnValue(throwError(MOCK_INSTRUCTIONS_ERROR));
+      spyOn(errorActionService, 'show');
+
+      fixture = TestBed.createComponent(TransactionTrackingInstructionsComponent);
+      component = fixture.componentInstance;
+      debugElement = fixture.debugElement;
+
+      fixture.detectChanges();
+    });
+
+    it('should show the generic error catcher', () => {
+      expect(errorActionService.show).toHaveBeenCalledWith(MOCK_INSTRUCTIONS_ERROR);
+      expect(errorActionService.show).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -6,8 +6,6 @@
 # WALLET-CHAT
 /src/app/private/features/chat
 
-# DELIVERY
-/src/app/private/features/delivery
 
 # ENGAGEMENT
 /src/app/private/features/favorites

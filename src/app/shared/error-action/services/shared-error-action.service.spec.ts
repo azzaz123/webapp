@@ -1,21 +1,21 @@
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
-import { WalletSharedErrorActionService } from './../services/wallet-shared-error-action.service';
+import { SharedErrorActionService } from '@shared/error-action/services/shared-error-action.service';
 
 import { Observable } from 'rxjs';
 
-describe('GIVEN the WalletSharedErrorActionService', () => {
+describe('GIVEN the SharedErrorActionService', () => {
   describe('WHEN displaying the error action service', () => {
-    let service: WalletSharedErrorActionService;
+    let service: SharedErrorActionService;
 
     beforeEach(
       waitForAsync(() => {
         TestBed.configureTestingModule({
           imports: [],
-          providers: [WalletSharedErrorActionService],
+          providers: [SharedErrorActionService],
         });
-        service = TestBed.inject(WalletSharedErrorActionService);
+        service = TestBed.inject(SharedErrorActionService);
       })
     );
     it('should be created', () => {

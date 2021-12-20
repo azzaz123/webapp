@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
+
 import { PendingTransaction } from '@api/core/model';
 import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
-import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
+import { SharedErrorActionService } from '@shared/error-action';
+
+import { catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { catchError, map } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-wallet-pending-transactions',
@@ -17,7 +19,7 @@ export class WalletPendingTransactionsComponent {
 
   constructor(
     private requestsAndTransactionsPendingService: RequestsAndTransactionsPendingService,
-    private errorActionService: WalletSharedErrorActionService
+    private errorActionService: SharedErrorActionService
   ) {
     this.pendingTransactionsAsSeller = this.requestsAndTransactionsPendingService.pendingTransactionsAsSeller.pipe(
       map((response: PendingTransactionsAndRequests) => response.transactions),
