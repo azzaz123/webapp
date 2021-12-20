@@ -12,7 +12,7 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
