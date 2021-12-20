@@ -55,7 +55,8 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   public isValid: boolean = true;
   public hashtagPlaceholder: string = $localize`:@@hashtags_view_search_bar_placeholder:Find or create a hashtag`;
   public keyUpSubject = new Subject<KeyboardEvent>();
-  public optionsSubject = new Subject<MultiSelectFormOption[]>();
+  private optionsSubject = new Subject<MultiSelectFormOption[]>();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public options$: Observable<MultiSelectFormOption[]> = this.optionsSubject.asObservable();
   private extendedOptions: TemplateMultiSelectFormOption[];
   private keyUp$: Observable<unknown>;

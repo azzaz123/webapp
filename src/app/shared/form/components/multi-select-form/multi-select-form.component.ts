@@ -31,13 +31,18 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   }
   @Input() disabled: boolean = false;
   @Input() reseteable: boolean = true;
-  public maxLengthReached: boolean = false;
-  public maxLength: number;
-  public extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
-  public shownChildrenOptionIdSubject: BehaviorSubject<string> = new BehaviorSubject(null);
-  public extendedOptions$: Observable<TemplateMultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
-  public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
+
   private extendedOptions: TemplateMultiSelectFormOption[] = [];
+  private extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
+  private shownChildrenOptionIdSubject: BehaviorSubject<string> = new BehaviorSubject(null);
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public extendedOptions$: Observable<TemplateMultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public maxLengthReached: boolean = false;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public maxLength: number;
 
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
