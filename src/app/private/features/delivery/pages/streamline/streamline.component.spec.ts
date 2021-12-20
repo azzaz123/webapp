@@ -69,7 +69,7 @@ describe('StreamlineComponent', () => {
         ongoingFilter = component.tabsBarElements.find((te) => te.value === STREAMLINE_PATHS.ONGOING);
         const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
 
-        filtersDebugElement.triggerEventHandler('handleOnClick', ongoingFilter);
+        filtersDebugElement.triggerEventHandler('onChange', ongoingFilter);
         fixture.detectChanges();
       });
 
