@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { STANDALONE_STATUS } from '@core/standalone/enums/standalone-status.enum';
 
-const STANDALONE_QUERY_PARAM: string = 'standalone';
+export const STANDALONE_QUERY_PARAM: string = 'standalone';
 
 @Injectable({
   providedIn: 'root',
