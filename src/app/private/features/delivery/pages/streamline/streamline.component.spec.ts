@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { TabComponent } from '@shared/tabs-bar/components/tab/tab.component';
 import { TabsBarComponent } from '@shared/tabs-bar/components/tabs-bar/tabs-bar.component';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
@@ -57,30 +56,10 @@ describe('StreamlineComponent', () => {
     });
 
     it('should show all filters', () => {
-      const tabsDebugElements = fixture.debugElement.queryAll(By.directive(TabComponent));
-      const expectedNumberOfFilters = Object.values(STREAMLINE_PATHS).filter((v) => typeof v === 'string').length;
-      const findTabBarComponentByElement = (de: DebugElement, tabBarElement: TabsBarElement<STREAMLINE_PATHS>) => {
-        const tabBarComponentInstance: TabComponent<STREAMLINE_PATHS> = de.componentInstance;
-        return tabBarComponentInstance.tabsBarElement.label === tabBarElement.label;
-      };
-      const expectAllFiltersToHaveATab = () => {
-        component.tabsBarElements.forEach((tabBarElement) => {
-          const foundTabBar = tabsDebugElements.find((de) => findTabBarComponentByElement(de, tabBarElement));
-          expect(foundTabBar).toBeTruthy();
-        });
-      };
+      const expectedTabs = component.tabsBarElements;
+      const childComponentTabs = getTabsBarComponent().tabsBarElements;
 
-      expect(tabsDebugElements.length).toEqual(expectedNumberOfFilters);
-      expectAllFiltersToHaveATab();
-    });
-
-    it('should redirect to the ongoing shippings page', () => {
-      const expectedUrl: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}/${STREAMLINE_PATHS.ONGOING}`;
-
-      component.ngOnInit();
-
-      expect(router.navigate).toHaveBeenCalledTimes(1);
-      expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      expect(childComponentTabs).toBe(expectedTabs);
     });
 
     describe('and when user clicks on a tab bar', () => {
@@ -100,5 +79,39 @@ describe('StreamlineComponent', () => {
         expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
       });
     });
+
+    describe('and when the page is for the ongoing transactions', () => {
+      beforeEach(() => {
+        jest.spyOn(router, 'url', 'get').mockReturnValue(STREAMLINE_PATHS.ONGOING);
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should select the ongoing tab as active', () => {
+        const ongoingTabsBarElement = component.tabsBarElements.find((t) => t.value === STREAMLINE_PATHS.ONGOING);
+        const result = getTabsBarComponent().initialSelectedTabBarElement;
+
+        expect(result).toBe(ongoingTabsBarElement);
+      });
+    });
+
+    describe('and when the page is for the completed transactions', () => {
+      beforeEach(() => {
+        jest.spyOn(router, 'url', 'get').mockReturnValue(STREAMLINE_PATHS.COMPLETED);
+        component.ngOnInit();
+        fixture.detectChanges();
+      });
+
+      it('should select the completed tab as active', () => {
+        const completedTabsBarElement = component.tabsBarElements.find((t) => t.value === STREAMLINE_PATHS.COMPLETED);
+        const result = getTabsBarComponent().initialSelectedTabBarElement;
+
+        expect(result).toBe(completedTabsBarElement);
+      });
+    });
   });
+
+  function getTabsBarComponent(): TabsBarComponent<STREAMLINE_PATHS> {
+    return fixture.debugElement.query(By.directive(TabsBarComponent)).componentInstance;
+  }
 });
