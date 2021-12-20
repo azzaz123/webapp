@@ -81,11 +81,7 @@ describe('StreamlineComponent', () => {
     });
 
     describe('and when the page is for the ongoing transactions', () => {
-      beforeEach(() => {
-        jest.spyOn(router, 'url', 'get').mockReturnValue(STREAMLINE_PATHS.ONGOING);
-        component.ngOnInit();
-        fixture.detectChanges();
-      });
+      beforeEach(() => mockRouterUrl(STREAMLINE_PATHS.ONGOING));
 
       it('should select the ongoing tab as active', () => {
         const ongoingTabsBarElement = component.tabsBarElements.find((t) => t.value === STREAMLINE_PATHS.ONGOING);
@@ -96,11 +92,7 @@ describe('StreamlineComponent', () => {
     });
 
     describe('and when the page is for the completed transactions', () => {
-      beforeEach(() => {
-        jest.spyOn(router, 'url', 'get').mockReturnValue(STREAMLINE_PATHS.COMPLETED);
-        component.ngOnInit();
-        fixture.detectChanges();
-      });
+      beforeEach(() => mockRouterUrl(STREAMLINE_PATHS.COMPLETED));
 
       it('should select the completed tab as active', () => {
         const completedTabsBarElement = component.tabsBarElements.find((t) => t.value === STREAMLINE_PATHS.COMPLETED);
@@ -109,7 +101,24 @@ describe('StreamlineComponent', () => {
         expect(result).toBe(completedTabsBarElement);
       });
     });
+
+    describe('and when the page is not a known tab', () => {
+      beforeEach(() => mockRouterUrl('gibberish'));
+
+      it('should select the ongoing tab as active', () => {
+        const ongoingTabsBarElement = component.tabsBarElements.find((t) => t.value === STREAMLINE_PATHS.ONGOING);
+        const result = getTabsBarComponent().initialSelectedTabBarElement;
+
+        expect(result).toBe(ongoingTabsBarElement);
+      });
+    });
   });
+
+  function mockRouterUrl(url: string): void {
+    jest.spyOn(router, 'url', 'get').mockReturnValue(url);
+    component.ngOnInit();
+    fixture.detectChanges();
+  }
 
   function getTabsBarComponent(): TabsBarComponent<STREAMLINE_PATHS> {
     return fixture.debugElement.query(By.directive(TabsBarComponent)).componentInstance;
