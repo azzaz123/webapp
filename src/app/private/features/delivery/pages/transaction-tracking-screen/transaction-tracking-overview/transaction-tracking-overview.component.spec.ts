@@ -192,41 +192,46 @@ describe('TransactionTrackingOverviewComponent', () => {
     });
   });
 
-  describe('WHEN there is an error retrieving the transaction tracking', () => {
+  describe('WHEN there is an error retrieving data', () => {
     let errorActionSpy;
 
     beforeEach(() => {
-      transactionTrackingService = TestBed.inject(TransactionTrackingService);
       errorActionService = TestBed.inject(SharedErrorActionService);
-      spyOn(transactionTrackingService, 'get').and.returnValue(throwError('The server is broken'));
       errorActionSpy = spyOn(errorActionService, 'show');
-      fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
-      component = fixture.componentInstance;
-      de = fixture.debugElement;
-      fixture.detectChanges();
     });
 
-    it('should show the generic error catcher', fakeAsync(() => {
-      expect(errorActionSpy).toHaveBeenCalledTimes(1);
-    }));
-  });
+    describe('WHEN there is an error retrieving the transaction tracking', () => {
+      beforeEach(() => {
+        transactionTrackingService = TestBed.inject(TransactionTrackingService);
+        spyOn(transactionTrackingService, 'get').and.returnValue(throwError('The server is broken'));
 
-  describe('WHEN there is an error retrieving the transaction tracking details', () => {
-    let errorActionSpy;
+        fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
+        component = fixture.componentInstance;
+        de = fixture.debugElement;
 
-    beforeEach(() => {
-      transactionTrackingService = TestBed.inject(TransactionTrackingService);
-      errorActionService = TestBed.inject(SharedErrorActionService);
-      spyOn(transactionTrackingService, 'getDetails').and.returnValue(throwError('The server is broken'));
-      errorActionSpy = spyOn(errorActionService, 'show');
-      fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
-      component = fixture.componentInstance;
-      de = fixture.debugElement;
-      fixture.detectChanges();
+        fixture.detectChanges();
+      });
+
+      it('should show the generic error catcher', fakeAsync(() => {
+        expect(errorActionSpy).toHaveBeenCalledTimes(1);
+      }));
     });
 
-    it('should show the generic error catcher', fakeAsync(() => {
-      expect(errorActionSpy).toHaveBeenCalledTimes(1);
-    }));
+    describe('WHEN there is an error retrieving the transaction tracking details', () => {
+      beforeEach(() => {
+        transactionTrackingService = TestBed.inject(TransactionTrackingService);
+        spyOn(transactionTrackingService, 'getDetails').and.returnValue(throwError('The server is broken'));
+
+        fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
+        component = fixture.componentInstance;
+        de = fixture.debugElement;
+
+        fixture.detectChanges();
+      });
+
+      it('should show the generic error catcher', fakeAsync(() => {
+        expect(errorActionSpy).toHaveBeenCalledTimes(1);
+      }));
+    });
   });
 });

@@ -48,7 +48,7 @@ export class SharedErrorActionComponent implements OnDestroy, OnInit {
   public doAction(): void {
     this.errorAction = null;
     const currentUrl = this.router.url;
-    const root: string = currentUrl.split('/').filter(Boolean).reverse().pop();
+    const root: string = currentUrl.split('/').filter(Boolean).shift();
     const retryUrl: string = this.retryUrl ?? root;
 
     this.router.navigateByUrl(retryUrl, { skipLocationChange: true }).then(() => {

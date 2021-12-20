@@ -134,7 +134,7 @@ describe('GIVEN SharedErrorActionComponent', () => {
           }));
         });
         describe('AND WHEN the retryUrl has not been reported', () => {
-          it('should navigate to the refresh page', fakeAsync(() => {
+          it('should navigate to the root page', fakeAsync(() => {
             component.retryUrl = null;
             const buttonComponent = fixture.debugElement.query(By.directive(ButtonComponent));
             const button = buttonComponent.query(By.css('button'));
