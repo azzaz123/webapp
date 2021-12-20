@@ -73,12 +73,12 @@ export class StreamlineCompletedUIService {
   }
 
   public reset(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
     this.historicList = null;
     this.initialLoad = true;
     this.requestedHistoricTransactionsDate = [];
     this.nextPage = null;
     this.loading = false;
-    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   private calculateCurrentPage(): number {
