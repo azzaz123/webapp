@@ -27,7 +27,7 @@ describe('StandaloneService', () => {
     route = TestBed.inject(ActivatedRoute);
   });
 
-  describe('When the app url has a standalone query param set as true', () => {
+  describe('when the app url has a standalone query param set as true', () => {
     it('should enable the standalone mode', (done) => {
       service = TestBed.inject(StandaloneService);
 
@@ -37,7 +37,7 @@ describe('StandaloneService', () => {
       });
     });
   });
-  describe('When the app url has NOT a standalone query param set as true', () => {
+  describe('when the app url has NOT a standalone query param set as true', () => {
     it('should NOT enable the standalone mode', (done) => {
       spyOn(route.snapshot.queryParamMap, 'get').and.returnValue('false');
 
