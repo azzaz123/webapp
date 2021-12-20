@@ -21,13 +21,13 @@ const MOCK_TABS_BAR_ELEMENTS: TabsBarElement<number>[] = [
   template: ` <tsl-tabs-bar
     [tabsBarElements]="tabsBarElements"
     [initialSelectedTabBarElement]="initialSelectedTabBarElement"
-    (onChange)="onChange($event)"
+    (handleOnClick)="handleClick($event)"
   ></tsl-tabs-bar>`,
 })
 class TestComponent<T> {
   public tabsBarElements: TabsBarElement<T>[];
   public initialSelectedTabBarElement: TabsBarElement<T>;
-  public handleOnClick(): void {}
+  public handleClick(): void {}
 }
 
 describe('TabsBarComponent', () => {
@@ -89,7 +89,7 @@ describe('TabsBarComponent', () => {
     const secondTab = MOCK_TABS_BAR_ELEMENTS[1];
 
     beforeEach(() => {
-      spyOn(wrapperComponent, 'handleOnClick');
+      spyOn(wrapperComponent, 'handleClick');
 
       const secondTabInDOM: TabComponent<number> = fixture.debugElement.queryAll(By.directive(TabComponent))[1].componentInstance;
       secondTabInDOM.handleClick();
@@ -97,8 +97,8 @@ describe('TabsBarComponent', () => {
     });
 
     it('should notify the click', () => {
-      expect(wrapperComponent.handleOnClick).toHaveBeenCalledTimes(1);
-      expect(wrapperComponent.handleOnClick).toHaveBeenCalledWith(secondTab);
+      expect(wrapperComponent.handleClick).toHaveBeenCalledTimes(1);
+      expect(wrapperComponent.handleClick).toHaveBeenCalledWith(secondTab);
     });
 
     it('should mark the clicked tab as selected', () => {
