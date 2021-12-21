@@ -45,7 +45,7 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     isClearable: true,
     hasContentPlaceholder: true,
     bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE,
-    singleBubbleValueLabel: 'Marcas (OJO TIRAR DE MIQUEL)',
+    singleBubbleValueLabel: $localize`:@@quick_filter_n_brands:${''}:INTERPOLATION:brands`,
   },
   {
     id: FASHION_CONFIGURATION_ID.SIZE,
