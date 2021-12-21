@@ -49,9 +49,9 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
     this.optionService
       .getOptions(this.config.id)
       .pipe(take(1))
-      .subscribe((options) => {
-        this.optionsSubject.next(options);
-        this.options = options;
+      .subscribe(({ list }) => {
+        this.optionsSubject.next(list);
+        this.options = list;
         this.updateLabel();
       });
     this.initForm();
