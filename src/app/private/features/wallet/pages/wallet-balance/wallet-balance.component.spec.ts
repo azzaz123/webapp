@@ -13,7 +13,7 @@ import { WalletBalanceTrackingEventService } from '@private/features/wallet/page
 import { WalletPendingTransactionComponent } from '@private/features/wallet/pages/wallet-balance/components/wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsComponent } from '@private/features/wallet/pages/wallet-balance/components/wallet-pending-transactions/wallet-pending-transactions.component';
 import { WalletPendingTransactionsListComponent } from '@private/features/wallet/pages/wallet-balance/components/wallet-pending-transactions-list/wallet-pending-transactions-list.component';
-import { WalletSharedErrorActionComponent } from '@private/features/wallet/shared/error-action';
+import { SharedErrorActionComponent } from '@shared/error-action';
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { of } from 'rxjs';
@@ -31,7 +31,7 @@ describe('WalletBalanceComponent', () => {
         WalletPendingTransactionComponent,
         WalletPendingTransactionsComponent,
         WalletPendingTransactionsListComponent,
-        WalletSharedErrorActionComponent,
+        SharedErrorActionComponent,
       ],
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
