@@ -256,7 +256,7 @@ export const MOCK_SAVE_DELIVERY_ADDRESS_EVENT: AnalyticsEvent<SaveAddress> = {
 export const MOCK_VIEW_SHIPPING_ADDRESS_SCREEN_EVENT: AnalyticsPageView<ViewShippingAddress> = {
   name: ANALYTICS_EVENT_NAMES.ViewShippingAddress,
   attributes: {
-    screenId: SCREEN_IDS.MyShippingAddress,
+    screenId: SCREEN_IDS.EditAddress,
   },
 };
 
