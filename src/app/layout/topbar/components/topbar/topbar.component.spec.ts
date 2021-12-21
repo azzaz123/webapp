@@ -14,7 +14,7 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { TopbarComponent } from './topbar.component';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
@@ -36,6 +36,7 @@ import { SuggesterComponentStub } from '@fixtures/shared/components/suggester.co
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -75,6 +76,10 @@ describe('TopbarComponent', () => {
   let router: Router;
   let navigator: SearchNavigatorService;
   let topbarTrackingEventsService: TopbarTrackingEventsService;
+  let standaloneService: StandaloneService;
+
+  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  const logoIconSelector: string = '.topbar-logo-icon';
 
   beforeEach(
     waitForAsync(() => {
@@ -155,6 +160,12 @@ describe('TopbarComponent', () => {
             },
           },
           {
+            provide: StandaloneService,
+            useValue: {
+              standalone$: standaloneSubject.asObservable(),
+            },
+          },
+          {
             provide: SITE_URL,
             useValue: MOCK_SITE_URL,
           },
@@ -180,6 +191,7 @@ describe('TopbarComponent', () => {
     navigator = TestBed.inject(SearchNavigatorService);
     router = TestBed.inject(Router);
     topbarTrackingEventsService = TestBed.inject(TopbarTrackingEventsService);
+    standaloneService = TestBed.inject(StandaloneService);
   });
 
   it('should be created', () => {
@@ -403,6 +415,27 @@ describe('TopbarComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(WallacoinsDisabledModalComponent, {
         backdrop: 'static',
         windowClass: 'modal-standard',
+      });
+    });
+  });
+
+  describe('Logo icon', () => {
+    describe('when the app url has a standalone query param set as true', () => {
+      it('should NOT show the wallapop logo icon', () => {
+        standaloneSubject.next(true);
+        fixture.detectChanges();
+        const logoIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector(logoIconSelector);
+
+        expect(logoIcon).toBeFalsy();
+      });
+    });
+    describe('when the app url has NOT a standalone query param set as true', () => {
+      it('should show the wallapop logo icon', () => {
+        standaloneSubject.next(false);
+        fixture.detectChanges();
+        const logoIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector(logoIconSelector);
+
+        expect(logoIcon).toBeTruthy();
       });
     });
   });
