@@ -83,6 +83,7 @@ export class KYCModalComponent implements OnDestroy {
 
   public defineImageMethodAndGoNext(takeImageMethod: KYC_TAKE_IMAGE_OPTIONS): void {
     this.KYCStoreService.specifications = { ...this.KYCStoreService.specifications, imageMethod: takeImageMethod };
+    this.kycTrackingEventsService.trackClickKycSelectImageMethod(takeImageMethod);
     this.goNextStep();
   }
 

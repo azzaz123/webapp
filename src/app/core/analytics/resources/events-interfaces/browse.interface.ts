@@ -14,6 +14,10 @@ export interface Browse {
    */
   categoryId?: number;
   /**
+   * Identifier of the subcategory that has been filtered in the browsing
+   */
+  objectTypeId?: string;
+  /**
    * The unique identifier of the browsing
    */
   searchId: string;
@@ -30,14 +34,15 @@ export interface Browse {
    */
   source:
     | 'home'
-    | 'quickfilters'
+    | 'quick_filters'
     | 'stored_filters'
     | 'category_slider'
     | 'default_filters'
     | 'seo_category_slider'
     | 'seo_home'
     | 'seo_sitemap'
-    | 'item_detail';
+    | 'item_detail'
+    | 'subcategory_slider';
   /**
    * Identifier of the screen where the browsing has been done
    */

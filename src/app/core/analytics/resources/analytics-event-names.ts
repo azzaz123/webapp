@@ -40,6 +40,7 @@ export enum ANALYTICS_EVENT_NAMES {
   ClickKYCCloseTutorial = 'Click KYC Close Tutorial',
   ClickKYCConfirmBankAccountInfo = 'Click KYC Confirm Bank Account Info',
   ClickKYCFinishIdentityVerification = 'Click KYC Finish Identity Verification',
+  ClickKYCSelectImageMethod = 'Click KYC Select Image Method',
   ClickKYCStartVerification = 'Click KYC Start Verification',
   ClickKYCUnderstoodVerifyingIdentity = 'Click KYC Understood Verifying Identity',
   ClickMarkItemSold = 'Click Mark Item Sold',

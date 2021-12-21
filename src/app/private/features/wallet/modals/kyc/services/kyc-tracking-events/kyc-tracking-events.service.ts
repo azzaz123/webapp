@@ -17,6 +17,8 @@ import {
   ViewKYCVerifyingIdentityScreen,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { ClickKYCSelectImageMethod } from '@core/analytics/resources/events-interfaces/click-kyc-select-image-method.interface';
+import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
 import { KYCNationalityAnalytics, KYCTypeOfDocumentAnalytics } from './kyc-tracking-events.type';
 
 @Injectable()
@@ -138,5 +140,20 @@ export class KYCTrackingEventsService {
     };
 
     this.analyticsService.trackPageView(event);
+  }
+
+  public trackClickKycSelectImageMethod(imageMethod: KYC_TAKE_IMAGE_OPTIONS): void {
+    const method: ClickKYCSelectImageMethod['method'] = imageMethod === KYC_TAKE_IMAGE_OPTIONS.SHOOT ? 'camera' : 'upload';
+
+    const event: AnalyticsEvent<ClickKYCSelectImageMethod> = {
+      name: ANALYTICS_EVENT_NAMES.ClickKYCSelectImageMethod,
+      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      attributes: {
+        screenId: SCREEN_IDS.KYCSelectImage,
+        method,
+      },
+    };
+
+    this.analyticsService.trackEvent(event);
   }
 }
