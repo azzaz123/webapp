@@ -142,4 +142,5 @@ export enum SCREEN_IDS {
   CheckoutLogistics = 311,
   CheckoutPayment = 312,
   CheckoutSummary = 313,
+  AccountDeletion = 314,
 }

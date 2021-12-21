@@ -17,4 +17,8 @@ export interface RegisterSuccess {
    * If the user has given consent for communications
    */
   communicationsConsent: boolean;
+  /**
+   * Identifier of the source of the registration
+   */
+  registrationSource?: 'member_get_member';
 }
