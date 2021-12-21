@@ -22,7 +22,7 @@ export class FilterTemplateComponent {
   @Output() clear: EventEmitter<void> = new EventEmitter();
   @Output() click: EventEmitter<void> = new EventEmitter();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
-  @Output() scrolledToBottom: EventEmitter<ViewOwnItemDetail> = new EventEmitter();
+  @Output() scrolledToBottom: EventEmitter<void> = new EventEmitter();
   @ViewChild('scrollableContainer') private scrollableContainer: ElementRef;
 
   constructor(private elementRef: ElementRef) {}
