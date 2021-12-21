@@ -34,7 +34,8 @@ export interface Search {
     | 'seo_list'
     | 'seo_location_list'
     | 'seo_sitemap'
-    | 'item_detail';
+    | 'item_detail'
+    | 'subcategory_slider';
   /**
    * Identifier of the screen where the searching has been done
    */

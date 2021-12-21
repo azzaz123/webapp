@@ -39,6 +39,7 @@ export * from './click-keyboard-search-button.interface';
 export * from './click-kyc-close-tutorial.interface';
 export * from './click-kyc-confirm-bank-account-info.interface';
 export * from './click-kyc-finish-identity-verification.interface';
+export * from './click-kyc-select-image-method.interface';
 export * from './click-kyc-start-verification.interface';
 export * from './click-kyc-understood-verifying-identity.interface';
 export * from './click-mark-item-sold.interface';
