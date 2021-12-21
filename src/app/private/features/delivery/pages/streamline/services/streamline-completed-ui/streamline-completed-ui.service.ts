@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HistoricTransaction } from '@api/core/model';
-import { TransactionsHistoryApiService } from '@api/delivery/transactions/history/transactions-history-api.service';
+
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
-import { ReplaySubject, Observable, Subscription } from 'rxjs';
-import { finalize, take, tap } from 'rxjs/operators';
-import { mapHistoricTransactionsToHistoricList } from '../../mappers/historic-transactions-to-historic-list/historic-transactions-to-historic-list.mapper';
+import { HistoricTransaction } from '@api/core/model';
+import { mapHistoricTransactionsToHistoricList } from '@private/features/delivery/pages/streamline/mappers/historic-transactions-to-historic-list/historic-transactions-to-historic-list.mapper';
+import { TransactionsHistoryApiService } from '@api/delivery/transactions/history/transactions-history-api.service';
+
+import { catchError, finalize, take, tap } from 'rxjs/operators';
+import { ReplaySubject, Observable, Subscription, throwError } from 'rxjs';
 
 @Injectable()
 export class StreamlineCompletedUIService {
@@ -15,7 +17,7 @@ export class StreamlineCompletedUIService {
   private _loading: boolean = false;
   private subscriptions: Subscription[] = [];
   private readonly _loading$: ReplaySubject<boolean> = new ReplaySubject(1);
-  private readonly _historicList$: ReplaySubject<HistoricList> = new ReplaySubject(1);
+  private _historicList$: ReplaySubject<HistoricList> = new ReplaySubject(1);
 
   constructor(private transactionsHistoryApiService: TransactionsHistoryApiService) {}
 
@@ -62,6 +64,11 @@ export class StreamlineCompletedUIService {
           this.requestedHistoricTransactionsDate = this.requestedHistoricTransactionsDate.concat(response);
           this.historicList = mapHistoricTransactionsToHistoricList(this.requestedHistoricTransactionsDate);
         }),
+        catchError((error: unknown) => {
+          this._historicList$.error(error);
+          this.resetSubject();
+          return throwError(error);
+        }),
         finalize(() => {
           this.initialLoad = false;
           this.loading = false;
@@ -91,5 +98,12 @@ export class StreamlineCompletedUIService {
   private calculateNextPage(response: HistoricTransaction[]): number | null {
     const isResponseEmpty: boolean = response.length === 0;
     return isResponseEmpty ? null : this.currentPage + 1;
+  }
+
+  private resetSubject(): void {
+    if (!!this._historicList$) {
+      this._historicList$.complete();
+    }
+    this._historicList$ = new ReplaySubject<HistoricList>(1);
   }
 }
