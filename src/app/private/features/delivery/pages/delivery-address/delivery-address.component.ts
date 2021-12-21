@@ -1,6 +1,6 @@
-import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
@@ -58,7 +58,7 @@ import { DeliveryCountriesStoreService } from '../../services/countries/delivery
   templateUrl: './delivery-address.component.html',
   styleUrls: ['./delivery-address.component.scss'],
 })
-export class DeliveryAddressComponent implements OnInit {
+export class DeliveryAddressComponent implements OnInit, OnDestroy {
   @Input() whereUserComes: DELIVERY_ADDRESS_PREVIOUS_PAGE;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
@@ -172,16 +172,6 @@ export class DeliveryAddressComponent implements OnInit {
     }
   }
 
-  private defineFormControlMaxLengthMessage(formControlName: string): void {
-    let maxLengthErrorMessage: Record<string, string> = {
-      street: DeliveryAddressErrorTranslations.ADDRESS_TOO_LONG_HINT,
-      flat_and_floor: DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT,
-      full_name: DeliveryAddressErrorTranslations.NAME_TOO_LONG_HINT,
-    };
-
-    this.formErrorMessages[formControlName] = maxLengthErrorMessage[formControlName];
-  }
-
   public handleShowWarningCountry(): void {
     if (!this.isCountryEditable && this.countries?.length > 1) {
       if (this.isNewForm) {
@@ -232,6 +222,16 @@ export class DeliveryAddressComponent implements OnInit {
 
   public canExit(): true | Promise<any> {
     return this.formComponent.canExit();
+  }
+
+  private defineFormControlMaxLengthMessage(formControlName: string): void {
+    let maxLengthErrorMessage: Record<string, string> = {
+      street: DeliveryAddressErrorTranslations.ADDRESS_TOO_LONG_HINT,
+      flat_and_floor: DeliveryAddressErrorTranslations.FLAT_AND_FLOOR_TOO_LONG_HINT,
+      full_name: DeliveryAddressErrorTranslations.NAME_TOO_LONG_HINT,
+    };
+
+    this.formErrorMessages[formControlName] = maxLengthErrorMessage[formControlName];
   }
 
   private clearFormAndResetLocationsWhenCountryChange(): void {

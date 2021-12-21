@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TabsBarElement } from '../../interfaces/tabs-bar-element.interface';
 
 @Component({
@@ -8,19 +7,16 @@ import { TabsBarElement } from '../../interfaces/tabs-bar-element.interface';
   styleUrls: ['./tabs-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TabsBarComponent<T> {
-  @Input()
-  set tabsBarElements(newTabsBarElements: TabsBarElement<T>[]) {
-    this.setFirstElementAsSelected(newTabsBarElements);
-    this._tabsBarElements$.next(newTabsBarElements);
-  }
+export class TabsBarComponent<T> implements OnChanges {
+  @Input() tabsBarElements: TabsBarElement<T>[];
+  @Input() initialSelectedTabBarElement: TabsBarElement<T>;
   @Output() onChange: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
 
-  private selectedTabBarElement: TabsBarElement<T>;
-  private readonly _tabsBarElements$: ReplaySubject<TabsBarElement<T>[]> = new ReplaySubject<TabsBarElement<T>[]>(1);
-  public get tabsBarElements$(): Observable<TabsBarElement<T>[]> {
-    return this._tabsBarElements$.asObservable();
+  ngOnChanges() {
+    this.setSelectedTabBarElement();
   }
+
+  private selectedTabBarElement: TabsBarElement<T>;
 
   public handleClick(tabBarElement: TabsBarElement<T>): void {
     this.onChange.emit(tabBarElement);
@@ -31,8 +27,13 @@ export class TabsBarComponent<T> {
     return tabBarElement === this.selectedTabBarElement;
   }
 
-  private setFirstElementAsSelected(tabsBarElements: TabsBarElement<T>[]): void {
-    const firstElement: TabsBarElement<T> | null = tabsBarElements.length ? tabsBarElements[0] : null;
+  private setSelectedTabBarElement(): void {
+    if (this.initialSelectedTabBarElement) {
+      this.selectedTabBarElement = this.initialSelectedTabBarElement;
+      return;
+    }
+
+    const firstElement: TabsBarElement<T> | null = this.tabsBarElements.length ? this.tabsBarElements[0] : null;
     this.selectedTabBarElement = firstElement;
   }
 }

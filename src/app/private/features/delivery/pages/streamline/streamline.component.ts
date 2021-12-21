@@ -17,12 +17,13 @@ export class StreamlineComponent implements OnInit {
     { value: STREAMLINE_PATHS.COMPLETED, label: $localize`:@@purchases_view_finished_tab_title:Completed` },
   ];
 
+  public selectedTabsBarElement: TabsBarElement<STREAMLINE_PATHS>;
+
   constructor(private router: Router, private streamlineTrackingEventsService: StreamlineTrackingEventsService) {}
 
   ngOnInit() {
-    const firstTabsBarElementValue = this.tabsBarElements[0].value;
+    this.selectedTabsBarElement = this.getSelectedTabByRoute();
     this.streamlineTrackingEventsService.trackViewStreamlineScreen();
-    this.redirect(firstTabsBarElementValue);
   }
 
   public onTabsBarChange(tabsBarElement: TabsBarElement<STREAMLINE_PATHS>): void {
@@ -32,5 +33,12 @@ export class StreamlineComponent implements OnInit {
   private redirect(subroute: STREAMLINE_PATHS): void {
     const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}/${subroute}`;
     this.router.navigate([route]);
+  }
+
+  private getSelectedTabByRoute(): TabsBarElement<STREAMLINE_PATHS> {
+    const currentUrlPath = this.router.url.split('?')[0].split('/').pop();
+
+    const selectedTabsBarElement: TabsBarElement<STREAMLINE_PATHS> = this.tabsBarElements.find((t) => t.value === currentUrlPath);
+    return selectedTabsBarElement ?? this.tabsBarElements[0];
   }
 }

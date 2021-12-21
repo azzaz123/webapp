@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -13,7 +13,7 @@ import { StreamlineCompletedUIService } from '../../services/streamline-complete
   styleUrls: ['./streamline-completed.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StreamlineCompletedComponent implements OnInit {
+export class StreamlineCompletedComponent implements OnInit, OnDestroy {
   public loadingIconSrc: string = '/assets/icons/spinner.svg';
   public loadingIconSizePixels: number = 32;
 

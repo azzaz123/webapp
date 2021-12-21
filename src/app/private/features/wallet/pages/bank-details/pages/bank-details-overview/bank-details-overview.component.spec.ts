@@ -20,12 +20,12 @@ import { MOCK_BANK_ACCOUNT } from '@fixtures/private/wallet/bank-account/bank-ac
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { mockCreditCard } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
-import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { PaymentsCardInfoComponent } from '@shared/payments-card-info/payments-card-info.component';
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { SharedErrorActionService } from '@shared/error-action';
 
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -49,7 +49,7 @@ describe('BankDetailsOverviewComponent', () => {
   let router: Router;
   let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
   let de: DebugElement;
-  let errorActionService: WalletSharedErrorActionService;
+  let errorActionService: SharedErrorActionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -82,8 +82,8 @@ describe('BankDetailsOverviewComponent', () => {
         },
         { provide: ToastService, useClass: MockToastService },
         {
-          provide: WalletSharedErrorActionService,
-          useValue: MockWalletSharedErrorActionService,
+          provide: SharedErrorActionService,
+          useValue: MockSharedErrorActionService,
         },
         {
           provide: BankAccountTrackingEventsService,
@@ -107,7 +107,7 @@ describe('BankDetailsOverviewComponent', () => {
     toastService = TestBed.inject(ToastService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
-    errorActionService = TestBed.inject(WalletSharedErrorActionService);
+    errorActionService = TestBed.inject(SharedErrorActionService);
     bankAccountTrackingEventsService = TestBed.inject(BankAccountTrackingEventsService);
     de = fixture.debugElement;
 
@@ -438,7 +438,7 @@ describe('BankDetailsOverviewComponent', () => {
     let fixture: ComponentFixture<BankDetailsOverviewComponent>;
     let bankAccountService: BankAccountService;
     let paymentsCreditCardService: PaymentsCreditCardService;
-    let errorActionService: WalletSharedErrorActionService;
+    let errorActionService: SharedErrorActionService;
     let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
 
     beforeEach(async () => {
@@ -471,8 +471,8 @@ describe('BankDetailsOverviewComponent', () => {
             },
           },
           {
-            provide: WalletSharedErrorActionService,
-            useValue: MockWalletSharedErrorActionService,
+            provide: SharedErrorActionService,
+            useValue: MockSharedErrorActionService,
           },
           BankAccountTrackingEventsService,
           KYCPropertiesService,
@@ -488,7 +488,7 @@ describe('BankDetailsOverviewComponent', () => {
       component = fixture.componentInstance;
       bankAccountService = TestBed.inject(BankAccountService);
       paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
-      errorActionService = TestBed.inject(WalletSharedErrorActionService);
+      errorActionService = TestBed.inject(SharedErrorActionService);
       bankAccountTrackingEventsService = TestBed.inject(BankAccountTrackingEventsService);
 
       fixture.detectChanges();

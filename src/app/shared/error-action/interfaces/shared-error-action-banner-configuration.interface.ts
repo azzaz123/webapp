@@ -1,6 +1,6 @@
 import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 
-export interface WalletSharedErrorActionBannerConfigurationInterface extends NgbAlertConfig {
+export interface SharedErrorActionBannerConfigurationInterface extends NgbAlertConfig {
   buttonText: string;
   description: string;
   iconPath: string;
