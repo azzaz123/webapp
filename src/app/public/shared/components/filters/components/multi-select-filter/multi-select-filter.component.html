@@ -17,7 +17,7 @@
         (cancel)="handleCancel()"
         class="MultiSelectFilter__template"
         [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
-      >
+        (scrolledToBottom)="scrolledToBottom()">
         <tsl-drawer-placeholder-template
           #selectFilterTemplateComponent
           [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
@@ -27,10 +27,10 @@
           [isClearable]="hasValue$ | async"
           (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
           (clear)="handleClear()"
-        >
+          (scrolledToBottom)="scrolledToBottom()">
           <div [class.MultiSelectFilter__bubble]="variant | isBubble">
             <form [formGroup]="formGroup" class="MultiSelectFilter__form">
-              <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
+              <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options" ></tsl-multi-select-form>
             </form>
           </div>
         </tsl-drawer-placeholder-template>
@@ -49,14 +49,13 @@
       [icon]="config.icon"
       [label]="label$ | async"
       [hasValue]="hasValue$ | async"
-      s
       (apply)="handleApply()"
       (clear)="handleClear()"
       (openStateChange)="filterTemplateOpenStateChange($event)"
       (cancel)="handleCancel()"
       class="MultiSelectFilter__template"
       [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
-    >
+      (scrolledToBottom)="scrolledToBottom()">
       <tsl-drawer-placeholder-template
         #selectFilterTemplateComponent
         [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
@@ -65,8 +64,8 @@
         [contentTitle]="contentTitle"
         [isClearable]="hasValue$ | async"
         (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
-        (clear)="handleClear()"
-      >
+        (clear)="handleClear()" 
+        (scrolledToBottom)="scrolledToBottom()">
         <div [class.MultiSelectFilter__bubble]="variant | isBubble">
           <form [formGroup]="formGroup" class="MultiSelectFilter__form">
             <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
@@ -94,7 +93,8 @@
       (cancel)="handleCancel()"
       class="MultiSelectFilter__template"
       [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
-    >
+
+      (scrolledToBottom)="scrolledToBottom()">
       <tsl-drawer-placeholder-template
         #selectFilterTemplateComponent
         [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
@@ -104,7 +104,7 @@
         [isClearable]="hasValue$ | async"
         (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
         (clear)="handleClear()"
-      >
+        (scrolledToBottom)="scrolledToBottom()">
         <div [class.MultiSelectFilter__bubble]="variant | isBubble">
           <form [formGroup]="formGroup" class="MultiSelectFilter__form">
             <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>

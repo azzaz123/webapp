@@ -49,6 +49,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   public readonly MULTISELECT_FILTER_BUBBLE_VARIANT = MULTISELECT_FILTER_BUBBLE_VARIANT;
 
   private offset = '0';
+
   public constructor(private optionService: FilterOptionService) {
     super();
   }
@@ -120,6 +121,12 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
       this.restartMultiselectNavigation();
     }
     this.openStateChange.emit($event);
+  }
+
+  public scrolledToBottom() {
+    if (this.offset) {
+      this.getOptions();
+    }
   }
 
   private getOptions(): void {
