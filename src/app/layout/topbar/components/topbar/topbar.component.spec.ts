@@ -421,8 +421,8 @@ describe('TopbarComponent', () => {
 
   describe('Logo icon', () => {
     describe('when the app url is for the standalone feature', () => {
+      beforeEach(() => standaloneSubject.next(true));
       it('should NOT show the wallapop logo icon', () => {
-        standaloneSubject.next(true);
         fixture.detectChanges();
         const logoIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector(logoIconSelector);
 
@@ -430,8 +430,8 @@ describe('TopbarComponent', () => {
       });
     });
     describe('when the app url has NOT the standalone feature', () => {
+      beforeEach(() => standaloneSubject.next(false));
       it('should show the wallapop logo icon', () => {
-        standaloneSubject.next(false);
         fixture.detectChanges();
         const logoIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector(logoIconSelector);
 
