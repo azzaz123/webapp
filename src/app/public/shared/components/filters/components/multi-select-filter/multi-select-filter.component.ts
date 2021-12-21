@@ -48,20 +48,13 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   public readonly MULTISELECT_FILTER_BUBBLE_VARIANT = MULTISELECT_FILTER_BUBBLE_VARIANT;
 
+  private offset = '0';
   public constructor(private optionService: FilterOptionService) {
     super();
   }
 
   public ngOnInit(): void {
-    this.optionService
-      .getOptions(this.config.id)
-      .pipe(take(1))
-      .subscribe((options) => {
-        this.options = options;
-        this.allOptions = this.mergeOptions(options);
-        this.updateLabel();
-      });
-
+    this.getOptions();
     this.updatePlaceholderIcon();
     super.ngOnInit();
   }
@@ -127,6 +120,24 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
       this.restartMultiselectNavigation();
     }
     this.openStateChange.emit($event);
+  }
+
+  private getOptions(): void {
+    this.optionService
+      .getOptions(this.config.id, { text: '' }, { offset: parseInt(this.offset) })
+      .pipe(take(1))
+      .subscribe(({ list, paginationParameter }) => {
+        const pagination = new URLSearchParams(paginationParameter);
+
+        if (this.offset === '0') {
+          this.options = list;
+        } else {
+          this.options = this.options.concat(list);
+        }
+        this.allOptions = this.mergeOptions(this.options);
+        this.updateLabel();
+        this.offset = pagination.get('start');
+      });
   }
 
   private restartMultiselectNavigation(): void {

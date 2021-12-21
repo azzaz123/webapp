@@ -16,6 +16,7 @@ export class DrawerPlaceholderTemplateComponent {
   @Output() clear = new EventEmitter<void>();
   @Output() apply = new EventEmitter<void>();
   @Output() placeholderOpenStateChange = new EventEmitter<boolean>();
+  @Output() scrolledToBottom: EventEmitter<void> = new EventEmitter();
 
   public isPlaceholderOpen = false;
 
