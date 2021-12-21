@@ -65,9 +65,7 @@ export class StreamlineOngoingUIService {
   }
 
   private resetSubject(): void {
-    if (!!this._historicList$) {
-      this._historicList$.complete();
-    }
+    this._historicList$.complete();
     this._historicList$ = new ReplaySubject<HistoricList>(1);
   }
 }
