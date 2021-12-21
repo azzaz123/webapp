@@ -41,8 +41,8 @@ export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterPa
     this.optionService
       .getOptions(this.config.id)
       .pipe(take(1))
-      .subscribe((options) => {
-        this.options = options as GridSelectFormOption[];
+      .subscribe(({ list }) => {
+        this.options = list as GridSelectFormOption[];
         this.updateLabel();
         this.updateIcon();
       });
