@@ -2,8 +2,8 @@
   *ngIf="transactionTrackingInstructions$ | async as instructions"
   class="TransactionTrackingInstructions d-flex w-100 flex-column box mt-3 p-3 container"
 >
-  <tsl-transaction-tracking-header [transactionTrackingHeader]="instructions.header"></tsl-transaction-tracking-header>
-  <div class="TransactionTrackingInstructions__content">
+  <tsl-transaction-tracking-header [transactionTrackingHeader]="instructions.header" class="mb-3"></tsl-transaction-tracking-header>
+  <div>
     <tsl-transaction-tracking-banner
       *ngIf="!!instructions.body.banner"
       [banner]="instructions.body.banner"
