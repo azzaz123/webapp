@@ -23,7 +23,6 @@
     "test-clean": "rm -rf ./coverage && yarn test-once --clearCache",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}",
     "mparticle": "yarn install && yarn upgrade mparticle_json_validation && node scripts/mparticle.js",
     "analyze-bundle": "yarn buildprod --statsJson=true && yarn webpack-bundle-analyzer dist/es/stats.json",
     "libphonenumber-metadata": "./scripts/generate-metadata/generate-metadata.sh",
