@@ -6,11 +6,11 @@
  */
 
 /**
- * User views shipping address screen from the shipping menu
+ * Event triggered by the MGM guest when the reward expired because wasn't used in the required time
  */
-export interface ViewShippingAddress {
+export interface ExpireMGMGuestReward {
   /**
-   * Identifier of the shipping address screen
+   * Identifier of the guest that has accepted the invitation
    */
-  screenId: 245;
+  MGMhostUserId: string;
 }

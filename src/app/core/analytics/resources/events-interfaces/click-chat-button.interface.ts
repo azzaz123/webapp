@@ -45,4 +45,8 @@ export interface ClickChatButton {
    * If the item has the shipping toggle ON and a shipping weight informed
    */
   shippingAllowed: boolean;
+  /**
+   * Name of the experiment or A/B testing applied to the user who clicked the chat button. The default value would be 'baseline'
+   */
+  experiment?: string;
 }
