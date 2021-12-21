@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { VerificationsNSecurityStore } from '@private/features/profile/pages/verifications-n-security/services/verifications-n-security-store.service';
 import { VerificationsNSecurityTrackingEventsService } from '@private/features/profile/services/verifications-n-security-tracking-events.service';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { EmailThanksModalComponent } from '../../../email-thanks-modal/email-thanks-modal.component';
@@ -11,13 +12,17 @@ import { EmailThanksModalComponent } from '../../../email-thanks-modal/email-tha
   styleUrls: ['./email-verification-modal.component.scss'],
 })
 export class EmailVerificationModalComponent {
-  @Input() email: string;
+  public email: string;
+
   constructor(
     public activeModal: NgbActiveModal,
     private userVerificationsService: UserVerificationsService,
     private modalService: NgbModal,
-    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService
-  ) {}
+    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService,
+    private verificationsNSecurityStore: VerificationsNSecurityStore
+  ) {
+    this.email = this.verificationsNSecurityStore.userInformation.email;
+  }
 
   public changeEmail(): void {
     this.activeModal.close();
@@ -28,6 +33,7 @@ export class EmailVerificationModalComponent {
   public verifyEmail(): void {
     this.userVerificationsService.verifyEmail().subscribe(() => {
       this.activeModal.close();
+
       const modalRef: NgbModalRef = this.openModal(EmailThanksModalComponent);
       modalRef.componentInstance.copies = {
         title: $localize`:@@email_verification_all_users_system_modal_title:Thank you!`,

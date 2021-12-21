@@ -13,6 +13,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { PhonePrefix } from '../../interfaces/phone-prefix.interface';
+import { VerificationsNSecurityStore } from '@private/features/profile/pages/verifications-n-security/services/verifications-n-security-store.service';
 
 @Component({
   selector: 'tsl-phone-verification-modal',
@@ -30,12 +31,14 @@ export class PhoneVerificationModalComponent implements OnInit {
     private toastService: ToastService,
     private modalService: NgbModal,
     private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService,
+    private verificationsNSecurityStore: VerificationsNSecurityStore,
     @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
   ngOnInit(): void {
     this.buildForm();
     this.setPhonePrefixes();
+    this.verificationsNSecurityStore.verifiedPhone('+34674817633');
   }
 
   public onSubmitPhone(): void {
