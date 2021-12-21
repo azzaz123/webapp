@@ -420,7 +420,7 @@ describe('TopbarComponent', () => {
   });
 
   describe('Logo icon', () => {
-    describe('when the app url has a standalone query param set as true', () => {
+    describe('when the app url is for the standalone feature', () => {
       it('should NOT show the wallapop logo icon', () => {
         standaloneSubject.next(true);
         fixture.detectChanges();
@@ -429,7 +429,7 @@ describe('TopbarComponent', () => {
         expect(logoIcon).toBeFalsy();
       });
     });
-    describe('when the app url has NOT a standalone query param set as true', () => {
+    describe('when the app url has NOT the standalone feature', () => {
       it('should show the wallapop logo icon', () => {
         standaloneSubject.next(false);
         fixture.detectChanges();

@@ -20,6 +20,7 @@ import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { SITE_URL } from '@configs/site-url.config';
 import { StandaloneService } from '@core/standalone/services/standalone.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-topbar',
@@ -34,7 +35,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public wallacoins = 0;
   public currencyName: string;
   public isLogged: boolean;
-  public readonly standalone$: Observable<boolean> = this.standaloneService.standalone$;
+  public readonly showLogo$: Observable<boolean> = this.standaloneService.standalone$.pipe(map((standalone: boolean) => !standalone));
   @Input() isMyZone: boolean;
 
   private componentSubscriptions: Subscription[] = [];
