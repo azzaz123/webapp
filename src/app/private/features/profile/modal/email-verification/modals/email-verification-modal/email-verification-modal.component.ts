@@ -18,11 +18,8 @@ export class EmailVerificationModalComponent {
     public activeModal: NgbActiveModal,
     private userVerificationsService: UserVerificationsService,
     private modalService: NgbModal,
-    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService,
-    private verificationsNSecurityStore: VerificationsNSecurityStore
-  ) {
-    this.email = this.verificationsNSecurityStore.userInformation.email;
-  }
+    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService
+  ) {}
 
   public changeEmail(): void {
     this.activeModal.close();

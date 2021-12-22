@@ -31,14 +31,12 @@ export class PhoneVerificationModalComponent implements OnInit {
     private toastService: ToastService,
     private modalService: NgbModal,
     private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService,
-    private verificationsNSecurityStore: VerificationsNSecurityStore,
     @Inject(LOCALE_ID) private locale: APP_LOCALE
   ) {}
 
   ngOnInit(): void {
     this.buildForm();
     this.setPhonePrefixes();
-    this.verificationsNSecurityStore.verifiedPhone('+34674817633');
   }
 
   public onSubmitPhone(): void {

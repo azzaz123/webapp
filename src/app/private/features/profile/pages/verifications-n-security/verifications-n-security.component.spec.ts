@@ -1,5 +1,5 @@
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
@@ -8,6 +8,7 @@ import {
   MOCK_USER_VERIFICATIONS_MAPPED,
   MOCK_USER_VERIFICATIONS_PHONE_VERIFIED,
 } from '@api/fixtures/user-verifications/user-verifications.fixtures.spec';
+import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
 import { UserService } from '@core/user/user.service';
 import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -38,13 +39,28 @@ describe('VerificationsNSecurityComponent', () => {
       declarations: [VerificationsNSecurityComponent, MockVerificationCardComponent],
       providers: [
         FormBuilder,
-        VerificationsNSecurityStore,
         { provide: UserService, useClass: MockedUserService },
+        {
+          provide: UserVerificationsService,
+          useValue: {
+            verifyPhone() {
+              return of({});
+            },
+          },
+        },
         {
           provide: VerificationsNSecurityTrackingEventsService,
           useValue: {
             verificationsNSecurityPageView() {},
             trackClickVerificationOptionEvent() {},
+          },
+        },
+        {
+          provide: VerificationsNSecurityStore,
+          useValue: {
+            getUserVerifications() {
+              return of();
+            },
           },
         },
       ],
@@ -80,15 +96,14 @@ describe('VerificationsNSecurityComponent', () => {
     });
 
     it('should show the email and phone cards', () => {
-      const cards: DebugElement[] = fixture.debugElement.queryAll(By.directive(MockVerificationCardComponent));
+      component.verificationsNSecurityStore.getUserVerifications().subscribe((result) => {
+        const cards: DebugElement[] = fixture.debugElement.queryAll(By.directive(MockVerificationCardComponent));
 
-      expect(cards).toHaveLength(2);
+        expect(cards).toHaveLength(2);
+      });
     });
 
-    it('should call the set phoneNumber', () => {});
-
     it('should track page view event', () => {
-      spyOn(verificationsNSecurityStore, 'getUserVerifications').and.callThrough();
       spyOn(verificationsNSecurityTrackingEventsService, 'verificationsNSecurityPageView');
 
       component.verificationsNSecurityStore.getUserVerifications().subscribe((result) => {
@@ -114,7 +129,7 @@ describe('VerificationsNSecurityComponent', () => {
 
       describe('and the email is verified', () => {
         beforeEach(() => {
-          spyVerificationsNSecurityStore = spyOn(verificationsNSecurityStore, 'getUserVerifications').and.returnValue(
+          spyVerificationsNSecurityStore.and.returnValue(
             of({
               userVerifications: MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED,
               userInformation: {
@@ -132,10 +147,11 @@ describe('VerificationsNSecurityComponent', () => {
 
           component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
             response = userVerifications;
-          });
-          const text = component.verifiedTextButton[response.email.toString()];
 
-          expect(text).toBe('Change');
+            const text = component.verifiedTextButton[response.email.toString()];
+
+            expect(text).toBe('Change');
+          });
         });
         it('should open the change email modal when button is clicked', () => {
           spyOn(modalService, 'open').and.callThrough();
@@ -157,10 +173,10 @@ describe('VerificationsNSecurityComponent', () => {
           let response: UserVerifications;
           component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
             response = userVerifications;
-          });
-          const text = component.verifiedTextButton[response.email.toString()];
+            const text = component.verifiedTextButton[response.email.toString()];
 
-          expect(text).toBe('Verify');
+            expect(text).toBe('Verify');
+          });
         });
         it('should open the email verification modal when button is clicked', () => {
           spyOn(modalService, 'open').and.callThrough();
@@ -183,7 +199,7 @@ describe('VerificationsNSecurityComponent', () => {
         beforeEach(() => {
           spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
 
-          spyVerificationsNSecurityStore = spyOn(verificationsNSecurityStore, 'getUserVerifications').and.returnValue(
+          spyVerificationsNSecurityStore.and.returnValue(
             of({
               userVerifications: MOCK_USER_VERIFICATIONS_PHONE_VERIFIED,
               userInformation: {
@@ -201,10 +217,10 @@ describe('VerificationsNSecurityComponent', () => {
 
           component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
             response = userVerifications;
-          });
-          const text = component.verifiedTextButton[response.phone.toString()];
+            const text = component.verifiedTextButton[response.phone.toString()];
 
-          expect(text).toBe('Change');
+            expect(text).toBe('Change');
+          });
         });
 
         it('should open the phone verification modal when button is clicked', () => {
@@ -224,7 +240,7 @@ describe('VerificationsNSecurityComponent', () => {
         beforeEach(() => {
           spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
 
-          spyVerificationsNSecurityStore = spyOn(verificationsNSecurityStore, 'getUserVerifications').and.returnValue(
+          spyVerificationsNSecurityStore.and.returnValue(
             of({
               userVerifications: MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED,
               userInformation: {
@@ -242,10 +258,10 @@ describe('VerificationsNSecurityComponent', () => {
 
           component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
             response = userVerifications;
-          });
-          const text = component.verifiedTextButton[response.phone.toString()];
+            const text = component.verifiedTextButton[response.phone.toString()];
 
-          expect(text).toBe('Verify');
+            expect(text).toBe('Verify');
+          });
         });
 
         it('should open the phone verification modal when button is clicked', () => {

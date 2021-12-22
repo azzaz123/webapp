@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
-import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { EmailVerificationModalComponent } from '../../modal/email-verification/modals/email-verification-modal/email-verification-modal.component';
 import { PhoneVerificationModalComponent } from '../../modal/phone-verification/modals/phone-verification-modal/phone-verification-modal.component';
