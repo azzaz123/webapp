@@ -12,13 +12,15 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { SITE_URL } from '@configs/site-url.config';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-topbar',
@@ -33,7 +35,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   public wallacoins = 0;
   public currencyName: string;
   public isLogged: boolean;
-
+  public readonly showLogo$: Observable<boolean> = this.standaloneService.standalone$.pipe(map((standalone: boolean) => !standalone));
   @Input() isMyZone: boolean;
 
   private componentSubscriptions: Subscription[] = [];
@@ -47,6 +49,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private searchNavigator: SearchNavigatorService,
     private topbarTrackingEventsService: TopbarTrackingEventsService,
+    private standaloneService: StandaloneService,
     @Inject(SITE_URL) private siteUrl: string
   ) {}
 
