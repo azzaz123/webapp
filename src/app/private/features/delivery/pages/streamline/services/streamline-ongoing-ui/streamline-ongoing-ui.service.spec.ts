@@ -1,12 +1,13 @@
-import { TestBed } from '@angular/core/testing';
-import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
-import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
-import { MOCK_PENDING_TRANSACTIONS_AND_REQUESTS } from '@api/fixtures/core/model/delivery/pending-transactions-and-requests.fixtures.spec';
-import { MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
-import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
-import { Observable, ReplaySubject } from 'rxjs';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { StreamlineOngoingUIService } from './streamline-ongoing-ui.service';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
+import { MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
+import { MOCK_PENDING_TRANSACTIONS_AND_REQUESTS } from '@api/fixtures/core/model/delivery/pending-transactions-and-requests.fixtures.spec';
+import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
+import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
+import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
+
+import { Observable, ReplaySubject, throwError } from 'rxjs';
 
 describe('StreamlineOngoingUIService', () => {
   let service: StreamlineOngoingUIService;
@@ -84,4 +85,34 @@ describe('StreamlineOngoingUIService', () => {
       expect(result).toBeFalsy();
     });
   });
+});
+
+describe('WHEN there is an error retrieving the shipping list', () => {
+  let streamlineOngoingUIService: StreamlineOngoingUIService;
+  let requestsAndTransactionsPendingService: RequestsAndTransactionsPendingService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        StreamlineOngoingUIService,
+        {
+          provide: RequestsAndTransactionsPendingService,
+          useValue: {
+            get pendingTransactionsAndRequests() {
+              return throwError('The server is broken');
+            },
+          },
+        },
+      ],
+    });
+    streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
+    requestsAndTransactionsPendingService = TestBed.inject(RequestsAndTransactionsPendingService);
+  });
+
+  it('should show the generic error catcher', fakeAsync(() => {
+    expect(() => {
+      streamlineOngoingUIService.getItems();
+      tick();
+    }).toThrowError();
+  }));
 });

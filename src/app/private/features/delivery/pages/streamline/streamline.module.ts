@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
-import { StreamlineTrackingEventsService } from './services/streamline-tracking-events/streamline-tracking-events.service';
+
+import { SharedErrorActionModule } from '@shared/error-action';
 import { streamlineRoutedComponents, StreamlineRoutingModule } from './streamline.routing.module';
+import { StreamlineTrackingEventsService } from '@private/features/delivery/pages/streamline/services/streamline-tracking-events/streamline-tracking-events.service';
+import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
 
 @NgModule({
-  imports: [StreamlineRoutingModule, TabsBarModule, RouterModule],
+  imports: [StreamlineRoutingModule, TabsBarModule, RouterModule, SharedErrorActionModule],
   declarations: [streamlineRoutedComponents],
   providers: [StreamlineTrackingEventsService],
 })

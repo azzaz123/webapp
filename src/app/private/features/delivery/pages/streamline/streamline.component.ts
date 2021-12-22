@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
+import { StreamlineTrackingEventsService } from '@private/features/delivery/pages/streamline/services/streamline-tracking-events/streamline-tracking-events.service';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
-import { DELIVERY_PATHS } from '../../delivery-routing-constants';
-import { StreamlineTrackingEventsService } from './services/streamline-tracking-events/streamline-tracking-events.service';
-import { STREAMLINE_PATHS } from './streamline.routing.constants';
 
 @Component({
   selector: 'tsl-streamline',
@@ -17,6 +18,7 @@ export class StreamlineComponent implements OnInit {
     { value: STREAMLINE_PATHS.COMPLETED, label: $localize`:@@purchases_view_finished_tab_title:Completed` },
   ];
 
+  public retryUrl: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`;
   public selectedTabsBarElement: TabsBarElement<STREAMLINE_PATHS>;
 
   constructor(private router: Router, private streamlineTrackingEventsService: StreamlineTrackingEventsService) {}
