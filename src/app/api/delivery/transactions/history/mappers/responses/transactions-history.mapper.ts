@@ -64,6 +64,7 @@ const mapToTransactions = (input: TransactionsHistoryWithUserAndItem): HistoricT
         tracking,
       },
       isCurrentUserTheSeller,
+      requestId: transaction.request_id,
     };
 
     return historicTransaction;

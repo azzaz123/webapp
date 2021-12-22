@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
+import { HistoricElement, HistoricElementTransaction } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { SharedErrorActionService } from '@shared/error-action';
@@ -48,9 +48,13 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     this.streamlineOngoingUIService.reset();
   }
 
-  // TODO: Implement redirection to TTS
-  public onItemClick(historicElement: HistoricElement): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${historicElement.id}`;
+  public onItemClick(historicElement: HistoricElement | HistoricElementTransaction): void {
+    const requestId: string = this.isTransaction(historicElement) ? historicElement.requestId : historicElement.id;
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
     this.router.navigate([pathToTransactionTracking]);
+  }
+
+  private isTransaction(input: HistoricElement | HistoricElementTransaction): input is HistoricElementTransaction {
+    return (<HistoricElementTransaction>input).requestId !== undefined;
   }
 }
