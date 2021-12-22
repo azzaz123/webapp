@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { EmailVerificationModalComponent } from '../../modal/email-verification/modals/email-verification-modal/email-verification-modal.component';
 import { PhoneVerificationModalComponent } from '../../modal/phone-verification/modals/phone-verification-modal/phone-verification-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
@@ -40,9 +40,9 @@ export class VerificationsNSecurityComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.verificationsNSecurityStore
-      .getUserVerifications()
-      .pipe(take(1))
+    this.verificationsNSecurityStore.initializeUserVerifications();
+    this.verificationsNSecurityStore.userVerifications$
+      .pipe(filter((userVerifications: UserVerifications) => !!userVerifications))
       .subscribe((userVerifications: UserVerifications) => {
         this.verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView(userVerifications);
       });
@@ -51,7 +51,7 @@ export class VerificationsNSecurityComponent implements OnInit {
   public onClickVerifyEmail(isVerifiedEmail: boolean): void {
     let modalRef: NgbModalRef;
     let modal: VerificationModalComponent = this.getEmailModal(isVerifiedEmail);
-    const email: string = this.verificationsNSecurityStore.userInformation.email;
+    const email: string = '';
 
     modalRef = this.openModal(modal);
 

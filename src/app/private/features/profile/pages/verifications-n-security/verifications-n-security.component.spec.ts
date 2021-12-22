@@ -1,5 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
@@ -13,7 +14,7 @@ import { UserService } from '@core/user/user.service';
 import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { EmailVerificationModalComponent } from '../../modal/email-verification/modals/email-verification-modal/email-verification-modal.component';
 import { PhoneVerificationModalComponent } from '../../modal/phone-verification/modals/phone-verification-modal/phone-verification-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
@@ -37,6 +38,7 @@ describe('VerificationsNSecurityComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [VerificationsNSecurityComponent, MockVerificationCardComponent],
+      imports: [HttpClientTestingModule],
       providers: [
         FormBuilder,
         { provide: UserService, useClass: MockedUserService },
@@ -44,6 +46,9 @@ describe('VerificationsNSecurityComponent', () => {
           provide: UserVerificationsService,
           useValue: {
             verifyPhone() {
+              return of({});
+            },
+            verifyEmail() {
               return of({});
             },
           },
@@ -58,8 +63,25 @@ describe('VerificationsNSecurityComponent', () => {
         {
           provide: VerificationsNSecurityStore,
           useValue: {
-            getUserVerifications() {
+            get userVerifications$() {
               return of();
+            },
+            get userInformation$() {
+              return of();
+            },
+            get userInformation() {
+              return {};
+            },
+            initializeUserVerifications() {},
+          },
+        },
+        {
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                componentInstance: {},
+              };
             },
           },
         },
@@ -72,15 +94,9 @@ describe('VerificationsNSecurityComponent', () => {
   });
 
   beforeEach(() => {
-    spyVerificationsNSecurityStore = spyOn(verificationsNSecurityStore, 'getUserVerifications').and.returnValue(
-      of({
-        userVerifications: MOCK_USER_VERIFICATIONS_MAPPED,
-        userInformation: {
-          phone: '',
-          email: MOCK_FULL_USER.email,
-        },
-      })
-    );
+    spyVerificationsNSecurityStore = jest
+      .spyOn(verificationsNSecurityStore, 'userVerifications$', 'get')
+      .mockReturnValue(of(MOCK_USER_VERIFICATIONS_MAPPED));
 
     fixture = TestBed.createComponent(VerificationsNSecurityComponent);
     component = fixture.componentInstance;
@@ -91,24 +107,21 @@ describe('VerificationsNSecurityComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should call the verfications store to get verifications', () => {
-      expect(spyVerificationsNSecurityStore).toHaveBeenCalledTimes(1);
-    });
-
     it('should show the email and phone cards', () => {
-      component.verificationsNSecurityStore.getUserVerifications().subscribe((result) => {
+      component.verificationsNSecurityStore.userVerifications$.subscribe(() => {
         const cards: DebugElement[] = fixture.debugElement.queryAll(By.directive(MockVerificationCardComponent));
 
         expect(cards).toHaveLength(2);
       });
     });
 
-    it('should track page view event', () => {
+    it('should track page view event', (done) => {
       spyOn(verificationsNSecurityTrackingEventsService, 'verificationsNSecurityPageView');
-
-      component.verificationsNSecurityStore.getUserVerifications().subscribe((result) => {
+      component.ngOnInit();
+      component.verificationsNSecurityStore.userVerifications$.subscribe((result) => {
         expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledTimes(1);
         expect(verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView).toHaveBeenCalledWith(result);
+        done();
       });
     });
   });
@@ -129,38 +142,34 @@ describe('VerificationsNSecurityComponent', () => {
 
       describe('and the email is verified', () => {
         beforeEach(() => {
-          spyVerificationsNSecurityStore.and.returnValue(
-            of({
-              userVerifications: MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED,
-              userInformation: {
-                phone: '',
-                email: MOCK_FULL_USER.email,
-              },
-            })
-          );
+          spyVerificationsNSecurityStore.mockReturnValue(of(MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED));
+
           fixture = TestBed.createComponent(VerificationsNSecurityComponent);
           component = fixture.componentInstance;
           fixture.detectChanges();
         });
-        it('should show Change button text', () => {
-          let response: UserVerifications;
-
-          component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
-            response = userVerifications;
-
-            const text = component.verifiedTextButton[response.email.toString()];
+        it('should show Change button text', (done) => {
+          component.verificationsNSecurityStore.userVerifications$.subscribe((userVerifications) => {
+            const text = component.verifiedTextButton[userVerifications.email.toString()];
 
             expect(text).toBe('Change');
+            done();
           });
         });
-        it('should open the change email modal when button is clicked', () => {
+        it('should open the change email modal when button is clicked', (done) => {
           spyOn(modalService, 'open').and.callThrough();
-          component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
+          jest.spyOn(verificationsNSecurityStore, 'userInformation', 'get').mockReturnValue({
+            email: MOCK_FULL_USER.email,
+            phone: '',
+          });
+
+          component.verificationsNSecurityStore.userVerifications$.subscribe((userVerifications) => {
             component.onClickVerifyEmail(userVerifications.email);
 
             expect(modalService.open).toHaveBeenCalledWith(EmailModalComponent, {
               windowClass: 'modal-standard',
             });
+            done();
           });
         });
       });
@@ -169,18 +178,17 @@ describe('VerificationsNSecurityComponent', () => {
           spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
           fixture.detectChanges();
         });
-        it('should show Verify button text', () => {
-          let response: UserVerifications;
-          component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
-            response = userVerifications;
-            const text = component.verifiedTextButton[response.email.toString()];
+        it('should show Verify button text', (done) => {
+          component.verificationsNSecurityStore.userVerifications$.subscribe((userVerifications) => {
+            const text = component.verifiedTextButton[userVerifications.email.toString()];
 
             expect(text).toBe('Verify');
+            done();
           });
         });
-        it('should open the email verification modal when button is clicked', () => {
+        it('should open the email verification modal when button is clicked', (done) => {
           spyOn(modalService, 'open').and.callThrough();
-          component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
+          component.verificationsNSecurityStore.userVerifications$.subscribe((userVerifications) => {
             component.onClickVerifyEmail(userVerifications.email);
 
             expect(modalService.open).toHaveBeenCalledWith(EmailVerificationModalComponent, {
@@ -191,6 +199,7 @@ describe('VerificationsNSecurityComponent', () => {
             expect(verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent).toHaveBeenCalledWith(
               VERIFICATION_METHOD.EMAIL
             );
+            done();
           });
         });
       });
@@ -198,28 +207,20 @@ describe('VerificationsNSecurityComponent', () => {
       describe('and the phone is verified', () => {
         beforeEach(() => {
           spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
-
-          spyVerificationsNSecurityStore.and.returnValue(
-            of({
-              userVerifications: MOCK_USER_VERIFICATIONS_PHONE_VERIFIED,
-              userInformation: {
-                phone: '+34 935 50 09 96',
-                email: MOCK_FULL_USER.email,
-              },
-            })
-          );
+          spyVerificationsNSecurityStore.mockReturnValue(of(MOCK_USER_VERIFICATIONS_PHONE_VERIFIED));
           fixture = TestBed.createComponent(VerificationsNSecurityComponent);
           component = fixture.componentInstance;
           fixture.detectChanges();
         });
-        it('should show Change button text and the phone legend', () => {
+        it('should show Change button text and the phone legend', (done) => {
           let response: UserVerifications;
 
-          component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
+          component.verificationsNSecurityStore.userVerifications$.subscribe((userVerifications) => {
             response = userVerifications;
             const text = component.verifiedTextButton[response.phone.toString()];
 
             expect(text).toBe('Change');
+            done();
           });
         });
 
@@ -239,28 +240,19 @@ describe('VerificationsNSecurityComponent', () => {
       describe('and the phone is not verified', () => {
         beforeEach(() => {
           spyOn(verificationsNSecurityTrackingEventsService, 'trackClickVerificationOptionEvent');
-
-          spyVerificationsNSecurityStore.and.returnValue(
-            of({
-              userVerifications: MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED,
-              userInformation: {
-                phone: '',
-                email: MOCK_FULL_USER.email,
-              },
-            })
-          );
+          spyVerificationsNSecurityStore.mockReturnValue(of(MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED));
           fixture = TestBed.createComponent(VerificationsNSecurityComponent);
           component = fixture.componentInstance;
           fixture.detectChanges();
         });
-        it('should show Verify button text and not show phone legend', () => {
+        it('should show Verify button text and not show phone legend', (done) => {
           let response: UserVerifications;
 
-          component.verificationsNSecurityStore.getUserVerifications().subscribe((userVerifications) => {
-            response = userVerifications;
-            const text = component.verifiedTextButton[response.phone.toString()];
+          component.verificationsNSecurityStore.userVerifications$.subscribe((userVerifications) => {
+            const text = component.verifiedTextButton[userVerifications.phone.toString()];
 
             expect(text).toBe('Verify');
+            done();
           });
         });
 

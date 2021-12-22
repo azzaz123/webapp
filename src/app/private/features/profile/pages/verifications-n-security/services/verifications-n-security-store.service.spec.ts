@@ -1,5 +1,4 @@
-import { TestBed, tick } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { VerificationsNSecurityStore } from './verifications-n-security-store.service';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
@@ -9,7 +8,6 @@ import {
 } from '@api/fixtures/user-verifications/user-verifications.fixtures.spec';
 import { UserService } from '@core/user/user.service';
 import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec';
-import { UserVerifications } from '@api/core/model/verifications';
 
 describe('VerificationsNSecurityStore', () => {
   let store: VerificationsNSecurityStore;
@@ -37,16 +35,23 @@ describe('VerificationsNSecurityStore', () => {
     jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_FULL_USER);
   });
 
-  describe('when getUserVerifications is called', () => {
+  describe('when User Verifications is initialized', () => {
     describe('and the phone is not verified', () => {
       beforeEach(() => {
         spyOn(userVerificationsService, 'getVerifications').and.returnValue(of(MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED));
+        store.initializeUserVerifications();
       });
-      it('should fullfill the user information with an empty phone number', () => {
-        store.getUserVerifications().subscribe(() => {
-          expect(userVerificationsService.getVerifications).toHaveBeenCalled();
-          expect(store.userVerifications).toEqual(MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED);
+      it('should fullfill the user verifications', (done) => {
+        store.userVerifications$.subscribe((userVerifications) => {
+          expect(userVerifications).toEqual(MOCK_USER_VERIFICATIONS_EMAIL_VERIFIED);
+          done();
+        });
+      });
+
+      it('should fullfill the user information with an empty phone', (done) => {
+        store.userInformation$.subscribe(() => {
           expect(store.userInformation).toEqual({ email: MOCK_FULL_USER.email, phone: '' });
+          done();
         });
       });
     });
@@ -54,12 +59,20 @@ describe('VerificationsNSecurityStore', () => {
     describe('and the phone is verified', () => {
       beforeEach(() => {
         spyOn(userVerificationsService, 'getVerifications').and.returnValue(of(MOCK_USER_VERIFICATIONS_MAPPED));
+        store.initializeUserVerifications();
       });
-      it('should fullfill the user information with an non empty phone number', () => {
-        store.getUserVerifications().subscribe(() => {
-          expect(userVerificationsService.getVerifications).toHaveBeenCalled();
+
+      it('should fullfill the user verifications', (done) => {
+        store.userVerifications$.subscribe(() => {
           expect(store.userVerifications).toEqual(MOCK_USER_VERIFICATIONS_MAPPED);
+          done();
+        });
+      });
+
+      it('should fullfill the user information with an non empty phone number', (done) => {
+        store.userInformation$.subscribe(() => {
           expect(store.userInformation).toEqual({ email: MOCK_FULL_USER.email, phone: '+34 935 50 09 96' });
+          done();
         });
       });
     });

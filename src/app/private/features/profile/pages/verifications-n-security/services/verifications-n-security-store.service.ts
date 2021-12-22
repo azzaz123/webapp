@@ -4,7 +4,7 @@ import { UserVerificationsService } from '@api/user-verifications/user-verificat
 import { UserService } from '@core/user/user.service';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { UserInformation } from './user-information.interface';
 
 @Injectable()
@@ -38,16 +38,17 @@ export class VerificationsNSecurityStore {
     this._userInfomation.next(userInformation);
   }
 
-  public getUserVerifications(): Observable<UserVerifications> {
-    return this.userVerificationsService.getVerifications().pipe(
-      tap((userVerifications: UserVerifications) => {
-        this.userVerifications = { ...userVerifications };
+  public initializeUserVerifications(): void {
+    this.userVerificationsService
+      .getVerifications()
+      .pipe(take(1))
+      .subscribe((userVerifications: UserVerifications) => {
+        this.userVerifications = userVerifications;
         this.userInformation = {
           email: this.userService.user.email,
           phone: this.getPhoneNumber(this.userService.user.phone),
         };
-      })
-    );
+      });
   }
 
   public verifiedPhone(phoneNumber: string): void {
