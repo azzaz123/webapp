@@ -27,7 +27,8 @@ export class SmsCodeVerificationModalComponent implements OnInit {
     private fb: FormBuilder,
     public activeModal: NgbActiveModal,
     private userVerificationsService: UserVerificationsService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private verificationsNSecurityStore: VerificationsNSecurityStore
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +46,7 @@ export class SmsCodeVerificationModalComponent implements OnInit {
         .subscribe(
           () => {
             this.showSuccessToast();
+            this.verificationsNSecurityStore.verifiedPhone(this.phoneNumber);
             this.activeModal.close();
           },
           () => {
