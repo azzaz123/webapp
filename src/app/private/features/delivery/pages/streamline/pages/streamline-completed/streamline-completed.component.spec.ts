@@ -1,21 +1,24 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+
 import { HistoricElementComponent } from '@shared/historic-list/components/historic-element/historic-element.component';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { HistoricListComponent } from '@shared/historic-list/components/historic-list/historic-list.component';
+import { HistoricListModule } from '@shared/historic-list/historic-list.module';
 import {
   MOCK_HISTORIC_LIST_EMPTY,
   MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS,
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
-import { HistoricListModule } from '@shared/historic-list/historic-list.module';
-import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { SharedErrorActionService } from '@shared/error-action';
+import { StreamlineCompletedComponent } from '@private/features/delivery/pages/streamline/pages/streamline-completed/streamline-completed.component';
+import { StreamlineCompletedUIService } from '@private/features/delivery/pages/streamline/services/streamline-completed-ui/streamline-completed-ui.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { ReplaySubject } from 'rxjs';
-import { StreamlineCompletedUIService } from '../../services/streamline-completed-ui/streamline-completed-ui.service';
 
-import { StreamlineCompletedComponent } from './streamline-completed.component';
+import { ReplaySubject, throwError } from 'rxjs';
 
 describe('StreamlineCompletedComponent', () => {
   let component: StreamlineCompletedComponent;
@@ -43,7 +46,10 @@ describe('StreamlineCompletedComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, HistoricListModule, SvgIconModule],
       declarations: [StreamlineCompletedComponent],
-      providers: [{ provide: StreamlineCompletedUIService, useClass: MockStreamlineCompletedUIService }],
+      providers: [
+        { provide: StreamlineCompletedUIService, useClass: MockStreamlineCompletedUIService },
+        { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(StreamlineCompletedComponent);
@@ -162,4 +168,48 @@ describe('StreamlineCompletedComponent', () => {
     historicList.elements.forEach((h) => h.elements.forEach((st) => st.elements.forEach(() => totalHistoricElements++)));
     return totalHistoricElements;
   }
+});
+
+describe('WHEN there is an error retrieving the shipping list', () => {
+  let errorActionSpy;
+  let streamlineOngoingUIService;
+  let errorActionService;
+  let component: StreamlineCompletedComponent;
+  let fixture: ComponentFixture<StreamlineCompletedComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientTestingModule, HistoricListModule, SvgIconModule],
+      declarations: [StreamlineCompletedComponent],
+      providers: [
+        {
+          provide: StreamlineCompletedUIService,
+          useValue: {
+            get historicList$() {
+              return throwError('The server is broken');
+            },
+            getItems: () => {},
+            reset: () => {},
+          },
+        },
+        { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    streamlineOngoingUIService = TestBed.inject(StreamlineCompletedUIService);
+    jest.spyOn(streamlineOngoingUIService, 'historicList$', 'get').mockReturnValue(throwError('The server is broken'));
+    errorActionService = TestBed.inject(SharedErrorActionService);
+    errorActionSpy = spyOn(errorActionService, 'show');
+
+    fixture = TestBed.createComponent(StreamlineCompletedComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
+  });
+
+  it('should show the generic error catcher', fakeAsync(() => {
+    expect(errorActionSpy).toHaveBeenCalledTimes(1);
+  }));
 });

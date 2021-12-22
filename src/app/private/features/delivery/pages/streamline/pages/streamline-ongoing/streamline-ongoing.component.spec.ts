@@ -1,23 +1,26 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { HistoricElementComponent } from '@shared/historic-list/components/historic-element/historic-element.component';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
+import { HistoricListModule } from '@shared/historic-list/historic-list.module';
 import { MOCK_HISTORIC_ELEMENT_WITH_ID } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import {
   MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS,
   MOCK_HISTORIC_LIST_EMPTY,
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
-import { HistoricListModule } from '@shared/historic-list/historic-list.module';
-import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { SharedErrorActionService } from '@shared/error-action';
+import { StreamlineOngoingComponent } from '@private/features/delivery/pages/streamline/pages/streamline-ongoing/streamline-ongoing.component';
+import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { ReplaySubject } from 'rxjs';
-import { StreamlineOngoingUIService } from '../../services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 
-import { StreamlineOngoingComponent } from './streamline-ongoing.component';
+import { ReplaySubject, throwError } from 'rxjs';
 
 describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;
@@ -30,6 +33,7 @@ describe('StreamlineOngoingComponent', () => {
 
   let spinnerSelector: string = '.spinner';
   let emptyStateSelector: string = '.HistoricList__no-results';
+  let errorActionService: SharedErrorActionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,6 +49,7 @@ describe('StreamlineOngoingComponent', () => {
             reset: () => {},
           },
         },
+        { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
       ],
     }).compileComponents();
   });
@@ -52,10 +57,12 @@ describe('StreamlineOngoingComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamlineOngoingComponent);
     component = fixture.componentInstance;
+
     router = TestBed.inject(Router);
     streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
-    fixture.detectChanges();
+    errorActionService = TestBed.inject(SharedErrorActionService);
 
+    fixture.detectChanges();
     spyOn(router, 'navigate');
   });
 
@@ -138,4 +145,48 @@ describe('StreamlineOngoingComponent', () => {
     historicList.elements.forEach((h) => h.elements.forEach((st) => st.elements.forEach(() => totalHistoricElements++)));
     return totalHistoricElements;
   }
+});
+
+describe('WHEN there is an error retrieving the shipping list', () => {
+  let errorActionSpy;
+  let streamlineOngoingUIService;
+  let errorActionService;
+  let component: StreamlineOngoingComponent;
+  let fixture: ComponentFixture<StreamlineOngoingComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientTestingModule, HistoricListModule, SvgIconModule],
+      declarations: [StreamlineOngoingComponent],
+      providers: [
+        {
+          provide: StreamlineOngoingUIService,
+          useValue: {
+            get historicList$() {
+              return throwError('The server is broken');
+            },
+            getItems: () => {},
+            reset: () => {},
+          },
+        },
+        { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
+    jest.spyOn(streamlineOngoingUIService, 'historicList$', 'get').mockReturnValue(throwError('The server is broken'));
+    errorActionService = TestBed.inject(SharedErrorActionService);
+    errorActionSpy = spyOn(errorActionService, 'show');
+
+    fixture = TestBed.createComponent(StreamlineOngoingComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
+  });
+
+  it('should show the generic error catcher', fakeAsync(() => {
+    expect(errorActionSpy).toHaveBeenCalledTimes(1);
+  }));
 });
