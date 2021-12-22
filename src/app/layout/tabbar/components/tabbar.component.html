@@ -1,8 +1,7 @@
 <div class="TabBar w-100 align-items-center justify-content-around" [hidden]="hidden">
   <a *ngIf="(standaloneMode$ | async); else isNotStandalone" class="TabBar__option"  (click)="navigateToSearchPage()" 
-  [class.active]="router.isActive(SEARCH_PATH, false)"
-  routerLinkActive="active"
-  [routerLinkActiveOptions]="{ exact: true }">
+  [class.active]="(isActive$ | async)"
+  >
     <ng-container *ngTemplateOutlet="homeTab"></ng-container>
   </a>
   <ng-template #isNotStandalone>

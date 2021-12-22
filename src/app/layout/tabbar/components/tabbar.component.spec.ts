@@ -7,11 +7,15 @@ import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-cha
 import { MockUnreadChatMessagesService } from '@fixtures/chat';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { ELEMENT_TYPE, INPUT_TYPE, TabbarComponent } from './tabbar.component';
 import { TabbarService } from '../core/services/tabbar.service';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
+import { Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
@@ -19,6 +23,11 @@ describe('TabbarComponent', () => {
   let el: HTMLElement;
   let fixture: ComponentFixture<TabbarComponent>;
   let eventService: EventService;
+  let standaloneService: StandaloneService;
+  let searchNavigatorService: SearchNavigatorService;
+
+  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  const tabBar: string = '.TabBar__option';
 
   beforeEach(
     waitForAsync(() => {
@@ -45,6 +54,24 @@ describe('TabbarComponent', () => {
             provide: SITE_URL,
             useValue: MOCK_SITE_URL,
           },
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
+          {
+            provide: SearchNavigatorService,
+            useValue: {
+              navigateWithLocationParams: () => {},
+            },
+          },
+          {
+            provide: StandaloneService,
+            useValue: {
+              standalone$: standaloneSubject.asObservable(),
+            },
+          },
           EventService,
           TabbarService,
         ],
@@ -60,6 +87,8 @@ describe('TabbarComponent', () => {
     el = de.nativeElement;
     fixture.detectChanges();
     eventService = TestBed.inject(EventService);
+    standaloneService = TestBed.inject(StandaloneService);
+    searchNavigatorService = TestBed.inject(SearchNavigatorService);
   });
 
   describe('ngOnInit', () => {
@@ -331,6 +360,42 @@ describe('TabbarComponent', () => {
       component.onFocusOut(event);
 
       expect(component.hidden).toBe(false);
+    });
+  });
+
+  describe('Home tab', () => {
+    describe('when the app url is for the standalone feature', () => {
+      beforeEach(() => {
+        standaloneSubject.next(true);
+        fixture.detectChanges();
+      });
+      describe('and the user click on the home tab', () => {
+        it('should open the Search page', () => {
+          spyOn(searchNavigatorService, 'navigateWithLocationParams');
+          const homeTab = fixture.debugElement.query(By.css(tabBar)).nativeElement;
+
+          homeTab.click();
+
+          expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith({});
+        });
+      });
+    });
+    describe('when the app url has NOT the standalone feature', () => {
+      beforeEach(() => {
+        standaloneSubject.next(false);
+        fixture.detectChanges();
+      });
+      describe('and the user click on the home tab', () => {
+        it('should NOT open the Search page', () => {
+          spyOn(component, 'navigateToSearchPage');
+          const homeTab = fixture.debugElement.query(By.css(tabBar));
+
+          homeTab.nativeElement.click();
+
+          expect(component.navigateToSearchPage).not.toHaveBeenCalled();
+          expect(homeTab.attributes.href).toEqual(component.homeUrl);
+        });
+      });
     });
   });
 });
