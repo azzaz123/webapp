@@ -15,7 +15,7 @@
   <tsl-transaction-tracking-action-selector
     *ngIf="info.action"
     [actionDetail]="info.action"
-    class="TransactionTrackingStatusInfo__descriptionWrapper TransactionTrackingStatusInfo__descriptionWrapper--clickable"
+    class="TransactionTrackingStatusInfo__descriptionWrapper TransactionTrackingStatusInfo__descriptionWrapper--clickable align-self-center"
   >
     <div [innerHTML]="info.description | bypassHTML"></div>
   </tsl-transaction-tracking-action-selector>
@@ -23,7 +23,7 @@
     *ngIf="!info.action"
     id="safeDescription"
     [innerHTML]="info.description | bypassHTML"
-    class="TransactionTrackingStatusInfo__descriptionWrapper"
+    class="TransactionTrackingStatusInfo__descriptionWrapper align-self-center"
   ></div>
   <tsl-svg-icon
     *ngIf="info.showCaret"

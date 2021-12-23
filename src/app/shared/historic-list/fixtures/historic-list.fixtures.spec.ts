@@ -1,6 +1,7 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { MOCK_PENDING_REQUEST } from '@api/fixtures/core/model/delivery/requests.fixtures.spec';
+import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-subdescription-type.enum';
@@ -139,6 +140,7 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
                 type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
               },
               moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 19.75, currency: 'EUR' }),
+              payload: MOCK_HISTORIC_TRANSACTIONS[0],
             },
             {
               id: '001cf831-d040-4e31-b4e7-aa50d2a3cadc',
@@ -154,6 +156,7 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
                 type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
               },
               moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 12, currency: 'EUR' }),
+              payload: MOCK_HISTORIC_TRANSACTIONS[1],
             },
           ],
         },

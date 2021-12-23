@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
+import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { Observable, ReplaySubject, throwError } from 'rxjs';
 import { tap, take, finalize, catchError } from 'rxjs/operators';
@@ -44,7 +45,7 @@ export class StreamlineOngoingUIService {
 
     this.requestsAndTransactionsPendingService.pendingTransactionsAndRequests
       .pipe(
-        tap((response) => {
+        tap((response: PendingTransactionsAndRequests) => {
           this.historicList = mapPendingTransactionToHistoricList(response);
         }),
         catchError((error: unknown) => {

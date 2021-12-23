@@ -52,6 +52,7 @@ const mapToTransactions = (input: TransactionsHistoryWithUserAndItem): HistoricT
 
     const historicTransaction: HistoricTransaction = {
       id: transaction.id,
+      requestId: transaction.request_id,
       creationDate,
       item: mappedItem,
       buyer: mappedBuyer,
