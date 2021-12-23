@@ -559,45 +559,45 @@ describe(`DeeplinkService`, () => {
     });
   });
 
-  describe.each([
-    [itemDeeplink],
-    [printableLabelDeeplink],
-    [userProfileDeeplink],
-    [zendeskArticleDeeplink],
-    [zendeskCreateDisputeFormDeeplink],
-  ])(`WHEN navigate to an external url`, (deeplink) => {
-    beforeEach(() => {
-      spyOn(window, `open`);
-    });
-
-    it(`should open a new tab`, fakeAsync(() => {
-      service.navigate(deeplink);
-
-      service.toWebLink(deeplink).subscribe((webLink) => {
-        expect(window.open).toHaveBeenCalledTimes(1);
-        expect(window.open).toHaveBeenCalledWith(webLink, `_blank`);
+  describe.each([[itemDeeplink], [printableLabelDeeplink], [zendeskArticleDeeplink], [zendeskCreateDisputeFormDeeplink]])(
+    `WHEN navigate to an external url`,
+    (deeplink) => {
+      beforeEach(() => {
+        spyOn(window, `open`);
       });
 
-      flush();
-    }));
-  });
+      it(`should open a new tab`, fakeAsync(() => {
+        service.navigate(deeplink);
 
-  describe.each([[checkDeliveryInstructionDeeplink], [packagingInstructionsDeeplink]])(`WHEN navigate to an internal route`, (deeplink) => {
-    beforeEach(() => {
-      spyOn(router, `navigate`);
-    });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(window.open).toHaveBeenCalledTimes(1);
+          expect(window.open).toHaveBeenCalledWith(webLink, `_blank`);
+        });
 
-    it(`should navigate to an angular route`, fakeAsync(() => {
-      service.navigate(deeplink);
+        flush();
+      }));
+    }
+  );
 
-      service.toWebLink(deeplink).subscribe((webLink) => {
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([webLink]);
+  describe.each([[checkDeliveryInstructionDeeplink], [packagingInstructionsDeeplink], [userProfileDeeplink]])(
+    `WHEN navigate to an internal route`,
+    (deeplink) => {
+      beforeEach(() => {
+        spyOn(router, `navigate`);
       });
 
-      flush();
-    }));
-  });
+      it(`should navigate to an angular route`, fakeAsync(() => {
+        service.navigate(deeplink);
+
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith([webLink]);
+        });
+
+        flush();
+      }));
+    }
+  );
 
   describe.each([['some_kind_of_strange_deeplink'], ['some-unknown-url']])(`WHEN navigate to an unavailable deeplink`, (deeplink) => {
     beforeEach(() => {
