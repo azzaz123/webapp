@@ -47,6 +47,7 @@ export interface RequestsAndTransactionsPendingDto {
           seller_user_image: string;
           seller_user_name: string;
           status: string;
+          request_id: string;
         }
       ]
     | [];

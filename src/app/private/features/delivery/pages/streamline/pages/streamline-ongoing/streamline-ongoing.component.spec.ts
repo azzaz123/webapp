@@ -8,7 +8,10 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { HistoricElementComponent } from '@shared/historic-list/components/historic-element/historic-element.component';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { HistoricListModule } from '@shared/historic-list/historic-list.module';
-import { MOCK_HISTORIC_ELEMENT_WITH_ID } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
+import {
+  MOCK_HISTORIC_ELEMENT_WITH_REQUEST,
+  MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION,
+} from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import {
   MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS,
   MOCK_HISTORIC_LIST_EMPTY,
@@ -120,12 +123,26 @@ describe('StreamlineOngoingComponent', () => {
     });
 
     describe('when user clicks on a historic element', () => {
-      it('should navigate to the tracking page', () => {
-        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_ID.id}`;
+      describe('and the element is a request', () => {
+        it('should navigate to the tracking page with the id', () => {
+          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION.payload.requestId}`;
 
-        component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_ID);
+          component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION);
 
-        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+        });
+      });
+
+      describe('and the element is a pending transaction', () => {
+        it('should navigate to the tracking page with the payload id', () => {
+          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST.id}`;
+
+          component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST);
+
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+        });
       });
     });
 

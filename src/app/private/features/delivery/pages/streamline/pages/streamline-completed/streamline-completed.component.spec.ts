@@ -19,12 +19,17 @@ import { StreamlineCompletedUIService } from '@private/features/delivery/pages/s
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 import { ReplaySubject, throwError } from 'rxjs';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { MOCK_HISTORIC_ELEMENT_WITH_HISTORIC_TRANSACTION } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
+import { Router } from '@angular/router';
 
 describe('StreamlineCompletedComponent', () => {
   let component: StreamlineCompletedComponent;
   let fixture: ComponentFixture<StreamlineCompletedComponent>;
   let streamlineCompletedUIService: StreamlineCompletedUIService;
   let streamlineCompletedUIServiceGetItemsSpy: jasmine.Spy;
+  let router: Router;
 
   const streamlineCompletedLoadingReplaySubject: ReplaySubject<boolean> = new ReplaySubject(1);
   const streamlineCompletedHistoricListReplaySubject: ReplaySubject<HistoricList> = new ReplaySubject(1);
@@ -54,6 +59,7 @@ describe('StreamlineCompletedComponent', () => {
 
     fixture = TestBed.createComponent(StreamlineCompletedComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
     streamlineCompletedUIService = TestBed.inject(StreamlineCompletedUIService);
     streamlineCompletedUIServiceGetItemsSpy = spyOn(streamlineCompletedUIService, 'getItems');
     fixture.detectChanges();
@@ -105,6 +111,20 @@ describe('StreamlineCompletedComponent', () => {
       const historyDetailsDebugElements = fixture.debugElement.queryAll(By.directive(HistoricElementComponent));
 
       expect(historyDetailsDebugElements.length).toBe(expectedNumberOfElements);
+    });
+
+    describe('when user clicks on a historic element', () => {
+      beforeEach(() => {
+        spyOn(router, 'navigate');
+      });
+      it('should navigate to the tracking page with the payload id', () => {
+        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_HISTORIC_TRANSACTION.payload.requestId}`;
+
+        component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_HISTORIC_TRANSACTION);
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
     });
 
     describe('and when user scrolls', () => {
