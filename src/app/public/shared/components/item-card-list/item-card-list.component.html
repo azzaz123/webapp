@@ -15,7 +15,12 @@
                 <ng-content select="[inlineAdSlot]"></ng-content>
             </div>
         </ng-container>
-        <a [href]="item.webSlug | itemDetailRoute" [title]="item.title" target="_blank" class="ItemCardList__item">
+        <a  
+        [tslItemRoute]
+        [itemSlug]= 'item.webSlug'
+        [itemUUID]='item.id'
+        [title]="item.title"  
+        class="ItemCardList__item">
             <tsl-public-item-card *ngIf="cardType === cardTypes.REGULAR" [item]="item"
                 [showDescription]="showDescription" [showFavourite]="!(item.ownerId | isCurrentUser)"
                 (toggleFavourite)="toggleFavourite(item)" (click)="trackItemCardClick({itemCard: item, index: i})">

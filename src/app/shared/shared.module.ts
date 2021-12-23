@@ -79,6 +79,7 @@ import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal.module';
+import { ItemRouteDirective } from './item-route/item-route.directive';
 
 @NgModule({
   imports: [
@@ -176,6 +177,7 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     VisibleDirectiveModule,
     PaymentsCardInfoModule,
     ConfirmationModalModule,
+    ItemRouteDirective,
   ],
   declarations: [
     RestrictInputDirective,
@@ -226,6 +228,7 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
     LocationSelectorModal,
+    ItemRouteDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe, ListingLimitService],
   entryComponents: [
