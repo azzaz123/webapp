@@ -36,6 +36,7 @@ import { UserService } from '@core/user/user.service';
 
 import { of, throwError } from 'rxjs';
 import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -125,6 +126,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
             },
           },
         },
+        TransactionTrackingScreenStoreService,
       ],
     }).compileComponents();
   });

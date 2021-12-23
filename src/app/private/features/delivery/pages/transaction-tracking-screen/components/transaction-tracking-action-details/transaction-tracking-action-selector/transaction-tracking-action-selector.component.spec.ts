@@ -26,6 +26,9 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
 import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 import { TransactionTrackingScreenTrackingEventsService } from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 describe('TransactionTrackingActionSelectorComponent', () => {
   let component: TransactionTrackingActionSelectorComponent;
@@ -42,8 +45,12 @@ describe('TransactionTrackingActionSelectorComponent', () => {
         TransactionTrackingActionTrackingWebviewComponent,
         TransactionTrackingActionUserActionComponent,
       ],
-      imports: [ImageFallbackModule, ItemDetailRouteModule, UserProfileRouteModule, BypassHTMLModule],
+      imports: [ImageFallbackModule, ItemDetailRouteModule, UserProfileRouteModule, BypassHTMLModule, RouterTestingModule],
       providers: [
+        {
+          provide: TransactionTrackingScreenStoreService,
+          useValue: {},
+        },
         {
           provide: SITE_URL,
           useValue: MOCK_SITE_URL,
@@ -64,6 +71,16 @@ describe('TransactionTrackingActionSelectorComponent', () => {
           provide: TransactionTrackingScreenTrackingEventsService,
           useValue: {
             trackClickActionTTS() {},
+          },
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => '123',
+              },
+            },
           },
         },
       ],

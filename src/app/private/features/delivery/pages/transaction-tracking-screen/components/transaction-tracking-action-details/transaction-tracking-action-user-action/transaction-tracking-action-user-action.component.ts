@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import {
   TransactionTracking,
@@ -21,7 +21,7 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
   templateUrl: './transaction-tracking-action-user-action.component.html',
   styleUrls: ['../styles/transaction-tracking-action.scss'],
 })
-export class TransactionTrackingActionUserActionComponent {
+export class TransactionTrackingActionUserActionComponent implements OnInit {
   @Input() userAction: TransactionTrackingActionUserAction;
   private requestId: string;
 
@@ -32,7 +32,9 @@ export class TransactionTrackingActionUserActionComponent {
     private route: ActivatedRoute,
     private router: Router,
     private storeService: TransactionTrackingScreenStoreService
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.requestId = this.route.snapshot.paramMap.get(DELIVERY_PATH_PARAMS.ID);
   }
 
