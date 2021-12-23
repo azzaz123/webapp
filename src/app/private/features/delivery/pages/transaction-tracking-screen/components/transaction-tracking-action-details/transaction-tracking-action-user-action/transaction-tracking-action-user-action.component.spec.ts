@@ -9,7 +9,10 @@ import {
   MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION,
   MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS,
 } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of, throwError } from 'rxjs';
+import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 import { TransactionTrackingScreenTrackingEventsService } from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingActionUserActionComponent } from './transaction-tracking-action-user-action.component';
@@ -20,6 +23,10 @@ describe('TransactionTrackingActionUserActionComponent', () => {
   let transactionTrackingService: TransactionTrackingService;
   let errorsService: ErrorsService;
   let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
+  let storeService: TransactionTrackingScreenStoreService;
+  let router: Router;
+
+  const MOCK_REQUEST_ID = '124565656';
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -49,7 +56,7 @@ describe('TransactionTrackingActionUserActionComponent', () => {
           useValue: {
             snapshot: {
               paramMap: {
-                get: () => '1234',
+                get: () => MOCK_REQUEST_ID,
               },
             },
           },
@@ -57,7 +64,9 @@ describe('TransactionTrackingActionUserActionComponent', () => {
         {
           provide: Router,
           useValue: {
-            url: '/path',
+            get url() {
+              return '/path';
+            },
             navigate() {},
           },
         },
@@ -72,6 +81,8 @@ describe('TransactionTrackingActionUserActionComponent', () => {
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
     errorsService = TestBed.inject(ErrorsService);
+    storeService = TestBed.inject(TransactionTrackingScreenStoreService);
+    router = TestBed.inject(Router);
 
     fixture.detectChanges();
   });
@@ -81,6 +92,11 @@ describe('TransactionTrackingActionUserActionComponent', () => {
   });
 
   describe('when the user clicks on action', () => {
+    beforeEach(() => {
+      spyOn(storeService, 'refresh');
+      spyOn(router, 'navigate');
+    });
+
     describe('and the action has analytics...', () => {
       it('should track the event', () => {
         spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
@@ -131,40 +147,78 @@ describe('TransactionTrackingActionUserActionComponent', () => {
         expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
       });
 
-      it('should NOT update the transaction tracking store', () => {});
+      it('should NOT refresh the transaction tracking store', () => {
+        expect(storeService.refresh).not.toHaveBeenCalled();
+      });
 
-      it('should stay at the same page', () => {});
+      it('should stay at the same page', () => {
+        expect(router.navigate).not.toHaveBeenCalled();
+      });
     });
 
     describe('and the request succeed...', () => {
       beforeEach(() => {
         spyOn(errorsService, 'i18nError');
         spyOn(transactionTrackingService, 'sendUserAction').and.returnValue(of(''));
-
-        fixture.debugElement.query(By.css('div')).nativeElement.click();
-        fixture.detectChanges();
       });
-
-      it('should send the request user action petition', () => {
-        expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
-        expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(
-          MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.transactionId,
-          MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.name
-        );
-      });
-
-      it('should NOT show an error', () => {
-        expect(errorsService.i18nError).not.toHaveBeenCalled();
-      });
-
-      it('should update the transaction tracking store', () => {});
 
       describe('and we are on the TTS instructions page', () => {
-        it('should redirect to the TTS page', () => {});
+        beforeEach(() => {
+          jest
+            .spyOn(router, 'url', 'get')
+            .mockReturnValue(`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/1234/${TRANSACTION_TRACKING_PATHS.INSTRUCTIONS}`);
+
+          fixture.debugElement.query(By.css('div')).nativeElement.click();
+        });
+
+        it('should send the request user action petition', () => {
+          expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
+          expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(
+            MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.transactionId,
+            MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.name
+          );
+        });
+
+        it('should NOT show an error', () => {
+          expect(errorsService.i18nError).not.toHaveBeenCalled();
+        });
+
+        it('should update the transaction tracking store', () => {
+          expect(storeService.refresh).toHaveBeenCalledTimes(1);
+        });
+
+        it('should redirect to the TTS page', () => {
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+        });
       });
 
       describe('and we are NOT on the TTS instructions page', () => {
-        it('should stay at the same page', () => {});
+        beforeEach(() => {
+          jest.spyOn(router, 'url', 'get').mockReturnValue(`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/1234`);
+
+          fixture.debugElement.query(By.css('div')).nativeElement.click();
+        });
+
+        it('should send the request user action petition', () => {
+          expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
+          expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(
+            MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.transactionId,
+            MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION.name
+          );
+        });
+
+        it('should NOT show an error', () => {
+          expect(errorsService.i18nError).not.toHaveBeenCalled();
+        });
+
+        it('should stay at the same page', () => {
+          expect(router.navigate).not.toHaveBeenCalled();
+        });
+
+        it('should update the transaction tracking store', () => {
+          expect(storeService.refresh).toHaveBeenCalledTimes(1);
+        });
       });
     });
   });

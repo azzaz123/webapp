@@ -10,9 +10,12 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING_ACTION_DIALOG } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { of, throwError } from 'rxjs';
 import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
+import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 
 import { TransactionTrackingActionDialogComponent } from './transaction-tracking-action-dialog.component';
 
@@ -26,6 +29,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
     confirmColor: COLORS.WALLA_MAIN,
   };
   const componentInstance: any = {};
+  const MOCK_REQUEST_ID = '1827382738273';
 
   let component: TransactionTrackingActionDialogComponent;
   let fixture: ComponentFixture<TransactionTrackingActionDialogComponent>;
@@ -33,6 +37,8 @@ describe('TransactionTrackingActionDialogComponent', () => {
   let transactionTrackingService: TransactionTrackingService;
   let errorsService: ErrorsService;
   let de: DebugElement;
+  let storeService: TransactionTrackingScreenStoreService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -72,7 +78,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
           useValue: {
             snapshot: {
               paramMap: {
-                get: () => '1234',
+                get: () => MOCK_REQUEST_ID,
               },
             },
           },
@@ -80,7 +86,9 @@ describe('TransactionTrackingActionDialogComponent', () => {
         {
           provide: Router,
           useValue: {
-            url: '/path',
+            get url() {
+              return '/path';
+            },
             navigate() {},
           },
         },
@@ -96,6 +104,8 @@ describe('TransactionTrackingActionDialogComponent', () => {
     modalService = TestBed.inject(NgbModal);
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     errorsService = TestBed.inject(ErrorsService);
+    storeService = TestBed.inject(TransactionTrackingScreenStoreService);
+    router = TestBed.inject(Router);
 
     fixture.detectChanges();
   });
@@ -108,6 +118,8 @@ describe('TransactionTrackingActionDialogComponent', () => {
     let wrapperDialog: DebugElement;
 
     beforeEach(() => {
+      spyOn(storeService, 'refresh');
+      spyOn(router, 'navigate');
       wrapperDialog = de.query(By.css('div'));
     });
 
@@ -142,30 +154,88 @@ describe('TransactionTrackingActionDialogComponent', () => {
           expect(errorsService.i18nError).toHaveBeenCalledTimes(1);
           expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
         });
+
+        it('should NOT refresh the transaction tracking store', () => {
+          expect(storeService.refresh).not.toHaveBeenCalled();
+        });
+
+        it('should stay at the same page', () => {
+          expect(router.navigate).not.toHaveBeenCalled();
+        });
       });
 
       describe('and the request succeed...', () => {
         beforeEach(() => {
           spyOn(transactionTrackingService, 'sendUserAction').and.returnValue(of(null));
-
-          wrapperDialog.nativeElement.click();
         });
 
-        it('should open with the action dialog properties', () => {
-          component['modalRef'] = <any>{
-            componentInstance: componentInstance,
-          };
+        describe('and we are on the TTS instructions page', () => {
+          beforeEach(() => {
+            jest
+              .spyOn(router, 'url', 'get')
+              .mockReturnValue(`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/1234/${TRANSACTION_TRACKING_PATHS.INSTRUCTIONS}`);
 
-          expect(component['modalRef'].componentInstance.properties).toStrictEqual(MOCK_MODAL_PROPERTIES);
+            wrapperDialog.nativeElement.click();
+          });
+
+          it('should open with the action dialog properties', () => {
+            component['modalRef'] = <any>{
+              componentInstance: componentInstance,
+            };
+
+            expect(component['modalRef'].componentInstance.properties).toStrictEqual(MOCK_MODAL_PROPERTIES);
+          });
+
+          it('should send the request user action petition', () => {
+            expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
+            expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(MOCK_USER_ACTION.transactionId, MOCK_USER_ACTION.name);
+          });
+
+          it('should NOT show an error', () => {
+            expect(errorsService.i18nError).not.toHaveBeenCalled();
+          });
+
+          it('should update the transaction tracking store', () => {
+            expect(storeService.refresh).toHaveBeenCalledTimes(1);
+          });
+
+          it('should redirect to the TTS page', () => {
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+          });
         });
 
-        it('should send the request user action petition', () => {
-          expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
-          expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(MOCK_USER_ACTION.transactionId, MOCK_USER_ACTION.name);
-        });
+        describe('and we are NOT on the TTS instructions page', () => {
+          beforeEach(() => {
+            jest.spyOn(router, 'url', 'get').mockReturnValue(`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/1234`);
 
-        it('should NOT show an error', () => {
-          expect(errorsService.i18nError).not.toHaveBeenCalled();
+            wrapperDialog.nativeElement.click();
+          });
+
+          it('should open with the action dialog properties', () => {
+            component['modalRef'] = <any>{
+              componentInstance: componentInstance,
+            };
+
+            expect(component['modalRef'].componentInstance.properties).toStrictEqual(MOCK_MODAL_PROPERTIES);
+          });
+
+          it('should send the request user action petition', () => {
+            expect(transactionTrackingService.sendUserAction).toHaveBeenCalledTimes(1);
+            expect(transactionTrackingService.sendUserAction).toHaveBeenCalledWith(MOCK_USER_ACTION.transactionId, MOCK_USER_ACTION.name);
+          });
+
+          it('should NOT show an error', () => {
+            expect(errorsService.i18nError).not.toHaveBeenCalled();
+          });
+
+          it('should stay at the same page', () => {
+            expect(router.navigate).not.toHaveBeenCalled();
+          });
+
+          it('should update the transaction tracking store', () => {
+            expect(storeService.refresh).toHaveBeenCalledTimes(1);
+          });
         });
       });
     });
@@ -176,6 +246,14 @@ describe('TransactionTrackingActionDialogComponent', () => {
         spyOn(transactionTrackingService, 'sendUserAction');
 
         wrapperDialog.nativeElement.click();
+      });
+
+      it('should NOT refresh the transaction tracking store', () => {
+        expect(storeService.refresh).not.toHaveBeenCalled();
+      });
+
+      it('should stay at the same page', () => {
+        expect(router.navigate).not.toHaveBeenCalled();
       });
 
       it('should open with the action dialog properties', () => {
