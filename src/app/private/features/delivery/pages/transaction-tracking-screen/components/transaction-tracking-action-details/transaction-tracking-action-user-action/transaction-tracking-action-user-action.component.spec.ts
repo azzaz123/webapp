@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -9,6 +11,7 @@ import {
   MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS,
 } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
 import { of, throwError } from 'rxjs';
+import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 import { TransactionTrackingScreenTrackingEventsService } from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingActionUserActionComponent } from './transaction-tracking-action-user-action.component';
 
@@ -21,6 +24,7 @@ describe('TransactionTrackingActionUserActionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [TransactionTrackingActionUserActionComponent],
       providers: [
         {
@@ -39,6 +43,17 @@ describe('TransactionTrackingActionUserActionComponent', () => {
           provide: TransactionTrackingScreenTrackingEventsService,
           useValue: {
             trackClickActionTTS() {},
+          },
+        },
+        TransactionTrackingScreenStoreService,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => '1234',
+              },
+            },
           },
         },
       ],
@@ -109,6 +124,10 @@ describe('TransactionTrackingActionUserActionComponent', () => {
         expect(errorsService.i18nError).toHaveBeenCalledTimes(1);
         expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
       });
+
+      it('should NOT update the transaction tracking store', () => {});
+
+      it('should stay at the same page', () => {});
     });
 
     describe('and the request succeed...', () => {
@@ -130,6 +149,16 @@ describe('TransactionTrackingActionUserActionComponent', () => {
 
       it('should NOT show an error', () => {
         expect(errorsService.i18nError).not.toHaveBeenCalled();
+      });
+
+      it('should update the transaction tracking store', () => {});
+
+      describe('and we are on the TTS instructions page', () => {
+        it('should redirect to the TTS page', () => {});
+      });
+
+      describe('and we are NOT on the TTS instructions page', () => {
+        it('should stay at the same page', () => {});
       });
     });
   });
