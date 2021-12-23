@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { HistoricElement, HistoricElementTransaction } from '@shared/historic-list/interfaces/historic-element.interface';
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { SharedErrorActionService } from '@shared/error-action';
@@ -10,6 +10,7 @@ import { StreamlineCompletedUIService } from '@private/features/delivery/pages/s
 
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { HistoricTransaction } from '@api/core/model';
 
 @Component({
   selector: 'tsl-streamline-completed',
@@ -56,9 +57,8 @@ export class StreamlineCompletedComponent implements OnInit, OnDestroy {
     this.streamlineCompletedUIService.getItems();
   }
 
-  // TODO: Implement redirection to TTS
-  public onItemClick(historicElement: HistoricElementTransaction): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${historicElement.requestId}`;
+  public onItemClick(historicElement: HistoricElement<HistoricTransaction>): void {
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${historicElement.payload.requestId}`;
     this.router.navigate([pathToTransactionTracking]);
   }
 }

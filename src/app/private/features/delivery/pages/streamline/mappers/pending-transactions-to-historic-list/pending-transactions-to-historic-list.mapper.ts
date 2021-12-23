@@ -5,7 +5,7 @@ import { ToDomainMapper } from '@api/core/utils/types';
 import { ongoingTransactionTrackingStatusAsBuyerTranslations } from '@private/features/delivery/translations/ongoing-transaction-tracking-status-as-buyer.translations';
 import { ongoingTransactionTrackingStatusAsSellerTranslations } from '@private/features/delivery/translations/ongoing-transaction-tracking-status-as-seller.translations';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
-import { HistoricElement, HistoricElementTransaction } from '@shared/historic-list/interfaces/historic-element.interface';
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricListHeader } from '@shared/historic-list/interfaces/historic-list-header.interface';
 import { HistoricListSubtitle } from '@shared/historic-list/interfaces/historic-list-subtitle.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
@@ -47,15 +47,14 @@ const mapPendingTransactionToHistoricListSubtitle = (input: PendingTransactionsA
   return result;
 };
 
-const mapPendingTransactionToHistoricElement = (pendingTransaction: PendingTransaction): HistoricElementTransaction => {
-  const { id, item, moneyAmount, requestId } = pendingTransaction;
+const mapPendingTransactionToHistoricElement = (pendingTransaction: PendingTransaction): HistoricElement => {
+  const { id, item, moneyAmount } = pendingTransaction;
   const description = getDescription();
   const subDescription = getSubDescription(pendingTransaction);
   const iconUrl = getIconUrl(pendingTransaction);
 
-  const historicElement: HistoricElementTransaction = {
+  const historicElement: HistoricElement = {
     id,
-    requestId,
     imageUrl: item.imageUrl,
     iconUrl,
     title: item.title,

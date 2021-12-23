@@ -1,6 +1,7 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { MOCK_PENDING_REQUEST } from '@api/fixtures/core/model/delivery/requests.fixtures.spec';
+import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-subdescription-type.enum';
@@ -99,7 +100,6 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
             },
             {
               id: MOCK_PENDING_TRANSACTIONS[0].id,
-              requestId: MOCK_PENDING_TRANSACTIONS[0].requestId,
               imageUrl: MOCK_PENDING_TRANSACTIONS[0].item.imageUrl,
               iconUrl: MOCK_PENDING_TRANSACTIONS[0].seller.imageUrl,
               title: MOCK_PENDING_TRANSACTIONS[0].item.title,
@@ -128,7 +128,6 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
           elements: [
             {
               id: '3b7560cc-b4f8-48bf-ba27-4d070952b3e8',
-              requestId: '3b7560cca',
               imageUrl: MOCK_ITEM.images[0].urls_by_size.original,
               iconUrl: MOCK_USER.image.urls_by_size.original,
               title: MOCK_ITEM.title,
@@ -141,10 +140,10 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
                 type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
               },
               moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 19.75, currency: 'EUR' }),
+              payload: MOCK_HISTORIC_TRANSACTIONS[0],
             },
             {
               id: '001cf831-d040-4e31-b4e7-aa50d2a3cadc',
-              requestId: '001cf831a',
               imageUrl: MOCK_ITEM.images[0].urls_by_size.original,
               iconUrl: MOCK_USER.image.urls_by_size.original,
               title: MOCK_ITEM.title,
@@ -157,6 +156,7 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
                 type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
               },
               moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 12, currency: 'EUR' }),
+              payload: MOCK_HISTORIC_TRANSACTIONS[1],
             },
           ],
         },

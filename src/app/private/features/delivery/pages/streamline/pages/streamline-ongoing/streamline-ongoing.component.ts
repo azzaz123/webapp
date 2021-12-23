@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { HistoricElement, HistoricElementTransaction } from '@shared/historic-list/interfaces/historic-element.interface';
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { SharedErrorActionService } from '@shared/error-action';
@@ -10,6 +10,8 @@ import { StreamlineOngoingUIService } from '@private/features/delivery/pages/str
 
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { PendingTransaction } from '@api/core/model';
+import { Request } from '@api/core/model/delivery';
 
 @Component({
   selector: 'tsl-streamline-ongoing',
@@ -48,13 +50,13 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     this.streamlineOngoingUIService.reset();
   }
 
-  public onItemClick(historicElement: HistoricElement | HistoricElementTransaction): void {
-    const requestId: string = this.isTransaction(historicElement) ? historicElement.requestId : historicElement.id;
+  public onItemClick(historicElement: HistoricElement<PendingTransaction | Request>): void {
+    const requestId: string = this.isPendingTransaction(historicElement) ? historicElement.payload.requestId : historicElement.id;
     const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
     this.router.navigate([pathToTransactionTracking]);
   }
 
-  private isTransaction(input: HistoricElement | HistoricElementTransaction): input is HistoricElementTransaction {
-    return (<HistoricElementTransaction>input).requestId !== undefined;
+  private isPendingTransaction(input: HistoricElement<PendingTransaction | Request>): input is HistoricElement<PendingTransaction> {
+    return (<HistoricElement<PendingTransaction>>input).payload.requestId !== undefined;
   }
 }

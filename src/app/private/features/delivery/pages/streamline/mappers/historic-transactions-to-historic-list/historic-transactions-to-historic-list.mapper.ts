@@ -3,7 +3,7 @@ import { ToDomainMapper } from '@api/core/utils/types';
 import { completedTransactionTrackingStatusAsBuyerTranslations } from '@private/features/delivery/translations/completed-transaction-tracking-status-as-buyer.translations';
 import { completedTransactionTrackingStatusAsSellerTranslations } from '@private/features/delivery/translations/completed-transaction-tracking-status-as-seller.translations';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '@shared/historic-list/enums/historic-element-subdescription-type.enum';
-import { HistoricElementTransaction } from '@shared/historic-list/interfaces/historic-element.interface';
+import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import * as moment from 'moment';
 import { mapCompletedTransactionTrackingStatusToSubDescription } from './completed-transaction-tracking-status-to-subdescription-type.mapper';
@@ -49,22 +49,22 @@ const getMonthFromTransaction = (input: HistoricTransaction): string => {
   return capitalizedFormattedMonth;
 };
 
-const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricElementTransaction => {
+const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricElement<HistoricTransaction> => {
   const { id, item, moneyAmount, requestId } = input;
   const { imageUrl, title } = item;
   const iconUrl = getIconUrlFromHistoricTransaction(input);
   const description = getDescriptionFromHistoricTransaction(input);
   const subDescription = getSubDescriptionFromHistoricTransaction(input);
 
-  const historicElement: HistoricElementTransaction = {
+  const historicElement: HistoricElement<HistoricTransaction> = {
     id,
-    requestId,
     imageUrl,
     iconUrl,
     title,
     description,
     subDescription,
     moneyAmount,
+    payload: input,
   };
 
   return historicElement;

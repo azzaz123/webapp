@@ -1,4 +1,8 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
+import { PendingTransaction } from '@api/core/model';
+import { Request } from '@api/core/model/delivery';
+import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
+import { MOCK_PENDING_REQUEST } from '@api/fixtures/core/model/delivery/requests.fixtures.spec';
 import { environment } from '@environments/environment';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '../interfaces/historic-element.interface';
@@ -83,7 +87,14 @@ export const MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT: HistoricElemen
   },
 };
 
-export const MOCK_HISTORIC_ELEMENT_WITH_ID: HistoricElement = {
+export const MOCK_HISTORIC_ELEMENT_WITH_ID: HistoricElement<PendingTransaction> = {
   ...MOCK_HISTORIC_ELEMENT,
   id: '1337',
+  payload: MOCK_PENDING_TRANSACTIONS[0],
+};
+
+export const MOCK_HISTORIC_ELEMENT_REQUEST_WITH_ID: HistoricElement<Request> = {
+  ...MOCK_HISTORIC_ELEMENT,
+  id: '13333353537',
+  payload: MOCK_PENDING_REQUEST,
 };

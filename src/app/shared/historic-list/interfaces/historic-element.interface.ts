@@ -18,7 +18,3 @@ export interface HistoricElement<T = Object> {
   moneyAmount: Money;
   payload?: T;
 }
-
-export interface HistoricElementTransaction extends HistoricElement {
-  requestId: string;
-}
