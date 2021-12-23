@@ -220,7 +220,7 @@ export class DeeplinkService {
       item: true,
       printableLabel: true,
       unknown: false,
-      userProfile: true,
+      userProfile: false,
       zendeskArticle: true,
       zendeskForm: true,
     };
