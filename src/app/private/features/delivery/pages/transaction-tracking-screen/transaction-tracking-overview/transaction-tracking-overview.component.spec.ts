@@ -13,6 +13,7 @@ import { TransactionTrackingScreenTrackingEventsService } from '@private/feature
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 import { of, throwError } from 'rxjs';
+import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 describe('TransactionTrackingOverviewComponent', () => {
   const MOCK_TRANSACTION_TRACKING_ID = 'Laia';
@@ -26,6 +27,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
   let de: DebugElement;
   let transactionTrackingService: TransactionTrackingService;
+  let transactionTrackingScreenStoreService: TransactionTrackingScreenStoreService;
   let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
   let errorActionService: SharedErrorActionService;
 
@@ -64,6 +66,7 @@ describe('TransactionTrackingOverviewComponent', () => {
           provide: SharedErrorActionService,
           useValue: MockSharedErrorActionService,
         },
+        TransactionTrackingScreenStoreService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -74,6 +77,7 @@ describe('TransactionTrackingOverviewComponent', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
+    transactionTrackingScreenStoreService = TestBed.inject(TransactionTrackingScreenStoreService);
     transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
   });
 
@@ -88,6 +92,18 @@ describe('TransactionTrackingOverviewComponent', () => {
       spyOn(transactionTrackingScreenTrackingEventsService, 'trackViewTTSScreen');
 
       fixture.detectChanges();
+    });
+
+    it('should update the transaction tracking store', () => {
+      transactionTrackingScreenStoreService.transactionTracking$.subscribe((expectedValue: TransactionTracking) => {
+        expect(expectedValue).toStrictEqual(MOCK_TRANSACTION_TRACKING);
+      });
+    });
+
+    it('should update the transaction tracking details store', () => {
+      transactionTrackingScreenStoreService.transactionTrackingDetails$.subscribe((expectedValue: TransactionTrackingDetails) => {
+        expect(expectedValue).toStrictEqual(MOCK_TRANSACTION_TRACKING_DETAILS);
+      });
     });
 
     it('should track the view TTS screen event', () => {
@@ -135,6 +151,12 @@ describe('TransactionTrackingOverviewComponent', () => {
       fixture.detectChanges();
     });
 
+    it('should update the transaction tracking store', () => {
+      transactionTrackingScreenStoreService.transactionTracking$.subscribe((expectedValue: TransactionTracking) => {
+        expect(expectedValue).toStrictEqual(null);
+      });
+    });
+
     it('should NOT render the transaction tracking header ', () => {
       expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeFalsy();
     });
@@ -153,6 +175,12 @@ describe('TransactionTrackingOverviewComponent', () => {
       spyOn(transactionTrackingService, 'getDetails').and.returnValue(of(null));
 
       fixture.detectChanges();
+    });
+
+    it('should update the transaction tracking store', () => {
+      transactionTrackingScreenStoreService.transactionTrackingDetails$.subscribe((expectedValue: TransactionTrackingDetails) => {
+        expect(expectedValue).toStrictEqual(null);
+      });
     });
 
     it('should NOT render the transaction tracking status info ', () => {

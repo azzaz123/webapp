@@ -1,9 +1,8 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
 import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
@@ -36,6 +35,7 @@ import { UserService } from '@core/user/user.service';
 
 import { of, throwError } from 'rxjs';
 import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -64,7 +64,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BypassHTMLModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [BypassHTMLModule, HttpClientTestingModule],
       declarations: [
         ButtonComponent,
         SvgIconComponent,
@@ -123,6 +123,14 @@ describe('TransactionTrackingInstructionsComponent', () => {
             user: {
               webSlug: 'this_is_a_web_slug',
             },
+          },
+        },
+        TransactionTrackingScreenStoreService,
+        {
+          provide: Router,
+          useValue: {
+            url: '/path',
+            navigate() {},
           },
         },
       ],
