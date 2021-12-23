@@ -12,6 +12,7 @@ import {
   TransactionTrackingStatusInfoWrapperModule,
 } from '../components/sections';
 import { TransactionTrackingScreenTrackingEventsService } from '../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 @NgModule({
   declarations: [transactionTrackingOverviewRoutedComponents],
@@ -22,6 +23,11 @@ import { TransactionTrackingScreenTrackingEventsService } from '../services/tran
     TransactionTrackingGeneralInfoModule,
     TransactionTrackingStatusInfoWrapperModule,
   ],
-  providers: [TransactionTrackingService, TransactionTrackingHttpService, TransactionTrackingScreenTrackingEventsService],
+  providers: [
+    TransactionTrackingService,
+    TransactionTrackingHttpService,
+    TransactionTrackingScreenTrackingEventsService,
+    TransactionTrackingScreenStoreService,
+  ],
 })
 export class TransactionTrackingOverviewModule {}
