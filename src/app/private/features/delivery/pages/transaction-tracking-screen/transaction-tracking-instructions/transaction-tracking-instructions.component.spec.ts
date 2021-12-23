@@ -1,9 +1,8 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
 import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
@@ -65,7 +64,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BypassHTMLModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [BypassHTMLModule, HttpClientTestingModule],
       declarations: [
         ButtonComponent,
         SvgIconComponent,
@@ -127,6 +126,13 @@ describe('TransactionTrackingInstructionsComponent', () => {
           },
         },
         TransactionTrackingScreenStoreService,
+        {
+          provide: Router,
+          useValue: {
+            url: '/path',
+            navigate() {},
+          },
+        },
       ],
     }).compileComponents();
   });

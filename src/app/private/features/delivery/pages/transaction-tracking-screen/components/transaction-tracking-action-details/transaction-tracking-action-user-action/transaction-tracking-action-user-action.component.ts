@@ -1,10 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import {
-  TransactionTracking,
-  TransactionTrackingActionUserAction,
-  TransactionTrackingDetails,
-} from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingActionUserAction } from '@api/core/model/delivery/transaction/tracking';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
@@ -12,8 +8,7 @@ import { ActionNameAnalytics } from '@private/features/delivery/pages/transactio
 import { ActivatedRoute, Router } from '@angular/router';
 import { DELIVERY_PATHS, DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
 import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
-import { forkJoin } from 'rxjs';
-import { TRANSACTION_TRACKING_PATHS } from '../../..';
+import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 @Component({

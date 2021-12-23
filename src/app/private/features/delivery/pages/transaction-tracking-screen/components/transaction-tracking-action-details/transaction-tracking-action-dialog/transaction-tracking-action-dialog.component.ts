@@ -10,7 +10,7 @@ import { DELIVERY_PATHS, DELIVERY_PATH_PARAMS } from '@private/features/delivery
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
-import { TRANSACTION_TRACKING_PATHS } from '../../..';
+import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 @Component({

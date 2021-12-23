@@ -1,6 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { TransactionTrackingActionUserAction } from '@api/core/model/delivery/transaction/tracking';
 import { COLORS } from '@core/colors/colors-constants';
@@ -9,9 +10,9 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING_ACTION_DIALOG } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { of, throwError } from 'rxjs';
+import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 import { TransactionTrackingActionDialogComponent } from './transaction-tracking-action-dialog.component';
 
@@ -38,14 +39,16 @@ describe('TransactionTrackingActionDialogComponent', () => {
       declarations: [TransactionTrackingActionDialogComponent],
       providers: [
         {
-          provide: ErrorsService,
-          useClass: MockErrorService,
-        },
-        {
           provide: TransactionTrackingService,
           useValue: {
-            sendUserAction() {},
+            sendUserAction() {
+              return of();
+            },
           },
+        },
+        {
+          provide: ErrorsService,
+          useClass: MockErrorService,
         },
         {
           provide: NgbModal,
@@ -56,6 +59,29 @@ describe('TransactionTrackingActionDialogComponent', () => {
                 result: Promise.resolve(),
               };
             },
+          },
+        },
+        {
+          provide: TransactionTrackingScreenStoreService,
+          useValue: {
+            refresh() {},
+          },
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => '1234',
+              },
+            },
+          },
+        },
+        {
+          provide: Router,
+          useValue: {
+            url: '/path',
+            navigate() {},
           },
         },
       ],
@@ -70,6 +96,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
     modalService = TestBed.inject(NgbModal);
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     errorsService = TestBed.inject(ErrorsService);
+
     fixture.detectChanges();
   });
 

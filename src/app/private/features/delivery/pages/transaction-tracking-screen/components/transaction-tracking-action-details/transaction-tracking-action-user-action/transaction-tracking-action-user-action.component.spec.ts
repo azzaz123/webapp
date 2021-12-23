@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -24,7 +23,6 @@ describe('TransactionTrackingActionUserActionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [TransactionTrackingActionUserActionComponent],
       providers: [
         {
@@ -56,6 +54,13 @@ describe('TransactionTrackingActionUserActionComponent', () => {
             },
           },
         },
+        {
+          provide: Router,
+          useValue: {
+            url: '/path',
+            navigate() {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -67,6 +72,7 @@ describe('TransactionTrackingActionUserActionComponent', () => {
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
     errorsService = TestBed.inject(ErrorsService);
+
     fixture.detectChanges();
   });
 
