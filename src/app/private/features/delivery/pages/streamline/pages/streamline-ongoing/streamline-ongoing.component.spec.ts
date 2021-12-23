@@ -9,8 +9,8 @@ import { HistoricElementComponent } from '@shared/historic-list/components/histo
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { HistoricListModule } from '@shared/historic-list/historic-list.module';
 import {
-  MOCK_HISTORIC_ELEMENT_REQUEST_WITH_ID,
-  MOCK_HISTORIC_ELEMENT_WITH_ID,
+  MOCK_HISTORIC_ELEMENT_WITH_REQUEST,
+  MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION,
 } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import {
   MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS,
@@ -125,9 +125,9 @@ describe('StreamlineOngoingComponent', () => {
     describe('when user clicks on a historic element', () => {
       describe('and the element is a request', () => {
         it('should navigate to the tracking page with the id', () => {
-          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_ID.payload.requestId}`;
+          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION.payload.requestId}`;
 
-          component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_ID);
+          component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION);
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
@@ -136,9 +136,9 @@ describe('StreamlineOngoingComponent', () => {
 
       describe('and the element is a pending transaction', () => {
         it('should navigate to the tracking page with the payload id', () => {
-          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_REQUEST_WITH_ID.id}`;
+          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST.id}`;
 
-          component.onItemClick(MOCK_HISTORIC_ELEMENT_REQUEST_WITH_ID);
+          component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST);
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
