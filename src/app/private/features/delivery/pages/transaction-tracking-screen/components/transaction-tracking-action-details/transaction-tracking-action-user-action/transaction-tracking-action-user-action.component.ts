@@ -42,7 +42,7 @@ export class TransactionTrackingActionUserActionComponent implements OnInit {
     this.trackEvent();
     this.transactionTrackingService.sendUserAction(this.userAction.transactionId, this.userAction.name).subscribe(
       () => {
-        this.updateStore();
+        this.storeService.refresh(this.requestId);
         this.redirectToTTSIfInstructions();
       },
       () => {
@@ -68,14 +68,5 @@ export class TransactionTrackingActionUserActionComponent implements OnInit {
       const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${this.requestId}`;
       this.router.navigate([pathToTransactionTracking]);
     }
-  }
-
-  private updateStore(): void {
-    forkJoin([this.transactionTrackingService.get(this.requestId), this.transactionTrackingService.getDetails(this.requestId)]).subscribe(
-      ([transactionTracking, transactionTrackingDetails]: [TransactionTracking, TransactionTrackingDetails]) => {
-        this.storeService.transactionTracking = transactionTracking;
-        this.storeService.transactionTrackingDetails = transactionTrackingDetails;
-      }
-    );
   }
 }
