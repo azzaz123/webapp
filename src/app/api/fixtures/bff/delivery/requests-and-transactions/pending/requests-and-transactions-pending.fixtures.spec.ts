@@ -24,6 +24,7 @@ export const MOCK_REQUESTS_AND_TRANSACTIONS_PENDING_DTO_RESPONSE: RequestsAndTra
   transactions: [
     {
       id: '81891bfa-9df3-41f9-9411-0cd85d1daf9e',
+      request_id: '81891bfaa',
       item_hash: 'kmzn9dmg4kjn',
       item_cost: { amount: 3, currency: 'EUR' },
       item_name: 'Laia testing beta',

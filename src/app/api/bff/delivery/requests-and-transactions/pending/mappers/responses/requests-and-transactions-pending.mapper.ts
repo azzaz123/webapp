@@ -41,6 +41,7 @@ export const mapRequestsAndTransactionsPendingToPendingTransactionsAndRequests: 
 const mapRawTransactionToPendingTransaction = (rawTransaction: TransactionPendingApi, currentUserId: string) => {
   const {
     id,
+    request_id: requestId,
     item_hash: itemId,
     item_image: itemImageUrl,
     item_name: itemTitle,
@@ -67,6 +68,7 @@ const mapRawTransactionToPendingTransaction = (rawTransaction: TransactionPendin
 
   const mappedTransaction: PendingTransaction = {
     id,
+    requestId,
     item: {
       id: itemId,
       imageUrl: itemImageUrl,

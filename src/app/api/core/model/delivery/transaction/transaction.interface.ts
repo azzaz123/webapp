@@ -14,4 +14,5 @@ export interface Transaction {
     payment: TRANSACTION_PAYMENT_STATUS;
   };
   isCurrentUserTheSeller: boolean;
+  requestId: string;
 }
