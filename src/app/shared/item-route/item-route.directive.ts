@@ -13,13 +13,11 @@ export class ItemRouteDirective {
 
   constructor(private router: Router, private standaloneService: StandaloneService, @Inject(SITE_URL) private siteUrl: string) {}
 
-  @HostListener('click') onClick() {
-    this.standaloneService.standalone$.subscribe((standaloneMode) => {
-      if (standaloneMode) {
-        this.router.navigate([`${PUBLIC_PATHS.ITEM_DETAIL}/${this.itemUUID}`]);
-      } else {
-        window.open(`${this.siteUrl}${PUBLIC_PATHS.ITEM_DETAIL}/${this.itemSlug}`);
-      }
+  @HostListener('click') onClick(): void {
+    this.standaloneService.standalone$.subscribe((isStandalone: boolean) => {
+      isStandalone
+        ? this.router.navigate([`${PUBLIC_PATHS.ITEM_DETAIL}/${this.itemUUID}`])
+        : window.open(`${this.siteUrl}${PUBLIC_PATHS.ITEM_DETAIL}/${this.itemSlug}`);
     });
   }
 }
