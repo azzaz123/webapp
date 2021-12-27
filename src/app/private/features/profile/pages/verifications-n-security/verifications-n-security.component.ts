@@ -1,16 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
-import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
-import { User } from '@core/user/user';
-import { UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
-import { format, parsePhoneNumber } from 'libphonenumber-js';
-import { Observable } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { EmailVerificationModalComponent } from '../../modal/email-verification/modals/email-verification-modal/email-verification-modal.component';
 import { PhoneVerificationModalComponent } from '../../modal/phone-verification/modals/phone-verification-modal/phone-verification-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
+import { VerificationsNSecurityStore } from './services/verifications-n-security-store.service';
 
 export enum VERIFICATIONS_N_SECURITY_TYPES {
   EMAIL,
@@ -27,10 +23,6 @@ type VerificationModalComponent =
   styleUrls: ['./verifications-n-security.component.scss'],
 })
 export class VerificationsNSecurityComponent implements OnInit {
-  public user: User;
-  public userPhone: string;
-  public userVerifications$: Observable<UserVerifications>;
-
   public readonly VERIFICATIONS_N_SECURITY_TYPES = VERIFICATIONS_N_SECURITY_TYPES;
   public readonly titleVerifications = {
     [VERIFICATIONS_N_SECURITY_TYPES.EMAIL]: $localize`:@@verification_and_security_all_users_verifications_email_label:Email`,
@@ -42,33 +34,31 @@ export class VerificationsNSecurityComponent implements OnInit {
   };
 
   constructor(
-    private userService: UserService,
-    private userVerificationsService: UserVerificationsService,
     private modalService: NgbModal,
-    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService
+    private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService,
+    public verificationsNSecurityStore: VerificationsNSecurityStore
   ) {}
 
   ngOnInit(): void {
-    this.user = this.userService.user;
-
-    this.userVerifications$ = this.userVerificationsService.userVerifications$.pipe(
-      take(1),
-      tap((userVerifications: UserVerifications) => {
-        this.subscribeUserVerifications(userVerifications);
-      })
-    );
+    this.verificationsNSecurityStore.initializeUserVerifications();
+    this.verificationsNSecurityStore.userVerifications$
+      .pipe(filter((userVerifications: UserVerifications) => !!userVerifications))
+      .subscribe((userVerifications: UserVerifications) => {
+        this.verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView(userVerifications);
+      });
   }
 
   public onClickVerifyEmail(isVerifiedEmail: boolean): void {
     let modalRef: NgbModalRef;
     let modal: VerificationModalComponent = this.getEmailModal(isVerifiedEmail);
+    const email: string = '';
 
     modalRef = this.openModal(modal);
 
     if (isVerifiedEmail) {
-      modalRef.componentInstance.currentEmail = this.user.email;
+      modalRef.componentInstance.currentEmail = email;
     } else {
-      modalRef.componentInstance.email = this.user.email;
+      modalRef.componentInstance.email = email;
 
       this.verificationsNSecurityTrackingEventsService.trackClickVerificationOptionEvent(VERIFICATION_METHOD.EMAIL);
     }
@@ -88,14 +78,5 @@ export class VerificationsNSecurityComponent implements OnInit {
     return this.modalService.open(modal, {
       windowClass: 'modal-standard',
     });
-  }
-
-  private getUserPhone(isVerifiedPhone: boolean): string {
-    return isVerifiedPhone ? parsePhoneNumber(this.user.phone).format('INTERNATIONAL') : '';
-  }
-
-  private subscribeUserVerifications(userVerifications: UserVerifications): void {
-    this.userPhone = this.getUserPhone(userVerifications.phone);
-    this.verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView(userVerifications);
   }
 }
