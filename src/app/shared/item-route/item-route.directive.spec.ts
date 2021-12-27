@@ -69,7 +69,7 @@ describe('ItemRouteDirective', () => {
   });
 
   describe('when a click is triggered on an item', () => {
-    describe('and the app is on the standalone mode', () => {
+    describe('and the app is on standalone mode', () => {
       beforeEach(() => {
         standaloneSubject.next(true);
         fixture.detectChanges();
@@ -85,7 +85,7 @@ describe('ItemRouteDirective', () => {
         expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
       });
     });
-    describe('and the app is NOT on the standalone mode', () => {
+    describe('and the app is NOT on standalone mode', () => {
       beforeEach(() => {
         standaloneSubject.next(false);
         fixture.detectChanges();

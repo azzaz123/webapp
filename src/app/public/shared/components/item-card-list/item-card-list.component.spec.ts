@@ -6,7 +6,6 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
@@ -26,6 +25,8 @@ import { ShowSlotPipe } from './pipes/show-slot.pipe';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'tsl-item-card-list-wrapper',
@@ -63,6 +64,10 @@ describe('ItemCardListComponent', () => {
   let checkSessionService: CheckSessionService;
   let itemCardService: ItemCardService;
   let permissionService: NgxPermissionsService;
+  let standaloneService: StandaloneService;
+  let itemCard: DebugElement;
+
+  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -82,6 +87,12 @@ describe('ItemCardListComponent', () => {
           provide: AccessTokenService,
           useValue: {
             accessToken: 'ACCESS_TOKEN',
+          },
+        },
+        {
+          provide: StandaloneService,
+          useValue: {
+            standalone$: standaloneSubject.asObservable(),
           },
         },
         {
@@ -120,31 +131,21 @@ describe('ItemCardListComponent', () => {
     router = TestBed.inject(Router);
     permissionService = TestBed.inject(NgxPermissionsService);
     fixture.detectChanges();
+    itemCard = fixture.debugElement.query(By.css('.ItemCardList__item'));
   });
 
   describe('when component inits', () => {
-    let itemCard: DebugElement;
-
-    beforeEach(() => {
-      itemCard = fixture.debugElement.query(By.css('.ItemCardList__item'));
-    });
-
     it('should show as many cards as given', () => {
       expect(el.querySelectorAll(cardSelector).length).toEqual(component.items.length);
     });
 
-    it('should render item cards with valid URLs', () => {
-      const expectedEnvironmentURL = MOCK_SITE_URL;
-
-      expect(itemCard.attributes.href).toEqual(`${expectedEnvironmentURL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_CARD.webSlug}`);
+    it('should render item cards with valid item attributes', () => {
+      expect(itemCard.attributes['ng-reflect-item-slug']).toEqual(`${MOCK_ITEM_CARD.webSlug}`);
+      expect(itemCard.attributes['ng-reflect-item-u-u-i-d']).toEqual(`${MOCK_ITEM_CARD.id}`);
     });
 
     it('should render item cards with valid titles', () => {
       expect(itemCard.attributes.title).toEqual(MOCK_ITEM.title);
-    });
-
-    it('should open items in a new tab', () => {
-      expect(itemCard.attributes.target).toEqual('_blank');
     });
   });
 
@@ -307,6 +308,39 @@ describe('ItemCardListComponent', () => {
         const regularItemCardPlaceholders = fixture.debugElement.queryAll(By.css('tsl-item-card-placeholder'));
 
         expect(regularItemCardPlaceholders.length).toBe(component.placeholderCards);
+      });
+    });
+  });
+
+  describe('when a click is triggered on an item card', () => {
+    describe('and the app is on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(true);
+        fixture.detectChanges();
+        spyOn(router, 'navigate');
+      });
+      it('should navigate to the item without opening a new tab', () => {
+        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_CARD.id}`;
+
+        itemCard.nativeElement.click();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
+    });
+    describe('and the app is NOT on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(false);
+        fixture.detectChanges();
+        spyOn(window, 'open');
+      });
+      it('should navigate to the item in a new tab', () => {
+        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_CARD.webSlug}`;
+
+        itemCard.nativeElement.click();
+
+        expect(window.open).toHaveBeenCalledTimes(1);
+        expect(window.open).toHaveBeenCalledWith(expectedUrl);
       });
     });
   });
