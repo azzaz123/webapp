@@ -51,7 +51,7 @@ export class VerificationsNSecurityComponent implements OnInit {
   public onClickVerifyEmail(isVerifiedEmail: boolean): void {
     let modalRef: NgbModalRef;
     let modal: VerificationModalComponent = this.getEmailModal(isVerifiedEmail);
-    const email: string = '';
+    const email: string = this.verificationsNSecurityStore.userInformation.email;
 
     modalRef = this.openModal(modal);
 
