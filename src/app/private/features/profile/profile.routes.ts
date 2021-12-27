@@ -40,7 +40,6 @@ const routes: Route[] = [
       {
         path: PROFILE_PATHS.VERIFICATIONS,
         loadChildren: () => VerificationsNScurityModule,
-        canLoad: [DevelopmentGuard],
       },
       {
         path: PRO_PATHS.SUBSCRIPTIONS,
