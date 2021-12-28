@@ -27,7 +27,7 @@
           (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
           (clear)="handleClear()">
          <div class="MultiSelectFilter__search" *ngIf="config.isSearchable">
-          <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder">
+          <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder" [(ngModel)]="searchText" debounce-keyup (debouncedKeyup)="search()">
          </div>
 
           <div [class.MultiSelectFilter__bubble]="variant | isBubble"   
@@ -73,9 +73,8 @@
         (clear)="handleClear()">
 
         <div class="MultiSelectFilter__search" *ngIf="config.isSearchable">
-          <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder">
+          <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder" [(ngModel)]="searchText" debounce-keyup (debouncedKeyup)="search()">
          </div>
-
 
          <div [class.MultiSelectFilter__bubble]="variant | isBubble"   
             [class.MultiSelectFilter__bubble--searchable]="config.isSearchable" 
@@ -120,11 +119,11 @@
       <div [class.MultiSelectFilter__bubble]="variant | isBubble">
 
         <div class="MultiSelectFilter__search MultiSelectFilter__search--drawer" *ngIf="config.isSearchable">
-          <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder">
+          <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder" [(ngModel)]="searchText" debounce-keyup (debouncedKeyup)="search()">
          </div>
 
 
-        <form [formGroup]="formGroup" class="MultiSelectFilter__form" [class.MultiSelectFilter__form--searchable]="config.isSearchable"  scroll (scrolledToBottom)="config.isSearchable ? scrolledToBottom() : null">
+        <form [formGroup]="formGroup" class="MultiSelectFilter__form" [class.MultiSelectFilter__form--searchable]="config.isSearchable" scroll (scrolledToBottom)="config.isSearchable ? scrolledToBottom() : null">
           <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
         </form>
       </div>

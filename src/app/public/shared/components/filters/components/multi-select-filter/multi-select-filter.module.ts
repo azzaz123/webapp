@@ -5,15 +5,17 @@ import { MultiSelectFilterComponent } from './multi-select-filter.component';
 import { AbstractFilterModule } from '../abstract-filter/abstract-filter.module';
 import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-select-filter.module';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { ScrollModule } from '@shared/scroll/scroll.module';
+import { DebounceKeyupModule } from '@shared/debounce-keyup/debounce-keyup.module';
 
 @NgModule({
   declarations: [MultiSelectFilterComponent],
   exports: [MultiSelectFilterComponent],
   imports: [
     CommonModule,
+    FormsModule,
     FilterOptionServiceModule,
     AbstractFilterModule,
     AbstractSelectFilterModule,
@@ -21,6 +23,7 @@ import { ScrollModule } from '@shared/scroll/scroll.module';
     ReactiveFormsModule,
     MultiSelectFormModule,
     ScrollModule,
+    DebounceKeyupModule,
   ],
 })
 export class MultiSelectFilterModule {}

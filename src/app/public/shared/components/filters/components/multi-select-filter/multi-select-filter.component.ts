@@ -48,6 +48,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   public readonly MULTISELECT_FILTER_BUBBLE_VARIANT = MULTISELECT_FILTER_BUBBLE_VARIANT;
 
+  public searchText: string;
   private offset = '0';
 
   public constructor(private optionService: FilterOptionService) {
@@ -119,6 +120,9 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   public filterTemplateOpenStateChange($event: boolean): void {
     if (!$event) {
       this.restartMultiselectNavigation();
+      if (this.config.isSearchable) {
+        this.restartSearch();
+      }
     }
     this.openStateChange.emit($event);
   }
@@ -129,9 +133,14 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     }
   }
 
+  public search(): void {
+    this.offset = '0';
+    this.getOptions();
+  }
+
   private getOptions(): void {
     this.optionService
-      .getOptions(this.config.id, { text: '' }, { offset: parseInt(this.offset) })
+      .getOptions(this.config.id, { text: this.searchText }, { offset: parseInt(this.offset) })
       .pipe(take(1))
       .subscribe(({ list, paginationParameter }) => {
         const pagination = new URLSearchParams(paginationParameter);
@@ -145,6 +154,12 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
         this.updateLabel();
         this.offset = pagination.get('start');
       });
+  }
+
+  private restartSearch(): void {
+    this.searchText = '';
+    this.offset = '0';
+    this.getOptions();
   }
 
   private restartMultiselectNavigation(): void {
