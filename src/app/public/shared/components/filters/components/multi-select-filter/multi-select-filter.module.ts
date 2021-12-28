@@ -7,6 +7,7 @@ import { AbstractSelectFilterModule } from '../abstract-select-filter/abstract-s
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
+import { ScrollModule } from '@shared/scroll/scroll.module';
 
 @NgModule({
   declarations: [MultiSelectFilterComponent],
@@ -19,6 +20,7 @@ import { MultiSelectFormModule } from '@shared/form/components/multi-select-form
     SelectFormModule,
     ReactiveFormsModule,
     MultiSelectFormModule,
+    ScrollModule,
   ],
 })
 export class MultiSelectFilterModule {}

@@ -1,5 +1,9 @@
 @import '~style/common';
 
+$searchable-title-section-height: 70px;
+$searchable-input-section-height: 74px;
+$bubble-content-max-height: 285px;
+
 .MultiSelectFilter {
   &--bubble {
     display: flex;
@@ -9,11 +13,48 @@
   &__bubble {
     margin-left: -24px;
     margin-right: -24px;
+    max-height: $bubble-content-max-height + $searchable-input-section-height;
+    overflow: auto;
+
+    &--searchable {
+      max-height: $bubble-content-max-height;
+    }
   }
 
   &__form {
     @include media-breakpoint-up(md) {
       max-height: 325px;
+    }
+
+    &--searchable {
+      max-height: calc(100vh - #{$searchable-title-section-height} - #{$searchable-input-section-height});
+      overflow: auto;
+    }
+  }
+
+  &__search {
+    margin-left: -24px;
+    margin-right: -24px;
+    padding: $spacer;
+
+    &--drawer {
+      margin: 0;
+    }
+
+    &__input {
+      background-image: url('/assets/icons/glass_icon.svg');
+      background-position-x: $spacer * 0.5;
+      background-position-y: center;
+      background-repeat: no-repeat;
+      background-size: $spacer * 1.5;
+      border-radius: 6px;
+      border: 1px solid $blue-grey-4;
+      padding: $spacer * 0.5 $spacer $spacer * 0.5 ($spacer + $spacer * 1.5);
+      width: 100%;
+
+      &:focus {
+        border-color: $walla-main;
+      }
     }
   }
 

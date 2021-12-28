@@ -16,8 +16,7 @@
         (openStateChange)="filterTemplateOpenStateChange($event)"
         (cancel)="handleCancel()"
         class="MultiSelectFilter__template"
-        [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
-        (scrolledToBottom)="scrolledToBottom()">
+        [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async">
         <tsl-drawer-placeholder-template
           #selectFilterTemplateComponent
           [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
@@ -26,9 +25,14 @@
           [contentTitle]="contentTitle"
           [isClearable]="hasValue$ | async"
           (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
-          (clear)="handleClear()"
-          (scrolledToBottom)="scrolledToBottom()">
-          <div [class.MultiSelectFilter__bubble]="variant | isBubble">
+          (clear)="handleClear()">
+         <div class="MultiSelectFilter__search" *ngIf="config.isSearchable">
+          <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder">
+         </div>
+
+          <div [class.MultiSelectFilter__bubble]="variant | isBubble"   
+                [class.MultiSelectFilter__bubble--searchable]="config.isSearchable" 
+                scroll (scrolledToBottom)="scrolledToBottom()">
             <form [formGroup]="formGroup" class="MultiSelectFilter__form">
               <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options" ></tsl-multi-select-form>
             </form>
@@ -38,42 +42,6 @@
     </ng-container>
   </ng-container>
 
-  <ng-template #isDrawer>
-    <tsl-filter-template
-      #filterTemplateComponent
-      [hasApply]="true"
-      [isBubble]="variant | isBubble"
-      [isDropdown]="true"
-      [isClearable]="true"
-      [title]="config.title"
-      [icon]="config.icon"
-      [label]="label$ | async"
-      [hasValue]="hasValue$ | async"
-      (apply)="handleApply()"
-      (clear)="handleClear()"
-      (openStateChange)="filterTemplateOpenStateChange($event)"
-      (cancel)="handleCancel()"
-      class="MultiSelectFilter__template"
-      [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
-      (scrolledToBottom)="scrolledToBottom()">
-      <tsl-drawer-placeholder-template
-        #selectFilterTemplateComponent
-        [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
-        [placeholderLabel]="label$ | async"
-        [placeholderIcon]="placeholderIcon$ | async"
-        [contentTitle]="contentTitle"
-        [isClearable]="hasValue$ | async"
-        (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
-        (clear)="handleClear()" 
-        (scrolledToBottom)="scrolledToBottom()">
-        <div [class.MultiSelectFilter__bubble]="variant | isBubble">
-          <form [formGroup]="formGroup" class="MultiSelectFilter__form">
-            <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
-          </form>
-        </div>
-      </tsl-drawer-placeholder-template>
-    </tsl-filter-template>
-  </ng-template>
 
   <ng-template #multiBubble>
     <tsl-filter-template
@@ -92,9 +60,8 @@
       (openStateChange)="filterTemplateOpenStateChange($event)"
       (cancel)="handleCancel()"
       class="MultiSelectFilter__template"
-      [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async"
+      [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async">
 
-      (scrolledToBottom)="scrolledToBottom()">
       <tsl-drawer-placeholder-template
         #selectFilterTemplateComponent
         [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
@@ -103,9 +70,16 @@
         [contentTitle]="contentTitle"
         [isClearable]="hasValue$ | async"
         (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
-        (clear)="handleClear()"
-        (scrolledToBottom)="scrolledToBottom()">
-        <div [class.MultiSelectFilter__bubble]="variant | isBubble">
+        (clear)="handleClear()">
+
+        <div class="MultiSelectFilter__search" *ngIf="config.isSearchable">
+          <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder">
+         </div>
+
+
+         <div [class.MultiSelectFilter__bubble]="variant | isBubble"   
+            [class.MultiSelectFilter__bubble--searchable]="config.isSearchable" 
+            scroll (scrolledToBottom)="scrolledToBottom()">
           <form [formGroup]="formGroup" class="MultiSelectFilter__form">
             <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
           </form>
@@ -114,3 +88,49 @@
     </tsl-filter-template>
   </ng-template>
 </div>
+
+<ng-template #isDrawer>
+  ISDRAWER
+  <tsl-filter-template
+    #filterTemplateComponent
+    [hasApply]="true"
+    [isBubble]="variant | isBubble"
+    [isDropdown]="true"
+    [isClearable]="true"
+    [title]="config.title"
+    [icon]="config.icon"
+    [label]="label$ | async"
+    [hasValue]="hasValue$ | async"
+    (apply)="handleApply()"
+    (clear)="handleClear()"
+    (openStateChange)="filterTemplateOpenStateChange($event)"
+    (cancel)="handleCancel()"
+    class="MultiSelectFilter__template"
+    [class.MultiSelectFilter__template--hidden-title]="multiselectForm.shownChildrenOptionId$ | async">
+    
+    <tsl-drawer-placeholder-template
+      #selectFilterTemplateComponent
+      [hasContentPlaceholder]="!(variant | isBubble) && config.hasContentPlaceholder"
+      [placeholderLabel]="label$ | async"
+      [placeholderIcon]="placeholderIcon$ | async"
+      [contentTitle]="contentTitle"
+      [isClearable]="hasValue$ | async"
+      (placeholderOpenStateChange)="placeholderOpenStateChange($event); filterTemplateOpenStateChange($event)"
+      (clear)="handleClear()"
+      (scrolledToBottom)="!config.isSearchable ? scrolledToBottom() : null">
+      <div [class.MultiSelectFilter__bubble]="variant | isBubble">
+
+        IS DRAWER
+
+        <div class="MultiSelectFilter__search MultiSelectFilter__search--drawer" *ngIf="config.isSearchable">
+          <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder">
+         </div>
+
+
+        <form [formGroup]="formGroup" class="MultiSelectFilter__form" [class.MultiSelectFilter__form--searchable]="config.isSearchable"  scroll (scrolledToBottom)="config.isSearchable ? scrolledToBottom() : null">
+          <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
+        </form>
+      </div>
+    </tsl-drawer-placeholder-template>
+  </tsl-filter-template>
+</ng-template>
