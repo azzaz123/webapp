@@ -10,7 +10,7 @@ const environmentLocal: Environment = {
   protocol: 'https://',
   baseUrl: `https://apigw.dock${dockNum}.devel.wallapop.com/`,
   xmppDomain: `dock${dockNum}.wallapop.com`,
-  wsUrl: `wss://mongooseimprotool-dock${dockNum}.wallapop.com:5282/ws-xmpp`,
+  wsUrl: `wss://dock${dockNum}.wallapop.com:5282/ws-xmpp`,
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
   cookieSuffix: 'Local',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents',
