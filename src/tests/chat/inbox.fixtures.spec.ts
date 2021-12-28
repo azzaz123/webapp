@@ -9,7 +9,7 @@ import {
   MessageType,
 } from '@private/features/chat/core/model';
 import { CATEGORY_IDS } from '@core/category/category-ids';
-import { ITEM_ID, MOCK_ITEM } from '../item.fixtures.spec';
+import { ITEM_ID, MOCK_ITEM, ITEM_WEB_SLUG } from '@fixtures/item.fixtures.spec';
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { OTHER_USER_ID, USER_ID } from '../user.fixtures.spec';
 
@@ -220,7 +220,7 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     { amount: 100, currency: '€' },
     'Some item',
     null,
-    null,
+    ITEM_WEB_SLUG,
     InboxItemStatus.PUBLISHED,
     false,
     CATEGORY_IDS.CELL_PHONES_ACCESSORIES
