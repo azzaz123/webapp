@@ -108,6 +108,11 @@ Default.args = {
   config: conditionConfig,
 };
 
+export const DefaultSearchable = Template.bind({});
+DefaultSearchable.args = {
+  config: { ...conditionConfig, isSearchable: true, searchPlaceholder: 'Search placeholder' },
+};
+
 export const WithDefaultValue = Template.bind({});
 WithDefaultValue.args = {
   config: conditionConfig,
@@ -133,6 +138,17 @@ WithNestedOptionsAndDefaultValue.args = {
 export const SingleBubble = Template.bind({});
 SingleBubble.args = {
   config: { ...conditionConfig, bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE, singleBubbleValueLabel: 'conditions' },
+};
+
+export const SingleBubbleSearchable = Template.bind({});
+SingleBubbleSearchable.args = {
+  config: {
+    ...conditionConfig,
+    bubbleVariant: MULTISELECT_FILTER_BUBBLE_VARIANT.SINGLE,
+    singleBubbleValueLabel: 'conditions',
+    isSearchable: true,
+    searchPlaceholder: 'Search placeholder',
+  },
 };
 
 export const SingleBubbleWithNestedOptions = Template.bind({});
