@@ -6,7 +6,6 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { ProfileInfoComponent } from './pages/profile-info/profile-info.component';
 import { ProfileComponent } from './pages/profile.component';
 import { PRO_PATHS } from '../pro/pro-routing-constants';
-import { DevelopmentGuard } from '@core/user/development.guard';
 import { VerificationsNScurityModule } from './pages/verifications-n-security/verifications-n-securty.module';
 import { PROFILE_PATHS } from './profile-routing-constants';
 import { AccountModule } from './pages/account/account.module';
