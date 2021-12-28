@@ -53,12 +53,6 @@ describe('ItemStatsRowComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set link', () => {
-      const element = fixture.debugElement.query(By.css('.image'));
-
-      expect(element.attributes.href).toBe(MOCK_SITE_URL + 'item/toyota-yaris-1-3-99cv-500008657');
-    });
-
     it('should call getStatistics and set it', () => {
       spyOn(itemStatsService, 'getStatistics').and.callThrough();
 

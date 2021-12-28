@@ -3,8 +3,9 @@
     <div class="review-image">
       <ng-container *ngIf="review.item?.image; else categoryIcon">
         <a
-          [href]="review.item?.webSlug | itemDetailRoute"
-          target="_blank"
+        [tslItemRoute]
+        [itemSlug]= 'review.item.webSlug'
+        [itemUUID]='review.item.id'
           tslsanitizedBackground="{{ review.item?.image.small }}"
           [fallback]="fallback" class="image"
         ></a>
@@ -28,7 +29,10 @@
       <span *ngIf="review.isBought">{{ reviewItemCopies.boughtCopy }}:</span>
     </div>
     <div class="review-title">
-      <a *ngIf="review.item?.id" [href]="review.item?.webSlug | itemDetailRoute" target="_blank"> {{ review.item.title }} </a>
+      <a *ngIf="review.item?.id"  
+      [tslItemRoute]
+      [itemSlug]= 'review.item.webSlug'
+      [itemUUID]='review.item.id'> {{ review.item.title }}</a>
       <span *ngIf="!review.item?.id && category?.name as categoryName">
         {{ categoryName }}
       </span>

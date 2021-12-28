@@ -91,16 +91,6 @@ describe('ItemCardFavouriteComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('goToItemDetail', () => {
-    it('should change window url', () => {
-      spyOn(window, 'open');
-      const MOCK_ITEM_URL: string = MOCK_SITE_URL + 'item/' + MOCK_ITEM.webSlug;
-      const element = fixture.debugElement.query(By.css('a'));
-
-      expect(element.attributes.href).toEqual(MOCK_ITEM_URL);
-    });
-  });
-
   describe('removeFavorite', () => {
     beforeEach(() => {
       spyOn(component.onFavoriteChange, 'emit');

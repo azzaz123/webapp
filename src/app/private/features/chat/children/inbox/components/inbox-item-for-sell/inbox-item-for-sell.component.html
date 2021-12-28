@@ -1,5 +1,7 @@
-<a class="card" [href]="user?.sellingItem.webSlug | itemDetailRoute"
-   target="_blank" *ngIf="user?.sellingItem">
+<a class="card" [tslItemRoute]
+[itemSlug]= 'user?.sellingItem.webSlug'
+[itemUUID]='user?.sellingItem.id' 
+*ngIf="user?.sellingItem">
   <div class="card-block">
     <tsl-item-avatar class="pull-left" [item]="user?.sellingItem" fallbackLight="true"></tsl-item-avatar>
     <div class="item-details-wrap">
