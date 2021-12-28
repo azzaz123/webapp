@@ -90,7 +90,6 @@
 </div>
 
 <ng-template #isDrawer>
-  ISDRAWER
   <tsl-filter-template
     #filterTemplateComponent
     [hasApply]="true"
@@ -119,8 +118,6 @@
       (clear)="handleClear()"
       (scrolledToBottom)="!config.isSearchable ? scrolledToBottom() : null">
       <div [class.MultiSelectFilter__bubble]="variant | isBubble">
-
-        IS DRAWER
 
         <div class="MultiSelectFilter__search MultiSelectFilter__search--drawer" *ngIf="config.isSearchable">
           <input class="MultiSelectFilter__search__input" type="text" [placeholder]="config.searchPlaceholder">
