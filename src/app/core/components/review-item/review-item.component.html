@@ -32,7 +32,7 @@
       <a *ngIf="review.item?.id"  
       [tslItemRoute]
       [itemSlug]= 'review.item.webSlug'
-      [itemUUID]='review.item.id'> {{ review.item.title }}</a>
+      [itemUUID]='review.item.id' class="review-title-item"> {{ review.item.title }}</a>
       <span *ngIf="!review.item?.id && category?.name as categoryName">
         {{ categoryName }}
       </span>

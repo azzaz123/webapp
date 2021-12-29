@@ -1,7 +1,8 @@
-import { of } from 'rxjs';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { of, BehaviorSubject } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ItemCardFavouriteComponent } from './item-card-favourite.component';
 import { ItemService } from '@core/item/item.service';
@@ -17,15 +18,20 @@ import { FavouritesListTrackingEventsService } from '../../services/favourites-l
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@core/core.module';
 import { MARKET_PROVIDER } from '@configs/market.config';
+import { Router } from '@angular/router';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
+import { SharedModule } from '@shared/shared.module';
 
 describe('ItemCardFavouriteComponent', () => {
   let component: ItemCardFavouriteComponent;
   let fixture: ComponentFixture<ItemCardFavouriteComponent>;
   let element: HTMLElement;
-
   let itemService: ItemService;
   let modalService: NgbModal;
   let favouritesListTrackingEventsService: FavouritesListTrackingEventsService;
+  let router: Router;
+
+  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   const modalRef: any = {
     result: Promise.resolve({
@@ -39,11 +45,23 @@ describe('ItemCardFavouriteComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, CoreModule],
-        declarations: [ItemCardFavouriteComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
+        imports: [HttpClientTestingModule, CoreModule, SharedModule],
+        declarations: [ItemCardFavouriteComponent, CustomCurrencyPipe],
         providers: [
           DecimalPipe,
           I18nService,
+          {
+            provide: StandaloneService,
+            useValue: {
+              standalone$: standaloneSubject.asObservable(),
+            },
+          },
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
           {
             provide: ItemService,
             useValue: {
@@ -89,6 +107,7 @@ describe('ItemCardFavouriteComponent', () => {
     modalService = TestBed.inject(NgbModal);
     favouritesListTrackingEventsService = TestBed.inject(FavouritesListTrackingEventsService);
     fixture.detectChanges();
+    router = TestBed.inject(Router);
   });
 
   describe('removeFavorite', () => {
@@ -131,5 +150,40 @@ describe('ItemCardFavouriteComponent', () => {
       expect(favouritesListTrackingEventsService.trackUnfavouriteItemEvent).toHaveBeenCalledTimes(1);
       expect(favouritesListTrackingEventsService.trackUnfavouriteItemEvent).toHaveBeenCalledWith(component.item);
     }));
+  });
+
+  describe('when a click is triggered on a favorite item card', () => {
+    describe('and the app is on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(true);
+        fixture.detectChanges();
+        spyOn(router, 'navigate');
+      });
+      it('should navigate to the favorite item without opening a new tab', () => {
+        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`;
+        const itemCard = fixture.debugElement.query(By.css('a')).nativeElement;
+
+        itemCard.click();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
+    });
+    describe('and the app is NOT on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(false);
+        fixture.detectChanges();
+        spyOn(window, 'open');
+      });
+      it('should navigate to the favorite item in a new tab', () => {
+        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.webSlug}`;
+        const itemCard = fixture.debugElement.query(By.css('a')).nativeElement;
+
+        itemCard.click();
+
+        expect(window.open).toHaveBeenCalledTimes(1);
+        expect(window.open).toHaveBeenCalledWith(expectedUrl);
+      });
+    });
   });
 });
