@@ -1,19 +1,27 @@
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ItemChangeEvent } from '@private/features/catalog/core/item-change.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
-import { getMockItemWithPurchases, ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { EventService } from '../../../core/event/event.service';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { Item } from '../../../core/item/item';
-import { ItemService } from '../../../core/item/item.service';
-import { CustomCurrencyPipe, ItemDetailRoutePipe } from '../../pipes';
+import { BehaviorSubject, of } from 'rxjs';
+import { getMockItemWithPurchases, ITEM_ID, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { Item } from '@core/item/item';
+import { ItemService } from '@core/item/item.service';
+import { CustomCurrencyPipe } from '../../pipes';
 import { CatalogCardComponent } from './catalog-card.component';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { SharedModule } from '@shared/shared.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CoreModule } from '@core/core.module';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
+import { Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
@@ -28,14 +36,23 @@ describe('CatalogCardComponent', () => {
     price: null,
     item: null,
   };
+  let router: Router;
+  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CatalogCardComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
+        imports: [HttpClientTestingModule, RouterTestingModule, SharedModule, CoreModule],
+        declarations: [CatalogCardComponent, CustomCurrencyPipe],
         providers: [
           DecimalPipe,
           I18nService,
+          {
+            provide: StandaloneService,
+            useValue: {
+              standalone$: standaloneSubject.asObservable(),
+            },
+          },
           {
             provide: ItemService,
             useValue: {
@@ -91,6 +108,7 @@ describe('CatalogCardComponent', () => {
     errorsService = TestBed.inject(ErrorsService);
     i18nService = TestBed.inject(I18nService);
     eventService = TestBed.inject(EventService);
+    router = TestBed.inject(Router);
   });
 
   describe('select', () => {
@@ -218,6 +236,73 @@ describe('CatalogCardComponent', () => {
 
       expect(i18nService.translate).toHaveBeenCalledWith(component.item.purchases.bump_type);
       expect(component.bumpName).toBe('City Bump');
+    });
+  });
+
+  describe('when a click is triggered on an item image', () => {
+    describe('and the app is on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(true);
+        spyOn(router, 'navigate');
+      });
+      it('should navigate to the item without opening a new tab', () => {
+        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`;
+        const itemImage = fixture.debugElement.query(By.css('.image')).nativeElement;
+
+        itemImage.click();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
+    });
+    describe('and the app is NOT on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(false);
+        spyOn(window, 'open');
+      });
+      it('should navigate to the item in a new tab', () => {
+        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.webSlug}`;
+        const itemImage = fixture.debugElement.query(By.css('.image')).nativeElement;
+
+        itemImage.click();
+
+        expect(window.open).toHaveBeenCalledTimes(1);
+        expect(window.open).toHaveBeenCalledWith(expectedUrl);
+      });
+    });
+  });
+
+  describe('when a click is triggered on the price or title of an item', () => {
+    describe('and the app is on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(true);
+        fixture.detectChanges();
+        spyOn(router, 'navigate');
+      });
+      it('should navigate to the item without opening a new tab', () => {
+        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`;
+        const itemInfo = fixture.debugElement.query(By.css('.info')).nativeElement;
+
+        itemInfo.click();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
+    });
+    describe('and the app is NOT on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(false);
+        spyOn(window, 'open');
+      });
+      it('should navigate to the item in a new tab', () => {
+        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.webSlug}`;
+        const itemInfo = fixture.debugElement.query(By.css('.info')).nativeElement;
+
+        itemInfo.click();
+
+        expect(window.open).toHaveBeenCalledTimes(1);
+        expect(window.open).toHaveBeenCalledWith(expectedUrl);
+      });
     });
   });
 });
