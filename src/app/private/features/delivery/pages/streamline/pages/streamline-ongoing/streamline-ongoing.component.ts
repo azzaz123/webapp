@@ -54,8 +54,8 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   }
 
   public onItemClick(historicElement: HistoricElement<PendingTransaction | Request>): void {
-    const isPendingTransaction = this.isPendingTransaction(historicElement);
-    const isRequestAndSeller = !isPendingTransaction && historicElement.payload.isCurrentUserTheSeller;
+    const isPendingTransaction: boolean = this.isPendingTransaction(historicElement);
+    const isRequestAndSeller: boolean = !isPendingTransaction && historicElement.payload.isCurrentUserTheSeller;
 
     if (isRequestAndSeller) {
       this.openAcceptScreenAwarenessModal();
