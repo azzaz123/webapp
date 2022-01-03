@@ -159,7 +159,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
   [PRO_MODAL_TYPE.confirm_change_card]: {
     img: '/assets/icons/pro/modals/confirm-change-card.svg',
     title: $localize`:@@bank_card_change_confirm_modal_pro_user_title:This is your payment method`,
-    text1: $localize`:@@bank_card_change_confirm_modal_pro_user_description:The card you've associated has this last four digits: XXXX.`,
+    text1: $localize`:@@bank_card_change_confirm_modal_pro_user_description:The card you've associated has this last four digits: ${'XXXX'}:INTERPOLATION:.`,
     buttons: {
       secondary: { text: $localize`:@@web_cancel:Cancel` },
       primary: { text: $localize`:@@bank_card_change_confirm_modal_pro_user_confirm_button:Confirm` },

@@ -97,7 +97,7 @@ export class ChangeCardModalComponent implements OnInit {
     }
     let modalRef: NgbModalRef = this.modalService.open(ProModalComponent, { windowClass: 'pro-modal' });
     modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.confirm_change_card];
-    modalRef.componentInstance.modalConfig.text1 = $localize`:@@bank_card_change_confirm_modal_pro_user_description:The card you've associated has this last four digits: ${this.card.stripeCard.last4}:INTERPOLATION:`;
+    modalRef.componentInstance.modalConfig.text1 = $localize`:@@bank_card_change_confirm_modal_pro_user_description:The card you've associated has this last four digits: ${this.card.stripeCard.last4}:INTERPOLATION:.`;
 
     modalRef.result.then((action: MODAL_ACTION) => {
       if (action === MODAL_ACTION.PRIMARY_BUTTON) {
