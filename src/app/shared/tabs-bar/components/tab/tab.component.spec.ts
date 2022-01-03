@@ -41,13 +41,13 @@ describe('TabComponent', () => {
 
   describe('when user clicks on an specific tab', () => {
     it('should notify the click', () => {
-      spyOn(component.onClick, 'emit');
+      spyOn(component.handleOnClick, 'emit');
       const label = fixture.debugElement.query(By.css(tabComponentLabelSelector)).nativeElement;
 
       label.click();
 
-      expect(component.onClick.emit).toHaveBeenCalledTimes(1);
-      expect(component.onClick.emit).toHaveBeenCalledWith(MOCK_TABS_BAR_ELEMENT);
+      expect(component.handleOnClick.emit).toHaveBeenCalledTimes(1);
+      expect(component.handleOnClick.emit).toHaveBeenCalledWith(MOCK_TABS_BAR_ELEMENT);
     });
   });
 });

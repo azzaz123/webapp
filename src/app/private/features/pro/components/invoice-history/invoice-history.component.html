@@ -2,7 +2,7 @@
   <div class="InvoiceHistory">
         <h3 i18n="@@web_invoice_history">Invoice history</h3>
     <div class="InvoiceHistory__tabs">
-      <tsl-tabs-bar [tabsBarElements]="tabsBarElements" (onChange)="onChangeFilter($event.value)"></tsl-tabs-bar>
+      <tsl-tabs-bar [tabsBarElements]="tabsBarElements" (handleOnClick)="onChangeFilter($event.value)"></tsl-tabs-bar>
     </div>
     <div *ngIf="!filteredTransactions?.length; else showTransactions">
       <img class="InvoiceHistory__feedback w-100" src="/assets/images/empty-invoices-placeholder.svg" alt="empty"/>

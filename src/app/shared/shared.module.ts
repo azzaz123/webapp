@@ -17,7 +17,6 @@ import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/cata
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
-import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { GeolocationModule } from './geolocation/geolocation.module';
@@ -73,12 +72,13 @@ import { DateCountDownModule } from './date-countdown/date-countdown.module';
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { HeaderModule } from './header/header.module';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
-import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
+import { LocationSelectorModalComponent } from './modals/location-selector-modal/location-selector-modal.component';
 import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
 import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal.module';
+import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 
 @NgModule({
   imports: [
@@ -189,7 +189,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     UnarchiveButtonComponent,
     ReviewModalComponent,
     ReviewModalComponent,
-    CheckboxComponent,
     SelectComponent,
     SearchInputComponent,
     AlreadyFeaturedModalComponent,
@@ -225,7 +224,8 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     RouterLinkDirectiveStub,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
-    LocationSelectorModal,
+    DeliveryDevelopmentDirective,
+    LocationSelectorModalComponent,
   ],
   providers: [DecimalPipe, LinkTransformPipe, ListingLimitService],
   entryComponents: [

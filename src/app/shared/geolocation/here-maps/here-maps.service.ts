@@ -42,10 +42,9 @@ export const RETRY_AMOUNT = 12;
   providedIn: 'root',
 })
 export class HereMapsService {
+  public platform: H.service.Platform;
   private isLibraryReadySubject = new BehaviorSubject<boolean>(false);
   private isLibraryLoadingSubject = new BehaviorSubject<boolean>(true);
-
-  public platform: H.service.Platform;
   public isLibraryLoading$ = () => this.isLibraryLoadingSubject.asObservable();
 
   public initScript(): Observable<boolean> {

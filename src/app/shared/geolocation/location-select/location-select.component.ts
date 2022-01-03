@@ -29,6 +29,12 @@ export class LocationSelectComponent implements OnChanges {
 
   constructor(private modalService: NgbModal, private userService: UserService) {}
 
+  setLocation(coordinates: Coordinate) {
+    this.latitudeControl.setValue(coordinates.latitude);
+    this.longitudeControl.setValue(coordinates.longitude);
+    this.locationSelected.emit();
+  }
+
   ngOnChanges(changes?: any) {
     if (this.form) {
       this.control = this.form.get(this.name + '.address');
@@ -91,11 +97,5 @@ export class LocationSelectComponent implements OnChanges {
         () => {}
       );
     }, LOCATION_MODAL_TIMEOUT);
-  }
-
-  setLocation(coordinates: Coordinate) {
-    this.latitudeControl.setValue(coordinates.latitude);
-    this.longitudeControl.setValue(coordinates.longitude);
-    this.locationSelected.emit();
   }
 }

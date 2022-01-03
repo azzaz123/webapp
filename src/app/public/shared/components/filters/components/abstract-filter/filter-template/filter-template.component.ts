@@ -19,15 +19,15 @@ export class FilterTemplateComponent {
   @Output() apply: EventEmitter<void> = new EventEmitter();
   @Output() cancel: EventEmitter<void> = new EventEmitter();
   @Output() clear: EventEmitter<void> = new EventEmitter();
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() click: EventEmitter<void> = new EventEmitter();
   @Output() openStateChange: EventEmitter<boolean> = new EventEmitter();
   @ViewChild('scrollableContainer') private scrollableContainer: ElementRef;
 
-  constructor(private elementRef: ElementRef) {}
-
   public BUBBLE_VARIANT = BUBBLE_VARIANT;
-
   public isDropdownOpen = false;
+
+  constructor(private elementRef: ElementRef) {}
 
   public handleBubbleClick(event: MouseEvent): void {
     if (this.isDropdown) {

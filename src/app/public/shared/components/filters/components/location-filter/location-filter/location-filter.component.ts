@@ -36,8 +36,6 @@ export const DEFAULT_ZOOM_VALUE = 13;
 })
 export class LocationFilterComponent extends AbstractFilter<LocationFilterParams> implements OnInit, OnDestroy {
   @Input() config: LocationFilterConfig;
-
-  private subscriptions = new Subscription();
   public componentLocationForm = new FormGroup({
     location: new FormGroup({
       latitude: new FormControl(),
@@ -52,6 +50,7 @@ export class LocationFilterComponent extends AbstractFilter<LocationFilterParams
   public loadingGeolocation = false;
   public valueLabel: string;
 
+  private subscriptions = new Subscription();
   private readonly geolocationCoordinatesSubject: Subject<SearchLocation> = new Subject<SearchLocation>();
   private readonly selectedSuggestionSubject: Subject<string> = new Subject<string>();
 

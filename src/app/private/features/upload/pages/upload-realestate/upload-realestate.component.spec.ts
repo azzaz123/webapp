@@ -40,7 +40,7 @@ import { UploadService } from '../../core/services/upload/upload.service';
 import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.component';
 import { UploadRealestateComponent } from './upload-realestate.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { LocationSelectorModal } from '@shared/modals/location-selector-modal/location-selector-modal.component';
+import { LocationSelectorModalComponent } from '@shared/modals/location-selector-modal/location-selector-modal.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 
@@ -384,7 +384,7 @@ describe('UploadRealestateComponent', () => {
         component.onSubmit();
 
         expect(modalService.open).toHaveBeenCalledTimes(1);
-        expect(modalService.open).toHaveBeenCalledWith(LocationSelectorModal);
+        expect(modalService.open).toHaveBeenCalledWith(LocationSelectorModalComponent);
       });
     });
   });

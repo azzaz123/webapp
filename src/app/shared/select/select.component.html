@@ -2,6 +2,6 @@
   <a ngbDropdownToggle class="dropdown-header">{{selected?.label}} <tsl-svg-icon src="/assets/icons/caret.svg"></tsl-svg-icon></a>
   <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
     <button class="dropdown-item" *ngFor="let item of items" (click)="selectItem(item)"
-      [hidden]="item.label == selected?.label">{{item.label}}</button>
+      [hidden]="item.label === selected?.label">{{item.label}}</button>
   </div>
 </div>
