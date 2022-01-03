@@ -754,7 +754,7 @@ describe(`DeeplinkService`, () => {
       }));
     });
 
-    describe(`WHEN the irwm service does not return any item`, () => {
+    describe(`WHEN the item service does not return any item`, () => {
       beforeEach(() => {
         TestBed.overrideProvider(ItemService, {
           useValue: {
