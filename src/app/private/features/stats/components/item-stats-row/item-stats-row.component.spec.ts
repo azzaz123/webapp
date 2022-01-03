@@ -20,6 +20,8 @@ import { CoreModule } from '@core/core.module';
 import { StandaloneService } from '@core/standalone/services/standalone.service';
 import { Router } from '@angular/router';
 
+const IMAGE_CLASS_NAME: string = '.image';
+
 describe('ItemStatsRowComponent', () => {
   let component: ItemStatsRowComponent;
   let fixture: ComponentFixture<ItemStatsRowComponent>;
@@ -123,7 +125,7 @@ describe('ItemStatsRowComponent', () => {
       });
       it('should navigate to the item without opening a new tab', () => {
         const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_V3.id}`;
-        const itemImage = fixture.debugElement.query(By.css('.image')).nativeElement;
+        const itemImage = fixture.debugElement.query(By.css(IMAGE_CLASS_NAME)).nativeElement;
 
         itemImage.click();
 
@@ -138,7 +140,7 @@ describe('ItemStatsRowComponent', () => {
       });
       it('should navigate to the item in a new tab', () => {
         const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_V3.webSlug}`;
-        const itemImage = fixture.debugElement.query(By.css('.image')).nativeElement;
+        const itemImage = fixture.debugElement.query(By.css(IMAGE_CLASS_NAME)).nativeElement;
 
         itemImage.click();
 

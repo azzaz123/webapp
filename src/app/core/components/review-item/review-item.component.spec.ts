@@ -21,6 +21,10 @@ import { SharedModule } from '@shared/shared.module';
 import { CoreModule } from '@core/core.module';
 import { StandaloneService } from '@core/standalone/services/standalone.service';
 
+const MOCK_REVIEW: Review = MOCK_REVIEWS[0];
+const IMAGE_CLASS_NAME: string = '.image';
+const REVIEW_TITLE_CLASS_NAME: string = '.review-title-item';
+
 @Component({
   selector: 'tsl-test',
   template: '<tsl-review-item [isOwner]="isOwner" [review]="review"></tsl-review-item>',
@@ -214,8 +218,8 @@ describe('ReviewItemComponent', () => {
         spyOn(router, 'navigate');
       });
       it('should navigate to the item without opening a new tab', () => {
-        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEWS[0].item.id}`;
-        const itemImage = fixture.debugElement.query(By.css('.image')).nativeElement;
+        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEW.item.id}`;
+        const itemImage = fixture.debugElement.query(By.css(IMAGE_CLASS_NAME)).nativeElement;
 
         itemImage.click();
 
@@ -230,8 +234,8 @@ describe('ReviewItemComponent', () => {
         spyOn(window, 'open');
       });
       it('should navigate to the item in a new tab', () => {
-        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEWS[0].item.webSlug}`;
-        const itemImage = fixture.debugElement.query(By.css('.image')).nativeElement;
+        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEW.item.webSlug}`;
+        const itemImage = fixture.debugElement.query(By.css(IMAGE_CLASS_NAME)).nativeElement;
 
         itemImage.click();
 
@@ -249,8 +253,8 @@ describe('ReviewItemComponent', () => {
         spyOn(router, 'navigate');
       });
       it('should navigate to the item without opening a new tab', () => {
-        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEWS[0].item.id}`;
-        const reviewTitle = fixture.debugElement.query(By.css('.review-title-item')).nativeElement;
+        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEW.item.id}`;
+        const reviewTitle = fixture.debugElement.query(By.css(REVIEW_TITLE_CLASS_NAME)).nativeElement;
 
         reviewTitle.click();
 
@@ -265,8 +269,8 @@ describe('ReviewItemComponent', () => {
         spyOn(window, 'open');
       });
       it('should navigate to the item in a new tab', () => {
-        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEWS[0].item.webSlug}`;
-        const reviewTitle = fixture.debugElement.query(By.css('.review-title-item')).nativeElement;
+        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEW.item.webSlug}`;
+        const reviewTitle = fixture.debugElement.query(By.css(REVIEW_TITLE_CLASS_NAME)).nativeElement;
 
         reviewTitle.click();
 

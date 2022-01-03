@@ -22,6 +22,8 @@ import { Router } from '@angular/router';
 import { StandaloneService } from '@core/standalone/services/standalone.service';
 import { SharedModule } from '@shared/shared.module';
 
+const ANCHOR_TAG: string = 'a';
+
 describe('ItemCardFavouriteComponent', () => {
   let component: ItemCardFavouriteComponent;
   let fixture: ComponentFixture<ItemCardFavouriteComponent>;
@@ -161,7 +163,7 @@ describe('ItemCardFavouriteComponent', () => {
       });
       it('should navigate to the favorite item without opening a new tab', () => {
         const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`;
-        const itemCard = fixture.debugElement.query(By.css('a')).nativeElement;
+        const itemCard = fixture.debugElement.query(By.css(ANCHOR_TAG)).nativeElement;
 
         itemCard.click();
 
@@ -177,7 +179,7 @@ describe('ItemCardFavouriteComponent', () => {
       });
       it('should navigate to the favorite item in a new tab', () => {
         const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.webSlug}`;
-        const itemCard = fixture.debugElement.query(By.css('a')).nativeElement;
+        const itemCard = fixture.debugElement.query(By.css(ANCHOR_TAG)).nativeElement;
 
         itemCard.click();
 

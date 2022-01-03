@@ -23,6 +23,9 @@ import { StandaloneService } from '@core/standalone/services/standalone.service'
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 
+const INFO_CLASS_NAME: string = '.info';
+const IMAGE_CLASS_NAME: string = '.image';
+
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
   let fixture: ComponentFixture<CatalogCardComponent>;
@@ -247,7 +250,7 @@ describe('CatalogCardComponent', () => {
       });
       it('should navigate to the item without opening a new tab', () => {
         const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`;
-        const itemImage = fixture.debugElement.query(By.css('.image')).nativeElement;
+        const itemImage = fixture.debugElement.query(By.css(IMAGE_CLASS_NAME)).nativeElement;
 
         itemImage.click();
 
@@ -262,7 +265,7 @@ describe('CatalogCardComponent', () => {
       });
       it('should navigate to the item in a new tab', () => {
         const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.webSlug}`;
-        const itemImage = fixture.debugElement.query(By.css('.image')).nativeElement;
+        const itemImage = fixture.debugElement.query(By.css(IMAGE_CLASS_NAME)).nativeElement;
 
         itemImage.click();
 
@@ -281,7 +284,7 @@ describe('CatalogCardComponent', () => {
       });
       it('should navigate to the item without opening a new tab', () => {
         const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`;
-        const itemInfo = fixture.debugElement.query(By.css('.info')).nativeElement;
+        const itemInfo = fixture.debugElement.query(By.css(INFO_CLASS_NAME)).nativeElement;
 
         itemInfo.click();
 
@@ -296,7 +299,7 @@ describe('CatalogCardComponent', () => {
       });
       it('should navigate to the item in a new tab', () => {
         const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.webSlug}`;
-        const itemInfo = fixture.debugElement.query(By.css('.info')).nativeElement;
+        const itemInfo = fixture.debugElement.query(By.css(INFO_CLASS_NAME)).nativeElement;
 
         itemInfo.click();
 

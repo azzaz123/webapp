@@ -29,6 +29,8 @@ import { StandaloneService } from '@core/standalone/services/standalone.service'
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 
+const AVATAR_CLASS_NAME: string = '.avatar';
+
 class MockConversationService {
   public loadMoreMessages() {}
 }
@@ -311,7 +313,7 @@ describe('ConversationDetailsBarComponent', () => {
       });
       it('should navigate to the item without opening a new tab', () => {
         const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${ITEM_ID}`;
-        const itemImage = fixture.debugElement.query(By.css('.avatar')).nativeElement;
+        const itemImage = fixture.debugElement.query(By.css(AVATAR_CLASS_NAME)).nativeElement;
 
         itemImage.click();
 
@@ -327,7 +329,7 @@ describe('ConversationDetailsBarComponent', () => {
       });
       it('should navigate to the item in a new tab', () => {
         const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${ITEM_WEB_SLUG}`;
-        const itemImage = fixture.debugElement.query(By.css('.avatar')).nativeElement;
+        const itemImage = fixture.debugElement.query(By.css(AVATAR_CLASS_NAME)).nativeElement;
 
         itemImage.click();
 

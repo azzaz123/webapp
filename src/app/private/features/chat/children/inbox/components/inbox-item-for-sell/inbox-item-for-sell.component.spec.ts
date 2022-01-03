@@ -16,6 +16,8 @@ import { By } from '@angular/platform-browser';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
+const CARD_CLASS_NAME: string = '.card';
+
 describe('InboxItemForSellComponent', () => {
   let component: InboxItemForSellComponent;
   let fixture: ComponentFixture<InboxItemForSellComponent>;
@@ -124,7 +126,7 @@ describe('InboxItemForSellComponent', () => {
       });
       it('should navigate to the favorite item without opening a new tab', () => {
         const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`;
-        const itemForSellCard = fixture.debugElement.query(By.css('.card')).nativeElement;
+        const itemForSellCard = fixture.debugElement.query(By.css(CARD_CLASS_NAME)).nativeElement;
 
         itemForSellCard.click();
 
@@ -140,7 +142,7 @@ describe('InboxItemForSellComponent', () => {
       });
       it('should navigate to the favorite item in a new tab', () => {
         const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.webSlug}`;
-        const itemForSellCard = fixture.debugElement.query(By.css('.card')).nativeElement;
+        const itemForSellCard = fixture.debugElement.query(By.css(CARD_CLASS_NAME)).nativeElement;
 
         itemForSellCard.click();
 

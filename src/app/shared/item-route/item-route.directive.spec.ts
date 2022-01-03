@@ -1,5 +1,5 @@
 import { ItemRouteDirective } from './item-route.directive';
-import { Component, DebugElement } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ComponentFixture, waitForAsync, TestBed } from '@angular/core/testing';
@@ -9,6 +9,9 @@ import { StandaloneService } from '@core/standalone/services/standalone.service'
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
+import { By } from '@angular/platform-browser';
+
+const BUTTON: string = 'button';
 
 @Component({
   template: `<button tslItemRoute [itemSlug]="item.webSlug" [itemUUID]="item.id"></button>`,
@@ -20,8 +23,6 @@ class TestComponent {
 
 describe('ItemRouteDirective', () => {
   let component: TestComponent;
-  let de: DebugElement;
-  let el: HTMLElement;
   let fixture: ComponentFixture<TestComponent>;
   let standaloneService: StandaloneService;
   let router: Router;
@@ -57,8 +58,6 @@ describe('ItemRouteDirective', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
-    de = fixture.debugElement;
-    el = de.nativeElement;
     standaloneService = TestBed.inject(StandaloneService);
     component.item = MOCK_ITEM_CARD;
     router = TestBed.inject(Router);
@@ -77,9 +76,9 @@ describe('ItemRouteDirective', () => {
       });
       it('should navigate to the item without opening a new tab', () => {
         const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_CARD.id}`;
-        const click = () => el.querySelector('button').click();
+        const testButton = fixture.debugElement.query(By.css(BUTTON)).nativeElement;
 
-        click();
+        testButton.click();
 
         expect(router.navigate).toHaveBeenCalledTimes(1);
         expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
@@ -93,9 +92,9 @@ describe('ItemRouteDirective', () => {
       });
       it('should navigate to the item in a new tab', () => {
         const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_CARD.webSlug}`;
-        const click = () => el.querySelector('button').click();
+        const testButton = fixture.debugElement.query(By.css(BUTTON)).nativeElement;
 
-        click();
+        testButton.click();
 
         expect(window.open).toHaveBeenCalledTimes(1);
         expect(window.open).toHaveBeenCalledWith(expectedUrl);
