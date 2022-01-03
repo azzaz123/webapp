@@ -6,16 +6,23 @@ import { APP_LOCALE } from '@configs/subdomains.config';
 import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
+import { ItemService } from '@core/item/item.service';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 import { SITE_URL } from '@configs/site-url.config';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { UserService } from '@core/user/user.service';
 
 import { of, throwError } from 'rxjs';
-import { ToastService } from '@layout/toast/core/services/toast.service';
-import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
-import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 
 const fakeBarcode = 'abcZYW123908';
 const fakeInstructionsType = 'packaging';
+const fakeItemId = 'this_is_a_fake_item_id';
+const fakeItemName = 'this-is-a-fake-item';
+const fakeItemWebSlug = `${fakeItemName}-1234567890`;
+const fakeItem = {
+  webSlug: fakeItemWebSlug,
+};
 const fakePrintableUrl = 'http://fake.url.fake';
 const fakeRequestId = '123-456-789-000';
 const fakeUserId = 'this_is_a_fake_user_id';
@@ -50,6 +57,8 @@ describe(`DeeplinkService`, () => {
   let service: DeeplinkService;
   let window: Window;
   let toastService: ToastService;
+  let itemService: ItemService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -65,6 +74,14 @@ describe(`DeeplinkService`, () => {
         },
         { provide: SITE_URL, useValue: siteUrlMock },
         DeeplinkService,
+        {
+          provide: ItemService,
+          useValue: {
+            get: () => {
+              return of(fakeItem);
+            },
+          },
+        },
         ItemDetailRoutePipe,
         UserProfileRoutePipe,
         {
@@ -337,12 +354,31 @@ describe(`DeeplinkService`, () => {
   });
 
   describe(`WHEN the deeplink is a item deeplink`, () => {
+    beforeEach(() => {
+      router = TestBed.inject(Router);
+      service = TestBed.inject(DeeplinkService);
+      itemService = TestBed.inject(ItemService);
+      toastService = TestBed.inject(ToastService);
+
+      spyOn(itemService, 'get').and.callThrough();
+    });
+
     it(`should return the url`, fakeAsync(() => {
-      const deeplink = `${itemBaseDeeplink}/my-item-id`;
-      const expected = `${siteUrlMock}item/my-item-id`;
+      const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;
+      const expected = `${siteUrlMock}item/${fakeItemWebSlug}`;
 
       service.toWebLink(deeplink).subscribe((webLink) => {
         expect(webLink).toEqual(expected);
+      });
+
+      flush();
+    }));
+
+    it('should call to the item service', fakeAsync(() => {
+      const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;
+
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(itemService.get).toHaveBeenCalledTimes(1);
       });
 
       flush();
@@ -411,6 +447,15 @@ describe(`DeeplinkService`, () => {
   });
 
   describe(`WHEN the deeplink is a user profile deeplink`, () => {
+    beforeEach(() => {
+      router = TestBed.inject(Router);
+      service = TestBed.inject(DeeplinkService);
+      userService = TestBed.inject(UserService);
+      toastService = TestBed.inject(ToastService);
+
+      spyOn(userService, 'get').and.callThrough();
+    });
+
     it(`should return the url`, fakeAsync(() => {
       const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
       const expected = `/user/${fakeUsername}-${fakeUserId}`;
@@ -418,6 +463,16 @@ describe(`DeeplinkService`, () => {
       service.toWebLink(deeplink).subscribe((webLink) => {
         expect(webLink).toBeTruthy();
         expect(webLink).toBe(expected);
+      });
+
+      flush();
+    }));
+
+    it('should call to the user service', fakeAsync(() => {
+      const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
+
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(userService.get).toHaveBeenCalledTimes(1);
       });
 
       flush();
@@ -665,6 +720,54 @@ describe(`DeeplinkService`, () => {
 
       it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
+
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
+    });
+  });
+
+  describe('WHEN the deeplink is an item', () => {
+    describe(`WHEN the item service crashes`, () => {
+      beforeEach(() => {
+        TestBed.overrideProvider(ItemService, {
+          useValue: {
+            get: () => {
+              return throwError('unexpected error');
+            },
+          },
+        });
+        service = TestBed.inject(DeeplinkService);
+      });
+
+      it(`should not return any url`, fakeAsync(() => {
+        const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;
+
+        service.toWebLink(deeplink).subscribe((webLink: string) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
+    });
+
+    describe(`WHEN the irwm service does not return any item`, () => {
+      beforeEach(() => {
+        TestBed.overrideProvider(ItemService, {
+          useValue: {
+            get: () => {
+              return of({ webSlug: null });
+            },
+          },
+        });
+        service = TestBed.inject(DeeplinkService);
+      });
+
+      it(`should not return any url`, fakeAsync(() => {
+        const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;
 
         service.toWebLink(deeplink).subscribe((webLink) => {
           expect(webLink).toBeFalsy();
