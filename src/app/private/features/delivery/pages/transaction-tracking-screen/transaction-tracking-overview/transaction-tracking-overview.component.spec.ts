@@ -131,6 +131,8 @@ describe('TransactionTrackingOverviewComponent', () => {
         transactionTrackingExpected = transactionTrackingReceived;
       });
 
+      component.ngOnInit();
+
       expect(transactionTrackingExpected).toStrictEqual(MOCK_TRANSACTION_TRACKING);
     });
 
@@ -139,6 +141,8 @@ describe('TransactionTrackingOverviewComponent', () => {
       component.transactionTrackingDetails$.subscribe((transactionTrackingDetailsReceived: TransactionTrackingDetails) => {
         transactionTrackingDetailsExpected = transactionTrackingDetailsReceived;
       });
+
+      component.ngOnInit();
 
       expect(transactionTrackingDetailsExpected).toStrictEqual(MOCK_TRANSACTION_TRACKING_DETAILS);
     });
@@ -192,6 +196,7 @@ describe('TransactionTrackingOverviewComponent', () => {
     beforeEach(() => {
       spyOn(transactionTrackingService, 'get').and.returnValue(of(MOCK_TRANSACTION_TRACKING));
 
+      component.ngOnInit();
       fixture.detectChanges();
     });
 
