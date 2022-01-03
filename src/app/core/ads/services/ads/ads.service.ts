@@ -132,7 +132,7 @@ export class AdsService {
         filter(([adsReady, adShoppingGroupSlotData]: [boolean, AdShoppingGroupSlotData]) => {
           const slotConfig = adShoppingGroupSlotData?.slotConfig;
 
-          return adsReady && slotConfig.length > 0;
+          return adsReady && slotConfig && slotConfig.length > 0;
         }),
         map(([_, adShoppingGroupSlotData]: [boolean, AdShoppingGroupSlotData]) => [adShoppingGroupSlotData])
       )
@@ -188,8 +188,11 @@ export class AdsService {
 
   private refreshAdShopping(): void {
     const slotData = this.setShoppingSlotSubject.getValue();
-    const { slotConfig, pageOptions } = slotData;
 
-    this.googlePublisherTagService.displayShopping(pageOptions, slotConfig);
+    if (slotData) {
+      const { slotConfig, pageOptions } = slotData;
+
+      this.googlePublisherTagService.displayShopping(pageOptions, slotConfig);
+    }
   }
 }

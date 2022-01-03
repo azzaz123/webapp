@@ -1,11 +1,16 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
-import { Observable } from 'rxjs';
-import { StreamlineCompletedUIService } from '../../services/streamline-completed-ui/streamline-completed-ui.service';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { SharedErrorActionService } from '@shared/error-action';
+import { StreamlineCompletedUIService } from '@private/features/delivery/pages/streamline/services/streamline-completed-ui/streamline-completed-ui.service';
+
+import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { HistoricTransaction } from '@api/core/model';
 
 @Component({
   selector: 'tsl-streamline-completed',
@@ -17,7 +22,11 @@ export class StreamlineCompletedComponent implements OnInit, OnDestroy {
   public loadingIconSrc: string = '/assets/icons/spinner.svg';
   public loadingIconSizePixels: number = 32;
 
-  constructor(private streamlineCompletedUIService: StreamlineCompletedUIService, private router: Router) {}
+  constructor(
+    private streamlineCompletedUIService: StreamlineCompletedUIService,
+    private router: Router,
+    private errorActionService: SharedErrorActionService
+  ) {}
 
   public get infiniteScrollDisabled(): boolean {
     return this.streamlineCompletedUIService.infiniteScrollDisabled;
@@ -28,7 +37,12 @@ export class StreamlineCompletedComponent implements OnInit, OnDestroy {
   }
 
   public get historicList$(): Observable<HistoricList> {
-    return this.streamlineCompletedUIService.historicList$;
+    return this.streamlineCompletedUIService.historicList$.pipe(
+      catchError((error: unknown) => {
+        this.errorActionService.show(error);
+        return throwError(error);
+      })
+    );
   }
 
   ngOnInit() {
@@ -43,9 +57,8 @@ export class StreamlineCompletedComponent implements OnInit, OnDestroy {
     this.streamlineCompletedUIService.getItems();
   }
 
-  // TODO: Implement redirection to TTS
-  public onItemClick(historicElement: HistoricElement): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${historicElement.id}`;
+  public onItemClick(historicElement: HistoricElement<HistoricTransaction>): void {
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${historicElement.payload.requestId}`;
     this.router.navigate([pathToTransactionTracking]);
   }
 }

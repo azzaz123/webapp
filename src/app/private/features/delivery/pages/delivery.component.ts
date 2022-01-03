@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
@@ -6,6 +6,7 @@ import { UserService } from '@core/user/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
+import { Subscription } from 'rxjs';
 import { DELIVERY_PATHS } from '../delivery-routing-constants';
 import { TRXAwarenessModalComponent } from '../modals/trx-awareness-modal/trx-awareness-modal.component';
 
@@ -15,7 +16,7 @@ export const LOCAL_STORAGE_TRX_AWARENESS = 'trx-awareness';
   templateUrl: './delivery.component.html',
   styleUrls: ['./delivery.component.scss'],
 })
-export class DeliveryComponent implements OnInit {
+export class DeliveryComponent implements OnInit, OnDestroy {
   readonly myShippingsNavLink: NavLink = {
     id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
     display: $localize`:@@web_delivery_shippings_title:Shippings`,
@@ -28,6 +29,7 @@ export class DeliveryComponent implements OnInit {
   public navLinks: NavLink[] = [this.deliveryAddressNavLink];
 
   public selectedNavLinkId: string;
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -35,16 +37,22 @@ export class DeliveryComponent implements OnInit {
     private modalService: NgbModal,
     private featureflagService: FeatureFlagService
   ) {
-    router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        this.selectedNavLinkId = this.navLinks.find((link) => e.url.startsWith(link.id))?.id;
-      }
-    });
+    this.subscriptions.add(
+      router.events.subscribe((e) => {
+        if (e instanceof NavigationEnd) {
+          this.selectedNavLinkId = this.navLinks.find((link) => e.url.startsWith(link.id))?.id;
+        }
+      })
+    );
   }
 
   ngOnInit(): void {
     this.showMyShippingsWhenDeliveryFeatureFlagEnabled();
     this.showTRXAwarenessModalForFirstTime();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   public onNavLinkClicked(navLinkId: string): void {
@@ -59,11 +67,13 @@ export class DeliveryComponent implements OnInit {
   }
 
   private showMyShippingsWhenDeliveryFeatureFlagEnabled(): void {
-    this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
-      if (isActive) {
-        this.navLinks = [this.myShippingsNavLink, this.deliveryAddressNavLink];
-      }
-    });
+    this.subscriptions.add(
+      this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
+        if (isActive) {
+          this.navLinks = [this.myShippingsNavLink, this.deliveryAddressNavLink];
+        }
+      })
+    );
   }
 
   private showTRXAwarenessModalForFirstTime(): void {

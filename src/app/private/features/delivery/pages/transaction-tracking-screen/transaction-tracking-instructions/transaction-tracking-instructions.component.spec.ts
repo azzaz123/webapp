@@ -1,9 +1,8 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
 import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
@@ -12,12 +11,14 @@ import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routin
 import { environment } from '@environments/environment';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
+import { ItemService } from '@core/item/item.service';
 import {
   MOCK_TRANSACTION_TRACKING_INSTRUCTIONS,
   MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_WITHOUT_BANNER,
   MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_WITHOUT_FOOTER,
   MOCK_TRANSACTION_TRACKING_INSTRUCTIONS_WITH_ADDITIONAL_INFO,
 } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-instructions.fixtures.spec';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { SharedErrorActionService } from '@shared/error-action';
 import { SITE_URL } from '@configs/site-url.config';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
@@ -31,11 +32,11 @@ import {
 import { TransactionTrackingBannerComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/banner/transaction-tracking-banner.component';
 import { TransactionTrackingHeaderComponent } from '@private/features/delivery/pages/transaction-tracking-screen/components/sections';
 import { TransactionTrackingInstructionsComponent } from '@private/features/delivery/pages/transaction-tracking-screen';
+import { TransactionTrackingScreenStoreService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { UserService } from '@core/user/user.service';
 
 import { of, throwError } from 'rxjs';
-import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 
 const fakeActionType: TransactionTrackingActionType = 'deeplink';
 const fakeId: string = '123';
@@ -64,7 +65,7 @@ describe('TransactionTrackingInstructionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BypassHTMLModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [BypassHTMLModule, HttpClientTestingModule],
       declarations: [
         ButtonComponent,
         SvgIconComponent,
@@ -116,6 +117,14 @@ describe('TransactionTrackingInstructionsComponent', () => {
           provide: SharedErrorActionService,
           useValue: MockSharedErrorActionService,
         },
+        {
+          provide: ItemService,
+          useValue: {
+            item: {
+              webSlug: 'this_is_a_web_slug',
+            },
+          },
+        },
         UserProfileRoutePipe,
         {
           provide: UserService,
@@ -123,6 +132,14 @@ describe('TransactionTrackingInstructionsComponent', () => {
             user: {
               webSlug: 'this_is_a_web_slug',
             },
+          },
+        },
+        TransactionTrackingScreenStoreService,
+        {
+          provide: Router,
+          useValue: {
+            url: '/path',
+            navigate() {},
           },
         },
       ],

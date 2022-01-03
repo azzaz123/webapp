@@ -6,7 +6,9 @@
         [initialSelectedTabBarElement]="selectedTabsBarElement"
         (onChange)="onTabsBarChange($event)"
       ></tsl-tabs-bar>
-      <router-outlet></router-outlet>
+      <tsl-shared-error-action [retryUrl]="retryUrl">
+        <router-outlet></router-outlet>
+      </tsl-shared-error-action>
     </div>
   </div>
 </div>

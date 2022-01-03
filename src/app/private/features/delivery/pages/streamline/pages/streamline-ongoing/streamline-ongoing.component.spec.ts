@@ -1,29 +1,40 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { HistoricElementComponent } from '@shared/historic-list/components/historic-element/historic-element.component';
-import { MOCK_HISTORIC_ELEMENT_WITH_ID } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
+import { HistoricListModule } from '@shared/historic-list/historic-list.module';
+import {
+  MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER,
+  MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION,
+  MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER,
+} from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import {
   MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS,
   MOCK_HISTORIC_LIST_EMPTY,
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
-import { HistoricListModule } from '@shared/historic-list/historic-list.module';
-import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { SharedErrorActionService } from '@shared/error-action';
+import { StreamlineOngoingComponent } from '@private/features/delivery/pages/streamline/pages/streamline-ongoing/streamline-ongoing.component';
+import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { ReplaySubject } from 'rxjs';
-import { StreamlineOngoingUIService } from '../../services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 
-import { StreamlineOngoingComponent } from './streamline-ongoing.component';
+import { ReplaySubject, throwError } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
+import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
 
 describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;
   let fixture: ComponentFixture<StreamlineOngoingComponent>;
   let streamlineOngoingUIService: StreamlineOngoingUIService;
   let router: Router;
+  let modalService: NgbModal;
 
   let loadingReplaySubject: ReplaySubject<boolean> = new ReplaySubject(1);
   let historicListReplaySubject: ReplaySubject<HistoricList> = new ReplaySubject(1);
@@ -45,6 +56,8 @@ describe('StreamlineOngoingComponent', () => {
             reset: () => {},
           },
         },
+        { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
+        { provide: NgbModal, useClass: NgbModalMock },
       ],
     }).compileComponents();
   });
@@ -52,10 +65,12 @@ describe('StreamlineOngoingComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamlineOngoingComponent);
     component = fixture.componentInstance;
+
     router = TestBed.inject(Router);
     streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
-    fixture.detectChanges();
+    modalService = TestBed.inject(NgbModal);
 
+    fixture.detectChanges();
     spyOn(router, 'navigate');
   });
 
@@ -113,12 +128,45 @@ describe('StreamlineOngoingComponent', () => {
     });
 
     describe('when user clicks on a historic element', () => {
-      it('should navigate to the tracking page', () => {
-        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_ID.id}`;
+      describe('and the element is a request', () => {
+        describe('and the user is the buyer', () => {
+          it('should navigate to the tracking page with the id', () => {
+            const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER.id}`;
 
-        component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_ID);
+            component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER);
 
-        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+          });
+        });
+
+        describe('and the user is the seller', () => {
+          beforeEach(() => {
+            spyOn(modalService, 'open').and.callThrough();
+
+            component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER);
+          });
+
+          it('should stay at the same page', () => {
+            expect(router.navigate).not.toHaveBeenCalled();
+          });
+
+          it('should open the accept screen awareness modal', () => {
+            expect(modalService.open).toHaveBeenCalledTimes(1);
+            expect(modalService.open).toHaveBeenCalledWith(AcceptScreenAwarenessModalComponent);
+          });
+        });
+      });
+
+      describe('and the element is a pending transaction', () => {
+        it('should navigate to the tracking page with the payload request id', () => {
+          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION.payload.requestId}`;
+
+          component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION);
+
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+        });
       });
     });
 
@@ -138,4 +186,48 @@ describe('StreamlineOngoingComponent', () => {
     historicList.elements.forEach((h) => h.elements.forEach((st) => st.elements.forEach(() => totalHistoricElements++)));
     return totalHistoricElements;
   }
+});
+
+describe('WHEN there is an error retrieving the shipping list', () => {
+  let errorActionSpy;
+  let streamlineOngoingUIService;
+  let errorActionService;
+  let component: StreamlineOngoingComponent;
+  let fixture: ComponentFixture<StreamlineOngoingComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, HttpClientTestingModule, HistoricListModule, SvgIconModule],
+      declarations: [StreamlineOngoingComponent],
+      providers: [
+        {
+          provide: StreamlineOngoingUIService,
+          useValue: {
+            get historicList$() {
+              return throwError('The server is broken');
+            },
+            getItems: () => {},
+            reset: () => {},
+          },
+        },
+        { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
+    jest.spyOn(streamlineOngoingUIService, 'historicList$', 'get').mockReturnValue(throwError('The server is broken'));
+    errorActionService = TestBed.inject(SharedErrorActionService);
+    errorActionSpy = spyOn(errorActionService, 'show');
+
+    fixture = TestBed.createComponent(StreamlineOngoingComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
+  });
+
+  it('should show the generic error catcher', fakeAsync(() => {
+    expect(errorActionSpy).toHaveBeenCalledTimes(1);
+  }));
 });

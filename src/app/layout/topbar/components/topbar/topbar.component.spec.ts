@@ -14,7 +14,7 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { TopbarComponent } from './topbar.component';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
@@ -22,14 +22,12 @@ import { By } from '@angular/platform-browser';
 import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { Router } from '@angular/router';
-import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
-import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -37,6 +35,8 @@ import { SuggesterService } from '@layout/topbar/core/services/suggester.service
 import { SuggesterComponentStub } from '@fixtures/shared/components/suggester.component.stub';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -76,6 +76,10 @@ describe('TopbarComponent', () => {
   let router: Router;
   let navigator: SearchNavigatorService;
   let topbarTrackingEventsService: TopbarTrackingEventsService;
+  let standaloneService: StandaloneService;
+
+  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  const logoIconSelector: string = '.topbar-logo-icon';
 
   beforeEach(
     waitForAsync(() => {
@@ -150,6 +154,18 @@ describe('TopbarComponent', () => {
             useValue: {},
           },
           {
+            provide: SearchNavigatorService,
+            useValue: {
+              navigate: () => {},
+            },
+          },
+          {
+            provide: StandaloneService,
+            useValue: {
+              standalone$: standaloneSubject.asObservable(),
+            },
+          },
+          {
             provide: SITE_URL,
             useValue: MOCK_SITE_URL,
           },
@@ -175,6 +191,7 @@ describe('TopbarComponent', () => {
     navigator = TestBed.inject(SearchNavigatorService);
     router = TestBed.inject(Router);
     topbarTrackingEventsService = TestBed.inject(TopbarTrackingEventsService);
+    standaloneService = TestBed.inject(StandaloneService);
   });
 
   it('should be created', () => {
@@ -343,26 +360,22 @@ describe('TopbarComponent', () => {
         [FILTER_QUERY_PARAM_KEY.categoryId]: `${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`,
       };
 
-      describe('and the experimental features flag is not enabled', () => {
-        beforeEach(() => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
-          spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
-          spyOn(router, 'navigate');
-          spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
+      beforeEach(() => {
+        const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
 
-          searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
-        });
+        spyOn(navigator, 'navigate');
+        spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
 
-        it('should redirect to the old search page', () => {
-          const expectedUrl = `${component.homeUrl}${PUBLIC_PATHS.SEARCH}?${FILTER_QUERY_PARAM_KEY.keywords}=&${FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE}=${FILTERS_SOURCE.SEARCH_BOX}`;
+        searchBox.triggerEventHandler('searchCancel', MOCK_SEARCH_BOX_VALUE);
+      });
 
-          expect(router.navigate).not.toHaveBeenCalled();
-          expect(window.location.href).toEqual(expectedUrl);
-        });
+      it('should redirect to the search page', () => {
+        const expectedSearchParams: FilterParameter[] = [{ key: FILTER_QUERY_PARAM_KEY.keywords, value: '' }];
+        expect(navigator.navigate).toHaveBeenCalledWith(expectedSearchParams, FILTERS_SOURCE.SEARCH_BOX);
+      });
 
-        it('should send cancel search event', () => {
-          expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
-        });
+      it('should send cancel search event', () => {
+        expect(topbarTrackingEventsService.trackCancelSearchEvent).toHaveBeenCalledWith(MOCK_SEARCH_BOX_VALUE.keywords);
       });
     });
   });
@@ -402,6 +415,27 @@ describe('TopbarComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(WallacoinsDisabledModalComponent, {
         backdrop: 'static',
         windowClass: 'modal-standard',
+      });
+    });
+  });
+
+  describe('Logo icon', () => {
+    describe('when the app url is for the standalone feature', () => {
+      beforeEach(() => standaloneSubject.next(true));
+      it('should NOT show the wallapop logo icon', () => {
+        fixture.detectChanges();
+        const logoIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector(logoIconSelector);
+
+        expect(logoIcon).toBeFalsy();
+      });
+    });
+    describe('when the app url has NOT the standalone feature', () => {
+      beforeEach(() => standaloneSubject.next(false));
+      it('should show the wallapop logo icon', () => {
+        fixture.detectChanges();
+        const logoIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector(logoIconSelector);
+
+        expect(logoIcon).toBeTruthy();
       });
     });
   });

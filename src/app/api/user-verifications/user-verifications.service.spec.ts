@@ -39,7 +39,7 @@ describe('UserVerificationsService', () => {
     });
 
     it('should retrieve all the verifications', () => {
-      service.userVerifications$.subscribe();
+      service.getVerifications().subscribe();
 
       expect(userVerificationsHttpService.get).toHaveBeenCalled();
     });
@@ -47,7 +47,7 @@ describe('UserVerificationsService', () => {
     it('should map server response to web context', () => {
       let response: UserVerifications;
 
-      service.userVerifications$.subscribe((data) => (response = data));
+      service.getVerifications().subscribe((data) => (response = data));
 
       expect(JSON.stringify(response)).toEqual(JSON.stringify(MOCK_USER_VERIFICATIONS_MAPPED));
     });
