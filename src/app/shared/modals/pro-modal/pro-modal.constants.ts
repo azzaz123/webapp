@@ -148,10 +148,9 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     },
   },
   [PRO_MODAL_TYPE.remove_card]: {
-    img: '/assets/icons/pro/modals/remove-card.svg',
+    img: '/assets/icons/pro/modals/confirm-change-card.svg',
     title: $localize`:@@web_missing_payment_method_title:Delete payment method`,
     text1: $localize`:@@web_missing_payment_method_subtitle:Without a card linked to your subscriptions, you won't be able to renew them and you will lose the benefits of being PRO. Is that what you want?`,
-    style: MODAL_STYLE.GREEN,
     buttons: {
       secondary: { text: $localize`:@@web_cancel:Cancel` },
       primary: { text: $localize`:@@web_confirm_delete_card:Yes, delete card` },
@@ -159,11 +158,11 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
   },
   [PRO_MODAL_TYPE.confirm_change_card]: {
     img: '/assets/icons/pro/modals/confirm-change-card.svg',
-    title: $localize`:@@web_confirm_payment_method:Confirm payment method`,
-    text1: $localize`:@@web_charge_this_card:The card linked to your subscriptions will be`,
+    title: $localize`:@@bank_card_change_confirm_modal_pro_user_title:This is your payment method`,
+    text1: $localize`:@@bank_card_change_confirm_modal_pro_user_description:The card you've associated has this last four digits: XXXX.`,
     buttons: {
       secondary: { text: $localize`:@@web_cancel:Cancel` },
-      primary: { text: $localize`:@@web_confirm_payment_method_yes:Confirm payment method` },
+      primary: { text: $localize`:@@bank_card_change_confirm_modal_pro_user_confirm_button:Confirm` },
     },
   },
 };
