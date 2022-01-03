@@ -3,6 +3,18 @@ import { IOption } from './option.interface';
 import { Diacritics } from './diacritics';
 
 export class OptionList {
+  private _options: Array<Option>;
+
+  /* Consider using these for performance improvement. */
+  // private _selection: Array<Option>;
+  // private _filtered: Array<Option>;
+  // private _value: Array<string>;
+
+  private _highlightedOption: Option = null;
+  private _hasShown: boolean;
+  private _hasSelected: boolean;
+  private _hasValues: boolean;
+
   get hasShown(): boolean {
     return this._hasShown;
   }
@@ -14,7 +26,7 @@ export class OptionList {
   }
 
   constructor(options: Array<IOption>) {
-    this._hasValues = options != null;
+    this._hasValues = !!options;
 
     if (!this.hasValues) {
       options = [];
@@ -74,17 +86,6 @@ export class OptionList {
   get highlightedOption(): Option {
     return this._highlightedOption;
   }
-  private _options: Array<Option>;
-
-  /* Consider using these for performance improvement. */
-  // private _selection: Array<Option>;
-  // private _filtered: Array<Option>;
-  // private _value: Array<string>;
-
-  private _highlightedOption: Option = null;
-  private _hasShown: boolean;
-  private _hasSelected: boolean;
-  private _hasValues: boolean;
 
   // v0 and v1 are assumed not to be undefined or null.
   static equalValues(v0: Array<string>, v1: Array<string>): boolean {
@@ -126,10 +127,6 @@ export class OptionList {
     this._hasSelected = false;
   }
 
-  private updateHasSelected() {
-    this._hasSelected = this.options.some((option) => option.selected);
-  }
-
   filter(term: string): boolean {
     let anyShown = false;
 
@@ -152,12 +149,6 @@ export class OptionList {
     this._hasShown = anyShown;
 
     return anyShown;
-  }
-
-  private resetFilter() {
-    this.options.forEach((option) => {
-      option.shown = true;
-    });
   }
 
   highlight() {
@@ -192,6 +183,18 @@ export class OptionList {
     }
   }
 
+  getHighlightedIndex() {
+    return this.getHighlightedIndexFromList(this.filtered);
+  }
+
+  /** Util. **/
+
+  hasShownSelected() {
+    return this.options.some((option) => {
+      return option.shown && option.selected;
+    });
+  }
+
   private clearHighlightedOption() {
     if (this.highlightedOption !== null) {
       this.highlightedOption.highlighted = false;
@@ -208,15 +211,13 @@ export class OptionList {
     return -1;
   }
 
-  getHighlightedIndex() {
-    return this.getHighlightedIndexFromList(this.filtered);
+  private updateHasSelected() {
+    this._hasSelected = this.options.some((option) => option.selected);
   }
 
-  /** Util. **/
-
-  hasShownSelected() {
-    return this.options.some((option) => {
-      return option.shown && option.selected;
+  private resetFilter() {
+    this.options.forEach((option) => {
+      option.shown = true;
     });
   }
 

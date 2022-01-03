@@ -25,6 +25,15 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   public range: [number, number] = [0, 0];
   private readonly DEFAULT_DEBOUNCE_TIME = 200;
 
+  public handleApply(): void {
+    this.applyChanges();
+  }
+
+  public handleClear(): void {
+    super.handleClear();
+    this.cleanForm();
+  }
+
   public ngOnInit(): void {
     this.initRange();
     this.updateForm();
@@ -93,15 +102,6 @@ export class RangeFilterComponent extends AbstractFilter<RangeFilterParams> impl
   private cleanForm(): void {
     this.formGroup.controls.range.setValue([this.range[0], this.range[1]]);
     this.setLabel(null, null);
-  }
-
-  public handleApply(): void {
-    this.applyChanges();
-  }
-
-  public handleClear(): void {
-    super.handleClear();
-    this.cleanForm();
   }
 
   private setValue(min: number, max: number) {

@@ -8,13 +8,13 @@
       <p class="ChangeCardModal__subtitle" i18n="@@web_change_subscription_card_subtitle">This will be the payment method linked to your subscription</p>
     </div>
     <div class="ChangeCardModal__body">
-      <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+      <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (handleSelectExistingCard)="setSavedCard($event)"
                             (hasCard)="hasCard($event)"
       ></tsl-stripe-card-selection>
       <div class="ChangeCardModal__NewCard--add" (click)="addNewCard()" *ngIf="!isNewSubscription && savedCard" i18n="@@web_add_card">Add card</div>
       <div class="ChangeCardModal__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n="@@web_use_a_saved_card">Use a saved card</div>
       <tsl-stripe-card-element *ngIf="showCard" [type]="'setDefault'" [cart]="cart"
-                                  (stripeCard)="setCardInfo($event)" (onStripeSetDefaultCard)="setNewDefaultCard($event)" [loading]="loading"
+                                  (stripeCard)="setCardInfo($event)" (handleStripeSetDefaultCard)="setNewDefaultCard($event)" [loading]="loading"
       ></tsl-stripe-card-element>
       <tsl-button [hidden]="!savedCard"
                   className="btn-block btn-primary"

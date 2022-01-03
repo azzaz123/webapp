@@ -35,10 +35,13 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   private extendedOptions: TemplateMultiSelectFormOption[] = [];
   private extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
   private shownChildrenOptionIdSubject: BehaviorSubject<string> = new BehaviorSubject(null);
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public extendedOptions$: Observable<TemplateMultiSelectFormOption[]> = this.extendedOptionsSubject.asObservable();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public shownChildrenOptionId$: Observable<string> = this.shownChildrenOptionIdSubject.asObservable();
-
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public maxLengthReached: boolean = false;
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public maxLength: number;
 
   public writeValue(value: MultiSelectValue): void {

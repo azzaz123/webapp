@@ -1,5 +1,4 @@
-import { AfterContentInit, Directive } from '@angular/core';
-import { ContentChildren, QueryList } from '@angular/core';
+import { AfterContentInit, Directive, ContentChildren, QueryList } from '@angular/core';
 import { AdSlotConfiguration } from '@core/ads/models';
 import { AdsService } from '@core/ads/services';
 import { Variant } from '@core/experimentation/models';

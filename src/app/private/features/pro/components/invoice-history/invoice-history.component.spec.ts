@@ -187,6 +187,6 @@ describe('InvoiceComponent', () => {
     const tab = fixture.debugElement
       .queryAll(By.directive(TabComponent))
       .find((t) => t.componentInstance.tabsBarElement.value === filterType);
-    tab.triggerEventHandler('onClick', { value: filterType });
+    tab.triggerEventHandler('handleOnClick', { value: filterType });
   };
 });

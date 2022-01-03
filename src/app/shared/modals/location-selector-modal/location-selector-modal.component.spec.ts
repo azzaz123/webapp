@@ -4,7 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '@shared/button/button.component';
-import { LocationSelectorModal } from './location-selector-modal.component';
+import { LocationSelectorModalComponent } from './location-selector-modal.component';
 import { UserService } from '@core/user/user.service';
 import { FormBuilder } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -13,8 +13,8 @@ import { MOCK_USER_NO_LOCATION } from '@private/features/upload/pages/upload-car
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('BumpSuggestionModalComponent', () => {
-  let component: LocationSelectorModal;
-  let fixture: ComponentFixture<LocationSelectorModal>;
+  let component: LocationSelectorModalComponent;
+  let fixture: ComponentFixture<LocationSelectorModalComponent>;
   let activeModal: NgbActiveModal;
   let userService: UserService;
   let errorService: ErrorsService;
@@ -22,7 +22,7 @@ describe('BumpSuggestionModalComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LocationSelectorModal, ButtonComponent],
+      declarations: [LocationSelectorModalComponent, ButtonComponent],
       providers: [
         FormBuilder,
         {
@@ -51,7 +51,7 @@ describe('BumpSuggestionModalComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LocationSelectorModal);
+    fixture = TestBed.createComponent(LocationSelectorModalComponent);
     component = fixture.componentInstance;
     activeModal = TestBed.inject(NgbActiveModal);
     userService = TestBed.inject(UserService);

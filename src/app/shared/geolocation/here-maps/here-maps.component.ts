@@ -32,6 +32,24 @@ export class HereMapsComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   constructor(private hereMapsService: HereMapsService) {}
 
+  ngOnChanges() {
+    if (this.map) {
+      const coordinates = this.getCenter();
+      this.map.setCenter(coordinates);
+      if (!this.isApproximateLocation) {
+        this.addMarker(coordinates);
+      } else {
+        this.addCircle(coordinates);
+      }
+      this.map.setZoom(this.zoom);
+    }
+  }
+  ngOnDestroy() {
+    if (this.mapSubscription) {
+      this.mapSubscription.unsubscribe();
+    }
+  }
+
   ngAfterViewInit() {
     this.isLoading = this.hereMapsService.isLibraryLoading$();
     if (!this.coordinates) {
@@ -47,6 +65,26 @@ export class HereMapsComponent implements AfterViewInit, OnChanges, OnDestroy {
         this.initializeMap();
       });
   }
+  public createMap(defaultLayers: H.service.DefaultLayers) {
+    return new H.Map(this.mapEl.nativeElement, defaultLayers.vector.normal.map);
+  }
+
+  public createIcon(icon: string) {
+    return new H.map.Icon(icon);
+  }
+
+  public createCircle(coordinates: any) {
+    return new H.map.Circle(coordinates, 650, {
+      style: {
+        fillColor: 'rgba(51, 51, 51, 0.15)',
+        lineWidth: 0,
+      },
+    });
+  }
+
+  public createMarker(coordinates: any, icon: H.map.Icon) {
+    return new H.map.Marker(coordinates, { icon });
+  }
 
   private initializeMap(): void {
     const defaultLayers = this.hereMapsService.platform.createDefaultLayers();
@@ -60,19 +98,6 @@ export class HereMapsComponent implements AfterViewInit, OnChanges, OnDestroy {
       } else {
         this.addCircle(coordinates);
       }
-    }
-  }
-
-  ngOnChanges() {
-    if (this.map) {
-      const coordinates = this.getCenter();
-      this.map.setCenter(coordinates);
-      if (!this.isApproximateLocation) {
-        this.addMarker(coordinates);
-      } else {
-        this.addCircle(coordinates);
-      }
-      this.map.setZoom(this.zoom);
     }
   }
 
@@ -106,32 +131,5 @@ export class HereMapsComponent implements AfterViewInit, OnChanges, OnDestroy {
       lat: this.coordinates.latitude,
       lng: this.coordinates.longitude,
     };
-  }
-
-  public createMap(defaultLayers: H.service.DefaultLayers) {
-    return new H.Map(this.mapEl.nativeElement, defaultLayers.vector.normal.map);
-  }
-
-  public createIcon(icon: string) {
-    return new H.map.Icon(icon);
-  }
-
-  public createCircle(coordinates: any) {
-    return new H.map.Circle(coordinates, 650, {
-      style: {
-        fillColor: 'rgba(51, 51, 51, 0.15)',
-        lineWidth: 0,
-      },
-    });
-  }
-
-  public createMarker(coordinates: any, icon: H.map.Icon) {
-    return new H.map.Marker(coordinates, { icon });
-  }
-
-  ngOnDestroy() {
-    if (this.mapSubscription) {
-      this.mapSubscription.unsubscribe();
-    }
   }
 }

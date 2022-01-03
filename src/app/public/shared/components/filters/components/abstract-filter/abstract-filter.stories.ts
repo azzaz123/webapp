@@ -51,10 +51,6 @@ class StoryAbstractFilterComponent extends AbstractFilter<{}> {
   @Output() storyBubbleApply: EventEmitter<void> = new EventEmitter();
   @Output() storyClick: EventEmitter<void> = new EventEmitter();
 
-  protected _hasValue(): boolean {
-    return this.storyHasCustomValue ? true : super._hasValue();
-  }
-
   public getFilterCounter(): number {
     return this.storyHasCustomCounter ? 9 : super.getFilterCounter();
   }
@@ -72,6 +68,10 @@ class StoryAbstractFilterComponent extends AbstractFilter<{}> {
   }
 
   public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {}
+
+  protected _hasValue(): boolean {
+    return this.storyHasCustomValue ? true : super._hasValue();
+  }
 }
 
 export default {

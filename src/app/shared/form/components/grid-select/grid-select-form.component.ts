@@ -26,8 +26,8 @@ export class GridSelectFormComponent extends AbstractFormComponent<string[]> imp
   @Input() isMultiselect?: boolean;
   @Input() isHoverMainColor?: boolean;
 
-  private selectedOptions: string[] = [];
   public gridClasses: string[] = [];
+  private selectedOptions: string[] = [];
 
   ngOnInit(): void {
     this.setGridColumns();

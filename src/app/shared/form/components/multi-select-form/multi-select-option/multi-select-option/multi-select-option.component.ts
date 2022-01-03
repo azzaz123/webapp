@@ -15,19 +15,16 @@ export class MultiSelectOptionComponent {
     this.hasChildren = !!value.children?.length;
     this.updateChildSelection();
   }
+
   public data: TemplateMultiSelectFormOption;
   public hasChildren = false;
+  public selectedChildrenCount: number;
+
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
     if (this.isDisabled) {
       event.preventDefault();
     }
-  }
-
-  public selectedChildrenCount: number;
-
-  private updateChildSelection(): void {
-    this.selectedChildrenCount = this.getSelectedChildrenCount();
   }
 
   public getSelectedChildrenCount(): number {
@@ -38,5 +35,8 @@ export class MultiSelectOptionComponent {
 
   public toggleCheckbox(): void {
     this.toggleOnChange.emit();
+  }
+  private updateChildSelection(): void {
+    this.selectedChildrenCount = this.getSelectedChildrenCount();
   }
 }
