@@ -59,10 +59,10 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
 
     if (isRequestAndSeller) {
       this.openAcceptScreenAwarenessModal();
-    } else {
-      const requestId: string = this.isPendingTransaction(historicElement) ? historicElement.payload.requestId : historicElement.id;
-      this.redirectToTTS(requestId);
+      return;
     }
+    const requestId: string = this.isPendingTransaction(historicElement) ? historicElement.payload.requestId : historicElement.id;
+    this.redirectToTTS(requestId);
   }
 
   private redirectToTTS(requestId: string): void {
