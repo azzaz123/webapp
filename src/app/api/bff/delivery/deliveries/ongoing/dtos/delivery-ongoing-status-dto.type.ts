@@ -1,5 +1,4 @@
 export type DeliveryOngoingStatusDto =
-  | 'REQUEST_CREATED'
   | 'TRANSACTION_CREATED'
   | 'DELIVERED_TO_CARRIER'
   | 'IN_TRANSIT'

@@ -25,5 +25,5 @@ interface OngoingDeliveryAsBuyerDto {
     image: string;
     name: string;
   };
-  status: DeliveryOngoingStatusDto;
+  status: DeliveryOngoingStatusDto | 'REQUEST_CREATED';
 }
