@@ -1,4 +1,4 @@
-import { DeliveryOngoingStatusDto } from './delivery-ongoing-status-dto.type';
+import { DeliveryOngoingSellerStatusDto } from './delivery-ongoing-status-dto.type';
 
 export interface DeliveriesOngoingAsSellerDto {
   ongoing_deliveries: OngoingDeliveryAsSellerDto[];
@@ -12,7 +12,7 @@ interface OngoingDeliveryAsSellerDto {
   };
   item: {
     cost: {
-      amount: 0;
+      amount: number;
       currency: string;
     };
     hash: string;
@@ -25,5 +25,5 @@ interface OngoingDeliveryAsSellerDto {
     image: string;
     name: string;
   };
-  status: DeliveryOngoingStatusDto;
+  status: DeliveryOngoingSellerStatusDto;
 }

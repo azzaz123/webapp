@@ -1,4 +1,4 @@
-export type DeliveryOngoingStatusDto =
+export type DeliveryOngoingSellerStatusDto =
   | 'TRANSACTION_CREATED'
   | 'DELIVERED_TO_CARRIER'
   | 'IN_TRANSIT'
@@ -17,3 +17,5 @@ export type DeliveryOngoingStatusDto =
   | 'DISPUTE_ESCALATED_BY_SELLER'
   | 'TRANSACTION_DEFAULT'
   | 'REQUEST_DEFAULT';
+
+export type DeliveryOngoingBuyerStatusDto = DeliveryOngoingSellerStatusDto | 'REQUEST_CREATED';

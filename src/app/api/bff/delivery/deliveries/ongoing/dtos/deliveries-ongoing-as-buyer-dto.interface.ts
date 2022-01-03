@@ -1,4 +1,4 @@
-import { DeliveryOngoingStatusDto } from './delivery-ongoing-status-dto.type';
+import { DeliveryOngoingBuyerStatusDto } from './delivery-ongoing-status-dto.type';
 
 export interface DeliveriesOngoingAsBuyerDto {
   ongoing_deliveries: OngoingDeliveryAsBuyerDto[];
@@ -25,5 +25,5 @@ interface OngoingDeliveryAsBuyerDto {
     image: string;
     name: string;
   };
-  status: DeliveryOngoingStatusDto | 'REQUEST_CREATED';
+  status: DeliveryOngoingBuyerStatusDto;
 }
