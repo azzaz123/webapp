@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCardOption } from '../../../core/payments/payment.interface';
+import { FinancialCardOption, SetupIntent, SetupIntentResponse } from '../../../core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from 'app/core/payments/payment.service';
 import { EventService } from 'app/core/event/event.service';
 import { StripeService } from 'app/core/stripe/stripe.service';
@@ -89,7 +89,7 @@ export class ChangeCardModalComponent implements OnInit {
     this.setDefaultCard(paymentIntent.payment_method);
   }
 
-  public setExistingDefaultCard() {
+  public setExistingDefaultCard(): void {
     if (!this.selectedCard) return;
     if (this.isNewSubscription) {
       this.activeModal.close(this.card);
@@ -99,11 +99,14 @@ export class ChangeCardModalComponent implements OnInit {
     modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.confirm_change_card];
     modalRef.componentInstance.modalConfig.text1 = $localize`:@@bank_card_change_confirm_modal_pro_user_description:The card you've associated has this last four digits: ${this.card.stripeCard.last4}:INTERPOLATION:.`;
 
-    modalRef.result.then((action: MODAL_ACTION) => {
-      if (action === MODAL_ACTION.PRIMARY_BUTTON) {
-        this.confirmCardChange();
-      }
-    });
+    modalRef.result.then(
+      (action: MODAL_ACTION) => {
+        if (action === MODAL_ACTION.PRIMARY_BUTTON) {
+          this.confirmCardChange();
+        }
+      },
+      () => {}
+    );
   }
 
   private confirmCardChange() {
@@ -112,7 +115,7 @@ export class ChangeCardModalComponent implements OnInit {
     this.stripeService.getSetupIntent().subscribe((clientSecret: any) => {
       this.stripeService
         .createDefaultCard(clientSecret.setup_intent, this.card.id)
-        .then((response: any) => {
+        .then((response: SetupIntentResponse) => {
           if (response.setupIntent.status && response.setupIntent.status.toUpperCase() === PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
             this.setDefaultCard(response.setupIntent.payment_method);
           } else {
