@@ -4,7 +4,7 @@ export interface DeliveriesOngoingAsSellerDto {
   ongoing_deliveries: OngoingDeliveryAsSellerDto[];
 }
 
-interface OngoingDeliveryAsSellerDto {
+export interface OngoingDeliveryAsSellerDto {
   buyer: {
     hash: string;
     image: string;
