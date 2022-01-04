@@ -19,11 +19,11 @@ export const LOCAL_STORAGE_TRX_AWARENESS = 'trx-awareness';
 export class DeliveryComponent implements OnInit, OnDestroy {
   readonly buysNavLink: NavLink = {
     id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`,
-    display: $localize`:@@web_purchases:Purchases`,
+    display: $localize`:@@you_menu_purchases_label:Purchases`,
   };
   readonly sellsNavLink: NavLink = {
     id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`,
-    display: $localize`:@@web_sales:Sales`,
+    display: $localize`:@@you_menu_sales_label:Sales`,
   };
   readonly deliveryAddressNavLink: NavLink = {
     id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,

@@ -53,6 +53,6 @@ export class StreamlineComponent implements OnInit {
   }
 
   private get isBuysPath(): boolean {
-    return this.router.url.indexOf(`/${DELIVERY_PATHS.BUYS}`) >= 0;
+    return this.router.url.includes(`/${DELIVERY_PATHS.BUYS}`);
   }
 }
