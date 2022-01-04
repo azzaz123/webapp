@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { User } from '@core/user/user';
 import { ErrorsService } from '@core/errors/errors.service';
 import { UserService } from '@core/user/user.service';
@@ -17,7 +17,7 @@ import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
   templateUrl: './picture-upload.component.html',
   styleUrls: ['./picture-upload.component.scss'],
 })
-export class PictureUploadComponent implements OnInit {
+export class PictureUploadComponent implements OnInit, OnDestroy {
   @Input() user: User;
   file: UploadFile;
   options: NgUploaderOptions;
@@ -41,6 +41,15 @@ export class PictureUploadComponent implements OnInit {
     this.subscribeUploadEvents();
   }
 
+  ngOnDestroy() {
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
+  }
+
+  public onFilesAdded(event: FileList): void {
+    this.uploaderService.handleFiles(event, this.options, this.imageType);
+  }
   private subscribeUploadEvents(): void {
     this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe((event: UploadOutput) => {
       if (event.imageType === this.imageType) {
@@ -98,15 +107,5 @@ export class PictureUploadComponent implements OnInit {
 
   private showError(message?: string): void {
     this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR, message || '');
-  }
-
-  public onFilesAdded(event: FileList): void {
-    this.uploaderService.handleFiles(event, this.options, this.imageType);
-  }
-
-  ngOnDestroy() {
-    if (this.eventsSubscription) {
-      this.eventsSubscription.unsubscribe();
-    }
   }
 }

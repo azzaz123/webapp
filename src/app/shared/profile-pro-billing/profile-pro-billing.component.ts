@@ -32,18 +32,18 @@ export enum COMPONENT_TYPE {
   styleUrls: ['./profile-pro-billing.component.scss'],
 })
 export class ProfileProBillingComponent implements CanComponentDeactivate, OnInit, OnDestroy {
+  @Input() containerType: COMPONENT_TYPE;
+  @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
+  @Output() billingInfoNotUpdateRequired: EventEmitter<void> = new EventEmitter();
+  @Output() billingInfoFormSaved: EventEmitter<FormGroup> = new EventEmitter();
+  @ViewChild(ProfileFormComponent, { static: true })
+  formComponent: ProfileFormComponent;
   public billingForm: FormGroup;
   public isNewBillingInfoForm = true;
   public loading = true;
   public type: string;
   public isSubmitShown: boolean;
   private savedData: unknown;
-  @ViewChild(ProfileFormComponent, { static: true })
-  formComponent: ProfileFormComponent;
-  @Output() billingInfoFormChange: EventEmitter<FormGroup> = new EventEmitter();
-  @Output() billingInfoNotUpdateRequired: EventEmitter<void> = new EventEmitter();
-  @Output() billingInfoFormSaved: EventEmitter<FormGroup> = new EventEmitter();
-  @Input() containerType: COMPONENT_TYPE;
 
   constructor(
     private fb: FormBuilder,
@@ -262,7 +262,8 @@ export class ProfileProBillingComponent implements CanComponentDeactivate, OnIni
     if (Validators.required(control)) {
       return null;
     }
-    const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const pattern: RegExp =
+      /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
     return pattern.test(control.value) ? null : { email: true };
   }

@@ -24,7 +24,6 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 export class CartComponent implements OnInit, OnDestroy {
   @Input() provincialBump: boolean;
   @Input() creditInfo: CreditInfo;
-  private active = true;
   public cart: CartBase;
   public types: string[] = BUMP_TYPES;
   public hasSavedCard = true;
@@ -34,6 +33,8 @@ export class CartComponent implements OnInit, OnDestroy {
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
+
+  private active = true;
 
   constructor(
     private cartService: CartService,
@@ -105,6 +106,35 @@ export class CartComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
+  public addNewCard() {
+    this.showCard = true;
+    this.savedCard = false;
+  }
+
+  public removeNewCard() {
+    this.showCard = false;
+    this.savedCard = true;
+  }
+
+  public setSavedCard(selectedCard: FinancialCardOption) {
+    this.showCard = false;
+    this.savedCard = true;
+    this.selectedCard = true;
+    this.setCardInfo(selectedCard);
+  }
+
+  public handleIconPath(type: string): string {
+    const iconBump = type.replace('bump', '');
+    return `/assets/icons/wing-${iconBump}.svg`;
+  }
+
+  public hasCard(hasCard: boolean) {
+    this.hasSavedCard = hasCard;
+    if (!hasCard) {
+      this.addNewCard();
+    }
+  }
+
   public setCardInfo(card: any): void {
     this.card = card;
   }
@@ -158,13 +188,6 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
-  public hasCard(hasCard: boolean) {
-    this.hasSavedCard = hasCard;
-    if (!hasCard) {
-      this.addNewCard();
-    }
-  }
-
   get totalToPay(): number {
     if (!this.cart) {
       return 0;
@@ -187,27 +210,5 @@ export class CartComponent implements OnInit, OnDestroy {
     } else {
       return -this.creditInfo.credit;
     }
-  }
-
-  public addNewCard() {
-    this.showCard = true;
-    this.savedCard = false;
-  }
-
-  public removeNewCard() {
-    this.showCard = false;
-    this.savedCard = true;
-  }
-
-  public setSavedCard(selectedCard: FinancialCardOption) {
-    this.showCard = false;
-    this.savedCard = true;
-    this.selectedCard = true;
-    this.setCardInfo(selectedCard);
-  }
-
-  public handleIconPath(type: string): string {
-    const iconBump = type.replace('bump', '');
-    return `/assets/icons/wing-${iconBump}.svg`;
   }
 }

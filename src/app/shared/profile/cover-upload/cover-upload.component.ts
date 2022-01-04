@@ -20,7 +20,6 @@ import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
 export class CoverUploadComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() isPro: boolean;
-
   @Output() clickNotPro: EventEmitter<null> = new EventEmitter();
 
   file: UploadFile;
@@ -45,12 +44,14 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
     this.subscribeUploadEvents();
   }
 
-  private subscribeUploadEvents(): void {
-    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe((event: UploadOutput) => {
-      if (event.imageType === this.imageType) {
-        this.onUploadOutput(event);
-      }
-    });
+  ngOnDestroy() {
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
+  }
+
+  public onFilesAdded(event: FileList): void {
+    this.uploaderService.handleFiles(event, this.options, this.imageType);
   }
 
   public onUploadOutput(output: UploadOutput): void {
@@ -67,6 +68,14 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
         this.file = null;
         break;
     }
+  }
+
+  private subscribeUploadEvents(): void {
+    this.eventsSubscription = this.uploaderService.serviceEvents$.subscribe((event: UploadOutput) => {
+      if (event.imageType === this.imageType) {
+        this.onUploadOutput(event);
+      }
+    });
   }
 
   private uploadPicture(): void {
@@ -102,15 +111,5 @@ export class CoverUploadComponent implements OnInit, OnDestroy {
 
   private showError(message?: string): void {
     this.errorsService.i18nError(TRANSLATION_KEY.SERVER_ERROR, message || '');
-  }
-
-  public onFilesAdded(event: FileList): void {
-    this.uploaderService.handleFiles(event, this.options, this.imageType);
-  }
-
-  ngOnDestroy() {
-    if (this.eventsSubscription) {
-      this.eventsSubscription.unsubscribe();
-    }
   }
 }

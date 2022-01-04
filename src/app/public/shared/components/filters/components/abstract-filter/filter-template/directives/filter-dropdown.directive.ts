@@ -10,10 +10,8 @@ export const DROPDOWN_TOP_POSITION = 124;
 export class FilterDropdownDirective implements OnChanges, OnDestroy {
   @Input() public dropdownOpened: boolean;
   @Output() openChange: EventEmitter<boolean> = new EventEmitter();
-
-  constructor(private elementRef: ElementRef) {}
-
   private closeDropdownListener;
+  constructor(private elementRef: ElementRef) {}
 
   ngOnChanges(changes: SimpleChanges) {
     const { currentValue: dropdownOpened } = changes.dropdownOpened;

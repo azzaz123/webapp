@@ -5,7 +5,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   TemplateRef,
   ViewChild,
@@ -59,13 +58,6 @@ export class DropdownListComponent implements AfterViewInit, OnChanges {
     this.setView();
   }
 
-  private setView(): void {
-    this.moveHighlightedIntoView();
-    if (!this.multiple && this.filterEnabled) {
-      this.filterInput?.nativeElement.focus();
-    }
-  }
-
   onOptionsListClick() {
     this.optionsListClick.emit(null);
   }
@@ -98,16 +90,6 @@ export class DropdownListComponent implements AfterViewInit, OnChanges {
     this.optionClicked.emit(option);
   }
 
-  /** Initialization. **/
-
-  private optionsReset() {
-    if (!this.optionList) {
-      return;
-    }
-    this.optionList.filter('');
-    this.optionList.highlight();
-  }
-
   moveHighlightedIntoView() {
     const list = this.optionsList?.nativeElement;
     if (!list) {
@@ -132,6 +114,22 @@ export class DropdownListComponent implements AfterViewInit, OnChanges {
       } else if (itemTop < viewTop) {
         list.scrollTop = itemTop;
       }
+    }
+  }
+  /** Initialization. **/
+
+  private optionsReset() {
+    if (!this.optionList) {
+      return;
+    }
+    this.optionList.filter('');
+    this.optionList.highlight();
+  }
+
+  private setView(): void {
+    this.moveHighlightedIntoView();
+    if (!this.multiple && this.filterEnabled) {
+      this.filterInput?.nativeElement.focus();
     }
   }
 
