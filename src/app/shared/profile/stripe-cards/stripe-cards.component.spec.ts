@@ -141,7 +141,7 @@ describe('StripeCardsComponent', () => {
         component.openDeleteCardModal(STRIPE_CARD_OPTION_SUBSCRIPTION);
       });
 
-      it('should open NoCardModalComponent modal', fakeAsync(() => {
+      it('should open pro modal with remove card configuration', fakeAsync(() => {
         tick();
 
         expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
@@ -184,7 +184,7 @@ describe('StripeCardsComponent', () => {
         component.openDeleteCardModal(STRIPE_CARD_OPTION_SUBSCRIPTION);
       });
 
-      it('should open NoCardModalComponent modal', fakeAsync(() => {
+      it('should open pro modal with remove card configuration', fakeAsync(() => {
         tick();
         fixture.detectChanges();
 
@@ -222,7 +222,7 @@ describe('StripeCardsComponent', () => {
         component.openDeleteCardModal(STRIPE_CARD_OPTION);
       });
 
-      it('should open NoCardModalComponent modal', fakeAsync(() => {
+      it('should open confirmation modal', fakeAsync(() => {
         tick();
 
         expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
