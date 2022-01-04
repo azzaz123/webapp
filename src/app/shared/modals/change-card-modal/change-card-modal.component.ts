@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCardOption, SetupIntent, SetupIntentResponse } from '../../../core/payments/payment.interface';
+import { FinancialCardOption, SetupIntentResponse } from '../../../core/payments/payment.interface';
 import { PAYMENT_RESPONSE_STATUS } from 'app/core/payments/payment.service';
 import { EventService } from 'app/core/event/event.service';
 import { StripeService } from 'app/core/stripe/stripe.service';
