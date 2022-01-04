@@ -35,6 +35,7 @@ export class FilterGroupComponent implements OnChanges {
 
   private hostConfigsSubject = new BehaviorSubject<FilterHostConfig[]>([]);
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public filterConfigs$ = this.hostConfigsSubject.asObservable();
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}

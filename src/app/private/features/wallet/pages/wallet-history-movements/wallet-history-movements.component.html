@@ -1,5 +1,5 @@
 <div class="WalletHistoryMovements mt-3">
-  <tsl-tabs-bar [tabsBarElements]="this.tabBarElements" (onChange)="onChangeFilter($event.value)"></tsl-tabs-bar>
+  <tsl-tabs-bar [tabsBarElements]="this.tabBarElements" (handleOnClick)="onChangeFilter($event.value)"></tsl-tabs-bar>
   <tsl-historic-list
     *ngIf="historicList$ | async as historicList"
     [historicList]="historicList"

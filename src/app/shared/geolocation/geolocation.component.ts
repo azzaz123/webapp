@@ -14,14 +14,14 @@ import { UserService } from '../../core/user/user.service';
   styleUrls: ['./geolocation.component.scss'],
 })
 export class GeolocationComponent implements OnInit, OnChanges {
-  private MIN_LENGTH = 3;
-  public focus: boolean;
-  @Output() public newCoordinate = new EventEmitter<Coordinate>();
   @Input() value: string;
   @Input() updateLocation = true;
   @Input() fromCookie = true;
-  public model: any = { description: '' };
+  @Output() public newCoordinate = new EventEmitter<Coordinate>();
   @ViewChild('pacInputHeader', { static: true }) searchInputEl: ElementRef;
+  public focus: boolean;
+  public model: any = { description: '' };
+  private MIN_LENGTH = 3;
 
   constructor(private geolocationService: GeolocationService, private cookieService: CookieService, private userService: UserService) {}
 

@@ -24,7 +24,7 @@
       <div class="total" i18n>Price</div>
       <div class="amount">{{pack.price | customCurrency}}</div>
     </div>
-    <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (onSelectExistingCard)="setSavedCard($event)"
+    <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (handleSelectExistingCard)="setSavedCard($event)"
                                (hasCard)="hasCard($event)"
     ></tsl-stripe-card-selection>
     <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n>+ Add another credit card</div>

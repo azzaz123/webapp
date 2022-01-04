@@ -19,7 +19,6 @@ export class ReviewModalComponent implements OnInit, OnChanges {
   @Input() thread?: string;
   @Output() finishedReview = new EventEmitter();
   @Output() backPress = new EventEmitter();
-
   public seller: User;
   public userName: string;
   public score: number;
@@ -28,21 +27,6 @@ export class ReviewModalComponent implements OnInit, OnChanges {
   public reviewCommentLength = 0;
 
   constructor(public activeModal: NgbActiveModal, private reviewService: ReviewService) {}
-
-  ngOnInit() {
-    this.setUsername();
-    this.price = this.item.salePrice;
-  }
-
-  ngOnChanges() {
-    this.setUsername();
-  }
-
-  private setUsername() {
-    if (this.userToReview) {
-      this.userName = this.userToReview.micro_name;
-    }
-  }
 
   public countChars(event) {
     this.reviewCommentLength = event.target.value.length;
@@ -74,5 +58,20 @@ export class ReviewModalComponent implements OnInit, OnChanges {
 
   public onRated(score: number) {
     this.score = score;
+  }
+
+  ngOnInit() {
+    this.setUsername();
+    this.price = this.item.salePrice;
+  }
+
+  ngOnChanges() {
+    this.setUsername();
+  }
+
+  private setUsername() {
+    if (this.userToReview) {
+      this.userName = this.userToReview.micro_name;
+    }
   }
 }
