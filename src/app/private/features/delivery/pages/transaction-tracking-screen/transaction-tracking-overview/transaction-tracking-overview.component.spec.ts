@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
@@ -9,11 +9,11 @@ import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wa
 import { SharedErrorActionService } from '@shared/error-action';
 import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingOverviewComponent } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-overview/transaction-tracking-overview.component';
+import { TransactionTrackingScreenStoreService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 import { of, throwError } from 'rxjs';
-import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 describe('TransactionTrackingOverviewComponent', () => {
   const MOCK_TRANSACTION_TRACKING_ID = 'Laia';
@@ -131,6 +131,8 @@ describe('TransactionTrackingOverviewComponent', () => {
         transactionTrackingExpected = transactionTrackingReceived;
       });
 
+      component.ngOnInit();
+
       expect(transactionTrackingExpected).toStrictEqual(MOCK_TRANSACTION_TRACKING);
     });
 
@@ -139,6 +141,8 @@ describe('TransactionTrackingOverviewComponent', () => {
       component.transactionTrackingDetails$.subscribe((transactionTrackingDetailsReceived: TransactionTrackingDetails) => {
         transactionTrackingDetailsExpected = transactionTrackingDetailsReceived;
       });
+
+      component.ngOnInit();
 
       expect(transactionTrackingDetailsExpected).toStrictEqual(MOCK_TRANSACTION_TRACKING_DETAILS);
     });
@@ -195,17 +199,44 @@ describe('TransactionTrackingOverviewComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should render the transaction tracking header ', () => {
-      expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeTruthy();
-    });
+    it('should render the transaction tracking header ', fakeAsync(() => {
+      component.transactionTracking$.subscribe(() => {
+        fixture.detectChanges();
 
-    it('should render the general info ', () => {
-      expect(de.query(By.css(generalInfoSelector))).toBeTruthy();
-    });
+        expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeTruthy();
 
-    it('should render the transaction tracking status info ', () => {
-      expect(de.query(By.css(transactionTrackingStatusInfoWrapperSelector))).toBeTruthy();
-    });
+        flush();
+      });
+
+      component.ngOnInit();
+      tick();
+    }));
+
+    it('should render the general info ', fakeAsync(() => {
+      component.transactionTracking$.subscribe(() => {
+        fixture.detectChanges();
+
+        expect(de.query(By.css(generalInfoSelector))).toBeTruthy();
+
+        flush();
+      });
+
+      component.ngOnInit();
+      tick();
+    }));
+
+    it('should render the transaction tracking status info ', fakeAsync(() => {
+      component.transactionTracking$.subscribe(() => {
+        fixture.detectChanges();
+
+        expect(de.query(By.css(transactionTrackingStatusInfoWrapperSelector))).toBeTruthy();
+
+        flush();
+      });
+
+      component.ngOnInit();
+      tick();
+    }));
   });
 
   describe('when we receive tracking details info...', () => {
@@ -215,9 +246,18 @@ describe('TransactionTrackingOverviewComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should render the transaction tracking status info ', () => {
-      expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeTruthy();
-    });
+    it('should render the transaction tracking status info ', fakeAsync(() => {
+      component.transactionTrackingDetails$.subscribe(() => {
+        fixture.detectChanges();
+
+        expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeTruthy();
+
+        flush();
+      });
+
+      component.ngOnInit();
+      tick();
+    }));
   });
 
   describe('WHEN there is an error retrieving data', () => {
