@@ -222,7 +222,7 @@ export class SubscriptionsComponent implements OnInit {
 
     // Subscription was previously canceled
     if (this.subscriptionsService.isStripeSubscription(subscription) && subscription.subscribed_until) {
-      return this.manageSubscriptionService.cancelSubscription(subscription);
+      return this.manageSubscriptionService.continueSubscription(subscription);
     }
   }
 

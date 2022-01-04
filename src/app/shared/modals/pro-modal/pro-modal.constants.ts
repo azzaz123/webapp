@@ -13,6 +13,7 @@ export enum PRO_MODAL_TYPE {
   reactivation,
   profile_pro_fields,
   cancel_subscription,
+  continue_subscription,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -148,12 +149,21 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
   },
   [PRO_MODAL_TYPE.cancel_subscription]: {
     img: '/assets/icons/pro/modals/cancel-subscription.svg',
-    title: null,
-    text1: $localize`:@@web_profile_modal_cancel_subscription_238:It’s sad that you are leaving us. You can return whenever you want, we’ll be waiting for you!`,
+    title: $localize`:@@cancel_subscription_modal_pro_user_title:It’s sad that you are leaving us. You can return whenever you want, we’ll be waiting for you!`,
+    text1: $localize`:@@cancel_subscription_modal_pro_user_description:It’s sad that you are leaving us. You can return whenever you want, we’ll be waiting for you!`,
     style: MODAL_STYLE.GREEN,
     buttons: {
-      secondary: { text: $localize`:@@web_profile_modal_cancel_subscription_240:No, I want to keep my subscription.` },
-      primary: { text: $localize`:@@web_profile_modal_cancel_subscription_239:Yes, I want to cancel my subscription.` },
+      secondary: { text: $localize`:@@cancel_subscription_modal_pro_user_keep_button:No, I want to keep my subscription.` },
+      primary: { text: $localize`:@@cancel_subscription_modal_pro_user_confirm_cancelation_button:Yes, I want to cancel my subscription.` },
+    },
+  },
+  [PRO_MODAL_TYPE.continue_subscription]: {
+    img: '/assets/icons/pro/modals/cancel-subscription.svg',
+    title: null,
+    text1: $localize`:@@web_profile_modal_continue_subscription_245:It’s never too late! You can undo the cancelation and keep enjoying the benefits.`,
+    buttons: {
+      secondary: { text: $localize`:@@web_profile_modal_continue_subscription_247:No, I want to cancel subscription.` },
+      primary: { text: $localize`:@@web_profile_modal_continue_subscription_246:Yes, I want to keep my subscription.` },
     },
   },
 };

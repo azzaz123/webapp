@@ -34,13 +34,19 @@ export class ManageSubscriptionService {
     });
   }
 
-  private openCancelSubscriptionModal(observer: Subscriber<boolean>, subscription: SubscriptionsResponse) {
+  public continueSubscription(subscription: SubscriptionsResponse): Observable<boolean> {
+    return new Observable((observer: Subscriber<boolean>) => {
+      this.openContinueSubscriptionModal(observer, subscription);
+    });
+  }
+
+  private openContinueSubscriptionModal(observer: Subscriber<boolean>, subscription: SubscriptionsResponse) {
     const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
       windowClass: 'pro-modal',
     });
 
-    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.cancel_subscription];
-    modalRef.componentInstance.modalConfig.title = $localize`:@@web_profile_modal_cancel_subscription_237:${subscription.category_name}:INTERPOLATION:?`;
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.continue_subscription];
+    modalRef.componentInstance.modalConfig.title = $localize`:@@web_continue_subscription_title:Would you like to stay subscribed to Wallapop PRO ${subscription.category_name}:INTERPOLATION:?`;
     modalRef.result.then((result: MODAL_ACTION) => {
       if (result === MODAL_ACTION.PRIMARY_BUTTON) {
         this.confirmCancelSubscription(observer, subscription);
@@ -48,6 +54,52 @@ export class ManageSubscriptionService {
       }
       observer.error();
     });
+  }
+
+  private openCancelSubscriptionModal(observer: Subscriber<boolean>, subscription: SubscriptionsResponse) {
+    const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
+      windowClass: 'pro-modal',
+    });
+
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.cancel_subscription];
+    modalRef.result.then((result: MODAL_ACTION) => {
+      if (result === MODAL_ACTION.PRIMARY_BUTTON) {
+        this.confirmContinueSubscription(observer, subscription);
+        return;
+      }
+      observer.error();
+    });
+  }
+
+  private confirmContinueSubscription(observer: Subscriber<boolean>, subscription): void {
+    observer.next(true);
+    this.subscriptionsService.continueSubscription(subscription.selected_tier_id).subscribe(
+      (response) => {
+        if (response.status === STRIPE_SUCCESSFUL_CODE) {
+          this.toastService.show({
+            title: $localize`:@@web_pro_subscription_continue_success_title:Success`,
+            text: $localize`:@@web_pro_subscription_continue_success_body:Your subscription is active again`,
+            type: TOAST_TYPES.SUCCESS,
+          });
+          observer.complete();
+        } else {
+          observer.error();
+          this.toastService.show({
+            title: $localize`:@@web_pro_subscription_continue_error_title:There was an error`,
+            text: $localize`:@@web_pro_subscription_continue_error_body:We could not proceed with your request.`,
+            type: TOAST_TYPES.ERROR,
+          });
+        }
+      },
+      () => {
+        observer.error();
+        this.toastService.show({
+          title: $localize`:@@web_pro_subscription_continue_error_title:There was an error`,
+          text: $localize`:@@web_pro_subscription_continue_error_body:We could not proceed with your request.`,
+          type: TOAST_TYPES.ERROR,
+        });
+      }
+    );
   }
 
   private confirmCancelSubscription(observer: Subscriber<boolean>, subscription): void {
