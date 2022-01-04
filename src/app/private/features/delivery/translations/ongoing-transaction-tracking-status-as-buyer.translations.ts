@@ -7,7 +7,7 @@ export const ongoingTransactionTrackingStatusAsBuyerTranslations: Record<ONGOING
   [ONGOING_TRANSACTION_TRACKING_STATUS.IN_TRANSIT]: $localize`:@@purchases_view_buyer_all_all_in_transit_ongoing_tab_shipping_status_label:Package out for delivery`,
   [ONGOING_TRANSACTION_TRACKING_STATUS.ON_HOLD_AT_CARRIER]: $localize`:@@purchases_view_buyer_po_all_on_hold_at_carrier_ongoing_tab_shipping_status_label:Package on hold`,
   [ONGOING_TRANSACTION_TRACKING_STATUS.ON_HOLD_INSTRUCTIONS_RECEIVED]: $localize`:@@purchases_view_buyer_po_all_on_hold_instructions_received_ongoing_tab_shipping_status_label:Reviewing the issue...`,
-  [ONGOING_TRANSACTION_TRACKING_STATUS.ITEM_AVAILABLE_FOR_THE_RECIPIENT]: $localize`:@@purchases_view_buyer_all_po_item_available_for_the_recipient_ongoing_tab_shipping_status_label:Package ready to pick up!`,
+  [ONGOING_TRANSACTION_TRACKING_STATUS.ITEM_AVAILABLE_FOR_THE_RECIPIENT]: $localize`:@@purchases_view_buyer_all_po_item_available_for_the_recipient_ongoing_tab_shipping_status_label:Package ready to pick up`,
   [ONGOING_TRANSACTION_TRACKING_STATUS.ITEM_DELIVERED]: $localize`:@@purchases_view_buyer_all_all_item_delivered_ongoing_tab_shipping_status_label:Package received`,
   [ONGOING_TRANSACTION_TRACKING_STATUS.SHIPPING_FAILED]: $localize`:@@purchases_view_buyer_all_all_shipping_failed_ongoing_tab_shipping_status_label:Shipment not completed`,
   [ONGOING_TRANSACTION_TRACKING_STATUS.DISPUTE_OPEN]: $localize`:@@purchases_view_buyer_all_all_dispute_open_ongoing_tab_shipping_status_label:Dispute opened`,
