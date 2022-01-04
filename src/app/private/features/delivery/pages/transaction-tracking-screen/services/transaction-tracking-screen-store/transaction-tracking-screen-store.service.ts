@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
-import { forkJoin, Observable, ReplaySubject } from 'rxjs';
+import { forkJoin, Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class TransactionTrackingScreenStoreService {
-  private readonly transactionTrackingSubject: ReplaySubject<TransactionTracking> = new ReplaySubject(1);
-  private readonly transactionTrackingDetailsSubject: ReplaySubject<TransactionTrackingDetails> = new ReplaySubject(1);
+  private readonly transactionTrackingSubject: Subject<TransactionTracking> = new Subject();
+  private readonly transactionTrackingDetailsSubject: Subject<TransactionTrackingDetails> = new Subject();
 
   constructor(private transactionTrackingService: TransactionTrackingService) {}
 
