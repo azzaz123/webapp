@@ -158,12 +158,12 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     },
   },
   [PRO_MODAL_TYPE.continue_subscription]: {
-    img: '/assets/icons/pro/modals/cancel-subscription.svg',
+    img: '/assets/icons/pro/modals/continue-subscription.svg',
     title: null,
     text1: $localize`:@@web_profile_modal_continue_subscription_245:It’s never too late! You can undo the cancelation and keep enjoying the benefits.`,
     buttons: {
-      secondary: { text: $localize`:@@web_profile_modal_continue_subscription_247:No, I want to cancel subscription.` },
-      primary: { text: $localize`:@@web_profile_modal_continue_subscription_246:Yes, I want to keep my subscription.` },
+      secondary: { text: $localize`:@@cancel_subscription_modal_pro_user_confirm_cancelation_button:Cancel subscription` },
+      primary: { text: $localize`:@@cancel_subscription_modal_pro_user_keep_button:Keep subscription` },
     },
   },
 };
