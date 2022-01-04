@@ -3,7 +3,6 @@ import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
-  ClickConfirmCloseSubscription,
   ClickSubscriptionPlanDone,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
@@ -18,11 +17,9 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { User } from '@core/user/user';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
-import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
-import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
-import { MODAL_ACTION } from '@shared/modals/pro-modal/pro-modal.interface';
+import { ManageSubscriptionService } from '@private/features/pro/services/manage-subscription.service';
 import { finalize } from 'rxjs/operators';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
@@ -54,7 +51,8 @@ export class SubscriptionEditComponent implements OnInit {
     private benefitsService: SubscriptionBenefitsService,
     private toastService: ToastService,
     private i18n: I18nService,
-    private customerHelpService: CustomerHelpService
+    private customerHelpService: CustomerHelpService,
+    private manageSubscriptionService: ManageSubscriptionService
   ) {}
 
   ngOnInit(): void {
@@ -72,17 +70,13 @@ export class SubscriptionEditComponent implements OnInit {
   }
 
   public cancelSubscription(): void {
-    const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
-      windowClass: 'pro-modal',
-    });
-
-    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.cancel_subscription];
-    modalRef.componentInstance.modalConfig.title = $localize`:@@web_profile_modal_cancel_subscription_237:${this.subscription.category_name}:INTERPOLATION:?`;
-    modalRef.result.then((result: MODAL_ACTION) => {
-      if (result === MODAL_ACTION.PRIMARY_BUTTON) {
-        this.confirmCancelSubscription();
-      }
-    });
+    this.manageSubscriptionService.cancelSubscription(this.subscription).subscribe(
+      (isLoading: boolean) => {
+        this.isLoading = isLoading;
+      },
+      () => {},
+      () => this.editSuccesful.emit()
+    );
   }
 
   public onRedirectTo(path: string): void {
@@ -153,55 +147,6 @@ export class SubscriptionEditComponent implements OnInit {
         screenId: SCREEN_IDS.SubscriptionManagement,
       },
     };
-    this.analyticsService.trackEvent(event);
-  }
-
-  private confirmCancelSubscription(): void {
-    this.isLoading = true;
-    this.trackClickConfirmCloseSubscription();
-    this.subscriptionsService
-      .cancelSubscription(this.subscription.selected_tier_id)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe(
-        (response) => {
-          if (response.status === PAYMENT_SUCCESSFUL_CODE) {
-            this.toastService.show({
-              title: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_TITLE),
-              text: this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_SUCCESS_BODY),
-              type: TOAST_TYPES.SUCCESS,
-            });
-            this.editSuccesful.emit();
-          } else {
-            this.showToastError(
-              this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_TITLE),
-              this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_BODY)
-            );
-          }
-        },
-        () => {
-          this.showToastError(
-            this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_TITLE),
-            this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_CANCEL_ERROR_BODY)
-          );
-        }
-      );
-  }
-
-  private trackClickConfirmCloseSubscription() {
-    const event: AnalyticsEvent<ClickConfirmCloseSubscription> = {
-      name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
-      attributes: {
-        subscription: this.subscription.category_id as SUBSCRIPTION_CATEGORIES,
-        tier: this.subscription.selected_tier_id,
-        screenId: SCREEN_IDS.ProfileSubscription,
-      },
-    };
-
     this.analyticsService.trackEvent(event);
   }
 }

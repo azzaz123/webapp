@@ -13,18 +13,13 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORIES, SUBSCRIPTION_SOURCE } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
-import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/core/user/user';
 import { UserService } from 'app/core/user/user.service';
 import { isEqual } from 'lodash-es';
 import { delay, finalize, repeatWhen, take, takeWhile } from 'rxjs/operators';
-import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
-import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { Observable } from 'rxjs';
-
-export type SubscriptionModal = typeof CancelSubscriptionModalComponent | typeof ContinueSubscriptionModalComponent;
+import { ManageSubscriptionService } from '../../services/manage-subscription.service';
 
 @Component({
   selector: 'tsl-subscription',
@@ -40,13 +35,13 @@ export class SubscriptionsComponent implements OnInit {
   public editSubscription: SubscriptionsResponse = null;
 
   constructor(
-    private modalService: NgbModal,
     private subscriptionsService: SubscriptionsService,
     private router: Router,
     private analyticsService: AnalyticsService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private benefitsService: SubscriptionBenefitsService
+    private benefitsService: SubscriptionBenefitsService,
+    private manageSubscriptionService: ManageSubscriptionService
   ) {}
 
   ngOnInit() {
@@ -124,22 +119,11 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
-  private openSubscriptionModal(subscription: SubscriptionsResponse, modal: SubscriptionModal): void {
-    let modalRef: NgbModalRef = this.modalService.open(modal, {
-      windowClass: 'review',
-    });
-    modalRef.componentInstance.subscription = subscription;
-    modalRef.componentInstance.isNewSubscriber = !this.subscriptionsService.hasOneStripeSubscription(this.subscriptions);
-    modalRef.result.then(
-      (action: ModalStatuses) => {
-        if (action) {
-          this.subscriptionChangeSuccessful();
-        }
-        modalRef = null;
-      },
-      () => {
-        modalRef = null;
-      }
+  private openSubscriptionModal(subscription: SubscriptionsResponse, modal: Observable<boolean>): void {
+    modal.subscribe(
+      (isLoading: boolean) => {},
+      () => {},
+      () => this.subscriptionChangeSuccessful()
     );
   }
 
@@ -230,15 +214,15 @@ export class SubscriptionsComponent implements OnInit {
     return this.analyticsService.trackEvent(event);
   }
 
-  private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): SubscriptionModal {
+  private getModalTypeDependingOnSubscription(subscription: SubscriptionsResponse): Observable<boolean> {
     // Subscription is active, from Stripe, not cancelled, with only one tier
     if (this.subscriptionsService.isStripeSubscription(subscription) && !subscription.subscribed_until && subscription.tiers.length === 1) {
-      return CancelSubscriptionModalComponent;
+      return this.manageSubscriptionService.cancelSubscription(subscription);
     }
 
     // Subscription was previously canceled
     if (this.subscriptionsService.isStripeSubscription(subscription) && subscription.subscribed_until) {
-      return ContinueSubscriptionModalComponent;
+      return this.manageSubscriptionService.cancelSubscription(subscription);
     }
   }
 

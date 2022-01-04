@@ -39,6 +39,7 @@ import { SelectOptionModule } from '@shared/form/components/select/select-option
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 import { DiscountBadgeComponent } from './components/discount-badge/discount-badge.component';
 import { ProHeaderComponent } from './components/pro-header/pro-header.component';
+import { ManageSubscriptionService } from './services/manage-subscription.service';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { ProHeaderComponent } from './components/pro-header/pro-header.component
     DiscountBadgeComponent,
     ProHeaderComponent,
   ],
+  providers: [ManageSubscriptionService],
   imports: [
     CommonModule,
     NgxPermissionsModule.forChild(),
