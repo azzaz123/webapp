@@ -149,12 +149,12 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
   },
   [PRO_MODAL_TYPE.cancel_subscription]: {
     img: '/assets/icons/pro/modals/cancel-subscription.svg',
-    title: $localize`:@@cancel_subscription_modal_pro_user_title:It’s sad that you are leaving us. You can return whenever you want, we’ll be waiting for you!`,
-    text1: $localize`:@@cancel_subscription_modal_pro_user_description:It’s sad that you are leaving us. You can return whenever you want, we’ll be waiting for you!`,
+    title: $localize`:@@cancel_subscription_modal_pro_user_title:Want to cancel your subscription?`,
+    text1: $localize`:@@cancel_subscription_modal_pro_user_description:We are sorry you leave. If you cancel your subscription right now, you will continue enjoying their benefits until the expiration date.`,
     style: MODAL_STYLE.GREEN,
     buttons: {
-      secondary: { text: $localize`:@@cancel_subscription_modal_pro_user_keep_button:No, I want to keep my subscription.` },
-      primary: { text: $localize`:@@cancel_subscription_modal_pro_user_confirm_cancelation_button:Yes, I want to cancel my subscription.` },
+      secondary: { text: $localize`:@@cancel_subscription_modal_pro_user_keep_button:Keep subscription` },
+      primary: { text: $localize`:@@cancel_subscription_modal_pro_user_confirm_cancelation_button:Cancel subscription` },
     },
   },
   [PRO_MODAL_TYPE.continue_subscription]: {
