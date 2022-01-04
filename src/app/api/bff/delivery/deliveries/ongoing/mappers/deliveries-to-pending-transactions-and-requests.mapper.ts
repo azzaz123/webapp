@@ -69,7 +69,7 @@ function getMappedRequests(
   isCurrentUserTheSeller: boolean
 ): Request[] {
   return deliveries
-    .filter((delivery) => delivery.status !== ('REQUEST_CREATED' as DeliveryOngoingBuyerStatusDto))
+    .filter((delivery) => delivery.status === ('REQUEST_CREATED' as DeliveryOngoingBuyerStatusDto))
     .map((requestDto: OngoingDeliveryAsBuyerDto) => mapRawDeliveryToRequest(requestDto, isCurrentUserTheSeller));
 }
 
