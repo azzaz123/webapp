@@ -4,7 +4,7 @@
       <tsl-tabs-bar
         [tabsBarElements]="tabsBarElements"
         [initialSelectedTabBarElement]="selectedTabsBarElement"
-        (onChange)="onTabsBarChange($event)"
+        (handleOnClick)="onTabsBarChange($event)"
       ></tsl-tabs-bar>
       <tsl-shared-error-action [retryUrl]="retryUrl">
         <router-outlet></router-outlet>
