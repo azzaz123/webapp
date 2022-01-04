@@ -17,9 +17,13 @@ export const LOCAL_STORAGE_TRX_AWARENESS = 'trx-awareness';
   styleUrls: ['./delivery.component.scss'],
 })
 export class DeliveryComponent implements OnInit, OnDestroy {
-  readonly myShippingsNavLink: NavLink = {
-    id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
-    display: $localize`:@@web_delivery_shippings_title:Shippings`,
+  readonly buysNavLink: NavLink = {
+    id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`,
+    display: $localize`:@@web_purchases:Purchases`,
+  };
+  readonly sellsNavLink: NavLink = {
+    id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`,
+    display: $localize`:@@web_sales:Sales`,
   };
   readonly deliveryAddressNavLink: NavLink = {
     id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
@@ -47,7 +51,7 @@ export class DeliveryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.showMyShippingsWhenDeliveryFeatureFlagEnabled();
+    this.showStreamlineWhenDeliveryFeatureFlagEnabled();
     this.showTRXAwarenessModalForFirstTime();
   }
 
@@ -66,11 +70,11 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     );
   }
 
-  private showMyShippingsWhenDeliveryFeatureFlagEnabled(): void {
+  private showStreamlineWhenDeliveryFeatureFlagEnabled(): void {
     this.subscriptions.add(
       this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
         if (isActive) {
-          this.navLinks = [this.myShippingsNavLink, this.deliveryAddressNavLink];
+          this.navLinks = [this.buysNavLink, this.sellsNavLink, this.deliveryAddressNavLink];
         }
       })
     );
