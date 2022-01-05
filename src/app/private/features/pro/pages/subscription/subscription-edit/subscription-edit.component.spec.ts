@@ -23,7 +23,6 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
-import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
 import { ManageSubscriptionService } from '@private/features/pro/services/manage-subscription.service';
 import { of, throwError } from 'rxjs';
 import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
@@ -59,7 +58,7 @@ describe('SubscriptionEditComponent', () => {
           useValue: {
             open() {
               return {
-                result: Promise.resolve(ModalStatuses.SUCCESS),
+                result: Promise.resolve(),
                 componentInstance: {},
               };
             },
