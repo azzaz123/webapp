@@ -5,7 +5,7 @@ import { FINANCIAL_STRIPE_CARD } from '@fixtures/payments.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { StripeCardsComponent } from './stripe-cards.component';
 import { StripeService } from '../../../core/stripe/stripe.service';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { createFinancialCardFixture, STRIPE_CARD_OPTION_SUBSCRIPTION, STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
 import { delay } from 'rxjs/operators';
@@ -15,9 +15,11 @@ import { SubscriptionsService } from 'app/core/subscriptions/subscriptions.servi
 import { SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { NoCardModalComponent } from '@shared/modals/no-card-modal/no-card-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { MODAL_ACTION } from '@shared/modals/pro-modal/pro-modal.interface';
 
 describe('StripeCardsComponent', () => {
   let component: StripeCardsComponent;
@@ -28,6 +30,7 @@ describe('StripeCardsComponent', () => {
   let modalSpy: jasmine.Spy;
   let i18nService: I18nService;
   let subscriptionsService: SubscriptionsService;
+  let componentInstance: any = {};
   let toastService: ToastService;
 
   beforeEach(
@@ -74,13 +77,6 @@ describe('StripeCardsComponent', () => {
               getSubscriptions() {
                 return of(SUBSCRIPTIONS);
               },
-            },
-          },
-          {
-            provide: NgbActiveModal,
-            useValue: {
-              close() {},
-              dismiss() {},
             },
           },
         ],
@@ -132,23 +128,27 @@ describe('StripeCardsComponent', () => {
     beforeEach(() => {
       spyOn(toastService, 'show');
       spyOn(errorService, 'i18nError');
-      spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve('deleteCardModal') });
+      spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(MODAL_ACTION.PRIMARY_BUTTON), componentInstance });
       spyOn(stripeService, 'getCards').and.returnValue(of([FINANCIAL_STRIPE_CARD]));
     });
 
     describe('and the delete petition succeed...', () => {
       beforeEach(() => {
         spyOn(stripeService, 'deleteCard').and.returnValue(of(null));
-
+        component['modalRef'] = <any>{
+          componentInstance: componentInstance,
+        };
         component.openDeleteCardModal(STRIPE_CARD_OPTION_SUBSCRIPTION);
       });
 
-      it('should open NoCardModalComponent modal', fakeAsync(() => {
+      it('should open pro modal with remove card configuration', fakeAsync(() => {
         tick();
 
-        expect(modalService.open).toHaveBeenCalledWith(NoCardModalComponent, {
-          windowClass: 'review',
+        expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
         });
+
+        expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.remove_card]);
       }));
 
       it('should call deleteCard service action', fakeAsync(() => {
@@ -177,16 +177,21 @@ describe('StripeCardsComponent', () => {
     describe('and the delete petition fails...', () => {
       beforeEach(() => {
         spyOn(stripeService, 'deleteCard').and.returnValue(throwError('network error'));
+        component['modalRef'] = <any>{
+          componentInstance: componentInstance,
+        };
 
         component.openDeleteCardModal(STRIPE_CARD_OPTION_SUBSCRIPTION);
       });
 
-      it('should open NoCardModalComponent modal', fakeAsync(() => {
+      it('should open pro modal with remove card configuration', fakeAsync(() => {
         tick();
+        fixture.detectChanges();
 
-        expect(modalService.open).toHaveBeenCalledWith(NoCardModalComponent, {
-          windowClass: 'review',
+        expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
         });
+        expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.remove_card]);
       }));
 
       it('should call deleteCard service action', fakeAsync(() => {
@@ -217,7 +222,7 @@ describe('StripeCardsComponent', () => {
         component.openDeleteCardModal(STRIPE_CARD_OPTION);
       });
 
-      it('should open NoCardModalComponent modal', fakeAsync(() => {
+      it('should open confirmation modal', fakeAsync(() => {
         tick();
 
         expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
