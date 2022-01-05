@@ -344,7 +344,7 @@ describe('DeliveryAddressComponent', () => {
 
             component.onSubmit();
 
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.STREAMLINE]);
+            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BUYS]);
           });
 
           it('should stay at the same page by default', () => {
