@@ -540,13 +540,20 @@ describe('SubscriptionComponent', () => {
 
     describe('and the subscription has only one tier', () => {
       describe('and the user confirm cancel subscription', () => {
+        it('should call cancel service', () => {
+          spyOn(manageSubscription, 'cancelSubscription').and.callThrough();
+
+          component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
+
+          expect(manageSubscription.cancelSubscription).toHaveBeenCalledTimes(1);
+          expect(manageSubscription.cancelSubscription).toHaveBeenCalledWith(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
+        });
         describe('and cancellation is successful', () => {
           it('should update subscription', () => {
             spyOn(component, 'subscriptionChangeSuccessful').and.callThrough();
             spyOn(manageSubscription, 'cancelSubscription').and.returnValue(of('error'));
 
             component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
-            fixture.detectChanges();
 
             expect(component.subscriptionChangeSuccessful).toHaveBeenCalledWith();
             expect(component.subscriptionChangeSuccessful).toBeCalledTimes(1);
@@ -567,7 +574,15 @@ describe('SubscriptionComponent', () => {
   });
 
   describe('when the user has cancelled the subscription', () => {
-    describe('and the user confirm reactivate subscription', () => {
+    describe('and the user reactivates subscription', () => {
+      it('should call reactivate service', () => {
+        spyOn(manageSubscription, 'continueSubscription').and.callThrough();
+
+        component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
+
+        expect(manageSubscription.continueSubscription).toHaveBeenCalledTimes(1);
+        expect(manageSubscription.continueSubscription).toHaveBeenCalledWith(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
+      });
       describe('and reactivation is successful', () => {
         it('should update subscription', () => {
           spyOn(component, 'subscriptionChangeSuccessful').and.callThrough();

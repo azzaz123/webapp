@@ -76,6 +76,7 @@ describe('ProComponent', () => {
             },
           },
           FeatureFlagService,
+          ManageSubscriptionService,
           {
             provide: UserService,
             useClass: MockedUserService,
@@ -107,10 +108,6 @@ describe('ProComponent', () => {
                 return of([]);
               },
             },
-          },
-          {
-            provide: ManageSubscriptionService,
-            useClass: MockManageSubscriptionService,
           },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
