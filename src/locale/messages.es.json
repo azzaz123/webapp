@@ -686,7 +686,7 @@
     "purchases_view_seller_all_all_transaction_cancelled_by_seller_finished_tab_shipping_status_label": "Cancelled on {$INTERPOLATION}",
     "purchases_view_seller_all_all_transaction_expired_finished_tab_shipping_status_label": "Cancelled on {$INTERPOLATION}",
     "purchases_view_seller_all_all_transaction_cancelled_finished_tab_shipping_status_label": "Cancelled on {$INTERPOLATION}",
-    "purchases_view_seller_all_all_money_transferred_finished_tab_shipping_status_label": "Completed on {$INTERPOLATION}",
+    "purchases_view_seller_all_all_money_transferred_finished_tab_shipping_status_label": "Completado el {$INTERPOLATION}",
     "purchases_view_seller_all_all_request_created_ongoing_tab_shipping_status_label": "Purchase made",
     "purchases_view_seller_all_all_transaction_created_ongoing_tab_shipping_status_label": "Purchase accepted",
     "purchases_view_seller_all_all_item_delivered_to_carrier_ongoing_tab_shipping_status_label": "The courier company already has the package",
