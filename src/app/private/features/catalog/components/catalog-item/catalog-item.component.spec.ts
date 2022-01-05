@@ -1,3 +1,4 @@
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { DecimalPipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -12,22 +13,28 @@ import { Item } from '@core/item/item';
 import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
+import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
-import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
-import * as moment from 'moment';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { of, ReplaySubject } from 'rxjs';
+import { of, ReplaySubject, BehaviorSubject } from 'rxjs';
 import { ItemChangeEvent } from '../../core/item-change.interface';
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 import { CatalogItemComponent } from './catalog-item.component';
+import { SharedModule } from '@shared/shared.module';
+import { CoreModule } from '@core/core.module';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
+import { By } from '@angular/platform-browser';
+
+const ITEM_IMAGE_CLASS_NAME: string = '.item-image';
+const ITEM_INFO_CLASS_NAME: string = '.item-info';
+const ITEM_DETAILS_CLASS_NAME: string = '.item-info';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -42,9 +49,12 @@ describe('CatalogItemComponent', () => {
     item: null,
   };
 
+  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule, SharedModule, CoreModule],
         declarations: [CatalogItemComponent, CustomCurrencyPipe],
         providers: [
           DecimalPipe,
@@ -52,7 +62,12 @@ describe('CatalogItemComponent', () => {
           ToastService,
           ItemRequiredDataService,
           CatalogItemTrackingEventService,
-          ItemDetailRoutePipe,
+          {
+            provide: StandaloneService,
+            useValue: {
+              standalone$: standaloneSubject.asObservable(),
+            },
+          },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UserService, useClass: MockedUserService },
           {
@@ -107,7 +122,6 @@ describe('CatalogItemComponent', () => {
           },
           I18nService,
         ],
-        imports: [HttpClientTestingModule],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
@@ -347,17 +361,6 @@ describe('CatalogItemComponent', () => {
     });
   });
 
-  describe('onClickInfoElement', () => {
-    it('should open the link', () => {
-      spyOn(window, 'open');
-
-      component.openItem();
-
-      expect(window.open).toHaveBeenCalledTimes(1);
-      expect(window.open).toHaveBeenCalledWith(component.link);
-    });
-  });
-
   describe('activateItem', () => {
     it('should emit the item to activate', () => {
       spyOn(component.itemChange, 'emit');
@@ -368,6 +371,76 @@ describe('CatalogItemComponent', () => {
       expect(component.itemChange.emit).toHaveBeenCalledWith({
         item,
         action: 'activate',
+      });
+    });
+  });
+
+  describe('when a click is triggered on an item image', () => {
+    describe('and the app is on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(true);
+        spyOn(router, 'navigate');
+      });
+      it('should navigate to the item without opening a new tab', () => {
+        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`;
+        const itemImage = fixture.debugElement.query(By.css(ITEM_IMAGE_CLASS_NAME)).nativeElement;
+
+        itemImage.click();
+
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
+    });
+    describe('and the app is NOT on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(false);
+        spyOn(window, 'open');
+      });
+      it('should navigate to the item in a new tab', () => {
+        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.webSlug}`;
+        const itemImage = fixture.debugElement.query(By.css(ITEM_IMAGE_CLASS_NAME)).nativeElement;
+
+        itemImage.click();
+
+        expect(window.open).toHaveBeenCalledTimes(1);
+        expect(window.open).toHaveBeenCalledWith(expectedUrl);
+      });
+    });
+  });
+
+  describe('when a click is triggered on any item information', () => {
+    describe('and the app is on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(true);
+        spyOn(router, 'navigate');
+      });
+      it('should navigate to the item without opening a new tab', () => {
+        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.id}`;
+        const itemDetails = fixture.debugElement.query(By.css(ITEM_DETAILS_CLASS_NAME)).nativeElement;
+        const itemInfo = fixture.debugElement.query(By.css(ITEM_INFO_CLASS_NAME)).nativeElement;
+
+        itemDetails.click();
+        itemInfo.click();
+
+        expect(router.navigate).toHaveBeenCalledTimes(2);
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
+    });
+    describe('and the app is NOT on standalone mode', () => {
+      beforeEach(() => {
+        standaloneSubject.next(false);
+        spyOn(window, 'open');
+      });
+      it('should navigate to the item in a new tab', () => {
+        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM.webSlug}`;
+        const itemDetails = fixture.debugElement.query(By.css(ITEM_DETAILS_CLASS_NAME)).nativeElement;
+        const itemInfo = fixture.debugElement.query(By.css(ITEM_INFO_CLASS_NAME)).nativeElement;
+
+        itemDetails.click();
+        itemInfo.click();
+
+        expect(window.open).toHaveBeenCalledTimes(2);
+        expect(window.open).toHaveBeenCalledWith(expectedUrl);
       });
     });
   });

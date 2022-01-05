@@ -20,25 +20,33 @@
       <div class="CatalogItem__content-veil" *ngIf="selectMode" (click)="select(item)"></div>
 
       <div class="col p-0 d-flex align-items-center justify-content-center item-image clickable" 
-      [ngClass]="{'item-image--onHold': item.flags.onhold }"  (click)="openItem()">
+      [ngClass]="{'item-image--onHold': item.flags.onhold }" tslItemRoute
+      [itemSlug]= 'item.webSlug'
+      [itemUUID]='item.id'>
         <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
       </div>
 
       <div class="col overflow-sm-hidden">
         <div class="row h-100 d-flex align-items-center">
 
-          <div class="col-12 col-md-2 d-flex flex-column clickable" [ngClass]="{'clickable--onHold': item.flags.onhold }" (click)="openItem()">
+          <div class="col-12 col-md-2 d-flex flex-column clickable item-details" [ngClass]="{'clickable--onHold': item.flags.onhold }" tslItemRoute
+          [itemSlug]= 'item.webSlug'
+          [itemUUID]='item.id'>
             <span class="info-price"> {{item.salePrice | customCurrency:item.currencyCode}} </span>
             <span class="info-title subtitle"> {{item.title}}</span>
             <span class="info-title subtitle" *ngIf="item.car_info?.km"> {{item.car_info?.km | number}} km</span>
           </div>
 
-          <div class="col d-none d-md-flex flex-column item-info clickable" [ngClass]="{'clickable--onHold': item.flags.onhold }" (click)="openItem()">
+          <div class="col d-none d-md-flex flex-column item-info clickable" [ngClass]="{'clickable--onHold': item.flags.onhold }" tslItemRoute
+          [itemSlug]= 'item.webSlug'
+          [itemUUID]='item.id'>
             <div i18n="@@web_catalog_components_item_103">Published</div>
             <div class="subtitle"> {{ item.publishedDate | date: 'dd/MM/yyyy'}}</div>
           </div>
 
-          <div class="col d-none d-xl-flex flex-column item-info clickable" (click)="openItem()">
+          <div class="col d-none d-xl-flex flex-column item-info clickable" tslItemRoute
+          [itemSlug]= 'item.webSlug'
+          [itemUUID]='item.id'>
             <ng-container *ngIf="!item.flags.onhold; else onHoldDate">
               <div i18n="@@web_catalog_components_item_104">Modified</div>
               <div class="subtitle"> {{ item.modifiedDate | date: 'dd/MM/yyyy'}}</div>
