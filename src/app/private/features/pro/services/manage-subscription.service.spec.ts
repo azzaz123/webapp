@@ -18,6 +18,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 import { MODAL_ACTION } from '@shared/modals/pro-modal/pro-modal.interface';
 import { of, throwError } from 'rxjs';
 
@@ -31,6 +32,7 @@ describe('ManageSubscriptionService', () => {
   let subscriptionsService: SubscriptionsService;
   let toastService: ToastService;
   let i18nService: I18nService;
+  const componentInstance = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -48,6 +50,16 @@ describe('ManageSubscriptionService', () => {
         {
           provide: LOCALE_ID,
           useValue: 'es',
+        },
+        {
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                componentInstance: componentInstance,
+              };
+            },
+          },
         },
       ],
     });
@@ -67,13 +79,18 @@ describe('ManageSubscriptionService', () => {
     beforeEach(() => {
       modalSpy = spyOn(modalService, 'open').and.callThrough();
     });
-    it('should open modal', () => {
+    it('should open cancellation modal', () => {
+      service['modalRef'] = {
+        componentInstance: componentInstance,
+      };
+
       service.cancelSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe();
 
       expect(modalService.open).toHaveBeenCalledTimes(1);
       expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
         windowClass: 'pro-modal',
       });
+      expect(service['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.cancel_subscription]);
     });
     describe('and click CTA', () => {
       beforeEach(() => {
@@ -183,6 +200,119 @@ describe('ManageSubscriptionService', () => {
         tick();
 
         expect(analyticsService.trackEvent).not.toHaveBeenCalled();
+      }));
+    });
+  });
+
+  describe('When user reactivates a subscription', () => {
+    beforeEach(() => {
+      modalSpy = spyOn(modalService, 'open').and.callThrough();
+    });
+    it('should open reactivation modal', () => {
+      service['modalRef'] = {
+        componentInstance: componentInstance,
+      };
+
+      service.continueSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe();
+
+      expect(modalService.open).toHaveBeenCalledTimes(1);
+      expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+        windowClass: 'pro-modal',
+      });
+      expect(service['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.continue_subscription]);
+    });
+    describe('and click CTA', () => {
+      beforeEach(() => {
+        modalSpy.and.returnValue({ result: Promise.resolve(MODAL_ACTION.PRIMARY_BUTTON), componentInstance: {} });
+      });
+      it('should make the request', fakeAsync(() => {
+        spyOn(subscriptionsService, 'continueSubscription').and.callThrough();
+
+        service.continueSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe();
+        tick();
+
+        expect(subscriptionsService.continueSubscription).toHaveBeenCalledWith(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED.selected_tier_id);
+      }));
+
+      describe('and request is successful', () => {
+        beforeEach(() => {
+          spyOn(toastService, 'show').and.callThrough();
+        });
+        it('should emit event', fakeAsync(() => {
+          let isCompleted = false;
+          service.continueSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe(
+            () => {},
+            () => {},
+            () => {
+              isCompleted = true;
+            }
+          );
+          tick();
+
+          expect(isCompleted).toBe(true);
+        }));
+        it('should show success toast', fakeAsync(() => {
+          service.continueSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe();
+          tick();
+
+          expect(toastService.show).toHaveBeenCalledTimes(1);
+          expect(toastService.show).toHaveBeenCalledWith({
+            title: $localize`:@@web_pro_subscription_continue_success_title:Success`,
+            text: $localize`:@@web_pro_subscription_continue_success_body:Your subscription is active again`,
+            type: TOAST_TYPES.SUCCESS,
+          });
+        }));
+      });
+
+      describe('and request fail', () => {
+        beforeEach(() => {
+          spyOn(subscriptionsService, 'continueSubscription').and.returnValue(throwError('error'));
+          spyOn(toastService, 'show').and.callThrough();
+        });
+        it('should not emit event', fakeAsync(() => {
+          let hasError = false;
+          service.continueSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe(
+            () => {},
+            () => {
+              hasError = true;
+            },
+            () => {}
+          );
+          tick();
+
+          expect(hasError).toBe(true);
+        }));
+        it('should show error toast', fakeAsync(() => {
+          service.continueSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe(
+            () => {},
+            () => {}
+          );
+          tick();
+
+          expect(toastService.show).toHaveBeenCalledTimes(1);
+          expect(toastService.show).toHaveBeenCalledWith({
+            title: $localize`:@@web_pro_subscription_continue_error_title:There was an error`,
+            text: $localize`:@@web_pro_subscription_continue_error_body:We could not proceed with your request.`,
+            type: TOAST_TYPES.ERROR,
+          });
+        }));
+      });
+    });
+    describe('and click secondary button', () => {
+      beforeEach(() => {
+        modalSpy.and.returnValue({ result: Promise.resolve(MODAL_ACTION.SECONDARY_BUTON), componentInstance: {} });
+      });
+      it('should emit error', fakeAsync(() => {
+        let error = false;
+        service.continueSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe(
+          () => {},
+          () => {
+            error = true;
+          }
+        );
+        tick();
+
+        expect(error).toBe(true);
       }));
     });
   });

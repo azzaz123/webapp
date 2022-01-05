@@ -89,6 +89,9 @@ export class MockSubscriptionService {
   public cancelSubscription(): Observable<unknown> {
     return of({ status: 202 });
   }
+  public continueSubscription(): Observable<unknown> {
+    return of({ status: 202 });
+  }
 }
 
 export const MOCK_SUBSCRIPTION_BENEFITS: SubscriptionBenefit[] = [

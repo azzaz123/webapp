@@ -551,7 +551,6 @@ describe('SubscriptionComponent', () => {
         describe('and cancellation is successful', () => {
           it('should update subscription', () => {
             spyOn(component, 'subscriptionChangeSuccessful').and.callThrough();
-            spyOn(manageSubscription, 'cancelSubscription').and.returnValue(of('error'));
 
             component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
 
