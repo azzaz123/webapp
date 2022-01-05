@@ -10,10 +10,11 @@ import { StreamlineOngoingUIService } from '@private/features/delivery/pages/str
 
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PendingTransaction } from '@api/core/model';
 import { Request } from '@api/core/model/delivery';
 import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction/delivery-pending-transaction.interface';
+import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-status.enum';
 
 @Component({
   selector: 'tsl-streamline-ongoing',
@@ -46,14 +47,14 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.streamlineOngoingUIService.getItems();
+    this.streamlineOngoingUIService.getItems(this.isSellerPath);
   }
 
   ngOnDestroy(): void {
     this.streamlineOngoingUIService.reset();
   }
 
-  public onItemClick(historicElement: HistoricElement<PendingTransaction | Request>): void {
+  public onItemClick(historicElement: HistoricElement<DeliveryPendingTransaction | Request>): void {
     const isPendingTransaction: boolean = this.isPendingTransaction(historicElement);
     const isRequestAndSeller: boolean = !isPendingTransaction && historicElement.payload.isCurrentUserTheSeller;
 
@@ -61,8 +62,8 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
       this.openAcceptScreenAwarenessModal();
       return;
     }
-    const requestId: string = this.isPendingTransaction(historicElement) ? historicElement.payload.requestId : historicElement.id;
-    this.redirectToTTS(requestId);
+
+    this.redirectToTTS(historicElement.id);
   }
 
   private redirectToTTS(requestId: string): void {
@@ -77,7 +78,13 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     );
   }
 
-  private isPendingTransaction(input: HistoricElement<PendingTransaction | Request>): input is HistoricElement<PendingTransaction> {
-    return (<HistoricElement<PendingTransaction>>input).payload.requestId !== undefined;
+  private isPendingTransaction(
+    input: HistoricElement<DeliveryPendingTransaction | Request>
+  ): input is HistoricElement<DeliveryPendingTransaction> {
+    return (<HistoricElement<DeliveryPendingTransaction>>input).payload.status.name !== DELIVERY_ONGOING_STATUS.REQUEST_CREATED;
+  }
+
+  private get isSellerPath(): boolean {
+    return this.router.url.includes(`/${DELIVERY_PATHS.SELLS}`);
   }
 }
