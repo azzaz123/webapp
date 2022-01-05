@@ -81,7 +81,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   private isPendingTransaction(
     input: HistoricElement<DeliveryPendingTransaction | Request>
   ): input is HistoricElement<DeliveryPendingTransaction> {
-    return (<HistoricElement<DeliveryPendingTransaction>>input).payload.status.name !== DELIVERY_ONGOING_STATUS.REQUEST_CREATED;
+    return !!(<HistoricElement<DeliveryPendingTransaction>>input).payload.status;
   }
 
   private get isSellerPath(): boolean {
