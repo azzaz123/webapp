@@ -6,6 +6,7 @@ import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pen
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsListComponent } from './wallet-pending-transactions-list.component';
+import { MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER } from '@api/fixtures/core/model/delivery/deliveries/ongoing/delivery-pending-transactions-and-requests.fixtures.spec';
 
 describe('GIVEN WalletPendingTransactionsListComponent', () => {
   let component: WalletPendingTransactionsListComponent;
@@ -26,7 +27,7 @@ describe('GIVEN WalletPendingTransactionsListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WalletPendingTransactionsListComponent);
     component = fixture.componentInstance;
-    component.pendingTransactions = MOCK_PENDING_TRANSACTIONS;
+    component.pendingTransactions = MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER.transactions;
     fixture.detectChanges();
   });
 
@@ -72,7 +73,8 @@ describe('GIVEN WalletPendingTransactionsListComponent', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(WalletPendingTransactionsListComponent);
         component = fixture.componentInstance;
-        component.pendingTransactions = [...MOCK_PENDING_TRANSACTIONS, ...MOCK_PENDING_TRANSACTIONS, ...MOCK_PENDING_TRANSACTIONS];
+        const MOCK_TRANSACTION = MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER.transactions[0];
+        component.pendingTransactions = [MOCK_TRANSACTION, MOCK_TRANSACTION, MOCK_TRANSACTION];
         fixture.detectChanges();
       });
       it('should show an expandable button container', () => {

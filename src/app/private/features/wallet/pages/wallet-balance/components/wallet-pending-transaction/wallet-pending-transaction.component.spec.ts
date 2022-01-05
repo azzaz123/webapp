@@ -1,13 +1,13 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { WalletPendingTransactionComponent } from './wallet-pending-transaction.component';
+import { MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER } from '@api/fixtures/core/model/delivery/deliveries/ongoing/delivery-pending-transactions-and-requests.fixtures.spec';
 
 describe('GIVEN WalletPendingTransactionComponent', () => {
   let component: WalletPendingTransactionComponent;
   let fixture: ComponentFixture<WalletPendingTransactionComponent>;
-  const pendingTransaction = MOCK_PENDING_TRANSACTIONS[0];
+  const pendingTransaction = MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER.transactions[0];
   const pendingTransactionItemAmountSelector = '.WalletPendingTransaction__amount';
   const pendingTransactionItemImageSelector = '.WalletPendingTransaction__image';
   const pendingTransactionItemTitleSelector = '.WalletPendingTransaction__title';
