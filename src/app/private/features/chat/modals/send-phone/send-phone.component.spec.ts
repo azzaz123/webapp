@@ -127,6 +127,12 @@ describe('SendPhoneComponent', () => {
 
         expect(component.activeModal.close).toHaveBeenCalled();
       });
+
+      it('should not require phone', () => {
+        component.handleSubmit();
+
+        expect(component.conversation.phoneRequired).toBe(false);
+      });
     });
 
     describe('when the phone field is empty', () => {

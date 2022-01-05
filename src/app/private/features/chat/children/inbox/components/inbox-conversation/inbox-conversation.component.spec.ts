@@ -88,6 +88,12 @@ describe('Component: Conversation', () => {
       expect(component.conversation.cannotChat).toBe(true);
     });
 
+    it('should set conversation.cannotChat to TRUE when phone is requested', () => {
+      component.conversation.phoneRequired = true;
+
+      expect(component.conversation.cannotChat).toBe(true);
+    });
+
     it('should set conversation.cannotChat to FALSE when none of the above conditions are met', () => {
       component.conversation.item.status = InboxItemStatus.PUBLISHED;
       component.conversation.user.blocked = false;
