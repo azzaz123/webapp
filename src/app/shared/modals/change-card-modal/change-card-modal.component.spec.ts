@@ -1,18 +1,24 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeCardModalComponent } from './change-card-modal.component';
 import { StripeService } from 'app/core/stripe/stripe.service';
-import { STRIPE_CARD_OPTION, STRIPE_CARD } from '../../../../tests/stripe.fixtures.spec';
-import { FINANCIAL_CARD, FINANCIAL_STRIPE_CARD } from '../../../../tests/payments.fixtures.spec';
+import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { FINANCIAL_CARD, FINANCIAL_STRIPE_CARD, SETUP_INTENT_DATA } from '../../../../tests/payments.fixtures.spec';
 import { EventService } from 'app/core/event/event.service';
+import { MODAL_ACTION } from '../pro-modal/pro-modal.interface';
+import { ProModalComponent } from '../pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '../pro-modal/pro-modal.constants';
 
 describe('ChangeCardModalComponent', () => {
   let component: ChangeCardModalComponent;
   let fixture: ComponentFixture<ChangeCardModalComponent>;
   let activeModal: NgbActiveModal;
   let stripeService: StripeService;
+  let modalService: NgbModal;
+  let componentInstance: any = {};
+  let modalSpy: jasmine.Spy;
 
   beforeEach(
     waitForAsync(() => {
@@ -36,6 +42,12 @@ describe('ChangeCardModalComponent', () => {
               getCards() {
                 return of([FINANCIAL_CARD]);
               },
+              getSetupIntent() {
+                return of({});
+              },
+              createDefaultCard() {
+                return Promise.resolve(SETUP_INTENT_DATA);
+              },
             },
           },
         ],
@@ -50,6 +62,7 @@ describe('ChangeCardModalComponent', () => {
     stripeService = TestBed.inject(StripeService);
     fixture.detectChanges();
     activeModal = TestBed.inject(NgbActiveModal);
+    modalService = TestBed.inject(NgbModal);
   });
 
   describe('setSavedCard', () => {
@@ -147,6 +160,55 @@ describe('ChangeCardModalComponent', () => {
       component.setNewDefaultCard(paymentIntent);
 
       expect(component.setDefaultCard).toHaveBeenCalledWith(paymentIntent.payment_method);
+    });
+  });
+
+  describe('change card', () => {
+    beforeEach(() => {
+      modalSpy = spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(MODAL_ACTION.PRIMARY_BUTTON), componentInstance });
+      component.selectedCard = true;
+      component.card = FINANCIAL_STRIPE_CARD;
+      component['modalRef'] = <any>{
+        componentInstance: componentInstance,
+      };
+      spyOn(stripeService, 'getSetupIntent').and.callThrough();
+      spyOn(stripeService, 'createDefaultCard').and.callThrough();
+    });
+
+    it('should show confirm modal', () => {
+      component.setExistingDefaultCard();
+
+      expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+        windowClass: 'pro-modal',
+      });
+      expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.confirm_change_card]);
+      expect(component['modalRef'].componentInstance.modalConfig.text1).toContain(FINANCIAL_STRIPE_CARD.stripeCard.last4);
+    });
+
+    describe('and click primary button', () => {
+      it('should call service', fakeAsync(() => {
+        component.setExistingDefaultCard();
+
+        tick();
+
+        expect(stripeService.getSetupIntent).toBeCalledTimes(1);
+        expect(stripeService.getSetupIntent).toBeCalledWith();
+        expect(stripeService.createDefaultCard).toBeCalledTimes(1);
+        expect(stripeService.createDefaultCard).toBeCalledWith(undefined, component.card.id);
+      }));
+    });
+    describe('and not click primary button', () => {
+      beforeEach(() => {
+        modalSpy.and.returnValue({ result: Promise.reject('error'), componentInstance });
+      });
+      it('should not call service', fakeAsync(() => {
+        component.setExistingDefaultCard();
+
+        tick();
+
+        expect(stripeService.getSetupIntent).not.toHaveBeenCalled();
+        expect(stripeService.createDefaultCard).not.toHaveBeenCalled();
+      }));
     });
   });
 });
