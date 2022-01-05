@@ -154,6 +154,7 @@ export class ChatComponent implements OnInit {
   private openSendPhoneModalIfNeeded(conversation: InboxConversation): void {
     this.userService.getPhoneInfo(conversation.user.id).subscribe((phoneInfo) => {
       if (!isNil(phoneInfo) && phoneInfo.phone_method === PhoneMethod.POP_UP) {
+        conversation.phoneRequired = true;
         this.openSendPhoneModal(conversation);
       }
     });

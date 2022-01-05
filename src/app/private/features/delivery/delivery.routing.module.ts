@@ -36,7 +36,12 @@ const routes: Route[] = [
         loadChildren: () => PayviewModule,
       },
       {
-        path: DELIVERY_PATHS.STREAMLINE,
+        path: DELIVERY_PATHS.BUYS,
+        canLoad: [DeliveryDevelopmentGuard],
+        loadChildren: () => StreamlineModule,
+      },
+      {
+        path: DELIVERY_PATHS.SELLS,
         canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineModule,
       },
