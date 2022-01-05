@@ -6,13 +6,10 @@ import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
 import { TransactionTrackingActionSelectorModule } from '@private/features/delivery/pages/transaction-tracking-screen/components/transaction-tracking-action-details/transaction-tracking-action-selector/transaction-tracking-action-selector.module';
 import { TransactionTrackingBannerModule } from '@private/features/delivery/pages/transaction-tracking-screen';
 import { TransactionTrackingHeaderModule } from '@private/features/delivery/pages/transaction-tracking-screen/components/sections';
-import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 import {
   transactionTrackingInstructionsRoutedComponents,
   TransactionTrackingInstructionsRoutingModule,
 } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-instructions/transaction-tracking-instructions.routing.module';
-import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
-import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 @NgModule({
   declarations: [transactionTrackingInstructionsRoutedComponents],
@@ -25,6 +22,5 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
     TransactionTrackingHeaderModule,
     TransactionTrackingInstructionsRoutingModule,
   ],
-  providers: [TransactionTrackingService, TransactionTrackingHttpService, TransactionTrackingScreenTrackingEventsService],
 })
 export class TransactionTrackingInstructionsModule {}

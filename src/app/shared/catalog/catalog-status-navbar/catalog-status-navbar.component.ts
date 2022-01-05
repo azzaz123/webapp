@@ -14,8 +14,8 @@ export class CatalogStatusNavbarComponent implements OnInit {
   @Input() counters: Counters;
   @Input() subscriptionPlan: number;
   @Output() public filterByStatus: EventEmitter<any> = new EventEmitter();
-  private page: number;
   public bumpsCounter = 0;
+  private page: number;
 
   constructor(private paymentService: PaymentService, private eventService: EventService) {}
 

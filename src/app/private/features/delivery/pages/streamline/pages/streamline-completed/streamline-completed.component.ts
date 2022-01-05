@@ -10,6 +10,7 @@ import { StreamlineCompletedUIService } from '@private/features/delivery/pages/s
 
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { HistoricTransaction } from '@api/core/model';
 
 @Component({
   selector: 'tsl-streamline-completed',
@@ -56,9 +57,8 @@ export class StreamlineCompletedComponent implements OnInit, OnDestroy {
     this.streamlineCompletedUIService.getItems();
   }
 
-  // TODO: Implement redirection to TTS
-  public onItemClick(historicElement: HistoricElement): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${historicElement.id}`;
+  public onItemClick(historicElement: HistoricElement<HistoricTransaction>): void {
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${historicElement.payload.requestId}`;
     this.router.navigate([pathToTransactionTracking]);
   }
 }

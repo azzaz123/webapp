@@ -36,7 +36,12 @@ const routes: Route[] = [
         loadChildren: () => PayviewModule,
       },
       {
-        path: DELIVERY_PATHS.STREAMLINE,
+        path: DELIVERY_PATHS.BUYS,
+        canLoad: [DeliveryDevelopmentGuard],
+        loadChildren: () => StreamlineModule,
+      },
+      {
+        path: DELIVERY_PATHS.SELLS,
         canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineModule,
       },
@@ -45,6 +50,7 @@ const routes: Route[] = [
         canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => CreateDisputeModule,
       },
+      // TODO: change to STREAMLINE when opening production		Date: 2021/12/22
       {
         path: '**',
         redirectTo: DELIVERY_PATHS.ADDRESS,

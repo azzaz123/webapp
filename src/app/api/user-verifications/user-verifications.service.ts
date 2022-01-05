@@ -11,7 +11,7 @@ import { mapUserVerificationsApiToUserVerifications } from './mappers/user-verif
 export class UserVerificationsService {
   constructor(private userVerificationsHttpService: UserVerificationsHttpService) {}
 
-  public get userVerifications$(): Observable<UserVerifications> {
+  public getVerifications(): Observable<UserVerifications> {
     return this.userVerificationsHttpService.get().pipe(map(mapUserVerificationsApiToUserVerifications));
   }
 

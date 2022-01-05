@@ -18,7 +18,7 @@
       <span>{{formattedDuration}}</span>
     </div>
     <div class="col-1 process">
-      <tsl-archive-button [lead]="call" (click)="archived = true" [hidden]="call.archived"></tsl-archive-button>
+      <tsl-archive-button [lead]="call" (handleClick)="archived = true" [hidden]="call.archived"></tsl-archive-button>
       <tsl-unarchive-button [lead]="call" [hidden]="!call.archived"></tsl-unarchive-button>
     </div>
   </div>

@@ -7,97 +7,10 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 
 @Injectable()
 export class UploaderService {
-  private serviceEvents = new Subject<UploadOutput>();
+  public serviceEvents = new Subject<UploadOutput>();
   public serviceEvents$ = this.serviceEvents.asObservable();
 
   constructor(private sanitizer: DomSanitizer) {}
-
-  handleFiles(files: FileList, options: NgUploaderOptions, imageType?: IMAGE_TYPE, previousFiles: UploadFile[] = []): void {
-    const _previousFiles: UploadFile[] = cloneDeep(previousFiles);
-    [].forEach.call(files, (file: File, i: number) => {
-      const uploadFile: UploadFile = {
-        fileIndex: _previousFiles[_previousFiles.length - 1] ? _previousFiles[_previousFiles.length - 1].fileIndex + 1 : 0,
-        file: file,
-        id: this.generateId(),
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        progress: {
-          status: UPLOAD_STATUS.Queue,
-          data: {
-            percentage: 0,
-            speed: null,
-            speedHuman: null,
-          },
-        },
-        lastModifiedDate: new Date(file.lastModified),
-      };
-      if (
-        this.checkExtension(uploadFile, options, imageType) &&
-        this.checkMaxUploads(uploadFile, options, _previousFiles, imageType) &&
-        this.checkMaxSize(uploadFile, options, imageType)
-      ) {
-        let reader: FileReader = new FileReader();
-        reader.readAsDataURL(<Blob>file);
-        reader.addEventListener('load', (event: any) => {
-          uploadFile.preview = this.sanitizer.bypassSecurityTrustResourceUrl(event.target.result);
-          this.serviceEvents.next({
-            type: OUTPUT_TYPE.addedToQueue,
-            file: uploadFile,
-            imageType,
-          });
-        });
-        _previousFiles.push(uploadFile);
-      }
-    });
-  }
-
-  private checkExtension(file: UploadFile, options: NgUploaderOptions, imageType: IMAGE_TYPE): boolean {
-    let allowedExtensions = options.allowedExtensions || [];
-    if (allowedExtensions.indexOf(file.type.toLowerCase()) !== -1) {
-      return true;
-    }
-
-    let ext = file.name.split('.').pop();
-    if (ext && allowedExtensions.indexOf(ext.toLowerCase()) !== -1) {
-      return true;
-    }
-
-    this.serviceEvents.next({
-      type: OUTPUT_TYPE.rejected,
-      file: file,
-      reason: TRANSLATION_KEY.UPLOAD_EXTENSION_NOT_ALLOWED_ERROR,
-      imageType,
-    });
-
-    return false;
-  }
-
-  private checkMaxUploads(file: UploadFile, options: NgUploaderOptions, files: UploadFile[], imageType: IMAGE_TYPE): boolean {
-    if (files.length < options.maxUploads) {
-      return true;
-    }
-    this.serviceEvents.next({
-      type: OUTPUT_TYPE.rejected,
-      file: file,
-      reason: TRANSLATION_KEY.UPLOAD_MAX_UPLOADS_ERROR,
-      imageType,
-    });
-    return false;
-  }
-
-  private checkMaxSize(file: UploadFile, options: NgUploaderOptions, imageType: IMAGE_TYPE): boolean {
-    if (!options.maxSize || file.size < options.maxSize) {
-      return true;
-    }
-    this.serviceEvents.next({
-      type: OUTPUT_TYPE.rejected,
-      file: file,
-      reason: TRANSLATION_KEY.UPLOAD_MAX_SIZE_ERROR,
-      imageType,
-    });
-    return false;
-  }
 
   uploadFile(file: UploadFile, event: UploadInput): Observable<UploadOutput> {
     return new Observable((observer) => {
@@ -202,6 +115,93 @@ export class UploaderService {
 
   generateId(): string {
     return Math.random().toString(36).substring(7);
+  }
+
+  handleFiles(files: FileList, options: NgUploaderOptions, imageType?: IMAGE_TYPE, previousFiles: UploadFile[] = []): void {
+    const _previousFiles: UploadFile[] = cloneDeep(previousFiles);
+    [].forEach.call(files, (file: File, i: number) => {
+      const uploadFile: UploadFile = {
+        fileIndex: _previousFiles[_previousFiles.length - 1] ? _previousFiles[_previousFiles.length - 1].fileIndex + 1 : 0,
+        file: file,
+        id: this.generateId(),
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        progress: {
+          status: UPLOAD_STATUS.Queue,
+          data: {
+            percentage: 0,
+            speed: null,
+            speedHuman: null,
+          },
+        },
+        lastModifiedDate: new Date(file.lastModified),
+      };
+      if (
+        this.checkExtension(uploadFile, options, imageType) &&
+        this.checkMaxUploads(uploadFile, options, _previousFiles, imageType) &&
+        this.checkMaxSize(uploadFile, options, imageType)
+      ) {
+        let reader: FileReader = new FileReader();
+        reader.readAsDataURL(<Blob>file);
+        reader.addEventListener('load', (event: any) => {
+          uploadFile.preview = this.sanitizer.bypassSecurityTrustResourceUrl(event.target.result);
+          this.serviceEvents.next({
+            type: OUTPUT_TYPE.addedToQueue,
+            file: uploadFile,
+            imageType,
+          });
+        });
+        _previousFiles.push(uploadFile);
+      }
+    });
+  }
+
+  private checkExtension(file: UploadFile, options: NgUploaderOptions, imageType: IMAGE_TYPE): boolean {
+    let allowedExtensions = options.allowedExtensions || [];
+    if (allowedExtensions.indexOf(file.type.toLowerCase()) !== -1) {
+      return true;
+    }
+
+    let ext = file.name.split('.').pop();
+    if (ext && allowedExtensions.indexOf(ext.toLowerCase()) !== -1) {
+      return true;
+    }
+
+    this.serviceEvents.next({
+      type: OUTPUT_TYPE.rejected,
+      file: file,
+      reason: TRANSLATION_KEY.UPLOAD_EXTENSION_NOT_ALLOWED_ERROR,
+      imageType,
+    });
+
+    return false;
+  }
+
+  private checkMaxUploads(file: UploadFile, options: NgUploaderOptions, files: UploadFile[], imageType: IMAGE_TYPE): boolean {
+    if (files.length < options.maxUploads) {
+      return true;
+    }
+    this.serviceEvents.next({
+      type: OUTPUT_TYPE.rejected,
+      file: file,
+      reason: TRANSLATION_KEY.UPLOAD_MAX_UPLOADS_ERROR,
+      imageType,
+    });
+    return false;
+  }
+
+  private checkMaxSize(file: UploadFile, options: NgUploaderOptions, imageType: IMAGE_TYPE): boolean {
+    if (!options.maxSize || file.size < options.maxSize) {
+      return true;
+    }
+    this.serviceEvents.next({
+      type: OUTPUT_TYPE.rejected,
+      file: file,
+      reason: TRANSLATION_KEY.UPLOAD_MAX_SIZE_ERROR,
+      imageType,
+    });
+    return false;
   }
 }
 

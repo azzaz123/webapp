@@ -13,6 +13,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 export class SearchInputComponent implements OnChanges {
   @Input() placeholder;
   @Input() onCloseSearch: boolean;
+  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('term') public term$: EventEmitter<string> = new EventEmitter<string>();
   @Output() deleteSearch: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('input') input: ElementRef;

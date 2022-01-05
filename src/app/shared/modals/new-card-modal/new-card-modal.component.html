@@ -7,7 +7,7 @@
     <p class="NewCardModal__subtitle" i18n="@@web_change_subscription_card_subtitle">This will be the payment method linked to your subscription</p>
   </div>
   <div class="NewCardModal__body">
-      <tsl-stripe-card-element [newLoading]="loading" (onStripeCardCreate)="onCreateCard($event)" [type]="'new'"
+      <tsl-stripe-card-element [newLoading]="loading" (handleStripeCardCreate)="onCreateCard($event)" [type]="'new'"
       ></tsl-stripe-card-element>
   </div>
 </div>

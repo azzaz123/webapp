@@ -9,6 +9,7 @@ import { AdSlotShoppingComponent } from './ad-slot-shopping.component';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'stories-ad-slot-shopping',
   template:
     '<tsl-sky-shopping [cardType]="cardType" [adSlotContainer]="adSlotContainer" [adShoppingPageOptions]="adShoppingPageOptions" [index]="index"></tsl-sky-shopping>',

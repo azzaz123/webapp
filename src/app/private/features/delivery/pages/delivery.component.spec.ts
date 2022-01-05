@@ -1,27 +1,29 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { UserService } from '@core/user/user.service';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
+
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { DeliveryComponent, LOCAL_STORAGE_TRX_AWARENESS } from '@private/features/delivery/pages/delivery.component';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { NavLinksComponent } from '@shared/nav-links/nav-links.component';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { of } from 'rxjs';
-import { DELIVERY_PATHS } from '../delivery-routing-constants';
-import { TRXAwarenessModalComponent } from '../modals/trx-awareness-modal/trx-awareness-modal.component';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
+import { UserService } from '@core/user/user.service';
 
-import { DeliveryComponent, LOCAL_STORAGE_TRX_AWARENESS } from './delivery.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { of } from 'rxjs';
 
 describe('DeliveryComponent', () => {
   const FAKE_DATE_NOW = 1627743615459;
-  const URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`;
+  const BUYS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`;
+  const SELLS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`;
   let component: DeliveryComponent;
   let fixture: ComponentFixture<DeliveryComponent>;
   let router: Router;
@@ -75,12 +77,16 @@ describe('DeliveryComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should show the delivery address tab and my shippings tab', () => {
+    it('should show the delivery address tab and the streamline tab', () => {
       const navLinks = fixture.debugElement.query(By.directive(NavLinksComponent)).componentInstance.navLinks;
-      const navLinksWithMyShippings: NavLink[] = [
+      const navLinksWithStreamline: NavLink[] = [
         {
-          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`,
-          display: $localize`:@@web_delivery_shippings_title:Shippings`,
+          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`,
+          display: $localize`:@@web_purchases:Purchases`,
+        },
+        {
+          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`,
+          display: $localize`:@@web_sales:Sales`,
         },
         {
           id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
@@ -88,7 +94,7 @@ describe('DeliveryComponent', () => {
         },
       ];
 
-      expect(navLinks).toStrictEqual(navLinksWithMyShippings);
+      expect(navLinks).toStrictEqual(navLinksWithStreamline);
     });
   });
 
@@ -117,9 +123,9 @@ describe('DeliveryComponent', () => {
       const navLinksElement = fixture.debugElement.query(By.css('tsl-nav-links'));
       spyOn(router, 'navigate');
 
-      navLinksElement.triggerEventHandler('clickedLink', URL);
+      navLinksElement.triggerEventHandler('clickedLink', BUYS_URL);
 
-      expect(router.navigate).toHaveBeenCalledWith([URL]);
+      expect(router.navigate).toHaveBeenCalledWith([BUYS_URL]);
     });
   });
 

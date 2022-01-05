@@ -15,6 +15,8 @@ import { PERMISSIONS } from '@core/user/user-constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemCardListComponent {
+  private static DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS = 15;
+
   @Input() items: ItemCard[];
   @Input() showDescription = true;
   @Input() showPlaceholder = false;
@@ -38,7 +40,6 @@ export class ItemCardListComponent {
   public cardTypes = CARD_TYPES;
   public readonly INLINE_SLOT_POSITION = 6;
   public readonly PERMISSIONS = PERMISSIONS;
-  private static DEFAULT_NUMBER_OF_PLACEHOLDER_CARDS = 15;
 
   constructor(private itemCardService: ItemCardService, private checkSessionService: CheckSessionService) {}
 

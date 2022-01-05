@@ -7,6 +7,7 @@ interface TransactionHistoryDto {
   transaction_status: string;
   transactor_user_hash_id: string;
   user_hash_id: string;
+  request_id: string;
 }
 
 export type TransactionsHistoryDto = TransactionHistoryDto[] | [];

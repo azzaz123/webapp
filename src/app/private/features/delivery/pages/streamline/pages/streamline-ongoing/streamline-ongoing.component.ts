@@ -10,6 +10,10 @@ import { StreamlineOngoingUIService } from '@private/features/delivery/pages/str
 
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { PendingTransaction } from '@api/core/model';
+import { Request } from '@api/core/model/delivery';
+import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-streamline-ongoing',
@@ -24,7 +28,8 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   constructor(
     private streamlineOngoingUIService: StreamlineOngoingUIService,
     private router: Router,
-    private errorActionService: SharedErrorActionService
+    private errorActionService: SharedErrorActionService,
+    private modalService: NgbModal
   ) {}
 
   public get historicList$(): Observable<HistoricList> {
@@ -48,9 +53,31 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     this.streamlineOngoingUIService.reset();
   }
 
-  // TODO: Implement redirection to TTS
-  public onItemClick(historicElement: HistoricElement): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${historicElement.id}`;
+  public onItemClick(historicElement: HistoricElement<PendingTransaction | Request>): void {
+    const isPendingTransaction: boolean = this.isPendingTransaction(historicElement);
+    const isRequestAndSeller: boolean = !isPendingTransaction && historicElement.payload.isCurrentUserTheSeller;
+
+    if (isRequestAndSeller) {
+      this.openAcceptScreenAwarenessModal();
+      return;
+    }
+    const requestId: string = this.isPendingTransaction(historicElement) ? historicElement.payload.requestId : historicElement.id;
+    this.redirectToTTS(requestId);
+  }
+
+  private redirectToTTS(requestId: string): void {
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
     this.router.navigate([pathToTransactionTracking]);
+  }
+
+  private openAcceptScreenAwarenessModal(): void {
+    this.modalService.open(AcceptScreenAwarenessModalComponent).result.then(
+      () => {},
+      () => {}
+    );
+  }
+
+  private isPendingTransaction(input: HistoricElement<PendingTransaction | Request>): input is HistoricElement<PendingTransaction> {
+    return (<HistoricElement<PendingTransaction>>input).payload.requestId !== undefined;
   }
 }

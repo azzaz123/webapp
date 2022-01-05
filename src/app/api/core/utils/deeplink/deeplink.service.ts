@@ -1,4 +1,5 @@
 import { DOCUMENT } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -17,15 +18,17 @@ import { EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID } from '@core/external-links/cust
 import { getCustomerHelpUrl, UNIFIED_EXTERNAL_CUSTOMER_HELP_PAGE_ID } from '@core/external-links/customer-help/get-customer-help-url';
 import { getTicketFormUrl } from '@core/external-links/customer-help/get-ticket-form-url';
 import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
-import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
+import { Item } from '@core/item/item';
+import { ItemService } from '@core/item/item.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
-import { UserService } from '@core/user/user.service';
-import { User } from '@core/user/user';
-import { Observable, of, Subscriber } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
+import { User } from '@core/user/user';
+import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
+import { UserService } from '@core/user/user.service';
+
+import { Observable, of, Subscriber } from 'rxjs';
 
 type deeplinkType =
   | 'unknown'
@@ -45,6 +48,7 @@ export class DeeplinkService {
     @Inject(LOCALE_ID) private locale: APP_LOCALE,
     @Inject(DOCUMENT) document: Document,
     private itemDetailRoutePipe: ItemDetailRoutePipe,
+    private itemService: ItemService,
     private userProfileRoutePipe: UserProfileRoutePipe,
     private router: Router,
     private userService: UserService,
@@ -108,14 +112,17 @@ export class DeeplinkService {
     if (!deeplink) {
       return of(null);
     }
-
     if (this.getDeeplinkType(deeplink) === 'userProfile') {
       return this.getUserProfileWebLink(deeplink);
     }
+    if (this.getDeeplinkType(deeplink) === 'item') {
+      return this.getItemWebLink(deeplink);
+    }
+
     const deeplinkMappers: Record<deeplinkType, string> = {
       barcodeLabel: this.getBarcodeWebLink(deeplink),
       instructions: this.getInstructionsWebLink(deeplink),
-      item: this.getItemWebLink(deeplink),
+      item: null,
       printableLabel: this.getPrintableLabelWebLink(deeplink),
       userProfile: null,
       zendeskArticle: this.getZendeskArticleWebLink(deeplink),
@@ -165,9 +172,26 @@ export class DeeplinkService {
       : null;
   }
 
-  private getItemWebLink(deeplink: string): string {
-    const id = deeplink.split(itemDeeplinkPrefix).pop();
-    return !!id ? this.itemDetailRoutePipe.transform(id) : null;
+  private getItemWebLink(deeplink: string): Observable<string> {
+    const itemId = deeplink.split(itemDeeplinkPrefix).pop();
+
+    if (!itemId) {
+      return of(null);
+    }
+
+    return new Observable((subscriber: Subscriber<string>) => {
+      this.itemService.get(itemId).subscribe({
+        next: (item: Item) => {
+          subscriber.next(!!item.webSlug ? this.itemDetailRoutePipe.transform(item.webSlug) : null);
+        },
+        error: (error: HttpErrorResponse) => {
+          subscriber.next(null);
+        },
+        complete: () => {
+          subscriber.complete();
+        },
+      });
+    });
   }
 
   private getParams(deeplink: string): string[] {
@@ -220,7 +244,7 @@ export class DeeplinkService {
       item: true,
       printableLabel: true,
       unknown: false,
-      userProfile: true,
+      userProfile: false,
       zendeskArticle: true,
       zendeskForm: true,
     };

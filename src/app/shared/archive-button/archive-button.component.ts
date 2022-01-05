@@ -10,13 +10,13 @@ import { CallsService } from '../../core/conversation/calls.service';
 })
 export class ArchiveButtonComponent {
   @Input() lead: Lead;
-  @Output() click: EventEmitter<any> = new EventEmitter();
+  @Output() handleClick: EventEmitter<any> = new EventEmitter();
 
   constructor(private callService: CallsService) {}
 
   archive(event: Event) {
     event.stopPropagation();
-    this.click.emit();
+    this.handleClick.emit();
     if (this.lead instanceof Call) {
       this.callService.archive(this.lead.id).subscribe();
     }

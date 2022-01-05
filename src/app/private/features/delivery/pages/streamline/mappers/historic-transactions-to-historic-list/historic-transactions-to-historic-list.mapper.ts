@@ -49,14 +49,14 @@ const getMonthFromTransaction = (input: HistoricTransaction): string => {
   return capitalizedFormattedMonth;
 };
 
-const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricElement => {
-  const { id, item, moneyAmount } = input;
+const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricElement<HistoricTransaction> => {
+  const { id, item, moneyAmount, requestId } = input;
   const { imageUrl, title } = item;
   const iconUrl = getIconUrlFromHistoricTransaction(input);
   const description = getDescriptionFromHistoricTransaction(input);
   const subDescription = getSubDescriptionFromHistoricTransaction(input);
 
-  const historicElement: HistoricElement = {
+  const historicElement: HistoricElement<HistoricTransaction> = {
     id,
     imageUrl,
     iconUrl,
@@ -64,6 +64,7 @@ const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricEl
     description,
     subDescription,
     moneyAmount,
+    payload: input,
   };
 
   return historicElement;
