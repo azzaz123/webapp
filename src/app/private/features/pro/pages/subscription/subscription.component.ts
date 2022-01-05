@@ -123,7 +123,9 @@ export class SubscriptionsComponent implements OnInit {
     modal.subscribe(
       (isLoading: boolean) => {},
       () => {},
-      () => this.subscriptionChangeSuccessful()
+      () => {
+        this.subscriptionChangeSuccessful();
+      }
     );
   }
 

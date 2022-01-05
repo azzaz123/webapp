@@ -40,7 +40,7 @@ export class ManageSubscriptionService {
     });
   }
 
-  private openContinueSubscriptionModal(observer: Subscriber<boolean>, subscription: SubscriptionsResponse) {
+  private openContinueSubscriptionModal(observer: Subscriber<boolean>, subscription: SubscriptionsResponse): void {
     const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
       windowClass: 'pro-modal',
     });
@@ -56,7 +56,7 @@ export class ManageSubscriptionService {
     });
   }
 
-  private openCancelSubscriptionModal(observer: Subscriber<boolean>, subscription: SubscriptionsResponse) {
+  private openCancelSubscriptionModal(observer: Subscriber<boolean>, subscription: SubscriptionsResponse): void {
     const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
       windowClass: 'pro-modal',
     });
@@ -71,7 +71,7 @@ export class ManageSubscriptionService {
     });
   }
 
-  private confirmContinueSubscription(observer: Subscriber<boolean>, subscription): void {
+  private confirmContinueSubscription(observer: Subscriber<boolean>, subscription: SubscriptionsResponse): void {
     observer.next(true);
     this.subscriptionsService.continueSubscription(subscription.selected_tier_id).subscribe(
       (response) => {
@@ -102,7 +102,7 @@ export class ManageSubscriptionService {
     );
   }
 
-  private confirmCancelSubscription(observer: Subscriber<boolean>, subscription): void {
+  private confirmCancelSubscription(observer: Subscriber<boolean>, subscription: SubscriptionsResponse): void {
     observer.next(true);
     this.trackClickConfirmCloseSubscription(subscription);
     this.subscriptionsService.cancelSubscription(subscription.selected_tier_id).subscribe(
@@ -134,7 +134,7 @@ export class ManageSubscriptionService {
     );
   }
 
-  private trackClickConfirmCloseSubscription(subscription) {
+  private trackClickConfirmCloseSubscription(subscription: SubscriptionsResponse): void {
     const event: AnalyticsEvent<ClickConfirmCloseSubscription> = {
       name: ANALYTICS_EVENT_NAMES.ClickConfirmCloseSubscription,
       eventType: ANALYTIC_EVENT_TYPES.Other,
