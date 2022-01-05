@@ -12,6 +12,7 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_INVOICE_HISTORY } from '@fixtures/invoice.fixtures.spec';
+import { MockManageSubscriptionService } from '@fixtures/manage-subscription.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
@@ -28,6 +29,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
 import { PRO_PATHS } from '../pro-routing-constants';
+import { ManageSubscriptionService } from '../services/manage-subscription.service';
 import { ProComponent } from './pro.component';
 import { SubscriptionsComponent } from './subscription/subscription.component';
 
@@ -105,6 +107,10 @@ describe('ProComponent', () => {
                 return of([]);
               },
             },
+          },
+          {
+            provide: ManageSubscriptionService,
+            useClass: MockManageSubscriptionService,
           },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],

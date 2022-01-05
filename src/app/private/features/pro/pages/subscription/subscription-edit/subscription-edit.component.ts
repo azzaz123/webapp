@@ -98,17 +98,11 @@ export class SubscriptionEditComponent implements OnInit {
           if (response.status === PAYMENT_SUCCESSFUL_CODE) {
             this.showEditSuccessful = true;
           } else {
-            this.showToastError(
-              this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE),
-              this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)
-            );
+            this.showToastError();
           }
         },
         () => {
-          this.showToastError(
-            this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE),
-            this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)
-          );
+          this.showToastError();
         }
       );
   }
@@ -128,10 +122,10 @@ export class SubscriptionEditComponent implements OnInit {
     this.isEqualTier = this.selectedTier?.id === this.subscribedTier?.id;
   }
 
-  private showToastError(title: string, text: string): void {
+  private showToastError(): void {
     this.toastService.show({
-      title,
-      text,
+      title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE)}`,
+      text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)}`,
       type: TOAST_TYPES.ERROR,
     });
   }

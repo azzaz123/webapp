@@ -49,7 +49,7 @@ export class ManageSubscriptionService {
     modalRef.componentInstance.modalConfig.title = $localize`:@@web_continue_subscription_title:Would you like to stay subscribed to Wallapop PRO ${subscription.category_name}:INTERPOLATION:?`;
     modalRef.result.then((result: MODAL_ACTION) => {
       if (result === MODAL_ACTION.PRIMARY_BUTTON) {
-        this.confirmCancelSubscription(observer, subscription);
+        this.confirmContinueSubscription(observer, subscription);
         return;
       }
       observer.error();
@@ -64,7 +64,7 @@ export class ManageSubscriptionService {
     modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.cancel_subscription];
     modalRef.result.then((result: MODAL_ACTION) => {
       if (result === MODAL_ACTION.PRIMARY_BUTTON) {
-        this.confirmContinueSubscription(observer, subscription);
+        this.confirmCancelSubscription(observer, subscription);
         return;
       }
       observer.error();
