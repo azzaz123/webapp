@@ -47,13 +47,18 @@ export class ManageSubscriptionService {
 
     modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.continue_subscription];
     modalRef.componentInstance.modalConfig.title = $localize`:@@web_continue_subscription_title:Would you like to stay subscribed to Wallapop PRO ${subscription.category_name}:INTERPOLATION:?`;
-    modalRef.result.then((result: MODAL_ACTION) => {
-      if (result === MODAL_ACTION.PRIMARY_BUTTON) {
-        this.confirmContinueSubscription(observer, subscription);
-        return;
+    modalRef.result.then(
+      (result: MODAL_ACTION) => {
+        if (result === MODAL_ACTION.PRIMARY_BUTTON) {
+          this.confirmContinueSubscription(observer, subscription);
+          return;
+        }
+        observer.error();
+      },
+      () => {
+        observer.error();
       }
-      observer.error();
-    });
+    );
   }
 
   private openCancelSubscriptionModal(observer: Subscriber<boolean>, subscription: SubscriptionsResponse): void {
@@ -62,13 +67,18 @@ export class ManageSubscriptionService {
     });
 
     modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.cancel_subscription];
-    modalRef.result.then((result: MODAL_ACTION) => {
-      if (result === MODAL_ACTION.PRIMARY_BUTTON) {
-        this.confirmCancelSubscription(observer, subscription);
-        return;
+    modalRef.result.then(
+      (result: MODAL_ACTION) => {
+        if (result === MODAL_ACTION.PRIMARY_BUTTON) {
+          this.confirmCancelSubscription(observer, subscription);
+          return;
+        }
+        observer.error();
+      },
+      () => {
+        observer.error();
       }
-      observer.error();
-    });
+    );
   }
 
   private confirmContinueSubscription(observer: Subscriber<boolean>, subscription: SubscriptionsResponse): void {

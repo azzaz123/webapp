@@ -540,6 +540,9 @@ describe('SubscriptionComponent', () => {
 
     describe('and the subscription has only one tier', () => {
       describe('and the user confirm cancel subscription', () => {
+        beforeEach(() => {
+          spyOn(component, 'subscriptionChangeSuccessful').and.returnValue(undefined);
+        });
         it('should call cancel service', () => {
           spyOn(manageSubscription, 'cancelSubscription').and.callThrough();
 
@@ -550,8 +553,6 @@ describe('SubscriptionComponent', () => {
         });
         describe('and cancellation is successful', () => {
           it('should update subscription', () => {
-            spyOn(component, 'subscriptionChangeSuccessful').and.callThrough();
-
             component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
 
             expect(component.subscriptionChangeSuccessful).toHaveBeenCalledWith();
@@ -560,7 +561,6 @@ describe('SubscriptionComponent', () => {
         });
         describe('and cancellation fails', () => {
           it('should not update subscription', () => {
-            spyOn(component, 'subscriptionChangeSuccessful').and.callThrough();
             spyOn(manageSubscription, 'cancelSubscription').and.returnValue(throwError('error'));
 
             component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
@@ -573,6 +573,9 @@ describe('SubscriptionComponent', () => {
   });
 
   describe('when the user has cancelled the subscription', () => {
+    beforeEach(() => {
+      spyOn(component, 'subscriptionChangeSuccessful').and.returnValue(undefined);
+    });
     describe('and the user reactivates subscription', () => {
       it('should call reactivate service', () => {
         spyOn(manageSubscription, 'continueSubscription').and.callThrough();
@@ -584,8 +587,6 @@ describe('SubscriptionComponent', () => {
       });
       describe('and reactivation is successful', () => {
         it('should update subscription', () => {
-          spyOn(component, 'subscriptionChangeSuccessful').and.callThrough();
-
           component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
 
           expect(component.subscriptionChangeSuccessful).toHaveBeenCalledWith();
@@ -594,7 +595,6 @@ describe('SubscriptionComponent', () => {
       });
       describe('and reactivation fails', () => {
         it('should not update subscription', () => {
-          spyOn(component, 'subscriptionChangeSuccessful').and.callThrough();
           spyOn(manageSubscription, 'continueSubscription').and.returnValue(throwError('error'));
 
           component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);

@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -12,7 +12,6 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_INVOICE_HISTORY } from '@fixtures/invoice.fixtures.spec';
-import { MockManageSubscriptionService } from '@fixtures/manage-subscription.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import { MockSubscriptionService } from '@fixtures/subscriptions.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
@@ -29,9 +28,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
 import { PRO_PATHS } from '../pro-routing-constants';
-import { ManageSubscriptionService } from '../services/manage-subscription.service';
 import { ProComponent } from './pro.component';
-import { SubscriptionsComponent } from './subscription/subscription.component';
 
 @Component({
   selector: 'tsl-test-component',
@@ -58,7 +55,7 @@ describe('ProComponent', () => {
           NgxPermissionsModule.forRoot(),
           HttpClientTestingModule,
           RouterTestingModule.withRoutes([
-            { path: PRO_PATHS.SUBSCRIPTIONS, component: SubscriptionsComponent },
+            { path: PRO_PATHS.SUBSCRIPTIONS, component: TestComponent },
             { path: PRO_PATHS.BILLING, component: TestComponent },
           ]),
         ],
@@ -76,7 +73,6 @@ describe('ProComponent', () => {
             },
           },
           FeatureFlagService,
-          ManageSubscriptionService,
           {
             provide: UserService,
             useClass: MockedUserService,

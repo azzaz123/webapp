@@ -66,11 +66,7 @@ export class SubscriptionsComponent implements OnInit {
 
   public manageSubscription(subscription: SubscriptionsResponse): void {
     const modal = this.getModalTypeDependingOnSubscription(subscription);
-    if (!modal) {
-      this.openSubscriptionPage(subscription);
-    } else {
-      this.openSubscriptionModal(subscription, modal);
-    }
+    modal ? this.openSubscriptionModal(modal) : this.openSubscriptionPage(subscription);
   }
 
   public subscriptionChangeSuccessful(redirect?: string): void {
@@ -119,9 +115,9 @@ export class SubscriptionsComponent implements OnInit {
     }
   }
 
-  private openSubscriptionModal(subscription: SubscriptionsResponse, modal: Observable<boolean>): void {
+  private openSubscriptionModal(modal: Observable<boolean>): void {
     modal.subscribe(
-      (isLoading: boolean) => {},
+      () => {},
       () => {},
       () => {
         this.subscriptionChangeSuccessful();
