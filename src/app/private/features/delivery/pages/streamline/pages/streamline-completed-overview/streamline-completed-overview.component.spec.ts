@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
@@ -26,8 +27,15 @@ describe('StreamlineCompletedOverviewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have the buys path as retry url when the petition fails', () => {
+  it('should contain the streamline completed', () => {
+    expect(fixture.debugElement.query(By.css('tsl-streamline-completed'))).toBeTruthy();
+  });
+
+  it('should implement the error catcher', () => {
     const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`;
-    expect(component.retryUrl).toStrictEqual(expectedUrl);
+    const errorCatcherComponent = fixture.debugElement.query(By.css('tsl-shared-error-action'));
+
+    expect(errorCatcherComponent).toBeTruthy();
+    expect(errorCatcherComponent.nativeElement.retryUrl).toStrictEqual(expectedUrl);
   });
 });

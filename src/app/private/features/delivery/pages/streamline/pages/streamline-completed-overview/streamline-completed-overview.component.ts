@@ -1,4 +1,4 @@
-import { DELIVERY_PATHS } from './../../../../delivery-routing-constants';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { Component } from '@angular/core';
 import { PRIVATE_PATHS } from '@private//private-routing-constants';
 
