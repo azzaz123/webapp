@@ -89,6 +89,10 @@ describe('DeliveryComponent', () => {
           display: $localize`:@@web_sales:Sales`,
         },
         {
+          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.COMPLETED}`,
+          display: $localize`:@@purchases_view_finished_tab_title:Completed`,
+        },
+        {
           id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
           display: $localize`:@@web_delivery_shipping_address:Address`,
         },
