@@ -39,6 +39,13 @@ export class CatalogItemActionsComponent implements OnInit {
     this.resetSelectedItems();
   }
 
+  public selectAll() {
+    this.items.forEach((item) => {
+      this.itemService.selectItem(item.id);
+      item.selected = true;
+    });
+  }
+
   public deactivate() {
     this.modalService.open(DeactivateItemsModalComponent).result.then(() => {
       this.itemService
@@ -128,12 +135,5 @@ export class CatalogItemActionsComponent implements OnInit {
 
   private resetSelectedItems(): void {
     this.itemService.selectedItems = [];
-  }
-
-  public selectAll() {
-    this.items.forEach((item) => {
-      this.itemService.selectItem(item.id);
-      item.selected = true;
-    });
   }
 }

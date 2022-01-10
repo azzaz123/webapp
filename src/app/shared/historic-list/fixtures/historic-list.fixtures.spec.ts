@@ -1,6 +1,6 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
-import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
-import { MOCK_PENDING_REQUEST } from '@api/fixtures/core/model/delivery/requests.fixtures.spec';
+import { MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER } from '@api/fixtures/core/model/delivery/deliveries/ongoing/delivery-pending-transactions-and-requests.fixtures.spec';
+import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-subdescription-type.enum';
@@ -85,30 +85,110 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
         {
           elements: [
             {
-              id: MOCK_PENDING_REQUEST.id,
-              imageUrl: MOCK_PENDING_REQUEST.item.imageUrl,
-              iconUrl: MOCK_PENDING_REQUEST.seller.imageUrl,
-              title: MOCK_PENDING_REQUEST.item.title,
-              description: {
-                text: 'Via shipping',
-                iconUrl: 'assets/icons/box.svg',
+              description: { iconUrl: 'assets/icons/box.svg', text: 'Via shipping' },
+              iconUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].seller.imageUrl,
+              id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].id,
+              imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].item.imageUrl,
+              moneyAmount: {
+                amount: {
+                  decimals: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.amount.decimals,
+                  integer: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.amount.integer,
+                  total: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.amount.total,
+                },
+                currency: {
+                  code: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.currency.code,
+                  symbol: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.currency.symbol,
+                },
               },
-              moneyAmount: MOCK_PENDING_REQUEST.moneyAmount,
+              payload: {
+                buyer: {
+                  id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].buyer.id,
+                  imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].buyer.imageUrl,
+                  name: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].buyer.name,
+                },
+                id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].id,
+                isCurrentUserTheSeller: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].isCurrentUserTheSeller,
+                item: {
+                  id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].item.id,
+                  imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].item.imageUrl,
+                  title: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].item.title,
+                },
+                moneyAmount: {
+                  amount: {
+                    decimals: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.amount.decimals,
+                    integer: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.amount.integer,
+                    total: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.amount.total,
+                  },
+                  currency: {
+                    code: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.currency.code,
+                    symbol: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].moneyAmount.currency.symbol,
+                  },
+                },
+                seller: {
+                  id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].seller.id,
+                  imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].seller.imageUrl,
+                  name: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].seller.name,
+                },
+              },
               subDescription: null,
-              payload: MOCK_PENDING_REQUEST,
+              title: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].item.title,
             },
             {
-              id: MOCK_PENDING_TRANSACTIONS[0].id,
-              imageUrl: MOCK_PENDING_TRANSACTIONS[0].item.imageUrl,
-              iconUrl: MOCK_PENDING_TRANSACTIONS[0].seller.imageUrl,
-              title: MOCK_PENDING_TRANSACTIONS[0].item.title,
-              description: {
-                text: 'Via shipping',
-                iconUrl: 'assets/icons/box.svg',
+              description: { iconUrl: 'assets/icons/box.svg', text: 'Via shipping' },
+              iconUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].seller.imageUrl,
+              id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].id,
+              imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].item.imageUrl,
+              moneyAmount: {
+                amount: {
+                  decimals: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.amount.decimals,
+                  integer: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.amount.integer,
+                  total: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.amount.total,
+                },
+                currency: {
+                  code: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.currency.code,
+                  symbol: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.currency.symbol,
+                },
               },
-              moneyAmount: MOCK_PENDING_TRANSACTIONS[0].moneyAmount,
-              subDescription: null,
-              payload: MOCK_PENDING_TRANSACTIONS[0],
+              payload: {
+                buyer: {
+                  id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].buyer.id,
+                  imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].buyer.imageUrl,
+                  name: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].buyer.name,
+                },
+                id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].id,
+                isCurrentUserTheSeller: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].isCurrentUserTheSeller,
+                item: {
+                  id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].item.id,
+                  imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].item.imageUrl,
+                  title: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].item.title,
+                },
+                moneyAmount: {
+                  amount: {
+                    decimals: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.amount.decimals,
+                    integer: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.amount.integer,
+                    total: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.amount.total,
+                  },
+                  currency: {
+                    code: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.currency.code,
+                    symbol: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].moneyAmount.currency.symbol,
+                  },
+                },
+                seller: {
+                  id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].seller.id,
+                  imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].seller.imageUrl,
+                  name: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].seller.name,
+                },
+                state: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].state,
+                status: {
+                  name: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].status.name,
+                  translation: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].status.translation,
+                },
+              },
+              subDescription: {
+                text: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].status.translation,
+                type: 2,
+              },
+              title: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].item.title,
             },
           ],
         },
@@ -139,6 +219,7 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
                 type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
               },
               moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 19.75, currency: 'EUR' }),
+              payload: MOCK_HISTORIC_TRANSACTIONS[0],
             },
             {
               id: '001cf831-d040-4e31-b4e7-aa50d2a3cadc',
@@ -154,6 +235,7 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
                 type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
               },
               moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 12, currency: 'EUR' }),
+              payload: MOCK_HISTORIC_TRANSACTIONS[1],
             },
           ],
         },

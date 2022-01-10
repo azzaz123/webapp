@@ -61,10 +61,12 @@
   &__img {
     padding: $spacing-xl;
     background: $color-pro-main;
+    max-width: 289px;
 
     @include media-breakpoint-down(sm) {
       background: linear-gradient(0deg, transparent 30%, $color-pro-main 30%);
       padding: $spacing-ml 0 0 0;
+      max-width: none;
     }
 
     img {

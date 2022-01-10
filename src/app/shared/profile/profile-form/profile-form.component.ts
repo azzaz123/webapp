@@ -11,14 +11,28 @@ import { ExitConfirmationModalComponent } from '../../exit-confirmation-modal/ex
 })
 export class ProfileFormComponent implements OnInit {
   @Input() profileForm: FormGroup;
-  @Output() onInit = new EventEmitter<boolean>();
-  private oldFormValue: any;
+  @Output() handleOnInit = new EventEmitter<boolean>();
   public hasNotSavedChanges: boolean;
+  private oldFormValue: any;
 
   constructor(private modalService: NgbModal) {}
-
+  @HostListener('window:beforeunload')
+  handleBeforeUnload() {
+    if (this.hasNotSavedChanges) {
+      return confirm();
+    }
+  }
   ngOnInit() {
     this.detectFormChanges();
+  }
+
+  public canExit() {
+    if (!this.hasNotSavedChanges) {
+      return true;
+    }
+    return this.modalService.open(ExitConfirmationModalComponent, {
+      backdrop: 'static',
+    }).result;
   }
 
   public initFormControl() {
@@ -39,22 +53,6 @@ export class ProfileFormComponent implements OnInit {
       }
     });
 
-    this.onInit.emit(true);
-  }
-
-  public canExit() {
-    if (!this.hasNotSavedChanges) {
-      return true;
-    }
-    return this.modalService.open(ExitConfirmationModalComponent, {
-      backdrop: 'static',
-    }).result;
-  }
-
-  @HostListener('window:beforeunload')
-  handleBeforeUnload() {
-    if (this.hasNotSavedChanges) {
-      return confirm();
-    }
+    this.handleOnInit.emit(true);
   }
 }

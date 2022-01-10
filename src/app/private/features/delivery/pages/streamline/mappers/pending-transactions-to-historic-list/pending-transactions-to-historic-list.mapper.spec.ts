@@ -1,7 +1,7 @@
 import {
-  MOCK_EMPTY_PENDING_TRANSACTIONS_AND_REQUESTS,
-  MOCK_PENDING_TRANSACTIONS_AND_REQUESTS,
-} from '@api/fixtures/core/model/delivery/pending-transactions-and-requests.fixtures.spec';
+  MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER,
+  MOCK_EMPTY_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS,
+} from '@api/fixtures/core/model/delivery/deliveries/ongoing/delivery-pending-transactions-and-requests.fixtures.spec';
 import {
   MOCK_HISTORIC_LIST_EMPTY,
   MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS,
@@ -15,7 +15,7 @@ describe('mapPendingTransactionToHistoricList', () => {
       let result: HistoricList;
       const expectedResult = MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS;
 
-      result = mapPendingTransactionToHistoricList(MOCK_PENDING_TRANSACTIONS_AND_REQUESTS);
+      result = mapPendingTransactionToHistoricList(MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER);
 
       expect(result).toEqual(expectedResult);
     });
@@ -26,7 +26,7 @@ describe('mapPendingTransactionToHistoricList', () => {
       let result: HistoricList;
       const expectedResult = MOCK_HISTORIC_LIST_EMPTY;
 
-      result = mapPendingTransactionToHistoricList(MOCK_EMPTY_PENDING_TRANSACTIONS_AND_REQUESTS);
+      result = mapPendingTransactionToHistoricList(MOCK_EMPTY_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS);
 
       expect(result).toEqual(expectedResult);
     });

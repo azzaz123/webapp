@@ -7,7 +7,7 @@ import { StarRate } from './star-rate.interface';
   styleUrls: ['./stars-rate.component.scss'],
 })
 export class StarsRateComponent implements OnInit {
-  @Output() onChange: EventEmitter<number> = new EventEmitter();
+  @Output() handleOnChange: EventEmitter<number> = new EventEmitter();
   public starsArray: StarRate[] = [];
   private score: number;
 
@@ -44,6 +44,6 @@ export class StarsRateComponent implements OnInit {
 
   public setScore(score: number) {
     this.score = score;
-    this.onChange.emit(score);
+    this.handleOnChange.emit(score);
   }
 }

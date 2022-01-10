@@ -8,7 +8,11 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { HistoricElementComponent } from '@shared/historic-list/components/historic-element/historic-element.component';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { HistoricListModule } from '@shared/historic-list/historic-list.module';
-import { MOCK_HISTORIC_ELEMENT_WITH_ID } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
+import {
+  MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER,
+  MOCK_HISTORIC_ELEMENT_WITH_DELIVERY_PENDING_TRANSACTION,
+  MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER,
+} from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import {
   MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS,
   MOCK_HISTORIC_LIST_EMPTY,
@@ -21,19 +25,22 @@ import { StreamlineOngoingUIService } from '@private/features/delivery/pages/str
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 import { ReplaySubject, throwError } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
+import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
 
 describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;
   let fixture: ComponentFixture<StreamlineOngoingComponent>;
   let streamlineOngoingUIService: StreamlineOngoingUIService;
   let router: Router;
+  let modalService: NgbModal;
 
   let loadingReplaySubject: ReplaySubject<boolean> = new ReplaySubject(1);
   let historicListReplaySubject: ReplaySubject<HistoricList> = new ReplaySubject(1);
 
   let spinnerSelector: string = '.spinner';
   let emptyStateSelector: string = '.HistoricList__no-results';
-  let errorActionService: SharedErrorActionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -50,6 +57,7 @@ describe('StreamlineOngoingComponent', () => {
           },
         },
         { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
+        { provide: NgbModal, useClass: NgbModalMock },
       ],
     }).compileComponents();
   });
@@ -60,7 +68,7 @@ describe('StreamlineOngoingComponent', () => {
 
     router = TestBed.inject(Router);
     streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
-    errorActionService = TestBed.inject(SharedErrorActionService);
+    modalService = TestBed.inject(NgbModal);
 
     fixture.detectChanges();
     spyOn(router, 'navigate');
@@ -120,12 +128,45 @@ describe('StreamlineOngoingComponent', () => {
     });
 
     describe('when user clicks on a historic element', () => {
-      it('should navigate to the tracking page', () => {
-        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_ID.id}`;
+      describe('and the element is a request', () => {
+        describe('and the user is the buyer', () => {
+          it('should navigate to the tracking page with the id', () => {
+            const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER.id}`;
 
-        component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_ID);
+            component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER);
 
-        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+          });
+        });
+
+        describe('and the user is the seller', () => {
+          beforeEach(() => {
+            spyOn(modalService, 'open').and.callThrough();
+
+            component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER);
+          });
+
+          it('should stay at the same page', () => {
+            expect(router.navigate).not.toHaveBeenCalled();
+          });
+
+          it('should open the accept screen awareness modal', () => {
+            expect(modalService.open).toHaveBeenCalledTimes(1);
+            expect(modalService.open).toHaveBeenCalledWith(AcceptScreenAwarenessModalComponent);
+          });
+        });
+      });
+
+      describe('and the element is a pending transaction', () => {
+        it('should navigate to the tracking page with the payload request id', () => {
+          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_DELIVERY_PENDING_TRANSACTION.id}`;
+
+          component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_DELIVERY_PENDING_TRANSACTION);
+
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+        });
       });
     });
 

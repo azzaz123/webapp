@@ -1,4 +1,4 @@
-<tsl-profile-form [profileForm]="billingForm" (onInit)="initForm()">
+<tsl-profile-form [profileForm]="billingForm" (handleOnInit)="initForm()">
   <form [formGroup]="billingForm" (submit)="onSubmit($event)" class="BillingForm">
     <div class="box profile-box">
       <div class="content" [hidden]="loading">

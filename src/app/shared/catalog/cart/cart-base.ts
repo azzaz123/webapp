@@ -30,14 +30,6 @@ export abstract class CartBase {
     collapsed: false,
   };
 
-  abstract add(cartItem: CartItem | CartProItem | CartProExtrasPack, type: string);
-
-  abstract removeCartItem(type: string, itemId?: string, index?: number);
-
-  abstract clean();
-
-  abstract prepareOrder();
-
   public getOrderId(): string {
     return UuidService.getUUID();
   }
@@ -47,4 +39,12 @@ export abstract class CartBase {
       this.removeCartItem(itemId, type);
     });
   }
+
+  abstract add(cartItem: CartItem | CartProItem | CartProExtrasPack, type: string);
+
+  abstract removeCartItem(type: string, itemId?: string, index?: number);
+
+  abstract clean();
+
+  abstract prepareOrder();
 }

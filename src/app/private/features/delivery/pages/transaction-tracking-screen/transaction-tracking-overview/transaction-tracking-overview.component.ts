@@ -9,6 +9,7 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
 
 import { catchError, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-overview',
@@ -23,39 +24,56 @@ export class TransactionTrackingOverviewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private transactionTrackingService: TransactionTrackingService,
+    private storeService: TransactionTrackingScreenStoreService,
     private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService,
     private errorActionService: SharedErrorActionService
   ) {}
 
   ngOnInit(): void {
     const requestId = this.route.snapshot.paramMap.get(DELIVERY_PATH_PARAMS.ID);
+    this.initializeTransactionTracking(requestId);
+    this.initializeTransactionTrackingDetails(requestId);
 
-    this.transactionTracking$ = this.getTransactionTracking(requestId);
-    this.transactionTrackingDetails$ = this.getTransactionTrackingDetails(requestId);
+    this.transactionTracking$ = this.storeService.transactionTracking$;
+    this.transactionTrackingDetails$ = this.storeService.transactionTrackingDetails$;
   }
 
-  private getTransactionTracking(requestId: string): Observable<TransactionTracking | never> {
-    return this.transactionTrackingService.get(requestId).pipe(
-      tap((transactionTracking: TransactionTracking) => {
-        this.transactionTrackingScreenTrackingEventsService.trackViewTTSScreen(
-          requestId,
-          transactionTracking.analytics.buyer.country,
-          transactionTracking.analytics.seller.country
-        );
-      }),
-      catchError((error: unknown) => {
-        this.errorActionService.show(error);
-        return throwError(error);
-      })
-    );
+  private initializeTransactionTracking(requestId: string): void {
+    this.transactionTrackingService
+      .get(requestId)
+      .pipe(
+        tap((transactionTracking: TransactionTracking) => {
+          this.trackViewPageEvent(requestId, transactionTracking);
+          this.storeService.transactionTracking = transactionTracking;
+        }),
+        catchError((error: unknown) => {
+          this.errorActionService.show(error);
+          return throwError(error);
+        })
+      )
+      .subscribe();
   }
 
-  private getTransactionTrackingDetails(requestId: string): Observable<TransactionTrackingDetails | never> {
-    return this.transactionTrackingService.getDetails(requestId).pipe(
-      catchError((error: unknown) => {
-        this.errorActionService.show(error);
-        return throwError(error);
-      })
+  private initializeTransactionTrackingDetails(requestId: string): void {
+    this.transactionTrackingService
+      .getDetails(requestId)
+      .pipe(
+        tap((details: TransactionTrackingDetails) => {
+          this.storeService.transactionTrackingDetails = details;
+        }),
+        catchError((error: unknown) => {
+          this.errorActionService.show(error);
+          return throwError(error);
+        })
+      )
+      .subscribe();
+  }
+
+  private trackViewPageEvent(requestId: string, transactionTracking: TransactionTracking): void {
+    this.transactionTrackingScreenTrackingEventsService.trackViewTTSScreen(
+      requestId,
+      transactionTracking.analytics.buyer.country,
+      transactionTracking.analytics.seller.country
     );
   }
 }

@@ -10,16 +10,16 @@ import { TabsBarElement } from '../../interfaces/tabs-bar-element.interface';
 export class TabsBarComponent<T> implements OnChanges {
   @Input() tabsBarElements: TabsBarElement<T>[];
   @Input() initialSelectedTabBarElement: TabsBarElement<T>;
-  @Output() onChange: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
+  @Output() handleOnClick: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
+
+  private selectedTabBarElement: TabsBarElement<T>;
 
   ngOnChanges() {
     this.setSelectedTabBarElement();
   }
 
-  private selectedTabBarElement: TabsBarElement<T>;
-
   public handleClick(tabBarElement: TabsBarElement<T>): void {
-    this.onChange.emit(tabBarElement);
+    this.handleOnClick.emit(tabBarElement);
     this.selectedTabBarElement = tabBarElement;
   }
 

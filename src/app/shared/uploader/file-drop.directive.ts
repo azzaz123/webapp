@@ -34,29 +34,6 @@ export class FileDropDirective implements OnInit, OnDestroy {
     this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
     this.isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
   }
-
-  ngOnInit() {
-    if (this.isServer) {
-      return;
-    }
-
-    this.el = this.elementRef.nativeElement;
-    this.el.addEventListener('drop', this.stopEvent, false);
-    this.el.addEventListener('dragenter', this.stopEvent, false);
-    this.el.addEventListener('dragover', this.stopEvent, false);
-  }
-
-  ngOnDestroy() {
-    if (this.isServer) {
-      return;
-    }
-  }
-
-  stopEvent = (e: Event) => {
-    e.stopPropagation();
-    e.preventDefault();
-  };
-
   @HostListener('drop', ['$event'])
   public onDrop(e: any) {
     e.stopPropagation();
@@ -84,4 +61,26 @@ export class FileDropDirective implements OnInit, OnDestroy {
     }
     this.fileDropAction.emit({ action: FileDropActions.DRAGOUT });
   }
+
+  ngOnInit() {
+    if (this.isServer) {
+      return;
+    }
+
+    this.el = this.elementRef.nativeElement;
+    this.el.addEventListener('drop', this.stopEvent, false);
+    this.el.addEventListener('dragenter', this.stopEvent, false);
+    this.el.addEventListener('dragover', this.stopEvent, false);
+  }
+
+  ngOnDestroy() {
+    if (this.isServer) {
+      return;
+    }
+  }
+
+  stopEvent = (e: Event) => {
+    e.stopPropagation();
+    e.preventDefault();
+  };
 }

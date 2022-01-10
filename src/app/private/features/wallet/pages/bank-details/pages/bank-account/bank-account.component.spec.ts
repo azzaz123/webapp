@@ -752,7 +752,7 @@ describe('BankAccountComponent', () => {
 
   function triggerProfileFormInit(): void {
     const profileFormElement = fixture.debugElement.query(By.directive(ProfileFormComponent));
-    profileFormElement.triggerEventHandler('onInit', {});
+    profileFormElement.triggerEventHandler('handleOnInit', {});
   }
 
   function triggerFormSubmit(): void {

@@ -53,6 +53,7 @@ export class SendPhoneComponent implements OnInit {
 
     this.inboxConversationService.addPhoneNumberToConversation$(this.conversation, phoneNumber).subscribe();
     this.realTimeService.addPhoneNumberMessageToConversation(this.conversation, phoneNumber);
+    this.conversation.phoneRequired = false;
     this.activeModal.close();
   }
 

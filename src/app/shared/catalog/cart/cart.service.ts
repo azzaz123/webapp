@@ -5,9 +5,9 @@ import { CartBase } from './cart-base';
 
 @Injectable()
 export class CartService {
+  public cart$: Observable<CartChange>;
   private cartSource: Subject<CartChange> = new Subject();
   private cart: CartBase;
-  public cart$: Observable<CartChange>;
 
   constructor() {
     this.cart$ = this.cartSource.asObservable();

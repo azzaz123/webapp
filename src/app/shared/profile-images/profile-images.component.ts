@@ -9,11 +9,12 @@ import { ProfileImage } from '../../core/profile/profile-response.interface';
   styleUrls: ['./profile-images.component.scss'],
 })
 export class ProfileImagesComponent implements OnChanges {
-  public avatar: string;
-  public fallback: string;
   @Input() fallbackLight: boolean;
   @Input() profileImage: ProfileImage;
   @Input() size: string;
+
+  public avatar: string;
+  public fallback: string;
 
   constructor() {}
 

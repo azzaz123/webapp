@@ -10,6 +10,7 @@ export class FilterParameterStoreService {
 
   private parameters: FilterParameter[] = [];
   private parametersSubject = new ReplaySubject<FilterParameter[]>(1);
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public parameters$ = this.parametersSubject.asObservable();
 
   public getParameters(): FilterParameter[] {
