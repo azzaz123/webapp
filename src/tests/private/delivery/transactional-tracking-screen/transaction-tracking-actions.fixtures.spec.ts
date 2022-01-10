@@ -74,6 +74,17 @@ export const MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2: Transacti
   },
 };
 
+export const MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITHOUT_ANALYTICS: TransactionTrackingActionDialog = {
+  ...MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS,
+  positive: {
+    action: {
+      ...MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION,
+      analytics: null,
+    },
+    title: 'Confirmar',
+  },
+};
+
 export const MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW: TransactionTrackingActionCarrierTrackingWebview = {
   isCarrierTrackingWebview: true,
   linkUrl: 'https://www.correos.es/es/es/herramientas/localizador/envios/detalle?tracking-number=PK55Z20727923640108018P',

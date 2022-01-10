@@ -10,6 +10,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
 import {
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG,
+  MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITHOUT_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2,
 } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -206,6 +207,11 @@ describe('TransactionTrackingActionDialogComponent', () => {
         });
 
         describe('and the action has NOT analytics', () => {
+          beforeEach(() => {
+            component.dialogAction = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITHOUT_ANALYTICS;
+            fixture.detectChanges();
+          });
+
           it('should NOT track the event', () => {
             wrapperDialog.nativeElement.click();
 
