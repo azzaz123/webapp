@@ -12,6 +12,8 @@ export enum PRO_MODAL_TYPE {
   listing_limit_discount,
   reactivation,
   profile_pro_fields,
+  remove_card,
+  confirm_change_card,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -143,6 +145,24 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
         text: $localize`:@@pro_after_reactivation_non_subscribed_user_view_plans_button:View plans`,
         redirect: { type: REDIRECT_TYPE.routerLink, url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}` },
       },
+    },
+  },
+  [PRO_MODAL_TYPE.remove_card]: {
+    img: '/assets/icons/pro/modals/confirm-change-card.svg',
+    title: $localize`:@@web_missing_payment_method_title:Delete payment method`,
+    text1: $localize`:@@web_missing_payment_method_subtitle:Without a card linked to your subscriptions, you won't be able to renew them and you will lose the benefits of being PRO. Is that what you want?`,
+    buttons: {
+      secondary: { text: $localize`:@@web_cancel:Cancel` },
+      primary: { text: $localize`:@@web_confirm_delete_card:Yes, delete card` },
+    },
+  },
+  [PRO_MODAL_TYPE.confirm_change_card]: {
+    img: '/assets/icons/pro/modals/confirm-change-card.svg',
+    title: $localize`:@@bank_card_change_confirm_modal_pro_user_title:This is your payment method`,
+    text1: $localize`:@@bank_card_change_confirm_modal_pro_user_description:The card you've associated has this last four digits: ${'XXXX'}:INTERPOLATION:.`,
+    buttons: {
+      secondary: { text: $localize`:@@web_cancel:Cancel` },
+      primary: { text: $localize`:@@bank_card_change_confirm_modal_pro_user_confirm_button:Confirm` },
     },
   },
 };

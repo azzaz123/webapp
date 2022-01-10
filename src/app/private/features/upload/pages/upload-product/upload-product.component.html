@@ -210,7 +210,7 @@
             placeholder="phones_brand_example"
             [suggestions]="brandSuggestions"
             (inputChange)="getBrands($event)"
-            (onSuggestionSelect)="autoCompleteCellphonesModel($event)"
+            (handleSuggestionSelect)="autoCompleteCellphonesModel($event)"
           >
           </tsl-keyword-suggester>
         </div>

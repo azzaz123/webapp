@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
+import { DeliveriesOngoingService } from '@api/bff/delivery/deliveries/ongoing/deliveries-ongoing.service';
+import { DeliveryPendingTransactionsAndRequests } from '@api/core/model/delivery';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { Observable, ReplaySubject, throwError } from 'rxjs';
 import { tap, take, finalize, catchError } from 'rxjs/operators';
@@ -11,7 +12,7 @@ export class StreamlineOngoingUIService {
   private readonly _loading$: ReplaySubject<boolean> = new ReplaySubject(1);
   private _historicList$: ReplaySubject<HistoricList> = new ReplaySubject(1);
 
-  constructor(private requestsAndTransactionsPendingService: RequestsAndTransactionsPendingService) {}
+  constructor(private deliveriesOngoingService: DeliveriesOngoingService) {}
 
   public get loading$(): Observable<boolean> {
     return this._loading$.asObservable();
@@ -34,7 +35,7 @@ export class StreamlineOngoingUIService {
     this._loading$.next(value);
   }
 
-  public getItems(): void {
+  public getItems(isCurrentUserTheSeller: boolean): void {
     const canNotLoadMoreItems = this.loading;
     if (canNotLoadMoreItems) {
       return;
@@ -42,9 +43,12 @@ export class StreamlineOngoingUIService {
 
     this.loading = true;
 
-    this.requestsAndTransactionsPendingService.pendingTransactionsAndRequests
+    const request = isCurrentUserTheSeller
+      ? this.deliveriesOngoingService.pendingTransactionsAndRequestsAsSeller
+      : this.deliveriesOngoingService.pendingTransactionsAndRequestsAsBuyer;
+    request
       .pipe(
-        tap((response) => {
+        tap((response: DeliveryPendingTransactionsAndRequests) => {
           this.historicList = mapPendingTransactionToHistoricList(response);
         }),
         catchError((error: unknown) => {

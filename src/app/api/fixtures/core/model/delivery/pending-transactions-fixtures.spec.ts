@@ -10,6 +10,7 @@ import {
 export const MOCK_PENDING_TRANSACTIONS: PendingTransaction[] = [
   {
     id: '81891bfa-9df3-41f9-9411-0cd85d1daf9e',
+    requestId: '81891bfaa',
     item: {
       id: 'kmzn9dmg4kjn',
       imageUrl: 'http://cdn-beta.wallapop.com/images/10420/34/ow/__/c10420p189278801/i420098101.jpg?pictureSize=W800',

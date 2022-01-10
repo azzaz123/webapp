@@ -23,7 +23,7 @@ export class TransactionsHistoryApiService {
   public get(page: number = 0): Observable<HistoricTransaction[] | []> {
     return this.transactionsHistoryHttpService.get(mapTransactionsHistoryFiltersToApi({ page })).pipe(
       take(1),
-      concatMap((transactionsHistoryResponse) =>
+      concatMap((transactionsHistoryResponse: TransactionsHistoryDto) =>
         forkJoin([
           this.getAllUsers(transactionsHistoryResponse),
           this.getAllItems(transactionsHistoryResponse),

@@ -1,6 +1,6 @@
 <div *ngIf="item" class="ItemCardWide container w-100 p-1">
     <div class="row d-flex w-100 h-100 m-0 align-content-start">
-        <div class="ItemCardWide__images col-12 col-md-5 p-0"> 
+        <div class="ItemCardWide__images col-12 col-md-4 p-0"> 
             <tsl-svg-icon *ngIf="item.flags?.sold" width="20"
                 class="ItemCardWide__icon ItemCardWide__icon--left position-absolute d-flex justify-content-center align-items-center"
                 src="/assets/icons/item-card/sold.svg"></tsl-svg-icon>
@@ -22,7 +22,7 @@
                 </ng-template>
             </tsl-carousel-slides>
         </div>
-        <div class="col-12 col-md-7 w-100 pt-3 p-2 pt-md-2 px-md-3">
+        <div class="col-12 col-md-8 w-100 pt-3 p-2 pt-md-2 px-md-3">
             <div class="d-flex justify-content-between">
                 <span class="ItemCardWide__price ItemCardWide__price--bold">{{item.salePrice | customCurrency:item.currencyCode}}</span>
                 <tsl-favourite-icon *ngIf="showFavourite" class="ItemCardWide__favourite" [active]="item.flags?.favorite"

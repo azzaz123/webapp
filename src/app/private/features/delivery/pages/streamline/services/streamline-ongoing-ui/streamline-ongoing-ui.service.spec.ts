@@ -2,43 +2,83 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
 import { MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
-import { MOCK_PENDING_TRANSACTIONS_AND_REQUESTS } from '@api/fixtures/core/model/delivery/pending-transactions-and-requests.fixtures.spec';
-import { PendingTransactionsAndRequests } from '@api/core/model/delivery';
-import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
+import { DeliveryPendingTransactionsAndRequests } from '@api/core/model/delivery';
 import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 
 import { Observable, ReplaySubject, throwError } from 'rxjs';
+import { DeliveriesOngoingService } from '@api/bff/delivery/deliveries/ongoing/deliveries-ongoing.service';
+import { MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER } from '@api/fixtures/core/model/delivery/deliveries/ongoing/delivery-pending-transactions-and-requests.fixtures.spec';
 
 describe('StreamlineOngoingUIService', () => {
   let service: StreamlineOngoingUIService;
-  let requestsAndTransactionsPendingService: RequestsAndTransactionsPendingService;
+  let deliveriesOngoingService: DeliveriesOngoingService;
+  let spyPendingTransactionsAndRequestsAsSeller;
+  let spyPendingTransactionsAndRequestsAsBuyer;
 
-  const requestsReplaySubject: ReplaySubject<PendingTransactionsAndRequests> = new ReplaySubject<PendingTransactionsAndRequests>(1);
+  const requestsAsSellerReplaySubject: ReplaySubject<DeliveryPendingTransactionsAndRequests> =
+    new ReplaySubject<DeliveryPendingTransactionsAndRequests>(1);
+  const requestsAsBuyerReplaySubject: ReplaySubject<DeliveryPendingTransactionsAndRequests> =
+    new ReplaySubject<DeliveryPendingTransactionsAndRequests>(1);
 
-  class MockRequestsAndTransactionsPendingService {
-    get pendingTransactionsAndRequests(): Observable<PendingTransactionsAndRequests> {
-      return requestsReplaySubject.asObservable();
+  class MockDeliveriesOngoingService {
+    get pendingTransactionsAndRequestsAsSeller(): Observable<DeliveryPendingTransactionsAndRequests> {
+      return requestsAsSellerReplaySubject.asObservable();
+    }
+    get pendingTransactionsAndRequestsAsBuyer(): Observable<DeliveryPendingTransactionsAndRequests> {
+      return requestsAsBuyerReplaySubject.asObservable();
     }
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        StreamlineOngoingUIService,
-        { provide: RequestsAndTransactionsPendingService, useClass: MockRequestsAndTransactionsPendingService },
-      ],
+      providers: [StreamlineOngoingUIService, { provide: DeliveriesOngoingService, useClass: MockDeliveriesOngoingService }],
     });
     service = TestBed.inject(StreamlineOngoingUIService);
-    requestsAndTransactionsPendingService = TestBed.inject(RequestsAndTransactionsPendingService);
+    deliveriesOngoingService = TestBed.inject(DeliveriesOngoingService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('when requesting items', () => {
+    beforeEach(() => {
+      spyPendingTransactionsAndRequestsAsSeller = jest.spyOn(deliveriesOngoingService, 'pendingTransactionsAndRequestsAsSeller', 'get');
+      spyPendingTransactionsAndRequestsAsBuyer = jest.spyOn(deliveriesOngoingService, 'pendingTransactionsAndRequestsAsBuyer', 'get');
+    });
+
+    describe('and we are the seller', () => {
+      beforeEach(() => {
+        service.getItems(true);
+      });
+
+      it('should request the transactions and requests as seller', () => {
+        expect(spyPendingTransactionsAndRequestsAsSeller).toHaveBeenCalledTimes(1);
+      });
+
+      it('should NOT request the transactions and requests as buyer', () => {
+        expect(spyPendingTransactionsAndRequestsAsBuyer).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and we are the buyer', () => {
+      beforeEach(() => {
+        service.getItems(false);
+      });
+
+      it('should request the transactions and requests as buyer', () => {
+        expect(spyPendingTransactionsAndRequestsAsBuyer).toHaveBeenCalledTimes(1);
+      });
+
+      it('should NOT request the transactions and requests as seller', () => {
+        expect(spyPendingTransactionsAndRequestsAsSeller).not.toHaveBeenCalled();
+      });
+    });
+  });
+
   describe('when getting elements', () => {
     beforeEach(() => {
-      service.getItems();
+      service.getItems(true);
     });
 
     it('should notify loading state', () => {
@@ -51,7 +91,7 @@ describe('StreamlineOngoingUIService', () => {
 
     describe('and when server responses', () => {
       beforeEach(() => {
-        requestsReplaySubject.next(MOCK_PENDING_TRANSACTIONS_AND_REQUESTS);
+        requestsAsSellerReplaySubject.next(MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER);
       });
 
       it('should notify loading state ended', () => {
@@ -67,7 +107,7 @@ describe('StreamlineOngoingUIService', () => {
 
         service.historicList$.subscribe((data) => (historicList = data));
 
-        expect(JSON.stringify(historicList)).toEqual(JSON.stringify(MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS));
+        expect(historicList).toEqual(MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS);
       });
     });
   });
@@ -89,16 +129,15 @@ describe('StreamlineOngoingUIService', () => {
 
 describe('WHEN there is an error retrieving the shipping list', () => {
   let streamlineOngoingUIService: StreamlineOngoingUIService;
-  let requestsAndTransactionsPendingService: RequestsAndTransactionsPendingService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         StreamlineOngoingUIService,
         {
-          provide: RequestsAndTransactionsPendingService,
+          provide: DeliveriesOngoingService,
           useValue: {
-            get pendingTransactionsAndRequests() {
+            get pendingTransactionsAndRequestsAsSeller() {
               return throwError('The server is broken');
             },
           },
@@ -106,12 +145,11 @@ describe('WHEN there is an error retrieving the shipping list', () => {
       ],
     });
     streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
-    requestsAndTransactionsPendingService = TestBed.inject(RequestsAndTransactionsPendingService);
   });
 
   it('should show the generic error catcher', fakeAsync(() => {
     expect(() => {
-      streamlineOngoingUIService.getItems();
+      streamlineOngoingUIService.getItems(true);
       tick();
     }).toThrowError();
   }));

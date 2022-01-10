@@ -19,15 +19,18 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 export class GridSelectFilterComponent extends AbstractFilter<GridSelectFilterParams> implements OnInit, OnDestroy {
   @Input() config: GridSelectFilterConfig;
 
-  private labelSubject = new BehaviorSubject<string>('');
-  private iconSubject = new BehaviorSubject<string>('');
-  private subscriptions = new Subscription();
-
   public options: GridSelectFormOption[] = [];
   public formGroup = new FormGroup({
     select: new FormControl([]),
   });
+
+  private labelSubject = new BehaviorSubject<string>('');
+  private iconSubject = new BehaviorSubject<string>('');
+  private subscriptions = new Subscription();
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public label$ = this.labelSubject.asObservable();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public icon$ = this.iconSubject.asObservable();
 
   constructor(private optionService: FilterOptionService) {

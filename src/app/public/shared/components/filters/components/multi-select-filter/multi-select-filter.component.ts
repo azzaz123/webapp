@@ -31,23 +31,24 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   @ViewChild('multiselectForm', { read: MultiSelectFormComponent })
   private multiselectForm: MultiSelectFormComponent;
 
-  private subscriptions = new Subscription();
-  private labelSubject = new BehaviorSubject(undefined);
-  private multiValueSubject = new BehaviorSubject(undefined);
-  private placeholderIconSubject = new BehaviorSubject(undefined);
-
+  public readonly MULTISELECT_FILTER_BUBBLE_VARIANT = MULTISELECT_FILTER_BUBBLE_VARIANT;
   public formGroup = new FormGroup({
     select: new FormControl(),
   });
   public options: FilterOption[] = [];
-  private allOptions: FilterOption[] = [];
 
+  private subscriptions = new Subscription();
+  private labelSubject = new BehaviorSubject(undefined);
+  private multiValueSubject = new BehaviorSubject(undefined);
+  private placeholderIconSubject = new BehaviorSubject(undefined);
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public label$ = this.labelSubject.asObservable();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public placeholderIcon$ = this.labelSubject.asObservable();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public multiValue$ = this.multiValueSubject.asObservable();
 
-  public readonly MULTISELECT_FILTER_BUBBLE_VARIANT = MULTISELECT_FILTER_BUBBLE_VARIANT;
-
+  private allOptions: FilterOption[] = [];
   public constructor(private optionService: FilterOptionService) {
     super();
   }

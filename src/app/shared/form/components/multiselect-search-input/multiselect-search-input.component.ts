@@ -10,6 +10,7 @@ import {
   EventEmitter,
   HostListener,
   ChangeDetectionStrategy,
+  OnDestroy,
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PaginatedList } from '@api/core/model';
@@ -39,7 +40,7 @@ import { union } from 'lodash-es';
     },
   ],
 })
-export class MultiselectSearchInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit {
+export class MultiselectSearchInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit, OnDestroy {
   @Input() categoryId: string;
   @Input() disabled: boolean;
   @Input() max: number;
@@ -54,15 +55,25 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   public isValid: boolean = true;
   public hashtagPlaceholder: string = $localize`:@@hashtags_view_search_bar_placeholder:Find or create a hashtag`;
   public keyUpSubject = new Subject<KeyboardEvent>();
+  private optionsSubject = new Subject<MultiSelectFormOption[]>();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public options$: Observable<MultiSelectFormOption[]> = this.optionsSubject.asObservable();
   private extendedOptions: TemplateMultiSelectFormOption[];
   private keyUp$: Observable<unknown>;
   private subscriptions = new Subscription();
 
-  private optionsSubject = new Subject<MultiSelectFormOption[]>();
-  public options$: Observable<MultiSelectFormOption[]> = this.optionsSubject.asObservable();
-
   constructor(public hashtagSuggesterApiService: HashtagSuggesterApiService) {
     super();
+  }
+  @HostListener('window:click', ['$event']) onWindowClick(n: Event) {
+    const optionsList = this.hashtagSuggesterOptions.nativeElement.querySelector('tsl-multi-select-form');
+
+    if (!optionsList.contains(n.target)) {
+      this.emptyOptions();
+      this.searchValue = '';
+      this.isValid = true;
+      this.changeValidStatus.emit(this.isValid);
+    }
   }
   ngOnInit() {
     this.detectTitleKeyboardChanges();
@@ -81,15 +92,41 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     this.subscriptions.unsubscribe();
   }
 
-  @HostListener('window:click', ['$event']) onWindowClick(n: Event) {
-    const optionsList = this.hashtagSuggesterOptions.nativeElement.querySelector('tsl-multi-select-form');
-
-    if (!optionsList.contains(n.target)) {
-      this.emptyOptions();
-      this.searchValue = '';
+  public isValidKey(): boolean {
+    const pattern: RegExp = /^#$|^#?([\p{L}\p{Nd}])+$/u;
+    if (this.searchValue) {
+      this.isValid = pattern.test(this.searchValue);
+    } else {
       this.isValid = true;
-      this.changeValidStatus.emit(this.isValid);
     }
+    this.changeValidStatus.emit(this.isValid);
+    return this.isValid;
+  }
+
+  public detectTitleKeyboardChanges(): void {
+    this.keyUp$ = this.keyUpSubject.pipe(
+      debounceTime(750),
+      switchMap(() => {
+        this.suggestions = this.value;
+        if (this.isValid) {
+          return this.getHashtagSuggesters();
+        }
+      })
+    );
+
+    this.subscriptions.add(
+      this.keyUp$.subscribe((options: PaginatedList<Hashtag> | []) => {
+        if (Array.isArray(options)) {
+          this.optionsSubject.next(options);
+        } else {
+          this.optionsSubject.next(this.mapHashtagSuggestersToOptions(options));
+        }
+      })
+    );
+  }
+
+  public emptyOptions(): void {
+    this.optionsSubject.next([]);
   }
 
   public keyUp(event): void {
@@ -123,32 +160,6 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   private handleSelectedOption(): void {
     this.value = this.mapExtendedOptionsToValue();
     this.onChange(this.value);
-  }
-
-  public detectTitleKeyboardChanges(): void {
-    this.keyUp$ = this.keyUpSubject.pipe(
-      debounceTime(750),
-      switchMap(() => {
-        this.suggestions = this.value;
-        if (this.isValid) {
-          return this.getHashtagSuggesters();
-        }
-      })
-    );
-
-    this.subscriptions.add(
-      this.keyUp$.subscribe((options: PaginatedList<Hashtag> | []) => {
-        if (Array.isArray(options)) {
-          this.optionsSubject.next(options);
-        } else {
-          this.optionsSubject.next(this.mapHashtagSuggestersToOptions(options));
-        }
-      })
-    );
-  }
-
-  public emptyOptions(): void {
-    this.optionsSubject.next([]);
   }
 
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag> | []> {
@@ -195,16 +206,5 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     newValue = newValue.filter((value) => !valuesToRemove.includes(value));
 
     return newValue;
-  }
-
-  public isValidKey(): boolean {
-    const pattern: RegExp = /^#$|^#?([\p{L}\p{Nd}])+$/u;
-    if (this.searchValue) {
-      this.isValid = pattern.test(this.searchValue);
-    } else {
-      this.isValid = true;
-    }
-    this.changeValidStatus.emit(this.isValid);
-    return this.isValid;
   }
 }

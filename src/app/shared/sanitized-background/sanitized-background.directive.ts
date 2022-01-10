@@ -1,11 +1,12 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/core';
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[tslsanitizedBackground]',
 })
 export class SanitizedBackgroundDirective implements OnChanges {
   @Input('tslsanitizedBackground') image: string;
-  @Input('fallback') fallback: string;
+  @Input() fallback: string;
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 

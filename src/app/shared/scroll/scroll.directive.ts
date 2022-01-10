@@ -3,6 +3,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from
 export const DEFAULT_INFINITE_SCROLL_DISTANCE = 300;
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[scroll]',
 })
 export class ScrollDirective {

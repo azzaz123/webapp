@@ -18,6 +18,10 @@ const routes: Route[] = [
         path: STREAMLINE_PATHS.COMPLETED,
         loadChildren: () => StreamlineCompletedModule,
       },
+      {
+        path: '**',
+        redirectTo: STREAMLINE_PATHS.ONGOING,
+      },
     ],
   },
 ];

@@ -344,7 +344,7 @@ describe('DeliveryAddressComponent', () => {
 
             component.onSubmit();
 
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.STREAMLINE]);
+            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BUYS]);
           });
 
           it('should stay at the same page by default', () => {
@@ -589,7 +589,7 @@ describe('DeliveryAddressComponent', () => {
 
         describe('when we click on accept on the change country confirmation modal ', () => {
           beforeEach(() => {
-            spyOn(component.countriesDropdown, 'open');
+            spyOn(component.countriesDropdown, 'open').and.returnValue({ result: Promise.resolve() });
             spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve(), componentInstance: { ConfirmationModalComponent } });
           });
 
@@ -604,7 +604,7 @@ describe('DeliveryAddressComponent', () => {
 
         describe('when we click on cancel on the change country confirmation modal ', () => {
           beforeEach(() => {
-            spyOn(component.countriesDropdown, 'open');
+            spyOn(component.countriesDropdown, 'open').and.returnValue({ result: Promise.resolve() });
             spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance: { ConfirmationModalComponent } });
 
             fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();
@@ -621,7 +621,7 @@ describe('DeliveryAddressComponent', () => {
 
       describe('and the user already accepted the terms...', () => {
         it('should open the dropdown', fakeAsync(() => {
-          spyOn(component.countriesDropdown, 'open');
+          spyOn(component.countriesDropdown, 'open').and.returnValue({ result: Promise.resolve() });
           component.countries = MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.countryOptions;
           component.isNewForm = false;
           component.isCountryEditable = true;
@@ -643,7 +643,7 @@ describe('DeliveryAddressComponent', () => {
       });
 
       it('should NOT open the dropdown directly', fakeAsync(() => {
-        spyOn(component.countriesDropdown, 'open');
+        spyOn(component.countriesDropdown, 'open').and.returnValue({ result: Promise.resolve() });
         component.isNewForm = true;
 
         fixture.debugElement.query(By.css(countriesDropdownSelector)).nativeElement.click();

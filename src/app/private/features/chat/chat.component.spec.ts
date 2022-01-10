@@ -264,6 +264,12 @@ describe('Component: ChatComponent with ItemId', () => {
 
         expect(modalService.open).toHaveBeenCalledWith(SendPhoneComponent, expectedModalOptions);
       });
+
+      it('should require phone', () => {
+        component.ngOnInit();
+
+        expect(component.inboxConversationService.currentConversation.phoneRequired).toBe(true);
+      });
     });
 
     describe('and the seller could request you the mail or cellphone', () => {

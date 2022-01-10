@@ -7,6 +7,7 @@ import { moduleMetadata, Story } from '@storybook/angular';
 import { AdSlotGroupShoppingComponent } from './ad-slot-group-shopping.component';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'stories-ad-slot-group-shopping',
   template:
     '<tsl-sky-slot-group-shopping [adShoppingPageOptions]="adShoppingPageOptions" [adSlotShoppingConfiguration]="adSlotShoppingConfiguration"></tsl-sky-slot-group-shopping>',

@@ -7,7 +7,7 @@
   </div>
   <h2 i18n="@@web_review_modal_502">Rate your experience with <strong>{{userName}}</strong></h2>
   <p i18n="@@web_review_modal_503">Click on the stars to leave your review. The more stars, the better your experience.</p>
-  <tsl-stars-rate (onChange)="onRated($event)"></tsl-stars-rate>
+  <tsl-stars-rate (handleOnChange)="onRated($event)"></tsl-stars-rate>
   <div *ngIf="isSeller">
     <p class="text" i18n="@@web_review_modal_504">I sold this for:</p>
     <input type="number" class="form-control" id="price" name="price" [(ngModel)]="price" min="0" tslRestrictInputNumber /> <span class="currency">{{item.currencyCode}}</span>

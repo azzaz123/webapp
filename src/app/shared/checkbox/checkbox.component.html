@@ -1,8 +1,0 @@
-<div class="checkbox">
-  <button type="button" [ngClass]="{'selected': checked}" (click)="switchCheckbox()">
-    <tsl-svg-icon src="/assets/icons/check.svg"></tsl-svg-icon>
-  </button>
-  <span [ngClass]="{'selected': checked}" (click)="switchCheckbox()">
-    <ng-content select="label"></ng-content>
-  </span>
-</div>

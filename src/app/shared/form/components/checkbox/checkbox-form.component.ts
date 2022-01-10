@@ -16,10 +16,11 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
   ],
 })
 export class CheckboxFormComponent extends AbstractFormComponent<boolean> {
+  public id = this.uuidService.getUUID();
+
   constructor(private uuidService: UuidService, private cdr: ChangeDetectorRef) {
     super();
   }
-  public id = this.uuidService.getUUID();
 
   public writeValue(value: boolean): void {
     super.writeValue(value);

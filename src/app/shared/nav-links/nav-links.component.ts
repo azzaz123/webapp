@@ -32,6 +32,44 @@ export class NavLinksComponent implements OnInit, OnChanges {
 
   constructor(private modalService: NgbModal, private deviceService: DeviceDetectorService) {}
 
+  onClickNavLink(navLink: NavLink) {
+    this.clickedLink.emit(navLink.id);
+    this.selectedLink = navLink;
+  }
+
+  onSearchChange(search: string) {
+    this.searchChanged.emit(search);
+  }
+
+  onDeleteSearch() {
+    this.onSearchChange('');
+  }
+
+  onClickSortSelector(id: string): void {
+    const sortLinks = this.mapSortToLink(this.sortItems);
+    const sortLinkSelected = sortLinks.find((link) => link.id === id);
+    this.onSortChange(sortLinkSelected);
+  }
+
+  onSortChange(sort: NavLink) {
+    this.sortChanged.emit(sort.id);
+    this.selectedSort = sort;
+  }
+
+  onClickSearch(): void {
+    if (this.deviceService.isMobile()) {
+      this.searchClicked = true;
+    }
+  }
+
+  onClickCloseSearch(e: Event): void {
+    e.stopPropagation();
+    e.preventDefault();
+    this.searchClicked = false;
+    this.closeSearch = true;
+    this.onSearchChange('');
+  }
+
   ngOnInit() {
     if (!this.selectedLinkId && this.navLinks && this.navLinks[0]) {
       this.selectedLinkId = this.navLinks[0].id;
@@ -76,43 +114,5 @@ export class NavLinksComponent implements OnInit, OnChanges {
       sortLinks.push(sortObj);
     });
     return sortLinks;
-  }
-
-  onClickNavLink(navLink: NavLink) {
-    this.clickedLink.emit(navLink.id);
-    this.selectedLink = navLink;
-  }
-
-  onSearchChange(search: string) {
-    this.searchChanged.emit(search);
-  }
-
-  onDeleteSearch() {
-    this.onSearchChange('');
-  }
-
-  onClickSortSelector(id: string): void {
-    const sortLinks = this.mapSortToLink(this.sortItems);
-    const sortLinkSelected = sortLinks.find((link) => link.id === id);
-    this.onSortChange(sortLinkSelected);
-  }
-
-  onSortChange(sort: NavLink) {
-    this.sortChanged.emit(sort.id);
-    this.selectedSort = sort;
-  }
-
-  onClickSearch(): void {
-    if (this.deviceService.isMobile()) {
-      this.searchClicked = true;
-    }
-  }
-
-  onClickCloseSearch(e: Event): void {
-    e.stopPropagation();
-    e.preventDefault();
-    this.searchClicked = false;
-    this.closeSearch = true;
-    this.onSearchChange('');
   }
 }

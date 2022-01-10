@@ -9,7 +9,7 @@ const environmentLocal: Environment = {
   appDomain: `.dock${dockNum}.devel.wallapop.com/`,
   protocol: 'https://',
   baseUrl: `https://apigw.dock${dockNum}.devel.wallapop.com/`,
-  xmppDomain: `dock${dockNum}.devel.wallapop.com`,
+  xmppDomain: `mongooseimprotool-dock${dockNum}.wallapop.com`,
   wsUrl: `wss://mongooseimprotool-dock${dockNum}.wallapop.com:5282/ws-xmpp`,
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
   cookieSuffix: 'Local',
