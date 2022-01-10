@@ -1,8 +1,8 @@
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
@@ -18,12 +18,15 @@ import { UserService } from '@core/user/user.service';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 describe('DeliveryComponent', () => {
   const FAKE_DATE_NOW = 1627743615459;
   const BUYS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`;
   const SELLS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`;
+  const ADDRESS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`;
+  const routerEvents: Subject<any> = new Subject();
+
   let component: DeliveryComponent;
   let fixture: ComponentFixture<DeliveryComponent>;
   let router: Router;
@@ -48,6 +51,16 @@ describe('DeliveryComponent', () => {
           provide: FeatureFlagService,
           useClass: FeatureFlagServiceMock,
         },
+        {
+          provide: Router,
+          useValue: {
+            navigate(): void {},
+            events: routerEvents,
+            get url(): string {
+              return '';
+            },
+          },
+        },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
       ],
     }).compileComponents();
@@ -70,8 +83,37 @@ describe('DeliveryComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('when the url changes', () => {
+    describe('and matchs the default url', () => {
+      beforeEach(() => {
+        fixture.detectChanges();
+      });
+
+      it('should redirect to the default route', fakeAsync(() => {
+        tick();
+        routerEvents.next(new NavigationEnd(1, ADDRESS_URL, ''));
+
+        expect(component.selectedNavLinkId).toStrictEqual(ADDRESS_URL);
+      }));
+    });
+
+    describe('and NOT matchs the default url', () => {
+      beforeEach(() => {
+        fixture.detectChanges();
+      });
+
+      it('should redirect to the new url provided', fakeAsync(() => {
+        tick();
+        routerEvents.next(new NavigationEnd(1, SELLS_URL, ''));
+
+        expect(component.selectedNavLinkId).toStrictEqual(SELLS_URL);
+      }));
+    });
+  });
+
   describe('when we have the delivery flag enabled...', () => {
     beforeEach(() => {
+      jest.spyOn(router, 'url', 'get').mockReturnValue(BUYS_URL);
       spyOn(featureflagService, 'getLocalFlag').and.returnValue(of(true));
 
       fixture.detectChanges();
@@ -96,10 +138,15 @@ describe('DeliveryComponent', () => {
 
       expect(navLinks).toStrictEqual(navLinksWithStreamline);
     });
+
+    it('should select the nav link option that matchs the url', () => {
+      expect(component.selectedNavLinkId).toStrictEqual(BUYS_URL);
+    });
   });
 
   describe('when the delivery flag is NOT enabled...', () => {
     beforeEach(() => {
+      jest.spyOn(router, 'url', 'get').mockReturnValue(ADDRESS_URL);
       spyOn(featureflagService, 'getLocalFlag').and.returnValue(of(false));
 
       fixture.detectChanges();
@@ -109,12 +156,16 @@ describe('DeliveryComponent', () => {
       const navLinks = fixture.debugElement.query(By.directive(NavLinksComponent)).componentInstance.navLinks;
       const navLinksWithoutMyShippings: NavLink[] = [
         {
-          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
+          id: ADDRESS_URL,
           display: $localize`:@@web_delivery_shipping_address:Address`,
         },
       ];
 
       expect(navLinks).toStrictEqual(navLinksWithoutMyShippings);
+    });
+
+    it('should select the nav link option that matchs the url', () => {
+      expect(component.selectedNavLinkId).toStrictEqual(ADDRESS_URL);
     });
   });
 
@@ -162,7 +213,7 @@ describe('DeliveryComponent', () => {
     });
   });
 
-  describe('wwhen the user has previously viewed the TRX Awareness Modal', () => {
+  describe('when the user has previously viewed the TRX Awareness Modal', () => {
     beforeEach(() => {
       spyOn(userService, 'getLocalStore').and.returnValue(true);
 
