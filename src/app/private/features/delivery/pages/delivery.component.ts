@@ -42,9 +42,12 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     private featureflagService: FeatureFlagService
   ) {
     this.subscriptions.add(
-      router.events.subscribe((e) => {
-        if (e instanceof NavigationEnd) {
-          this.selectedNavLinkId = this.navLinks.find((link) => e.url.startsWith(link.id))?.id;
+      router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd && this.navLinks) {
+          const defaultUrl: string = this.deliveryAddressNavLink.id;
+          const isDefaultUrlSelected: boolean = event.urlAfterRedirects === defaultUrl;
+
+          this.selectNavLink(isDefaultUrlSelected ? defaultUrl : event.url);
         }
       })
     );
@@ -76,6 +79,7 @@ export class DeliveryComponent implements OnInit, OnDestroy {
         if (isActive) {
           this.navLinks = [this.buysNavLink, this.sellsNavLink, this.deliveryAddressNavLink];
         }
+        this.selectNavLink(this.router.url);
       })
     );
   }
@@ -89,5 +93,9 @@ export class DeliveryComponent implements OnInit, OnDestroy {
 
   private get shouldShowTRXAwarenessModal(): boolean {
     return !this.userService.getLocalStore(LOCAL_STORAGE_TRX_AWARENESS);
+  }
+
+  private selectNavLink(routeURL: string): void {
+    this.selectedNavLinkId = this.navLinks.find((link) => routeURL.startsWith(link.id))?.id;
   }
 }
