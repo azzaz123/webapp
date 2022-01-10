@@ -1,18 +1,20 @@
 <div class="SubscriptionCardSelector row">
-    <ng-container *ngIf="selectedCard">
-        <tsl-payments-card-info class="col-12 col-sm-6 mb-md-0 mb-2"
-            [brand]="selectedCard.stripeCard?.brand"
-            [numberCard]="selectedCard.number"
-            [expireDate]="selectedCard.expire_date"
-            [hideDelete]="true"
-            [error]="error"
-            [hideEdit]="!showChangeLink"
-            (changeCardClick)="onChangeCard()">
-        </tsl-payments-card-info>
-    </ng-container>
-    <div class="col-12 col-sm-6">
-        <div class="SubscriptionCardSelector__newCard d-flex flex-column align-items-center justify-content-center" (click)="onAddCard()">
-            <span i18n="@@web_add_card">Add card</span>
-        </div>
+  <ng-container *ngIf="selectedCard">
+    <tsl-payments-card-info
+      class="col-12 col-sm-6 mb-md-0 mb-2"
+      [brand]="selectedCard.stripeCard?.brand"
+      [numberCard]="selectedCard.number"
+      [expireDate]="selectedCard.expire_date"
+      [hideDelete]="true"
+      [error]="error"
+      [hideEdit]="!showChangeLink"
+      (changeCardClick)="onChangeCard()"
+    >
+    </tsl-payments-card-info>
+  </ng-container>
+  <div class="col-12 col-sm-6">
+    <div class="SubscriptionCardSelector__newCard d-flex flex-column align-items-center justify-content-center" (click)="onAddCard()">
+      <span i18n="@@web_add_card">Add card</span>
     </div>
+  </div>
 </div>
