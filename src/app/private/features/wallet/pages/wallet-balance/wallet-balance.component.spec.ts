@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { KYCPropertiesService } from '@api/payments/kyc-properties/kyc-properties.service';
 import { MOCK_KYC_NO_NEED_PROPERTIES_API } from '@fixtures/private/wallet/kyc/kyc-properties.fixtures.spec';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
-import { RequestsAndTransactionsPendingService } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletBalanceComponent } from './wallet-balance.component';
 import { WalletBalanceInfoComponent } from '@private/features/wallet/pages/wallet-balance/modules/wallet-balance-info/wallet-balance-info.component';
@@ -17,6 +16,8 @@ import { SharedErrorActionComponent } from '@shared/error-action';
 import { WalletTransferService } from '@private/features/wallet/services/transfer/wallet-transfer.service';
 
 import { of } from 'rxjs';
+import { DeliveriesOngoingService } from '@api/bff/delivery/deliveries/ongoing/deliveries-ongoing.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('WalletBalanceComponent', () => {
   let component: WalletBalanceComponent;
@@ -43,14 +44,7 @@ describe('WalletBalanceComponent', () => {
             },
           },
         },
-        {
-          provide: RequestsAndTransactionsPendingService,
-          useValue: {
-            get pendingTransactionsAsSeller() {
-              return of([]);
-            },
-          },
-        },
+
         {
           provide: KYCPropertiesService,
           useValue: {
@@ -76,7 +70,19 @@ describe('WalletBalanceComponent', () => {
             trackViewWallet() {},
           },
         },
+        {
+          provide: DeliveriesOngoingService,
+          useValue: {
+            get pendingTransactionsAndRequestsAsSeller() {
+              return of(null);
+            },
+            get pendingTransactionsAndRequestsAsBuyer() {
+              return of(null);
+            },
+          },
+        },
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
