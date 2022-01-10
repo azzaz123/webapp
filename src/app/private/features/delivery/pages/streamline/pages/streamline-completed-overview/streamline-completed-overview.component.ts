@@ -9,5 +9,4 @@ import { PRIVATE_PATHS } from '@private//private-routing-constants';
 })
 export class StreamlineCompletedOverviewComponent {
   public readonly retryUrl: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`;
-  constructor() {}
 }
