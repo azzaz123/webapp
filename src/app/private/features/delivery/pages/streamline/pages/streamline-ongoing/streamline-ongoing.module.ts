@@ -4,17 +4,17 @@ import { streamlineOngoingRoutedComponents, StreamlineOngoingRoutingModule } fro
 import { HistoricListModule } from '@shared/historic-list/historic-list.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { StreamlineOngoingUIService } from '../../services/streamline-ongoing-ui/streamline-ongoing-ui.service';
-import { RequestAndTransactionsPendingModule } from '@api/bff/delivery/requests-and-transactions/pending/requests-and-transactions-pending.module';
 import { AcceptScreenAwarenessModalModule } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.module';
+import { DeliveriesOngoingModule } from '@api/bff/delivery/deliveries/ongoing/deliveries-ongoing.module';
 
 @NgModule({
   imports: [
     CommonModule,
     HistoricListModule,
     SvgIconModule,
-    RequestAndTransactionsPendingModule,
     AcceptScreenAwarenessModalModule,
     StreamlineOngoingRoutingModule,
+    DeliveriesOngoingModule,
   ],
   declarations: [streamlineOngoingRoutedComponents],
   providers: [StreamlineOngoingUIService],

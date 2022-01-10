@@ -1,7 +1,8 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
-import { HistoricTransaction, PendingTransaction } from '@api/core/model';
+import { HistoricTransaction } from '@api/core/model';
 import { Request } from '@api/core/model/delivery';
-import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
+import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction/delivery-pending-transaction.interface';
+import { MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER } from '@api/fixtures/core/model/delivery/deliveries/ongoing/delivery-pending-transactions-and-requests.fixtures.spec';
 import { MOCK_PENDING_REQUEST_AS_BUYER, MOCK_PENDING_REQUEST_AS_SELLER } from '@api/fixtures/core/model/delivery/requests.fixtures.spec';
 import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
 import { environment } from '@environments/environment';
@@ -90,10 +91,10 @@ export const MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT: HistoricElemen
   },
 };
 
-export const MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION: HistoricElement<PendingTransaction> = {
+export const MOCK_HISTORIC_ELEMENT_WITH_DELIVERY_PENDING_TRANSACTION: HistoricElement<DeliveryPendingTransaction> = {
   ...MOCK_HISTORIC_ELEMENT,
   id: '1337',
-  payload: MOCK_PENDING_TRANSACTIONS[0],
+  payload: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0],
 };
 
 export const MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER: HistoricElement<Request> = {
