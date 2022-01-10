@@ -2,11 +2,15 @@
 
 .NavLinks {
   display: flex;
+  flex-wrap: wrap;
   height: 38px;
   margin: $spacing-l 0;
 
   &--marginless {
     margin: 0;
+    @media (max-width: 360px) {
+      margin-bottom: $spacing-xxl;
+    }
   }
 
   &--disabled {

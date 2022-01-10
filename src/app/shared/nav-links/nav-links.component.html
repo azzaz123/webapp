@@ -8,7 +8,7 @@
     (click)="onClickCloseSearch($event)">Cancel</span>
   </div>
   <div class="NavLinks__links" [ngClass]="{ hidden: searchClicked }">
-    <div *ngIf="!isMobile || isMobile && !showSearchInput">
+    <div *ngIf="!isMobile || isMobile && !showSearchInput" class="flex-wrap">
       <div class="NavLinks__link" *ngFor="let navLink of navLinks">
         <a
           [ngClass]="{ active: selectedLinkId === navLink.id }"
