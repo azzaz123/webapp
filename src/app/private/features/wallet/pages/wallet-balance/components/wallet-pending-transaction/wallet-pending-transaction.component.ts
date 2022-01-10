@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { PendingTransaction } from '@api/core/model';
+import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction/delivery-pending-transaction.interface';
 
 @Component({
   selector: 'tsl-wallet-pending-transaction',
@@ -8,7 +8,7 @@ import { PendingTransaction } from '@api/core/model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WalletPendingTransactionComponent {
-  @Input() walletPendingTransaction: PendingTransaction;
+  @Input() walletPendingTransaction: DeliveryPendingTransaction;
 
   public get imageStyle(): Object {
     return {
