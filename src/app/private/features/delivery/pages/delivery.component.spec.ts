@@ -84,11 +84,11 @@ describe('DeliveryComponent', () => {
   });
 
   describe('when the url changes', () => {
-    describe('and matchs the default url', () => {
-      beforeEach(() => {
-        fixture.detectChanges();
-      });
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
 
+    describe('and matchs the default url', () => {
       it('should redirect to the default route', fakeAsync(() => {
         tick();
         routerEvents.next(new NavigationEnd(1, ADDRESS_URL, ''));
@@ -98,10 +98,6 @@ describe('DeliveryComponent', () => {
     });
 
     describe('and NOT matchs the default url', () => {
-      beforeEach(() => {
-        fixture.detectChanges();
-      });
-
       it('should redirect to the new url provided', fakeAsync(() => {
         tick();
         routerEvents.next(new NavigationEnd(1, SELLS_URL, ''));
