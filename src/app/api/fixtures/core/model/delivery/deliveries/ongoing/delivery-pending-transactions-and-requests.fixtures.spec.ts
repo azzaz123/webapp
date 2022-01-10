@@ -40,3 +40,8 @@ export const MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER: Delivery
     },
   ],
 };
+
+export const MOCK_EMPTY_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS: DeliveryPendingTransactionsAndRequests = {
+  requests: [],
+  transactions: [],
+};

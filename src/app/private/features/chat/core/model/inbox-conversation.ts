@@ -15,7 +15,8 @@ export class InboxConversation {
     private _phone_number: string,
     private _unreadCounter: number = 0,
     private _lastMessage?: InboxMessage,
-    private _translatable?: boolean
+    private _translatable?: boolean,
+    private _phoneRequired?: boolean
   ) {}
 
   public active = false;
@@ -23,7 +24,7 @@ export class InboxConversation {
   public isAutomaticallyTranslatable = false;
 
   get cannotChat(): boolean {
-    return this.user.blocked || !this.user.available || this.item.status === InboxItemStatus.NOT_AVAILABLE;
+    return this.user.blocked || !this.user.available || this.item.status === InboxItemStatus.NOT_AVAILABLE || !!this.phoneRequired;
   }
 
   get id(): string {
@@ -88,6 +89,14 @@ export class InboxConversation {
 
   get phoneNumber(): string {
     return this._phone_number;
+  }
+
+  set phoneRequired(value: boolean) {
+    this._phoneRequired = value;
+  }
+
+  get phoneRequired(): boolean {
+    return this._phoneRequired;
   }
 
   set phoneShared(value: boolean) {
