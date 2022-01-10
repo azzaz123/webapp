@@ -12,6 +12,8 @@ import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmat
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
+import { ActionNameAnalytics } from '../../../services/transaction-tracking-screen-tracking-events/action-name-analytics-type';
+import { TransactionTrackingScreenTrackingEventsService } from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-dialog',
@@ -29,7 +31,8 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
     private errorsService: ErrorsService,
     private router: Router,
     private route: ActivatedRoute,
-    private storeService: TransactionTrackingScreenStoreService
+    private storeService: TransactionTrackingScreenStoreService,
+    private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService
   ) {}
 
   ngOnInit() {
@@ -55,6 +58,7 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
     const userAction = this.dialogAction.positive.action as TransactionTrackingActionUserAction;
     this.transactionTrackingService.sendUserAction(userAction.transactionId, userAction.name).subscribe(
       () => {
+        this.trackEvent(userAction);
         this.storeService.refresh(this.requestId);
         this.redirectToTTSIfInstructions();
       },
@@ -63,6 +67,16 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
         this.errorsService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
       }
     );
+  }
+
+  private trackEvent(userAction: TransactionTrackingActionUserAction): void {
+    const analyticsEvent = userAction.analytics;
+    if (analyticsEvent) {
+      this.transactionTrackingScreenTrackingEventsService.trackClickActionTTS(
+        analyticsEvent.requestId,
+        analyticsEvent.source as ActionNameAnalytics
+      );
+    }
   }
 
   private get modalProperties(): ConfirmationModalProperties {

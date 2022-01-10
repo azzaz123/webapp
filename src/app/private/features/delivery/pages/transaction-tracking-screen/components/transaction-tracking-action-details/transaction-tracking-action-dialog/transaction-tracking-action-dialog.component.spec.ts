@@ -8,7 +8,10 @@ import { COLORS } from '@core/colors/colors-constants';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
-import { MOCK_TRANSACTION_TRACKING_ACTION_DIALOG } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
+import {
+  MOCK_TRANSACTION_TRACKING_ACTION_DIALOG,
+  MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2,
+} from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -18,6 +21,7 @@ import { TransactionTrackingScreenStoreService } from '../../../services/transac
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 
 import { TransactionTrackingActionDialogComponent } from './transaction-tracking-action-dialog.component';
+import { TransactionTrackingScreenTrackingEventsService } from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 
 describe('TransactionTrackingActionDialogComponent', () => {
   const MOCK_USER_ACTION = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG.positive.action as TransactionTrackingActionUserAction;
@@ -39,6 +43,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
   let de: DebugElement;
   let storeService: TransactionTrackingScreenStoreService;
   let router: Router;
+  let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -92,6 +97,12 @@ describe('TransactionTrackingActionDialogComponent', () => {
             navigate() {},
           },
         },
+        {
+          provide: TransactionTrackingScreenTrackingEventsService,
+          useValue: {
+            trackClickActionTTS() {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -105,6 +116,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     errorsService = TestBed.inject(ErrorsService);
     storeService = TestBed.inject(TransactionTrackingScreenStoreService);
+    transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
     router = TestBed.inject(Router);
 
     fixture.detectChanges();
@@ -125,6 +137,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
 
     describe('and the user accepts the dialog action', () => {
       beforeEach(() => {
+        spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
         spyOn(modalService, 'open').and.callThrough();
         spyOn(errorsService, 'i18nError');
       });
@@ -162,11 +175,42 @@ describe('TransactionTrackingActionDialogComponent', () => {
         it('should stay at the same page', () => {
           expect(router.navigate).not.toHaveBeenCalled();
         });
+
+        it('should NOT track the event', () => {
+          wrapperDialog.nativeElement.click();
+
+          expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).not.toHaveBeenCalled();
+        });
       });
 
       describe('and the request succeed...', () => {
         beforeEach(() => {
           spyOn(transactionTrackingService, 'sendUserAction').and.returnValue(of(null));
+        });
+
+        describe('and the action has analytics', () => {
+          beforeEach(() => {
+            component.dialogAction = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2;
+            fixture.detectChanges();
+          });
+
+          it('should track the event', () => {
+            wrapperDialog.nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledTimes(1);
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).toHaveBeenCalledWith(
+              MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2.positive.action.analytics.requestId,
+              MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2.positive.action.analytics.source
+            );
+          });
+        });
+
+        describe('and the action has NOT analytics', () => {
+          it('should NOT track the event', () => {
+            wrapperDialog.nativeElement.click();
+
+            expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).not.toHaveBeenCalled();
+          });
         });
 
         describe('and we are on the TTS instructions page', () => {
