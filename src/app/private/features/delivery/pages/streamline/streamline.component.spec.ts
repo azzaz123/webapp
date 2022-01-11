@@ -114,7 +114,8 @@ describe('StreamlineComponent', () => {
           spyOn(router, 'navigate');
         });
 
-        describe.each([[STREAMLINE_PATHS.ONGOING], [STREAMLINE_PATHS.COMPLETED]])('WHEN user selects filter', (filter) => {
+        // TODO: Add in each the [STREAMLINE_PATHS.COMPLETED] when we add completed tab again		Date: 2022/01/10
+        describe.each([[STREAMLINE_PATHS.ONGOING]])('WHEN user selects filter', (filter) => {
           beforeEach(() => {
             ongoingFilter = component.tabsBarElements.find((te) => te.value === (filter as STREAMLINE_PATHS));
             const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
@@ -170,7 +171,8 @@ describe('StreamlineComponent', () => {
           spyOn(router, 'navigate');
         });
 
-        describe.each([[STREAMLINE_PATHS.ONGOING], [STREAMLINE_PATHS.COMPLETED]])('WHEN user selects filter', (filter) => {
+        // TODO: Add in each the [STREAMLINE_PATHS.COMPLETED] when we add completed tab again		Date: 2022/01/10
+        describe.each([[STREAMLINE_PATHS.ONGOING]])('WHEN user selects filter', (filter) => {
           beforeEach(() => {
             ongoingFilter = component.tabsBarElements.find((te) => te.value === (filter as STREAMLINE_PATHS));
             const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
@@ -199,7 +201,8 @@ describe('StreamlineComponent', () => {
       });
     });
 
-    describe('and when the page is for the completed transactions', () => {
+    // TODO: Uncomment this test when we add completed tab again 		Date: 2022/01/10
+    /*describe('and when the page is for the completed transactions', () => {
       beforeEach(() => mockRouterUrl(STREAMLINE_PATHS.COMPLETED));
 
       it('should select the completed tab as active', () => {
@@ -208,7 +211,7 @@ describe('StreamlineComponent', () => {
 
         expect(result).toBe(completedTabsBarElement);
       });
-    });
+    });*/
 
     describe('and when the page is not a known tab', () => {
       beforeEach(() => mockRouterUrl('gibberish'));
