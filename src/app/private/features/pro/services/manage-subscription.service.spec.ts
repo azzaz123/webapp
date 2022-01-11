@@ -127,7 +127,7 @@ describe('ManageSubscriptionService', () => {
         beforeEach(() => {
           spyOn(toastService, 'show').and.callThrough();
         });
-        it('should emit event', fakeAsync(() => {
+        it('should emit completed', fakeAsync(() => {
           let isCompleted = false;
           service.cancelSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe(
             () => {},
@@ -158,7 +158,7 @@ describe('ManageSubscriptionService', () => {
           spyOn(subscriptionsService, 'cancelSubscription').and.returnValue(throwError('error'));
           spyOn(toastService, 'show').and.callThrough();
         });
-        it('should not emit event', fakeAsync(() => {
+        it('should emit error', fakeAsync(() => {
           let hasError = false;
           service.cancelSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe(
             () => {},
@@ -201,6 +201,18 @@ describe('ManageSubscriptionService', () => {
 
         expect(analyticsService.trackEvent).not.toHaveBeenCalled();
       }));
+      it('should emit error', fakeAsync(() => {
+        let error = false;
+        service.cancelSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe(
+          () => {},
+          () => {
+            error = true;
+          }
+        );
+        tick();
+
+        expect(error).toBe(true);
+      }));
     });
   });
 
@@ -238,7 +250,7 @@ describe('ManageSubscriptionService', () => {
         beforeEach(() => {
           spyOn(toastService, 'show').and.callThrough();
         });
-        it('should emit event', fakeAsync(() => {
+        it('should emit completed', fakeAsync(() => {
           let isCompleted = false;
           service.continueSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe(
             () => {},
@@ -269,7 +281,7 @@ describe('ManageSubscriptionService', () => {
           spyOn(subscriptionsService, 'continueSubscription').and.returnValue(throwError('error'));
           spyOn(toastService, 'show').and.callThrough();
         });
-        it('should not emit event', fakeAsync(() => {
+        it('should emit error', fakeAsync(() => {
           let hasError = false;
           service.continueSubscription(MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED).subscribe(
             () => {},
