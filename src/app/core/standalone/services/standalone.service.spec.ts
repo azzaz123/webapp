@@ -79,19 +79,6 @@ describe('StandaloneService', () => {
           });
         });
       });
-
-      describe('and the standalone query param is NOT set as true', () => {
-        it('should NOT enable the standalone mode', (done) => {
-          spyOn(route.snapshot.queryParamMap, 'get').and.returnValue('false');
-
-          service = TestBed.inject(StandaloneService);
-
-          service.standalone$.subscribe((value: boolean) => {
-            expect(value).toBe(false);
-            done();
-          });
-        });
-      });
     });
   });
 });
