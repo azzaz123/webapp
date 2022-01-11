@@ -49,8 +49,8 @@ describe('VerificationsNSecurityStore', () => {
       });
 
       it('should fullfill the user information with an empty phone', (done) => {
-        store.userInformation$.subscribe(() => {
-          expect(store.userInformation).toEqual({ email: MOCK_FULL_USER.email, phone: '' });
+        store.userInformation$.subscribe((userInformation) => {
+          expect(userInformation).toEqual({ email: MOCK_FULL_USER.email, phone: '' });
           done();
         });
       });
@@ -63,15 +63,15 @@ describe('VerificationsNSecurityStore', () => {
       });
 
       it('should fullfill the user verifications', (done) => {
-        store.userVerifications$.subscribe(() => {
-          expect(store.userVerifications).toEqual(MOCK_USER_VERIFICATIONS_MAPPED);
+        store.userVerifications$.subscribe((userVerifications) => {
+          expect(userVerifications).toEqual(MOCK_USER_VERIFICATIONS_MAPPED);
           done();
         });
       });
 
       it('should fullfill the user information with an non empty phone number', (done) => {
-        store.userInformation$.subscribe(() => {
-          expect(store.userInformation).toEqual({ email: MOCK_FULL_USER.email, phone: '+34 935 50 09 96' });
+        store.userInformation$.subscribe((userInformation) => {
+          expect(userInformation).toEqual({ email: MOCK_FULL_USER.email, phone: '+34 935 50 09 96' });
           done();
         });
       });
@@ -82,8 +82,13 @@ describe('VerificationsNSecurityStore', () => {
     it('should set the phone number and the verification as true ', () => {
       store.verifiedPhone(MOCK_FULL_USER.phone);
 
-      expect(store.userVerifications.phone).toBeTruthy();
-      expect(store.userInformation.phone).toBe('+34 935 50 09 96');
+      store.userVerifications$.subscribe((userVerifications) => {
+        expect(userVerifications.phone).toBeTruthy();
+      });
+
+      store.userInformation$.subscribe((userInformation) => {
+        expect(userInformation.phone).toBe('+34 935 50 09 96');
+      });
     });
   });
 });
