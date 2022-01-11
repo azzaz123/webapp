@@ -17,10 +17,9 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { User } from '@core/user/user';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
-import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
+import { ManageSubscriptionService } from '@private/features/pro/services/manage-subscription.service';
 import { finalize } from 'rxjs/operators';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
@@ -52,7 +51,8 @@ export class SubscriptionEditComponent implements OnInit {
     private benefitsService: SubscriptionBenefitsService,
     private toastService: ToastService,
     private i18n: I18nService,
-    private customerHelpService: CustomerHelpService
+    private customerHelpService: CustomerHelpService,
+    private manageSubscriptionService: ManageSubscriptionService
   ) {}
 
   ngOnInit(): void {
@@ -70,17 +70,12 @@ export class SubscriptionEditComponent implements OnInit {
   }
 
   public cancelSubscription(): void {
-    const modalRef: NgbModalRef = this.modalService.open(CancelSubscriptionModalComponent, {
-      windowClass: 'review',
-    });
-    modalRef.componentInstance.subscription = this.subscription;
-    modalRef.result.then(
-      (result: ModalStatuses) => {
-        if (result === ModalStatuses.SUCCESS) {
-          this.editSuccesful.emit();
-        }
+    this.manageSubscriptionService.cancelSubscription(this.subscription).subscribe(
+      (isLoading: boolean) => {
+        this.isLoading = isLoading;
       },
-      () => {}
+      () => {},
+      () => this.editSuccesful.emit()
     );
   }
 
@@ -106,7 +101,9 @@ export class SubscriptionEditComponent implements OnInit {
             this.showToastError();
           }
         },
-        () => this.showToastError()
+        () => {
+          this.showToastError();
+        }
       );
   }
 
