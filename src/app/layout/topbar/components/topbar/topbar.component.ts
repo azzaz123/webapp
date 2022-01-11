@@ -29,13 +29,13 @@ import { map } from 'rxjs/operators';
 })
 export class TopbarComponent implements OnInit, OnDestroy {
   public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
+  public readonly showLogo$: Observable<boolean> = this.standaloneService.standalone$.pipe(map((standalone: boolean) => !standalone));
   public user: User;
   public homeUrl: string;
   public isProfessional: boolean;
   public wallacoins = 0;
   public currencyName: string;
   public isLogged: boolean;
-  public readonly showLogo$: Observable<boolean> = this.standaloneService.standalone$.pipe(map((standalone: boolean) => !standalone));
   @Input() isMyZone: boolean;
 
   private componentSubscriptions: Subscription[] = [];
