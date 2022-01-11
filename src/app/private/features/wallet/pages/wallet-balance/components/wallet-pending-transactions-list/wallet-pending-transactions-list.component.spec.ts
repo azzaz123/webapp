@@ -2,7 +2,6 @@ import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
 import { WalletPendingTransactionsListComponent } from './wallet-pending-transactions-list.component';
@@ -47,7 +46,7 @@ describe('GIVEN WalletPendingTransactionsListComponent', () => {
       expect(target).toEqual(expected);
     });
     it('should show as many wallet pending transactions as there are pending transactions', () => {
-      const expected = MOCK_PENDING_TRANSACTIONS.length;
+      const expected = MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER.transactions.length;
       const target = fixture.debugElement.queryAll(By.css(walletPendingTransactionSelector));
 
       expect(target.length).toEqual(expected);
