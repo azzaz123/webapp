@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { DeliveryPendingTransactionsAndRequests, PendingTransactionsAndRequests } from '@api/core/model/delivery';
+import { DeliveryPendingTransactionsAndRequests } from '@api/core/model/delivery';
 import { SharedErrorActionService } from '@shared/error-action';
 
 import { catchError, map } from 'rxjs/operators';
