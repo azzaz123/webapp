@@ -292,6 +292,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
 
     describe('and the user rejects the dialog action', () => {
       beforeEach(() => {
+        spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
         spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance });
         spyOn(transactionTrackingService, 'sendUserAction');
 
@@ -316,6 +317,12 @@ describe('TransactionTrackingActionDialogComponent', () => {
 
       it('should NOT send the request user action petition', () => {
         expect(transactionTrackingService.sendUserAction).not.toHaveBeenCalled();
+      });
+
+      it('should NOT track the event', () => {
+        wrapperDialog.nativeElement.click();
+
+        expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).not.toHaveBeenCalled();
       });
     });
   });
