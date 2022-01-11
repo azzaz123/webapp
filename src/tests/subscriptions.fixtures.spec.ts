@@ -84,7 +84,13 @@ export class MockSubscriptionService {
   }
 
   public editSubscription(): Observable<unknown> {
-    return of({});
+    return of({ status: 202 });
+  }
+  public cancelSubscription(): Observable<unknown> {
+    return of({ status: 202 });
+  }
+  public continueSubscription(): Observable<unknown> {
+    return of({ status: 202 });
   }
 }
 
