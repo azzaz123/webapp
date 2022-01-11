@@ -77,7 +77,7 @@ const getIconUrlFromHistoricTransaction = (input: HistoricTransaction): string =
 
 const getDescriptionFromHistoricTransaction = (input: HistoricTransaction): { text: string; iconUrl: string } => {
   return {
-    text: 'Via shipping',
+    text: $localize`:@@shipping_transaction_type_label:Via shipping`,
     iconUrl: 'assets/icons/box.svg',
   };
 };

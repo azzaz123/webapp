@@ -15,7 +15,7 @@ import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.int
 export class StreamlineComponent implements OnInit {
   public tabsBarElements: TabsBarElement<STREAMLINE_PATHS>[] = [
     { value: STREAMLINE_PATHS.ONGOING, label: $localize`:@@purchases_view_ongoing_tab_title:On going` },
-    { value: STREAMLINE_PATHS.COMPLETED, label: $localize`:@@purchases_view_finished_tab_title:Completed` },
+    // { value: STREAMLINE_PATHS.COMPLETED, label: $localize`:@@purchases_view_finished_tab_title:Completed` },
   ];
 
   public currentUrl: string;

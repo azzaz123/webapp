@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
   AnalyticsEvent,
@@ -15,15 +15,15 @@ import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-be
 import { SUBSCRIPTION_CATEGORIES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { MockManageSubscriptionService } from '@fixtures/manage-subscription.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
 import { MockSubscriptionService, MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
-import { CancelSubscriptionModalComponent } from '@private/features/pro/modal/cancel-subscription/cancel-subscription-modal.component';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
-import { ModalStatuses } from '@private/features/pro/modal/modal.statuses.enum';
+import { ManageSubscriptionService } from '@private/features/pro/services/manage-subscription.service';
 import { of, throwError } from 'rxjs';
 import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
 import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
@@ -36,8 +36,9 @@ describe('SubscriptionEditComponent', () => {
   let benefitsService: SubscriptionBenefitsService;
   let analyticsService: AnalyticsService;
   let modalService: NgbModal;
-  let modalSpy: jasmine.Spy;
+  let manageSubscriptionServiceSpy: jasmine.Spy;
   let customerHelpService: CustomerHelpService;
+  let manageSubscriptionService: ManageSubscriptionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -57,7 +58,7 @@ describe('SubscriptionEditComponent', () => {
           useValue: {
             open() {
               return {
-                result: Promise.resolve(ModalStatuses.SUCCESS),
+                result: Promise.resolve(),
                 componentInstance: {},
               };
             },
@@ -66,6 +67,10 @@ describe('SubscriptionEditComponent', () => {
         {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
+        },
+        {
+          provide: ManageSubscriptionService,
+          useClass: MockManageSubscriptionService,
         },
         {
           provide: CustomerHelpService,
@@ -88,6 +93,7 @@ describe('SubscriptionEditComponent', () => {
     modalService = TestBed.inject(NgbModal);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
     customerHelpService = TestBed.inject(CustomerHelpService);
+    manageSubscriptionService = TestBed.inject(ManageSubscriptionService);
     fixture.detectChanges();
   });
 
@@ -125,40 +131,37 @@ describe('SubscriptionEditComponent', () => {
   });
   describe('When user cancel a subscription', () => {
     beforeEach(() => {
-      modalSpy = spyOn(modalService, 'open').and.callThrough();
+      manageSubscriptionServiceSpy = spyOn(manageSubscriptionService, 'cancelSubscription').and.callThrough();
       spyOn(component.editSuccesful, 'emit').and.callThrough();
     });
-    it('should open modal', () => {
+    it('should call cancel service', () => {
       component.cancelSubscription();
 
-      expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(CancelSubscriptionModalComponent, {
-        windowClass: 'review',
+      expect(manageSubscriptionService.cancelSubscription).toHaveBeenCalledTimes(1);
+      expect(manageSubscriptionService.cancelSubscription).toHaveBeenCalledWith(component.subscription);
+    });
+    describe('and click CTA', () => {
+      describe('and request is successful', () => {
+        it('should emit event', () => {
+          component.cancelSubscription();
+
+          expect(component.editSuccesful.emit).toHaveBeenCalledTimes(1);
+          expect(component.editSuccesful.emit).toHaveBeenCalledWith();
+        });
+      });
+      describe('and request fails', () => {
+        beforeEach(() => {
+          manageSubscriptionServiceSpy.and.returnValue(throwError('error'));
+        });
+        it('should not emit event', () => {
+          component.cancelSubscription();
+
+          expect(component.editSuccesful.emit).not.toHaveBeenCalled();
+        });
       });
     });
-    describe('and modal return success', () => {
-      it('should emit successful', fakeAsync(() => {
-        component.cancelSubscription();
-
-        tick();
-        fixture.detectChanges;
-
-        expect(component.editSuccesful.emit).toHaveBeenCalledTimes(1);
-        expect(component.editSuccesful.emit).toHaveBeenLastCalledWith();
-      }));
-    });
-    describe('and modal not return success', () => {
-      it('should emit successful', fakeAsync(() => {
-        modalSpy.and.returnValue({ result: Promise.resolve(ModalStatuses.FAIL), componentInstance: {} });
-        component.cancelSubscription();
-
-        tick();
-        fixture.detectChanges;
-
-        expect(component.editSuccesful.emit).not.toHaveBeenCalled();
-      }));
-    });
   });
+
   describe('Edit subscription', () => {
     describe('when click on confirm button', () => {
       it('should track event', () => {
