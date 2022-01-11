@@ -25,6 +25,10 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`,
     display: $localize`:@@you_menu_sales_label:Sales`,
   };
+  readonly completedNavLink: NavLink = {
+    id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.COMPLETED}`,
+    display: $localize`:@@purchases_view_finished_tab_title:Completed`,
+  };
   readonly deliveryAddressNavLink: NavLink = {
     id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
     display: $localize`:@@web_delivery_shipping_address:Address`,
@@ -77,7 +81,7 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
         if (isActive) {
-          this.navLinks = [this.buysNavLink, this.sellsNavLink, this.deliveryAddressNavLink];
+          this.navLinks = [this.buysNavLink, this.sellsNavLink, this.completedNavLink, this.deliveryAddressNavLink];
         }
         this.selectNavLink(this.router.url);
       })

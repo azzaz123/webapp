@@ -14,7 +14,7 @@ import {
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
 import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { SharedErrorActionService } from '@shared/error-action';
-import { StreamlineCompletedComponent } from '@private/features/delivery/pages/streamline/pages/streamline-completed/streamline-completed.component';
+import { StreamlineCompletedComponent } from '@private/features/delivery/pages/streamline/pages/streamline-completed-overview/streamline-completed/streamline-completed.component';
 import { StreamlineCompletedUIService } from '@private/features/delivery/pages/streamline/services/streamline-completed-ui/streamline-completed-ui.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
