@@ -25,6 +25,10 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`,
     display: $localize`:@@you_menu_sales_label:Sales`,
   };
+  readonly completedNavLink: NavLink = {
+    id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.COMPLETED}`,
+    display: $localize`:@@purchases_view_finished_tab_title:Completed`,
+  };
   readonly deliveryAddressNavLink: NavLink = {
     id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
     display: $localize`:@@web_delivery_shipping_address:Address`,
@@ -42,9 +46,12 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     private featureflagService: FeatureFlagService
   ) {
     this.subscriptions.add(
-      router.events.subscribe((e) => {
-        if (e instanceof NavigationEnd) {
-          this.selectedNavLinkId = this.navLinks.find((link) => e.url.startsWith(link.id))?.id;
+      router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd && this.navLinks) {
+          const defaultUrl: string = this.deliveryAddressNavLink.id;
+          const isDefaultUrlSelected: boolean = event.urlAfterRedirects === defaultUrl;
+
+          this.selectNavLink(isDefaultUrlSelected ? defaultUrl : event.url);
         }
       })
     );
@@ -74,8 +81,9 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
         if (isActive) {
-          this.navLinks = [this.buysNavLink, this.sellsNavLink, this.deliveryAddressNavLink];
+          this.navLinks = [this.buysNavLink, this.sellsNavLink, this.completedNavLink, this.deliveryAddressNavLink];
         }
+        this.selectNavLink(this.router.url);
       })
     );
   }
@@ -89,5 +97,9 @@ export class DeliveryComponent implements OnInit, OnDestroy {
 
   private get shouldShowTRXAwarenessModal(): boolean {
     return !this.userService.getLocalStore(LOCAL_STORAGE_TRX_AWARENESS);
+  }
+
+  private selectNavLink(routeURL: string): void {
+    this.selectedNavLinkId = this.navLinks.find((link) => routeURL.startsWith(link.id))?.id;
   }
 }

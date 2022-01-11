@@ -40,6 +40,6 @@ $spacing-23: math.div(23px, 16px) * $spacer;
     margin-top: $spacing-ml;
   }
   &__actionButton {
-    width: 200px;
+    min-width: 200px;
   }
 }
