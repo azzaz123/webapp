@@ -1,5 +1,5 @@
 import { DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
@@ -142,13 +142,14 @@ describe('TransactionTrackingActionDialogComponent', () => {
       });
 
       describe('and the request fails...', () => {
-        beforeEach(() => {
+        beforeEach(fakeAsync(() => {
           spyOn(transactionTrackingService, 'sendUserAction').and.returnValue(throwError('error! :P'));
           component.dialogAction = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG;
 
           fixture.detectChanges();
           wrapperDialog.nativeElement.click();
-        });
+          tick();
+        }));
 
         it('should open with the action dialog properties', () => {
           component['modalRef'] = <any>{
@@ -189,7 +190,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
         });
 
         describe('and we are on the TTS instructions page', () => {
-          beforeEach(() => {
+          beforeEach(fakeAsync(() => {
             jest
               .spyOn(router, 'url', 'get')
               .mockReturnValue(`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/1234/${TRANSACTION_TRACKING_PATHS.INSTRUCTIONS}`);
@@ -197,7 +198,8 @@ describe('TransactionTrackingActionDialogComponent', () => {
 
             fixture.detectChanges();
             wrapperDialog.nativeElement.click();
-          });
+            tick();
+          }));
 
           it('should open with the action dialog properties', () => {
             component['modalRef'] = <any>{
@@ -227,13 +229,14 @@ describe('TransactionTrackingActionDialogComponent', () => {
         });
 
         describe('and we are NOT on the TTS instructions page', () => {
-          beforeEach(() => {
+          beforeEach(fakeAsync(() => {
             jest.spyOn(router, 'url', 'get').mockReturnValue(`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/1234`);
             component.dialogAction = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG;
 
             fixture.detectChanges();
             wrapperDialog.nativeElement.click();
-          });
+            tick();
+          }));
 
           it('should open with the action dialog properties', () => {
             component['modalRef'] = <any>{
@@ -262,14 +265,15 @@ describe('TransactionTrackingActionDialogComponent', () => {
         });
 
         describe('and the action has analytics', () => {
-          beforeEach(() => {
+          beforeEach(fakeAsync(() => {
             component.dialogAction = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2;
             fixture.detectChanges();
-          });
+
+            wrapperDialog.nativeElement.click();
+            tick();
+          }));
 
           it('should track the event', () => {
-            wrapperDialog.nativeElement.click();
-
             expect(spy).toHaveBeenCalledTimes(1);
             expect(spy).toHaveBeenCalledWith(
               MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2.positive.action.analytics.requestId,
@@ -279,14 +283,15 @@ describe('TransactionTrackingActionDialogComponent', () => {
         });
 
         describe('and the action has NOT analytics', () => {
-          beforeEach(() => {
+          beforeEach(fakeAsync(() => {
             component.dialogAction = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITHOUT_ANALYTICS;
             fixture.detectChanges();
-          });
+
+            wrapperDialog.nativeElement.click();
+            tick();
+          }));
 
           it('should NOT track the event', () => {
-            wrapperDialog.nativeElement.click();
-
             expect(spy).not.toHaveBeenCalled();
           });
         });
@@ -294,7 +299,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
     });
 
     describe('and the user rejects the dialog action', () => {
-      beforeEach(() => {
+      beforeEach(fakeAsync(() => {
         spyOn(transactionTrackingScreenTrackingEventsService, 'trackClickActionTTS');
         spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance });
         spyOn(transactionTrackingService, 'sendUserAction');
@@ -302,7 +307,8 @@ describe('TransactionTrackingActionDialogComponent', () => {
 
         fixture.detectChanges();
         wrapperDialog.nativeElement.click();
-      });
+        tick();
+      }));
 
       it('should NOT refresh the transaction tracking store', () => {
         expect(storeService.refresh).not.toHaveBeenCalled();
