@@ -46,9 +46,12 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     private featureflagService: FeatureFlagService
   ) {
     this.subscriptions.add(
-      router.events.subscribe((e) => {
-        if (e instanceof NavigationEnd && this.navLinks) {
-          this.selectNavLink(e.url);
+      router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd && this.navLinks) {
+          const defaultUrl: string = this.deliveryAddressNavLink.id;
+          const isDefaultUrlSelected: boolean = event.urlAfterRedirects === defaultUrl;
+
+          this.selectNavLink(isDefaultUrlSelected ? defaultUrl : event.url);
         }
       })
     );
