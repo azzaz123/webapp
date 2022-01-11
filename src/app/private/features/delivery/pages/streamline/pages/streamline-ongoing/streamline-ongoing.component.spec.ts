@@ -10,7 +10,7 @@ import { HistoricList } from '@shared/historic-list/interfaces/historic-list.int
 import { HistoricListModule } from '@shared/historic-list/historic-list.module';
 import {
   MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER,
-  MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION,
+  MOCK_HISTORIC_ELEMENT_WITH_DELIVERY_PENDING_TRANSACTION,
   MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER,
 } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import {
@@ -160,9 +160,9 @@ describe('StreamlineOngoingComponent', () => {
 
       describe('and the element is a pending transaction', () => {
         it('should navigate to the tracking page with the payload request id', () => {
-          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION.payload.requestId}`;
+          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_HISTORIC_ELEMENT_WITH_DELIVERY_PENDING_TRANSACTION.id}`;
 
-          component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_PENDING_TRANSACTION);
+          component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_DELIVERY_PENDING_TRANSACTION);
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
