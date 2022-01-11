@@ -1,14 +1,17 @@
 <div class="TabBar w-100 align-items-center justify-content-around" [hidden]="hidden">
-  <a *ngIf="(standaloneMode$ | async); else isNotStandalone" class="TabBar__option"  (click)="navigateToSearchPage()" 
-  [class.active]="(isActive$ | async)"
-  >
-    <ng-container *ngTemplateOutlet="homeTab"></ng-container>
-  </a>
+  <div *ngIf="(standaloneMode$ | async); else isNotStandalone" class="TabBar__option" [routerLink]="SEARCH_PATH"
+    routerLinkActive="active">
+    <div class="TabBar__option TabBar__home" (click)="navigateToSearchPage($event)">
+      <ng-container *ngTemplateOutlet="homeTab"></ng-container>
+    </div>
+  </div>
+
   <ng-template #isNotStandalone>
-    <a class="TabBar__option" [href]="homeUrl">
+    <a class="TabBar__option TabBar__home" [href]="homeUrl">
       <ng-container *ngTemplateOutlet="homeTab"></ng-container>
     </a>
   </ng-template>
+
   <ng-template #homeTab>
     <svg width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
       <path class="fill-path" fill-rule="evenodd" clip-rule="evenodd"
@@ -17,7 +20,7 @@
     </svg>
     <span i18n="@@web_components_tabbar_3">Home</span>
   </ng-template>
-  
+
   <div class="TabBar__option" [routerLink]="['/favorites']" routerLinkActive="active">
     <svg width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/sv6" viewBox="0 0 48 48">
       <path class="fill-path"
@@ -26,6 +29,7 @@
     </svg>
     <span i18n="@@web_components_tabbar_4">Favorites</span>
   </div>
+
   <div class="TabBar__option" [routerLink]="['/catalog/upload']" routerLinkActive="active">
     <svg width="46" height="46" fill="none" xmlns="http://www.w3.org/2000/sv6" viewBox="0 0 48 48">
       <path class="fill-path fill-stroke" d="M23 36c7.18 0 13-5.82 13-13s-5.82-13-13-13-13 5.82-13 13 5.82 13 13 13z"
@@ -35,6 +39,7 @@
     </svg>
     <span i18n="@@web_components_tabbar_5">Upload</span>
   </div>
+
   <div class="TabBar__option TabBar__chat" [routerLink]="['/chat']" routerLinkActive="active"
     [ngClass]="{'TabBar__option--pending': hasUnreadMessages}">
     <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 48 48">
@@ -50,7 +55,9 @@
     <span i18n="@@web_components_tabbar_6">Messages</span>
     <div class="TabBar__badge"></div>
   </div>
-  <div id="tab-bar-access-zone" class="TabBar__option" [routerLink]="isLogged ? ['/catalog/list'] : ['/', LOGIN_PATH]" routerLinkActive="active">
+
+  <div id="tab-bar-access-zone" class="TabBar__option" [routerLink]="isLogged ? ['/catalog/list'] : ['/', LOGIN_PATH]"
+    routerLinkActive="active">
     <svg *ngIf="!user?.image?.urls_by_size.medium" xmlns="http://www.w3.org/2000/svg" width="46" height="46"
       viewBox="0 0 48 48">
       <g fill="none" fill-rule="evenodd" transform="translate(11 10)">
@@ -67,7 +74,7 @@
       <div class="image" [style.background-image]="'url('+ user?.image?.urls_by_size.medium + ')'">
       </div>
     </div>
-      <span *ngIf="isLogged" i18n="@@web_tab_bar_button_my_zone">My Zone</span>
-      <span *ngIf="!isLogged" i18n="@@web_tab_bar_button_login">Log in</span>
+    <span *ngIf="isLogged" i18n="@@web_tab_bar_button_my_zone">My Zone</span>
+    <span *ngIf="!isLogged" i18n="@@web_tab_bar_button_login">Log in</span>
   </div>
 </div>
