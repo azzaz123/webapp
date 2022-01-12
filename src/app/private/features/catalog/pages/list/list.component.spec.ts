@@ -72,6 +72,7 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
 import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { MeApiService } from '@api/me/me-api.service';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -122,7 +123,7 @@ describe('ListComponent', () => {
       children: [{ path: '', component: ListComponent }],
     },
     { path: `${PRIVATE_PATHS.CATALOG}/list`, component: ListComponent },
-    { path: `${PRIVATE_PATHS.CATALOG}/checkout`, component: ListComponent },
+    { path: `${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, component: ListComponent },
     { path: `wallacoins`, component: ListComponent },
     { path: PRIVATE_PATHS.DELIVERY, component: ListComponent },
     { path: PRIVATE_PATHS.WALLET, component: ListComponent },
@@ -475,7 +476,7 @@ describe('ListComponent', () => {
           tick();
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith(['catalog/checkout', { itemId: '1' }]);
+          expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: '1' }]);
         }));
 
         it('should not redirect when modal is closed', fakeAsync(() => {

@@ -1,20 +1,20 @@
 import { takeWhile } from 'rxjs/operators';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CartService } from './cart.service';
-import { Cart } from './cart';
-import { CartChange, CartItem } from './cart-item.interface';
-import { Order, PurchaseProductsWithCreditsResponse } from '../../../core/item/item-response.interface';
-import { ItemService } from '../../../core/item/item.service';
-import { ErrorsService } from '../../../core/errors/errors.service';
 import { Router } from '@angular/router';
-import { CreditInfo, FinancialCardOption } from '../../../core/payments/payment.interface';
-import { PAYMENT_METHOD, PAYMENT_RESPONSE_STATUS } from '../../../core/payments/payment.service';
-import { BUMP_TYPES, CartBase } from './cart-base';
-import { EventService } from '../../../core/event/event.service';
-import { StripeService } from '../../../core/stripe/stripe.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UuidService } from '../../../core/uuid/uuid.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { CartService } from '@shared/catalog/cart/cart.service';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { Order, PurchaseProductsWithCreditsResponse } from '@core/item/item-response.interface';
+import { ItemService } from '@core/item/item.service';
+import { CreditInfo, FinancialCardOption } from '@core/payments/payment.interface';
+import { PAYMENT_RESPONSE_STATUS, PAYMENT_METHOD } from '@core/payments/payment.service';
+import { StripeService } from '@core/stripe/stripe.service';
+import { UuidService } from '@core/uuid/uuid.service';
+import { Cart } from '@shared/catalog/cart/cart';
+import { CartBase, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
+import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
 
 @Component({
   selector: 'tsl-cart',

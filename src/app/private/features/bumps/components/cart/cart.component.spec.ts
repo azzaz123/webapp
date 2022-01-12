@@ -1,23 +1,22 @@
 import { throwError, of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
-
-import { CartComponent } from './cart.component';
-import { CustomCurrencyPipe } from '../../pipes';
 import { DecimalPipe } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { CartService } from './cart.service';
-import { Cart } from './cart';
-import { CartChange } from './cart-item.interface';
-import { CART_ITEM_CITYBUMP, CART_ORDER, ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
-import { ItemService } from '../../../core/item/item.service';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { Router } from '@angular/router';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
-import { EventService } from '../../../core/event/event.service';
-import { StripeService } from '../../../core/stripe/stripe.service';
-import { STRIPE_CARD_OPTION } from '../../../../tests/stripe.fixtures.spec';
+import { Router } from '@angular/router';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { ItemService } from '@core/item/item.service';
+import { StripeService } from '@core/stripe/stripe.service';
+import { ITEM_ID, CART_ITEM_CITYBUMP, MOCK_ITEM_V3, CART_ORDER } from '@fixtures/item.fixtures.spec';
+import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { Cart } from '@shared/catalog/cart/cart';
+import { CartChange } from '@shared/catalog/cart/cart-item.interface';
+import { CartService } from '@shared/catalog/cart/cart.service';
+import { CustomCurrencyPipe } from '@shared/pipes';
+import { CartComponent } from './cart.component';
 
 describe('CartComponent', () => {
   let component: CartComponent;
