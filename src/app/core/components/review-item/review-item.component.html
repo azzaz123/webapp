@@ -3,7 +3,7 @@
     <div class="review-image">
       <ng-container *ngIf="review.item?.image; else categoryIcon">
         <a
-        [tslItemRoute]
+        tslItemRoute
         [itemSlug]= 'review.item.webSlug'
         [itemUUID]='review.item.id'
           tslsanitizedBackground="{{ review.item?.image.small }}"
@@ -30,7 +30,7 @@
     </div>
     <div class="review-title">
       <a *ngIf="review.item?.id"  
-      [tslItemRoute]
+      tslItemRoute
       [itemSlug]= 'review.item.webSlug'
       [itemUUID]='review.item.id' class="review-title-item"> {{ review.item.title }}</a>
       <span *ngIf="!review.item?.id && category?.name as categoryName">
