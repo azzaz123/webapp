@@ -13,11 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { bumpsRoutedComponents, BumpsRoutingModule } from './bumps.routing.module';
 import { BumpTutorialModule } from '@shared/bump-tutorial/bump-tutorial.module';
 import { SharedModule } from '@shared/shared.module';
-import { CatalogManagerApiModule } from '@api/catalog-manager/catalog-manager-api.module';
-import { MeApiModule } from '@api/me/me-api.module';
-import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavLinksModule } from '@shared/nav-links/nav-links.module';
-import { ReviewsModule } from '../reviews/reviews.module';
 
 @NgModule({
   declarations: [CheckoutItemComponent, CartComponent, WallacoinComponent, bumpsRoutedComponents],
@@ -34,14 +30,7 @@ import { ReviewsModule } from '../reviews/reviews.module';
     BumpsRoutingModule,
     BumpTutorialModule,
     SharedModule,
-    SharedModule,
-    FormsModule,
-    NgbButtonsModule,
-    NgbTooltipModule,
-    ReviewsModule,
     NavLinksModule,
-    CatalogManagerApiModule,
-    MeApiModule,
   ],
 })
 export class BumpsModule {}
