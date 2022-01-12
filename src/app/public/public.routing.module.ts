@@ -9,7 +9,7 @@ const routes: Route[] = [
     path: '',
     component: PublicComponent,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: PUBLIC_PATHS.LOGIN },
+      { path: '', pathMatch: 'full', redirectTo: PUBLIC_PATHS.SEARCH },
       {
         path: PUBLIC_PATHS.LOGIN,
         canLoad: [DevelopmentGuard],
