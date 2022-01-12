@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Route } from '@angular/router';
 import { LoggedGuard } from '@core/user/logged.guard';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { APP_PATHS } from './app-routing-constants';
 
 const publicRoute: Route = {
@@ -14,7 +15,12 @@ const privateRoute = {
   loadChildren: () => import('@private/private.module').then((m) => m.PrivateModule),
 };
 
-const routes: Route[] = [publicRoute, privateRoute];
+const notFoundRoute = {
+  path: '**',
+  redirectTo: PUBLIC_PATHS.SEARCH,
+};
+
+const routes: Route[] = [publicRoute, privateRoute, notFoundRoute];
 
 @NgModule({
   imports: [

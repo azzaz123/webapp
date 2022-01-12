@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/browser';
 import { Integrations as TracingIntegrations } from '@sentry/tracing';
 
 export const SENTRY_DSN = 'https://1d0e1781157041509326a1072f4ad490@o608018.ingest.sentry.io/5839391';
-export const TRACES_SAMPLE_RATE = 0.05;
+export const TRACES_SAMPLE_RATE = 0.01;
 export const WALLAPOP_DOMAIN_REGEX = /https?:\/\/it\.wallapop\.com/;
 
 @Injectable({
