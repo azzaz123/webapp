@@ -22,24 +22,12 @@ $offset: 7px;
 }
 
 .table-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: -$offset;
   .info {
-    height: 80px + $offset;
-    width: 100%;
-    text-align: center;
-    align-self: flex-end;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: $font-size-s;
     tsl-svg-icon {
       ::ng-deep svg path {
         fill: $walla-main;
       }
-      margin-right: $spacing-ms;
     }
     a {
       text-decoration: underline;

@@ -1,37 +1,16 @@
 <div class="page-content">
   <div class="container">
-    <a class="back d-flex align-items-center justify-content-center" [routerLink]="['/catalog/list']"
-      ><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon> <span i18n="@@web_catalog_pages_checkout_674">Back</span></a
-    >
     <div class="row" [hidden]="!itemsWithProducts">
       <div class="col-xl col-lg-8">
-        <div class="table-header">
-          <div class="info">
-            <tsl-svg-icon src="/assets/icons/feature.svg"></tsl-svg-icon>
+        <div class="table-header d-flex justify-content-between mb-4">
+          <div>
+            <a class="back d-flex align-items-center justify-content-center" [routerLink]="['/catalog/list']"
+              ><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon> <span i18n="@@web_catalog_pages_checkout_674">Back</span></a
+            >
+          </div>
+          <div class="info d-flex">
+            <tsl-svg-icon class="mr-2" src="/assets/icons/feature.svg"></tsl-svg-icon>
             <a (click)="bumpTutorial.show()" i18n="@@web_catalog_pages_checkout_563">What can features do for you?</a>
-          </div>
-          <div class="type zone">
-            <div class="d-flex flex-column align-items-center justify-content-center">
-              <tsl-svg-icon src="/assets/icons/bump-zone.svg"></tsl-svg-icon>
-              <div [hidden]="provincialBump" i18n="@@web_catalog_pages_checkout_143">Feature it locally</div>
-              <div [hidden]="!provincialBump" i18n="@@web_catalog_pages_checkout_144">Feature it provincially</div>
-            </div>
-          </div>
-          <div class="type city" [hidden]="provincialBump">
-            <div class="d-flex flex-column align-items-center justify-content-center">
-              <div>
-                <tsl-svg-icon src="/assets/icons/bump-city.svg"></tsl-svg-icon>
-              </div>
-              <div i18n="@@web_catalog_pages_checkout_145">Feature it your city</div>
-            </div>
-          </div>
-          <div class="type country">
-            <div class="d-flex flex-column align-items-center justify-content-center">
-              <div>
-                <tsl-svg-icon src="/assets/icons/bump-country.svg"></tsl-svg-icon>
-              </div>
-              <div i18n="@@web_catalog_pages_checkout_146">Feature it nationally</div>
-            </div>
           </div>
         </div>
         <div class="price-table">
