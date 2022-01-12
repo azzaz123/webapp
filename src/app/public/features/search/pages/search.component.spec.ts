@@ -686,15 +686,6 @@ describe('SearchComponent', () => {
       itemsSubject.next([MOCK_ITEM_CARD]);
     });
 
-    it('should render ads', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
-
-      const shoppingSlotGroup = fixture.debugElement.query(By.directive(AdComponentStub));
-
-      expect(shoppingSlotGroup).toBeTruthy();
-    }));
-
     describe('when the search has a keyword applied', () => {
       it('should show the Google shopping Ads at the bottom of the page', fakeAsync(() => {
         component.device = DeviceType.DESKTOP;
