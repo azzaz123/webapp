@@ -2,10 +2,10 @@
   <ngb-panel id="custom-panel-1">
     <ng-template ngbPanelHeader>
       <div class="d-flex align-items-left justify-content-start flex-column py-3">
-          <h3 i18n="@@web_invoice_information">Invoice information</h3>
-          <span i18n="@@web_invoice_history_description" class="InvoiceAccordion__description">
-            For now, you can only view or download invoices or credit memos from your subscriptions.
-          </span>
+        <h3 i18n="@@web_invoice_information">Invoice information</h3>
+        <span i18n="@@web_invoice_history_description" class="InvoiceAccordion__description">
+          For now, you can only view or download invoices or credit memos from your subscriptions.
+        </span>
       </div>
       <div class="d-flex align-items-right justify-content-end flex-grow-1">
         <button ngbPanelToggle class="btn btn-link p-0">
@@ -14,7 +14,10 @@
       </div>
     </ng-template>
     <ng-template ngbPanelContent>
-      <tsl-profile-pro-billing [containerType]="INVOICE_COMPONENT_TYPE.PROFILE_INFO" (billingInfoFormSaved)="handleModalAndInvoicePermission()"></tsl-profile-pro-billing>
+      <tsl-profile-pro-billing
+        [containerType]="INVOICE_COMPONENT_TYPE.PROFILE_INFO"
+        (billingInfoFormSaved)="handleModalAndInvoicePermission()"
+      ></tsl-profile-pro-billing>
     </ng-template>
   </ngb-panel>
 </ngb-accordion>
