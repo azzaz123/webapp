@@ -5,7 +5,6 @@ import { STANDALONE_STATUS } from '@core/standalone/enums/standalone-status.enum
 import { USER_AGENT } from '@core/user-agent/user-agent';
 
 export const STANDALONE_QUERY_PARAM: string = 'standalone';
-const HUAWEI: string = 'huawei';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +19,11 @@ export class StandaloneService {
   }
 
   private get standaloneStatus(): boolean {
-    const isStandalone: boolean = this.route.snapshot.queryParamMap.get(STANDALONE_QUERY_PARAM) === STANDALONE_STATUS.ENABLED;
-    const isHuaweiUserAgent: boolean = this.userAgent.toLowerCase().includes(HUAWEI);
+    const isStandaloneQueryParamEnabled: boolean =
+      this.route.snapshot.queryParamMap.get(STANDALONE_QUERY_PARAM) === STANDALONE_STATUS.ENABLED;
+    const isHuaweiUserAgent: boolean = this.userAgent.indexOf('hap') >= 0;
+    const isStandalone: boolean = isStandaloneQueryParamEnabled || isHuaweiUserAgent;
 
-    return isStandalone || isHuaweiUserAgent;
+    return isStandalone;
   }
 }
