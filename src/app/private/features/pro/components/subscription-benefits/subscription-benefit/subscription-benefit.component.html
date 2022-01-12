@@ -1,10 +1,14 @@
-<div class="d-flex justify-content-center justify-content-xl-between row SubscriptionBenefit"
-  [ngClass]="{'flex-row-reverse': leftAligment}">
-  <div class="col-xl-6 d-flex justify-content-center justify-content-xl-start" [ngClass]="{'justify-content-xl-end': leftAligment}">
-    <img [src]="img">
+<div
+  class="d-flex justify-content-center justify-content-xl-between row SubscriptionBenefit"
+  [ngClass]="{ 'flex-row-reverse': leftAligment }"
+>
+  <div class="col-xl-6 d-flex justify-content-center justify-content-xl-start" [ngClass]="{ 'justify-content-xl-end': leftAligment }">
+    <img [src]="img" />
   </div>
   <div class="col-xl-6 d-flex flex-column mt-5 text-center text-xl-left px-6 SubscriptionBenefit__text">
-    <h4 class="SubscriptionBenefit__title">{{title}}</h4>
-    <div class="SubscriptionBenefit__subtitle"><b>{{description}}</b></div>
+    <h4 class="SubscriptionBenefit__title">{{ title }}</h4>
+    <div class="SubscriptionBenefit__subtitle">
+      <b>{{ description }}</b>
+    </div>
   </div>
 </div>
