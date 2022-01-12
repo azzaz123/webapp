@@ -1,4 +1,4 @@
-export const RICH_AUDIENCE_URL = 'https://cdn3.richaudience.com/ab083674fb8200b877a6983126e4477d/wallapop/pb_wrapper/v1/lib_1.6.js';
+export const RICH_AUDIENCE_URL = 'https://cdn3.richaudience.com/ab083674fb8200b877a6983126e4477d/wallapop/pb_wrapper/v1/lib_1.10.js';
 
 export const CRITEO_URL = 'https://static.criteo.net/js/ld/publishertag.js';
 

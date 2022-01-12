@@ -12,7 +12,7 @@ import { DeviceType } from '@core/device/deviceType.enum';
 
 export const CHAT_AD_SLOTS: AdSlotConfiguration = {
   id: 'div-gpt-sky-1508490196308-0',
-  name: '130868815/web/chat_right',
+  name: '130868815/Desktop_Chat/Right',
   sizes: AD_DESKTOP_VERTICAL_MAPPING,
   sizeMapping: {
     desktop: {
