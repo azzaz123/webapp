@@ -30,14 +30,14 @@ import {
 import { MOCK_FULL_USER, MOCK_FULL_USER_FEATURED, USER_DATA } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'app/core/user/user.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { SubscriptionsComponent } from './subscription.component';
 import { By } from '@angular/platform-browser';
-import { CancelSubscriptionModalComponent } from '../../modal/cancel-subscription/cancel-subscription-modal.component';
-import { ContinueSubscriptionModalComponent } from '../../modal/continue-subscription/continue-subscription-modal.component';
 import { PRO_PATHS } from '../../pro-routing-constants';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
+import { ManageSubscriptionService } from '../../services/manage-subscription.service';
+import { MockManageSubscriptionService } from '@fixtures/manage-subscription.fixtures.spec';
 
 @Component({
   selector: 'tsl-subscription-purchase',
@@ -62,6 +62,7 @@ describe('SubscriptionComponent', () => {
   let userService: UserService;
   let route: ActivatedRoute;
   let benefitsService: SubscriptionBenefitsService;
+  let manageSubscription: ManageSubscriptionService;
   const componentInstance = { subscription: SUBSCRIPTIONS[0] };
 
   beforeEach(
@@ -123,6 +124,10 @@ describe('SubscriptionComponent', () => {
             useClass: MockSubscriptionBenefitsService,
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          {
+            provide: ManageSubscriptionService,
+            useClass: MockManageSubscriptionService,
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -140,6 +145,7 @@ describe('SubscriptionComponent', () => {
     userService = TestBed.inject(UserService);
     route = TestBed.inject(ActivatedRoute);
     benefitsService = TestBed.inject(SubscriptionBenefitsService);
+    manageSubscription = TestBed.inject(ManageSubscriptionService);
     fixture.detectChanges();
   });
 
@@ -533,26 +539,68 @@ describe('SubscriptionComponent', () => {
     });
 
     describe('and the subscription has only one tier', () => {
-      it('should open the cancel modal', () => {
-        spyOn(modalService, 'open').and.callThrough();
+      describe('and the user confirm cancel subscription', () => {
+        beforeEach(() => {
+          spyOn(component, 'subscriptionChangeSuccessful').and.returnValue(undefined);
+        });
+        it('should call cancel service', () => {
+          spyOn(manageSubscription, 'cancelSubscription').and.callThrough();
 
-        component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
+          component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
 
-        expect(modalService.open).toHaveBeenCalledWith(CancelSubscriptionModalComponent, {
-          windowClass: 'review',
+          expect(manageSubscription.cancelSubscription).toHaveBeenCalledTimes(1);
+          expect(manageSubscription.cancelSubscription).toHaveBeenCalledWith(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
+        });
+        describe('and cancellation is successful', () => {
+          it('should update subscription', () => {
+            component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
+
+            expect(component.subscriptionChangeSuccessful).toHaveBeenCalledWith();
+            expect(component.subscriptionChangeSuccessful).toBeCalledTimes(1);
+          });
+        });
+        describe('and cancellation fails', () => {
+          it('should not update subscription', () => {
+            spyOn(manageSubscription, 'cancelSubscription').and.returnValue(throwError('error'));
+
+            component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED);
+
+            expect(component.subscriptionChangeSuccessful).not.toHaveBeenCalled();
+          });
         });
       });
     });
   });
 
   describe('when the user has cancelled the subscription', () => {
-    it('should open the continue subscribed modal', () => {
-      spyOn(modalService, 'open').and.callThrough();
+    beforeEach(() => {
+      spyOn(component, 'subscriptionChangeSuccessful').and.returnValue(undefined);
+    });
+    describe('and the user reactivates subscription', () => {
+      it('should call reactivate service', () => {
+        spyOn(manageSubscription, 'continueSubscription').and.callThrough();
 
-      component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
+        component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
 
-      expect(modalService.open).toHaveBeenCalledWith(ContinueSubscriptionModalComponent, {
-        windowClass: 'review',
+        expect(manageSubscription.continueSubscription).toHaveBeenCalledTimes(1);
+        expect(manageSubscription.continueSubscription).toHaveBeenCalledWith(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
+      });
+      describe('and reactivation is successful', () => {
+        it('should update subscription', () => {
+          component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
+
+          expect(component.subscriptionChangeSuccessful).toHaveBeenCalledWith();
+          expect(component.subscriptionChangeSuccessful).toBeCalledTimes(1);
+        });
+      });
+      describe('and reactivation fails', () => {
+        it('should not update subscription', () => {
+          spyOn(manageSubscription, 'continueSubscription').and.returnValue(throwError('error'));
+
+          component.manageSubscription(MOCK_SUBSCRIPTION_CONSUMER_GOODS_CANCELLED_MAPPED);
+
+          expect(component.subscriptionChangeSuccessful).not.toHaveBeenCalled();
+        });
       });
     });
   });

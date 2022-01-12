@@ -27,7 +27,7 @@ describe('TabbarComponent', () => {
   let searchNavigatorService: SearchNavigatorService;
 
   const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  const tabBar: string = '.TabBar__option';
+  const homeTabClass: string = '.TabBar__home';
 
   beforeEach(
     waitForAsync(() => {
@@ -364,36 +364,40 @@ describe('TabbarComponent', () => {
   });
 
   describe('Home tab', () => {
-    describe('when the app url is for the standalone feature', () => {
+    describe('when the standalone mode is enabled', () => {
       beforeEach(() => {
         standaloneSubject.next(true);
         fixture.detectChanges();
       });
+
       describe('and the user click on the home tab', () => {
         it('should open the Search page', () => {
           spyOn(searchNavigatorService, 'navigateWithLocationParams');
-          const homeTab = fixture.debugElement.query(By.css(tabBar)).nativeElement;
+          const homeTabEl = fixture.debugElement.query(By.css(homeTabClass)).nativeElement;
 
-          homeTab.click();
+          homeTabEl.click();
 
           expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith({});
         });
       });
     });
-    describe('when the app url has NOT the standalone feature', () => {
+
+    describe('when the standalone mode is disabled', () => {
       beforeEach(() => {
         standaloneSubject.next(false);
         fixture.detectChanges();
       });
+
       describe('and the user click on the home tab', () => {
         it('should NOT open the Search page', () => {
           spyOn(component, 'navigateToSearchPage');
-          const homeTab = fixture.debugElement.query(By.css(tabBar));
+          const homeTabDebugEl = fixture.debugElement.query(By.css(homeTabClass));
+          const homeTabEl = homeTabDebugEl.nativeElement;
 
-          homeTab.nativeElement.click();
+          homeTabEl.click();
 
           expect(component.navigateToSearchPage).not.toHaveBeenCalled();
-          expect(homeTab.attributes.href).toEqual(component.homeUrl);
+          expect(homeTabDebugEl.attributes.href).toEqual(component.homeUrl);
         });
       });
     });

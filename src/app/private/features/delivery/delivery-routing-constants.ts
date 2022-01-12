@@ -6,6 +6,7 @@ export enum DELIVERY_PATHS {
   PAYVIEW = 'payview',
   SELLS = 'sells',
   TRACKING = 'tracking',
+  COMPLETED = 'completed',
 }
 
 export enum DELIVERY_PATH_PARAMS {

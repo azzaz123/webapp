@@ -13,19 +13,26 @@
   <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>
 
   <tsl-search-layout *ngIf="(searchWithoutResults$ | async) !== true">
-    <div top class="d-block h-100 position-relative">
-      <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search1"></tsl-sky>
-    </div>
+    <ng-container *ngIf="device === DevicesType.DESKTOP || device === DevicesType.TABLET">
+      <div top class="d-block h-100 position-relative">
+        <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.topBanner"></tsl-sky>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="device === DevicesType.MOBILE">
+      <div top class="d-block h-100 position-relative">
+        <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.mobileTopBanner"></tsl-sky>
+      </div>
+    </ng-container>
     <div right class="d-flex flex-column h-100">
       <ng-container *ngIf="device === DevicesType.DESKTOP">
         <div class="Search__sky w-100 mb-3">
           <div class="Search__sky-wrapper position-sticky">
-            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search2r"></tsl-sky>
+            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.pos1Right"></tsl-sky>
           </div>
         </div>
         <div class="Search__sky w-100">
           <div class="Search__sky-wrapper position-sticky">
-            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
+            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.pos2Right"></tsl-sky>
           </div>
         </div>
       </ng-container>
@@ -46,7 +53,7 @@
         (toggleFavouriteEvent)="trackFavouriteToggleEvent($event)"
       >
         <ng-container inlineAdSlot *ngxPermissionsOnly="PERMISSIONS.showAds">
-          <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.search2r"></tsl-sky>
+          <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.mobilePos1"></tsl-sky>
         </ng-container>
       </tsl-public-item-card-list>
 
@@ -66,7 +73,7 @@
           ></tsl-sky-slot-group-shopping>
         </div>
         <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
-          <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.search3r"></tsl-sky>
+          <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.mobilePos2"></tsl-sky>
         </div>
       </ng-container>
     </ng-container>

@@ -5,32 +5,46 @@
       <div class="row listings">
         <div class="col">
           <h2>
-            <span *ngIf="perks?.subscription.listing.quantity" i18n="@@web_profile_pages_pro_subscription_299">Current plan: Plan {{perks?.subscription.listing.quantity}}</span>
-            <span *ngIf="!perks?.subscription.listing.quantity" i18n="@@web_profile_pages_pro_subscription_300">You are not yet subscribed to any plan.</span>
+            <span *ngIf="perks?.subscription.listing.quantity" i18n="@@web_profile_pages_pro_subscription_299"
+              >Current plan: Plan {{ perks?.subscription.listing.quantity }}</span
+            >
+            <span *ngIf="!perks?.subscription.listing.quantity" i18n="@@web_profile_pages_pro_subscription_300"
+              >You are not yet subscribed to any plan.</span
+            >
           </h2>
-          <p class="description" i18n="@@web_car_plan_description">Each plan allows you to have up to a maximum number of cars published in the Wallapop app and website.</p>
-          <p class="contact" i18n="@@web_cardealer_upgrade_plan_contact">To upgrade your plan, call us at {{sellbytelPhone}} or send us an email at <a href="mailto:{{email}}">{{email}}</a></p>
+          <p class="description" i18n="@@web_car_plan_description">
+            Each plan allows you to have up to a maximum number of cars published in the Wallapop app and website.
+          </p>
+          <p class="contact" i18n="@@web_cardealer_upgrade_plan_contact">
+            To upgrade your plan, call us at {{ sellbytelPhone }} or send us an email at <a href="mailto:{{ email }}">{{ email }}</a>
+          </p>
         </div>
         <div class="packs">
-          <div class="pack" *ngFor="let bump of getListings(perks?.subscription.listing.quantity)"
-               [ngClass]="{'selected': perks?.subscription.listing.quantity === bump.quantity}">
-            <tsl-svg-icon [src]="bump | subscriptionIcon:(perks?.subscription.listing.quantity === bump.quantity)"></tsl-svg-icon>
-            <div class="name">Plan {{bump.quantity}}</div>
-            <div class="desc" i18n="@@web_profile_pages_pro_subscription_301">Publish a maximum of {{bump.quantity}} cars</div>
-            <a href="mailto:{{email}}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_302">Subscribe</a>
-            <div class="expire"><span i18n="@@web_profile_pages_pro_subscription_303">Subscribed since</span><br />{{perks?.subscription.listing.createDate | date:'mediumDate'}}</div>
+          <div
+            class="pack"
+            *ngFor="let bump of getListings(perks?.subscription.listing.quantity)"
+            [ngClass]="{ selected: perks?.subscription.listing.quantity === bump.quantity }"
+          >
+            <tsl-svg-icon [src]="bump | subscriptionIcon: perks?.subscription.listing.quantity === bump.quantity"></tsl-svg-icon>
+            <div class="name">Plan {{ bump.quantity }}</div>
+            <div class="desc" i18n="@@web_profile_pages_pro_subscription_301">Publish a maximum of {{ bump.quantity }} cars</div>
+            <a href="mailto:{{ email }}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_302">Subscribe</a>
+            <div class="expire">
+              <span i18n="@@web_profile_pages_pro_subscription_303">Subscribed since</span><br />{{
+                perks?.subscription.listing.createDate | date: 'mediumDate'
+              }}
+            </div>
           </div>
           <div class="pack personal" *ngIf="getListings(perks?.subscription.listing.quantity).length <= 2">
             <tsl-svg-icon src="/assets/icons/plans/personal2.svg"></tsl-svg-icon>
             <div class="name" i18n="@@web_profile_pages_pro_subscription_304">Personal Plan</div>
             <div class="desc" i18n="@@web_profile_pages_pro_subscription_305">We can work out the best plan for you</div>
-            <a href="mailto:{{email}}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_581">Subscribe</a>
+            <a href="mailto:{{ email }}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_581">Subscribe</a>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 
   <div class="box">
     <div class="box-content">
@@ -39,26 +53,42 @@
           <h2>
             <tsl-svg-icon src="/assets/icons/bump-city-small.svg"></tsl-svg-icon>
             <span [hidden]="perks?.subscription.bump.total > 0" i18n="@@web_profile_pages_pro_subscription_306">City visibility</span>
-            <span [hidden]="perks?.subscription.bump.total === 0" i18n="@@web_profile_pages_pro_subscription_307">City {{perks?.subscription.bump.total}} plan</span>
+            <span [hidden]="perks?.subscription.bump.total === 0" i18n="@@web_profile_pages_pro_subscription_307"
+              >City {{ perks?.subscription.bump.total }} plan</span
+            >
           </h2>
           <p class="description">
-            <span i18n="@@web_profile_pages_pro_subscription_308">The city plan allows you to promote your cars in your city and appear in the top positions of the wall of the website and the app. Your product card will have a different style and you will appear in the promoted area throughout your city.</span>
+            <span i18n="@@web_profile_pages_pro_subscription_308"
+              >The city plan allows you to promote your cars in your city and appear in the top positions of the wall of the website and the
+              app. Your product card will have a different style and you will appear in the promoted area throughout your city.</span
+            >
           </p>
-          <p class="contact" [hidden]="perks?.subscription.bump.total > 0" i18n="@@web_cardealer_subscribe_city_plan">To subscribe to a city plan, call us at {{sellbytelPhone}} or send us an email at <a href="mailto:{{email}}">{{email}}</a></p>
-          <p class="contact" [hidden]="perks?.subscription.bump.total === 0" i18n="@@web_cardealer_change_city_plan">To change your city plan, call us at {{sellbytelPhone}} or send us an email at <a href="mailto:{{email}}">{{email}}</a></p>
+          <p class="contact" [hidden]="perks?.subscription.bump.total > 0" i18n="@@web_cardealer_subscribe_city_plan">
+            To subscribe to a city plan, call us at {{ sellbytelPhone }} or send us an email at <a href="mailto:{{ email }}">{{ email }}</a>
+          </p>
+          <p class="contact" [hidden]="perks?.subscription.bump.total === 0" i18n="@@web_cardealer_change_city_plan">
+            To change your city plan, call us at {{ sellbytelPhone }} or send us an email at <a href="mailto:{{ email }}">{{ email }}</a>
+          </p>
         </div>
         <div class="packs">
-          <div class="pack" *ngFor="let bump of packs?.cityBump"
-               [ngClass]="{'no-discount': !bump.discount, 'selected': perks?.subscription.bump.total === bump.quantity}">
+          <div
+            class="pack"
+            *ngFor="let bump of packs?.cityBump"
+            [ngClass]="{ 'no-discount': !bump.discount, selected: perks?.subscription.bump.total === bump.quantity }"
+          >
             <div class="quantity-container">
-              <div class="quantity">{{bump.quantity}}</div>
+              <div class="quantity">{{ bump.quantity }}</div>
               <div class="quantity-time">x24h</div>
             </div>
             <div class="type" i18n="@@web_profile_pages_pro_subscription_309">Featured</div>
-            <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
-            <div class="discount" [hidden]="!bump.discount" i18n="@@web_profile_pages_pro_subscription_310">Save {{bump.discount}}%</div>
-            <a href="mailto:{{email}}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_654">Subscribe</a>
-            <div class="expire"><span i18n="@@web_profile_pages_pro_subscription_582">Subscribed since</span><br />{{perks?.subscription.bump.createDate | date:'mediumDate'}}</div>
+            <div class="price">&euro;{{ bump.price | number: '1.2-2' }}</div>
+            <div class="discount" [hidden]="!bump.discount" i18n="@@web_profile_pages_pro_subscription_310">Save {{ bump.discount }}%</div>
+            <a href="mailto:{{ email }}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_654">Subscribe</a>
+            <div class="expire">
+              <span i18n="@@web_profile_pages_pro_subscription_582">Subscribed since</span><br />{{
+                perks?.subscription.bump.createDate | date: 'mediumDate'
+              }}
+            </div>
           </div>
         </div>
       </div>
@@ -66,27 +96,46 @@
         <div class="col">
           <h2>
             <tsl-svg-icon src="/assets/icons/bump-country-small.svg"></tsl-svg-icon>
-            <span [hidden]="perks?.subscription.national.total > 0" i18n="@@web_profile_pages_pro_subscription_311">Country visibility</span>
-            <span [hidden]="perks?.subscription.national.total === 0" i18n="@@web_profile_pages_pro_subscription_312">Country {{perks?.subscription.national.total}} plan</span>
+            <span [hidden]="perks?.subscription.national.total > 0" i18n="@@web_profile_pages_pro_subscription_311"
+              >Country visibility</span
+            >
+            <span [hidden]="perks?.subscription.national.total === 0" i18n="@@web_profile_pages_pro_subscription_312"
+              >Country {{ perks?.subscription.national.total }} plan</span
+            >
           </h2>
           <p class="description">
-            <span i18n="@@web_profile_pages_pro_subscription_313">The country plan allows you to promote your cars countrywide and appear in the top positions of the wall of the web and the app. The product card will have a different style and you will appear in the promoted area throughout the country.</span>
+            <span i18n="@@web_profile_pages_pro_subscription_313"
+              >The country plan allows you to promote your cars countrywide and appear in the top positions of the wall of the web and the
+              app. The product card will have a different style and you will appear in the promoted area throughout the country.</span
+            >
           </p>
-          <p class="contact" [hidden]="perks?.subscription.national.total > 0" i18n="@@web_cardealer_subscribe_country_plan">To subscribe to a country plan, call us at {{sellbytelPhone}} or send us an email at <a href="mailto:{{email}}">{{email}}</a></p>
-          <p class="contact" [hidden]="perks?.subscription.national.total === 0" i18n="@@web_cardealer_change_country_plan">To change your country plan, call us at {{sellbytelPhone}} or send us an email at <a href="mailto:{{email}}">{{email}}</a></p>
+          <p class="contact" [hidden]="perks?.subscription.national.total > 0" i18n="@@web_cardealer_subscribe_country_plan">
+            To subscribe to a country plan, call us at {{ sellbytelPhone }} or send us an email at
+            <a href="mailto:{{ email }}">{{ email }}</a>
+          </p>
+          <p class="contact" [hidden]="perks?.subscription.national.total === 0" i18n="@@web_cardealer_change_country_plan">
+            To change your country plan, call us at {{ sellbytelPhone }} or send us an email at <a href="mailto:{{ email }}">{{ email }}</a>
+          </p>
         </div>
         <div class="packs">
-          <div class="pack" *ngFor="let bump of packs?.countryBump"
-               [ngClass]="{'no-discount': !bump.discount, 'selected': perks?.subscription.national.total === bump.quantity}">
+          <div
+            class="pack"
+            *ngFor="let bump of packs?.countryBump"
+            [ngClass]="{ 'no-discount': !bump.discount, selected: perks?.subscription.national.total === bump.quantity }"
+          >
             <div class="quantity-container">
-              <div class="quantity">{{bump.quantity}}</div>
+              <div class="quantity">{{ bump.quantity }}</div>
               <div class="quantity-time">x24h</div>
             </div>
             <div class="type" i18n="@@web_profile_pages_pro_subscription_583">Featured</div>
-            <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
-            <div class="discount" [hidden]="!bump.discount" i18n="@@web_profile_pages_pro_subscription_584">Save {{bump.discount}}%</div>
-            <a href="mailto:{{email}}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_677">Subscribe</a>
-            <div class="expire"><span i18n="@@web_profile_pages_pro_subscription_655">Subscribed since</span><br />{{perks?.subscription.national.createDate | date:'mediumDate'}}</div>
+            <div class="price">&euro;{{ bump.price | number: '1.2-2' }}</div>
+            <div class="discount" [hidden]="!bump.discount" i18n="@@web_profile_pages_pro_subscription_584">Save {{ bump.discount }}%</div>
+            <a href="mailto:{{ email }}" class="btn btn-block" i18n="@@web_profile_pages_pro_subscription_677">Subscribe</a>
+            <div class="expire">
+              <span i18n="@@web_profile_pages_pro_subscription_655">Subscribed since</span><br />{{
+                perks?.subscription.national.createDate | date: 'mediumDate'
+              }}
+            </div>
           </div>
         </div>
       </div>
@@ -94,6 +143,8 @@
   </div>
 
   <p class="text-center">
-    <a href="" i18n="@@web_profile_pages_pro_subscription_314" (click)="openFaqs(); $event.preventDefault()" class="open-visibility">Why should I buy visibility?</a>
+    <a href="" i18n="@@web_profile_pages_pro_subscription_314" (click)="openFaqs(); $event.preventDefault()" class="open-visibility"
+      >Why should I buy visibility?</a
+    >
   </p>
 </div>

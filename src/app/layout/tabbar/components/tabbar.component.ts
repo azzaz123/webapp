@@ -5,10 +5,9 @@ import { UserService } from '@core/user/user.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
-import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
 import { SITE_URL } from '@configs/site-url.config';
-import { Router } from '@angular/router';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { StandaloneService } from '@core/standalone/services/standalone.service';
 
@@ -36,7 +35,6 @@ export class TabbarComponent implements OnInit {
   public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public readonly SEARCH_PATH = `/${PUBLIC_PATHS.SEARCH}`;
   public readonly standaloneMode$: Observable<boolean> = this.standaloneService.standalone$;
-  public readonly isActive$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public user: User;
   public homeUrl: string;
   public hidden = false;
@@ -46,7 +44,6 @@ export class TabbarComponent implements OnInit {
   private componentSubscriptions: Subscription[] = [];
 
   constructor(
-    private route: Router,
     private userService: UserService,
     private tabBarService: TabbarService,
     private unreadChatMessagesService: UnreadChatMessagesService,
@@ -76,12 +73,6 @@ export class TabbarComponent implements OnInit {
         this.isLogged = this.userService.isLogged;
       })
     );
-    this.isSearchPath();
-  }
-
-  private isSearchPath(): void {
-    if (!this.route.url) return;
-    if (this.route.url.includes(this.SEARCH_PATH)) this.isActive$.next(true);
   }
 
   public navigateToSearchPage(): void {
