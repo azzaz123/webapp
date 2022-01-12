@@ -1,6 +1,5 @@
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 
-import { MOCK_PENDING_TRANSACTIONS } from '@api/fixtures/core/model/delivery/pending-transactions-fixtures.spec';
 import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
@@ -75,7 +74,7 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
     describe('WHEN there are some pending transactions', () => {
       it('should retrieve the list of pending transactions', () => {
         service.pendingTransactionsAndRequestsAsSeller.subscribe((result) => {
-          expect(result).toEqual(MOCK_PENDING_TRANSACTIONS);
+          expect(result).toEqual(MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER.transactions);
         });
       });
       it('should show the pending transactions block', () => {
@@ -89,13 +88,13 @@ describe('GIVEN the WalletPendingTransactionsComponent', () => {
         expect(target).toBeTruthy();
       });
       it('should show the amount of pending transactions', () => {
-        const expected = `(${MOCK_PENDING_TRANSACTIONS.length})`;
+        const expected = `(${MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER.transactions.length})`;
         const target = fixture.debugElement.query(By.css(walletPendingTransactionsLabelAmountSelector));
 
         expect(target.nativeElement.innerHTML).toBe(expected);
       });
       it('should show the list of pending transactions', () => {
-        const expected = MOCK_PENDING_TRANSACTIONS.length;
+        const expected = MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_SELLER.transactions.length;
         const target = fixture.debugElement.queryAll(By.directive(WalletPendingTransactionComponent));
 
         expect(target.length).toBe(expected);

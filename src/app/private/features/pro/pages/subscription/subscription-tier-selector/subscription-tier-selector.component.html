@@ -1,45 +1,58 @@
 <div class="SubscriptionTierSelector">
-    <div class="row">
-        <ng-container *ngFor="let tier of tiers">
-            <div class="col-md-4 col-sm-12 mb-2">
-            <div class="GenericCard Card h-100" [ngClass]="{'Card--selected' : selectedTier?.id === tier.id, 'Card--noHover': disableHover}"
-                (click)="onTierSelectedChanged(tier)">
-                <div *ngIf="tier.discount">
-                    <tsl-discount-badge i18n="@@pro_subscription_purchase_tier_list_discount_label">{{tier.discount.percentage}}% off!</tsl-discount-badge>
-                </div>
-                <ng-container *ngIf="tier.is_basic; else noBasicTitle">
-                    <div class="GenericCard__title Card__title Card__title--small">
-                        <span i18n="@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_title">Basic</span>
-                    </div>
-                    <div class="GenericCard__subtitle mb-1">{{ getLimitText(tier) }}</div>
-                </ng-container>
-                <ng-template #noBasicTitle>
-                    <div class="Card__title">
-                        <ng-container *ngIf="tier.limit">
-                            <span class="Card__title--large">{{tier.limit}}</span><span ngPreserveWhitespaces> </span><span i18n="@@pro_subscription_purchase_tier_list_items_number_label">items</span>
-                        </ng-container>
-                        <span *ngIf="!tier.limit" class="GenericCard__title" i18n="@@web_profile_pages_subscription_586">List without limits</span>
-                    </div>
-                </ng-template>
-                <div class="Card__description">
-                    <ng-container *ngIf="tier.discount; else noTierDiscount">
-                        <b><span class="Card__description--discounted mr-1">{{tier.price}}</span>
-                            <span i18n="@@web_profile_pages_subscription_326">{{tier.discount.price}}{{tier.currency}}/month</span></b>
-                        <ng-container *ngIf="subscription.trial_available"><span ngPreserveWhitespaces> </span><span i18n="@@web_after_free_trial">after free trial</span>
-                        </ng-container>
-                        <div class="mt-1">
-                            <span class="Card__footer" i18n="@@pro_subscription_purchase_tier_list_discount_limit_date_label">
-                                Enjoy the discount until {{tier.discount.end_date |  date:'dd/MM/yy' }}</span>
-                        </div>
-                    </ng-container>
-                    <ng-template #noTierDiscount>
-                        <b><span i18n="@@web_profile_pages_subscription_326">{{tier.price}}{{tier.currency}}/month</span></b>
-                        <ng-container *ngIf="subscription.trial_available"><span ngPreserveWhitespaces> </span><span i18n="@@web_after_free_trial">after free trial</span>
-                        </ng-container>
-                    </ng-template>
-                </div>
-            </div>
+  <div class="row">
+    <ng-container *ngFor="let tier of tiers">
+      <div class="col-md-4 col-sm-12 mb-2">
+        <div
+          class="GenericCard Card h-100"
+          [ngClass]="{ 'Card--selected': selectedTier?.id === tier.id, 'Card--noHover': disableHover }"
+          (click)="onTierSelectedChanged(tier)"
+        >
+          <div *ngIf="tier.discount">
+            <tsl-discount-badge i18n="@@pro_subscription_purchase_tier_list_discount_label"
+              >{{ tier.discount.percentage }}% off!</tsl-discount-badge
+            >
           </div>
-        </ng-container>
-    </div>
+          <ng-container *ngIf="tier.is_basic; else noBasicTitle">
+            <div class="GenericCard__title Card__title Card__title--small">
+              <span i18n="@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_title">Basic</span>
+            </div>
+            <div class="GenericCard__subtitle mb-1">{{ getLimitText(tier) }}</div>
+          </ng-container>
+          <ng-template #noBasicTitle>
+            <div class="Card__title">
+              <ng-container *ngIf="tier.limit">
+                <span class="Card__title--large">{{ tier.limit }}</span
+                ><span ngPreserveWhitespaces> </span><span i18n="@@pro_subscription_purchase_tier_list_items_number_label">items</span>
+              </ng-container>
+              <span *ngIf="!tier.limit" class="GenericCard__title" i18n="@@web_profile_pages_subscription_586">List without limits</span>
+            </div>
+          </ng-template>
+          <div class="Card__description">
+            <ng-container *ngIf="tier.discount; else noTierDiscount">
+              <b
+                ><span class="Card__description--discounted mr-1">{{ tier.price }}</span>
+                <span i18n="@@web_profile_pages_subscription_326">{{ tier.discount.price }}{{ tier.currency }}/month</span></b
+              >
+              <ng-container *ngIf="subscription.trial_available"
+                ><span ngPreserveWhitespaces> </span><span i18n="@@web_after_free_trial">after free trial</span>
+              </ng-container>
+              <div class="mt-1">
+                <span class="Card__footer" i18n="@@pro_subscription_purchase_tier_list_discount_limit_date_label">
+                  Enjoy the discount until {{ tier.discount.end_date | date: 'dd/MM/yy' }}</span
+                >
+              </div>
+            </ng-container>
+            <ng-template #noTierDiscount>
+              <b
+                ><span i18n="@@web_profile_pages_subscription_326">{{ tier.price }}{{ tier.currency }}/month</span></b
+              >
+              <ng-container *ngIf="subscription.trial_available"
+                ><span ngPreserveWhitespaces> </span><span i18n="@@web_after_free_trial">after free trial</span>
+              </ng-container>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </div>
