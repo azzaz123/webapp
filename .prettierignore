@@ -22,7 +22,6 @@ githooks
 /src/app/private/features/catalog-pro/**/*.html
 /src/app/private/features/dashboard/**/*.html
 /src/app/private/features/help/**/*.html
-/src/app/private/features/pro/**/*.html
 /src/app/private/features/upload/**/*.html
 /src/app/private/features/wallacoins/**/*.html
 

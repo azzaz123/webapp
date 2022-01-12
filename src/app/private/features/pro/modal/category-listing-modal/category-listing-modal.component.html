@@ -1,13 +1,16 @@
 <div class="CategoryListingModal d-flex flex-column text-center">
   <div class="CategoryListingModal__close d-flex justify-content-end mt-3 mr-3">
-      <tsl-svg-icon src="/assets/icons/cross.svg" (click)="onClose()"></tsl-svg-icon>
+    <tsl-svg-icon src="/assets/icons/cross.svg" (click)="onClose()"></tsl-svg-icon>
   </div>
-  <span class="CategoryListingModal__title mt-3 mb-2" i18n="@@pro_subscription_management_regular_title">{{subscription.category_name}} subscription</span>
-  <span class="CategoryListingModal__subtitle mb-3" i18n="@@pro_cg_clarification_view_subheader">You can list items from the following categories:</span>
-  <div  class="CategoryListingModal__options">
-   <ng-container *ngFor="let option of categories">
-     <tsl-select-option class="d-block" [icon]="option.icon_id" [label]="option.name">
-     </tsl-select-option>
-   </ng-container>
+  <span class="CategoryListingModal__title mt-3 mb-2" i18n="@@pro_subscription_management_regular_title"
+    >{{ subscription.category_name }} subscription</span
+  >
+  <span class="CategoryListingModal__subtitle mb-3" i18n="@@pro_cg_clarification_view_subheader"
+    >You can list items from the following categories:</span
+  >
+  <div class="CategoryListingModal__options">
+    <ng-container *ngFor="let option of categories">
+      <tsl-select-option class="d-block" [icon]="option.icon_id" [label]="option.name"> </tsl-select-option>
+    </ng-container>
   </div>
 </div>
