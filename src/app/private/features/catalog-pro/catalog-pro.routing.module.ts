@@ -6,6 +6,8 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { CatalogProListComponent } from './pages/catalog-pro-list/catalog-pro-list.component';
 import { CheckoutExtrasProComponent } from './pages/checkout-extras-pro/checkout-extras-pro.component';
 import { CheckoutProComponent } from './pages/checkout-pro/checkout-pro.component';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { BUMPS_PATHS } from '../bumps/bumps-routing-constants';
 
 export function getRedirectToCatalogList(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
   if (isEmpty(route.params)) {
@@ -49,7 +51,7 @@ export const routes: Route[] = [
             only: PERMISSIONS.bumps,
             except: PERMISSIONS.normal,
             redirectTo: {
-              [PERMISSIONS.normal]: '/catalog/checkout',
+              [PERMISSIONS.normal]: `/${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`,
               default: '',
             },
           },

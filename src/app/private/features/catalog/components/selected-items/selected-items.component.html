@@ -58,7 +58,7 @@
             <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
               <ng-container *ngIf="!hideFeaturedButton">
                 <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
-                [routerLink]="['/catalog/checkout']" 
+                [routerLink]="BUMP_PATH" 
                 i18n="@@web_catalog_components_selected_items_558">Feature</tsl-button>
               </ng-container>
             </ng-container>

@@ -36,6 +36,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.component';
@@ -552,7 +553,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
           this.bumpSuggestionModalRef = null;
           if (result?.redirect) {
-            this.router.navigate(['catalog/checkout', { itemId }]);
+            this.router.navigate([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId }]);
           }
         });
       } else {

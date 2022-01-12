@@ -8,6 +8,7 @@ import { LoggedGuard } from '@core/user/logged.guard';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { ListComponent } from './pages/list/list.component';
 import { BUMPS_PATHS } from '../bumps/bumps-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 export function isNormalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
   if (isEmpty(route.params)) {
@@ -46,7 +47,7 @@ export const routes: Route[] = [
       },
       {
         path: BUMPS_PATHS.CHECKOUT,
-        redirectTo: `/${BUMPS_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`,
+        redirectTo: `/${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`,
       },
     ],
   },

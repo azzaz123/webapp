@@ -85,7 +85,7 @@ const routes: Routes = [
         loadChildren: () => import('@private/features/reviews/reviews.module').then((m) => m.ReviewsModule),
       },
       {
-        path: 'bumps',
+        path: PRIVATE_PATHS.BUMPS,
         loadChildren: () => import('@private/features/bumps/bumps.module').then((m) => m.BumpsModule),
       },
       {
