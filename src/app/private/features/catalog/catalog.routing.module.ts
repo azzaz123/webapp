@@ -6,8 +6,8 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { isEmpty } from 'lodash-es';
 import { LoggedGuard } from '@core/user/logged.guard';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { ListComponent } from './pages/list/list.component';
+import { BUMPS_PATHS } from '../bumps/bumps-routing-constants';
 
 export function isNormalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
   if (isEmpty(route.params)) {
@@ -17,15 +17,6 @@ export function isNormalCatalogPermissions(rejectedPermissionName: string, route
       navigationCommands: ['/pro/catalog/list', route.params],
     };
   }
-}
-
-export function isNormalCheckoutPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
-  if (!route.params.itemId) {
-    return '/pro/catalog/checkout';
-  }
-  return {
-    navigationCommands: ['/pro/catalog/checkout/', { itemId: route.params.itemId }],
-  };
 }
 
 export const routes: Route[] = [
@@ -54,20 +45,8 @@ export const routes: Route[] = [
         },
       },
       {
-        path: 'checkout',
-        component: CheckoutComponent,
-        data: {
-          isMyZone: true,
-          isProducts: true,
-          permissions: {
-            only: PERMISSIONS.bumps,
-            except: PERMISSIONS.professional,
-            redirectTo: {
-              [PERMISSIONS.professional]: isNormalCheckoutPermissions,
-              default: '',
-            },
-          },
-        },
+        path: BUMPS_PATHS.CHECKOUT,
+        redirectTo: `/${BUMPS_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`,
       },
     ],
   },
@@ -79,4 +58,4 @@ export const routes: Route[] = [
 })
 export class CatalogRoutingModule {}
 
-export const catalogRoutedComponents = [CatalogComponent, ListComponent, CheckoutComponent];
+export const catalogRoutedComponents = [CatalogComponent, ListComponent];

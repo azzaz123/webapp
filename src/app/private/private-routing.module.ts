@@ -85,6 +85,10 @@ const routes: Routes = [
         loadChildren: () => import('@private/features/reviews/reviews.module').then((m) => m.ReviewsModule),
       },
       {
+        path: 'bumps',
+        loadChildren: () => import('@private/features/bumps/bumps.module').then((m) => m.BumpsModule),
+      },
+      {
         path: 'wallacoins',
         canLoad: [NgxPermissionsGuard],
         data: {
