@@ -40,7 +40,6 @@
           </div>
           <ul [hidden]="cart[type].collapsed">
             <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item">
-              <tsl-svg-icon src="/assets/icons/remove.svg" class="close-icon" (click)="remove(cartItem, type)"></tsl-svg-icon>
               <div class="cart-box">
                 <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
                 <div class="type">

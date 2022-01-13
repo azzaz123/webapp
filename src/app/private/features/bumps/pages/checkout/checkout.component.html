@@ -14,7 +14,12 @@
           </div>
         </div>
         <div class="price-table">
-          <tsl-checkout-item *ngFor="let item of itemsWithProducts" [itemWithProducts]="item" [creditInfo]="creditInfo"></tsl-checkout-item>
+          <tsl-checkout-item
+            *ngFor="let item of itemsWithProducts"
+            (itemRemoved)="removeItem($event)"
+            [itemWithProducts]="item"
+            [creditInfo]="creditInfo"
+          ></tsl-checkout-item>
         </div>
       </div>
       <div class="cart">

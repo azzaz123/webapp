@@ -34,6 +34,13 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  public removeItem(itemId: string): void {
+    this.itemsWithProducts = this.itemsWithProducts.filter((itemWithProducts) => itemWithProducts.item.id !== itemId);
+    if (this.itemsWithProducts.length === 0) {
+      this.router.navigate(['catalog/list']);
+    }
+  }
+
   private getProductsFromSelectedItems() {
     if (!this.itemService.selectedItems.length) {
       this.router.navigate(['catalog/list']);

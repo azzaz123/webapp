@@ -1,5 +1,5 @@
 import { takeWhile } from 'rxjs/operators';
-import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { ItemWithProducts } from '@core/item/item-response.interface';
 import { keys } from 'lodash-es';
 import { CartService } from '@shared/catalog/cart/cart.service';
@@ -16,6 +16,7 @@ import { CreditInfo } from '@core/payments/payment.interface';
 export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
+  @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
   types: string[] = BUMP_TYPES;
   durations: string[];
   _duration: string;
@@ -58,6 +59,11 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.active = false;
+  }
+
+  public onRemoveItem(itemId: string, type: string): void {
+    this.cartService.remove(itemId, type);
+    this.itemRemoved.emit(itemId);
   }
 
   selectDuration(selectedDuration: string) {

@@ -1,13 +1,16 @@
 <div class="item" [ngClass]="{ 'provincial-bump': provincialBump }">
-  <div class="d-flex">
+  <div class="d-flex w-100">
     <tsl-item-avatar
       [item]="itemWithProducts.item"
       size="big"
       fallbackLight="true"
       title="{{ itemWithProducts.item.title }}"
     ></tsl-item-avatar>
-    <div class="d-flex flex-column">
-      <div>{{ itemWithProducts.item.title }}</div>
+    <div class="d-flex flex-column w-100">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>{{ itemWithProducts.item.title }}</div>
+        <tsl-svg-icon (click)="onRemoveItem(itemWithProducts.item.id, selectedType)" [src]="'/assets/icons/delete.svg'"></tsl-svg-icon>
+      </div>
       <div class="d-flex">
         <div>
           <div>Duration</div>
