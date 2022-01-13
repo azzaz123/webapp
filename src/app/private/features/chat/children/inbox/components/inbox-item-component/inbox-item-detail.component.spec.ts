@@ -6,7 +6,7 @@ import { ItemService } from '@core/item/item.service';
 import { MOCKED_INBOX_CONVERSATIONS } from '@fixtures/chat';
 import { ITEM_COUNTERS_DATA } from '@fixtures/item.fixtures.spec';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { CustomCurrencyPipe } from '@shared/pipes';
+import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { InboxItemDetailComponent } from './inbox-item-detail.component';
@@ -19,7 +19,7 @@ describe('Component: Item', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InboxItemDetailComponent, CustomCurrencyPipe],
+      declarations: [InboxItemDetailComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
       providers: [
         DecimalPipe,
         {

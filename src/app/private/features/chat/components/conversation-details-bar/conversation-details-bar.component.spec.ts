@@ -1,5 +1,3 @@
-import { ITEM_WEB_SLUG } from '@fixtures/item.fixtures.spec';
-import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -15,7 +13,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { of, throwError, BehaviorSubject } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
 import { ReportService } from '@core/trust-and-safety/report/report.service';
 import { ITEM_REPORT_REASONS } from '@core/trust-and-safety/report/constants/item-report-reasons';
@@ -24,12 +22,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { CustomCurrencyPipe } from '@shared/pipes';
-import { StandaloneService } from '@core/standalone/services/standalone.service';
-import { Router } from '@angular/router';
-import { By } from '@angular/platform-browser';
-
-const AVATAR_CLASS_NAME: string = '.avatar';
+import { ItemDetailRoutePipe } from '@shared/pipes';
 
 class MockConversationService {
   public loadMoreMessages() {}
@@ -48,6 +41,7 @@ class BlockUserServiceMock {
 describe('ConversationDetailsBarComponent', () => {
   let component: ConversationDetailsBarComponent;
   let fixture: ComponentFixture<ConversationDetailsBarComponent>;
+
   let realTime: RealTimeService;
   let eventService: EventService;
   let toastService: ToastService;
@@ -56,32 +50,17 @@ describe('ConversationDetailsBarComponent', () => {
   let blockUserService: BlockUserService;
   let blockUserXmppService: BlockUserXmppService;
   let conversationService: InboxConversationService;
-  let router: Router;
-
-  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule, NgbModule, NgxPermissionsModule.forRoot()],
-      declarations: [ConversationDetailsBarComponent, CustomCurrencyPipe],
+      declarations: [ConversationDetailsBarComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         EventService,
         ToastService,
         ErrorsService,
         ReportService,
-        {
-          provide: StandaloneService,
-          useValue: {
-            standalone$: standaloneSubject.asObservable(),
-          },
-        },
-        {
-          provide: Router,
-          useValue: {
-            navigate() {},
-          },
-        },
         {
           provide: RealTimeService,
           useValue: {
@@ -101,6 +80,7 @@ describe('ConversationDetailsBarComponent', () => {
             unblockUser() {},
           },
         },
+        ItemDetailRoutePipe,
         {
           provide: SITE_URL,
           useValue: MOCK_SITE_URL,
@@ -121,7 +101,6 @@ describe('ConversationDetailsBarComponent', () => {
     blockUserService = TestBed.inject(BlockUserService);
     blockUserXmppService = TestBed.inject(BlockUserXmppService);
     conversationService = TestBed.inject(InboxConversationService);
-    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
@@ -302,40 +281,5 @@ describe('ConversationDetailsBarComponent', () => {
       expect(blockUserXmppService.unblockUser).not.toHaveBeenCalled();
       expect(toastService.show).not.toHaveBeenCalled();
     }));
-  });
-
-  describe('when a click is triggered on an item image', () => {
-    describe('and the app is on standalone mode', () => {
-      beforeEach(() => {
-        standaloneSubject.next(true);
-        fixture.detectChanges();
-        spyOn(router, 'navigate');
-      });
-      it('should navigate to the item without opening a new tab', () => {
-        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${ITEM_ID}`;
-        const itemImage = fixture.debugElement.query(By.css(AVATAR_CLASS_NAME)).nativeElement;
-
-        itemImage.click();
-
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
-      });
-    });
-    describe('and the app is NOT on standalone mode', () => {
-      beforeEach(() => {
-        standaloneSubject.next(false);
-        fixture.detectChanges();
-        spyOn(window, 'open');
-      });
-      it('should navigate to the item in a new tab', () => {
-        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${ITEM_WEB_SLUG}`;
-        const itemImage = fixture.debugElement.query(By.css(AVATAR_CLASS_NAME)).nativeElement;
-
-        itemImage.click();
-
-        expect(window.open).toHaveBeenCalledTimes(1);
-        expect(window.open).toHaveBeenCalledWith(expectedUrl);
-      });
-    });
   });
 });

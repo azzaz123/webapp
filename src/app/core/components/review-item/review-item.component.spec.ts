@@ -1,14 +1,13 @@
-import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { MOCK_REVIEWS, MOCK_TRANSLATABLE_REVIEW } from '@fixtures/review.fixtures.spec';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReviewItemComponent } from './review-item.component';
 import { Component, DebugElement, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { CategoryService } from 'app/core/category/category.service';
 import { SanitizedBackgroundDirective } from 'app/shared/sanitized-background/sanitized-background.directive';
-import { UserProfileRoutePipe } from '@shared/pipes';
+import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { ReviewsApiModule, ReviewsApiService } from '@api/reviews';
 import { By } from '@angular/platform-browser';
 import { TranslateButtonComponent } from '@core/components/translate-button/translate-button.component';
@@ -16,14 +15,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Review } from '@private/features/reviews/core/review';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { Router } from '@angular/router';
-import { SharedModule } from '@shared/shared.module';
-import { CoreModule } from '@core/core.module';
-import { StandaloneService } from '@core/standalone/services/standalone.service';
-
-const MOCK_REVIEW: Review = MOCK_REVIEWS[0];
-const IMAGE_CLASS_NAME: string = '.image';
-const REVIEW_TITLE_CLASS_NAME: string = '.review-title-item';
 
 @Component({
   selector: 'tsl-test',
@@ -40,16 +31,20 @@ describe('ReviewItemComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let debugElement: DebugElement;
   let reviewsApiService: ReviewsApiService;
-  let router: Router;
-
-  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ReviewItemComponent, SanitizedBackgroundDirective, UserProfileRoutePipe, TestComponent, TranslateButtonComponent],
+        declarations: [
+          ReviewItemComponent,
+          SanitizedBackgroundDirective,
+          UserProfileRoutePipe,
+          TestComponent,
+          TranslateButtonComponent,
+          ItemDetailRoutePipe,
+        ],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [ReviewsApiModule, HttpClientTestingModule, SharedModule, CoreModule],
+        imports: [ReviewsApiModule, HttpClientTestingModule],
         providers: [
           {
             provide: CategoryService,
@@ -57,18 +52,6 @@ describe('ReviewItemComponent', () => {
               getCategoryById: () => {
                 return of(CATEGORY_DATA_WEB[0]);
               },
-            },
-          },
-          {
-            provide: StandaloneService,
-            useValue: {
-              standalone$: standaloneSubject.asObservable(),
-            },
-          },
-          {
-            provide: Router,
-            useValue: {
-              navigate() {},
             },
           },
           {
@@ -87,7 +70,6 @@ describe('ReviewItemComponent', () => {
     debugElement = fixture.debugElement;
     component = debugElement.query(By.directive(ReviewItemComponent)).componentInstance;
     testComponent.review = MOCK_REVIEWS[0];
-    router = TestBed.inject(Router);
   });
 
   describe('ngOnInit', () => {
@@ -206,76 +188,6 @@ describe('ReviewItemComponent', () => {
             expect(comment).toEqual(MOCK_TRANSLATABLE_REVIEW.comments);
           });
         });
-      });
-    });
-  });
-
-  describe('when a click is triggered on an item image from a review', () => {
-    describe('and the app is on standalone mode', () => {
-      beforeEach(() => {
-        standaloneSubject.next(true);
-        fixture.detectChanges();
-        spyOn(router, 'navigate');
-      });
-      it('should navigate to the item without opening a new tab', () => {
-        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEW.item.id}`;
-        const itemImage = fixture.debugElement.query(By.css(IMAGE_CLASS_NAME)).nativeElement;
-
-        itemImage.click();
-
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
-      });
-    });
-    describe('and the app is NOT on standalone mode', () => {
-      beforeEach(() => {
-        standaloneSubject.next(false);
-        fixture.detectChanges();
-        spyOn(window, 'open');
-      });
-      it('should navigate to the item in a new tab', () => {
-        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEW.item.webSlug}`;
-        const itemImage = fixture.debugElement.query(By.css(IMAGE_CLASS_NAME)).nativeElement;
-
-        itemImage.click();
-
-        expect(window.open).toHaveBeenCalledTimes(1);
-        expect(window.open).toHaveBeenCalledWith(expectedUrl);
-      });
-    });
-  });
-
-  describe('when a click is triggered on a review title', () => {
-    describe('and the app is on standalone mode', () => {
-      beforeEach(() => {
-        standaloneSubject.next(true);
-        fixture.detectChanges();
-        spyOn(router, 'navigate');
-      });
-      it('should navigate to the item without opening a new tab', () => {
-        const expectedUrl: string = `${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEW.item.id}`;
-        const reviewTitle = fixture.debugElement.query(By.css(REVIEW_TITLE_CLASS_NAME)).nativeElement;
-
-        reviewTitle.click();
-
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
-      });
-    });
-    describe('and the app is NOT on standalone mode', () => {
-      beforeEach(() => {
-        standaloneSubject.next(false);
-        fixture.detectChanges();
-        spyOn(window, 'open');
-      });
-      it('should navigate to the item in a new tab', () => {
-        const expectedUrl: string = `${MOCK_SITE_URL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_REVIEW.item.webSlug}`;
-        const reviewTitle = fixture.debugElement.query(By.css(REVIEW_TITLE_CLASS_NAME)).nativeElement;
-
-        reviewTitle.click();
-
-        expect(window.open).toHaveBeenCalledTimes(1);
-        expect(window.open).toHaveBeenCalledWith(expectedUrl);
       });
     });
   });
