@@ -225,7 +225,7 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
               iconUrl: MOCK_USER.image.urls_by_size.original,
               title: MOCK_ITEM.title,
               description: {
-                text: 'Via shipping',
+                text: 'Shipping',
                 iconUrl: 'assets/icons/box.svg',
               },
               subDescription: {
@@ -241,7 +241,7 @@ export const MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS: HistoricList = {
               iconUrl: MOCK_USER.image.urls_by_size.original,
               title: MOCK_ITEM.title,
               description: {
-                text: 'Via shipping',
+                text: 'Shipping',
                 iconUrl: 'assets/icons/box.svg',
               },
               subDescription: {
