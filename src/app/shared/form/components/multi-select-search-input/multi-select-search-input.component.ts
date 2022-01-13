@@ -16,10 +16,7 @@ import { PaginatedList } from '@api/core/model';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
-import {
-  MultiSelectFormOption,
-  TemplateMultiSelectFormOption,
-} from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
+import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -56,7 +53,6 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   private optionsSubject = new Subject<MultiSelectFormOption[]>();
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public options$: Observable<MultiSelectFormOption[]> = this.optionsSubject.asObservable();
-  private extendedOptions: TemplateMultiSelectFormOption[];
   private keyUp$: Observable<unknown>;
   private subscriptions = new Subscription();
 

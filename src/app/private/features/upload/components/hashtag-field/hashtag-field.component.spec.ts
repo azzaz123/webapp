@@ -6,7 +6,7 @@ import { PaginatedList } from '@api/core/model';
 import { MOCK_HASHTAGS } from '@fixtures/hashtag.fixtures.spec';
 import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
-import { MultiselectSearchInputComponent } from '@shared/form/components/multiselect-search-input/multiselect-search-input.component';
+import { MultiselectSearchInputComponent } from '@shared/form/components/multi-select-search-input/multi-select-search-input.component';
 import { Observable, of } from 'rxjs';
 import { Hashtag } from '../../core/models/hashtag.interface';
 import { HashtagSuggesterApiService } from '../../core/services/hashtag-suggestions/hashtag-suggester-api.service';
