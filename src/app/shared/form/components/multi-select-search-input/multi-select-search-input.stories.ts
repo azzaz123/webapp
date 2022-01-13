@@ -7,7 +7,7 @@ import { HashtagSuggesterApiService } from '@private/features/upload/core/servic
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
 import { Component, Input } from '@angular/core';
-import { MultiselectSearchInputModule } from './multiselect-search-input.module';
+import { MultiselectSearchInputModule } from './multi-select-search-input.module';
 @Component({
   selector: 'tsl-story-multiselect-search-input',
   template: `
