@@ -60,6 +60,10 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     this.active = false;
   }
 
+  selectDuration(selectedDuration: string) {
+    this.duration = selectedDuration;
+  }
+
   select(type: string) {
     if (this.selectedType === type && this.selectedDuration === this.duration) {
       this.cartService.remove(this.itemWithProducts.item.id, type);
