@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Item } from '@core/item/item';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from '@private/features/stats/core/item-stats-response.interface';
 import { ItemStatsService } from '@private/features/stats/core/services/item-stats.service';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { every, isEmpty } from 'lodash-es';
 import { ITEM_STATS_ROW_ANIMATION } from './item-stats-row.animation';
 
@@ -27,6 +29,7 @@ export class ItemStatsRowComponent implements OnInit {
     favourites: $localize`:@@web_stats_item_favourites_tooltip:Favourites`,
   };
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly BUMP_PATH = `/${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`;
 
   constructor(private itemStatsService: ItemStatsService) {}
 

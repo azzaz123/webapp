@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { BumpTutorialService } from '../../core/services/bump-tutorial.service';
 import { BumpTutorialComponent, KEY_CODE } from './bump-tutorial.component';
+import { BumpTutorialService } from './services/bump-tutorial.service';
 
 describe('BumpTutorialComponent', () => {
   let component: BumpTutorialComponent;

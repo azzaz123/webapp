@@ -3,6 +3,8 @@ import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscripti
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { Subscription } from 'rxjs';
 import { STATUS } from './selected-product.interface';
 
@@ -22,6 +24,7 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
   public disableFeatureOption: boolean;
   public showActiveOption: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly BUMP_PATH = `/${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`;
   private selectedItemsSubscription: Subscription;
 
   constructor(public itemService: ItemService) {}
