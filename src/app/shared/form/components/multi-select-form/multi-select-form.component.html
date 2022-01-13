@@ -4,7 +4,7 @@
 <ng-container *ngFor="let option of extendedOptions$ | async">
   <div *ngIf="(shownChildrenOptionId$ | async) === null" class="w-100">
     <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="option" [isDisabled]="disabled || isDisabledByMaxLengthReached(option.checked)" 
-    (toggleOnChange)="handleSelectedOption()" (click)="showChildren(option);"></tsl-multi-select-option>
+    (toggleOnChange)="handleToggleChange($event)" (click)="showChildren(option);"></tsl-multi-select-option>
   </div>
 
   <ng-container *ngIf="(shownChildrenOptionId$ | async) === option.value">
@@ -24,7 +24,7 @@
   
       <div class="MultiSelectForm__children__options">
         <div *ngFor="let childOption of option.children" class="w-100">
-          <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="childOption" [isDisabled]="disabled || isDisabledByMaxLengthReached(childOption.checked)" (toggleOnChange)="handleSelectedOption()"></tsl-multi-select-option>
+          <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="childOption" [isDisabled]="disabled || isDisabledByMaxLengthReached(childOption.checked)" (toggleOnChange)="handleChildToggleChange($event, option)"></tsl-multi-select-option>
         </div>
       </div>
     </div>

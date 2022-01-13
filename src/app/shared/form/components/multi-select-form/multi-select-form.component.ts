@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, Input, OnDe
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { MultiSelectFormOption, TemplateMultiSelectFormOption } from './interfaces/multi-select-form-option.interface';
-import { MultiSelectValue } from './interfaces/multi-select-value.type';
+import { MultiSelectFormOption, TemplateMultiSelectFormOption } from '../multi-select-form/interfaces/multi-select-form-option.interface';
+import { MultiSelectValue } from '../multi-select-form/interfaces/multi-select-value.type';
 @Component({
   selector: 'tsl-multi-select-form',
   templateUrl: './multi-select-form.component.html',
@@ -44,14 +44,30 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public maxLength: number;
 
+  constructor() {
+    super();
+    this.value = [];
+  }
+
   public writeValue(value: MultiSelectValue): void {
     this.value = value;
     this.mapCheckedValue();
     this.handleMaxLength();
   }
 
-  public handleSelectedOption(): void {
-    this.value = this.extendedOptions
+  public handleToggleChange(option: TemplateMultiSelectFormOption): void {
+    if (option.checked) {
+      this.addValue(option.value);
+    } else {
+      this.removeValue(option.value);
+    }
+
+    this.onChange([...this.value]);
+    this.handleMaxLength();
+  }
+
+  public handleChildToggleChange(childOption: TemplateMultiSelectFormOption, parentOption: TemplateMultiSelectFormOption): void {
+    const checkedValues = parentOption.children
       .filter((option) => {
         return option.checked;
       })
@@ -59,9 +75,24 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
         return option.value;
       });
 
-    this.value = this.getValue(this.extendedOptions);
-    this.onChange(this.value);
-    this.extendedOptionsSubject.next(this.extendedOptions);
+    if (childOption.checked) {
+      if (checkedValues.length === parentOption.children.length) {
+        this.addValue(parentOption.value);
+        parentOption.children.forEach((option) => {
+          this.removeValue(option.value);
+        });
+      } else {
+        this.addValue(childOption.value);
+      }
+    } else {
+      this.removeValue(parentOption.value);
+      this.removeValue(childOption.value);
+      checkedValues.forEach((value) => {
+        this.addValue(value);
+      });
+    }
+
+    this.onChange([...this.value]);
     this.handleMaxLength();
   }
 
@@ -98,6 +129,16 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   public isDisabledByMaxLengthReached(checked: boolean): boolean {
     return !checked && this.maxLengthReached;
+  }
+
+  private removeValue(valueToRemove: string): void {
+    this.value = this.value.filter((value) => {
+      return value !== valueToRemove;
+    });
+  }
+
+  private addValue(valueToAdd: string): void {
+    this.value.push(valueToAdd);
   }
 
   private handleMaxLength(): void {
@@ -151,25 +192,5 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
     });
 
     return formattedExtendedOptions;
-  }
-
-  private getValue(options: TemplateMultiSelectFormOption[]): string[] {
-    let value = [];
-    options.forEach((option: TemplateMultiSelectFormOption) => {
-      if (option.checked) {
-        value.push(option.value);
-      } else {
-        if (option.children?.length) {
-          const checkedChildOptions = this.getValue(option.children);
-          if (checkedChildOptions.length === option.children.length) {
-            value = [...value, option.value];
-          } else {
-            value = [...value, ...this.getValue(option.children)];
-          }
-        }
-      }
-    });
-
-    return value;
   }
 }
