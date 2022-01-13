@@ -129,8 +129,16 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
                   imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].seller.imageUrl,
                   name: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].seller.name,
                 },
+                state: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].state,
+                status: {
+                  name: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].status.name,
+                  translation: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].status.translation,
+                },
               },
-              subDescription: null,
+              subDescription: {
+                text: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].status.translation,
+                type: 1,
+              },
               title: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].item.title,
             },
             {

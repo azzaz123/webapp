@@ -1,4 +1,7 @@
+import { mapDeliveryPendingTransactionStatusTranslation } from '@api/core/mappers/delivery/deliveries/status';
 import { DeliveryPendingTransactionsAndRequests } from '@api/core/model/delivery';
+import { DELIVERY_ONGOING_STATES } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-states.enum';
+import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-status.enum';
 
 export const MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER: DeliveryPendingTransactionsAndRequests = {
   requests: [
@@ -7,6 +10,11 @@ export const MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER: DeliveryP
       item: { id: '23827837283', imageUrl: '/path/to/icon/thumbsup.svg', title: 'Melena Alejandro' },
       buyer: { id: '232323', imageUrl: 'img/perfilLaia.png', name: 'Laia' },
       seller: { id: '987459347', imageUrl: 'img/perfilToni.png', name: 'Toni' },
+      status: {
+        name: DELIVERY_ONGOING_STATUS.REQUEST_CREATED,
+        translation: mapDeliveryPendingTransactionStatusTranslation(DELIVERY_ONGOING_STATUS.REQUEST_CREATED, false),
+      },
+      state: DELIVERY_ONGOING_STATES.REQUEST_CREATED,
       moneyAmount: { amount: { integer: 66666666, decimals: 0, total: 66666666 }, currency: { code: 'EUR', symbol: '€' } },
       isCurrentUserTheSeller: false,
     },

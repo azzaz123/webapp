@@ -69,6 +69,7 @@ const mapPendingRequestToHistoricElement = (pendingRequest: Request): HistoricEl
   const { id, item, moneyAmount } = pendingRequest;
   const description = getDescription();
   const iconUrl = getIconUrl(pendingRequest);
+  const subDescription = getSubDescription(pendingRequest);
 
   const historicElement: HistoricElement = {
     id,
@@ -77,7 +78,7 @@ const mapPendingRequestToHistoricElement = (pendingRequest: Request): HistoricEl
     title: item.title,
     description,
     moneyAmount,
-    subDescription: null,
+    subDescription,
     payload: pendingRequest,
   };
 
@@ -91,7 +92,9 @@ const getDescription = (): { text: string; iconUrl: string } => {
   };
 };
 
-const getSubDescription = (input: DeliveryPendingTransaction): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } | null => {
+const getSubDescription = (
+  input: DeliveryPendingTransaction | Request
+): { text: string; type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } | null => {
   const type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE = mapOngoingTransactionTrackingStatusToSubDescriptionType[input.state];
 
   return {
