@@ -10,7 +10,7 @@
             <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
                 <!-- Feature -->
                 <tsl-button *ngIf="!item.bumpExpiringDate" class="ItemDetailHeader__featureButton" className="btn-feature"
-                [routerLink]="['/catalog/checkout', {itemId: item.id}]" id="featureItemButton">
+                [routerLink]="[BUMP_PATH, {itemId: item.id}]" id="featureItemButton">
                 <tsl-svg-icon src="/assets/icons/feature.svg" class="mr-3"></tsl-svg-icon>
                     <span i18n="@@web_feature">Feature</span>
                 </tsl-button>

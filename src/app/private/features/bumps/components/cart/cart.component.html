@@ -5,14 +5,20 @@
   </a>
 </div>
 <div [class.with-credits]="creditInfo?.currencyName === 'wallacredits'">
-  <div class="cart-wrapper" [class.has-financial-card]="hasSavedCard"
-       [class.no-credit]="!creditInfo?.credit"
-       [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit">
+  <div
+    class="cart-wrapper"
+    [class.has-financial-card]="hasSavedCard"
+    [class.no-credit]="!creditInfo?.credit"
+    [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit"
+  >
     <div class="scroll-panel">
       <ul *ngIf="cart" class="items-list">
         <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
-          <div class="type-total cart-box" [ngClass]="{collapsed: cart[type].collapsed}"
-               (click)="cart[type].collapsed = !cart[type].collapsed">
+          <div
+            class="type-total cart-box"
+            [ngClass]="{ collapsed: cart[type].collapsed }"
+            (click)="cart[type].collapsed = !cart[type].collapsed"
+          >
             <tsl-svg-icon class="wing-icon" [src]="handleIconPath(type)"></tsl-svg-icon>
             <div class="type">
               <span [ngSwitch]="type" class="bump-type">
@@ -23,9 +29,10 @@
                 <ng-container *ngSwitchCase="'citybump'" i18n="@@web_cart_616">City bump</ng-container>
                 <ng-container *ngSwitchCase="'countrybump'" i18n="@@web_cart_617">Country bump</ng-container>
               </span>
-              <strong>x {{cart[type].cartItems.length}}</strong><br />
+              <strong>x {{ cart[type].cartItems.length }}</strong
+              ><br />
               <span class="price">
-                {{cart[type].total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+                {{ cart[type].total * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
                 <tsl-wallacoin [currency]="creditInfo?.currencyName" color="grey"></tsl-wallacoin>
               </span>
             </div>
@@ -45,10 +52,10 @@
                     <ng-container *ngSwitchCase="'citybump'" i18n="@@web_cart_663">City</ng-container>
                     <ng-container *ngSwitchCase="'countrybump'" i18n="@@web_cart_664">Country</ng-container>
                   </span>
-                  x {{cartItem.duration.duration / 24}}<span i18n="@@web_cart_665">days</span>
+                  x {{ cartItem.duration.duration / 24 }}<span i18n="@@web_cart_665">days</span>
                 </div>
                 <div class="price">
-                  {{cartItem.duration.market_code * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+                  {{ cartItem.duration.market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
                   <tsl-wallacoin [currency]="creditInfo?.currencyName" color="grey"></tsl-wallacoin>
                 </div>
               </div>
@@ -61,14 +68,14 @@
   <div class="walla-total" [hidden]="!creditInfo?.credit">
     <span class="label" i18n="@@web_cart_618">Total</span>
     <span class="price">
-      {{cart?.total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+      {{ cart?.total * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
       <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
     </span>
   </div>
   <div class="credit" [hidden]="!creditInfo?.credit && !usedCredits">
     <span class="label" [hidden]="!creditInfo?.credit">
       <span [hidden]="creditInfo?.currencyName !== 'wallacredits'">
-        {{creditInfo?.credit | customCurrency:creditInfo?.currencyName}} <span i18n="@@web_cart_666">credit</span>
+        {{ creditInfo?.credit | customCurrency: creditInfo?.currencyName }} <span i18n="@@web_cart_666">credit</span>
       </span>
       <span [hidden]="creditInfo?.currencyName === 'wallacredits'">
         <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>
@@ -76,7 +83,7 @@
       </span>
     </span>
     <span class="price" [hidden]="!usedCredits">
-      {{usedCredits | customCurrency:creditInfo?.currencyName}}
+      {{ usedCredits | customCurrency: creditInfo?.currencyName }}
       <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>
     </span>
   </div>
@@ -86,37 +93,44 @@
       <span i18n="@@web_cart_620">missing</span>
     </div>
     <div class="price">
-      {{totalToPay * creditInfo?.factor | number}}
+      {{ totalToPay * creditInfo?.factor | number }}
       <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
     </div>
   </div>
   <div class="discounted-total" *ngIf="!creditInfo?.credit && cart?.discountedTotal">
-    <s>{{cart?.discountedTotal | customCurrency:creditInfo?.currencyName}}</s>
+    <s>{{ cart?.discountedTotal | customCurrency: creditInfo?.currencyName }}</s>
   </div>
   <div class="total">
     <span class="label" i18n="@@web_cart_621">Total to pay</span>
-    <span class="price">{{totalToPay | customCurrency}}</span>
+    <span class="price">{{ totalToPay | customCurrency }}</span>
   </div>
   <div *ngIf="totalToPay > 0">
-    <tsl-stripe-card-selection *ngIf="hasSavedCard && savedCard" (handleSelectExistingCard)="setSavedCard($event)"
-                              (hasCard)="hasCard($event)"
+    <tsl-stripe-card-selection
+      *ngIf="hasSavedCard && savedCard"
+      (handleSelectExistingCard)="setSavedCard($event)"
+      (hasCard)="hasCard($event)"
     ></tsl-stripe-card-selection>
     <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n="@@web_cart_681">+ Add another credit card</div>
     <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n="@@web_cart_682">Use saved card</div>
-    <tsl-stripe-card-element *ngIf="showCard" [type]="'cart'" [cart]="cart" (stripeCardToken)="checkout($event)"
-                            (stripeCard)="setCardInfo($event)" [loading]="loading"
+    <tsl-stripe-card-element
+      *ngIf="showCard"
+      [type]="'cart'"
+      [cart]="cart"
+      (stripeCardToken)="checkout($event)"
+      (stripeCard)="setCardInfo($event)"
+      [loading]="loading"
     ></tsl-stripe-card-element>
   </div>
-  <tsl-button [hidden]="!savedCard && totalToPay > 0"
-              [disabled]="(!cart?.total || loading)"
-              [loading]="loading"
-              (click)="checkout()"
-              id="qa-checkout-buy"
-              className="btn-primary btn-medium stripe"
+  <tsl-button
+    [hidden]="!savedCard && totalToPay > 0"
+    [disabled]="!cart?.total || loading"
+    [loading]="loading"
+    (click)="checkout()"
+    id="qa-checkout-buy"
+    className="btn-primary btn-medium stripe"
   >
     <div class="secure-payment-button">
       <span i18n="@@web_cart_683">Continue to checkout</span>
     </div>
   </tsl-button>
 </div>
-

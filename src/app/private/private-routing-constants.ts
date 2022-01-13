@@ -5,4 +5,5 @@ export enum PRIVATE_PATHS {
   CATALOG = 'catalog',
   VERIFICATION = 'verification',
   CHAT = 'chat',
+  BUMPS = 'bumps',
 }

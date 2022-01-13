@@ -46,8 +46,8 @@ const mapPendingTransactionToHistoricListSubtitle = (input: DeliveryPendingTrans
 };
 
 const mapPendingTransactionToHistoricElement = (pendingTransaction: DeliveryPendingTransaction): HistoricElement => {
-  const { id, item, moneyAmount } = pendingTransaction;
-  const description = getDescription();
+  const { id, item, moneyAmount, isCurrentUserTheSeller } = pendingTransaction;
+  const description = getDescription(isCurrentUserTheSeller);
   const subDescription = getSubDescription(pendingTransaction);
   const iconUrl = getIconUrl(pendingTransaction);
 
@@ -66,8 +66,8 @@ const mapPendingTransactionToHistoricElement = (pendingTransaction: DeliveryPend
 };
 
 const mapPendingRequestToHistoricElement = (pendingRequest: Request): HistoricElement => {
-  const { id, item, moneyAmount } = pendingRequest;
-  const description = getDescription();
+  const { id, item, moneyAmount, isCurrentUserTheSeller } = pendingRequest;
+  const description = getDescription(isCurrentUserTheSeller);
   const iconUrl = getIconUrl(pendingRequest);
   const subDescription = getSubDescription(pendingRequest);
 
@@ -85,9 +85,13 @@ const mapPendingRequestToHistoricElement = (pendingRequest: Request): HistoricEl
   return historicElement;
 };
 
-const getDescription = (): { text: string; iconUrl: string } => {
+const getDescription = (isCurrentUserTheSeller: boolean): { text: string; iconUrl: string } => {
+  const text = isCurrentUserTheSeller
+    ? $localize`:@@sales_view_seller_shipping_transaction_type_label:Shipping`
+    : $localize`:@@purchases_view_buyer_shipping_transaction_type_label:Shipping`;
+
   return {
-    text: $localize`:@@shipping_transaction_type_label:Via shipping`,
+    text,
     iconUrl: 'assets/icons/box.svg',
   };
 };

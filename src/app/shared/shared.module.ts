@@ -11,7 +11,6 @@ import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
 import { ButtonModule } from './button/button.module';
 import { CardModule } from './card/card.module';
-import { CartComponent } from './catalog/cart/cart.component';
 import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.component';
 import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
@@ -32,7 +31,6 @@ import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
-import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
 import {
   DateCalendarPipe,
   DateUntilDayPipe,
@@ -135,7 +133,6 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     SearchInputComponent,
     SelectComponent,
     RestrictInputNumberDirective,
-    WallacoinComponent,
     EditEmailComponent,
     EmailModalComponent,
     EditPasswordComponent,
@@ -144,7 +141,6 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
-    CartComponent,
     ExitConfirmationModalComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
@@ -191,7 +187,6 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     SearchInputComponent,
     AlreadyFeaturedModalComponent,
     RestrictInputNumberDirective,
-    WallacoinComponent,
     EditEmailComponent,
     EmailModalComponent,
     EditPasswordComponent,
@@ -200,7 +195,6 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
-    CartComponent,
     ExitConfirmationModalComponent,
     DeactivateItemsModalComponent,
     CoverUploadComponent,
