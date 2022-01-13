@@ -85,7 +85,10 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
         {
           elements: [
             {
-              description: { iconUrl: 'assets/icons/box.svg', text: 'Via shipping' },
+              description: {
+                iconUrl: 'assets/icons/box.svg',
+                text: $localize`:@@purchases_view_buyer_shipping_transaction_type_label:Shipping`,
+              },
               iconUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].seller.imageUrl,
               id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].id,
               imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].item.imageUrl,
@@ -142,7 +145,10 @@ export const MOCK_HISTORIC_LIST_FROM_PENDING_TRANSACTIONS: HistoricList = {
               title: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.requests[0].item.title,
             },
             {
-              description: { iconUrl: 'assets/icons/box.svg', text: 'Via shipping' },
+              description: {
+                iconUrl: 'assets/icons/box.svg',
+                text: $localize`:@@purchases_view_buyer_shipping_transaction_type_label:Shipping`,
+              },
               iconUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].seller.imageUrl,
               id: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].id,
               imageUrl: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0].item.imageUrl,
