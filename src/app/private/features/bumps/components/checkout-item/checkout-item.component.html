@@ -1,4 +1,4 @@
-<div class="item" [ngClass]="{ 'provincial-bump': provincialBump }">
+<div class="item d-flex flex-column" [ngClass]="{ 'provincial-bump': provincialBump }">
   <div class="d-flex w-100">
     <tsl-item-avatar
       [item]="itemWithProducts.item"
@@ -29,11 +29,7 @@
           <div class="d-flex border-l">
             <div *ngFor="let type of types" class="price" [ngClass]="type">
               <ng-container *ngIf="itemWithProducts.products[duration][type]">
-                <button
-                  class="btn item__button"
-                  (click)="select(type)"
-                  [ngClass]="{ selected: type === selectedType && duration === selectedDuration }"
-                >
+                <button class="btn item__button" (click)="select(type)" [ngClass]="{ selected: type === selectedType }">
                   {{ type }}
                 </button>
               </ng-container>
@@ -42,5 +38,11 @@
         </div>
       </div>
     </div>
+  </div>
+  <div *ngIf="selectedDuration && selectedType" class="text-right w-100">
+    {{
+      itemWithProducts?.products[selectedDuration][selectedType]?.market_code * creditInfo?.factor
+        | customCurrency: creditInfo?.currencyName
+    }}
   </div>
 </div>
