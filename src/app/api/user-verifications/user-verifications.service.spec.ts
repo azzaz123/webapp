@@ -117,4 +117,18 @@ describe('UserVerificationsService', () => {
       expect(response).toEqual(VERIFICATION_STATUS.SENT);
     });
   });
+
+  describe('when request to change password', () => {
+    let email = 'test@test.com';
+
+    beforeEach(() => {
+      spyOn(userVerificationsHttpService, 'passwordRecovery').and.returnValue(of({}));
+    });
+
+    it('should call the post password recovery', () => {
+      service.changePassword(email).subscribe();
+
+      expect(userVerificationsHttpService.passwordRecovery).toHaveBeenCalledWith(email);
+    });
+  });
 });

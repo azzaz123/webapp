@@ -26,4 +26,8 @@ export class UserVerificationsService {
   public verifySmsCode(smsCode: string): Observable<VERIFICATION_STATUS> {
     return this.userVerificationsHttpService.sendVerifyUserIdentity(smsCode).pipe(map(mapPhoneVerificationApiToVerificationStatus));
   }
+
+  public changePassword(email: string): Observable<void> {
+    return this.userVerificationsHttpService.passwordRecovery(email);
+  }
 }
