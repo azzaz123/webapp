@@ -14,6 +14,7 @@ import { bumpsRoutedComponents, BumpsRoutingModule } from './bumps.routing.modul
 import { BumpTutorialModule } from '@shared/bump-tutorial/bump-tutorial.module';
 import { SharedModule } from '@shared/shared.module';
 import { NavLinksModule } from '@shared/nav-links/nav-links.module';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [CheckoutItemComponent, CartComponent, WallacoinComponent, bumpsRoutedComponents],
@@ -31,6 +32,7 @@ import { NavLinksModule } from '@shared/nav-links/nav-links.module';
     BumpTutorialModule,
     SharedModule,
     NavLinksModule,
+    NgbButtonsModule,
   ],
 })
 export class BumpsModule {}
