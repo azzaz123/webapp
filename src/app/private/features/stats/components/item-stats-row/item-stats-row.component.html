@@ -55,7 +55,7 @@
       <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
       <h2 i18n="@@web_stats_components_item_row_341">Get your listing in shape</h2>
       <p class="note" i18n="@@web_stats_components_item_row_342">Improve the stats of your listing. The more visits you get, the more you sell!</p>
-      <tsl-button className="btn-primary btn-block" *ngIf="price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n="@@web_stats_components_item_row_343">Feature it now from {{price | customCurrency}}</tsl-button>
+      <tsl-button className="btn-primary btn-block" *ngIf="price" [routerLink]="[BUMP_PATH, {itemId: item.id}]" i18n="@@web_stats_components_item_row_343">Feature it now from {{price | customCurrency}}</tsl-button>
       </ng-container>
     </div>
     <div class="graphs-container graph-info reactivate" *ngIf="item.flags.expired">
