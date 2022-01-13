@@ -29,7 +29,7 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
     this.maxLength = value;
     this.handleMaxLength();
   }
-  @Input() disabled: boolean = false;
+  @Input() isDisabled: boolean = false;
   @Input() reseteable: boolean = true;
 
   private extendedOptions: TemplateMultiSelectFormOption[] = [];

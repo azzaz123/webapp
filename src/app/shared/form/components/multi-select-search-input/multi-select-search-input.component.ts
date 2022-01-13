@@ -37,7 +37,7 @@ import { debounceTime, switchMap } from 'rxjs/operators';
 })
 export class MultiselectSearchInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, OnDestroy {
   @Input() categoryId: string;
-  @Input() disabled: boolean;
+  @Input() isDisabled: boolean;
   @Input() max: number;
   @ViewChild('hashtagSuggesterInput', { static: true }) hashtagSuggesterInput: ElementRef;
   @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;

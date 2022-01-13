@@ -16,13 +16,13 @@ import { MultiselectSearchInputModule } from './multi-select-search-input.module
       <h5 *ngIf="max">Max restriction set to: {{ max }}</h5>
 
       Get your hashtags:
-      <tsl-multiselect-search-input
+      <tsl-multi-select-search-input
         formControlName="hashtag"
-        [disabled]="disabled"
+        [isDisabled]="disabled"
         [categoryId]="categoryId"
         [max]="max"
         (changeValidStatus)="changeValidStatus($event)"
-      ></tsl-multiselect-search-input>
+      ></tsl-multi-select-search-input>
     </form>
     <div *ngIf="showErrorNessage">Our hashtags are good with anything except special characters and spaces of course</div>
   `,
