@@ -18,6 +18,7 @@ import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/de
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 
+export const PATH_TO_ACCEPT_SCREEN: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ACCEPT_SCREEN}/`;
 @Component({
   selector: 'tsl-streamline-ongoing',
   templateUrl: './streamline-ongoing.component.html',
@@ -53,7 +54,6 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.streamlineOngoingUIService.getItems(this.isSellsPage);
-    this.checkDeliveryFlagStatus();
   }
 
   ngOnDestroy(): void {
@@ -63,6 +63,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   public onItemClick(historicElement: HistoricElement<DeliveryPendingTransaction | Request>): void {
     const isPendingTransaction: boolean = this.isPendingTransaction(historicElement);
     const isRequestAndSeller: boolean = !isPendingTransaction && historicElement.payload.isCurrentUserTheSeller;
+    this.checkDeliveryFlagStatus();
 
     if (isRequestAndSeller) {
       if (this.isDeliveryFlagEnabled) {
@@ -83,8 +84,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   }
 
   private redirectToAcceptScreen(): void {
-    const pathToAcceptScreen: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ACCEPT_SCREEN}/`;
-    this.router.navigate([pathToAcceptScreen]);
+    this.router.navigate([PATH_TO_ACCEPT_SCREEN]);
   }
 
   private checkDeliveryFlagStatus(): void {
