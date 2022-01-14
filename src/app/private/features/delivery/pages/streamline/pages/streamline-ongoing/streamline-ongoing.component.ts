@@ -9,12 +9,14 @@ import { SharedErrorActionService } from '@shared/error-action';
 import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, take } from 'rxjs/operators';
 import { Request } from '@api/core/model/delivery';
 import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction/delivery-pending-transaction.interface';
 import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-status.enum';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 
 @Component({
   selector: 'tsl-streamline-ongoing',
@@ -26,11 +28,14 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   public readonly loadingIconSrc: string = '/assets/icons/spinner.svg';
   public readonly loadingIconSizePixels: number = 32;
 
+  private isDeliveryFlagEnabled: boolean;
+
   constructor(
     private streamlineOngoingUIService: StreamlineOngoingUIService,
     private router: Router,
     private errorActionService: SharedErrorActionService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private featureflagService: FeatureFlagService
   ) {}
 
   public get historicList$(): Observable<HistoricList> {
@@ -48,6 +53,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.streamlineOngoingUIService.getItems(this.isSellsPage);
+    this.checkDeliveryFlagStatus();
   }
 
   ngOnDestroy(): void {
@@ -59,8 +65,13 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     const isRequestAndSeller: boolean = !isPendingTransaction && historicElement.payload.isCurrentUserTheSeller;
 
     if (isRequestAndSeller) {
-      this.openAcceptScreenAwarenessModal();
-      return;
+      if (this.isDeliveryFlagEnabled) {
+        this.redirectToAcceptScreen();
+        return;
+      } else {
+        this.openAcceptScreenAwarenessModal();
+        return;
+      }
     }
 
     this.redirectToTTS(historicElement.id);
@@ -69,6 +80,20 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   private redirectToTTS(requestId: string): void {
     const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
     this.router.navigate([pathToTransactionTracking]);
+  }
+
+  private redirectToAcceptScreen(): void {
+    const pathToAcceptScreen: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ACCEPT_SCREEN}/`;
+    this.router.navigate([pathToAcceptScreen]);
+  }
+
+  private checkDeliveryFlagStatus(): void {
+    this.featureflagService
+      .getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY)
+      .pipe(take(1))
+      .subscribe((isActive: boolean) => {
+        this.isDeliveryFlagEnabled = isActive;
+      });
   }
 
   private openAcceptScreenAwarenessModal(): void {
