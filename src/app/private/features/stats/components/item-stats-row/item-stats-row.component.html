@@ -3,8 +3,8 @@
     <div class="col-6 col-item-title">
       <a 
       tslItemRoute
-      [itemSlug]= 'item.webSlug'
-      [itemUUID]='item.id' class="image"><tsl-item-avatar [item]="item" size="medium" fallbackLight="true"></tsl-item-avatar></a>
+      [itemSlug]="item.webSlug"
+      [itemUUID]="item.id" class="image"><tsl-item-avatar [item]="item" size="medium" fallbackLight="true"></tsl-item-avatar></a>
       <div class="price">{{item.salePrice | customCurrency}}</div>
       <div class="title">{{item.title}}</div>
     </div>

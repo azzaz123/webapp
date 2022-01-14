@@ -25,8 +25,8 @@
 
     <div class="avatar-container d-none d-sm-block">
       <a   tslItemRoute
-      [itemSlug]= 'currentConversation?.item.itemSlug'
-      [itemUUID]='currentConversation?.item.id' class="avatar">
+      [itemSlug]="currentConversation?.item.itemSlug"
+      [itemUUID]="currentConversation?.item.id" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
                          size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
       </a>
@@ -34,8 +34,8 @@
 
     <div class="avatar-container d-block d-sm-none">
       <a tslItemRoute
-      [itemSlug]= 'currentConversation?.item.itemSlug'
-      [itemUUID]='currentConversation?.item.id' class="avatar">
+      [itemSlug]="currentConversation?.item.itemSlug"
+      [itemUUID]="currentConversation?.item.id" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
       </a>

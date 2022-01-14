@@ -17,8 +17,8 @@
         </ng-container>
         <a  
         tslItemRoute
-        [itemSlug]= 'item.webSlug'
-        [itemUUID]='item.id'
+        [itemSlug]="item.webSlug"
+        [itemUUID]="item.id"
         [title]="item.title"  
         class="ItemCardList__item">
             <tsl-public-item-card *ngIf="cardType === cardTypes.REGULAR" [item]="item"
