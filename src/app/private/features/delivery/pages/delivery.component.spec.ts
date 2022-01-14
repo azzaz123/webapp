@@ -100,7 +100,7 @@ describe('DeliveryComponent', () => {
     });
 
     describe('and matches the tracking url', () => {
-      it('should redirect to the default route', fakeAsync(() => {
+      it('should not select any nav link', fakeAsync(() => {
         tick();
         routerEvents.next(new NavigationEnd(1, TRACKING_URL, ''));
 
