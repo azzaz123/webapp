@@ -19,12 +19,14 @@ import { UserService } from '@core/user/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subject } from 'rxjs';
+import { NO_NAV_LINK_SELECTED, DELIVERY_TRACKING_PATH } from './delivery.component';
 
 describe('DeliveryComponent', () => {
   const FAKE_DATE_NOW = 1627743615459;
   const BUYS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`;
   const SELLS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`;
   const ADDRESS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`;
+  const TRACKING_URL: string = DELIVERY_TRACKING_PATH;
   const routerEvents: Subject<any> = new Subject();
 
   let component: DeliveryComponent;
@@ -94,6 +96,15 @@ describe('DeliveryComponent', () => {
         routerEvents.next(new NavigationEnd(1, ADDRESS_URL, ''));
 
         expect(component.selectedNavLinkId).toStrictEqual(ADDRESS_URL);
+      }));
+    });
+
+    describe('and matches the tracking url', () => {
+      it('should not select any nav link', fakeAsync(() => {
+        tick();
+        routerEvents.next(new NavigationEnd(1, TRACKING_URL, ''));
+
+        expect(component.selectedNavLinkId).toStrictEqual(NO_NAV_LINK_SELECTED);
       }));
     });
 
