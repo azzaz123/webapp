@@ -14,6 +14,10 @@ export class StandaloneService {
 
   constructor(private route: ActivatedRoute, @Inject(USER_AGENT) private userAgent: string) {}
 
+  public get standalone(): boolean {
+    return this._standalone$.getValue();
+  }
+
   public get standalone$(): Observable<boolean> {
     return this._standalone$.asObservable();
   }

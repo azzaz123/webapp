@@ -12,9 +12,8 @@ import { Item } from '@core/item/item';
 import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
+import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -22,12 +21,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
 import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
-import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject } from 'rxjs';
 import { ItemChangeEvent } from '../../core/item-change.interface';
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 import { CatalogItemComponent } from './catalog-item.component';
+import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -45,14 +44,14 @@ describe('CatalogItemComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CatalogItemComponent, CustomCurrencyPipe],
+        declarations: [CatalogItemComponent, CustomCurrencyPipe, ItemRouteDirectiveMock],
         providers: [
           DecimalPipe,
           EventService,
           ToastService,
           ItemRequiredDataService,
-          CatalogItemTrackingEventService,
           ItemDetailRoutePipe,
+          CatalogItemTrackingEventService,
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UserService, useClass: MockedUserService },
           {
@@ -344,17 +343,6 @@ describe('CatalogItemComponent', () => {
 
         expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', facebookEvent);
       });
-    });
-  });
-
-  describe('onClickInfoElement', () => {
-    it('should open the link', () => {
-      spyOn(window, 'open');
-
-      component.openItem();
-
-      expect(window.open).toHaveBeenCalledTimes(1);
-      expect(window.open).toHaveBeenCalledWith(component.link);
     });
   });
 

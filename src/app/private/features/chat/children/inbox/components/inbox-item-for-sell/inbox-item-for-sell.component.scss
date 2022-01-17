@@ -6,6 +6,9 @@
 
 .card {
   color: $blue-grey-1;
+  &:hover {
+    cursor: pointer;
+  }
 
   .item-details-wrap {
     display: flex;

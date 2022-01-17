@@ -99,10 +99,6 @@ export class CatalogItemComponent implements OnInit {
     this.eventService.emit(EventService.ITEM_SOLD, item);
   }
 
-  public openItem() {
-    window.open(this.link);
-  }
-
   private reactivateItem(item: Item): void {
     this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
       this.catalogItemTrackingEventService.trackReactivateItemEvent(item);

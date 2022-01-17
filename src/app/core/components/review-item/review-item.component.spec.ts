@@ -7,7 +7,7 @@ import { Component, DebugElement, Input, NO_ERRORS_SCHEMA } from '@angular/core'
 import { of } from 'rxjs';
 import { CategoryService } from 'app/core/category/category.service';
 import { SanitizedBackgroundDirective } from 'app/shared/sanitized-background/sanitized-background.directive';
-import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
+import { UserProfileRoutePipe } from '@shared/pipes';
 import { ReviewsApiModule, ReviewsApiService } from '@api/reviews';
 import { By } from '@angular/platform-browser';
 import { TranslateButtonComponent } from '@core/components/translate-button/translate-button.component';
@@ -15,6 +15,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Review } from '@private/features/reviews/core/review';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
 
 @Component({
   selector: 'tsl-test',
@@ -41,7 +42,7 @@ describe('ReviewItemComponent', () => {
           UserProfileRoutePipe,
           TestComponent,
           TranslateButtonComponent,
-          ItemDetailRoutePipe,
+          ItemRouteDirectiveMock,
         ],
         schemas: [NO_ERRORS_SCHEMA],
         imports: [ReviewsApiModule, HttpClientTestingModule],
