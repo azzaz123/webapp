@@ -18,7 +18,6 @@ import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/de
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 
-export const PATH_TO_ACCEPT_SCREEN: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ACCEPT_SCREEN}/`;
 @Component({
   selector: 'tsl-streamline-ongoing',
   templateUrl: './streamline-ongoing.component.html',
@@ -28,8 +27,6 @@ export const PATH_TO_ACCEPT_SCREEN: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVE
 export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   public readonly loadingIconSrc: string = '/assets/icons/spinner.svg';
   public readonly loadingIconSizePixels: number = 32;
-
-  private isDeliveryFlagEnabled: boolean;
 
   constructor(
     private streamlineOngoingUIService: StreamlineOngoingUIService,
@@ -63,36 +60,33 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   public onItemClick(historicElement: HistoricElement<DeliveryPendingTransaction | Request>): void {
     const isPendingTransaction: boolean = this.isPendingTransaction(historicElement);
     const isRequestAndSeller: boolean = !isPendingTransaction && historicElement.payload.isCurrentUserTheSeller;
-    this.checkDeliveryFlagStatus();
+    const requestId: string = historicElement.id;
 
     if (isRequestAndSeller) {
-      if (this.isDeliveryFlagEnabled) {
-        this.redirectToAcceptScreen();
-      } else {
-        this.openAcceptScreenAwarenessModal();
-      }
-      return;
+      this.isDeliveryFlagEnabled.subscribe((isEnabled: boolean) => {
+        if (isEnabled) {
+          this.redirectToAcceptScreen(requestId);
+        } else {
+          this.openAcceptScreenAwarenessModal();
+        }
+      });
+    } else {
+      this.redirectToTTS(requestId);
     }
-
-    this.redirectToTTS(historicElement.id);
   }
 
   private redirectToTTS(requestId: string): void {
     const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
-    this.router.navigate([pathToTransactionTracking]);
+    this.redirectToPage(pathToTransactionTracking);
   }
 
-  private redirectToAcceptScreen(): void {
-    this.router.navigate([`${PATH_TO_ACCEPT_SCREEN}`]);
+  private redirectToAcceptScreen(requestId: string): void {
+    const pathToAcceptScreen: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ACCEPT_SCREEN}/${requestId}`;
+    this.redirectToPage(pathToAcceptScreen);
   }
 
-  private checkDeliveryFlagStatus(): void {
-    this.featureflagService
-      .getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY)
-      .pipe(take(1))
-      .subscribe((isActive: boolean) => {
-        this.isDeliveryFlagEnabled = isActive;
-      });
+  private redirectToPage(page: string): void {
+    this.router.navigate([page]);
   }
 
   private openAcceptScreenAwarenessModal(): void {
@@ -106,6 +100,10 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     input: HistoricElement<DeliveryPendingTransaction | Request>
   ): input is HistoricElement<DeliveryPendingTransaction> {
     return (<HistoricElement<DeliveryPendingTransaction>>input).payload.status.name !== DELIVERY_ONGOING_STATUS.REQUEST_CREATED;
+  }
+
+  private get isDeliveryFlagEnabled(): Observable<boolean> {
+    return this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).pipe(take(1));
   }
 
   private get isSellsPage(): boolean {

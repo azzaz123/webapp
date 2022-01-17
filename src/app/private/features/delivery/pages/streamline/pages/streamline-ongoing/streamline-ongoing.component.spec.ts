@@ -30,7 +30,8 @@ import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
 import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { PATH_TO_ACCEPT_SCREEN } from './streamline-ongoing.component';
+
+const PATH_TO_ACCEPT_SCREEN: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
 
 describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;
@@ -154,19 +155,21 @@ describe('StreamlineOngoingComponent', () => {
         });
 
         describe('and the user is the seller', () => {
-          beforeEach(() => {
-            spyOn(modalService, 'open').and.callThrough();
+          describe('and the delivery feature flag is NOT enabled', () => {
+            beforeEach(() => {
+              spyOn(modalService, 'open').and.callThrough();
 
-            component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER);
-          });
+              component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER);
+            });
 
-          it('should stay at the same page', () => {
-            expect(router.navigate).not.toHaveBeenCalled();
-          });
+            it('should stay at the same page', () => {
+              expect(router.navigate).not.toHaveBeenCalled();
+            });
 
-          it('should open the accept screen awareness modal', () => {
-            expect(modalService.open).toHaveBeenCalledTimes(1);
-            expect(modalService.open).toHaveBeenCalledWith(AcceptScreenAwarenessModalComponent);
+            it('should open the accept screen awareness modal', () => {
+              expect(modalService.open).toHaveBeenCalledTimes(1);
+              expect(modalService.open).toHaveBeenCalledWith(AcceptScreenAwarenessModalComponent);
+            });
           });
 
           describe('and the delivery feature flag is enabled', () => {
