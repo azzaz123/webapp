@@ -19,7 +19,6 @@ const routes: Route[] = [
     children: [
       {
         path: `${DELIVERY_PATHS.TRACKING}`,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => TransactionTrackingScreenModule,
       },
       {
@@ -38,17 +37,14 @@ const routes: Route[] = [
       },
       {
         path: DELIVERY_PATHS.BUYS,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineModule,
       },
       {
         path: DELIVERY_PATHS.SELLS,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineModule,
       },
       {
         path: DELIVERY_PATHS.COMPLETED,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineCompletedModule,
       },
       {
