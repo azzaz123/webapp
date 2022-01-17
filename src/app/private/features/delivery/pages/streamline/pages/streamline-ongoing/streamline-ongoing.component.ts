@@ -68,11 +68,10 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     if (isRequestAndSeller) {
       if (this.isDeliveryFlagEnabled) {
         this.redirectToAcceptScreen();
-        return;
       } else {
         this.openAcceptScreenAwarenessModal();
-        return;
       }
+      return;
     }
 
     this.redirectToTTS(historicElement.id);
@@ -84,7 +83,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   }
 
   private redirectToAcceptScreen(): void {
-    this.router.navigate([PATH_TO_ACCEPT_SCREEN]);
+    this.router.navigate([`${PATH_TO_ACCEPT_SCREEN}`]);
   }
 
   private checkDeliveryFlagStatus(): void {
