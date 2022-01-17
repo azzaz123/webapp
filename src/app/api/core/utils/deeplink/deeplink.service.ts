@@ -1,4 +1,3 @@
-import { DOCUMENT } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
@@ -29,6 +28,7 @@ import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { UserService } from '@core/user/user.service';
 
 import { Observable, of, Subscriber } from 'rxjs';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 
 type deeplinkType =
   | 'unknown'
@@ -42,20 +42,16 @@ type deeplinkType =
 
 @Injectable()
 export class DeeplinkService {
-  private window: Window;
-
   constructor(
     @Inject(LOCALE_ID) private locale: APP_LOCALE,
-    @Inject(DOCUMENT) document: Document,
+    @Inject(WINDOW_TOKEN) private window: Window,
     private itemDetailRoutePipe: ItemDetailRoutePipe,
     private itemService: ItemService,
     private userProfileRoutePipe: UserProfileRoutePipe,
     private router: Router,
     private userService: UserService,
     private toastService: ToastService
-  ) {
-    this.window = document.defaultView;
-  }
+  ) {}
 
   public isAvailable(deeplink: string): boolean {
     const availabilities: Record<deeplinkType, boolean> = {
@@ -258,8 +254,9 @@ export class DeeplinkService {
   }
 
   private navigateToUrl(deeplink: string): void {
+    const windowReference: Window = this.window.open();
     this.toWebLink(deeplink).subscribe((webLink: string) => {
-      this.window.open(webLink, '_blank');
+      windowReference.location = webLink;
     });
   }
 
