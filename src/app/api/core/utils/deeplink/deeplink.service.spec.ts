@@ -61,7 +61,9 @@ describe(`DeeplinkService`, () => {
   let itemService: ItemService;
   let userService: UserService;
   const windowOpenMock = {
-    location: '' as any,
+    location: {
+      href: '',
+    },
   };
 
   beforeEach(() => {
@@ -619,14 +621,14 @@ describe(`DeeplinkService`, () => {
     `WHEN navigate to an external url`,
     (deeplink) => {
       afterEach(() => {
-        windowOpenMock.location = '';
+        windowOpenMock.location.href = '';
       });
 
       it(`should open a new tab`, fakeAsync(() => {
         service.navigate(deeplink);
 
         service.toWebLink(deeplink).subscribe((webLink) => {
-          expect(windowOpenMock.location).toEqual(webLink);
+          expect(windowOpenMock.location.href).toEqual(webLink);
         });
 
         flush();
@@ -674,7 +676,7 @@ describe(`DeeplinkService`, () => {
     }));
 
     it(`should not navigate`, fakeAsync(() => {
-      expect(windowOpenMock.location).toEqual('');
+      expect(windowOpenMock.location.href).toEqual('');
       expect(router.navigate).toHaveBeenCalledTimes(0);
 
       flush();
