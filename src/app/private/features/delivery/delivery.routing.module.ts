@@ -55,7 +55,7 @@ const routes: Route[] = [
       // TODO: change to STREAMLINE when opening production		Date: 2021/12/22
       {
         path: '**',
-        redirectTo: DELIVERY_PATHS.ADDRESS,
+        redirectTo: DELIVERY_PATHS.BUYS,
       },
     ],
   },
