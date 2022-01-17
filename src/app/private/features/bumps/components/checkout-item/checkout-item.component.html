@@ -9,7 +9,7 @@
       <div class="d-flex">
         <div class="pr-5">
           <div class="item__subtitle mb-1">Duration</div>
-          <div class="d-flex">
+          <div class="d-flex flex-wrap">
             <ng-container *ngFor="let duration of durations">
               <button class="btn item__button" (click)="selectDuration(duration)" [ngClass]="{ selected: selectedDuration === duration }">
                 {{ duration / 24 }} days
@@ -19,7 +19,7 @@
         </div>
         <div class="pl-5 border-l">
           <div class="item__subtitle mb-1">Visibility Area</div>
-          <div class="d-flex">
+          <div class="d-flex flex-wrap">
             <ng-container *ngFor="let type of types">
               <ng-container *ngIf="selectedDuration && itemWithProducts?.products[selectedDuration][type]">
                 <button class="btn item__button" (click)="select(type)" [ngClass]="{ selected: type === selectedType }">
