@@ -4,13 +4,13 @@
 <div class="HashtagField__search mr-3" >
 	<div class="HashtagField__search__box p-2" > 
 		<tsl-cancel-bubble *ngFor="let bubble of value" [text]="bubble" class="mr-1 mb-1" (clear)="removeValue(bubble)"></tsl-cancel-bubble>
-		<tsl-multi-select-search-input [formControlName]="HASHTAG_TYPE.SEARCHED" [categoryId]="categoryId" [attr.disabled]="maxReached$ | async" [isDisabled]="maxReached$ | async" (changeValidStatus)="searchedValidStatusChange($event)"></tsl-multi-select-search-input>
+		<tsl-multi-select-search-input [formControlName]="HASHTAG_TYPE.SEARCHED" [categoryId]="categoryId" [isDisabled]="maxReached$ | async" (changeValidStatus)="searchedValidStatusChange($event)"></tsl-multi-select-search-input>
 	</div>
 	<span *ngIf="showSearchedErrorMessage" class="HashtagField__search__error mt-2 d-block" i18n="@@hashtags_view_empty_state_unaccepted_character_description">Our hashtags are good with anything except special characters and spaces of course.</span>
 
 </div>
 	<div class="HashtagField__suggested">
 		<span class="HashtagField__suggested__title" i18n="@@hashtags_view_suggested_tap_bar_title">Suggested</span>
-		<tsl-multi-select-form class="HashtagField__suggested__multiselect" scroll (scrolledToBottom)="suggestionsScrolled()" [formControlName]="HASHTAG_TYPE.SUGGESTED" [reseteable]="false" [options]="suggestedOptions$ | async" [attr.disabled]="maxReached$ | async"></tsl-multi-select-form>
+		<tsl-multi-select-form class="HashtagField__suggested__multiselect" scroll (scrolledToBottom)="suggestionsScrolled()" [formControlName]="HASHTAG_TYPE.SUGGESTED" [reseteable]="false" [options]="suggestedOptions$ | async" [isDisabled]="maxReached$ | async"></tsl-multi-select-form>
 	</div>
 </div>
