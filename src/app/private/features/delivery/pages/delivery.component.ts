@@ -11,6 +11,8 @@ import { DELIVERY_PATHS } from '../delivery-routing-constants';
 import { TRXAwarenessModalComponent } from '../modals/trx-awareness-modal/trx-awareness-modal.component';
 
 export const LOCAL_STORAGE_TRX_AWARENESS = 'trx-awareness';
+export const DELIVERY_TRACKING_PATH: string = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}`;
+export const NO_NAV_LINK_SELECTED: string = 'nonSelected';
 @Component({
   selector: 'tsl-delivery',
   templateUrl: './delivery.component.html',
@@ -100,6 +102,12 @@ export class DeliveryComponent implements OnInit, OnDestroy {
   }
 
   private selectNavLink(routeURL: string): void {
-    this.selectedNavLinkId = this.navLinks.find((link) => routeURL.startsWith(link.id))?.id;
+    const isTrackingPage: boolean = routeURL.startsWith(DELIVERY_TRACKING_PATH);
+
+    if (isTrackingPage) {
+      this.selectedNavLinkId = NO_NAV_LINK_SELECTED;
+    } else {
+      this.selectedNavLinkId = this.navLinks.find((link) => routeURL.startsWith(link.id))?.id;
+    }
   }
 }
