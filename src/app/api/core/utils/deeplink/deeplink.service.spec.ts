@@ -14,6 +14,7 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { UserService } from '@core/user/user.service';
 
 import { of, throwError } from 'rxjs';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 
 const fakeBarcode = 'abcZYW123908';
 const fakeInstructionsType = 'packaging';
@@ -55,21 +56,24 @@ const zendeskCreateDisputeFormDeeplink: string = `${zendeskCreateDisputeFormBase
 describe(`DeeplinkService`, () => {
   let router: Router;
   let service: DeeplinkService;
-  let window: Window;
+  let windowMock: Window;
   let toastService: ToastService;
   let itemService: ItemService;
   let userService: UserService;
+  const windowOpenMock = {
+    location: {
+      href: '',
+    },
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: LOCALE_ID, useValue: `es` },
         {
-          provide: Document,
+          provide: WINDOW_TOKEN,
           useValue: {
-            defaultView: {
-              open() {},
-            },
+            open: () => windowOpenMock,
           },
         },
         { provide: SITE_URL, useValue: siteUrlMock },
@@ -116,10 +120,9 @@ describe(`DeeplinkService`, () => {
     describe.each([allLanguages])(`WHEN mapping deeplink to customer help url`, (locale) => {
       beforeEach(() => {
         TestBed.overrideProvider(LOCALE_ID, { useValue: locale });
-        document = TestBed.inject(Document);
         router = TestBed.inject(Router);
         service = TestBed.inject(DeeplinkService);
-        window = document.defaultView;
+        windowMock = TestBed.inject(WINDOW_TOKEN);
       });
 
       it(`should return the url according with the specified language`, fakeAsync(() => {
@@ -617,16 +620,15 @@ describe(`DeeplinkService`, () => {
   describe.each([[itemDeeplink], [printableLabelDeeplink], [zendeskArticleDeeplink], [zendeskCreateDisputeFormDeeplink]])(
     `WHEN navigate to an external url`,
     (deeplink) => {
-      beforeEach(() => {
-        spyOn(window, `open`);
+      afterEach(() => {
+        windowOpenMock.location.href = '';
       });
 
       it(`should open a new tab`, fakeAsync(() => {
         service.navigate(deeplink);
 
         service.toWebLink(deeplink).subscribe((webLink) => {
-          expect(window.open).toHaveBeenCalledTimes(1);
-          expect(window.open).toHaveBeenCalledWith(webLink, `_blank`);
+          expect(windowOpenMock.location.href).toEqual(webLink);
         });
 
         flush();
@@ -656,7 +658,6 @@ describe(`DeeplinkService`, () => {
 
   describe.each([['some_kind_of_strange_deeplink'], ['some-unknown-url']])(`WHEN navigate to an unavailable deeplink`, (deeplink) => {
     beforeEach(() => {
-      spyOn(window, `open`);
       spyOn(router, 'navigate');
       spyOn(toastService, 'show');
 
@@ -675,7 +676,7 @@ describe(`DeeplinkService`, () => {
     }));
 
     it(`should not navigate`, fakeAsync(() => {
-      expect(window.open).toHaveBeenCalledTimes(0);
+      expect(windowOpenMock.location.href).toEqual('');
       expect(router.navigate).toHaveBeenCalledTimes(0);
 
       flush();

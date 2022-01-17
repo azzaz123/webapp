@@ -121,6 +121,7 @@ $feature-button-width: 170px;
     color: $blue-grey-1;
     &:hover {
       text-decoration: none;
+      cursor: pointer;
     }
   }
   .image {

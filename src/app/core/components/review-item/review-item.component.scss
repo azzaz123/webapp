@@ -6,6 +6,9 @@
   margin-bottom: $spacing-s;
   padding: $spacing-ml;
   min-height: 164px;
+  a:hover {
+    cursor: pointer;
+  }
   .info {
     padding: 0;
     width: calc(100% - 80px - #{$spacing-ml});
@@ -23,6 +26,10 @@
     text-overflow: ellipsis;
     a {
       color: $blue-grey-1;
+    }
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
     }
   }
   .review-rating {
