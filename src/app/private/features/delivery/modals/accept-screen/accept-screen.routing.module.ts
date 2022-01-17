@@ -7,6 +7,10 @@ const routes: Route[] = [
     path: '',
     component: AcceptScreenComponent,
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
 
 @NgModule({
