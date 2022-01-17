@@ -47,7 +47,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.streamlineOngoingUIService.getItems(this.isSellerPath);
+    this.streamlineOngoingUIService.getItems(this.isSellsPage);
   }
 
   ngOnDestroy(): void {
@@ -84,7 +84,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     return (<HistoricElement<DeliveryPendingTransaction>>input).payload.status.name !== DELIVERY_ONGOING_STATUS.REQUEST_CREATED;
   }
 
-  private get isSellerPath(): boolean {
+  private get isSellsPage(): boolean {
     return this.router.url.includes(`/${DELIVERY_PATHS.SELLS}`);
   }
 }

@@ -8,8 +8,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { DeliveryComponent, LOCAL_STORAGE_TRX_AWARENESS } from '@private/features/delivery/pages/delivery.component';
 import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NavLink } from '@shared/nav-links/nav-link.interface';
 import { NavLinksComponent } from '@shared/nav-links/nav-links.component';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -18,13 +16,15 @@ import { UserService } from '@core/user/user.service';
 
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
+import { NO_NAV_LINK_SELECTED, DELIVERY_TRACKING_PATH } from './delivery.component';
 
 describe('DeliveryComponent', () => {
   const FAKE_DATE_NOW = 1627743615459;
   const BUYS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`;
   const SELLS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`;
   const ADDRESS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`;
+  const TRACKING_URL: string = DELIVERY_TRACKING_PATH;
   const routerEvents: Subject<any> = new Subject();
 
   let component: DeliveryComponent;
@@ -32,7 +32,6 @@ describe('DeliveryComponent', () => {
   let router: Router;
   let userService: UserService;
   let modalService: NgbModal;
-  let featureflagService: FeatureFlagService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,10 +45,6 @@ describe('DeliveryComponent', () => {
             getLocalStore() {},
             saveLocalStore() {},
           },
-        },
-        {
-          provide: FeatureFlagService,
-          useClass: FeatureFlagServiceMock,
         },
         {
           provide: Router,
@@ -72,7 +67,6 @@ describe('DeliveryComponent', () => {
     router = TestBed.inject(Router);
     userService = TestBed.inject(UserService);
     modalService = TestBed.inject(NgbModal);
-    featureflagService = TestBed.inject(FeatureFlagService);
 
     spyOn(Date, 'now').and.returnValue(FAKE_DATE_NOW);
     spyOn(userService, 'saveLocalStore');
@@ -97,6 +91,15 @@ describe('DeliveryComponent', () => {
       }));
     });
 
+    describe('and matches the tracking url', () => {
+      it('should not select any nav link', fakeAsync(() => {
+        tick();
+        routerEvents.next(new NavigationEnd(1, TRACKING_URL, ''));
+
+        expect(component.selectedNavLinkId).toStrictEqual(NO_NAV_LINK_SELECTED);
+      }));
+    });
+
     describe('and NOT matchs the default url', () => {
       it('should redirect to the new url provided', fakeAsync(() => {
         tick();
@@ -107,15 +110,14 @@ describe('DeliveryComponent', () => {
     });
   });
 
-  describe('when we have the delivery flag enabled...', () => {
-    beforeEach(() => {
-      jest.spyOn(router, 'url', 'get').mockReturnValue(BUYS_URL);
-      spyOn(featureflagService, 'getLocalFlag').and.returnValue(of(true));
-
+  describe('when the user enters the page', () => {
+    beforeEach(fakeAsync(() => {
+      routerEvents.next(new NavigationEnd(1, BUYS_URL, ''));
+      tick();
       fixture.detectChanges();
-    });
+    }));
 
-    it('should show the delivery address tab and the streamline tab', () => {
+    it('should show all nav links', () => {
       const navLinks = fixture.debugElement.query(By.directive(NavLinksComponent)).componentInstance.navLinks;
       const navLinksWithStreamline: NavLink[] = [
         {
@@ -141,31 +143,6 @@ describe('DeliveryComponent', () => {
 
     it('should select the nav link option that matchs the url', () => {
       expect(component.selectedNavLinkId).toStrictEqual(BUYS_URL);
-    });
-  });
-
-  describe('when the delivery flag is NOT enabled...', () => {
-    beforeEach(() => {
-      jest.spyOn(router, 'url', 'get').mockReturnValue(ADDRESS_URL);
-      spyOn(featureflagService, 'getLocalFlag').and.returnValue(of(false));
-
-      fixture.detectChanges();
-    });
-
-    it('should only show the delivery address tab', () => {
-      const navLinks = fixture.debugElement.query(By.directive(NavLinksComponent)).componentInstance.navLinks;
-      const navLinksWithoutMyShippings: NavLink[] = [
-        {
-          id: ADDRESS_URL,
-          display: $localize`:@@web_delivery_shipping_address:Address`,
-        },
-      ];
-
-      expect(navLinks).toStrictEqual(navLinksWithoutMyShippings);
-    });
-
-    it('should select the nav link option that matchs the url', () => {
-      expect(component.selectedNavLinkId).toStrictEqual(ADDRESS_URL);
     });
   });
 
