@@ -6,4 +6,5 @@ export enum PRIVATE_PATHS {
   VERIFICATION = 'verification',
   CHAT = 'chat',
   BUMPS = 'bumps',
+  ACCEPT_SCREEN = 'accept',
 }

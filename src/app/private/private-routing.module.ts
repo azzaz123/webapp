@@ -1,3 +1,4 @@
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
@@ -13,6 +14,10 @@ const routes: Routes = [
     path: '',
     component: PrivateComponent,
     children: [
+      {
+        path: PRIVATE_PATHS.ACCEPT_SCREEN,
+        loadChildren: () => import('@private/features/accept-screen/accept-screen.module').then((m) => m.AcceptScreenModule),
+      },
       {
         path: 'pro',
         children: [

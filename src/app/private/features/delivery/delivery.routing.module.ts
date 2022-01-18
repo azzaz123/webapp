@@ -22,12 +22,6 @@ const routes: Route[] = [
         loadChildren: () => TransactionTrackingScreenModule,
       },
       {
-        path: DELIVERY_PATHS.ACCEPT_SCREEN,
-        canLoad: [DeliveryDevelopmentGuard],
-        loadChildren: () =>
-          import('@private/features/delivery/modals/accept-screen/accept-screen.module').then((m) => m.AcceptScreenModule),
-      },
-      {
         path: DELIVERY_PATHS.ADDRESS,
         loadChildren: () => DeliveryAddressModule,
       },
