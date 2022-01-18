@@ -7,9 +7,7 @@ import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Observable, Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
-import { SITE_URL } from '@configs/site-url.config';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
-import { StandaloneService } from '@core/standalone/services/standalone.service';
 
 export const INPUT_TYPE = {
   TEXT: 'text',
@@ -34,9 +32,7 @@ export const ELEMENT_TYPE = {
 export class TabbarComponent implements OnInit {
   public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public readonly SEARCH_PATH = `/${PUBLIC_PATHS.SEARCH}`;
-  public readonly standaloneMode$: Observable<boolean> = this.standaloneService.standalone$;
   public user: User;
-  public homeUrl: string;
   public hidden = false;
   public hasUnreadMessages = false;
   public isLogged: boolean;
@@ -48,13 +44,10 @@ export class TabbarComponent implements OnInit {
     private tabBarService: TabbarService,
     private unreadChatMessagesService: UnreadChatMessagesService,
     private eventService: EventService,
-    private searchNavigatorService: SearchNavigatorService,
-    private standaloneService: StandaloneService,
-    @Inject(SITE_URL) private siteUrl: string
+    private searchNavigatorService: SearchNavigatorService
   ) {}
 
   ngOnInit() {
-    this.homeUrl = this.siteUrl;
     this.isLogged = this.userService.isLogged;
     this.user = this.userService.user;
     this.componentSubscriptions.push(this.tabBarService.tabBarHidden$.subscribe((hidden) => (this.hidden = hidden)));
