@@ -10,9 +10,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { ELEMENT_TYPE, INPUT_TYPE, TabbarComponent } from './tabbar.component';
 import { TabbarService } from '../core/services/tabbar.service';
-import { SITE_URL } from '@configs/site-url.config';
-import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { StandaloneService } from '@core/standalone/services/standalone.service';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
@@ -23,7 +20,6 @@ describe('TabbarComponent', () => {
   let el: HTMLElement;
   let fixture: ComponentFixture<TabbarComponent>;
   let eventService: EventService;
-  let standaloneService: StandaloneService;
   let searchNavigatorService: SearchNavigatorService;
 
   const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -51,10 +47,6 @@ describe('TabbarComponent', () => {
             useClass: MockUnreadChatMessagesService,
           },
           {
-            provide: SITE_URL,
-            useValue: MOCK_SITE_URL,
-          },
-          {
             provide: Router,
             useValue: {
               navigate() {},
@@ -64,12 +56,6 @@ describe('TabbarComponent', () => {
             provide: SearchNavigatorService,
             useValue: {
               navigateWithLocationParams: () => {},
-            },
-          },
-          {
-            provide: StandaloneService,
-            useValue: {
-              standalone$: standaloneSubject.asObservable(),
             },
           },
           EventService,
@@ -87,7 +73,6 @@ describe('TabbarComponent', () => {
     el = de.nativeElement;
     fixture.detectChanges();
     eventService = TestBed.inject(EventService);
-    standaloneService = TestBed.inject(StandaloneService);
     searchNavigatorService = TestBed.inject(SearchNavigatorService);
   });
 
@@ -363,43 +348,14 @@ describe('TabbarComponent', () => {
     });
   });
 
-  describe('Home tab', () => {
-    describe('when the standalone mode is enabled', () => {
-      beforeEach(() => {
-        standaloneSubject.next(true);
-        fixture.detectChanges();
-      });
+  describe('when the user clicks on the home tab', () => {
+    it('should open the Search page', () => {
+      spyOn(searchNavigatorService, 'navigateWithLocationParams');
+      const homeTabEl = fixture.debugElement.query(By.css(homeTabClass)).nativeElement;
 
-      describe('and the user click on the home tab', () => {
-        it('should open the Search page', () => {
-          spyOn(searchNavigatorService, 'navigateWithLocationParams');
-          const homeTabEl = fixture.debugElement.query(By.css(homeTabClass)).nativeElement;
+      homeTabEl.click();
 
-          homeTabEl.click();
-
-          expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith({});
-        });
-      });
-    });
-
-    describe('when the standalone mode is disabled', () => {
-      beforeEach(() => {
-        standaloneSubject.next(false);
-        fixture.detectChanges();
-      });
-
-      describe('and the user click on the home tab', () => {
-        it('should NOT open the Search page', () => {
-          spyOn(component, 'navigateToSearchPage');
-          const homeTabDebugEl = fixture.debugElement.query(By.css(homeTabClass));
-          const homeTabEl = homeTabDebugEl.nativeElement;
-
-          homeTabEl.click();
-
-          expect(component.navigateToSearchPage).not.toHaveBeenCalled();
-          expect(homeTabDebugEl.attributes.href).toEqual(component.homeUrl);
-        });
-      });
+      expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith({});
     });
   });
 });

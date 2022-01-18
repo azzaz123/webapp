@@ -43,8 +43,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private modalService: NgbModal,
     private searchNavigator: SearchNavigatorService,
-    private topbarTrackingEventsService: TopbarTrackingEventsService,
-    @Inject(SITE_URL) private siteUrl: string
+    private topbarTrackingEventsService: TopbarTrackingEventsService
   ) {}
 
   ngOnInit() {

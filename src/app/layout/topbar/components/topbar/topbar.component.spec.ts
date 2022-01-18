@@ -14,14 +14,13 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { TopbarComponent } from './topbar.component';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
-import { Router } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
@@ -33,10 +32,8 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
 import { SuggesterComponentStub } from '@fixtures/shared/components/suggester.component.stub';
-import { SITE_URL } from '@configs/site-url.config';
-import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
-import { StandaloneService } from '@core/standalone/services/standalone.service';
+import { HomeRouteDirectiveMock } from '@fixtures/home-route.fixtures.spec';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -72,13 +69,9 @@ describe('TopbarComponent', () => {
   let paymentService: PaymentService;
   let cookieService: CookieService;
   let modalService: NgbModal;
-  let featureFlagService: FeatureFlagServiceMock;
-  let router: Router;
   let navigator: SearchNavigatorService;
   let topbarTrackingEventsService: TopbarTrackingEventsService;
-  let standaloneService: StandaloneService;
 
-  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
   const logoIconSelector: string = '.topbar-logo-icon';
 
   beforeEach(
@@ -159,18 +152,8 @@ describe('TopbarComponent', () => {
               navigate: () => {},
             },
           },
-          {
-            provide: StandaloneService,
-            useValue: {
-              standalone$: standaloneSubject.asObservable(),
-            },
-          },
-          {
-            provide: SITE_URL,
-            useValue: MOCK_SITE_URL,
-          },
         ],
-        declarations: [SuggesterComponentStub, TopbarComponent, CustomCurrencyPipe],
+        declarations: [SuggesterComponentStub, TopbarComponent, CustomCurrencyPipe, HomeRouteDirectiveMock],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
       userService = TestBed.inject(UserService);
@@ -187,11 +170,8 @@ describe('TopbarComponent', () => {
     paymentService = TestBed.inject(PaymentService);
     cookieService = TestBed.inject(CookieService);
     modalService = TestBed.inject(NgbModal);
-    featureFlagService = TestBed.inject(FeatureFlagService);
     navigator = TestBed.inject(SearchNavigatorService);
-    router = TestBed.inject(Router);
     topbarTrackingEventsService = TestBed.inject(TopbarTrackingEventsService);
-    standaloneService = TestBed.inject(StandaloneService);
   });
 
   it('should be created', () => {
@@ -415,27 +395,6 @@ describe('TopbarComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(WallacoinsDisabledModalComponent, {
         backdrop: 'static',
         windowClass: 'modal-standard',
-      });
-    });
-  });
-
-  describe('Logo icon', () => {
-    describe('when the app url is for the standalone feature', () => {
-      beforeEach(() => standaloneSubject.next(true));
-      it('should NOT show the wallapop logo icon', () => {
-        fixture.detectChanges();
-        const logoIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector(logoIconSelector);
-
-        expect(logoIcon).toBeFalsy();
-      });
-    });
-    describe('when the app url has NOT the standalone feature', () => {
-      beforeEach(() => standaloneSubject.next(false));
-      it('should show the wallapop logo icon', () => {
-        fixture.detectChanges();
-        const logoIcon: HTMLElement = fixture.debugElement.nativeElement.querySelector(logoIconSelector);
-
-        expect(logoIcon).toBeTruthy();
       });
     });
   });
