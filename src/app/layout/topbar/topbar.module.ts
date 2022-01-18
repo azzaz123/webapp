@@ -9,9 +9,10 @@ import { SharedModule } from '@shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { TopbarTrackingEventsService } from './core/services/topbar-tracking-events/topbar-tracking-events.service';
+import { HomeRouteModule } from '@shared/home-route/home-route/home-route.module';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, FormsModule, RouterModule, NgbTypeaheadModule, CustomCurrencyModule],
+  imports: [CommonModule, SharedModule, FormsModule, RouterModule, NgbTypeaheadModule, CustomCurrencyModule, HomeRouteModule],
   exports: [TopbarComponent, SuggesterComponent],
   declarations: [TopbarComponent, SuggesterComponent],
   providers: [SuggesterService, TopbarTrackingEventsService],

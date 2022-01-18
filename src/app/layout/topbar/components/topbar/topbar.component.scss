@@ -298,6 +298,7 @@
 }
 
 .topbar-logo-icon {
+  cursor: pointer;
   @include media-breakpoint-down(md) {
     padding-left: $spacing-m;
   }
