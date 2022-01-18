@@ -28,17 +28,21 @@ export class SelectFilterComponent extends AbstractSelectFilter<SelectFilterPara
   @ViewChild('filterTemplateComponent', { read: FilterTemplateComponent })
   public filterTemplate: FilterTemplateComponent;
 
+  public formGroup = new FormGroup({
+    select: new FormControl(),
+  });
+
   private options: FilterOption[] = [];
   private subscriptions = new Subscription();
   private labelSubject = new BehaviorSubject(undefined);
   private placeholderIconSubject = new BehaviorSubject(undefined);
   private optionsSubject: BehaviorSubject<FilterOption[]> = new BehaviorSubject([]);
 
-  public formGroup = new FormGroup({
-    select: new FormControl(),
-  });
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public options$ = this.optionsSubject.asObservable();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public label$ = this.labelSubject.asObservable();
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public placeholderIcon$ = this.labelSubject.asObservable();
 
   public constructor(private optionService: FilterOptionService) {

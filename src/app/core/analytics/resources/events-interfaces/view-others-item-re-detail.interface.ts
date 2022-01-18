@@ -61,4 +61,8 @@ export interface ViewOthersItemREDetail {
    * Country of the seller (e.g.: ES, IT, etc.) using 2-digit ISO Code
    */
   sellerCountry?: string;
+  /**
+   * Name of the experiment or A/B testing applied to the user who has viewed the item detail. The default value would be 'baseline'
+   */
+  experiment?: string;
 }

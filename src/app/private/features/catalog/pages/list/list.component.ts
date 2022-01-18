@@ -36,8 +36,10 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.component';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
@@ -52,7 +54,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { Subscription } from 'rxjs';
 import { take, takeWhile } from 'rxjs/operators';
-import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
 import { STATUS } from '../../components/selected-items/selected-product.interface';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -552,7 +553,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
           this.bumpSuggestionModalRef = null;
           if (result?.redirect) {
-            this.router.navigate(['catalog/checkout', { itemId }]);
+            this.router.navigate([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId }]);
           }
         });
       } else {

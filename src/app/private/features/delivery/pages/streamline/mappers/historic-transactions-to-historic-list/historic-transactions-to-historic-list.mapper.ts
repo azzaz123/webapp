@@ -49,14 +49,14 @@ const getMonthFromTransaction = (input: HistoricTransaction): string => {
   return capitalizedFormattedMonth;
 };
 
-const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricElement => {
-  const { id, item, moneyAmount } = input;
+const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricElement<HistoricTransaction> => {
+  const { id, item, moneyAmount, requestId } = input;
   const { imageUrl, title } = item;
   const iconUrl = getIconUrlFromHistoricTransaction(input);
   const description = getDescriptionFromHistoricTransaction(input);
   const subDescription = getSubDescriptionFromHistoricTransaction(input);
 
-  const historicElement: HistoricElement = {
+  const historicElement: HistoricElement<HistoricTransaction> = {
     id,
     imageUrl,
     iconUrl,
@@ -64,6 +64,7 @@ const mapTransactionToHistoricElement = (input: HistoricTransaction): HistoricEl
     description,
     subDescription,
     moneyAmount,
+    payload: input,
   };
 
   return historicElement;
@@ -75,8 +76,13 @@ const getIconUrlFromHistoricTransaction = (input: HistoricTransaction): string =
 };
 
 const getDescriptionFromHistoricTransaction = (input: HistoricTransaction): { text: string; iconUrl: string } => {
+  const { isCurrentUserTheSeller } = input;
+  const text = isCurrentUserTheSeller
+    ? $localize`:@@sales_view_seller_shipping_transaction_type_label:Shipping`
+    : $localize`:@@purchases_view_buyer_shipping_transaction_type_label:Shipping`;
+
   return {
-    text: 'Via shipping',
+    text,
     iconUrl: 'assets/icons/box.svg',
   };
 };

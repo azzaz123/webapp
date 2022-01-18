@@ -11,13 +11,11 @@ import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
 import { ButtonModule } from './button/button.module';
 import { CardModule } from './card/card.module';
-import { CartComponent } from './catalog/cart/cart.component';
 import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.component';
 import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
-import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { DisableControlDirective } from './forms/disable-control.directive';
 import { GeolocationModule } from './geolocation/geolocation.module';
@@ -25,17 +23,14 @@ import { ItemAvatarModule } from './item-avatar/item-avatar.module';
 import { KeywordSuggesterComponent } from './keyword-suggester/keyword-suggester.component';
 import { BumpSuggestionModalComponent } from './modals/bump-suggestion-modal/bump-suggestion-modal.component';
 import { ChangeCardModalComponent } from './modals/change-card-modal/change-card-modal.component';
-import { ConfirmCardModalComponent } from './modals/confirm-card-modal/confirm-card-modal.component';
 import { FullScreenModalComponent } from './modals/full-screen-menu/full-screen-modal.component';
 import { NewCardModalComponent } from './modals/new-card-modal/new-card-modal.component';
-import { NoCardModalComponent } from './modals/no-card-modal/no-card-modal.component';
 import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { WallacoinsDisabledModalComponent } from './modals/wallacoins-disabled-modal/wallacoins-disabled-modal.component';
 import { StripeCardSelectionComponent } from './payments/stripe-card-selection/stripe-card-selection.component';
 import { StripeCardElementComponent } from './payments/stripe/stripe-card-element.component';
-import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
 import {
   DateCalendarPipe,
   DateUntilDayPipe,
@@ -70,16 +65,17 @@ import { UploaderModule } from './uploader/uploader.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserCoverModule } from './user-cover/user-cover.module';
 import { DateCountDownModule } from './date-countdown/date-countdown.module';
-import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 import { ProfileFormModule } from './profile/profile-form/profile-form.module';
 import { HeaderModule } from './header/header.module';
 import { VisibleDirectiveModule } from './directives/visible/visible.directive.module';
-import { LocationSelectorModal } from './modals/location-selector-modal/location-selector-modal.component';
+import { LocationSelectorModalComponent } from './modals/location-selector-modal/location-selector-modal.component';
 import { PaymentsCardInfoModule } from './payments-card-info/payments-card-info.module';
 import { InfiniteScrollModule } from './infinite-scroll/infinite-scroll.module';
 import { InfiniteScrollDirective } from './infinite-scroll/infinite-scroll.directive';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal.module';
+import { ItemRouteDirective } from './item-route/item-route.directive';
+import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
 
 @NgModule({
   imports: [
@@ -137,7 +133,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     SearchInputComponent,
     SelectComponent,
     RestrictInputNumberDirective,
-    WallacoinComponent,
     EditEmailComponent,
     EmailModalComponent,
     EditPasswordComponent,
@@ -146,15 +141,12 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
-    CartComponent,
     ExitConfirmationModalComponent,
     CoverUploadComponent,
     KeywordSuggesterComponent,
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
-    NoCardModalComponent,
-    ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
     LinkTransformPipe,
@@ -172,12 +164,12 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     WallacoinsDisabledModalComponent,
     ButtonModule,
     DateCountDownModule,
-    DeliveryDevelopmentDirective,
     ProfileFormModule,
     InfiniteScrollDirective,
     VisibleDirectiveModule,
     PaymentsCardInfoModule,
     ConfirmationModalModule,
+    ItemRouteDirective,
   ],
   declarations: [
     RestrictInputDirective,
@@ -191,12 +183,10 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     UnarchiveButtonComponent,
     ReviewModalComponent,
     ReviewModalComponent,
-    CheckboxComponent,
     SelectComponent,
     SearchInputComponent,
     AlreadyFeaturedModalComponent,
     RestrictInputNumberDirective,
-    WallacoinComponent,
     EditEmailComponent,
     EmailModalComponent,
     EditPasswordComponent,
@@ -205,7 +195,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
-    CartComponent,
     ExitConfirmationModalComponent,
     DeactivateItemsModalComponent,
     CoverUploadComponent,
@@ -213,8 +202,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     StripeCardElementComponent,
     StripeCardsComponent,
     NewCardModalComponent,
-    NoCardModalComponent,
-    ConfirmCardModalComponent,
     ChangeCardModalComponent,
     StripeCardSelectionComponent,
     LinkTransformPipe,
@@ -227,8 +214,9 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     RouterLinkDirectiveStub,
     BumpSuggestionModalComponent,
     WallacoinsDisabledModalComponent,
+    ItemRouteDirective,
     DeliveryDevelopmentDirective,
-    LocationSelectorModal,
+    LocationSelectorModalComponent,
   ],
   providers: [DecimalPipe, LinkTransformPipe, ListingLimitService],
   entryComponents: [
@@ -240,8 +228,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     ExitConfirmationModalComponent,
     DeactivateItemsModalComponent,
     NewCardModalComponent,
-    NoCardModalComponent,
-    ConfirmCardModalComponent,
     ChangeCardModalComponent,
     FullScreenModalComponent,
     WallacoinsDisabledModalComponent,

@@ -1,0 +1,18 @@
+<input
+#hashtagSuggesterInput
+type="text" 
+class="MultiselectSearchInput border-0"
+*ngIf="!isDisabled"
+(keyup)="keyUp($event)"
+[placeholder]="hashtagPlaceholder" 
+(focus)="focus()"
+(blur)="blur()"
+[(ngModel)]="searchValue"
+[disabled]="isDisabled"
+/>
+
+<div [hidden]="!((options$ | async)?.length > 0)" class="position-relative">
+    <div  class="MultiselectSearchInput__hashtagList position-absolute" #hashtagSuggesterOptions>
+        <tsl-multi-select-form [(ngModel)]="suggestions" (change)="handleChange()" [reseteable]="false" [options]="options$ | async" [max]="value?.length === suggestions?.length ? max : max - value?.length"></tsl-multi-select-form>
+    </div>
+</div>

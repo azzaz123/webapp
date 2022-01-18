@@ -2,13 +2,9 @@
 @import '~style/common';
 
 $spacing-10: math.div(10px, 16px) * $spacer;
-$spacing-14: math.div(14px, 16px) * $spacer;
 $spacing-23: math.div(23px, 16px) * $spacer;
 
 .TransactionTrackingInstructions {
-  &__content {
-    padding: $spacing-14 $spacing-ml;
-  }
   &__title {
     font-weight: $font-weight-chunky;
     margin-top: $spacing-xl;
@@ -44,6 +40,6 @@ $spacing-23: math.div(23px, 16px) * $spacer;
     margin-top: $spacing-ml;
   }
   &__actionButton {
-    width: 200px;
+    min-width: 200px;
   }
 }

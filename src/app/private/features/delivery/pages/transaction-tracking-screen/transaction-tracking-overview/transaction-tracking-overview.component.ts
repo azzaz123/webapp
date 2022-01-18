@@ -1,11 +1,15 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
-import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
 import { ActivatedRoute } from '@angular/router';
-import { TransactionTrackingScreenTrackingEventsService } from '../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
-import { tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+
+import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
+import { SharedErrorActionService } from '@shared/error-action';
+import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model/delivery/transaction/tracking';
+import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+
+import { catchError, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-overview',
@@ -20,21 +24,56 @@ export class TransactionTrackingOverviewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private transactionTrackingService: TransactionTrackingService,
-    private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService
+    private storeService: TransactionTrackingScreenStoreService,
+    private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService,
+    private errorActionService: SharedErrorActionService
   ) {}
 
   ngOnInit(): void {
     const requestId = this.route.snapshot.paramMap.get(DELIVERY_PATH_PARAMS.ID);
-    this.transactionTracking$ = this.transactionTrackingService.get(requestId).pipe(
-      tap((transactionTracking: TransactionTracking) => {
-        this.transactionTrackingScreenTrackingEventsService.trackViewTTSScreen(
-          requestId,
-          transactionTracking.analytics.buyer.country,
-          transactionTracking.analytics.seller.country
-        );
-      })
-    );
+    this.initializeTransactionTracking(requestId);
+    this.initializeTransactionTrackingDetails(requestId);
 
-    this.transactionTrackingDetails$ = this.transactionTrackingService.getDetails(requestId);
+    this.transactionTracking$ = this.storeService.transactionTracking$;
+    this.transactionTrackingDetails$ = this.storeService.transactionTrackingDetails$;
+  }
+
+  private initializeTransactionTracking(requestId: string): void {
+    this.transactionTrackingService
+      .get(requestId)
+      .pipe(
+        tap((transactionTracking: TransactionTracking) => {
+          this.trackViewPageEvent(requestId, transactionTracking);
+          this.storeService.transactionTracking = transactionTracking;
+        }),
+        catchError((error: unknown) => {
+          this.errorActionService.show(error);
+          return throwError(error);
+        })
+      )
+      .subscribe();
+  }
+
+  private initializeTransactionTrackingDetails(requestId: string): void {
+    this.transactionTrackingService
+      .getDetails(requestId)
+      .pipe(
+        tap((details: TransactionTrackingDetails) => {
+          this.storeService.transactionTrackingDetails = details;
+        }),
+        catchError((error: unknown) => {
+          this.errorActionService.show(error);
+          return throwError(error);
+        })
+      )
+      .subscribe();
+  }
+
+  private trackViewPageEvent(requestId: string, transactionTracking: TransactionTracking): void {
+    this.transactionTrackingScreenTrackingEventsService.trackViewTTSScreen(
+      requestId,
+      transactionTracking.analytics.buyer.country,
+      transactionTracking.analytics.seller.country
+    );
   }
 }

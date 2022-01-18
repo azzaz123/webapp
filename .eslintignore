@@ -6,8 +6,6 @@
 # WALLET-CHAT
 /src/app/private/features/chat
 
-# DELIVERY
-/src/app/private/features/delivery
 
 # ENGAGEMENT
 /src/app/private/features/favorites
@@ -29,8 +27,6 @@
 /src/app/public/features/register
 
 # TRANSVERSAL 
-/src/app/shared
-/src/app/public/shared
 /src/app/layout
 /src/app/public/layout
 /src/app/private/layout

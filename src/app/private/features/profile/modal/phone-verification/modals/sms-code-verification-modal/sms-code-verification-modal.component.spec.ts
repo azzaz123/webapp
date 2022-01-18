@@ -8,6 +8,7 @@ import { DEFAULT_ERROR_TOAST } from '@layout/toast/core/constants/default-toasts
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { VerificationsNSecurityStore } from '@private/features/profile/pages/verifications-n-security/services/verifications-n-security-store.service';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
 import { of, throwError } from 'rxjs';
 import { SmsCodeVerificationModalComponent } from './sms-code-verification-modal.component';
@@ -24,6 +25,7 @@ describe('SmsCodeVerificationModalComponent', () => {
   let activeModal: NgbActiveModal;
   let userVerificationsService: UserVerificationsService;
   let toastService: ToastService;
+  let verificationsNSecurityStore: VerificationsNSecurityStore;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -44,6 +46,14 @@ describe('SmsCodeVerificationModalComponent', () => {
             },
           },
         },
+        {
+          provide: VerificationsNSecurityStore,
+          useValue: {
+            verifiedPhone() {
+              return of();
+            },
+          },
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -54,7 +64,9 @@ describe('SmsCodeVerificationModalComponent', () => {
     userVerificationsService = TestBed.inject(UserVerificationsService);
     activeModal = TestBed.inject(NgbActiveModal);
     toastService = TestBed.inject(ToastService);
+    verificationsNSecurityStore = TestBed.inject(VerificationsNSecurityStore);
     component = fixture.componentInstance;
+    component.phoneNumber = MOCK_PREFIX_PHONE + MOCK_PHONE_NUMBER;
     fixture.detectChanges();
     spyOn(activeModal, 'close').and.callThrough();
     spyOn(activeModal, 'dismiss').and.callThrough();
@@ -104,7 +116,9 @@ describe('SmsCodeVerificationModalComponent', () => {
     beforeEach(() => {});
     describe('and the code is valid', () => {
       beforeEach(() => {
+        component.codeVerificationForm.get('code').setValue('444');
         spyOn(userVerificationsService, 'verifySmsCode').and.callThrough();
+        spyOn(verificationsNSecurityStore, 'verifiedPhone').and.callThrough();
         component.onSubmitCode();
       });
       it('should close the modal and show a success toast', () => {
@@ -115,11 +129,27 @@ describe('SmsCodeVerificationModalComponent', () => {
         });
         expect(activeModal.close).toHaveBeenCalled();
       });
+      it('should store the phone number to refresh the value', () => {
+        expect(verificationsNSecurityStore.verifiedPhone).toHaveBeenCalled();
+        expect(verificationsNSecurityStore.verifiedPhone).toHaveBeenCalledTimes(1);
+        expect(verificationsNSecurityStore.verifiedPhone).toHaveBeenCalledWith(component.phoneNumber);
+      });
     });
     describe('and the code is not valid', () => {
       beforeEach(() => {
         spyOn(userVerificationsService, 'verifySmsCode').and.returnValue(throwError('error'));
         component.onSubmitCode();
+      });
+      it('should mark as dirty the invalid code form control', () => {
+        expect(component.codeVerificationForm.get('code').valid).toBe(false);
+        expect(component.codeVerificationForm.get('code').dirty).toBe(true);
+      });
+    });
+    describe('and the code cotains characters', () => {
+      beforeEach(() => {
+        component.codeVerificationForm.get('code').setValue('444aaa');
+        component.onSubmitCode();
+        fixture.detectChanges();
       });
       it('should mark as dirty the invalid code form control', () => {
         expect(component.codeVerificationForm.get('code').valid).toBe(false);
@@ -133,7 +163,6 @@ describe('SmsCodeVerificationModalComponent', () => {
       describe('and verifyPhone service return success', () => {
         beforeEach(() => {
           spyOn(userVerificationsService, 'verifyPhone').and.callThrough();
-          component.phoneNumber = MOCK_PREFIX_PHONE + MOCK_PHONE_NUMBER;
           component.resendSMS();
           fixture.detectChanges();
         });
@@ -144,6 +173,17 @@ describe('SmsCodeVerificationModalComponent', () => {
           expect(userVerificationsService.verifyPhone).toHaveBeenCalledTimes(1);
           expect(userVerificationsService.verifyPhone).toHaveBeenCalledWith(component.phoneNumber);
           expect(resendButton.disabled).toBe(true);
+        });
+
+        it('should show a success toast', () => {
+          expect(toastService.show).toHaveBeenCalledWith({
+            text:
+              'We have sent an SMS to the number ' +
+              component.phoneNumber +
+              ' with a verification code. Please enter the code to verify your phone.',
+            title: 'Many thanks',
+            type: TOAST_TYPES.SUCCESS,
+          });
         });
       });
 

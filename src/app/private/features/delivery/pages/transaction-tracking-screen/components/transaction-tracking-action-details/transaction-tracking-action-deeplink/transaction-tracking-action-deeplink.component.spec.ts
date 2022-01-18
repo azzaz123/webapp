@@ -28,7 +28,6 @@ describe('TransactionTrackingActionDeeplinkComponent', () => {
         {
           provide: DeeplinkService,
           useValue: {
-            isAvailable() {},
             navigate() {},
           },
         },
@@ -64,37 +63,12 @@ describe('TransactionTrackingActionDeeplinkComponent', () => {
     describe('and we click on the anchor', () => {
       beforeEach(() => {
         spyOn(deeplinkService, 'navigate');
+
+        anchor.nativeElement.click();
       });
 
-      describe('and the deeplink is available', () => {
-        beforeEach(() => {
-          spyOn(deeplinkService, 'isAvailable').and.returnValue(true);
-
-          anchor.nativeElement.click();
-        });
-
-        describe('and we click on the link', () => {
-          it('should navigate to the new section', () => {
-            expect(deeplinkService.navigate).toHaveBeenCalledTimes(1);
-          });
-        });
-      });
-
-      describe('and the deeplink is NOT available', () => {
-        beforeEach(() => {
-          spyOn(window, 'alert');
-          spyOn(deeplinkService, 'isAvailable').and.returnValue(false);
-
-          anchor.nativeElement.click();
-        });
-
-        it('should NOT navigate to a new section', () => {
-          expect(deeplinkService.navigate).not.toHaveBeenCalled();
-        });
-
-        it('should show a warning alert', () => {
-          expect(window.alert).toHaveBeenCalledWith('This deeplink is not available');
-        });
+      it('should navigate to the new section', () => {
+        expect(deeplinkService.navigate).toHaveBeenCalledTimes(1);
       });
     });
   });

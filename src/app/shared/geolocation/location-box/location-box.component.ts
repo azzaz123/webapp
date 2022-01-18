@@ -27,6 +27,10 @@ export class LocationBoxComponent implements OnInit {
 
   constructor(private userService: UserService) {}
 
+  public emitLocation() {
+    this.locationSelected.emit();
+  }
+
   ngOnInit() {
     if (this.location) {
       this.setLocation({
@@ -55,9 +59,5 @@ export class LocationBoxComponent implements OnInit {
 
   private setLocation(coordinates: Coordinate) {
     this.coordinates = coordinates;
-  }
-
-  public emitLocation() {
-    this.locationSelected.emit();
   }
 }

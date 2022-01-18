@@ -10,9 +10,9 @@ import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.int
 export class TabComponent<T> {
   @Input() tabsBarElement: TabsBarElement<T>;
   @Input() isSelected = false;
-  @Output() onClick: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
+  @Output() handleOnClick: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
 
   public handleClick() {
-    this.onClick.emit(this.tabsBarElement);
+    this.handleOnClick.emit(this.tabsBarElement);
   }
 }

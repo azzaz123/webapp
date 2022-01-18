@@ -1,20 +1,32 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NavigationEnd, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserService } from '@core/user/user.service';
-import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { DELIVERY_PATHS } from '../delivery-routing-constants';
-import { TRXAwarenessModalComponent } from '../modals/trx-awareness-modal/trx-awareness-modal.component';
 
-import { DeliveryComponent, LOCAL_STORAGE_TRX_AWARENESS } from './delivery.component';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { DeliveryComponent, LOCAL_STORAGE_TRX_AWARENESS } from '@private/features/delivery/pages/delivery.component';
+import { DeviceDetectorServiceMock } from '@fixtures/remote-console.fixtures.spec';
+import { NavLink } from '@shared/nav-links/nav-link.interface';
+import { NavLinksComponent } from '@shared/nav-links/nav-links.component';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
+import { UserService } from '@core/user/user.service';
+
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { Subject } from 'rxjs';
+import { NO_NAV_LINK_SELECTED, DELIVERY_TRACKING_PATH } from './delivery.component';
 
 describe('DeliveryComponent', () => {
   const FAKE_DATE_NOW = 1627743615459;
-  const URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}`;
+  const BUYS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`;
+  const SELLS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`;
+  const ADDRESS_URL = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`;
+  const TRACKING_URL: string = DELIVERY_TRACKING_PATH;
+  const routerEvents: Subject<any> = new Subject();
+
   let component: DeliveryComponent;
   let fixture: ComponentFixture<DeliveryComponent>;
   let router: Router;
@@ -24,7 +36,7 @@ describe('DeliveryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule, NgbModalModule],
-      declarations: [DeliveryComponent],
+      declarations: [DeliveryComponent, NavLinksComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
@@ -34,6 +46,17 @@ describe('DeliveryComponent', () => {
             saveLocalStore() {},
           },
         },
+        {
+          provide: Router,
+          useValue: {
+            navigate(): void {},
+            events: routerEvents,
+            get url(): string {
+              return '';
+            },
+          },
+        },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
       ],
     }).compileComponents();
   });
@@ -45,8 +68,6 @@ describe('DeliveryComponent', () => {
     userService = TestBed.inject(UserService);
     modalService = TestBed.inject(NgbModal);
 
-    fixture.detectChanges();
-
     spyOn(Date, 'now').and.returnValue(FAKE_DATE_NOW);
     spyOn(userService, 'saveLocalStore');
     spyOn(modalService, 'open').and.callThrough();
@@ -56,14 +77,83 @@ describe('DeliveryComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('when the url changes', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    describe('and matchs the default url', () => {
+      it('should redirect to the default route', fakeAsync(() => {
+        tick();
+        routerEvents.next(new NavigationEnd(1, ADDRESS_URL, ''));
+
+        expect(component.selectedNavLinkId).toStrictEqual(ADDRESS_URL);
+      }));
+    });
+
+    describe('and matches the tracking url', () => {
+      it('should not select any nav link', fakeAsync(() => {
+        tick();
+        routerEvents.next(new NavigationEnd(1, TRACKING_URL, ''));
+
+        expect(component.selectedNavLinkId).toStrictEqual(NO_NAV_LINK_SELECTED);
+      }));
+    });
+
+    describe('and NOT matchs the default url', () => {
+      it('should redirect to the new url provided', fakeAsync(() => {
+        tick();
+        routerEvents.next(new NavigationEnd(1, SELLS_URL, ''));
+
+        expect(component.selectedNavLinkId).toStrictEqual(SELLS_URL);
+      }));
+    });
+  });
+
+  describe('when the user enters the page', () => {
+    beforeEach(fakeAsync(() => {
+      routerEvents.next(new NavigationEnd(1, BUYS_URL, ''));
+      tick();
+      fixture.detectChanges();
+    }));
+
+    it('should show all nav links', () => {
+      const navLinks = fixture.debugElement.query(By.directive(NavLinksComponent)).componentInstance.navLinks;
+      const navLinksWithStreamline: NavLink[] = [
+        {
+          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`,
+          display: $localize`:@@web_purchases:Purchases`,
+        },
+        {
+          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`,
+          display: $localize`:@@web_sales:Sales`,
+        },
+        {
+          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.COMPLETED}`,
+          display: $localize`:@@purchases_view_finished_tab_title:Completed`,
+        },
+        {
+          id: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
+          display: $localize`:@@web_delivery_shipping_address:Address`,
+        },
+      ];
+
+      expect(navLinks).toStrictEqual(navLinksWithStreamline);
+    });
+
+    it('should select the nav link option that matchs the url', () => {
+      expect(component.selectedNavLinkId).toStrictEqual(BUYS_URL);
+    });
+  });
+
   describe('when the user navigates through the nav links...', () => {
     it('should navigate to the specified URL', () => {
       const navLinksElement = fixture.debugElement.query(By.css('tsl-nav-links'));
       spyOn(router, 'navigate');
 
-      navLinksElement.triggerEventHandler('clickedLink', URL);
+      navLinksElement.triggerEventHandler('clickedLink', BUYS_URL);
 
-      expect(router.navigate).toHaveBeenCalledWith([URL]);
+      expect(router.navigate).toHaveBeenCalledWith([BUYS_URL]);
     });
   });
 
@@ -86,7 +176,7 @@ describe('DeliveryComponent', () => {
     beforeEach(() => {
       spyOn(userService, 'getLocalStore').and.returnValue(false);
 
-      component.ngOnInit();
+      fixture.detectChanges();
     });
 
     it('should open the TRX Awareness Modal', () => {
@@ -100,11 +190,11 @@ describe('DeliveryComponent', () => {
     });
   });
 
-  describe('wwhen the user has previously viewed the TRX Awareness Modal', () => {
+  describe('when the user has previously viewed the TRX Awareness Modal', () => {
     beforeEach(() => {
       spyOn(userService, 'getLocalStore').and.returnValue(true);
 
-      component.ngOnInit();
+      fixture.detectChanges();
     });
 
     it('should NOT open the TRX Awareness Modal', () => {

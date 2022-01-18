@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -17,13 +17,18 @@ import { EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID } from '@core/external-links/cust
 import { getCustomerHelpUrl, UNIFIED_EXTERNAL_CUSTOMER_HELP_PAGE_ID } from '@core/external-links/customer-help/get-customer-help-url';
 import { getTicketFormUrl } from '@core/external-links/customer-help/get-ticket-form-url';
 import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
-import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
+import { Item } from '@core/item/item';
+import { ItemService } from '@core/item/item.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
-import { UserService } from '@core/user/user.service';
 import { User } from '@core/user/user';
+import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
+import { UserService } from '@core/user/user.service';
+
 import { Observable, of, Subscriber } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 
 type deeplinkType =
   | 'unknown'
@@ -37,18 +42,16 @@ type deeplinkType =
 
 @Injectable()
 export class DeeplinkService {
-  private window: Window;
-
   constructor(
     @Inject(LOCALE_ID) private locale: APP_LOCALE,
-    @Inject(DOCUMENT) document: Document,
+    @Inject(WINDOW_TOKEN) private window: Window,
     private itemDetailRoutePipe: ItemDetailRoutePipe,
+    private itemService: ItemService,
     private userProfileRoutePipe: UserProfileRoutePipe,
     private router: Router,
-    private userService: UserService
-  ) {
-    this.window = document.defaultView;
-  }
+    private userService: UserService,
+    private toastService: ToastService
+  ) {}
 
   public isAvailable(deeplink: string): boolean {
     const availabilities: Record<deeplinkType, boolean> = {
@@ -95,6 +98,7 @@ export class DeeplinkService {
 
   public navigate(deeplink: string): void {
     if (!this.isAvailable(deeplink)) {
+      this.showNotAvailableFeatureToast();
       return;
     }
     this.isExternalNavigation(deeplink) ? this.navigateToUrl(deeplink) : this.navigateToRoute(deeplink);
@@ -104,14 +108,17 @@ export class DeeplinkService {
     if (!deeplink) {
       return of(null);
     }
-
     if (this.getDeeplinkType(deeplink) === 'userProfile') {
       return this.getUserProfileWebLink(deeplink);
     }
+    if (this.getDeeplinkType(deeplink) === 'item') {
+      return this.getItemWebLink(deeplink);
+    }
+
     const deeplinkMappers: Record<deeplinkType, string> = {
       barcodeLabel: this.getBarcodeWebLink(deeplink),
       instructions: this.getInstructionsWebLink(deeplink),
-      item: this.getItemWebLink(deeplink),
+      item: null,
       printableLabel: this.getPrintableLabelWebLink(deeplink),
       userProfile: null,
       zendeskArticle: this.getZendeskArticleWebLink(deeplink),
@@ -161,9 +168,26 @@ export class DeeplinkService {
       : null;
   }
 
-  private getItemWebLink(deeplink: string): string {
-    const id = deeplink.split(itemDeeplinkPrefix).pop();
-    return !!id ? this.itemDetailRoutePipe.transform(id) : null;
+  private getItemWebLink(deeplink: string): Observable<string> {
+    const itemId = deeplink.split(itemDeeplinkPrefix).pop();
+
+    if (!itemId) {
+      return of(null);
+    }
+
+    return new Observable((subscriber: Subscriber<string>) => {
+      this.itemService.get(itemId).subscribe({
+        next: (item: Item) => {
+          subscriber.next(!!item.webSlug ? this.itemDetailRoutePipe.transform(item.webSlug) : null);
+        },
+        error: (error: HttpErrorResponse) => {
+          subscriber.next(null);
+        },
+        complete: () => {
+          subscriber.complete();
+        },
+      });
+    });
   }
 
   private getParams(deeplink: string): string[] {
@@ -216,7 +240,7 @@ export class DeeplinkService {
       item: true,
       printableLabel: true,
       unknown: false,
-      userProfile: true,
+      userProfile: false,
       zendeskArticle: true,
       zendeskForm: true,
     };
@@ -230,8 +254,17 @@ export class DeeplinkService {
   }
 
   private navigateToUrl(deeplink: string): void {
+    const windowReference: Window = this.window.open();
     this.toWebLink(deeplink).subscribe((webLink: string) => {
-      this.window.open(webLink, '_blank');
+      windowReference.location.href = webLink;
+    });
+  }
+
+  private showNotAvailableFeatureToast(): void {
+    this.toastService.show({
+      title: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_title_web_specific:Feature not available`,
+      text: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_description_web_specific:We are working on it... We appreciate your patience!`,
+      type: TOAST_TYPES.ERROR,
     });
   }
 }

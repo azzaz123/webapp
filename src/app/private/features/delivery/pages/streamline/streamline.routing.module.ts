@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { StreamlineCompletedModule } from './pages/streamline-completed/streamline-completed.module';
+// import { StreamlineCompletedModule } from './pages/streamline-completed/streamline-completed.module';
 import { StreamlineOngoingModule } from './pages/streamline-ongoing/streamline-ongoing.module';
 import { StreamlineComponent } from './streamline.component';
 import { STREAMLINE_PATHS } from './streamline.routing.constants';
@@ -14,9 +14,13 @@ const routes: Route[] = [
         path: STREAMLINE_PATHS.ONGOING,
         loadChildren: () => StreamlineOngoingModule,
       },
+      // {
+      //   path: STREAMLINE_PATHS.COMPLETED,
+      //   loadChildren: () => StreamlineCompletedModule,
+      // },
       {
-        path: STREAMLINE_PATHS.COMPLETED,
-        loadChildren: () => StreamlineCompletedModule,
+        path: '**',
+        redirectTo: STREAMLINE_PATHS.ONGOING,
       },
     ],
   },

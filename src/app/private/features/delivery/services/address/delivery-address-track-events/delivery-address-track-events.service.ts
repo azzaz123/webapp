@@ -18,7 +18,7 @@ export class DeliveryAddressTrackEventsService {
     const event: AnalyticsPageView<ViewShippingAddress> = {
       name: ANALYTICS_EVENT_NAMES.ViewShippingAddress,
       attributes: {
-        screenId: SCREEN_IDS.MyShippingAddress,
+        screenId: SCREEN_IDS.EditAddress,
       },
     };
     this.analyticsService.trackPageView(event);

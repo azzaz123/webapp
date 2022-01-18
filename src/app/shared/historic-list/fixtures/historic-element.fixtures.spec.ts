@@ -1,5 +1,13 @@
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
+import { HistoricTransaction } from '@api/core/model';
+import { Request } from '@api/core/model/delivery';
+import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction/delivery-pending-transaction.interface';
+import { MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER } from '@api/fixtures/core/model/delivery/deliveries/ongoing/delivery-pending-transactions-and-requests.fixtures.spec';
+import { MOCK_PENDING_REQUEST_AS_BUYER, MOCK_PENDING_REQUEST_AS_SELLER } from '@api/fixtures/core/model/delivery/requests.fixtures.spec';
+import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
 import { environment } from '@environments/environment';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE } from '../enums/historic-element-subdescription-type.enum';
 import { HistoricElement } from '../interfaces/historic-element.interface';
 
@@ -83,7 +91,37 @@ export const MOCK_HISTORIC_ELEMENT_CASHOUT_WITH_ESTIMATED_PAYOUT: HistoricElemen
   },
 };
 
-export const MOCK_HISTORIC_ELEMENT_WITH_ID: HistoricElement = {
+export const MOCK_HISTORIC_ELEMENT_WITH_DELIVERY_PENDING_TRANSACTION: HistoricElement<DeliveryPendingTransaction> = {
   ...MOCK_HISTORIC_ELEMENT,
   id: '1337',
+  payload: MOCK_DELIVERY_PENDING_TRANSACTIONS_AND_REQUESTS_AS_BUYER.transactions[0],
+};
+
+export const MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER: HistoricElement<Request> = {
+  ...MOCK_HISTORIC_ELEMENT,
+  id: '13333353537',
+  payload: MOCK_PENDING_REQUEST_AS_BUYER,
+};
+
+export const MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER: HistoricElement<Request> = {
+  ...MOCK_HISTORIC_ELEMENT,
+  id: '13333353537',
+  payload: MOCK_PENDING_REQUEST_AS_SELLER,
+};
+
+export const MOCK_HISTORIC_ELEMENT_WITH_HISTORIC_TRANSACTION: HistoricElement<HistoricTransaction> = {
+  id: '3b7560cc-b4f8-48bf-ba27-4d070952b3e8',
+  imageUrl: MOCK_ITEM.images[0].urls_by_size.original,
+  iconUrl: MOCK_USER.image.urls_by_size.original,
+  title: MOCK_ITEM.title,
+  description: {
+    text: 'Shipping',
+    iconUrl: 'assets/icons/box.svg',
+  },
+  subDescription: {
+    text: 'Completed on 22 Oct',
+    type: HISTORIC_ELEMENT_SUBDESCRIPTION_TYPE.NORMAL,
+  },
+  moneyAmount: mapNumberAndCurrencyCodeToMoney({ number: 19.75, currency: 'EUR' }),
+  payload: MOCK_HISTORIC_TRANSACTIONS[0],
 };

@@ -13,6 +13,12 @@ export class RequestVideoPermissionsService {
     return this.videoPermissionsSubject.asObservable();
   }
 
+  private readonly videoPermissionsSubject: BehaviorSubject<VIDEO_PERMISSIONS_STATUS> = new BehaviorSubject<VIDEO_PERMISSIONS_STATUS>(
+    VIDEO_PERMISSIONS_STATUS.LOADING
+  );
+
+  private readonly videoStreamSubject: BehaviorSubject<MediaStream | null> = new BehaviorSubject(null);
+
   public startStream(): void {
     if (this.isAPIAllowed()) {
       navigator.mediaDevices
@@ -38,12 +44,6 @@ export class RequestVideoPermissionsService {
       }
     });
   }
-
-  private readonly videoPermissionsSubject: BehaviorSubject<VIDEO_PERMISSIONS_STATUS> = new BehaviorSubject<VIDEO_PERMISSIONS_STATUS>(
-    VIDEO_PERMISSIONS_STATUS.LOADING
-  );
-
-  private readonly videoStreamSubject: BehaviorSubject<MediaStream | null> = new BehaviorSubject(null);
 
   private set userVideoPermissions(newPermissions: VIDEO_PERMISSIONS_STATUS) {
     this.videoPermissionsSubject.next(newPermissions);

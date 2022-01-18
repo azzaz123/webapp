@@ -10,6 +10,7 @@ import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { InboxItemDetailComponent } from './inbox-item-detail.component';
+import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
 
 describe('Component: Item', () => {
   let component: InboxItemDetailComponent;
@@ -19,7 +20,7 @@ describe('Component: Item', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InboxItemDetailComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
+      declarations: [InboxItemDetailComponent, CustomCurrencyPipe, ItemDetailRoutePipe, ItemRouteDirectiveMock],
       providers: [
         DecimalPipe,
         {

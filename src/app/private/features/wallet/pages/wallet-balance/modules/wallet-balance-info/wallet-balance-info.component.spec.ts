@@ -17,14 +17,14 @@ import {
   MOCK_PAYMENTS_WALLETS_MAPPED_MONEY,
   MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
 } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
-import { MockWalletSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
+import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ToastModule } from '@layout/toast/toast.module';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { WalletBalanceInfoComponent } from './wallet-balance-info.component';
 import { WalletBalanceTrackingEventService } from '@private/features/wallet/pages/wallet-balance/services/wallet-balance-tracking-event.service';
-import { WalletSharedErrorActionService } from '@private/features/wallet/shared/error-action';
+import { SharedErrorActionService } from '@shared/error-action';
 import { WalletTransferDismissError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-dismiss-error';
 import { WalletTransferErrorTranslations } from '@private/features/wallet/errors/constants/wallet-transfer-error-translations';
 import { WalletTransferPayUserBankAccountError } from '@private/features/wallet/errors/classes/transfer/wallet-transfer-pay-user-bank-account-error';
@@ -41,7 +41,7 @@ describe('WalletBalanceInfoComponent', () => {
   let fixture: ComponentFixture<WalletBalanceInfoComponent>;
   let toastService: ToastService;
   let walletService: PaymentsWalletsService;
-  let errorActionService: WalletSharedErrorActionService;
+  let errorActionService: SharedErrorActionService;
   let ngbModal: NgbModal;
   let transferService: WalletTransferService;
   let balanceTrackingEventService: WalletBalanceTrackingEventService;
@@ -73,8 +73,8 @@ describe('WalletBalanceInfoComponent', () => {
           },
         },
         {
-          provide: WalletSharedErrorActionService,
-          useValue: MockWalletSharedErrorActionService,
+          provide: SharedErrorActionService,
+          useValue: MockSharedErrorActionService,
         },
         NgbModal,
         {
@@ -108,7 +108,7 @@ describe('WalletBalanceInfoComponent', () => {
     decimalPipe = TestBed.inject(DecimalPipe);
     toastService = TestBed.inject(ToastService);
     kycPropertiesService = TestBed.inject(KYCPropertiesService);
-    errorActionService = TestBed.inject(WalletSharedErrorActionService);
+    errorActionService = TestBed.inject(SharedErrorActionService);
     ngbModal = TestBed.inject(NgbModal);
     transferService = TestBed.inject(WalletTransferService);
     balanceTrackingEventService = TestBed.inject(WalletBalanceTrackingEventService);

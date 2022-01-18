@@ -22,8 +22,6 @@ import { SubscriptionBenefitComponent } from './components/subscription-benefits
 import { SubscriptionsComponent } from './pages/subscription/subscription.component';
 import { InvoiceComponent } from './pages/invoice/invoice.component';
 import { ProfileProSubscriptionComponent } from './pages/profile-pro-subscription/profile-pro-subscription.component';
-import { CancelSubscriptionModalComponent } from './modal/cancel-subscription/cancel-subscription-modal.component';
-import { ContinueSubscriptionModalComponent } from './modal/continue-subscription/continue-subscription-modal.component';
 import { VisibilityProductsModalComponent } from './modal/visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from '../profile/pipes/subscription-icon.pipe';
 import { ProfileProBillingModule } from '@shared/profile-pro-billing/profile-pro-billing.module';
@@ -40,6 +38,7 @@ import { SelectOptionModule } from '@shared/form/components/select/select-option
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 import { DiscountBadgeComponent } from './components/discount-badge/discount-badge.component';
 import { ProHeaderComponent } from './components/pro-header/pro-header.component';
+import { ManageSubscriptionService } from './services/manage-subscription.service';
 
 @NgModule({
   declarations: [
@@ -60,8 +59,6 @@ import { ProHeaderComponent } from './components/pro-header/pro-header.component
     SubscriptionCardSelectorComponent,
     SubscriptionPurchaseFooterComponent,
     VisibilityProductsModalComponent,
-    CancelSubscriptionModalComponent,
-    ContinueSubscriptionModalComponent,
     SubscriptionIconPipe,
     SubscriptionBenefitsComponent,
     SubscriptionPurchaseSuccessComponent,
@@ -70,6 +67,7 @@ import { ProHeaderComponent } from './components/pro-header/pro-header.component
     DiscountBadgeComponent,
     ProHeaderComponent,
   ],
+  providers: [ManageSubscriptionService],
   imports: [
     CommonModule,
     NgxPermissionsModule.forChild(),

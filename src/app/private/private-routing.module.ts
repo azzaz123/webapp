@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DeliveryDevelopmentGuard } from './features/delivery/guards/delivery-development.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PRIVATE_PATHS } from './private-routing-constants';
 import { PrivateComponent } from './private.component';
@@ -86,6 +85,10 @@ const routes: Routes = [
         loadChildren: () => import('@private/features/reviews/reviews.module').then((m) => m.ReviewsModule),
       },
       {
+        path: PRIVATE_PATHS.BUMPS,
+        loadChildren: () => import('@private/features/bumps/bumps.module').then((m) => m.BumpsModule),
+      },
+      {
         path: 'wallacoins',
         canLoad: [NgxPermissionsGuard],
         data: {
@@ -128,7 +131,6 @@ const routes: Routes = [
       },
       {
         path: PRIVATE_PATHS.DELIVERY,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => import('@private/features/delivery/delivery.module').then((m) => m.DeliveryModule),
       },
       {
@@ -143,10 +145,6 @@ const routes: Routes = [
           { path: '', pathMatch: 'full', redirectTo: `/${PRIVATE_PATHS.CHAT}` },
           { path: 'view', redirectTo: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.VERIFICATIONS}` },
         ],
-      },
-      {
-        path: '**',
-        redirectTo: PRIVATE_PATHS.CHAT,
       },
     ],
   },

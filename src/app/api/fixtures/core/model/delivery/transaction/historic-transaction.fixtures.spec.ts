@@ -12,6 +12,7 @@ import { MOCK_TRANSACTION_USER_1, MOCK_TRANSACTION_USER_2 } from './transaction-
 export const MOCK_HISTORIC_TRANSACTIONS: HistoricTransaction[] = [
   {
     id: '3b7560cc-b4f8-48bf-ba27-4d070952b3e8',
+    requestId: '3b7560cca',
     creationDate: new Date('2021-10-22T10:57:14.000Z'),
     item: MOCK_TRANSACTION_ITEM_1,
     buyer: MOCK_TRANSACTION_USER_1,
@@ -27,6 +28,7 @@ export const MOCK_HISTORIC_TRANSACTIONS: HistoricTransaction[] = [
   },
   {
     id: '001cf831-d040-4e31-b4e7-aa50d2a3cadc',
+    requestId: '001cf831a',
     creationDate: new Date('2021-10-22T10:45:55.000Z'),
     item: MOCK_TRANSACTION_ITEM_2,
     buyer: MOCK_TRANSACTION_USER_1,

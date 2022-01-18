@@ -1,10 +1,12 @@
 export enum DELIVERY_PATHS {
-  ADDRESS = 'address',
-  PAYVIEW = 'payview',
   ACCEPT_SCREEN = 'accept',
-  TRACKING = 'tracking',
-  STREAMLINE = 'my-shippings',
+  ADDRESS = 'address',
+  BUYS = 'buys',
   DISPUTE = 'dispute',
+  PAYVIEW = 'payview',
+  SELLS = 'sells',
+  TRACKING = 'tracking',
+  COMPLETED = 'completed',
 }
 
 export enum DELIVERY_PATH_PARAMS {

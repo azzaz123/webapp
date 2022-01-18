@@ -44,6 +44,34 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     super();
   }
 
+  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
+    if (this._value.length > 0) {
+      this.updateValueFromParent();
+    } else {
+      this.handleClear();
+    }
+  }
+
+  public handleClear(): void {
+    super.handleClear();
+    this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
+    this.clearSearch();
+    this.initLabel();
+  }
+
+  public clearSearch(): void {
+    this.searchQuery = '';
+    this.searchQuery$.next('');
+  }
+
+  public ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  public onModelChanged() {
+    this.searchQuery$.next(this.searchQuery);
+  }
+
   public get options$(): Observable<FilterOption[]> {
     return this.optionsSubject.asObservable();
   }
@@ -70,30 +98,6 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     this.initForm();
     this.initModel();
     super.ngOnInit();
-  }
-
-  public onValueChange(previousValue: FilterParameter[], currentValue: FilterParameter[]): void {
-    if (this._value.length > 0) {
-      this.updateValueFromParent();
-    } else {
-      this.handleClear();
-    }
-  }
-
-  public handleClear(): void {
-    super.handleClear();
-    this.formGroup.controls.select.setValue(undefined, { emitEvent: false });
-    this.clearSearch();
-    this.initLabel();
-  }
-
-  public clearSearch(): void {
-    this.searchQuery = '';
-    this.searchQuery$.next('');
-  }
-
-  public ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
   }
 
   private initForm(): void {
@@ -181,10 +185,6 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
 
   private isStringValue(value: ComplexSelectValue): value is string {
     return typeof value === 'string';
-  }
-
-  public onModelChanged() {
-    this.searchQuery$.next(this.searchQuery);
   }
 
   private getSuggestions(query: string): void {

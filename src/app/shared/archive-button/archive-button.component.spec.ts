@@ -41,7 +41,7 @@ describe('ArchiveButtonComponent', () => {
     let called: boolean;
 
     beforeEach(() => {
-      component.click.subscribe(() => {
+      component.handleClick.subscribe(() => {
         called = true;
       });
     });

@@ -1,9 +1,0 @@
-@import '~style/common';
-@import '~web-styleguide/scss/spacing';
-
-.WalletSharedErrorAction {
-  padding-top: $spacing-ms;
-  &__icon {
-    @include square(48px);
-  }
-}

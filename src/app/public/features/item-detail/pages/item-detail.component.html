@@ -1,13 +1,13 @@
 <div tslAdSlotGroup class="container ItemDetail__container">
     <ng-container *ngIf="device === deviceType.DESKTOP || device === deviceType.TABLET">
-      <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
+      <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.itemTop"></tsl-sky>
     </ng-container>
 
 
     <div class="d-flex justify-content-around py-4">
         <div *ngIf="device === deviceType.DESKTOP"
             class="ItemDetail__sky align-self-start position-sticky d-none d-xl-block">
-            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
+            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.itemLeft"></tsl-sky>
         </div>
 
         <div class="ItemDetail__content w-100">
@@ -61,7 +61,7 @@
                 <p *ngIf="itemDetail.item.description" class="ItemDetail__description py-3 mb-0 text-break"
                     [ngClass]="{'borderBottom': device !== deviceType.MOBILE}">{{itemDetail.item.description}}</p>
                 <div *ngIf="device === deviceType.MOBILE">
-                    <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.item1"></tsl-sky>
+                    <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.itemMobilePos1"></tsl-sky>
                 </div>
                 <div class="ItemDetail__stats py-3 d-flex align-items-center justify-content-between"
                     [ngClass]="{'borderBottom': device !== deviceType.TABLET}">
@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="pt-4" *ngIf="device === deviceType.TABLET">
-                    <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
+                    <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.itemLeft"></tsl-sky>
                 </div>
                 <div class="ItemDetail__location py-3 d-flex align-items-center">
                     <tsl-svg-icon src="/assets/icons/location.svg" class="mr-2"></tsl-svg-icon>
@@ -109,13 +109,13 @@
             </tsl-recommended-items>
 
             <div *ngIf="device === deviceType.MOBILE" class="pt-4">
-                <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.item2l"></tsl-sky>
+                <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.itemMobilePos2"></tsl-sky>
             </div>
         </div>
 
         <div *ngIf="device === deviceType.DESKTOP"
             class="ItemDetail__sky align-self-start position-sticky d-none d-xl-block">
-            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.item3r"></tsl-sky>
+            <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adsSlotsItemDetail.itemRight"></tsl-sky>
         </div>
     </div>
 </div>

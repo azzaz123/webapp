@@ -6,13 +6,24 @@ import { APP_LOCALE } from '@configs/subdomains.config';
 import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
+import { ItemService } from '@core/item/item.service';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 import { SITE_URL } from '@configs/site-url.config';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { UserService } from '@core/user/user.service';
 
 import { of, throwError } from 'rxjs';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 
 const fakeBarcode = 'abcZYW123908';
 const fakeInstructionsType = 'packaging';
+const fakeItemId = 'this_is_a_fake_item_id';
+const fakeItemName = 'this-is-a-fake-item';
+const fakeItemWebSlug = `${fakeItemName}-1234567890`;
+const fakeItem = {
+  webSlug: fakeItemWebSlug,
+};
 const fakePrintableUrl = 'http://fake.url.fake';
 const fakeRequestId = '123-456-789-000';
 const fakeUserId = 'this_is_a_fake_user_id';
@@ -45,22 +56,36 @@ const zendeskCreateDisputeFormDeeplink: string = `${zendeskCreateDisputeFormBase
 describe(`DeeplinkService`, () => {
   let router: Router;
   let service: DeeplinkService;
-  let window: Window;
+  let windowMock: Window;
+  let toastService: ToastService;
+  let itemService: ItemService;
+  let userService: UserService;
+  const windowOpenMock = {
+    location: {
+      href: '',
+    },
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: LOCALE_ID, useValue: `es` },
         {
-          provide: Document,
+          provide: WINDOW_TOKEN,
           useValue: {
-            defaultView: {
-              open() {},
-            },
+            open: () => windowOpenMock,
           },
         },
         { provide: SITE_URL, useValue: siteUrlMock },
         DeeplinkService,
+        {
+          provide: ItemService,
+          useValue: {
+            get: () => {
+              return of(fakeItem);
+            },
+          },
+        },
         ItemDetailRoutePipe,
         UserProfileRoutePipe,
         {
@@ -77,6 +102,10 @@ describe(`DeeplinkService`, () => {
             },
           },
         },
+        {
+          provide: ToastService,
+          useClass: MockToastService,
+        },
       ],
     });
   });
@@ -91,10 +120,9 @@ describe(`DeeplinkService`, () => {
     describe.each([allLanguages])(`WHEN mapping deeplink to customer help url`, (locale) => {
       beforeEach(() => {
         TestBed.overrideProvider(LOCALE_ID, { useValue: locale });
-        document = TestBed.inject(Document);
         router = TestBed.inject(Router);
         service = TestBed.inject(DeeplinkService);
-        window = document.defaultView;
+        windowMock = TestBed.inject(WINDOW_TOKEN);
       });
 
       it(`should return the url according with the specified language`, fakeAsync(() => {
@@ -140,6 +168,7 @@ describe(`DeeplinkService`, () => {
         TestBed.overrideProvider(LOCALE_ID, { useValue: locale });
         router = TestBed.inject(Router);
         service = TestBed.inject(DeeplinkService);
+        toastService = TestBed.inject(ToastService);
       });
 
       it(`should return the url according with the specified language`, fakeAsync(() => {
@@ -328,12 +357,31 @@ describe(`DeeplinkService`, () => {
   });
 
   describe(`WHEN the deeplink is a item deeplink`, () => {
+    beforeEach(() => {
+      router = TestBed.inject(Router);
+      service = TestBed.inject(DeeplinkService);
+      itemService = TestBed.inject(ItemService);
+      toastService = TestBed.inject(ToastService);
+
+      spyOn(itemService, 'get').and.callThrough();
+    });
+
     it(`should return the url`, fakeAsync(() => {
-      const deeplink = `${itemBaseDeeplink}/my-item-id`;
-      const expected = `${siteUrlMock}item/my-item-id`;
+      const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;
+      const expected = `${siteUrlMock}item/${fakeItemWebSlug}`;
 
       service.toWebLink(deeplink).subscribe((webLink) => {
         expect(webLink).toEqual(expected);
+      });
+
+      flush();
+    }));
+
+    it('should call to the item service', fakeAsync(() => {
+      const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;
+
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(itemService.get).toHaveBeenCalledTimes(1);
       });
 
       flush();
@@ -402,6 +450,15 @@ describe(`DeeplinkService`, () => {
   });
 
   describe(`WHEN the deeplink is a user profile deeplink`, () => {
+    beforeEach(() => {
+      router = TestBed.inject(Router);
+      service = TestBed.inject(DeeplinkService);
+      userService = TestBed.inject(UserService);
+      toastService = TestBed.inject(ToastService);
+
+      spyOn(userService, 'get').and.callThrough();
+    });
+
     it(`should return the url`, fakeAsync(() => {
       const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
       const expected = `/user/${fakeUsername}-${fakeUserId}`;
@@ -409,6 +466,16 @@ describe(`DeeplinkService`, () => {
       service.toWebLink(deeplink).subscribe((webLink) => {
         expect(webLink).toBeTruthy();
         expect(webLink).toBe(expected);
+      });
+
+      flush();
+    }));
+
+    it('should call to the user service', fakeAsync(() => {
+      const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
+
+      service.toWebLink(deeplink).subscribe((webLink) => {
+        expect(userService.get).toHaveBeenCalledTimes(1);
       });
 
       flush();
@@ -550,56 +617,66 @@ describe(`DeeplinkService`, () => {
     });
   });
 
-  describe.each([
-    [itemDeeplink],
-    [printableLabelDeeplink],
-    [userProfileDeeplink],
-    [zendeskArticleDeeplink],
-    [zendeskCreateDisputeFormDeeplink],
-  ])(`WHEN navigate to an external url`, (deeplink) => {
-    beforeEach(() => {
-      spyOn(window, `open`);
-    });
-
-    it(`should open a new tab`, fakeAsync(() => {
-      service.navigate(deeplink);
-
-      service.toWebLink(deeplink).subscribe((webLink) => {
-        expect(window.open).toHaveBeenCalledTimes(1);
-        expect(window.open).toHaveBeenCalledWith(webLink, `_blank`);
+  describe.each([[itemDeeplink], [printableLabelDeeplink], [zendeskArticleDeeplink], [zendeskCreateDisputeFormDeeplink]])(
+    `WHEN navigate to an external url`,
+    (deeplink) => {
+      afterEach(() => {
+        windowOpenMock.location.href = '';
       });
 
-      flush();
-    }));
-  });
+      it(`should open a new tab`, fakeAsync(() => {
+        service.navigate(deeplink);
 
-  describe.each([[checkDeliveryInstructionDeeplink], [packagingInstructionsDeeplink]])(`WHEN navigate to an internal route`, (deeplink) => {
-    beforeEach(() => {
-      spyOn(router, `navigate`);
-    });
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(windowOpenMock.location.href).toEqual(webLink);
+        });
 
-    it(`should navigate to an angular route`, fakeAsync(() => {
-      service.navigate(deeplink);
+        flush();
+      }));
+    }
+  );
 
-      service.toWebLink(deeplink).subscribe((webLink) => {
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([webLink]);
+  describe.each([[checkDeliveryInstructionDeeplink], [packagingInstructionsDeeplink], [userProfileDeeplink]])(
+    `WHEN navigate to an internal route`,
+    (deeplink) => {
+      beforeEach(() => {
+        spyOn(router, `navigate`);
       });
 
-      flush();
-    }));
-  });
+      it(`should navigate to an angular route`, fakeAsync(() => {
+        service.navigate(deeplink);
+
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(router.navigate).toHaveBeenCalledTimes(1);
+          expect(router.navigate).toHaveBeenCalledWith([webLink]);
+        });
+
+        flush();
+      }));
+    }
+  );
 
   describe.each([['some_kind_of_strange_deeplink'], ['some-unknown-url']])(`WHEN navigate to an unavailable deeplink`, (deeplink) => {
     beforeEach(() => {
-      spyOn(window, `open`);
       spyOn(router, 'navigate');
+      spyOn(toastService, 'show');
+
+      service.navigate(deeplink);
     });
 
-    it(`should not navigate`, fakeAsync(() => {
-      service.navigate(deeplink);
+    it('should show an error toast', fakeAsync(() => {
+      expect(toastService.show).toHaveBeenCalledTimes(1);
+      expect(toastService.show).toHaveBeenCalledWith({
+        title: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_title_web_specific:Feature not available`,
+        text: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_description_web_specific:We are working on it... We appreciate your patience!`,
+        type: TOAST_TYPES.ERROR,
+      });
 
-      expect(window.open).toHaveBeenCalledTimes(0);
+      flush();
+    }));
+
+    it(`should not navigate`, fakeAsync(() => {
+      expect(windowOpenMock.location.href).toEqual('');
       expect(router.navigate).toHaveBeenCalledTimes(0);
 
       flush();
@@ -644,6 +721,54 @@ describe(`DeeplinkService`, () => {
 
       it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
+
+        service.toWebLink(deeplink).subscribe((webLink) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
+    });
+  });
+
+  describe('WHEN the deeplink is an item', () => {
+    describe(`WHEN the item service crashes`, () => {
+      beforeEach(() => {
+        TestBed.overrideProvider(ItemService, {
+          useValue: {
+            get: () => {
+              return throwError('unexpected error');
+            },
+          },
+        });
+        service = TestBed.inject(DeeplinkService);
+      });
+
+      it(`should not return any url`, fakeAsync(() => {
+        const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;
+
+        service.toWebLink(deeplink).subscribe((webLink: string) => {
+          expect(webLink).toBeFalsy();
+        });
+
+        flush();
+      }));
+    });
+
+    describe(`WHEN the item service does not return any item`, () => {
+      beforeEach(() => {
+        TestBed.overrideProvider(ItemService, {
+          useValue: {
+            get: () => {
+              return of({ webSlug: null });
+            },
+          },
+        });
+        service = TestBed.inject(DeeplinkService);
+      });
+
+      it(`should not return any url`, fakeAsync(() => {
+        const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;
 
         service.toWebLink(deeplink).subscribe((webLink) => {
           expect(webLink).toBeFalsy();

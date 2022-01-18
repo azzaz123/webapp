@@ -9,25 +9,22 @@ import { TemplateMultiSelectFormOption } from '../../interfaces/multi-select-for
 })
 export class MultiSelectOptionComponent {
   @Input() isDisabled = false;
-  @Output() toggleOnChange = new EventEmitter();
+  @Output() toggleOnChange = new EventEmitter<TemplateMultiSelectFormOption>();
   @Input() set option(value: TemplateMultiSelectFormOption) {
     this.data = value;
     this.hasChildren = !!value.children?.length;
     this.updateChildSelection();
   }
+
   public data: TemplateMultiSelectFormOption;
   public hasChildren = false;
+  public selectedChildrenCount: number;
+
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
     if (this.isDisabled) {
       event.preventDefault();
     }
-  }
-
-  public selectedChildrenCount: number;
-
-  private updateChildSelection(): void {
-    this.selectedChildrenCount = this.getSelectedChildrenCount();
   }
 
   public getSelectedChildrenCount(): number {
@@ -37,6 +34,9 @@ export class MultiSelectOptionComponent {
   }
 
   public toggleCheckbox(): void {
-    this.toggleOnChange.emit();
+    this.toggleOnChange.emit(this.data);
+  }
+  private updateChildSelection(): void {
+    this.selectedChildrenCount = this.getSelectedChildrenCount();
   }
 }

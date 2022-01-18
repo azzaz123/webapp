@@ -8,7 +8,7 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { PendingTransaction } from '@api/core/model';
+import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction/delivery-pending-transaction.interface';
 import { WalletPendingTransactionComponent } from '../wallet-pending-transaction/wallet-pending-transaction.component';
 
 const DEFAULT_VISIBLE_PENDING_TRANSACTIONS = 2;
@@ -20,7 +20,7 @@ const DEFAULT_VISIBLE_PENDING_TRANSACTIONS = 2;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WalletPendingTransactionsListComponent implements AfterViewInit {
-  @Input() pendingTransactions: PendingTransaction[];
+  @Input() pendingTransactions: DeliveryPendingTransaction[];
   @ViewChildren(WalletPendingTransactionComponent, { read: ElementRef }) private pendingTransactionsRef: QueryList<ElementRef>;
   public animated = false;
   public isExpanded = false;

@@ -22,7 +22,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { KYCModule } from '../../kyc.module';
 import { KYCStoreService } from '../../services/kyc-store/kyc-store.service';
-
+import { KYC_TAKE_IMAGE_OPTIONS } from '../../components/kyc-image-options/kyc-image-options.enum';
 import { KYCModalComponent } from './kyc-modal.component';
 import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc-tracking-events.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -262,6 +262,24 @@ describe('KYCModalComponent', () => {
 
         it('should close the modal', () => {
           expect(activeModal.close).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and the image method changes...', () => {
+        beforeEach(() => {
+          spyOn(kycTrackingEventsService, 'trackClickKycSelectImageMethod');
+          const KYCImageOptionsComponent = fixture.debugElement.query(By.css(KYCImageOptionsSelector));
+
+          KYCImageOptionsComponent.triggerEventHandler('takeImageOptionChange', KYC_TAKE_IMAGE_OPTIONS.SHOOT);
+        });
+
+        it('should update the store', () => {
+          expect(kycStoreService.specifications.imageMethod).toStrictEqual(KYC_TAKE_IMAGE_OPTIONS.SHOOT);
+        });
+
+        it('should track the click KYC select image method', () => {
+          expect(kycTrackingEventsService.trackClickKycSelectImageMethod).toHaveBeenCalledTimes(1);
+          expect(kycTrackingEventsService.trackClickKycSelectImageMethod).toHaveBeenCalledWith(KYC_TAKE_IMAGE_OPTIONS.SHOOT);
         });
       });
     });

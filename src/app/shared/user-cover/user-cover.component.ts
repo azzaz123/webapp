@@ -8,15 +8,14 @@ import { PLACEHOLDER_COVER, User } from '../../core/user/user';
   styleUrls: ['./user-cover.component.scss'],
 })
 export class UserCoverComponent implements OnChanges {
-  public avatar: string;
-  public uploadedCover;
-  public fallback: string;
   @Input() size = 40;
   @Input() user: User;
   @Input() imageCoverUrl: string;
   @Input() class: string;
 
-  constructor() {}
+  public avatar: string;
+  public uploadedCover;
+  public fallback: string;
 
   ngOnChanges(changes?: any) {
     if (changes && changes.imageCoverUrl && typeof changes.imageCoverUrl.currentValue === 'object') {

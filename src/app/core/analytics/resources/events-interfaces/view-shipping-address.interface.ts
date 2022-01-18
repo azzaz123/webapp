@@ -12,5 +12,5 @@ export interface ViewShippingAddress {
   /**
    * Identifier of the shipping address screen
    */
-  screenId: 310;
+  screenId: 245;
 }

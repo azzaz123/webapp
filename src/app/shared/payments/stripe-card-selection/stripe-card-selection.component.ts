@@ -11,19 +11,13 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
   styleUrls: ['./stripe-card-selection.component.scss'],
 })
 export class StripeCardSelectionComponent implements OnInit {
-  private _model: boolean = false;
+  @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() handleSelectExistingCard: EventEmitter<FinancialCardOption> = new EventEmitter<FinancialCardOption>();
   public financialCards: FinancialCardOption[];
   public card: string = '';
-
+  private _model: boolean = false;
   private notFoundMsg = '';
-  @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onSelectExistingCard: EventEmitter<FinancialCardOption> = new EventEmitter<FinancialCardOption>();
-
-  private onModelChange: any = () => {};
-  private onTouched: any = () => {};
-
   constructor(private stripeService: StripeService, private i18nService: I18nService) {}
-
   ngOnInit() {
     this.stripeService.getCards().subscribe(
       (stripeCards: FinancialCard[]) => {
@@ -36,6 +30,23 @@ export class StripeCardSelectionComponent implements OnInit {
     );
     this.notFoundMsg = this.i18nService.translate(TRANSLATION_KEY.NO_RESULTS_FOUND);
   }
+  public registerOnChange(fn: Function): void {
+    this.onModelChange = fn;
+  }
+
+  public writeValue(value: boolean): void {
+    this.model = value;
+  }
+
+  public registerOnTouched(fn: Function): void {
+    this.onTouched = fn;
+  }
+
+  public setFinancialCard(selectedCard: FinancialCardOption) {
+    this.handleSelectExistingCard.emit(selectedCard);
+  }
+  private onModelChange: any = () => {};
+  private onTouched: any = () => {};
 
   private toSelectOptions(card: FinancialCard): FinancialCardOption {
     return {
@@ -57,21 +68,5 @@ export class StripeCardSelectionComponent implements OnInit {
     this._model = val;
     this.onModelChange(val);
     this.onTouched();
-  }
-
-  public registerOnChange(fn: Function): void {
-    this.onModelChange = fn;
-  }
-
-  public writeValue(value: boolean): void {
-    this.model = value;
-  }
-
-  public registerOnTouched(fn: Function): void {
-    this.onTouched = fn;
-  }
-
-  public setFinancialCard(selectedCard: FinancialCardOption) {
-    this.onSelectExistingCard.emit(selectedCard);
   }
 }

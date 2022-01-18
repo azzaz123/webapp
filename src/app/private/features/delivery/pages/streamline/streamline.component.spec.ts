@@ -1,18 +1,17 @@
-import { DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { TabComponent } from '@shared/tabs-bar/components/tab/tab.component';
+import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
+import { StreamlineComponent } from '@private/features/delivery/pages/streamline/streamline.component';
+import { StreamlineTrackingEventsService } from '@private/features/delivery/pages/streamline/services/streamline-tracking-events/streamline-tracking-events.service';
 import { TabsBarComponent } from '@shared/tabs-bar/components/tabs-bar/tabs-bar.component';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { TabsBarModule } from '@shared/tabs-bar/tabs-bar.module';
-import { DELIVERY_PATHS } from '../../delivery-routing-constants';
-import { StreamlineTrackingEventsService } from './services/streamline-tracking-events/streamline-tracking-events.service';
-
-import { StreamlineComponent } from './streamline.component';
-import { STREAMLINE_PATHS } from './streamline.routing.constants';
 
 describe('StreamlineComponent', () => {
   let component: StreamlineComponent;
@@ -30,8 +29,18 @@ describe('StreamlineComponent', () => {
             trackViewStreamlineScreen() {},
           },
         },
+        {
+          provide: Router,
+          useValue: {
+            navigate() {},
+            get url() {
+              return `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`;
+            },
+          },
+        },
       ],
       declarations: [StreamlineComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -57,48 +66,172 @@ describe('StreamlineComponent', () => {
     });
 
     it('should show all filters', () => {
-      const tabsDebugElements = fixture.debugElement.queryAll(By.directive(TabComponent));
-      const expectedNumberOfFilters = Object.values(STREAMLINE_PATHS).filter((v) => typeof v === 'string').length;
-      const findTabBarComponentByElement = (de: DebugElement, tabBarElement: TabsBarElement<STREAMLINE_PATHS>) => {
-        const tabBarComponentInstance: TabComponent<STREAMLINE_PATHS> = de.componentInstance;
-        return tabBarComponentInstance.tabsBarElement.label === tabBarElement.label;
-      };
-      const expectAllFiltersToHaveATab = () => {
-        component.tabsBarElements.forEach((tabBarElement) => {
-          const foundTabBar = tabsDebugElements.find((de) => findTabBarComponentByElement(de, tabBarElement));
-          expect(foundTabBar).toBeTruthy();
-        });
-      };
+      const expectedTabs = component.tabsBarElements;
+      const childComponentTabs = getTabsBarComponent().tabsBarElements;
 
-      expect(tabsDebugElements.length).toEqual(expectedNumberOfFilters);
-      expectAllFiltersToHaveATab();
-    });
-
-    it('should redirect to the ongoing shippings page', () => {
-      const expectedUrl: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}/${STREAMLINE_PATHS.ONGOING}`;
-
-      component.ngOnInit();
-
-      expect(router.navigate).toHaveBeenCalledTimes(1);
-      expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      expect(childComponentTabs).toBe(expectedTabs);
     });
 
     describe('and when user clicks on a tab bar', () => {
       let ongoingFilter: TabsBarElement<STREAMLINE_PATHS>;
 
-      beforeEach(() => {
-        ongoingFilter = component.tabsBarElements.find((te) => te.value === STREAMLINE_PATHS.ONGOING);
-        const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
+      describe('WHEN the url correnponds to buys', () => {
+        beforeEach(async () => {
+          TestBed.resetTestingModule();
+          await TestBed.configureTestingModule({
+            imports: [RouterTestingModule, TabsBarModule],
+            providers: [
+              {
+                provide: StreamlineTrackingEventsService,
+                useValue: {
+                  trackViewStreamlineScreen() {},
+                },
+              },
+              {
+                provide: Router,
+                useValue: {
+                  navigate() {},
+                  get url() {
+                    return `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}`;
+                  },
+                },
+              },
+            ],
+            declarations: [StreamlineComponent],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          }).compileComponents();
+        });
 
-        filtersDebugElement.triggerEventHandler('onChange', ongoingFilter);
-        fixture.detectChanges();
+        beforeEach(() => {
+          router = TestBed.inject(Router);
+          streamlineTrackingEventsService = TestBed.inject(StreamlineTrackingEventsService);
+          fixture = TestBed.createComponent(StreamlineComponent);
+          component = fixture.componentInstance;
+
+          fixture.detectChanges();
+
+          spyOn(streamlineTrackingEventsService, 'trackViewStreamlineScreen');
+          spyOn(router, 'navigate');
+        });
+
+        // TODO: Add in each the [STREAMLINE_PATHS.COMPLETED] when we add completed tab again		Date: 2022/01/10
+        describe.each([[STREAMLINE_PATHS.ONGOING]])('WHEN user selects filter', (filter) => {
+          beforeEach(() => {
+            ongoingFilter = component.tabsBarElements.find((te) => te.value === (filter as STREAMLINE_PATHS));
+            const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
+
+            filtersDebugElement.triggerEventHandler('handleOnClick', ongoingFilter);
+            fixture.detectChanges();
+          });
+
+          it('should navigate to specified route', () => {
+            const expectedUrl: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.BUYS}/${ongoingFilter.value}`;
+
+            expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+          });
+        });
       });
 
-      it('should navigate to specified route', () => {
-        const expectedUrl: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.STREAMLINE}/${ongoingFilter.value}`;
+      describe('WHEN the url correnponds to sells', () => {
+        beforeEach(async () => {
+          TestBed.resetTestingModule();
+          await TestBed.configureTestingModule({
+            imports: [RouterTestingModule, TabsBarModule],
+            providers: [
+              {
+                provide: StreamlineTrackingEventsService,
+                useValue: {
+                  trackViewStreamlineScreen() {},
+                },
+              },
+              {
+                provide: Router,
+                useValue: {
+                  navigate() {},
+                  get url() {
+                    return `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}`;
+                  },
+                },
+              },
+            ],
+            declarations: [StreamlineComponent],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+          }).compileComponents();
+        });
 
-        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+        beforeEach(() => {
+          router = TestBed.inject(Router);
+          streamlineTrackingEventsService = TestBed.inject(StreamlineTrackingEventsService);
+          fixture = TestBed.createComponent(StreamlineComponent);
+          component = fixture.componentInstance;
+
+          fixture.detectChanges();
+
+          spyOn(streamlineTrackingEventsService, 'trackViewStreamlineScreen');
+          spyOn(router, 'navigate');
+        });
+
+        // TODO: Add in each the [STREAMLINE_PATHS.COMPLETED] when we add completed tab again		Date: 2022/01/10
+        describe.each([[STREAMLINE_PATHS.ONGOING]])('WHEN user selects filter', (filter) => {
+          beforeEach(() => {
+            ongoingFilter = component.tabsBarElements.find((te) => te.value === (filter as STREAMLINE_PATHS));
+            const filtersDebugElement = fixture.debugElement.query(By.directive(TabsBarComponent));
+
+            filtersDebugElement.triggerEventHandler('handleOnClick', ongoingFilter);
+            fixture.detectChanges();
+          });
+
+          it('should navigate to specified route', () => {
+            const expectedUrl: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}/${ongoingFilter.value}`;
+
+            expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+          });
+        });
+      });
+    });
+
+    describe('and when the page is for the ongoing transactions', () => {
+      beforeEach(() => mockRouterUrl(STREAMLINE_PATHS.ONGOING));
+
+      it('should select the ongoing tab as active', () => {
+        const ongoingTabsBarElement = component.tabsBarElements.find((t) => t.value === STREAMLINE_PATHS.ONGOING);
+        const result = getTabsBarComponent().initialSelectedTabBarElement;
+
+        expect(result).toBe(ongoingTabsBarElement);
+      });
+    });
+
+    // TODO: Uncomment this test when we add completed tab again 		Date: 2022/01/10
+    /*describe('and when the page is for the completed transactions', () => {
+      beforeEach(() => mockRouterUrl(STREAMLINE_PATHS.COMPLETED));
+
+      it('should select the completed tab as active', () => {
+        const completedTabsBarElement = component.tabsBarElements.find((t) => t.value === STREAMLINE_PATHS.COMPLETED);
+        const result = getTabsBarComponent().initialSelectedTabBarElement;
+
+        expect(result).toBe(completedTabsBarElement);
+      });
+    });*/
+
+    describe('and when the page is not a known tab', () => {
+      beforeEach(() => mockRouterUrl('gibberish'));
+
+      it('should select the ongoing tab as active', () => {
+        const ongoingTabsBarElement = component.tabsBarElements.find((t) => t.value === STREAMLINE_PATHS.ONGOING);
+        const result = getTabsBarComponent().initialSelectedTabBarElement;
+
+        expect(result).toBe(ongoingTabsBarElement);
       });
     });
   });
+
+  function mockRouterUrl(url: string): void {
+    jest.spyOn(router, 'url', 'get').mockReturnValue(url);
+    component.ngOnInit();
+    fixture.detectChanges();
+  }
+
+  function getTabsBarComponent(): TabsBarComponent<STREAMLINE_PATHS> {
+    return fixture.debugElement.query(By.directive(TabsBarComponent)).componentInstance;
+  }
 });

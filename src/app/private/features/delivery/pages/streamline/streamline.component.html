@@ -1,8 +1,14 @@
 <div class="box mx-0 p-3 mt-3">
   <div class="row">
     <div class="col">
-      <tsl-tabs-bar [tabsBarElements]="tabsBarElements" (onChange)="onTabsBarChange($event)"></tsl-tabs-bar>
-      <router-outlet></router-outlet>
+      <tsl-tabs-bar
+        [tabsBarElements]="tabsBarElements"
+        [initialSelectedTabBarElement]="selectedTabsBarElement"
+        (handleOnClick)="onTabsBarChange($event)"
+      ></tsl-tabs-bar>
+      <tsl-shared-error-action [retryUrl]="retryUrl">
+        <router-outlet></router-outlet>
+      </tsl-shared-error-action>
     </div>
   </div>
 </div>

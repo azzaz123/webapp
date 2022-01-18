@@ -1,13 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { HistoricTransaction } from '@api/core/model';
-import { TransactionsHistoryApiService } from '@api/delivery/transactions/history/transactions-history-api.service';
-import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
-import { MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
-import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
-import { ReplaySubject } from 'rxjs';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { StreamlineCompletedUIService } from './streamline-completed-ui.service';
+import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
+import { HistoricTransaction } from '@api/core/model';
+import { MOCK_HISTORIC_LIST_FROM_HISTORIC_TRANSACTIONS } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
+import { MOCK_HISTORIC_TRANSACTIONS } from '@api/fixtures/core/model/delivery/transaction/historic-transaction.fixtures.spec';
+import { StreamlineCompletedUIService } from '@private/features/delivery/pages/streamline/services/streamline-completed-ui/streamline-completed-ui.service';
+import { TransactionsHistoryApiService } from '@api/delivery/transactions/history/transactions-history-api.service';
+
+import { ReplaySubject, throwError } from 'rxjs';
 
 describe('StreamlineCompletedUIService', () => {
   let service: StreamlineCompletedUIService;
@@ -97,4 +98,34 @@ describe('StreamlineCompletedUIService', () => {
       expect(service.infiniteScrollDisabled).toBe(false);
     });
   });
+});
+
+describe('WHEN there is an error retrieving the shipping list', () => {
+  let streamlineCompletedUIService: StreamlineCompletedUIService;
+  let transactionsHistoryApiService: TransactionsHistoryApiService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        StreamlineCompletedUIService,
+        {
+          provide: TransactionsHistoryApiService,
+          useValue: {
+            get() {
+              return throwError('The server is broken');
+            },
+          },
+        },
+      ],
+    });
+    streamlineCompletedUIService = TestBed.inject(StreamlineCompletedUIService);
+    transactionsHistoryApiService = TestBed.inject(TransactionsHistoryApiService);
+  });
+
+  it('should show the generic error catcher', fakeAsync(() => {
+    expect(() => {
+      streamlineCompletedUIService.getItems();
+      tick();
+    }).toThrowError();
+  }));
 });

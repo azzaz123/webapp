@@ -66,13 +66,13 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ButtonComponent } from '@shared/button/button.component';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
-import { DeliveryDevelopmentDirective } from '@shared/directives/delivery-development/delivery-development.directive';
 import { CatalogManagerApiService } from '@api/catalog-manager/catalog-manager-api.service';
 import { MOCK_SUBSCRIPTION_SLOTS, MOCK_SUBSCRIPTION_SLOT_CARS } from '@fixtures/subscription-slots.fixtures.spec';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { MeApiService } from '@api/me/me-api.service';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -123,7 +123,7 @@ describe('ListComponent', () => {
       children: [{ path: '', component: ListComponent }],
     },
     { path: `${PRIVATE_PATHS.CATALOG}/list`, component: ListComponent },
-    { path: `${PRIVATE_PATHS.CATALOG}/checkout`, component: ListComponent },
+    { path: `${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, component: ListComponent },
     { path: `wallacoins`, component: ListComponent },
     { path: PRIVATE_PATHS.DELIVERY, component: ListComponent },
     { path: PRIVATE_PATHS.WALLET, component: ListComponent },
@@ -141,7 +141,6 @@ describe('ListComponent', () => {
           SubscriptionsSlotItemComponent,
           TryProSlotComponent,
           ProBadgeComponent,
-          DeliveryDevelopmentDirective,
           ButtonComponent,
         ],
         providers: [
@@ -401,6 +400,7 @@ describe('ListComponent', () => {
 
       beforeEach(() => {
         walletButton = fixture.debugElement.query(By.css(walletButtonSelector));
+        deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
       });
 
       it('should not open upload confirmation modal', () => {
@@ -415,40 +415,24 @@ describe('ListComponent', () => {
         expect(walletButton).toBeTruthy();
       });
 
+      describe('and when clicking the wallet button', () => {
+        it('should navigate to wallet', () => {
+          expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
+        });
+      });
+
+      it('should show a delivery button', () => {
+        expect(deliveryButton).toBeTruthy();
+      });
+
+      describe('and when clicking the delivery button', () => {
+        it('should navigate to delivery', () => {
+          expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
+        });
+      });
+
       it('should point to the wallet path', () => {
         expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
-      });
-
-      describe('and when delivery feature flag is enabled', () => {
-        beforeEach(() => {
-          localFlagSubject.next(true);
-          fixture.detectChanges();
-
-          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
-        });
-
-        it('should show a delivery button', () => {
-          expect(deliveryButton).toBeTruthy();
-        });
-
-        describe('and when clicking the delivery button', () => {
-          it('should navigate to delivery', () => {
-            expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
-          });
-        });
-      });
-
-      describe('and when delivery feature flag is NOT enabled', () => {
-        beforeEach(() => {
-          localFlagSubject.next(false);
-          fixture.detectChanges();
-
-          deliveryButton = fixture.debugElement.query(By.css(deliveryButtonSelector));
-        });
-
-        it('should NOT show a delivery button', () => {
-          expect(deliveryButton).toBeFalsy();
-        });
       });
     });
 
@@ -492,7 +476,7 @@ describe('ListComponent', () => {
           tick();
 
           expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith(['catalog/checkout', { itemId: '1' }]);
+          expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: '1' }]);
         }));
 
         it('should not redirect when modal is closed', fakeAsync(() => {

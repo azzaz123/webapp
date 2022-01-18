@@ -11,7 +11,6 @@ import { MOCK_CONVERSATION, CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/cha
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from '@shared/shared.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
 import { ConversationDetailsBarComponent } from './conversation-details-bar.component';
@@ -22,7 +21,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { ItemDetailRoutePipe } from '@shared/pipes';
+import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
 
 class MockConversationService {
   public loadMoreMessages() {}
@@ -53,8 +52,8 @@ describe('ConversationDetailsBarComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, NgbModule, NgxPermissionsModule.forRoot()],
-      declarations: [ConversationDetailsBarComponent],
+      imports: [HttpClientTestingModule, NgbModule, NgxPermissionsModule.forRoot()],
+      declarations: [ConversationDetailsBarComponent, ItemRouteDirectiveMock],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         EventService,
@@ -80,7 +79,6 @@ describe('ConversationDetailsBarComponent', () => {
             unblockUser() {},
           },
         },
-        ItemDetailRoutePipe,
         {
           provide: SITE_URL,
           useValue: MOCK_SITE_URL,
