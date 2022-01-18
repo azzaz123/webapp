@@ -144,12 +144,16 @@
       media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
     />
 
+    <link rel="manifest" href="manifest.webmanifest" />
+
     <!--[if lte IE10]>
       <script type="text/javascript">
         window.location = 'https://www.wallapop.com/legacy';
       </script>
     <![endif]-->
-    <link rel="preload" href="manifest.json" />
+
+    <link rel="preload" href="manifest.json" as="fetch" />
+
     <!-- Google Analytics -->
     <script>
       (function (i, s, o, g, r, a, m) {
@@ -168,9 +172,6 @@
       ga('create', 'UA-56880961-1', 'auto');
     </script>
     <!-- End Google Analytics -->
-
-    <!-- TODO: Uncomment tags when enable PWA -->
-    <!-- <link rel="manifest" href="manifest.webmanifest"> -->
   </head>
   <body>
     <tsl-root>
