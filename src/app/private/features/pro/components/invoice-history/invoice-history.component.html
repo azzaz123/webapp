@@ -1,29 +1,32 @@
 <div class="box profile-box">
   <div class="InvoiceHistory">
-        <h3 i18n="@@web_invoice_history">Invoice history</h3>
+    <h3 i18n="@@web_invoice_history">Invoice history</h3>
     <div class="InvoiceHistory__tabs">
       <tsl-tabs-bar [tabsBarElements]="tabsBarElements" (handleOnClick)="onChangeFilter($event.value)"></tsl-tabs-bar>
     </div>
     <div *ngIf="!filteredTransactions?.length; else showTransactions">
-      <img class="InvoiceHistory__feedback w-100" src="/assets/images/empty-invoices-placeholder.svg" alt="empty"/>
+      <img class="InvoiceHistory__feedback w-100" src="/assets/images/empty-invoices-placeholder.svg" alt="empty" />
       <div class="content">
         <span *ngIf="loading" i18n="@@web_loading_data">We are loading your invoice history...</span>
-        <span *ngIf="isErrorLoading" i18n="@@web_not_loaded_invoices">Sorry, we cannot load your invoices at this time. Please try again later.</span>
+        <span *ngIf="isErrorLoading" i18n="@@web_not_loaded_invoices"
+          >Sorry, we cannot load your invoices at this time. Please try again later.</span
+        >
         <span i18n="@@web_empty_history" *ngIf="isShown(invoiceRequestStatus.EMPTY_HISTORY)">Your history is empty.</span>
-        <span i18n="@@web_not_old_invoices" *ngIf="isShown(invoiceRequestStatus.NOT_OLD_INVOICES)">You don't have any old invoices. Fill in the invoicing data for future purchases.</span>
+        <span i18n="@@web_not_old_invoices" *ngIf="isShown(invoiceRequestStatus.NOT_OLD_INVOICES)"
+          >You don't have any old invoices. Fill in the invoicing data for future purchases.</span
+        >
       </div>
     </div>
     <ng-template #showTransactions>
-      <tsl-invoice-item 
-      *ngFor="let invoice of filteredTransactions | slice:0:filterConfig[selectedFilter].limit"
-      [invoice]="invoice"
-      [active]="active"
+      <tsl-invoice-item
+        *ngFor="let invoice of filteredTransactions | slice: 0:filterConfig[selectedFilter].limit"
+        [invoice]="invoice"
+        [active]="active"
       >
       </tsl-invoice-item>
       <div class="InvoiceHistory__load-more-container" *ngIf="showLoadMore()">
         <a class="load-more">
-          <tsl-button className="btn-outline-primary" (click)="loadMore()" i18n="@@web_load_more_button"
-          >Load more</tsl-button>
+          <tsl-button className="btn-outline-primary" (click)="loadMore()" i18n="@@web_load_more_button">Load more</tsl-button>
         </a>
       </div>
     </ng-template>

@@ -4,18 +4,24 @@
       <div class="col-12 p-0 p-md-2 overflow-sm-hidden">
         <div class="row h-100 p-0 m-0 flex-row d-flex align-items-center">
           <div class="col-7 col-md-5 d-flex p-0 flex-column clickable">
-            <span class="InvoiceItem__info-price" [ngClass]="{'color-title': invoice.price < 0}">{{invoice.price}}{{invoice.currencySymbol}}</span>
-            <span class="InvoiceItem__info-title subtitle">{{invoice.description}}</span>
+            <span class="InvoiceItem__info-price" [ngClass]="{ 'color-title': invoice.price < 0 }"
+              >{{ invoice.price }}{{ invoice.currencySymbol }}</span
+            >
+            <span class="InvoiceItem__info-title subtitle">{{ invoice.description }}</span>
           </div>
           <div class="col-5 col-md-4 d-flex p-0 flex-column item-info clickable">
             <div class="d-none d-md-block" i18n="@@web_transaction_date">Transaction date</div>
             <div class="d-block d-md-none" i18n="@@web_date">Date</div>
-            <div class="InvoiceItem__info-title date">{{ invoice.date | date: 'd LLL yyyy'}}</div>
+            <div class="InvoiceItem__info-title date">{{ invoice.date | date: 'd LLL yyyy' }}</div>
           </div>
           <div class="col-12 col-md-3 ml-auto d-md-flex align-items-center justify-content-center text-center">
-              <tsl-svg-icon  *ngIf="loading" src="/assets/icons/spinner.svg" class="spinner grey"></tsl-svg-icon>
-              <tsl-button  *ngIf="!loading"  [disabled]="!active" [className]="invoice.invoice_generated ? 'btn-outline-primary' : 'basic'"
-              (click)="handleInvoice($event, invoice)">
+            <tsl-svg-icon *ngIf="loading" src="/assets/icons/spinner.svg" class="spinner grey"></tsl-svg-icon>
+            <tsl-button
+              *ngIf="!loading"
+              [disabled]="!active"
+              [className]="invoice.invoice_generated ? 'btn-outline-primary' : 'basic'"
+              (click)="handleInvoice($event, invoice)"
+            >
               <span i18n="@@web_request_invoice" *ngIf="!invoice.invoice_generated">Request invoice</span>
               <span i18n="@@web_download_invoice" *ngIf="invoice.invoice_generated">Download invoice</span>
             </tsl-button>

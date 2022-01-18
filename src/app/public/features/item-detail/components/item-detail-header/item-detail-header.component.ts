@@ -16,6 +16,8 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { I18nService } from '@core/i18n/i18n.service';
 import { COLORS } from '@core/colors/colors-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 
 @Component({
   selector: 'tsl-item-detail-header',
@@ -33,6 +35,8 @@ export class ItemDetailHeaderComponent implements OnInit {
 
   public readonly USER_INFO_SIZE = USER_INFO_SIZE;
   public readonly PERMISSIONS = PERMISSIONS;
+  public readonly BUMP_PATH = `/${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`;
+
   public showOptions = false;
   public loading = true;
   public tooltipMessages = {

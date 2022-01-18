@@ -9,6 +9,7 @@ import { PayviewModule } from './pages/payview/payview.module';
 import { StreamlineModule } from './pages/streamline/streamline.module';
 import { CreateDisputeModule } from './pages/create-dispute/create-dispute.module';
 import { DeliveryDevelopmentGuard } from './guards/delivery-development.guard';
+import { StreamlineCompletedModule } from './pages/streamline/pages/streamline-completed-overview/streamline-completed.module';
 
 // NOTE: they childs are begin loaded in a NON LAZY way but with the module
 const routes: Route[] = [
@@ -18,7 +19,6 @@ const routes: Route[] = [
     children: [
       {
         path: `${DELIVERY_PATHS.TRACKING}`,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => TransactionTrackingScreenModule,
       },
       {
@@ -37,23 +37,24 @@ const routes: Route[] = [
       },
       {
         path: DELIVERY_PATHS.BUYS,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineModule,
       },
       {
         path: DELIVERY_PATHS.SELLS,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineModule,
+      },
+      {
+        path: DELIVERY_PATHS.COMPLETED,
+        loadChildren: () => StreamlineCompletedModule,
       },
       {
         path: DELIVERY_PATHS.DISPUTE,
         canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => CreateDisputeModule,
       },
-      // TODO: change to STREAMLINE when opening production		Date: 2021/12/22
       {
         path: '**',
-        redirectTo: DELIVERY_PATHS.ADDRESS,
+        redirectTo: DELIVERY_PATHS.BUYS,
       },
     ],
   },

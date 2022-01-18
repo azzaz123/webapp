@@ -115,7 +115,7 @@ export const MOCK_HISTORIC_ELEMENT_WITH_HISTORIC_TRANSACTION: HistoricElement<Hi
   iconUrl: MOCK_USER.image.urls_by_size.original,
   title: MOCK_ITEM.title,
   description: {
-    text: 'Via shipping',
+    text: 'Shipping',
     iconUrl: 'assets/icons/box.svg',
   },
   subDescription: {

@@ -85,6 +85,10 @@ const routes: Routes = [
         loadChildren: () => import('@private/features/reviews/reviews.module').then((m) => m.ReviewsModule),
       },
       {
+        path: PRIVATE_PATHS.BUMPS,
+        loadChildren: () => import('@private/features/bumps/bumps.module').then((m) => m.BumpsModule),
+      },
+      {
         path: 'wallacoins',
         canLoad: [NgxPermissionsGuard],
         data: {
@@ -141,10 +145,6 @@ const routes: Routes = [
           { path: '', pathMatch: 'full', redirectTo: `/${PRIVATE_PATHS.CHAT}` },
           { path: 'view', redirectTo: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.VERIFICATIONS}` },
         ],
-      },
-      {
-        path: '**',
-        redirectTo: PRIVATE_PATHS.CHAT,
       },
     ],
   },

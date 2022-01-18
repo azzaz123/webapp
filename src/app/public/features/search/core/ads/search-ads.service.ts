@@ -9,7 +9,14 @@ import { Subscription } from 'rxjs';
 import { skip, take } from 'rxjs/operators';
 import { AD_PUBLIC_SEARCH } from './search-ads.config';
 
-export const SEARCH_SLOTS = [AD_PUBLIC_SEARCH.search1, AD_PUBLIC_SEARCH.search2r, AD_PUBLIC_SEARCH.search3r];
+export const SEARCH_SLOTS = [
+  AD_PUBLIC_SEARCH.topBanner,
+  AD_PUBLIC_SEARCH.pos1Right,
+  AD_PUBLIC_SEARCH.pos2Right,
+  AD_PUBLIC_SEARCH.mobileTopBanner,
+  AD_PUBLIC_SEARCH.mobilePos1,
+  AD_PUBLIC_SEARCH.mobilePos2,
+];
 
 @Injectable()
 export class SearchAdsService {
