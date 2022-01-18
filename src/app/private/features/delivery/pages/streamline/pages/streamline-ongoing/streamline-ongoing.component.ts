@@ -81,7 +81,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   }
 
   private redirectToAcceptScreen(requestId: string): void {
-    const pathToAcceptScreen: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ACCEPT_SCREEN}/${requestId}`;
+    const pathToAcceptScreen: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
     this.redirectToPage(pathToAcceptScreen);
   }
 

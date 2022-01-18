@@ -31,7 +31,7 @@ import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 
-const PATH_TO_ACCEPT_SCREEN: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
+const PATH_TO_ACCEPT_SCREEN: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
 
 describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;
