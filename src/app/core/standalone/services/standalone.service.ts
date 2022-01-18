@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { STANDALONE_STATUS } from '@core/standalone/enums/standalone-status.enum';
 import { USER_AGENT } from '@core/user-agent/user-agent';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 
 export const STANDALONE_QUERY_PARAM: string = 'standalone';
 
@@ -12,7 +13,7 @@ export const STANDALONE_QUERY_PARAM: string = 'standalone';
 export class StandaloneService {
   private readonly _standalone$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.standaloneStatus);
 
-  constructor(private route: ActivatedRoute, @Inject(USER_AGENT) private userAgent: string) {}
+  constructor(private route: ActivatedRoute, @Inject(USER_AGENT) private userAgent: string, @Inject(WINDOW_TOKEN) private window) {}
 
   public get standalone(): boolean {
     return this._standalone$.getValue();
@@ -26,7 +27,8 @@ export class StandaloneService {
     const isStandaloneQueryParamEnabled: boolean =
       this.route.snapshot.queryParamMap.get(STANDALONE_QUERY_PARAM) === STANDALONE_STATUS.ENABLED;
     const isHuaweiUserAgent: boolean = this.userAgent.indexOf('hap') >= 0;
-    const isStandalone: boolean = isStandaloneQueryParamEnabled || isHuaweiUserAgent;
+    const isDisplayModeStandalone: boolean = this.window.matchMedia('(display-mode: standalone)').matches;
+    const isStandalone: boolean = isStandaloneQueryParamEnabled || isHuaweiUserAgent || isDisplayModeStandalone;
 
     return isStandalone;
   }
