@@ -30,7 +30,6 @@ const routes: Route[] = [
       },
       {
         path: `${PUBLIC_PATHS.ITEM_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
-        canLoad: [DevelopmentGuard],
         loadChildren: () => import('./features/item-detail/item-detail.module').then((m) => m.ItemDetailModule),
       },
       {
