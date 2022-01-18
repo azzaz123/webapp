@@ -6,7 +6,6 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { IsCurrentUserStub } from '@fixtures/public/core';
@@ -14,9 +13,7 @@ import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ItemApiModule } from '@public/core/services/api/item/item-api.module';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
-import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { ItemCardModule } from '@public/shared/components/item-card/item-card.module';
-import { SharedModule } from '@shared/shared.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { CARD_TYPES } from './enums/card-types.enum';
@@ -26,6 +23,7 @@ import { ShowSlotPipe } from './pipes/show-slot.pipe';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
 
 @Component({
   selector: 'tsl-item-card-list-wrapper',
@@ -66,8 +64,8 @@ describe('ItemCardListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemCardListComponent, IsCurrentUserStub, ShowSlotPipe, ItemCardListWrapperComponent],
-      imports: [SharedModule, CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
+      declarations: [ItemCardListComponent, IsCurrentUserStub, ShowSlotPipe, ItemCardListWrapperComponent, ItemRouteDirectiveMock],
+      imports: [CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
       providers: [
         NgxPermissionsService,
         ItemCardService,
@@ -133,18 +131,8 @@ describe('ItemCardListComponent', () => {
       expect(el.querySelectorAll(cardSelector).length).toEqual(component.items.length);
     });
 
-    it('should render item cards with valid URLs', () => {
-      const expectedEnvironmentURL = MOCK_SITE_URL;
-
-      expect(itemCard.attributes.href).toEqual(`${expectedEnvironmentURL}${PUBLIC_PATHS.ITEM_DETAIL}/${MOCK_ITEM_CARD.webSlug}`);
-    });
-
     it('should render item cards with valid titles', () => {
       expect(itemCard.attributes.title).toEqual(MOCK_ITEM.title);
-    });
-
-    it('should open items in a new tab', () => {
-      expect(itemCard.attributes.target).toEqual('_blank');
     });
   });
 

@@ -4,16 +4,17 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { ItemChangeEvent } from '@private/features/catalog/core/item-change.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
-import { getMockItemWithPurchases, ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { EventService } from '../../../core/event/event.service';
-import { I18nService } from '../../../core/i18n/i18n.service';
-import { Item } from '../../../core/item/item';
-import { ItemService } from '../../../core/item/item.service';
-import { CustomCurrencyPipe, ItemDetailRoutePipe } from '../../pipes';
+import { getMockItemWithPurchases, ITEM_ID, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ErrorsService } from '@core/errors/errors.service';
+import { EventService } from '@core/event/event.service';
+import { I18nService } from '@core/i18n/i18n.service';
+import { Item } from '@core/item/item';
+import { ItemService } from '@core/item/item.service';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { CatalogCardComponent } from './catalog-card.component';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
@@ -32,7 +33,7 @@ describe('CatalogCardComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CatalogCardComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
+        declarations: [CatalogCardComponent, CustomCurrencyPipe, ItemRouteDirectiveMock],
         providers: [
           DecimalPipe,
           I18nService,

@@ -18,7 +18,6 @@ const routes: Route[] = [
     children: [
       {
         path: `${DELIVERY_PATHS.TRACKING}`,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => TransactionTrackingScreenModule,
       },
       {
@@ -32,17 +31,14 @@ const routes: Route[] = [
       },
       {
         path: DELIVERY_PATHS.BUYS,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineModule,
       },
       {
         path: DELIVERY_PATHS.SELLS,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineModule,
       },
       {
         path: DELIVERY_PATHS.COMPLETED,
-        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => StreamlineCompletedModule,
       },
       {
@@ -50,10 +46,9 @@ const routes: Route[] = [
         canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => CreateDisputeModule,
       },
-      // TODO: change to STREAMLINE when opening production		Date: 2021/12/22
       {
         path: '**',
-        redirectTo: DELIVERY_PATHS.ADDRESS,
+        redirectTo: DELIVERY_PATHS.BUYS,
       },
     ],
   },
