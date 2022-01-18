@@ -142,7 +142,6 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   }
 
   private handleMaxLength(): void {
-    console.log(' multi form - handleMaxLength', this.value?.length, this.maxLength);
     this.maxLengthReached = this.value?.length >= this.maxLength;
   }
 
