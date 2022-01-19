@@ -13,7 +13,7 @@ import {
   MultiSelectFormOption,
   TemplateMultiSelectFormOption,
 } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
-import { MultiselectSearchInputComponent } from '@shared/form/components/multiselect-search-input/multiselect-search-input.component';
+import { MultiselectSearchInputComponent } from '@shared/form/components/multi-select-search-input/multi-select-search-input.component';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 export enum HASHTAG_TYPE {

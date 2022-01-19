@@ -24,7 +24,7 @@ class StoryMultiSelectFormFormComponent {
   @Input() options: MultiSelectFormOption[];
   @Input() disabled: boolean = false;
   public formGroup = new FormGroup({
-    select: new FormControl(['9568']),
+    select: new FormControl(['9568', '1']),
   });
 
   public onClick() {
