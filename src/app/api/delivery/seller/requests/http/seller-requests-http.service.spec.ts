@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { TestBed } from '@angular/core/testing';
 import { MOCK_SELLER_REQUEST_DTO } from '@api/fixtures/delivery/seller/requests/seller-request-dto.fixtures.spec';
 import { SellerRequestDto } from '../dtos/seller-request-dto.interface';
-import { SELLER_REQUESTS_ENDPOINT } from './endpoints';
+import { SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID } from './endpoints';
 
 import { SellerRequestsHttpService } from './seller-requests-http.service';
 
@@ -31,7 +31,7 @@ describe('SellerRequestsHttpService', () => {
   describe('when asking to get the seller request by id to server', () => {
     it('should ask server for an specific request', () => {
       let response: SellerRequestDto;
-      const expectedUrl: string = SELLER_REQUESTS_ENDPOINT(MOCK_SELLER_REQUEST_ID);
+      const expectedUrl: string = SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(MOCK_SELLER_REQUEST_ID);
 
       service.getRequestInfo(MOCK_SELLER_REQUEST_ID).subscribe((data: SellerRequestDto) => (response = data));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
