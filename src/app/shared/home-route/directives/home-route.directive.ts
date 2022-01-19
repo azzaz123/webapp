@@ -15,10 +15,7 @@ export class HomeRouteDirective {
     @Inject(SITE_URL) private siteUrl: string
   ) {}
 
-  @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-
+  @HostListener('click') onClick(): void {
     if (this.standaloneService.standalone) {
       this.searchNavigatorService.navigateWithLocationParams({});
     } else {
