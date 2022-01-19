@@ -21,6 +21,7 @@ export class AcceptScreenService {
     this.getAcceptScreenProperties(requestId).subscribe();
   }
 
+  // TODO: Initialize store when created		Date: 2022/01/19
   private getAcceptScreenProperties(requestId: string): Observable<AcceptScreenProperties> {
     return this.getSellerRequest(requestId).pipe(
       concatMap((request: SellerRequest) => {
@@ -46,11 +47,11 @@ export class AcceptScreenService {
     return this.userService.get(userId);
   }
 
-  private getItem(itemId: string): Observable<Item> {
-    return this.itemService.get(itemId);
-  }
-
   private getSeller(): Observable<User> {
     return this.userService.getLoggedUserInformation();
+  }
+
+  private getItem(itemId: string): Observable<Item> {
+    return this.itemService.get(itemId);
   }
 }

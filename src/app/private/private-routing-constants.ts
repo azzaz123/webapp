@@ -8,3 +8,7 @@ export enum PRIVATE_PATHS {
   BUMPS = 'bumps',
   ACCEPT_SCREEN = 'accept',
 }
+
+export enum PRIVATE_PATH_PARAMS {
+  ID = 'id',
+}
