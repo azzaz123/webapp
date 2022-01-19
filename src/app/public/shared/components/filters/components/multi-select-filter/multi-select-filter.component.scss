@@ -17,7 +17,11 @@ $bubble-content-max-height: 285px;
     overflow: auto;
 
     &--searchable {
-      max-height: $bubble-content-max-height;
+      max-height: 100vh;
+
+      @include media-breakpoint-up(md) {
+        max-height: $bubble-content-max-height;
+      }
     }
   }
 
