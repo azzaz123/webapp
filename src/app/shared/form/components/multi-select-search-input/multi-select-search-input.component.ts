@@ -5,7 +5,6 @@ import {
   Input,
   OnInit,
   ViewChild,
-  AfterViewInit,
   Output,
   EventEmitter,
   HostListener,
@@ -17,20 +16,16 @@ import { PaginatedList } from '@api/core/model';
 import { Hashtag } from '@private/features/upload/core/models/hashtag.interface';
 import { HashtagSuggesterApiService } from '@private/features/upload/core/services/hashtag-suggestions/hashtag-suggester-api.service';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
-import {
-  MultiSelectFormOption,
-  TemplateMultiSelectFormOption,
-} from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
+import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 import { MultiSelectValue } from '@shared/form/components/multi-select-form/interfaces/multi-select-value.type';
 import { MultiSelectFormComponent } from '@shared/form/components/multi-select-form/multi-select-form.component';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
-import { union } from 'lodash-es';
 
 @Component({
-  selector: 'tsl-multiselect-search-input',
-  templateUrl: './multiselect-search-input.component.html',
-  styleUrls: ['./multiselect-search-input.component.scss'],
+  selector: 'tsl-multi-select-search-input',
+  templateUrl: './multi-select-search-input.component.html',
+  styleUrls: ['./multi-select-search-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
@@ -40,9 +35,9 @@ import { union } from 'lodash-es';
     },
   ],
 })
-export class MultiselectSearchInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, AfterViewInit, OnDestroy {
+export class MultiselectSearchInputComponent extends AbstractFormComponent<MultiSelectValue> implements OnInit, OnDestroy {
   @Input() categoryId: string;
-  @Input() disabled: boolean;
+  @Input() isDisabled: boolean;
   @Input() max: number;
   @ViewChild('hashtagSuggesterInput', { static: true }) hashtagSuggesterInput: ElementRef;
   @ViewChild(MultiSelectFormComponent) multiSelectFormComponent: MultiSelectFormComponent;
@@ -58,7 +53,6 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
   private optionsSubject = new Subject<MultiSelectFormOption[]>();
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public options$: Observable<MultiSelectFormOption[]> = this.optionsSubject.asObservable();
-  private extendedOptions: TemplateMultiSelectFormOption[];
   private keyUp$: Observable<unknown>;
   private subscriptions = new Subscription();
 
@@ -79,13 +73,9 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     this.detectTitleKeyboardChanges();
   }
 
-  ngAfterViewInit() {
-    this.subscriptions.add(
-      this.multiSelectFormComponent.extendedOptions$.subscribe((extendedOptions) => {
-        this.extendedOptions = extendedOptions;
-        this.handleSelectedOption();
-      })
-    );
+  handleChange(): void {
+    this.value = this.suggestions;
+    this.onChange(this.value);
   }
 
   ngOnDestroy() {
@@ -157,11 +147,6 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     this.value = value;
   }
 
-  private handleSelectedOption(): void {
-    this.value = this.mapExtendedOptionsToValue();
-    this.onChange(this.value);
-  }
-
   private getHashtagSuggesters(): Observable<PaginatedList<Hashtag> | []> {
     const newSearchValue = this.searchValue.substring(1);
     if (!newSearchValue) {
@@ -195,16 +180,5 @@ export class MultiselectSearchInputComponent extends AbstractFormComponent<Multi
     if (!!newSearchValue) {
       return [{ label: `#${newSearchValue}`, value: newSearchValue }];
     }
-  }
-
-  private mapExtendedOptionsToValue(): string[] {
-    let newValue: string[] = this.value;
-    const valuesToAdd = this.extendedOptions.filter((opt) => opt.checked).map((opt) => opt.value);
-    const valuesToRemove = this.extendedOptions.filter((opt) => !opt.checked).map((opt) => opt.value);
-
-    newValue = union(newValue, valuesToAdd);
-    newValue = newValue.filter((value) => !valuesToRemove.includes(value));
-
-    return newValue;
   }
 }
