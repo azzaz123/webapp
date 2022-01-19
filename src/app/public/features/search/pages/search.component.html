@@ -13,16 +13,12 @@
   <tsl-search-error-layout *ngIf="searchWithoutResults$ | async"></tsl-search-error-layout>
 
   <tsl-search-layout *ngIf="(searchWithoutResults$ | async) !== true">
-    <ng-container *ngIf="device === DevicesType.DESKTOP || device === DevicesType.TABLET">
-      <div top class="d-block h-100 position-relative">
+      <div top *ngIf="device === DevicesType.DESKTOP || device === DevicesType.TABLET" class="d-block h-100 position-relative">
         <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.topBanner"></tsl-sky>
       </div>
-    </ng-container>
-    <ng-container *ngIf="device === DevicesType.MOBILE">
-      <div top class="d-block h-100 position-relative">
+      <div top *ngIf="device === DevicesType.MOBILE" class="d-block h-100 position-relative">
         <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.mobileTopBanner"></tsl-sky>
       </div>
-    </ng-container>
     <div right class="d-flex flex-column h-100">
       <ng-container *ngIf="device === DevicesType.DESKTOP">
         <div class="Search__sky w-100 mb-3">
