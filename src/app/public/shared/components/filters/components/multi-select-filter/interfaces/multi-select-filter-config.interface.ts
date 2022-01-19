@@ -10,4 +10,5 @@ export interface MultiSelectFilterConfig extends AbstractSelectFilterConfig<Mult
   singleBubbleValueLabel?: string;
   isSearchable?: boolean;
   searchPlaceholder?: string;
+  hasValueAsLabel?: boolean;
 }
