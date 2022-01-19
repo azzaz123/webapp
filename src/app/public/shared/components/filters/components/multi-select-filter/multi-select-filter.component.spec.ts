@@ -235,7 +235,7 @@ describe('MultiSelectFilterComponent', () => {
           fixture.detectChanges();
 
           component.multiValue$.subscribe((multiValue) => {
-            expect(multiValue).toEqual([basicConfig.bubblePlaceholder]);
+            expect(multiValue).toEqual([]);
             done();
           });
         });

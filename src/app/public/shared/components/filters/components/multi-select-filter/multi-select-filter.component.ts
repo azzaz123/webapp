@@ -141,7 +141,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   private getOptions(): void {
     this.optionService
-      .getOptions(this.config.id, { text: this.searchText }, { offset: parseInt(this.offset) })
+      .getOptions(this.config.id, { text: this.searchText || null }, { offset: parseInt(this.offset) })
       .pipe(take(1))
       .subscribe(({ list, paginationParameter }) => {
         const pagination = new URLSearchParams(paginationParameter);
@@ -170,7 +170,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   private mergeOptions(options: FilterOption[]): FilterOption[] {
     let allOptions = [...options];
 
-    allOptions.map((option: FilterOption) => {
+    options.map((option: FilterOption) => {
       if (option.children?.length) {
         allOptions = allOptions.concat(option.children);
       }
@@ -192,28 +192,27 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   }
 
   private buildLabel(): string {
-    let label = '';
+    return (
+      this.formatStringArrayToLabel(this.config.hasValueAsLabel ? this.getValueAsArray() : this.getValueLabelAsArray()) ||
+      this.getLabelPlaceholder()
+    );
+  }
 
-    this.getValueAsArray().forEach((value: string, index: number) => {
-      const valueOption = this.allOptions.find((option) => {
-        return option.value === value;
-      });
-      label += valueOption ? `${index !== 0 && label.length > 2 ? ', ' : ''}${valueOption.label}` : '';
+  private getValueLabelAsArray(): string[] {
+    return this.getSelectedOptions().map((option: FilterOption) => {
+      return option.label;
     });
-
-    return label.length ? label : this.getLabelPlaceholder();
   }
 
   private buildMultiValue(): FilterOption[] | string[] {
-    const label = [...this.getValueAsArray()]
-      .map((value: string, index: number) => {
-        return this.allOptions.find((option) => {
-          return option.value === value;
-        });
-      })
-      .filter((filterOption) => !!filterOption);
-
-    return label.length ? label : [this.getLabelPlaceholder()];
+    return this.config.hasValueAsLabel
+      ? this.getValueAsArray().map((value: string) => {
+          return {
+            value: value,
+            label: value,
+          };
+        })
+      : this.getSelectedOptions() || [this.getLabelPlaceholder()];
   }
 
   private updateValueFromParent(): void {
@@ -241,5 +240,15 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   private getValueAsArray(): string[] {
     return super.getValue('parameterKey')?.split(',') || [];
+  }
+
+  private formatStringArrayToLabel(stringArray: string[]): string {
+    return stringArray.join(', ');
+  }
+
+  private getSelectedOptions(): FilterOption[] {
+    return this.allOptions.filter((option) => {
+      return this.getValueAsArray().includes(option.value.toString());
+    });
   }
 }
