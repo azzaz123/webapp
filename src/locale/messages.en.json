@@ -1477,6 +1477,7 @@
     "web_filter_fashion_brand_bubble_placeholder": "Brand",
     "web_filter_fashion_brand_drawer_placeholder": "Select brand",
     "quick_filter_n_brands": "{$INTERPOLATION} brands",
+    "web_filter_fashion_brand_suggester_placeholder": "Search brand",
     "web_filter_fashion_size_title": "Size",
     "web_filter_fashion_size_bubble_placeholder": "Size",
     "web_filter_fashion_size_drawer_placeholder": "Select size",
