@@ -536,7 +536,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         gender: [{ value: null, disabled: true }, [Validators.required]],
         condition: [null],
       }),
-      hashtags: '',
+      hashtags: [[]],
     });
   }
 
