@@ -16,7 +16,7 @@ import {
 } from '@fixtures/item.fixtures.spec';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
-import { Component, Input, NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -851,7 +851,7 @@ describe('UploadProductComponent', () => {
         sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
-        hashtags: '',
+        hashtags: [],
       };
 
       component.onSubmit();
@@ -877,7 +877,7 @@ describe('UploadProductComponent', () => {
         extra_info: {
           object_type: { id: 1 },
         },
-        hashtags: '',
+        hashtags: [],
       });
       component.uploadForm.get('extra_info').get('object_type').enable();
 
@@ -902,7 +902,7 @@ describe('UploadProductComponent', () => {
         sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
-        hashtags: '',
+        hashtags: [],
       };
 
       component.onSubmit();
@@ -1455,7 +1455,7 @@ describe('UploadProductComponent', () => {
         extra_info: {
           condition: null,
         },
-        hashtags: '',
+        hashtags: [],
       });
     });
 
