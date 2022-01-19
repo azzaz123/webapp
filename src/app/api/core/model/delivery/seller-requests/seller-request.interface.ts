@@ -1,13 +1,12 @@
 import { Money } from '../../money.interface';
-import { SellerRequestBuyerAddress } from './seller-request-buyer-address.interface';
+import { SellerRequestBuyer } from './seller-request-buyer.interface';
 import { SellerRequestPaymentAndRequestStatus } from './seller-request-payment-and-request-status.interface';
 import { SellerRequestRevenue } from './seller-request-revenue.interface';
 
 export interface SellerRequest {
   id: string;
-  itemHash: string;
-  buyerHash: string;
-  buyerAddress: SellerRequestBuyerAddress;
+  itemId: string;
+  buyer: SellerRequestBuyer;
   creationDate: Date;
   failReason: SellerRequestPaymentAndRequestStatus;
   offeredPrice: Money;
