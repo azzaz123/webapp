@@ -48,6 +48,7 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     singleBubbleValueLabel: $localize`:@@quick_filter_n_brands:${''}:INTERPOLATION:brands`,
     isSearchable: true,
     searchPlaceholder: $localize`:@@web_filter_fashion_brand_suggester_placeholder:Search brand`,
+    hasValueAsLabel: true,
   },
   {
     id: FASHION_CONFIGURATION_ID.SIZE,
