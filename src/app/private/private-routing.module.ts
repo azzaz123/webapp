@@ -1,4 +1,3 @@
-import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
@@ -8,6 +7,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from './features/pro/pro-routing-constants';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { PROFILE_PATHS } from './features/profile/profile-routing-constants';
+import { DeliveryDevelopmentGuard } from './features/delivery/guards/delivery-development.guard';
 
 const routes: Routes = [
   {
@@ -16,6 +16,7 @@ const routes: Routes = [
     children: [
       {
         path: PRIVATE_PATHS.ACCEPT_SCREEN,
+        canLoad: [DeliveryDevelopmentGuard],
         loadChildren: () => import('@private/features/accept-screen/accept-screen.module').then((m) => m.AcceptScreenModule),
       },
       {
