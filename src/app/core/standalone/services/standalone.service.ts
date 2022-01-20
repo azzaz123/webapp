@@ -13,7 +13,9 @@ export const STANDALONE_QUERY_PARAM: string = 'standalone';
 export class StandaloneService {
   private readonly _standalone$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.standaloneStatus);
 
-  constructor(private route: ActivatedRoute, @Inject(USER_AGENT) private userAgent: string, @Inject(WINDOW_TOKEN) private window) {}
+  constructor(private route: ActivatedRoute, @Inject(USER_AGENT) private userAgent: string, @Inject(WINDOW_TOKEN) private window) {
+    this.subscribeToAppInstalledEvent();
+  }
 
   public get standalone(): boolean {
     return this._standalone$.getValue();
@@ -32,5 +34,11 @@ export class StandaloneService {
     const isStandalone: boolean = isStandaloneQueryParamEnabled || isHuaweiUserAgent || isDisplayModeStandalone || isDisplayMinimalUi;
 
     return isStandalone;
+  }
+
+  private subscribeToAppInstalledEvent(): void {
+    this.window.addEventListener('appinstalled', () => {
+      this._standalone$.next(true);
+    });
   }
 }

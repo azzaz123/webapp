@@ -12,6 +12,7 @@ describe('StandaloneService', () => {
   let route: ActivatedRoute;
   let userAgentMock = MOCK_MACOS_USER_AGENT;
   let windowMock = {
+    addEventListener() {},
     matchMedia() {
       return {
         matches: false,
@@ -97,6 +98,7 @@ describe('StandaloneService', () => {
       beforeAll(() => {
         userAgentMock = MOCK_MACOS_USER_AGENT;
         windowMock = {
+          addEventListener() {},
           matchMedia() {
             return {
               matches: true,
