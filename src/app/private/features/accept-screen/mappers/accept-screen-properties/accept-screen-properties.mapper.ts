@@ -19,6 +19,7 @@ export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> =
 };
 
 export const mapUserToAcceptScreenSeller: ToDomainMapper<User, AcceptScreenSeller> = (seller: User): AcceptScreenSeller => {
+  // TODO: Map address when request created		Date: 2022/01/20
   return {
     id: seller.id,
     imageUrl: mapUserToImageUrl(seller),

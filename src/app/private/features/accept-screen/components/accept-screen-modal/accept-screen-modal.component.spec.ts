@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AcceptScreenModalComponent } from './accept-screen-modal.component';
-import { AcceptScreenService } from '../../services/accept-screen/accept-screen.service';
 import { ActivatedRoute } from '@angular/router';
+import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
 
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID = '82723gHYSA762';
 
   let component: AcceptScreenModalComponent;
   let fixture: ComponentFixture<AcceptScreenModalComponent>;
-  let acceptScreenService: AcceptScreenService;
+  let acceptScreenStoreService: AcceptScreenStoreService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,7 +25,7 @@ describe('AcceptScreenModalComponent', () => {
           },
         },
         {
-          provide: AcceptScreenService,
+          provide: AcceptScreenStoreService,
           useValue: {
             initialize() {},
           },
@@ -36,7 +36,7 @@ describe('AcceptScreenModalComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AcceptScreenModalComponent);
-    acceptScreenService = TestBed.inject(AcceptScreenService);
+    acceptScreenStoreService = TestBed.inject(AcceptScreenStoreService);
     component = fixture.componentInstance;
   });
 
@@ -46,14 +46,14 @@ describe('AcceptScreenModalComponent', () => {
 
   describe('When opening Accept Screen', () => {
     beforeEach(() => {
-      spyOn(acceptScreenService, 'initialize');
+      spyOn(acceptScreenStoreService, 'initialize');
 
       fixture.detectChanges();
     });
 
-    it('should initialize accept screen properties', () => {
-      expect(acceptScreenService.initialize).toHaveBeenCalledTimes(1);
-      expect(acceptScreenService.initialize).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+    it('should initialize accept screen properties using the store', () => {
+      expect(acceptScreenStoreService.initialize).toHaveBeenCalledTimes(1);
+      expect(acceptScreenStoreService.initialize).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });
 });

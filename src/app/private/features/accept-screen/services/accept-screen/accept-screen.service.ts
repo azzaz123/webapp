@@ -23,12 +23,7 @@ export class AcceptScreenService {
     private itemService: ItemService
   ) {}
 
-  public initialize(requestId: string): void {
-    this.getAcceptScreenProperties(requestId).subscribe();
-  }
-
-  // TODO: Initialize store when created		Date: 2022/01/19
-  private getAcceptScreenProperties(requestId: string): Observable<AcceptScreenProperties> {
+  public getAcceptScreenProperties(requestId: string): Observable<AcceptScreenProperties> {
     return this.getSellerRequest(requestId).pipe(
       take(1),
       concatMap((request: SellerRequest) => {
