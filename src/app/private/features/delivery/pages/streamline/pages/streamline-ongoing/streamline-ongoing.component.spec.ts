@@ -30,8 +30,9 @@ import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
 import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
 
-const PATH_TO_ACCEPT_SCREEN: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
+const PATH_TO_ACCEPT_SCREEN: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}/${STREAMLINE_PATHS.ONGOING}/${PRIVATE_PATHS.ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
 
 describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;

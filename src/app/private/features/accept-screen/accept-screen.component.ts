@@ -4,8 +4,7 @@ import { AcceptScreenModalComponent } from './components/accept-screen-modal/acc
 
 @Component({
   selector: 'tsl-accept-screen',
-  templateUrl: './accept-screen.component.html',
-  styleUrls: ['./accept-screen.component.scss'],
+  template: '',
 })
 export class AcceptScreenComponent implements OnInit {
   constructor(private modalService: NgbModal) {}

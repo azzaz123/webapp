@@ -17,6 +17,7 @@ import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction
 import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-status.enum';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
 
 @Component({
   selector: 'tsl-streamline-ongoing',
@@ -81,7 +82,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   }
 
   private redirectToAcceptScreen(requestId: string): void {
-    const pathToAcceptScreen: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
+    const pathToAcceptScreen: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}/${STREAMLINE_PATHS.ONGOING}/${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
     this.redirectToPage(pathToAcceptScreen);
   }
 
