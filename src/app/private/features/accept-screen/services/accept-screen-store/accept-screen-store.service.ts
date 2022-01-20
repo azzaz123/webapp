@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenService } from '../accept-screen/accept-screen.service';
 
@@ -11,11 +11,15 @@ export class AcceptScreenStoreService {
   constructor(private acceptScreenService: AcceptScreenService) {}
 
   public initialize(requestId: string): void {
-    this.acceptScreenService.getAcceptScreenProperties(requestId).pipe(
-      tap((acceptScreenProperties: AcceptScreenProperties) => {
-        this.properties = acceptScreenProperties;
-      })
-    );
+    this.acceptScreenService
+      .getAcceptScreenProperties(requestId)
+      .pipe(
+        take(1),
+        tap((acceptScreenProperties: AcceptScreenProperties) => {
+          this.properties = acceptScreenProperties;
+        })
+      )
+      .subscribe();
   }
 
   public get properties$(): Observable<AcceptScreenProperties> {
