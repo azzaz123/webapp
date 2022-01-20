@@ -8,13 +8,12 @@ import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 import { concatMap, map, mergeMap, take } from 'rxjs/operators';
 import { AcceptScreenProperties } from '../../interfaces/accept-screen-properties.interface';
-import { AcceptScreenItem } from '../../interfaces/accept-screen-item.interface';
-import { mapCurrencyCodeToCurrency } from '../../../../../api/core/mappers/currency/currency-mapper';
-import { mapNumberAndCurrencyCodeToMoney, NumberCurrencyCode } from '../../../../../api/core/mappers/money/money-mapper';
-import { CurrencyCode } from '../../../../../api/core/model/currency.interface';
-import { PLACEHOLDER_AVATAR } from '../../../../../core/user/user';
-import { AcceptScreenBuyer } from '../../interfaces/accept-screen-buyer.interface';
-import { AcceptScreenSeller } from '../../interfaces/accept-screen-seller.interface';
+import { AcceptScreenItem, AcceptScreenBuyer, AcceptScreenSeller } from '../../interfaces';
+import {
+  mapItemToAcceptScreenItem,
+  mapUserToAcceptScreenBuyer,
+  mapUserToAcceptScreenSeller,
+} from '../../mappers/accept-screen-properties/accept-screen-properties.mapper';
 
 @Injectable()
 export class AcceptScreenService {
@@ -52,43 +51,14 @@ export class AcceptScreenService {
   }
 
   private getBuyer(userId: string): Observable<AcceptScreenBuyer> {
-    return this.userService.get(userId).pipe(
-      map((buyer: User) => {
-        return {
-          id: buyer.id,
-          imageUrl: buyer.image?.urls_by_size.original || PLACEHOLDER_AVATAR,
-          name: buyer.microName,
-        };
-      })
-    );
+    return this.userService.get(userId).pipe(map((buyer: User) => mapUserToAcceptScreenBuyer(buyer)));
   }
 
   private getSeller(): Observable<AcceptScreenSeller> {
-    return this.userService.getLoggedUserInformation().pipe(
-      map((seller) => {
-        return {
-          id: seller.id,
-          imageUrl: seller.image?.urls_by_size.original || PLACEHOLDER_AVATAR,
-          address: null,
-        };
-      })
-    );
+    return this.userService.getLoggedUserInformation().pipe(map((seller) => mapUserToAcceptScreenSeller(seller)));
   }
 
   private getItem(itemId: string): Observable<AcceptScreenItem> {
-    return this.itemService.get(itemId).pipe(
-      map((item: Item) => {
-        const itemCurrencyPrice: NumberCurrencyCode = {
-          number: item.salePrice,
-          currency: item.currencyCode as CurrencyCode,
-        };
-        return {
-          id: item.id,
-          title: item.title,
-          price: mapNumberAndCurrencyCodeToMoney(itemCurrencyPrice),
-          imageUrl: item.images ? item.images[0].urls_by_size.original : null,
-        };
-      })
-    );
+    return this.itemService.get(itemId).pipe(map((item: Item) => mapItemToAcceptScreenItem(item)));
   }
 }
