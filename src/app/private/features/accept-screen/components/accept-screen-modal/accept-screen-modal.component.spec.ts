@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AcceptScreenModalComponent } from './accept-screen-modal.component';
-import { AcceptScreenService } from '../../services/accept-screen.service';
+import { AcceptScreenService } from '../../services/accept-screen/accept-screen.service';
 import { ActivatedRoute } from '@angular/router';
 
 describe('AcceptScreenModalComponent', () => {
