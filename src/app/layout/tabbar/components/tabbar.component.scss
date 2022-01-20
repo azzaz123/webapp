@@ -12,7 +12,7 @@
   background-color: $white;
   border-top: 1px solid $blue-grey-5;
   min-height: 64px;
-  @supports (padding: unquote('max(0px)')) {
+  @supports (padding: env(safe-area-inset-bottom)) {
     padding-bottom: unquote('max(#{10px}, env(safe-area-inset-bottom))');
   }
   svg {

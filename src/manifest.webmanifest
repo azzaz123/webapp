@@ -3,6 +3,7 @@
   "short_name": "Wallapop",
   "theme_color": "#FFF",
   "background_color": "#FFF",
+  "display_override": ["minimal-ui"],
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
