@@ -9,11 +9,11 @@ import { ADJUST_IOS_URL, ADJUST_ANDROID_URL } from '@core/constants';
   styleUrls: ['./mobile-blocker.component.scss'],
 })
 export class MobileBlockerComponent implements OnInit {
+  @Output() viewIsBlocked: EventEmitter<any> = new EventEmitter<any>();
   public isCardealer: boolean;
   public isMobile: boolean;
   public adjustIOSUrl = ADJUST_IOS_URL;
   public adjustAndroidUrl = ADJUST_ANDROID_URL;
-  @Output() viewIsBlocked: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private deviceDetector: DeviceDetectorService, private userService: UserService) {}
 
