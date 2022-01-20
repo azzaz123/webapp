@@ -27,7 +27,6 @@
 /src/app/public/features/register
 
 # TRANSVERSAL
-/src/app/public/layout
 /src/app/private/layout
 /src/app/public/features/error
 /src/tests
