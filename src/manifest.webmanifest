@@ -6,7 +6,7 @@
   "display_override": ["minimal-ui"],
   "display": "standalone",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/app/",
   "icons": [
     {
       "src": "assets/pwa/manifest-icon-192.png",
