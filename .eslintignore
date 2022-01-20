@@ -26,8 +26,7 @@
 # T&S
 /src/app/public/features/register
 
-# TRANSVERSAL 
-/src/app/layout
+# TRANSVERSAL
 /src/app/public/layout
 /src/app/private/layout
 /src/app/public/features/error
