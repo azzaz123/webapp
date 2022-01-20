@@ -7,8 +7,10 @@ import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/
 import { of } from 'rxjs';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
-import { MockedItemService } from '@fixtures/item.fixtures.spec';
-import { MOCK_USER, MOCK_OTHER_USER } from '@fixtures/user.fixtures.spec';
+import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { AcceptScreenProperties } from '../../interfaces';
+import { MOCK_ACCEPT_SCREEN_PROPERTIES } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 
 describe('AcceptScreenService', () => {
   let acceptScreenService: AcceptScreenService;
@@ -39,7 +41,14 @@ describe('AcceptScreenService', () => {
             },
           },
         },
-        { provide: ItemService, useClass: MockedItemService },
+        {
+          provide: ItemService,
+          useValue: {
+            get() {
+              return of(MOCK_ITEM);
+            },
+          },
+        },
       ],
       imports: [HttpClientTestingModule],
     });
@@ -53,8 +62,9 @@ describe('AcceptScreenService', () => {
     expect(acceptScreenService).toBeTruthy();
   });
 
-  describe('when asking to initialize the accept screen properties', () => {
+  describe('when asking the accept screen properties', () => {
     const MOCK_REQUEST_ID = 'dfsd34dss12';
+    let result: AcceptScreenProperties;
 
     beforeEach(fakeAsync(() => {
       spyOn(sellerRequestApiService, 'getRequestInfo').and.callThrough();
@@ -62,7 +72,9 @@ describe('AcceptScreenService', () => {
       spyOn(userService, 'getLoggedUserInformation').and.callThrough();
       spyOn(itemService, 'get').and.callThrough();
 
-      acceptScreenService.initialize(MOCK_REQUEST_ID);
+      acceptScreenService.getAcceptScreenProperties(MOCK_REQUEST_ID).subscribe((newProperties: AcceptScreenProperties) => {
+        result = newProperties;
+      });
       tick();
     }));
 
@@ -83,6 +95,10 @@ describe('AcceptScreenService', () => {
     it('should ask server for item information', () => {
       expect(itemService.get).toHaveBeenCalledTimes(1);
       expect(itemService.get).toHaveBeenCalledWith(MOCK_SELLER_REQUEST.itemId);
+    });
+
+    it('should return the properties mapped', () => {
+      expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_PROPERTIES));
     });
   });
 });
