@@ -28,15 +28,17 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./topbar.component.scss'],
 })
 export class TopbarComponent implements OnInit, OnDestroy {
+  @Input() isMyZone: boolean;
+
   public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public readonly showLogo$: Observable<boolean> = this.standaloneService.standalone$.pipe(map((standalone: boolean) => !standalone));
+
   public user: User;
   public homeUrl: string;
   public isProfessional: boolean;
   public wallacoins = 0;
   public currencyName: string;
   public isLogged: boolean;
-  @Input() isMyZone: boolean;
 
   private componentSubscriptions: Subscription[] = [];
 
@@ -87,18 +89,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
     );
   }
 
-  private updateCreditInfo(cache?: boolean) {
-    this.paymentService.getCreditInfo(cache).subscribe((creditInfo: CreditInfo) => {
-      this.currencyName = creditInfo.currencyName;
-      this.wallacoins = creditInfo.credit;
-      this.setCreditCookie();
+  ngOnDestroy(): void {
+    this.componentSubscriptions.forEach((subscription: Subscription) => {
+      subscription.unsubscribe();
     });
-  }
-
-  private setCreditCookie() {
-    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
-    this.cookieService.put('creditName', this.currencyName, cookieOptions);
-    this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
   }
 
   public searchCancel(searchValue: SearchBoxValue): void {
@@ -112,6 +106,27 @@ export class TopbarComponent implements OnInit, OnDestroy {
     }
 
     this.redirectToSearch(searchValue);
+  }
+
+  public onOpenWallacoinsModal(): void {
+    this.modalService.open(WallacoinsDisabledModalComponent, {
+      windowClass: 'modal-standard',
+      backdrop: 'static',
+    });
+  }
+
+  private updateCreditInfo(cache?: boolean) {
+    this.paymentService.getCreditInfo(cache).subscribe((creditInfo: CreditInfo) => {
+      this.currencyName = creditInfo.currencyName;
+      this.wallacoins = creditInfo.credit;
+      this.setCreditCookie();
+    });
+  }
+
+  private setCreditCookie() {
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    this.cookieService.put('creditName', this.currencyName, cookieOptions);
+    this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
   }
 
   private redirectToSearch(searchValue: SearchBoxValue): void {
@@ -138,18 +153,5 @@ export class TopbarComponent implements OnInit, OnDestroy {
     }
 
     this.searchNavigator.navigate(filterParams, FILTERS_SOURCE.SEARCH_BOX);
-  }
-
-  public onOpenWallacoinsModal(): void {
-    this.modalService.open(WallacoinsDisabledModalComponent, {
-      windowClass: 'modal-standard',
-      backdrop: 'static',
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.componentSubscriptions.forEach((subscription: Subscription) => {
-      subscription.unsubscribe();
-    });
   }
 }
