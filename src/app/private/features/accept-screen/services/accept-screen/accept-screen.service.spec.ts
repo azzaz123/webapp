@@ -9,8 +9,6 @@ import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
 import { MockedItemService } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER, MOCK_OTHER_USER } from '@fixtures/user.fixtures.spec';
-import { AcceptScreenProperties } from '../interfaces/accept-screen-properties.interface';
-import { SellerRequest } from '../../../../api/core/model/delivery/seller-requests/seller-request.interface';
 
 describe('AcceptScreenService', () => {
   let acceptScreenService: AcceptScreenService;
