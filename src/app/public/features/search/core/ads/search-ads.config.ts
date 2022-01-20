@@ -89,7 +89,7 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
   mobileTopBanner: {
     name: '130868815/Web_Mobile_Search/Topbanner',
     id: 'sky-unit-search-top',
-    sizes: AD_DESKTOP_MAPPING,
+    sizes: AD_MOBILE_MAPPING.small,
     sizeMapping: {
       desktop: {
         screenSize: AD_DESKTOP_SCREEN_SIZE,
@@ -111,7 +111,7 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
   mobilePos1: {
     name: '130868815/Web_Mobile_Search/Pos1',
     id: 'sky-unit-search-right-top',
-    sizes: AD_DESKTOP_VERTICAL_MAPPING,
+    sizes: AD_MOBILE_MAPPING.medium,
     sizeMapping: {
       desktop: {
         screenSize: AD_DESKTOP_SCREEN_SIZE,
@@ -133,7 +133,7 @@ export const AD_PUBLIC_SEARCH: AdSlotSearch = {
   mobilePos2: {
     name: '130868815/Web_Mobile_Search/Pos2',
     id: 'sky-unit-search-right-bottom',
-    sizes: AD_DESKTOP_VERTICAL_MAPPING,
+    sizes: AD_MOBILE_MAPPING.big,
     sizeMapping: {
       desktop: {
         screenSize: AD_DESKTOP_SCREEN_SIZE,
