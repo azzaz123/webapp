@@ -50,8 +50,7 @@ describe('ItemsStatsComponent', () => {
 
       fixture.detectChanges();
 
-      expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
-      expect(component['init']).toBe(20);
+      expect(itemService.mine).toHaveBeenCalledWith(null, 'published');
       expect(component.items).toEqual([MOCK_ITEM, MOCK_ITEM]);
     });
 
