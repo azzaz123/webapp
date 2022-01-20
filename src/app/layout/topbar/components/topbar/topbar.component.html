@@ -1,7 +1,5 @@
-<div class="topbar-logo-icon" *ngIf="(showLogo$ | async)">
-  <a [href]="homeUrl">
-    <i class="ic-logo-web"></i>
-  </a>
+<div tslHomeRoute class="topbar-logo-icon">
+  <i class="ic-logo-web"></i>
 </div>
 <tsl-suggester id="top-bar-suggester" (searchSubmit)="onSearchSubmit($event)" (searchCancel)="searchCancel($event)"></tsl-suggester>
 <div class="main-header-login d-none d-lg-flex" [class.professional]="isProfessional">
