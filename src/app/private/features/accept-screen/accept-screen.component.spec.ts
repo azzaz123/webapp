@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AcceptScreenComponent } from './accept-screen.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AcceptScreenModalComponent } from './components/accept-screen-modal/accept-screen-modal.component';
+import { AcceptScreenModalComponent } from './modals/accept-screen-modal/accept-screen-modal.component';
 
 describe('AcceptScreenComponent', () => {
   let component: AcceptScreenComponent;
