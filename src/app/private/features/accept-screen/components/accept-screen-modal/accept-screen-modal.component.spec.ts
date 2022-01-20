@@ -2,6 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AcceptScreenModalComponent } from './accept-screen-modal.component';
 import { ActivatedRoute } from '@angular/router';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
+import { MOCK_ACCEPT_SCREEN_PROPERTIES } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
+import { of } from 'rxjs';
+import { AcceptScreenProperties } from '../../interfaces';
 
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID = '82723gHYSA762';
@@ -28,6 +31,9 @@ describe('AcceptScreenModalComponent', () => {
           provide: AcceptScreenStoreService,
           useValue: {
             initialize() {},
+            get properties$() {
+              return of(MOCK_ACCEPT_SCREEN_PROPERTIES);
+            },
           },
         },
       ],
@@ -45,15 +51,24 @@ describe('AcceptScreenModalComponent', () => {
   });
 
   describe('When opening Accept Screen', () => {
+    let acceptScreenProperties: AcceptScreenProperties;
+
     beforeEach(() => {
       spyOn(acceptScreenStoreService, 'initialize');
 
       fixture.detectChanges();
+      component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
+        acceptScreenProperties = newProperties;
+      });
     });
 
-    it('should initialize accept screen properties using the store', () => {
+    it('should request accept screen properties using the store', () => {
       expect(acceptScreenStoreService.initialize).toHaveBeenCalledTimes(1);
       expect(acceptScreenStoreService.initialize).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+    });
+
+    it('should update the component properties', () => {
+      expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES);
     });
   });
 });
