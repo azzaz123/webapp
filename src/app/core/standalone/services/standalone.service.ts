@@ -28,7 +28,8 @@ export class StandaloneService {
       this.route.snapshot.queryParamMap.get(STANDALONE_QUERY_PARAM) === STANDALONE_STATUS.ENABLED;
     const isHuaweiUserAgent: boolean = this.userAgent.indexOf('hap') >= 0;
     const isDisplayModeStandalone: boolean = this.window.matchMedia('(display-mode: standalone)').matches;
-    const isStandalone: boolean = isStandaloneQueryParamEnabled || isHuaweiUserAgent || isDisplayModeStandalone;
+    const isDisplayMinimalUi: boolean = this.window.matchMedia('(display-mode: minimal-ui)').matches;
+    const isStandalone: boolean = isStandaloneQueryParamEnabled || isHuaweiUserAgent || isDisplayModeStandalone || isDisplayMinimalUi;
 
     return isStandalone;
   }
