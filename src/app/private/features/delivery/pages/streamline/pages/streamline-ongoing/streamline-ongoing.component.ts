@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { PATH_TO_ACCEPT_SCREEN, PRIVATE_PATHS } from '@private/private-routing-constants';
 import { SharedErrorActionService } from '@shared/error-action';
 import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 
@@ -17,7 +17,6 @@ import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction
 import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-status.enum';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
 
 @Component({
   selector: 'tsl-streamline-ongoing',
@@ -82,8 +81,8 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   }
 
   private redirectToAcceptScreen(requestId: string): void {
-    const pathToAcceptScreen: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}/${STREAMLINE_PATHS.ONGOING}/${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
-    this.redirectToPage(pathToAcceptScreen);
+    const pathToAcceptScreenWithRequestId: string = `${PATH_TO_ACCEPT_SCREEN}/${requestId}`;
+    this.redirectToPage(pathToAcceptScreenWithRequestId);
   }
 
   private redirectToPage(page: string): void {
