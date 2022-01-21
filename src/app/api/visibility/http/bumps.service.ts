@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use';
+import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use.interface';
 import { Observable } from 'rxjs';
 import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
 import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE } from './endpoints';

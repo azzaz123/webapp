@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use';
+import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BumpsHttpService } from './http/bumps.service';

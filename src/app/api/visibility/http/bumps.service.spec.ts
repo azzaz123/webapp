@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
-import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use';
+import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use.interface';
 import { MOCK_BUMPS_PACKAGE_BALANCE } from '@fixtures/bump-package.fixtures.spec';
 import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
 import { BumpsHttpService } from './bumps.service';
