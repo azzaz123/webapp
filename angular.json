@@ -37,6 +37,7 @@
               "src/assets",
               "src/favicon.ico",
               "src/manifest.json",
+              "src/manifest.webmanifest",
               "src/service-worker.js",
               {
                 "glob": "**/*",

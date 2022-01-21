@@ -84,7 +84,7 @@ const getTransactionUserFromUser = (user: User): TransactionUser => {
 const getTransactionItemFromItem = (item: Item): TransactionItem => {
   return {
     id: item.id,
-    imageUrl: item.images[0].urls_by_size.original,
+    imageUrl: item.images ? item.images[0].urls_by_size.original : null,
     title: item.title,
   };
 };

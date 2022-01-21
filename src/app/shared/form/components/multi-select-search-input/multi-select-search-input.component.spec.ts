@@ -9,13 +9,14 @@ import { HashtagSuggesterApiService } from '@private/features/upload/core/servic
 import { MultiSelectFormModule } from '@shared/form/components/multi-select-form/multi-select-form.module';
 import { SelectFormModule } from '@shared/form/components/select/select-form.module';
 import { of } from 'rxjs';
-import { MultiselectSearchInputComponent } from './multiselect-search-input.component';
-import { HASHTAG_EXTENDED_OPTIONS, HASHTAG_OPTIONS, HASHTAG_TESTING, INITIAL_HASHTAGS } from './multiselect-search-input.fixtures.spec';
+import { MultiselectSearchInputComponent } from './multi-select-search-input.component';
+import { HASHTAG_EXTENDED_OPTIONS, HASHTAG_TESTING, INITIAL_HASHTAGS } from './multi-select-search-input.fixtures.spec';
 
 describe('MultiselectSearchInputComponent', () => {
   let component: MultiselectSearchInputComponent;
   let fixture: ComponentFixture<MultiselectSearchInputComponent>;
   let inputElement: DebugElement;
+  let multiselectElement: DebugElement;
   let hashtagSuggesterApiService: HashtagSuggesterApiService;
 
   beforeEach(async () => {
@@ -33,6 +34,7 @@ describe('MultiselectSearchInputComponent', () => {
     hashtagSuggesterApiService = TestBed.inject(HashtagSuggesterApiService);
     fixture.detectChanges();
     inputElement = fixture.debugElement.query(By.css('.MultiselectSearchInput'));
+    multiselectElement = fixture.debugElement.query(By.css('tsl-multi-select-form'));
   });
 
   it('should create', () => {
@@ -156,10 +158,12 @@ describe('MultiselectSearchInputComponent', () => {
     describe('when we change the input checkbox', () => {
       it('should be able to update the value', () => {
         spyOn(component, 'onChange');
-        component.multiSelectFormComponent['extendedOptionsSubject'].next(HASHTAG_EXTENDED_OPTIONS);
-        const expextedValue = HASHTAG_EXTENDED_OPTIONS.filter((opt) => opt.checked).map((opt) => opt.value);
+        spyOn(hashtagSuggesterApiService, 'getHashtagsByPrefix').and.returnValue(of({ list: MOCK_HASHTAGS, paginationParameter: '10' }));
+        component.suggestions = [MOCK_HASHTAGS[0].text];
 
-        expect(component.onChange).toHaveBeenCalledWith(expextedValue);
+        multiselectElement.triggerEventHandler('change', null);
+
+        expect(component.onChange).toHaveBeenCalledWith([MOCK_HASHTAGS[0].text]);
       });
     });
   });
