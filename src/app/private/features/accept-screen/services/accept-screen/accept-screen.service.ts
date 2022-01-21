@@ -15,7 +15,9 @@ import {
   mapUserToAcceptScreenSeller,
 } from '../../mappers/accept-screen-properties/accept-screen-properties.mapper';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AcceptScreenService {
   constructor(
     private sellerRequestApiService: SellerRequestsApiService,

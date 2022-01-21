@@ -4,7 +4,9 @@ import { take, tap } from 'rxjs/operators';
 import { AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenService } from '../accept-screen/accept-screen.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AcceptScreenStoreService {
   private readonly propertiesSubject: ReplaySubject<AcceptScreenProperties> = new ReplaySubject(1);
 
