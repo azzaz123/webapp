@@ -14,7 +14,9 @@ import { StripeService } from '@core/stripe/stripe.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { Cart } from '@shared/catalog/cart/cart';
 import { CartBase, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
-import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
+import { CartChange } from '@shared/catalog/cart/cart-item.interface';
+import { PACKS_TYPES } from '@core/payments/pack';
+import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 
 @Component({
   selector: 'tsl-cart',
@@ -33,6 +35,8 @@ export class CartComponent implements OnInit, OnDestroy {
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
+  public readonly BUMP_TYPES = BUMP_TYPE;
+  public readonly PACK_TYPES = PACKS_TYPES;
 
   private active = true;
 
@@ -59,10 +63,6 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.active = false;
-    this.cartService.clean();
-  }
-
-  clean() {
     this.cartService.clean();
   }
 
@@ -117,11 +117,6 @@ export class CartComponent implements OnInit, OnDestroy {
     this.savedCard = true;
     this.selectedCard = true;
     this.setCardInfo(selectedCard);
-  }
-
-  public handleIconPath(type: string): string {
-    const iconBump = type.replace('bump', '');
-    return `/assets/icons/wing-${iconBump}.svg`;
   }
 
   public hasCard(hasCard: boolean) {
