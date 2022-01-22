@@ -97,11 +97,9 @@
       [disabled]="!cart?.total || loading"
       [loading]="loading"
       (click)="checkout()"
-      className="btn-primary btn-medium stripe"
-    >
-      <div class="secure-payment-button">
-        <span i18n="@@web_cart_683">Continue to checkout</span>
-      </div>
+      className="btn-primary w-100 btn-primary--bold"
+      i18n="@@web_cart_683"
+      >Continue to checkout
     </tsl-button>
   </div>
 </div>

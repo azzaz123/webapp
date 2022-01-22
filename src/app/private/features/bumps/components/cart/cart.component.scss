@@ -38,7 +38,9 @@ $card-select-height: (50px + $spacing-s) * 2 + $spacing-xs;
   }
 
   .cart-wrapper {
-    margin-bottom: auto;
+    border-bottom: solid 1px $blue-grey-5;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
 
     .with-credits & {
       &.no-discount {
@@ -188,49 +190,6 @@ $card-select-height: (50px + $spacing-s) * 2 + $spacing-xs;
           @include square(32px);
         }
       }
-    }
-  }
-
-  .secure-payment {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    tsl-svg-icon {
-      width: 21px;
-      height: 15.5px;
-    }
-    span {
-      font-size: $font-size-xs;
-      color: $blue-grey-3;
-    }
-  }
-
-  .secure-payment-button {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    tsl-svg-icon {
-      height: 14px;
-      width: 11px;
-      position: absolute;
-      right: 0;
-      top: 1px;
-    }
-    span {
-      font-size: $font-size-s;
-      color: $white;
-    }
-  }
-
-  .stripe-payment {
-    text-align: center;
-    margin: $spacing-xs 0 0 0;
-    tsl-svg-icon {
-      width: 100px;
-      height: 25px;
     }
   }
 
