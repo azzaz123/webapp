@@ -97,9 +97,11 @@ $offset: 7px;
 .price-table {
   z-index: 4;
   position: relative;
-  margin-bottom: $spacing-xxxl;
 }
 
 .cart {
-  width: 280px;
+  width: 100%;
+  @include media-breakpoint-up(lg) {
+    width: 280px;
+  }
 }

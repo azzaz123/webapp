@@ -1,11 +1,17 @@
 @import '~style/common';
 
-.item {
+.CheckoutItem {
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
   margin-bottom: $spacing-s;
   padding: 20px;
+
+  &__header {
+    @include media-breakpoint-down(sm) {
+      border-bottom: solid 1px $blue-grey-5;
+    }
+  }
 
   &__title {
     font-weight: bold;
@@ -32,7 +38,7 @@
     text-align: center;
     color: #90a4ae;
     &:not(:last-child) {
-      margin-right: 4px;
+      margin-right: 8px;
     }
     &:hover,
     &.selected {
@@ -45,7 +51,7 @@
       background-color: $zone-bump-dark;
     }
   }
-  .border-l {
+  .border {
     border-left: solid 1px $blue-grey-5;
     height: 75%;
   }

@@ -1,28 +1,48 @@
-<div class="item d-flex flex-column">
+<div class="CheckoutItem d-flex flex-column">
   <div class="d-flex w-100">
-    <tsl-item-avatar [item]="itemWithProducts.item" size="big" title="{{ itemWithProducts.item.title }}"></tsl-item-avatar>
+    <tsl-item-avatar
+      class="d-none d-md-inline"
+      [item]="itemWithProducts.item"
+      size="big"
+      title="{{ itemWithProducts.item.title }}"
+    ></tsl-item-avatar>
     <div class="d-flex flex-column w-100">
-      <div class="d-flex align-items-center justify-content-between">
-        <div class="item__title mb-2">{{ itemWithProducts.item.title }}</div>
-        <tsl-svg-icon (click)="onRemoveItem(itemWithProducts.item.id, selectedType)" [src]="'/assets/icons/delete.svg'"></tsl-svg-icon>
+      <div class="CheckoutItem__header d-flex align-items-center pb-3 pb-md-0">
+        <tsl-item-avatar
+          class="d-inline d-md-none"
+          [item]="itemWithProducts.item"
+          size="small"
+          title="{{ itemWithProducts.item.title }}"
+        ></tsl-item-avatar>
+        <div class="CheckoutItem__title mb-2">{{ itemWithProducts.item.title }}</div>
+        <tsl-svg-icon
+          class="ml-auto"
+          (click)="onRemoveItem(itemWithProducts.item.id, selectedType)"
+          [src]="'/assets/icons/delete.svg'"
+        ></tsl-svg-icon>
       </div>
-      <div class="d-flex">
-        <div class="pr-5">
-          <div class="item__subtitle mb-1">Duration</div>
-          <div class="d-flex flex-wrap">
+      <div class="d-flex justify-content-between flex-wrap">
+        <div>
+          <div class="CheckoutItem__subtitle mb-1 mt-3 mt-md-0">Duration</div>
+          <div class="d-flex">
             <ng-container *ngFor="let duration of durations">
-              <button class="btn item__button" (click)="selectDuration(duration)" [ngClass]="{ selected: selectedDuration === duration }">
+              <button
+                class="btn CheckoutItem__button"
+                (click)="selectDuration(duration)"
+                [ngClass]="{ selected: selectedDuration === duration }"
+              >
                 {{ duration / 24 }} days
               </button>
             </ng-container>
           </div>
         </div>
-        <div class="pl-5 border-l">
-          <div class="item__subtitle mb-1">Visibility Area</div>
-          <div class="d-flex flex-wrap">
+        <div class="border d-xl-block d-none"></div>
+        <div>
+          <div class="CheckoutItem__subtitle mb-1 mt-3 mt-xl-0">Visibility Area</div>
+          <div class="d-flex">
             <ng-container *ngFor="let type of types">
               <ng-container *ngIf="selectedDuration && itemWithProducts?.products[selectedDuration][type]">
-                <button class="btn item__button" (click)="select(type)" [ngClass]="{ selected: type === selectedType }">
+                <button class="btn CheckoutItem__button" (click)="select(type)" [ngClass]="{ selected: type === selectedType }">
                   {{ type }}
                 </button>
               </ng-container>
@@ -32,7 +52,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="selectedDuration && selectedType" class="text-right w-100 item__price mt-4">
+  <div *ngIf="selectedDuration && selectedType" class="text-right w-100 CheckoutItem__price mt-4">
     {{
       itemWithProducts?.products[selectedDuration][selectedType]?.market_code * creditInfo?.factor
         | customCurrency: creditInfo?.currencyName

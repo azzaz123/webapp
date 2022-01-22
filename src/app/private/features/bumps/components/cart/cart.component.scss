@@ -18,298 +18,229 @@ $margin-height: 110px;
 $clear-cart-height: 38px;
 $card-select-height: (50px + $spacing-s) * 2 + $spacing-xs;
 
-:host {
+.Cart {
   display: flex;
   flex-direction: column;
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
-  width: 280px;
-  position: fixed;
-  padding: 0 $spacing-s $spacing-s;
-  height: calc(100% - #{$margin-height});
-  .with-credits {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-}
+  min-width: 280px;
+  padding: 20px;
 
-h1 {
-  height: $title-height;
-  line-height: $line-height-xxl;
-  font-size: $font-size-m;
-  text-align: left;
-  margin: 0;
-}
-
-.cart-wrapper {
-  min-height: $margin-height;
-  height: calc(100% - #{$margin-height + $extra-height});
-  background-color: rgba($blue-grey-5, 0.3);
-  border-radius: 5px;
-  position: relative;
-  flex: 2 0px;
-  .with-credits & {
-    &.no-discount {
-      margin-bottom: $spacing-s;
-    }
+  @include media-breakpoint-up(lg) {
+    height: calc(100vh - #{$margin-height});
   }
-  &.has-financial-card {
+
+  &__title {
+    font-size: 20px;
+    line-height: 23px;
+    font-weight: bold;
+  }
+
+  .cart-wrapper {
+    margin-bottom: auto;
+
     .with-credits & {
       &.no-discount {
         margin-bottom: $spacing-s;
       }
     }
+    &.has-financial-card {
+      .with-credits & {
+        &.no-discount {
+          margin-bottom: $spacing-s;
+        }
+      }
+    }
   }
-}
 
-.scroll-panel {
-  overflow: auto;
-  padding: $spacing-s;
-  height: 100%;
-}
+  .scroll-panel {
+    overflow: auto;
+    height: 100%;
+  }
 
-.discounted-total {
-  text-align: right;
-  font-size: $font-size-l;
-  color: $blue-grey-3;
-  margin-top: $spacing-m;
-  padding-right: $spacing-s;
-  margin-bottom: -$spacing-s;
-  height: $discounted-total-height;
-}
-
-.walla-total,
-.credit,
-.total,
-.missing {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-chunky;
-  text-transform: uppercase;
-  overflow: hidden;
-  clear: both;
-}
-
-.walla-total {
-  color: $blue-grey-2;
-  line-height: $line-height-l;
-  margin-top: $spacing-s;
-  .price {
+  .discounted-total {
+    text-align: right;
     font-size: $font-size-l;
-  }
-  .with-credits & {
-    .price {
-      font-size: $font-size-m;
-    }
-  }
-}
-
-.credit,
-.missing {
-  .label {
-    tsl-wallacoin {
-      vertical-align: sub;
-      margin-right: $spacing-xs;
-    }
-  }
-}
-
-.credit {
-  color: $walla-main;
-  height: $credit-total-height;
-  .price {
-    font-size: $font-size-s;
-  }
-  .with-credits & {
-    font-size: $font-size-m;
-    .price {
-      font-size: $font-size-m;
-    }
-    .label span span {
-      font-size: $font-size-xs;
-    }
-  }
-}
-
-.missing {
-  border-top: solid 1px $blue-grey-5;
-  margin: $spacing-s $spacing-s 0 $spacing-s;
-  padding: $spacing-xs $spacing-xxs 0 0;
-  .label {
     color: $blue-grey-3;
+    margin-top: $spacing-m;
+    padding-right: $spacing-s;
+    margin-bottom: -$spacing-s;
+    height: $discounted-total-height;
   }
-  .price {
-    color: $blue-grey-2;
-    font-size: $font-size-l;
-  }
-}
 
-.total {
-  height: $main-total-height;
-  line-height: $line-height-xxl;
-  .price {
-    font-size: $font-size-xl;
-  }
-}
-
-ul,
-li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.items-list {
-  font-size: $font-size-xs;
-  .cart-box {
-    border-radius: 5px;
-    background-color: $white;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    border: solid 0.5px $blue-grey-4;
-    margin-bottom: $spacing-s;
+  .walla-total,
+  .credit,
+  .total,
+  .missing {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    user-select: none;
-  }
-  .type-total {
-    padding: $spacing-ms;
-    cursor: pointer;
-    .wing-icon {
-      width: 51px;
-      height: 30px;
-      margin-right: $spacing-s;
-      ::ng-deep svg {
-        height: 100%;
-        width: 100%;
-      }
-    }
-    .arrow-icon {
-      transform: rotate(-90deg) scale(0.8);
-      width: 9px;
-      height: 13px;
-    }
-    &.collapsed {
-      .arrow-icon {
-        transform: rotate(90deg) scale(0.8);
-      }
-    }
-  }
-  .price {
-    color: $blue-grey-2;
+    font-size: $font-size-xs;
     font-weight: $font-weight-chunky;
+    text-transform: uppercase;
+    overflow: hidden;
+    clear: both;
   }
-  .zonebump {
-    color: $zone-bump;
-  }
-  .citybump {
-    color: $city-bump;
-  }
-  .countrybump {
-    color: $country-bump;
-  }
-  .type {
-    flex: 1;
-    .bump-type {
-      margin-right: $spacing-xxs;
+
+  .walla-total {
+    color: $blue-grey-2;
+    line-height: $line-height-l;
+    margin-top: $spacing-s;
+    .price {
+      font-size: $font-size-l;
+    }
+    .with-credits & {
+      .price {
+        font-size: $font-size-m;
+      }
     }
   }
-  .close-icon {
-    @include square(16px);
-    margin-bottom: $spacing-s;
-    margin-right: $spacing-s;
-    cursor: pointer;
+
+  .credit,
+  .missing {
+    .label {
+      tsl-wallacoin {
+        vertical-align: sub;
+        margin-right: $spacing-xs;
+      }
+    }
   }
-  .cart-item {
-    display: flex;
-    align-items: center;
-    .cart-box {
-      padding: $spacing-xxs;
-      flex: 1;
+
+  .credit {
+    color: $walla-main;
+    height: $credit-total-height;
+    .price {
+      font-size: $font-size-s;
+    }
+    .with-credits & {
+      font-size: $font-size-m;
+      .price {
+        font-size: $font-size-m;
+      }
+      .label span span {
+        font-size: $font-size-xs;
+      }
+    }
+  }
+
+  .missing {
+    border-top: solid 1px $blue-grey-5;
+    margin: $spacing-s $spacing-s 0 $spacing-s;
+    padding: $spacing-xs $spacing-xxs 0 0;
+    .label {
+      color: $blue-grey-3;
     }
     .price {
-      margin-right: $spacing-s;
+      color: $blue-grey-2;
+      font-size: $font-size-l;
     }
-    tsl-item-avatar {
-      ::ng-deep div {
-        @include square(32px);
+  }
+
+  .total {
+    height: $main-total-height;
+    line-height: $line-height-xxl;
+    .price {
+      font-size: $font-size-xl;
+    }
+  }
+
+  ul,
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .items-list {
+    font-size: $font-size-xs;
+    .cart-box {
+      margin-bottom: $spacing-s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    .price {
+      color: $blue-grey-2;
+      font-weight: $font-weight-chunky;
+    }
+    .type {
+      flex: 1;
+      .bump-type {
+        margin-right: $spacing-xxs;
+      }
+    }
+    .close-icon {
+      @include square(16px);
+      margin-bottom: $spacing-s;
+      margin-right: $spacing-s;
+      cursor: pointer;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      .cart-box {
+        flex: 1;
+      }
+      tsl-item-avatar {
+        ::ng-deep div {
+          @include square(32px);
+        }
       }
     }
   }
-}
 
-.clean-cart {
-  position: absolute;
-  top: 13px;
-  right: 10px;
-  font-size: $font-size-xs;
-  a {
-    color: $blue-grey-2;
-    cursor: pointer;
+  .secure-payment {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    tsl-svg-icon {
+      width: 21px;
+      height: 15.5px;
+    }
+    span {
+      font-size: $font-size-xs;
+      color: $blue-grey-3;
+    }
   }
-}
 
-tsl-button {
-  display: block;
-  ::ng-deep .btn {
-    width: 100%;
-    margin-top: 0;
+  .secure-payment-button {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    tsl-svg-icon {
+      height: 14px;
+      width: 11px;
+      position: absolute;
+      right: 0;
+      top: 1px;
+    }
+    span {
+      font-size: $font-size-s;
+      color: $white;
+    }
   }
-}
 
-.secure-payment {
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  tsl-svg-icon {
-    width: 21px;
-    height: 15.5px;
+  .stripe-payment {
+    text-align: center;
+    margin: $spacing-xs 0 0 0;
+    tsl-svg-icon {
+      width: 100px;
+      height: 25px;
+    }
   }
-  span {
-    font-size: $font-size-xs;
-    color: $blue-grey-3;
-  }
-}
 
-.secure-payment-button {
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  tsl-svg-icon {
-    height: 14px;
-    width: 11px;
-    position: absolute;
-    right: 0;
-    top: 1px;
-  }
-  span {
-    font-size: $font-size-s;
-    color: $white;
-  }
-}
-
-.stripe-payment {
-  text-align: center;
-  margin: $spacing-xs 0 0 0;
-  tsl-svg-icon {
-    width: 100px;
-    height: 25px;
-  }
-}
-
-.Cart__NewCard {
-  &--add,
-  &--used {
-    margin: $spacing-s 0;
-    font-size: $font-size-s;
-    color: $walla-main;
-    cursor: pointer;
+  &__NewCard {
+    &--add,
+    &--used {
+      margin: $spacing-s 0;
+      font-size: $font-size-s;
+      color: $walla-main;
+      cursor: pointer;
+    }
   }
 }
