@@ -8,12 +8,12 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import {
   optionsFixture,
   extendedOptionsFixture,
-  extendedOptionsWithChildrenFixture,
   optionsWithChildrenFixture,
-} from './fixtures/multi-select-option.fixtures';
+  extendedOptionsWithChildrenFixture,
+} from '../multi-select-form/fixtures/multi-select-option.fixtures';
+import { MultiSelectOptionComponent } from '../multi-select-form/multi-select-option/multi-select-option/multi-select-option.component';
+import { MultiSelectOptionModule } from '../multi-select-form/multi-select-option/multi-select-option/multi-select-option.module';
 import { MultiSelectFormComponent } from './multi-select-form.component';
-import { MultiSelectOptionComponent } from './multi-select-option/multi-select-option/multi-select-option.component';
-import { MultiSelectOptionModule } from './multi-select-option/multi-select-option/multi-select-option.module';
 
 export const value = ['bb', 'cc'];
 
@@ -109,7 +109,8 @@ describe('MultiSelectFormComponent', () => {
         const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
         const optionToBeChecked: MultiSelectOptionComponent = options[2].componentInstance;
         optionToBeChecked.data.checked = true;
-        optionToBeChecked.toggleCheckbox();
+        optionToBeChecked.data.value = 'value';
+        optionToBeChecked.toggleOnChange.emit(optionToBeChecked.data);
 
         expect(component.value).toEqual([optionToBeChecked.data.value]);
       });
@@ -145,6 +146,7 @@ describe('MultiSelectFormComponent', () => {
 
           childOptions.forEach((childOption) => {
             childOption.componentInstance.data.checked = true;
+            childOption.componentInstance.data.value = true;
             childOption.componentInstance.toggleCheckbox();
           });
 
