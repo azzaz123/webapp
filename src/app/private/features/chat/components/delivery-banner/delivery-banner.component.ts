@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'tsl-delivery-banner',
   templateUrl: './delivery-banner.component.html',
   styleUrls: ['./delivery-banner.component.scss'],
 })
-export class DeliveryBannerComponent implements OnInit {
+export class DeliveryBannerComponent {
   constructor() {}
 
-  ngOnInit(): void {}
+  public get displayBanner$(): Observable<boolean> {
+    return of(false);
+  }
 }
