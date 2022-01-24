@@ -12,15 +12,12 @@ import { WallacoinsDisabledModalComponent } from '@shared/modals/wallacoins-disa
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { CookieService } from 'ngx-cookie';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
-import { SITE_URL } from '@configs/site-url.config';
-import { StandaloneService } from '@core/standalone/services/standalone.service';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-topbar',
@@ -31,10 +28,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   @Input() isMyZone: boolean;
 
   public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
-  public readonly showLogo$: Observable<boolean> = this.standaloneService.standalone$.pipe(map((standalone: boolean) => !standalone));
-
   public user: User;
-  public homeUrl: string;
   public isProfessional: boolean;
   public wallacoins = 0;
   public currencyName: string;
@@ -50,13 +44,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private modalService: NgbModal,
     private searchNavigator: SearchNavigatorService,
-    private topbarTrackingEventsService: TopbarTrackingEventsService,
-    private standaloneService: StandaloneService,
-    @Inject(SITE_URL) private siteUrl: string
+    private topbarTrackingEventsService: TopbarTrackingEventsService
   ) {}
 
   ngOnInit() {
-    this.homeUrl = this.siteUrl;
     this.isLogged = this.userService.isLogged;
     this.user = this.userService.user;
     this.componentSubscriptions.push(

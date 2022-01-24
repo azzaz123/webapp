@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PRIVATE_PATHS } from './private-routing-constants';
+import { PATH_TO_ACCEPT_SCREEN, PRIVATE_PATHS, PRIVATE_PATH_PARAMS } from './private-routing-constants';
 import { PrivateComponent } from './private.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from './features/pro/pro-routing-constants';
@@ -13,6 +13,10 @@ const routes: Routes = [
     path: '',
     component: PrivateComponent,
     children: [
+      {
+        path: `${PRIVATE_PATHS.ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
+        redirectTo: `${PATH_TO_ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
+      },
       {
         path: 'pro',
         children: [
