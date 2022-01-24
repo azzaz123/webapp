@@ -5,7 +5,6 @@
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
   margin-bottom: $spacing-s;
-  padding: 20px;
 
   &__header {
     @include media-breakpoint-down(sm) {
@@ -14,31 +13,31 @@
   }
 
   &__title {
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
 
   &__subtitle {
-    font-size: 12px;
+    font-size: $font-size-xs;
     line-height: 14px;
-    color: #607d8b;
+    color: $blue-grey-2;
   }
 
   &__price {
-    font-size: 20px;
+    font-size: $font-size-l;
     line-height: 23px;
-    color: #253238;
-    font-weight: bold;
+    color: $blue-grey-1;
+    font-weight: $font-weight-chunky;
   }
 
   &__button {
     background-color: $blue-grey-6;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
     border-radius: 100px;
-    font-size: 14px;
+    font-size: $font-size-s;
     text-align: center;
-    color: #90a4ae;
+    color: $blue-grey-3;
     &:not(:last-child) {
-      margin-right: 8px;
+      margin-right: $spacing-s;
     }
     &:hover,
     &.selected {

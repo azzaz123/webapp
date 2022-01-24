@@ -1,42 +1,22 @@
 @import '~style/common';
 
-$cart-height: calc(100vh - #{$topbar-height + $spacing-xl * 1.2});
-$title-height: 42px;
-$main-total-height: 46px;
 $credit-total-height: 21px;
-$missing-total-height: 43px;
-$totals-margins: 0px;
-$total-height: $main-total-height + $totals-margins + $credit-total-height + $missing-total-height;
 $discounted-total-height: 30px;
-$stripe-card-element-height: 100px;
-$button-height: 42px;
-$button-margin: $spacing-ml - $spacing-s;
-$button-space: $button-height + $spacing-ml;
-$secure-label-height: 25px;
-$extra-height: 100px;
-$margin-height: 110px;
-$clear-cart-height: 38px;
-$card-select-height: (50px + $spacing-s) * 2 + $spacing-xs;
 
 .Cart {
-  display: flex;
-  flex-direction: column;
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
   min-width: 280px;
-  padding: 20px;
 
   &__title {
-    font-size: 20px;
+    font-size: $font-size-l;
     line-height: 23px;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
 
   .cart-wrapper {
     border-bottom: solid 1px $blue-grey-5;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
 
     .with-credits & {
       &.no-discount {

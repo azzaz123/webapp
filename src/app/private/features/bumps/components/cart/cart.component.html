@@ -1,8 +1,8 @@
-<div class="Cart">
+<div class="Cart d-flex flex-column px-3 py-4">
   <div class="Cart__title mb-4" i18n="@@web_cart_451">My features</div>
   <div class="d-flex flex-column h-100">
     <div
-      class="cart-wrapper"
+      class="cart-wrapper pb-3 mb-4"
       [class.has-financial-card]="hasSavedCard"
       [class.no-credit]="!creditInfo?.credit"
       [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit"
