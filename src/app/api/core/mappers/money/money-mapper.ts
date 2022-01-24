@@ -6,6 +6,13 @@ import { mapNumberToNumericAmount } from '../numeric-amount/numeric-amount-mappe
 
 export type NumberCurrencyCode = { number: number; currency: CurrencyCode };
 
+export const mapMoneyToDomain = (dto: any): Money => {
+  return mapNumberAndCurrencyCodeToMoney({
+    number: dto.amount,
+    currency: dto.currency as CurrencyCode,
+  });
+};
+
 export const mapNumberAndCurrencyCodeToMoney: ToDomainMapper<NumberCurrencyCode, Money> = (input: NumberCurrencyCode): Money => {
   const { number, currency } = input;
   const mappedAmount = mapNumberToNumericAmount(number);
