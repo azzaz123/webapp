@@ -8,7 +8,7 @@ export interface DropOffModeDto {
   icon: string;
   post_office_details: PostOfficeDetailsDto;
   restrictions: string;
-  seller_costs: SellerCostDto;
+  seller_costs: SellerCostsDto;
   tentative_schedule: TentativeScheduleDto;
 }
 
@@ -50,7 +50,7 @@ export interface TentativeScheduleDto {
   pickup_start_date: string;
 }
 
-export interface SellerCostDto {
+export interface SellerCostsDto {
   amount: number;
   currency: string;
 }

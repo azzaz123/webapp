@@ -7,4 +7,5 @@ export interface DeliveryAddress {
   region: string;
   phoneNumber: string;
   flatAndFloor: string;
+  country: string;
 }
