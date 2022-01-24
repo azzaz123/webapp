@@ -4,4 +4,4 @@ import { Component } from '@angular/core';
   selector: 'tsl-search-error-layout',
   template: '',
 })
-export class SearchErrorLayoutComponentStub {}
+export class SearchErrorLayoutStubComponent {}
