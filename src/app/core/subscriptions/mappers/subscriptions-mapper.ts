@@ -1,6 +1,14 @@
-import { SubscriptionsResponse, SubscriptionsV3Response, SUBSCRIPTION_CATEGORY_TYPES } from '../subscriptions.interface';
+import {
+  BUMP_PERKS,
+  PERK_NAMES,
+  SubscriptionsResponse,
+  SUBSCRIPTION_CATEGORY_TYPES,
+  SUBSCRIPTION_MARKETS,
+  Tier,
+} from '../subscriptions.interface';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
 import { CURRENCY_SYMBOLS } from '@core/constants';
+import { SubscriptionsV3Response, TierDto } from '../dtos/subscriptions/subscription-response.interface';
 
 export const subscriptionMapper: Record<SUBSCRIPTION_CATEGORY_TYPES, { category_id: number; icon_id: string; label: string }> = {
   [SUBSCRIPTION_CATEGORY_TYPES.CARS]: {
@@ -45,19 +53,27 @@ function mapSubscription(subscription: SubscriptionsV3Response): SubscriptionsRe
     category_id: subscriptionMapper[subscription.type].category_id,
     category_name: subscriptionMapper[subscription.type].label,
     category_icon: subscriptionMapper[subscription.type].icon_id,
+    type: subscription.type as SUBSCRIPTION_CATEGORY_TYPES,
+    market: subscription.market as SUBSCRIPTION_MARKETS,
+    tiers: mapTiers(subscription.tiers),
+    selected_tier: undefined,
   };
 
   if (subscription.selected_tier_id) {
-    subscriptionMapped.selected_tier = subscription.tiers.find((tier) => tier.id === subscription.selected_tier_id);
+    subscriptionMapped.selected_tier = subscriptionMapped.tiers.find((tier) => tier.id === subscription.selected_tier_id);
   }
-
-  mapCurrenciesForTiers(subscriptionMapped);
 
   return subscriptionMapped;
 }
 
-function mapCurrenciesForTiers(subscription: SubscriptionsResponse) {
-  subscription.tiers.forEach((tier) => {
+function mapTiers(tiersDto: TierDto[]): Tier[] {
+  const tiers: Tier[] = tiersDto.map((tierDto) => {
+    const tier: Tier = {
+      ...tierDto,
+      limit: tierDto.perks.find((perk) => perk.name === PERK_NAMES.LIMIT)?.quantity,
+      bumps: tierDto.perks.filter((perks) => BUMP_PERKS.includes(perks.name)),
+    };
+
     const mappedCurrencyCharacter = CURRENCY_SYMBOLS[tier.currency];
     if (mappedCurrencyCharacter) {
       tier.currency = mappedCurrencyCharacter;
@@ -66,5 +82,7 @@ function mapCurrenciesForTiers(subscription: SubscriptionsResponse) {
       const oneDay = 1000 * 60 * 60 * 24;
       tier.discount.no_discount_date = tier.discount.end_date + oneDay;
     }
+    return tier;
   });
+  return tiers;
 }
