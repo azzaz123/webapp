@@ -1,5 +1,5 @@
 export interface CarrierDropOffModeRequestDto {
-  drop_off_modes: DropOffModeDto[];
+  drop_off_modes: DropOffModeDto[] | [];
 }
 
 export interface DropOffModeDto {
@@ -7,7 +7,7 @@ export interface DropOffModeDto {
   drop_off_mode: DropOffModeTypeDto;
   icon: string;
   post_office_details: PostOfficeDetailsDto;
-  restrictions: DropOffModeRestrictionsDto;
+  restrictions: string;
   seller_costs: SellerCostDto;
   tentative_schedule: TentativeScheduleDto;
 }
@@ -55,7 +55,6 @@ export interface SellerCostDto {
   currency: string;
 }
 
-export type DropOffModeRestrictionsDto = '';
-export type LastDeliveryModeDto = '';
-export type DropOffModeTypeDto = '';
-export type CarrierDto = '';
+export type LastDeliveryModeDto = 'BUYER_ADDRESS' | 'CARRIER_OFFICE';
+export type DropOffModeTypeDto = 'POST_OFFICE' | 'HOME_PICKUP';
+export type CarrierDto = 'SEUR' | 'POSTE_ITALIANE' | 'correos';

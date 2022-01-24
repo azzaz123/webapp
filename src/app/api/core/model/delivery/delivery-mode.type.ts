@@ -1,0 +1,4 @@
+export enum DELIVERY_MODE {
+  BUYER_ADDRESS,
+  CARRIER_OFFICE,
+}
