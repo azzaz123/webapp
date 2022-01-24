@@ -26,7 +26,7 @@ import { of, ReplaySubject } from 'rxjs';
 import { ItemChangeEvent } from '../../core/item-change.interface';
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 import { CatalogItemComponent } from './catalog-item.component';
-import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
+import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -44,7 +44,7 @@ describe('CatalogItemComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CatalogItemComponent, CustomCurrencyPipe, ItemRouteDirectiveMock],
+        declarations: [CatalogItemComponent, CustomCurrencyPipe, ItemRouteMockDirective],
         providers: [
           DecimalPipe,
           EventService,

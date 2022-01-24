@@ -21,7 +21,7 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
+import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
 
 class MockConversationService {
   public loadMoreMessages() {}
@@ -53,7 +53,7 @@ describe('ConversationDetailsBarComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgbModule, NgxPermissionsModule.forRoot()],
-      declarations: [ConversationDetailsBarComponent, ItemRouteDirectiveMock],
+      declarations: [ConversationDetailsBarComponent, ItemRouteMockDirective],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         EventService,
