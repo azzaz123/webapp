@@ -27,7 +27,7 @@ export interface LastAddressUsedDto {
 export interface BuyerAddressDto {
   city: string;
   country: string;
-  flat_and_floor: string;
+  flat_and_floor?: string;
   full_name: string;
   id: string;
   phone_number: string;
