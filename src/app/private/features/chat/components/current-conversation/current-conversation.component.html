@@ -22,6 +22,8 @@
         (blockUserEvent)="scrollToLastMessage()" (expandContainer)="expandTopBar($event)"
         [ngClass]="{expanded: isTopBarExpanded}"></tsl-conversation-details-bar>
 
+      <tsl-delivery-banner></tsl-delivery-banner>
+
       <div class="messages-panel-container" #scrollElement (scroll)="onScrollMessages($event)">
 
         <div class="empty-container"></div>
