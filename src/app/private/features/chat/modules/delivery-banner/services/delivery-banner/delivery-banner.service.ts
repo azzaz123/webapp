@@ -5,6 +5,7 @@ import { ActionableDeliveryBanner } from '../../interfaces/actionable-delivery-b
 import { DeliveryBanner } from '../../interfaces/delivery-banner.interface';
 import { DescriptiveDeliveryBanner } from '../../interfaces/descriptive-delivery-banner.interface';
 
+// TODO: Move this to fixtures
 const hardcodedOptions: DescriptiveDeliveryBanner & ActionableDeliveryBanner = {
   svgPath: 'assets/icons/explicit.svg',
   description: { text: 'Description', helpLink: 'www.google.com' },
