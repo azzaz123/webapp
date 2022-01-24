@@ -7,20 +7,20 @@ import {
 } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
 import { PaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/user-payment-preferences/http/payments-user-payment-preferences-http.service';
-import { PaymentsUserPreferencesService } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.service';
+import { PaymentsUserPaymentPreferencesService } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.service';
 
 import { of } from 'rxjs';
 
-describe('PaymentsUserPreferencesService', () => {
-  let service: PaymentsUserPreferencesService;
+describe('PaymentsUserPaymentPreferencesService', () => {
+  let service: PaymentsUserPaymentPreferencesService;
   let userPaymentPreferencesHttpService: PaymentsUserPaymentPreferencesHttpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [PaymentsUserPreferencesService, PaymentsUserPaymentPreferencesHttpService],
+      providers: [PaymentsUserPaymentPreferencesService, PaymentsUserPaymentPreferencesHttpService],
     });
-    service = TestBed.inject(PaymentsUserPreferencesService);
+    service = TestBed.inject(PaymentsUserPaymentPreferencesService);
     userPaymentPreferencesHttpService = TestBed.inject(PaymentsUserPaymentPreferencesHttpService);
   });
 

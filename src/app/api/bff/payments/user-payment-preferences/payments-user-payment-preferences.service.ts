@@ -8,7 +8,7 @@ import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class PaymentsUserPreferencesService {
+export class PaymentsUserPaymentPreferencesService {
   constructor(private paymentUserPreferencesHttpService: PaymentsUserPaymentPreferencesHttpService) {}
 
   public get paymentUserPreferences(): Observable<PaymentsUserPaymentPreferences> {
