@@ -17,13 +17,14 @@ import { CategoryResponse } from '@core/category/category-response.interface';
 export class SuggesterComponent implements OnInit, OnDestroy {
   private static SEARCH_BOX_INITIAL_VALUE = '';
   private static DEFAULT_PLACEHOLDER_VALUE = $localize`:@@web_components_suggester_7:Search in All categories`;
+
+  @Output() public searchSubmit = new EventEmitter<SearchBoxValue>();
+  @Output() public searchCancel = new EventEmitter<SearchBoxValue>();
+
   private readonly searchBoxValueSubject = new BehaviorSubject<SearchBoxValue>({ keywords: SuggesterComponent.SEARCH_BOX_INITIAL_VALUE });
   private readonly searchBoxPlaceholderSubject: BehaviorSubject<string> = new BehaviorSubject('');
   private searching = false;
   private subscriptions = new Subscription();
-
-  @Output() public searchSubmit = new EventEmitter<SearchBoxValue>();
-  @Output() public searchCancel = new EventEmitter<SearchBoxValue>();
 
   constructor(private suggesterService: SuggesterService, private route: ActivatedRoute, private categoryService: CategoryService) {}
 

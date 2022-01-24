@@ -36,6 +36,12 @@ export class FooterComponent implements OnInit {
     });
   }
 
+  public trackEvent(link: FooterLink): void {
+    if (link.trackEvent && this.trackingEventsConfig[link.trackEvent]) {
+      this.trackingEventsConfig[link.trackEvent]();
+    }
+  }
+
   private filterByLocale(sections: FooterLinkSection[], locale: APP_LOCALE): FooterLinkSection[] {
     return sections
       .filter((footerLinkSection: FooterLinkSection) => {
@@ -54,12 +60,6 @@ export class FooterComponent implements OnInit {
     return sections.filter((footerLinkSection: FooterLinkSection) => {
       return !footerLinkSection.permission || permissions[footerLinkSection.permission];
     });
-  }
-
-  public trackEvent(link: FooterLink): void {
-    if (link.trackEvent && this.trackingEventsConfig[link.trackEvent]) {
-      this.trackingEventsConfig[link.trackEvent]();
-    }
   }
 
   private trackClickProInfo(): void {

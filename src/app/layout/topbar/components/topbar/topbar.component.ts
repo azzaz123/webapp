@@ -18,20 +18,21 @@ import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
-import { SITE_URL } from '@configs/site-url.config';
+
 @Component({
   selector: 'tsl-topbar',
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
 })
 export class TopbarComponent implements OnInit, OnDestroy {
+  @Input() isMyZone: boolean;
+
   public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public user: User;
   public isProfessional: boolean;
   public wallacoins = 0;
   public currencyName: string;
   public isLogged: boolean;
-  @Input() isMyZone: boolean;
 
   private componentSubscriptions: Subscription[] = [];
 
@@ -79,18 +80,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
     );
   }
 
-  private updateCreditInfo(cache?: boolean) {
-    this.paymentService.getCreditInfo(cache).subscribe((creditInfo: CreditInfo) => {
-      this.currencyName = creditInfo.currencyName;
-      this.wallacoins = creditInfo.credit;
-      this.setCreditCookie();
+  ngOnDestroy(): void {
+    this.componentSubscriptions.forEach((subscription: Subscription) => {
+      subscription.unsubscribe();
     });
-  }
-
-  private setCreditCookie() {
-    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
-    this.cookieService.put('creditName', this.currencyName, cookieOptions);
-    this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
   }
 
   public searchCancel(searchValue: SearchBoxValue): void {
@@ -104,6 +97,27 @@ export class TopbarComponent implements OnInit, OnDestroy {
     }
 
     this.redirectToSearch(searchValue);
+  }
+
+  public onOpenWallacoinsModal(): void {
+    this.modalService.open(WallacoinsDisabledModalComponent, {
+      windowClass: 'modal-standard',
+      backdrop: 'static',
+    });
+  }
+
+  private updateCreditInfo(cache?: boolean) {
+    this.paymentService.getCreditInfo(cache).subscribe((creditInfo: CreditInfo) => {
+      this.currencyName = creditInfo.currencyName;
+      this.wallacoins = creditInfo.credit;
+      this.setCreditCookie();
+    });
+  }
+
+  private setCreditCookie() {
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    this.cookieService.put('creditName', this.currencyName, cookieOptions);
+    this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
   }
 
   private redirectToSearch(searchValue: SearchBoxValue): void {
@@ -130,18 +144,5 @@ export class TopbarComponent implements OnInit, OnDestroy {
     }
 
     this.searchNavigator.navigate(filterParams, FILTERS_SOURCE.SEARCH_BOX);
-  }
-
-  public onOpenWallacoinsModal(): void {
-    this.modalService.open(WallacoinsDisabledModalComponent, {
-      windowClass: 'modal-standard',
-      backdrop: 'static',
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.componentSubscriptions.forEach((subscription: Subscription) => {
-      subscription.unsubscribe();
-    });
   }
 }

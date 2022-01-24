@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { DELIVERY_PATHS } from './delivery-routing-constants';
 import { DeliveryComponent } from './pages/delivery.component';
-import { AcceptScreenModule } from './pages/accept-screen/accept-screen.module';
 import { DeliveryAddressModule } from './pages/delivery-address/delivery-address.module';
 import { TransactionTrackingScreenModule } from './pages/transaction-tracking-screen/transaction-tracking-screen.module';
 import { PayviewModule } from './pages/payview/payview.module';
@@ -20,11 +19,6 @@ const routes: Route[] = [
       {
         path: `${DELIVERY_PATHS.TRACKING}`,
         loadChildren: () => TransactionTrackingScreenModule,
-      },
-      {
-        path: DELIVERY_PATHS.ACCEPT_SCREEN,
-        canLoad: [DeliveryDevelopmentGuard],
-        loadChildren: () => AcceptScreenModule,
       },
       {
         path: DELIVERY_PATHS.ADDRESS,

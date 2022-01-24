@@ -1,5 +1,4 @@
 export enum DELIVERY_PATHS {
-  ACCEPT_SCREEN = 'accept',
   ADDRESS = 'address',
   BUYS = 'buys',
   DISPUTE = 'dispute',
