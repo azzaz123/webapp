@@ -9,7 +9,7 @@ import { EventService } from '@core/event/event.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { ItemService } from '@core/item/item.service';
 import { StripeService } from '@core/stripe/stripe.service';
-import { ITEM_ID, CART_ITEM_CITYBUMP, MOCK_ITEM_V3, CART_ORDER } from '@fixtures/item.fixtures.spec';
+import { ITEM_ID, CART_ORDER } from '@fixtures/item.fixtures.spec';
 import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { Cart } from '@shared/catalog/cart/cart';
@@ -178,27 +178,6 @@ describe('CartComponent', () => {
       spyOn(cartService, 'clean');
 
       component.ngOnDestroy();
-
-      expect(cartService.clean).toHaveBeenCalled();
-    });
-  });
-
-  describe('remove', () => {
-    it('should call remove', () => {
-      const TYPE = 'citybump';
-      spyOn(cartService, 'remove');
-
-      component.remove(CART_ITEM_CITYBUMP, TYPE);
-
-      expect(cartService.remove).toHaveBeenCalledWith(MOCK_ITEM_V3.id, TYPE);
-    });
-  });
-
-  describe('clean', () => {
-    it('should call clean', () => {
-      spyOn(cartService, 'clean');
-
-      component.clean();
 
       expect(cartService.clean).toHaveBeenCalled();
     });
