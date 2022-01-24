@@ -11,7 +11,7 @@ import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { AdSlotGroupShoppingComponentStub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
-import { SearchErrorLayoutComponentStub } from '@fixtures/shared/components/search-error-layout.component.stub';
+import { SearchErrorLayoutStubComponent } from '@fixtures/shared/components/search-error-layout-stub.component';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
@@ -131,7 +131,7 @@ describe('SearchComponent', () => {
       declarations: [
         SearchComponent,
         SearchLayoutComponent,
-        SearchErrorLayoutComponentStub,
+        SearchErrorLayoutStubComponent,
         AdComponentStub,
         AdSlotGroupShoppingComponentStub,
         AdSlotShoppingComponentStub,
