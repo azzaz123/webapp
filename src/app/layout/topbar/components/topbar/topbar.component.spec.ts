@@ -32,7 +32,7 @@ import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
-import { SuggesterComponentStub } from '@fixtures/shared/components/suggester.component.stub';
+import { SuggesterStubComponent } from '@fixtures/shared/components/suggester-stub.component';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
@@ -170,7 +170,7 @@ describe('TopbarComponent', () => {
             useValue: MOCK_SITE_URL,
           },
         ],
-        declarations: [SuggesterComponentStub, TopbarComponent, CustomCurrencyPipe],
+        declarations: [SuggesterStubComponent, TopbarComponent, CustomCurrencyPipe],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
       userService = TestBed.inject(UserService);
@@ -342,7 +342,7 @@ describe('TopbarComponent', () => {
         };
 
         it('should send click keyboard search button event', () => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterStubComponent));
           spyOn(topbarTrackingEventsService, 'trackClickKeyboardSearchButtonEvent');
 
           searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_ONLY_TEXT_VALUE);
@@ -361,7 +361,7 @@ describe('TopbarComponent', () => {
       };
 
       beforeEach(() => {
-        const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
+        const searchBox = fixture.debugElement.query(By.directive(SuggesterStubComponent));
 
         spyOn(navigator, 'navigate');
         spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');
