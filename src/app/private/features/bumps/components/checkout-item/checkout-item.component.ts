@@ -66,11 +66,11 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     this.itemRemoved.emit(itemId);
   }
 
-  selectDuration(selectedDuration: string) {
+  public selectDuration(selectedDuration: string): void {
     this.selectedDuration = selectedDuration;
   }
 
-  select(type: string) {
+  public select(type: string): void {
     this.selectedType = type;
     const cartItem: CartItem = {
       item: this.itemWithProducts.item,
@@ -79,7 +79,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     this.cartService.add(cartItem, type);
   }
 
-  private onRemoveOrClean(cartChange: CartChange) {
+  private onRemoveOrClean(cartChange: CartChange): void {
     if ((cartChange.action === 'remove' && cartChange.itemId === this.itemWithProducts.item.id) || cartChange.action === 'clean') {
       this.selectedType = undefined;
       this.selectedDuration = undefined;

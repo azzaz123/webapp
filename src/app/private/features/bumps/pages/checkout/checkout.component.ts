@@ -41,7 +41,7 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  private getProductsFromSelectedItems() {
+  private getProductsFromSelectedItems(): void {
     if (!this.itemService.selectedItems.length) {
       this.router.navigate(['catalog/list']);
       return;
@@ -51,13 +51,13 @@ export class CheckoutComponent implements OnInit {
       .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
   }
 
-  private getProductsFromParamsItem(itemId: string) {
+  private getProductsFromParamsItem(itemId: string): void {
     this.itemService
       .getItemsWithAvailableProducts([itemId])
       .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
   }
 
-  private setItems(itemsWithProducts: ItemWithProducts[]) {
+  private setItems(itemsWithProducts: ItemWithProducts[]): void {
     if (itemsWithProducts.length) {
       this.itemsWithProducts = itemsWithProducts;
       this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
