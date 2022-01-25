@@ -23,6 +23,10 @@ const routes: Route[] = [
     canLoad: [DeliveryDevelopmentGuard],
     loadChildren: () => import('@private/features/accept-screen/accept-screen.module').then((m) => m.AcceptScreenModule),
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
 
 @NgModule({

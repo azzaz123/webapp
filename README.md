@@ -16,6 +16,8 @@ The private web app for Wallapop once you do login in the public one.
 
 To do a clean installation after downloading the repo, follow this steps:
 
+**NOTE**: In case you are you are the lucky owner of an **M1 Mac**, please refer to [this](https://github.com/nvm-sh/nvm#macos-troubleshooting) guide before installing nvm.
+
 1. Install [nvm](https://github.com/creationix/nvm), a node version manager.
 2. Install the node version specified in `.nvmrc` with `nvm install x`. E.g.: `nvm install 8.9.4`.
 3. Install [yarn](https://yarnpkg.com/lang/en/).

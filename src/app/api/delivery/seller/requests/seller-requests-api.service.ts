@@ -6,7 +6,9 @@ import { SellerRequestDto } from './dtos/seller-request-dto.interface';
 import { SellerRequestsHttpService } from './http/seller-requests-http.service';
 import { mapSellerRequestDtoToSellerRequest } from './mappers/responses/seller-request.mapper';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SellerRequestsApiService {
   constructor(private sellerRequestsHttpService: SellerRequestsHttpService) {}
 
