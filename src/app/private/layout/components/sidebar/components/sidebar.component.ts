@@ -29,10 +29,11 @@ import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent implements OnInit {
-  public readonly PRIVATE_PATHS = PRIVATE_PATHS;
-  public user: User;
   @Input() isProducts: boolean;
   @Input() isProfile: boolean;
+
+  public readonly PRIVATE_PATHS = PRIVATE_PATHS;
+  public user: User;
   public isProfessional: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
