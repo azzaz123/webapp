@@ -4,7 +4,7 @@ import { CarrierDropOffModeRequestHttpService } from './carrier-drop-off-mode-re
 import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@angular/common/http/testing';
 import { CarrierDropOffModeRequestDto } from '../dtos/carrier-drop-off-mode-request-dto.interface';
 import { CARRIER_DROP_OFF_MODE_REQUEST_WITH_REQUEST_ID } from './endpoints';
-import { MOCK_CARRIER_DROP_OFF_MODE_DTO } from '@api/fixtures/delivery/carrier-drop-off-mode/carrier-drop-off-mode-dto.fixtures';
+import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST_DTO } from '@api/fixtures/delivery/carrier-drop-off-mode/carrier-drop-off-mode-request-dto.fixtures';
 
 describe('CarrierDropOffModeRequestHttpService', () => {
   let service: CarrierDropOffModeRequestHttpService;
@@ -35,10 +35,10 @@ describe('CarrierDropOffModeRequestHttpService', () => {
 
       service.get(MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ID).subscribe((data: CarrierDropOffModeRequestDto) => (response = data));
       const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(MOCK_CARRIER_DROP_OFF_MODE_DTO);
+      req.flush(MOCK_CARRIER_DROP_OFF_MODE_REQUEST_DTO);
 
       expect(req.request.method).toBe('GET');
-      expect(response).toEqual(MOCK_CARRIER_DROP_OFF_MODE_DTO);
+      expect(response).toEqual(MOCK_CARRIER_DROP_OFF_MODE_REQUEST_DTO);
     });
   });
 });

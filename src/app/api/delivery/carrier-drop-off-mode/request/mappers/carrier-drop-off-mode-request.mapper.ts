@@ -41,7 +41,7 @@ const mapDeliveryModeToDomain: Record<LastDeliveryModeDto, DELIVERY_MODE> = {
   CARRIER_OFFICE: DELIVERY_MODE.CARRIER_OFFICE,
 };
 
-export const mapCarrierDropOffRequestModeDtoToCarrierDropOfModeRequest: ToDomainMapper<
+export const mapCarrierDropOffRequestModeDtoToCarrierDropOffModeRequest: ToDomainMapper<
   CarrierDropOffModeRequestDto,
   CarrierDropOffModeRequest
 > = (input: CarrierDropOffModeRequestDto) => {
@@ -63,18 +63,18 @@ const getDropOffModeRequest = (dropOffModeDto: DropOffModeDto): DropOffModeReque
   return {
     type: mapCarrierDropOffTypeToDomain[dropOffModeDto.drop_off_mode],
     icon: dropOffModeDto.icon,
-    postOfficeDetails: getPostOfficeDetails(dropOffModeDto.post_office_details),
+    postOfficeDetails: dropOffModeDto.post_office_details ? getPostOfficeDetails(dropOffModeDto.post_office_details) : null,
     sellerCosts: mapMoneyToDomain(dropOffModeDto.seller_costs),
     acceptEndpoint: dropOffModeDto.accept_relative_url,
     restrictions: dropOffModeDto.restrictions,
-    schedule: getTentativeShedule(dropOffModeDto.tentative_schedule),
+    schedule: dropOffModeDto.tentative_schedule ? getTentativeShedule(dropOffModeDto.tentative_schedule) : null,
   };
 };
 
 const getPostOfficeDetails = (postOfficeDetailsDto: PostOfficeDetailsDto): PostOfficeDetails => {
   return {
     carrier: mapCarrierToDomain[postOfficeDetailsDto.carrier],
-    lastAddressUsed: getLastAddressUsed(postOfficeDetailsDto.last_address_used),
+    lastAddressUsed: postOfficeDetailsDto.last_address_used ? getLastAddressUsed(postOfficeDetailsDto.last_address_used) : null,
     selectionRequired: postOfficeDetailsDto.selection_required,
   };
 };
