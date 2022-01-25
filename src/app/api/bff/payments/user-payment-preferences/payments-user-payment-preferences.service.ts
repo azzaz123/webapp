@@ -4,7 +4,7 @@ import { mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences } f
 import { PaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/user-payment-preferences/http/payments-user-payment-preferences-http.service';
 
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -14,6 +14,6 @@ export class PaymentsUserPaymentPreferencesService {
   public get paymentUserPreferences(): Observable<PaymentsUserPaymentPreferences> {
     return this.paymentUserPreferencesHttpService
       .getUserPaymentPreferences()
-      .pipe(take(1), map(mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences));
+      .pipe(map(mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences));
   }
 }
