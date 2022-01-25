@@ -51,7 +51,7 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { DeliveryConversationContextService } from '@private/features/chat/services/delivery-conversation-context/delivery-conversation-context.service';
 import { DeliveryBannerComponent } from '../../modules/delivery-banner/components/delivery-banner.component';
-import { MOCK_BUY_NOW_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
+import { MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -215,7 +215,9 @@ describe('CurrentConversationComponent', () => {
 
     describe('when delivery banner needs to be displayed', () => {
       beforeEach(fakeAsync(() => {
-        jest.spyOn(deliveryConversationContextService, 'bannerProperties$', 'get').mockReturnValue(of(MOCK_BUY_NOW_BANNER_PROPERTIES));
+        jest
+          .spyOn(deliveryConversationContextService, 'bannerProperties$', 'get')
+          .mockReturnValue(of(MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES));
         tick();
         fixture.detectChanges();
       }));
