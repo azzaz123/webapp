@@ -13,11 +13,14 @@ import { AcceptScreenProperties } from '../../interfaces';
 import { MOCK_ACCEPT_SCREEN_PROPERTIES } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { CarrierDropOffModeRequestApiService } from '@api/delivery/carrier-drop-off-mode/request/carrier-drop-off-mode-request-api.service';
 import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST } from '@fixtures/private/delivery/accept-screen/carrier-drop-off-mode-request.fixtures.spec';
+import { DeliveryAddressApiService } from '@private/features/delivery/services/api/delivery-address-api/delivery-address-api.service';
+import { MOCK_DELIVERY_ADDRESS } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 
 describe('AcceptScreenService', () => {
   let acceptScreenService: AcceptScreenService;
   let sellerRequestApiService: SellerRequestsApiService;
   let carrierDropOffModeRequestApiService: CarrierDropOffModeRequestApiService;
+  let deliveryAddressApiService: DeliveryAddressApiService;
   let userService: UserService;
   let itemService: ItemService;
 
@@ -60,12 +63,21 @@ describe('AcceptScreenService', () => {
             },
           },
         },
+        {
+          provide: DeliveryAddressApiService,
+          useValue: {
+            get() {
+              return of(MOCK_DELIVERY_ADDRESS);
+            },
+          },
+        },
       ],
       imports: [HttpClientTestingModule],
     });
     acceptScreenService = TestBed.inject(AcceptScreenService);
     sellerRequestApiService = TestBed.inject(SellerRequestsApiService);
     carrierDropOffModeRequestApiService = TestBed.inject(CarrierDropOffModeRequestApiService);
+    deliveryAddressApiService = TestBed.inject(DeliveryAddressApiService);
     userService = TestBed.inject(UserService);
     itemService = TestBed.inject(ItemService);
   });
@@ -84,6 +96,7 @@ describe('AcceptScreenService', () => {
       spyOn(userService, 'getLoggedUserInformation').and.callThrough();
       spyOn(itemService, 'get').and.callThrough();
       spyOn(carrierDropOffModeRequestApiService, 'get').and.callThrough();
+      spyOn(deliveryAddressApiService, 'get').and.callThrough();
 
       acceptScreenService.getAcceptScreenProperties(MOCK_REQUEST_ID).subscribe((newProperties: AcceptScreenProperties) => {
         result = newProperties;
@@ -113,6 +126,10 @@ describe('AcceptScreenService', () => {
     it('should ask server for carriers information', () => {
       expect(carrierDropOffModeRequestApiService.get).toHaveBeenCalledTimes(1);
       expect(carrierDropOffModeRequestApiService.get).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+    });
+
+    it('should ask server for delivery address information', () => {
+      expect(deliveryAddressApiService.get).toHaveBeenCalledTimes(1);
     });
 
     it('should return the properties mapped', () => {
