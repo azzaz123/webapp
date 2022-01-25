@@ -16,7 +16,7 @@
                   <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
                   <div class="type">
                     <span [ngSwitch]="type">
-                      <ng-container *ngSwitchCase="BUMP_TYPES.LOCAL_BUMP">
+                      <ng-container *ngSwitchCase="BUMP_TYPES.ZONE_BUMP">
                         <ng-container *ngIf="!provincialBump" i18n="@@web_cart_454">Local</ng-container>
                         <ng-container *ngIf="provincialBump" i18n="@@web_cart_455">Provincial</ng-container>
                       </ng-container>
