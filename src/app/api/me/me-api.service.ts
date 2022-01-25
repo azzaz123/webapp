@@ -13,6 +13,7 @@ import { SoldItemResponseDto } from './dtos/sold/response/sold-response-dto';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { ItemService } from '@core/item/item.service';
 import { SoldItemsQueryParams } from './dtos/sold/request/sold-query-params';
+import { NotificationsSettingsResponseDto } from '@api/me/dtos/notifications-settings/response/notifcations-settings-response-dto';
 
 @Injectable()
 export class MeApiService {
@@ -69,13 +70,10 @@ export class MeApiService {
   }
 
   public getMyNotificationsSettings(): Observable<PaginatedList<Item>> {
-    let parameters: QueryParams<FavouritesQueryParams>;
-
-    return this.httpService.getFavourites(parameters).pipe(
-      take(1),
-      map(({ data, meta }: FavouritesResponseDto) => ({
-        list: mapFavouriteItemsToLegacyItem(data),
-        paginationParameter: meta?.next,
+    return this.httpService.getMyNotificationsSettings().pipe(
+      map(({ data }: NotificationsSettingsResponseDto) => ({
+        // TODO mapper...
+        list: data,
       }))
     );
   }
