@@ -1,0 +1,20 @@
+<div>
+  <div class="d-flex">
+    <tsl-user-avatar [imageUrl]="buyer.imageUrl"></tsl-user-avatar>
+    <span i18n="@@accept_view_seller_product_card_buyer_detail_buy_flow_test_variant_b_label" class="ml-3"
+      ><b>{{ buyer.name }}</b> bought it</span
+    >
+  </div>
+  <div>
+    <div>
+      <img [src]="item.imageUrl" />
+    </div>
+    <div>
+      <span i18n="accept_view_seller_product_card_item_detail_buy_flow_test_variant_b_label">Your product</span>
+      <span>{{ item.title }}</span>
+    </div>
+    <div>
+      <span>{{ item.price.amount.total }}{{ item.price.currency.symbol }}</span>
+    </div>
+  </div>
+</div>

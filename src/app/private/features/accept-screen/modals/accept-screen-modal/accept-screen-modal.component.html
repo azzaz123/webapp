@@ -1,0 +1,3 @@
+<div *ngIf="acceptScreenProperties$ | async as properties">
+  <tsl-product-card [buyer]="properties.buyer" [item]="properties.item"></tsl-product-card>
+</div>
