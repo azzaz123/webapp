@@ -6,7 +6,7 @@ import { PaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-p
 import { PaymentsUserPaymentPreferencesDto } from '@api/bff/payments/user-payment-preferences/dtos/payments-user-payment-preferences-dto.interface';
 import { ToDomainMapper } from '@api/core/utils/types';
 
-export const mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences: ToDomainMapper<
+export const mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences: ToDomainMapper<
   PaymentsUserPaymentPreferencesDto,
   PaymentsUserPaymentPreferences
 > = (input: PaymentsUserPaymentPreferencesDto): PaymentsUserPaymentPreferences => {

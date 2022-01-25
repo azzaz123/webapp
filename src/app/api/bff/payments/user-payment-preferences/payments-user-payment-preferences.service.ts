@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/mappers/payments-user-payment-preferences.mapper';
+import { mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/mappers/payments-user-payment-preferences.mapper';
 import { PaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/user-payment-preferences/http/payments-user-payment-preferences-http.service';
 
@@ -14,6 +14,6 @@ export class PaymentsUserPaymentPreferencesService {
   public get paymentUserPreferences(): Observable<PaymentsUserPaymentPreferences> {
     return this.paymentUserPreferencesHttpService
       .getUserPaymentPreferences()
-      .pipe(map(mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences));
+      .pipe(map(mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences));
   }
 }

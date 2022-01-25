@@ -1,4 +1,4 @@
-import { mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences as mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/mappers/payments-user-payment-preferences.mapper';
+import { mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences as mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/mappers/payments-user-payment-preferences.mapper';
 import {
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
