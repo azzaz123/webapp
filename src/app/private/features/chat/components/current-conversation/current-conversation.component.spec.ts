@@ -42,7 +42,7 @@ import * as Visibility from 'visibilityjs';
 import { CurrentConversationComponent } from './current-conversation.component';
 import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
 import { ChatApiModule } from '@api/chat/chat-api.module';
 import { ScrollingMessageComponent } from '@private/features/chat/components/scrolling-message';
 import { InputComponent } from '@private/features/chat/components/input';

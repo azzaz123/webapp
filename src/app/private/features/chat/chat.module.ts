@@ -35,7 +35,7 @@ import { MaliciousConversationModalComponent } from './modals/malicious-conversa
 import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { TranslateButtonModule } from '@core/components/translate-button/translate-button.module';
-import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
 import { ChatApiModule } from '@api/chat/chat-api.module';
 import { DeliveryBannerModule } from './modules/delivery-banner/delivery-banner.module';
 

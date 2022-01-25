@@ -40,7 +40,7 @@ import { delay, take } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
 import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
 import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
 import { DeliveryBannerService } from '../../modules/delivery-banner/services/delivery-banner/delivery-banner.service';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
