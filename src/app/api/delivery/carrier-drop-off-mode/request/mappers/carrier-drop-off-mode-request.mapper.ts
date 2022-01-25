@@ -1,12 +1,5 @@
 import { mapMoneyToDomain } from '@api/core/mappers';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
-import {
-  CarrierDropOffModeRequest,
-  DropOffModeRequest,
-} from '@api/core/model/delivery/carrier-drop-off-mode/carrier-drop-off-mode-request.interface';
-import { PostOfficeDetails } from '@api/core/model/delivery/carrier-drop-off-mode/post-office-details.interface';
-import { TentativeSchedule } from '@api/core/model/delivery/carrier-drop-off-mode/tentative-schedule.interface';
-import { OfficeAddress } from '@api/core/model/delivery/carrier-drop-off-mode/office-address.interface';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { ToDomainMapper } from '@api/core/utils/types';
 import {
@@ -21,8 +14,15 @@ import {
   PostOfficeDetailsDto,
   TentativeScheduleDto,
 } from '../dtos/carrier-drop-off-mode-request-dto.interface';
+import {
+  LastAddressUsed,
+  OfficeAddress,
+  TentativeSchedule,
+  PostOfficeDetails,
+  CarrierDropOffModeRequest,
+  DropOffModeRequest,
+} from '@api/core/model/delivery/carrier-drop-off-mode';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
-import { LastAddressUsed } from '@api/core/model/delivery/carrier-drop-off-mode/last-address-used.interface';
 import { DeliveryAddress } from '@api/core/model/delivery/address/delivery-address.interface';
 
 const mapCarrierDropOffTypeToDomain: Record<DropOffModeTypeDto, CARRIER_DROP_OFF_MODE> = {
