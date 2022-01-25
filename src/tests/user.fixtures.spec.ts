@@ -175,6 +175,23 @@ export const MOCK_USER: User = new User(
   USER_DATA.web_slug
 );
 
+export const MOCK_USER_WITHOUT_IMAGE: User = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  null,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  0,
+  USER_DATA.web_slug
+);
+
 export const MOCK_USER_WITHOUT_LOCATION: User = new User(
   USER_DATA.id,
   USER_DATA.micro_name,
@@ -196,6 +213,23 @@ export const MOCK_OTHER_USER: User = new User(
   'other',
   USER_DATA.micro_name,
   USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  0,
+  USER_DATA.web_slug
+);
+
+export const MOCK_OTHER_USER_WITHOUT_IMAGE: User = new User(
+  'other',
+  USER_DATA.micro_name,
+  null,
   USER_DATA.location,
   USER_DATA.stats,
   USER_DATA.validations,
