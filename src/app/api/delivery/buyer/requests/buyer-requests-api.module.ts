@@ -5,4 +5,4 @@ import { BuyerRequestsHttpService } from './http/buyer-requests-http.service';
 @NgModule({
   providers: [BuyerRequestsHttpService],
 })
-export class BuyerRequestsModule {}
+export class BuyerRequestsApiModule {}
