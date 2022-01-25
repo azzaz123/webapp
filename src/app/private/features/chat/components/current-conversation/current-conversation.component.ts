@@ -42,7 +42,7 @@ import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
 import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
-import { DeliveryBannerService } from '../../modules/delivery-banner/services/delivery-banner/delivery-banner.service';
+import { DeliveryConversationContextService } from '@private/features/chat/services/delivery-conversation-context/delivery-conversation-context.service';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
 
 @Component({
@@ -91,7 +91,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     private analyticsService: AnalyticsService,
     private momentCalendarSpecService: MomentCalendarSpecService,
     private translationService: ChatTranslationService,
-    private deliveryBannerService: DeliveryBannerService
+    private deliveryConversationContextService: DeliveryConversationContextService
   ) {}
 
   get emptyInbox(): boolean {
@@ -99,7 +99,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public get deliveryBannerProperties$(): Observable<DeliveryBanner> {
-    return this.deliveryBannerService.bannerProperties$;
+    return this.deliveryConversationContextService.bannerProperties$;
   }
 
   ngOnInit() {
@@ -134,7 +134,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.sendMetricMessageSendFailed('pending messages after restored connection')
     );
 
-    this.deliveryBannerService.update();
+    this.deliveryConversationContextService.update();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeliveryBannerService } from '../services/delivery-banner/delivery-banner.service';
+import { DeliveryConversationContextService } from '../../../services/delivery-conversation-context/delivery-conversation-context.service';
 
 import { DeliveryBannerComponent } from './delivery-banner.component';
 
@@ -10,7 +10,7 @@ describe('DeliveryBannerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DeliveryBannerComponent],
-      providers: [DeliveryBannerService],
+      providers: [DeliveryConversationContextService],
     }).compileComponents();
   });
 

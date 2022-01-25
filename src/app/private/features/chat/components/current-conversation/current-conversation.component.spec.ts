@@ -49,7 +49,7 @@ import { InputComponent } from '@private/features/chat/components/input';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { DeliveryBannerService } from '../../modules/delivery-banner/services/delivery-banner/delivery-banner.service';
+import { DeliveryConversationContextService } from '@private/features/chat/services/delivery-conversation-context/delivery-conversation-context.service';
 import { DeliveryBannerComponent } from '../../modules/delivery-banner/components/delivery-banner.component';
 import { MOCK_BUY_NOW_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 
@@ -65,7 +65,7 @@ describe('CurrentConversationComponent', () => {
   let modalService: NgbModal;
   let userService: UserService;
   let chatTranslationService: ChatTranslationService;
-  let deliveryBannerService: DeliveryBannerService;
+  let deliveryConversationContextService: DeliveryConversationContextService;
   let modalMockResult: Promise<{}>;
 
   beforeEach(
@@ -115,7 +115,7 @@ describe('CurrentConversationComponent', () => {
           I18nService,
           MomentCalendarSpecService,
           ChatTranslationService,
-          DeliveryBannerService,
+          DeliveryConversationContextService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -137,7 +137,7 @@ describe('CurrentConversationComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     userService = TestBed.inject(UserService);
     chatTranslationService = TestBed.inject(ChatTranslationService);
-    deliveryBannerService = TestBed.inject(DeliveryBannerService);
+    deliveryConversationContextService = TestBed.inject(DeliveryConversationContextService);
 
     fixture.detectChanges();
   });
@@ -215,7 +215,7 @@ describe('CurrentConversationComponent', () => {
 
     describe('when delivery banner needs to be displayed', () => {
       beforeEach(fakeAsync(() => {
-        jest.spyOn(deliveryBannerService, 'bannerProperties$', 'get').mockReturnValue(of(MOCK_BUY_NOW_BANNER_PROPERTIES));
+        jest.spyOn(deliveryConversationContextService, 'bannerProperties$', 'get').mockReturnValue(of(MOCK_BUY_NOW_BANNER_PROPERTIES));
         tick();
         fixture.detectChanges();
       }));
@@ -229,7 +229,7 @@ describe('CurrentConversationComponent', () => {
 
     describe('when delivery banner does NOT need to be displayed', () => {
       beforeEach(fakeAsync(() => {
-        jest.spyOn(deliveryBannerService, 'bannerProperties$', 'get').mockReturnValue(of(null));
+        jest.spyOn(deliveryConversationContextService, 'bannerProperties$', 'get').mockReturnValue(of(null));
         tick();
         fixture.detectChanges();
       }));
