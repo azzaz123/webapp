@@ -1,4 +1,4 @@
-<div *ngIf="bannerProperties$ | async as bannerProperties" class="DeliveryBanner d-flex align-content-between align-items-center">
+<div *ngIf="bannerProperties" class="DeliveryBanner d-flex align-content-between align-items-center">
   <div class="d-flex">
     <tsl-svg-icon [src]="bannerProperties.svgPath"></tsl-svg-icon>
     <p>{{bannerProperties.description.text}}</p>

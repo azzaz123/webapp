@@ -49,6 +49,9 @@ import { InputComponent } from '@private/features/chat/components/input';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { DeliveryBannerService } from '../../modules/delivery-banner/services/delivery-banner/delivery-banner.service';
+import { DeliveryBannerComponent } from '../../modules/delivery-banner/components/delivery-banner.component';
+import { MOCK_BUY_NOW_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -62,13 +65,14 @@ describe('CurrentConversationComponent', () => {
   let modalService: NgbModal;
   let userService: UserService;
   let chatTranslationService: ChatTranslationService;
+  let deliveryBannerService: DeliveryBannerService;
   let modalMockResult: Promise<{}>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule, ChatApiModule],
-        declarations: [CurrentConversationComponent, DateCalendarPipe, ScrollingMessageComponent, InputComponent],
+        declarations: [CurrentConversationComponent, DateCalendarPipe, ScrollingMessageComponent, InputComponent, DeliveryBannerComponent],
         providers: [
           EventService,
           NgbModal,
@@ -111,6 +115,7 @@ describe('CurrentConversationComponent', () => {
           I18nService,
           MomentCalendarSpecService,
           ChatTranslationService,
+          DeliveryBannerService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -132,6 +137,7 @@ describe('CurrentConversationComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     userService = TestBed.inject(UserService);
     chatTranslationService = TestBed.inject(ChatTranslationService);
+    deliveryBannerService = TestBed.inject(DeliveryBannerService);
 
     fixture.detectChanges();
   });
@@ -206,6 +212,34 @@ describe('CurrentConversationComponent', () => {
 
       expect(realTime.sendRead).not.toHaveBeenCalled();
     }));
+
+    describe('when delivery banner needs to be displayed', () => {
+      beforeEach(fakeAsync(() => {
+        jest.spyOn(deliveryBannerService, 'bannerProperties$', 'get').mockReturnValue(of(MOCK_BUY_NOW_BANNER_PROPERTIES));
+        tick();
+        fixture.detectChanges();
+      }));
+
+      it('should display the delivery banner', () => {
+        const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
+
+        expect(deliveryBannerElement).toBeTruthy();
+      });
+    });
+
+    describe('when delivery banner does NOT need to be displayed', () => {
+      beforeEach(fakeAsync(() => {
+        jest.spyOn(deliveryBannerService, 'bannerProperties$', 'get').mockReturnValue(of(null));
+        tick();
+        fixture.detectChanges();
+      }));
+
+      it('should NOT display the delivery banner', () => {
+        const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
+
+        expect(deliveryBannerElement).toBeFalsy();
+      });
+    });
   });
 
   describe('ngOnDestroy', () => {

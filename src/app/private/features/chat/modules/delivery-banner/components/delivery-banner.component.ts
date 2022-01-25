@@ -1,21 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DeliveryBanner } from '../interfaces/delivery-banner.interface';
-import { DeliveryBannerService } from '../services/delivery-banner/delivery-banner.service';
 
 @Component({
   selector: 'tsl-delivery-banner',
   templateUrl: './delivery-banner.component.html',
   styleUrls: ['./delivery-banner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DeliveryBannerComponent implements OnInit {
-  constructor(private deliveryBannerService: DeliveryBannerService) {}
-
-  public get bannerProperties$(): Observable<DeliveryBanner> {
-    return this.deliveryBannerService.bannerProperties$;
-  }
-
-  ngOnInit() {
-    this.deliveryBannerService.update();
-  }
+export class DeliveryBannerComponent {
+  @Input() bannerProperties: DeliveryBanner;
 }
