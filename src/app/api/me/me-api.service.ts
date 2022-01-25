@@ -67,4 +67,16 @@ export class MeApiService {
       }))
     );
   }
+
+  public getMyNotificationsSettings(): Observable<PaginatedList<Item>> {
+    let parameters: QueryParams<FavouritesQueryParams>;
+
+    return this.httpService.getFavourites(parameters).pipe(
+      take(1),
+      map(({ data, meta }: FavouritesResponseDto) => ({
+        list: mapFavouriteItemsToLegacyItem(data),
+        paginationParameter: meta?.next,
+      }))
+    );
+  }
 }
