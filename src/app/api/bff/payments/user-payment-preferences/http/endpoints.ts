@@ -1,4 +1,4 @@
 import { environment } from '@environments/environment';
 
-export const PAYMENTS_URL: string = `${environment.baseUrl}bff/payments`;
-export const USER_PAYMENT_PREFERENCES_ENDPOINT: string = `${PAYMENTS_URL}/user_payment_preferences`;
+const PAYMENTS_URL: string = `${environment.baseUrl}api/v3/payments`;
+export const USER_PAYMENT_PREFERENCES_ENDPOINT: string = `${PAYMENTS_URL}/payment-methods`;
