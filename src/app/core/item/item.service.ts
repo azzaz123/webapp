@@ -224,8 +224,17 @@ export class ItemService {
       );
   }
 
+  public getBaseUrlByStatus(status?: string): string {
+    switch (status) {
+      case 'inactive':
+        return ITEMS_API_URL;
+      default:
+        return WEB_ITEMS_API_URL;
+    }
+  }
+
   public mine(init: number, status?: string): Observable<ItemsData> {
-    return this.getPaginationItems(WEB_ITEMS_API_URL + '/mine/' + status, init, true);
+    return this.getPaginationItems(this.getBaseUrlByStatus(status) + '/mine/' + status, init, true);
   }
 
   public myFavorites(init: number): Observable<ItemsData> {

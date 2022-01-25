@@ -18,7 +18,7 @@ import {
   MOCK_HISTORIC_LIST_EMPTY,
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
 import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { PATH_TO_ACCEPT_SCREEN, PRIVATE_PATHS } from '@private/private-routing-constants';
 import { SharedErrorActionService } from '@shared/error-action';
 import { StreamlineOngoingComponent } from '@private/features/delivery/pages/streamline/pages/streamline-ongoing/streamline-ongoing.component';
 import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
@@ -32,7 +32,7 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
 
-const PATH_TO_ACCEPT_SCREEN: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}/${STREAMLINE_PATHS.ONGOING}/${PRIVATE_PATHS.ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
+const PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID: string = `${PATH_TO_ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
 
 describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;
@@ -180,7 +180,7 @@ describe('StreamlineOngoingComponent', () => {
               component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER);
 
               expect(router.navigate).toHaveBeenCalledTimes(1);
-              expect(router.navigate).toHaveBeenCalledWith([PATH_TO_ACCEPT_SCREEN]);
+              expect(router.navigate).toHaveBeenCalledWith([PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID]);
             });
           });
         });

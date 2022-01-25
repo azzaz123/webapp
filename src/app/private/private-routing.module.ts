@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PRIVATE_PATHS, PRIVATE_PATH_PARAMS } from './private-routing-constants';
+import { PATH_TO_ACCEPT_SCREEN, PRIVATE_PATHS, PRIVATE_PATH_PARAMS } from './private-routing-constants';
 import { PrivateComponent } from './private.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from './features/pro/pro-routing-constants';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { PROFILE_PATHS } from './features/profile/profile-routing-constants';
-import { DELIVERY_PATHS } from './features/delivery/delivery-routing-constants';
-import { STREAMLINE_PATHS } from './features/delivery/pages/streamline/streamline.routing.constants';
 
 const routes: Routes = [
   {
@@ -17,7 +15,7 @@ const routes: Routes = [
     children: [
       {
         path: `${PRIVATE_PATHS.ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
-        redirectTo: `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}/${STREAMLINE_PATHS.ONGOING}/${PRIVATE_PATHS.ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
+        redirectTo: `${PATH_TO_ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
       },
       {
         path: 'pro',
