@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class PaymentsPaymentMethodsService {
   constructor(private paymentMethodsHttpService: PaymentsPaymentMethodsHttpService) {}
 
-  public get paymentUserPreferences(): Observable<PaymentsPaymentMethods> {
+  public get paymentMethods(): Observable<PaymentsPaymentMethods> {
     return this.paymentMethodsHttpService.getPaymentMethods().pipe(map(mapPaymentsPaymentMethodsDtoToPaymentsPaymentMethods));
   }
 }

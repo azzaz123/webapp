@@ -34,7 +34,7 @@ describe('PaymentsPaymentMethodsService', () => {
     });
 
     it('should retrieve the user payment methods', () => {
-      service.paymentUserPreferences.subscribe();
+      service.paymentMethods.subscribe();
 
       expect(paymentMethodsHttpService.getPaymentMethods).toHaveBeenCalledTimes(1);
     });
@@ -42,7 +42,7 @@ describe('PaymentsPaymentMethodsService', () => {
     it('should map server response to web context', () => {
       let response: PaymentsPaymentMethods;
 
-      service.paymentUserPreferences.subscribe((data) => (response = data));
+      service.paymentMethods.subscribe((data) => (response = data));
 
       expect(JSON.stringify(response)).toEqual(JSON.stringify(MOCK_PAYMENTS_PAYMENT_METHODS));
     });
