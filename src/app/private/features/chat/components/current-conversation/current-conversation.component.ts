@@ -133,8 +133,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () =>
       this.sendMetricMessageSendFailed('pending messages after restored connection')
     );
-
-    this.deliveryConversationContextService.update();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -145,6 +143,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.openMaliciousConversationModal();
       this.isConversationChanged = true;
       this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
+      this.deliveryConversationContextService.update();
     }
   }
 

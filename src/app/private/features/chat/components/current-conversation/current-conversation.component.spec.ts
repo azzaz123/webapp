@@ -515,11 +515,19 @@ describe('CurrentConversationComponent', () => {
     });
   });
 
-  describe('when opening a different conversation', () => {
+  describe('when opening a conversation', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.callThrough();
-      component.currentConversation = null;
+      spyOn(deliveryConversationContextService, 'update');
+
+      component.ngOnChanges({
+        currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
+      });
       fixture.detectChanges();
+    });
+
+    it('should ask for delivery conversation context', () => {
+      expect(deliveryConversationContextService.update).toHaveBeenCalledTimes(1);
     });
 
     describe('and when other user is considered malicious', () => {
@@ -532,7 +540,6 @@ describe('CurrentConversationComponent', () => {
         fixture.detectChanges();
       });
       it('should show malicious modal', () => {
-        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
         expect(modalService.open).toHaveBeenCalledWith(MaliciousConversationModalComponent, {
           windowClass: 'warning',
         });
@@ -545,7 +552,7 @@ describe('CurrentConversationComponent', () => {
       });
     });
 
-    describe('when user is not considered malicious but unsubscribed to wallapop', () => {
+    describe('and when other user is not considered malicious but unsubscribed to wallapop', () => {
       beforeEach(() => {
         component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER;
         component.ngOnChanges({
@@ -567,7 +574,6 @@ describe('CurrentConversationComponent', () => {
 
     describe('and when other user is not considered malicious', () => {
       it('should not show malicious modal', () => {
-        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
         component.currentConversation = MOCK_INBOX_CONVERSATION_BASIC;
         component.ngOnChanges({
           currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
