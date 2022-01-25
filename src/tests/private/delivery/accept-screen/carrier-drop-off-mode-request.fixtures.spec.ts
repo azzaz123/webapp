@@ -4,7 +4,7 @@ import { CarrierDropOffModeRequest } from '@api/core/model/delivery/carrier-drop
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 
-export const MOCK_CARRIER_DROP_OFF_MODE: CarrierDropOffModeRequest = {
+export const MOCK_CARRIER_DROP_OFF_MODE_REQUEST: CarrierDropOffModeRequest = {
   modes: [
     {
       type: CARRIER_DROP_OFF_MODE.POST_OFFICE,
