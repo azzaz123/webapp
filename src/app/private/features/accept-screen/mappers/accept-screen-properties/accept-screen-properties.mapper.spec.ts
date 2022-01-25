@@ -1,5 +1,10 @@
 import { MOCK_ITEM, MOCK_ITEM_WITHOUT_IMAGE } from '@fixtures/item.fixtures.spec';
-import { mapItemToAcceptScreenItem, mapUserToAcceptScreenBuyer, mapUserToAcceptScreenSeller } from './accept-screen-properties.mapper';
+import {
+  mapCarrierDropOffModeToAcceptScreenCarriers,
+  mapItemToAcceptScreenItem,
+  mapUserToAcceptScreenBuyer,
+  mapUserToAcceptScreenSeller,
+} from './accept-screen-properties.mapper';
 import {
   MOCK_ACCEPT_SCREEN_ITEM_WITHOUT_IMAGE,
   MOCK_ACCEPT_SCREEN_ITEM,
@@ -7,8 +12,10 @@ import {
   MOCK_ACCEPT_SCREEN_SELLER,
   MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE,
   MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE,
+  MOCK_ACCEPT_SCREEN_CARRIERS,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { MOCK_USER, MOCK_OTHER_USER, MOCK_USER_WITHOUT_IMAGE, MOCK_OTHER_USER_WITHOUT_IMAGE } from '@fixtures/user.fixtures.spec';
+import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST } from '@fixtures/private/delivery/accept-screen/carrier-drop-off-mode-request.fixtures.spec';
 
 describe('mapItemToAcceptScreenItem', () => {
   describe('when asking for item map', () => {
@@ -66,6 +73,16 @@ describe('mapUserToAcceptScreenBuyer', () => {
 
         expect(JSON.stringify(expectedBuyer)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE));
       });
+    });
+  });
+});
+
+describe('mapCarrierDropOffModeToAcceptScreenCarriers', () => {
+  describe('when asking for carriers map', () => {
+    it('should return correctly mapped carriers', () => {
+      const expectedCarriers = mapCarrierDropOffModeToAcceptScreenCarriers(MOCK_CARRIER_DROP_OFF_MODE_REQUEST);
+
+      expect(JSON.stringify(expectedCarriers)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_CARRIERS));
     });
   });
 });
