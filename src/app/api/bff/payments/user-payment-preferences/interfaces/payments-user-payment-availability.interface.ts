@@ -1,7 +1,7 @@
-import { PaymentsPaymentMethod } from '@api/bff/payments/user-payment-preferences/types/payments-payment-method.type';
+import { PaymentMethod } from '@api/shared/types/payment-method.type';
 
 export interface PaymentsUserPaymentAvailability {
-  paymentMethod: PaymentsPaymentMethod;
+  paymentMethod: PaymentMethod;
   useWallet: boolean;
   walletBlocked: boolean;
 }
