@@ -9,6 +9,7 @@
   <img *ngIf="uploadedAvatar"
        [src]="uploadedAvatar"
        class="avatar-rounded"
+       [fallback]="fallback"
        [ngClass]="'avatar-' + size" />
        <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
         <tsl-pro-badge *ngIf="showProBadge" [iconType]="ICON_TYPE.SMALL" class="position-absolute bottom-0 end-0" [ngStyle]="badgeStyles"></tsl-pro-badge>

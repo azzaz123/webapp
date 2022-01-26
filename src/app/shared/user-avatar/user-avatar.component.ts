@@ -18,10 +18,10 @@ export class UserAvatarComponent implements OnInit, OnChanges {
   @Input() showProBadgeWide = false;
 
   public avatar: string;
-  public uploadedAvatar;
-  public fallback: string;
+  public uploadedAvatar: string;
   public badgeSize = 22;
   public badgeStyles = {};
+  public readonly fallback: string = PLACEHOLDER_AVATAR;
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly ICON_TYPE = ICON_TYPE;
 
@@ -31,7 +31,7 @@ export class UserAvatarComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes?: any) {
     if (
-      (changes && changes.imageUrl && typeof changes.imageUrl.currentValue === 'object') ||
+      (changes && changes.imageUrl && typeof changes.imageUrl.currentValue === 'string') ||
       (changes && changes.avatarUrl && typeof changes.avatarUrl.currentValue === 'object')
     ) {
       this.uploadedAvatar = changes.imageUrl ? changes.imageUrl.currentValue : changes.avatarUrl.currentValue;
@@ -46,7 +46,6 @@ export class UserAvatarComponent implements OnInit, OnChanges {
         this.avatar = this.avatar.replace('http://', 'https://');
       }
     }
-    this.fallback = PLACEHOLDER_AVATAR;
   }
 
   private checkPROBadgeProperties(): void {
