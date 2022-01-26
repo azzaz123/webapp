@@ -15,7 +15,6 @@ class TestComponent {
 describe('DebounceKeyupDirective', () => {
   let component: TestComponent;
   let de: DebugElement;
-  let el: HTMLElement;
   let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(() => {
@@ -26,7 +25,6 @@ describe('DebounceKeyupDirective', () => {
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-    el = de.nativeElement;
   });
 
   it('should create an instance', () => {
