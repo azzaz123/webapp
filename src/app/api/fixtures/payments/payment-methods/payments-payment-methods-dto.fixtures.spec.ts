@@ -1,4 +1,5 @@
-import { PaymentsPaymentMethods } from '@api/payments/payment-methods/interfaces/payments-payment-methods.interface';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
 import { PaymentsPaymentMethodsDto } from '@api/payments/payment-methods/dtos/payments-payment-methods-dto.interface';
 
 export const MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE: PaymentsPaymentMethodsDto = {
@@ -6,5 +7,5 @@ export const MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE: PaymentsPaymentMethodsDto =
 };
 
 export const MOCK_PAYMENTS_PAYMENT_METHODS: PaymentsPaymentMethods = {
-  paymentMethods: [{ method: 'paypal' }, { method: 'credit card' }],
+  paymentMethods: [{ method: 'paypal' as PaymentMethod }, { method: 'credit card' as PaymentMethod }],
 };
