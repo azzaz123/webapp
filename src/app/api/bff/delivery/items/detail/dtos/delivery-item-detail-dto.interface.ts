@@ -1,4 +1,4 @@
-export interface DeliveryItemDetailDto {
+export interface DeliveryItemDetailsDto {
   buy_now_allowed: boolean;
   call_to_action: string;
   delivery_costs: {
