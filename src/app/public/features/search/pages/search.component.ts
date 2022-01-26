@@ -38,6 +38,8 @@ import { SearchService } from '../core/services/search.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
+import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
+import { OPTIMIZELY_EXPERIMENTS } from '@core/experimentation/vendors/optimizely/resources/optimizely-experiment-keys';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -124,6 +126,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private queryStringService: SearchQueryStringService,
     private searchListTrackingEventsService: SearchListTrackingEventsService,
     private searchTrackingEventsService: SearchTrackingEventsService,
+    private experimentationService: ExperimentationService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
@@ -143,6 +146,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
         this.handleSearchResponseExtraData(searchResponseExtraData);
       })
     );
+    const test = this.experimentationService.activateOptimizelyExperiment({
+      experimentKey: OPTIMIZELY_EXPERIMENTS.Test01_Experiment,
+      attributes: { os: 'android' },
+    });
+    console.log(test);
   }
 
   public ngOnInit(): void {
