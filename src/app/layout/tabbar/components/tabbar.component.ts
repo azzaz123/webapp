@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
@@ -7,9 +7,7 @@ import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Observable, Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
-import { SITE_URL } from '@configs/site-url.config';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
-import { StandaloneService } from '@core/standalone/services/standalone.service';
 
 export const INPUT_TYPE = {
   TEXT: 'text',
@@ -31,12 +29,10 @@ export const ELEMENT_TYPE = {
   templateUrl: './tabbar.component.html',
   styleUrls: ['./tabbar.component.scss'],
 })
-export class TabbarComponent implements OnInit {
+export class TabbarComponent implements OnInit, OnDestroy {
   public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public readonly SEARCH_PATH = `/${PUBLIC_PATHS.SEARCH}`;
-  public readonly standaloneMode$: Observable<boolean> = this.standaloneService.standalone$;
   public user: User;
-  public homeUrl: string;
   public hidden = false;
   public hasUnreadMessages = false;
   public isLogged: boolean;
@@ -48,13 +44,24 @@ export class TabbarComponent implements OnInit {
     private tabBarService: TabbarService,
     private unreadChatMessagesService: UnreadChatMessagesService,
     private eventService: EventService,
-    private searchNavigatorService: SearchNavigatorService,
-    private standaloneService: StandaloneService,
-    @Inject(SITE_URL) private siteUrl: string
+    private searchNavigatorService: SearchNavigatorService
   ) {}
 
+  @HostListener('window:focusin', ['$event'])
+  onFocusIn(elementType: unknown) {
+    if (this.isTextInputOrTextarea(elementType)) {
+      this.hidden = true;
+    }
+  }
+
+  @HostListener('window:focusout', ['$event'])
+  onFocusOut(elementType: unknown) {
+    if (this.isTextInputOrTextarea(elementType)) {
+      this.hidden = false;
+    }
+  }
+
   ngOnInit() {
-    this.homeUrl = this.siteUrl;
     this.isLogged = this.userService.isLogged;
     this.user = this.userService.user;
     this.componentSubscriptions.push(this.tabBarService.tabBarHidden$.subscribe((hidden) => (this.hidden = hidden)));
@@ -75,7 +82,16 @@ export class TabbarComponent implements OnInit {
     );
   }
 
-  public navigateToSearchPage(): void {
+  ngOnDestroy(): void {
+    this.componentSubscriptions.forEach((subscription: Subscription) => {
+      subscription.unsubscribe();
+    });
+  }
+
+  public navigateToSearchPage(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
     this.searchNavigatorService.navigateWithLocationParams({});
   }
 
@@ -91,25 +107,5 @@ export class TabbarComponent implements OnInit {
 
     const inputType = elementTarget.attributes?.type?.nodeValue;
     return KEYBOARD_INPUT_TYPES.includes(inputType);
-  }
-
-  @HostListener('window:focusin', ['$event'])
-  onFocusIn(elementType: unknown) {
-    if (this.isTextInputOrTextarea(elementType)) {
-      this.hidden = true;
-    }
-  }
-
-  @HostListener('window:focusout', ['$event'])
-  onFocusOut(elementType: unknown) {
-    if (this.isTextInputOrTextarea(elementType)) {
-      this.hidden = false;
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.componentSubscriptions.forEach((subscription: Subscription) => {
-      subscription.unsubscribe();
-    });
   }
 }

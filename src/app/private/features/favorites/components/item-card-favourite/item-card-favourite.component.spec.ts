@@ -16,7 +16,7 @@ import { FavouritesListTrackingEventsService } from '../../services/favourites-l
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@core/core.module';
 import { MARKET_PROVIDER } from '@configs/market.config';
-import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
+import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
 
 describe('ItemCardFavouriteComponent', () => {
   let component: ItemCardFavouriteComponent;
@@ -40,7 +40,7 @@ describe('ItemCardFavouriteComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, CoreModule],
-        declarations: [ItemCardFavouriteComponent, CustomCurrencyPipe, ItemRouteDirectiveMock],
+        declarations: [ItemCardFavouriteComponent, CustomCurrencyPipe, ItemRouteMockDirective],
         providers: [
           DecimalPipe,
           I18nService,

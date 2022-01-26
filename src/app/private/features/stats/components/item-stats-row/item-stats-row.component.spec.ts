@@ -11,7 +11,7 @@ import { CustomCurrencyPipe } from '@shared/pipes';
 import { ItemStatsService } from '../../core/services/item-stats.service';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
+import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
 
 describe('ItemStatsRowComponent', () => {
   let component: ItemStatsRowComponent;
@@ -22,7 +22,7 @@ describe('ItemStatsRowComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CommonModule, NoopAnimationsModule],
-        declarations: [ItemStatsRowComponent, CustomCurrencyPipe, ItemRouteDirectiveMock],
+        declarations: [ItemStatsRowComponent, CustomCurrencyPipe, ItemRouteMockDirective],
         providers: [
           DecimalPipe,
           {

@@ -23,7 +23,7 @@ import { ShowSlotPipe } from './pipes/show-slot.pipe';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { ItemRouteDirectiveMock } from '@fixtures/item-route.fixtures.spec';
+import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
 
 @Component({
   selector: 'tsl-item-card-list-wrapper',
@@ -64,7 +64,7 @@ describe('ItemCardListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemCardListComponent, IsCurrentUserStub, ShowSlotPipe, ItemCardListWrapperComponent, ItemRouteDirectiveMock],
+      declarations: [ItemCardListComponent, IsCurrentUserStub, ShowSlotPipe, ItemCardListWrapperComponent, ItemRouteMockDirective],
       imports: [CommonModule, ItemCardModule, ItemApiModule, HttpClientTestingModule, NgxPermissionsModule.forRoot()],
       providers: [
         NgxPermissionsService,
