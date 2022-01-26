@@ -10,7 +10,7 @@ describe('mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences', 
       const mappedUserPaymentPreferences = mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences(
         MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE
       );
-      expect(JSON.stringify(mappedUserPaymentPreferences)).toEqual(JSON.stringify(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES));
+      expect(mappedUserPaymentPreferences).toEqual(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
     });
   });
 });

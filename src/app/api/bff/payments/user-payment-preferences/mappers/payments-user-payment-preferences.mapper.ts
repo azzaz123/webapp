@@ -1,9 +1,9 @@
-import { PaymentMethod } from '@api/shared/enums/payment-method.enum';
-import { PaymentsUserPaymentAvailability } from '@api/bff/payments/user-payment-preferences/interfaces/payments-user-payment-availability.interface';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PaymentsUserPaymentAvailability } from '@api/core/model/payments/interfaces/payments-user-payment-availability.interface';
 import { PaymentsUserPaymentAvailabilityDto } from '@api/bff/payments/user-payment-preferences/dtos/payments-user-payment-availability-dto.interface';
-import { PaymentsUserPaymentPreference } from '@api/bff/payments/user-payment-preferences/interfaces/payments-user-payment-preference.interface';
+import { PaymentsUserPaymentPreference } from '@api/core/model/payments/interfaces/payments-user-payment-preference.interface';
 import { PaymentsUserPaymentPreferenceDto } from '@api/bff/payments/user-payment-preferences/dtos/payments-user-payment-preference-dto.interface';
-import { PaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/interfaces/payments-user-payment-preferences.interface';
+import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesDto } from '@api/bff/payments/user-payment-preferences/dtos/payments-user-payment-preferences-dto.interface';
 import { ToDomainMapper } from '@api/core/utils/types';
 

@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@api/shared/enums/payment-method.enum';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 
 export interface PaymentsUserPaymentAvailability {
   paymentMethod: PaymentMethod;

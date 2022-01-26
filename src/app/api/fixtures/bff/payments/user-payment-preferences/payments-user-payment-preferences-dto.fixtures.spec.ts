@@ -1,4 +1,5 @@
-import { PaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/interfaces/payments-user-payment-preferences.interface';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesDto } from '@api/bff/payments/user-payment-preferences/dtos/payments-user-payment-preferences-dto.interface';
 
 export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE: PaymentsUserPaymentPreferencesDto = {
@@ -23,7 +24,7 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES: PaymentsUserPaymentPreferen
   },
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
-    paymentMethod: 'paypal',
+    paymentMethod: 'paypal' as PaymentMethod,
     useWallet: false,
     walletBlocked: false,
   },

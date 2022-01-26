@@ -5,7 +5,7 @@ import {
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
 } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
-import { PaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/interfaces/payments-user-payment-preferences.interface';
+import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/user-payment-preferences/http/payments-user-payment-preferences-http.service';
 import { PaymentsUserPaymentPreferencesService } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.service';
 
@@ -46,7 +46,7 @@ describe('PaymentsUserPaymentPreferencesService', () => {
 
       service.paymentUserPreferences.subscribe((data) => (response = data));
 
-      expect(JSON.stringify(response)).toEqual(JSON.stringify(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES));
+      expect(response).toEqual(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
     });
   });
 });

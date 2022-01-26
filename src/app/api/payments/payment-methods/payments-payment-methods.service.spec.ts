@@ -5,7 +5,7 @@ import {
   MOCK_PAYMENTS_PAYMENT_METHODS,
   MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE,
 } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
-import { PaymentsPaymentMethods } from '@api/payments/payment-methods/interfaces/payments-payment-methods.interface';
+import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
 import { PaymentsPaymentMethodsHttpService } from '@api/payments/payment-methods/http/payments-payment-methods-http.service';
 import { PaymentsPaymentMethodsService } from '@api/payments/payment-methods/payments-payment-methods.service';
 
@@ -44,7 +44,7 @@ describe('PaymentsPaymentMethodsService', () => {
 
       service.paymentMethods.subscribe((data) => (response = data));
 
-      expect(JSON.stringify(response)).toEqual(JSON.stringify(MOCK_PAYMENTS_PAYMENT_METHODS));
+      expect(response).toEqual(MOCK_PAYMENTS_PAYMENT_METHODS);
     });
   });
 });
