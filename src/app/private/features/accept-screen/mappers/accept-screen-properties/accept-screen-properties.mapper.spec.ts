@@ -99,7 +99,7 @@ describe('mapDeliveryAddresstoAcceptScreenDeliveryAddress', () => {
     it('should return correctly mapped delivery address', () => {
       const expectedDeliveryAddress = mapDeliveryAddresstoAcceptScreenDeliveryAddress(MOCK_DELIVERY_ADDRESS);
 
-      expect(JSON.stringify(expectedDeliveryAddress)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS));
+      expect(expectedDeliveryAddress).toEqual(MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS);
     });
   });
 
@@ -107,7 +107,7 @@ describe('mapDeliveryAddresstoAcceptScreenDeliveryAddress', () => {
     it('should return correctly mapped delivery address', () => {
       const expectedDeliveryAddress = mapDeliveryAddresstoAcceptScreenDeliveryAddress(MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR);
 
-      expect(JSON.stringify(expectedDeliveryAddress)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR));
+      expect(expectedDeliveryAddress).toEqual(MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR);
     });
   });
 });

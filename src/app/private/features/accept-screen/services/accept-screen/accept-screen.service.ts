@@ -95,8 +95,6 @@ export class AcceptScreenService {
   }
 
   private getDeliveryAddress(): Observable<AcceptScreenDeliveryAddress> {
-    return this.deliveryAddressApiService
-      .get()
-      .pipe(map((address: DeliveryAddressApi) => mapDeliveryAddresstoAcceptScreenDeliveryAddress(address)));
+    return this.deliveryAddressApiService.get().pipe(map(mapDeliveryAddresstoAcceptScreenDeliveryAddress));
   }
 }
