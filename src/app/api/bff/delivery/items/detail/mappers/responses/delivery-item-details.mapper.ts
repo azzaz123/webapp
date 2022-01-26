@@ -12,7 +12,7 @@ export const mapDeliveryItemDetailsDtoToDeliveryItemDetails: ToDomainMapper<Deli
   input: DeliveryItemDetailsDto
 ) => {
   const { delivery_costs } = input;
-  const isDeliveryCostsNull = !!delivery_costs;
+  const isDeliveryCostsNull = !delivery_costs;
   if (isDeliveryCostsNull) {
     return null;
   }
