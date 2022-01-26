@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('AcceptScreenModalComponent', () => {
-  const MOCK_REQUEST_ID = '82723gHYSA762';
+  const MOCK_REQUEST_ID: string = '82723gHYSA762';
 
   let component: AcceptScreenModalComponent;
   let fixture: ComponentFixture<AcceptScreenModalComponent>;
