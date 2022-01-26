@@ -37,7 +37,7 @@ describe('BuyerRequestsApiService', () => {
   });
 
   describe('when asking to get requests as buyer by item', () => {
-    const MOCK_ITEM_HASH = '9jdxdd2rylzk';
+    const MOCK_ITEM_HASH: string = '9jdxdd2rylzk';
     let response: BuyerRequest[];
 
     beforeEach(fakeAsync(() => {
