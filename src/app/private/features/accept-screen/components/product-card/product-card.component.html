@@ -1,19 +1,19 @@
-<div>
-  <div class="d-flex">
+<div class="ml-2 mr-2">
+  <div class="d-flex mb-2">
     <tsl-user-avatar [imageUrl]="buyer.imageUrl"></tsl-user-avatar>
-    <span i18n="@@accept_view_seller_product_card_buyer_detail_buy_flow_test_variant_b_label" class="ml-3"
+    <span i18n="@@accept_view_seller_product_card_buyer_detail_buy_flow_test_variant_b_label" class="ml-3 mt-2"
       ><b>{{ buyer.name }}</b> bought it</span
     >
   </div>
-  <div>
-    <div>
+  <div class="d-flex row align-items-center justify-content-center">
+    <div class="col-2">
       <img [src]="item.imageUrl" />
     </div>
-    <div>
+    <div class="col-4">
       <span i18n="accept_view_seller_product_card_item_detail_buy_flow_test_variant_b_label">Your product</span>
-      <span>{{ item.title }}</span>
+      <span> {{ item.title }}</span>
     </div>
-    <div>
+    <div class="col-4">
       <span>{{ item.price.amount.total }}{{ item.price.currency.symbol }}</span>
     </div>
   </div>
