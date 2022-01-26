@@ -5,6 +5,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DeviceService } from '@core/device/device.service';
 import { ExternalCommsService } from '@core/external-comms.service';
 import { SessionService } from '@core/session/session.service';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MockDeviceService, MOCK_DEVICE_UUID } from '@fixtures/device.fixtures.spec';
@@ -34,6 +35,10 @@ describe('AppComponent', () => {
         { provide: SessionService, useClass: MockSessionService },
         { provide: DeviceService, useValue: MockDeviceService },
         { provide: CookieService, useValue: MockCookieService },
+        {
+          provide: StandaloneService,
+          useValue: { standalone: false },
+        },
       ],
     }).compileComponents();
   });
