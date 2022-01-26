@@ -344,6 +344,8 @@
     "web_top_bar_button_register_or_signin": "Regístrate o inicia sesión",
     "web_components_topbar_11": "Subir producto",
     "web_components_topbar_12": "Subir coche",
+    "accept_view_seller_product_card_buyer_detail_buy_flow_test_variant_b_label": "{$INTERPOLATION} lo ha comprado",
+    "accept_view_seller_product_card_item_detail_buy_flow_test_variant_b_label": "Tu producto",
     "web_cart_451": "Mis destacados",
     "web_cart_615": "Eliminar lista",
     "web_cart_452": "Destacado de Barrio",
