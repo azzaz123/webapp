@@ -4,6 +4,7 @@ import { User, PLACEHOLDER_AVATAR } from '@core/user/user';
 import { mapNumberAndCurrencyCodeToMoney, NumberCurrencyCode } from '@api/core/mappers/money/money-mapper';
 import { CurrencyCode } from '@api/core/model/currency.interface';
 import { AcceptScreenItem, AcceptScreenSeller, AcceptScreenBuyer } from '@private/features/accept-screen/interfaces';
+import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 
 export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> = (item: Item): AcceptScreenItem => {
   const itemCurrencyPrice: NumberCurrencyCode = {
@@ -14,7 +15,7 @@ export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> =
     id: item.id,
     title: item.title,
     price: mapNumberAndCurrencyCodeToMoney(itemCurrencyPrice),
-    imageUrl: item.images ? item.images[0].urls_by_size.original : null,
+    imageUrl: item.images ? item.images[0].urls_by_size.original : FALLBACK_NOT_FOUND_SRC,
   };
 };
 

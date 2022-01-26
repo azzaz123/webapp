@@ -10,6 +10,7 @@ import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers/money/money-m
 import { CurrencyCode } from '@api/core/model/currency.interface';
 import { PLACEHOLDER_AVATAR } from '@core/user/user';
 import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
+import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 
 export const MOCK_ACCEPT_SCREEN_ITEM: AcceptScreenItem = {
   id: MOCK_ITEM.id,
@@ -28,7 +29,7 @@ export const MOCK_ACCEPT_SCREEN_ITEM_WITHOUT_IMAGE: AcceptScreenItem = {
     number: MOCK_ITEM_WITHOUT_IMAGE.salePrice,
     currency: MOCK_ITEM_WITHOUT_IMAGE.currencyCode as CurrencyCode,
   }),
-  imageUrl: null,
+  imageUrl: FALLBACK_NOT_FOUND_SRC,
 };
 
 export const MOCK_ACCEPT_SCREEN_BUYER: AcceptScreenBuyer = {
