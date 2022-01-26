@@ -14,6 +14,7 @@ import { STATUS } from '@private/features/catalog/components/selected-items/sele
 import { ItemService } from '@core/item/item.service';
 import { SoldItemsQueryParams } from './dtos/sold/request/sold-query-params';
 import { NotificationsSettingsResponseDto } from '@api/me/dtos/notifications-settings/response/notifcations-settings-response-dto';
+import { NotificationsSettingsDto } from '@api/me/dtos/notifications-settings/response/notifcations-settings-dto';
 
 @Injectable()
 export class MeApiService {
@@ -69,11 +70,11 @@ export class MeApiService {
     );
   }
 
-  public getMyNotificationsSettings(): Observable<PaginatedList<Item>> {
+  public getMyNotificationsSettings(): Observable<NotificationsSettingsResponseDto> {
     return this.httpService.getMyNotificationsSettings().pipe(
       map(({ data }: NotificationsSettingsResponseDto) => ({
         // TODO mapper...
-        list: data,
+        data: data,
       }))
     );
   }
