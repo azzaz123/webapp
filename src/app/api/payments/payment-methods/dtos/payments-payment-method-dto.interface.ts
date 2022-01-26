@@ -1,5 +1,5 @@
-import { PaymentMethod } from '@api/shared/types/payment-method.type';
+import { PaymentMethodDto } from '@api/shared/types/payment-method-dto.type';
 
 export interface PaymentsPaymentMethodDto {
-  method: PaymentMethod;
+  method: PaymentMethodDto;
 }

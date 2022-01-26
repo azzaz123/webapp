@@ -8,6 +8,7 @@ describe('mapPaymentsPaymentMethodsDtoToPaymentsPaymentMethods', () => {
   describe('when mapping from payment methods DTO', () => {
     it('should map to a payment methods entity', () => {
       const mappedUserPaymentPreferences = mapPaymentsPaymentMethodsDtoToPaymentsPaymentMethods(MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE);
+
       expect(JSON.stringify(mappedUserPaymentPreferences)).toEqual(JSON.stringify(MOCK_PAYMENTS_PAYMENT_METHODS));
     });
   });
