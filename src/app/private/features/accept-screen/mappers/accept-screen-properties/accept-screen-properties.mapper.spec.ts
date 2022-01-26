@@ -50,7 +50,7 @@ describe('mapUserToAcceptScreenSeller', () => {
       it('should return correctly mapped seller', () => {
         const expectedSeller = mapUserToAcceptScreenSeller(MOCK_USER);
 
-        expect(JSON.stringify(expectedSeller)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_SELLER));
+        expect(expectedSeller).toEqual(MOCK_ACCEPT_SCREEN_SELLER);
       });
     });
 
@@ -58,7 +58,7 @@ describe('mapUserToAcceptScreenSeller', () => {
       it('should return correctly mapped seller with PLACEHOLDER AVATAR', () => {
         const expectedSeller = mapUserToAcceptScreenSeller(MOCK_USER_WITHOUT_IMAGE);
 
-        expect(JSON.stringify(expectedSeller)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE));
+        expect(expectedSeller).toEqual(MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE);
       });
     });
   });
@@ -78,7 +78,7 @@ describe('mapUserToAcceptScreenBuyer', () => {
       it('should return correctly mapped buyer with PLACEHOLDER AVATAR', () => {
         const expectedBuyer = mapUserToAcceptScreenBuyer(MOCK_OTHER_USER_WITHOUT_IMAGE);
 
-        expect(JSON.stringify(expectedBuyer)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE));
+        expect(expectedBuyer).toEqual(MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE);
       });
     });
   });
@@ -89,7 +89,7 @@ describe('mapCarrierDropOffModeToAcceptScreenCarriers', () => {
     it('should return correctly mapped carriers', () => {
       const expectedCarriers = mapCarrierDropOffModeToAcceptScreenCarriers(MOCK_CARRIER_DROP_OFF_MODE_REQUEST);
 
-      expect(JSON.stringify(expectedCarriers)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_CARRIERS));
+      expect(expectedCarriers).toEqual(MOCK_ACCEPT_SCREEN_CARRIERS);
     });
   });
 });

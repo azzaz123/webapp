@@ -5,8 +5,9 @@ import { mapCurrencyCodeToCurrency } from '../currency/currency-mapper';
 import { mapNumberToNumericAmount } from '../numeric-amount/numeric-amount-mapper';
 
 export type NumberCurrencyCode = { number: number; currency: CurrencyCode };
+export type AmountAndCurrencyDto = { amount: number; currency: string };
 
-export const mapMoneyToDomain = (dto: any): Money => {
+export const mapMoneyToDomain = <T extends AmountAndCurrencyDto>(dto: T): Money => {
   return mapNumberAndCurrencyCodeToMoney({
     number: dto.amount,
     currency: dto.currency as CurrencyCode,

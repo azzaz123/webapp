@@ -5,10 +5,11 @@ import { SelectOptionModule } from '@shared/form/components/select/select-option
 import { SelectParentOptionModule } from './select-parent-option/select-parent-option.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ButtonModule } from '@shared/button/button.module';
+import { ScrollModule } from '@shared/scroll/scroll.module';
 
 @NgModule({
   declarations: [DrawerPlaceholderTemplateComponent],
   exports: [DrawerPlaceholderTemplateComponent],
-  imports: [ButtonModule, CommonModule, SelectOptionModule, SelectParentOptionModule, SvgIconModule],
+  imports: [ButtonModule, CommonModule, SelectOptionModule, SelectParentOptionModule, SvgIconModule, ScrollModule],
 })
 export class AbstractSelectFilterModule {}

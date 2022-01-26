@@ -4,8 +4,6 @@ import { Observable, forkJoin, of } from 'rxjs';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { UserService } from '@core/user/user.service';
 import { ItemService } from '@core/item/item.service';
-import { Item } from '@core/item/item';
-import { User } from '@core/user/user';
 import { concatMap, map, mergeMap, take } from 'rxjs/operators';
 import { AcceptScreenProperties } from '../../interfaces/accept-screen-properties.interface';
 import { AcceptScreenItem, AcceptScreenBuyer, AcceptScreenSeller, AcceptScreenCarrier } from '../../interfaces';
@@ -17,10 +15,8 @@ import {
   mapDeliveryAddresstoAcceptScreenDeliveryAddress,
 } from '../../mappers/accept-screen-properties/accept-screen-properties.mapper';
 import { CarrierDropOffModeRequestApiService } from '@api/delivery/carrier-drop-off-mode/request/carrier-drop-off-mode-request-api.service';
-import { CarrierDropOffModeRequest } from '@api/core/model/delivery/carrier-drop-off-mode';
 import { DeliveryAddressApiService } from '@private/features/delivery/services/api/delivery-address-api/delivery-address-api.service';
 import { AcceptScreenDeliveryAddress } from '../../interfaces/accept-screen-delivery-address.interface';
-import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -73,25 +69,19 @@ export class AcceptScreenService {
   }
 
   private getBuyer(userId: string): Observable<AcceptScreenBuyer> {
-    return this.userService.get(userId).pipe(map((buyer: User) => mapUserToAcceptScreenBuyer(buyer)));
+    return this.userService.get(userId).pipe(map(mapUserToAcceptScreenBuyer));
   }
 
   private getSeller(): Observable<AcceptScreenSeller> {
-    return this.userService.getLoggedUserInformation().pipe(map((seller) => mapUserToAcceptScreenSeller(seller)));
+    return this.userService.getLoggedUserInformation().pipe(map(mapUserToAcceptScreenSeller));
   }
 
   private getItem(itemId: string): Observable<AcceptScreenItem> {
-    return this.itemService.get(itemId).pipe(map((item: Item) => mapItemToAcceptScreenItem(item)));
+    return this.itemService.get(itemId).pipe(map(mapItemToAcceptScreenItem));
   }
 
   private getCarrierDropOffModeRequest(requestId: string): Observable<AcceptScreenCarrier[]> {
-    return this.carrierDropOffModeRequestApiService
-      .get(requestId)
-      .pipe(
-        map((carrierDropOffModeRequest: CarrierDropOffModeRequest) =>
-          mapCarrierDropOffModeToAcceptScreenCarriers(carrierDropOffModeRequest)
-        )
-      );
+    return this.carrierDropOffModeRequestApiService.get(requestId).pipe(map(mapCarrierDropOffModeToAcceptScreenCarriers));
   }
 
   private getDeliveryAddress(): Observable<AcceptScreenDeliveryAddress> {

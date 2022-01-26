@@ -11,6 +11,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { ProBadgeComponent } from '@shared/pro-badge/pro-badge.component';
 
 describe('Component: UserAvatar', () => {
+  const IMAGE_URL = 'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
   let fixture: ComponentFixture<UserAvatarComponent>;
   let component: UserAvatarComponent;
   let proBadgeElement: DebugElement;
@@ -32,8 +33,6 @@ describe('Component: UserAvatar', () => {
   });
 
   describe('with user image', () => {
-    const IMAGE_URL = 'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
-
     beforeEach(() => {
       IMAGE.urls_by_size.medium = IMAGE_URL;
       component.user = new User(USER_ID, MICRO_NAME, IMAGE);
@@ -46,18 +45,16 @@ describe('Component: UserAvatar', () => {
     });
 
     it('should update imageUrl', () => {
-      const imageObject = {
-        test: 'test',
-      };
+      const MOCK_IMAGE: string = 'newImage';
       const changes = {
         imageUrl: {
-          currentValue: imageObject,
+          currentValue: MOCK_IMAGE,
         },
       };
 
       component.ngOnChanges(changes);
 
-      expect(component.uploadedAvatar).toEqual(imageObject);
+      expect(component.uploadedAvatar).toEqual(MOCK_IMAGE);
     });
   });
 
