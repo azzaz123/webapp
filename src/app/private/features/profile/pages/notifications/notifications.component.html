@@ -1,0 +1,6 @@
+<div *ngFor="let notificationsGroup of notificationsForm.controls; let i = index">
+  <div [formGroupName]="i">
+    <input type="text" formControlName="subtitle" />
+    <input type="text" formControlName="title" />
+  </div>
+</div>

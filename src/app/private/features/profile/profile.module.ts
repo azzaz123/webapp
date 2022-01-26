@@ -11,6 +11,9 @@ import { EmailThanksModalComponent } from './modal/email-thanks-modal/email-than
 import { VerificationsNSecurityTrackingEventsService } from './services/verifications-n-security-tracking-events.service';
 import { EmailVerificationModule } from './modal/email-verification/email-verification.module';
 import { PhoneVerificationModule } from './modal/phone-verification/phone-verification.module';
+import { MeApiModule } from '@api/me/me-api.module';
+import { CommonModule } from '@angular/common';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 
 @NgModule({
   imports: [
@@ -26,8 +29,15 @@ import { PhoneVerificationModule } from './modal/phone-verification/phone-verifi
     CustomCurrencyModule,
     EmailVerificationModule,
     PhoneVerificationModule,
+    MeApiModule,
   ],
-  declarations: [profileRoutedComponents, UnsubscribeModalComponent, ChangeStoreLocationModal, EmailThanksModalComponent],
+  declarations: [
+    profileRoutedComponents,
+    UnsubscribeModalComponent,
+    ChangeStoreLocationModal,
+    EmailThanksModalComponent,
+    NotificationsComponent,
+  ],
   providers: [VerificationsNSecurityTrackingEventsService],
 })
 export class ProfileModule {}
