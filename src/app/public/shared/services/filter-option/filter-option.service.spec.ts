@@ -111,7 +111,7 @@ describe('FilterOptionService', () => {
     it('should retrieve corresponding options', fakeAsync(() => {
       let options: FilterOption[];
 
-      service.getOptions('hardcoded' as ConfigurationId).subscribe((opts) => (options = opts));
+      service.getOptions('hardcoded' as ConfigurationId).subscribe(({ list }) => (options = list));
       tick();
 
       expect(options).toEqual([
@@ -175,7 +175,7 @@ describe('FilterOptionService', () => {
           tick();
 
           expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, { offset: 0 });
-          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith({}, {});
+          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith(undefined, {});
         }));
       });
     });
@@ -205,13 +205,10 @@ describe('FilterOptionService', () => {
           service.getOptions('mapperWithRelatedParam' as ConfigurationId).subscribe();
           tick();
 
-          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith(
-            {},
-            {
-              siblingParam1: 'siblingParam1',
-              mappedSiblingParam2: 'siblingParam2',
-            }
-          );
+          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith(undefined, {
+            siblingParam1: 'siblingParam1',
+            mappedSiblingParam2: 'siblingParam2',
+          });
         }));
       });
     });

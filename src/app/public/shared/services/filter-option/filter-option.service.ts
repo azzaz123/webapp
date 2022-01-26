@@ -19,6 +19,8 @@ import {
   QueryParamVisibilityCondition,
 } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { PaginatedList } from '@api/core/model';
+import { HttpResponse } from '@angular/common/http';
 
 interface ExcludedFieldsOption {
   id?: string;
@@ -38,7 +40,7 @@ export class FilterOptionService {
     configurationId: ConfigurationId,
     params: QueryParams = {},
     paginationOptions: PaginationOptions = { offset: 0 }
-  ): Observable<FilterOption[]> {
+  ): Observable<PaginatedList<FilterOption>> {
     const configuration = this.getConfiguration(configurationId);
 
     if (this.isHardcoded(configuration)) {
@@ -56,9 +58,9 @@ export class FilterOptionService {
     return OPTIONS_ORIGIN_CONFIGURATION[filterId];
   }
 
-  private retrieveHardcodedOptions(configurationId: ConfigurationId): Observable<FilterOption[]> {
+  private retrieveHardcodedOptions(configurationId: ConfigurationId): Observable<PaginatedList<FilterOption>> {
     return new Observable((subscriber) => {
-      subscriber.next(HARDCODED_OPTIONS[configurationId]);
+      subscriber.next({ list: HARDCODED_OPTIONS[configurationId] });
     });
   }
 
@@ -66,7 +68,7 @@ export class FilterOptionService {
     configuration: OptionsApiOrigin,
     params?: QueryParams,
     paginationOptions?: PaginationOptions
-  ): Observable<FilterOption[]> {
+  ): Observable<PaginatedList<FilterOption>> {
     const { apiConfiguration, mapperConfiguration, visibilityModifierConfig } = configuration;
 
     const apiSiblingParams = this.getSiblingParams(apiConfiguration.requiredSiblingParams);
@@ -76,24 +78,42 @@ export class FilterOptionService {
       ...this.mapSiblingParams(apiSiblingParams, apiConfiguration.keyMappers),
     };
 
-    return this.filterOptionsApiService.getApiOptions(apiConfiguration.method, unifiedApiParams, paginationOptions).pipe(
-      map((options: unknown[]) => {
-        if (visibilityModifierConfig) {
-          this.handleVisibilityModifier(visibilityModifierConfig, options);
-        }
+    return new Observable((subscriber) => {
+      this.filterOptionsApiService
+        .getApiOptions(apiConfiguration.method, unifiedApiParams, paginationOptions)
+        .pipe(
+          map((r: HttpResponse<unknown>) => {
+            const nextPage: string = r.headers?.get('x-nextpage');
+            const options = r.body;
 
-        if (mapperConfiguration) {
-          const mapperSiblingParams = this.getSiblingParams(mapperConfiguration.requiredSiblingParams);
-          return this.filterOptionsMapperService.formatApiResponse(
-            mapperConfiguration.method,
-            options,
-            this.mapSiblingParams(mapperSiblingParams, mapperConfiguration.keyMappers)
-          );
-        }
+            if (visibilityModifierConfig) {
+              this.handleVisibilityModifier(visibilityModifierConfig, options as ExcludedFieldsOption[]);
+            }
 
-        return options as FilterOption[];
-      })
-    );
+            const paginatedResponse: PaginatedList<FilterOption, string> = {
+              list: options as FilterOption[],
+              paginationParameter: nextPage,
+            };
+
+            if (mapperConfiguration) {
+              const mapperSiblingParams = this.getSiblingParams(mapperConfiguration.requiredSiblingParams);
+              return {
+                list: this.filterOptionsMapperService.formatApiResponse(
+                  mapperConfiguration.method,
+                  options,
+                  this.mapSiblingParams(mapperSiblingParams, mapperConfiguration.keyMappers)
+                ),
+                paginationParameter: nextPage,
+              };
+            }
+
+            return paginatedResponse;
+          })
+        )
+        .subscribe((paginatedResponse: PaginatedList<FilterOption, string>) => {
+          subscriber.next(paginatedResponse);
+        });
+    });
   }
 
   private mapSiblingParams(relatedParams: Record<string, string> = {}, keyMappers: KeyMapper[] = []): Record<string, string> {
