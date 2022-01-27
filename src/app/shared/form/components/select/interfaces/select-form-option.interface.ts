@@ -3,4 +3,5 @@ export interface SelectFormOption<T> {
   sublabel?: string;
   icon?: string;
   value: T;
+  groupId?: string;
 }
