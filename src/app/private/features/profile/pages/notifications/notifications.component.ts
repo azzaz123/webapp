@@ -11,38 +11,19 @@ import { NotificationsDto } from '@api/me/dtos/notifications/response/notifcatio
   styleUrls: ['./notifications.component.scss'],
 })
 export class NotificationsComponent implements OnInit {
-  public notificationsForm: FormArray;
+  public notificationsSettingsGroup: NotificationsSettingsDto[];
   public allowSegmentation: boolean;
 
-  constructor(private meApiService: MeApiService, private fb: FormBuilder) {
-    this.notificationsForm = fb.array([]);
-  }
+  constructor(private meApiService: MeApiService) {}
 
   ngOnInit(): void {
-    this.meApiService
-      .getMyNotificationsSettings()
-      .subscribe((data) =>
-        data.notificationGroups.map((notificationGroup) => this.notificationsForm.push(this.addNewNotificationFormGroup(notificationGroup)))
-      );
-    console.log(this.notificationsForm);
-  }
-
-  addNewNotificationFormGroup(notificationGroup: NotificationsSettingsDto): FormGroup {
-    return this.fb.group({
-      notifications: new FormArray(
-        notificationGroup.notifications.map((notificationDetail) => this.addNewNotificationDetailForm(notificationDetail))
-      ),
-      subtitle: new FormControl(notificationGroup.subtitle),
-      title: new FormControl(notificationGroup.title),
+    this.meApiService.getMyNotificationsSettings().subscribe((data) => {
+      this.notificationsSettingsGroup = data.notificationGroups;
+      console.log(this.notificationsSettingsGroup);
     });
   }
 
-  addNewNotificationDetailForm(notificationDetail: NotificationsDto): FormGroup {
-    const { enabled, id, title } = notificationDetail;
-    return this.fb.group({
-      enabled: new FormControl(enabled),
-      id: new FormControl(id),
-      title: new FormControl(title),
-    });
+  handleChange($event) {
+    console.log($event);
   }
 }

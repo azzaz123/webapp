@@ -1,6 +1,23 @@
-<div *ngFor="let notificationsGroup of notificationsForm.controls; let i = index">
-  <div [formGroupName]="i">
-    <input type="text" formControlName="subtitle" />
-    <input type="text" formControlName="title" />
+<div *ngFor="let notificationsSettings of notificationsSettingsGroup" class="Notifications-settings">
+  <div class="Notifications-settings_title">
+    <span>{{ notificationsSettings.title }}</span>
+  </div>
+  <div>
+    <span class="Notifications-settings_subtitle">
+      {{ notificationsSettings.subtitle }}
+    </span>
+  </div>
+  <div *ngFor="let notifications of notificationsSettings.notifications" class="Notifications-settings_details">
+    <div class="Notifications-settings_details_title">
+      <span>
+        {{ notifications.title }}
+      </span>
+    </div>
+    <div class="Notifications-settings_details_subtitle">
+      <label [attr.for]="notifications.id" class="Toggle">
+        <input [attr.id]="notifications.id" type="checkbox" [(ngModel)]="notifications.enabled" (change)="handleChange()" />
+        <span class="Toggle-slider"></span>
+      </label>
+    </div>
   </div>
 </div>

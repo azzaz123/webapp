@@ -1,1 +1,27 @@
 @import '~style/common';
+@import '../../../../../shared/form/components/toggle/toggle-form.component.scss';
+
+.Notifications-settings {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  &_title {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  &_subtitle {
+    font-weight: 300;
+  }
+  &_details {
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    &_title {
+      width: 50%;
+    }
+
+    &_subtitle {
+      width: 50%;
+    }
+  }
+}
