@@ -3,4 +3,5 @@ export interface FilterOption {
   label: string;
   icon?: string;
   children?: FilterOption[];
+  groupId?: string;
 }
