@@ -5,21 +5,22 @@ import { ToDomainMapper, InnerType } from '@api/core/utils/types';
 import { DeliveryItemDetailsDto } from '../../dtos/delivery-item-detail-dto.interface';
 
 type DeliveryCostsDto = InnerType<DeliveryItemDetailsDto, 'delivery_costs'>;
-type BuyerAddressCost = InnerType<DeliveryCostsDto, 'buyer_address_cost'>;
-type CarrierOfficeCost = InnerType<DeliveryCostsDto, 'carrier_office_cost'>;
+type BuyerAddressCostDto = InnerType<DeliveryCostsDto, 'buyer_address_cost'>;
+type CarrierOfficeCostDto = InnerType<DeliveryCostsDto, 'carrier_office_cost'>;
+type DeliveryCostDto = BuyerAddressCostDto | CarrierOfficeCostDto;
 
 export const mapDeliveryItemDetailsDtoToDeliveryItemDetails: ToDomainMapper<DeliveryItemDetailsDto, DeliveryItemDetails | null> = (
   input: DeliveryItemDetailsDto
 ) => {
   const { delivery_costs } = input;
-  const isDeliveryCostsNull = !delivery_costs;
+  const isDeliveryCostsNull: boolean = !delivery_costs;
   if (isDeliveryCostsNull) {
     return null;
   }
 
   const { buyer_address_cost, carrier_office_cost } = delivery_costs;
 
-  const minimumPurchaseCostRaw = getLowestCost(buyer_address_cost, carrier_office_cost);
+  const minimumPurchaseCostRaw: DeliveryCostDto = getLowestCost(buyer_address_cost, carrier_office_cost);
 
   const deliveryItemDetails: DeliveryItemDetails = {
     minimumPurchaseCost: mapNumberAndCurrencyCodeToMoney({
@@ -31,7 +32,7 @@ export const mapDeliveryItemDetailsDtoToDeliveryItemDetails: ToDomainMapper<Deli
   return deliveryItemDetails;
 };
 
-const getLowestCost = (buyerAddressCost: BuyerAddressCost, carrierOfficeCost: CarrierOfficeCost): BuyerAddressCost | CarrierOfficeCost => {
+const getLowestCost = (buyerAddressCost: BuyerAddressCostDto, carrierOfficeCost: CarrierOfficeCostDto): DeliveryCostDto => {
   const isBuyerAddressCheaper = buyerAddressCost.amount < carrierOfficeCost.amount;
   return isBuyerAddressCheaper ? buyerAddressCost : carrierOfficeCost;
 };
