@@ -42,13 +42,16 @@ import * as Visibility from 'visibilityjs';
 import { CurrentConversationComponent } from './current-conversation.component';
 import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
 import { ChatApiModule } from '@api/chat/chat-api.module';
 import { ScrollingMessageComponent } from '@private/features/chat/components/scrolling-message';
 import { InputComponent } from '@private/features/chat/components/input';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { DeliveryConversationContextService } from '@private/features/chat/services/delivery-conversation-context/delivery-conversation-context.service';
+import { DeliveryBannerComponent } from '../../modules/delivery-banner/components/delivery-banner.component';
+import { MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -62,13 +65,14 @@ describe('CurrentConversationComponent', () => {
   let modalService: NgbModal;
   let userService: UserService;
   let chatTranslationService: ChatTranslationService;
+  let deliveryConversationContextService: DeliveryConversationContextService;
   let modalMockResult: Promise<{}>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule, ChatApiModule],
-        declarations: [CurrentConversationComponent, DateCalendarPipe, ScrollingMessageComponent, InputComponent],
+        declarations: [CurrentConversationComponent, DateCalendarPipe, ScrollingMessageComponent, InputComponent, DeliveryBannerComponent],
         providers: [
           EventService,
           NgbModal,
@@ -111,6 +115,7 @@ describe('CurrentConversationComponent', () => {
           I18nService,
           MomentCalendarSpecService,
           ChatTranslationService,
+          DeliveryConversationContextService,
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -132,6 +137,7 @@ describe('CurrentConversationComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     userService = TestBed.inject(UserService);
     chatTranslationService = TestBed.inject(ChatTranslationService);
+    deliveryConversationContextService = TestBed.inject(DeliveryConversationContextService);
 
     fixture.detectChanges();
   });
@@ -206,6 +212,36 @@ describe('CurrentConversationComponent', () => {
 
       expect(realTime.sendRead).not.toHaveBeenCalled();
     }));
+
+    describe('when delivery banner needs to be displayed', () => {
+      beforeEach(fakeAsync(() => {
+        jest
+          .spyOn(deliveryConversationContextService, 'bannerProperties$', 'get')
+          .mockReturnValue(of(MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES));
+        tick();
+        fixture.detectChanges();
+      }));
+
+      it('should display the delivery banner', () => {
+        const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
+
+        expect(deliveryBannerElement).toBeTruthy();
+      });
+    });
+
+    describe('when delivery banner does NOT need to be displayed', () => {
+      beforeEach(fakeAsync(() => {
+        jest.spyOn(deliveryConversationContextService, 'bannerProperties$', 'get').mockReturnValue(of(null));
+        tick();
+        fixture.detectChanges();
+      }));
+
+      it('should NOT display the delivery banner', () => {
+        const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
+
+        expect(deliveryBannerElement).toBeFalsy();
+      });
+    });
   });
 
   describe('ngOnDestroy', () => {
@@ -479,11 +515,19 @@ describe('CurrentConversationComponent', () => {
     });
   });
 
-  describe('when opening a different conversation', () => {
+  describe('when opening a conversation', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.callThrough();
-      component.currentConversation = null;
+      spyOn(deliveryConversationContextService, 'update');
+
+      component.ngOnChanges({
+        currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
+      });
       fixture.detectChanges();
+    });
+
+    it('should ask for delivery conversation context', () => {
+      expect(deliveryConversationContextService.update).toHaveBeenCalledTimes(1);
     });
 
     describe('and when other user is considered malicious', () => {
@@ -496,7 +540,6 @@ describe('CurrentConversationComponent', () => {
         fixture.detectChanges();
       });
       it('should show malicious modal', () => {
-        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
         expect(modalService.open).toHaveBeenCalledWith(MaliciousConversationModalComponent, {
           windowClass: 'warning',
         });
@@ -509,7 +552,7 @@ describe('CurrentConversationComponent', () => {
       });
     });
 
-    describe('when user is not considered malicious but unsubscribed to wallapop', () => {
+    describe('and when other user is not considered malicious but unsubscribed to wallapop', () => {
       beforeEach(() => {
         component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER;
         component.ngOnChanges({
@@ -531,7 +574,6 @@ describe('CurrentConversationComponent', () => {
 
     describe('and when other user is not considered malicious', () => {
       it('should not show malicious modal', () => {
-        // TODO: Investigate more why fixture.detectChanges is not triggering component.ngOnChanges automatically
         component.currentConversation = MOCK_INBOX_CONVERSATION_BASIC;
         component.ngOnChanges({
           currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),

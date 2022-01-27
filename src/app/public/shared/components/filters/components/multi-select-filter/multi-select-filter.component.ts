@@ -36,6 +36,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
     select: new FormControl(),
   });
   public options: FilterOption[] = [];
+  public searchText: string;
 
   private subscriptions = new Subscription();
   private labelSubject = new BehaviorSubject(undefined);
@@ -48,21 +49,15 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public multiValue$ = this.multiValueSubject.asObservable();
 
+  private offset = '0';
   private allOptions: FilterOption[] = [];
+
   public constructor(private optionService: FilterOptionService) {
     super();
   }
 
   public ngOnInit(): void {
-    this.optionService
-      .getOptions(this.config.id)
-      .pipe(take(1))
-      .subscribe((options) => {
-        this.options = options;
-        this.allOptions = this.mergeOptions(options);
-        this.updateLabel();
-      });
-
+    this.getOptions();
     this.updatePlaceholderIcon();
     super.ngOnInit();
   }
@@ -126,8 +121,46 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   public filterTemplateOpenStateChange($event: boolean): void {
     if (!$event) {
       this.restartMultiselectNavigation();
+      if (this.config.isSearchable) {
+        this.restartSearch();
+      }
     }
     this.openStateChange.emit($event);
+  }
+
+  public scrolledToBottom() {
+    if (this.offset) {
+      this.getOptions();
+    }
+  }
+
+  public search(): void {
+    this.offset = '0';
+    this.getOptions();
+  }
+
+  private getOptions(): void {
+    this.optionService
+      .getOptions(this.config.id, { text: this.searchText || null }, { offset: parseInt(this.offset) })
+      .pipe(take(1))
+      .subscribe(({ list, paginationParameter }) => {
+        const pagination = new URLSearchParams(paginationParameter);
+
+        if (this.offset === '0') {
+          this.options = list;
+        } else {
+          this.options = this.options.concat(list);
+        }
+        this.allOptions = this.mergeOptions(this.options);
+        this.updateLabel();
+        this.offset = pagination.get('start');
+      });
+  }
+
+  private restartSearch(): void {
+    this.searchText = '';
+    this.offset = '0';
+    this.getOptions();
   }
 
   private restartMultiselectNavigation(): void {
@@ -137,7 +170,7 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   private mergeOptions(options: FilterOption[]): FilterOption[] {
     let allOptions = [...options];
 
-    allOptions.map((option: FilterOption) => {
+    options.map((option: FilterOption) => {
       if (option.children?.length) {
         allOptions = allOptions.concat(option.children);
       }
@@ -159,28 +192,27 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
   }
 
   private buildLabel(): string {
-    let label = '';
+    return (
+      this.formatStringArrayToLabel(this.config.hasValueAsLabel ? this.getValueAsArray() : this.getValueLabelAsArray()) ||
+      this.getLabelPlaceholder()
+    );
+  }
 
-    this.getValueAsArray().forEach((value: string, index: number) => {
-      const valueOption = this.allOptions.find((option) => {
-        return option.value === value;
-      });
-      label += valueOption ? `${index !== 0 && label.length > 2 ? ', ' : ''}${valueOption.label}` : '';
+  private getValueLabelAsArray(): string[] {
+    return this.getSelectedOptions().map((option: FilterOption) => {
+      return option.label;
     });
-
-    return label.length ? label : this.getLabelPlaceholder();
   }
 
   private buildMultiValue(): FilterOption[] | string[] {
-    const label = [...this.getValueAsArray()]
-      .map((value: string, index: number) => {
-        return this.allOptions.find((option) => {
-          return option.value === value;
-        });
-      })
-      .filter((filterOption) => !!filterOption);
-
-    return label.length ? label : [this.getLabelPlaceholder()];
+    return this.config.hasValueAsLabel
+      ? this.getValueAsArray().map((value: string) => {
+          return {
+            value: value,
+            label: value,
+          };
+        })
+      : this.getSelectedOptions() || [this.getLabelPlaceholder()];
   }
 
   private updateValueFromParent(): void {
@@ -208,5 +240,15 @@ export class MultiSelectFilterComponent extends AbstractSelectFilter<MultiSelect
 
   private getValueAsArray(): string[] {
     return super.getValue('parameterKey')?.split(',') || [];
+  }
+
+  private formatStringArrayToLabel(stringArray: string[]): string {
+    return stringArray.join(', ');
+  }
+
+  private getSelectedOptions(): FilterOption[] {
+    return this.allOptions.filter((option) => {
+      return this.getValueAsArray().includes(option.value.toString());
+    });
   }
 }

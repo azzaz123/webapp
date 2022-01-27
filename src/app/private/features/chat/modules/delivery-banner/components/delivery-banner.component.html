@@ -1,0 +1,11 @@
+<div *ngIf="bannerProperties" class="DeliveryBanner d-flex align-content-between align-items-center">
+  <div class="d-flex">
+    <tsl-svg-icon [src]="bannerProperties.svgPath"></tsl-svg-icon>
+    <p>{{bannerProperties.description.text}}</p>
+    <a *ngIf="bannerProperties.description.help as helpLink" [href]="helpLink"></a>
+  </div>
+
+  <div *ngIf="bannerProperties.action as action">
+    <tsl-button>{{action.label}}</tsl-button>
+  </div>
+</div>
