@@ -7,6 +7,7 @@ import { Variant } from '@core/experimentation/models';
 import { OPTIMIZE_EXPERIMENTS } from '@core/experimentation/vendors/optimize/resources/optimize-experiment-ids';
 import { OptimizelyService } from '../../vendors/optimizely/optimizely.service';
 import { ExperimentationParamInterface, FeatureParamInterface } from '../../vendors/optimizely/optimizely.interface';
+import { UserService } from '@core/user/user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,8 @@ export class ExperimentationService {
   constructor(
     private loadExternalLibService: LoadExternalLibsService,
     private optimizeService: OptimizeService,
-    private optimizelyService: OptimizelyService
+    private optimizelyService: OptimizelyService,
+    private userService: UserService
   ) {}
 
   public get experimentReady$(): Observable<boolean> {
@@ -25,7 +27,9 @@ export class ExperimentationService {
   }
 
   public initialize(): void {
-    this.optimizelyService.initialize();
+    this.userService.isUserReady$.subscribe(() => {
+      this.optimizelyService.initialize();
+    });
     forkJoin([this.loadExternalLibService.loadScriptBySource(EXPERIMENTATION_SOURCES), this.optimizelyService.isReady$]).subscribe(() => {
       this._experimentReady$.next(true);
     });
@@ -37,10 +41,6 @@ export class ExperimentationService {
 
   public activateOptimizelyExperiment({ experimentKey, attributes }: ExperimentationParamInterface) {
     return this.optimizelyService.activate({ experimentKey, attributes });
-  }
-
-  public getOptimizelyVariation({ experimentKey, attributes }: ExperimentationParamInterface) {
-    return this.optimizelyService.getVariation({ experimentKey, attributes });
   }
 
   public isOptimizelyFeatureEnabled({ featureKey, attributes }: FeatureParamInterface) {

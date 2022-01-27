@@ -1,3 +1,3 @@
 export enum OPTIMIZELY_EXPERIMENTS {
-  Test01_Experiment = 'test01_experiment',
+  Test01_Web_Experiment = 'test01_web_experiment',
 }

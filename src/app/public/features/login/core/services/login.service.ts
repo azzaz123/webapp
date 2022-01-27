@@ -23,7 +23,13 @@ export class LoginService {
 
   public login(body: LoginRequest): Observable<LoginResponse> {
     body.metadata = this.getMetadata();
-    return this.httpClient.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body).pipe(tap((r) => this.storeData(r)));
+    return this.httpClient.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body).pipe(
+      tap((r) => {
+        this.storeData(r);
+        // This reload's purpose is to simulate web SEO's login behaviour in production
+        window.location.reload();
+      })
+    );
   }
 
   private getMetadata(): AccessMetadata {
