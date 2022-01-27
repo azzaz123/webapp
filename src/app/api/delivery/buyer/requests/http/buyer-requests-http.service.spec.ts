@@ -7,7 +7,7 @@ import { BuyerRequestsHttpService } from './buyer-requests-http.service';
 import { BUYER_REQUESTS_ENDPOINT, BUYER_REQUESTS_ITEM_HASH_QUERY_PARAM_KEY } from './endpoints';
 
 describe('BuyerRequestsHttpService', () => {
-  const MOCK_ITEM_HASH = '9jdxdd2rylzk';
+  const MOCK_ITEM_HASH: string = '9jdxdd2rylzk';
   let service: BuyerRequestsHttpService;
   let httpMock: HttpTestingController;
 
