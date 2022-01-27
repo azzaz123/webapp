@@ -1,0 +1,12 @@
+@import '~style/common';
+
+.Carriers {
+  &__header {
+    border-bottom: 1px solid $blue-grey-5;
+  }
+  &__headerTitle {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-s;
+    color: $blue-grey-1;
+  }
+}

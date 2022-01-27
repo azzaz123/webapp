@@ -1,0 +1,36 @@
+@import '~style/common';
+
+.Carrier {
+  border-bottom: 1px solid $blue-grey-5;
+
+  &__image {
+    @include square(48px);
+    background-size: 48px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  &__dropOffMode {
+    flex: 1;
+    font-weight: $font-weight-skinny;
+    font-size: $font-size-m;
+    color: $blue-grey-1;
+  }
+
+  &__infoTimePeriod {
+    font-weight: $font-weight-skinny;
+    font-size: $font-size-s;
+    color: $blue-grey-1;
+  }
+
+  &__infoRestrictions {
+    border-radius: 10px;
+    font-weight: $font-weight-skinny;
+    background-color: $blue-grey-5;
+    font-size: $font-size-xs;
+  }
+
+  &__infoButton {
+    min-width: 100px;
+  }
+}

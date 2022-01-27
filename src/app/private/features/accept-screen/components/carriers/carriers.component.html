@@ -1,0 +1,8 @@
+<div *ngIf="carriers" class="Carriers pt-4">
+  <div class="Carriers__header d-flex">
+    <span i18n="@@accept_view_seller_delivery_method_selector_title" class="Carriers__headerTitle pb-2">How to send it?</span>
+  </div>
+  <ng-container *ngFor="let carrier of carriers">
+    <tsl-carrier [carrier]="carrier"></tsl-carrier>
+  </ng-container>
+</div>
