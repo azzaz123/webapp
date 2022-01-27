@@ -1,5 +1,4 @@
-import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
-import { CurrencyCode } from '@api/core/model/currency.interface';
+import { mapMoneyToDomain } from '@api/core/mappers';
 import { SellerRequestBuyer } from '@api/core/model/delivery/seller-requests/seller-request-buyer.interface';
 import { SellerRequestPaymentAndRequestStatus } from '@api/core/model/delivery/seller-requests/seller-request-payment-and-request-status.interface';
 import { SellerRequestRevenue } from '@api/core/model/delivery/seller-requests/seller-request-revenue.interface';
@@ -11,7 +10,6 @@ import { ToDomainMapper } from '@api/core/utils/types';
 import {
   SellerPaymentStatusDto,
   SellerRequestBuyerAddressDto,
-  SellerRequestCostDto,
   SellerRequestDto,
   SellerRequestPaymentAndRequestStatusDto,
   SellerRequestRevenueDto,
@@ -88,11 +86,4 @@ const getSellerRevenue = (revenue: SellerRequestRevenueDto): SellerRequestRevenu
     itemPrice,
     totalPrice,
   };
-};
-
-const mapMoneyToDomain = (costDto: SellerRequestCostDto): Money => {
-  return mapNumberAndCurrencyCodeToMoney({
-    number: costDto.amount,
-    currency: costDto.currency as CurrencyCode,
-  });
 };
