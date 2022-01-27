@@ -57,10 +57,17 @@ export class MeApiService {
   public getMyNotificationsSettings(): Observable<NotificationsSettingsResponseDto> {
     return this.httpService.getMyNotificationsSettings().pipe(
       map(({ notificationGroups }: NotificationsSettingsResponseDto) => ({
-        // TODO mapper...
         notificationGroups: notificationGroups,
       }))
     );
+  }
+
+  public setNotificationEnable(notificationId): Observable<void> {
+    return this.httpService.setNotificationEnable(notificationId);
+  }
+
+  public setNotificationDisabled(notificationId): Observable<void> {
+    return this.httpService.setNotificationDisabled(notificationId);
   }
 
   private getSoldItems(paginationParameter: string): Observable<PaginatedList<Item>> {

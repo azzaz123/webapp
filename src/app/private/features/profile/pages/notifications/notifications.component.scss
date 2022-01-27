@@ -10,7 +10,8 @@
     font-size: 18px;
   }
   &_subtitle {
-    font-weight: 300;
+    font-weight: normal;
+    color: $blue-grey-2;
   }
   &_details {
     display: flex;
@@ -18,10 +19,20 @@
     padding-bottom: 10px;
     &_title {
       width: 50%;
+      @include media-breakpoint-down(sm) {
+        width: 80%;
+        word-wrap: break-word;
+      }
     }
 
-    &_subtitle {
+    &_toggle {
       width: 50%;
+      @include media-breakpoint-down(sm) {
+        width: 20%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
     }
   }
 }

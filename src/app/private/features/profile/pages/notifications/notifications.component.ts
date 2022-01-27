@@ -23,7 +23,13 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
-  handleChange($event) {
-    console.log($event);
+  handleChange(notification) {
+    const { id, enabled } = notification;
+
+    if (enabled) {
+      this.meApiService.setNotificationEnable(id).subscribe();
+    } else {
+      this.meApiService.setNotificationDisabled(id).subscribe();
+    }
   }
 }
