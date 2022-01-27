@@ -39,6 +39,7 @@ import { ChatTranslationService } from '@private/features/chat/services/chat-tra
 import { ChatApiModule } from '@api/chat/chat-api.module';
 import { DeliveryBannerModule } from './modules/delivery-banner/delivery-banner.module';
 import { DeliveryConversationContextService } from './services/delivery-conversation-context/delivery-conversation-context.service';
+import { DeliveryConversationContextModule } from './services/delivery-conversation-context/delivery-conversation-context.module';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { DeliveryConversationContextService } from './services/delivery-conversa
     TranslateButtonModule,
     ChatApiModule,
     DeliveryBannerModule,
+    DeliveryConversationContextModule,
   ],
   declarations: [
     chatRoutedComponents,
@@ -84,7 +86,7 @@ import { DeliveryConversationContextService } from './services/delivery-conversa
     MaliciousConversationModalComponent,
     PersonalDataInformationModal,
   ],
-  providers: [ChatTranslationService, DeliveryConversationContextService],
+  providers: [ChatTranslationService],
   exports: [InboxConversationComponent],
   entryComponents: [
     ArchiveInboxConversationComponent,
