@@ -12,5 +12,5 @@ export interface MultiSelectFilterConfig extends AbstractSelectFilterConfig<Mult
   isSearchable?: boolean;
   searchPlaceholder?: string;
   hasValueAsLabel?: boolean;
-  filterOptionGroupConfig?: Record<keyof FilterOptionGroupId, string>;
+  optionGroupConfig?: Partial<Record<FilterOptionGroupId, string>>;
 }
