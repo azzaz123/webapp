@@ -1,4 +1,4 @@
-import { mapMoneyToDomain } from '@api/core/mappers';
+import { mapAmountAndCurrenyToMoney } from '@api/core/mappers';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { CarrierDropOffModeRequest } from '@api/core/model/delivery/carrier-drop-off-mode/carrier-drop-off-mode-request.interface';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
@@ -34,7 +34,7 @@ export const MOCK_CARRIER_DROP_OFF_MODE_REQUEST: CarrierDropOffModeRequest = {
         },
         selectionRequired: false,
       },
-      sellerCosts: mapMoneyToDomain({ amount: 0.0, currency: 'EUR' }),
+      sellerCosts: mapAmountAndCurrenyToMoney({ amount: 0.0, currency: 'EUR' }),
       acceptEndpoint: '/api/v3/delivery/seller/requests/ad39c2dd-7632-4354-ae95-fd324065038d/accept/post-office-drop-off',
       restrictions:
         'Please bear in mind that the sum of the length, height, and width cannot exceed 210 cm. The longest side cannot exceed 120 cm.',
@@ -44,7 +44,7 @@ export const MOCK_CARRIER_DROP_OFF_MODE_REQUEST: CarrierDropOffModeRequest = {
       type: CARRIER_DROP_OFF_MODE.HOME_PICK_UP,
       icon: 'http://prod-delivery-resources.wallapop.com/Seur.png',
       postOfficeDetails: null,
-      sellerCosts: mapMoneyToDomain({ amount: 2.25, currency: 'EUR' }),
+      sellerCosts: mapAmountAndCurrenyToMoney({ amount: 2.25, currency: 'EUR' }),
       acceptEndpoint: '/api/v3/delivery/seller/requests/ad39c2dd-7632-4354-ae95-fd324065038d/accept/home-pickup',
       restrictions:
         'The sum of the length plus twice the height and twice the width cannot exceed 300 cm, and the longest side cannot exceed 175 cm. Please, keep it in mind!',
