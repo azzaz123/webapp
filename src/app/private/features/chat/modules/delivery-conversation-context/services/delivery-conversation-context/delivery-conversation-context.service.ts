@@ -43,7 +43,7 @@ export class DeliveryConversationContextService {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner> {
+  private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     const { item } = conversation;
     const { id: itemHash, isMine } = item;
     return isMine
