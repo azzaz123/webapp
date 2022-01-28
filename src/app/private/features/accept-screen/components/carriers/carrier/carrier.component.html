@@ -13,7 +13,7 @@
     </div>
     <div class="Carrier__selector d-flex px-2">
       <div class="input-radio">
-        <input type="radio" [value]="carrier.isSelected" (click)="onSelectCarrier($event)" />
+        <input type="radio" [value]="carrier.isSelected" (click)="carrierClick.emit(carrier)" />
       </div>
     </div>
   </div>

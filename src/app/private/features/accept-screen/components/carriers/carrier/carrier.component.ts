@@ -9,13 +9,8 @@ import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off
 })
 export class CarrierComponent {
   @Input() carrier: AcceptScreenCarrier;
-  @Output() carrierSelected: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() carrierClick: EventEmitter<AcceptScreenCarrier> = new EventEmitter();
 
   public readonly postOfficeDropOff: number = CARRIER_DROP_OFF_MODE.POST_OFFICE;
   public readonly homePickUp: number = CARRIER_DROP_OFF_MODE.HOME_PICK_UP;
-
-  public onSelectCarrier(selectedCarrier: MouseEvent): void {
-    this.carrier.isSelected = true;
-    this.carrierSelected.emit(selectedCarrier);
-  }
 }
