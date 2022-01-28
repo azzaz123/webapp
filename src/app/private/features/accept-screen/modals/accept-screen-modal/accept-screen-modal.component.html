@@ -1,6 +1,6 @@
 <div class="modal-body">
   <div *ngIf="acceptScreenProperties$ | async as properties">
     <tsl-product-card [buyer]="properties.buyer" [item]="properties.item"></tsl-product-card>
-    <tsl-carriers [carriers]="properties.carriers"></tsl-carriers>
+    <tsl-delivery-method-selector [deliveryMethods]="properties.carriers"></tsl-delivery-method-selector>
   </div>
 </div>

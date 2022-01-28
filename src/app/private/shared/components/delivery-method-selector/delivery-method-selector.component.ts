@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { AcceptScreenCarrier } from '@private/features/accept-screen/interfaces/accept-screen-carrier.interface';
 
 @Component({
@@ -9,4 +9,5 @@ import { AcceptScreenCarrier } from '@private/features/accept-screen/interfaces/
 export class DeliveryMethodSelectorComponent {
   @Input() title: string;
   @Input() deliveryMethods: AcceptScreenCarrier[];
+  @Output() deliveryMethodSelected: AcceptScreenCarrier;
 }
