@@ -1,5 +1,11 @@
 import { MOCK_ITEM, MOCK_ITEM_WITHOUT_IMAGE } from '@fixtures/item.fixtures.spec';
-import { mapItemToAcceptScreenItem, mapUserToAcceptScreenBuyer, mapUserToAcceptScreenSeller } from './accept-screen-properties.mapper';
+import {
+  mapCarrierDropOffModeToAcceptScreenCarriers,
+  mapItemToAcceptScreenItem,
+  mapUserToAcceptScreenBuyer,
+  mapUserToAcceptScreenSeller,
+  mapDeliveryAddresstoAcceptScreenDeliveryAddress,
+} from './accept-screen-properties.mapper';
 import {
   MOCK_ACCEPT_SCREEN_ITEM_WITHOUT_IMAGE,
   MOCK_ACCEPT_SCREEN_ITEM,
@@ -7,8 +13,16 @@ import {
   MOCK_ACCEPT_SCREEN_SELLER,
   MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE,
   MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE,
+  MOCK_ACCEPT_SCREEN_CARRIERS,
+  MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS,
+  MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { MOCK_USER, MOCK_OTHER_USER, MOCK_USER_WITHOUT_IMAGE, MOCK_OTHER_USER_WITHOUT_IMAGE } from '@fixtures/user.fixtures.spec';
+import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST } from '@fixtures/private/delivery/accept-screen/carrier-drop-off-mode-request.fixtures.spec';
+import {
+  MOCK_DELIVERY_ADDRESS,
+  MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR,
+} from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 
 describe('mapItemToAcceptScreenItem', () => {
   describe('when asking for item map', () => {
@@ -36,7 +50,7 @@ describe('mapUserToAcceptScreenSeller', () => {
       it('should return correctly mapped seller', () => {
         const expectedSeller = mapUserToAcceptScreenSeller(MOCK_USER);
 
-        expect(JSON.stringify(expectedSeller)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_SELLER));
+        expect(expectedSeller).toEqual(MOCK_ACCEPT_SCREEN_SELLER);
       });
     });
 
@@ -44,7 +58,7 @@ describe('mapUserToAcceptScreenSeller', () => {
       it('should return correctly mapped seller with PLACEHOLDER AVATAR', () => {
         const expectedSeller = mapUserToAcceptScreenSeller(MOCK_USER_WITHOUT_IMAGE);
 
-        expect(JSON.stringify(expectedSeller)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE));
+        expect(expectedSeller).toEqual(MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE);
       });
     });
   });
@@ -64,8 +78,36 @@ describe('mapUserToAcceptScreenBuyer', () => {
       it('should return correctly mapped buyer with PLACEHOLDER AVATAR', () => {
         const expectedBuyer = mapUserToAcceptScreenBuyer(MOCK_OTHER_USER_WITHOUT_IMAGE);
 
-        expect(JSON.stringify(expectedBuyer)).toEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE));
+        expect(expectedBuyer).toEqual(MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE);
       });
+    });
+  });
+});
+
+describe('mapCarrierDropOffModeToAcceptScreenCarriers', () => {
+  describe('when asking for carriers map', () => {
+    it('should return correctly mapped carriers', () => {
+      const expectedCarriers = mapCarrierDropOffModeToAcceptScreenCarriers(MOCK_CARRIER_DROP_OFF_MODE_REQUEST);
+
+      expect(expectedCarriers).toEqual(MOCK_ACCEPT_SCREEN_CARRIERS);
+    });
+  });
+});
+
+describe('mapDeliveryAddresstoAcceptScreenDeliveryAddress', () => {
+  describe('and the delivery address has flat and floor', () => {
+    it('should return correctly mapped delivery address', () => {
+      const expectedDeliveryAddress = mapDeliveryAddresstoAcceptScreenDeliveryAddress(MOCK_DELIVERY_ADDRESS);
+
+      expect(expectedDeliveryAddress).toEqual(MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS);
+    });
+  });
+
+  describe('and the delivery address has NOT flat and floor', () => {
+    it('should return correctly mapped delivery address', () => {
+      const expectedDeliveryAddress = mapDeliveryAddresstoAcceptScreenDeliveryAddress(MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR);
+
+      expect(expectedDeliveryAddress).toEqual(MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR);
     });
   });
 });
