@@ -5,6 +5,7 @@ import { HttpTestingController, HttpClientTestingModule, TestRequest } from '@an
 import { CarrierDropOffModeRequestDto } from '../dtos/carrier-drop-off-mode-request-dto.interface';
 import { CARRIER_DROP_OFF_MODE_REQUEST_WITH_REQUEST_ID } from './endpoints';
 import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST_DTO } from '@api/fixtures/delivery/carrier-drop-off-mode/carrier-drop-off-mode-request-dto.fixtures';
+import { APP_VERSION } from '@environments/version';
 
 describe('CarrierDropOffModeRequestHttpService', () => {
   let service: CarrierDropOffModeRequestHttpService;
@@ -39,6 +40,7 @@ describe('CarrierDropOffModeRequestHttpService', () => {
 
       expect(req.request.method).toBe('GET');
       expect(response).toEqual(MOCK_CARRIER_DROP_OFF_MODE_REQUEST_DTO);
+      expect(req.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
   });
 });
