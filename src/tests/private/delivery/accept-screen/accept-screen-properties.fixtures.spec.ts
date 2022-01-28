@@ -14,6 +14,8 @@ import { CurrencyCode } from '@api/core/model/currency.interface';
 import { PLACEHOLDER_AVATAR } from '@core/user/user';
 import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST } from './carrier-drop-off-mode-request.fixtures.spec';
+import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR } from '../delivery-address.fixtures.spec';
+import { AcceptScreenDeliveryAddress } from '@private/features/accept-screen/interfaces/accept-screen-delivery-address.interface';
 
 export const MOCK_ACCEPT_SCREEN_ITEM: AcceptScreenItem = {
   id: MOCK_ITEM.id,
@@ -81,10 +83,19 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS: AcceptScreenCarrier[] = [
   } as AcceptScreenHomePickUp,
 ];
 
+export const MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS: AcceptScreenDeliveryAddress = {
+  fullAddress: `${MOCK_DELIVERY_ADDRESS.street}, ${MOCK_DELIVERY_ADDRESS.flat_and_floor}, ${MOCK_DELIVERY_ADDRESS.postal_code}, ${MOCK_DELIVERY_ADDRESS.city}`,
+};
+
+export const MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR: AcceptScreenDeliveryAddress = {
+  fullAddress: `${MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR.street}, ${MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR.postal_code}, ${MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR.city}`,
+};
+
 export const MOCK_ACCEPT_SCREEN_PROPERTIES: AcceptScreenProperties = {
   request: MOCK_SELLER_REQUEST,
   item: MOCK_ACCEPT_SCREEN_ITEM,
   buyer: MOCK_ACCEPT_SCREEN_BUYER,
   seller: MOCK_ACCEPT_SCREEN_SELLER,
   carriers: MOCK_ACCEPT_SCREEN_CARRIERS,
+  deliveryAddress: MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS,
 };
