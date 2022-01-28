@@ -12,6 +12,18 @@ export const MOCK_DELIVERY_ADDRESS: DeliveryAddressApi = {
   flat_and_floor: '4 2',
 };
 
+export const MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR: DeliveryAddressApi = {
+  id: '23234',
+  full_name: 'Laia',
+  street: 'Walla',
+  postal_code: '08027',
+  city: 'Barcelona',
+  region: 'Barcelona',
+  country_iso_code: 'ES',
+  phone_number: '677594321',
+  flat_and_floor: null,
+};
+
 export const MOCK_INVALID_DELIVERY_ADDRESS: DeliveryAddressApi = {
   id: '23234',
   full_name: 'Lalli',

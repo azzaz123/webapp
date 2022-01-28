@@ -15,11 +15,6 @@
       display: flex;
       flex-direction: column;
 
-      tsl-conversation-details-bar {
-        height: 74px;
-        z-index: 999;
-      }
-
       .messages-panel-container {
         overflow-y: scroll;
         padding: $spacing-ms $spacing-ml;
