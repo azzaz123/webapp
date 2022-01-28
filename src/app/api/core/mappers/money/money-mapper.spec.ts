@@ -1,19 +1,19 @@
 import { MOCK_MONEY, MOCK_MONEY_DTO, MOCK_NUMBER_CURRENCY_CODE } from '@api/fixtures/core/money.fixtures';
-import { mapMoneyToDomain } from '..';
+import { mapAmountAndCurrenyToMoney } from '..';
 import { mapNumberAndCurrencyCodeToMoney } from './money-mapper';
 
-describe('GIVEN the mapMoneyToDomain', () => {
+describe('GIVEN the mapAmountAndCurrenyToMoney', () => {
   it('should map to the correct money', () => {
     const expected = MOCK_MONEY;
 
-    const result = mapMoneyToDomain(MOCK_MONEY_DTO);
+    const result = mapAmountAndCurrenyToMoney(MOCK_MONEY_DTO);
 
     expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
   });
   it('should return the money as a string', () => {
     const expected: string = MOCK_MONEY.toString();
 
-    const result = mapMoneyToDomain(MOCK_MONEY_DTO).toString();
+    const result = mapAmountAndCurrenyToMoney(MOCK_MONEY_DTO).toString();
 
     expect(result).toBe(expected);
   });

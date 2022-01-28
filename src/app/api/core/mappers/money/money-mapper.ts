@@ -7,7 +7,7 @@ import { mapNumberToNumericAmount } from '../numeric-amount/numeric-amount-mappe
 export type NumberCurrencyCode = { number: number; currency: CurrencyCode };
 export type AmountAndCurrencyDto = { amount: number; currency: string };
 
-export const mapMoneyToDomain = <T extends AmountAndCurrencyDto>(dto: T): Money => {
+export const mapAmountAndCurrenyToMoney = <T extends AmountAndCurrencyDto>(dto: T): Money => {
   return mapNumberAndCurrencyCodeToMoney({
     number: dto.amount,
     currency: dto.currency as CurrencyCode,

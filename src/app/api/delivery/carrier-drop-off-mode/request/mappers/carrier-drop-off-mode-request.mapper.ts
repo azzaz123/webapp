@@ -1,4 +1,4 @@
-import { mapMoneyToDomain } from '@api/core/mappers';
+import { mapAmountAndCurrenyToMoney } from '@api/core/mappers';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { ToDomainMapper } from '@api/core/utils/types';
@@ -64,7 +64,7 @@ const getDropOffModeRequest = (dropOffModeDto: DropOffModeDto): DropOffModeReque
     type: mapCarrierDropOffTypeToDomain[dropOffModeDto.drop_off_mode],
     icon: dropOffModeDto.icon,
     postOfficeDetails: dropOffModeDto.post_office_details ? getPostOfficeDetails(dropOffModeDto.post_office_details) : null,
-    sellerCosts: mapMoneyToDomain(dropOffModeDto.seller_costs),
+    sellerCosts: mapAmountAndCurrenyToMoney(dropOffModeDto.seller_costs),
     acceptEndpoint: dropOffModeDto.accept_relative_url,
     restrictions: dropOffModeDto.restrictions,
     schedule: dropOffModeDto.tentative_schedule ? getTentativeShedule(dropOffModeDto.tentative_schedule) : null,
