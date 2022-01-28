@@ -6,12 +6,14 @@ import { Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { concatMap, take } from 'rxjs/operators';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
+import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
 
 @Injectable()
 export class DeliveryConversationContextService {
   constructor(
     private featureFlagService: FeatureFlagService,
-    private deliveryConversationContextAsBuyerService: DeliveryConversationContextAsBuyerService
+    private deliveryConversationContextAsBuyerService: DeliveryConversationContextAsBuyerService,
+    private deliveryConversationContextAsSellerService: DeliveryConversationContextAsSellerService
   ) {}
 
   private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
@@ -45,12 +47,7 @@ export class DeliveryConversationContextService {
     const { item } = conversation;
     const { id: itemHash, isMine } = item;
     return isMine
-      ? this.getBannerPropertiesAsSeller(itemHash)
+      ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(itemHash)
       : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(itemHash);
-  }
-
-  // TODO
-  private getBannerPropertiesAsSeller(itemHash: string): Observable<DeliveryBanner | null> {
-    return of(null);
   }
 }

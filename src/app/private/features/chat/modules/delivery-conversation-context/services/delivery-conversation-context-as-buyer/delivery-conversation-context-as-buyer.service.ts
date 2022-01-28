@@ -13,7 +13,7 @@ import {
   BUYER_ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
   SELLER_ACTIVATE_SHIPPING_BANNER_PROPERTIES,
   SELLER_EDIT_PRICE_BANNER_PROPERTIES,
-} from '../../constants/delivery-banner-configs';
+} from '@private/features/chat/modules/delivery-banner/constants/delivery-banner-configs';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {

@@ -3,9 +3,10 @@ import { DeliveryItemDetailsApiModule } from '@api/bff/delivery/items/detail/del
 import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
 import { DeliveryConversationContextService } from './services/delivery-conversation-context/delivery-conversation-context.service';
 import { DeliveryConversationContextAsBuyerService } from './services/delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
+import { DeliveryConversationContextAsSellerService } from './services/delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
 
 @NgModule({
   imports: [BuyerRequestsApiModule, DeliveryItemDetailsApiModule],
-  providers: [DeliveryConversationContextAsBuyerService, DeliveryConversationContextService],
+  providers: [DeliveryConversationContextAsBuyerService, DeliveryConversationContextAsSellerService, DeliveryConversationContextService],
 })
 export class DeliveryConversationContextModule {}
