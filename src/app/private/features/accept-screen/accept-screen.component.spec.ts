@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AcceptScreenComponent } from './accept-screen.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AcceptScreenModalComponent } from './modals/accept-screen-modal/accept-screen-modal.component';
 import { ActivatedRoute } from '@angular/router';
 
 describe('AcceptScreenComponent', () => {
-  const modalRef: any = {
+  const modalRef: Partial<NgbModalRef> = {
     result: Promise.resolve(),
     componentInstance: {},
   };

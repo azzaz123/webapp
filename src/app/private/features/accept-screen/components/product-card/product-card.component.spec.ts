@@ -62,7 +62,7 @@ describe('ProductCardComponent', () => {
       });
 
       it('should show item price', () => {
-        const itemPrice: string = de.query(By.css('.ProductCard__itemPriceWrapper__price')).nativeElement.innerHTML;
+        const itemPrice: string = de.query(By.css('.ProductCard__itemPrice')).nativeElement.innerHTML;
         const expectedItemPrice: string = `${MOCK_ACCEPT_SCREEN_ITEM.price.amount.total}${MOCK_ACCEPT_SCREEN_ITEM.price.currency.symbol}`;
 
         expect(itemPrice).toStrictEqual(expectedItemPrice);
