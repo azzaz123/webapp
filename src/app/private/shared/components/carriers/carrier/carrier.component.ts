@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { AcceptScreenCarrier } from '../../../interfaces/accept-screen-carrier.interface';
+import { AcceptScreenCarrier } from '@private/features/accept-screen/interfaces/accept-screen-carrier.interface';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off-mode.type';
 
 @Component({

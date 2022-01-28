@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AcceptScreenCarrier } from '../../interfaces/accept-screen-carrier.interface';
+import { AcceptScreenCarrier } from '@private/features/accept-screen/interfaces/accept-screen-carrier.interface';
 
 @Component({
   selector: 'tsl-carriers',
@@ -7,5 +7,6 @@ import { AcceptScreenCarrier } from '../../interfaces/accept-screen-carrier.inte
   styleUrls: ['./carriers.component.scss'],
 })
 export class CarriersComponent {
+  @Input() title: string;
   @Input() carriers: AcceptScreenCarrier[];
 }
