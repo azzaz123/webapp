@@ -1,0 +1,32 @@
+@import '~style/common';
+
+.AcceptScreen {
+  &__sellerAddressTitle {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-s;
+    color: $blue-grey-1;
+    border-bottom: 1px solid $blue-grey-5;
+  }
+
+  &__sellerAddressWrapper {
+    border-bottom: 1px solid $blue-grey-5;
+  }
+
+  &__sellerAddressInfoWrapper {
+    flex: 1;
+  }
+
+  &__sellerAddressInfo {
+    flex: 1;
+  }
+
+  &__sellerAddressHeader {
+    font-size: $font-size-s;
+    color: $blue-grey-2;
+  }
+
+  &__sellerAddressEdit {
+    font-size: $font-size-s;
+    color: $walla-main;
+  }
+}
