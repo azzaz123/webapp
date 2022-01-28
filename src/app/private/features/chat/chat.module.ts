@@ -38,7 +38,7 @@ import { TranslateButtonModule } from '@core/components/translate-button/transla
 import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
 import { ChatApiModule } from '@api/chat/chat-api.module';
 import { DeliveryBannerModule } from './modules/delivery-banner/delivery-banner.module';
-import { DeliveryConversationContextModule } from './services/delivery-conversation-context/delivery-conversation-context.module';
+import { DeliveryConversationContextModule } from './modules/delivery-conversation-context/delivery-conversation-context.module';
 
 @NgModule({
   imports: [

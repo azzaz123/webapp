@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeliveryConversationContextService } from '../../../services/delivery-conversation-context/delivery-conversation-context.service';
+import { DeliveryConversationContextService } from '../../delivery-conversation-context/delivery-conversation-context.service';
 
 import { DeliveryBannerComponent } from './delivery-banner.component';
 

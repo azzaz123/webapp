@@ -4,7 +4,7 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
 import { Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { concatMap, take } from 'rxjs/operators';
 import { InboxConversation } from '../../core/model';
-import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
+import { DeliveryBanner } from '../delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryConversationContextAsBuyerService } from './services/delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 
 @Injectable()

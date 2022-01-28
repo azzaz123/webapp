@@ -49,7 +49,7 @@ import { InputComponent } from '@private/features/chat/components/input';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { DeliveryConversationContextService } from '@private/features/chat/services/delivery-conversation-context/delivery-conversation-context.service';
+import { DeliveryConversationContextService } from '@private/features/chat/modules/delivery-conversation-context/delivery-conversation-context.service';
 import { DeliveryBannerComponent } from '../../modules/delivery-banner/components/delivery-banner.component';
 import { MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 
