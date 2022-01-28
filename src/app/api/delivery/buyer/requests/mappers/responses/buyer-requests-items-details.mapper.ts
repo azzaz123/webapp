@@ -2,7 +2,6 @@ import { BuyerRequestsItemsDetails } from '@api/core/model/delivery/buyer-reques
 import { BuyerRequestsItemsDetailsDto } from '@api/delivery/buyer/requests/dtos/buyer-requests-items-details-dto.interface';
 import { CurrencyCode } from '@api/core/model/currency.interface';
 import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
-import { PriceDto } from '@api/core/dtos';
 import { ToDomainMapper } from '@api/core/utils/types';
 
 export const mapBuyerRequestsItemsDetailsDtoToBuyerRequestsItemsDetails: ToDomainMapper<
@@ -23,18 +22,9 @@ export const mapBuyerRequestsItemsDetailsDtoToBuyerRequestsItemsDetails: ToDomai
     categoryId,
     itemHash,
     pictureUrl,
-    price: mapPriceDtoToMoney(price),
+    price: mapNumberAndCurrencyCodeToMoney({ number: price.amount, currency: price.currency as CurrencyCode }),
     sellerCountry,
     sellerUserHash,
     title,
   };
-};
-
-const mapPriceDtoToMoney = (priceDto: PriceDto) => {
-  const { amount: number, currency } = priceDto;
-
-  return mapNumberAndCurrencyCodeToMoney({
-    number,
-    currency: currency as CurrencyCode,
-  });
 };
