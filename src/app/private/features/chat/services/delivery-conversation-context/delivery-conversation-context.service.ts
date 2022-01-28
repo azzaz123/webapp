@@ -6,7 +6,7 @@ import { Money } from '@api/core/model/money.interface';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { concatMap, map, take } from 'rxjs/operators';
 import { InboxConversation } from '../../core/model';
 import { DELIVERY_BANNER_TYPE } from '../../modules/delivery-banner/enums/delivery-banner-type.enum';
@@ -27,6 +27,7 @@ export class DeliveryConversationContextService {
   ) {}
 
   private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
+  private subscriptions: Subscription[] = [];
 
   public get bannerProperties$(): Observable<DeliveryBanner | null> {
     return this._bannerProperties$.asObservable();
@@ -41,9 +42,15 @@ export class DeliveryConversationContextService {
   }
 
   public update(conversation: InboxConversation): void {
-    this.isDeliveryFlagEnabled
+    const subscription: Subscription = this.isDeliveryFlagEnabled
       .pipe(concatMap((enabled: boolean) => (enabled ? this.getBannerProperties(conversation) : of(null))))
       .subscribe((banner: DeliveryBanner | null) => (this.bannerProperties = banner));
+    this.subscriptions.push(subscription);
+  }
+
+  public reset(): void {
+    this.bannerProperties = null;
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner> {

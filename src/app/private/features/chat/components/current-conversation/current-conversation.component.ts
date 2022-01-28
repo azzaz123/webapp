@@ -144,6 +144,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.isConversationChanged = true;
       this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
 
+      this.deliveryConversationContextService.reset();
       if (this.currentConversation) {
         this.deliveryConversationContextService.update(this.currentConversation);
       }
@@ -314,6 +315,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
     modalRef.result.then(() => this.handleUserConfirmsMaliciousModal()).catch(() => this.trackDismissMaliciousModal());
   }
+
+  private handleCurrentConversationChange(): void {}
 
   private handleUserConfirmsMaliciousModal(): void {
     this.inboxConversationService.currentConversation = null;
