@@ -143,7 +143,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.openMaliciousConversationModal();
       this.isConversationChanged = true;
       this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
-      this.deliveryConversationContextService.update();
+
+      if (this.currentConversation) {
+        this.deliveryConversationContextService.update(this.currentConversation);
+      }
     }
   }
 
