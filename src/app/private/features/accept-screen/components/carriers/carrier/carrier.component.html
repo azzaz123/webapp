@@ -13,11 +13,11 @@
     </div>
     <div class="Carrier__selector d-flex px-2">
       <div class="input-radio">
-        <input type="radio" [value]="carrier.type" id="type-natural" required />
+        <input type="radio" [value]="carrier.isSelected" (click)="onSelectCarrier($event)" />
       </div>
     </div>
   </div>
-  <div class="Carrier__infoWrapper d-flex flex-column pl-5 py-3 pr-3">
+  <div *ngIf="carrier.isSelected" class="Carrier__infoWrapper d-flex flex-column pl-5 py-3 pr-3">
     <span [ngSwitch]="carrier.type" class="Carrier__infoTimePeriod mx-2">
       <ng-container *ngSwitchCase="postOfficeDropOff" i18n="@@accept_view_seller_po_all_delivery_method_selector_time_limit_description"
         >You have 5 calendar days to deposit the package.
