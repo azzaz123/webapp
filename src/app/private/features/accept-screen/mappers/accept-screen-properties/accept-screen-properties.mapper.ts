@@ -14,6 +14,8 @@ import {
 import { CarrierDropOffModeRequest, DropOffModeRequest } from '@api/core/model/delivery/carrier-drop-off-mode';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
+import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
+import { AcceptScreenDeliveryAddress } from '../../interfaces/accept-screen-delivery-address.interface';
 
 export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> = (item: Item): AcceptScreenItem => {
   const itemCurrencyPrice: NumberCurrencyCode = {
@@ -54,6 +56,15 @@ export const mapCarrierDropOffModeToAcceptScreenCarriers: ToDomainMapper<Carrier
     }
     return mapDropOffPoint(dropOffModeRequest);
   });
+};
+
+export const mapDeliveryAddresstoAcceptScreenDeliveryAddress: ToDomainMapper<DeliveryAddressApi, AcceptScreenDeliveryAddress> = (
+  input: DeliveryAddressApi
+): AcceptScreenDeliveryAddress => {
+  const flatAndFloor: string = input.flat_and_floor ? ` ${input.flat_and_floor},` : '';
+  return {
+    fullAddress: `${input.street},${flatAndFloor} ${input.postal_code}, ${input.city}`,
+  };
 };
 
 const mapDropOffPoint: ToDomainMapper<DropOffModeRequest, AcceptScreenDropOffPoint> = (

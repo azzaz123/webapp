@@ -12,8 +12,11 @@ import {
   mapItemToAcceptScreenItem,
   mapUserToAcceptScreenBuyer,
   mapUserToAcceptScreenSeller,
+  mapDeliveryAddresstoAcceptScreenDeliveryAddress,
 } from '../../mappers/accept-screen-properties/accept-screen-properties.mapper';
 import { CarrierDropOffModeRequestApiService } from '@api/delivery/carrier-drop-off-mode/request/carrier-drop-off-mode-request-api.service';
+import { DeliveryAddressApiService } from '@private/features/delivery/services/api/delivery-address-api/delivery-address-api.service';
+import { AcceptScreenDeliveryAddress } from '../../interfaces/accept-screen-delivery-address.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +26,8 @@ export class AcceptScreenService {
     private sellerRequestApiService: SellerRequestsApiService,
     private userService: UserService,
     private itemService: ItemService,
-    private carrierDropOffModeRequestApiService: CarrierDropOffModeRequestApiService
+    private carrierDropOffModeRequestApiService: CarrierDropOffModeRequestApiService,
+    private deliveryAddressApiService: DeliveryAddressApiService
   ) {}
 
   public getAcceptScreenProperties(requestId: string): Observable<AcceptScreenProperties> {
@@ -35,16 +39,26 @@ export class AcceptScreenService {
           this.getBuyer(request.buyer.id),
           this.getSeller(),
           this.getCarrierDropOffModeRequest(requestId),
+          this.getDeliveryAddress(),
         ]).pipe(
-          mergeMap(([item, buyer, seller, carriers]: [AcceptScreenItem, AcceptScreenBuyer, AcceptScreenSeller, AcceptScreenCarrier[]]) => {
-            return of({
-              request,
-              item,
-              buyer,
-              seller,
-              carriers,
-            });
-          })
+          mergeMap(
+            ([item, buyer, seller, carriers, deliveryAddress]: [
+              AcceptScreenItem,
+              AcceptScreenBuyer,
+              AcceptScreenSeller,
+              AcceptScreenCarrier[],
+              AcceptScreenDeliveryAddress
+            ]) => {
+              return of({
+                request,
+                item,
+                buyer,
+                seller,
+                carriers,
+                deliveryAddress,
+              });
+            }
+          )
         );
       })
     );
@@ -68,5 +82,9 @@ export class AcceptScreenService {
 
   private getCarrierDropOffModeRequest(requestId: string): Observable<AcceptScreenCarrier[]> {
     return this.carrierDropOffModeRequestApiService.get(requestId).pipe(map(mapCarrierDropOffModeToAcceptScreenCarriers));
+  }
+
+  private getDeliveryAddress(): Observable<AcceptScreenDeliveryAddress> {
+    return this.deliveryAddressApiService.get().pipe(map(mapDeliveryAddresstoAcceptScreenDeliveryAddress));
   }
 }
