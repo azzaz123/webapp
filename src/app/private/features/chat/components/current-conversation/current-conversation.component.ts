@@ -42,8 +42,8 @@ import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
 import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
-import { DeliveryConversationContextService } from '@private/features/chat/modules/delivery-conversation-context/delivery-conversation-context.service';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
+import { DeliveryConversationContextService } from '../../modules/delivery-conversation-context/services/delivery-conversation-context/delivery-conversation-context.service';
 
 @Component({
   selector: 'tsl-current-conversation',
