@@ -5,7 +5,7 @@ import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/cal
 import { DeliveryBuyerCalculatorCostsDto } from '@api/delivery/buyer/calculator/dtos/delivery-buyer-calculator-costs-dto.interface';
 import { DeliveryBuyerCalculatorPromotionCost } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-promotion-cost.interface';
 import { DeliveryBuyerCalculatorPromotionCostDto } from '@api/delivery/buyer/calculator/dtos/delivery-buyer-calculator-promotion-cost-dto.interface';
-import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
+import { mapNumberAndCurrencyCodeToMoney, NumberCurrencyCode } from '@api/core/mappers';
 import { Money } from '@api/core/model/money.interface';
 import { PriceDto } from '@api/core/dtos';
 import { ToDomainMapper } from '@api/core/utils/types';
@@ -22,19 +22,12 @@ export const mapDeliveryBuyerCalculatorCostsDtoToDeliveryBuyerCalculatorCosts: T
   };
 };
 
-const mapMoneyToDomain = (input: PriceDto): Money => {
-  return mapNumberAndCurrencyCodeToMoney({
-    number: input.amount,
-    currency: input.currency as CurrencyCode,
-  });
-};
-
 const mapToDeliveryBuyerCalculatorCost = (input: DeliveryBuyerCalculatorCostDto): DeliveryBuyerCalculatorCost => {
   return {
-    deliveryCost: mapMoneyToDomain(input.delivery_cost),
-    fees: mapMoneyToDomain(input.fees),
-    productPrice: mapMoneyToDomain(input.product_price),
-    total: mapMoneyToDomain(input.total),
+    deliveryCost: mapToMoney(input.delivery_cost),
+    fees: mapToMoney(input.fees),
+    productPrice: mapToMoney(input.product_price),
+    total: mapToMoney(input.total),
   };
 };
 
@@ -44,10 +37,17 @@ const mapToDeliveryBuyerCalculatorPromotionCost = (
   return !!input
     ? {
         deliveryCostDiscountPercentage: input.delivery_cost_discount_percentage,
-        deliveryCostFixedPrice: mapMoneyToDomain(input.delivery_cost_fixed_price),
-        feesFixedPrice: mapMoneyToDomain(input.fees_fixed_price),
+        deliveryCostFixedPrice: mapToMoney(input.delivery_cost_fixed_price),
+        feesFixedPrice: mapToMoney(input.fees_fixed_price),
         originalBuyerCost: mapToDeliveryBuyerCalculatorCost(input.original_buyer_cost),
         promocode: input.promocode,
       }
     : null;
+};
+
+const mapToMoney = (priceDto: PriceDto): Money => {
+  return mapNumberAndCurrencyCodeToMoney({
+    number: priceDto.amount,
+    currency: priceDto.currency as CurrencyCode,
+  });
 };

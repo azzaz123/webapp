@@ -26,10 +26,9 @@ export class DeliveryBuyerCalculatorHttpService {
       [DeliveryBuyerCalculatorParam.PRODUCT_PRICE_CURRENCY]: money.currency.code,
       [DeliveryBuyerCalculatorParam.ITEM_ID]: itemId,
       [DeliveryBuyerCalculatorParam.PROMOCODE]: promocode,
-      [DeliveryBuyerCalculatorParam.CARRIER_DELIVERY_MODE]: deliveryMode,
+      [DeliveryBuyerCalculatorParam.CARRIER_DELIVERY_MODE]: DeliveryBuyerMode[deliveryMode],
     };
 
-    console.log(promocode);
     return this.http.get<DeliveryBuyerCalculatorCostsDto>(DELIVERY_BUYER_CALCULATOR_COSTS_ENDPOINT, { params });
   }
 }

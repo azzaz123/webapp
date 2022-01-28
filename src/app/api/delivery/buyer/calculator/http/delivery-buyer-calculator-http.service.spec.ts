@@ -42,7 +42,7 @@ describe('DeliveryBuyerCalculatorHttpService', () => {
           amount: { integer: 13, decimals: 99, total: 13.99 },
           currency: { code: 'EUR', symbol: '€' },
         };
-        const expectedUrl: string = `${DELIVERY_BUYER_CALCULATOR_COSTS_ENDPOINT}?product_price_amount=${money.amount.total}&product_price_currency=${money.currency.code}&item_id=${itemId}&promocode=null&carrier_delivery_mode=${deliveryMode}`;
+        const expectedUrl: string = `${DELIVERY_BUYER_CALCULATOR_COSTS_ENDPOINT}?product_price_amount=${money.amount.total}&product_price_currency=${money.currency.code}&item_id=${itemId}&promocode=null&carrier_delivery_mode=${DeliveryBuyerMode[deliveryMode]}`;
 
         service.getCosts(money, itemId, null, deliveryMode).subscribe((data: DeliveryBuyerCalculatorCostsDto) => (response = data));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
@@ -63,7 +63,7 @@ describe('DeliveryBuyerCalculatorHttpService', () => {
           currency: { code: 'EUR', symbol: '€' },
         };
         const promocode: string = 'fake-promocode';
-        const expectedUrl: string = `${DELIVERY_BUYER_CALCULATOR_COSTS_ENDPOINT}?product_price_amount=${money.amount.total}&product_price_currency=${money.currency.code}&item_id=${itemId}&promocode=${promocode}&carrier_delivery_mode=${deliveryMode}`;
+        const expectedUrl: string = `${DELIVERY_BUYER_CALCULATOR_COSTS_ENDPOINT}?product_price_amount=${money.amount.total}&product_price_currency=${money.currency.code}&item_id=${itemId}&promocode=${promocode}&carrier_delivery_mode=${DeliveryBuyerMode[deliveryMode]}`;
 
         service.getCosts(money, itemId, promocode, deliveryMode).subscribe((data: DeliveryBuyerCalculatorCostsDto) => (response = data));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
