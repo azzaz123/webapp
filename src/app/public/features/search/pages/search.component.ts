@@ -39,7 +39,7 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
-import { OPTIMIZELY_EXPERIMENTS } from '@core/experimentation/vendors/optimizely/resources/optimizely-experiment-keys';
+import { OPTIMIZELY_EXPERIMENTS } from '@core/experimentation/vendors/optimizely/resources/optimizely-flag-keys';
 import { UserService } from '@core/user/user.service';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
@@ -149,9 +149,9 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       })
     );
 
-    const test = this.experimentationService.activateOptimizelyExperiment({
-      experimentKey: OPTIMIZELY_EXPERIMENTS.Test01_Web_Experiment,
-      attributes: { os: 'android' },
+    this.experimentationService.initExperimentContext({});
+    const test = this.experimentationService.getVariations({
+      flagKeys: [OPTIMIZELY_EXPERIMENTS.Test01_Web_Experiment],
     });
     console.log(test);
   }

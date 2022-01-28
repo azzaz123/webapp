@@ -1,12 +1,7 @@
-import { OPTIMIZELY_EXPERIMENTS } from './resources/optimizely-experiment-keys';
-import { OPTIMIZELY_FEATURES } from './resources/optimizely-feature-keys';
+import { OptimizelyDecideOption } from '@optimizely/optimizely-sdk';
+import { OPTIMIZELY_FLAG_KEYS } from './resources/optimizely-flag-keys';
 
-export interface ExperimentationParamInterface {
-  experimentKey: OPTIMIZELY_EXPERIMENTS;
-  attributes?: { [key: string]: string };
-}
-
-export interface FeatureParamInterface {
-  featureKey: OPTIMIZELY_FEATURES;
-  attributes?: { [key: string]: string };
+export interface FlagsParamInterface {
+  flagKeys: OPTIMIZELY_FLAG_KEYS[];
+  options?: OptimizelyDecideOption[];
 }

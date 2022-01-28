@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '@core/user/user.service';
-import { Client } from '@optimizely/optimizely-sdk';
+import { Client, OptimizelyDecision, OptimizelyUserContext } from '@optimizely/optimizely-sdk';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { ExperimentationParamInterface, FeatureParamInterface } from './optimizely.interface';
+import { FlagsParamInterface } from './optimizely.interface';
 import { SDK_KEY_DEVELOPMENT } from './resources/sdk-keys';
 
 @Injectable({
@@ -11,6 +11,10 @@ import { SDK_KEY_DEVELOPMENT } from './resources/sdk-keys';
 export class OptimizelyService {
   private readonly _optimizelyReady$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private optimizelyClientInstance: Client;
+  private optimizelyUserContext: OptimizelyUserContext;
+  private baseAttributes = {
+    platform: 'web',
+  };
 
   public get isReady$(): Observable<boolean> {
     return this._optimizelyReady$.asObservable();
@@ -29,13 +33,25 @@ export class OptimizelyService {
     });
   }
 
-  public activate({ experimentKey, attributes }: ExperimentationParamInterface) {
-    const userId = this.userService?.user?.id;
-    return this.optimizelyClientInstance?.activate(experimentKey, userId, attributes);
+  public initExperimentContext(attributes: { [key: string]: string }): void {
+    if (!this.optimizelyUserContext) {
+      const userId = this.userService?.user?.id;
+      this.optimizelyUserContext = this.optimizelyClientInstance.createUserContext(userId, { ...attributes, ...this.baseAttributes });
+    } else {
+      if (attributes) this.addNewAttributes(attributes);
+    }
   }
 
-  public isFeatureEnabled({ featureKey, attributes }: FeatureParamInterface) {
-    const userId = this.userService?.user?.id;
-    return this.optimizelyClientInstance?.isFeatureEnabled(featureKey, userId, attributes);
+  public getVariations({ flagKeys, options }: FlagsParamInterface): { [key: string]: OptimizelyDecision } {
+    return this.optimizelyUserContext.decideForKeys(flagKeys, options);
+  }
+
+  private addNewAttributes(attributesToAdd) {
+    const currentUserAttributes = this.optimizelyUserContext.getAttributes();
+    const newUserAttributes = Object.keys(attributesToAdd).filter((keyToAdd) => !!currentUserAttributes[keyToAdd]);
+
+    newUserAttributes.forEach((key) => {
+      this.optimizelyUserContext.setAttribute(key, newUserAttributes[key]);
+    });
   }
 }

@@ -6,8 +6,9 @@ import { EXPERIMENTATION_SOURCES } from '@core/experimentation/constants';
 import { Variant } from '@core/experimentation/models';
 import { OPTIMIZE_EXPERIMENTS } from '@core/experimentation/vendors/optimize/resources/optimize-experiment-ids';
 import { OptimizelyService } from '../../vendors/optimizely/optimizely.service';
-import { ExperimentationParamInterface, FeatureParamInterface } from '../../vendors/optimizely/optimizely.interface';
+import { FlagsParamInterface } from '../../vendors/optimizely/optimizely.interface';
 import { UserService } from '@core/user/user.service';
+import { OptimizelyDecision } from '@optimizely/optimizely-sdk';
 
 @Injectable({
   providedIn: 'root',
@@ -39,11 +40,11 @@ export class ExperimentationService {
     return this.optimizeService.getVariant(id);
   }
 
-  public activateOptimizelyExperiment({ experimentKey, attributes }: ExperimentationParamInterface) {
-    return this.optimizelyService.activate({ experimentKey, attributes });
+  public initExperimentContext(attributes): void {
+    this.optimizelyService.initExperimentContext(attributes);
   }
 
-  public isOptimizelyFeatureEnabled({ featureKey, attributes }: FeatureParamInterface) {
-    return this.optimizelyService.isFeatureEnabled({ featureKey, attributes });
+  public getVariations({ flagKeys, options }: FlagsParamInterface): { [key: string]: OptimizelyDecision } {
+    return this.optimizelyService.getVariations({ flagKeys, options });
   }
 }
