@@ -1,0 +1,6 @@
+<div *ngIf="deliveryMethods" class="DeliveryMethods pt-4">
+  <div class="DeliveryMethods__header d-flex">
+    <span class="DeliveryMethods__headerTitle pb-2">{{ title }}</span>
+  </div>
+  <tsl-carrier *ngFor="let deliveryMethod of deliveryMethods" [carrier]="deliveryMethod"></tsl-carrier>
+</div>
