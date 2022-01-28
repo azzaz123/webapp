@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CarrierComponent } from './carrier.component';
+import { DeliveryMethodComponent } from './delivery-method.component';
 
-describe('CarrierComponent', () => {
-  let component: CarrierComponent;
-  let fixture: ComponentFixture<CarrierComponent>;
+describe('DeliveryMethodComponent', () => {
+  let component: DeliveryMethodComponent;
+  let fixture: ComponentFixture<DeliveryMethodComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CarrierComponent],
+      declarations: [DeliveryMethodComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CarrierComponent);
+    fixture = TestBed.createComponent(DeliveryMethodComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

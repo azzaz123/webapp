@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DeliveryMethodSelectorComponent } from './delivery-method-selector.component';
-import { CarrierComponent } from './carrier/carrier.component';
 import { ButtonModule } from '@shared/button/button.module';
+import { DeliveryMethodComponent } from './delivery-method/delivery-method.component';
 
 @NgModule({
-  declarations: [DeliveryMethodSelectorComponent, CarrierComponent],
+  declarations: [DeliveryMethodSelectorComponent, DeliveryMethodComponent],
   imports: [CommonModule, ButtonModule],
-  exports: [DeliveryMethodSelectorComponent, CarrierComponent],
+  exports: [DeliveryMethodSelectorComponent, DeliveryMethodComponent],
 })
 export class DeliveryMethodSelectorModule {}
