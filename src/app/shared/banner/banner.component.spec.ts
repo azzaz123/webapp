@@ -45,6 +45,7 @@ describe('BannerComponent', () => {
       component.specifications = {
         dismissible: false,
         type: 'success',
+        isFullHeight: false,
       };
 
       fixture.detectChanges();

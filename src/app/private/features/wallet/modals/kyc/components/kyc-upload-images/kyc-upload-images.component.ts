@@ -37,6 +37,7 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
   public readonly errorBannerSpecifications: BannerSpecifications = {
     type: BANNER_TYPES.DANGER,
     dismissible: false,
+    isFullHeight: false,
   };
 
   public readonly activeStep$: BehaviorSubject<KYCImagesNeeded> = new BehaviorSubject<KYCImagesNeeded>(1);
