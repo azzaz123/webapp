@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { BannerSpecifications } from '@shared/banner/banner-specifications.interface';
 import { DeliveryBanner } from '../interfaces/delivery-banner.interface';
 
 @Component({
@@ -9,4 +10,10 @@ import { DeliveryBanner } from '../interfaces/delivery-banner.interface';
 })
 export class DeliveryBannerComponent {
   @Input() bannerProperties: DeliveryBanner;
+
+  public readonly bannerStyleProperties: BannerSpecifications = {
+    dismissible: false,
+    type: 'info',
+    isFullHeight: true,
+  };
 }
