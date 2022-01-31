@@ -4,9 +4,10 @@ import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-reque
 import { DeliveryConversationContextService } from './services/delivery-conversation-context/delivery-conversation-context.service';
 import { DeliveryConversationContextAsBuyerService } from './services/delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from './services/delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
+import { TRXAwarenessModalModule } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.module';
 
 @NgModule({
-  imports: [BuyerRequestsApiModule, DeliveryItemDetailsApiModule],
+  imports: [BuyerRequestsApiModule, DeliveryItemDetailsApiModule, TRXAwarenessModalModule],
   providers: [DeliveryConversationContextAsBuyerService, DeliveryConversationContextAsSellerService, DeliveryConversationContextService],
 })
 export class DeliveryConversationContextModule {}

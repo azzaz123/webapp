@@ -8,13 +8,16 @@ import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/i
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
 import { DELIVERY_BANNER_ACTION_TYPE } from '../../../delivery-banner/enums/delivery-banner-action-type.enum';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 
 @Injectable()
 export class DeliveryConversationContextService {
   constructor(
     private featureFlagService: FeatureFlagService,
     private deliveryConversationContextAsBuyerService: DeliveryConversationContextAsBuyerService,
-    private deliveryConversationContextAsSellerService: DeliveryConversationContextAsSellerService
+    private deliveryConversationContextAsSellerService: DeliveryConversationContextAsSellerService,
+    private modalService: NgbModal
   ) {}
 
   private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
@@ -72,5 +75,7 @@ export class DeliveryConversationContextService {
       : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(itemHash);
   }
 
-  private openAwarenessModal(): void {}
+  private openAwarenessModal(): void {
+    this.modalService.open(TRXAwarenessModalComponent);
+  }
 }
