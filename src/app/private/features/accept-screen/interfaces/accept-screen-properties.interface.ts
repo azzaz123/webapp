@@ -3,6 +3,7 @@ import { AcceptScreenSeller } from './accept-screen-seller.interface';
 import { AcceptScreenBuyer } from './accept-screen-buyer.interface';
 import { AcceptScreenItem } from './accept-screen-item.interface';
 import { AcceptScreenCarrier } from './accept-screen-carrier.interface';
+import { AcceptScreenDeliveryAddress } from './accept-screen-delivery-address.interface';
 
 export interface AcceptScreenProperties {
   request: SellerRequest;
