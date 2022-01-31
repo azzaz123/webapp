@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SORT_BY } from '@api/core/model';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS, Search } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { SearchQueryStringService } from '@core/search/search-query-string.service';
 import { FILTER_PARAMETERS_SEARCH } from '@public/features/search/core/services/constants/filter-parameters';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
@@ -15,6 +16,7 @@ export class SearchTrackingEventsService {
     [FILTER_QUERY_PARAM_KEY.objectType]: 'objectTypeId',
     [FILTER_QUERY_PARAM_KEY.type]: 'propertyType',
     [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: 'source',
+    [FILTER_QUERY_PARAM_KEY.brand]: 'brandModel',
   };
 
   private readonly ORDER_BY_VALUE_MAP = {
@@ -43,6 +45,8 @@ export class SearchTrackingEventsService {
 
   private fromFilterParameterEventFilter(filterParams: FilterParameter[]): Partial<Search> {
     const FILTER_KEY_EVENT_MAP_KEYS = Object.keys(this.FILTER_KEY_EVENT_MAP);
+    const categoryId = filterParams.find((filterParam) => filterParam.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
+
     const filters = filterParams.reduce((map, parameter) => {
       const key = parameter.key;
       const value = parameter.value;
@@ -51,6 +55,16 @@ export class SearchTrackingEventsService {
         map[this.camelize(key)] = this.ORDER_BY_VALUE_MAP[value];
       } else {
         map[FILTER_KEY_EVENT_MAP_KEYS.includes(key) ? this.FILTER_KEY_EVENT_MAP[key] : this.camelize(key)] = value;
+      }
+
+      if (categoryId === CATEGORY_IDS.CAR.toString()) {
+        if (key === FILTER_QUERY_PARAM_KEY.brand) {
+          map['carBrand'] = value;
+        }
+
+        if (key === FILTER_QUERY_PARAM_KEY.model) {
+          map['carModel'] = value;
+        }
       }
 
       return map;
