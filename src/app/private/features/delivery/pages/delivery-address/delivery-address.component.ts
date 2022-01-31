@@ -1,6 +1,6 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
@@ -61,6 +61,8 @@ import { DeliveryCountriesStoreService } from '../../services/countries/delivery
 export class DeliveryAddressComponent implements OnInit, OnDestroy {
   @Input() showTitle: boolean = true;
   @Input() whereUserComes: DELIVERY_ADDRESS_PREVIOUS_PAGE;
+  @Output() addressSaveSucced: EventEmitter<void> = new EventEmitter();
+
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
@@ -88,7 +90,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     street: '',
     flat_and_floor: '',
   };
-  public comesFromPayView: boolean;
+  public showDeleteButton: boolean;
   private subscriptions: Subscription = new Subscription();
   private defaultCountry: DeliveryCountryDefault;
 
@@ -116,9 +118,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.deliveryAddressTrackEventsService.trackViewShippingAddressScreen();
-    this.comesFromPayView =
-      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
-      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
+    this.initializeShowDeleteButton();
 
     this.buildForm();
     this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
@@ -364,6 +364,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
           this.formComponent.initFormControl();
           this.isNewForm = false;
           this.showToast(successKey, TOAST_TYPES.SUCCESS);
+          this.addressSaveSucced.emit();
           this.redirect();
         },
         (errors: DeliveryAddressError[]) => this.handleAddressErrors(errors)
@@ -561,5 +562,12 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.properties = properties;
 
     return modalRef;
+  }
+
+  private initializeShowDeleteButton(): void {
+    this.showDeleteButton =
+      this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS &&
+      this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY &&
+      this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
   }
 }

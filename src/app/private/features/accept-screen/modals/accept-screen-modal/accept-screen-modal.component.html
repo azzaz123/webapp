@@ -51,6 +51,7 @@
         *ngIf="acceptScreenCountries$ | async"
         [showTitle]="false"
         [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
+        (addressSaveSucced)="goToAcceptScreen()"
       ></tsl-delivery-address>
     </ng-template>
   </tsl-stepper>

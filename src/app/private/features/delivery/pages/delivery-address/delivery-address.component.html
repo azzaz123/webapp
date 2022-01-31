@@ -201,14 +201,14 @@
             <tsl-button
               [type]="'submit'"
               class="col-md-3 col-7"
-              [ngClass]="{ 'col-12': isNewForm || comesFromPayView }"
+              [ngClass]="{ 'col-12': isNewForm || !showDeleteButton }"
               [loading]="loadingButton"
               className="btn-primary btn-block"
               i18n="@@address_view_all_users_bottom_bar_save_button"
               >Save</tsl-button
             >
             <tsl-button
-              *ngIf="!isNewForm && !comesFromPayView"
+              *ngIf="!isNewForm && showDeleteButton"
               i18n="@@pre_address_view_all_users_address_added_remove_button"
               class="col-md-2 col-5"
               className="btn btn-link btn-link--negative"
