@@ -14,7 +14,7 @@ import {
 import { CarrierDropOffModeRequest, DropOffModeRequest } from '@api/core/model/delivery/carrier-drop-off-mode';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
-import { AcceptScreenDeliveryAddress } from '../../interfaces/accept-screen-delivery-address.interface';
+import { AcceptScreenSellerAddress } from '../../interfaces/accept-screen-seller-address.interface';
 import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 
 export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> = (item: Item): AcceptScreenItem => {
@@ -36,6 +36,7 @@ export const mapUserToAcceptScreenSeller: ToDomainMapper<User, AcceptScreenSelle
     id: seller.id,
     imageUrl: mapUserToImageUrl(seller),
     address: null,
+    fullAddress: null,
   };
 };
 
@@ -58,9 +59,9 @@ export const mapCarrierDropOffModeToAcceptScreenCarriers: ToDomainMapper<Carrier
   });
 };
 
-export const mapDeliveryAddresstoAcceptScreenDeliveryAddress: ToDomainMapper<DeliveryAddressApi, AcceptScreenDeliveryAddress> = (
+export const mapDeliveryAddressToSellerAddress: ToDomainMapper<DeliveryAddressApi, AcceptScreenSellerAddress> = (
   input: DeliveryAddressApi
-): AcceptScreenDeliveryAddress => {
+): AcceptScreenSellerAddress => {
   const flatAndFloor: string = input.flat_and_floor ? ` ${input.flat_and_floor},` : '';
   return {
     fullAddress: `${input.street},${flatAndFloor} ${input.postal_code}, ${input.city}`,
