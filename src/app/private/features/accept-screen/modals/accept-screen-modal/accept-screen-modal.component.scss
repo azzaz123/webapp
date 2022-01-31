@@ -5,10 +5,9 @@
     font-weight: $font-weight-chunky;
     font-size: $font-size-s;
     color: $blue-grey-1;
-    border-bottom: 1px solid $blue-grey-5;
   }
 
-  &__sellerAddressWrapper {
+  &__bottomLine {
     border-bottom: 1px solid $blue-grey-5;
   }
 
@@ -26,6 +25,7 @@
   }
 
   &__sellerAddressEdit {
+    cursor: pointer;
     font-size: $font-size-s;
     color: $walla-main;
   }
