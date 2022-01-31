@@ -10,7 +10,6 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
   selector: 'tsl-accept-screen-modal',
   templateUrl: './accept-screen-modal.component.html',
   styleUrls: ['./accept-screen-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AcceptScreenModalComponent implements OnInit {
   @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
