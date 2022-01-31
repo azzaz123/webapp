@@ -5,9 +5,11 @@ import { AcceptScreenModalComponent } from './modals/accept-screen-modal/accept-
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { DeliveryMethodSelectorModule } from '@private/shared/components/delivery-method-selector/delivery-method-selector.module';
+import { StepperModule } from '@shared/stepper/stepper.module';
+import { DeliveryAddressModule } from '../delivery/pages/delivery-address/delivery-address.module';
 
 @NgModule({
-  imports: [AcceptScreenRoutingModule, CommonModule, UserAvatarModule, DeliveryMethodSelectorModule],
+  imports: [AcceptScreenRoutingModule, CommonModule, UserAvatarModule, DeliveryMethodSelectorModule, StepperModule, DeliveryAddressModule],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent],
 })
 export class AcceptScreenModule {}
