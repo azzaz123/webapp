@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserService } from '@core/user/user.service';
-import { Client, OptimizelyDecision, OptimizelyUserContext } from '@optimizely/optimizely-sdk';
+import { Client, OptimizelyDecision, OptimizelyUserContext, enums } from '@optimizely/optimizely-sdk';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { FlagsParamInterface } from './optimizely.interface';
 import { SDK_KEY_DEVELOPMENT } from './resources/sdk-keys';
+import { BASE_USER_ATTRIBUTES } from './resources/user-attributes.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +14,13 @@ export class OptimizelyService {
   private readonly _optimizelyReady$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private optimizelyClientInstance: Client;
   private optimizelyUserContext: OptimizelyUserContext;
-  private baseAttributes = {
-    platform: 'web',
-  };
+  private baseAttributes = BASE_USER_ATTRIBUTES;
 
   public get isReady$(): Observable<boolean> {
     return this._optimizelyReady$.asObservable();
   }
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private analyticsService: AnalyticsService) {}
 
   public initialize(): void {
     import('@optimizely/optimizely-sdk').then((optimizelySdk) => {
@@ -28,7 +28,13 @@ export class OptimizelyService {
         sdkKey: SDK_KEY_DEVELOPMENT,
       });
       this.optimizelyClientInstance.onReady().then(({ success }) => {
-        if (success) this._optimizelyReady$.next(true);
+        if (success) {
+          this.optimizelyClientInstance.notificationCenter.addNotificationListener(
+            enums.NOTIFICATION_TYPES.DECISION,
+            this.onDecision.bind(this)
+          );
+          this._optimizelyReady$.next(true);
+        }
       });
     });
   }
@@ -48,10 +54,16 @@ export class OptimizelyService {
 
   private addNewAttributes(attributesToAdd) {
     const currentUserAttributes = this.optimizelyUserContext.getAttributes();
-    const newUserAttributes = Object.keys(attributesToAdd).filter((keyToAdd) => !!currentUserAttributes[keyToAdd]);
+    const newUserAttributes = Object.keys(attributesToAdd).filter((keyToAdd) => !currentUserAttributes[keyToAdd]);
 
     newUserAttributes.forEach((key) => {
-      this.optimizelyUserContext.setAttribute(key, newUserAttributes[key]);
+      this.optimizelyUserContext.setAttribute(key, attributesToAdd[key]);
     });
+  }
+
+  private onDecision({ type, userId, attributes, decisionInfo }) {
+    if (type === 'flag') {
+      if (decisionInfo) this.analyticsService.setUserAttribute(decisionInfo.ruleKey, decisionInfo.variationKey);
+    }
   }
 }

@@ -41,10 +41,12 @@ export class ExperimentationService {
   }
 
   public initExperimentContext(attributes): void {
-    this.optimizelyService.initExperimentContext(attributes);
+    if (this.userService.isLogged) this.optimizelyService.initExperimentContext(attributes);
   }
 
   public getVariations({ flagKeys, options }: FlagsParamInterface): { [key: string]: OptimizelyDecision } {
-    return this.optimizelyService.getVariations({ flagKeys, options });
+    if (this.userService.isLogged) {
+      return this.optimizelyService.getVariations({ flagKeys, options });
+    }
   }
 }

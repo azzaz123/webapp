@@ -27,6 +27,7 @@ export const COMMON_MPARTICLE_CONFIG = {
 })
 export class AnalyticsService {
   private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
+  private _mParticleuser: any;
   constructor(
     private userService: UserService,
     private deviceService: DeviceService,
@@ -36,6 +37,10 @@ export class AnalyticsService {
 
   public get mParticleReady$(): Observable<void> {
     return this._mParticleReady$.asObservable();
+  }
+
+  public setUserAttribute(key, value) {
+    this._mParticleuser.setUserAttribute(key, value);
   }
 
   public initialize(): void {
@@ -74,6 +79,7 @@ export class AnalyticsService {
     const mParticleUser = result.getUser();
 
     if (mParticleUser) {
+      this._mParticleuser = mParticleUser;
       mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
     }
   }
