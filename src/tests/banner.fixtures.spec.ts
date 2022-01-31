@@ -1,6 +1,6 @@
-import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
+import { BannerSpecifications } from '@shared/banner/banner-specifications.interface';
 
-export const MOCK_BANNER_PROPERTIES: NgbAlertConfig = {
+export const MOCK_BANNER_PROPERTIES: BannerSpecifications = {
   dismissible: false,
   type: 'danger',
 };
