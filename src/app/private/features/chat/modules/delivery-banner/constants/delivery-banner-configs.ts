@@ -1,5 +1,5 @@
 import { Money } from '@api/core/model/money.interface';
-import { DELIVERY_BANNER_BUTTON_TYPE } from '@private/features/chat/modules/delivery-banner/enums/delivery-banner-button-type.enum';
+import { DELIVERY_BANNER_BUTTON_STYLE } from '@private/features/chat/modules/delivery-banner/enums/delivery-banner-button-style.enum';
 import { ActionableDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/actionable-delivery-banner.interface';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { DescriptiveDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/descriptive-delivery-banner.interface';
@@ -11,7 +11,7 @@ export const BUYER_BUY_DELIVERY_BANNER_PROPERTIES = (price: Money): BuyerBuyDeli
     description: { text: `Shipping available for ${price}`, helpLink: 'www.google.com' },
     action: {
       label: 'Buy',
-      type: DELIVERY_BANNER_BUTTON_TYPE.CONTAINED,
+      style: DELIVERY_BANNER_BUTTON_STYLE.CONTAINED,
     },
   };
   return bannerProperties;
@@ -27,7 +27,7 @@ export const SELLER_ACTIVATE_SHIPPING_BANNER_PROPERTIES: ActionableDeliveryBanne
   description: { text: `Ask seller for shipping` },
   action: {
     label: 'Edit',
-    type: DELIVERY_BANNER_BUTTON_TYPE.CONTAINED,
+    style: DELIVERY_BANNER_BUTTON_STYLE.CONTAINED,
   },
 };
 
@@ -36,6 +36,6 @@ export const SELLER_EDIT_PRICE_BANNER_PROPERTIES: ActionableDeliveryBanner = {
   description: { text: `Change price` },
   action: {
     label: 'Change',
-    type: DELIVERY_BANNER_BUTTON_TYPE.OUTLINED,
+    style: DELIVERY_BANNER_BUTTON_STYLE.OUTLINED,
   },
 };
