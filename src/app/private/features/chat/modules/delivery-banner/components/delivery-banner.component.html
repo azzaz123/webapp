@@ -8,7 +8,7 @@
       </div>
     
       <div *ngIf="bannerProperties.action as action">
-        <tsl-button class="DeliveryBanner__button">{{action.label}}</tsl-button>
+        <tsl-button class="DeliveryBanner__button" (click)="handleClickCTA()">{{action.label}}</tsl-button>
       </div>
     </div>
   </tsl-banner>

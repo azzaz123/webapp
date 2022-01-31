@@ -7,6 +7,7 @@ import { concatMap, take } from 'rxjs/operators';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
+import { DELIVERY_BANNER_ACTION_TYPE } from '../../../delivery-banner/enums/delivery-banner-action-type.enum';
 
 @Injectable()
 export class DeliveryConversationContextService {
@@ -43,6 +44,26 @@ export class DeliveryConversationContextService {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
+  public handleClickCTA(conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE): void {
+    if (bannerActionType === DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL) {
+      return this.openAwarenessModal();
+    }
+
+    if (bannerActionType === DELIVERY_BANNER_ACTION_TYPE.ACTIVATE_SHIPPING) {
+      return this.openAwarenessModal();
+    }
+
+    if (bannerActionType === DELIVERY_BANNER_ACTION_TYPE.CHANGE_ITEM_PRICE) {
+      return this.openAwarenessModal();
+    }
+
+    if (bannerActionType === DELIVERY_BANNER_ACTION_TYPE.OPEN_PAYVIEW) {
+      return this.openAwarenessModal();
+    }
+
+    return this.openAwarenessModal();
+  }
+
   private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     const { item } = conversation;
     const { id: itemHash, isMine } = item;
@@ -50,4 +71,6 @@ export class DeliveryConversationContextService {
       ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(itemHash)
       : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(itemHash);
   }
+
+  private openAwarenessModal(): void {}
 }
