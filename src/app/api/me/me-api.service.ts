@@ -14,6 +14,9 @@ import { STATUS } from '@private/features/catalog/components/selected-items/sele
 import { ItemService } from '@core/item/item.service';
 import { SoldItemsQueryParams } from './dtos/sold/request/sold-query-params';
 import { NotificationsSettingsResponseDto } from '@api/me/dtos/notifications-settings/response/notifcations-settings-response-dto';
+import { mapNotificationsSettings } from './mappers/notifications-copies-mapper';
+import { NotificationSettings } from '@api/core/model/notifications';
+import { I18nService } from '@core/i18n/i18n.service';
 
 @Injectable()
 export class MeApiService {
@@ -21,7 +24,7 @@ export class MeApiService {
     [STATUS.SOLD]: (params: string) => this.getSoldItems(params),
   };
 
-  public constructor(private httpService: MeHttpService, private itemService: ItemService) {}
+  public constructor(private httpService: MeHttpService, private itemService: ItemService, private i18nService: I18nService) {}
 
   public getFavourites(paginationParameter?: string): Observable<PaginatedList<Item>> {
     let parameters: QueryParams<FavouritesQueryParams>;
@@ -54,11 +57,11 @@ export class MeApiService {
     );
   }
 
-  public getMyNotificationsSettings(): Observable<NotificationsSettingsResponseDto> {
+  public getMyNotificationsSettings(): Observable<NotificationSettings[]> {
     return this.httpService.getMyNotificationsSettings().pipe(
-      map(({ notificationGroups }: NotificationsSettingsResponseDto) => ({
-        notificationGroups: notificationGroups,
-      }))
+      map(({ notificationGroups }: NotificationsSettingsResponseDto) => {
+        return mapNotificationsSettings(notificationGroups, this.i18nService);
+      })
     );
   }
 

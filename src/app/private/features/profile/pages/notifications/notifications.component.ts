@@ -1,9 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Tier } from '@core/subscriptions/subscriptions.interface';
+import { Component, OnInit } from '@angular/core';
 import { MeApiService } from '@api/me/me-api.service';
-import { NotificationsSettingsDto } from '@api/me/dtos/notifications-settings/response/notifcations-settings-dto';
-import { NotificationsDto } from '@api/me/dtos/notifications/response/notifcations-dto';
+import { NotificationSettings } from '@api/core/model/notifications';
 
 @Component({
   selector: 'tsl-notifications',
@@ -11,7 +8,7 @@ import { NotificationsDto } from '@api/me/dtos/notifications/response/notifcatio
   styleUrls: ['./notifications.component.scss'],
 })
 export class NotificationsComponent implements OnInit {
-  public notificationsSettingsGroup: NotificationsSettingsDto[];
+  public notificationsSettingsGroup: NotificationSettings[];
   public allowSegmentation: boolean;
   private savedSearchedNotificationId = 'l1kmzng6n3p8';
 
@@ -19,7 +16,7 @@ export class NotificationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.meApiService.getMyNotificationsSettings().subscribe((data) => {
-      const filteredNotifications = data.notificationGroups
+      const filteredNotifications = data
         .map((nGroup) => {
           const noSavedSearchesId = nGroup.notifications.find((notification) => notification.id !== this.savedSearchedNotificationId);
           if (noSavedSearchesId) {
