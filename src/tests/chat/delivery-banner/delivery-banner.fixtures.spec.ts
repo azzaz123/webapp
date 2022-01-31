@@ -3,7 +3,7 @@ import { DELIVERY_BANNER_BUTTON_STYLE } from '@private/features/chat/modules/del
 import { ActionableDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/actionable-delivery-banner.interface';
 import { DescriptiveDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/descriptive-delivery-banner.interface';
 
-export const MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES: DescriptiveDeliveryBanner & ActionableDeliveryBanner = {
+export const MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES: DescriptiveDeliveryBanner & ActionableDeliveryBanner = {
   svgPath: 'assets/icons/joke.svg',
   description: { text: 'Shipping available for 12€', helpLink: 'www.google.com' },
   action: {

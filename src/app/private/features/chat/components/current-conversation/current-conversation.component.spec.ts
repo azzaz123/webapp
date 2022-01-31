@@ -48,10 +48,10 @@ import { ScrollingMessageComponent } from '@private/features/chat/components/scr
 import { InputComponent } from '@private/features/chat/components/input';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { By } from '@angular/platform-browser';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { DeliveryBannerComponent } from '@private/features/chat/modules/delivery-banner/components/delivery-banner.component';
 import { DeliveryConversationContextService } from '@private/features/chat/modules/delivery-conversation-context/services/delivery-conversation-context/delivery-conversation-context.service';
-import { MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
+import { MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 import { DELIVERY_BANNER_ACTION_TYPE } from '../../modules/delivery-banner/enums/delivery-banner-action-type.enum';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
 
@@ -227,7 +227,7 @@ describe('CurrentConversationComponent', () => {
 
     describe('when delivery banner needs to be displayed with actionable properties', () => {
       beforeEach(fakeAsync(() => {
-        mockDeliveryBannerSubject$.next(MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES);
+        mockDeliveryBannerSubject$.next(MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES);
         tick();
         fixture.detectChanges();
       }));
@@ -242,7 +242,7 @@ describe('CurrentConversationComponent', () => {
         it('should ask for CTA action handling to the delivery context', () => {
           spyOn(deliveryConversationContextService, 'handleClickCTA');
           const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
-          const expectedActionType: DELIVERY_BANNER_ACTION_TYPE = MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES.action.type;
+          const expectedActionType: DELIVERY_BANNER_ACTION_TYPE = MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES.action.type;
 
           deliveryBannerElement.triggerEventHandler('clickedCTA', expectedActionType);
 
