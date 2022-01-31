@@ -46,9 +46,9 @@ describe('SearchTrackingEventsService', () => {
     });
 
     describe('and no special filter names', () => {
-      const value = 'brand';
-      const filters: FilterParameter[] = [{ key: FILTER_QUERY_PARAM_KEY.brand, value: value }];
-      const jsonFilters = { brand: value };
+      const value = 'keywords';
+      const filters: FilterParameter[] = [{ key: FILTER_QUERY_PARAM_KEY.keywords, value: value }];
+      const jsonFilters = { keywords: value };
 
       beforeEach(() => {
         event.attributes = { ...event.attributes, ...jsonFilters };
