@@ -226,7 +226,6 @@ export class ItemService {
 
   public getBaseUrlByStatus(status?: string): string {
     switch (status) {
-      case 'published':
       case 'inactive':
         return ITEMS_API_URL;
       default:
