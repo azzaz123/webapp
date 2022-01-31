@@ -8,6 +8,7 @@ import { DeliveryMethodSelectorModule } from '@private/shared/components/deliver
 import { StepperModule } from '@shared/stepper/stepper.module';
 import { DeliveryAddressModule } from '../delivery/pages/delivery-address/delivery-address.module';
 import { ButtonModule } from '@shared/button/button.module';
+import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ButtonModule } from '@shared/button/button.module';
     DeliveryMethodSelectorModule,
     StepperModule,
     DeliveryAddressModule,
+    SvgIconModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent],
 })

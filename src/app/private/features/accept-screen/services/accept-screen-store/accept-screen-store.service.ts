@@ -13,15 +13,12 @@ export class AcceptScreenStoreService {
   constructor(private acceptScreenService: AcceptScreenService) {}
 
   public initialize(requestId: string): void {
-    this.acceptScreenService
-      .getAcceptScreenProperties(requestId)
-      .pipe(
-        take(1),
-        tap((acceptScreenProperties: AcceptScreenProperties) => {
-          this.properties = acceptScreenProperties;
-        })
-      )
-      .subscribe();
+    this.requestProperties(requestId).subscribe();
+  }
+
+  public update(requestId: string): void {
+    // TODO: Add logic inside pipe when applies		Date: 2022/01/31
+    this.requestProperties(requestId).pipe().subscribe();
   }
 
   public get properties$(): Observable<AcceptScreenProperties> {
@@ -30,5 +27,14 @@ export class AcceptScreenStoreService {
 
   private set properties(value: AcceptScreenProperties) {
     this.propertiesSubject.next(value);
+  }
+
+  private requestProperties(requestId: string): Observable<AcceptScreenProperties> {
+    return this.acceptScreenService.getAcceptScreenProperties(requestId).pipe(
+      take(1),
+      tap((acceptScreenProperties: AcceptScreenProperties) => {
+        this.properties = acceptScreenProperties;
+      })
+    );
   }
 }

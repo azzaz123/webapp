@@ -1,6 +1,10 @@
 @import '~style/common';
 
 .AcceptScreen {
+  &__cursorPointer {
+    cursor: pointer;
+  }
+
   &__sellerAddressTitle {
     font-weight: $font-weight-chunky;
     font-size: $font-size-s;

@@ -1,4 +1,15 @@
 <div class="AcceptScreen modal-body">
+  <div class="d-flex justify-content-between mb-4">
+    <a class="AcceptScreen__cursorPointer d-flex" (click)="goToAcceptScreen()">
+      <tsl-svg-icon
+        *ngIf="!isAcceptScreenStep"
+        src="/assets/icons/back-arrow.svg"
+        class="AcceptScreen__cursorPointer align-self-center"
+      ></tsl-svg-icon>
+      <span class="ml-3 p-0">{{ headerText }}</span>
+    </a>
+    <tsl-svg-icon src="/assets/icons/cross.svg" class="AcceptScreen__cursorPointer align-self-center" (click)="closeModal()"></tsl-svg-icon>
+  </div>
   <tsl-stepper>
     <ng-template step>
       <div *ngIf="acceptScreenProperties$ | async as properties">
@@ -36,7 +47,11 @@
       </div>
     </ng-template>
     <ng-template step>
-      <tsl-delivery-address *ngIf="acceptScreenCountries$ | async"></tsl-delivery-address>
+      <tsl-delivery-address
+        *ngIf="acceptScreenCountries$ | async"
+        [showTitle]="false"
+        [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
+      ></tsl-delivery-address>
     </ng-template>
   </tsl-stepper>
 </div>

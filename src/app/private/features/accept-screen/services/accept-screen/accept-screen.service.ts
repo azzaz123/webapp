@@ -4,7 +4,7 @@ import { Observable, forkJoin, of } from 'rxjs';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { UserService } from '@core/user/user.service';
 import { ItemService } from '@core/item/item.service';
-import { catchError, concatMap, map, mergeMap, take } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, take, tap } from 'rxjs/operators';
 import { AcceptScreenProperties } from '../../interfaces/accept-screen-properties.interface';
 import { AcceptScreenItem, AcceptScreenBuyer, AcceptScreenSeller, AcceptScreenCarrier } from '../../interfaces';
 import {
@@ -17,6 +17,8 @@ import { CarrierDropOffModeRequestApiService } from '@api/delivery/carrier-drop-
 import { DeliveryAddressApiService } from '@private/features/delivery/services/api/delivery-address-api/delivery-address-api.service';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { User } from '@core/user/user';
+import { ACCEPT_SCREEN_DELIVERY_ADDRESS, ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
+import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
 
 @Injectable({
   providedIn: 'root',
@@ -77,6 +79,12 @@ export class AcceptScreenService {
   }
 
   private getSellerAddress(): Observable<DeliveryAddressApi> {
-    return this.deliveryAddressApiService.get().pipe(catchError(() => of(null)));
+    return this.deliveryAddressApiService.get().pipe(
+      catchError(() => of(null)),
+      tap((address: DeliveryAddressApi) => {
+        const addressTitleTranslation = address ? ACCEPT_SCREEN_DELIVERY_ADDRESS.EDIT : ACCEPT_SCREEN_DELIVERY_ADDRESS.ADD;
+        ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS] = addressTitleTranslation;
+      })
+    );
   }
 }
