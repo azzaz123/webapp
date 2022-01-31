@@ -12,11 +12,11 @@ import {
   mapItemToAcceptScreenItem,
   mapUserToAcceptScreenBuyer,
   mapUserToAcceptScreenSeller,
-  mapDeliveryAddressToSellerAddress,
 } from '../../mappers/accept-screen-properties/accept-screen-properties.mapper';
 import { CarrierDropOffModeRequestApiService } from '@api/delivery/carrier-drop-off-mode/request/carrier-drop-off-mode-request-api.service';
 import { DeliveryAddressApiService } from '@private/features/delivery/services/api/delivery-address-api/delivery-address-api.service';
-import { AcceptScreenSellerAddress } from '../../interfaces/accept-screen-seller-address.interface';
+import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
+import { User } from '@core/user/user';
 
 @Injectable({
   providedIn: 'root',
@@ -63,10 +63,8 @@ export class AcceptScreenService {
   }
 
   private getSeller(): Observable<AcceptScreenSeller> {
-    return forkJoin([this.userService.getLoggedUserInformation().pipe(map(mapUserToAcceptScreenSeller)), this.getSellerAddress()]).pipe(
-      mergeMap(([acceptScreenSeller, sellerAddress]: [AcceptScreenSeller, AcceptScreenSellerAddress]) => {
-        return of({ ...acceptScreenSeller, fullAddress: sellerAddress.fullAddress });
-      })
+    return forkJoin([this.userService.getLoggedUserInformation(), this.getSellerAddress()]).pipe(
+      map(([seller, address]: [User, DeliveryAddressApi]) => mapUserToAcceptScreenSeller(seller, address))
     );
   }
 
@@ -78,7 +76,7 @@ export class AcceptScreenService {
     return this.carrierDropOffModeRequestApiService.get(requestId).pipe(map(mapCarrierDropOffModeToAcceptScreenCarriers));
   }
 
-  private getSellerAddress(): Observable<AcceptScreenSellerAddress> {
-    return this.deliveryAddressApiService.get().pipe(map(mapDeliveryAddressToSellerAddress));
+  private getSellerAddress(): Observable<DeliveryAddressApi> {
+    return this.deliveryAddressApiService.get();
   }
 }
