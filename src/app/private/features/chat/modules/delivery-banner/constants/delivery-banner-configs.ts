@@ -3,6 +3,7 @@ import { DELIVERY_BANNER_BUTTON_STYLE } from '@private/features/chat/modules/del
 import { ActionableDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/actionable-delivery-banner.interface';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { DescriptiveDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/descriptive-delivery-banner.interface';
+import { DELIVERY_BANNER_ACTION_TYPE } from '../enums/delivery-banner-action-type.enum';
 
 type BuyerBuyDeliveryBannerProperties = DescriptiveDeliveryBanner & ActionableDeliveryBanner;
 export const BUYER_BUY_DELIVERY_BANNER_PROPERTIES = (price: Money): BuyerBuyDeliveryBannerProperties => {
@@ -12,6 +13,7 @@ export const BUYER_BUY_DELIVERY_BANNER_PROPERTIES = (price: Money): BuyerBuyDeli
     action: {
       label: 'Buy',
       style: DELIVERY_BANNER_BUTTON_STYLE.CONTAINED,
+      type: DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL,
     },
   };
   return bannerProperties;
@@ -28,6 +30,7 @@ export const SELLER_ACTIVATE_SHIPPING_BANNER_PROPERTIES: ActionableDeliveryBanne
   action: {
     label: 'Edit',
     style: DELIVERY_BANNER_BUTTON_STYLE.CONTAINED,
+    type: DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL,
   },
 };
 
@@ -37,5 +40,6 @@ export const SELLER_EDIT_PRICE_BANNER_PROPERTIES: ActionableDeliveryBanner = {
   action: {
     label: 'Change',
     style: DELIVERY_BANNER_BUTTON_STYLE.OUTLINED,
+    type: DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL,
   },
 };
