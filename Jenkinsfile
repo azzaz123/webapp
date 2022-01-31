@@ -15,12 +15,12 @@ node {
     dockerTag = MessageDigest.getInstance("MD5").digest(fileContents.bytes).encodeHex().toString()
     gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
     sh '$(aws --region eu-west-1 ecr get-login)'
-    def app = docker.build('745640521341.dkr.ecr.eu-west-1.amazonaws.com/infra-ci:' + dockerTag, '--pull -f infrastructure/ansible/build/Dockerfile .')
+    def app = docker.build('567828013335.dkr.ecr.eu-west-1.amazonaws.com/infra-ci:' + dockerTag, '--pull -f infrastructure/ansible/build/Dockerfile .')
     app.push dockerTag
   }
 
   stage ('Test') {
-    docker.image('745640521341.dkr.ecr.eu-west-1.amazonaws.com/infra-ci:' + dockerTag).inside {
+    docker.image('567828013335.dkr.ecr.eu-west-1.amazonaws.com/infra-ci:' + dockerTag).inside {
       sh '/usr/local/bin/entrypoint.sh && \
         cd infrastructure/ansible && \
         ansible-playbook test_stacks.yml \
@@ -36,7 +36,7 @@ node {
 
   if (BRANCH_NAME == "develop") {
     stage('Deploy Beta') {
-      docker.image('745640521341.dkr.ecr.eu-west-1.amazonaws.com/infra-ci:' + dockerTag).inside {
+      docker.image('567828013335.dkr.ecr.eu-west-1.amazonaws.com/infra-ci:' + dockerTag).inside {
         sh '/usr/local/bin/entrypoint.sh && \
           cd infrastructure/ansible && \
           ansible-playbook create_stacks.yml \
@@ -49,7 +49,7 @@ node {
 
   if (BRANCH_NAME == "master") {
     stage('Deploy Prod') {
-      docker.image('745640521341.dkr.ecr.eu-west-1.amazonaws.com/infra-ci:' + dockerTag).inside {
+      docker.image('567828013335.dkr.ecr.eu-west-1.amazonaws.com/infra-ci:' + dockerTag).inside {
         sh '/usr/local/bin/entrypoint.sh && \
           cd infrastructure/ansible && \
           ansible-playbook create_stacks.yml \
