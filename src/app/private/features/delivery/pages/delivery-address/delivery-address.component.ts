@@ -59,6 +59,7 @@ import { DeliveryCountriesStoreService } from '../../services/countries/delivery
   styleUrls: ['./delivery-address.component.scss'],
 })
 export class DeliveryAddressComponent implements OnInit, OnDestroy {
+  @Input() showTitle: boolean = true;
   @Input() whereUserComes: DELIVERY_ADDRESS_PREVIOUS_PAGE;
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
