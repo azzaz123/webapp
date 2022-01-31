@@ -8,6 +8,8 @@ describe('BannerComponent', () => {
   let component: BannerComponent;
   let fixture: ComponentFixture<BannerComponent>;
 
+  const fullHeightBannerSelector: string = '.h-100';
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BannerComponent, NgbAlert],
@@ -74,6 +76,30 @@ describe('BannerComponent', () => {
         it('should emit the close event', () => {
           expect(component.closeClick.emit).toHaveBeenCalled();
         });
+      });
+    });
+
+    describe('and the banner is specified to be styled with full height', () => {
+      beforeEach(() => {
+        component.specifications.isFullHeight = true;
+        fixture.detectChanges();
+      });
+
+      it('should style with full height', () => {
+        const styledBanner = fixture.debugElement.query(By.css(fullHeightBannerSelector));
+        expect(styledBanner).toBeTruthy();
+      });
+    });
+
+    describe('and the banner is NOT specified to be styled with full height', () => {
+      beforeEach(() => {
+        component.specifications.isFullHeight = false;
+        fixture.detectChanges();
+      });
+
+      it('should style with full height', () => {
+        const styledBanner = fixture.debugElement.query(By.css(fullHeightBannerSelector));
+        expect(styledBanner).toBeFalsy();
       });
     });
   });
