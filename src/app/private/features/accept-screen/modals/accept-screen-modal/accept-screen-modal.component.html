@@ -1,4 +1,4 @@
-<div class="modal-body AcceptScreen">
+<div class="AcceptScreen modal-body">
   <tsl-stepper>
     <ng-template step>
       <div *ngIf="acceptScreenProperties$ | async as properties">
@@ -15,17 +15,23 @@
         <div class="AcceptScreen__bottomLine d-flex py-2 align-items-center justify-content-between">
           <div class="AcceptScreen__sellerAddressInfoWrapper d-flex text-truncate">
             <tsl-user-avatar [imageUrl]="properties.seller.imageUrl" [size]="48"></tsl-user-avatar>
-            <div class="AcceptScreen__sellerAddressInfo d-flex flex-column text-truncate mx-2">
-              <span class="AcceptScreen__sellerAddressHeader text-truncate" i18n="@@accept_view_seller_sender_details_label">Sender</span>
-              <span *ngIf="properties.seller.fullAddress" class="AcceptScreen__sellerAddressText text-truncate">{{
-                properties.seller.fullAddress
-              }}</span>
+            <div
+              class="AcceptScreen__sellerAddressInfo d-flex flex-column text-truncate mx-2"
+              [ngClass]="{ 'align-self-center': !properties.seller.fullAddress }"
+            >
+              <span
+                [ngClass]="{ 'AcceptScreen__sellerAddressHeader--small': properties.seller.fullAddress }"
+                class="text-truncate"
+                i18n="@@accept_view_seller_sender_details_label"
+                >Sender</span
+              >
+              <span *ngIf="properties.seller.fullAddress" class="text-truncate">{{ properties.seller.fullAddress }}</span>
             </div>
           </div>
-          <div class="AcceptScreen__sellerAddressEdit d-flex" (click)="goToDeliveryAddress()">
+          <tsl-button class="d-flex" className="btn btn-link" (click)="goToDeliveryAddress()">
             <span *ngIf="!properties.seller.fullAddress" i18n="@@accept_view_seller_sender_details_add_button">Add</span>
             <span *ngIf="properties.seller.fullAddress" i18n="@@accept_view_seller_sender_details_edit_button">Edit</span>
-          </div>
+          </tsl-button>
         </div>
       </div>
     </ng-template>

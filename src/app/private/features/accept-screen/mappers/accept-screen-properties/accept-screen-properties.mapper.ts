@@ -33,7 +33,7 @@ export function mapUserToAcceptScreenSeller(seller: User, address: DeliveryAddre
   return {
     id: seller.id,
     imageUrl: mapUserToImageUrl(seller),
-    fullAddress: mapDeliveryAddressToSellerAddress(address),
+    fullAddress: address ? mapDeliveryAddressToSellerAddress(address) : null,
   };
 }
 

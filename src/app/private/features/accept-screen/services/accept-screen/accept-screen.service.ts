@@ -4,7 +4,7 @@ import { Observable, forkJoin, of } from 'rxjs';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { UserService } from '@core/user/user.service';
 import { ItemService } from '@core/item/item.service';
-import { concatMap, map, mergeMap, take } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, take } from 'rxjs/operators';
 import { AcceptScreenProperties } from '../../interfaces/accept-screen-properties.interface';
 import { AcceptScreenItem, AcceptScreenBuyer, AcceptScreenSeller, AcceptScreenCarrier } from '../../interfaces';
 import {
@@ -77,6 +77,6 @@ export class AcceptScreenService {
   }
 
   private getSellerAddress(): Observable<DeliveryAddressApi> {
-    return this.deliveryAddressApiService.get();
+    return this.deliveryAddressApiService.get().pipe(catchError(() => of(null)));
   }
 }

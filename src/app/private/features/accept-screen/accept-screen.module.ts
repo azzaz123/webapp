@@ -7,9 +7,18 @@ import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { DeliveryMethodSelectorModule } from '@private/shared/components/delivery-method-selector/delivery-method-selector.module';
 import { StepperModule } from '@shared/stepper/stepper.module';
 import { DeliveryAddressModule } from '../delivery/pages/delivery-address/delivery-address.module';
+import { ButtonModule } from '@shared/button/button.module';
 
 @NgModule({
-  imports: [AcceptScreenRoutingModule, CommonModule, UserAvatarModule, DeliveryMethodSelectorModule, StepperModule, DeliveryAddressModule],
+  imports: [
+    ButtonModule,
+    AcceptScreenRoutingModule,
+    CommonModule,
+    UserAvatarModule,
+    DeliveryMethodSelectorModule,
+    StepperModule,
+    DeliveryAddressModule,
+  ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent],
 })
 export class AcceptScreenModule {}

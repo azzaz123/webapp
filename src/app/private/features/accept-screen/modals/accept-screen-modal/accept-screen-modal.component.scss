@@ -19,14 +19,8 @@
     flex: 1;
   }
 
-  &__sellerAddressHeader {
+  &__sellerAddressHeader--small {
     font-size: $font-size-s;
     color: $blue-grey-2;
-  }
-
-  &__sellerAddressEdit {
-    cursor: pointer;
-    font-size: $font-size-s;
-    color: $walla-main;
   }
 }
