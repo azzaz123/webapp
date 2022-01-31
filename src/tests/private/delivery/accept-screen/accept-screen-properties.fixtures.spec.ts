@@ -15,7 +15,6 @@ import { PLACEHOLDER_AVATAR } from '@core/user/user';
 import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST } from './carrier-drop-off-mode-request.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR } from '../delivery-address.fixtures.spec';
-import { AcceptScreenSellerAddress } from '@private/features/accept-screen/interfaces/accept-screen-seller-address.interface';
 import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 
 export const MOCK_ACCEPT_SCREEN_ITEM: AcceptScreenItem = {
@@ -53,20 +52,17 @@ export const MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE: AcceptScreenBuyer = {
 export const MOCK_ACCEPT_SCREEN_SELLER: AcceptScreenSeller = {
   id: MOCK_USER.id,
   imageUrl: MOCK_USER.image.urls_by_size.original,
-  address: null,
   fullAddress: `${MOCK_DELIVERY_ADDRESS.street}, ${MOCK_DELIVERY_ADDRESS.flat_and_floor}, ${MOCK_DELIVERY_ADDRESS.postal_code}, ${MOCK_DELIVERY_ADDRESS.city}`,
 };
 export const MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_ADDRESS: AcceptScreenSeller = {
   id: MOCK_USER.id,
   imageUrl: MOCK_USER.image.urls_by_size.original,
-  address: null,
   fullAddress: null,
 };
 
 export const MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE_AND_WITHOUT_ADDRESS: AcceptScreenSeller = {
   id: MOCK_USER_WITHOUT_IMAGE.id,
   imageUrl: PLACEHOLDER_AVATAR,
-  address: null,
   fullAddress: null,
 };
 
@@ -92,13 +88,9 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS: AcceptScreenCarrier[] = [
   } as AcceptScreenHomePickUp,
 ];
 
-export const MOCK_ACCEPT_SCREEN_SELLER_ADDRESS: AcceptScreenSellerAddress = {
-  fullAddress: `${MOCK_DELIVERY_ADDRESS.street}, ${MOCK_DELIVERY_ADDRESS.flat_and_floor}, ${MOCK_DELIVERY_ADDRESS.postal_code}, ${MOCK_DELIVERY_ADDRESS.city}`,
-};
+export const MOCK_ACCEPT_SCREEN_SELLER_ADDRESS: string = `${MOCK_DELIVERY_ADDRESS.street}, ${MOCK_DELIVERY_ADDRESS.flat_and_floor}, ${MOCK_DELIVERY_ADDRESS.postal_code}, ${MOCK_DELIVERY_ADDRESS.city}`;
 
-export const MOCK_ACCEPT_SCREEN_SELLER_ADDRESS_WITHOUT_FLAT_AND_FLOOR: AcceptScreenSellerAddress = {
-  fullAddress: `${MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR.street}, ${MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR.postal_code}, ${MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR.city}`,
-};
+export const MOCK_ACCEPT_SCREEN_SELLER_ADDRESS_WITHOUT_FLAT_AND_FLOOR: string = `${MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR.street}, ${MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR.postal_code}, ${MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR.city}`;
 
 export const MOCK_ACCEPT_SCREEN_PROPERTIES: AcceptScreenProperties = {
   request: MOCK_SELLER_REQUEST,

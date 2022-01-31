@@ -1,0 +1,7 @@
+export enum PaymentMethod {
+  CREDIT_CARD,
+  PAYPAL,
+  WALLET,
+  WALLET_AND_CREDIT_CARD,
+  WALLET_AND_PAYPAL,
+}
