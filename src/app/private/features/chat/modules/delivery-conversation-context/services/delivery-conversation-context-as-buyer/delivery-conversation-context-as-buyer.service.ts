@@ -44,32 +44,27 @@ export class DeliveryConversationContextAsBuyerService {
   private mapDeliveryDetailsAsBuyerToBannerType(
     buyerRequests: BuyerRequest[],
     deliveryItemDetails?: DeliveryItemDetails
-  ): BUYER_DELIVERY_BANNER_TYPE | null {
+  ): BUYER_DELIVERY_BANNER_TYPE {
     const noDeliveryItemDetails: boolean = !deliveryItemDetails;
     const buyerHasNoRequests: boolean = buyerRequests.length === 0;
     const buyerHasRequests: boolean = !buyerHasNoRequests;
 
     if (noDeliveryItemDetails) {
-      return null;
+      return BUYER_DELIVERY_BANNER_TYPE.HIDDEN;
     }
 
     if (buyerHasRequests) {
-      return null;
+      return BUYER_DELIVERY_BANNER_TYPE.HIDDEN;
     }
 
     if (buyerHasNoRequests) {
       return BUYER_DELIVERY_BANNER_TYPE.BUY;
     }
 
-    return null;
+    return BUYER_DELIVERY_BANNER_TYPE.HIDDEN;
   }
 
-  private mapBannerTypeToBuyerBannerProperties(type?: BUYER_DELIVERY_BANNER_TYPE, price?: Money): DeliveryBanner | null {
-    const isTypeNotDefined = !type;
-    if (isTypeNotDefined) {
-      return null;
-    }
-
+  private mapBannerTypeToBuyerBannerProperties(type: BUYER_DELIVERY_BANNER_TYPE, price?: Money): DeliveryBanner | null {
     if (type === BUYER_DELIVERY_BANNER_TYPE.BUY) {
       return BUYER_BUY_DELIVERY_BANNER_PROPERTIES(price);
     }
