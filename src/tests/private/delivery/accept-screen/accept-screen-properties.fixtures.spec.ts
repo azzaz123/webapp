@@ -54,6 +54,7 @@ export const MOCK_ACCEPT_SCREEN_SELLER: AcceptScreenSeller = {
   imageUrl: MOCK_USER.image.urls_by_size.original,
   fullAddress: `${MOCK_DELIVERY_ADDRESS.street}, ${MOCK_DELIVERY_ADDRESS.flat_and_floor}, ${MOCK_DELIVERY_ADDRESS.postal_code}, ${MOCK_DELIVERY_ADDRESS.city}`,
 };
+
 export const MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_ADDRESS: AcceptScreenSeller = {
   id: MOCK_USER.id,
   imageUrl: MOCK_USER.image.urls_by_size.original,
@@ -97,5 +98,13 @@ export const MOCK_ACCEPT_SCREEN_PROPERTIES: AcceptScreenProperties = {
   item: MOCK_ACCEPT_SCREEN_ITEM,
   buyer: MOCK_ACCEPT_SCREEN_BUYER,
   seller: MOCK_ACCEPT_SCREEN_SELLER,
+  carriers: MOCK_ACCEPT_SCREEN_CARRIERS,
+};
+
+export const MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS: AcceptScreenProperties = {
+  request: MOCK_SELLER_REQUEST,
+  item: MOCK_ACCEPT_SCREEN_ITEM,
+  buyer: MOCK_ACCEPT_SCREEN_BUYER,
+  seller: MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_ADDRESS,
   carriers: MOCK_ACCEPT_SCREEN_CARRIERS,
 };
