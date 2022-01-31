@@ -15,6 +15,7 @@ export class SearchTrackingEventsService {
     [FILTER_QUERY_PARAM_KEY.objectType]: 'objectTypeId',
     [FILTER_QUERY_PARAM_KEY.type]: 'propertyType',
     [FILTER_PARAMETERS_SEARCH.FILTERS_SOURCE]: 'source',
+    [FILTER_QUERY_PARAM_KEY.brand]: 'brandModel',
   };
 
   private readonly ORDER_BY_VALUE_MAP = {
