@@ -7,6 +7,15 @@ export const optionsFixture: MultiSelectFormOption[] = [
   { label: 'dd', value: 'dd', icon: '' },
 ];
 
+export const optionGroupIds = ['group_1', 'group_2'];
+
+export const optionsWithGroupFixture: MultiSelectFormOption[] = [
+  { label: 'aa', value: 'aa', icon: '', groupId: optionGroupIds[0] },
+  { label: 'bb', value: 'bb', icon: '', groupId: optionGroupIds[0] },
+  { label: 'cc', value: 'cc', icon: '', groupId: optionGroupIds[1] },
+  { label: 'dd', value: 'dd', icon: '', groupId: optionGroupIds[1] },
+];
+
 export const extendedOptionsFixture: TemplateMultiSelectFormOption[] = [
   { label: 'aa', value: 'aa', icon: '', checked: false },
   { label: 'bb', value: 'bb', icon: '', checked: true },

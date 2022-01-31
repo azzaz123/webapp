@@ -10,6 +10,8 @@ import {
   extendedOptionsFixture,
   optionsWithChildrenFixture,
   extendedOptionsWithChildrenFixture,
+  optionsWithGroupFixture,
+  optionGroupIds,
 } from '../multi-select-form/fixtures/multi-select-option.fixtures';
 import { MultiSelectOptionComponent } from '../multi-select-form/multi-select-option/multi-select-option/multi-select-option.component';
 import { MultiSelectOptionModule } from '../multi-select-form/multi-select-option/multi-select-option/multi-select-option.module';
@@ -35,6 +37,7 @@ describe('MultiSelectFormComponent', () => {
     fixture = TestBed.createComponent(MultiSelectFormComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
+    component.optionGroupConfig = {};
     fixture.detectChanges();
   });
 
@@ -226,6 +229,32 @@ describe('MultiSelectFormComponent', () => {
 
       options.forEach((option: DebugElement) => {
         expect(option.componentInstance.data.checked).toBeFalsy;
+      });
+    });
+  });
+
+  describe('when options have separators', () => {
+    beforeEach(() => {
+      component.options = optionsWithGroupFixture;
+      component.optionGroupConfig = {
+        [optionGroupIds[0]]: '1',
+        [optionGroupIds[1]]: '2',
+      };
+
+      fixture.detectChanges();
+    });
+
+    it('should show separators', async () => {
+      let separators = fixture.debugElement.queryAll(By.css('.MultiSelectForm__separator'));
+
+      expect(separators.length).toBe(2);
+    });
+
+    it('should show correct content inside separators', async () => {
+      let separators = fixture.debugElement.queryAll(By.css('.MultiSelectForm__separator'));
+
+      separators.forEach((separator, index) => {
+        expect(separator.nativeElement.innerHTML.trim()).toEqual(component.optionGroupConfig[optionGroupIds[index]]);
       });
     });
   });
