@@ -2,7 +2,11 @@
   <tsl-stepper>
     <ng-template step>
       <div *ngIf="acceptScreenProperties$ | async as properties">
-        <tsl-product-card [buyer]="properties.buyer" [item]="properties.item"></tsl-product-card>
+        <tsl-product-card
+          [buyer]="properties.buyer"
+          [item]="properties.item"
+          [offeredPrice]="properties.request.offeredPrice"
+        ></tsl-product-card>
         <tsl-carriers [carriers]="properties.carriers"></tsl-carriers>
         <tsl-delivery-method-selector [deliveryMethods]="properties.carriers"></tsl-delivery-method-selector>
         <div class="AcceptScreen__sellerAddressTitle AcceptScreen__bottomLine d-flex pt-4 pb-2">
