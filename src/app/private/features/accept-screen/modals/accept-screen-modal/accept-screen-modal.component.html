@@ -39,7 +39,7 @@
               <span *ngIf="properties.seller.fullAddress" class="text-truncate">{{ properties.seller.fullAddress }}</span>
             </div>
           </div>
-          <tsl-button class="d-flex" className="btn btn-link" (click)="goToDeliveryAddress()">
+          <tsl-button class="d-flex" className="btn btn-link btn--noPadding" (click)="goToDeliveryAddress()">
             <span *ngIf="!properties.seller.fullAddress" i18n="@@accept_view_seller_sender_details_add_button">Add</span>
             <span *ngIf="properties.seller.fullAddress" i18n="@@accept_view_seller_sender_details_edit_button">Edit</span>
           </tsl-button>
