@@ -94,6 +94,7 @@ describe('KYCBannerComponent', () => {
       expect(component.bannerSpecifications).toStrictEqual({
         dismissible: KYC_BANNER_TYPES[0].dismissible,
         type: KYC_BANNER_TYPES[0].type,
+        isFullHeight: false,
       });
     });
 

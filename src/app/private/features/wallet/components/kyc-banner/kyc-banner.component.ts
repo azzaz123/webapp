@@ -38,6 +38,7 @@ export class KYCBannerComponent {
     return {
       dismissible: this.KYCBannerSpecifications.dismissible,
       type: this.KYCBannerSpecifications.type,
+      isFullHeight: false,
     };
   }
 
