@@ -1,8 +1,8 @@
-<div *ngIf="carrier" class="Carrier py-2">
-  <div class="Carrier__dropOffModeWrapper d-flex">
-    <div class="Carrier__image d-flex mr-2" [ngStyle]="{ 'background-image': 'url(' + carrier.icon + ')' }"></div>
-    <div class="Carrier__dropOffMode d-flex flex-column">
-      <span [ngSwitch]="carrier.type">
+<div *ngIf="deliveryMethod" class="DeliveryMethod py-2">
+  <div class="DeliveryMethod__dropOffModeWrapper d-flex">
+    <div class="DeliveryMethod__image d-flex mr-2" [ngStyle]="{ 'background-image': 'url(' + deliveryMethod.icon + ')' }"></div>
+    <div class="DeliveryMethod__dropOffMode d-flex flex-column">
+      <span [ngSwitch]="deliveryMethod.type">
         <ng-container *ngSwitchCase="postOfficeDropOff" i18n="@@accept_view_seller_po_all_delivery_method_selector_title"
           >Deposit at a drop off point</ng-container
         >
@@ -11,14 +11,14 @@
         >
       </span>
     </div>
-    <div class="Carrier__selector d-flex px-2">
+    <div class="DeliveryMethod__selector d-flex px-2">
       <div class="input-radio">
-        <input type="radio" [value]="carrier.isSelected" (click)="carrierClick.emit(carrier)" />
+        <input type="radio" [value]="deliveryMethod.isSelected" (click)="deliveryMethodClick.emit(deliveryMethod)" />
       </div>
     </div>
   </div>
-  <div *ngIf="carrier.isSelected" class="Carrier__infoWrapper d-flex flex-column pl-5 py-3 pr-3">
-    <span [ngSwitch]="carrier.type" class="Carrier__infoTimePeriod mx-2">
+  <div *ngIf="deliveryMethod.isSelected" class="DeliveryMethod__infoWrapper d-flex flex-column pl-5 py-3 pr-3">
+    <span [ngSwitch]="deliveryMethod.type" class="DeliveryMethod__infoTimePeriod mx-2">
       <ng-container *ngSwitchCase="postOfficeDropOff" i18n="@@accept_view_seller_po_all_delivery_method_selector_time_limit_description"
         >You have 5 calendar days to deposit the package.
       </ng-container>
@@ -26,11 +26,13 @@
         >They will pick up the package at your address on</ng-container
       >
     </span>
-    <div class="Carrier__infoRestrictions mt-2 p-3 mx-1 align-items-center">
-      <span i18n="@@accept_view_seller_delivery_method_selector_volumetric_limit_type_1_description">{{ carrier.restrictions }}</span>
+    <div class="DeliveryMethod__infoRestrictions mt-2 p-3 mx-1 align-items-center">
+      <span i18n="@@accept_view_seller_delivery_method_selector_volumetric_limit_type_1_description">{{
+        deliveryMethod.restrictions
+      }}</span>
     </div>
-    <tsl-button class="Carrier__infoButton pt-3 pr-4 pl-1" className="btn-block btn-primary btn-secondary">
-      <span [ngSwitch]="carrier.type">
+    <tsl-button class="DeliveryMethod__infoButton pt-3 pr-4 pl-1" className="btn-block btn-primary btn-secondary">
+      <span [ngSwitch]="deliveryMethod.type">
         <ng-container
           *ngSwitchCase="postOfficeDropOff"
           i18n="@@accept_view_seller_po_all_delivery_method_selector_view_collection_points_button"
