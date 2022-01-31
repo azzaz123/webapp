@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { mapPaymentMethodDtoToPaymentMethod } from '@api/shared/mappers/payment-method-dto-to-payment-method.mapper';
 import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
 import { PaymentsPaymentMethodDto } from '@api/payments/payment-methods/dtos/payments-payment-method-dto.interface';
 import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
@@ -19,7 +19,7 @@ export const mapToPaymentsPaymentMethod: ToDomainMapper<PaymentsPaymentMethodDto
   input: PaymentsPaymentMethodDto
 ): PaymentsPaymentMethod => {
   return {
-    method: input.method as PaymentMethod,
+    method: mapPaymentMethodDtoToPaymentMethod(input.method),
   };
 };
 

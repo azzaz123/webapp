@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { mapPaymentMethodDtoToPaymentMethod } from '@api/shared/mappers/payment-method-dto-to-payment-method.mapper';
 import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesDto } from '@api/bff/payments/user-payment-preferences/dtos/payments-user-payment-preferences-dto.interface';
 
@@ -24,7 +24,7 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES: PaymentsUserPaymentPreferen
   },
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
-    paymentMethod: 'paypal' as PaymentMethod,
+    paymentMethod: mapPaymentMethodDtoToPaymentMethod('paypal'),
     useWallet: false,
     walletBlocked: false,
   },

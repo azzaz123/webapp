@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { mapPaymentMethodDtoToPaymentMethod } from '@api/shared/mappers/payment-method-dto-to-payment-method.mapper';
 import { PaymentsUserPaymentAvailability } from '@api/core/model/payments/interfaces/payments-user-payment-availability.interface';
 import { PaymentsUserPaymentAvailabilityDto } from '@api/bff/payments/user-payment-preferences/dtos/payments-user-payment-availability-dto.interface';
 import { PaymentsUserPaymentPreference } from '@api/core/model/payments/interfaces/payments-user-payment-preference.interface';
@@ -24,7 +24,7 @@ const mapToAvailability: ToDomainMapper<PaymentsUserPaymentAvailabilityDto, Paym
 ): PaymentsUserPaymentAvailability => {
   const { payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = defaults;
   return {
-    paymentMethod: paymentMethod as PaymentMethod,
+    paymentMethod: mapPaymentMethodDtoToPaymentMethod(paymentMethod),
     useWallet,
     walletBlocked,
   };
@@ -36,7 +36,7 @@ const mapToPreference: ToDomainMapper<PaymentsUserPaymentPreferenceDto, Payments
   const { id, payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = preference;
   return {
     id,
-    paymentMethod: paymentMethod as PaymentMethod,
+    paymentMethod: mapPaymentMethodDtoToPaymentMethod(paymentMethod),
     useWallet,
     walletBlocked,
   };
