@@ -7,7 +7,7 @@ import { I18nService } from '@core/i18n/i18n.service';
 import { RealTimeService } from '@core/message/real-time.service';
 import { RemoteConsoleService } from '@core/remote-console';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
-import { InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
+import { InboxConversation, InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
 import { MaliciousConversationModalComponent } from '@private/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { MockAdsService } from '@fixtures/ads.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -48,10 +48,12 @@ import { ScrollingMessageComponent } from '@private/features/chat/components/scr
 import { InputComponent } from '@private/features/chat/components/input';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
-import { DeliveryConversationContextService } from '@private/features/chat/modules/delivery-conversation-context/delivery-conversation-context.service';
-import { DeliveryBannerComponent } from '../../modules/delivery-banner/components/delivery-banner.component';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { DeliveryBannerComponent } from '@private/features/chat/modules/delivery-banner/components/delivery-banner.component';
+import { DeliveryConversationContextService } from '@private/features/chat/modules/delivery-conversation-context/services/delivery-conversation-context/delivery-conversation-context.service';
 import { MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
+import { DELIVERY_BANNER_ACTION_TYPE } from '../../modules/delivery-banner/enums/delivery-banner-action-type.enum';
+import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -67,6 +69,8 @@ describe('CurrentConversationComponent', () => {
   let chatTranslationService: ChatTranslationService;
   let deliveryConversationContextService: DeliveryConversationContextService;
   let modalMockResult: Promise<{}>;
+
+  const mockDeliveryBannerSubject$: BehaviorSubject<DeliveryBanner> = new BehaviorSubject(null);
 
   beforeEach(
     waitForAsync(() => {
@@ -115,7 +119,15 @@ describe('CurrentConversationComponent', () => {
           I18nService,
           MomentCalendarSpecService,
           ChatTranslationService,
-          DeliveryConversationContextService,
+          {
+            provide: DeliveryConversationContextService,
+            useValue: {
+              bannerProperties$: mockDeliveryBannerSubject$,
+              update: () => {},
+              reset: () => {},
+              handleClickCTA: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE) => {},
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -213,11 +225,9 @@ describe('CurrentConversationComponent', () => {
       expect(realTime.sendRead).not.toHaveBeenCalled();
     }));
 
-    describe('when delivery banner needs to be displayed', () => {
+    describe('when delivery banner needs to be displayed with actionable properties', () => {
       beforeEach(fakeAsync(() => {
-        jest
-          .spyOn(deliveryConversationContextService, 'bannerProperties$', 'get')
-          .mockReturnValue(of(MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES));
+        mockDeliveryBannerSubject$.next(MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES);
         tick();
         fixture.detectChanges();
       }));
@@ -227,11 +237,23 @@ describe('CurrentConversationComponent', () => {
 
         expect(deliveryBannerElement).toBeTruthy();
       });
+
+      describe('and when the user clicks on the CTA of the banner', () => {
+        it('should ask for CTA action handling to the delivery context', () => {
+          spyOn(deliveryConversationContextService, 'handleClickCTA');
+          const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
+          const expectedActionType: DELIVERY_BANNER_ACTION_TYPE = MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES.action.type;
+
+          deliveryBannerElement.triggerEventHandler('clickedCTA', expectedActionType);
+
+          expect(deliveryConversationContextService.handleClickCTA).toHaveBeenCalledWith(component.currentConversation, expectedActionType);
+        });
+      });
     });
 
     describe('when delivery banner does NOT need to be displayed', () => {
       beforeEach(fakeAsync(() => {
-        jest.spyOn(deliveryConversationContextService, 'bannerProperties$', 'get').mockReturnValue(of(null));
+        mockDeliveryBannerSubject$.next(null);
         tick();
         fixture.detectChanges();
       }));
@@ -515,19 +537,36 @@ describe('CurrentConversationComponent', () => {
     });
   });
 
-  describe('when opening a conversation', () => {
+  describe('when changing the current conversation', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.callThrough();
-      spyOn(deliveryConversationContextService, 'update');
+      spyOn(deliveryConversationContextService, 'reset');
 
+      component.currentConversation = null;
       component.ngOnChanges({
-        currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
+        currentConversation: new SimpleChange(null, null, false),
       });
       fixture.detectChanges();
     });
 
-    it('should ask for delivery conversation context', () => {
-      expect(deliveryConversationContextService.update).toHaveBeenCalledTimes(1);
+    it('should ask for delivery conversation context to reset information', () => {
+      expect(deliveryConversationContextService.reset).toHaveBeenCalledTimes(1);
+    });
+
+    describe('and when current conversation is defined', () => {
+      beforeEach(() => {
+        spyOn(deliveryConversationContextService, 'update');
+
+        component.currentConversation = MOCK_INBOX_CONVERSATION_BASIC;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_BASIC, false),
+        });
+      });
+
+      it('should ask for delivery convesration context for current conversation', () => {
+        expect(deliveryConversationContextService.update).toHaveBeenCalledTimes(1);
+        expect(deliveryConversationContextService.update).toHaveBeenCalledWith(MOCK_INBOX_CONVERSATION_BASIC);
+      });
     });
 
     describe('and when other user is considered malicious', () => {
@@ -539,6 +578,7 @@ describe('CurrentConversationComponent', () => {
 
         fixture.detectChanges();
       });
+
       it('should show malicious modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(MaliciousConversationModalComponent, {
           windowClass: 'warning',
