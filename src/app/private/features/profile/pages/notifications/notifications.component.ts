@@ -13,13 +13,21 @@ import { NotificationsDto } from '@api/me/dtos/notifications/response/notifcatio
 export class NotificationsComponent implements OnInit {
   public notificationsSettingsGroup: NotificationsSettingsDto[];
   public allowSegmentation: boolean;
+  private savedSearchedNotificationId = 'l1kmzng6n3p8';
 
   constructor(private meApiService: MeApiService) {}
 
   ngOnInit(): void {
     this.meApiService.getMyNotificationsSettings().subscribe((data) => {
-      this.notificationsSettingsGroup = data.notificationGroups;
-      console.log(this.notificationsSettingsGroup);
+      const filteredNotifications = data.notificationGroups
+        .map((nGroup) => {
+          const noSavedSearchesId = nGroup.notifications.find((notification) => notification.id !== this.savedSearchedNotificationId);
+          if (noSavedSearchesId) {
+            return nGroup;
+          }
+        })
+        .filter((ngroup) => !!ngroup);
+      this.notificationsSettingsGroup = filteredNotifications;
     });
   }
 
