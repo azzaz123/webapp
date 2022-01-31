@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Money } from '@api/core/model/money.interface';
 import { AcceptScreenBuyer, AcceptScreenItem } from '../../interfaces';
 
 @Component({
@@ -10,4 +11,5 @@ import { AcceptScreenBuyer, AcceptScreenItem } from '../../interfaces';
 export class ProductCardComponent {
   @Input() buyer: AcceptScreenBuyer;
   @Input() item: AcceptScreenItem;
+  @Input() offeredPrice: Money;
 }

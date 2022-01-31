@@ -5,6 +5,7 @@ import {
   MOCK_ACCEPT_SCREEN_BUYER,
   MOCK_ACCEPT_SCREEN_ITEM,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
+import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 
 import { ProductCardComponent } from './product-card.component';
 
@@ -35,6 +36,7 @@ describe('ProductCardComponent', () => {
       beforeEach(() => {
         component.buyer = MOCK_ACCEPT_SCREEN_BUYER;
         component.item = MOCK_ACCEPT_SCREEN_ITEM;
+        component.offeredPrice = MOCK_SELLER_REQUEST.offeredPrice;
         fixture.detectChanges();
       });
 
@@ -61,11 +63,11 @@ describe('ProductCardComponent', () => {
         expect(itemTitle).toStrictEqual(MOCK_ACCEPT_SCREEN_ITEM.title);
       });
 
-      it('should show item price', () => {
-        const itemPrice: string = de.query(By.css('.ProductCard__itemPrice')).nativeElement.innerHTML;
-        const expectedItemPrice: string = `${MOCK_ACCEPT_SCREEN_ITEM.price.amount.total}${MOCK_ACCEPT_SCREEN_ITEM.price.currency.symbol}`;
+      it('should show offered price', () => {
+        const offeredPrice: string = de.query(By.css('.ProductCard__offeredPrice')).nativeElement.innerHTML;
+        const expectedItemPrice: string = `${MOCK_SELLER_REQUEST.offeredPrice.amount.total}${MOCK_SELLER_REQUEST.offeredPrice.currency.symbol}`;
 
-        expect(itemPrice).toStrictEqual(expectedItemPrice);
+        expect(offeredPrice).toStrictEqual(expectedItemPrice);
       });
     });
 
