@@ -52,7 +52,7 @@ describe('BuyerRequestsHttpService', () => {
   describe('when asking to get the item details', () => {
     it('should ask server for an specific request', () => {
       let response: BuyerRequestsItemsDetailsDto;
-      const fakeItemHash = 'abc1234';
+      const fakeItemHash: string = 'abc1234';
       const expectedUrl: string = BUYER_REQUESTS_ITEMS_DETAILS(fakeItemHash);
 
       service.getItemsDetails(fakeItemHash).subscribe((data: BuyerRequestsItemsDetailsDto) => (response = data));
