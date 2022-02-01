@@ -88,6 +88,7 @@ describe('BannerComponent', () => {
 
       it('should style with full height', () => {
         const styledBanner = fixture.debugElement.query(By.css(fullHeightBannerSelector));
+
         expect(styledBanner).toBeTruthy();
       });
     });
@@ -100,6 +101,7 @@ describe('BannerComponent', () => {
 
       it('should style with full height', () => {
         const styledBanner = fixture.debugElement.query(By.css(fullHeightBannerSelector));
+
         expect(styledBanner).toBeFalsy();
       });
     });
