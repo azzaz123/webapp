@@ -3,10 +3,21 @@ import { TestBed } from '@angular/core/testing';
 import { MeHttpService } from './me-http.service';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { publishedResponseFixture } from '@api/fixtures/catalog/published/published-response.fixtures';
-import { ME_FAVOURITES_ENDPOINT, ME_SOLD_ITEMS_ENDPOINT } from '@api/me/http/endpoints';
+import {
+  BASE_SET_NOTIFICATION,
+  ME_FAVOURITES_ENDPOINT,
+  ME_SOLD_ITEMS_ENDPOINT,
+  NOTIFICATIONS_API_URL_ENDPOINT,
+} from '@api/me/http/endpoints';
 import { FavouritesResponseDto } from '../dtos/favourites/response/favourites-response-dto';
 import { SoldItemResponseDto } from '../dtos/sold/response/sold-response-dto';
 import { soldItemsResponseFixture } from '@api/fixtures/me/sold/sold-response.fixture';
+import { NotificationsSettingsDto } from '../dtos/notifications-settings/response/notifcations-settings-dto';
+import { NotificationsSettingsResponseDto } from '../dtos/notifications-settings/response/notifcations-settings-response-dto';
+import {
+  notificationIdToModify,
+  notificationsSettingsResponseFixture,
+} from '@api/fixtures/me/notifications/notifications-response.fixture';
 
 describe('MeHttpService', () => {
   let service: MeHttpService;
@@ -77,6 +88,33 @@ describe('MeHttpService', () => {
         req.flush(soldItemsResponseFixture);
 
         expect(response).toEqual(soldItemsResponseFixture);
+      });
+    });
+    describe('when asked to retrieve sold items', () => {
+      describe('notifications settings', () => {
+        it('should retrieve notifications settings', () => {
+          let response: NotificationsSettingsResponseDto;
+          service.getMyNotificationsSettings().subscribe((res) => (response = res));
+          const req: TestRequest = httpMock.expectOne(`${NOTIFICATIONS_API_URL_ENDPOINT}`);
+          req.flush(notificationsSettingsResponseFixture);
+          expect(response).toEqual(notificationsSettingsResponseFixture);
+        });
+
+        it('should call disable notification', () => {
+          service.setNotificationDisabled(notificationIdToModify).subscribe();
+          const req: TestRequest = httpMock.expectOne(`${BASE_SET_NOTIFICATION}/${notificationIdToModify}/disable`);
+          req.flush({});
+          expect(req.request.url).toEqual(`${BASE_SET_NOTIFICATION}/${notificationIdToModify}/disable`);
+          expect(req.request.method).toBe('POST');
+        });
+
+        it('should call enable notification', () => {
+          service.setNotificationEnable(notificationIdToModify).subscribe();
+          const req: TestRequest = httpMock.expectOne(`${BASE_SET_NOTIFICATION}/${notificationIdToModify}/enable`);
+          req.flush({});
+          expect(req.request.url).toEqual(`${BASE_SET_NOTIFICATION}/${notificationIdToModify}/enable`);
+          expect(req.request.method).toBe('POST');
+        });
       });
     });
   });

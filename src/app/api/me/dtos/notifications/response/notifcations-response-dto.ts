@@ -1,5 +1,5 @@
-import { NotificationsDto } from './notifcations-dto';
+import { NotificationsSettingsDto } from '../../notifications-settings/response/notifcations-settings-dto';
 
-export interface SoldItemResponseDto {
-  data: NotificationsDto[];
+export interface NotificationsSettingsResponseDto {
+  data: NotificationsSettingsDto[];
 }

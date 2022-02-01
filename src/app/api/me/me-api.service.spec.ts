@@ -11,6 +11,9 @@ import { ItemService } from '@core/item/item.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { mappedSoldItemsResponseFixture, soldItemsResponseFixture } from '@api/fixtures/me/sold/sold-response.fixture';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
+import { NotificationsSettingsResponseDto } from './dtos/notifications-settings/response/notifcations-settings-response-dto';
+import { NotificationSettings } from '@api/core/model/notifications';
+import { NotificationsSettingsDto } from './dtos/notifications-settings/response/notifcations-settings-dto';
 
 describe('MeApiService', () => {
   let service: MeApiService;
@@ -126,6 +129,32 @@ describe('MeApiService', () => {
         expect(itemService.mine).toHaveBeenCalledWith(+pagination, STATUS.PUBLISHED);
         expect(itemList).toEqual({ list: [MOCK_ITEM, MOCK_ITEM], paginationParameter: pagination });
       });
+    });
+
+    describe('when asked for notifications settings', () => {
+      it('should retrieve notifications items', () => {
+        let notificationsSettingsResponseDto: NotificationsSettingsResponseDto;
+
+        service
+          .getMyNotificationsSettings()
+          .subscribe((data: NotificationsSettingsDto[]) => (notificationsSettingsResponseDto.notificationGroups = data));
+
+        // expect(notificationsSettingsResponseDto).toEqual({ list: [MOCK_ITEM, MOCK_ITEM] });
+      });
+      // it('should disable notifications items', () => {
+      //   let notificationsSettingsResponseDto: NotificationsSettingsResponseDto;
+
+      //   service.getMyNotificationsSettings().subscribe((data: NotificationsSettingsDto[]) => (notificationsSettingsResponseDto.notificationGroups = data));
+
+      //   // expect(notificationsSettingsResponseDto).toEqual({ list: [MOCK_ITEM, MOCK_ITEM] });
+      // });
+      // it('should enable notifications items', () => {
+      //   let notificationsSettingsResponseDto: NotificationsSettingsResponseDto;
+
+      //   service.getMyNotificationsSettings().subscribe((data: NotificationsSettingsDto[]) => (notificationsSettingsResponseDto.notificationGroups = data));
+
+      //   // expect(notificationsSettingsResponseDto).toEqual({ list: [MOCK_ITEM, MOCK_ITEM] });
+      // });
     });
   });
 });
