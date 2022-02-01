@@ -3,7 +3,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserService } from '@core/user/user.service';
 import { Client, OptimizelyDecision, OptimizelyUserContext, enums } from '@optimizely/optimizely-sdk';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { FlagsParamInterface } from './optimizely.interface';
+import { FlagsParamInterface, TrackParamsInterface } from './optimizely.interface';
 import { SDK_KEY_DEVELOPMENT } from './resources/sdk-keys';
 import { BASE_USER_ATTRIBUTES } from './resources/user-attributes.constants';
 
@@ -50,6 +50,10 @@ export class OptimizelyService {
 
   public getVariations({ flagKeys, options }: FlagsParamInterface): { [key: string]: OptimizelyDecision } {
     return this.optimizelyUserContext.decideForKeys(flagKeys, options);
+  }
+
+  public track({ eventKey, eventTags }: TrackParamsInterface): void {
+    this.optimizelyUserContext.trackEvent(eventKey, eventTags);
   }
 
   private addNewAttributes(attributesToAdd) {

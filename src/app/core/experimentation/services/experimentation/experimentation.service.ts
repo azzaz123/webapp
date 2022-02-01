@@ -6,7 +6,7 @@ import { EXPERIMENTATION_SOURCES } from '@core/experimentation/constants';
 import { Variant } from '@core/experimentation/models';
 import { OPTIMIZE_EXPERIMENTS } from '@core/experimentation/vendors/optimize/resources/optimize-experiment-ids';
 import { OptimizelyService } from '../../vendors/optimizely/optimizely.service';
-import { FlagsParamInterface } from '../../vendors/optimizely/optimizely.interface';
+import { FlagsParamInterface, TrackParamsInterface } from '../../vendors/optimizely/optimizely.interface';
 import { UserService } from '@core/user/user.service';
 import { OptimizelyDecision } from '@optimizely/optimizely-sdk';
 
@@ -48,5 +48,9 @@ export class ExperimentationService {
     if (this.userService.isLogged) {
       return this.optimizelyService.getVariations({ flagKeys, options });
     }
+  }
+
+  public trackOptimizelyEvent({ eventKey, eventTags }: TrackParamsInterface): void {
+    if (this.userService.isLogged) this.optimizelyService.track({ eventKey, eventTags });
   }
 }
