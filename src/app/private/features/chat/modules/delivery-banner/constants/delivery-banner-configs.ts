@@ -13,7 +13,7 @@ export const BUYER_BUY_DELIVERY_BANNER_PROPERTIES = (price: Money): BuyerBuyDeli
     action: {
       label: 'Buy',
       style: DELIVERY_BANNER_BUTTON_STYLE.CONTAINED,
-      type: DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL,
+      type: DELIVERY_BANNER_ACTION_TYPE.OPEN_PAYVIEW,
     },
   };
   return bannerProperties;
@@ -30,7 +30,7 @@ export const SELLER_ACTIVATE_SHIPPING_BANNER_PROPERTIES: ActionableDeliveryBanne
   action: {
     label: 'Edit',
     style: DELIVERY_BANNER_BUTTON_STYLE.CONTAINED,
-    type: DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL,
+    type: DELIVERY_BANNER_ACTION_TYPE.ACTIVATE_SHIPPING,
   },
 };
 
@@ -40,6 +40,6 @@ export const SELLER_EDIT_PRICE_BANNER_PROPERTIES: ActionableDeliveryBanner = {
   action: {
     label: 'Change',
     style: DELIVERY_BANNER_BUTTON_STYLE.OUTLINED,
-    type: DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL,
+    type: DELIVERY_BANNER_ACTION_TYPE.CHANGE_ITEM_PRICE,
   },
 };
