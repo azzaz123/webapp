@@ -71,15 +71,7 @@ describe('CheckoutItemComponent', () => {
 
     it('should set durations and default duration', () => {
       expect(component.durations).toEqual(['24', '72', '168']);
-      expect(component.duration).toEqual('72');
-    });
-
-    it('should set provincialBump to true if no citybump', () => {
-      component.itemWithProducts = ITEMS_WITH_PRODUCTS_PROVINCE[0];
-
-      component.ngOnInit();
-
-      expect(component.provincialBump).toBeTruthy();
+      expect(component.selectedDuration).toEqual('72');
     });
 
     describe('onRemoveOrClean', () => {
@@ -146,7 +138,7 @@ describe('CheckoutItemComponent', () => {
 
   describe('select', () => {
     beforeEach(() => {
-      component.duration = DURATION;
+      component.selectedDuration = DURATION;
       spyOn(cartService, 'add');
       spyOn(cartService, 'remove');
 
@@ -167,17 +159,6 @@ describe('CheckoutItemComponent', () => {
         TYPE
       );
     });
-
-    it('should set items flags', () => {
-      expect(component.itemWithProducts.item.flags.bump_type).toBe(TYPE);
-      expect(component.itemWithProducts.item.flags.bumped).toBeTruthy();
-    });
-
-    it('should call remove if selected twice', () => {
-      component.select(TYPE);
-
-      expect(cartService.remove).toHaveBeenCalledWith(MOCK_ITEM_V3.id, TYPE);
-    });
   });
 
   describe('duration', () => {
@@ -185,7 +166,7 @@ describe('CheckoutItemComponent', () => {
       spyOn(component, 'select');
       component.selectedType = TYPE;
 
-      component.duration = DURATION;
+      component.selectedDuration = DURATION;
 
       expect(component.select).toHaveBeenCalledTimes(1);
       expect(component.select).toHaveBeenCalledWith(TYPE);
@@ -195,7 +176,7 @@ describe('CheckoutItemComponent', () => {
       spyOn(component, 'select');
       component.selectedType = null;
 
-      component.duration = DURATION;
+      component.selectedDuration = DURATION;
 
       expect(component.select).toHaveBeenCalledTimes(0);
     });

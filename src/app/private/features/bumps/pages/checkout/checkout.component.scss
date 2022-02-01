@@ -1,7 +1,5 @@
 @import '~style/common';
 
-$offset: 7px;
-
 .back {
   color: $blue-grey-1;
   position: absolute;
@@ -22,24 +20,12 @@ $offset: 7px;
 }
 
 .table-header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: -$offset;
   .info {
-    height: 80px + $offset;
-    width: 100%;
-    text-align: center;
-    align-self: flex-end;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: $font-size-s;
     tsl-svg-icon {
       ::ng-deep svg path {
         fill: $walla-main;
       }
-      margin-right: $spacing-ms;
     }
     a {
       text-decoration: underline;
@@ -50,69 +36,16 @@ $offset: 7px;
       }
     }
   }
-  .type {
-    $border-radius: 20px;
-    flex: 0 0 $duration-table-col-width-md;
-    align-self: flex-end;
-    border-top-right-radius: $border-radius;
-    border-top-left-radius: $border-radius;
-    box-shadow: 13px 6px 10px 0 rgba(0, 0, 0, 0.2);
-    border: solid 1px $blue-grey-5;
-    border-bottom: 0;
-    color: $white;
-    font-weight: $font-weight-chunky;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    padding: $spacing-m;
-    font-size: $font-size-s;
-    justify-content: center;
-    flex-direction: column;
-    line-height: $line-height-m;
-    @include media-breakpoint-up(xl) {
-      flex: 0 0 $duration-table-col-width;
-    }
-    &.zone {
-      background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $zone-bump);
-      z-index: 3;
-      height: 80px + $offset;
-      tsl-svg-icon {
-        width: 40px;
-        height: 44px;
-      }
-      div {
-        margin-bottom: $spacing-xs;
-      }
-    }
-    &.city {
-      background-image: linear-gradient(205deg, #36b6d7, #2b8ea7);
-      z-index: 2;
-      height: 100px + $offset;
-      tsl-svg-icon {
-        width: 66px;
-        height: 44px;
-      }
-    }
-    &.country {
-      background-image: linear-gradient(208deg, #8fd6ff, $country-bump);
-      box-shadow: none;
-      z-index: 1;
-      height: 120px + $offset;
-      tsl-svg-icon {
-        width: 93px;
-        height: 44px;
-      }
-    }
-  }
 }
 
 .price-table {
   z-index: 4;
   position: relative;
-  margin-bottom: $spacing-xxxl;
 }
 
 .cart {
-  width: 280px;
-  padding: 0 $spacing-ms;
+  width: 100%;
+  @include media-breakpoint-up(lg) {
+    width: 280px;
+  }
 }

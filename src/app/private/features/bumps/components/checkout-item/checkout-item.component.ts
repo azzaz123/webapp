@@ -1,10 +1,10 @@
 import { takeWhile } from 'rxjs/operators';
-import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { ItemWithProducts } from '@core/item/item-response.interface';
 import { keys } from 'lodash-es';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
-import { BUMP_PROVINCIAL_TYPES, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
+import { BUMP_TYPES } from '@shared/catalog/cart/cart-base';
 import { Cart } from '@shared/catalog/cart/cart';
 import { CreditInfo } from '@core/payments/payment.interface';
 
@@ -16,21 +16,25 @@ import { CreditInfo } from '@core/payments/payment.interface';
 export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
+  @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
   types: string[] = BUMP_TYPES;
   durations: string[];
   _duration: string;
   selectedType: string;
-  selectedDuration: string;
-  provincialBump: boolean;
   private active = true;
 
-  set duration(value: string) {
+  set selectedDuration(value: string) {
     this._duration = value;
     if (this.selectedType) {
-      this.select(this.selectedType);
+      if (this.itemWithProducts.products[this.selectedDuration][this.selectedType]) {
+        this.select(this.selectedType);
+      } else {
+        this.selectedType = this.types[0];
+        this.select(this.selectedType);
+      }
     }
   }
-  get duration(): string {
+  get selectedDuration(): string {
     return this._duration;
   }
 
@@ -39,14 +43,11 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.cartService.createInstance(new Cart());
     this.durations = keys(this.itemWithProducts.products);
-    this.duration = this.durations[1];
+    this.selectedDuration = this.durations[1];
+
     this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
     });
-    this.provincialBump = !this.itemWithProducts.products['168'].citybump;
-    if (this.provincialBump) {
-      this.types = BUMP_PROVINCIAL_TYPES;
-    }
   }
 
   ngOnChanges() {
@@ -60,15 +61,17 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     this.active = false;
   }
 
-  select(type: string) {
-    if (this.selectedType === type && this.selectedDuration === this.duration) {
-      this.cartService.remove(this.itemWithProducts.item.id, type);
-      return;
-    }
+  public onRemoveItem(itemId: string, type: string): void {
+    this.cartService.remove(itemId, type);
+    this.itemRemoved.emit(itemId);
+  }
+
+  public selectDuration(selectedDuration: string): void {
+    this.selectedDuration = selectedDuration;
+  }
+
+  public select(type: string): void {
     this.selectedType = type;
-    this.selectedDuration = this.duration;
-    this.itemWithProducts.item.flags.bump_type = type;
-    this.itemWithProducts.item.flags.bumped = true;
     const cartItem: CartItem = {
       item: this.itemWithProducts.item,
       duration: this.itemWithProducts.products[this.selectedDuration][type],
@@ -76,12 +79,10 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     this.cartService.add(cartItem, type);
   }
 
-  private onRemoveOrClean(cartChange: CartChange) {
+  private onRemoveOrClean(cartChange: CartChange): void {
     if ((cartChange.action === 'remove' && cartChange.itemId === this.itemWithProducts.item.id) || cartChange.action === 'clean') {
       this.selectedType = undefined;
       this.selectedDuration = undefined;
-      this.itemWithProducts.item.flags.bump_type = undefined;
-      this.itemWithProducts.item.flags.bumped = false;
     }
   }
 }

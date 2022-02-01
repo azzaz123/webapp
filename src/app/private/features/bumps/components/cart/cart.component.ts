@@ -14,7 +14,9 @@ import { StripeService } from '@core/stripe/stripe.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { Cart } from '@shared/catalog/cart/cart';
 import { CartBase, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
-import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
+import { CartChange } from '@shared/catalog/cart/cart-item.interface';
+import { PACKS_TYPES } from '@core/payments/pack';
+import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 
 @Component({
   selector: 'tsl-cart',
@@ -33,6 +35,8 @@ export class CartComponent implements OnInit, OnDestroy {
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
+  public readonly BUMP_TYPES = BUMP_TYPE;
+  public readonly PACK_TYPES = PACKS_TYPES;
 
   private active = true;
 
@@ -62,15 +66,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.clean();
   }
 
-  remove(cartItem: CartItem, type: string) {
-    this.cartService.remove(cartItem.item.id, type);
-  }
-
-  clean() {
-    this.cartService.clean();
-  }
-
-  checkout() {
+  public checkout(): void {
     if (!this.cart.total || this.loading) {
       return;
     }
@@ -106,29 +102,24 @@ export class CartComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
-  public addNewCard() {
+  public addNewCard(): void {
     this.showCard = true;
     this.savedCard = false;
   }
 
-  public removeNewCard() {
+  public removeNewCard(): void {
     this.showCard = false;
     this.savedCard = true;
   }
 
-  public setSavedCard(selectedCard: FinancialCardOption) {
+  public setSavedCard(selectedCard: FinancialCardOption): void {
     this.showCard = false;
     this.savedCard = true;
     this.selectedCard = true;
     this.setCardInfo(selectedCard);
   }
 
-  public handleIconPath(type: string): string {
-    const iconBump = type.replace('bump', '');
-    return `/assets/icons/wing-${iconBump}.svg`;
-  }
-
-  public hasCard(hasCard: boolean) {
+  public hasCard(hasCard: boolean): void {
     this.hasSavedCard = hasCard;
     if (!hasCard) {
       this.addNewCard();
@@ -152,7 +143,7 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private buyStripe(orderId: string) {
+  private buyStripe(orderId: string): void {
     const paymentId: string = this.uuidService.getUUID();
 
     if (this.selectedCard || !this.savedCard) {
@@ -163,13 +154,13 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private success() {
+  private success(): void {
     this.itemService.deselectItems();
     this.itemService.selectedAction = null;
     this.router.navigate(['catalog/list', { code: 200 }]);
   }
 
-  private track(order: Order[]) {
+  private track(order: Order[]): void {
     const result = order.map((purchase) => ({
       item_id: purchase.item_id,
       bump_type: purchase.product_id,
