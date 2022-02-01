@@ -1,7 +1,6 @@
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import {
   DeliveryBuyerAddressUsed,
-  DeliveryBuyerCarrier,
   DeliveryBuyerDefaultDeliveryMethod,
   DeliveryBuyerDeliveryMethod,
   DeliveryBuyerDeliveryMethods,
@@ -13,12 +12,13 @@ import {
   DeliveryBuyerDeliveryMethodsDto,
   DeliveryBuyerDeliveryModeDto,
 } from '@api/bff/delivery/buyer/dtos';
+import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { ToDomainMapper } from '@api/core/utils/types';
 
-const carriers: Record<DeliveryBuyerCarrierDto, DeliveryBuyerCarrier> = {
-  correos: DeliveryBuyerCarrier.CORREOS,
-  POSTE_ITALIANE: DeliveryBuyerCarrier.POSTE_ITALIANE,
-  SEUR: DeliveryBuyerCarrier.SEUR,
+const carriers: Record<DeliveryBuyerCarrierDto, POST_OFFICE_CARRIER> = {
+  correos: POST_OFFICE_CARRIER.CORREOS,
+  POSTE_ITALIANE: POST_OFFICE_CARRIER.POSTE_ITALIANE,
+  SEUR: POST_OFFICE_CARRIER.SEUR,
 };
 
 const methods: Record<DeliveryBuyerDeliveryModeDto, DELIVERY_MODE> = {

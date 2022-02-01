@@ -1,6 +1,7 @@
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
-import { DeliveryBuyerCarrier, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryBuyerDeliveryMethodsDto } from '@api/bff/delivery/buyer/dtos';
+import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 
 export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS_RESPONSE: DeliveryBuyerDeliveryMethodsDto = {
   delivery_methods: [
@@ -32,7 +33,7 @@ export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods 
     {
       method: DELIVERY_MODE.CARRIER_OFFICE,
       icon: 'http://prod-delivery-resources.wallapop.com/Correos.png',
-      carrier: DeliveryBuyerCarrier.CORREOS,
+      carrier: POST_OFFICE_CARRIER.CORREOS,
       deliveryTimes: { from: 3, to: 7 },
       lastAddressUsed: {
         id: 'c10c9fa9-9589-4212-991b-43237ac8afd6',
