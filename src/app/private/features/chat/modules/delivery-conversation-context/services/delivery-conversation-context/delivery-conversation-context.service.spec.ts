@@ -56,6 +56,7 @@ describe('DeliveryConversationContextService', () => {
           expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledWith(
             MOCK_INBOX_CONVERSATION_AS_SELLER.item.id
           );
+          expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledTimes(1);
         });
       });
 
@@ -70,6 +71,7 @@ describe('DeliveryConversationContextService', () => {
           expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledWith(
             MOCK_INBOX_CONVERSATION_AS_BUYER.item.id
           );
+          expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledTimes(1);
         });
       });
     });
@@ -119,6 +121,7 @@ describe('DeliveryConversationContextService', () => {
 
       it('should open awareness modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+        expect(modalService.open).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -130,6 +133,7 @@ describe('DeliveryConversationContextService', () => {
 
       it('should open awareness modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+        expect(modalService.open).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -141,6 +145,7 @@ describe('DeliveryConversationContextService', () => {
 
       it('should open awareness modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+        expect(modalService.open).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -152,6 +157,7 @@ describe('DeliveryConversationContextService', () => {
 
       it('should open awareness modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+        expect(modalService.open).toHaveBeenCalledTimes(1);
       });
     });
   });
