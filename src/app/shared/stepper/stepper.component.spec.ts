@@ -114,11 +114,10 @@ describe('StepperComponent', () => {
       });
       describe('and it is an existing step', () => {
         it('should go to the specific step', () => {
-          const stepId: number = 2;
+          const stepId: number = component.steps.length - 1;
 
           component.goSpecificStep(stepId);
 
-          expect(component.goSpecificStep).toHaveBeenCalledWith(stepId);
           expect(component.activeId).toBe(stepId);
         });
       });
@@ -131,7 +130,6 @@ describe('StepperComponent', () => {
 
           component.goSpecificStep(stepId);
 
-          expect(component.goSpecificStep).toHaveBeenCalledWith(stepId);
           expect(component.activeId).toBe(actualPage);
         });
       });
@@ -144,7 +142,6 @@ describe('StepperComponent', () => {
 
           component.goSpecificStep(stepId);
 
-          expect(component.goSpecificStep).toHaveBeenCalledWith(stepId);
           expect(component.activeId).toBe(actualPage);
         });
       });

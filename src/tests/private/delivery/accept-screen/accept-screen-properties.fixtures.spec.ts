@@ -61,10 +61,10 @@ export const MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_ADDRESS: AcceptScreenSeller = {
   fullAddress: null,
 };
 
-export const MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE_AND_WITHOUT_ADDRESS: AcceptScreenSeller = {
+export const MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE: AcceptScreenSeller = {
   id: MOCK_USER_WITHOUT_IMAGE.id,
   imageUrl: PLACEHOLDER_AVATAR,
-  fullAddress: null,
+  fullAddress: `${MOCK_DELIVERY_ADDRESS.street}, ${MOCK_DELIVERY_ADDRESS.flat_and_floor}, ${MOCK_DELIVERY_ADDRESS.postal_code}, ${MOCK_DELIVERY_ADDRESS.city}`,
 };
 
 export const MOCK_ACCEPT_SCREEN_CARRIERS: AcceptScreenCarrier[] = [
