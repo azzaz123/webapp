@@ -1,6 +1,6 @@
 <div class="AcceptScreen modal-body">
   <div class="d-flex justify-content-between mb-4">
-    <a class="AcceptScreen__cursorPointer d-flex" (click)="goToAcceptScreen()">
+    <a class="d-flex" (click)="goToAcceptScreen()" [ngClass]="{ AcceptScreen__cursorPointer: !isAcceptScreenStep }">
       <tsl-svg-icon
         id="back"
         *ngIf="!isAcceptScreenStep"
@@ -16,7 +16,9 @@
       (click)="closeModal()"
     ></tsl-svg-icon>
   </div>
-  <tsl-button *ngIf="isAcceptScreenStep" id="help" i18n="@@accept_view_seller_top_bar_help_title" className="btn btn-link">Help</tsl-button>
+  <div *ngIf="isAcceptScreenStep" class="text-right py-2">
+    <a [href]="ACCEPT_SCREEN_HELP_URL" target="_blank" i18n="@@accept_view_seller_top_bar_help_title" id="help">Help</a>
+  </div>
   <tsl-stepper>
     <ng-template step>
       <div *ngIf="acceptScreenProperties$ | async as properties">
@@ -47,10 +49,10 @@
           </div>
           <tsl-button id="addressButton" class="d-flex" className="btn btn-link btn--noPadding" (click)="goToDeliveryAddress()">
             <span *ngIf="!properties.seller.fullAddress" id="addressButtonCopy" i18n="@@accept_view_seller_sender_details_add_button"
-              >Add your address</span
+              >Add</span
             >
             <span *ngIf="properties.seller.fullAddress" id="addressButtonCopy" i18n="@@accept_view_seller_sender_details_edit_button"
-              >Edit your address</span
+              >Edit</span
             >
           </tsl-button>
         </div>
