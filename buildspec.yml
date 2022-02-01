@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   variables:
-    ECR: "745640521341.dkr.ecr.eu-west-1.amazonaws.com"
-    ECR_REPO: "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp"
+    ECR: "567828013335.dkr.ecr.eu-west-1.amazonaws.com"
+    ECR_REPO: "567828013335.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp"
     NODE_IMAGE: "nodejs12"
   parameter-store:
     build_ssh_key: "BuildSSHKey"

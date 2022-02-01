@@ -21,8 +21,8 @@
         <span class="ProductCard__text text-truncate">{{ item.title }}</span>
       </div>
     </div>
-    <span class="ProductCard__offeredPrice ProductCard__text--bold pl-4"
-      >{{ offeredPrice.amount.total }}{{ offeredPrice.currency.symbol }}</span
-    >
+    <span class="ProductCard__offeredPrice ProductCard__text--bold pl-4">{{
+      offeredPrice.amount.total | customCurrency: offeredPrice.currency.code
+    }}</span>
   </div>
 </div>

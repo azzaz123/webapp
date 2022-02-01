@@ -9,6 +9,7 @@ import { StepperModule } from '@shared/stepper/stepper.module';
 import { DeliveryAddressModule } from '../delivery/pages/delivery-address/delivery-address.module';
 import { ButtonModule } from '@shared/button/button.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
     StepperModule,
     DeliveryAddressModule,
     SvgIconModule,
+    CustomCurrencyModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent],
 })

@@ -10,7 +10,7 @@ import { AcceptScreenProperties } from '../../interfaces';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ACCEPT_SCREEN_DELIVERY_ADDRESS, ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
+import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
@@ -20,6 +20,8 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 import { DeliveryMethodSelectorComponent } from '@private/shared/components/delivery-method-selector/delivery-method-selector.component';
 import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { CustomCurrencyPipe } from '@shared/pipes/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
@@ -37,8 +39,16 @@ describe('AcceptScreenModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AcceptScreenModalComponent, ProductCardComponent, StepperComponent, StepDirective, DeliveryMethodSelectorComponent],
+      declarations: [
+        AcceptScreenModalComponent,
+        ProductCardComponent,
+        StepperComponent,
+        StepDirective,
+        DeliveryMethodSelectorComponent,
+        CustomCurrencyPipe,
+      ],
       providers: [
+        DecimalPipe,
         {
           provide: AcceptScreenStoreService,
           useValue: {
