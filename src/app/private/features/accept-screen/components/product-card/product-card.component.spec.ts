@@ -6,8 +6,10 @@ import {
   MOCK_ACCEPT_SCREEN_ITEM,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
+import { DecimalPipe } from '@angular/common';
 
 import { ProductCardComponent } from './product-card.component';
+import { CustomCurrencyPipe } from '@shared/pipes/custom-currency/custom-currency.pipe';
 
 describe('ProductCardComponent', () => {
   let component: ProductCardComponent;
@@ -16,7 +18,8 @@ describe('ProductCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProductCardComponent],
+      declarations: [ProductCardComponent, CustomCurrencyPipe],
+      providers: [DecimalPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
