@@ -15,6 +15,7 @@ import { CarrierDropOffModeRequest, DropOffModeRequest } from '@api/core/model/d
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { AcceptScreenDeliveryAddress } from '../../interfaces/accept-screen-delivery-address.interface';
+import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 
 export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> = (item: Item): AcceptScreenItem => {
   const itemCurrencyPrice: NumberCurrencyCode = {
@@ -25,7 +26,7 @@ export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> =
     id: item.id,
     title: item.title,
     price: mapNumberAndCurrencyCodeToMoney(itemCurrencyPrice),
-    imageUrl: item.images ? item.images[0].urls_by_size.original : null,
+    imageUrl: item.images ? item.images[0].urls_by_size.original : FALLBACK_NOT_FOUND_SRC,
   };
 };
 
