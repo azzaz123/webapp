@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
 import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
@@ -24,6 +26,7 @@ export class AcceptScreenModalComponent implements OnInit {
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
+  public ACCEPT_SCREEN_HELP_URL: string;
 
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS;
@@ -32,10 +35,12 @@ export class AcceptScreenModalComponent implements OnInit {
   constructor(
     private acceptScreenStoreService: AcceptScreenStoreService,
     private deliveryCountries: DeliveryCountriesService,
-    private activeModal: NgbActiveModal
+    private activeModal: NgbActiveModal,
+    private customerHelpService: CustomerHelpService
   ) {}
 
   ngOnInit(): void {
+    this.ACCEPT_SCREEN_HELP_URL = this.getHelpURL();
     this.acceptScreenStoreService.initialize(this.requestId);
     this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$;
     this.acceptScreenCountries$ = this.deliveryCountries.getCountriesAsOptionsAndDefault();
@@ -65,5 +70,9 @@ export class AcceptScreenModalComponent implements OnInit {
   private refreshStepProperties(slideId: number): void {
     this.headerText = this.ACCEPT_SCREEN_HEADER_TRANSLATIONS[slideId];
     this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
+  }
+
+  private getHelpURL(): string {
+    return this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
   }
 }

@@ -19,6 +19,7 @@ import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { DeliveryMethodSelectorComponent } from '@private/shared/components/delivery-method-selector/delivery-method-selector.component';
 import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
@@ -27,6 +28,7 @@ describe('AcceptScreenModalComponent', () => {
   const acceptScreenPropertiesSubject: ReplaySubject<AcceptScreenProperties> = new ReplaySubject(1);
   const countriesAsOptionsAndDefaultSubject: ReplaySubject<CountryOptionsAndDefault> = new ReplaySubject(1);
   const deliveryAddressSelector = 'tsl-delivery-address';
+  const MOCK_ACCEPT_SCREEN_HELP_URL = 'MOCK_ACCEPT_SCREEN_HELP_URL';
 
   let activeModal: NgbActiveModal;
   let component: AcceptScreenModalComponent;
@@ -52,6 +54,14 @@ describe('AcceptScreenModalComponent', () => {
           useValue: {
             getCountriesAsOptionsAndDefault() {
               return countriesAsOptionsAndDefaultSubject.asObservable();
+            },
+          },
+        },
+        {
+          provide: CustomerHelpService,
+          useValue: {
+            getPageUrl() {
+              return MOCK_ACCEPT_SCREEN_HELP_URL;
             },
           },
         },
@@ -109,6 +119,20 @@ describe('AcceptScreenModalComponent', () => {
         describe('and we click on the close button', () => {
           it('should close the modal', () => {
             shouldCloseModalWhenCrossClick();
+          });
+        });
+
+        describe('and we click on the help button', () => {
+          let helpButtonRef: DebugElement;
+
+          beforeEach(() => {
+            helpButtonRef = fixture.debugElement.query(By.css('#help'));
+            fixture.detectChanges();
+          });
+
+          it('should open the Accept Screen help page', () => {
+            expect(component.ACCEPT_SCREEN_HELP_URL).toStrictEqual(MOCK_ACCEPT_SCREEN_HELP_URL);
+            expect(helpButtonRef.attributes['href']).toStrictEqual(component.ACCEPT_SCREEN_HELP_URL);
           });
         });
       });
@@ -172,7 +196,9 @@ describe('AcceptScreenModalComponent', () => {
           });
 
           it('should show the edit address button', () => {
-            shouldShowDeliveryAddressButtonSpecificText(ACCEPT_SCREEN_DELIVERY_ADDRESS.EDIT);
+            const editCopy: string = $localize`:@@accept_view_seller_sender_details_edit_button:Edit`;
+
+            shouldShowDeliveryAddressButtonSpecificText(editCopy);
           });
         });
 
@@ -195,7 +221,9 @@ describe('AcceptScreenModalComponent', () => {
           });
 
           it('should show the add address button', () => {
-            shouldShowDeliveryAddressButtonSpecificText(ACCEPT_SCREEN_DELIVERY_ADDRESS.ADD);
+            const addCopy: string = $localize`:@@accept_view_seller_sender_details_add_button:Add`;
+
+            shouldShowDeliveryAddressButtonSpecificText(addCopy);
           });
         });
       });
