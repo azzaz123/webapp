@@ -3,12 +3,12 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
 import { DeliveryBuyerCalculatorHttpService } from '@api/delivery/buyer/calculator/http/delivery-buyer-calculator-http.service';
 import { DeliveryBuyerCalculatorService } from '@api/delivery/buyer/calculator/delivery-buyer-calculator.service';
-import { DeliveryBuyerMode } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-mode.enum';
-import { Money } from '@api/core/model/money.interface';
+import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import {
   MOCK_DELIVERY_BUYER_CALCULATOR_COSTS,
   MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_RESPONSE,
 } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
+import { Money } from '@api/core/model/money.interface';
 
 import { of } from 'rxjs';
 
@@ -39,7 +39,7 @@ describe('DeliveryBuyerCalculatorService', () => {
   });
 
   describe('when asking to get the costs about a delivery', () => {
-    const deliveryMode: DeliveryBuyerMode = DeliveryBuyerMode.BUYER_ADDRESS;
+    const deliveryMode: DELIVERY_MODE = DELIVERY_MODE.BUYER_ADDRESS;
     const itemId: string = 'p61v99q1rx65';
     const money: Money = {
       amount: { integer: 13, decimals: 99, total: 13.99 },

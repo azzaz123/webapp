@@ -6,7 +6,6 @@ export * from './transaction-tracking-barcode/transaction-tracking-barcode.routi
 export * from './transaction-tracking-instructions/transaction-tracking-instructions.component';
 export * from './transaction-tracking-instructions/transaction-tracking-instructions.module';
 export * from './transaction-tracking-instructions/transaction-tracking-instructions.routing.module';
-export * from './constants/fallback-images-src-constants';
 export * from './interfaces/transaction-info.interface';
 export * from './transaction-tracking-overview/transaction-tracking-overview.module';
 export * from './transaction-tracking-overview/transaction-tracking-overview.routing.module';
