@@ -6,7 +6,6 @@ import { MOCK_DELIVERY_ITEM_DETAILS } from '@api/fixtures/core/model/delivery/it
 import { MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 import { of } from 'rxjs';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
-import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
 import { DescriptiveDeliveryBanner } from '../../../delivery-banner/interfaces/descriptive-delivery-banner.interface';
 
 import { DeliveryConversationContextAsBuyerService } from './delivery-conversation-context-as-buyer.service';
