@@ -1,8 +1,5 @@
-import {
-  DeliveryBuyerCarrier,
-  DeliveryBuyerDeliveryMethods,
-  DeliveryBuyerDeliveryMode,
-} from '@api/core/model/delivery/buyer/delivery-methods';
+import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
+import { DeliveryBuyerCarrier, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryBuyerDeliveryMethodsDto } from '@api/bff/delivery/buyer/dtos';
 
 export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS_RESPONSE: DeliveryBuyerDeliveryMethodsDto = {
@@ -33,7 +30,7 @@ export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS_RESPONSE: DeliveryBuyerDeliver
 export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods = {
   deliveryMethods: [
     {
-      method: DeliveryBuyerDeliveryMode.CARRIER_OFFICE,
+      method: DELIVERY_MODE.CARRIER_OFFICE,
       icon: 'http://prod-delivery-resources.wallapop.com/Correos.png',
       carrier: DeliveryBuyerCarrier.CORREOS,
       deliveryTimes: { from: 3, to: 7 },
@@ -43,7 +40,7 @@ export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods 
       },
     },
     {
-      method: DeliveryBuyerDeliveryMode.BUYER_ADDRESS,
+      method: DELIVERY_MODE.BUYER_ADDRESS,
       icon: 'http://prod-delivery-resources.wallapop.com/default_home.png',
       carrier: null,
       deliveryTimes: { from: 3, to: 7 },

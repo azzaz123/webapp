@@ -1,10 +1,10 @@
+import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import {
   DeliveryBuyerAddressUsed,
   DeliveryBuyerCarrier,
   DeliveryBuyerDefaultDeliveryMethod,
   DeliveryBuyerDeliveryMethod,
   DeliveryBuyerDeliveryMethods,
-  DeliveryBuyerDeliveryMode,
   DeliveryBuyerDeliveryTime,
 } from '@api/core/model/delivery/buyer/delivery-methods';
 import {
@@ -21,9 +21,9 @@ const carriers: Record<DeliveryBuyerCarrierDto, DeliveryBuyerCarrier> = {
   SEUR: DeliveryBuyerCarrier.SEUR,
 };
 
-const methods: Record<DeliveryBuyerDeliveryModeDto, DeliveryBuyerDeliveryMode> = {
-  BUYER_ADDRESS: DeliveryBuyerDeliveryMode.BUYER_ADDRESS,
-  CARRIER_OFFICE: DeliveryBuyerDeliveryMode.CARRIER_OFFICE,
+const methods: Record<DeliveryBuyerDeliveryModeDto, DELIVERY_MODE> = {
+  BUYER_ADDRESS: DELIVERY_MODE.BUYER_ADDRESS,
+  CARRIER_OFFICE: DELIVERY_MODE.CARRIER_OFFICE,
 };
 
 export const mapDeliveryBuyerDeliveryMethodsDtoToDeliveryBuyerDeliveryMethods: ToDomainMapper<
