@@ -107,5 +107,47 @@ describe('StepperComponent', () => {
         });
       });
     });
+
+    describe('and we trigger for an specific step...', () => {
+      beforeEach(() => {
+        spyOn(component, 'goSpecificStep').and.callThrough();
+      });
+      describe('and it is an existing step', () => {
+        it('should go to the specific step', () => {
+          const stepId: number = 2;
+
+          component.goSpecificStep(stepId);
+
+          expect(component.goSpecificStep).toHaveBeenCalledWith(stepId);
+          expect(component.activeId).toBe(stepId);
+        });
+      });
+
+      describe('and it is a step greater than the current steps', () => {
+        it('should stay on the same page', () => {
+          const actualPage: number = 3;
+          const stepId: number = component.steps.length + 1;
+          component.activeId = actualPage;
+
+          component.goSpecificStep(stepId);
+
+          expect(component.goSpecificStep).toHaveBeenCalledWith(stepId);
+          expect(component.activeId).toBe(actualPage);
+        });
+      });
+
+      describe('and it is a negative step number', () => {
+        it('should stay on the same page', () => {
+          const actualPage: number = 3;
+          const stepId: number = -1;
+          component.activeId = actualPage;
+
+          component.goSpecificStep(stepId);
+
+          expect(component.goSpecificStep).toHaveBeenCalledWith(stepId);
+          expect(component.activeId).toBe(actualPage);
+        });
+      });
+    });
   });
 });

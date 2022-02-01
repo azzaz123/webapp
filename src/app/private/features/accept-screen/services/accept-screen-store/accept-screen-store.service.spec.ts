@@ -55,4 +55,27 @@ describe('AcceptScreenStoreService', () => {
       expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES);
     });
   });
+
+  describe('when we update the accept screen store', () => {
+    let expectedAcceptScreenProperties: AcceptScreenProperties;
+
+    beforeEach(fakeAsync(() => {
+      spyOn(acceptScreenService, 'getAcceptScreenProperties').and.callThrough();
+      service.properties$.subscribe((newProperties: AcceptScreenProperties) => {
+        expectedAcceptScreenProperties = newProperties;
+      });
+
+      service.update(MOCK_REQUEST_ID);
+      tick();
+    }));
+
+    it('should request the accept screen properties', () => {
+      expect(acceptScreenService.getAcceptScreenProperties).toHaveBeenCalledTimes(1);
+      expect(acceptScreenService.getAcceptScreenProperties).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+    });
+
+    it('should update the accept screen store properties ', () => {
+      expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES);
+    });
+  });
 });
