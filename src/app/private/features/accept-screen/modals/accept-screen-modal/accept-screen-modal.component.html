@@ -9,16 +9,25 @@
       ></tsl-svg-icon>
       <span class="ml-3 p-0" id="headerText">{{ headerText }}</span>
     </a>
-    <tsl-svg-icon
-      id="cross"
-      src="/assets/icons/cross.svg"
-      class="AcceptScreen__cursorPointer align-self-center"
-      (click)="closeModal()"
-    ></tsl-svg-icon>
+    <div class="d-flex">
+      <a
+        *ngIf="isAcceptScreenStep"
+        class="mr-3"
+        [href]="ACCEPT_SCREEN_HELP_URL"
+        target="_blank"
+        i18n="@@accept_view_seller_top_bar_help_title"
+        id="help"
+        >Help</a
+      >
+      <tsl-svg-icon
+        id="cross"
+        src="/assets/icons/cross.svg"
+        class="AcceptScreen__cursorPointer align-self-center"
+        (click)="closeModal()"
+      ></tsl-svg-icon>
+    </div>
   </div>
-  <div *ngIf="isAcceptScreenStep" class="text-right py-2">
-    <a [href]="ACCEPT_SCREEN_HELP_URL" target="_blank" i18n="@@accept_view_seller_top_bar_help_title" id="help">Help</a>
-  </div>
+
   <tsl-stepper>
     <ng-template step>
       <div *ngIf="acceptScreenProperties$ | async as properties">
