@@ -16,9 +16,9 @@ import {
 import { ToDomainMapper } from '@api/core/utils/types';
 
 const carriers: Record<DeliveryBuyerCarrierDto, DeliveryBuyerCarrier> = {
-  SEUR: DeliveryBuyerCarrier.SEUR,
+  correos: DeliveryBuyerCarrier.CORREOS,
   POSTE_ITALIANE: DeliveryBuyerCarrier.POSTE_ITALIANE,
-  correos: DeliveryBuyerCarrier.SEUR,
+  SEUR: DeliveryBuyerCarrier.SEUR,
 };
 
 const methods: Record<DeliveryBuyerDeliveryModeDto, DeliveryBuyerDeliveryMode> = {
