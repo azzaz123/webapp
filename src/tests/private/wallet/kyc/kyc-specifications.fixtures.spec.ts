@@ -33,6 +33,7 @@ export const MOCK_KYC_SPECIFICATIONS_NO_NEED: KYCBannerSpecifications = {
   buttonText: 'the button text',
   type: BANNER_TYPES.DANGER,
   dismissible: false,
+  isFullHeight: false,
 };
 
 export const MOCK_KYC_SPECIFICATIONS_PENDING: KYCBannerSpecifications = {
@@ -42,6 +43,7 @@ export const MOCK_KYC_SPECIFICATIONS_PENDING: KYCBannerSpecifications = {
   buttonText: 'the button text',
   type: BANNER_TYPES.DANGER,
   dismissible: false,
+  isFullHeight: false,
 };
 
 export const MOCK_KYC_SPECIFICATIONS_VERIFIED: KYCBannerSpecifications = {
@@ -51,4 +53,5 @@ export const MOCK_KYC_SPECIFICATIONS_VERIFIED: KYCBannerSpecifications = {
   buttonText: 'the button text',
   type: BANNER_TYPES.DANGER,
   dismissible: false,
+  isFullHeight: false,
 };
