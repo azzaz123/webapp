@@ -1,0 +1,5 @@
+export enum POST_OFFICE_CARRIER {
+  CORREOS,
+  SEUR,
+  POSTE_ITALIANE,
+}
