@@ -49,7 +49,7 @@ export class MockFilterOptionService implements Partial<FilterOptionService> {
           ],
         });
       case FASHION_CONFIGURATION_ID.OBJECT_TYPE:
-        return of({ list: SUBCATEGORIES_WITH_CHILDREN_MOCK });
+        return of({ list: SUBCATEGORIES_WITH_CHILDREN_MOCK as FilterOption[] });
       case FASHION_CONFIGURATION_ID.GENDER:
         return of({
           list: [

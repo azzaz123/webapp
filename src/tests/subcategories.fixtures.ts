@@ -1,4 +1,3 @@
-import { FilterOption } from '@public/shared/components/filters/core/interfaces/filter-option.interface';
 import { MultiSelectFormOption } from '@shared/form/components/multi-select-form/interfaces/multi-select-form-option.interface';
 
 export const SUBCATEGORIES_MOCK: MultiSelectFormOption[] = [
@@ -36,7 +35,7 @@ export const SUBCATEGORIES_MOCK: MultiSelectFormOption[] = [
   },
 ];
 
-export const SUBCATEGORIES_WITH_CHILDREN_MOCK: FilterOption[] = [
+export const SUBCATEGORIES_WITH_CHILDREN_MOCK: MultiSelectFormOption[] = [
   {
     value: '10150',
     label: 'Abrigos y chaquetas',
