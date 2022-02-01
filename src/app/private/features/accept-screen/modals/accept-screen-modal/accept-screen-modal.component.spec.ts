@@ -17,11 +17,12 @@ import { DeliveryCountriesService } from '@private/features/delivery/services/co
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
 import { StepDirective } from '@shared/stepper/step.directive';
 import { StepperComponent } from '@shared/stepper/stepper.component';
-import { DeliveryMethodSelectorComponent } from '@private/shared/components/delivery-method-selector/delivery-method-selector.component';
 import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { CustomCurrencyPipe } from '@shared/pipes/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
+import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
+import { DeliveryRadioSelectorComponent } from '@private/shared/delivery-radio-selector/delivery-radio-selector.component';
 
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
@@ -39,14 +40,8 @@ describe('AcceptScreenModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AcceptScreenModalComponent,
-        ProductCardComponent,
-        StepperComponent,
-        StepDirective,
-        DeliveryMethodSelectorComponent,
-        CustomCurrencyPipe,
-      ],
+      imports: [DeliveryRadioSelectorModule],
+      declarations: [AcceptScreenModalComponent, ProductCardComponent, StepperComponent, StepDirective, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         {
@@ -448,7 +443,7 @@ describe('AcceptScreenModalComponent', () => {
   }
 
   function shouldRenderAvailableDeliveryMethods(isShowed: boolean): void {
-    const deliveryMethods = fixture.debugElement.query(By.directive(DeliveryMethodSelectorComponent));
+    const deliveryMethods = fixture.debugElement.query(By.directive(DeliveryRadioSelectorComponent));
     if (isShowed) {
       expect(deliveryMethods).toBeTruthy();
     } else {
