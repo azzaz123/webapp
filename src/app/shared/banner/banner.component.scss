@@ -9,6 +9,12 @@
     color: $white;
   }
 
+  &-info {
+    background-color: $white;
+    padding: 12px 10px !important;
+    border-radius: 0px;
+  }
+
   &-success {
     background-color: $walla-main;
   }
