@@ -2,12 +2,12 @@ import { DeliveryBuyerAddressUsedDto } from '@api/bff/delivery/buyer/dtos/delive
 import { DeliveryBuyerDeliveryTimeDto } from '@api/bff/delivery/buyer/dtos/delivery-buyer-delivery-time-dto.interface';
 
 export interface DeliveryBuyerDeliveryMethodDto {
-  carrier: CarrierDto;
+  carrier: DeliveryBuyerCarrierDto;
   delivery_times: DeliveryBuyerDeliveryTimeDto;
   icon: string;
   last_address_used: DeliveryBuyerAddressUsedDto;
-  method: DeliveryModeDto;
+  method: DeliveryBuyerDeliveryModeDto;
 }
 
-export type DeliveryModeDto = 'BUYER_ADDRESS' | 'CARRIER_OFFICE';
-export type CarrierDto = 'SEUR' | 'POSTE_ITALIANE' | 'correos';
+export type DeliveryBuyerDeliveryModeDto = 'BUYER_ADDRESS' | 'CARRIER_OFFICE';
+export type DeliveryBuyerCarrierDto = 'SEUR' | 'POSTE_ITALIANE' | 'correos';
