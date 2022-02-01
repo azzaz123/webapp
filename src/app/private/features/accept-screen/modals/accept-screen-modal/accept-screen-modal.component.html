@@ -36,7 +36,11 @@
           [item]="properties.item"
           [offeredPrice]="properties.request.offeredPrice"
         ></tsl-product-card>
-        <tsl-delivery-method-selector [deliveryMethods]="properties.carriers"></tsl-delivery-method-selector>
+        <tsl-delivery-radio-selector>
+          <ng-template tslDeliveryRadioOption *ngFor="let dropOffPoint of properties.carriers">
+            {{ dropOffPoint.type }}
+          </ng-template>
+        </tsl-delivery-radio-selector>
         <div class="AcceptScreen__sellerAddressTitle AcceptScreen__bottomLine d-flex pt-4 pb-2">
           <span i18n="@@accept_view_seller_sender_details_title">Your data</span>
         </div>

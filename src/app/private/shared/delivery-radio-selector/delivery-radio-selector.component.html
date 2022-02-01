@@ -1,0 +1,4 @@
+<div *ngFor="let option of options; let i = index">
+  <ng-template [ngTemplateOutlet]="option.templateRef"></ng-template>
+  <input type="radio" name="form" [value]="i" [checked]="selectedId === i" (change)="selectedChanged.emit(i)" />
+</div>
