@@ -5,6 +5,10 @@
       [item]="properties.item"
       [offeredPrice]="properties.request.offeredPrice"
     ></tsl-product-card>
-    <tsl-delivery-method-selector [deliveryMethods]="properties.carriers"></tsl-delivery-method-selector>
+    <tsl-delivery-radio-selector>
+      <ng-template tslDeliveryRadioOption *ngFor="let dropOffPoint of properties.carriers">
+        {{ dropOffPoint.type }}
+      </ng-template>
+    </tsl-delivery-radio-selector>
   </div>
 </div>
