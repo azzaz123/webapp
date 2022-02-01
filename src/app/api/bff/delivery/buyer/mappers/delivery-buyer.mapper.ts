@@ -1,7 +1,6 @@
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import {
   DeliveryBuyerAddressUsed,
-  DeliveryBuyerDefaultDeliveryMethod,
   DeliveryBuyerDeliveryMethod,
   DeliveryBuyerDeliveryMethods,
   DeliveryBuyerDeliveryTime,
@@ -32,14 +31,13 @@ export const mapDeliveryBuyerDeliveryMethodsDtoToDeliveryBuyerDeliveryMethods: T
 > = (input: DeliveryBuyerDeliveryMethodsDto): DeliveryBuyerDeliveryMethods => {
   const { delivery_methods: deliveryMethods, default: defaultMethod } = input;
 
-  const methods: DeliveryBuyerDeliveryMethod[] = [];
-  deliveryMethods.forEach((method: DeliveryBuyerDeliveryMethodDto) => {
-    methods.push(mapToDeliveryMethod(method));
+  const methods: DeliveryBuyerDeliveryMethod[] = deliveryMethods.map((method: DeliveryBuyerDeliveryMethodDto) => {
+    return mapToDeliveryMethod(method);
   });
 
   return {
     deliveryMethods: methods,
-    default: defaultMethod as DeliveryBuyerDefaultDeliveryMethod,
+    default: defaultMethod,
   };
 };
 

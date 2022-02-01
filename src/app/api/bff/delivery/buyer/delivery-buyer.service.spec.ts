@@ -37,7 +37,7 @@ describe('DeliveryBuyerService', () => {
     it('should get the costs for this specific item', () => {
       service.getDeliveryMethods(fakeItemHash).subscribe();
 
-      expect(deliveryCostsHttpService.getDeliveryMethods).toHaveBeenCalled();
+      expect(deliveryCostsHttpService.getDeliveryMethods).toHaveBeenCalledTimes(1);
       expect(deliveryCostsHttpService.getDeliveryMethods).toHaveBeenCalledWith(fakeItemHash);
     });
 
