@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
@@ -29,7 +29,7 @@ export const ELEMENT_TYPE = {
   templateUrl: './tabbar.component.html',
   styleUrls: ['./tabbar.component.scss'],
 })
-export class TabbarComponent implements OnInit {
+export class TabbarComponent implements OnInit, OnDestroy {
   public readonly LOGIN_PATH = `${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.LOGIN}`;
   public readonly SEARCH_PATH = `/${PUBLIC_PATHS.SEARCH}`;
   public user: User;
@@ -46,6 +46,20 @@ export class TabbarComponent implements OnInit {
     private eventService: EventService,
     private searchNavigatorService: SearchNavigatorService
   ) {}
+
+  @HostListener('window:focusin', ['$event'])
+  onFocusIn(elementType: unknown) {
+    if (this.isTextInputOrTextarea(elementType)) {
+      this.hidden = true;
+    }
+  }
+
+  @HostListener('window:focusout', ['$event'])
+  onFocusOut(elementType: unknown) {
+    if (this.isTextInputOrTextarea(elementType)) {
+      this.hidden = false;
+    }
+  }
 
   ngOnInit() {
     this.isLogged = this.userService.isLogged;
@@ -68,7 +82,16 @@ export class TabbarComponent implements OnInit {
     );
   }
 
-  public navigateToSearchPage(): void {
+  ngOnDestroy(): void {
+    this.componentSubscriptions.forEach((subscription: Subscription) => {
+      subscription.unsubscribe();
+    });
+  }
+
+  public navigateToSearchPage(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
     this.searchNavigatorService.navigateWithLocationParams({});
   }
 
@@ -84,25 +107,5 @@ export class TabbarComponent implements OnInit {
 
     const inputType = elementTarget.attributes?.type?.nodeValue;
     return KEYBOARD_INPUT_TYPES.includes(inputType);
-  }
-
-  @HostListener('window:focusin', ['$event'])
-  onFocusIn(elementType: unknown) {
-    if (this.isTextInputOrTextarea(elementType)) {
-      this.hidden = true;
-    }
-  }
-
-  @HostListener('window:focusout', ['$event'])
-  onFocusOut(elementType: unknown) {
-    if (this.isTextInputOrTextarea(elementType)) {
-      this.hidden = false;
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.componentSubscriptions.forEach((subscription: Subscription) => {
-      subscription.unsubscribe();
-    });
   }
 }

@@ -31,7 +31,7 @@ import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { SuggesterService } from '@layout/topbar/core/services/suggester.service';
-import { SuggesterComponentStub } from '@fixtures/shared/components/suggester.component.stub';
+import { SuggesterStubComponent } from '@fixtures/shared/components/suggester-stub.component';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { HomeRouteDirectiveMock } from '@fixtures/home-route.fixtures.spec';
 
@@ -153,7 +153,7 @@ describe('TopbarComponent', () => {
             },
           },
         ],
-        declarations: [SuggesterComponentStub, TopbarComponent, CustomCurrencyPipe, HomeRouteDirectiveMock],
+        declarations: [SuggesterStubComponent, TopbarComponent, CustomCurrencyPipe, HomeRouteDirectiveMock],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
       userService = TestBed.inject(UserService);
@@ -322,7 +322,7 @@ describe('TopbarComponent', () => {
         };
 
         it('should send click keyboard search button event', () => {
-          const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
+          const searchBox = fixture.debugElement.query(By.directive(SuggesterStubComponent));
           spyOn(topbarTrackingEventsService, 'trackClickKeyboardSearchButtonEvent');
 
           searchBox.triggerEventHandler('searchSubmit', MOCK_SEARCH_BOX_ONLY_TEXT_VALUE);
@@ -341,7 +341,7 @@ describe('TopbarComponent', () => {
       };
 
       beforeEach(() => {
-        const searchBox = fixture.debugElement.query(By.directive(SuggesterComponentStub));
+        const searchBox = fixture.debugElement.query(By.directive(SuggesterStubComponent));
 
         spyOn(navigator, 'navigate');
         spyOn(topbarTrackingEventsService, 'trackCancelSearchEvent');

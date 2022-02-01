@@ -3,7 +3,7 @@ import { Directive, Input } from '@angular/core';
 @Directive({
   selector: '[tslItemRoute]',
 })
-export class ItemRouteDirectiveMock {
+export class ItemRouteMockDirective {
   @Input() itemSlug: string;
   @Input() itemUUID: string;
 
