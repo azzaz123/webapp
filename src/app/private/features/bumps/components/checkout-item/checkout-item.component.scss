@@ -39,14 +39,12 @@
     &:not(:last-child) {
       margin-right: $spacing-s;
     }
-    &:hover,
-    &.selected {
-      color: $white;
-    }
     &:hover {
+      color: $white;
       background-color: $zone-bump;
     }
-    &.selected {
+    &--selected {
+      color: $white;
       background-color: $zone-bump-dark;
     }
   }

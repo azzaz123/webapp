@@ -29,7 +29,7 @@
               <button
                 class="btn CheckoutItem__button mb-0 mb-xl-2"
                 (click)="selectDuration(duration)"
-                [ngClass]="{ selected: selectedDuration === duration }"
+                [ngClass]="{ 'CheckoutItem__button--selected': selectedDuration === duration }"
               >
                 {{ duration / 24 }} days
               </button>
@@ -44,7 +44,7 @@
                 <button
                   class="btn CheckoutItem__button mb-0 mb-xl-2"
                   (click)="select(type)"
-                  [ngClass]="{ selected: type === selectedType }"
+                  [ngClass]="{ 'CheckoutItem__button--selected': type === selectedType }"
                 >
                   {{ type }}
                 </button>
