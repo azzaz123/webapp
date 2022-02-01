@@ -253,7 +253,7 @@ describe('ItemService', () => {
         let response: ItemsData;
         const INIT = 10;
         const expectedUrlParams = `init=${INIT}&expired=true`;
-        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
+        const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
         const expectedUrl2 = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`;
 
         service.mine(10, 'published').subscribe((r) => (response = r));
@@ -292,7 +292,7 @@ describe('ItemService', () => {
         let response: ItemsData;
         const INIT = 10;
         const expectedUrlParams = `init=${INIT}&expired=true`;
-        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
+        const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
         const expectedUrl2 = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`;
 
         service.mine(10, 'published').subscribe((r) => (response = r));
