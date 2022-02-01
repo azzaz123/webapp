@@ -23,11 +23,11 @@ export class AcceptScreenModalComponent implements OnInit {
   public acceptScreenCountries$: Observable<CountryOptionsAndDefault>;
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
+  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
 
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
-  private readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
 
   constructor(
     private acceptScreenStoreService: AcceptScreenStoreService,
@@ -39,7 +39,7 @@ export class AcceptScreenModalComponent implements OnInit {
     this.acceptScreenStoreService.initialize(this.requestId);
     this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$;
     this.acceptScreenCountries$ = this.deliveryCountries.getCountriesAsOptionsAndDefault();
-    this.headerText = this.ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN];
+    this.refreshStepProperties(this.stepper.activeId);
   }
 
   public goToDeliveryAddress(): void {
@@ -56,10 +56,14 @@ export class AcceptScreenModalComponent implements OnInit {
 
   private goSpecificStep(slideId: ACCEPT_SCREEN_ID_STEPS): void {
     this.stepper.goSpecificStep(slideId);
-    this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
-    this.headerText = this.ACCEPT_SCREEN_HEADER_TRANSLATIONS[slideId];
+    this.refreshStepProperties(slideId);
     if (this.isAcceptScreenStep) {
       this.acceptScreenStoreService.update(this.requestId);
     }
+  }
+
+  private refreshStepProperties(slideId: number): void {
+    this.headerText = this.ACCEPT_SCREEN_HEADER_TRANSLATIONS[slideId];
+    this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
   }
 }
