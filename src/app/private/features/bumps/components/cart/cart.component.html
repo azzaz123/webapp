@@ -81,7 +81,7 @@
     </div>
     <tsl-button
       [hidden]="!savedCard && totalToPay > 0"
-      [disabled]="!cart?.total || loading"
+      [disabled]="loading"
       [loading]="loading"
       (click)="checkout()"
       className="btn-primary w-100 btn-primary--bold mt-3"

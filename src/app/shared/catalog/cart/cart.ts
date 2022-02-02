@@ -29,13 +29,14 @@ export class Cart extends CartBase {
   prepareOrder() {
     const ordersArray: Order[] = [];
     BUMP_TYPES.forEach((type: string) => {
-      const orders: Order[] = this[type].cartItems.map((cartItem: CartItem) => {
-        return {
-          item_id: cartItem.item.id,
-          product_id: cartItem.duration.id,
-        };
+      this[type].cartItems.map((cartItem: CartItem) => {
+        if (!cartItem.isFree) {
+          ordersArray.push({
+            item_id: cartItem.item.id,
+            product_id: cartItem.duration.id,
+          });
+        }
       });
-      ordersArray.push(...orders);
     });
     return ordersArray;
   }

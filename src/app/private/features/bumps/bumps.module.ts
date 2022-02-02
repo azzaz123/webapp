@@ -17,6 +17,7 @@ import { NavLinksModule } from '@shared/nav-links/nav-links.module';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
+import { VisibilityApiModule } from '@api/visibility/visibility-api.module';
 
 @NgModule({
   declarations: [CheckoutItemComponent, CartComponent, WallacoinComponent, bumpsRoutedComponents],
@@ -37,6 +38,7 @@ import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
     NgbButtonsModule,
     ToggleFormModule,
     ProBadgeModule,
+    VisibilityApiModule,
   ],
 })
 export class BumpsModule {}

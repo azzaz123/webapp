@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use.interface';
 import { Observable } from 'rxjs';
 import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
+import { BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
 import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE } from './endpoints';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class BumpsHttpService {
     return this.httpClient.get<BumpsPackageBalanceDTO[]>(BUMPS_PACKAGE_BALANCE(userId));
   }
 
-  public useBumpPackage(cart: BumpsPackageUse[]): Observable<void> {
+  public useBumpPackage(cart: BumpsPackageUseDTO[]): Observable<void> {
     return this.httpClient.post<void>(BUMPS_PACKAGE_USE, cart);
   }
 }
