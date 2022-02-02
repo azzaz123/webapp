@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserService } from '@core/user/user.service';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 import { Client, OptimizelyDecision, OptimizelyUserContext, enums } from '@optimizely/optimizely-sdk';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { FlagsParamInterface, TrackParamsInterface } from './optimizely.interface';
@@ -20,7 +21,7 @@ export class OptimizelyService {
     return this._optimizelyReady$.asObservable();
   }
 
-  constructor(private userService: UserService, private analyticsService: AnalyticsService) {}
+  constructor(private userService: UserService, private analyticsService: AnalyticsService, @Inject(WINDOW_TOKEN) private window: Window) {}
 
   public initialize(): void {
     import('@optimizely/optimizely-sdk').then((optimizelySdk) => {
@@ -29,6 +30,7 @@ export class OptimizelyService {
       });
       this.optimizelyClientInstance.onReady().then(({ success }) => {
         if (success) {
+          this.window['optimizelyClientInstance'] = this.optimizelyClientInstance;
           this.optimizelyClientInstance.notificationCenter.addNotificationListener(
             enums.NOTIFICATION_TYPES.DECISION,
             this.onDecision.bind(this)
