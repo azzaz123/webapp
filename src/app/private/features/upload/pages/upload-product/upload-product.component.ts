@@ -122,8 +122,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public lastSuggestedCategoryText: string;
   public isProUser: boolean;
 
-  public isShippabilityAllowed = false;
-  public isShippabilityAllowedByCategory = false;
+  public isShippabilityAllowed = true;
+  public isShippabilityAllowedByCategory = true;
   public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
   public readonly PERMISSIONS = PERMISSIONS;
