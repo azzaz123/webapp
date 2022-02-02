@@ -6,11 +6,11 @@
  */
 
 /**
- * Users clicks to view the MGM info in the MGM Host Section
+ * The account of the user is correctly deleted
  */
-export interface ClickMGMHostInfo {
+export interface AccountDeleted {
   /**
-   * Identifier of the screen where the user clicked to see more MGM Info
+   * Identifier of the screen
    */
-  screenId: 293 | 315;
+  screenId: 233;
 }

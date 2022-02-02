@@ -129,7 +129,6 @@ export enum SCREEN_IDS {
   OnboardingSeller = 298,
   P2PPaymentOffer = 299,
   '2FAConfiguration' = 300,
-  ItemDescriptionCG = 301,
   ActivateShippingToggle = 302,
   SelectShippingWeight = 303,
   KYCSelectImage = 304,
@@ -143,4 +142,10 @@ export enum SCREEN_IDS {
   CheckoutPayment = 312,
   CheckoutSummary = 313,
   AccountDeletion = 314,
+  MGMHostSuggested = 315,
+  ActivateShippingToggleV2 = 316,
+  ShippingFAQs = 317,
+  BumpItemPurchaseType = 318,
+  ProBumpItemPurchaseOption = 319,
+  NotificationSettings = 320,
 }

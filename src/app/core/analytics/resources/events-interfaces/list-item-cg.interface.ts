@@ -48,7 +48,7 @@ export interface ListItemCG {
   /**
    * Identifier of the screen that the item was uploaded from
    */
-  screenId: number;
+  screenId: 160 | 302 | 303;
   /**
    * Hashtags
    */
@@ -56,11 +56,15 @@ export interface ListItemCG {
   /**
    * shippingAllowed
    */
-  shippingAllowed?: boolean;
+  shippingAllowed: boolean;
   /**
    * If the item has the weight informed
    */
   shippingWeight?: number;
+  /**
+   * If the item has a preselected weight informed
+   */
+  preselectedItemWeight?: number;
   /**
    * Country of the user (seller) that lists the item (e.g.: ES, IT, etc.)
    */

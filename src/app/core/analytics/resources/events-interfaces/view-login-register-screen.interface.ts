@@ -17,4 +17,12 @@ export interface ViewLoginRegisterScreen {
    * The source that takes the user to the login/register page
    */
   source?: 'landing_banner' | 'landing_details';
+  /**
+   * Name of the experiment or A/B testing applied to the user who has viewed the login register screen. The default value would be 'baseline'
+   */
+  experiment?: string;
+  /**
+   * The value proposition shown on the screen from the walkthrough slider
+   */
+  valuePropositionScreen?: 'sell' | 'buy' | 'your_way' | 'shipping' | 'safety';
 }

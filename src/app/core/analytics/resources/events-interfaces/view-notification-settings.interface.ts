@@ -6,11 +6,11 @@
  */
 
 /**
- * Users clicks to view the MGM info in the MGM Host Section
+ * Users view the notification settings screen
  */
-export interface ClickMGMHostInfo {
+export interface ViewNotificationSettings {
   /**
-   * Identifier of the screen where the user clicked to see more MGM Info
+   * Identifier of the screen where the user can activate or deactivate different types of notifications
    */
-  screenId: 293 | 315;
+  screenId: 320;
 }

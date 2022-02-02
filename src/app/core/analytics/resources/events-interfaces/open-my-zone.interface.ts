@@ -6,15 +6,15 @@
  */
 
 /**
- * Users clicks to share the a link to invite a guest in the Member Get Member program
+ * View launched when the user joins the private web, default = my_catalog
  */
-export interface ClickShareMGMLink {
+export interface OpenMyZone {
   /**
-   * Identifier of the screen that the link was shared from
+   * Whether the user is a PRO
    */
-  screenId: 293 | 315;
+  isPro: boolean;
   /**
-   * MGM code that the user has shared
+   * Identifier of the edit screen
    */
-  referralCode: string;
+  screenId: 140;
 }
