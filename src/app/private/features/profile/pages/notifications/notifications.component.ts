@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MeApiService } from '@api/me/me-api.service';
-import { NotificationSettings } from '@api/core/model/notifications';
+import { NotificationConsent, NotificationSettings } from '@api/core/model/notifications';
 
 @Component({
   selector: 'tsl-notifications',
@@ -32,7 +32,7 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
-  public handleChange(notification) {
+  public handleChange(notification: NotificationConsent) {
     const { id, enabled } = notification;
 
     if (enabled) {
