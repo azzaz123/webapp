@@ -11,9 +11,14 @@ import { ItemService } from '@core/item/item.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { mappedSoldItemsResponseFixture, soldItemsResponseFixture } from '@api/fixtures/me/sold/sold-response.fixture';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
-import { NotificationsSettingsResponseDto } from './dtos/notifications-settings/response/notifcations-settings-response-dto';
 import { NotificationSettings } from '@api/core/model/notifications';
-import { NotificationsSettingsDto } from './dtos/notifications-settings/response/notifcations-settings-dto';
+import {
+  notificationIdToModify,
+  notificationsSettingsResponseFixture,
+} from '@api/fixtures/me/notifications/notifications-response.fixture';
+import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { mappedNotificationsSettings } from '@api/fixtures/me/notifications/notifications.fixture';
 
 describe('MeApiService', () => {
   let service: MeApiService;
@@ -30,6 +35,14 @@ describe('MeApiService', () => {
           useValue: {
             mine() {
               return of({ data: [MOCK_ITEM, MOCK_ITEM] });
+            },
+          },
+        },
+        {
+          provide: I18nService,
+          useValue: {
+            translate: (key: TRANSLATION_KEY) => {
+              return key;
             },
           },
         },
@@ -133,28 +146,25 @@ describe('MeApiService', () => {
 
     describe('when asked for notifications settings', () => {
       it('should retrieve notifications items', () => {
-        let notificationsSettingsResponseDto: NotificationsSettingsResponseDto;
-
-        service
-          .getMyNotificationsSettings()
-          .subscribe((data: NotificationsSettingsDto[]) => (notificationsSettingsResponseDto.notificationGroups = data));
-
-        // expect(notificationsSettingsResponseDto).toEqual({ list: [MOCK_ITEM, MOCK_ITEM] });
+        let notificationsSettings: NotificationSettings[];
+        spyOn(httpService, 'getMyNotificationsSettings').and.returnValue(of(notificationsSettingsResponseFixture));
+        service.getMyNotificationsSettings().subscribe((data: NotificationSettings[]) => (notificationsSettings = data));
+        expect(notificationsSettings).toEqual(mappedNotificationsSettings);
       });
-      // it('should disable notifications items', () => {
-      //   let notificationsSettingsResponseDto: NotificationsSettingsResponseDto;
 
-      //   service.getMyNotificationsSettings().subscribe((data: NotificationsSettingsDto[]) => (notificationsSettingsResponseDto.notificationGroups = data));
+      it('should disable notification', (done) => {
+        spyOn(httpService, 'setNotificationDisabled').and.returnValue(of(null));
+        service.setNotificationDisabled(`${notificationIdToModify}`).subscribe(() => {
+          done();
+        });
+      });
 
-      //   // expect(notificationsSettingsResponseDto).toEqual({ list: [MOCK_ITEM, MOCK_ITEM] });
-      // });
-      // it('should enable notifications items', () => {
-      //   let notificationsSettingsResponseDto: NotificationsSettingsResponseDto;
-
-      //   service.getMyNotificationsSettings().subscribe((data: NotificationsSettingsDto[]) => (notificationsSettingsResponseDto.notificationGroups = data));
-
-      //   // expect(notificationsSettingsResponseDto).toEqual({ list: [MOCK_ITEM, MOCK_ITEM] });
-      // });
+      it('should enable notification', (done) => {
+        spyOn(httpService, 'setNotificationEnable').and.returnValue(of(null));
+        service.setNotificationEnable(`${notificationIdToModify}`).subscribe(() => {
+          done();
+        });
+      });
     });
   });
 });

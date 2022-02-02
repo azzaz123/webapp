@@ -79,7 +79,6 @@ export function mapNotifications(notifications: NotificationsDto[], i18nService:
       title: i18nService.translate(mapBackendyNotificationCopyToFrontend(title)),
       enabled,
     };
-
     return item;
   });
 }

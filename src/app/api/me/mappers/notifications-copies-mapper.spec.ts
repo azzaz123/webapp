@@ -1,10 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { notificationsSettingsResponseFixture } from '@api/fixtures/me/notifications/notifications-response.fixture';
-import { mappedNotificationsSettingsDto } from '@api/fixtures/me/notifications/notifications.fixture';
+import { mappedNotificationsSettings } from '@api/fixtures/me/notifications/notifications.fixture';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { BackendNotificationKeys, mapNotificationsSettings } from './notifications-copies-mapper';
+import { mapNotificationsSettings } from './notifications-copies-mapper';
 
 describe('NotificationsSettingsMapper', () => {
   let i18nService: I18nService;
@@ -36,8 +36,7 @@ describe('NotificationsSettingsMapper', () => {
   describe('mapNotificationSettings', () => {
     it('should map', () => {
       const items = mapNotificationsSettings(notificationsSettingsResponseFixture.notificationGroups, i18nService);
-
-      expect(items).toEqual(mappedNotificationsSettingsDto);
+      expect(items).toEqual(mappedNotificationsSettings);
     });
   });
 });

@@ -15,6 +15,10 @@ export class NotificationsComponent implements OnInit {
   constructor(private meApiService: MeApiService) {}
 
   ngOnInit(): void {
+    this.getMyNotificationsSettings();
+  }
+
+  public getMyNotificationsSettings() {
     this.meApiService.getMyNotificationsSettings().subscribe((data) => {
       const filteredNotifications = data
         .map((nGroup) => {
@@ -28,7 +32,7 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
-  handleChange(notification) {
+  public handleChange(notification) {
     const { id, enabled } = notification;
 
     if (enabled) {

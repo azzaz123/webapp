@@ -12,7 +12,6 @@ import {
 import { FavouritesResponseDto } from '../dtos/favourites/response/favourites-response-dto';
 import { SoldItemResponseDto } from '../dtos/sold/response/sold-response-dto';
 import { soldItemsResponseFixture } from '@api/fixtures/me/sold/sold-response.fixture';
-import { NotificationsSettingsDto } from '../dtos/notifications-settings/response/notifcations-settings-dto';
 import { NotificationsSettingsResponseDto } from '../dtos/notifications-settings/response/notifcations-settings-response-dto';
 import {
   notificationIdToModify,
@@ -90,7 +89,7 @@ describe('MeHttpService', () => {
         expect(response).toEqual(soldItemsResponseFixture);
       });
     });
-    describe('when asked to retrieve sold items', () => {
+    describe('when asked to retrieve notifications settings', () => {
       describe('notifications settings', () => {
         it('should retrieve notifications settings', () => {
           let response: NotificationsSettingsResponseDto;
