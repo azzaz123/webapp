@@ -7,12 +7,13 @@ import {
   SUBSCRIPTION_MARKETS,
   TierDiscount,
   SUBSCRIPTION_CATEGORY_TYPES,
-  SubscriptionsV3Response,
+  PERK_NAMES,
 } from '../app/core/subscriptions/subscriptions.interface';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { SubscriptionsV3Response, TierDto } from '@core/subscriptions/dtos/subscriptions/subscription-response.interface';
 
 export class MockSubscriptionService {
   getSubscriptions() {
@@ -124,25 +125,50 @@ export const TIER_DISCOUNT: TierDiscount = {
   no_discount_date: 1640908800000,
 };
 
-export const TIER_WITH_DISCOUNT: Tier = {
+export const TIER_WITH_DISCOUNT_NO_MAPPED: TierDto = {
   id: 'plan_FWuFVeTHEDyECd',
   limit: 9,
   price: 9.99,
   currency: '€',
   discount: TIER_DISCOUNT,
   is_basic: false,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 9,
+    },
+  ],
+};
+
+export const TIER_WITH_DISCOUNT: Tier = {
+  ...TIER_WITH_DISCOUNT_NO_MAPPED,
+  bumps: [],
 };
 
 export const TIER_2_WITH_DISCOUNT: Tier = {
   ...TIER_WITH_DISCOUNT,
   id: 'plan_FWuFVeTHEDyECz',
   limit: 50,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 50,
+    },
+  ],
 };
 
 export const TIER_WITH_DISCOUNT_WITHOUT_LIMIT: Tier = {
   ...TIER_WITH_DISCOUNT,
   id: 'plan_FWuFVeTHEDyECe',
-  limit: null,
+  limit: undefined,
+  perks: [],
+};
+
+export const TIER_WITH_DISCOUNT_WITHOUT_LIMIT_NO_MAPPED: TierDto = {
+  ...TIER_WITH_DISCOUNT_NO_MAPPED,
+  id: 'plan_FWuFVeTHEDyECe',
+  limit: undefined,
+  perks: [],
 };
 
 export const TIER_BASIC_WITH_DISCOUNT: Tier = {
@@ -152,6 +178,13 @@ export const TIER_BASIC_WITH_DISCOUNT: Tier = {
   currency: '€',
   discount: TIER_DISCOUNT,
   is_basic: true,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 9,
+    },
+  ],
+  bumps: [],
 };
 
 export const TIER_NO_DISCOUNT_NO_BASIC: Tier = {
@@ -161,6 +194,13 @@ export const TIER_NO_DISCOUNT_NO_BASIC: Tier = {
   currency: '€',
   discount: null,
   is_basic: false,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 9,
+    },
+  ],
+  bumps: [],
 };
 
 export const TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT: Tier = {
@@ -169,6 +209,9 @@ export const TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT: Tier = {
   currency: '€',
   discount: null,
   is_basic: false,
+  limit: undefined,
+  perks: [],
+  bumps: [],
 };
 
 const MOCK_CG_BASIC_DATA: Partial<SubscriptionsResponse> = {
@@ -284,6 +327,12 @@ export const MOCK_SUBSCRIPTION_RE_SUBSCRIBED: SubscriptionsResponse = generateSu
   TIER_WITH_DISCOUNT,
   TIER_WITH_DISCOUNT_WITHOUT_LIMIT,
 ]);
+
+export const MOCK_SUBSCRIPTION_RE_SUBSCRIBED_NO_MAPPED: SubscriptionsV3Response = generateSubscription(
+  MOCK_RE_BASIC_DATA,
+  MOCK_SUBSCRIBED_DATA,
+  [TIER_WITH_DISCOUNT_NO_MAPPED as Tier, TIER_WITH_DISCOUNT_WITHOUT_LIMIT_NO_MAPPED as Tier]
+);
 
 export const MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED: SubscriptionsResponse = generateSubscription(
   MOCK_CARS_BASIC_DATA,
@@ -429,7 +478,7 @@ export const SUBSCRIPTION_REQUIRES_PAYMENT: SubscriptionResponse = {
 
 export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
   {
-    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED,
+    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED_NO_MAPPED,
     id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
   },
   {
@@ -453,6 +502,49 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
   },
   {
     ...MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
+  },
+];
+
+export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS: SubscriptionsV3Response[] = [
+  {
+    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED_NO_MAPPED,
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT_NO_MAPPED,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: PERK_NAMES.CITYBUMP,
+            quantity: 12,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_NO_DISCOUNTS,
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT_NO_MAPPED,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: PERK_NAMES.CITYBUMP,
+            quantity: 12,
+          },
+          {
+            name: PERK_NAMES.ZONEBUMP,
+            quantity: 8,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c07',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
     id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
   },
 ];
