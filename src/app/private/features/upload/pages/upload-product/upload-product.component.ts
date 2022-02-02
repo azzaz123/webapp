@@ -43,8 +43,8 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { fromEvent, merge, Observable, Subject } from 'rxjs';
+import { debounceTime, map, pairwise, take, tap } from 'rxjs/operators';
 import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
@@ -652,9 +652,9 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         if (prev !== curr) {
           if (curr) {
             this.setRequiredDeliveryInfo(true);
-        } else {
+          } else {
             this.setRequiredDeliveryInfo(false);
-          deliveryInfo.setValue(null);
+            deliveryInfo.setValue(null);
           }
         }
       });
@@ -933,10 +933,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.setRequiredDeliveryInfo(this.isShippabilityAllowed);
 
       if (performRestartIfNecessary) {
-      if (!this.isShippabilityAllowed) {
-        this.restartShippingToggleFormData(false);
-      } else if (!previousIsShippabilityAllowed) {
-        this.restartShippingToggleFormData(true);
+        if (!this.isShippabilityAllowed) {
+          this.restartShippingToggleFormData(false);
+        } else if (!previousIsShippabilityAllowed) {
+          this.restartShippingToggleFormData(true);
         }
       }
     });
@@ -971,7 +971,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     )
       .pipe(debounceTime(500))
       .subscribe(() => {
-      this.updateShippingToggleStatus(this.isShippabilityAllowed);
-    });
+        this.updateShippingToggleStatus(this.isShippabilityAllowed);
+      });
   }
 }
