@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AcceptScreenProperties } from '../../interfaces';
+import { tap } from 'rxjs/operators';
+import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
 
 @Component({
@@ -12,11 +13,20 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
 export class AcceptScreenModalComponent implements OnInit {
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties>;
+  public selectedDropOffPosition: number;
 
   constructor(private acceptScreenStoreService: AcceptScreenStoreService) {}
 
   ngOnInit(): void {
     this.acceptScreenStoreService.initialize(this.requestId);
-    this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$;
+    this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$.pipe(
+      tap((acceptScreenProperties: AcceptScreenProperties) => {
+        this.selectedDropOffPosition = acceptScreenProperties.carriers.findIndex((carrier: AcceptScreenCarrier) => carrier.isSelected);
+      })
+    );
+  }
+
+  public notifySelectedDropOffModeByUser(newSelectedDropOffPosition: number, currentProperties: AcceptScreenProperties): void {
+    this.acceptScreenStoreService.notifySelectedDropOffModeByUser(newSelectedDropOffPosition, currentProperties);
   }
 }

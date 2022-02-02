@@ -1,13 +1,34 @@
 <div class="modal-body">
   <div *ngIf="acceptScreenProperties$ | async as properties">
     <tsl-product-card
+      class="d-block mb-4"
       [buyer]="properties.buyer"
       [item]="properties.item"
       [offeredPrice]="properties.request.offeredPrice"
     ></tsl-product-card>
-    <tsl-delivery-radio-selector>
-      <ng-template tslDeliveryRadioOption *ngFor="let dropOffPoint of properties.carriers">
-        {{ dropOffPoint.type }}
+    <h2 class="mb-3" i18n="@@accept_view_seller_delivery_method_selector_title">How to send it?</h2>
+    <tsl-delivery-radio-selector
+      class="d-block"
+      [selectedId]="selectedDropOffPosition"
+      (selectedIdChanged)="notifySelectedDropOffModeByUser($event, properties)"
+    >
+      <ng-template tslDeliveryRadioOption *ngFor="let carrier of properties.carriers">
+        <div class="d-flex">
+          <div class="Carrier__iconWrapper mr-2">
+            <img class="Carrier__iconImage" alt="carrier image" [src]="carrier.icon" />
+          </div>
+          <div>
+            <span
+              >{{ carrier.title }} <b>{{ carrier.price }}</b></span
+            >
+            <div *ngIf="carrier.isSelected" class="mb-2">
+              <span *ngIf="carrier.information" class="d-block">{{ carrier.information }}</span>
+              <span *ngIf="carrier.secondaryInformation" class="d-block">{{ carrier.secondaryInformation }}</span>
+              <span class="d-block">{{ carrier.restrictions }}</span>
+              <tsl-button *ngIf="carrier.buttonProperties.isShowed">{{ carrier.buttonProperties.text }}</tsl-button>
+            </div>
+          </div>
+        </div>
       </ng-template>
     </tsl-delivery-radio-selector>
   </div>

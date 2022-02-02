@@ -1,0 +1,14 @@
+@import '~style/common';
+
+.Carrier {
+  &__iconWrapper {
+    @include square(48px);
+  }
+
+  &__iconImage {
+    border-radius: 5px;
+    object-fit: cover;
+    overflow: hidden;
+    width: inherit;
+  }
+}

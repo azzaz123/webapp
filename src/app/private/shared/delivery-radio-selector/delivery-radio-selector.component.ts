@@ -7,7 +7,7 @@ import { DeliveryRadioOptionDirective } from '@private/shared/delivery-radio-sel
 })
 export class DeliveryRadioSelectorComponent implements AfterContentInit {
   @Input() selectedId: number;
-  @Output() selectedChanged: EventEmitter<number> = new EventEmitter();
+  @Output() selectedIdChanged: EventEmitter<number> = new EventEmitter();
 
   @ContentChildren(DeliveryRadioOptionDirective)
   rawOptions: QueryList<DeliveryRadioOptionDirective>;
