@@ -11,6 +11,6 @@ export const AcceptScreenDropOffPointButtonTranslations: Record<CARRIER_DROP_OFF
 };
 
 export const AcceptScreenDropOffPointFreePrice: Record<CARRIER_DROP_OFF_MODE, string> = {
-  [CARRIER_DROP_OFF_MODE.HOME_PICK_UP]: $localize``,
-  [CARRIER_DROP_OFF_MODE.POST_OFFICE]: $localize``,
+  [CARRIER_DROP_OFF_MODE.HOME_PICK_UP]: '',
+  [CARRIER_DROP_OFF_MODE.POST_OFFICE]: '',
 };
