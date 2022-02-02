@@ -9,7 +9,7 @@ import { mapDeliveryItemDetailsDtoToDeliveryItemDetails } from './mappers/respon
 export class DeliveryItemDetailsApiService {
   constructor(private deliveryItemDetailsHttpService: DeliveryItemDetailsHttpService) {}
 
-  public getDeliveryDetailsByItemHash(itemHash: string): Observable<DeliveryItemDetails> {
+  public getDeliveryDetailsByItemHash(itemHash: string): Observable<DeliveryItemDetails | null> {
     return this.deliveryItemDetailsHttpService.get(itemHash).pipe(map(mapDeliveryItemDetailsDtoToDeliveryItemDetails));
   }
 }
