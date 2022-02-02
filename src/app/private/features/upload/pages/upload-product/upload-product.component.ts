@@ -924,20 +924,20 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 
-  private updateShippingToggleStatus(previousIsShippabilityAllowed: boolean): void {
-    const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
-    const subcategoryId = this.getSubcategoryId();
-    const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
-
-    this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
+  private updateShippingToggleStatus(previousIsShippabilityAllowed: boolean, performRestartIfNecessary: boolean = true): void {
+    this.getShippabilittyAllowance().subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
       this.isShippabilityAllowed = shippingToggleAllowance.category && shippingToggleAllowance.subcategory && shippingToggleAllowance.price;
       this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
       this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
 
+      this.setRequiredDeliveryInfo(this.isShippabilityAllowed);
+
+      if (performRestartIfNecessary) {
       if (!this.isShippabilityAllowed) {
         this.restartShippingToggleFormData(false);
       } else if (!previousIsShippabilityAllowed) {
         this.restartShippingToggleFormData(true);
+        }
       }
     });
   }
