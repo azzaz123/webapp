@@ -190,6 +190,7 @@ export interface Duration {
   duration: number;
   market_code: string;
   original_market_code: string;
+  is_free: boolean;
 }
 
 export interface SelectedItemsAction {

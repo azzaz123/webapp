@@ -15,6 +15,8 @@ import { BumpTutorialModule } from '@shared/bump-tutorial/bump-tutorial.module';
 import { SharedModule } from '@shared/shared.module';
 import { NavLinksModule } from '@shared/nav-links/nav-links.module';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
+import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 
 @NgModule({
   declarations: [CheckoutItemComponent, CartComponent, WallacoinComponent, bumpsRoutedComponents],
@@ -33,6 +35,8 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     NavLinksModule,
     NgbButtonsModule,
+    ToggleFormModule,
+    ProBadgeModule,
   ],
 })
 export class BumpsModule {}

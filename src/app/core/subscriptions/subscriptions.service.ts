@@ -196,6 +196,10 @@ export class SubscriptionsService {
     return subscriptions.find((subscription) => subscription.category_id === categorySubscriptionId);
   }
 
+  public isSubscribed(subscription: SubscriptionsResponse): boolean {
+    return !!subscription.subscribed_from;
+  }
+
   public tierDiscountByCategoryId(subscriptions: SubscriptionsResponse[], categoryId: number): Tier {
     const selectedsubscription = this.getSubscriptionByCategory(subscriptions, categoryId);
 

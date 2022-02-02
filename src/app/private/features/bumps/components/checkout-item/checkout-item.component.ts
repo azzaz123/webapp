@@ -7,6 +7,7 @@ import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
 import { BUMP_TYPES } from '@shared/catalog/cart/cart-base';
 import { Cart } from '@shared/catalog/cart/cart';
 import { CreditInfo } from '@core/payments/payment.interface';
+import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-checkout-item',
@@ -16,17 +17,22 @@ import { CreditInfo } from '@core/payments/payment.interface';
 export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
+  @Input() subscription: SubscriptionsResponse;
   @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
   types: string[] = BUMP_TYPES;
   durations: string[];
   _duration: string;
   selectedType: string;
+  onlyFree: boolean;
   private active = true;
 
   set selectedDuration(value: string) {
     this._duration = value;
     if (this.selectedType) {
       if (this.itemWithProducts.products[this.selectedDuration][this.selectedType]) {
+        if (this.onlyFree && !this.itemWithProducts.products[this.selectedDuration][this.selectedType].is_free) {
+          this.selectedType = this.types[0];
+        }
         this.select(this.selectedType);
       } else {
         this.selectedType = this.types[0];
@@ -59,6 +65,40 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.active = false;
+  }
+
+  public onToggleChange() {
+    const parsedDurations = [];
+    if (this.onlyFree) {
+      this.types = [];
+
+      this.durations.forEach((duration) => {
+        if (this.hasOneFree(duration)) {
+          parsedDurations.push(duration);
+        }
+      });
+      this.durations = parsedDurations;
+      this.selectedDuration = this.durations[0];
+    } else {
+      this.durations = keys(this.itemWithProducts.products);
+      this.selectedDuration = this.durations[1];
+    }
+  }
+
+  hasOneFree(duration): boolean {
+    let isFree: boolean;
+    const bumpTypes = keys(this.itemWithProducts.products[duration]);
+    const aa = bumpTypes.find((bumpType) => this.itemWithProducts.products[duration][bumpType].is_free);
+
+    bumpTypes.forEach((bumpType) => {
+      if (this.itemWithProducts.products[duration][bumpType].is_free) {
+        isFree = true;
+        if (!this.types.includes(bumpType)) {
+          this.types.push(bumpType);
+        }
+      }
+    });
+    return isFree;
   }
 
   public onRemoveItem(itemId: string, type: string): void {

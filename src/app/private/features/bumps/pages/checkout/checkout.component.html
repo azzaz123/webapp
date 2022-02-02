@@ -19,6 +19,7 @@
             (itemRemoved)="removeItem($event)"
             [itemWithProducts]="item"
             [creditInfo]="creditInfo"
+            [subscription]="subscriptionByCategoryId(item.item.categoryId)"
           ></tsl-checkout-item>
         </div>
       </div>

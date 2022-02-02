@@ -4,6 +4,8 @@ import { ItemWithProducts } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
+import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.component';
 
 @Component({
@@ -16,12 +18,14 @@ export class CheckoutComponent implements OnInit {
   itemsWithProducts: ItemWithProducts[];
   provincialBump: boolean;
   creditInfo: CreditInfo;
+  subscriptions: SubscriptionsResponse[];
 
   constructor(
     private itemService: ItemService,
     private router: Router,
     private paymentService: PaymentService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private subscriptionService: SubscriptionsService
   ) {}
 
   ngOnInit() {
@@ -32,6 +36,7 @@ export class CheckoutComponent implements OnInit {
         this.getProductsFromSelectedItems();
       }
     });
+    this.getBumpsSubscription();
   }
 
   public removeItem(itemId: string): void {
@@ -39,6 +44,12 @@ export class CheckoutComponent implements OnInit {
     if (this.itemsWithProducts.length === 0) {
       this.router.navigate(['catalog/list']);
     }
+  }
+
+  public subscriptionByCategoryId(categoryId) {
+    const subscription = this.subscriptionService.getSubscriptionByCategory(this.subscriptions, categoryId);
+
+    return this.subscriptionService.isSubscribed(subscription) ? subscription : null;
   }
 
   private getProductsFromSelectedItems(): void {
@@ -61,6 +72,16 @@ export class CheckoutComponent implements OnInit {
     if (itemsWithProducts.length) {
       this.itemsWithProducts = itemsWithProducts;
       this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
+      this.itemsWithProducts.map((item) => {
+        const itemMapped = item;
+        const subscription = this.subscriptionByCategoryId(item.item.categoryId);
+        if (subscription) {
+          subscription.selected_tier.bumps.forEach((bump) => {
+            itemMapped.products[bump.duration_days * 24][bump.name].is_free = true;
+          });
+        }
+        return itemMapped;
+      });
     } else {
       this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
     }
@@ -70,6 +91,12 @@ export class CheckoutComponent implements OnInit {
         creditInfo.factor = 1;
       }
       this.creditInfo = creditInfo;
+    });
+  }
+
+  private getBumpsSubscription() {
+    this.subscriptionService.getSubscriptions().subscribe((response) => {
+      this.subscriptions = response;
     });
   }
 }

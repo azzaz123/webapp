@@ -12,7 +12,7 @@
           <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length">
             <ul>
               <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item">
-                <div class="cart-box">
+                <div class="cart-box mb-2">
                   <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
                   <div class="type">
                     <span [ngSwitch]="type">
@@ -26,8 +26,14 @@
                     x {{ cartItem.duration.duration / 24 }}<span i18n="@@web_cart_665">days</span>
                   </div>
                   <div class="price">
-                    {{ cartItem.duration.market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
+                    {{
+                      (cartItem.duration.is_free ? 0 : cartItem.duration.market_code * creditInfo?.factor)
+                        | customCurrency: creditInfo?.currencyName
+                    }}
                   </div>
+                </div>
+                <div *ngIf="cartItem.duration.is_free">
+                  <tsl-pro-badge class="ml-2"></tsl-pro-badge>
                 </div>
               </li>
             </ul>
