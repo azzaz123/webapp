@@ -32,6 +32,7 @@ describe('AcceptScreenModalComponent', () => {
   const countriesAsOptionsAndDefaultSubject: ReplaySubject<CountryOptionsAndDefault> = new ReplaySubject(1);
   const deliveryAddressSelector = 'tsl-delivery-address';
   const MOCK_ACCEPT_SCREEN_HELP_URL = 'MOCK_ACCEPT_SCREEN_HELP_URL';
+  const MOCK_UPDATE_ACCEPT_SCREEN_PROPERTIES = MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS;
 
   let activeModal: NgbActiveModal;
   let component: AcceptScreenModalComponent;
@@ -48,7 +49,9 @@ describe('AcceptScreenModalComponent', () => {
           provide: AcceptScreenStoreService,
           useValue: {
             initialize() {},
-            update() {},
+            update() {
+              acceptScreenPropertiesSubject.next(MOCK_UPDATE_ACCEPT_SCREEN_PROPERTIES);
+            },
             get properties$() {
               return acceptScreenPropertiesSubject.asObservable();
             },
@@ -92,6 +95,7 @@ describe('AcceptScreenModalComponent', () => {
 
   describe('When opening Accept Screen', () => {
     beforeEach(() => {
+      spyOn(acceptScreenStoreService, 'update').and.callThrough();
       spyOn(activeModal, 'close');
     });
 
@@ -178,12 +182,18 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         describe('and we click on the address button', () => {
-          it('should redirect to address screen step', () => {
+          beforeEach(() => {
             const addressButton = fixture.debugElement.query(By.css('#addressButton')).nativeElement;
 
             addressButton.click();
+          });
 
+          it('should redirect to address screen step', () => {
             expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS);
+          });
+
+          it('should NOT update the accept screen properties', () => {
+            shouldUpdateTheAcceptScreenProperties(false);
           });
         });
 
@@ -269,7 +279,7 @@ describe('AcceptScreenModalComponent', () => {
       });
 
       it('should detect the accept screen as active step', () => {
-        expect(component.isAcceptScreenStep).toBeTruthy();
+        shouldAcceptScreenActiveStep();
       });
     });
 
@@ -297,8 +307,18 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         describe('and we click on the back button', () => {
+          beforeEach(() => {
+            const backButton = fixture.debugElement.query(By.css('#back')).nativeElement;
+
+            backButton.click();
+          });
+
           it('should redirect to the accept screen step', () => {
-            shouldMoveToPrincipalStepWhenBack();
+            shouldAcceptScreenActiveStep();
+          });
+
+          it('should update the accept screen properties requesting it again', () => {
+            shouldUpdateTheAcceptScreenProperties(true);
           });
         });
 
@@ -322,8 +342,11 @@ describe('AcceptScreenModalComponent', () => {
           });
 
           it('should redirect to the accept screen step', () => {
-            expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN);
-            expect(component.isAcceptScreenStep).toBeTruthy();
+            shouldAcceptScreenActiveStep();
+          });
+
+          it('should update the accept screen properties requesting it again', () => {
+            shouldUpdateTheAcceptScreenProperties(true);
           });
         });
       });
@@ -369,8 +392,18 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         describe('and we click on the back button', () => {
+          beforeEach(() => {
+            const backButton = fixture.debugElement.query(By.css('#back')).nativeElement;
+
+            backButton.click();
+          });
+
           it('should redirect to the accept screen step', () => {
-            shouldMoveToPrincipalStepWhenBack();
+            shouldAcceptScreenActiveStep();
+          });
+
+          it('should update the accept screen properties requesting it again', () => {
+            shouldUpdateTheAcceptScreenProperties(true);
           });
         });
 
@@ -410,8 +443,18 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         describe('and we click on the back button', () => {
+          beforeEach(() => {
+            const backButton = fixture.debugElement.query(By.css('#back')).nativeElement;
+
+            backButton.click();
+          });
+
           it('should redirect to the accept screen step', () => {
-            shouldMoveToPrincipalStepWhenBack();
+            shouldAcceptScreenActiveStep();
+          });
+
+          it('should update the accept screen properties requesting it again', () => {
+            shouldUpdateTheAcceptScreenProperties(true);
           });
         });
 
@@ -480,11 +523,22 @@ describe('AcceptScreenModalComponent', () => {
     }
   }
 
-  function shouldMoveToPrincipalStepWhenBack(): void {
-    const backButton = fixture.debugElement.query(By.css('#back')).nativeElement;
+  function shouldUpdateTheAcceptScreenProperties(shouldBeUpdated: boolean): void {
+    if (shouldBeUpdated) {
+      let newAcceptScreenProperties: AcceptScreenProperties;
+      component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
+        newAcceptScreenProperties = newProperties;
+      });
 
-    backButton.click();
+      expect(acceptScreenStoreService.update).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      expect(acceptScreenStoreService.update).toHaveBeenCalledTimes(1);
+      expect(newAcceptScreenProperties).toStrictEqual(MOCK_UPDATE_ACCEPT_SCREEN_PROPERTIES);
+    } else {
+      expect(acceptScreenStoreService.update).not.toHaveBeenCalled();
+    }
+  }
 
+  function shouldAcceptScreenActiveStep(): void {
     expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN);
     expect(component.isAcceptScreenStep).toBeTruthy();
   }
