@@ -357,6 +357,28 @@ export const MOCK_MALICIOUS_INBOX_USER = new InboxUser(
 
 export const MOCK_INBOX_ITEM: InboxItem = InboxItemPlaceholder;
 
+export const MOCK_INBOX_ITEM_MINE: InboxItem = new InboxItem(
+  'itemHash',
+  { amount: 288, currency: 'EUR' },
+  'Item title',
+  InboxItemPlaceholder.mainImage,
+  'web-slug',
+  InboxItemStatus.PUBLISHED,
+  true,
+  CATEGORY_IDS.GAMES_CONSOLES
+);
+
+export const MOCK_INBOX_ITEM_NOT_MINE: InboxItem = new InboxItem(
+  'itemHash',
+  { amount: 288, currency: 'EUR' },
+  'Item title',
+  InboxItemPlaceholder.mainImage,
+  'web-slug',
+  InboxItemStatus.PUBLISHED,
+  false,
+  CATEGORY_IDS.GAMES_CONSOLES
+);
+
 export const MOCK_INBOX_MESSAGE: InboxMessage = new InboxMessage(
   'msg1',
   'abcd',
@@ -393,6 +415,32 @@ export const MOCK_INBOX_CONVERSATION_BASIC: InboxConversation = new InboxConvers
   new Date(),
   MOCK_INBOX_USER,
   MOCK_INBOX_ITEM,
+  'bli',
+  MOCK_INBOX_MESSAGES,
+  false,
+  CONVERSATION_PHONE,
+  288,
+  MOCK_INBOX_MESSAGES[0]
+);
+
+export const MOCK_INBOX_CONVERSATION_AS_BUYER: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM_NOT_MINE,
+  'bli',
+  MOCK_INBOX_MESSAGES,
+  false,
+  CONVERSATION_PHONE,
+  288,
+  MOCK_INBOX_MESSAGES[0]
+);
+
+export const MOCK_INBOX_CONVERSATION_AS_SELLER: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM_MINE,
   'bli',
   MOCK_INBOX_MESSAGES,
   false,

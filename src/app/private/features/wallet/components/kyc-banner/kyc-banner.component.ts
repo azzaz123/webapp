@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { KYCBannerSpecifications } from '@api/core/model/kyc-properties/interfaces/kyc-banner-specifications.interface';
 import { KYCProperties } from '@api/core/model/kyc-properties/interfaces/kyc-properties.interface';
 import { KYC_STATUS } from '@api/core/model/kyc-properties/kyc-status.enum';
-import { NgbAlertConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { BannerSpecifications } from '@shared/banner/banner-specifications.interface';
 import { KYCInfoModalComponent } from '../../modals/kyc-info-modal/kyc-info-modal.component';
 import { KYCStatusModalComponent } from '../../modals/kyc-status-modal/kyc-status-modal.component';
 import { KYC_MODAL_STATUS_PROPERTIES } from '../../modals/kyc/constants/kyc-modal-status-constants';
@@ -33,10 +34,11 @@ export class KYCBannerComponent {
     return `btn-white btn-white--medium-fontsize btn-white--${this.KYCBannerSpecifications.type}`;
   }
 
-  public get ngbAlertConfiguration(): NgbAlertConfig {
+  public get bannerSpecifications(): BannerSpecifications {
     return {
       dismissible: this.KYCBannerSpecifications.dismissible,
       type: this.KYCBannerSpecifications.type,
+      isFullHeight: false,
     };
   }
 

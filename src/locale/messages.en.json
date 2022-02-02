@@ -344,6 +344,8 @@
     "web_top_bar_button_register_or_signin": "Register or sign in",
     "web_components_topbar_11": "List a product",
     "web_components_topbar_12": "List a car",
+    "accept_view_seller_product_card_buyer_detail_buy_flow_test_variant_b_label": "{$INTERPOLATION} bought it",
+    "accept_view_seller_product_card_item_detail_buy_flow_test_variant_b_label": "Your product",
     "web_cart_451": "My features",
     "web_cart_615": "Delete list",
     "web_cart_452": "Local bump",
