@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { SellerRequestDto } from '../dtos/seller-request-dto.interface';
 import { SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID } from './endpoints';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SellerRequestsHttpService {
   constructor(private http: HttpClient) {}
 

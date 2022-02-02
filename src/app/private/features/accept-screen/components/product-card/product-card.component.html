@@ -1,0 +1,28 @@
+<div class="ProductCard p-2">
+  <div *ngIf="buyer" class="ProductCard__buyerWrapper d-flex px-2 py-3">
+    <tsl-user-avatar [imageUrl]="buyer.imageUrl" [size]="48"></tsl-user-avatar>
+    <span
+      i18n="@@accept_view_seller_product_card_buyer_detail_buy_flow_test_variant_b_label"
+      class="ProductCard__buyerName ml-2 align-self-center"
+      ><span id="BuyerName" class="ProductCard__text--bold">{{ buyer.name }}</span> bought it</span
+    >
+  </div>
+  <div *ngIf="item" id="itemWrapper" class="d-flex px-2 py-3 align-items-center justify-content-between">
+    <div class="ProductCard__item d-flex text-truncate pr-2">
+      <div class="ProductCard__itemImageWrapper mr-2">
+        <img class="ProductCard__itemImage" alt="item image" [src]="item.imageUrl" />
+      </div>
+      <div class="ProductCard__itemInfo d-flex flex-column text-truncate">
+        <span
+          class="ProductCard__itemInfoHeader text-truncate"
+          i18n="@@accept_view_seller_product_card_item_detail_buy_flow_test_variant_b_label"
+          >Your product</span
+        >
+        <span class="ProductCard__text text-truncate">{{ item.title }}</span>
+      </div>
+    </div>
+    <span class="ProductCard__offeredPrice ProductCard__text--bold pl-4">{{
+      offeredPrice.amount.total | customCurrency: offeredPrice.currency.code
+    }}</span>
+  </div>
+</div>

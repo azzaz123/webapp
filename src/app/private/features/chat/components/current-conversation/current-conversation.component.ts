@@ -35,13 +35,16 @@ import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { UserService } from 'app/core/user/user.service';
 import { eq, includes, isEmpty } from 'lodash-es';
 import { CalendarSpec } from 'moment';
-import { of, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { delay, take } from 'rxjs/operators';
 import { onVisible } from 'visibilityjs';
 import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
 import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
+import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
+import { DeliveryConversationContextService } from '../../modules/delivery-conversation-context/services/delivery-conversation-context/delivery-conversation-context.service';
+import { DELIVERY_BANNER_ACTION_TYPE } from '../../modules/delivery-banner/enums/delivery-banner-action-type.enum';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -88,11 +91,16 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     private userService: UserService,
     private analyticsService: AnalyticsService,
     private momentCalendarSpecService: MomentCalendarSpecService,
-    private translationService: ChatTranslationService
+    private translationService: ChatTranslationService,
+    private deliveryConversationContextService: DeliveryConversationContextService
   ) {}
 
   get emptyInbox(): boolean {
     return this.conversationsTotal === 0;
+  }
+
+  public get deliveryBannerProperties$(): Observable<DeliveryBanner> {
+    return this.deliveryConversationContextService.bannerProperties$;
   }
 
   ngOnInit() {
@@ -136,6 +144,11 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.openMaliciousConversationModal();
       this.isConversationChanged = true;
       this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
+
+      this.deliveryConversationContextService.reset();
+      if (this.currentConversation) {
+        this.deliveryConversationContextService.update(this.currentConversation);
+      }
     }
   }
 
@@ -262,6 +275,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
           conversation.isAutomaticallyTranslatable = true;
         });
     }
+  }
+
+  public handleDeliveryBannerCTAClick(deliveryBannerActionType: DELIVERY_BANNER_ACTION_TYPE): void {
+    this.deliveryConversationContextService.handleClickCTA(this.currentConversation, deliveryBannerActionType);
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {

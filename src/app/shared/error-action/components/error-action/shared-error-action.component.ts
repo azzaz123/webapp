@@ -42,6 +42,7 @@ export class SharedErrorActionComponent implements OnDestroy, OnInit {
       iconPath: '/assets/images/wallet/error-action/icon.svg',
       imagePath: '/assets/images/wallet/error-action/error.svg',
       type: BANNER_TYPES.DANGER,
+      isFullHeight: false,
     };
   }
 
