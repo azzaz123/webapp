@@ -82,6 +82,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     } else {
       this.durations = keys(this.itemWithProducts.products);
       this.selectedDuration = this.durations[1];
+      this.types = BUMP_TYPES;
     }
   }
 
@@ -115,6 +116,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     const cartItem: CartItem = {
       item: this.itemWithProducts.item,
       duration: this.itemWithProducts.products[this.selectedDuration][type],
+      isFree: this.onlyFree,
     };
     this.cartService.add(cartItem, type);
   }

@@ -8,6 +8,8 @@ import { CalendarDates } from '@private/features/catalog-pro/core/calendar-dates
 export interface CartItem {
   item: Item;
   duration: Duration;
+  isFree?: boolean;
+  subscriptionPackage?: string;
 }
 
 export interface CartProItem {

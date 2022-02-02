@@ -2,38 +2,43 @@
   <div class="Cart__title mb-4" i18n="@@web_cart_451">My features</div>
   <div class="d-flex flex-column h-100">
     <div
-      class="cart-wrapper pb-3 mb-4"
+      class="Cart__wrapper pb-3 mb-4"
       [class.has-financial-card]="hasSavedCard"
       [class.no-credit]="!creditInfo?.credit"
       [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit"
     >
-      <div class="scroll-panel">
-        <ul *ngIf="cart" class="items-list">
+      <div class="overflow-auto h-100">
+        <ul *ngIf="cart" class="Cart__list">
           <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length">
             <ul>
-              <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item">
-                <div class="cart-box mb-2">
+              <li *ngFor="let cartItem of cart[type].cartItems" class="d-flex flex-column">
+                <div class="d-flex mb-2">
                   <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
-                  <div class="type">
-                    <span [ngSwitch]="type">
-                      <ng-container *ngSwitchCase="BUMP_TYPES.ZONE_BUMP">
-                        <ng-container *ngIf="!provincialBump" i18n="@@web_cart_454">Local</ng-container>
-                        <ng-container *ngIf="provincialBump" i18n="@@web_cart_455">Provincial</ng-container>
-                      </ng-container>
-                      <ng-container *ngSwitchCase="BUMP_TYPES.CITY_BUMP" i18n="@@web_cart_663">City</ng-container>
-                      <ng-container *ngSwitchCase="BUMP_TYPES.COUNTRY_BUMP" i18n="@@web_cart_664">Country</ng-container>
-                    </span>
-                    x {{ cartItem.duration.duration / 24 }}<span i18n="@@web_cart_665">days</span>
+                  <div class="d-flex w-100 flex-column justify-content-center">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <span [ngSwitch]="type">
+                          <ng-container *ngSwitchCase="BUMP_TYPES.ZONE_BUMP">
+                            <ng-container *ngIf="!provincialBump" i18n="@@web_cart_454">Local</ng-container>
+                            <ng-container *ngIf="provincialBump" i18n="@@web_cart_455">Provincial</ng-container>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="BUMP_TYPES.CITY_BUMP" i18n="@@web_cart_663">City</ng-container>
+                          <ng-container *ngSwitchCase="BUMP_TYPES.COUNTRY_BUMP" i18n="@@web_cart_664">Country</ng-container>
+                        </span>
+                        x {{ cartItem.duration.duration / 24 }}<span i18n="@@web_cart_665">days</span>
+                      </div>
+                      <div>
+                        {{
+                          (cartItem.isFree ? 0 : cartItem.duration.market_code * creditInfo?.factor)
+                            | customCurrency: creditInfo?.currencyName
+                        }}
+                      </div>
+                    </div>
+                    <div *ngIf="cartItem.isFree" class="align-items-center d-flex Cart__listDescription">
+                      {{ cartItem.duration.subscriptionPackage }}
+                      <tsl-pro-badge class="ml-2" [iconType]="ICON_TYPE.MEDIUM"></tsl-pro-badge>
+                    </div>
                   </div>
-                  <div class="price">
-                    {{
-                      (cartItem.duration.is_free ? 0 : cartItem.duration.market_code * creditInfo?.factor)
-                        | customCurrency: creditInfo?.currencyName
-                    }}
-                  </div>
-                </div>
-                <div *ngIf="cartItem.duration.is_free">
-                  <tsl-pro-badge class="ml-2"></tsl-pro-badge>
                 </div>
               </li>
             </ul>

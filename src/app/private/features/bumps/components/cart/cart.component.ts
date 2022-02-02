@@ -17,6 +17,7 @@ import { CartBase, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { PACKS_TYPES } from '@core/payments/pack';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
+import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 
 @Component({
   selector: 'tsl-cart',
@@ -37,6 +38,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public selectedCard = false;
   public readonly BUMP_TYPES = BUMP_TYPE;
   public readonly PACK_TYPES = PACKS_TYPES;
+  public readonly ICON_TYPE = ICON_TYPE;
 
   private active = true;
 

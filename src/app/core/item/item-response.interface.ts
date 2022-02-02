@@ -191,6 +191,7 @@ export interface Duration {
   market_code: string;
   original_market_code: string;
   is_free: boolean;
+  subscriptionPackage: string;
 }
 
 export interface SelectedItemsAction {

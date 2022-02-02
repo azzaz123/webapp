@@ -78,6 +78,7 @@ export class CheckoutComponent implements OnInit {
         if (subscription) {
           subscription.selected_tier.bumps.forEach((bump) => {
             itemMapped.products[bump.duration_days * 24][bump.name].is_free = true;
+            itemMapped.products[bump.duration_days * 24][bump.name].subscriptionPackage = subscription.type;
           });
         }
         return itemMapped;
