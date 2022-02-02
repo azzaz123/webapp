@@ -31,6 +31,7 @@ export class AcceptScreenService {
     private carrierDropOffModeRequestApiService: CarrierDropOffModeRequestApiService,
     private deliveryAddressApiService: DeliveryAddressApiService
   ) {}
+
   public getAcceptScreenProperties(
     requestId: string,
     dropOffSelectedByUser: CARRIER_DROP_OFF_MODE = null

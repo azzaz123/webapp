@@ -10,7 +10,7 @@
     <tsl-delivery-radio-selector
       class="d-block"
       [selectedId]="selectedDropOffPosition"
-      (selectedIdChanged)="notifySelectedDropOffModeByUser($event, properties)"
+      (selectedIdChanged)="notifySelectedDropOffModeByUserChanged($event, properties)"
     >
       <ng-template tslDeliveryRadioOption *ngFor="let carrier of properties.carriers">
         <div class="d-flex">
@@ -25,7 +25,9 @@
               <span *ngIf="carrier.information" class="d-block">{{ carrier.information }}</span>
               <span *ngIf="carrier.secondaryInformation" class="d-block">{{ carrier.secondaryInformation }}</span>
               <span class="d-block">{{ carrier.restrictions }}</span>
-              <tsl-button *ngIf="carrier.buttonProperties.isShowed">{{ carrier.buttonProperties.text }}</tsl-button>
+              <tsl-button *ngIf="carrier.buttonProperties.isShowed" class="mt-2" className="btn-secondary">{{
+                carrier.buttonProperties.text
+              }}</tsl-button>
             </div>
           </div>
         </div>

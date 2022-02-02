@@ -1,4 +1,4 @@
-<div *ngFor="let option of options; let i = index" class="d-flex">
+<div *ngFor="let option of options; let i = index" class="d-flex justify-content-between">
   <ng-template [ngTemplateOutlet]="option.templateRef"></ng-template>
   <input type="radio" name="form" [value]="i" [checked]="selectedId === i" (change)="selectedIdChanged.emit(i)" />
 </div>

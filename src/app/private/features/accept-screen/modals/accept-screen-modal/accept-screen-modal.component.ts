@@ -26,7 +26,7 @@ export class AcceptScreenModalComponent implements OnInit {
     );
   }
 
-  public notifySelectedDropOffModeByUser(newSelectedDropOffPosition: number, currentProperties: AcceptScreenProperties): void {
+  public notifySelectedDropOffModeByUserChanged(newSelectedDropOffPosition: number, currentProperties: AcceptScreenProperties): void {
     this.acceptScreenStoreService.notifySelectedDropOffModeByUser(newSelectedDropOffPosition, currentProperties);
   }
 }

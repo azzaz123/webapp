@@ -8,8 +8,6 @@ import {
   AcceptScreenSeller,
   AcceptScreenBuyer,
   AcceptScreenCarrier,
-  AcceptScreenDropOffPoint,
-  AcceptScreenHomePickUp,
   AcceptScreenCarrierButtonProperties,
 } from '@private/features/accept-screen/interfaces';
 import {
@@ -23,12 +21,7 @@ import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { AcceptScreenDeliveryAddress } from '../../interfaces/accept-screen-delivery-address.interface';
 import { Money } from '@api/core/model/money.interface';
-import {
-  AcceptScreenDropOffPointButtonTranslations,
-  AcceptScreenDropOffPointInformation,
-  AcceptScreenDropOffPointSecondInformation,
-  AcceptScreenDropOffPointTitle,
-} from '../../constants/accept-screen-translations';
+import { AcceptScreenDropOffPointButtonTranslations, AcceptScreenDropOffPointTitle } from '../../constants/accept-screen-translations';
 import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 
@@ -68,16 +61,15 @@ export function mapCarrierDropOffModeToAcceptScreenCarriers(
   input: CarrierDropOffModeRequest,
   dropOffModeSelectedByUser: CARRIER_DROP_OFF_MODE
 ): AcceptScreenCarrier[] {
-  const dropOffSorteredByCost = input.modes.sort((a, b) => a.sellerCosts.amount.total - b.sellerCosts.amount.total);
-  const dropOffSelected = dropOffModeSelectedByUser || dropOffSorteredByCost[0].type;
+  if (!input.modes) return [];
+
+  const dropOffSorteredByCost: DropOffModeRequest[] = input.modes.sort(
+    (a: DropOffModeRequest, b: DropOffModeRequest) => a.sellerCosts.amount.total - b.sellerCosts.amount.total
+  );
+  const dropOffSelected: CARRIER_DROP_OFF_MODE = dropOffModeSelectedByUser || dropOffSorteredByCost[0].type;
 
   return dropOffSorteredByCost.map((dropOffModeRequest: DropOffModeRequest) => {
-    if (dropOffModeRequest.type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP) {
-      return mapHomePickup(dropOffModeRequest, dropOffSelected);
-    }
-    if (dropOffModeRequest.type === CARRIER_DROP_OFF_MODE.POST_OFFICE) {
-      return mapDropOffPoint(dropOffModeRequest, dropOffSelected);
-    }
+    return mapCarrier(dropOffModeRequest, dropOffSelected);
   });
 }
 
@@ -90,21 +82,6 @@ export const mapDeliveryAddresstoAcceptScreenDeliveryAddress: ToDomainMapper<Del
   };
 };
 
-function mapDropOffPoint(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenDropOffPoint {
-  const lastAddressUsed: LastAddressUsed = dropOffMode.postOfficeDetails.lastAddressUsed;
-  return {
-    ...mapCarrier(dropOffMode, carrierDropOffModeSelected),
-    dropOffPoint: lastAddressUsed ? mapDropOffPointInformation(lastAddressUsed) : null,
-  };
-}
-
-function mapHomePickup(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenHomePickUp {
-  return {
-    ...mapCarrier(dropOffMode, carrierDropOffModeSelected),
-    deliveryDayInformation: dropOffMode.schedule ? mapDeliveryDayInformation(dropOffMode.schedule) : null,
-  };
-}
-
 function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {
   return {
     type: dropOffMode.type,
@@ -112,8 +89,8 @@ function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected:
     icon: dropOffMode.icon,
     title: mapTitle(dropOffMode.type),
     price: mapPrice(dropOffMode.sellerCosts),
-    information: mapInformation(dropOffMode.type),
-    secondaryInformation: mapSecondaryInformation(dropOffMode.type),
+    information: mapInformation(dropOffMode.type, dropOffMode.schedule),
+    secondaryInformation: mapSecondaryInformation(dropOffMode.type, dropOffMode.postOfficeDetails?.lastAddressUsed),
     restrictions: dropOffMode.restrictions,
     buttonProperties: mapButtonProperties(
       dropOffMode.type,
@@ -132,12 +109,28 @@ const mapTitle: ToDomainMapper<CARRIER_DROP_OFF_MODE, string> = (type: CARRIER_D
   return AcceptScreenDropOffPointTitle[type];
 };
 
-const mapInformation: ToDomainMapper<CARRIER_DROP_OFF_MODE, string> = (type: CARRIER_DROP_OFF_MODE): string => {
-  return AcceptScreenDropOffPointInformation[type];
-};
+function mapInformation(type: CARRIER_DROP_OFF_MODE, schedule: TentativeSchedule): string {
+  const scheduleMapped: string = schedule ? mapDeliveryDayInformation(schedule) : null;
 
-function mapSecondaryInformation(type: CARRIER_DROP_OFF_MODE): string {
-  return AcceptScreenDropOffPointSecondInformation[type];
+  if (type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP && scheduleMapped) {
+    return $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_pickup_date_description:The package will be picked up at your address on ${scheduleMapped}:INTERPOLATION:`;
+  }
+
+  if (type === CARRIER_DROP_OFF_MODE.POST_OFFICE) {
+    return $localize`:@@accept_view_seller_po_all_delivery_method_selector_time_limit_description:You have 5 days to drop off the package.`;
+  }
+}
+
+function mapSecondaryInformation(type: CARRIER_DROP_OFF_MODE, lastAddressUsed: LastAddressUsed): string {
+  const lastAddressUsedMapped: string = lastAddressUsed ? mapDropOffPointInformation(lastAddressUsed) : null;
+
+  if (type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP) {
+    return $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_service_fee_description:The cost of the service will be deducted from your sale.`;
+  }
+
+  if (type === CARRIER_DROP_OFF_MODE.POST_OFFICE && lastAddressUsedMapped) {
+    return $localize`:@@accept_view_seller_po_all_delivery_method_selector_collection_point_address_description:Drop-off point: ${lastAddressUsedMapped}:INTERPOLATION:`;
+  }
 }
 
 function mapButtonProperties(
@@ -181,6 +174,7 @@ const mapDeliveryDayInformation: ToDomainMapper<TentativeSchedule, string> = (sc
   const weekDay: string = schedule.pickUpStartDate.toLocaleDateString(navigatorLanguage, { weekday: 'long' }).toLowerCase();
   const completeDate: string = schedule.pickUpStartDate
     .toLocaleDateString(navigatorLanguage, { day: 'numeric', month: 'long', year: 'numeric' })
+    .replace(',', '')
     .toLowerCase();
   const hourStart: string = getHourAndMinutesFromDate(schedule.pickUpStartDate);
   const hourEnd: string = getHourAndMinutesFromDate(schedule.pickUpEndDate);

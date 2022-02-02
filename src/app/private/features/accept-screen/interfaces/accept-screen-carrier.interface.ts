@@ -14,14 +14,6 @@ export interface AcceptScreenCarrier {
   acceptEndpoint: string;
 }
 
-export interface AcceptScreenDropOffPoint extends AcceptScreenCarrier {
-  dropOffPoint: string;
-}
-
-export interface AcceptScreenHomePickUp extends AcceptScreenCarrier {
-  deliveryDayInformation: string;
-}
-
 export interface AcceptScreenCarrierButtonProperties {
   isShowed: boolean;
   text: string;
