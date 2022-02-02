@@ -64,16 +64,22 @@ export const mapUserToAcceptScreenBuyer: ToDomainMapper<User, AcceptScreenBuyer>
   };
 };
 
-export const mapCarrierDropOffModeToAcceptScreenCarriers: ToDomainMapper<CarrierDropOffModeRequest, AcceptScreenCarrier[]> = (
-  input: CarrierDropOffModeRequest
-): AcceptScreenCarrier[] => {
-  return input.modes.map((dropOffModeRequest: DropOffModeRequest) => {
+export function mapCarrierDropOffModeToAcceptScreenCarriers(
+  input: CarrierDropOffModeRequest,
+  dropOffModeSelectedByUser: CARRIER_DROP_OFF_MODE
+): AcceptScreenCarrier[] {
+  const dropOffSorteredByCost = input.modes.sort((a, b) => a.sellerCosts.amount.total - b.sellerCosts.amount.total);
+  const dropOffSelected = dropOffModeSelectedByUser || dropOffSorteredByCost[0].type;
+
+  return dropOffSorteredByCost.map((dropOffModeRequest: DropOffModeRequest) => {
     if (dropOffModeRequest.type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP) {
-      return mapHomePickup(dropOffModeRequest);
+      return mapHomePickup(dropOffModeRequest, dropOffSelected);
     }
-    return mapDropOffPoint(dropOffModeRequest);
+    if (dropOffModeRequest.type === CARRIER_DROP_OFF_MODE.POST_OFFICE) {
+      return mapDropOffPoint(dropOffModeRequest, dropOffSelected);
+    }
   });
-};
+}
 
 export const mapDeliveryAddresstoAcceptScreenDeliveryAddress: ToDomainMapper<DeliveryAddressApi, AcceptScreenDeliveryAddress> = (
   input: DeliveryAddressApi
@@ -84,29 +90,25 @@ export const mapDeliveryAddresstoAcceptScreenDeliveryAddress: ToDomainMapper<Del
   };
 };
 
-const mapDropOffPoint: ToDomainMapper<DropOffModeRequest, AcceptScreenDropOffPoint> = (
-  dropOffMode: DropOffModeRequest
-): AcceptScreenDropOffPoint => {
+function mapDropOffPoint(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenDropOffPoint {
   const lastAddressUsed: LastAddressUsed = dropOffMode.postOfficeDetails.lastAddressUsed;
   return {
-    ...mapCarrier(dropOffMode),
+    ...mapCarrier(dropOffMode, carrierDropOffModeSelected),
     dropOffPoint: lastAddressUsed ? mapDropOffPointInformation(lastAddressUsed) : null,
   };
-};
+}
 
-const mapHomePickup: ToDomainMapper<DropOffModeRequest, AcceptScreenHomePickUp> = (
-  dropOffMode: DropOffModeRequest
-): AcceptScreenHomePickUp => {
+function mapHomePickup(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenHomePickUp {
   return {
-    ...mapCarrier(dropOffMode),
+    ...mapCarrier(dropOffMode, carrierDropOffModeSelected),
     deliveryDayInformation: dropOffMode.schedule ? mapDeliveryDayInformation(dropOffMode.schedule) : null,
   };
-};
+}
 
-const mapCarrier: ToDomainMapper<DropOffModeRequest, AcceptScreenCarrier> = (dropOffMode: DropOffModeRequest): AcceptScreenCarrier => {
+function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {
   return {
     type: dropOffMode.type,
-    isSelected: null,
+    isSelected: dropOffMode.type === carrierDropOffModeSelected,
     icon: dropOffMode.icon,
     title: mapTitle(dropOffMode.type),
     price: mapPrice(dropOffMode.sellerCosts),
@@ -120,7 +122,7 @@ const mapCarrier: ToDomainMapper<DropOffModeRequest, AcceptScreenCarrier> = (dro
     ),
     acceptEndpoint: dropOffMode.acceptEndpoint,
   };
-};
+}
 
 const mapUserToImageUrl: ToDomainMapper<User, string> = (user: User): string => {
   return user.image?.urls_by_size.original || PLACEHOLDER_AVATAR;
