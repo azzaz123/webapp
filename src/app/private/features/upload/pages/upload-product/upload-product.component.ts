@@ -657,6 +657,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       });
   }
 
+  private setRequiredDeliveryInfo(required: boolean) {
+    this.uploadForm.get('delivery_info').setValidators(required ? [Validators.required] : []);
+  }
+
   private handleUploadFormExtraFields(): void {
     const formCategoryId = this.uploadForm.get('category_id').value;
     const rawCategory = this.rawCategories.find((category) => category.category_id === +formCategoryId);
