@@ -190,7 +190,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
     this.detectTitleKeyboardChanges();
 
-    this.updateShippingToggleStatus(this.isShippabilityAllowed);
+    this.updateShippingToggleStatus(this.isShippabilityAllowed, false);
     this.isProUser = this.userService.isProUser();
   }
 
