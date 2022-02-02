@@ -646,13 +646,16 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.uploadForm
       .get('sale_conditions')
       .get('supports_shipping')
-      .valueChanges.subscribe((supportsShipping) => {
+      .valueChanges.pipe(pairwise())
+      .subscribe(([prev, curr]: [boolean, boolean]) => {
         const deliveryInfo = this.uploadForm.get('delivery_info');
-        if (supportsShipping) {
-          deliveryInfo.setValidators([Validators.required]);
+        if (prev !== curr) {
+          if (curr) {
+            this.setRequiredDeliveryInfo(true);
         } else {
-          deliveryInfo.setValidators([]);
+            this.setRequiredDeliveryInfo(false);
           deliveryInfo.setValue(null);
+          }
         }
       });
   }
