@@ -10,7 +10,7 @@ import {
 import { BannerComponent } from '@shared/banner/banner.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
-import { DELIVERY_BANNER_ACTION_TYPE } from '../enums/delivery-banner-action-type.enum';
+import { DELIVERY_BANNER_ACTION } from '../enums/delivery-banner-action.enum';
 import { DeliveryBanner } from '../interfaces/delivery-banner.interface';
 
 import { DeliveryBannerComponent } from './delivery-banner.component';
@@ -21,7 +21,7 @@ import { DeliveryBannerComponent } from './delivery-banner.component';
 })
 class TestWrapperDeliveryBannerComponent {
   @Input() bannerProperties: DeliveryBanner = MOCK_DELIVERY_BANNER;
-  clickedCTA(_actionType: DELIVERY_BANNER_ACTION_TYPE): void {}
+  clickedCTA(_actionType: DELIVERY_BANNER_ACTION): void {}
 }
 
 describe('DeliveryBannerComponent', () => {

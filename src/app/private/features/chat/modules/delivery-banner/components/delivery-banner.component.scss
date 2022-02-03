@@ -3,13 +3,4 @@
 .DeliveryBanner {
   height: 66px;
   border-bottom: 1px solid $blue-grey-5;
-
-  &__description {
-    margin: 0px;
-  }
-
-  ::ng-deep button {
-    padding-top: 11px;
-    padding-bottom: 11px;
-  }
 }
