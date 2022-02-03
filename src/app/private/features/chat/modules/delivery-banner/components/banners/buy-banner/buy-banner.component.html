@@ -5,12 +5,13 @@
         <tsl-lottie [src]="lottie" [loop]="false"></tsl-lottie>
       </div>
       <div>
-        <span class="mr-1">Shipping from</span><b>{{ bannerProperties.price }}</b>
+        <span class="mr-1" i18n="@@chat_buyer_shipping_enabled_banner_starting_price_description_part_1">Shipping from</span
+        ><b>{{ bannerProperties.price }}</b>
       </div>
     </div>
 
     <div>
-      <tsl-button (click)="handleClickBuy()">Buy</tsl-button>
+      <tsl-button (click)="handleClickBuy()" i18n="@@chat_buyer_shipping_enabled_banner_buy_button">Buy</tsl-button>
     </div>
   </div>
 </tsl-banner>
