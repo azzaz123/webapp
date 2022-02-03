@@ -968,10 +968,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.uploadForm.get('extra_info').get('object_type').get('id').valueChanges,
       this.uploadForm.get('extra_info').get('object_type_2').get('id').valueChanges,
       this.uploadForm.get('sale_price').valueChanges
-    )
-      .pipe(debounceTime(500))
-      .subscribe(() => {
-        this.updateShippingToggleStatus(this.isShippabilityAllowed);
-      });
+    ).subscribe(() => {
+      this.updateShippingToggleStatus(this.isShippabilityAllowed);
+    });
   }
 }
