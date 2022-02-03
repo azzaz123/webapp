@@ -354,6 +354,7 @@
     "accept_view_seller_po_all_delivery_method_selector_time_limit_description": "Hai 5 giorni per depositare il pacco.\n",
     "accept_view_seller_hpu_ba_delivery_method_selector_service_fee_description": "Il costo del servizio verrà detratto dalla tua vendita.",
     "accept_view_seller_po_all_delivery_method_selector_collection_point_address_description": "Punto di consegna:",
+    "accept_view_seller_delivery_method_selector_free_text": "GRATIS",
     "accept_view_seller_delivery_method_selector_title": "Come vuoi spedirlo?",
     "web_cart_451": "I miei articoli in evidenza",
     "web_cart_615": "Elimina lista",

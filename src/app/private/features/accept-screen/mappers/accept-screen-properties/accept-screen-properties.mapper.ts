@@ -150,7 +150,8 @@ function mapButtonProperties(
 }
 
 const mapPrice: ToDomainMapper<Money, string> = (sellerCosts: Money): string => {
-  return sellerCosts.amount.total <= 0 ? 'GRATIS' : sellerCosts.toString();
+  const deliveryMethodFreeTranslation: string = $localize`:@@accept_view_seller_delivery_method_selector_free_text:FREE`;
+  return sellerCosts.amount.total <= 0 ? deliveryMethodFreeTranslation : sellerCosts.toString();
 };
 
 const mapDropOffPointInformation: ToDomainMapper<LastAddressUsed, string> = (lastAddressUsed: LastAddressUsed): string => {

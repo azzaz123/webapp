@@ -354,6 +354,7 @@
     "accept_view_seller_po_all_delivery_method_selector_time_limit_description": "Dispones de 5 días naturales para depositar el paquete.",
     "accept_view_seller_hpu_ba_delivery_method_selector_service_fee_description": "El coste del servicio se descontará del dinero de la venta.",
     "accept_view_seller_po_all_delivery_method_selector_collection_point_address_description": "Punto de entrega:",
+    "accept_view_seller_delivery_method_selector_free_text": "GRATIS",
     "accept_view_seller_delivery_method_selector_title": "¿Cómo quieres enviarlo?",
     "web_cart_451": "Mis destacados",
     "web_cart_615": "Eliminar lista",

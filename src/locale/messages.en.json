@@ -354,6 +354,7 @@
     "accept_view_seller_po_all_delivery_method_selector_time_limit_description": "You have 5 days to drop off the package. ",
     "accept_view_seller_hpu_ba_delivery_method_selector_service_fee_description": "The cost of the service will be deducted from your sale.",
     "accept_view_seller_po_all_delivery_method_selector_collection_point_address_description": "Drop-off point:",
+    "accept_view_seller_delivery_method_selector_free_text": "FREE",
     "accept_view_seller_delivery_method_selector_title": "How to send it?",
     "web_cart_451": "My features",
     "web_cart_615": "Delete list",
