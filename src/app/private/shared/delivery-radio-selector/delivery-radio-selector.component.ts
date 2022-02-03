@@ -4,6 +4,7 @@ import { DeliveryRadioOptionDirective } from '@private/shared/delivery-radio-sel
 @Component({
   selector: 'tsl-delivery-radio-selector',
   templateUrl: './delivery-radio-selector.component.html',
+  styleUrls: ['./delivery-radio-selector.component.scss'],
 })
 export class DeliveryRadioSelectorComponent implements AfterContentInit {
   @Input() selectedId: number;

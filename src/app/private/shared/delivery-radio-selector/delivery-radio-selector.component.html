@@ -1,4 +1,11 @@
-<div *ngFor="let option of options; let i = index" class="d-flex justify-content-between">
+<div *ngFor="let option of options; let i = index" class="DeliveryRadioOption input-radio">
   <ng-template [ngTemplateOutlet]="option.templateRef"></ng-template>
-  <input type="radio" name="form" [value]="i" [checked]="selectedId === i" (change)="selectedIdChanged.emit(i)" />
+  <input
+    class="ml-3 mb-auto"
+    [ngClass]="selectedId === i ? 'mt-3' : 'mt-4'"
+    type="radio"
+    [value]="i"
+    [checked]="selectedId === i"
+    (change)="selectedIdChanged.emit(i)"
+  />
 </div>

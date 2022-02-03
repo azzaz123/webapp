@@ -6,26 +6,28 @@
       [item]="properties.item"
       [offeredPrice]="properties.request.offeredPrice"
     ></tsl-product-card>
-    <h2 class="mb-3" i18n="@@accept_view_seller_delivery_method_selector_title">How to send it?</h2>
+    <h2 class="AcceptScreenModal__title pb-2" i18n="@@accept_view_seller_delivery_method_selector_title">How to send it?</h2>
     <tsl-delivery-radio-selector
       class="d-block"
       [selectedId]="selectedDropOffPosition"
       (selectedIdChanged)="notifySelectedDropOffModeByUserChanged($event, properties)"
     >
       <ng-template tslDeliveryRadioOption *ngFor="let carrier of properties.carriers">
-        <div class="d-flex">
-          <div class="Carrier__iconWrapper mr-2">
-            <img class="Carrier__iconImage" alt="carrier image" [src]="carrier.icon" />
+        <div class="AcceptScreenModal__carrierWrapper d-flex">
+          <div class="AcceptScreenModal__carrierIconWrapper mr-3">
+            <img class="AcceptScreenModal__carrierIcon" alt="carrier image" [src]="carrier.icon" />
           </div>
-          <div>
-            <span
+          <div class="align-self-center">
+            <span class="mb-2"
               >{{ carrier.title }} <b>{{ carrier.price }}</b></span
             >
-            <div *ngIf="carrier.isSelected" class="mb-2">
-              <span *ngIf="carrier.information" class="d-block">{{ carrier.information }}</span>
-              <span *ngIf="carrier.secondaryInformation" class="d-block">{{ carrier.secondaryInformation }}</span>
-              <span class="d-block">{{ carrier.restrictions }}</span>
-              <tsl-button *ngIf="carrier.buttonProperties.isShowed" class="mt-2" className="btn-secondary">{{
+            <div *ngIf="carrier.isSelected">
+              <span *ngIf="carrier.information" class="AcceptScreenModal__carrierInformation d-block mt-2">{{ carrier.information }}</span>
+              <span *ngIf="carrier.secondaryInformation" class="AcceptScreenModal__carrierInformation d-block mt-2">{{
+                carrier.secondaryInformation
+              }}</span>
+              <span class="AcceptScreenModal__carrierRestrictions d-block p-2 mt-2">{{ carrier.restrictions }}</span>
+              <tsl-button *ngIf="carrier.buttonProperties.isShowed" class="mt-3 mb-1" className="btn-secondary">{{
                 carrier.buttonProperties.text
               }}</tsl-button>
             </div>
