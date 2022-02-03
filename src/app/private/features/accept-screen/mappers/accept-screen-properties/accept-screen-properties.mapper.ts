@@ -61,7 +61,7 @@ export function mapCarrierDropOffModeToAcceptScreenCarriers(
   input: CarrierDropOffModeRequest,
   dropOffModeSelectedByUser: CARRIER_DROP_OFF_MODE
 ): AcceptScreenCarrier[] {
-  if (!input.modes) return [];
+  if (!input.modes || input.modes.length === 0) return [];
 
   const dropOffSorteredByCost: DropOffModeRequest[] = input.modes.sort(
     (a: DropOffModeRequest, b: DropOffModeRequest) => a.sellerCosts.amount.total - b.sellerCosts.amount.total
@@ -94,8 +94,8 @@ function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected:
     restrictions: dropOffMode.restrictions,
     buttonProperties: mapButtonProperties(
       dropOffMode.type,
-      dropOffMode.schedule?.isEditable,
-      dropOffMode.postOfficeDetails?.selectionRequired
+      !!dropOffMode.schedule?.isEditable,
+      !!dropOffMode.postOfficeDetails?.selectionRequired
     ),
     acceptEndpoint: dropOffMode.acceptEndpoint,
   };
@@ -112,8 +112,10 @@ const mapTitle: ToDomainMapper<CARRIER_DROP_OFF_MODE, string> = (type: CARRIER_D
 function mapInformation(type: CARRIER_DROP_OFF_MODE, schedule: TentativeSchedule): string {
   const scheduleMapped: string = schedule ? mapDeliveryDayInformation(schedule) : null;
 
-  if (type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP && scheduleMapped) {
-    return $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_pickup_date_description:The package will be picked up at your address on ${scheduleMapped}:INTERPOLATION:`;
+  if (type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP) {
+    return scheduleMapped
+      ? $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_pickup_date_description:The package will be picked up at your address on ${scheduleMapped}:INTERPOLATION:`
+      : null;
   }
 
   if (type === CARRIER_DROP_OFF_MODE.POST_OFFICE) {
@@ -128,8 +130,10 @@ function mapSecondaryInformation(type: CARRIER_DROP_OFF_MODE, lastAddressUsed: L
     return $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_service_fee_description:The cost of the service will be deducted from your sale.`;
   }
 
-  if (type === CARRIER_DROP_OFF_MODE.POST_OFFICE && lastAddressUsedMapped) {
-    return $localize`:@@accept_view_seller_po_all_delivery_method_selector_collection_point_address_description:Drop-off point: ${lastAddressUsedMapped}:INTERPOLATION:`;
+  if (type === CARRIER_DROP_OFF_MODE.POST_OFFICE) {
+    return lastAddressUsedMapped
+      ? $localize`:@@accept_view_seller_po_all_delivery_method_selector_collection_point_address_description:Drop-off point: ${lastAddressUsedMapped}:INTERPOLATION:`
+      : null;
   }
 }
 
