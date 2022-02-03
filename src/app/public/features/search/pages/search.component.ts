@@ -40,7 +40,6 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { OPTIMIZELY_FLAG_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-flag-keys';
-import { UserService } from '@core/user/user.service';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -128,7 +127,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private searchListTrackingEventsService: SearchListTrackingEventsService,
     private searchTrackingEventsService: SearchTrackingEventsService,
     private experimentationService: ExperimentationService,
-    private userService: UserService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();

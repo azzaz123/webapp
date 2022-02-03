@@ -11,3 +11,8 @@ export const OptimizelyServiceMock = {
 export const OptimizeServiceMock = {
   getVariant: () => {},
 };
+
+export const ExperimentationServiceMock = {
+  initExperimentContext: () => {},
+  getVariations: () => {},
+};
