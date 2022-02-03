@@ -1,3 +1,7 @@
-<tsl-banner [specifications]="bannerStyleProperties">
-  <tsl-buyer-buy-banner *ngIf="bannerProperties.type === 1" [bannerProperties]="bannerProperties" (clickedCTA)="handleClickCTA($event)"></tsl-buyer-buy-banner>
-</tsl-banner>
+<div class="DeliveryBanner">
+  <tsl-buyer-buy-banner
+    *ngIf="bannerProperties.type === 1"
+    [bannerProperties]="bannerProperties"
+    (clickedCTA)="handleClickCTA($event)"
+  ></tsl-buyer-buy-banner>
+</div>

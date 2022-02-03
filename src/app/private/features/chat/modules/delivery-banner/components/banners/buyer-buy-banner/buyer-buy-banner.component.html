@@ -1,11 +1,16 @@
+<tsl-banner [specifications]="bannerStyleProperties">
+  <div class="BuyerBuyBanner d-flex h-100 w-100 align-content-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div>
+        <tsl-lottie [src]="lottie" [loop]="false"></tsl-lottie>
+      </div>
+      <div>
+        <span class="mr-1">Shipping from</span><b>{{ bannerProperties.price }}</b>
+      </div>
+    </div>
 
-<div class="BuyerBuyBanner d-flex justify-content-between">
-  <div class="d-flex">
-    <tsl-lottie [src]="'https://prod-delivery-resources.wallapop.com/chat-banner/box.json'"></tsl-lottie>
-    <span><p>Shipping from</p><b>{{bannerProperties.price}}</b></span>
+    <div>
+      <tsl-button (click)="handleClickBuy()">Buy</tsl-button>
+    </div>
   </div>
-
-  <div>
-    <tsl-button (click)="handleClickBuy()">Buy</tsl-button>
-  </div>
-</div>
+</tsl-banner>
