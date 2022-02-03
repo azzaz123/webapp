@@ -12,8 +12,8 @@ import { DecimalPipe } from '@angular/common';
 
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
-  const REJECT_BUTTON_ELEMENT_ID: string = '#rejectButton';
-  const ACCEPT_BUTTON_ELEMENT_ID: string = '#acceptButton';
+  const rejectButtonSelector: string = '#rejectButton';
+  const acceptButtonSelector: string = '#acceptButton';
 
   let component: AcceptScreenModalComponent;
   let fixture: ComponentFixture<AcceptScreenModalComponent>;
@@ -136,17 +136,17 @@ describe('AcceptScreenModalComponent', () => {
 
   function shouldRenderRejectButton(isShowed: boolean): void {
     if (isShowed) {
-      expect(de.nativeElement.querySelector(REJECT_BUTTON_ELEMENT_ID)).toBeTruthy();
+      expect(de.nativeElement.querySelector(rejectButtonSelector)).toBeTruthy();
     } else {
-      expect(de.nativeElement.querySelector(REJECT_BUTTON_ELEMENT_ID)).toBeFalsy();
+      expect(de.nativeElement.querySelector(rejectButtonSelector)).toBeFalsy();
     }
   }
 
   function shouldRenderAcceptButton(isShowed: boolean): void {
     if (isShowed) {
-      expect(de.nativeElement.querySelector(ACCEPT_BUTTON_ELEMENT_ID)).toBeTruthy();
+      expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeTruthy();
     } else {
-      expect(de.nativeElement.querySelector(ACCEPT_BUTTON_ELEMENT_ID)).toBeFalsy();
+      expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeFalsy();
     }
   }
 });
