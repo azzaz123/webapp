@@ -1698,7 +1698,7 @@
     "web_name_max_length": "Il nome non può contenere più di 32 caratteri",
     "web_last_name": "Cognome",
     "web_surname_required": "Cognome richiesto",
-    "web_surname_max_length": "Il nome non può contenere pi�� di 32 caratteri",
+    "web_surname_max_length": "Il nome non può contenere più di 32 caratteri",
     "web_company_name": "Ragione sociale",
     "web_company_name_required": "Nominativo della società richiesto",
     "web_company_name_max_length": "Il nome dell'azienda non può contenere più di 32 caratteri.",
