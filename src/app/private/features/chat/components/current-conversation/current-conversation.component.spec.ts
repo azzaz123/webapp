@@ -242,7 +242,7 @@ describe('CurrentConversationComponent', () => {
         it('should ask for CTA action handling to the delivery context', () => {
           spyOn(deliveryConversationContextService, 'handleClickCTA');
           const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
-          const expectedActionType: DELIVERY_BANNER_ACTION = MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES.action.type;
+          const expectedActionType: DELIVERY_BANNER_ACTION = MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES.action;
 
           deliveryBannerElement.triggerEventHandler('clickedCTA', expectedActionType);
 
