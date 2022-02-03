@@ -1,15 +1,15 @@
 <div class="DeliveryBanner">
   <tsl-banner [specifications]="bannerStyleProperties">
-    <div class="d-flex align-content-between align-items-center">
-      <div class="d-flex">
-        <tsl-svg-icon [src]="bannerProperties.svgPath"></tsl-svg-icon>
-        <p>{{bannerProperties.description.text}}</p>
-        <a *ngIf="showLink" [href]="bannerProperties.description.helpLink">Learn more</a>
-      </div>
-    
-      <div *ngIf="showCTA">
-        <tsl-button class="DeliveryBanner__button" (click)="handleClickCTA()">{{bannerProperties.action.label}}</tsl-button>
-      </div>
+      <div class="d-flex w-100 h-100 align-content-between align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <tsl-svg-icon class="DeliveryBanner__icon mr-3" [src]="bannerProperties.svgPath"></tsl-svg-icon>
+          <p class="DeliveryBanner__description">{{bannerProperties.description.text}}</p>
+          <a *ngIf="showLink" [href]="bannerProperties.description.helpLink">Learn more</a>
+        </div>
+      
+        <div *ngIf="showCTA">
+          <tsl-button class="DeliveryBanner__button" (click)="handleClickCTA()">{{bannerProperties.action.label}}</tsl-button>
+        </div>
     </div>
   </tsl-banner>
 </div>
