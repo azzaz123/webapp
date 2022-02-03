@@ -1,0 +1,20 @@
+@import '~style/common';
+
+.BuyerBuyBanner {
+  &__lottie {
+    @include square(48px);
+
+    max-height: 48px;
+    max-width: 48px;
+  }
+
+  b {
+    color: $walla-main;
+  }
+
+  ::ng-deep button {
+    padding: 11px 19px;
+    line-height: 20px;
+    border: 0px;
+  }
+}
