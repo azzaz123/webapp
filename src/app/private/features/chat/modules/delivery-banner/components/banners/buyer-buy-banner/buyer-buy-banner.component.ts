@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DELIVERY_BANNER_ACTION } from '../../../enums/delivery-banner-action-type.enum';
+import { DELIVERY_BANNER_ACTION } from '../../../enums/delivery-banner-action.enum';
 import { ActionableDeliveryBanner } from '../../../interfaces/actionable-delivery-banner.interface';
 import { PriceableDeliveryBanner } from '../../../interfaces/priceable-delivery-banner.interface';
 
