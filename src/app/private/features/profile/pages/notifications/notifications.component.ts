@@ -3,6 +3,7 @@ import { MeApiService } from '@api/me/me-api.service';
 import { NotificationConsent, NotificationSettings } from '@api/core/model/notifications';
 import {
   AnalyticsEvent,
+  AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
@@ -30,17 +31,6 @@ export class NotificationsComponent implements OnInit {
     this.getMyNotificationsSettings();
     this.trackViewNotificationSettings();
   }
-
-  // public trackViewKYCVerifyingIdentityScreen(): void {
-  //   const event: AnalyticsPageView<ViewKYCVerifyingIdentityScreen> = {
-  //     name: ANALYTICS_EVENT_NAMES.ViewKYCVerifyingIdentityScreen,
-  //     attributes: {
-  //       screenId: SCREEN_IDS.KYCVerifyingIdentity,
-  //     },
-  //   };
-
-  //   this.analyticsService.trackPageView(event);
-  // }
 
   public getMyNotificationsSettings() {
     this.meApiService.getMyNotificationsSettings().subscribe((data) => {
@@ -74,9 +64,8 @@ export class NotificationsComponent implements OnInit {
   }
 
   private trackViewNotificationSettings(): void {
-    const event: AnalyticsEvent<ViewNotificationSettings> = {
+    const event: AnalyticsPageView<ViewNotificationSettings> = {
       name: ANALYTICS_EVENT_NAMES.ViewNotificationSettings,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.NotificationSettings,
       },
@@ -87,8 +76,8 @@ export class NotificationsComponent implements OnInit {
 
   private trackCLMUpdateNotification(consent: boolean): void {
     const event: AnalyticsEvent<UpdateCLMNotification> = {
-      name: ANALYTICS_EVENT_NAMES.ViewNotificationSettings,
-      eventType: ANALYTIC_EVENT_TYPES.UserContent,
+      name: ANALYTICS_EVENT_NAMES.UpdateCLMNotification,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
         screenId: SCREEN_IDS.NotificationSettings,
         consent,
@@ -100,8 +89,8 @@ export class NotificationsComponent implements OnInit {
 
   private trackPromoUpdateNotification(consent: boolean): void {
     const event: AnalyticsEvent<UpdatePromoNotification> = {
-      name: ANALYTICS_EVENT_NAMES.ViewNotificationSettings,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      name: ANALYTICS_EVENT_NAMES.UpdatePromoNotification,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
         screenId: SCREEN_IDS.NotificationSettings,
         consent,
