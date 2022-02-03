@@ -14,7 +14,7 @@ export class DeliveryBannerComponent {
   @Input() bannerProperties: DeliveryBanner;
   @Output() clickedCTA: EventEmitter<DELIVERY_BANNER_ACTION> = new EventEmitter<DELIVERY_BANNER_ACTION>();
 
-  public readonly DELIVERY_BANNER_TYPES: DELIVERY_BANNER_TYPE;
+  public readonly DELIVERY_BANNER_TYPES: typeof DELIVERY_BANNER_TYPE = DELIVERY_BANNER_TYPE;
 
   public handleClickCTA(action: DELIVERY_BANNER_ACTION): void {
     this.clickedCTA.emit(action);
