@@ -2,16 +2,17 @@ import { Money } from '@api/core/model/money.interface';
 import { DELIVERY_BANNER_BUTTON_STYLE } from '@private/features/chat/modules/delivery-banner/enums/delivery-banner-button-style.enum';
 import { ActionableDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/actionable-delivery-banner.interface';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
-import { DescriptiveDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/descriptive-delivery-banner.interface';
 import { DELIVERY_BANNER_ACTION_TYPE } from '../enums/delivery-banner-action-type.enum';
 
-type BuyerBuyDeliveryBannerProperties = DescriptiveDeliveryBanner & ActionableDeliveryBanner;
+type BuyerBuyDeliveryBannerProperties = ActionableDeliveryBanner;
 export const BUYER_BUY_DELIVERY_BANNER_PROPERTIES = (price: Money): BuyerBuyDeliveryBannerProperties => {
   const bannerProperties: BuyerBuyDeliveryBannerProperties = {
-    svgPath: 'assets/icons/joke.svg',
-    description: { text: `Shipping available for ${price}`, helpLink: 'www.google.com' },
+    svgPath: 'assets/icons/shipping-available.svg',
+    description: {
+      text: `${$localize`:@@chat_buyer_shipping_enabled_banner_starting_price_description_part_1:Shipping from`} ${price}`,
+    },
     action: {
-      label: 'Buy',
+      label: $localize`:@@chat_buyer_shipping_enabled_banner_buy_button:Buy`,
       style: DELIVERY_BANNER_BUTTON_STYLE.CONTAINED,
       type: DELIVERY_BANNER_ACTION_TYPE.OPEN_PAYVIEW,
     },
