@@ -10,6 +10,7 @@ import {
 } from '@public/shared/services/filter-option/interfaces/option-responses/fashion-size-n-gender.interface';
 import { FashionBrand } from '@public/shared/services/filter-option/interfaces/option-responses/fashion-brand.interface';
 import { QueryParams } from '@public/shared/components/filters/core/interfaces/query-params.interface';
+import { FASHION_BRAND_FILTER_OPTION_GROUP_ID } from '@public/shared/components/filters/core/enums/filter-option-group-ids/fashion/fashion-brand-filter-option-group-id';
 
 export type FilterOptionsMapperMethods = keyof Omit<FilterOptionsMapperService, 'formatApiResponse'>;
 
@@ -101,10 +102,36 @@ export class FilterOptionsMapperService {
   public formatFashionBrand(brands: FashionBrand[]): FilterOption[];
   public formatFashionBrand(response: unknown, params: QueryParams): FilterOption[];
   public formatFashionBrand(brands: FashionBrand[]): FilterOption[] {
-    return brands.map((brand) => ({
-      value: brand.brand,
-      label: brand.brand,
-    }));
+    const mapToFilterOption = (brands, groupId = null) => {
+      return brands.map((brand: FashionBrand): FilterOption => {
+        const option: FilterOption = {
+          value: brand.brand,
+          label: brand.brand,
+        };
+
+        if (groupId) {
+          option.groupId = groupId;
+        }
+
+        return option;
+      });
+    };
+
+    let formattedBrands: FilterOption[] = [];
+    const popular = brands.filter((brand) => brand.is_popular);
+
+    if (popular.length) {
+      const common = mapToFilterOption(
+        brands.filter((brand) => !brand.is_popular),
+        FASHION_BRAND_FILTER_OPTION_GROUP_ID.COMMON
+      );
+
+      formattedBrands = [...mapToFilterOption(popular, FASHION_BRAND_FILTER_OPTION_GROUP_ID.POPULAR), ...common];
+    } else {
+      formattedBrands = mapToFilterOption(brands);
+    }
+
+    return formattedBrands;
   }
 
   private getBrandModelLabel(brandModel: BrandModel): string {
