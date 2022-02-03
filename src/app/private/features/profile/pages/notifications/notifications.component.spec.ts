@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { NotificationsComponent } from './notifications.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { By } from '@angular/platform-browser';
-import { mappedNotificationsSettings } from '@api/fixtures/me/notifications/notifications.fixture';
+import { mappedNotificationsSettings } from '@api/fixtures/notifications/notifications.fixture';
 import { NotificationsApiService } from '@api/notifications/notifications-api.service';
 
 describe('NotificationsComponent', () => {

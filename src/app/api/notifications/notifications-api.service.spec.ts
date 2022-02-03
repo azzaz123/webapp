@@ -3,11 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { NotificationsApiService } from './notifications-api.service';
 import { NotificationSettings } from '@api/core/model/notifications';
 import { of } from 'rxjs';
-import {
-  notificationIdToModify,
-  notificationsSettingsResponseFixture,
-} from '@api/fixtures/me/notifications/notifications-response.fixture';
-import { mappedNotificationsSettings } from '@api/fixtures/me/notifications/notifications.fixture';
+import { notificationIdToModify, notificationsSettingsResponseFixture } from '@api/fixtures/notifications/notifications-response.fixture';
+import { mappedNotificationsSettings } from '@api/fixtures/notifications/notifications.fixture';
 import { NotificationsHttpService } from '@api/notifications/http/notifications-http.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
