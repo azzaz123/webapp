@@ -32,10 +32,17 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.availableTypes = this.itemWithProducts.products;
+
+    if (this.subscription?.selected_tier?.bumps) {
+      this.onlyFree = true;
+    } else {
+    }
+    this.onToggleChange();
+
+    /*     this.availableTypes = this.itemWithProducts.products;
     this.selectedType = this.itemWithProducts.products[0];
     this.availablesDurations = this.selectedType.durations;
-    this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_index];
+    this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_inde */
 
     this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
