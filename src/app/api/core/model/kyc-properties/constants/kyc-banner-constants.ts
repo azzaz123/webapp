@@ -10,6 +10,7 @@ export const KYC_BANNER_TYPES: KYCBannerSpecifications[] = [
     buttonText: $localize`:@@view_agnostic_kyc_verification_pending_banner_button:Verify`,
     type: BANNER_TYPES.DANGER,
     dismissible: false,
+    isFullHeight: false,
   },
   {
     status: KYC_STATUS.PENDING_VERIFICATION,
@@ -18,6 +19,7 @@ export const KYC_BANNER_TYPES: KYCBannerSpecifications[] = [
     buttonText: $localize`:@@view_agnostic_kyc_verification_in_progress_banner_button:Details`,
     type: BANNER_TYPES.WARNING,
     dismissible: false,
+    isFullHeight: false,
   },
   {
     status: KYC_STATUS.VERIFIED,
@@ -26,6 +28,7 @@ export const KYC_BANNER_TYPES: KYCBannerSpecifications[] = [
     buttonText: $localize`:@@view_agnostic_kyc_verification_succeeded_banner_button:Details`,
     type: BANNER_TYPES.SUCCESS,
     dismissible: false,
+    isFullHeight: false,
   },
   {
     status: KYC_STATUS.REJECTED,
@@ -34,5 +37,6 @@ export const KYC_BANNER_TYPES: KYCBannerSpecifications[] = [
     buttonText: $localize`:@@view_agnostic_kyc_verification_error_banner_button:Retry`,
     type: BANNER_TYPES.DANGER,
     dismissible: false,
+    isFullHeight: false,
   },
 ];

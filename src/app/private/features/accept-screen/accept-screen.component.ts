@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PRIVATE_PATH_PARAMS } from '@private/private-routing-constants';
 import { AcceptScreenModalComponent } from './modals/accept-screen-modal/accept-screen-modal.component';
 
 @Component({
@@ -7,10 +9,14 @@ import { AcceptScreenModalComponent } from './modals/accept-screen-modal/accept-
   template: '',
 })
 export class AcceptScreenComponent implements OnInit {
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.modalService.open(AcceptScreenModalComponent).result.then(
+    const requestId: string = this.route.snapshot.paramMap.get(PRIVATE_PATH_PARAMS.ID);
+    const modalRef = this.modalService.open(AcceptScreenModalComponent);
+    modalRef.componentInstance.requestId = requestId;
+
+    modalRef.result.then(
       () => {},
       () => {}
     );

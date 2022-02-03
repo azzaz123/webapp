@@ -1,11 +1,15 @@
-<div *ngIf="bannerProperties" class="DeliveryBanner d-flex align-content-between align-items-center">
-  <div class="d-flex">
-    <tsl-svg-icon [src]="bannerProperties.svgPath"></tsl-svg-icon>
-    <p>{{bannerProperties.description.text}}</p>
-    <a *ngIf="bannerProperties.description.help as helpLink" [href]="helpLink"></a>
-  </div>
-
-  <div *ngIf="bannerProperties.action as action">
-    <tsl-button>{{action.label}}</tsl-button>
-  </div>
+<div class="DeliveryBanner">
+  <tsl-banner [specifications]="bannerStyleProperties">
+    <div class="d-flex align-content-between align-items-center">
+      <div class="d-flex">
+        <tsl-svg-icon [src]="bannerProperties.svgPath"></tsl-svg-icon>
+        <p>{{bannerProperties.description.text}}</p>
+        <a *ngIf="showLink" [href]="bannerProperties.description.helpLink">Learn more</a>
+      </div>
+    
+      <div *ngIf="showCTA">
+        <tsl-button class="DeliveryBanner__button" (click)="handleClickCTA()">{{bannerProperties.action.label}}</tsl-button>
+      </div>
+    </div>
+  </tsl-banner>
 </div>
