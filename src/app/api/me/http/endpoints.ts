@@ -1,7 +1,7 @@
 import { environment } from '@environments/environment';
+import { NOTIFICATIONS_API_URL } from '@api/notifications/http/endpoints';
 
 export const USER_API_URL = 'api/v3/user';
-export const NOTIFICATIONS_API_URL = 'api/v3/notifications';
 
 export const ME_FAVOURITES_ENDPOINT = `${environment.baseUrl}${USER_API_URL}/items/favorited`;
 
