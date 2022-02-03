@@ -1,18 +1,18 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { NotificationsComponent } from './notifications.component';
-import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { By } from '@angular/platform-browser';
-import { MeApiService } from '@api/me/me-api.service';
 import { mappedNotificationsSettings } from '@api/fixtures/me/notifications/notifications.fixture';
+import { NotificationsApiService } from '@api/notifications/notifications-api.service';
 
 describe('NotificationsComponent', () => {
   let component: NotificationsComponent;
   let fixture: ComponentFixture<NotificationsComponent>;
-  let meApiService: MeApiService;
+  let notificationsApiService: NotificationsApiService;
 
   beforeEach(
     waitForAsync(() => {
@@ -20,7 +20,7 @@ describe('NotificationsComponent', () => {
         imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule, NgxPermissionsModule.forRoot()],
         providers: [
           {
-            provide: MeApiService,
+            provide: NotificationsApiService,
             useValue: {
               getMyNotificationsSettings() {
                 return of(mappedNotificationsSettings);
@@ -43,14 +43,14 @@ describe('NotificationsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NotificationsComponent);
     component = fixture.componentInstance;
-    meApiService = TestBed.inject(MeApiService);
+    notificationsApiService = TestBed.inject(NotificationsApiService);
     fixture.detectChanges();
   });
 
   describe('init', () => {
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getMyNotificationsSettings').and.callThrough();
-      spyOn(meApiService, 'getMyNotificationsSettings').and.callThrough();
+      spyOn(notificationsApiService, 'getMyNotificationsSettings').and.callThrough();
       component.ngOnInit();
       tick();
       fixture.detectChanges();
@@ -70,7 +70,7 @@ describe('NotificationsComponent', () => {
   describe('should disable notification', () => {
     beforeEach(() => {
       spyOn(component, 'handleChange').and.callThrough();
-      spyOn(meApiService, 'setNotificationDisabled').and.callThrough();
+      spyOn(notificationsApiService, 'setNotificationDisabled').and.callThrough();
       const notificationLabelToggle = fixture.debugElement.query(By.css('.Notifications-settings_details_toggle')).nativeNode.childNodes[0];
       notificationLabelToggle.click();
       fixture.detectChanges();
@@ -78,14 +78,14 @@ describe('NotificationsComponent', () => {
 
     it('it should disable a enabled notification when clicked', () => {
       expect(component.handleChange).toHaveBeenCalled();
-      expect(meApiService.setNotificationDisabled).toHaveBeenCalled();
+      expect(notificationsApiService.setNotificationDisabled).toHaveBeenCalled();
     });
   });
 
   describe('should enable notification', () => {
     beforeEach(() => {
       spyOn(component, 'handleChange').and.callThrough();
-      spyOn(meApiService, 'setNotificationEnable').and.callThrough();
+      spyOn(notificationsApiService, 'setNotificationEnable').and.callThrough();
       const notificationLabelToggle = fixture.debugElement.query(By.css('.Notifications-settings_details_toggle')).nativeNode.childNodes[0];
       notificationLabelToggle.click();
       fixture.detectChanges();
@@ -93,7 +93,7 @@ describe('NotificationsComponent', () => {
 
     it('it should enable a disabled notification when clicked', () => {
       expect(component.handleChange).toHaveBeenCalled();
-      expect(meApiService.setNotificationEnable).toHaveBeenCalled();
+      expect(notificationsApiService.setNotificationEnable).toHaveBeenCalled();
     });
   });
 });

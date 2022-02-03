@@ -12,8 +12,7 @@ import { VerificationsNSecurityTrackingEventsService } from './services/verifica
 import { EmailVerificationModule } from './modal/email-verification/email-verification.module';
 import { PhoneVerificationModule } from './modal/phone-verification/phone-verification.module';
 import { MeApiModule } from '@api/me/me-api.module';
-import { CommonModule } from '@angular/common';
-import { NotificationsComponent } from './pages/notifications/notifications.component';
+import { NotificationsApiModule } from '@api/notifications/notifications-api.module';
 
 @NgModule({
   imports: [
@@ -30,6 +29,7 @@ import { NotificationsComponent } from './pages/notifications/notifications.comp
     EmailVerificationModule,
     PhoneVerificationModule,
     MeApiModule,
+    NotificationsApiModule,
   ],
   declarations: [profileRoutedComponents, UnsubscribeModalComponent, ChangeStoreLocationModal, EmailThanksModalComponent],
   providers: [VerificationsNSecurityTrackingEventsService],

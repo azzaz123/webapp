@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MeApiService } from '@api/me/me-api.service';
 import { NotificationConsent, NotificationSettings } from '@api/core/model/notifications';
+import { NotificationsApiService } from '@api/notifications/notifications-api.service';
 
 @Component({
   selector: 'tsl-notifications',
@@ -12,15 +12,15 @@ export class NotificationsComponent implements OnInit {
   public allowSegmentation: boolean;
   private savedSearchedNotificationId = 'l1kmzng6n3p8';
 
-  constructor(private meApiService: MeApiService) {}
+  constructor(private notificationsApiService: NotificationsApiService) {}
 
   ngOnInit(): void {
     this.getMyNotificationsSettings();
   }
 
   public getMyNotificationsSettings() {
-    this.meApiService.getMyNotificationsSettings().subscribe((data) => {
-      const filteredNotifications = data
+    this.notificationsApiService.getMyNotificationsSettings().subscribe((data) => {
+      this.notificationsSettingsGroup = data
         .map((nGroup) => {
           const noSavedSearchesId = nGroup.notifications.find((notification) => notification.id !== this.savedSearchedNotificationId);
           if (noSavedSearchesId) {
@@ -28,7 +28,6 @@ export class NotificationsComponent implements OnInit {
           }
         })
         .filter((ngroup) => !!ngroup);
-      this.notificationsSettingsGroup = filteredNotifications;
     });
   }
 
@@ -36,9 +35,9 @@ export class NotificationsComponent implements OnInit {
     const { id, enabled } = notification;
 
     if (enabled) {
-      this.meApiService.setNotificationEnable(id).subscribe();
+      this.notificationsApiService.setNotificationEnable(id).subscribe();
     } else {
-      this.meApiService.setNotificationDisabled(id).subscribe();
+      this.notificationsApiService.setNotificationDisabled(id).subscribe();
     }
   }
 }
