@@ -1,6 +1,7 @@
 <div *ngFor="let option of options; let i = index" class="DeliveryRadioOption input-radio">
   <ng-template [ngTemplateOutlet]="option.templateRef"></ng-template>
   <input
+    id="inputRadio"
     class="ml-3 mb-auto"
     [ngClass]="selectedId === i ? 'mt-3' : 'mt-4'"
     type="radio"
