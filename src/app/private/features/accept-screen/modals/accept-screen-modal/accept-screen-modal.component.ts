@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
 
@@ -20,9 +20,11 @@ export class AcceptScreenModalComponent implements OnInit {
   ngOnInit(): void {
     this.acceptScreenStoreService.initialize(this.requestId);
     this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$.pipe(
-      filter((acceptScreenProperties: AcceptScreenProperties) => !!acceptScreenProperties),
       tap((acceptScreenProperties: AcceptScreenProperties) => {
-        this.selectedDropOffPosition = acceptScreenProperties.carriers.findIndex((carrier: AcceptScreenCarrier) => carrier.isSelected);
+        const carrierSelectedPosition: number = acceptScreenProperties?.carriers?.findIndex(
+          (carrier: AcceptScreenCarrier) => carrier.isSelected
+        );
+        this.selectedDropOffPosition = carrierSelectedPosition || null;
       })
     );
   }
