@@ -31,13 +31,7 @@ import { NotificationsComponent } from './pages/notifications/notifications.comp
     PhoneVerificationModule,
     MeApiModule,
   ],
-  declarations: [
-    profileRoutedComponents,
-    UnsubscribeModalComponent,
-    ChangeStoreLocationModal,
-    EmailThanksModalComponent,
-    NotificationsComponent,
-  ],
+  declarations: [profileRoutedComponents, UnsubscribeModalComponent, ChangeStoreLocationModal, EmailThanksModalComponent],
   providers: [VerificationsNSecurityTrackingEventsService],
 })
 export class ProfileModule {}
