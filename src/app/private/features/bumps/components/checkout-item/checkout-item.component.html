@@ -21,38 +21,36 @@
         <div class="CheckoutItem__title mb-2">{{ itemWithProducts.item.title }}</div>
         <tsl-svg-icon
           class="ml-auto"
-          (click)="onRemoveItem(itemWithProducts.item.id, selectedType)"
+          (click)="onRemoveItem(itemWithProducts.item.id, selectedType.name)"
           [src]="'/assets/icons/delete.svg'"
         ></tsl-svg-icon>
       </div>
-      <div class="d-flex flex-wrap flex-xl-nowrap">
+      <div class="d-block d-sm-flex flex-wrap flex-xl-nowrap">
         <div>
-          <div class="CheckoutItem__subtitle mb-1 mt-3 mt-md-0">Duration</div>
+          <div class="CheckoutItem__subtitle mb-1 mt-3 mt-md-0">Visibility Area</div>
           <div class="d-flex flex-xl-wrap mr-4 pr-4 CheckoutItem__border">
-            <ng-container *ngFor="let duration of durations">
+            <ng-container *ngFor="let type of availableTypes">
               <button
                 class="btn CheckoutItem__button mb-0 mb-xl-2"
-                (click)="selectDuration(duration)"
-                [ngClass]="{ 'CheckoutItem__button--selected': selectedDuration === duration }"
+                (click)="selectType(type)"
+                [ngClass]="{ 'CheckoutItem__button--selected': type === selectedType }"
               >
-                {{ duration / 24 }} days
+                {{ type.name }}
               </button>
             </ng-container>
           </div>
         </div>
         <div>
-          <div class="CheckoutItem__subtitle mb-1 mt-3 mt-xl-0">Visibility Area</div>
+          <div class="CheckoutItem__subtitle mb-1 mt-3 mt-xl-0">Duration</div>
           <div class="d-flex flex-xl-wrap">
-            <ng-container *ngFor="let type of types">
-              <ng-container *ngIf="selectedDuration && itemWithProducts?.products[selectedDuration][type]">
-                <button
-                  class="btn CheckoutItem__button mb-0 mb-xl-2"
-                  (click)="select(type)"
-                  [ngClass]="{ 'CheckoutItem__button--selected': type === selectedType }"
-                >
-                  {{ type }}
-                </button>
-              </ng-container>
+            <ng-container *ngFor="let duration of availablesDurations">
+              <button
+                class="btn CheckoutItem__button mb-0 mb-xl-2"
+                (click)="selectDuration(duration)"
+                [ngClass]="{ 'CheckoutItem__button--selected': selectedDuration === duration }"
+              >
+                {{ duration.duration / 24 }} days
+              </button>
             </ng-container>
           </div>
         </div>
@@ -62,19 +60,13 @@
   <div *ngIf="selectedDuration && selectedType" class="text-right w-100 mt-4">
     <ng-container *ngIf="onlyFree; else noFreePrice">
       <span class="CheckoutItem__price--discount">
-        {{
-          itemWithProducts?.products[selectedDuration][selectedType]?.market_code * creditInfo?.factor
-            | customCurrency: creditInfo?.currencyName
-        }}
+        {{ selectedDuration?.market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
       </span>
       <span class="CheckoutItem__price">{{ 0 | customCurrency: creditInfo?.currencyName }}</span>
     </ng-container>
     <ng-template #noFreePrice>
       <span class="CheckoutItem__price">
-        {{
-          itemWithProducts?.products[selectedDuration][selectedType]?.market_code * creditInfo?.factor
-            | customCurrency: creditInfo?.currencyName
-        }}
+        {{ selectedDuration?.market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
       </span>
     </ng-template>
   </div>

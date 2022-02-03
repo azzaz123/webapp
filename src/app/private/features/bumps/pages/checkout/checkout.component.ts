@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemWithProducts } from '@core/item/item-response.interface';
+import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
@@ -25,7 +26,8 @@ export class CheckoutComponent implements OnInit {
     private router: Router,
     private paymentService: PaymentService,
     private route: ActivatedRoute,
-    private subscriptionService: SubscriptionsService
+    private subscriptionService: SubscriptionsService,
+    private visibilityApiService: VisibilityApiService
   ) {}
 
   ngOnInit() {
@@ -57,28 +59,30 @@ export class CheckoutComponent implements OnInit {
       this.router.navigate(['catalog/list']);
       return;
     }
-    this.itemService
+    this.visibilityApiService
       .getItemsWithAvailableProducts(this.itemService.selectedItems)
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
+      .subscribe((itemsWithProducts: any[]) => this.setItems(itemsWithProducts));
   }
 
   private getProductsFromParamsItem(itemId: string): void {
-    this.itemService
-      .getItemsWithAvailableProducts([itemId])
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
+    this.visibilityApiService.getItemsWithAvailableProducts([itemId]).subscribe((itemsWithProducts) => this.setItems(itemsWithProducts));
   }
 
   private setItems(itemsWithProducts: ItemWithProducts[]): void {
     if (itemsWithProducts.length) {
-      this.itemsWithProducts = itemsWithProducts;
-      this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
-      this.itemsWithProducts.map((item) => {
+      console.log('products', itemsWithProducts);
+      //this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
+      this.itemsWithProducts = itemsWithProducts.map((item) => {
         const itemMapped = item;
         const subscription = this.subscriptionByCategoryId(item.item.categoryId);
         if (subscription) {
           subscription.selected_tier.bumps.forEach((bump) => {
-            itemMapped.products[bump.duration_days * 24][bump.name].is_free = true;
-            itemMapped.products[bump.duration_days * 24][bump.name].subscriptionPackage = subscription.type;
+            const productType = itemMapped.products.find((product) => product.name === bump.name);
+            const durationType = productType?.durations.find((duration) => duration.duration === bump.duration_days * 24);
+            if (durationType) {
+              durationType.is_free = true;
+              durationType.subscriptionPackage = subscription.type;
+            }
           });
         }
         return itemMapped;

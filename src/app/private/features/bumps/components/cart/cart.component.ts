@@ -205,7 +205,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   get totalToPay(): number {
-    if (!this.cart) {
+    if (!this.cart || !this.creditInfo) {
       return 0;
     }
     const totalCreditsToPay: number = this.cart.total * this.creditInfo.factor;
@@ -217,7 +217,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   get usedCredits(): number {
-    if (!this.cart) {
+    if (!this.cart || !this.creditInfo) {
       return 0;
     }
     const totalCreditsToPay: number = this.cart.total * this.creditInfo.factor;

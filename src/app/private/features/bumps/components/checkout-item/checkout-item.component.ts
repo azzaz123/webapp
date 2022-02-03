@@ -1,6 +1,6 @@
 import { takeWhile } from 'rxjs/operators';
 import { Component, Input, OnDestroy, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
-import { ItemWithProducts } from '@core/item/item-response.interface';
+import { Duration, Product } from '@core/item/item-response.interface';
 import { keys } from 'lodash-es';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
@@ -8,6 +8,8 @@ import { BUMP_TYPES } from '@shared/catalog/cart/cart-base';
 import { Cart } from '@shared/catalog/cart/cart';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { duration } from 'moment';
+import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
 
 @Component({
   selector: 'tsl-checkout-item',
@@ -19,37 +21,21 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   @Input() itemWithProducts: ItemWithProducts;
   @Input() subscription: SubscriptionsResponse;
   @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
-  types: string[] = BUMP_TYPES;
-  durations: string[];
-  _duration: string;
-  selectedType: string;
+  selectedType: Product;
+  selectedDuration: Duration;
+  availableTypes: Product[];
+  availablesDurations: Duration[];
   onlyFree: boolean;
   private active = true;
-
-  set selectedDuration(value: string) {
-    this._duration = value;
-    if (this.selectedType) {
-      if (this.itemWithProducts.products[this.selectedDuration][this.selectedType]) {
-        if (this.onlyFree && !this.itemWithProducts.products[this.selectedDuration][this.selectedType].is_free) {
-          this.selectedType = this.types[0];
-        }
-        this.select(this.selectedType);
-      } else {
-        this.selectedType = this.types[0];
-        this.select(this.selectedType);
-      }
-    }
-  }
-  get selectedDuration(): string {
-    return this._duration;
-  }
 
   constructor(private cartService: CartService) {}
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.durations = keys(this.itemWithProducts.products);
-    this.selectedDuration = this.durations[1];
+    this.availableTypes = this.itemWithProducts.products;
+    this.selectedType = this.itemWithProducts.products[0];
+    this.availablesDurations = this.selectedType.durations;
+    this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_index];
 
     this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
@@ -58,9 +44,11 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges() {
     if (this.creditInfo && !this.selectedType) {
-      this.selectedType = this.types[0];
-      this.select(this.selectedType);
+      this.selectedType = this.itemWithProducts.products[0];
+      this.selectType(this.selectedType);
     }
+
+    this.addToCart();
   }
 
   ngOnDestroy() {
@@ -68,38 +56,33 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public onToggleChange() {
-    const parsedDurations = [];
     if (this.onlyFree) {
-      this.types = [];
+      this.availableTypes = this.getFreeTypes();
+      this.selectedType = this.availableTypes[0];
+      this.availablesDurations = this.selectedType.durations;
+      this.selectedDuration = this.selectedType.durations[0];
 
-      this.durations.forEach((duration) => {
-        if (this.hasOneFree(duration)) {
-          parsedDurations.push(duration);
-        }
-      });
-      this.durations = parsedDurations;
-      this.selectedDuration = this.durations[0];
+      this.addToCart();
     } else {
-      this.durations = keys(this.itemWithProducts.products);
-      this.selectedDuration = this.durations[1];
-      this.types = BUMP_TYPES;
+      this.availableTypes = this.itemWithProducts.products;
+      this.selectedType = this.itemWithProducts.products[0];
+      this.availablesDurations = this.selectedType.durations;
+      this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_index];
+
+      this.addToCart();
     }
   }
 
-  hasOneFree(duration): boolean {
-    let isFree: boolean;
-    const bumpTypes = keys(this.itemWithProducts.products[duration]);
-    const aa = bumpTypes.find((bumpType) => this.itemWithProducts.products[duration][bumpType].is_free);
+  getFreeTypes(): Product[] {
+    const freeTypes: Product[] = [];
+    this.itemWithProducts.products.forEach((bumpType) => {
+      const freeProducts = bumpType.durations.filter((duration) => duration.is_free);
 
-    bumpTypes.forEach((bumpType) => {
-      if (this.itemWithProducts.products[duration][bumpType].is_free) {
-        isFree = true;
-        if (!this.types.includes(bumpType)) {
-          this.types.push(bumpType);
-        }
+      if (freeProducts.length) {
+        freeTypes.push({ ...bumpType, durations: freeProducts });
       }
     });
-    return isFree;
+    return freeTypes;
   }
 
   public onRemoveItem(itemId: string, type: string): void {
@@ -107,18 +90,31 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
     this.itemRemoved.emit(itemId);
   }
 
-  public selectDuration(selectedDuration: string): void {
-    this.selectedDuration = selectedDuration;
+  public selectDuration(duration: Duration): void {
+    this.selectedDuration = duration;
+    this.addToCart();
   }
 
-  public select(type: string): void {
+  public selectType(type: Product): void {
     this.selectedType = type;
-    const cartItem: CartItem = {
+
+    if (this.selectedDuration) {
+      const newDuration = this.selectedType.durations.find((duration) => duration.duration === this.selectedDuration.duration);
+      this.availablesDurations = this.selectedType.durations;
+      this.selectedDuration = newDuration ? newDuration : this.selectedType.durations[this.selectedType.default_duration_index];
+    } else {
+      this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_index];
+    }
+    this.addToCart();
+  }
+
+  private addToCart(): void {
+    const cartItem: any = {
       item: this.itemWithProducts.item,
-      duration: this.itemWithProducts.products[this.selectedDuration][type],
+      duration: this.selectedDuration,
       isFree: this.onlyFree,
     };
-    this.cartService.add(cartItem, type);
+    this.cartService.add(cartItem, this.selectedType.name);
   }
 
   private onRemoveOrClean(cartChange: CartChange): void {
