@@ -1482,6 +1482,8 @@
     "web_filter_fashion_brand_drawer_placeholder": "Select brand",
     "quick_filter_n_brands": "{$INTERPOLATION} brands",
     "web_filter_fashion_brand_suggester_placeholder": "Search brand",
+    "suggester_brand_divider_all_brands": "All the brands",
+    "suggester_brand_divider_popular": "Popular brands",
     "web_filter_fashion_size_title": "Size",
     "web_filter_fashion_size_bubble_placeholder": "Size",
     "web_filter_fashion_size_drawer_placeholder": "Select size",

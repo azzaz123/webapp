@@ -1482,6 +1482,8 @@
     "web_filter_fashion_brand_drawer_placeholder": "Seleziona un marchio",
     "quick_filter_n_brands": "{$INTERPOLATION} marchi",
     "web_filter_fashion_brand_suggester_placeholder": "Cerca un marchio ",
+    "suggester_brand_divider_all_brands": "Tutti i marchi",
+    "suggester_brand_divider_popular": "Marchi popolari",
     "web_filter_fashion_size_title": "Taglia",
     "web_filter_fashion_size_bubble_placeholder": "Taglia",
     "web_filter_fashion_size_drawer_placeholder": "Seleziona una taglia ",
