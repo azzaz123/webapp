@@ -5,12 +5,12 @@ import { ActionableDeliveryBanner } from '../../../interfaces/actionable-deliver
 import { PriceableDeliveryBanner } from '../../../interfaces/priceable-delivery-banner.interface';
 
 @Component({
-  selector: 'tsl-buyer-buy-banner',
-  templateUrl: './buyer-buy-banner.component.html',
-  styleUrls: ['./buyer-buy-banner.component.scss'],
+  selector: 'tsl-buy-banner',
+  templateUrl: './buy-banner.component.html',
+  styleUrls: ['./buy-banner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BuyerBuyBannerComponent {
+export class BuyBannerComponent {
   @Input() bannerProperties: PriceableDeliveryBanner & ActionableDeliveryBanner;
   @Output() clickedCTA: EventEmitter<DELIVERY_BANNER_ACTION> = new EventEmitter<DELIVERY_BANNER_ACTION>();
 

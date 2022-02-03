@@ -1,1 +1,1 @@
-export * from './buyer-buy-banner/buyer-buy-banner.module';
+export * from './buy-banner/buy-banner.module';
