@@ -10,7 +10,7 @@
     <tsl-delivery-radio-selector
       class="d-block"
       [selectedId]="selectedDropOffPosition"
-      (selectedIdChanged)="notifySelectedDropOffModeByUserChanged($event, properties)"
+      (selectedIdChanged)="notifySelectedDropOffModeByUserChanged($event)"
     >
       <ng-template tslDeliveryRadioOption *ngFor="let carrier of properties.carriers">
         <div class="AcceptScreenModal__carrierWrapper d-flex">

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
-import { Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenService } from '../accept-screen/accept-screen.service';
@@ -9,7 +9,7 @@ import { AcceptScreenService } from '../accept-screen/accept-screen.service';
   providedIn: 'root',
 })
 export class AcceptScreenStoreService {
-  private readonly propertiesSubject: ReplaySubject<AcceptScreenProperties> = new ReplaySubject(1);
+  private readonly propertiesSubject: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
   private readonly selectedDropOffModeByUserSubject: ReplaySubject<CARRIER_DROP_OFF_MODE> = new ReplaySubject(1);
 
   constructor(private acceptScreenService: AcceptScreenService) {}
@@ -26,7 +26,8 @@ export class AcceptScreenStoreService {
       .subscribe();
   }
 
-  public notifySelectedDropOffModeByUser(selectedDropOffPosition: number, currentProperties: AcceptScreenProperties): void {
+  public notifySelectedDropOffModeByUser(selectedDropOffPosition: number): void {
+    const currentProperties: AcceptScreenProperties = this.propertiesSubject.value;
     const selectedDropOffMode: CARRIER_DROP_OFF_MODE = currentProperties.carriers[selectedDropOffPosition].type;
     const newCarriers: AcceptScreenCarrier[] = currentProperties.carriers.map((carrier: AcceptScreenCarrier, index: number) => {
       carrier.isSelected = index === selectedDropOffPosition;
@@ -39,6 +40,10 @@ export class AcceptScreenStoreService {
 
   public get properties$(): Observable<AcceptScreenProperties> {
     return this.propertiesSubject.asObservable();
+  }
+
+  public get selectedDropOffModeByUser$(): Observable<CARRIER_DROP_OFF_MODE> {
+    return this.selectedDropOffModeByUserSubject.asObservable();
   }
 
   private set selectedDropOffModeByUser(value: CARRIER_DROP_OFF_MODE) {
