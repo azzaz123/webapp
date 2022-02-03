@@ -152,7 +152,7 @@ export interface RealestateContent extends ItemContent {
 
 export interface ItemsData {
   data: Item[];
-  since: string;
+  init: number;
 }
 
 export interface ConversationUser {

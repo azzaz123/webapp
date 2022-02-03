@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 })
 export class ItemsStatsComponent implements OnInit {
   public items: Item[] = [];
-  private since: string = null;
+  private init = 0;
   public end: boolean;
   public opens: boolean[] = [];
   public prices: CheapestProducts;
@@ -33,12 +33,12 @@ export class ItemsStatsComponent implements OnInit {
     if (!append) {
       this.items = [];
     }
-    this.itemService.mine(this.since, 'published').subscribe((itemsData: ItemsData) => {
+    this.itemService.mine(this.init, 'published').subscribe((itemsData: ItemsData) => {
       const items = itemsData.data;
-      this.since = itemsData.since;
+      this.init = itemsData.init;
       this.items = append ? this.items.concat(items) : items;
       this.isLoading.next(false);
-      this.end = !this.since;
+      this.end = !this.init;
       if (this.end) {
         this.stopPagination.next(true);
       }

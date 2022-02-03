@@ -42,12 +42,12 @@ export class MeApiService {
     if (status in this.requestConfig) {
       return this.requestConfig[status](paginationParameter);
     }
-    return this.itemService.mine(paginationParameter, status).pipe(
+    return this.itemService.mine(+paginationParameter, status).pipe(
       // TODO remove when all request were migrated
       map((response) => {
         return {
           list: response.data,
-          paginationParameter: response.since,
+          paginationParameter: response.init?.toString(),
         };
       })
     );
