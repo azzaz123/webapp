@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { ExitConfirmGuard } from '@core/guards/exit-confirm.guard';
-import { NotificationsComponent } from './Notifications.component';
+import { NotificationsComponent } from './notifications.component';
 
 const routes: Route[] = [
   {
