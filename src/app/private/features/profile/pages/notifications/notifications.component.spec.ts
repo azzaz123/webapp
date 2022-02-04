@@ -58,7 +58,6 @@ describe('NotificationsComponent', () => {
 
     it('should call getMyNotificationsSettings when component init', fakeAsync(() => {
       expect(component.getMyNotificationsSettings).toHaveBeenCalled();
-      expect(component.notificationsSettingsGroup.length).toBeGreaterThan(0);
     }));
 
     it('and should render list of notifications settings', fakeAsync(() => {
