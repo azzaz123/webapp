@@ -3,6 +3,7 @@ import { AvailableFilterConfig } from '../../../types/available-filter-config.ty
 import { FASHION_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/fashion-configuration-ids.enum';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { MULTISELECT_FILTER_BUBBLE_VARIANT } from '@public/shared/components/filters/components/multi-select-filter/enum/multi-select-filter-bubble-variant.enum';
+import { FASHION_BRAND_FILTER_OPTION_GROUP_ID } from '../../../enums/filter-option-group-ids/fashion/fashion-brand-filter-option-group-id';
 
 export const FASHION_FILTERS: AvailableFilterConfig[] = [
   {
@@ -49,6 +50,11 @@ export const FASHION_FILTERS: AvailableFilterConfig[] = [
     isSearchable: true,
     searchPlaceholder: $localize`:@@web_filter_fashion_brand_suggester_placeholder:Search brand`,
     hasValueAsLabel: true,
+    optionGroupConfig: {
+      [FASHION_BRAND_FILTER_OPTION_GROUP_ID.DEFAULT]: $localize`:@@suggester_brand_divider_all_brands:All the brands`,
+      [FASHION_BRAND_FILTER_OPTION_GROUP_ID.COMMON]: $localize`:@@suggester_brand_divider_all_brands:All the brands`,
+      [FASHION_BRAND_FILTER_OPTION_GROUP_ID.POPULAR]: $localize`:@@suggester_brand_divider_popular:Popular brands`,
+    },
   },
   {
     id: FASHION_CONFIGURATION_ID.SIZE,

@@ -25,7 +25,8 @@ import { DeliveryAddressStoreService } from '@private/features/delivery/services
 import { DeliveryBannerModule } from '@private/features/chat/modules/delivery-banner/delivery-banner.module';
 import { DeliveryBuyerCalculatorModule } from '@api/delivery/buyer/calculator/delivery-buyer-calculator.module';
 import { DeliveryBuyerModule } from '@api/bff/delivery/buyer/delivery-buyer.module';
-import { DeliveryConversationContextService } from '@private/features/chat/services/delivery-conversation-context/delivery-conversation-context.service';
+import { DeliveryConversationContextModule } from '@private/features/chat/modules/delivery-conversation-context/delivery-conversation-context.module';
+import { DeliveryConversationContextService } from '@private/features/chat/modules/delivery-conversation-context/services/delivery-conversation-context/delivery-conversation-context.service';
 import { DeliveryCostsModule } from '@api/bff/delivery/costs/delivery-costs.module';
 import { InboxComponent } from '@private/features/chat/children/inbox/inbox.component';
 import { InboxConversationComponent } from '@private/features/chat/children/inbox/components/inbox-conversation';
@@ -81,6 +82,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     PaymentsPaymentMethodsModule,
     PaymentsUserPaymentPreferencesModule,
     PaymentsWalletsModule,
+    DeliveryConversationContextModule,
   ],
   declarations: [
     chatRoutedComponents,
