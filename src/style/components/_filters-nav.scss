@@ -6,6 +6,7 @@
     line-height: $line-height-xl;
     overflow-x: auto;
     overflow-y: hidden;
+    @include hide-scroll-bars();
 
     a {
       display: inline-block;
@@ -18,7 +19,6 @@
       font-weight: $font-weight-chunky;
       padding: 0;
       white-space: nowrap;
-      text-overflow: ellipsis;
       &:hover {
         color: darken($blue-grey-2, 10%);
       }
