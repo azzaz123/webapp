@@ -61,7 +61,7 @@ describe('NotificationsComponent', () => {
     }));
 
     it('and should render list of notifications settings', fakeAsync(() => {
-      let notificationsList = fixture.debugElement.query(By.css('.Notifications-container')).nativeNode;
+      let notificationsList = fixture.debugElement.query(By.css('.NotificationsContainer')).nativeNode;
       expect(notificationsList.childNodes.length).toBeGreaterThan(0);
     }));
   });
@@ -70,7 +70,7 @@ describe('NotificationsComponent', () => {
     beforeEach(() => {
       spyOn(component, 'handleChange').and.callThrough();
       spyOn(notificationsApiService, 'setNotificationDisabled').and.callThrough();
-      const notificationLabelToggle = fixture.debugElement.query(By.css('.Notifications-settings_details_toggle')).nativeNode.childNodes[0];
+      const notificationLabelToggle = fixture.debugElement.query(By.css('.NotificationsSettings__details_toggle')).nativeNode.childNodes[0];
       notificationLabelToggle.click();
       fixture.detectChanges();
     });
@@ -85,7 +85,7 @@ describe('NotificationsComponent', () => {
     beforeEach(() => {
       spyOn(component, 'handleChange').and.callThrough();
       spyOn(notificationsApiService, 'setNotificationEnable').and.callThrough();
-      const notificationLabelToggle = fixture.debugElement.query(By.css('.Notifications-settings_details_toggle')).nativeNode.childNodes[0];
+      const notificationLabelToggle = fixture.debugElement.query(By.css('.NotificationsSettings__details_toggle')).nativeNode.childNodes[0];
       notificationLabelToggle.click();
       fixture.detectChanges();
     });
