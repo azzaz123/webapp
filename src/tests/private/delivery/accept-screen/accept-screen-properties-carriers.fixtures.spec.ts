@@ -13,6 +13,20 @@ import {
 import { ACCEPT_SCREEN_ID_STEPS } from '@private/features/accept-screen/constants/accept-screen-id-steps';
 
 const freeCostTranslation: string = $localize`:@@accept_view_seller_delivery_method_selector_free_text:FREE`;
+const MOCK_PICK_UP_START_DATE: string = MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.schedule.pickUpStartDate.toLocaleTimeString(
+  navigator.language,
+  {
+    hour: '2-digit',
+    minute: '2-digit',
+  }
+);
+const MOCK_PICK_UP_END_DATE: string = MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.schedule.pickUpEndDate.toLocaleTimeString(navigator.language, {
+  hour: '2-digit',
+  minute: '2-digit',
+});
+const MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED_INFORMATION: string = $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_pickup_date_description:The package will be picked up at your address on ${
+  'tuesday, january 25 2022, ' + MOCK_PICK_UP_START_DATE + ' - ' + MOCK_PICK_UP_END_DATE + '.'
+}:INTERPOLATION:`;
 
 export const MOCK_ACCEPT_SCREEN_CARRIERS: AcceptScreenCarrier[] = [
   {
@@ -77,7 +91,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED: AcceptScr
     icon: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.icon,
     title: AcceptScreenDropOffPointTitle[MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.type],
     price: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.sellerCosts.toString(),
-    information: $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_pickup_date_description:The package will be picked up at your address on ${'tuesday, january 25 2022, 09:00 AM - 08:00 PM.'}:INTERPOLATION:`,
+    information: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED_INFORMATION,
     secondaryInformation: $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_service_fee_description:The cost of the service will be deducted from your sale.`,
     restrictions: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.restrictions,
     buttonProperties: {
@@ -96,7 +110,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS: AcceptScreenC
     icon: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.icon,
     title: AcceptScreenDropOffPointTitle[MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.type],
     price: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.sellerCosts.toString(),
-    information: $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_pickup_date_description:The package will be picked up at your address on ${'tuesday, january 25 2022, 09:00 AM - 08:00 PM.'}:INTERPOLATION:`,
+    information: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED_INFORMATION,
     secondaryInformation: $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_service_fee_description:The cost of the service will be deducted from your sale.`,
     restrictions: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.restrictions,
     buttonProperties: {
@@ -147,7 +161,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_CARRIER_OFFICE: AcceptScreen
     icon: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.icon,
     title: AcceptScreenDropOffPointTitle[MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.type],
     price: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.sellerCosts.toString(),
-    information: $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_pickup_date_description:The package will be picked up at your address on ${'tuesday, january 25 2022, 09:00 AM - 08:00 PM.'}:INTERPOLATION:`,
+    information: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED_INFORMATION,
     secondaryInformation: $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_service_fee_description:The cost of the service will be deducted from your sale.`,
     restrictions: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.restrictions,
     buttonProperties: {

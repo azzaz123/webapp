@@ -93,7 +93,3 @@ Object.defineProperty(navigator, 'languages', {
   value: GLOBAL_MOCKS.MOCK_NAVIGATOR_LANGUAGES,
   writable: true,
 });
-Object.defineProperty(navigator, 'language', {
-  value: GLOBAL_MOCKS.MOCK_NAVIGATOR_LANGUAGES[0],
-  writable: true,
-});
