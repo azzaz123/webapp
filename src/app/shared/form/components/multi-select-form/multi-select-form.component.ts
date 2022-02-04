@@ -31,6 +31,9 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
   }
   @Input() isDisabled: boolean = false;
   @Input() reseteable: boolean = true;
+  @Input() optionGroupConfig: Record<string, string>;
+
+  public readonly DEFAULT_OPTION_GROUP_CONFIG = 'DEFAULT';
 
   private extendedOptions: TemplateMultiSelectFormOption[] = [];
   private extendedOptionsSubject: BehaviorSubject<TemplateMultiSelectFormOption[]> = new BehaviorSubject([]);
@@ -182,12 +185,12 @@ export class MultiSelectFormComponent extends AbstractFormComponent<MultiSelectV
 
   private formatToExtendedOptions(options: MultiSelectFormOption[]): TemplateMultiSelectFormOption[] {
     const formattedExtendedOptions: TemplateMultiSelectFormOption[] = options.map((option) => {
-      const { label, icon, value } = option;
+      const { label, icon, value, groupId } = option;
 
       if (option.children?.length) {
-        return { label, icon, value, children: this.formatToExtendedOptions(option.children), checked: false };
+        return { label, icon, value, children: this.formatToExtendedOptions(option.children), checked: false, groupId };
       } else {
-        return { label, icon, value, checked: false };
+        return { label, icon, value, checked: false, groupId };
       }
     });
 

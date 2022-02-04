@@ -91,9 +91,10 @@ describe('KYCBannerComponent', () => {
     it('should get the correct alert specifications', () => {
       setBannerSpecifications(MOCK_KYC_BANNER_PENDING);
 
-      expect(component.ngbAlertConfiguration).toStrictEqual({
+      expect(component.bannerSpecifications).toStrictEqual({
         dismissible: KYC_BANNER_TYPES[0].dismissible,
         type: KYC_BANNER_TYPES[0].type,
+        isFullHeight: KYC_BANNER_TYPES[0].isFullHeight,
       });
     });
 
