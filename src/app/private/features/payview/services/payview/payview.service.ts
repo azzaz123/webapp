@@ -66,9 +66,9 @@ const mapToCountryIsoCode: ToDomainMapper<DeliveryCountryISOCode, PayviewCountry
   return countries[input];
 };
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PayviewService {
-  private static itemId: string;
+  private itemHash: string;
 
   constructor(
     private addressService: DeliveryAddressService,
@@ -83,7 +83,9 @@ export class PayviewService {
     private walletsService: PaymentsWalletsService
   ) {}
 
-  public getCurrentState(): Observable<PayviewState> {
+  public getCurrentState(itemHash: string): Observable<PayviewState> {
+    this.itemHash = itemHash;
+
     return forkJoin(this.stateSources)
       .pipe(
         mergeMap(
@@ -128,10 +130,6 @@ export class PayviewService {
       );
   }
 
-  public set itemHash(value: string) {
-    PayviewService.itemId = value;
-  }
-
   private get address(): Observable<PayviewDeliveryAddress> {
     return this.addressService.get(false).pipe(map(mapToPayviewDeliveryAddress));
   }
@@ -141,25 +139,26 @@ export class PayviewService {
   }
 
   private getCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
+    console.log(state);
     const method = state.delivery.methods.deliveryMethods[state.delivery.methods.default.index];
 
-    return this.calculatorService.getCosts(state.itemDetails.price, PayviewService.itemId, null, method.method);
+    return this.calculatorService.getCosts(state.itemDetails.price, this.itemHash, null, method.method);
   }
 
   private get deliveryCosts(): Observable<DeliveryCosts> {
-    return this.deliveryCostsService.getCosts(PayviewService.itemId);
+    return this.deliveryCostsService.getCosts(this.itemHash);
   }
 
   private get deliveryMethods(): Observable<DeliveryBuyerDeliveryMethods> {
-    return this.deliveryBuyerService.getDeliveryMethods(PayviewService.itemId);
+    return this.deliveryBuyerService.getDeliveryMethods(this.itemHash);
   }
 
   private get item(): Observable<Item> {
-    return this.itemService.get(PayviewService.itemId);
+    return this.itemService.get(this.itemHash);
   }
 
   private get itemDetails(): Observable<BuyerRequestsItemsDetails> {
-    return this.buyerRequestService.getRequestsItemsDetails(PayviewService.itemId);
+    return this.buyerRequestService.getRequestsItemsDetails(this.itemHash);
   }
 
   private get paymentMethods(): Observable<PaymentsPaymentMethods> {
@@ -190,7 +189,7 @@ export class PayviewService {
         methods: deliveryMethods,
       },
       item,
-      itemDetails: itemDetails,
+      itemDetails,
       payment: {
         card,
         methods: paymentMethods,
