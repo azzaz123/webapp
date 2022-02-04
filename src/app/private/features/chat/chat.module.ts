@@ -11,7 +11,6 @@ import {
   UnarchiveInboxConversationComponent,
   UnblockUserComponent,
 } from '@private/features/chat/modals';
-import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
 import { ChatApiModule } from '@api/chat/chat-api.module';
 import { chatRoutedComponents, ChatRoutingModule } from '@private/features/chat/chat.routes';
 import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
@@ -19,7 +18,6 @@ import { ConnectionAlertComponent } from '@private/features/chat/components/conn
 import { ConversationDetailsBarComponent } from '@private/features/chat/components/conversation-details-bar';
 import { CurrentConversationComponent } from '@private/features/chat/components/current-conversation';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
-import { DeliveryAddressApiService } from '@private/features/delivery/services/api/delivery-address-api/delivery-address-api.service';
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
 import { DeliveryAddressStoreService } from '@private/features/delivery/services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryBannerModule } from '@private/features/chat/modules/delivery-banner/delivery-banner.module';
@@ -36,7 +34,6 @@ import { InboxUserDetailComponent } from '@private/features/chat/children/inbox/
 import { InputComponent } from '@private/features/chat/components/input';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { ItemReservedComponent } from '@private/features/chat/children/item/components/item-reserved';
-import { ItemService } from '@core/item/item.service';
 import { ItemSoldComponent } from '@private/features/chat/children/item/components/item-sold';
 import { MaliciousConversationModalComponent } from '@private/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { MessageModule } from '@private/features/chat/children/message';
@@ -44,7 +41,6 @@ import { PaymentsCreditCardModule } from '@api/payments/cards';
 import { PaymentsPaymentMethodsModule } from '@api/payments/payment-methods/payments-payment-methods.module';
 import { PaymentsUserPaymentPreferencesModule } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.module';
 import { PaymentsWalletsModule } from '@api/payments/wallets/payments-wallets.module';
-import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PersonalDataInformationModal } from '@private/features/chat/modals/personal-data-information-modal/personal-data-information-modal.component';
 import { ScrollingMessageComponent } from '@private/features/chat/components/scrolling-message';
 import { SharedModule } from '@shared/shared.module';
@@ -74,7 +70,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     TranslateButtonModule,
     ChatApiModule,
     DeliveryBannerModule,
-    BuyerRequestsApiModule,
     DeliveryBuyerModule,
     DeliveryBuyerCalculatorModule,
     DeliveryCostsModule,
@@ -109,15 +104,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     MaliciousConversationModalComponent,
     PersonalDataInformationModal,
   ],
-  providers: [
-    ChatTranslationService,
-    DeliveryConversationContextService,
-    DeliveryAddressService,
-    DeliveryAddressApiService,
-    DeliveryAddressStoreService,
-    ItemService,
-    PayviewService,
-  ],
+  providers: [ChatTranslationService, DeliveryConversationContextService, DeliveryAddressService, DeliveryAddressStoreService],
   exports: [InboxConversationComponent],
   entryComponents: [
     ArchiveInboxConversationComponent,
