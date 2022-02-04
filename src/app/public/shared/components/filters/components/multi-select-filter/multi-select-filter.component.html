@@ -34,7 +34,7 @@
                 [class.MultiSelectFilter__bubble--searchable]="config.isSearchable" 
                 scroll (scrolledToBottom)="scrolledToBottom()">
             <form [formGroup]="formGroup" class="MultiSelectFilter__form">
-              <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options" ></tsl-multi-select-form>
+              <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options" [optionGroupConfig]="config.optionGroupConfig"></tsl-multi-select-form>
             </form>
           </div>
         </tsl-drawer-placeholder-template>
@@ -80,7 +80,7 @@
             [class.MultiSelectFilter__bubble--searchable]="config.isSearchable" 
             scroll (scrolledToBottom)="scrolledToBottom()">
           <form [formGroup]="formGroup" class="MultiSelectFilter__form">
-            <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
+            <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options" [optionGroupConfig]="config.optionGroupConfig"></tsl-multi-select-form>
           </form>
         </div>
       </tsl-drawer-placeholder-template>
@@ -124,7 +124,7 @@
 
 
         <form [formGroup]="formGroup" class="MultiSelectFilter__form" [class.MultiSelectFilter__form--searchable]="config.isSearchable" scroll (scrolledToBottom)="config.isSearchable ? scrolledToBottom() : null">
-          <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options"></tsl-multi-select-form>
+          <tsl-multi-select-form #multiselectForm formControlName="select" [options]="options" [optionGroupConfig]="config.optionGroupConfig"></tsl-multi-select-form>
         </form>
       </div>
     </tsl-drawer-placeholder-template>

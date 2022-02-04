@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MeApiService } from '@api/me/me-api.service';
 import { NotificationConsent, NotificationSettings } from '@api/core/model/notifications';
 import {
   AnalyticsEvent,
@@ -12,6 +11,9 @@ import {
   ViewNotificationSettings,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { NotificationsApiService } from '@api/notifications/notifications-api.service';
+import { Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-notifications',
@@ -19,13 +21,13 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
   styleUrls: ['./notifications.component.scss'],
 })
 export class NotificationsComponent implements OnInit {
-  public notificationsSettingsGroup: NotificationSettings[];
   public allowSegmentation: boolean;
+  public notificationsSettings$: Observable<NotificationSettings[]> = this.getMyNotificationsSettings();
   private readonly savedSearchedNotificationId = 'l1kmzng6n3p8';
   private readonly idTipsNotification = 'y98ejk1zxmwp';
   private readonly idPromoNotification = 'd9ke65vmjox1';
 
-  constructor(private meApiService: MeApiService, private analyticsService: AnalyticsService) {}
+  constructor(private notificationsApiService: NotificationsApiService, private analyticsService: AnalyticsService) {}
 
   ngOnInit(): void {
     this.getMyNotificationsSettings();
@@ -33,26 +35,26 @@ export class NotificationsComponent implements OnInit {
   }
 
   public getMyNotificationsSettings() {
-    this.meApiService.getMyNotificationsSettings().subscribe((data) => {
-      const filteredNotifications = data
-        .map((nGroup) => {
-          const noSavedSearchesId = nGroup.notifications.find((notification) => notification.id !== this.savedSearchedNotificationId);
-          if (noSavedSearchesId) {
-            return nGroup;
-          }
-        })
-        .filter((ngroup) => !!ngroup);
-      this.notificationsSettingsGroup = filteredNotifications;
-    });
+    return this.notificationsApiService.getMyNotificationsSettings().pipe(
+      map((nGroup) => {
+        const noSavedSearchesId = nGroup.map((group) =>
+          group.notifications.find((notification) => notification.id !== this.savedSearchedNotificationId)
+        );
+        if (noSavedSearchesId) {
+          return nGroup;
+        }
+      }),
+      filter((ngroup) => !!ngroup)
+    );
   }
 
   public handleChange(notification: NotificationConsent) {
     const { id, enabled } = notification;
 
     if (enabled) {
-      this.meApiService.setNotificationEnable(id).subscribe();
+      this.notificationsApiService.setNotificationEnable(id).subscribe();
     } else {
-      this.meApiService.setNotificationDisabled(id).subscribe();
+      this.notificationsApiService.setNotificationDisabled(id).subscribe();
     }
 
     if (id === this.idTipsNotification) {

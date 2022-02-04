@@ -1,22 +1,22 @@
 @import '~style/common';
 @import '../../../../../shared/form/components/toggle/toggle-form.component.scss';
 
-.Notifications-settings {
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 20px;
-  &_title {
+.NotificationsSettings {
+  padding-left: $spacing-l;
+  padding-right: $spacing-l;
+  padding-top: $spacing-l;
+  &__title {
     font-weight: bold;
-    font-size: 18px;
+    font-size: $font-size-l;
   }
-  &_subtitle {
+  &__subtitle {
     font-weight: normal;
     color: $blue-grey-2;
   }
-  &_details {
+  &__details {
     display: flex;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: $spacing-s * 1.25;
+    padding-bottom: $spacing-s * 1.25;
     &_title {
       width: 50%;
       @include media-breakpoint-down(sm) {

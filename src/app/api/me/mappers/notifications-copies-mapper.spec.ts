@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { notificationsSettingsResponseFixture } from '@api/fixtures/me/notifications/notifications-response.fixture';
-import { mappedNotificationsSettings } from '@api/fixtures/me/notifications/notifications.fixture';
+import { notificationsSettingsResponseFixture } from '@api/fixtures/notifications/notifications-response.fixture';
+import { mappedNotificationsSettings } from '@api/fixtures/notifications/notifications.fixture';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { mapNotificationsSettings } from './notifications-copies-mapper';

@@ -19,6 +19,11 @@ $nested-title-height: 57px;
       border-bottom: $border;
     }
 
+    &__separator {
+      font-weight: $font-weight-chunky;
+      font-size: $font-size-s;
+    }
+
     &__children {
       background: $white;
       bottom: 0;
