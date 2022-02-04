@@ -8,7 +8,7 @@ import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/i
 import { Observable } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import {
-  BUYER_BUY_DELIVERY_BANNER_PROPERTIES,
+  BUY_DELIVERY_BANNER_PROPERTIES,
   BUYER_ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
 } from '@private/features/chat/modules/delivery-banner/constants/delivery-banner-configs';
 import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
@@ -66,7 +66,7 @@ export class DeliveryConversationContextAsBuyerService {
 
   private mapBannerTypeToBuyerBannerProperties(type: DELIVERY_BANNER_TYPE, price?: Money): DeliveryBanner | null {
     if (type === DELIVERY_BANNER_TYPE.BUY) {
-      return BUYER_BUY_DELIVERY_BANNER_PROPERTIES(price);
+      return BUY_DELIVERY_BANNER_PROPERTIES(price);
     }
 
     if (type === DELIVERY_BANNER_TYPE.ASK_SELLER_FOR_SHIPPING) {

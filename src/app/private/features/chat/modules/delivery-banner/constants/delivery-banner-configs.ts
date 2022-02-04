@@ -5,7 +5,7 @@ import { DELIVERY_BANNER_ACTION } from '../enums/delivery-banner-action.enum';
 import { ActionableDeliveryBanner } from '../interfaces/actionable-delivery-banner.interface';
 import { PriceableDeliveryBanner } from '../interfaces/priceable-delivery-banner.interface';
 
-export const BUYER_BUY_DELIVERY_BANNER_PROPERTIES = (price: Money): PriceableDeliveryBanner & ActionableDeliveryBanner => {
+export const BUY_DELIVERY_BANNER_PROPERTIES = (price: Money): PriceableDeliveryBanner & ActionableDeliveryBanner => {
   const bannerProperties: PriceableDeliveryBanner & ActionableDeliveryBanner = {
     type: DELIVERY_BANNER_TYPE.BUY,
     price,
