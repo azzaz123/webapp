@@ -1,13 +1,12 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { NotificationsComponent } from './notifications.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { By } from '@angular/platform-browser';
 import { mappedNotificationsSettings } from '@api/fixtures/notifications/notifications.fixture';
 import { NotificationsApiService } from '@api/notifications/notifications-api.service';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 describe('NotificationsComponent', () => {
   let component: NotificationsComponent;
@@ -17,7 +16,7 @@ describe('NotificationsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, FormsModule, NgbButtonsModule, NgxPermissionsModule.forRoot()],
+        imports: [NgxPermissionsModule.forRoot()],
         providers: [
           {
             provide: NotificationsApiService,
@@ -31,6 +30,13 @@ describe('NotificationsComponent', () => {
               setNotificationDisabled() {
                 return of(null);
               },
+            },
+          },
+          {
+            provide: AnalyticsService,
+            useValue: {
+              trackPageView: () => {},
+              trackEvent: () => {},
             },
           },
         ],
