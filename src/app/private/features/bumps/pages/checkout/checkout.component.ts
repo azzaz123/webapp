@@ -5,8 +5,6 @@ import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
-import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.component';
 
 @Component({
@@ -19,14 +17,12 @@ export class CheckoutComponent implements OnInit {
   itemsWithProducts: ItemWithProducts[];
   provincialBump: boolean;
   creditInfo: CreditInfo;
-  subscriptions: SubscriptionsResponse[];
 
   constructor(
     private itemService: ItemService,
     private router: Router,
     private paymentService: PaymentService,
     private route: ActivatedRoute,
-    private subscriptionService: SubscriptionsService,
     private visibilityApiService: VisibilityApiService
   ) {}
 
@@ -38,7 +34,7 @@ export class CheckoutComponent implements OnInit {
         this.getProductsFromSelectedItems();
       }
     });
-    this.getBumpsSubscription();
+    this.getCreditInfo();
   }
 
   public removeItem(itemId: string): void {
@@ -48,48 +44,23 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  public subscriptionByCategoryId(categoryId) {
-    const subscription = this.subscriptionService.getSubscriptionByCategory(this.subscriptions, categoryId);
-
-    return this.subscriptionService.isSubscribed(subscription) ? subscription : null;
-  }
-
   private getProductsFromSelectedItems(): void {
     if (!this.itemService.selectedItems.length) {
       this.router.navigate(['catalog/list']);
       return;
     }
     this.visibilityApiService
-      .getItemsWithAvailableProducts(this.itemService.selectedItems)
-      .subscribe((itemsWithProducts: any[]) => this.setItems(itemsWithProducts));
+      .getItemsWithProductsAndSubscriptionBumps(this.itemService.selectedItems)
+      .subscribe((itemsWithProducts) => this.setItems(itemsWithProducts));
   }
 
   private getProductsFromParamsItem(itemId: string): void {
-    this.visibilityApiService.getItemsWithAvailableProducts([itemId]).subscribe((itemsWithProducts) => this.setItems(itemsWithProducts));
+    this.visibilityApiService.getItemsWithProductsAndSubscriptionBumps([itemId]).subscribe((itemsWithProducts) => {
+      this.setItems(itemsWithProducts);
+    });
   }
 
-  private setItems(itemsWithProducts: ItemWithProducts[]): void {
-    if (itemsWithProducts.length) {
-      console.log('products', itemsWithProducts);
-      //this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
-      this.itemsWithProducts = itemsWithProducts.map((item) => {
-        const itemMapped = item;
-        const subscription = this.subscriptionByCategoryId(item.item.categoryId);
-        if (subscription) {
-          subscription.selected_tier.bumps.forEach((bump) => {
-            const productType = itemMapped.products.find((product) => product.name === bump.name);
-            const durationType = productType?.durations.find((duration) => duration.duration === bump.duration_days * 24);
-            if (durationType) {
-              durationType.is_free = true;
-              durationType.subscriptionPackage = subscription.type;
-            }
-          });
-        }
-        return itemMapped;
-      });
-    } else {
-      this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
-    }
+  private getCreditInfo(): void {
     this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {
         creditInfo.currencyName = 'wallacredits';
@@ -99,9 +70,11 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  private getBumpsSubscription() {
-    this.subscriptionService.getSubscriptions().subscribe((response) => {
-      this.subscriptions = response;
-    });
+  private setItems(itemsWithProducts: ItemWithProducts[]): void {
+    if (itemsWithProducts.length) {
+      this.itemsWithProducts = itemsWithProducts;
+    } else {
+      this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
+    }
   }
 }

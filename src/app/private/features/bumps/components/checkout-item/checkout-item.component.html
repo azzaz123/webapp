@@ -1,14 +1,10 @@
 <div class="CheckoutItem d-flex flex-column p-4">
-  <div *ngIf="subscription?.selected_tier?.bumps?.length" class="CheckoutItem__subscription pb-3 mb-3 pb-md-0 d-flex align-items-center">
-    <tsl-toggle-form [(ngModel)]="onlyFree" (ngModelChange)="onToggleChange()"> </tsl-toggle-form>
+  <div *ngIf="isFreeOptionAvailable" class="CheckoutItem__subscription pb-3 mb-3 pb-md-0 d-flex align-items-center">
+    <tsl-toggle-form [(ngModel)]="isFreeOptionSelected" (ngModelChange)="getAvailableProducts()"> </tsl-toggle-form>
     <span class="ml-2" i18n="@@additional_services_selector_pro_user_install_service_info_title">Use bumps from my subscription </span>
-    <div class="ml-auto d-flex align-items-center CheckoutItem__delete">
+    <div class="ml-auto d-flex align-items-center CheckoutItem__delete" (click)="onRemoveItem(itemWithProducts.item.id, selectedType.name)">
       <span class="d-none d-sm-flex mr-2">Delete</span>
-      <tsl-svg-icon
-        class=""
-        (click)="onRemoveItem(itemWithProducts.item.id, selectedType.name)"
-        [src]="'/assets/icons/delete.svg'"
-      ></tsl-svg-icon>
+      <tsl-svg-icon [src]="'/assets/icons/delete.svg'"></tsl-svg-icon>
     </div>
   </div>
   <div class="d-flex w-100">
@@ -27,7 +23,7 @@
           title="{{ itemWithProducts.item.title }}"
         ></tsl-item-avatar>
         <div class="CheckoutItem__title">{{ itemWithProducts.item.title }}</div>
-        <div *ngIf="!subscription?.selected_tier?.bumps?.length" class="ml-auto d-flex align-items-center CheckoutItem__delete">
+        <div *ngIf="!isFreeOptionAvailable" class="ml-auto d-flex align-items-center CheckoutItem__delete">
           <span class="d-none d-sm-flex mr-2">Delete</span>
           <tsl-svg-icon
             class=""
@@ -46,7 +42,7 @@
                 (click)="selectType(type)"
                 [ngClass]="{ 'CheckoutItem__button--selected': type === selectedType }"
               >
-                {{ type.name }}
+                {{ type.name === BUMP_TYPES.ZONE_BUMP && itemWithProducts.isProvincialBump ? 'Provincial' : type.name }}
               </button>
             </ng-container>
           </div>
@@ -54,7 +50,7 @@
         <div>
           <div class="CheckoutItem__subtitle mb-1 mt-3 mt-xl-0">Duration</div>
           <div class="d-flex flex-xl-wrap">
-            <ng-container *ngFor="let duration of availablesDurations">
+            <ng-container *ngFor="let duration of availableDurations">
               <button
                 class="btn CheckoutItem__button mb-0 mb-xl-2"
                 (click)="selectDuration(duration)"
@@ -69,7 +65,7 @@
     </div>
   </div>
   <div *ngIf="selectedDuration && selectedType" class="text-right w-100 mt-4">
-    <ng-container *ngIf="onlyFree; else noFreePrice">
+    <ng-container *ngIf="isFreeOptionSelected; else noFreePrice">
       <span class="CheckoutItem__price--discount mr-2">
         {{ selectedDuration?.market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
       </span>

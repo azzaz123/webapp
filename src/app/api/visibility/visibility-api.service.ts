@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
 import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
-import { ItemService } from '@core/item/item.service';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CartBase } from '@shared/catalog/cart/cart-base';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { BumpsHttpService } from './http/bumps.service';
-import { mapBalance, mapFreeBumpsPurchase, mapItemsWithProducts } from './mappers/bumps-mapper';
+import { mapBalance, mapFreeBumpsPurchase, mapItemsWithProducts, mapItemsWithProductsAndSubscriptionBumps } from './mappers/bumps-mapper';
 
 @Injectable()
 export class VisibilityApiService {
-  constructor(private bumpsHttpService: BumpsHttpService, private uuidService: UuidService, private itemService: ItemService) {}
+  constructor(
+    private bumpsHttpService: BumpsHttpService,
+    private uuidService: UuidService,
+    private subscriptionService: SubscriptionsService
+  ) {}
 
   public getBalance(userId: string): Observable<BumpsPackageBalance[]> {
     return this.bumpsHttpService.getBalance(userId).pipe(map(mapBalance));
@@ -24,5 +28,16 @@ export class VisibilityApiService {
 
   public getItemsWithAvailableProducts(ids: string[]): Observable<ItemWithProducts[]> {
     return this.bumpsHttpService.getItemsWithAvailableProducts(ids).pipe(map(mapItemsWithProducts));
+  }
+
+  public getItemsWithProductsAndSubscriptionBumps(ids: string[]): Observable<ItemWithProducts[]> {
+    return forkJoin([
+      this.bumpsHttpService.getItemsWithAvailableProducts(ids).pipe(map(mapItemsWithProducts)),
+      this.subscriptionService.getSubscriptions(),
+    ]).pipe(
+      map(([itemWithProducts, subscriptions]) => {
+        return mapItemsWithProductsAndSubscriptionBumps(itemWithProducts, subscriptions, this.subscriptionService);
+      })
+    );
   }
 }

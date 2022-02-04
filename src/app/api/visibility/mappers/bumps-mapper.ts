@@ -1,9 +1,10 @@
-import { mapImageDtosToImages } from '@api/core/mappers';
+import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { BumpPackageBalance, BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
 import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
 import { Item } from '@core/item/item';
-import { ItemImagesURLs, ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
-import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
+import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { BUMP_TYPES, CartBase } from '@shared/catalog/cart/cart-base';
 import { CartItem } from '@shared/catalog/cart/cart-item.interface';
@@ -49,7 +50,35 @@ function mapItemWithProducts(itemWithProducts: ItemsWithAvailableProductsRespons
   return {
     item: mapItemsToLegacyItem(itemWithProducts),
     products: itemWithProducts.productList,
+    isProvincialBump: !itemWithProducts.productList.find((product) => product.name === BUMP_TYPE.CITY_BUMP),
   };
+}
+
+export function mapItemsWithProductsAndSubscriptionBumps(
+  itemsWithProducts: ItemWithProducts[],
+  subscriptions: SubscriptionsResponse[],
+  subscriptionService: SubscriptionsService
+): ItemWithProducts[] {
+  return itemsWithProducts.map((item) =>
+    mapItemWithProductsAndSubscriptionBumps(item, subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId))
+  );
+}
+
+function mapItemWithProductsAndSubscriptionBumps(
+  itemWithProducts: ItemWithProducts,
+  subscription: SubscriptionsResponse
+): ItemWithProducts {
+  if (subscription?.selected_tier) {
+    subscription.selected_tier.bumps.forEach((bump) => {
+      const productType = itemWithProducts.products.find((product) => product.name === bump.name);
+      const durationType = productType?.durations.find((duration) => duration.duration === bump.duration_days * 24);
+      if (durationType) {
+        durationType.isFreeOption = true;
+        durationType.subscriptionPackageType = subscription.type;
+      }
+    });
+  }
+  return itemWithProducts;
 }
 
 function mapItemsToLegacyItem(itemsWithAvailable: ItemsWithAvailableProductsResponse): Item {

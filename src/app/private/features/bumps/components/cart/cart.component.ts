@@ -1,5 +1,5 @@
 import { finalize, takeWhile } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -33,7 +33,6 @@ export class CartComponent implements OnInit, OnDestroy {
   public cart: CartBase;
   public types: string[] = BUMP_TYPES;
   public hasSavedCard = true;
-  public cardType = 'old';
   public loading: boolean;
   public card: any;
   public showCard = false;

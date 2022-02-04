@@ -19,8 +19,8 @@
                       <div>
                         <span [ngSwitch]="type">
                           <ng-container *ngSwitchCase="BUMP_TYPES.ZONE_BUMP">
-                            <ng-container *ngIf="!provincialBump" i18n="@@web_cart_454">Local</ng-container>
-                            <ng-container *ngIf="provincialBump" i18n="@@web_cart_455">Provincial</ng-container>
+                            <ng-container *ngIf="!cartItem.isProvincialBump" i18n="@@web_cart_454">Local</ng-container>
+                            <ng-container *ngIf="cartItem.isProvincialBump" i18n="@@web_cart_455">Provincial</ng-container>
                           </ng-container>
                           <ng-container *ngSwitchCase="BUMP_TYPES.CITY_BUMP" i18n="@@web_cart_663">City</ng-container>
                           <ng-container *ngSwitchCase="BUMP_TYPES.COUNTRY_BUMP" i18n="@@web_cart_664">Country</ng-container>
@@ -35,7 +35,7 @@
                       </div>
                     </div>
                     <div *ngIf="cartItem.isFree" class="align-items-center d-flex Cart__listDescription">
-                      {{ cartItem.duration.subscriptionPackage }}
+                      {{ cartItem.duration.subscriptionPackageType }}
                       <tsl-pro-badge class="ml-2" [iconType]="ICON_TYPE.MEDIUM"></tsl-pro-badge>
                     </div>
                   </div>
