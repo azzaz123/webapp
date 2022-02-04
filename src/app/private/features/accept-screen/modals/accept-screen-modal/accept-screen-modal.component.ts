@@ -23,7 +23,7 @@ export class AcceptScreenModalComponent implements OnInit {
         const carrierSelectedPosition: number = acceptScreenProperties?.carriers?.findIndex(
           (carrier: AcceptScreenCarrier) => carrier.isSelected
         );
-        this.selectedDropOffPosition = carrierSelectedPosition || null;
+        this.selectedDropOffPosition = carrierSelectedPosition;
       })
     );
   }

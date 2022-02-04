@@ -64,7 +64,8 @@ export function mapCarrierDropOffModeToAcceptScreenCarriers(
   if (!input.modes || input.modes.length === 0) return [];
 
   const dropOffSorteredByCost: DropOffModeRequest[] = input.modes.sort(
-    (a: DropOffModeRequest, b: DropOffModeRequest) => a.sellerCosts.amount.total - b.sellerCosts.amount.total
+    (dropOffModeA: DropOffModeRequest, dropOffModeB: DropOffModeRequest) =>
+      dropOffModeA.sellerCosts.amount.total - dropOffModeB.sellerCosts.amount.total
   );
   const dropOffSelected: CARRIER_DROP_OFF_MODE = dropOffModeSelectedByUser || dropOffSorteredByCost[0].type;
 
