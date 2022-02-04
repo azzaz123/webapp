@@ -98,6 +98,10 @@ describe('mapUserToAcceptScreenBuyer', () => {
 });
 
 describe('mapCarrierDropOffModeToAcceptScreenCarriers', () => {
+  beforeEach(() => {
+    jest.spyOn(window.navigator, 'language', 'get').mockReturnValue('en-us');
+  });
+
   describe('when asking for carriers map', () => {
     describe('and we have carriers defined', () => {
       describe('and the user has selected a new drop off mode', () => {
