@@ -104,14 +104,24 @@ export const formattedCarBrandNModel: FilterOption = {
   label: calcBrandModelLabel(brandNModel),
 };
 
-export const fashionBrand: FashionBrand = {
-  brand: 'brand',
+export const popularFashionBrand: FashionBrand = {
+  brand: 'popularBrand',
   is_popular: true,
 };
 
-export const formattedFashionBrand: FilterOption = {
-  label: fashionBrand.brand,
-  value: fashionBrand.brand,
+export const commonFashionBrand: FashionBrand = {
+  brand: 'commonBrand',
+  is_popular: false,
+};
+
+export const popularFormattedFashionBrand: FilterOption = {
+  label: popularFashionBrand.brand,
+  value: popularFashionBrand.brand,
+};
+
+export const commonFormattedFashionBrand: FilterOption = {
+  label: commonFashionBrand.brand,
+  value: commonFashionBrand.brand,
 };
 
 export const sizeNGender: SizeNGenderResponse = {

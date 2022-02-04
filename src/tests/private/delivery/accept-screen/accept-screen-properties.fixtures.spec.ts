@@ -16,6 +16,7 @@ import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/
 import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST } from './carrier-drop-off-mode-request.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR } from '../delivery-address.fixtures.spec';
 import { AcceptScreenDeliveryAddress } from '@private/features/accept-screen/interfaces/accept-screen-delivery-address.interface';
+import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 
 export const MOCK_ACCEPT_SCREEN_ITEM: AcceptScreenItem = {
   id: MOCK_ITEM.id,
@@ -34,7 +35,7 @@ export const MOCK_ACCEPT_SCREEN_ITEM_WITHOUT_IMAGE: AcceptScreenItem = {
     number: MOCK_ITEM_WITHOUT_IMAGE.salePrice,
     currency: MOCK_ITEM_WITHOUT_IMAGE.currencyCode as CurrencyCode,
   }),
-  imageUrl: null,
+  imageUrl: FALLBACK_NOT_FOUND_SRC,
 };
 
 export const MOCK_ACCEPT_SCREEN_BUYER: AcceptScreenBuyer = {
