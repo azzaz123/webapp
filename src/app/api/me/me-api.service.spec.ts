@@ -119,21 +119,21 @@ describe('MeApiService', () => {
         service.getItems(null, STATUS.PUBLISHED).subscribe((list: PaginatedList<Item>) => (itemList = list));
 
         expect(itemService.mine).toHaveBeenCalledTimes(1);
-        expect(itemService.mine).toHaveBeenCalledWith(0, STATUS.PUBLISHED);
+        expect(itemService.mine).toHaveBeenCalledWith(null, STATUS.PUBLISHED);
         expect(itemList).toEqual({ list: [MOCK_ITEM, MOCK_ITEM] });
       });
     });
 
     describe('with pagination', () => {
       it('should retrieve published items', () => {
-        const pagination = '20';
+        const pagination = 'paginationHash';
         let itemList: PaginatedList<Item>;
-        spyOn(itemService, 'mine').and.returnValue(of({ data: [MOCK_ITEM, MOCK_ITEM], init: pagination }));
+        spyOn(itemService, 'mine').and.returnValue(of({ data: [MOCK_ITEM, MOCK_ITEM], since: pagination }));
 
         service.getItems(pagination, STATUS.PUBLISHED).subscribe((list: PaginatedList<Item>) => (itemList = list));
 
         expect(itemService.mine).toHaveBeenCalledTimes(1);
-        expect(itemService.mine).toHaveBeenCalledWith(+pagination, STATUS.PUBLISHED);
+        expect(itemService.mine).toHaveBeenCalledWith(pagination, STATUS.PUBLISHED);
         expect(itemList).toEqual({ list: [MOCK_ITEM, MOCK_ITEM], paginationParameter: pagination });
       });
     });
