@@ -52,7 +52,7 @@ export const MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED: DropOffModeRequest = {
 
 export const MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS: DropOffModeRequest = {
   type: CARRIER_DROP_OFF_MODE.POST_OFFICE,
-  icon: 'random icon',
+  icon: 'http://localhost/random_icon.png',
   postOfficeDetails: {
     carrier: POST_OFFICE_CARRIER.CORREOS,
     lastAddressUsed: {
@@ -86,7 +86,7 @@ export const MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS: DropOffModeRequest
 
 export const MOCK_CARRIER_PO_WITH_LAST_ADDRESS_CARRIER_OFFICE: DropOffModeRequest = {
   type: CARRIER_DROP_OFF_MODE.POST_OFFICE,
-  icon: 'random icon',
+  icon: 'http://localhost/random_icon2.png',
   postOfficeDetails: {
     carrier: POST_OFFICE_CARRIER.CORREOS,
     lastAddressUsed: {

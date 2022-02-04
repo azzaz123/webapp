@@ -14,7 +14,7 @@
       <div class="col p-0">
         <h2 class="AcceptScreenModal__title pb-2" i18n="@@accept_view_seller_delivery_method_selector_title">How to send it?</h2>
         <tsl-delivery-radio-selector
-          *ngIf="properties.carriers"
+          *ngIf="properties.carriers?.length"
           class="d-block"
           [selectedId]="selectedDropOffPosition"
           (selectedIdChanged)="notifySelectedDropOffModeByUserChanged($event)"

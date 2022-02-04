@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AcceptScreenModalComponent } from './accept-screen-modal.component';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
-import { MOCK_ACCEPT_SCREEN_PROPERTIES } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
+import {
+  MOCK_ACCEPT_SCREEN_PROPERTIES,
+  MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU,
+} from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { BehaviorSubject } from 'rxjs';
 import { AcceptScreenProperties } from '../../interfaces';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
@@ -71,6 +74,7 @@ describe('AcceptScreenModalComponent', () => {
 
       beforeEach(() => {
         spyOn(acceptScreenStoreService, 'initialize');
+
         acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES);
 
         fixture.detectChanges();
@@ -102,6 +106,13 @@ describe('AcceptScreenModalComponent', () => {
       describe('and we receive carriers', () => {
         const newCarrierSelectedPosition: number = 0;
 
+        it('should update the selected drop off position', () => {
+          const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.findIndex(
+            (carrier: AcceptScreenCarrier) => carrier.isSelected
+          );
+          expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
+        });
+
         it('should show carrier options', () => {
           shouldRenderRadioSelector(true);
         });
@@ -114,16 +125,6 @@ describe('AcceptScreenModalComponent', () => {
         describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
           const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.indexOf(carrier);
 
-          it('should show the carrier image', () => {
-            const carrierImage: DebugElement = de.queryAll(By.css('.AcceptScreenModal__carrierIcon'))[currentCarrierPosition];
-            expect(carrierImage.nativeElement.src).toStrictEqual(carrier.icon);
-          });
-
-          it('should show the carrier title and price', () => {
-            const carrierTitle: string = de.queryAll(By.css('#carrierTitle'))[currentCarrierPosition].nativeElement.innerHTML;
-            expect(carrierTitle).toStrictEqual(`${carrier.title} <b>${carrier.price}</b>`);
-          });
-
           describe('and the selected option is provided...', () => {
             shouldShowCarrierInformation(carrier, currentCarrierPosition);
           });
@@ -135,8 +136,6 @@ describe('AcceptScreenModalComponent', () => {
             fixture.debugElement
               .query(By.directive(DeliveryRadioSelectorComponent))
               .triggerEventHandler('selectedIdChanged', newCarrierSelectedPosition);
-
-            fixture.detectChanges();
           });
 
           it('should notify the new carrier selected position ', () => {
@@ -155,6 +154,51 @@ describe('AcceptScreenModalComponent', () => {
 
         it('should NOT show any carrier option', () => {
           shouldRenderRadioSelector(false);
+        });
+
+        it('should NOT define the selected drop off position', () => {
+          expect(component.selectedDropOffPosition).not.toBeDefined();
+        });
+      });
+    });
+
+    describe('and we receive accept screen properties but carriers with first option selected', () => {
+      let acceptScreenProperties: AcceptScreenProperties;
+
+      beforeEach(() => {
+        acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+
+        fixture.detectChanges();
+        component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
+          acceptScreenProperties = newProperties;
+        });
+      });
+
+      it('should update the component properties', () => {
+        expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+      });
+
+      it('should update the selected drop off position', () => {
+        const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.findIndex(
+          (carrier: AcceptScreenCarrier) => carrier.isSelected
+        );
+        expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
+      });
+
+      it('should show carrier options', () => {
+        shouldRenderRadioSelector(true);
+      });
+
+      it('should show carriers received', () => {
+        const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
+        expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.length);
+      });
+
+      describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
+        const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.indexOf(carrier);
+
+        describe('and the selected option is provided...', () => {
+          shouldShowCarrierInformation(carrier, currentCarrierPosition);
         });
       });
     });
@@ -222,6 +266,16 @@ describe('AcceptScreenModalComponent', () => {
   }
 
   function shouldShowCarrierInformation(carrier: AcceptScreenCarrier, currentCarrierPosition: number): void {
+    it('should show the carrier image', () => {
+      const carrierImage: DebugElement = de.queryAll(By.css('.AcceptScreenModal__carrierIcon'))[currentCarrierPosition];
+      expect(carrierImage.nativeElement.src).toStrictEqual(carrier.icon);
+    });
+
+    it('should show the carrier title and price', () => {
+      const carrierTitle: string = de.queryAll(By.css('#carrierTitle'))[currentCarrierPosition].nativeElement.innerHTML;
+      expect(carrierTitle).toStrictEqual(`${carrier.title} <b>${carrier.price}</b>`);
+    });
+
     if (carrier.isSelected) {
       it('should show first information when is provided', () => {
         const isFirstInfoShowed: boolean = de
@@ -248,9 +302,11 @@ describe('AcceptScreenModalComponent', () => {
       });
 
       it('should show carrier restrictions', () => {
-        const carrierRestrictions: string = de.queryAll(By.css('.AcceptScreenModal__carrierRestrictions'))[currentCarrierPosition]
-          .nativeElement.innerHTML;
-        expect(carrierRestrictions).toStrictEqual(carrier.restrictions);
+        const areCarrierRestrictionsShowed: boolean = de
+          .queryAll(By.css('.AcceptScreenModal__carrierRestrictions'))
+          .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.restrictions);
+
+        expect(areCarrierRestrictionsShowed).toBe(true);
       });
 
       it('should should show button when needed', () => {

@@ -13,7 +13,10 @@ import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/
 import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR } from '../delivery-address.fixtures.spec';
 import { AcceptScreenDeliveryAddress } from '@private/features/accept-screen/interfaces/accept-screen-delivery-address.interface';
-import { MOCK_ACCEPT_SCREEN_CARRIERS, MOCK_ACCEPT_SCREEN_CARRIERS_2 } from './accept-screen-properties-carriers.fixtures.spec';
+import {
+  MOCK_ACCEPT_SCREEN_CARRIERS,
+  MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS,
+} from './accept-screen-properties-carriers.fixtures.spec';
 
 export const MOCK_ACCEPT_SCREEN_ITEM: AcceptScreenItem = {
   id: MOCK_ITEM.id,
@@ -72,7 +75,7 @@ export const MOCK_ACCEPT_SCREEN_PROPERTIES: AcceptScreenProperties = {
   item: MOCK_ACCEPT_SCREEN_ITEM,
   buyer: MOCK_ACCEPT_SCREEN_BUYER,
   seller: MOCK_ACCEPT_SCREEN_SELLER,
-  carriers: MOCK_ACCEPT_SCREEN_CARRIERS_2,
+  carriers: MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS,
   deliveryAddress: MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS,
 };
 
