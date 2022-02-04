@@ -139,7 +139,6 @@ export class PayviewService {
   }
 
   private getCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
-    console.log(state);
     const method = state.delivery.methods.deliveryMethods[state.delivery.methods.default.index];
 
     return this.calculatorService.getCosts(state.itemDetails.price, this.itemHash, null, method.method);
