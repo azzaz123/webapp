@@ -76,13 +76,13 @@ describe('ExperimentService', () => {
     it('should get the variations', fakeAsync(() => {
       spyOn(OptimizelyServiceMock, 'getVariations');
       service.getVariations({
-        flagKeys: [OPTIMIZELY_FLAG_KEYS.TestPlaceholder, OPTIMIZELY_FLAG_KEYS.Test01_Web_Experiment],
+        flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest],
         options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT],
       });
       tick();
 
       expect(OptimizelyServiceMock.getVariations).toHaveBeenCalledWith({
-        flagKeys: [OPTIMIZELY_FLAG_KEYS.TestPlaceholder, OPTIMIZELY_FLAG_KEYS.Test01_Web_Experiment],
+        flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest],
         options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT],
       });
     }));

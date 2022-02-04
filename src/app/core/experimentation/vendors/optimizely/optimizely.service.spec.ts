@@ -156,7 +156,7 @@ describe('Optimizely service', () => {
       service.initialize();
       tick();
       service.initExperimentContext({});
-      service.getVariations({ flagKeys: [OPTIMIZELY_FLAG_KEYS.TestPlaceholder] });
+      service.getVariations({ flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest] });
 
       expect(UserContext.decideForKeys).toHaveBeenCalled();
     }));
