@@ -17,6 +17,8 @@ import { ButtonComponent } from '@shared/button/button.component';
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
+  const rejectButtonSelector: string = '#rejectButton';
+  const acceptButtonSelector: string = '#acceptButton';
 
   let de: DebugElement;
   let component: AcceptScreenModalComponent;
@@ -53,6 +55,7 @@ describe('AcceptScreenModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AcceptScreenModalComponent);
     acceptScreenStoreService = TestBed.inject(AcceptScreenStoreService);
+    de = fixture.debugElement;
     component = fixture.componentInstance;
     de = fixture.debugElement;
     component.requestId = MOCK_REQUEST_ID;
@@ -82,6 +85,14 @@ describe('AcceptScreenModalComponent', () => {
 
       it('should show product card specifications', () => {
         shouldRenderProductCard(true);
+      });
+
+      it('should show reject button', () => {
+        shouldRenderRejectButton(true);
+      });
+
+      it('should show accept button', () => {
+        shouldRenderAcceptButton(true);
       });
 
       it('should update the component properties', () => {
@@ -169,6 +180,14 @@ describe('AcceptScreenModalComponent', () => {
         shouldRenderProductCard(false);
       });
 
+      it('should NOT show reject button', () => {
+        shouldRenderRejectButton(false);
+      });
+
+      it('should NOT show accept button', () => {
+        shouldRenderAcceptButton(false);
+      });
+
       it('should update the component properties', () => {
         expect(acceptScreenEmptyProperties).toStrictEqual(null);
       });
@@ -250,6 +269,22 @@ describe('AcceptScreenModalComponent', () => {
         const carrierInformationWrapper = fixture.debugElement.query(By.css('#carrierInformationWrapperSelector'));
         expect(carrierInformationWrapper).toBeFalsy();
       });
+    }
+  }
+
+  function shouldRenderRejectButton(isShowed: boolean): void {
+    if (isShowed) {
+      expect(de.nativeElement.querySelector(rejectButtonSelector)).toBeTruthy();
+    } else {
+      expect(de.nativeElement.querySelector(rejectButtonSelector)).toBeFalsy();
+    }
+  }
+
+  function shouldRenderAcceptButton(isShowed: boolean): void {
+    if (isShowed) {
+      expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeTruthy();
+    } else {
+      expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeFalsy();
     }
   }
 });
