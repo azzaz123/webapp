@@ -26,10 +26,6 @@ export class VisibilityApiService {
     return itemsMapped.length === 0 ? of(true) : this.bumpsHttpService.useBumpPackage(itemsMapped).pipe(catchError((error) => of(error)));
   }
 
-  public getItemsWithAvailableProducts(ids: string[]): Observable<ItemWithProducts[]> {
-    return this.bumpsHttpService.getItemsWithAvailableProducts(ids).pipe(map(mapItemsWithProducts));
-  }
-
   public getItemsWithProductsAndSubscriptionBumps(ids: string[]): Observable<ItemWithProducts[]> {
     return forkJoin([
       this.bumpsHttpService.getItemsWithAvailableProducts(ids).pipe(map(mapItemsWithProducts)),

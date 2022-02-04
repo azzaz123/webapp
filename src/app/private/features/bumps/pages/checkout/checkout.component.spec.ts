@@ -7,7 +7,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
-import { ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE, ITEM_ID } from '@fixtures/item.fixtures.spec';
+import { ITEM_ID } from '@fixtures/item.fixtures.spec';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
+import { ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED } from '@fixtures/bump-package.fixtures.spec';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
@@ -17,6 +19,7 @@ describe('CheckoutComponent', () => {
   let paymentService: PaymentService;
   let spyCall;
   let route: ActivatedRoute;
+  let visibilityService: VisibilityApiService;
 
   const SELECTED_ITEMS = ['1', '2', '3'];
 
@@ -29,9 +32,6 @@ describe('CheckoutComponent', () => {
             provide: ItemService,
             useValue: {
               selectedItems: SELECTED_ITEMS,
-              getItemsWithAvailableProducts() {
-                return of(ITEMS_WITH_PRODUCTS);
-              },
             },
           },
           {
@@ -54,6 +54,14 @@ describe('CheckoutComponent', () => {
               params: of({}),
             },
           },
+          {
+            provide: VisibilityApiService,
+            useValue: {
+              getItemsWithProductsAndSubscriptionBumps() {
+                return of(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED);
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -67,15 +75,16 @@ describe('CheckoutComponent', () => {
     router = TestBed.inject(Router);
     paymentService = TestBed.inject(PaymentService);
     route = TestBed.inject(ActivatedRoute);
-    spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
+    visibilityService = TestBed.inject(VisibilityApiService);
+    spyCall = spyOn(visibilityService, 'getItemsWithProductsAndSubscriptionBumps').and.callThrough();
     fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
     describe('no params', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
-        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
-        expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
+        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith(SELECTED_ITEMS);
+        expect(component.itemsWithProducts).toEqual(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED);
       });
 
       it('should redirect to catalog if no item selected', () => {
@@ -85,14 +94,6 @@ describe('CheckoutComponent', () => {
         component.ngOnInit();
 
         expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
-      });
-
-      it('should set provincialBump to true if no citybump', () => {
-        spyCall.and.returnValue(of(ITEMS_WITH_PRODUCTS_PROVINCE));
-
-        component.ngOnInit();
-
-        expect(component.provincialBump).toBe(true);
       });
     });
 
@@ -106,16 +107,8 @@ describe('CheckoutComponent', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
         component.ngOnInit();
 
-        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([ITEM_ID]);
-        expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
-      });
-
-      it('should set provincialBump to true if no citybump', () => {
-        spyCall.and.returnValue(of(ITEMS_WITH_PRODUCTS_PROVINCE));
-
-        component.ngOnInit();
-
-        expect(component.provincialBump).toBe(true);
+        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith([ITEM_ID]);
+        expect(component.itemsWithProducts).toEqual(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED);
       });
 
       it('should redirect if no products available', () => {
@@ -124,7 +117,7 @@ describe('CheckoutComponent', () => {
 
         component.ngOnInit();
 
-        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([ITEM_ID]);
+        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith([ITEM_ID]);
         expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { alreadyFeatured: true }]);
       });
     });

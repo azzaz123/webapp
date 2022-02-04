@@ -90,9 +90,12 @@ export class CartComponent implements OnInit, OnDestroy {
             this.loading = false;
           })
         )
-        .subscribe(() => {
-          this.success();
-        });
+        .subscribe(
+          () => {
+            this.success();
+          },
+          () => {}
+        );
       this.purchaseBumps(order, orderId);
     }, 2000);
   }
@@ -119,12 +122,12 @@ export class CartComponent implements OnInit, OnDestroy {
         }
       },
       (e: HttpErrorResponse) => {
-        this.purchaseBumpsSubject.error(e);
         if (e.error) {
           this.errorService.show(e);
         } else {
           this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
         }
+        this.purchaseBumpsSubject.error(e);
       }
     );
   }

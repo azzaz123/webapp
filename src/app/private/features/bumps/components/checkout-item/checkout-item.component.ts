@@ -59,8 +59,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
 
   ngOnChanges() {
     if (this.creditInfo && !this.selectedType) {
-      this.selectedType = this.itemWithProducts.products[0];
-      this.selectType(this.selectedType);
+      this.selectType(this.itemWithProducts.products[0]);
     }
   }
 

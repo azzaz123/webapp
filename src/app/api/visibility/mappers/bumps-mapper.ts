@@ -82,32 +82,38 @@ function mapItemWithProductsAndSubscriptionBumps(
 }
 
 function mapItemsToLegacyItem(itemsWithAvailable: ItemsWithAvailableProductsResponse): Item {
-  const { id, title, category_id, images, price, currency, web_slug, publish_date, modified_date, image } = itemsWithAvailable.content;
+  const {
+    id,
+    title,
+    description,
+    category_id,
+    images,
+    url,
+    sale_price,
+    currency_code,
+    web_slug,
+    publish_date,
+    modified_date,
+    image,
+    flags,
+    sale_conditions,
+  } = itemsWithAvailable.content;
 
   const item = new Item(
     id,
     null,
     null,
     title,
-    undefined,
+    description,
     category_id,
-    undefined,
-    price,
-    currency,
+    null,
+    sale_price,
+    currency_code,
     modified_date,
-    web_slug,
-    {
-      pending: false,
-      sold: false,
-      favorite: false,
-      reserved: false,
-      banned: false,
-      expired: false,
-      bumped: false,
-      bump_type: null,
-    },
-    undefined,
-    undefined,
+    url,
+    flags,
+    null,
+    sale_conditions,
     images
       ? images[0]
       : {

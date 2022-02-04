@@ -1,13 +1,14 @@
 import { of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
-import { CITYBUMP_DURATIONS, ITEM_ID, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE, MOCK_ITEM_V3 } from '@fixtures/item.fixtures.spec';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { Cart } from '@shared/catalog/cart/cart';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
+import { ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED } from '@fixtures/bump-package.fixtures.spec';
+import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 
 describe('CheckoutItemComponent', () => {
   let component: CheckoutItemComponent;
@@ -48,7 +49,7 @@ describe('CheckoutItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutItemComponent);
     component = fixture.componentInstance;
-    component.itemWithProducts = ITEMS_WITH_PRODUCTS[0];
+    component.itemWithProducts = ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0];
     component.creditInfo = {
       currencyName: 'wallacoins',
       credit: 200,
@@ -69,15 +70,22 @@ describe('CheckoutItemComponent', () => {
       });
     });
 
-    it('should set durations and default duration', () => {
-      expect(component.durations).toEqual(['24', '72', '168']);
-      expect(component.selectedDuration).toEqual('72');
+    describe('should default products', () => {
+      describe('and has not free products', () => {
+        it('should set default products', () => {
+          expect(component.availableTypes).toEqual(component.itemWithProducts.products);
+          expect(component.selectedType).toEqual(component.itemWithProducts.products[0]);
+          expect(component.availableDurations).toEqual(component.selectedType.durations);
+          expect(component.selectedDuration).toEqual(component.selectedType.durations[component.selectedType.default_duration_index]);
+        });
+      });
     });
 
-    describe('onRemoveOrClean', () => {
+    /*     describe('onRemoveOrClean', () => {
       beforeEach(() => {
-        component.selectedType = TYPE;
-        component.selectedDuration = DURATION;
+        component.selectedType = undefined;
+        component.selectedDuration = undefined;
+        component.ngOnInit();
       });
 
       it('should reset flags, selected type and duration if action remove', () => {
@@ -88,7 +96,8 @@ describe('CheckoutItemComponent', () => {
         };
         cartService.cart$ = of(cartChange);
 
-        component.ngOnInit();
+        component.ngOnChanges();
+        fixture.detectChanges();
       });
 
       it('should reset flags, selected type and duration if action clean', () => {
@@ -98,16 +107,15 @@ describe('CheckoutItemComponent', () => {
         };
         cartService.cart$ = of(cartChange);
 
-        component.ngOnInit();
+        component.ngOnChanges();
+        fixture.detectChanges();
       });
 
       afterEach(() => {
         expect(component.selectedType).toBeUndefined();
         expect(component.selectedDuration).toBeUndefined();
-        expect(component.itemWithProducts.item.flags.bump_type).toBeUndefined();
-        expect(component.itemWithProducts.item.flags.bumped).toBeFalsy();
       });
-    });
+    }); */
   });
 
   describe('ngOnDestroy', () => {
@@ -119,8 +127,8 @@ describe('CheckoutItemComponent', () => {
   });
 
   describe('ngOnChanges', () => {
-    it('should call select method when creditInfo is changed and select value is not defined', () => {
-      spyOn(component, 'select');
+    it('should call select method when creditInfo is changed and select value is not defined', fakeAsync(() => {
+      spyOn(component, 'selectType').and.callThrough();
       component.creditInfo = {
         currencyName: 'yens',
         credit: 420,
@@ -129,56 +137,39 @@ describe('CheckoutItemComponent', () => {
       component.selectedType = null;
 
       component.ngOnChanges();
+      tick();
+      fixture.detectChanges();
 
-      expect(component.selectedType).toBe(component.types[0]);
-      expect(component.select).toHaveBeenCalledTimes(1);
-      expect(component.select).toHaveBeenCalledWith(component.types[0]);
-    });
+      expect(component.selectType).toHaveBeenCalledTimes(1);
+      expect(component.selectType).toHaveBeenCalledWith(component.itemWithProducts.products[0]);
+      expect(component.selectedType).toBe(component.itemWithProducts.products[0]);
+    }));
   });
 
-  describe('select', () => {
+  describe('select type', () => {
     beforeEach(() => {
-      component.selectedDuration = DURATION;
-      spyOn(cartService, 'add');
-      spyOn(cartService, 'remove');
+      component.availableDurations = component.selectedType.durations;
+      spyOn(cartService, 'add').and.callThrough();
+      spyOn(cartService, 'remove').and.callThrough();
 
-      component.select(TYPE);
+      component.selectType(component.availableTypes[0]);
     });
 
     it('should set type and duration', () => {
-      expect(component.selectedType).toBe(TYPE);
-      expect(component.selectedDuration).toBe(DURATION);
+      expect(component.selectedType).toBe(component.availableTypes[0]);
+      expect(component.selectedDuration).toBe(component.selectedType.durations[component.selectedType.default_duration_index]);
     });
 
     it('should call add', () => {
       expect(cartService.add).toHaveBeenCalledWith(
         {
-          item: MOCK_ITEM_V3,
-          duration: CITYBUMP_DURATIONS[0],
+          item: ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0].item,
+          duration: component.selectedDuration,
+          isFree: undefined,
+          isProvincialBump: true,
         },
-        TYPE
+        component.selectedType.name
       );
-    });
-  });
-
-  describe('duration', () => {
-    it('should call select method when changed and selectedType is defined', () => {
-      spyOn(component, 'select');
-      component.selectedType = TYPE;
-
-      component.selectedDuration = DURATION;
-
-      expect(component.select).toHaveBeenCalledTimes(1);
-      expect(component.select).toHaveBeenCalledWith(TYPE);
-    });
-
-    it('should not call select method when changed and selectedType is null', () => {
-      spyOn(component, 'select');
-      component.selectedType = null;
-
-      component.selectedDuration = DURATION;
-
-      expect(component.select).toHaveBeenCalledTimes(0);
     });
   });
 });

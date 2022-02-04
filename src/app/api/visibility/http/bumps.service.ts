@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
 import { WEB_ITEMS_API_URL } from '@core/item/item.service';
 import { environment } from '@environments/environment.beta';
 import { Observable } from 'rxjs';
@@ -19,11 +20,14 @@ export class BumpsHttpService {
     return this.httpClient.post<void>(BUMPS_PACKAGE_USE, cart);
   }
 
-  public getItemsWithAvailableProducts(ids: string[]): Observable<any> {
-    return this.httpClient.get(`${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`, {
-      params: {
-        itemsIds: ids.join(','),
-      },
-    });
+  public getItemsWithAvailableProducts(ids: string[]): Observable<ItemsWithAvailableProductsResponse[]> {
+    return this.httpClient.get<ItemsWithAvailableProductsResponse[]>(
+      `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`,
+      {
+        params: {
+          itemsIds: ids.join(','),
+        },
+      }
+    );
   }
 }
