@@ -1,28 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
-import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
-import { SharedModule } from '@shared/shared.module';
-import { AutosizeModule } from 'ngx-autosize';
-import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
-import { InboxConversationComponent } from './children/inbox/components/inbox-conversation';
-import { InboxItemDetailComponent } from './children/inbox/components/inbox-item-component';
-import { InboxItemForSellComponent } from './children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component';
-import { InboxUserDetailComponent } from './children/inbox/components/inbox-user-component';
-import { InboxComponent } from './children/inbox/inbox.component';
-import { ItemReservedComponent } from './children/item/components/item-reserved';
-import { ItemSoldComponent } from './children/item/components/item-sold';
-import { MessageModule } from './children/message';
-import { ArchivedInboxConversationComponent } from './components/archived-inbox-conversation';
-import { ConnectionAlertComponent } from './components/connection-alert/inbox';
-import { ConversationDetailsBarComponent } from './components/conversation-details-bar';
-import { CurrentConversationComponent } from './components/current-conversation';
-import { InputComponent } from './components/input';
-import { ScrollingMessageComponent } from './components/scrolling-message';
-import { UserDetailComponent } from './components/user-detail';
-import { UserResponseRateModule } from './components/user-response-rate/user-response-rate.module';
+
+import { ArchivedInboxConversationComponent } from '@private/features/chat/components/archived-inbox-conversation';
 import {
   ArchiveInboxConversationComponent,
   BlockUserComponent,
@@ -30,15 +10,50 @@ import {
   ReportUserComponent,
   UnarchiveInboxConversationComponent,
   UnblockUserComponent,
-} from './modals';
-import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
-import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { TranslateButtonModule } from '@core/components/translate-button/translate-button.module';
-import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
+} from '@private/features/chat/modals';
+import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
 import { ChatApiModule } from '@api/chat/chat-api.module';
-import { DeliveryBannerModule } from './modules/delivery-banner/delivery-banner.module';
-import { DeliveryConversationContextService } from './services/delivery-conversation-context/delivery-conversation-context.service';
+import { chatRoutedComponents, ChatRoutingModule } from '@private/features/chat/chat.routes';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
+import { ConnectionAlertComponent } from '@private/features/chat/components/connection-alert/inbox';
+import { ConversationDetailsBarComponent } from '@private/features/chat/components/conversation-details-bar';
+import { CurrentConversationComponent } from '@private/features/chat/components/current-conversation';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { DeliveryAddressApiService } from '@private/features/delivery/services/api/delivery-address-api/delivery-address-api.service';
+import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
+import { DeliveryAddressStoreService } from '@private/features/delivery/services/address/delivery-address-store/delivery-address-store.service';
+import { DeliveryBannerModule } from '@private/features/chat/modules/delivery-banner/delivery-banner.module';
+import { DeliveryBuyerCalculatorModule } from '@api/delivery/buyer/calculator/delivery-buyer-calculator.module';
+import { DeliveryBuyerModule } from '@api/bff/delivery/buyer/delivery-buyer.module';
+import { DeliveryConversationContextService } from '@private/features/chat/services/delivery-conversation-context/delivery-conversation-context.service';
+import { DeliveryCostsModule } from '@api/bff/delivery/costs/delivery-costs.module';
+import { InboxComponent } from '@private/features/chat/children/inbox/inbox.component';
+import { InboxConversationComponent } from '@private/features/chat/children/inbox/components/inbox-conversation';
+import { InboxItemDetailComponent } from '@private/features/chat/children/inbox/components/inbox-item-component';
+import { InboxItemForSellComponent } from '@private/features/chat/children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component';
+import { InboxUserDetailComponent } from '@private/features/chat/children/inbox/components/inbox-user-component';
+import { InputComponent } from '@private/features/chat/components/input';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { ItemReservedComponent } from '@private/features/chat/children/item/components/item-reserved';
+import { ItemService } from '@core/item/item.service';
+import { ItemSoldComponent } from '@private/features/chat/children/item/components/item-sold';
+import { MaliciousConversationModalComponent } from '@private/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { MessageModule } from '@private/features/chat/children/message';
+import { PaymentsCreditCardModule } from '@api/payments/cards';
+import { PaymentsPaymentMethodsModule } from '@api/payments/payment-methods/payments-payment-methods.module';
+import { PaymentsUserPaymentPreferencesModule } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.module';
+import { PaymentsWalletsModule } from '@api/payments/wallets/payments-wallets.module';
+import { PayviewService } from '@private/features/payview/services/payview/payview.service';
+import { PersonalDataInformationModal } from '@private/features/chat/modals/personal-data-information-modal/personal-data-information-modal.component';
+import { ScrollingMessageComponent } from '@private/features/chat/components/scrolling-message';
+import { SharedModule } from '@shared/shared.module';
+import { TranslateButtonModule } from '@core/components/translate-button/translate-button.module';
+import { UserDetailComponent } from '@private/features/chat/components/user-detail';
+import { UserResponseRateModule } from '@private/features/chat/components/user-response-rate/user-response-rate.module';
+
+import { AutosizeModule } from 'ngx-autosize';
+import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   imports: [
@@ -58,6 +73,14 @@ import { DeliveryConversationContextService } from './services/delivery-conversa
     TranslateButtonModule,
     ChatApiModule,
     DeliveryBannerModule,
+    BuyerRequestsApiModule,
+    DeliveryBuyerModule,
+    DeliveryBuyerCalculatorModule,
+    DeliveryCostsModule,
+    PaymentsCreditCardModule,
+    PaymentsPaymentMethodsModule,
+    PaymentsUserPaymentPreferencesModule,
+    PaymentsWalletsModule,
   ],
   declarations: [
     chatRoutedComponents,
@@ -84,7 +107,15 @@ import { DeliveryConversationContextService } from './services/delivery-conversa
     MaliciousConversationModalComponent,
     PersonalDataInformationModal,
   ],
-  providers: [ChatTranslationService, DeliveryConversationContextService],
+  providers: [
+    ChatTranslationService,
+    DeliveryConversationContextService,
+    DeliveryAddressService,
+    DeliveryAddressApiService,
+    DeliveryAddressStoreService,
+    ItemService,
+    PayviewService,
+  ],
   exports: [InboxConversationComponent],
   entryComponents: [
     ArchiveInboxConversationComponent,
