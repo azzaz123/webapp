@@ -9,7 +9,6 @@ export interface CartItem {
   item: Item;
   duration: Duration;
   isFree?: boolean;
-  subscriptionPackage?: string;
 }
 
 export interface CartProItem {
