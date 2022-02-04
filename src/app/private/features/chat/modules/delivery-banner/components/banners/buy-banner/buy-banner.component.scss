@@ -1,11 +1,8 @@
 @import '~style/common';
 
 .BuyBanner {
-  &__lottie {
+  &__lottieWrapper {
     @include square(48px);
-
-    max-height: 48px;
-    max-width: 48px;
   }
 
   b {
