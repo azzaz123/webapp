@@ -1,4 +1,4 @@
-import { BackendNotificationKeys } from '@api/me/mappers/notifications-copies-mapper';
+import { BackendNotificationKeys } from '@api/notifications/mappers/notifications-copies-mapper';
 
 export interface NotificationsDto {
   id: string;

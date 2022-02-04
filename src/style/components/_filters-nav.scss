@@ -6,6 +6,7 @@
     line-height: $line-height-xl;
     overflow-x: auto;
     overflow-y: hidden;
+    @include hide-scroll-bars();
 
     a {
       display: inline-block;
