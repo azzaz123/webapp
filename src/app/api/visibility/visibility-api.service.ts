@@ -5,7 +5,7 @@ import { ItemService } from '@core/item/item.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CartBase } from '@shared/catalog/cart/cart-base';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { BumpsHttpService } from './http/bumps.service';
 import { mapBalance, mapFreeBumpsPurchase, mapItemsWithProducts } from './mappers/bumps-mapper';
 
@@ -17,9 +17,9 @@ export class VisibilityApiService {
     return this.bumpsHttpService.getBalance(userId).pipe(map(mapBalance));
   }
 
-  public bumpWithPackage(cart: CartBase): Observable<void> {
+  public bumpWithPackage(cart: CartBase): Observable<unknown> {
     const itemsMapped = mapFreeBumpsPurchase(cart, this.uuidService);
-    return itemsMapped.length === 0 ? of() : this.bumpsHttpService.useBumpPackage(itemsMapped);
+    return itemsMapped.length === 0 ? of(true) : this.bumpsHttpService.useBumpPackage(itemsMapped).pipe(catchError((error) => of(error)));
   }
 
   public getItemsWithAvailableProducts(ids: string[]): Observable<ItemWithProducts[]> {

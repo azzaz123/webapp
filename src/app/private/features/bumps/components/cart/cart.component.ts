@@ -1,5 +1,5 @@
 import { finalize, takeWhile } from 'rxjs/operators';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -19,7 +19,7 @@ import { PACKS_TYPES } from '@core/payments/pack';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
-import { BehaviorSubject, forkJoin, Observable, Subscriber } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'tsl-cart',
@@ -29,6 +29,7 @@ import { BehaviorSubject, forkJoin, Observable, Subscriber } from 'rxjs';
 export class CartComponent implements OnInit, OnDestroy {
   @Input() provincialBump: boolean;
   @Input() creditInfo: CreditInfo;
+
   public cart: CartBase;
   public types: string[] = BUMP_TYPES;
   public hasSavedCard = true;
@@ -42,7 +43,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public readonly PACK_TYPES = PACKS_TYPES;
   public readonly ICON_TYPE = ICON_TYPE;
 
-  public purchaseBumpsSubject = new BehaviorSubject(null);
+  public purchaseBumpsSubject = new BehaviorSubject<boolean>(false);
 
   public get experimentReady$(): Observable<boolean> {
     return this.purchaseBumpsSubject.asObservable();
@@ -84,14 +85,16 @@ export class CartComponent implements OnInit, OnDestroy {
     const orderId: string = this.cart.getOrderId();
     this.loading = true;
     setTimeout(() => {
-      this.purchaseBumps(order, orderId);
       forkJoin([this.experimentReady$, this.visibilityService.bumpWithPackage(this.cart)])
         .pipe(
           finalize(() => {
             this.loading = false;
           })
         )
-        .subscribe(() => this.success());
+        .subscribe(() => {
+          this.success();
+        });
+      this.purchaseBumps(order, orderId);
     }, 2000);
   }
 

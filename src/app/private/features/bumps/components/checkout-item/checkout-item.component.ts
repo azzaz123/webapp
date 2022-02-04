@@ -1,14 +1,11 @@
 import { takeWhile } from 'rxjs/operators';
 import { Component, Input, OnDestroy, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Duration, Product } from '@core/item/item-response.interface';
-import { keys } from 'lodash-es';
 import { CartService } from '@shared/catalog/cart/cart.service';
-import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
-import { BUMP_TYPES } from '@shared/catalog/cart/cart-base';
+import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { Cart } from '@shared/catalog/cart/cart';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
-import { duration } from 'moment';
 import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
 
 @Component({
@@ -33,16 +30,10 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.cartService.createInstance(new Cart());
 
-    if (this.subscription?.selected_tier?.bumps) {
+    if (this.subscription?.selected_tier?.bumps?.length) {
       this.onlyFree = true;
     } else {
     }
-    this.onToggleChange();
-
-    /*     this.availableTypes = this.itemWithProducts.products;
-    this.selectedType = this.itemWithProducts.products[0];
-    this.availablesDurations = this.selectedType.durations;
-    this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_inde */
 
     this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
@@ -55,7 +46,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
       this.selectType(this.selectedType);
     }
 
-    this.addToCart();
+    this.onToggleChange();
   }
 
   ngOnDestroy() {
