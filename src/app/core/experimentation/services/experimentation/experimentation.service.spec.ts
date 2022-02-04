@@ -1,4 +1,4 @@
-import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ExperimentationService } from './experimentation.service';
 import { EXPERIMENTATION_SOURCES } from '@core/experimentation/constants';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
@@ -7,7 +7,10 @@ import { UserService } from '@core/user/user.service';
 import { OptimizeService } from '@core/experimentation/vendors/optimize/optimize.service';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { OptimizelyServiceMock, OptimizeServiceMock } from '@fixtures/experimentation.fixtures.spec';
+import { OPTIMIZELY_FLAG_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-flag-keys';
 import { OptimizelyService } from '@core/experimentation/vendors/optimizely/optimizely.service';
+import { OptimizelyDecideOption } from '@optimizely/optimizely-sdk';
+import { ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
 
 describe('ExperimentService', () => {
   let service: ExperimentationService;
@@ -58,24 +61,38 @@ describe('ExperimentService', () => {
 
         expect(OptimizelyServiceMock.initialize).not.toHaveBeenCalled();
       }));
-
-      it('should not set experimentation as ready', fakeAsync(() => {
-        service.initialize();
-        tick();
-
-        // userService.initializeUserWithPermissions();
-
-        // userService.isUserReady$.subscribe((value) =>{
-        //   console.log('HOLA', value)
-        //   expect(value).toBeTruthy();
-        // })
-
-        // service.experimentReady$.subscribe((value) => {
-        //   expect(value).toBeFalsy();
-        // });
-
-        flush();
-      }));
     });
+  });
+
+  describe('when the user is ready', () => {
+    it('should initialize the experiment context', fakeAsync(() => {
+      spyOn(OptimizelyServiceMock, 'initExperimentContext');
+      service.initExperimentContext({ age: 25 });
+      tick();
+
+      expect(OptimizelyServiceMock.initExperimentContext).toHaveBeenCalledWith({ age: 25 });
+    }));
+
+    it('should get the variations', fakeAsync(() => {
+      spyOn(OptimizelyServiceMock, 'getVariations');
+      service.getVariations({
+        flagKeys: [OPTIMIZELY_FLAG_KEYS.TestPlaceholder, OPTIMIZELY_FLAG_KEYS.Test01_Web_Experiment],
+        options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT],
+      });
+      tick();
+
+      expect(OptimizelyServiceMock.getVariations).toHaveBeenCalledWith({
+        flagKeys: [OPTIMIZELY_FLAG_KEYS.TestPlaceholder, OPTIMIZELY_FLAG_KEYS.Test01_Web_Experiment],
+        options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT],
+      });
+    }));
+
+    it('should call the optimizely tracking event', fakeAsync(() => {
+      spyOn(OptimizelyServiceMock, 'track');
+      service.trackOptimizelyEvent({ eventKey: ANALYTICS_EVENT_NAMES.ClickAcceptOffer });
+      tick();
+
+      expect(OptimizelyServiceMock.track).toHaveBeenCalledWith({ eventKey: ANALYTICS_EVENT_NAMES.ClickAcceptOffer });
+    }));
   });
 });
