@@ -1,7 +1,7 @@
 import { NotificationConsent, NotificationSettings } from '@api/core/model/notifications';
 import { I18nService } from '@core/i18n/i18n.service';
-import { NotificationsSettingsDto } from '../dtos/notifications-settings/response/notifcations-settings-dto';
-import { NotificationsDto } from '../dtos/notifications/response/notifcations-dto';
+import { NotificationsSettingsDto } from '@api/notifications/dtos/response/notifcations-settings-dto';
+import { NotificationsDto } from '@api/notifications/dtos/response/notifcations-dto';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 export enum BackendNotificationKeys {
@@ -64,21 +64,19 @@ export function mapNotificationsSettings(
   i18nService: I18nService
 ): NotificationSettings[] {
   return notificationSettings.map(({ subtitle, title, notifications }: NotificationsSettingsDto) => {
-    const item = {
+    return {
       title: i18nService.translate(mapBackendyNotificationCopyToFrontend(title)),
       subtitle: i18nService.translate(mapBackendyNotificationCopyToFrontend(subtitle)),
       notifications: mapNotifications(notifications, i18nService),
     };
-    return item;
   });
 }
 export function mapNotifications(notifications: NotificationsDto[], i18nService: I18nService): NotificationConsent[] {
   return notifications.map(({ id, title, enabled }: NotificationsDto) => {
-    const item = {
+    return {
       id,
       title: i18nService.translate(mapBackendyNotificationCopyToFrontend(title)),
       enabled,
     };
-    return item;
   });
 }

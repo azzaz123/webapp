@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NotificationSettings } from '@api/core/model/notifications';
 import { map } from 'rxjs/operators';
-import { NotificationsSettingsResponseDto } from '@api/me/dtos/notifications-settings/response/notifcations-settings-response-dto';
+import { NotificationsSettingsResponseDto } from '@api/notifications/dtos/response/notifcations-settings-response-dto';
 import { mapNotificationsSettings } from '@api/me/mappers/notifications-copies-mapper';
 import { I18nService } from '@core/i18n/i18n.service';
 import { NotificationsHttpService } from '@api/notifications/http/notifications-http.service';

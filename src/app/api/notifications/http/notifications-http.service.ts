@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NotificationsSettingsResponseDto } from '@api/me/dtos/notifications-settings/response/notifcations-settings-response-dto';
+import { NotificationsSettingsResponseDto } from '@api/notifications/dtos/response/notifcations-settings-response-dto';
 import { BASE_SET_NOTIFICATION, NOTIFICATIONS_API_URL_ENDPOINT } from '@api/me/http/endpoints';
 import { HttpClient } from '@angular/common/http';
 

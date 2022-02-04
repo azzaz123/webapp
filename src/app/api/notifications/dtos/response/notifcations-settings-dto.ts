@@ -1,5 +1,5 @@
 import { BackendNotificationKeys } from '@api/me/mappers/notifications-copies-mapper';
-import { NotificationsDto } from '../../notifications/response/notifcations-dto';
+import { NotificationsDto } from './notifcations-dto';
 
 export interface NotificationsSettingsDto {
   title: BackendNotificationKeys;
