@@ -17,7 +17,7 @@ export const MOCK_CARRIER_FREE_COST: DropOffModeRequest = {
   },
   sellerCosts: mapAmountAndCurrenyToMoney({ amount: 0.0, currency: 'EUR' }),
   acceptEndpoint: 'RANDOM_ENDPOINT',
-  restrictions: '',
+  restrictions: 'RESTRICTIONS',
   schedule: null,
 };
 
@@ -31,7 +31,7 @@ export const MOCK_CARRIER_ONE_EURO_COST: DropOffModeRequest = {
   },
   sellerCosts: mapAmountAndCurrenyToMoney({ amount: 1, currency: 'EUR' }),
   acceptEndpoint: 'RANDOM_ENDPOINT_2',
-  restrictions: '',
+  restrictions: 'RESTRICTIONS',
   schedule: null,
 };
 
@@ -80,7 +80,7 @@ export const MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS: DropOffModeRequest
   },
   sellerCosts: mapAmountAndCurrenyToMoney({ amount: 4, currency: 'EUR' }),
   acceptEndpoint: 'random value',
-  restrictions: '',
+  restrictions: 'RESTRICTIONS',
   schedule: null,
 };
 
@@ -114,7 +114,7 @@ export const MOCK_CARRIER_PO_WITH_LAST_ADDRESS_CARRIER_OFFICE: DropOffModeReques
   },
   sellerCosts: mapAmountAndCurrenyToMoney({ amount: 1, currency: 'EUR' }),
   acceptEndpoint: 'random value',
-  restrictions: '',
+  restrictions: 'RESTRICTIONS',
   schedule: null,
 };
 

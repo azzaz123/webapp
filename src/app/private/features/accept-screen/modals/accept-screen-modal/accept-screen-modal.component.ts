@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
@@ -8,7 +8,6 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
   selector: 'tsl-accept-screen-modal',
   templateUrl: './accept-screen-modal.component.html',
   styleUrls: ['./accept-screen-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AcceptScreenModalComponent implements OnInit {
   public requestId: string;

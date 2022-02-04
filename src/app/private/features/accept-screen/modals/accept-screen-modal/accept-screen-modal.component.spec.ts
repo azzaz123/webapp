@@ -10,12 +10,15 @@ import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { CustomCurrencyPipe } from '@shared/pipes/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import { DeliveryRadioSelectorComponent } from '@private/shared/delivery-radio-selector/delivery-radio-selector.component';
+import { AcceptScreenCarrier } from '../../interfaces/accept-screen-carrier.interface';
 import { DeliveryRadioOptionDirective } from '@private/shared/delivery-radio-selector/delivery-radio-option.directive';
+import { ButtonComponent } from '@shared/button/button.component';
 
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
 
+  let de: DebugElement;
   let component: AcceptScreenModalComponent;
   let fixture: ComponentFixture<AcceptScreenModalComponent>;
   let acceptScreenStoreService: AcceptScreenStoreService;
@@ -28,6 +31,7 @@ describe('AcceptScreenModalComponent', () => {
         CustomCurrencyPipe,
         DeliveryRadioSelectorComponent,
         DeliveryRadioOptionDirective,
+        ButtonComponent,
       ],
       providers: [
         DecimalPipe,
@@ -50,6 +54,7 @@ describe('AcceptScreenModalComponent', () => {
     fixture = TestBed.createComponent(AcceptScreenModalComponent);
     acceptScreenStoreService = TestBed.inject(AcceptScreenStoreService);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
     component.requestId = MOCK_REQUEST_ID;
   });
 
@@ -90,11 +95,27 @@ describe('AcceptScreenModalComponent', () => {
           shouldRenderRadioSelector(true);
         });
 
-        // TODO: Check why this is failing		Date: 2022/02/03
-        xit('should show carriers received', () => {
-          const expectedCarriers = fixture.debugElement.queryAll(By.directive(DeliveryRadioOptionDirective)).length;
-
+        it('should show carriers received', () => {
+          const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
           expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.length);
+        });
+
+        describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
+          const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.indexOf(carrier);
+
+          it('should show the carrier image', () => {
+            const carrierImage: DebugElement = de.queryAll(By.css('.AcceptScreenModal__carrierIcon'))[currentCarrierPosition];
+            expect(carrierImage.nativeElement.src).toStrictEqual(carrier.icon);
+          });
+
+          it('should show the carrier title and price', () => {
+            const carrierTitle: string = de.queryAll(By.css('#carrierTitle'))[currentCarrierPosition].nativeElement.innerHTML;
+            expect(carrierTitle).toStrictEqual(`${carrier.title} <b>${carrier.price}</b>`);
+          });
+
+          describe('and the selected option is provided...', () => {
+            shouldShowCarrierInformation(carrier, currentCarrierPosition);
+          });
         });
 
         describe('and the user selects another carrier', () => {
@@ -103,6 +124,8 @@ describe('AcceptScreenModalComponent', () => {
             fixture.debugElement
               .query(By.directive(DeliveryRadioSelectorComponent))
               .triggerEventHandler('selectedIdChanged', newCarrierSelectedPosition);
+
+            fixture.detectChanges();
           });
 
           it('should notify the new carrier selected position ', () => {
@@ -176,6 +199,57 @@ describe('AcceptScreenModalComponent', () => {
       expect(radioSelector).toBeTruthy();
     } else {
       expect(radioSelector).toBeFalsy();
+    }
+  }
+
+  function shouldShowCarrierInformation(carrier: AcceptScreenCarrier, currentCarrierPosition: number): void {
+    if (carrier.isSelected) {
+      it('should show first information when is provided', () => {
+        const isFirstInfoShowed: boolean = de
+          .queryAll(By.css('#carrierInformation'))
+          .some((firstInformation) => firstInformation.nativeElement.innerHTML === carrier.information);
+
+        if (carrier.information) {
+          expect(isFirstInfoShowed).toBe(true);
+        } else {
+          expect(isFirstInfoShowed).toBe(false);
+        }
+      });
+
+      it('should show secondary information when is provided', () => {
+        const isSecondInfoShowed: boolean = de
+          .queryAll(By.css('#carrierSecondaryInformation'))
+          .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.secondaryInformation);
+
+        if (carrier.secondaryInformation) {
+          expect(isSecondInfoShowed).toBe(true);
+        } else {
+          expect(isSecondInfoShowed).toBe(false);
+        }
+      });
+
+      it('should show carrier restrictions', () => {
+        const carrierRestrictions: string = de.queryAll(By.css('.AcceptScreenModal__carrierRestrictions'))[currentCarrierPosition]
+          .nativeElement.innerHTML;
+        expect(carrierRestrictions).toStrictEqual(carrier.restrictions);
+      });
+
+      it('should should show button when needed', () => {
+        const isButtonShowed: boolean = de
+          .queryAll(By.directive(ButtonComponent))
+          .some((button) => button.nativeElement.textContent === carrier.buttonProperties.text);
+
+        if (carrier.buttonProperties.isShowed) {
+          expect(isButtonShowed).toBe(true);
+        } else {
+          expect(isButtonShowed).toBe(false);
+        }
+      });
+    } else {
+      it('should NOT show any information', () => {
+        const carrierInformationWrapper = fixture.debugElement.query(By.css('#carrierInformationWrapperSelector'));
+        expect(carrierInformationWrapper).toBeFalsy();
+      });
     }
   }
 });
