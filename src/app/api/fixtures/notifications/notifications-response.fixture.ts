@@ -1,6 +1,6 @@
 import { NotificationsSettingsDto } from '@api/notifications/dtos/response/notifcations-settings-dto';
 import { NotificationsSettingsResponseDto } from '@api/notifications/dtos/response/notifcations-settings-response-dto';
-import { BackendNotificationKeys } from '@api/me/mappers/notifications-copies-mapper';
+import { BackendNotificationKeys } from '@api/notifications/mappers/notifications-copies-mapper';
 
 export const notificationIdToModify = '2n08z8oj3wrq';
 
