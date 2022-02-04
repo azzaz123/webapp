@@ -11,8 +11,6 @@ import { ItemService } from '@core/item/item.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { mappedSoldItemsResponseFixture, soldItemsResponseFixture } from '@api/fixtures/me/sold/sold-response.fixture';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
-import { I18nService } from '@core/i18n/i18n.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 describe('MeApiService', () => {
   let service: MeApiService;
@@ -29,14 +27,6 @@ describe('MeApiService', () => {
           useValue: {
             mine() {
               return of({ data: [MOCK_ITEM, MOCK_ITEM] });
-            },
-          },
-        },
-        {
-          provide: I18nService,
-          useValue: {
-            translate: (key: TRANSLATION_KEY) => {
-              return key;
             },
           },
         },
