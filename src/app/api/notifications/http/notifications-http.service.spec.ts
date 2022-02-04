@@ -3,8 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { NotificationsHttpService } from './notifications-http.service';
 import { NotificationsSettingsResponseDto } from '@api/notifications/dtos/response/notifcations-settings-response-dto';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { BASE_SET_NOTIFICATION, NOTIFICATIONS_API_URL_ENDPOINT } from '@api/me/http/endpoints';
 import { notificationIdToModify, notificationsSettingsResponseFixture } from '@api/fixtures/notifications/notifications-response.fixture';
+import { BASE_SET_NOTIFICATION, NOTIFICATIONS_API_URL_ENDPOINT } from '@api/notifications/http/endpoints';
 
 describe('NotificationsHttpService', () => {
   let service: NotificationsHttpService;
