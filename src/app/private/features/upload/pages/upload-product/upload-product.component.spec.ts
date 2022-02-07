@@ -1216,6 +1216,7 @@ describe('UploadProductComponent', () => {
             screenId: SCREEN_IDS.EditItem,
             shippingAllowed: false,
             salePriceChange: null,
+            shippingAllowedChange: 0,
           },
         };
         spyOn(analyticsService, 'trackEvent');
@@ -1292,7 +1293,7 @@ describe('UploadProductComponent', () => {
             salePrice: uploadResponse.sale_price,
             title: uploadResponse.title,
             isPro: false,
-            screenId: SCREEN_IDS.Upload,
+            screenId: SCREEN_IDS.UploadCG,
             country: analyticsService.market,
             language: analyticsService.appLocale,
             shippingAllowed: false,
