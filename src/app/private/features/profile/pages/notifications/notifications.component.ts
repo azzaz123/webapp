@@ -6,15 +6,12 @@ import {
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
   SCREEN_IDS,
-  UpdateCLMNotification,
-  UpdatePromoNotification,
+  UpdateNotificationSetting,
   ViewNotificationSettings,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { NotificationsApiService } from '@api/notifications/notifications-api.service';
 import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
-
 @Component({
   selector: 'tsl-notifications',
   templateUrl: './notifications.component.html',
@@ -23,8 +20,6 @@ import { map, filter } from 'rxjs/operators';
 export class NotificationsComponent implements OnInit {
   public allowSegmentation: boolean;
   public notificationsSettings$: Observable<NotificationSettings[]> = this.getMyNotificationsSettings();
-  private readonly idTipsNotification = 'y98ejk1zxmwp';
-  private readonly idPromoNotification = 'd9ke65vmjox1';
 
   constructor(private notificationsApiService: NotificationsApiService, private analyticsService: AnalyticsService) {}
 
@@ -45,13 +40,7 @@ export class NotificationsComponent implements OnInit {
     } else {
       this.notificationsApiService.setNotificationDisabled(id).subscribe();
     }
-
-    if (id === this.idTipsNotification) {
-      this.trackCLMUpdateNotification(enabled);
-    }
-    if (id === this.idPromoNotification) {
-      this.trackPromoUpdateNotification(enabled);
-    }
+    this.trackUpdateNotification(id, enabled);
   }
 
   private trackViewNotificationSettings(): void {
@@ -65,26 +54,14 @@ export class NotificationsComponent implements OnInit {
     this.analyticsService.trackPageView(event);
   }
 
-  private trackCLMUpdateNotification(consent: boolean): void {
-    const event: AnalyticsEvent<UpdateCLMNotification> = {
-      name: ANALYTICS_EVENT_NAMES.UpdateCLMNotification,
+  private trackUpdateNotification(notificationId: string, consent: boolean): void {
+    const event: AnalyticsEvent<UpdateNotificationSetting> = {
+      name: ANALYTICS_EVENT_NAMES.UpdateNotificationSetting,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
         screenId: SCREEN_IDS.NotificationSettings,
         consent,
-      },
-    };
-
-    this.analyticsService.trackEvent(event);
-  }
-
-  private trackPromoUpdateNotification(consent: boolean): void {
-    const event: AnalyticsEvent<UpdatePromoNotification> = {
-      name: ANALYTICS_EVENT_NAMES.UpdatePromoNotification,
-      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-      attributes: {
-        screenId: SCREEN_IDS.NotificationSettings,
-        consent,
+        notificationId,
       },
     };
 

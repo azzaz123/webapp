@@ -11013,7 +11013,7 @@ move-concurrently@^1.0.1:
 
 "mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#feature/PA-797":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#d940c0c0def180173d3a13b2a5ec0df62849751a"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#efe776b77ae722103464ac262257859e145e5ad5"
 
 mri@^1.1.5:
   version "1.2.0"

@@ -6,9 +6,9 @@
  */
 
 /**
- * User changes the setting of the Tips & Suggestions notification
+ * User changes the setting of a notification
  */
-export interface UpdateCLMNotification {
+export interface UpdateNotificationSetting {
   /**
    * Identifier of the screen where the user can activate or deactivate different types of notifications
    */
@@ -17,4 +17,8 @@ export interface UpdateCLMNotification {
    * User's new setting on the notification, True if it is moved to Active and False otherwise
    */
   consent: boolean;
+  /**
+   * Identifier of the notification type (promo, clm, etc.)
+   */
+  notificationId: string;
 }
