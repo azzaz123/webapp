@@ -5,7 +5,7 @@ import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { of, Subscription } from 'rxjs';
-import { DELIVERY_BANNER_ACTION_TYPE } from '../../../delivery-banner/enums/delivery-banner-action-type.enum';
+import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
 
@@ -116,7 +116,7 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is to open awareness modal', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL);
+        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.AWARENESS_MODAL);
       });
 
       it('should open awareness modal', () => {
@@ -128,7 +128,7 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is open the payview', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.OPEN_PAYVIEW);
+        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
       });
 
       it('should open awareness modal', () => {
@@ -140,7 +140,7 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is change item price', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.CHANGE_ITEM_PRICE);
+        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE);
       });
 
       it('should open awareness modal', () => {
@@ -152,7 +152,7 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is activate shipping', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.ACTIVATE_SHIPPING);
+        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING);
       });
 
       it('should open awareness modal', () => {
