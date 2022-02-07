@@ -23,7 +23,6 @@ import { map, filter } from 'rxjs/operators';
 export class NotificationsComponent implements OnInit {
   public allowSegmentation: boolean;
   public notificationsSettings$: Observable<NotificationSettings[]> = this.getMyNotificationsSettings();
-  private readonly savedSearchedNotificationId = 'l1kmzng6n3p8';
   private readonly idTipsNotification = 'y98ejk1zxmwp';
   private readonly idPromoNotification = 'd9ke65vmjox1';
 
@@ -35,17 +34,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   public getMyNotificationsSettings() {
-    return this.notificationsApiService.getMyNotificationsSettings().pipe(
-      map((nGroup) => {
-        const noSavedSearchesId = nGroup.map((group) =>
-          group.notifications.find((notification) => notification.id !== this.savedSearchedNotificationId)
-        );
-        if (noSavedSearchesId) {
-          return nGroup;
-        }
-      }),
-      filter((ngroup) => !!ngroup)
-    );
+    return this.notificationsApiService.getMyNotificationsSettings().pipe();
   }
 
   public handleChange(notification: NotificationConsent) {
