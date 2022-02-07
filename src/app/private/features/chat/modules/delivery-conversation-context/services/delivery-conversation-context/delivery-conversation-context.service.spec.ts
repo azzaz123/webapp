@@ -112,11 +112,11 @@ describe('DeliveryConversationContextService', () => {
     });
   });
 
-  describe('when handling CTA actions', () => {
+  describe('when handling banner CTA actions', () => {
     describe('and when action is to open awareness modal', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL);
       });
 
       it('should open awareness modal', () => {
@@ -128,7 +128,7 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is open the payview', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.OPEN_PAYVIEW);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.OPEN_PAYVIEW);
       });
 
       it('should open awareness modal', () => {
@@ -140,7 +140,7 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is change item price', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.CHANGE_ITEM_PRICE);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.CHANGE_ITEM_PRICE);
       });
 
       it('should open awareness modal', () => {
@@ -152,13 +152,25 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is activate shipping', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.ACTIVATE_SHIPPING);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION_TYPE.ACTIVATE_SHIPPING);
       });
 
       it('should open awareness modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
         expect(modalService.open).toHaveBeenCalledTimes(1);
       });
+    });
+  });
+
+  describe('when handling third voice CTA click', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open');
+      service.handleThirdVoiceCTAClick(MOCK_INBOX_CONVERSATION_BASIC);
+    });
+
+    it('should open awareness modal', () => {
+      expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+      expect(modalService.open).toHaveBeenCalledTimes(1);
     });
   });
 });

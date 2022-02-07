@@ -21,6 +21,7 @@ import {
   MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY,
   MOCK_CONVERSATION,
   InboxConversationServiceMock,
+  MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES,
 } from '@fixtures/chat';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
@@ -54,6 +55,7 @@ import { DeliveryConversationContextService } from '@private/features/chat/modul
 import { MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 import { DELIVERY_BANNER_ACTION_TYPE } from '../../modules/delivery-banner/enums/delivery-banner-action-type.enum';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
+import { ThirdVoiceDeliveryComponent } from '../../children/message/components/third-voice-delivery/third-voice-delivery.component';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -76,7 +78,14 @@ describe('CurrentConversationComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule, ChatApiModule],
-        declarations: [CurrentConversationComponent, DateCalendarPipe, ScrollingMessageComponent, InputComponent, DeliveryBannerComponent],
+        declarations: [
+          CurrentConversationComponent,
+          DateCalendarPipe,
+          ScrollingMessageComponent,
+          InputComponent,
+          DeliveryBannerComponent,
+          ThirdVoiceDeliveryComponent,
+        ],
         providers: [
           EventService,
           NgbModal,
@@ -125,7 +134,8 @@ describe('CurrentConversationComponent', () => {
               bannerProperties$: mockDeliveryBannerSubject$,
               update: () => {},
               reset: () => {},
-              handleClickCTA: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE) => {},
+              handleBannerCTAClick: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE) => {},
+              handleThirdVoiceCTAClick: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE) => {},
             },
           },
         ],
@@ -240,13 +250,16 @@ describe('CurrentConversationComponent', () => {
 
       describe('and when the user clicks on the CTA of the banner', () => {
         it('should ask for CTA action handling to the delivery context', () => {
-          spyOn(deliveryConversationContextService, 'handleClickCTA');
+          spyOn(deliveryConversationContextService, 'handleBannerCTAClick');
           const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
           const expectedActionType: DELIVERY_BANNER_ACTION_TYPE = MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES.action.type;
 
           deliveryBannerElement.triggerEventHandler('clickedCTA', expectedActionType);
 
-          expect(deliveryConversationContextService.handleClickCTA).toHaveBeenCalledWith(component.currentConversation, expectedActionType);
+          expect(deliveryConversationContextService.handleBannerCTAClick).toHaveBeenCalledWith(
+            component.currentConversation,
+            expectedActionType
+          );
         });
       });
     });
@@ -262,6 +275,37 @@ describe('CurrentConversationComponent', () => {
         const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
 
         expect(deliveryBannerElement).toBeFalsy();
+      });
+    });
+
+    describe('when conversation has delivery third voices', () => {
+      let deliveryThirdVoiceElement: DebugElement;
+
+      beforeEach(() => {
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES, false),
+        });
+        fixture.detectChanges();
+        deliveryThirdVoiceElement = debugElement.query(By.directive(ThirdVoiceDeliveryComponent));
+      });
+
+      it('should show generic delivery third voices', () => {
+        expect(deliveryThirdVoiceElement).toBeTruthy();
+      });
+
+      describe('and the user clicks the CTA from the third voice', () => {
+        beforeEach(() => {
+          spyOn(deliveryConversationContextService, 'handleThirdVoiceCTAClick');
+          deliveryThirdVoiceElement.triggerEventHandler('clickedCTA', {});
+        });
+
+        it('should delegate handling the action to delivery context', () => {
+          expect(deliveryConversationContextService.handleThirdVoiceCTAClick).toHaveBeenCalledTimes(1);
+          expect(deliveryConversationContextService.handleThirdVoiceCTAClick).toHaveBeenCalledWith(
+            MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES
+          );
+        });
       });
     });
   });

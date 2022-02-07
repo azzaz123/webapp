@@ -47,7 +47,7 @@ export class DeliveryConversationContextService {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  public handleClickCTA(conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE): void {
+  public handleBannerCTAClick(conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE): void {
     if (bannerActionType === DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL) {
       return this.openAwarenessModal();
     }
@@ -65,6 +65,10 @@ export class DeliveryConversationContextService {
     }
 
     return this.openAwarenessModal();
+  }
+
+  public handleThirdVoiceCTAClick(conversation: InboxConversation): void {
+    this.openAwarenessModal();
   }
 
   private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner | null> {
