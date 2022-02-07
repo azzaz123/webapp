@@ -36,6 +36,7 @@ export const mapDeliveryBuyerDeliveryMethodsDtoToDeliveryBuyerDeliveryMethods: T
   });
 
   return {
+    current: methods[defaultMethod.index],
     deliveryMethods: methods,
     default: defaultMethod,
   };
