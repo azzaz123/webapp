@@ -7,7 +7,7 @@ import { concatMap, take } from 'rxjs/operators';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
-import { DELIVERY_BANNER_ACTION_TYPE } from '../../../delivery-banner/enums/delivery-banner-action-type.enum';
+import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 
@@ -47,20 +47,20 @@ export class DeliveryConversationContextService {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  public handleClickCTA(conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE): void {
-    if (bannerActionType === DELIVERY_BANNER_ACTION_TYPE.AWARENESS_MODAL) {
+  public handleClickCTA(conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION): void {
+    if (bannerActionType === DELIVERY_BANNER_ACTION.AWARENESS_MODAL) {
       return this.openAwarenessModal();
     }
 
-    if (bannerActionType === DELIVERY_BANNER_ACTION_TYPE.ACTIVATE_SHIPPING) {
+    if (bannerActionType === DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING) {
       return this.openAwarenessModal();
     }
 
-    if (bannerActionType === DELIVERY_BANNER_ACTION_TYPE.CHANGE_ITEM_PRICE) {
+    if (bannerActionType === DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE) {
       return this.openAwarenessModal();
     }
 
-    if (bannerActionType === DELIVERY_BANNER_ACTION_TYPE.OPEN_PAYVIEW) {
+    if (bannerActionType === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
       return this.openAwarenessModal();
     }
 
