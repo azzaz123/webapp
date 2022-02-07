@@ -6,16 +6,19 @@ import { of } from 'rxjs';
 import { AcceptScreenProperties } from '../../interfaces';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { By } from '@angular/platform-browser';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { CustomCurrencyPipe } from '@shared/pipes/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
+  const rejectButtonSelector: string = '#rejectButton';
+  const acceptButtonSelector: string = '#acceptButton';
 
   let component: AcceptScreenModalComponent;
   let fixture: ComponentFixture<AcceptScreenModalComponent>;
   let acceptScreenStoreService: AcceptScreenStoreService;
+  let de: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -39,6 +42,7 @@ describe('AcceptScreenModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AcceptScreenModalComponent);
     acceptScreenStoreService = TestBed.inject(AcceptScreenStoreService);
+    de = fixture.debugElement;
     component = fixture.componentInstance;
     component.requestId = MOCK_REQUEST_ID;
   });
@@ -68,6 +72,14 @@ describe('AcceptScreenModalComponent', () => {
         shouldRenderProductCard(true);
       });
 
+      it('should show reject button', () => {
+        shouldRenderRejectButton(true);
+      });
+
+      it('should show accept button', () => {
+        shouldRenderAcceptButton(true);
+      });
+
       it('should update the component properties', () => {
         expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES);
       });
@@ -94,6 +106,14 @@ describe('AcceptScreenModalComponent', () => {
         shouldRenderProductCard(false);
       });
 
+      it('should NOT show reject button', () => {
+        shouldRenderRejectButton(false);
+      });
+
+      it('should NOT show accept button', () => {
+        shouldRenderAcceptButton(false);
+      });
+
       it('should update the component properties', () => {
         expect(acceptScreenEmptyProperties).toStrictEqual(null);
       });
@@ -111,6 +131,22 @@ describe('AcceptScreenModalComponent', () => {
       expect(productCard).toBeTruthy();
     } else {
       expect(productCard).toBeFalsy();
+    }
+  }
+
+  function shouldRenderRejectButton(isShowed: boolean): void {
+    if (isShowed) {
+      expect(de.nativeElement.querySelector(rejectButtonSelector)).toBeTruthy();
+    } else {
+      expect(de.nativeElement.querySelector(rejectButtonSelector)).toBeFalsy();
+    }
+  }
+
+  function shouldRenderAcceptButton(isShowed: boolean): void {
+    if (isShowed) {
+      expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeTruthy();
+    } else {
+      expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeFalsy();
     }
   }
 });
