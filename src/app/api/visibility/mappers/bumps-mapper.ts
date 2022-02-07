@@ -64,18 +64,19 @@ export function mapItemsWithProductsAndSubscriptionBumps(
   );
 }
 
-function mapItemWithProductsAndSubscriptionBumps(
+export function mapItemWithProductsAndSubscriptionBumps(
   itemWithProducts: ItemWithProducts,
   subscription: SubscriptionsResponse
 ): ItemWithProducts {
   if (subscription?.selected_tier) {
     subscription.selected_tier.bumps.forEach((bump) => {
-      const productType = itemWithProducts.products.find((product) => product.name === bump.name);
-      const durationType = productType?.durations.find((duration) => duration.duration === bump.duration_days * 24);
-      if (durationType) {
-        durationType.isFreeOption = true;
-        durationType.subscriptionPackageType = subscription.type;
-      }
+      const productTypeIndex = itemWithProducts.products.findIndex((product) => product.name === bump.name);
+      const durationIndex = itemWithProducts.products[productTypeIndex]?.durations.findIndex(
+        (duration) => duration.duration === bump.duration_days * 24
+      );
+      itemWithProducts.products[productTypeIndex].durations[durationIndex].isFreeOption = durationIndex > -1;
+      itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionPackageType =
+        durationIndex > -1 ? subscription.type : null;
     });
   }
   return itemWithProducts;

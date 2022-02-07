@@ -7,7 +7,7 @@ import { CartBase } from '@shared/catalog/cart/cart-base';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { BumpsHttpService } from './http/bumps.service';
-import { mapBalance, mapFreeBumpsPurchase, mapItemsWithProducts, mapItemsWithProductsAndSubscriptionBumps } from './mappers/bumps-mapper';
+import { mapBalance, mapFreeBumpsPurchase, mapItemsWithProducts, mapItemWithProductsAndSubscriptionBumps } from './mappers/bumps-mapper';
 
 @Injectable()
 export class VisibilityApiService {
@@ -32,7 +32,12 @@ export class VisibilityApiService {
       this.subscriptionService.getSubscriptions(),
     ]).pipe(
       map(([itemWithProducts, subscriptions]) => {
-        return mapItemsWithProductsAndSubscriptionBumps(itemWithProducts, subscriptions, this.subscriptionService);
+        return itemWithProducts.map((item) =>
+          mapItemWithProductsAndSubscriptionBumps(
+            item,
+            this.subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId)
+          )
+        );
       })
     );
   }

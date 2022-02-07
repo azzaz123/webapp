@@ -548,3 +548,124 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS: SubscriptionsV3Response[] = 
     id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
   },
 ];
+
+export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED: SubscriptionsResponse[] = [
+  {
+    ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+    selected_tier: {
+      ...TIER_WITH_DISCOUNT,
+      perks: [
+        { name: PERK_NAMES.LIMIT, quantity: 5 },
+        {
+          name: PERK_NAMES.ZONEBUMP,
+          quantity: 12,
+          duration_days: 2,
+        },
+      ],
+      bumps: [
+        {
+          name: PERK_NAMES.ZONEBUMP,
+          quantity: 12,
+          duration_days: 2,
+        },
+      ],
+    },
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: PERK_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            duration_days: 2,
+          },
+        ],
+        bumps: [
+          {
+            name: PERK_NAMES.ZONEBUMP,
+            quantity: 12,
+            duration_days: 2,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT,
+        bumps: [
+          {
+            name: PERK_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            duration_days: 2,
+          },
+          {
+            name: PERK_NAMES.ZONEBUMP,
+            quantity: 8,
+            duration_days: 2,
+          },
+        ],
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: PERK_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            duration_days: 2,
+          },
+          {
+            name: PERK_NAMES.ZONEBUMP,
+            quantity: 8,
+            duration_days: 2,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c07',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+    selected_tier: {
+      ...TIER_WITH_DISCOUNT,
+      perks: [
+        { name: PERK_NAMES.LIMIT, quantity: 5 },
+        {
+          name: PERK_NAMES.COUNTRYBUMP,
+          quantity: 12,
+          duration_days: 2,
+        },
+      ],
+      bumps: [
+        {
+          name: PERK_NAMES.COUNTRYBUMP,
+          quantity: 12,
+          duration_days: 2,
+        },
+      ],
+    },
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: PERK_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            duration_days: 2,
+          },
+        ],
+        bumps: [
+          {
+            name: PERK_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            duration_days: 2,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+];

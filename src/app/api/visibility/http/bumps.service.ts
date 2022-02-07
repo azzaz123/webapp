@@ -1,12 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
-import { WEB_ITEMS_API_URL } from '@core/item/item.service';
-import { environment } from '@environments/environment.beta';
 import { Observable } from 'rxjs';
 import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
 import { BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
-import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE } from './endpoints';
+import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE, ITEMS_WITH_PRODUCTS } from './endpoints';
 
 @Injectable()
 export class BumpsHttpService {
@@ -21,13 +19,10 @@ export class BumpsHttpService {
   }
 
   public getItemsWithAvailableProducts(ids: string[]): Observable<ItemsWithAvailableProductsResponse[]> {
-    return this.httpClient.get<ItemsWithAvailableProductsResponse[]>(
-      `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`,
-      {
-        params: {
-          itemsIds: ids.join(','),
-        },
-      }
-    );
+    return this.httpClient.get<ItemsWithAvailableProductsResponse[]>(ITEMS_WITH_PRODUCTS, {
+      params: {
+        itemsIds: ids.join(','),
+      },
+    });
   }
 }
