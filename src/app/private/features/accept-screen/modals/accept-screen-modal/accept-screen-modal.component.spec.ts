@@ -20,6 +20,8 @@ import { ButtonComponent } from '@shared/button/button.component';
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
+  const initializeAcceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
+
   const rejectButtonSelector: string = '#rejectButton';
   const acceptButtonSelector: string = '#acceptButton';
 
@@ -43,10 +45,9 @@ describe('AcceptScreenModalComponent', () => {
         {
           provide: AcceptScreenStoreService,
           useValue: {
-            clean() {
-              acceptScreenPropertiesSubjectMock.next(null);
+            initialize$() {
+              return initializeAcceptScreenPropertiesSubjectMock.asObservable();
             },
-            initialize() {},
             notifySelectedDropOffModeByUser() {},
             get properties$() {
               return acceptScreenPropertiesSubjectMock.asObservable();
@@ -76,18 +77,12 @@ describe('AcceptScreenModalComponent', () => {
       let acceptScreenProperties: AcceptScreenProperties;
 
       beforeEach(() => {
-        spyOn(acceptScreenStoreService, 'initialize');
-
-        acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES);
-
+        initializePropertiesWithStore(MOCK_ACCEPT_SCREEN_PROPERTIES);
         fixture.detectChanges();
+
         component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
           acceptScreenProperties = newProperties;
         });
-      });
-
-      it('should request accept screen properties using the store', () => {
-        shouldInitializePropertiesWithStore();
       });
 
       it('should show product card specifications', () => {
@@ -136,14 +131,45 @@ describe('AcceptScreenModalComponent', () => {
         describe('and the user selects another carrier', () => {
           beforeEach(() => {
             spyOn(acceptScreenStoreService, 'notifySelectedDropOffModeByUser').and.callThrough();
+            acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+
             fixture.debugElement
               .query(By.directive(DeliveryRadioSelectorComponent))
               .triggerEventHandler('selectedIdChanged', newCarrierSelectedPosition);
+            fixture.detectChanges();
           });
 
           it('should notify the new carrier selected position ', () => {
             expect(acceptScreenStoreService.notifySelectedDropOffModeByUser).toHaveBeenCalledTimes(1);
             expect(acceptScreenStoreService.notifySelectedDropOffModeByUser).toHaveBeenCalledWith(newCarrierSelectedPosition);
+          });
+
+          it('should update the component properties', () => {
+            expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+          });
+
+          it('should update the selected drop off position', () => {
+            const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.findIndex(
+              (carrier: AcceptScreenCarrier) => carrier.isSelected
+            );
+            expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
+          });
+
+          it('should show carrier options', () => {
+            shouldRenderRadioSelector(true);
+          });
+
+          it('should show carriers received', () => {
+            const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
+            expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.length);
+          });
+
+          describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
+            const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.indexOf(carrier);
+
+            describe('and the selected option is provided...', () => {
+              shouldShowCarrierInformation(carrier, currentCarrierPosition);
+            });
           });
         });
       });
@@ -165,62 +191,16 @@ describe('AcceptScreenModalComponent', () => {
       });
     });
 
-    describe('and we receive accept screen properties but carriers with first option selected', () => {
-      let acceptScreenProperties: AcceptScreenProperties;
-
-      beforeEach(() => {
-        acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
-
-        fixture.detectChanges();
-        component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
-          acceptScreenProperties = newProperties;
-        });
-      });
-
-      it('should update the component properties', () => {
-        expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
-      });
-
-      it('should update the selected drop off position', () => {
-        const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.findIndex(
-          (carrier: AcceptScreenCarrier) => carrier.isSelected
-        );
-        expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
-      });
-
-      it('should show carrier options', () => {
-        shouldRenderRadioSelector(true);
-      });
-
-      it('should show carriers received', () => {
-        const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
-        expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.length);
-      });
-
-      describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
-        const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.indexOf(carrier);
-
-        describe('and the selected option is provided...', () => {
-          shouldShowCarrierInformation(carrier, currentCarrierPosition);
-        });
-      });
-    });
-
     describe('and we NOT receive accept screen properties', () => {
       let acceptScreenEmptyProperties: AcceptScreenProperties;
 
       beforeEach(() => {
-        acceptScreenPropertiesSubjectMock.next(null);
-        spyOn(acceptScreenStoreService, 'initialize');
+        initializePropertiesWithStore(null);
 
         fixture.detectChanges();
         component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
           acceptScreenEmptyProperties = newProperties;
         });
-      });
-
-      it('should request accept screen properties using the store', () => {
-        shouldInitializePropertiesWithStore();
       });
 
       it('should NOT show product card specifications', () => {
@@ -245,21 +225,9 @@ describe('AcceptScreenModalComponent', () => {
     });
   });
 
-  describe('When leaving Accept Screen', () => {
-    beforeEach(() => {
-      spyOn(acceptScreenStoreService, 'clean');
-
-      component.ngOnDestroy();
-    });
-
-    it('should clean the store properties', () => {
-      expect(acceptScreenStoreService.clean).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  function shouldInitializePropertiesWithStore(): void {
-    expect(acceptScreenStoreService.initialize).toHaveBeenCalledTimes(1);
-    expect(acceptScreenStoreService.initialize).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+  function initializePropertiesWithStore(initialProperties: AcceptScreenProperties): void {
+    initializeAcceptScreenPropertiesSubjectMock.next(initialProperties);
+    acceptScreenPropertiesSubjectMock.next(initialProperties);
   }
 
   function shouldRenderProductCard(isShowed: boolean): void {
@@ -326,7 +294,7 @@ describe('AcceptScreenModalComponent', () => {
 
       it('should should show button when needed', () => {
         const isButtonShowed: boolean = de
-          .queryAll(By.directive(ButtonComponent))
+          .queryAll(By.css('#carrierButton'))
           .some((button) => button.nativeElement.textContent === carrier.buttonProperties.text);
 
         if (carrier.buttonProperties.isShowed) {

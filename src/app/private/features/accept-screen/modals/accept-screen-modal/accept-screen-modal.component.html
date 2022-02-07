@@ -39,7 +39,7 @@
                     >{{ carrier.secondaryInformation }}</span
                   >
                   <span class="AcceptScreenModal__carrierRestrictions d-block p-2 mt-2">{{ carrier.restrictions }}</span>
-                  <tsl-button *ngIf="carrier.buttonProperties.isShowed" class="mt-3 mb-1" className="btn-secondary">{{
+                  <tsl-button id="carrierButton" *ngIf="carrier.buttonProperties.isShowed" class="mt-3 mb-1" className="btn-secondary">{{
                     carrier.buttonProperties.text
                   }}</tsl-button>
                 </div>
