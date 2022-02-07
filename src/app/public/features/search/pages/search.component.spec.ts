@@ -58,6 +58,8 @@ import { SortByService } from '../components/sort-filter/services/sort-by.servic
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
+import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -190,6 +192,10 @@ describe('SearchComponent', () => {
         {
           provide: SearchTrackingEventsService,
           useClass: MockSearchTrackingEventsService,
+        },
+        {
+          provide: ExperimentationService,
+          useValue: ExperimentationServiceMock,
         },
         {
           provide: SITE_URL,
