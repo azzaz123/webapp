@@ -6,6 +6,8 @@ import { of } from 'rxjs';
 import { SellerRequestsHttpService } from './http/seller-requests-http.service';
 
 import { SellerRequestsApiService } from './seller-requests-api.service';
+import { MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO } from '@api/fixtures/delivery/seller/requests/seller-request-accept-post-office-drop-off-dto.fixtures.spec';
+import { SellerRequestAcceptPostOfficeDropOffDto } from './dtos/seller-request-accept-post-office-drop-off-dto.interface';
 
 describe('SellerRequestsApiService', () => {
   let service: SellerRequestsApiService;
@@ -24,6 +26,9 @@ describe('SellerRequestsApiService', () => {
             },
             cancelRequest() {
               return of();
+            },
+            acceptRequestPostOfficeDropOff() {
+              return of(MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO);
             },
           },
         },
@@ -68,6 +73,28 @@ describe('SellerRequestsApiService', () => {
     it('should ask server to cancel the request', () => {
       expect(sellerRequestsHttpService.cancelRequest).toHaveBeenCalledTimes(1);
       expect(sellerRequestsHttpService.cancelRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+    });
+  });
+
+  describe('when asking to accept a request with post office drop off mode', () => {
+    let response: SellerRequestAcceptPostOfficeDropOffDto;
+
+    beforeEach(fakeAsync(() => {
+      spyOn(sellerRequestsHttpService, 'acceptRequestPostOfficeDropOff').and.callThrough();
+
+      service
+        .acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID)
+        .subscribe((data: SellerRequestAcceptPostOfficeDropOffDto) => (response = data));
+      tick();
+    }));
+
+    it('should ask server to accept the request with post office drop off mode', () => {
+      expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
+      expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+    });
+
+    it('should return the request response', () => {
+      expect(response).toStrictEqual(MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO);
     });
   });
 });

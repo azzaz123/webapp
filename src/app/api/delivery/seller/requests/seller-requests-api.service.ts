@@ -21,6 +21,12 @@ export class SellerRequestsApiService {
   }
 
   public cancelRequest(requestId: string): Observable<void> {
+    // TODO: Manejo de errores		Date: 2022/02/07
     return this.sellerRequestsHttpService.cancelRequest(requestId);
+  }
+
+  public acceptRequestPostOfficeDropOff(requestId: string): Observable<unknown> {
+    // TODO: Manejo de errores		Date: 2022/02/07
+    return this.sellerRequestsHttpService.acceptRequestPostOfficeDropOff(requestId);
   }
 }

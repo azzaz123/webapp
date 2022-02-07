@@ -22,7 +22,7 @@ export class SellerRequestsHttpService {
     return this.http.patch<void>(SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(requestId), null);
   }
 
-  public acceptRequest(requestId: string): Observable<SellerRequestAcceptPostOfficeDropOffDto> {
+  public acceptRequestPostOfficeDropOff(requestId: string): Observable<SellerRequestAcceptPostOfficeDropOffDto> {
     return this.http.post<SellerRequestAcceptPostOfficeDropOffDto>(
       SELLER_REQUESTS_ACCEPT_POST_OFFICE_DROP_OFF_ENDPOINT_WITH_REQUEST_ID(requestId),
       null

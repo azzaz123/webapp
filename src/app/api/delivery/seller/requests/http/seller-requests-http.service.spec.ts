@@ -61,12 +61,14 @@ describe('SellerRequestsHttpService', () => {
     });
   });
 
-  describe('when asking to accept the request by id with a post office drop off mode', () => {
+  describe('when asking to accept the request by id with post office drop off mode', () => {
     it('should call to the corresponding accept request endpoint', () => {
       let response: SellerRequestAcceptPostOfficeDropOffDto;
       const expectedUrl: string = SELLER_REQUESTS_ACCEPT_POST_OFFICE_DROP_OFF_ENDPOINT_WITH_REQUEST_ID(MOCK_SELLER_REQUEST_ID);
 
-      service.acceptRequest(MOCK_SELLER_REQUEST_ID).subscribe((data: SellerRequestAcceptPostOfficeDropOffDto) => (response = data));
+      service
+        .acceptRequestPostOfficeDropOff(MOCK_SELLER_REQUEST_ID)
+        .subscribe((data: SellerRequestAcceptPostOfficeDropOffDto) => (response = data));
       const acceptRequest: TestRequest = httpMock.expectOne(expectedUrl);
       acceptRequest.flush(MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO);
 
