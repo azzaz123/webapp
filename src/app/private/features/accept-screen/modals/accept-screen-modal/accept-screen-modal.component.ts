@@ -9,15 +9,16 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
   templateUrl: './accept-screen-modal.component.html',
   styleUrls: ['./accept-screen-modal.component.scss'],
 })
-export class AcceptScreenModalComponent implements OnInit, OnDestroy {
+export class AcceptScreenModalComponent implements OnInit {
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties>;
+  public initializeAcceptScreenProperties$: Observable<AcceptScreenProperties>;
   public selectedDropOffPosition: number;
 
   constructor(private acceptScreenStoreService: AcceptScreenStoreService) {}
 
   ngOnInit(): void {
-    this.acceptScreenStoreService.initialize(this.requestId);
+    this.initializeAcceptScreenProperties$ = this.acceptScreenStoreService.initialize$(this.requestId);
     this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$.pipe(
       tap((acceptScreenProperties: AcceptScreenProperties) => {
         const carrierSelectedPosition: number = acceptScreenProperties?.carriers?.findIndex(
@@ -26,10 +27,6 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
         this.selectedDropOffPosition = carrierSelectedPosition;
       })
     );
-  }
-
-  ngOnDestroy(): void {
-    this.acceptScreenStoreService.clean();
   }
 
   public notifySelectedDropOffModeByUserChanged(newSelectedDropOffPosition: number): void {

@@ -46,7 +46,7 @@ describe('AcceptScreenStoreService', () => {
         expectedAcceptScreenProperties = newProperties;
       });
 
-      service.initialize(MOCK_REQUEST_ID);
+      service.initialize$(MOCK_REQUEST_ID).subscribe();
       tick();
     }));
 
@@ -87,29 +87,6 @@ describe('AcceptScreenStoreService', () => {
       it('should update the accept screen properties', () => {
         expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
       });
-    });
-  });
-
-  describe('when we clean the store', () => {
-    beforeEach(fakeAsync(() => {
-      service.properties$.subscribe((newProperties: AcceptScreenProperties) => {
-        expectedAcceptScreenProperties = newProperties;
-      });
-
-      service.selectedDropOffModeByUser$.subscribe((newModeSelectedByUser: CARRIER_DROP_OFF_MODE) => {
-        expectedDropOffMode = newModeSelectedByUser;
-      });
-
-      service.clean();
-      tick();
-    }));
-
-    it('should reset the properties', () => {
-      expect(expectedAcceptScreenProperties).toStrictEqual(null);
-    });
-
-    it('should reset the selected drop off mode by user', () => {
-      expect(expectedDropOffMode).toStrictEqual(null);
     });
   });
 });

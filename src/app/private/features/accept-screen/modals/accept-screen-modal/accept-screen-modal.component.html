@@ -1,4 +1,4 @@
-<div class="modal-body">
+<div class="modal-body" *ngIf="initializeAcceptScreenProperties$ | async">
   <div *ngIf="acceptScreenProperties$ | async as properties" class="container">
     <div class="row">
       <div class="col p-0">

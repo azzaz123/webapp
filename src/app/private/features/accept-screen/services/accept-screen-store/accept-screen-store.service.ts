@@ -14,21 +14,13 @@ export class AcceptScreenStoreService {
 
   constructor(private acceptScreenService: AcceptScreenService) {}
 
-  public initialize(requestId: string): void {
-    this.acceptScreenService
-      .getAcceptScreenProperties(requestId)
-      .pipe(
-        take(1),
-        tap((acceptScreenProperties: AcceptScreenProperties) => {
-          this.properties = acceptScreenProperties;
-        })
-      )
-      .subscribe();
-  }
-
-  public clean(): void {
-    this.properties = null;
-    this.selectedDropOffModeByUser = null;
+  public initialize$(requestId: string): Observable<AcceptScreenProperties> {
+    return this.acceptScreenService.getAcceptScreenProperties(requestId).pipe(
+      take(1),
+      tap((acceptScreenProperties: AcceptScreenProperties) => {
+        this.properties = acceptScreenProperties;
+      })
+    );
   }
 
   public notifySelectedDropOffModeByUser(selectedDropOffPosition: number): void {
