@@ -214,6 +214,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.filterOpened = opened;
   }
 
+  public setResetSearchId(value: boolean): void {
+    this.resetSearchId = value;
+  }
+
   private handleSearchResponseExtraData(searchResponseExtraData: SearchResponseExtraData): void {
     const categoryId = this.filterParameterStore.getParametersByKeys([FILTER_QUERY_PARAM_KEY.categoryId])[0]?.value;
 
