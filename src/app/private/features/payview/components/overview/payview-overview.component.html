@@ -1,3 +1,8 @@
-<div class="d-flex w-100 h-75 p-5">
-  <h1><pre>Payview is coming!!!</pre></h1>
+<div class="PayviewOverview d-flex w-100 h-100 flex-column">
+  <div class="PayviewOverview_Summary" *ngIf="payviewState$ | async as payviewState">
+    <tsl-payview-summary-overview
+      [deliveryMethods]="payviewState.delivery.methods"
+      [item]="payviewState.item"
+    ></tsl-payview-summary-overview>
+  </div>
 </div>

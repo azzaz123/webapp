@@ -2,7 +2,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 import { PayviewOverviewComponent } from '@private/features/payview/components/overview/payview-overview.component';
-import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
 import { PRIVATE_PATH_PARAMS } from '@private/private-routing-constants';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,24 +11,21 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   template: '',
 })
 export class PayviewComponent implements OnInit {
-  constructor(
-    private modalService: NgbModal,
-    private route: ActivatedRoute,
-    private payviewStateManagementService: PayviewStateManagementService
-  ) {}
+  constructor(private modalService: NgbModal, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.loadPayviewData();
-    this.openModal();
+    this.openModal(this.getPayviewData());
   }
 
-  private loadPayviewData(): void {
-    const itemId: string = this.route.snapshot.paramMap.get(PRIVATE_PATH_PARAMS.ID);
-    this.payviewStateManagementService.itemHash = itemId;
+  private getPayviewData(): string {
+    return this.route.snapshot.paramMap.get(PRIVATE_PATH_PARAMS.ID);
   }
 
-  private openModal(): void {
-    this.modalService.open(PayviewOverviewComponent).result.then(
+  private openModal(itemHash: string): void {
+    const modalRef = this.modalService.open(PayviewOverviewComponent);
+    modalRef.componentInstance.itemHash = itemHash;
+
+    modalRef.result.then(
       () => {},
       () => {}
     );

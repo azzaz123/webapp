@@ -5,9 +5,10 @@ import { PayviewOverviewComponent } from '@private/features/payview/components/o
 import { payviewRoutedComponents, PayviewRoutingModule } from '@private/features/payview/payview.routing.module';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
+import { PayviewSummaryModule } from '@private/features/payview/modules/summary/payview-summary.module';
 
 @NgModule({
-  imports: [CommonModule, PayviewRoutingModule],
+  imports: [CommonModule, PayviewRoutingModule, PayviewSummaryModule],
   declarations: [payviewRoutedComponents, PayviewOverviewComponent],
   providers: [PayviewService, PayviewStateManagementService],
 })
