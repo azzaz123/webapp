@@ -49,4 +49,8 @@ export class InboxConversationComponent {
   public isThirdVoiceReview(messageType: MessageType): boolean {
     return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
+
+  public isDeliveryThirdVoice(messageType: MessageType): boolean {
+    return messageType === MessageType.DELIVERY_GENERIC;
+  }
 }

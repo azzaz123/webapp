@@ -1,15 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { I18nService } from '@core/i18n/i18n.service';
 import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
 import { InboxConversation, InboxItemStatus } from '@private/features/chat/core/model';
-import { InboxConversationServiceMock, CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
+import {
+  InboxConversationServiceMock,
+  CREATE_MOCK_INBOX_CONVERSATION,
+  MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE,
+} from '@fixtures/chat';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { InboxConversationComponent } from './inbox-conversation.component';
 import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
+import { ThirdVoiceDeliveryComponent } from '../../../message/components/third-voice-delivery/third-voice-delivery.component';
+import { By } from '@angular/platform-browser';
 
 describe('Component: Conversation', () => {
   let inboxConversationService: InboxConversationService;
@@ -20,7 +27,7 @@ describe('Component: Conversation', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CommonModule, NgxPermissionsModule.forRoot()],
-        declarations: [InboxConversationComponent, DateCalendarPipe],
+        declarations: [InboxConversationComponent, DateCalendarPipe, ThirdVoiceDeliveryComponent],
         providers: [
           I18nService,
           MomentCalendarSpecService,
@@ -118,6 +125,22 @@ describe('Component: Conversation', () => {
 
       expect(inboxConversationService.archive$).toHaveBeenCalledWith(inboxConversation);
       expect(component.conversation).toEqual(null);
+    });
+  });
+
+  describe('when the last message is a third voice', () => {
+    beforeEach(() => {
+      MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES.lastMessage = MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE;
+      component.conversation = MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES;
+      fixture.detectChanges();
+    });
+
+    describe('and when it is a delivery generic third voice type', () => {
+      it('should display the third voice', () => {
+        const deliveryThirdVoice: DebugElement = fixture.debugElement.query(By.directive(ThirdVoiceDeliveryComponent));
+
+        expect(deliveryThirdVoice).toBeTruthy();
+      });
     });
   });
 });
