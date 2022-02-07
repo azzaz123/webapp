@@ -2,10 +2,10 @@ import { Inject, Injectable } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { UserService } from '@core/user/user.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
+import { environment } from '@environments/environment';
 import { Client, OptimizelyDecision, OptimizelyUserContext, enums } from '@optimizely/optimizely-sdk';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { FlagsParamInterface, TrackParamsInterface } from './optimizely.interface';
-import { SDK_KEY_DEVELOPMENT } from './resources/sdk-keys';
+import { FlagsParamInterface, OnDecisionCallbackInterface, TrackParamsInterface } from './optimizely.interface';
 import { BASE_USER_ATTRIBUTES } from './resources/user-attributes.constants';
 
 @Injectable({
@@ -26,7 +26,7 @@ export class OptimizelyService {
   public initialize(): void {
     import('@optimizely/optimizely-sdk').then((optimizelySdk) => {
       this.optimizelyClientInstance = optimizelySdk.createInstance({
-        sdkKey: SDK_KEY_DEVELOPMENT,
+        sdkKey: environment.optimizelySdkKey,
       });
       this.optimizelyClientInstance.onReady().then(({ success }) => {
         if (success) {
@@ -41,9 +41,9 @@ export class OptimizelyService {
     });
   }
 
-  public initExperimentContext(attributes: { [key: string]: string }): void {
+  public initExperimentContext(attributes?: { [key: string]: any }): void {
     if (!this.optimizelyUserContext) {
-      const userId = this.userService?.user?.id;
+      const userId = this.userService.user.id;
       this.optimizelyUserContext = this.optimizelyClientInstance.createUserContext(userId, { ...attributes, ...this.baseAttributes });
     } else {
       if (attributes) this.addNewAttributes(attributes);
@@ -58,7 +58,7 @@ export class OptimizelyService {
     this.optimizelyUserContext.trackEvent(eventKey, eventTags);
   }
 
-  private addNewAttributes(attributesToAdd) {
+  private addNewAttributes(attributesToAdd: { [key: string]: string }) {
     const currentUserAttributes = this.optimizelyUserContext.getAttributes();
     const newUserAttributes = Object.keys(attributesToAdd).filter((keyToAdd) => !currentUserAttributes[keyToAdd]);
 
@@ -67,7 +67,7 @@ export class OptimizelyService {
     });
   }
 
-  private onDecision({ type, userId, attributes, decisionInfo }) {
+  private onDecision({ type, userId, attributes, decisionInfo }: OnDecisionCallbackInterface) {
     if (type === 'flag') {
       if (decisionInfo) this.analyticsService.setUserAttribute(decisionInfo.ruleKey, decisionInfo.variationKey);
     }

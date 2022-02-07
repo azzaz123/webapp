@@ -40,7 +40,7 @@ export class ExperimentationService {
     return this.optimizeService.getVariant(id);
   }
 
-  public initExperimentContext(attributes): void {
+  public initExperimentContext(attributes?: { [key: string]: any }): void {
     if (this.userService.isLogged) this.optimizelyService.initExperimentContext(attributes);
   }
 
