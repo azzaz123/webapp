@@ -4,7 +4,7 @@ import { MockedUserService, USER_ID } from '@fixtures/user.fixtures.spec';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { OptimizelyService } from './optimizely.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { SDK_KEY_DEVELOPMENT } from './resources/sdk-keys';
+import { environment } from '@environments/environment';
 import { BASE_USER_ATTRIBUTES } from './resources/user-attributes.constants';
 import { OPTIMIZELY_FLAG_KEYS } from './resources/optimizely-flag-keys';
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
@@ -76,7 +76,7 @@ describe('Optimizely service', () => {
       service.initialize();
       tick();
 
-      expect(OptimizelySdk.createInstance).toHaveBeenCalledWith({ sdkKey: SDK_KEY_DEVELOPMENT });
+      expect(OptimizelySdk.createInstance).toHaveBeenCalledWith({ sdkKey: environment.optimizelySdkKey });
       service.isReady$.subscribe((ready) => expect(ready).toBeTruthy());
     }));
 
