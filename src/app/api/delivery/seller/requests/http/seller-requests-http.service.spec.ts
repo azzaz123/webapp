@@ -2,9 +2,14 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { TestBed } from '@angular/core/testing';
 import { MOCK_SELLER_REQUEST_DTO } from '@api/fixtures/delivery/seller/requests/seller-request-dto.fixtures.spec';
 import { SellerRequestDto } from '../dtos/seller-request-dto.interface';
-import { SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID } from './endpoints';
+import {
+  SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID,
+  SELLER_REQUESTS_ACCEPT_POST_OFFICE_DROP_OFF_ENDPOINT_WITH_REQUEST_ID,
+} from './endpoints';
 
 import { SellerRequestsHttpService } from './seller-requests-http.service';
+import { MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO } from '@api/fixtures/delivery/seller/requests/seller-request-accept-post-office-drop-off-dto.fixtures.spec';
+import { SellerRequestAcceptPostOfficeDropOffDto } from '../dtos/seller-request-accept-post-office-drop-off-dto.interface';
 
 describe('SellerRequestsHttpService', () => {
   const MOCK_SELLER_REQUEST_ID = '23203821337';
@@ -53,6 +58,22 @@ describe('SellerRequestsHttpService', () => {
       expect(cancelRequest.request.url).toEqual(expectedUrl);
       expect(cancelRequest.request.method).toBe('PATCH');
       expect(cancelRequest.request.body).toBe(null);
+    });
+  });
+
+  describe('when asking to accept the request by id with a post office drop off mode', () => {
+    it('should call to the corresponding accept request endpoint', () => {
+      let response: SellerRequestAcceptPostOfficeDropOffDto;
+      const expectedUrl: string = SELLER_REQUESTS_ACCEPT_POST_OFFICE_DROP_OFF_ENDPOINT_WITH_REQUEST_ID(MOCK_SELLER_REQUEST_ID);
+
+      service.acceptRequest(MOCK_SELLER_REQUEST_ID).subscribe((data: SellerRequestAcceptPostOfficeDropOffDto) => (response = data));
+      const acceptRequest: TestRequest = httpMock.expectOne(expectedUrl);
+      acceptRequest.flush(MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO);
+
+      expect(acceptRequest.request.url).toEqual(expectedUrl);
+      expect(acceptRequest.request.method).toBe('POST');
+      expect(acceptRequest.request.body).toBe(null);
+      expect(response).toBe(MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO);
     });
   });
 });
