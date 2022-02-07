@@ -11,6 +11,7 @@ import { PROFILE_PATHS } from './profile-routing-constants';
 import { AccountModule } from './pages/account/account.module';
 import { NotificationsComponent } from '@private/features/profile/pages/notifications/notifications.component';
 import { NotificationsModule } from './pages/notifications/notifications.module';
+import { DevelopmentGuard } from '@core/user/development.guard';
 
 const routes: Route[] = [
   {
@@ -44,6 +45,7 @@ const routes: Route[] = [
       },
       {
         path: PROFILE_PATHS.NOTIFICATIONS,
+        canLoad: [DevelopmentGuard],
         loadChildren: () => NotificationsModule,
       },
       {
