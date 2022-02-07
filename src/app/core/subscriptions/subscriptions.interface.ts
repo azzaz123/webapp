@@ -21,8 +21,8 @@ export interface Tier {
 export interface Perks {
   name: PERK_NAMES;
   quantity: number;
-  used: number;
-  duration_days: number;
+  used?: number;
+  duration_days?: number;
 }
 
 export interface TierDiscount {
