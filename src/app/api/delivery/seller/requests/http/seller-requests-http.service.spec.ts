@@ -41,4 +41,18 @@ describe('SellerRequestsHttpService', () => {
       expect(response).toEqual(MOCK_SELLER_REQUEST_DTO);
     });
   });
+
+  describe('when asking to cancel the request by id to server', () => {
+    it('should call to the corresponding cancel request endpoint', () => {
+      const expectedUrl: string = SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(MOCK_SELLER_REQUEST_ID);
+
+      service.cancelRequest(MOCK_SELLER_REQUEST_ID).subscribe();
+      const cancelRequest: TestRequest = httpMock.expectOne(expectedUrl);
+      cancelRequest.flush({});
+
+      expect(cancelRequest.request.url).toEqual(expectedUrl);
+      expect(cancelRequest.request.method).toBe('PATCH');
+      expect(cancelRequest.request.body).toBe(null);
+    });
+  });
 });

@@ -19,4 +19,8 @@ export class SellerRequestsApiService {
       })
     );
   }
+
+  public cancelRequest(requestId: string): Observable<void> {
+    return this.sellerRequestsHttpService.cancelRequest(requestId);
+  }
 }

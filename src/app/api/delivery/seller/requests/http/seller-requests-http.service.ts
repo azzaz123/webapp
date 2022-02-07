@@ -13,4 +13,8 @@ export class SellerRequestsHttpService {
   public getRequestInfo(requestId: string): Observable<SellerRequestDto> {
     return this.http.get<SellerRequestDto>(SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(requestId));
   }
+
+  public cancelRequest(requestId: string): Observable<void> {
+    return this.http.patch<void>(SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(requestId), null);
+  }
 }

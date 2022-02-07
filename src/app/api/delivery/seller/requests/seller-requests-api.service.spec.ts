@@ -10,6 +10,7 @@ import { SellerRequestsApiService } from './seller-requests-api.service';
 describe('SellerRequestsApiService', () => {
   let service: SellerRequestsApiService;
   let sellerRequestsHttpService: SellerRequestsHttpService;
+  const MOCK_REQUEST_ID = '392183AK28923';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,6 +21,9 @@ describe('SellerRequestsApiService', () => {
           useValue: {
             getRequestInfo() {
               return of(MOCK_SELLER_REQUEST_DTO);
+            },
+            cancelRequest() {
+              return of();
             },
           },
         },
@@ -34,7 +38,6 @@ describe('SellerRequestsApiService', () => {
   });
 
   describe('when asking to get a seller request information', () => {
-    const MOCK_REQUEST_ID = '392183AK28923';
     let response: SellerRequest;
 
     beforeEach(fakeAsync(() => {
@@ -51,6 +54,20 @@ describe('SellerRequestsApiService', () => {
 
     it('should return the request response mapped into our model domain', () => {
       expect(JSON.stringify(response)).toStrictEqual(JSON.stringify(MOCK_SELLER_REQUEST));
+    });
+  });
+
+  describe('when asking to cancel a request', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(sellerRequestsHttpService, 'cancelRequest').and.callThrough();
+
+      service.cancelRequest(MOCK_REQUEST_ID).subscribe();
+      tick();
+    }));
+
+    it('should ask server to cancel the request', () => {
+      expect(sellerRequestsHttpService.cancelRequest).toHaveBeenCalledTimes(1);
+      expect(sellerRequestsHttpService.cancelRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });
 });
