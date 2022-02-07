@@ -245,11 +245,18 @@ $vertical-padding: $spacing-ms;
   &--width {
     width: 100%;
   }
+
   &--big {
     height: 50px;
   }
 
   &--noPadding {
     padding: 0;
+  }
+
+  &--thin {
+    padding: 11px 19px;
+    line-height: 20px;
+    border: 0px;
   }
 }
