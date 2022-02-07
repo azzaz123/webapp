@@ -36,9 +36,9 @@ export class NotificationsComponent implements OnInit {
     const { id, enabled } = notification;
 
     if (enabled) {
-      this.notificationsApiService.setNotificationEnable(id);
+      this.notificationsApiService.setNotificationEnable(id).subscribe();
     } else {
-      this.notificationsApiService.setNotificationDisabled(id);
+      this.notificationsApiService.setNotificationDisabled(id).subscribe();
     }
     this.trackUpdateNotification(id, enabled);
   }
