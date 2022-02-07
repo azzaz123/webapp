@@ -26,6 +26,11 @@ export class AcceptScreenStoreService {
       .subscribe();
   }
 
+  public clean(): void {
+    this.properties = null;
+    this.selectedDropOffModeByUser = null;
+  }
+
   public notifySelectedDropOffModeByUser(selectedDropOffPosition: number): void {
     const currentProperties: AcceptScreenProperties = this.propertiesSubject.value;
     const selectedDropOffMode: CARRIER_DROP_OFF_MODE = currentProperties.carriers[selectedDropOffPosition].type;

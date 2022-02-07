@@ -14,6 +14,8 @@ describe('AcceptScreenStoreService', () => {
   const MOCK_REQUEST_ID: string = '2387283dsbd';
   let service: AcceptScreenStoreService;
   let acceptScreenService: AcceptScreenService;
+  let expectedAcceptScreenProperties: AcceptScreenProperties;
+  let expectedDropOffMode: CARRIER_DROP_OFF_MODE;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,8 +40,6 @@ describe('AcceptScreenStoreService', () => {
   });
 
   describe('when we initialize the accept screen store', () => {
-    let expectedAcceptScreenProperties: AcceptScreenProperties;
-
     beforeEach(fakeAsync(() => {
       spyOn(acceptScreenService, 'getAcceptScreenProperties').and.callThrough();
       service.properties$.subscribe((newProperties: AcceptScreenProperties) => {
@@ -59,9 +59,8 @@ describe('AcceptScreenStoreService', () => {
       expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES);
     });
 
-    describe('when we notify selected drop off mode by user changed', () => {
+    describe('and when we notify selected drop off mode by user changed', () => {
       const carrierPositionUpdatedByUser: number = 1;
-      let expectedDropOffMode: CARRIER_DROP_OFF_MODE;
 
       beforeEach(fakeAsync(() => {
         service.selectedDropOffModeByUser$.subscribe((newModeSelectedByUser: CARRIER_DROP_OFF_MODE) => {
@@ -88,6 +87,29 @@ describe('AcceptScreenStoreService', () => {
       it('should update the accept screen properties', () => {
         expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
       });
+    });
+  });
+
+  describe('when we clean the store', () => {
+    beforeEach(fakeAsync(() => {
+      service.properties$.subscribe((newProperties: AcceptScreenProperties) => {
+        expectedAcceptScreenProperties = newProperties;
+      });
+
+      service.selectedDropOffModeByUser$.subscribe((newModeSelectedByUser: CARRIER_DROP_OFF_MODE) => {
+        expectedDropOffMode = newModeSelectedByUser;
+      });
+
+      service.clean();
+      tick();
+    }));
+
+    it('should reset the properties', () => {
+      expect(expectedAcceptScreenProperties).toStrictEqual(null);
+    });
+
+    it('should reset the selected drop off mode by user', () => {
+      expect(expectedDropOffMode).toStrictEqual(null);
     });
   });
 });

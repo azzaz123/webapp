@@ -43,6 +43,9 @@ describe('AcceptScreenModalComponent', () => {
         {
           provide: AcceptScreenStoreService,
           useValue: {
+            clean() {
+              acceptScreenPropertiesSubjectMock.next(null);
+            },
             initialize() {},
             notifySelectedDropOffModeByUser() {},
             get properties$() {
@@ -239,6 +242,18 @@ describe('AcceptScreenModalComponent', () => {
       it('should NOT show any carrier option', () => {
         shouldRenderRadioSelector(false);
       });
+    });
+  });
+
+  describe('When leaving Accept Screen', () => {
+    beforeEach(() => {
+      spyOn(acceptScreenStoreService, 'clean');
+
+      component.ngOnDestroy();
+    });
+
+    it('should clean the store properties', () => {
+      expect(acceptScreenStoreService.clean).toHaveBeenCalledTimes(1);
     });
   });
 

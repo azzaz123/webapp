@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
@@ -9,7 +9,7 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
   templateUrl: './accept-screen-modal.component.html',
   styleUrls: ['./accept-screen-modal.component.scss'],
 })
-export class AcceptScreenModalComponent implements OnInit {
+export class AcceptScreenModalComponent implements OnInit, OnDestroy {
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties>;
   public selectedDropOffPosition: number;
@@ -26,6 +26,10 @@ export class AcceptScreenModalComponent implements OnInit {
         this.selectedDropOffPosition = carrierSelectedPosition;
       })
     );
+  }
+
+  ngOnDestroy(): void {
+    this.acceptScreenStoreService.clean();
   }
 
   public notifySelectedDropOffModeByUserChanged(newSelectedDropOffPosition: number): void {
