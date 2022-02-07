@@ -1,0 +1,13 @@
+@import '~style/mixins/_mixins.scss';
+@import '~web-styleguide/scss/spacing';
+
+.PayviewSummaryHeader {
+  background: rgba(236, 239, 241, 0.7);
+  border-radius: 10px;
+  padding-right: $spacing-ml;
+
+  &__image {
+    @include square(70px);
+    border-radius: 5px;
+  }
+}
