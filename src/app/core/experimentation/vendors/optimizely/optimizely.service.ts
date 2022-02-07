@@ -41,7 +41,7 @@ export class OptimizelyService {
     });
   }
 
-  public initExperimentContext(attributes?: { [key: string]: any }): void {
+  public initExperimentContext(attributes?: { [key: string]: string }): void {
     if (!this.optimizelyUserContext) {
       const userId = this.userService.user.id;
       this.optimizelyUserContext = this.optimizelyClientInstance.createUserContext(userId, { ...attributes, ...this.baseAttributes });

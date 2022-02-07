@@ -67,10 +67,10 @@ describe('ExperimentService', () => {
   describe('when the user is ready', () => {
     it('should initialize the experiment context', fakeAsync(() => {
       spyOn(OptimizelyServiceMock, 'initExperimentContext');
-      service.initExperimentContext({ age: 25 });
+      service.initExperimentContext({ age: '25' });
       tick();
 
-      expect(OptimizelyServiceMock.initExperimentContext).toHaveBeenCalledWith({ age: 25 });
+      expect(OptimizelyServiceMock.initExperimentContext).toHaveBeenCalledWith({ age: '25' });
     }));
 
     it('should get the variations', fakeAsync(() => {
