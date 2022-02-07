@@ -5,7 +5,8 @@
     @include square(48px);
   }
 
-  b {
+  &__price {
     color: $walla-main;
+    font-weight: $font-weight-chunky;
   }
 }
