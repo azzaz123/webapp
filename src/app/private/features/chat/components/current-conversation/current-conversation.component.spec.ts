@@ -22,6 +22,8 @@ import {
   MOCK_CONVERSATION,
   InboxConversationServiceMock,
   MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE_WITHOUT_PAYLOAD,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE,
 } from '@fixtures/chat';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
@@ -292,6 +294,10 @@ describe('CurrentConversationComponent', () => {
 
       it('should show generic delivery third voices', () => {
         expect(deliveryThirdVoiceElement).toBeTruthy();
+      });
+
+      it('should pass message to delivery third voice', () => {
+        expect(deliveryThirdVoiceElement.componentInstance.message).toEqual(MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE);
       });
 
       describe('and the user clicks the CTA from the third voice', () => {
