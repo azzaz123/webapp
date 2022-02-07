@@ -131,45 +131,15 @@ describe('AcceptScreenModalComponent', () => {
         describe('and the user selects another carrier', () => {
           beforeEach(() => {
             spyOn(acceptScreenStoreService, 'notifySelectedDropOffModeByUser').and.callThrough();
-            acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
 
             fixture.debugElement
               .query(By.directive(DeliveryRadioSelectorComponent))
               .triggerEventHandler('selectedIdChanged', newCarrierSelectedPosition);
-            fixture.detectChanges();
           });
 
           it('should notify the new carrier selected position ', () => {
             expect(acceptScreenStoreService.notifySelectedDropOffModeByUser).toHaveBeenCalledTimes(1);
             expect(acceptScreenStoreService.notifySelectedDropOffModeByUser).toHaveBeenCalledWith(newCarrierSelectedPosition);
-          });
-
-          it('should update the component properties', () => {
-            expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
-          });
-
-          it('should update the selected drop off position', () => {
-            const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.findIndex(
-              (carrier: AcceptScreenCarrier) => carrier.isSelected
-            );
-            expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
-          });
-
-          it('should show carrier options', () => {
-            shouldRenderRadioSelector(true);
-          });
-
-          it('should show carriers received', () => {
-            const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
-            expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.length);
-          });
-
-          describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
-            const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.indexOf(carrier);
-
-            describe('and the selected option is provided...', () => {
-              shouldShowCarrierInformation(carrier, currentCarrierPosition);
-            });
           });
         });
       });
@@ -187,6 +157,48 @@ describe('AcceptScreenModalComponent', () => {
 
         it('should NOT define the selected drop off position', () => {
           expect(component.selectedDropOffPosition).not.toBeDefined();
+        });
+      });
+    });
+
+    describe('and we receive accept screen properties but carriers with first option selected', () => {
+      let acceptScreenProperties: AcceptScreenProperties;
+
+      beforeEach(() => {
+        acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+
+        fixture.detectChanges();
+
+        component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
+          acceptScreenProperties = newProperties;
+        });
+      });
+
+      it('should update the component properties', () => {
+        expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+      });
+
+      it('should update the selected drop off position', () => {
+        const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.findIndex(
+          (carrier: AcceptScreenCarrier) => carrier.isSelected
+        );
+        expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
+      });
+
+      it('should show carrier options', () => {
+        shouldRenderRadioSelector(true);
+      });
+
+      it('should show carriers received', () => {
+        const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
+        expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.length);
+      });
+
+      describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
+        const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.indexOf(carrier);
+
+        describe('and the selected option is provided...', () => {
+          shouldShowCarrierInformation(carrier, currentCarrierPosition);
         });
       });
     });
