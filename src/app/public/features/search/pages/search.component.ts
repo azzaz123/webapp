@@ -171,6 +171,8 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           this.sortBySubject.next(sortBy);
         })
     );
+
+    this.manageKeywordChange();
   }
 
   public onAttach(): void {
