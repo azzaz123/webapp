@@ -7,6 +7,7 @@ export enum MessageType {
   /** Real Time Service */
   DROP_PRICE = 'drop_price',
   REVIEW = 'review',
+  DELIVERY_GENERIC = 'delivery_generic',
 }
 
 export enum MessageStatus {
@@ -16,7 +17,13 @@ export enum MessageStatus {
   READ = 'read',
 }
 
-export const MESSAGES_WHITE_LIST = [MessageType.TEXT, MessageType.REVIEW, MessageType.DROP_PRICE, MessageType.PRICE_DROP];
+export const MESSAGES_WHITE_LIST = [
+  MessageType.TEXT,
+  MessageType.REVIEW,
+  MessageType.DROP_PRICE,
+  MessageType.PRICE_DROP,
+  MessageType.DELIVERY_GENERIC,
+];
 
 export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];
 
