@@ -108,7 +108,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   @debounce(500)
   onWindowScroll() {
     if (this.componentAttached) {
-      this.resetSearchId = true;
+      this.setResetSearchId(true);
     }
   }
 
@@ -133,11 +133,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
         if (searchResponseExtraData.searchId) {
           if (this.resetSearchId) {
             this.searchId = searchResponseExtraData.searchId;
-            this.resetSearchId = false;
+            this.setResetSearchId(false);
           }
           this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
         } else {
-          this.resetSearchId = true;
+          this.setResetSearchId(true);
         }
 
         this.handleSearchResponseExtraData(searchResponseExtraData);
@@ -176,7 +176,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public onAttach(): void {
     this.searchAdsService.refreshSlots();
     this.componentAttached = true;
-    this.resetSearchId = true;
+    this.setResetSearchId(true);
   }
 
   public onDetach(): void {
@@ -194,7 +194,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       this.searchService.loadMore();
     }
 
-    this.resetSearchId = true;
+    this.setResetSearchId(true);
   }
 
   public trackClickItemCardEvent(clickedItemCard: ClickedItemCard): void {
