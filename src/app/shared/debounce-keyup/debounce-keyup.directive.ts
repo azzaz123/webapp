@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[debounce-keyup]',
 })
 export class DebounceKeyupDirective {
