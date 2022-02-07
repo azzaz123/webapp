@@ -29,16 +29,16 @@ export class NotificationsComponent implements OnInit {
   }
 
   public getMyNotificationsSettings() {
-    return this.notificationsApiService.getMyNotificationsSettings().pipe();
+    return this.notificationsApiService.getMyNotificationsSettings();
   }
 
   public handleChange(notification: NotificationConsent) {
     const { id, enabled } = notification;
 
     if (enabled) {
-      this.notificationsApiService.setNotificationEnable(id).subscribe();
+      this.notificationsApiService.setNotificationEnable(id);
     } else {
-      this.notificationsApiService.setNotificationDisabled(id).subscribe();
+      this.notificationsApiService.setNotificationDisabled(id);
     }
     this.trackUpdateNotification(id, enabled);
   }

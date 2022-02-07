@@ -7,6 +7,7 @@ import { By } from '@angular/platform-browser';
 import { mappedNotificationsSettings } from '@api/fixtures/notifications/notifications.fixture';
 import { NotificationsApiService } from '@api/notifications/notifications-api.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { FormsModule } from '@angular/forms';
 
 describe('NotificationsComponent', () => {
   let component: NotificationsComponent;
@@ -17,7 +18,7 @@ describe('NotificationsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [NgxPermissionsModule.forRoot()],
+        imports: [FormsModule, NgxPermissionsModule.forRoot()],
         providers: [
           {
             provide: NotificationsApiService,
@@ -76,23 +77,6 @@ describe('NotificationsComponent', () => {
     }));
   });
 
-  describe('should enable notification', () => {
-    beforeEach(() => {
-      spyOn(component, 'handleChange').and.callThrough();
-      spyOn(notificationsApiService, 'setNotificationEnable').and.callThrough();
-      spyOn(analyticsService, 'trackEvent').and.callThrough();
-      const notificationLabelToggle = fixture.debugElement.query(By.css('.NotificationsSettings__details_toggle')).nativeNode.childNodes[0];
-      notificationLabelToggle.click();
-      fixture.detectChanges();
-    });
-
-    it('it should enable a disabled notification when clicked and track new event', () => {
-      expect(component.handleChange).toHaveBeenCalled();
-      expect(notificationsApiService.setNotificationEnable).toHaveBeenCalled();
-      expect(analyticsService.trackEvent).toHaveBeenCalled();
-    });
-  });
-
   describe('should disable notification', () => {
     beforeEach(fakeAsync(() => {
       spyOn(component, 'handleChange').and.callThrough();
@@ -106,6 +90,23 @@ describe('NotificationsComponent', () => {
     it('it should disable a enabled notification when clicked and track new event', () => {
       expect(component.handleChange).toHaveBeenCalled();
       expect(notificationsApiService.setNotificationDisabled).toHaveBeenCalled();
+      expect(analyticsService.trackEvent).toHaveBeenCalled();
+    });
+  });
+
+  describe('should enable notification', () => {
+    beforeEach(() => {
+      spyOn(component, 'handleChange').and.callThrough();
+      spyOn(notificationsApiService, 'setNotificationEnable').and.callThrough();
+      spyOn(analyticsService, 'trackEvent').and.callThrough();
+      const notificationLabelToggle = fixture.debugElement.query(By.css('.NotificationsSettings__details_toggle')).nativeNode.childNodes[0];
+      notificationLabelToggle.click();
+      fixture.detectChanges();
+    });
+
+    it('it should enable a disabled notification when clicked and track new event', () => {
+      expect(component.handleChange).toHaveBeenCalled();
+      expect(notificationsApiService.setNotificationEnable).toHaveBeenCalled();
       expect(analyticsService.trackEvent).toHaveBeenCalled();
     });
   });
