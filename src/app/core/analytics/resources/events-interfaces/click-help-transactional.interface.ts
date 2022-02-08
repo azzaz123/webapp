@@ -36,9 +36,9 @@ export interface ClickHelpTransactional {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 209 | 210 | 238 | 41 | 27;
+  screenId: 210 | 238 | 41 | 27 | 302 | 316;
   /**
    * Name of the tutorial/help that the user is clicking on
    */
-  helpName: 'Help Top Pay Screen' | 'Help Top Accept Screen' | 'Help Shipping Upload Screen' | 'Learn More Chat Screen';
+  helpName: 'Help Top Pay Screen' | 'Help Top Accept Screen' | 'Help Shipping Upload Screen' | 'Learn More Chat Screen' | 'Shipping FAQs';
 }

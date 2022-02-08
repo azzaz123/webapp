@@ -12,7 +12,7 @@ export interface ClickShareMGMLink {
   /**
    * Identifier of the screen that the link was shared from
    */
-  screenId: 293;
+  screenId: 293 | 315;
   /**
    * MGM code that the user has shared
    */
