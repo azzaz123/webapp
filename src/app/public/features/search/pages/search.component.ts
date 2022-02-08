@@ -14,7 +14,7 @@ import { ClickedItemCard } from '@public/shared/components/item-card-list/interf
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { delay, distinctUntilChanged, filter, skip, map, tap } from 'rxjs/operators';
+import { delay, distinctUntilChanged, filter, skip, map, tap, pairwise } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import { AD_SHOPPING_PUBLIC_SEARCH, AdShoppingPageOptionPublicSearchFactory } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchAdsService } from './../core/ads/search-ads.service';
