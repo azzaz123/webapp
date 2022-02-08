@@ -1,5 +1,5 @@
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
-import { ACCEPT_SCREEN_ID_STEPS } from '../constants/accept-screen-id-steps';
+import { ACCEPT_SCREEN_STEPS } from '../constants/accept-screen-steps';
 
 export interface AcceptScreenCarrier {
   type: CARRIER_DROP_OFF_MODE;
@@ -17,5 +17,5 @@ export interface AcceptScreenCarrier {
 export interface AcceptScreenCarrierButtonProperties {
   isShowed: boolean;
   text: string;
-  redirectStep: ACCEPT_SCREEN_ID_STEPS.MAP | ACCEPT_SCREEN_ID_STEPS.SCHEDULE;
+  redirectStep: ACCEPT_SCREEN_STEPS.MAP | ACCEPT_SCREEN_STEPS.SCHEDULE;
 }
