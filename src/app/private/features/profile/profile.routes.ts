@@ -9,6 +9,8 @@ import { PRO_PATHS } from '../pro/pro-routing-constants';
 import { VerificationsNScurityModule } from './pages/verifications-n-security/verifications-n-securty.module';
 import { PROFILE_PATHS } from './profile-routing-constants';
 import { AccountModule } from './pages/account/account.module';
+import { NotificationsComponent } from '@private/features/profile/pages/notifications/notifications.component';
+import { NotificationsModule } from './pages/notifications/notifications.module';
 
 const routes: Route[] = [
   {
@@ -39,6 +41,10 @@ const routes: Route[] = [
       {
         path: PROFILE_PATHS.VERIFICATIONS,
         loadChildren: () => VerificationsNScurityModule,
+      },
+      {
+        path: PROFILE_PATHS.NOTIFICATIONS,
+        loadChildren: () => NotificationsModule,
       },
       {
         path: PRO_PATHS.SUBSCRIPTIONS,
