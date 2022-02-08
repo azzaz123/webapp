@@ -55,8 +55,8 @@ import { By } from '@angular/platform-browser';
 import { BehaviorSubject, of } from 'rxjs';
 import { DeliveryBannerComponent } from '@private/features/chat/modules/delivery-banner/components/delivery-banner.component';
 import { DeliveryConversationContextService } from '@private/features/chat/modules/delivery-conversation-context/services/delivery-conversation-context/delivery-conversation-context.service';
-import { MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
-import { DELIVERY_BANNER_ACTION_TYPE } from '../../modules/delivery-banner/enums/delivery-banner-action-type.enum';
+import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
+import { DELIVERY_BANNER_ACTION } from '../../modules/delivery-banner/enums/delivery-banner-action.enum';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
 import { ThirdVoiceDeliveryComponent } from '../../children/message/components/third-voice-delivery/third-voice-delivery.component';
 
@@ -137,8 +137,8 @@ describe('CurrentConversationComponent', () => {
               bannerProperties$: mockDeliveryBannerSubject$,
               update: () => {},
               reset: () => {},
-              handleBannerCTAClick: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE) => {},
-              handleThirdVoiceCTAClick: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION_TYPE) => {},
+              handleBannerCTAClick: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION) => {},
+              handleThirdVoiceCTAClick: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION) => {},
             },
           },
         ],
@@ -240,7 +240,7 @@ describe('CurrentConversationComponent', () => {
 
     describe('when delivery banner needs to be displayed with actionable properties', () => {
       beforeEach(fakeAsync(() => {
-        mockDeliveryBannerSubject$.next(MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES);
+        mockDeliveryBannerSubject$.next(MOCK_BUY_DELIVERY_BANNER_PROPERTIES);
         tick();
         fixture.detectChanges();
       }));
@@ -255,7 +255,7 @@ describe('CurrentConversationComponent', () => {
         it('should ask for CTA action handling to the delivery context', () => {
           spyOn(deliveryConversationContextService, 'handleBannerCTAClick');
           const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
-          const expectedActionType: DELIVERY_BANNER_ACTION_TYPE = MOCK_DELIVERY_BANNER_BUY_NOW_PROPERTIES.action.type;
+          const expectedActionType: DELIVERY_BANNER_ACTION = MOCK_BUY_DELIVERY_BANNER_PROPERTIES.action;
 
           deliveryBannerElement.triggerEventHandler('clickedCTA', expectedActionType);
 

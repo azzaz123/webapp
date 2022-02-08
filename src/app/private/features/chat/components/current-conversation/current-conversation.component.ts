@@ -44,7 +44,7 @@ import { ChatTranslationService } from '@private/features/chat/services/chat-tra
 import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryConversationContextService } from '../../modules/delivery-conversation-context/services/delivery-conversation-context/delivery-conversation-context.service';
-import { DELIVERY_BANNER_ACTION_TYPE } from '../../modules/delivery-banner/enums/delivery-banner-action-type.enum';
+import { DELIVERY_BANNER_ACTION } from '../../modules/delivery-banner/enums/delivery-banner-action.enum';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -279,7 +279,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     }
   }
 
-  public handleDeliveryBannerCTAClick(deliveryBannerActionType: DELIVERY_BANNER_ACTION_TYPE): void {
+  public handleDeliveryBannerCTAClick(deliveryBannerActionType: DELIVERY_BANNER_ACTION): void {
     this.deliveryConversationContextService.handleBannerCTAClick(this.currentConversation, deliveryBannerActionType);
   }
 

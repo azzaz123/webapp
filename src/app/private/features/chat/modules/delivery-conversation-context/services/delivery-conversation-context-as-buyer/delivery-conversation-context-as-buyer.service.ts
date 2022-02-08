@@ -8,11 +8,9 @@ import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/i
 import { Observable } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
 import {
-  BUYER_BUY_DELIVERY_BANNER_PROPERTIES,
+  BUY_DELIVERY_BANNER_PROPERTIES,
   BUYER_ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
 } from '@private/features/chat/modules/delivery-banner/constants/delivery-banner-configs';
-import { BUYER_DELIVERY_BANNER_TYPE } from '@private/features/chat/modules/delivery-banner/enums/buyer-delivery-banner-type.enum';
-import { InboxConversation } from '@private/features/chat/core/model';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -20,6 +18,7 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
@@ -64,7 +63,7 @@ export class DeliveryConversationContextAsBuyerService {
     buyerRequests: BuyerRequest[],
     deliveryItemDetails: DeliveryItemDetails
   ): DeliveryBanner | null {
-    const bannerType: BUYER_DELIVERY_BANNER_TYPE | null = this.mapDeliveryDetailsAsBuyerToBannerType(buyerRequests, deliveryItemDetails);
+    const bannerType: DELIVERY_BANNER_TYPE | null = this.mapDeliveryDetailsAsBuyerToBannerType(buyerRequests, deliveryItemDetails);
     const minimumPurchaseCost: Money | null = deliveryItemDetails ? deliveryItemDetails.minimumPurchaseCost : null;
     return this.mapBannerTypeToBuyerBannerProperties(bannerType, minimumPurchaseCost);
   }
@@ -72,32 +71,32 @@ export class DeliveryConversationContextAsBuyerService {
   private mapDeliveryDetailsAsBuyerToBannerType(
     buyerRequests: BuyerRequest[],
     deliveryItemDetails?: DeliveryItemDetails
-  ): BUYER_DELIVERY_BANNER_TYPE {
+  ): DELIVERY_BANNER_TYPE {
     const noDeliveryItemDetails: boolean = !deliveryItemDetails;
     const buyerHasNoRequests: boolean = buyerRequests.length === 0;
     const buyerHasRequests: boolean = !buyerHasNoRequests;
 
     if (noDeliveryItemDetails) {
-      return BUYER_DELIVERY_BANNER_TYPE.HIDDEN;
+      return DELIVERY_BANNER_TYPE.HIDDEN;
     }
 
     if (buyerHasRequests) {
-      return BUYER_DELIVERY_BANNER_TYPE.HIDDEN;
+      return DELIVERY_BANNER_TYPE.HIDDEN;
     }
 
     if (buyerHasNoRequests) {
-      return BUYER_DELIVERY_BANNER_TYPE.BUY;
+      return DELIVERY_BANNER_TYPE.BUY;
     }
 
-    return BUYER_DELIVERY_BANNER_TYPE.HIDDEN;
+    return DELIVERY_BANNER_TYPE.HIDDEN;
   }
 
-  private mapBannerTypeToBuyerBannerProperties(type: BUYER_DELIVERY_BANNER_TYPE, price?: Money): DeliveryBanner | null {
-    if (type === BUYER_DELIVERY_BANNER_TYPE.BUY) {
-      return BUYER_BUY_DELIVERY_BANNER_PROPERTIES(price);
+  private mapBannerTypeToBuyerBannerProperties(type: DELIVERY_BANNER_TYPE, price?: Money): DeliveryBanner | null {
+    if (type === DELIVERY_BANNER_TYPE.BUY) {
+      return BUY_DELIVERY_BANNER_PROPERTIES(price);
     }
 
-    if (type === BUYER_DELIVERY_BANNER_TYPE.ASK_SELLER_FOR_SHIPPING) {
+    if (type === DELIVERY_BANNER_TYPE.ASK_SELLER_FOR_SHIPPING) {
       return BUYER_ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES;
     }
 

@@ -10,11 +10,15 @@
  */
 export interface ViewMGMHostSection {
   /**
-   * Identifier of the view own profile menu screen
+   * Identifier of the MGM host section screen
    */
-  screenId: 293;
+  screenId: 293 | 315;
   /**
    * Name of the experiment or A/B testing applied to the user who has performed the view. The default value would be 'baseline'
    */
   experiment?: string;
+  /**
+   * The source from which the the user has accessed the MGM Host Section
+   */
+  source?: 'QR' | 'profile_menu' | 'other';
 }
