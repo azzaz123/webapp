@@ -20,7 +20,7 @@ export interface UploadItemError {
   /**
    * Identifier of the checkout screen
    */
-  screenId: 160 | 302 | 303;
+  screenId: 160 | 302 | 316 | 303;
   /**
    * Id of the item category
    */
