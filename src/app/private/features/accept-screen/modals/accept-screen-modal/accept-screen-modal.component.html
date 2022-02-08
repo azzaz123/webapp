@@ -66,30 +66,22 @@
                         <img class="AcceptScreenModal__carrierIcon" alt="carrier image" [src]="carrier.icon" />
                       </div>
                       <div class="align-self-center">
-                        <span id="carrierTitle" class="mb-2"
+                        <span class="mb-2 carrierTitle"
                           >{{ carrier.title }} <b>{{ carrier.price }}</b></span
                         >
-                        <div id="carrierInformationWrapper" *ngIf="carrier.isSelected">
-                          <span
-                            *ngIf="carrier.information"
-                            id="carrierInformation"
-                            class="AcceptScreenModal__carrierInformation d-block mt-2"
-                            >{{ carrier.information }}</span
-                          >
+                        <div *ngIf="carrier.isSelected" class="carrierInformationWrapper">
+                          <span *ngIf="carrier.information" class="AcceptScreenModal__carrierInformation d-block mt-2 carrierInformation">{{
+                            carrier.information
+                          }}</span>
                           <span
                             *ngIf="carrier.secondaryInformation"
-                            id="carrierSecondaryInformation"
-                            class="AcceptScreenModal__carrierInformation d-block mt-2"
+                            class="AcceptScreenModal__carrierInformation d-block mt-2 carrierSecondaryInformation"
                             >{{ carrier.secondaryInformation }}</span
                           >
                           <span class="AcceptScreenModal__carrierRestrictions d-block p-2 mt-2">{{ carrier.restrictions }}</span>
-                          <tsl-button
-                            id="carrierButton"
-                            *ngIf="carrier.buttonProperties.isShowed"
-                            class="mt-3 mb-1"
-                            className="btn-secondary"
-                            >{{ carrier.buttonProperties.text }}</tsl-button
-                          >
+                          <tsl-button *ngIf="carrier.buttonProperties.isShowed" class="mt-3 mb-1 carrierButton" className="btn-secondary">{{
+                            carrier.buttonProperties.text
+                          }}</tsl-button>
                         </div>
                       </div>
                     </div>

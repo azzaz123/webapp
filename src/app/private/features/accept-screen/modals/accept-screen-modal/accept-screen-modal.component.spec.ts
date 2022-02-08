@@ -726,14 +726,14 @@ describe('AcceptScreenModalComponent', () => {
     });
 
     it('should show the carrier title and price', () => {
-      const carrierTitle: string = de.queryAll(By.css('#carrierTitle'))[currentCarrierPosition].nativeElement.innerHTML;
+      const carrierTitle: string = de.queryAll(By.css('.carrierTitle'))[currentCarrierPosition].nativeElement.innerHTML;
       expect(carrierTitle).toStrictEqual(`${carrier.title} <b>${carrier.price}</b>`);
     });
 
     if (carrier.isSelected) {
       it('should show first information when is provided', () => {
         const isFirstInfoShowed: boolean = de
-          .queryAll(By.css('#carrierInformation'))
+          .queryAll(By.css('.carrierInformation'))
           .some((firstInformation) => firstInformation.nativeElement.innerHTML === carrier.information);
 
         if (carrier.information) {
@@ -745,7 +745,7 @@ describe('AcceptScreenModalComponent', () => {
 
       it('should show secondary information when is provided', () => {
         const isSecondInfoShowed: boolean = de
-          .queryAll(By.css('#carrierSecondaryInformation'))
+          .queryAll(By.css('.carrierSecondaryInformation'))
           .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.secondaryInformation);
 
         if (carrier.secondaryInformation) {
@@ -765,7 +765,7 @@ describe('AcceptScreenModalComponent', () => {
 
       it('should should show button when needed', () => {
         const isButtonShowed: boolean = de
-          .queryAll(By.css('#carrierButton'))
+          .queryAll(By.css('.carrierButton'))
           .some((button) => button.nativeElement.textContent === carrier.buttonProperties.text);
 
         if (carrier.buttonProperties.isShowed) {
@@ -776,7 +776,7 @@ describe('AcceptScreenModalComponent', () => {
       });
     } else {
       it('should NOT show any information', () => {
-        const carrierInformationWrapper = fixture.debugElement.query(By.css('#carrierInformationWrapperSelector'));
+        const carrierInformationWrapper = fixture.debugElement.query(By.css('.carrierInformationWrapper'));
         expect(carrierInformationWrapper).toBeFalsy();
       });
     }
