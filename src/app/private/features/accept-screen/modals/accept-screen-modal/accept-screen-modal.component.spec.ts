@@ -3,9 +3,10 @@ import { AcceptScreenModalComponent } from './accept-screen-modal.component';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
 import {
   MOCK_ACCEPT_SCREEN_PROPERTIES,
+  MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU,
   MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
-import { of, ReplaySubject } from 'rxjs';
+import { of, ReplaySubject, BehaviorSubject } from 'rxjs';
 import { AcceptScreenProperties } from '../../interfaces';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { By } from '@angular/platform-browser';
@@ -23,18 +24,27 @@ import { CustomCurrencyPipe } from '@shared/pipes/custom-currency/custom-currenc
 import { DecimalPipe } from '@angular/common';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { DeliveryRadioSelectorComponent } from '@private/shared/delivery-radio-selector/delivery-radio-selector.component';
+import { AcceptScreenCarrier } from '../../interfaces/accept-screen-carrier.interface';
+import { DeliveryRadioOptionDirective } from '@private/shared/delivery-radio-selector/delivery-radio-option.directive';
+import { ButtonComponent } from '@shared/button/button.component';
 
 describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const sellerAddressHeaderStylesSelector: string = '.AcceptScreen__sellerAddressHeader--small';
   const fullAddressSelector: string = '#fullAddress';
-  const acceptScreenPropertiesSubject: ReplaySubject<AcceptScreenProperties> = new ReplaySubject(1);
+  const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
+  const initializeAcceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
   const countriesAsOptionsAndDefaultSubject: ReplaySubject<CountryOptionsAndDefault> = new ReplaySubject(1);
   const deliveryAddressSelector = 'tsl-delivery-address';
+  const rejectButtonSelector: string = '#rejectButton';
+  const acceptButtonSelector: string = '#acceptButton';
+
   const MOCK_ACCEPT_SCREEN_HELP_URL = 'MOCK_ACCEPT_SCREEN_HELP_URL';
   const MOCK_UPDATE_ACCEPT_SCREEN_PROPERTIES = MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS;
 
   let activeModal: NgbActiveModal;
+  let de: DebugElement;
+
   let component: AcceptScreenModalComponent;
   let fixture: ComponentFixture<AcceptScreenModalComponent>;
   let acceptScreenStoreService: AcceptScreenStoreService;
@@ -42,18 +52,31 @@ describe('AcceptScreenModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DeliveryRadioSelectorModule],
-      declarations: [AcceptScreenModalComponent, ProductCardComponent, StepperComponent, StepDirective, CustomCurrencyPipe],
+      declarations: [
+        AcceptScreenModalComponent,
+        ProductCardComponent,
+        StepperComponent,
+        StepDirective,
+        CustomCurrencyPipe,
+        DeliveryRadioSelectorComponent,
+        DeliveryRadioOptionDirective,
+        ButtonComponent,
+      ],
       providers: [
         DecimalPipe,
         {
           provide: AcceptScreenStoreService,
           useValue: {
-            initialize() {},
-            update() {
-              acceptScreenPropertiesSubject.next(MOCK_UPDATE_ACCEPT_SCREEN_PROPERTIES);
+            initialize$() {
+              return initializeAcceptScreenPropertiesSubjectMock.asObservable();
             },
+            update() {
+              acceptScreenPropertiesSubjectMock.next(MOCK_UPDATE_ACCEPT_SCREEN_PROPERTIES);
+            },
+            notifySelectedDropOffModeByUser() {},
+
             get properties$() {
-              return acceptScreenPropertiesSubject.asObservable();
+              return acceptScreenPropertiesSubjectMock.asObservable();
             },
           },
         },
@@ -82,11 +105,11 @@ describe('AcceptScreenModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AcceptScreenModalComponent);
     acceptScreenStoreService = TestBed.inject(AcceptScreenStoreService);
+    de = fixture.debugElement;
     component = fixture.componentInstance;
+    de = fixture.debugElement;
     component.requestId = MOCK_REQUEST_ID;
     activeModal = TestBed.inject(NgbActiveModal);
-    acceptScreenPropertiesSubject.next(MOCK_ACCEPT_SCREEN_PROPERTIES);
-    countriesAsOptionsAndDefaultSubject.next(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
   });
 
   it('should create', () => {
@@ -150,7 +173,7 @@ describe('AcceptScreenModalComponent', () => {
         let acceptScreenProperties: AcceptScreenProperties;
 
         beforeEach(() => {
-          spyOn(acceptScreenStoreService, 'initialize');
+          initializePropertiesWithStore(MOCK_ACCEPT_SCREEN_PROPERTIES);
 
           fixture.detectChanges();
           component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
@@ -158,8 +181,8 @@ describe('AcceptScreenModalComponent', () => {
           });
         });
 
-        it('should request accept screen properties using the store', () => {
-          shouldInitializePropertiesWithStore();
+        it('should detect the accept screen as active step', () => {
+          shouldAcceptScreenActiveStep();
         });
 
         it('should show product card specifications', () => {
@@ -175,6 +198,22 @@ describe('AcceptScreenModalComponent', () => {
 
           expect(sellerAvatar).toBeTruthy();
           expect(sellerAvatar.nativeElement.imageUrl).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES.seller.imageUrl);
+        });
+
+        it('should update the component properties', () => {
+          expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES);
+        });
+
+        it('should show product card specifications', () => {
+          shouldRenderProductCard(true);
+        });
+
+        it('should show reject button', () => {
+          shouldRenderRejectButton(true);
+        });
+
+        it('should show accept button', () => {
+          shouldRenderAcceptButton(true);
         });
 
         it('should update the component properties', () => {
@@ -219,7 +258,7 @@ describe('AcceptScreenModalComponent', () => {
 
         describe('and we NOT receive the seller address', () => {
           beforeEach(() => {
-            acceptScreenPropertiesSubject.next(MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS);
+            acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS);
 
             fixture.detectChanges();
           });
@@ -243,21 +282,58 @@ describe('AcceptScreenModalComponent', () => {
         });
       });
 
+      describe('and we receive accept screen properties but carriers with first option selected', () => {
+        let acceptScreenProperties: AcceptScreenProperties;
+
+        beforeEach(() => {
+          acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+
+          fixture.detectChanges();
+
+          component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
+            acceptScreenProperties = newProperties;
+          });
+        });
+
+        it('should update the component properties', () => {
+          expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+        });
+
+        it('should update the selected drop off position', () => {
+          const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.findIndex(
+            (carrier: AcceptScreenCarrier) => carrier.isSelected
+          );
+          expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
+        });
+
+        it('should show carrier options', () => {
+          shouldRenderRadioSelector(true);
+        });
+
+        it('should show carriers received', () => {
+          const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
+          expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.length);
+        });
+
+        describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
+          const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.indexOf(carrier);
+
+          describe('and the selected option is provided...', () => {
+            shouldShowCarrierInformation(carrier, currentCarrierPosition);
+          });
+        });
+      });
+
       describe('and we NOT receive accept screen properties', () => {
         let acceptScreenEmptyProperties: AcceptScreenProperties;
 
         beforeEach(() => {
-          jest.spyOn(acceptScreenStoreService, 'properties$', 'get').mockReturnValue(of(null));
-          spyOn(acceptScreenStoreService, 'initialize');
+          acceptScreenPropertiesSubjectMock.next(null);
 
           fixture.detectChanges();
           component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
             acceptScreenEmptyProperties = newProperties;
           });
-        });
-
-        it('should request accept screen properties using the store', () => {
-          shouldInitializePropertiesWithStore();
         });
 
         it('should NOT show product card specifications', () => {
@@ -278,8 +354,63 @@ describe('AcceptScreenModalComponent', () => {
         });
       });
 
-      it('should detect the accept screen as active step', () => {
-        shouldAcceptScreenActiveStep();
+      describe('and we receive carriers', () => {
+        const newCarrierSelectedPosition: number = 0;
+
+        it('should update the selected drop off position', () => {
+          const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.findIndex(
+            (carrier: AcceptScreenCarrier) => carrier.isSelected
+          );
+          expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
+        });
+
+        it('should show carrier options', () => {
+          shouldRenderRadioSelector(true);
+        });
+
+        it('should show carriers received', () => {
+          const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
+          expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.length);
+        });
+
+        describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
+          const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.indexOf(carrier);
+
+          describe('and the selected option is provided...', () => {
+            shouldShowCarrierInformation(carrier, currentCarrierPosition);
+          });
+        });
+
+        describe('and the user selects another carrier', () => {
+          beforeEach(() => {
+            spyOn(acceptScreenStoreService, 'notifySelectedDropOffModeByUser').and.callThrough();
+
+            fixture.debugElement
+              .query(By.directive(DeliveryRadioSelectorComponent))
+              .triggerEventHandler('selectedIdChanged', newCarrierSelectedPosition);
+          });
+
+          it('should notify the new carrier selected position ', () => {
+            expect(acceptScreenStoreService.notifySelectedDropOffModeByUser).toHaveBeenCalledTimes(1);
+            expect(acceptScreenStoreService.notifySelectedDropOffModeByUser).toHaveBeenCalledWith(newCarrierSelectedPosition);
+          });
+        });
+      });
+
+      describe('and we NOT receive carriers', () => {
+        beforeEach(() => {
+          acceptScreenPropertiesSubjectMock.next({ ...MOCK_ACCEPT_SCREEN_PROPERTIES, carriers: null });
+
+          fixture.detectChanges();
+        });
+
+        it('should NOT show any carrier option', () => {
+          shouldRenderRadioSelector(false);
+        });
+
+        it('should NOT define the selected drop off position', () => {
+          expect(component.selectedDropOffPosition).not.toBeDefined();
+        });
       });
     });
 
@@ -330,6 +461,12 @@ describe('AcceptScreenModalComponent', () => {
       });
 
       describe('and we receive countries for the address screen', () => {
+        beforeEach(() => {
+          countriesAsOptionsAndDefaultSubject.next(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
+
+          fixture.detectChanges();
+        });
+
         it('should show the delivery address form', () => {
           shouldRenderDeliveryAddressForm(true);
         });
@@ -406,13 +543,16 @@ describe('AcceptScreenModalComponent', () => {
             shouldUpdateTheAcceptScreenProperties(true);
           });
         });
-
         describe('and we click on the close button', () => {
           it('should close the modal', () => {
             shouldCloseModalWhenCrossClick();
           });
         });
       });
+
+      it('should detect the map as active step', () => {});
+
+      it('should not render the accept screen step information', () => {});
 
       it('should not detect the accept screen as active step', () => {
         expect(component.isAcceptScreenStep).toBeFalsy();
@@ -465,19 +605,23 @@ describe('AcceptScreenModalComponent', () => {
         });
       });
 
+      it('should detect the schedule as active step', () => {});
+
+      it('should not render the accept screen step information', () => {});
+
       it('should not detect the accept screen as active step', () => {
         expect(component.isAcceptScreenStep).toBeFalsy();
       });
     });
   });
 
-  function shouldInitializePropertiesWithStore(): void {
-    expect(acceptScreenStoreService.initialize).toHaveBeenCalledTimes(1);
-    expect(acceptScreenStoreService.initialize).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+  function initializePropertiesWithStore(initialProperties: AcceptScreenProperties): void {
+    initializeAcceptScreenPropertiesSubjectMock.next(initialProperties);
+    acceptScreenPropertiesSubjectMock.next(initialProperties);
   }
 
   function shouldRenderProductCard(isShowed: boolean): void {
-    const productCard = fixture.debugElement.query(By.directive(ProductCardComponent));
+    const productCard: DebugElement = fixture.debugElement.query(By.directive(ProductCardComponent));
     if (isShowed) {
       expect(productCard).toBeTruthy();
     } else {
@@ -563,6 +707,94 @@ describe('AcceptScreenModalComponent', () => {
       expect(deliveryAddressForm).toBeTruthy();
     } else {
       expect(deliveryAddressForm).toBeFalsy();
+    }
+  }
+
+  function shouldRenderRadioSelector(isShowed: boolean): void {
+    const radioSelector: DebugElement = fixture.debugElement.query(By.directive(DeliveryRadioSelectorComponent));
+    if (isShowed) {
+      expect(radioSelector).toBeTruthy();
+    } else {
+      expect(radioSelector).toBeFalsy();
+    }
+  }
+
+  function shouldShowCarrierInformation(carrier: AcceptScreenCarrier, currentCarrierPosition: number): void {
+    it('should show the carrier image', () => {
+      const carrierImage: DebugElement = de.queryAll(By.css('.AcceptScreenModal__carrierIcon'))[currentCarrierPosition];
+      expect(carrierImage.nativeElement.src).toStrictEqual(carrier.icon);
+    });
+
+    it('should show the carrier title and price', () => {
+      const carrierTitle: string = de.queryAll(By.css('#carrierTitle'))[currentCarrierPosition].nativeElement.innerHTML;
+      expect(carrierTitle).toStrictEqual(`${carrier.title} <b>${carrier.price}</b>`);
+    });
+
+    if (carrier.isSelected) {
+      it('should show first information when is provided', () => {
+        const isFirstInfoShowed: boolean = de
+          .queryAll(By.css('#carrierInformation'))
+          .some((firstInformation) => firstInformation.nativeElement.innerHTML === carrier.information);
+
+        if (carrier.information) {
+          expect(isFirstInfoShowed).toBe(true);
+        } else {
+          expect(isFirstInfoShowed).toBe(false);
+        }
+      });
+
+      it('should show secondary information when is provided', () => {
+        const isSecondInfoShowed: boolean = de
+          .queryAll(By.css('#carrierSecondaryInformation'))
+          .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.secondaryInformation);
+
+        if (carrier.secondaryInformation) {
+          expect(isSecondInfoShowed).toBe(true);
+        } else {
+          expect(isSecondInfoShowed).toBe(false);
+        }
+      });
+
+      it('should show carrier restrictions', () => {
+        const areCarrierRestrictionsShowed: boolean = de
+          .queryAll(By.css('.AcceptScreenModal__carrierRestrictions'))
+          .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.restrictions);
+
+        expect(areCarrierRestrictionsShowed).toBe(true);
+      });
+
+      it('should should show button when needed', () => {
+        const isButtonShowed: boolean = de
+          .queryAll(By.css('#carrierButton'))
+          .some((button) => button.nativeElement.textContent === carrier.buttonProperties.text);
+
+        if (carrier.buttonProperties.isShowed) {
+          expect(isButtonShowed).toBe(true);
+        } else {
+          expect(isButtonShowed).toBe(false);
+        }
+      });
+    } else {
+      it('should NOT show any information', () => {
+        const carrierInformationWrapper = fixture.debugElement.query(By.css('#carrierInformationWrapperSelector'));
+        expect(carrierInformationWrapper).toBeFalsy();
+      });
+    }
+  }
+
+  function shouldRenderRejectButton(isShowed: boolean): void {
+    if (isShowed) {
+      expect(de.nativeElement.querySelector(rejectButtonSelector)).toBeTruthy();
+    } else {
+      expect(de.nativeElement.querySelector(rejectButtonSelector)).toBeFalsy();
+    }
+  }
+
+  function shouldRenderAcceptButton(isShowed: boolean): void {
+    if (isShowed) {
+      expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeTruthy();
+    } else {
+      expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeFalsy();
     }
   }
 });

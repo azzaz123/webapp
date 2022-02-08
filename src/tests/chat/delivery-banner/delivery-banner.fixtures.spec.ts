@@ -1,12 +1,7 @@
-import { DELIVERY_BANNER_BUTTON_TYPE } from '@private/features/chat/modules/delivery-banner/enums/delivery-banner-button-type.enum';
+import { MOCK_MONEY } from '@api/fixtures/core/money.fixtures';
+import { BUY_DELIVERY_BANNER_PROPERTIES } from '@private/features/chat/modules/delivery-banner/constants/delivery-banner-configs';
 import { ActionableDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/actionable-delivery-banner.interface';
-import { DescriptiveDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/descriptive-delivery-banner.interface';
+import { PriceableDeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/priceable-delivery-banner.interface';
 
-export const MOCK_DELVIVERY_BANNER_BUY_NOW_PROPERTIES: DescriptiveDeliveryBanner & ActionableDeliveryBanner = {
-  svgPath: 'assets/icons/joke.svg',
-  description: { text: 'Shipping available for 12€', helpLink: 'www.google.com' },
-  action: {
-    label: 'Buy',
-    type: DELIVERY_BANNER_BUTTON_TYPE.CONTAINED,
-  },
-};
+export const MOCK_BUY_DELIVERY_BANNER_PROPERTIES: PriceableDeliveryBanner & ActionableDeliveryBanner =
+  BUY_DELIVERY_BANNER_PROPERTIES(MOCK_MONEY);

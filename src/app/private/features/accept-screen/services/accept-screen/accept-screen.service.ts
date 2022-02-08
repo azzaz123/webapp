@@ -19,6 +19,8 @@ import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delive
 import { User } from '@core/user/user';
 import { ACCEPT_SCREEN_DELIVERY_ADDRESS, ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
+import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
+import { CarrierDropOffModeRequest } from '@api/core/model/delivery/carrier-drop-off-mode';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +34,10 @@ export class AcceptScreenService {
     private deliveryAddressApiService: DeliveryAddressApiService
   ) {}
 
-  public getAcceptScreenProperties(requestId: string): Observable<AcceptScreenProperties> {
+  public getAcceptScreenProperties(
+    requestId: string,
+    dropOffSelectedByUser: CARRIER_DROP_OFF_MODE = null
+  ): Observable<AcceptScreenProperties> {
     return this.getSellerRequest(requestId).pipe(
       take(1),
       concatMap((request: SellerRequest) => {
@@ -40,7 +45,7 @@ export class AcceptScreenService {
           this.getItem(request.itemId),
           this.getBuyer(request.buyer.id),
           this.getSeller(),
-          this.getCarrierDropOffModeRequest(requestId),
+          this.getCarrierDropOffModeRequest(requestId, dropOffSelectedByUser),
         ]).pipe(
           mergeMap(([item, buyer, seller, carriers]: [AcceptScreenItem, AcceptScreenBuyer, AcceptScreenSeller, AcceptScreenCarrier[]]) => {
             return of({
@@ -74,8 +79,12 @@ export class AcceptScreenService {
     return this.itemService.get(itemId).pipe(map(mapItemToAcceptScreenItem));
   }
 
-  private getCarrierDropOffModeRequest(requestId: string): Observable<AcceptScreenCarrier[]> {
-    return this.carrierDropOffModeRequestApiService.get(requestId).pipe(map(mapCarrierDropOffModeToAcceptScreenCarriers));
+  private getCarrierDropOffModeRequest(requestId: string, dropOffSelectedByUser: CARRIER_DROP_OFF_MODE): Observable<AcceptScreenCarrier[]> {
+    return this.carrierDropOffModeRequestApiService
+      .get(requestId)
+      .pipe(
+        map((dropOffModes: CarrierDropOffModeRequest) => mapCarrierDropOffModeToAcceptScreenCarriers(dropOffModes, dropOffSelectedByUser))
+      );
   }
 
   private getSellerAddress(): Observable<DeliveryAddressApi> {

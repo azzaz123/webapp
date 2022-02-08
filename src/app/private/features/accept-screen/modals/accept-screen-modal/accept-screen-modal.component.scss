@@ -1,18 +1,12 @@
 @import '~style/common';
 
-.AcceptScreen {
+.AcceptScreenModal {
   &__cursorPointer {
     cursor: pointer;
   }
 
-  &__sellerAddressTitle {
-    font-weight: $font-weight-chunky;
-    font-size: $font-size-s;
-    color: $blue-grey-1;
-  }
-
   &__bottomLine {
-    border-bottom: 1px solid $blue-grey-5;
+    border-bottom: 1px solid $blue-grey-4;
   }
 
   &__sellerAddressInfoWrapper {
@@ -23,8 +17,41 @@
     flex: 1;
   }
 
-  &__sellerAddressHeader--small {
+  &__sellerWithAddressHeader {
     font-size: $font-size-s;
+    color: $blue-grey-2;
+  }
+
+  &__title {
+    color: $blue-grey-1;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__carrierWrapper {
+    padding: $spacer * 0.75 0px;
+    flex: 1;
+  }
+
+  &__carrierIconWrapper {
+    @include square(48px);
+  }
+
+  &__carrierIcon {
+    border-radius: 5px;
+    object-fit: cover;
+    overflow: hidden;
+    width: inherit;
+  }
+
+  &__carrierInformation {
+    font-size: $font-size-s;
+  }
+
+  &__carrierRestrictions {
+    background-color: $blue-grey-5;
+    border-radius: $border-radius;
+    font-size: $font-size-xs;
     color: $blue-grey-2;
   }
 }

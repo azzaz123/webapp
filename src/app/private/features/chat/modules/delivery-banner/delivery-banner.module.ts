@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DeliveryBannerComponent } from './components/delivery-banner.component';
-import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { ButtonModule } from '@shared/button/button.module';
+import { BannerModule } from '@shared/banner/banner.module';
+import { BuyBannerModule } from './components/banners';
 
+const chatBannerModules = [BuyBannerModule];
 @NgModule({
-  imports: [CommonModule, SvgIconModule, ButtonModule],
+  imports: [CommonModule, BannerModule, ...chatBannerModules],
   exports: [DeliveryBannerComponent],
   declarations: [DeliveryBannerComponent],
 })

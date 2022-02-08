@@ -251,15 +251,15 @@ describe('ItemService', () => {
     describe('no purchases', () => {
       it('should call endpoint', () => {
         let response: ItemsData;
-        const INIT = 10;
-        const expectedUrlParams = `init=${INIT}&expired=true`;
-        const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
+        const paginationHash = 'paginationHash';
+        const expectedUrlParams = `since=${paginationHash}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
         const expectedUrl2 = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`;
 
-        service.mine(10, 'published').subscribe((r) => (response = r));
+        service.mine(paginationHash, 'published').subscribe((r) => (response = r));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush(ITEMS_DATA_V3, {
-          headers: { 'x-nextpage': `init=${INIT + 10}` },
+          headers: { 'x-nextpage': `since=${paginationHash}` },
         });
         const req2: TestRequest = httpMock.expectOne(expectedUrl2);
         req2.flush([]);
@@ -283,22 +283,21 @@ describe('ItemService', () => {
           urls_by_size: ITEMS_DATA_V3[0].content.image,
         });
         expect(item.bumpExpiringDate).toBeUndefined();
-        expect(response.init).toBe(INIT + 10);
       });
     });
 
     describe('with purchases', () => {
       it('should get purchases', () => {
         let response: ItemsData;
-        const INIT = 10;
-        const expectedUrlParams = `init=${INIT}&expired=true`;
-        const expectedUrl = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
+        const paginationHash = 'paginationHash';
+        const expectedUrlParams = `since=${paginationHash}`;
+        const expectedUrl = `${environment.baseUrl}${ITEMS_API_URL}/mine/published?${expectedUrlParams}`;
         const expectedUrl2 = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`;
 
-        service.mine(10, 'published').subscribe((r) => (response = r));
+        service.mine(paginationHash, 'published').subscribe((r) => (response = r));
         const req: TestRequest = httpMock.expectOne(expectedUrl);
         req.flush(ITEMS_DATA_V3, {
-          headers: { 'x-nextpage': `init=${INIT + 10}` },
+          headers: { 'x-nextpage': `since=${paginationHash}` },
         });
         const req2: TestRequest = httpMock.expectOne(expectedUrl2);
         req2.flush(PURCHASES);
@@ -308,47 +307,6 @@ describe('ItemService', () => {
         expect(response.data[2].bumpExpiringDate).toBe(1509874085135);
         expect(response.data[2].flags.bumped).toBeTruthy();
       });
-    });
-  });
-
-  describe('myFavorites', () => {
-    it('should get user favorites', () => {
-      let response: ItemsData;
-      const INIT = 0;
-      const expectedUrlParams = `init=${INIT}&expired=undefined`;
-      const expectedUrl = `${environment.baseUrl}${USERS_API_URL}/me/items/favorites?${expectedUrlParams}`;
-      const expectedUrl2 = `${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`;
-
-      service.myFavorites(0).subscribe((r) => (response = r));
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(ITEMS_DATA_v3_FAVORITES, {
-        headers: { 'x-nextpage': `init=${INIT + 10}` },
-      });
-      const req2: TestRequest = httpMock.expectOne(expectedUrl2);
-      req2.flush([]);
-
-      expect(req.request.urlWithParams).toEqual(expectedUrl);
-      expect(req.request.method).toBe('GET');
-      expect(req2.request.url).toEqual(expectedUrl2);
-      expect(req2.request.method).toEqual('GET');
-
-      expect(response.data.length).toBe(2);
-      const item = response.data[0];
-      expect(item.id).toBe(ITEMS_DATA_v3_FAVORITES[0].id);
-      expect(item.favorited).toBe(true);
-      expect(item.title).toBe(ITEMS_DATA_v3_FAVORITES[0].content.title);
-      expect(item.description).toBe(ITEMS_DATA_v3_FAVORITES[0].content.description);
-      expect(item.salePrice).toBe(ITEMS_DATA_v3_FAVORITES[0].content.price);
-      expect(item.currencyCode).toBe(ITEMS_DATA_v3_FAVORITES[0].content.currency);
-      expect(item.flags).toEqual(ITEMS_DATA_v3_FAVORITES[0].content.flags);
-      expect(item.mainImage).toEqual({
-        id: '1',
-        original_width: ITEMS_DATA_v3_FAVORITES[0].content.image.original_width,
-        original_height: ITEMS_DATA_v3_FAVORITES[0].content.image.original_height,
-        average_hex_color: '',
-        urls_by_size: ITEMS_DATA_v3_FAVORITES[0].content.image,
-      });
-      expect(response.init).toBe(10);
     });
   });
 

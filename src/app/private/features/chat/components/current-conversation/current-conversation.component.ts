@@ -42,8 +42,9 @@ import { CHAT_AD_SLOTS } from '../../core/ads/chat-ad.config';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
 import { TranslateButtonCopies } from '@core/components/translate-button/interfaces';
-import { DeliveryConversationContextService } from '@private/features/chat/services/delivery-conversation-context/delivery-conversation-context.service';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
+import { DeliveryConversationContextService } from '../../modules/delivery-conversation-context/services/delivery-conversation-context/delivery-conversation-context.service';
+import { DELIVERY_BANNER_ACTION } from '../../modules/delivery-banner/enums/delivery-banner-action.enum';
 
 @Component({
   selector: 'tsl-current-conversation',
@@ -143,7 +144,11 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.openMaliciousConversationModal();
       this.isConversationChanged = true;
       this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
-      this.deliveryConversationContextService.update();
+
+      this.deliveryConversationContextService.reset();
+      if (this.currentConversation) {
+        this.deliveryConversationContextService.update(this.currentConversation);
+      }
     }
   }
 
@@ -270,6 +275,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
           conversation.isAutomaticallyTranslatable = true;
         });
     }
+  }
+
+  public handleDeliveryBannerCTAClick(deliveryBannerActionType: DELIVERY_BANNER_ACTION): void {
+    this.deliveryConversationContextService.handleClickCTA(this.currentConversation, deliveryBannerActionType);
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {

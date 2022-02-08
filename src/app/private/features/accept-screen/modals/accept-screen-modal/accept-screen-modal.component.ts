@@ -9,7 +9,8 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
 import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
-import { AcceptScreenProperties } from '../../interfaces';
+import { tap } from 'rxjs/operators';
+import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
 
 @Component({
@@ -22,11 +23,14 @@ export class AcceptScreenModalComponent implements OnInit {
 
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties>;
+  public initializeAcceptScreenProperties$: Observable<AcceptScreenProperties>;
   public acceptScreenCountries$: Observable<CountryOptionsAndDefault>;
+
+  public selectedDropOffPosition: number;
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
-  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
   public ACCEPT_SCREEN_HELP_URL: string;
+  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
 
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS;
@@ -41,10 +45,14 @@ export class AcceptScreenModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.ACCEPT_SCREEN_HELP_URL = this.getHelpURL();
-    this.acceptScreenStoreService.initialize(this.requestId);
-    this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$;
+    this.initializeAcceptScreenProperties$ = this.acceptScreenStoreService.initialize$(this.requestId);
+    this.initializeAcceptScreenProperties();
     this.acceptScreenCountries$ = this.deliveryCountries.getCountriesAsOptionsAndDefault();
     this.refreshStepProperties(this.stepper.activeId);
+  }
+
+  public notifySelectedDropOffModeByUserChanged(newSelectedDropOffPosition: number): void {
+    this.acceptScreenStoreService.notifySelectedDropOffModeByUser(newSelectedDropOffPosition);
   }
 
   public goToDeliveryAddress(): void {
@@ -74,5 +82,16 @@ export class AcceptScreenModalComponent implements OnInit {
 
   private getHelpURL(): string {
     return this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
+  }
+
+  private initializeAcceptScreenProperties(): void {
+    this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$.pipe(
+      tap((acceptScreenProperties: AcceptScreenProperties) => {
+        const carrierSelectedPosition: number = acceptScreenProperties?.carriers?.findIndex(
+          (carrier: AcceptScreenCarrier) => carrier.isSelected
+        );
+        this.selectedDropOffPosition = carrierSelectedPosition;
+      })
+    );
   }
 }
