@@ -1597,7 +1597,7 @@
     "web_bump_suggestion_modal_button": "Destaca desde {$INTERPOLATION}",
     "web_bump_suggestion_modal_no_price_button": "Destaca",
     "web_bump_suggestion_modal_share": "Compártelo con tus amigos:",
-    "web_change_select_subscription_card_title": "Selecciona una tarjeta de crédito",
+    "web_change_select_subscription_card_title": "Selecciona una tarjeta de cr��dito",
     "web_change_add_subscription_card_title": "Añade una tarjeta de crédito",
     "web_change_subscription_card_subtitle": "Será el método de pago vinculado a tu suscripción",
     "web_use_a_saved_card": "Utilizar una tarjeta guardada",
