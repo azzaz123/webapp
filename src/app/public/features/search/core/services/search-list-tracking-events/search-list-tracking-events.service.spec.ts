@@ -8,6 +8,7 @@ import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { MOCK_ITEM_INDEX } from '@public/features/item-detail/core/services/item-detail-track-events/track-events.fixtures.spec';
 import {
   MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH,
+  MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH_NO_SELLER_ID,
   MOCK_FAVOURITE_ITEM_EVENT_FROM_SEARCH,
   MOCK_SEARCH_ID,
   MOCK_UNFAVOURITE_ITEM_EVENT_FROM_SEARCH,
@@ -38,15 +39,47 @@ describe('SearchListTrackingEventsService', () => {
   });
 
   describe('when user clicks on the item card', () => {
-    it('should send track click item card event', fakeAsync(() => {
-      spyOn(service, 'trackClickItemCardEvent').and.callThrough();
-      spyOn(analyticsService, 'trackEvent');
+    describe('and has ownerId', () => {
+      it('should send track click item card event', fakeAsync(() => {
+        spyOn(service, 'trackClickItemCardEvent').and.callThrough();
+        spyOn(analyticsService, 'trackEvent');
 
-      service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
-      tick();
+        service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
+        tick();
 
-      expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH);
-    }));
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH);
+      }));
+      it('should call user service', fakeAsync(() => {
+        spyOn(userService, 'get').and.callThrough();
+
+        service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
+        tick();
+
+        expect(userService.get).toBeCalledTimes(1);
+        expect(userService.get).toHaveBeenCalledWith(MOCK_ITEM_CARD.ownerId);
+      }));
+    });
+    describe('and has not ownerId', () => {
+      let mockItem = { ...MOCK_ITEM_CARD, ownerId: null };
+      beforeEach(() => {});
+      it('should send track click item card event', fakeAsync(() => {
+        spyOn(service, 'trackClickItemCardEvent').and.callThrough();
+        spyOn(analyticsService, 'trackEvent');
+
+        service.trackClickItemCardEvent(mockItem, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
+        tick();
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH_NO_SELLER_ID);
+      }));
+      it('should not call user service', fakeAsync(() => {
+        spyOn(userService, 'get').and.callThrough();
+
+        service.trackClickItemCardEvent(mockItem, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
+        tick();
+
+        expect(userService.get).not.toHaveBeenCalled();
+      }));
+    });
   });
 
   describe('when user triggers on favourite button', () => {

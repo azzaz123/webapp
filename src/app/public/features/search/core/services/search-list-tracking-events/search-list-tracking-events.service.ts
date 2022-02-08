@@ -19,7 +19,14 @@ export class SearchListTrackingEventsService {
   constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
   public async trackClickItemCardEvent(itemCard: ItemCard, index: number, searchId: string): Promise<void> {
-    const { featured, type } = await this.userService.get(itemCard.ownerId).toPromise();
+    let isFeatured: boolean = null;
+    let isCarDealer: boolean = null;
+
+    if (itemCard?.ownerId) {
+      const user = await this.userService.get(itemCard.ownerId).toPromise();
+      isFeatured = user.featured;
+      isCarDealer = user.type === USER_TYPE.PROFESSIONAL;
+    }
 
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
@@ -30,8 +37,8 @@ export class SearchListTrackingEventsService {
         position: index + 1,
         searchId: searchId,
         screenId: SCREEN_IDS.Search,
-        isPro: featured,
-        isCarDealer: type === USER_TYPE.PROFESSIONAL,
+        isPro: isFeatured,
+        isCarDealer: isCarDealer,
         salePrice: itemCard.salePrice,
         title: itemCard.title,
         itemDistance: itemCard.distance,
