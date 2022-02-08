@@ -6,7 +6,7 @@ import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums
 import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { StepperComponent } from '@shared/stepper/stepper.component';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { tap } from 'rxjs/operators';
@@ -35,6 +35,7 @@ export class AcceptScreenModalComponent implements OnInit {
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
+  private readonly deliveryAddressUpdateSubscription: Subscription = new Subscription();
 
   constructor(
     private acceptScreenStoreService: AcceptScreenStoreService,
@@ -71,7 +72,8 @@ export class AcceptScreenModalComponent implements OnInit {
     this.stepper.goSpecificStep(slideId);
     this.refreshStepProperties(slideId);
     if (this.isAcceptScreenStep) {
-      this.acceptScreenStoreService.update(this.requestId);
+      this.deliveryAddressUpdateSubscription.unsubscribe();
+      this.deliveryAddressUpdateSubscription.add(this.acceptScreenStoreService.update(this.requestId).subscribe());
     }
   }
 

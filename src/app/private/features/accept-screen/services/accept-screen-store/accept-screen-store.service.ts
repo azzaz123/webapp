@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenService } from '../accept-screen/accept-screen.service';
 
@@ -15,17 +15,13 @@ export class AcceptScreenStoreService {
   constructor(private acceptScreenService: AcceptScreenService) {}
 
   public initialize$(requestId: string): Observable<AcceptScreenProperties> {
-    return this.acceptScreenService.getAcceptScreenProperties(requestId).pipe(
-      take(1),
-      tap((acceptScreenProperties: AcceptScreenProperties) => {
-        this.properties = acceptScreenProperties;
-      })
-    );
+    return this.requestProperties(requestId);
   }
 
-  public update(requestId: string): void {
-    // TODO: Add logic inside pipe when applies		Date: 2022/01/31
-    this.requestProperties(requestId).pipe().subscribe();
+  public update(requestId: string): Observable<AcceptScreenProperties> {
+    return this.selectedDropOffModeByUser$.pipe(
+      switchMap((selectedDropOffModeByUser: CARRIER_DROP_OFF_MODE) => this.requestProperties(requestId, selectedDropOffModeByUser))
+    );
   }
 
   public notifySelectedDropOffModeByUser(selectedDropOffPosition: number): void {
@@ -56,7 +52,10 @@ export class AcceptScreenStoreService {
     this.propertiesSubject.next(value);
   }
 
-  private requestProperties(requestId: string): Observable<AcceptScreenProperties> {
+  private requestProperties(
+    requestId: string,
+    selectedDropOffModeByUser: CARRIER_DROP_OFF_MODE = null
+  ): Observable<AcceptScreenProperties> {
     return this.acceptScreenService.getAcceptScreenProperties(requestId).pipe(
       take(1),
       tap((acceptScreenProperties: AcceptScreenProperties) => {
