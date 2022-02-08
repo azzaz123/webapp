@@ -6,8 +6,6 @@ import { of } from 'rxjs';
 import { SellerRequestsHttpService } from './http/seller-requests-http.service';
 
 import { SellerRequestsApiService } from './seller-requests-api.service';
-import { MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO } from '@api/fixtures/delivery/seller/requests/seller-request-accept-post-office-drop-off-dto.fixtures.spec';
-import { SellerRequestAcceptPostOfficeDropOffDto } from './dtos/seller-request-accept-post-office-drop-off-dto.interface';
 
 describe('SellerRequestsApiService', () => {
   let service: SellerRequestsApiService;
@@ -28,7 +26,10 @@ describe('SellerRequestsApiService', () => {
               return of();
             },
             acceptRequestPostOfficeDropOff() {
-              return of(MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO);
+              return of();
+            },
+            acceptRequestHomePickup() {
+              return of();
             },
           },
         },
@@ -77,14 +78,10 @@ describe('SellerRequestsApiService', () => {
   });
 
   describe('when asking to accept a request with post office drop off mode', () => {
-    let response: SellerRequestAcceptPostOfficeDropOffDto;
-
     beforeEach(fakeAsync(() => {
       spyOn(sellerRequestsHttpService, 'acceptRequestPostOfficeDropOff').and.callThrough();
 
-      service
-        .acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID)
-        .subscribe((data: SellerRequestAcceptPostOfficeDropOffDto) => (response = data));
+      service.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe();
       tick();
     }));
 
@@ -92,9 +89,19 @@ describe('SellerRequestsApiService', () => {
       expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
       expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
+  });
 
-    it('should return the request response', () => {
-      expect(response).toStrictEqual(MOCK_SELLER_REQUEST_ACCEPT_POST_OFFICE_DROP_OFF_DTO);
+  describe('when asking to accept a request with home pickup mode', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(sellerRequestsHttpService, 'acceptRequestHomePickup').and.callThrough();
+
+      service.acceptRequestHomePickup(MOCK_REQUEST_ID).subscribe();
+      tick();
+    }));
+
+    it('should ask server to accept the request with post office drop off mode', () => {
+      expect(sellerRequestsHttpService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
+      expect(sellerRequestsHttpService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });
 });

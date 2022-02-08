@@ -29,4 +29,9 @@ export class SellerRequestsApiService {
     // TODO: Manejo de errores		Date: 2022/02/07
     return this.sellerRequestsHttpService.acceptRequestPostOfficeDropOff(requestId);
   }
+
+  public acceptRequestHomePickup(requestId: string): Observable<unknown> {
+    // TODO: Manejo de errores		Date: 2022/02/07
+    return this.sellerRequestsHttpService.acceptRequestHomePickup(requestId);
+  }
 }
