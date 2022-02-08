@@ -51,6 +51,6 @@ export class InboxConversationComponent {
   }
 
   public isDeliveryThirdVoice(messageType: MessageType): boolean {
-    return messageType === MessageType.DELIVERY_GENERIC;
+    return messageType === MessageType.DELIVERY || messageType === MessageType.DELIVERY_GENERIC;
   }
 }

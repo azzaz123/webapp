@@ -410,6 +410,18 @@ export const MOCK_INBOX_TRANSLATED_MESSAGES: InboxMessage[] = MOCK_INBOX_MESSAGE
   }
 );
 
+export const MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE: InboxMessage = new InboxMessage(
+  '5d0614b7-d9af-4bc4-ae8c-d984f60f1695',
+  '0j2y2ro33nzy',
+  'Payment complete! Time for the seller to make the shipment.',
+  undefined,
+  undefined,
+  new Date(),
+  MessageStatus.RECEIVED,
+  MessageType.DELIVERY,
+  { text: 'Payment complete! Time for the seller to make the shipment.', type: 'delivery' }
+);
+
 export const MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE: InboxMessage = new InboxMessage(
   '5d0614b7-d9af-4bc4-ae8c-d984f60f1695',
   '0j2y2ro33nzy',

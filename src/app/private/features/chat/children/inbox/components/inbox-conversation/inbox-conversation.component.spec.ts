@@ -9,6 +9,7 @@ import {
   CREATE_MOCK_INBOX_CONVERSATION,
   MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES,
   MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE,
 } from '@fixtures/chat';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -129,13 +130,27 @@ describe('Component: Conversation', () => {
   });
 
   describe('when the last message is a third voice', () => {
-    beforeEach(() => {
-      MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES.lastMessage = MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE;
-      component.conversation = MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES;
-      fixture.detectChanges();
+    describe('and when it is a delivery generic third voice type', () => {
+      beforeEach(() => {
+        MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES.lastMessage = MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE;
+        component.conversation = MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES;
+        fixture.detectChanges();
+      });
+
+      it('should display the third voice', () => {
+        const deliveryThirdVoice: DebugElement = fixture.debugElement.query(By.directive(ThirdVoiceDeliveryComponent));
+
+        expect(deliveryThirdVoice).toBeTruthy();
+      });
     });
 
-    describe('and when it is a delivery generic third voice type', () => {
+    describe('and when it is a delivery realtime third voice type', () => {
+      beforeEach(() => {
+        MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES.lastMessage = MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE;
+        component.conversation = MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES;
+        fixture.detectChanges();
+      });
+
       it('should display the third voice', () => {
         const deliveryThirdVoice: DebugElement = fixture.debugElement.query(By.directive(ThirdVoiceDeliveryComponent));
 
