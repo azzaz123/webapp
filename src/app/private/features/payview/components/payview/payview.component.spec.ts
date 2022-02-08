@@ -16,7 +16,7 @@ import { PaymentsPaymentMethodsModule } from '@api/payments/payment-methods/paym
 import { PaymentsUserPaymentPreferencesModule } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.module';
 import { PaymentsWalletsModule } from '@api/payments/wallets/payments-wallets.module';
 import { PayviewComponent } from '@private/features/payview/components/payview/payview.component';
-import { PayviewOverviewComponent } from '@private/features/payview/components/overview/payview-overview.component';
+import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
 
@@ -88,7 +88,7 @@ describe('PayviewComponent', () => {
 
     it('should open the payview overview component', () => {
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(PayviewOverviewComponent);
+      expect(modalService.open).toHaveBeenCalledWith(PayviewModalComponent);
     });
 
     it('should set the item id passed as parameter', () => {

@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { PayviewOverviewComponent } from '@private/features/payview/components/overview/payview-overview.component';
+import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
 import { PRIVATE_PATH_PARAMS } from '@private/private-routing-constants';
 
@@ -29,7 +29,7 @@ export class PayviewComponent implements OnInit {
   }
 
   private openModal(): void {
-    this.modalService.open(PayviewOverviewComponent).result.then(
+    this.modalService.open(PayviewModalComponent).result.then(
       () => {},
       () => {}
     );

@@ -6,7 +6,9 @@ import { DeliveryCostsDto } from '@api/bff/delivery/costs/dtos';
 
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryCostsHttpService {
   constructor(private http: HttpClient) {}
 

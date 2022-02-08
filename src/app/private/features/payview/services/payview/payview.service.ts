@@ -3,10 +3,7 @@ import { Injectable } from '@angular/core';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { BuyerRequestsItemsDetails } from '@api/core/model/delivery/buyer-request/buyer-requests-items-details.interface';
 import { CreditCard } from '@api/core/model';
-import {
-  DeliveryAddressApi,
-  DeliveryCountryISOCode,
-} from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
+import { DeliveryAddress } from '@api/core/model/delivery/address/delivery-address.interface';
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
 import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
 import { DeliveryBuyerCalculatorService } from '@api/delivery/buyer/calculator/delivery-buyer-calculator.service';
@@ -16,6 +13,7 @@ import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.int
 import { DeliveryCostsService } from '@api/bff/delivery/costs/delivery-costs.service';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
+import { mapToDeliveryAddress } from '@private/features/payview/services/payview/payview.mappers';
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
@@ -23,48 +21,10 @@ import { PaymentsPaymentMethodsService } from '@api/payments/payment-methods/pay
 import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesService } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
-import { PayviewCountryIsoCode } from '@private/features/payview/enums/payview-country-iso-code.enum';
-import { PayviewDeliveryAddress } from '@private/features/payview/interfaces/payview-delivery-address.interface';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
-import { ToDomainMapper } from '@api/core/utils/types';
 
-import { concatMap, map, mergeMap, take } from 'rxjs/operators';
+import { catchError, concatMap, map, mergeMap, take } from 'rxjs/operators';
 import { forkJoin, Observable, ObservableInput, of } from 'rxjs';
-
-const countries: Record<DeliveryCountryISOCode, PayviewCountryIsoCode> = {
-  ES: PayviewCountryIsoCode.ES,
-  IT: PayviewCountryIsoCode.IT,
-};
-
-const mapToPayviewDeliveryAddress: ToDomainMapper<DeliveryAddressApi, PayviewDeliveryAddress> = (input: DeliveryAddressApi) => {
-  const {
-    city,
-    country_iso_code: country,
-    full_name: fullName,
-    flat_and_floor: flatAndFloor,
-    id,
-    phone_number: phoneNumber,
-    postal_code: postalCode,
-    region,
-    street,
-  } = input;
-
-  return {
-    city,
-    countryIsoCode: mapToCountryIsoCode(country),
-    flatAndFloor,
-    fullName,
-    id,
-    phoneNumber,
-    postalCode,
-    region,
-    street,
-  };
-};
-
-const mapToCountryIsoCode: ToDomainMapper<DeliveryCountryISOCode, PayviewCountryIsoCode> = (input: DeliveryCountryISOCode) => {
-  return countries[input];
-};
 
 @Injectable({ providedIn: 'root' })
 export class PayviewService {
@@ -90,7 +50,7 @@ export class PayviewService {
       .pipe(
         mergeMap(
           ([address, card, deliveryCosts, deliveryMethods, item, itemDetails, paymentMethods, paymentPreferences, wallet]: [
-            PayviewDeliveryAddress,
+            DeliveryAddress,
             CreditCard,
             DeliveryCosts,
             DeliveryBuyerDeliveryMethods,
@@ -130,8 +90,11 @@ export class PayviewService {
       );
   }
 
-  private get address(): Observable<PayviewDeliveryAddress> {
-    return this.addressService.get(false).pipe(map(mapToPayviewDeliveryAddress));
+  private get address(): Observable<DeliveryAddress> {
+    return this.addressService.get(false).pipe(
+      map(mapToDeliveryAddress),
+      catchError(() => of(null))
+    );
   }
 
   private get card(): Observable<CreditCard> {
@@ -170,7 +133,7 @@ export class PayviewService {
 
   private getState(
     costs: DeliveryBuyerCalculatorCosts,
-    address: PayviewDeliveryAddress,
+    address: DeliveryAddress,
     card: CreditCard,
     deliveryCosts: DeliveryCosts,
     deliveryMethods: DeliveryBuyerDeliveryMethods,

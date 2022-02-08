@@ -9,7 +9,9 @@ import { Money } from '@api/core/model/money.interface';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryBuyerCalculatorService {
   constructor(private deliveryBuyerCalculatorService: DeliveryBuyerCalculatorHttpService) {}
 

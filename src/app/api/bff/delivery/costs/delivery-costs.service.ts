@@ -7,7 +7,9 @@ import { mapDeliveryCostsDtoToDeliveryCosts } from '@api/bff/delivery/costs/mapp
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryCostsService {
   constructor(private deliveryCostsHttpService: DeliveryCostsHttpService) {}
 
