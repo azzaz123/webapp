@@ -26,7 +26,9 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 import { catchError, concatMap, map, mergeMap, take } from 'rxjs/operators';
 import { forkJoin, Observable, ObservableInput, of } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class PayviewService {
   private itemHash: string;
 
@@ -161,7 +163,17 @@ export class PayviewService {
     });
   }
 
-  private get stateSources(): ObservableInput<unknown>[] {
+  private get stateSources(): [
+    ObservableInput<DeliveryAddress>,
+    ObservableInput<CreditCard>,
+    ObservableInput<DeliveryCosts>,
+    ObservableInput<DeliveryBuyerDeliveryMethods>,
+    ObservableInput<Item>,
+    ObservableInput<BuyerRequestsItemsDetails>,
+    ObservableInput<PaymentsPaymentMethods>,
+    ObservableInput<PaymentsUserPaymentPreferences>,
+    ObservableInput<Money>
+  ] {
     return [
       this.address,
       this.card,
