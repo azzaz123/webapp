@@ -8,6 +8,15 @@ import { mappedNotificationsSettings } from '@api/fixtures/notifications/notific
 import { NotificationsApiService } from '@api/notifications/notifications-api.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { FormsModule } from '@angular/forms';
+import {
+  AnalyticsPageView,
+  ViewNotificationSettings,
+  ANALYTICS_EVENT_NAMES,
+  SCREEN_IDS,
+  AnalyticsEvent,
+  ANALYTIC_EVENT_TYPES,
+  UpdateNotificationSetting,
+} from '@core/analytics/analytics-constants';
 
 describe('NotificationsComponent', () => {
   let component: NotificationsComponent;
@@ -66,9 +75,16 @@ describe('NotificationsComponent', () => {
       fixture.detectChanges();
     }));
 
+    const event: AnalyticsPageView<ViewNotificationSettings> = {
+      name: ANALYTICS_EVENT_NAMES.ViewNotificationSettings,
+      attributes: {
+        screenId: SCREEN_IDS.NotificationSettings,
+      },
+    };
+
     it('should call getMyNotificationsSettings when component init and track page view', fakeAsync(() => {
       expect(component.getMyNotificationsSettings).toHaveBeenCalled();
-      expect(analyticsService.trackPageView).toHaveBeenCalled();
+      expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
     }));
 
     it('and should render list of notifications settings', fakeAsync(() => {
@@ -87,10 +103,20 @@ describe('NotificationsComponent', () => {
       fixture.detectChanges();
     }));
 
+    const event: AnalyticsEvent<UpdateNotificationSetting> = {
+      name: ANALYTICS_EVENT_NAMES.UpdateNotificationSetting,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        screenId: SCREEN_IDS.NotificationSettings,
+        consent: false,
+        notificationId: mappedNotificationsSettings[0].notifications[0].id,
+      },
+    };
+
     it('it should disable a enabled notification when clicked and track new event', () => {
       expect(component.handleChange).toHaveBeenCalled();
       expect(notificationsApiService.setNotificationDisabled).toHaveBeenCalled();
-      expect(analyticsService.trackEvent).toHaveBeenCalled();
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
     });
   });
 
@@ -104,10 +130,20 @@ describe('NotificationsComponent', () => {
       fixture.detectChanges();
     });
 
+    const event: AnalyticsEvent<UpdateNotificationSetting> = {
+      name: ANALYTICS_EVENT_NAMES.UpdateNotificationSetting,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        screenId: SCREEN_IDS.NotificationSettings,
+        consent: true,
+        notificationId: mappedNotificationsSettings[0].notifications[0].id,
+      },
+    };
+
     it('it should enable a disabled notification when clicked and track new event', () => {
       expect(component.handleChange).toHaveBeenCalled();
       expect(notificationsApiService.setNotificationEnable).toHaveBeenCalled();
-      expect(analyticsService.trackEvent).toHaveBeenCalled();
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
     });
   });
 });
