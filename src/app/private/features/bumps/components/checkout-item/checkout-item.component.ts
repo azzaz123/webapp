@@ -17,13 +17,13 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
   @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
-  selectedType: Product;
-  _selectedDuration: Duration;
-  availableTypes: Product[];
-  availableDurations: Duration[];
-  isFreeOptionSelected: boolean;
-  isFreeOptionAvailable: boolean;
+  public selectedType: Product;
+  public availableTypes: Product[];
+  public availableDurations: Duration[];
+  public isFreeOptionSelected: boolean;
+  public isFreeOptionAvailable: boolean;
   public readonly BUMP_TYPES = BUMP_TYPE;
+  private _selectedDuration: Duration;
   private active = true;
 
   constructor(private cartService: CartService) {}
