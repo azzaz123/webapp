@@ -1,6 +1,5 @@
+import { DELIVERY_BANNER_TYPE } from '../enums/delivery-banner-type.enum';
+
 export interface DeliveryBanner {
-  svgPath: string;
-  description: {
-    text: string;
-  };
+  type: DELIVERY_BANNER_TYPE;
 }
