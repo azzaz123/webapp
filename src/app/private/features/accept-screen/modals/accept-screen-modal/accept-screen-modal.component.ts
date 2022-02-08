@@ -7,7 +7,7 @@ import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
-import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
+import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { tap } from 'rxjs/operators';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
@@ -19,7 +19,7 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
   styleUrls: ['./accept-screen-modal.component.scss'],
 })
 export class AcceptScreenModalComponent implements OnInit {
-  @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
+  @ViewChild(StepperComponent) stepper: StepperComponent;
 
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties>;
@@ -32,8 +32,8 @@ export class AcceptScreenModalComponent implements OnInit {
   public ACCEPT_SCREEN_HELP_URL: string;
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
 
-  private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN;
-  private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS;
+  private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
+  private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
 
   constructor(
@@ -48,7 +48,7 @@ export class AcceptScreenModalComponent implements OnInit {
     this.initializeAcceptScreenProperties$ = this.acceptScreenStoreService.initialize$(this.requestId);
     this.initializeAcceptScreenProperties();
     this.acceptScreenCountries$ = this.deliveryCountries.getCountriesAsOptionsAndDefault();
-    this.refreshStepProperties(this.stepper.activeId);
+    this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
   }
 
   public notifySelectedDropOffModeByUserChanged(newSelectedDropOffPosition: number): void {
@@ -67,7 +67,7 @@ export class AcceptScreenModalComponent implements OnInit {
     this.activeModal.close();
   }
 
-  private goSpecificStep(slideId: ACCEPT_SCREEN_ID_STEPS): void {
+  private goSpecificStep(slideId: ACCEPT_SCREEN_STEPS): void {
     this.stepper.goSpecificStep(slideId);
     this.refreshStepProperties(slideId);
     if (this.isAcceptScreenStep) {

@@ -12,7 +12,7 @@ import { ProductCardComponent } from '../../components/product-card/product-card
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
-import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
+import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
@@ -124,7 +124,7 @@ describe('AcceptScreenModalComponent', () => {
 
     describe('and we are on the accept screen step', () => {
       beforeEach(() => {
-        component.stepper.activeId = ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN;
+        component.stepper.activeId = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
       });
 
       describe('the header...', () => {
@@ -137,7 +137,7 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         it('should show the accept screen translated title', () => {
-          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN]);
+          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN]);
         });
 
         it('should show help button', () => {
@@ -228,7 +228,7 @@ describe('AcceptScreenModalComponent', () => {
           });
 
           it('should redirect to address screen step', () => {
-            expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS);
+            expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS);
           });
 
           it('should NOT update the accept screen properties', () => {
@@ -387,7 +387,7 @@ describe('AcceptScreenModalComponent', () => {
 
             fixture.debugElement
               .query(By.directive(DeliveryRadioSelectorComponent))
-              .triggerEventHandler('selectedIdChanged', newCarrierSelectedPosition);
+              .triggerEventHandler('changed', newCarrierSelectedPosition);
           });
 
           it('should notify the new carrier selected position ', () => {
@@ -416,7 +416,7 @@ describe('AcceptScreenModalComponent', () => {
 
     describe('and we are on the address screen step', () => {
       beforeEach(() => {
-        component.stepper.activeId = ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS;
+        component.stepper.activeId = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
         fixture.detectChanges();
       });
 
@@ -426,7 +426,7 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         it('should show the address screen translated title', () => {
-          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS]);
+          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS]);
         });
 
         it('should NOT show help button', () => {
@@ -507,7 +507,7 @@ describe('AcceptScreenModalComponent', () => {
 
     describe('and we are on the map step', () => {
       beforeEach(() => {
-        component.stepper.activeId = ACCEPT_SCREEN_ID_STEPS.MAP;
+        component.stepper.activeId = ACCEPT_SCREEN_STEPS.MAP;
         fixture.detectChanges();
       });
 
@@ -517,7 +517,7 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         it('should show the map translated title', () => {
-          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_ID_STEPS.MAP]);
+          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.MAP]);
         });
 
         it('should NOT show help button', () => {
@@ -561,7 +561,7 @@ describe('AcceptScreenModalComponent', () => {
 
     describe('and we are on the preference schedule step', () => {
       beforeEach(() => {
-        component.stepper.activeId = ACCEPT_SCREEN_ID_STEPS.SCHEDULE;
+        component.stepper.activeId = ACCEPT_SCREEN_STEPS.SCHEDULE;
         fixture.detectChanges();
       });
 
@@ -571,7 +571,7 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         it('should show the preference schedule translated title', () => {
-          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_ID_STEPS.SCHEDULE]);
+          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.SCHEDULE]);
         });
 
         it('should NOT show help button', () => {
@@ -683,7 +683,7 @@ describe('AcceptScreenModalComponent', () => {
   }
 
   function shouldAcceptScreenActiveStep(): void {
-    expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_ID_STEPS.ACCEPT_SCREEN);
+    expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
     expect(component.isAcceptScreenStep).toBeTruthy();
   }
 

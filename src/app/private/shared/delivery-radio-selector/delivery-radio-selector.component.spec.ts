@@ -20,7 +20,7 @@ describe('DeliveryRadioSelectorComponent', () => {
   const selectedOptionPosition: number = 3;
   const newSelectedOptionPosition: number = 0;
   const newSelectedOptionPosition2: number = 1;
-  const inputRadioSelector: string = '#inputRadio';
+  const inputRadioSelector: string = 'input';
 
   let component: DeliveryRadioSelectorComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
@@ -34,7 +34,7 @@ describe('DeliveryRadioSelectorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestWrapperComponent);
     component = fixture.debugElement.children[0].componentInstance;
-    spyOn(component.selectedIdChanged, 'emit');
+    spyOn(component.changed, 'emit');
   });
 
   it('should create', () => {
@@ -75,8 +75,8 @@ describe('DeliveryRadioSelectorComponent', () => {
         });
 
         it('should emit the new selected id', () => {
-          expect(component.selectedIdChanged.emit).toHaveBeenCalledWith(newSelectedOptionPosition);
-          expect(component.selectedIdChanged.emit).toHaveBeenCalledTimes(1);
+          expect(component.changed.emit).toHaveBeenCalledWith(newSelectedOptionPosition);
+          expect(component.changed.emit).toHaveBeenCalledTimes(1);
         });
       });
     });
@@ -103,8 +103,8 @@ describe('DeliveryRadioSelectorComponent', () => {
         });
 
         it('should emit the new selected id', () => {
-          expect(component.selectedIdChanged.emit).toHaveBeenCalledWith(newSelectedOptionPosition2);
-          expect(component.selectedIdChanged.emit).toHaveBeenCalledTimes(1);
+          expect(component.changed.emit).toHaveBeenCalledWith(newSelectedOptionPosition2);
+          expect(component.changed.emit).toHaveBeenCalledTimes(1);
         });
       });
     });

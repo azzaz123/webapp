@@ -19,7 +19,7 @@ import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_FREE_AND_ONE_EURO_COST } from '@
 import { DeliveryAddressApiService } from '@private/features/delivery/services/api/delivery-address-api/delivery-address-api.service';
 import { MOCK_DELIVERY_ADDRESS } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { ACCEPT_SCREEN_DELIVERY_ADDRESS, ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
-import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
+import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 
 describe('AcceptScreenService', () => {
   const MOCK_REQUEST_ID = 'dfsd34dss12';
@@ -118,9 +118,7 @@ describe('AcceptScreenService', () => {
       });
 
       it('should define the EDIT address translation', () => {
-        expect(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS]).toStrictEqual(
-          ACCEPT_SCREEN_DELIVERY_ADDRESS.EDIT
-        );
+        expect(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS]).toStrictEqual(ACCEPT_SCREEN_DELIVERY_ADDRESS.EDIT);
       });
 
       it('should return the properties mapped', () => {
@@ -143,9 +141,7 @@ describe('AcceptScreenService', () => {
       });
 
       it('should define the ADD address translation', () => {
-        expect(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS]).toStrictEqual(
-          ACCEPT_SCREEN_DELIVERY_ADDRESS.ADD
-        );
+        expect(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS]).toStrictEqual(ACCEPT_SCREEN_DELIVERY_ADDRESS.ADD);
       });
 
       it('should return the properties mapped', () => {

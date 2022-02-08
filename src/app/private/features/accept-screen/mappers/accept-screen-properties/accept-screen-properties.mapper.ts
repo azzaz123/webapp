@@ -20,7 +20,7 @@ import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 import { Money } from '@api/core/model/money.interface';
-import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
+import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import {
   AcceptScreenDropOffPointButtonTranslations,
@@ -140,8 +140,8 @@ function mapButtonProperties(
   isScheduleEditable: boolean,
   isPostOfficeEditable: boolean
 ): AcceptScreenCarrierButtonProperties {
-  const redirectStep: ACCEPT_SCREEN_ID_STEPS =
-    type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP ? ACCEPT_SCREEN_ID_STEPS.SCHEDULE : ACCEPT_SCREEN_ID_STEPS.MAP;
+  const redirectStep: ACCEPT_SCREEN_STEPS =
+    type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP ? ACCEPT_SCREEN_STEPS.SCHEDULE : ACCEPT_SCREEN_STEPS.MAP;
   const isShowed: boolean = type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP ? isScheduleEditable : isPostOfficeEditable;
 
   return {

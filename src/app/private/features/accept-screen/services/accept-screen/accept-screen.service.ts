@@ -18,7 +18,7 @@ import { DeliveryAddressApiService } from '@private/features/delivery/services/a
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { User } from '@core/user/user';
 import { ACCEPT_SCREEN_DELIVERY_ADDRESS, ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
-import { ACCEPT_SCREEN_ID_STEPS } from '../../constants/accept-screen-id-steps';
+import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { CarrierDropOffModeRequest } from '@api/core/model/delivery/carrier-drop-off-mode';
 
@@ -92,7 +92,7 @@ export class AcceptScreenService {
       catchError(() => of(null)),
       tap((address: DeliveryAddressApi) => {
         const addressTitleTranslation = address ? ACCEPT_SCREEN_DELIVERY_ADDRESS.EDIT : ACCEPT_SCREEN_DELIVERY_ADDRESS.ADD;
-        ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_ID_STEPS.DELIVERY_ADDRESS] = addressTitleTranslation;
+        ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS] = addressTitleTranslation;
       })
     );
   }

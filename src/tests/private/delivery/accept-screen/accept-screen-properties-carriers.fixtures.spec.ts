@@ -10,7 +10,7 @@ import {
   AcceptScreenDropOffPointButtonTranslations,
   AcceptScreenDropOffPointTitle,
 } from '@private/features/accept-screen/constants/accept-screen-translations';
-import { ACCEPT_SCREEN_ID_STEPS } from '@private/features/accept-screen/constants/accept-screen-id-steps';
+import { ACCEPT_SCREEN_STEPS } from '@private/features/accept-screen/constants/accept-screen-steps';
 
 const freeCostTranslation: string = $localize`:@@accept_view_seller_delivery_method_selector_free_text:FREE`;
 const MOCK_PICK_UP_START_DATE: string = MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.schedule.pickUpStartDate.toLocaleTimeString(
@@ -41,7 +41,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS: AcceptScreenCarrier[] = [
     buttonProperties: {
       isShowed: false,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_FREE_COST.type],
-      redirectStep: ACCEPT_SCREEN_ID_STEPS.MAP,
+      redirectStep: ACCEPT_SCREEN_STEPS.MAP,
     },
     acceptEndpoint: MOCK_CARRIER_FREE_COST.acceptEndpoint,
   },
@@ -57,7 +57,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS: AcceptScreenCarrier[] = [
     buttonProperties: {
       isShowed: false,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_ONE_EURO_COST.type],
-      redirectStep: ACCEPT_SCREEN_ID_STEPS.SCHEDULE,
+      redirectStep: ACCEPT_SCREEN_STEPS.SCHEDULE,
     },
     acceptEndpoint: MOCK_CARRIER_ONE_EURO_COST.acceptEndpoint,
   },
@@ -81,7 +81,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED: AcceptScr
     buttonProperties: {
       isShowed: false,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_FREE_COST.type],
-      redirectStep: ACCEPT_SCREEN_ID_STEPS.MAP,
+      redirectStep: ACCEPT_SCREEN_STEPS.MAP,
     },
     acceptEndpoint: MOCK_CARRIER_FREE_COST.acceptEndpoint,
   },
@@ -97,7 +97,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED: AcceptScr
     buttonProperties: {
       isShowed: true,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.type],
-      redirectStep: ACCEPT_SCREEN_ID_STEPS.SCHEDULE,
+      redirectStep: ACCEPT_SCREEN_STEPS.SCHEDULE,
     },
     acceptEndpoint: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.acceptEndpoint,
   },
@@ -116,7 +116,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS: AcceptScreenC
     buttonProperties: {
       isShowed: true,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.type],
-      redirectStep: ACCEPT_SCREEN_ID_STEPS.SCHEDULE,
+      redirectStep: ACCEPT_SCREEN_STEPS.SCHEDULE,
     },
     acceptEndpoint: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.acceptEndpoint,
   },
@@ -132,7 +132,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS: AcceptScreenC
     buttonProperties: {
       isShowed: true,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS.type],
-      redirectStep: ACCEPT_SCREEN_ID_STEPS.MAP,
+      redirectStep: ACCEPT_SCREEN_STEPS.MAP,
     },
     acceptEndpoint: MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS.acceptEndpoint,
   },
@@ -151,7 +151,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_CARRIER_OFFICE: AcceptScreen
     buttonProperties: {
       isShowed: false,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_PO_WITH_LAST_ADDRESS_CARRIER_OFFICE.type],
-      redirectStep: ACCEPT_SCREEN_ID_STEPS.MAP,
+      redirectStep: ACCEPT_SCREEN_STEPS.MAP,
     },
     acceptEndpoint: MOCK_CARRIER_PO_WITH_LAST_ADDRESS_CARRIER_OFFICE.acceptEndpoint,
   },
@@ -167,7 +167,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_CARRIER_OFFICE: AcceptScreen
     buttonProperties: {
       isShowed: true,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.type],
-      redirectStep: ACCEPT_SCREEN_ID_STEPS.SCHEDULE,
+      redirectStep: ACCEPT_SCREEN_STEPS.SCHEDULE,
     },
     acceptEndpoint: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.acceptEndpoint,
   },
