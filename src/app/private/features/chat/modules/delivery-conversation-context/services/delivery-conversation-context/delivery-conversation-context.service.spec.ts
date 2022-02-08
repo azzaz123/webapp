@@ -23,8 +23,14 @@ describe('DeliveryConversationContextService', () => {
       providers: [
         DeliveryConversationContextService,
         { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
-        { provide: DeliveryConversationContextAsBuyerService, useValue: { getBannerPropertiesAsBuyer: () => of(null) } },
-        { provide: DeliveryConversationContextAsSellerService, useValue: { getBannerPropertiesAsSeller: () => of(null) } },
+        {
+          provide: DeliveryConversationContextAsBuyerService,
+          useValue: { getBannerPropertiesAsBuyer: () => of(null), handleThirdVoiceCTAClick: () => {} },
+        },
+        {
+          provide: DeliveryConversationContextAsSellerService,
+          useValue: { getBannerPropertiesAsSeller: () => of(null), handleThirdVoiceCTAClick: () => {} },
+        },
         { provide: NgbModal, useValue: { open: () => {} } },
       ],
     });
@@ -163,14 +169,26 @@ describe('DeliveryConversationContextService', () => {
   });
 
   describe('when handling third voice CTA click', () => {
-    beforeEach(() => {
-      spyOn(modalService, 'open');
-      service.handleThirdVoiceCTAClick(MOCK_INBOX_CONVERSATION_BASIC);
+    describe('and when the current user is the seller', () => {
+      beforeEach(() => {
+        spyOn(deliveryConversationContextAsSellerService, 'handleThirdVoiceCTAClick');
+        service.handleThirdVoiceCTAClick(MOCK_INBOX_CONVERSATION_AS_SELLER);
+      });
+
+      it('should delegate click handling to seller context', () => {
+        expect(deliveryConversationContextAsSellerService.handleThirdVoiceCTAClick).toHaveBeenCalledTimes(1);
+      });
     });
 
-    it('should open awareness modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
-      expect(modalService.open).toHaveBeenCalledTimes(1);
+    describe('and when the current user is the buyer', () => {
+      beforeEach(() => {
+        spyOn(deliveryConversationContextAsBuyerService, 'handleThirdVoiceCTAClick');
+        service.handleThirdVoiceCTAClick(MOCK_INBOX_CONVERSATION_AS_BUYER);
+      });
+
+      it('should delegate click handling to seller context', () => {
+        expect(deliveryConversationContextAsBuyerService.handleThirdVoiceCTAClick).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

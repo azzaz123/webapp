@@ -24,7 +24,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
   describe('when handling CTA button', () => {
     beforeEach(() => {
       spyOn(modalService, 'open');
-      service.handleThirdVoiceCTAClick(MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES);
+      service.handleThirdVoiceCTAClick();
     });
 
     it('should open TRX awareness modal', () => {

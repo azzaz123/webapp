@@ -68,18 +68,29 @@ export class DeliveryConversationContextService {
   }
 
   public handleThirdVoiceCTAClick(conversation: InboxConversation): void {
-    this.openAwarenessModal();
+    const isCurrentUserTheSeller: boolean = this.isCurrentUserTheSeller(conversation);
+
+    isCurrentUserTheSeller
+      ? this.deliveryConversationContextAsSellerService.handleThirdVoiceCTAClick()
+      : this.deliveryConversationContextAsBuyerService.handleThirdVoiceCTAClick();
   }
 
   private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     const { item } = conversation;
-    const { id: itemHash, isMine } = item;
-    return isMine
+    const { id: itemHash } = item;
+    const isCurrentUserTheSeller: boolean = this.isCurrentUserTheSeller(conversation);
+    return isCurrentUserTheSeller
       ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(itemHash)
       : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(itemHash);
   }
 
   private openAwarenessModal(): void {
     this.modalService.open(TRXAwarenessModalComponent);
+  }
+
+  private isCurrentUserTheSeller(conversation: InboxConversation): boolean {
+    const { item } = conversation;
+    const { isMine } = item;
+    return isMine;
   }
 }

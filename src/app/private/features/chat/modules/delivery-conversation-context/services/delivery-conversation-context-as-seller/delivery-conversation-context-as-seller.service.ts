@@ -14,7 +14,7 @@ export class DeliveryConversationContextAsSellerService {
     return of(null);
   }
 
-  public handleThirdVoiceCTAClick(conversation: InboxConversation): void {
+  public handleThirdVoiceCTAClick(): void {
     this.modalService.open(TRXAwarenessModalComponent);
   }
 }
