@@ -9,6 +9,9 @@ import {
 } from './endpoints';
 
 import { SellerRequestsHttpService } from './seller-requests-http.service';
+import { MOCK_LOCATION_ACCURACY } from '@api/fixtures/delivery/seller/requests/seller-request-location.fixtures.spec';
+import { APP_VERSION } from '@environments/version';
+import { ACCEPT_LOCATION_HEADERS } from './seller-requests-location-headers.enum';
 
 describe('SellerRequestsHttpService', () => {
   const MOCK_SELLER_REQUEST_ID: string = '23203821337';
@@ -64,13 +67,17 @@ describe('SellerRequestsHttpService', () => {
     it('should call to the corresponding accept request endpoint', () => {
       const expectedUrl: string = SELLER_REQUESTS_ACCEPT_POST_OFFICE_DROP_OFF_ENDPOINT_WITH_REQUEST_ID(MOCK_SELLER_REQUEST_ID);
 
-      service.acceptRequestPostOfficeDropOff(MOCK_SELLER_REQUEST_ID).subscribe();
+      service.acceptRequestPostOfficeDropOff(MOCK_SELLER_REQUEST_ID, MOCK_LOCATION_ACCURACY).subscribe();
       const acceptRequest: TestRequest = httpMock.expectOne(expectedUrl);
       acceptRequest.flush({});
 
       expect(acceptRequest.request.url).toEqual(expectedUrl);
       expect(acceptRequest.request.method).toBe('POST');
       expect(acceptRequest.request.body).toBe(null);
+      expect(acceptRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
+      expect(acceptRequest.request.headers.get(ACCEPT_LOCATION_HEADERS.ACCURACY)).toEqual(MOCK_LOCATION_ACCURACY.accuracy.toString());
+      expect(acceptRequest.request.headers.get(ACCEPT_LOCATION_HEADERS.LATITUDE)).toEqual(MOCK_LOCATION_ACCURACY.latitude.toString());
+      expect(acceptRequest.request.headers.get(ACCEPT_LOCATION_HEADERS.LONGITUDE)).toEqual(MOCK_LOCATION_ACCURACY.longitude.toString());
     });
   });
 

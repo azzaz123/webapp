@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { SellerRequestsHttpService } from './http/seller-requests-http.service';
 
 import { SellerRequestsApiService } from './seller-requests-api.service';
+import { MOCK_LOCATION_ACCURACY } from '@api/fixtures/delivery/seller/requests/seller-request-location.fixtures.spec';
 
 describe('SellerRequestsApiService', () => {
   let service: SellerRequestsApiService;
@@ -81,13 +82,13 @@ describe('SellerRequestsApiService', () => {
     beforeEach(fakeAsync(() => {
       spyOn(sellerRequestsHttpService, 'acceptRequestPostOfficeDropOff').and.callThrough();
 
-      service.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe();
+      service.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID, MOCK_LOCATION_ACCURACY).subscribe();
       tick();
     }));
 
     it('should ask server to accept the request with post office drop off mode', () => {
       expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
-      expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID, MOCK_LOCATION_ACCURACY);
     });
   });
 
