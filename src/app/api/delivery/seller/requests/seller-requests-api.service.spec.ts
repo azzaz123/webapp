@@ -10,7 +10,7 @@ import { SellerRequestsApiService } from './seller-requests-api.service';
 describe('SellerRequestsApiService', () => {
   let service: SellerRequestsApiService;
   let sellerRequestsHttpService: SellerRequestsHttpService;
-  const MOCK_REQUEST_ID = '392183AK28923';
+  const MOCK_REQUEST_ID: string = '392183AK28923';
 
   beforeEach(() => {
     TestBed.configureTestingModule({

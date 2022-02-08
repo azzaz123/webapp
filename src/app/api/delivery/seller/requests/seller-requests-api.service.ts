@@ -21,17 +21,14 @@ export class SellerRequestsApiService {
   }
 
   public cancelRequest(requestId: string): Observable<void> {
-    // TODO: Manejo de errores		Date: 2022/02/07
     return this.sellerRequestsHttpService.cancelRequest(requestId);
   }
 
-  public acceptRequestPostOfficeDropOff(requestId: string): Observable<unknown> {
-    // TODO: Manejo de errores		Date: 2022/02/07
+  public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {
     return this.sellerRequestsHttpService.acceptRequestPostOfficeDropOff(requestId);
   }
 
-  public acceptRequestHomePickup(requestId: string): Observable<unknown> {
-    // TODO: Manejo de errores		Date: 2022/02/07
+  public acceptRequestHomePickup(requestId: string): Observable<void> {
     return this.sellerRequestsHttpService.acceptRequestHomePickup(requestId);
   }
 }
