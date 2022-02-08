@@ -119,6 +119,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       if (this.currentConversation.isAutomaticallyTranslatable) {
         this.translateConversation();
       }
+
+      this.checkIfDeliveryContextNeedsUpdateOnNewMessage(message);
     });
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED, (conversation: InboxConversation) => {
@@ -144,11 +146,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.openMaliciousConversationModal();
       this.isConversationChanged = true;
       this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
-
-      this.deliveryConversationContextService.reset();
-      if (this.currentConversation) {
-        this.deliveryConversationContextService.update(this.currentConversation);
-      }
+      this.refreshDeliveryContext();
     }
   }
 
@@ -230,8 +228,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
 
-  public isThirdVoiceDeliveryGeneric(messageType: MessageType): boolean {
-    return messageType === MessageType.DELIVERY_GENERIC;
+  public isDeliveryThirdVoice(messageType: MessageType): boolean {
+    return messageType === MessageType.DELIVERY || messageType === MessageType.DELIVERY_GENERIC;
   }
 
   public scrollToLastMessage(): void {
@@ -289,6 +287,15 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.deliveryConversationContextService.handleThirdVoiceCTAClick(this.currentConversation);
   }
 
+  private checkIfDeliveryContextNeedsUpdateOnNewMessage(newMessage: InboxMessage): void {
+    const isRealTimeDeliveryThirdVoice: boolean = newMessage.type === MessageType.DELIVERY;
+    const isMessageInCurrentConversation: boolean = !!this.currentConversation.messages.find((m) => m.id === newMessage.id);
+    const shouldRefreshDeliveryContext = isRealTimeDeliveryThirdVoice && isMessageInCurrentConversation;
+    if (shouldRefreshDeliveryContext) {
+      this.refreshDeliveryContext();
+    }
+  }
+
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
     if (!this.currentConversation) {
       return;
@@ -332,6 +339,13 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   private handleUserConfirmsMaliciousModal(): void {
     this.inboxConversationService.currentConversation = null;
     this.trackClickMaliciousModalCTAButton();
+  }
+
+  private refreshDeliveryContext(): void {
+    this.deliveryConversationContextService.reset();
+    if (this.currentConversation) {
+      this.deliveryConversationContextService.update(this.currentConversation);
+    }
   }
 
   private trackClickMaliciousModalCTAButton(): void {

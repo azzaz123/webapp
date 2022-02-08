@@ -24,6 +24,7 @@ import {
   MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES,
   MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE_WITHOUT_PAYLOAD,
   MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE,
 } from '@fixtures/chat';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
@@ -312,6 +313,31 @@ describe('CurrentConversationComponent', () => {
             MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES
           );
         });
+      });
+    });
+
+    describe('when new third voice is received in realtime for current conversation', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(deliveryConversationContextService, 'reset');
+        spyOn(deliveryConversationContextService, 'update');
+
+        MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES.messages.push(MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE);
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES;
+        eventService.emit(EventService.MESSAGE_ADDED, MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE);
+        tick();
+      }));
+
+      afterEach(() => {
+        MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES.messages.pop();
+      });
+
+      it('should ask for delivery conversation context to reset information', () => {
+        expect(deliveryConversationContextService.reset).toHaveBeenCalledTimes(1);
+      });
+
+      it('should ask for delivery convesration context for current conversation', () => {
+        expect(deliveryConversationContextService.update).toHaveBeenCalledTimes(1);
+        expect(deliveryConversationContextService.update).toHaveBeenCalledWith(MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES);
       });
     });
   });
