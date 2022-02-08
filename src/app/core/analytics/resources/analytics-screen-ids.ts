@@ -148,4 +148,5 @@ export enum SCREEN_IDS {
   BumpItemPurchaseType = 318,
   ProBumpItemPurchaseOption = 319,
   NotificationSettings = 320,
+  LoginRegisterMessage = 321,
 }

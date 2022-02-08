@@ -43,8 +43,8 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { fromEvent, merge, Observable, Subject } from 'rxjs';
+import { debounceTime, map, pairwise, take, tap } from 'rxjs/operators';
 import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
@@ -122,8 +122,8 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public lastSuggestedCategoryText: string;
   public isProUser: boolean;
 
-  public isShippabilityAllowed = false;
-  public isShippabilityAllowedByCategory = false;
+  public isShippabilityAllowed = true;
+  public isShippabilityAllowedByCategory = true;
   public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
   public readonly PERMISSIONS = PERMISSIONS;
@@ -190,7 +190,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
     this.detectTitleKeyboardChanges();
 
-    this.updateShippingToggleStatus(this.isShippabilityAllowed);
+    this.updateShippingToggleStatus(this.isShippabilityAllowed, false);
     this.isProUser = this.userService.isProUser();
   }
 
@@ -646,15 +646,22 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     this.uploadForm
       .get('sale_conditions')
       .get('supports_shipping')
-      .valueChanges.subscribe((supportsShipping) => {
+      .valueChanges.pipe(pairwise())
+      .subscribe(([prev, curr]: [boolean, boolean]) => {
         const deliveryInfo = this.uploadForm.get('delivery_info');
-        if (supportsShipping) {
-          deliveryInfo.setValidators([Validators.required]);
-        } else {
-          deliveryInfo.setValidators([]);
-          deliveryInfo.setValue(null);
+        if (prev !== curr) {
+          if (curr) {
+            this.setRequiredDeliveryInfo(true);
+          } else {
+            this.setRequiredDeliveryInfo(false);
+            deliveryInfo.setValue(null);
+          }
         }
       });
+  }
+
+  private setRequiredDeliveryInfo(required: boolean) {
+    this.uploadForm.get('delivery_info').setValidators(required ? [Validators.required] : []);
   }
 
   private handleUploadFormExtraFields(): void {
@@ -917,22 +924,30 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 
-  private updateShippingToggleStatus(previousIsShippabilityAllowed: boolean): void {
-    const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
-    const subcategoryId = this.getSubcategoryId();
-    const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
-
-    this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
+  private updateShippingToggleStatus(previousIsShippabilityAllowed: boolean, performRestartIfNecessary: boolean = true): void {
+    this.getShippabilittyAllowance().subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
       this.isShippabilityAllowed = shippingToggleAllowance.category && shippingToggleAllowance.subcategory && shippingToggleAllowance.price;
       this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
       this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
 
-      if (!this.isShippabilityAllowed) {
-        this.restartShippingToggleFormData(false);
-      } else if (!previousIsShippabilityAllowed) {
-        this.restartShippingToggleFormData(true);
+      this.setRequiredDeliveryInfo(this.isShippabilityAllowed);
+
+      if (performRestartIfNecessary) {
+        if (!this.isShippabilityAllowed) {
+          this.restartShippingToggleFormData(false);
+        } else if (!previousIsShippabilityAllowed) {
+          this.restartShippingToggleFormData(true);
+        }
       }
     });
+  }
+
+  private getShippabilittyAllowance(): Observable<ShippingToggleAllowance> {
+    const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
+    const subcategoryId = this.getSubcategoryId();
+    const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
+
+    return this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).pipe(take(1));
   }
 
   private getSubcategoryId(): string {
@@ -948,24 +963,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectShippabilityAllowanceChanges(): void {
-    this.uploadForm.get('category_id').valueChanges.subscribe(() => {
-      this.updateShippingToggleStatus(this.isShippabilityAllowed);
-    });
-    this.uploadForm
-      .get('extra_info')
-      .get('object_type')
-      .get('id')
-      .valueChanges.subscribe(() => {
-        this.updateShippingToggleStatus(this.isShippabilityAllowed);
-      });
-    this.uploadForm
-      .get('extra_info')
-      .get('object_type_2')
-      .get('id')
-      .valueChanges.subscribe(() => {
-        this.updateShippingToggleStatus(this.isShippabilityAllowed);
-      });
-    this.uploadForm.get('sale_price').valueChanges.subscribe((price) => {
+    merge(
+      this.uploadForm.get('category_id').valueChanges,
+      this.uploadForm.get('extra_info').get('object_type').get('id').valueChanges,
+      this.uploadForm.get('extra_info').get('object_type_2').get('id').valueChanges,
+      this.uploadForm.get('sale_price').valueChanges
+    ).subscribe(() => {
       this.updateShippingToggleStatus(this.isShippabilityAllowed);
     });
   }

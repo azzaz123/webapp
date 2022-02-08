@@ -48,7 +48,7 @@ export interface ListItemCG {
   /**
    * Identifier of the screen that the item was uploaded from
    */
-  screenId: 160 | 302 | 303;
+  screenId: 41 | 160 | 302 | 316 | 303;
   /**
    * Hashtags
    */

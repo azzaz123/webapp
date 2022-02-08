@@ -60,7 +60,7 @@ export interface EditItemCG {
   /**
    * Change in the shipping toggle
    */
-  shippingAllowedChange: -1 | 0 | 1;
+  shippingAllowedChange?: -1 | 0 | 1;
   /**
    * If the item has the weight informed
    */

@@ -16,7 +16,7 @@ export interface ClickInformWeight {
   /**
    * Identifier of the screen that the button was clicked from
    */
-  screenId: 302;
+  screenId: 302 | 316;
   /**
    * Identifier of the user that the item belongs to
    */
