@@ -7,6 +7,6 @@
     type="radio"
     [value]="i"
     [checked]="selectedId === i"
-    (change)="selectedIdChanged.emit(i)"
+    (change)="changed.emit(i)"
   />
 </div>

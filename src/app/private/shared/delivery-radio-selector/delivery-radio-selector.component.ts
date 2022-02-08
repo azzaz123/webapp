@@ -1,13 +1,4 @@
-import {
-  AfterContentInit,
-  ChangeDetectionStrategy,
-  Component,
-  ContentChildren,
-  EventEmitter,
-  Input,
-  Output,
-  QueryList,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChildren, EventEmitter, Input, Output, QueryList } from '@angular/core';
 import { DeliveryRadioOptionDirective } from '@private/shared/delivery-radio-selector/delivery-radio-option.directive';
 
 @Component({
@@ -16,15 +7,10 @@ import { DeliveryRadioOptionDirective } from '@private/shared/delivery-radio-sel
   styleUrls: ['./delivery-radio-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DeliveryRadioSelectorComponent implements AfterContentInit {
+export class DeliveryRadioSelectorComponent {
   @Input() selectedId: number;
-  @Output() selectedIdChanged: EventEmitter<number> = new EventEmitter();
+  @Output() changed: EventEmitter<number> = new EventEmitter();
 
   @ContentChildren(DeliveryRadioOptionDirective)
-  rawOptions: QueryList<DeliveryRadioOptionDirective>;
-  public options: DeliveryRadioOptionDirective[];
-
-  ngAfterContentInit() {
-    this.options = this.rawOptions.toArray();
-  }
+  options: QueryList<DeliveryRadioOptionDirective>;
 }

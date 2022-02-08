@@ -134,7 +134,7 @@ describe('AcceptScreenModalComponent', () => {
 
             fixture.debugElement
               .query(By.directive(DeliveryRadioSelectorComponent))
-              .triggerEventHandler('selectedIdChanged', newCarrierSelectedPosition);
+              .triggerEventHandler('changed', newCarrierSelectedPosition);
           });
 
           it('should notify the new carrier selected position ', () => {
