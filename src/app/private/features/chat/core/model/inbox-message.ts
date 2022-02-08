@@ -5,10 +5,11 @@ export enum MessageType {
   TEXT = 'text',
   /** Projections */
   PRICE_DROP = 'price_drop',
+  DELIVERY_GENERIC = 'delivery_generic',
   /** Real Time Service */
   DROP_PRICE = 'drop_price',
   REVIEW = 'review',
-  DELIVERY_GENERIC = 'delivery_generic',
+  DELIVERY = 'delivery',
 }
 
 export enum MessageStatus {
@@ -25,6 +26,7 @@ export const MESSAGES_WHITE_LIST = [
   MessageType.PRICE_DROP,
   // FIXME: We can't enable the message list and then hide the UI. Chat already has several bugs regarding these third voices
   // and hiding the components gets worse. Until then, this allows us to test delivery features with the flag
+  FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.DELIVERY : null,
   FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.DELIVERY_GENERIC : null,
 ];
 
