@@ -230,7 +230,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onSubmit(): void {
-    console.log('onSubmit', this.uploadForm);
     if (this.uploadForm.valid) {
       this.loading = true;
       this.proFeaturesComponent?.trackSubmit();
