@@ -58,6 +58,8 @@ import { SortByService } from '../components/sort-filter/services/sort-by.servic
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
+import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -190,6 +192,10 @@ describe('SearchComponent', () => {
         {
           provide: SearchTrackingEventsService,
           useClass: MockSearchTrackingEventsService,
+        },
+        {
+          provide: ExperimentationService,
+          useValue: ExperimentationServiceMock,
         },
         {
           provide: SITE_URL,
@@ -676,6 +682,30 @@ describe('SearchComponent', () => {
 
       it('should set searchId reset status', () => {
         expect(component['resetSearchId']).toBeTruthy();
+      });
+    });
+  });
+
+  describe('when a search with keyword is performed', () => {
+    const keyword = 'keyword';
+
+    beforeAll(() => {
+      component.setResetSearchId(false);
+      parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keyword }]);
+    });
+
+    describe('and the keyword is different', () => {
+      it('searchId should be reset', () => {
+        expect(component['resetSearchId']).toBeTruthy();
+      });
+    });
+
+    describe('and the keyword is the same', () => {
+      it('searchId should NOT be reset', () => {
+        component.setResetSearchId(false);
+        parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keyword }]);
+
+        expect(component['resetSearchId']).toBeFalsy();
       });
     });
   });

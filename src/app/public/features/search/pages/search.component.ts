@@ -14,7 +14,7 @@ import { ClickedItemCard } from '@public/shared/components/item-card-list/interf
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { delay, distinctUntilChanged, filter, skip, map, tap } from 'rxjs/operators';
+import { delay, distinctUntilChanged, filter, skip, map, tap, pairwise } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import { AD_SHOPPING_PUBLIC_SEARCH, AdShoppingPageOptionPublicSearchFactory } from '../core/ads/shopping/search-ads-shopping.config';
 import { SearchAdsService } from './../core/ads/search-ads.service';
@@ -38,6 +38,8 @@ import { SearchService } from '../core/services/search.service';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
+import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
+import { OPTIMIZELY_FLAG_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-flag-keys';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -108,7 +110,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   @debounce(500)
   onWindowScroll() {
     if (this.componentAttached) {
-      this.resetSearchId = true;
+      this.setResetSearchId(true);
     }
   }
 
@@ -124,6 +126,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     private queryStringService: SearchQueryStringService,
     private searchListTrackingEventsService: SearchListTrackingEventsService,
     private searchTrackingEventsService: SearchTrackingEventsService,
+    private experimentationService: ExperimentationService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStore: FilterParameterStoreService
   ) {
     this.device = this.deviceService.getDeviceType();
@@ -133,16 +136,21 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
         if (searchResponseExtraData.searchId) {
           if (this.resetSearchId) {
             this.searchId = searchResponseExtraData.searchId;
-            this.resetSearchId = false;
+            this.setResetSearchId(false);
           }
           this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
         } else {
-          this.resetSearchId = true;
+          this.setResetSearchId(true);
         }
 
         this.handleSearchResponseExtraData(searchResponseExtraData);
       })
     );
+
+    this.experimentationService.initExperimentContext();
+    this.experimentationService.getVariations({
+      flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest],
+    });
   }
 
   public ngOnInit(): void {
@@ -171,12 +179,14 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           this.sortBySubject.next(sortBy);
         })
     );
+
+    this.manageKeywordChange();
   }
 
   public onAttach(): void {
     this.searchAdsService.refreshSlots();
     this.componentAttached = true;
-    this.resetSearchId = true;
+    this.setResetSearchId(true);
   }
 
   public onDetach(): void {
@@ -194,7 +204,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       this.searchService.loadMore();
     }
 
-    this.resetSearchId = true;
+    this.setResetSearchId(true);
   }
 
   public trackClickItemCardEvent(clickedItemCard: ClickedItemCard): void {
@@ -212,6 +222,24 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public handleFilterOpened(opened: boolean) {
     this.filterOpened = opened;
+  }
+
+  public setResetSearchId(value: boolean): void {
+    this.resetSearchId = value;
+  }
+
+  private manageKeywordChange(): void {
+    this.subscription.add(
+      this.filterParameterStore.parameters$.pipe(pairwise()).subscribe(([prev, curr]: [FilterParameter[], FilterParameter[]]) => {
+        const getKeywordValue = (filters: FilterParameter[]): string => {
+          return filters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.keywords)?.value;
+        };
+
+        if (getKeywordValue(prev) !== getKeywordValue(curr)) {
+          this.setResetSearchId(true);
+        }
+      })
+    );
   }
 
   private handleSearchResponseExtraData(searchResponseExtraData: SearchResponseExtraData): void {

@@ -45,7 +45,7 @@
         [cardType]="listCardType$ | async"
         [slotsConfig]="slotsConfig"
         [showNativeAdSlots]="searchWithKeyword$ | async"
-        (clickedItemAndIndex)="trackClickItemCardEvent($event)"
+        (clickedItemAndIndex)="trackClickItemCardEvent($event); setResetSearchId(true);"
         (toggleFavouriteEvent)="trackFavouriteToggleEvent($event)"
       >
         <ng-container inlineAdSlot *ngxPermissionsOnly="PERMISSIONS.showAds">
