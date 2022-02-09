@@ -17,6 +17,25 @@
         placeholder="New price"
       />
     </form>
+
+    <span
+      *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.MAX"
+      class="EditItemSalePriceModal__newPriceError"
+      i18n="@@chat_seller_price_edit_pop_up_price_out_of_range_inline_error"
+      >Products greater than {{ MAX_ITEM_PRICE }} can't be shipped</span
+    >
+    <span
+      *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.MIN"
+      class="EditItemSalePriceModal__newPriceError"
+      i18n="@@chat_seller_price_edit_pop_up_min_price_not_reached_inline_error"
+      >Products lesser than {{ MIN_ITEM_PRICE }} can't be shipped</span
+    >
+    <span
+      *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.DEFAULT"
+      class="EditItemSalePriceModal__newPriceError"
+      i18n="@@chat_seller_price_edit_pop_up_generic_inline_error"
+      >Error</span
+    >
   </div>
 
   <div class="EditItemSalePriceModal__submitButton w-100">

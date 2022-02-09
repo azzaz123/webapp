@@ -1,6 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
+enum EDIT_ITEM_SALE_PRICE_ERROR {
+  DEFAULT,
+  MIN,
+  MAX,
+}
 @Component({
   selector: 'tsl-edit-item-sale-price-modal',
   templateUrl: './edit-item-sale-price-modal.component.html',
@@ -10,12 +15,13 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 export class EditItemSalePriceModalComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
+  public readonly MIN_ITEM_PRICE: number = 1;
+  public readonly MAX_ITEM_PRICE: number = 1000;
+  public readonly EDIT_ITEM_SALE_PRICE_ERROR = EDIT_ITEM_SALE_PRICE_ERROR;
   public newItemSalePriceForm: FormGroup;
   public isInvalidInput: boolean = false;
   public isButtonDisabled: boolean = true;
-
-  private readonly MIN_ITEM_PRICE: number = 1;
-  private readonly MAX_ITEM_PRICE: number = 1000;
+  public inputError: EDIT_ITEM_SALE_PRICE_ERROR | null;
 
   ngOnInit(): void {
     this.buildForm();
@@ -23,7 +29,11 @@ export class EditItemSalePriceModalComponent implements OnInit {
   }
 
   private attachListeners(): void {
-    this.newPriceFormControl.valueChanges.subscribe(() => this.updateButtonDisabledStyles());
+    this.newPriceFormControl.valueChanges.subscribe(() => {
+      this.inputError = null;
+      this.isInvalidInput = false;
+      this.checkDisabledButton();
+    });
   }
 
   private buildForm(): void {
@@ -33,18 +43,34 @@ export class EditItemSalePriceModalComponent implements OnInit {
   }
 
   public handleSubmit(): void {
-    this.updateInputValidationStyles();
+    this.checkInputError();
+    this.checkInvalidInput();
   }
 
   private get newPriceFormControl(): FormControl {
     return this.newItemSalePriceForm.get('newPrice') as FormControl;
   }
 
-  private updateInputValidationStyles(): void {
-    this.isInvalidInput = !!this.newPriceFormControl.errors;
+  private checkInvalidInput(): void {
+    this.isInvalidInput = this.inputError !== null;
   }
 
-  private updateButtonDisabledStyles(): void {
+  private checkDisabledButton(): void {
     this.isButtonDisabled = this.newPriceFormControl.errors?.required;
+  }
+
+  private checkInputError(): void {
+    const isMinValueError: boolean = !!this.newPriceFormControl.errors?.min;
+    const isMaxValueError: boolean = !!this.newPriceFormControl.errors?.max;
+
+    if (isMinValueError) {
+      this.inputError = EDIT_ITEM_SALE_PRICE_ERROR.MIN;
+      return;
+    }
+
+    if (isMaxValueError) {
+      this.inputError = EDIT_ITEM_SALE_PRICE_ERROR.MAX;
+      return;
+    }
   }
 }

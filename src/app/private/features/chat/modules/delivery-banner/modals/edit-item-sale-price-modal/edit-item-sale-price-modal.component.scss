@@ -8,6 +8,21 @@
   }
 
   &__newPrice {
+    @include hide-input-numeric-arrows();
     height: 74px;
+  }
+
+  &__newPriceInput {
+    border: 2px solid $black;
+
+    &--invalid {
+      color: $negative-main;
+      border: 2px solid $negative-main;
+    }
+  }
+
+  &__newPriceInputError {
+    color: $negative-main;
+    font-size: $font-size-s;
   }
 }
