@@ -44,14 +44,18 @@ export class VisibilityApiService {
         const b: ItemsBySubscription[] = [];
         const keys = Object.keys(a);
         for (const key of keys) {
-          b.push({
-            items: a[key],
-            subscription: a[key][0].subscription,
-          });
+          if (key === undefined) {
+            b.push({
+              items: a[key],
+              subscription: null,
+            });
+          } else {
+            b.unshift({
+              items: a[key],
+              subscription: a[key][0].subscription,
+            });
+          }
         }
-
-        console.log('aaaa', a, b);
-
         return b;
       })
     );

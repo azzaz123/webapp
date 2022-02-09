@@ -5,6 +5,8 @@ import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
 import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.component';
 
 @Component({
@@ -14,16 +16,17 @@ import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.compo
 })
 export class CheckoutComponent implements OnInit {
   @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
-  itemsWithProducts: ItemsBySubscription[];
-  provincialBump: boolean;
-  creditInfo: CreditInfo;
+  public itemsWithProducts: ItemsBySubscription[];
+  public creditInfo: CreditInfo;
+  public user: User;
 
   constructor(
     private itemService: ItemService,
     private router: Router,
     private paymentService: PaymentService,
     private route: ActivatedRoute,
-    private visibilityApiService: VisibilityApiService
+    private visibilityApiService: VisibilityApiService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -35,6 +38,7 @@ export class CheckoutComponent implements OnInit {
       }
     });
     this.getCreditInfo();
+    this.user = this.userService.user;
   }
 
   public removeItem(itemId: string): void {

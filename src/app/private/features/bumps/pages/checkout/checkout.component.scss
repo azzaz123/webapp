@@ -38,9 +38,10 @@
     }
   }
 
-  &__price-table {
-    z-index: 4;
-    position: relative;
+  &__items {
+    &:not(:first-child) {
+      margin-top: 32px;
+    }
   }
 
   &__cart {

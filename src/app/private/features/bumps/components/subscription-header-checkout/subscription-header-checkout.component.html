@@ -1,11 +1,16 @@
 <div class="SubscriptionHeaderCheckout d-flex flex-wrap">
-  <span class="SubscriptionHeaderCheckout__title">{{ subscription.type }}</span>
-  <ng-container *ngFor="let bump of subscription.selected_tier.bumps">
-    <span
-      class="SubscriptionHeaderCheckout__counter SubscriptionHeaderCheckout__counter--{{ bump.name }}"
-      [ngClass]="{ 'SubscriptionHeaderCheckout__counter--completed': bump.used === bump.quantity }"
-    >
-      {{ bump.used }}/{{ bump.quantity }} {{ bump.name }} used
-    </span>
+  <ng-container *ngIf="subscription; else noSubscription">
+    <span class="SubscriptionHeaderCheckout__title">{{ subscription.type }}</span>
+    <ng-container *ngFor="let bump of subscription.selected_tier.bumps">
+      <span
+        class="SubscriptionHeaderCheckout__counter SubscriptionHeaderCheckout__counter--{{ bump.name }}"
+        [ngClass]="{ 'SubscriptionHeaderCheckout__counter--completed': bump.used === bump.quantity }"
+      >
+        {{ bump.used }}/{{ bump.quantity }} {{ bump.name }} used
+      </span>
+    </ng-container>
   </ng-container>
+  <ng-template #noSubscription>
+    <span class="SubscriptionHeaderCheckout__title">Productos sin una subscription</span>
+  </ng-template>
 </div>
