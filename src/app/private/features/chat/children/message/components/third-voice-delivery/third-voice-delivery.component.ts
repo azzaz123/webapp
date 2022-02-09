@@ -15,14 +15,14 @@ export class ThirdVoiceDeliveryComponent implements OnChanges {
   public isCTAVisible: boolean = true;
 
   ngOnChanges(): void {
-    this.isCTAVisible = this.shouldDisplayCTA();
+    this.isCTAVisible = this.showCTA;
+  }
+
+  private get showCTA(): boolean {
+    return !!this.message.payload;
   }
 
   public handleClickCTA(): void {
     this.clickedCTA.emit();
-  }
-
-  private shouldDisplayCTA(): boolean {
-    return !!this.message.payload;
   }
 }
