@@ -1,4 +1,4 @@
-<div class="EditItemSalePriceModal">
+<div class="EditItemSalePriceModal w-100 h-100 d-flex flex-column justify-content-between">
   <div class="EditItemSalePriceModal__close d-flex justify-content-end mb-3">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
@@ -18,19 +18,19 @@
 
     <span
       *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.MAX"
-      class="EditItemSalePriceModal__newPriceError"
+      class="EditItemSalePriceModal__newPriceInputError"
       i18n="@@chat_seller_price_edit_pop_up_price_out_of_range_inline_error"
-      >Products over {{ MAX_ITEM_PRICE }} cannot be shipped.</span
+      >Products over {{ MAX_ITEM_PRICE }} cannot be shipped cannot be shipped.</span
     >
     <span
       *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.MIN"
-      class="EditItemSalePriceModal__newPriceError"
+      class="EditItemSalePriceModal__newPriceInputError"
       i18n="@@chat_seller_price_edit_pop_up_min_price_not_reached_inline_error"
       >Products under {{ MIN_ITEM_PRICE }} cannot be shipped.</span
     >
     <span
       *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.DEFAULT"
-      class="EditItemSalePriceModal__newPriceError"
+      class="EditItemSalePriceModal__newPriceInputError"
       i18n="@@chat_seller_price_edit_pop_up_generic_inline_error"
       >Sorry, there was an error updating the price.</span
     >

@@ -463,8 +463,13 @@ $modal-border-radius: 0.3rem;
 
 .modal.modal-small {
   .modal-dialog {
+    width: 100%;
     max-width: 300px;
-    max-height: 280px;
+    min-height: 280px;
+  }
+
+  .modal-content {
+    height: 100%;
   }
 }
 

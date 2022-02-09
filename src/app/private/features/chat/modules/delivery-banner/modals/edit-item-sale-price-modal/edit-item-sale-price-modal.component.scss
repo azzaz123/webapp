@@ -1,5 +1,10 @@
 @import '~style/common';
 
+:host {
+  width: 100%;
+  height: 100%;
+}
+
 .EditItemSalePriceModal {
   padding: $spacing-m;
 
