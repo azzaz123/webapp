@@ -9,7 +9,7 @@ import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-ban
 export class DeliveryConversationContextAsSellerService {
   constructor(private modalService: NgbModal) {}
 
-  // TODO
+  // TODO: Implement method for getting banner properties as seller
   public getBannerPropertiesAsSeller(itemHash: string): Observable<DeliveryBanner | null> {
     return of(null);
   }
