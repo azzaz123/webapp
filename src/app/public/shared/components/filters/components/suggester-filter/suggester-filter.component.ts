@@ -188,7 +188,6 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   }
 
   private getSuggestions(query: string): void {
-    console.log('pepito', this.config.hasOptionsOnInit || query, query);
     if (this.config.hasOptionsOnInit || query) {
       this.optionService
         .getOptions(this.config.id, { text: query || null })
