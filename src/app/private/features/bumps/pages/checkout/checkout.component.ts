@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemsBySubscription, ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { ItemsBySubscription } from '@api/core/model/bumps/item-products.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
@@ -41,8 +41,15 @@ export class CheckoutComponent implements OnInit {
     this.user = this.userService.user;
   }
 
-  public removeItem(itemId: string): void {
-    // this.itemsWithProducts = this.itemsWithProducts.filter((itemWithProducts) => itemWithProducts.item.id !== itemId);
+  public removeItem(itemId: string, productIndex: number): void {
+    this.itemsWithProducts[productIndex].items = this.itemsWithProducts[productIndex].items.filter(
+      (itemWithProducts) => itemWithProducts.item.id !== itemId
+    );
+
+    if (this.itemsWithProducts[productIndex].items.length === 0) {
+      this.itemsWithProducts.splice(productIndex, 1);
+    }
+
     if (this.itemsWithProducts.length === 0) {
       this.router.navigate(['catalog/list']);
     }
