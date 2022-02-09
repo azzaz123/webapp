@@ -37,7 +37,7 @@
     <!-- TODO: Pending red bubble logic in ngIf -->
     <!-- <div class="Sidebar__notification" *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0"></div> -->
     <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_inbox.svg"></tsl-svg-icon>
-    <span class="Sidebar__label ml-2">Inbox</span>
+    <span class="Sidebar__label ml-2"  i18n="@@agnostic_view_nav_bar_inbox_label">Inbox</span>
   </a>
 
   <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
