@@ -33,6 +33,13 @@
     <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_679">Messages</span>
   </a>
 
+  <a class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/inbox']" routerLinkActive="Sidebar__entry--active">
+    <div class="Sidebar__notification" *ngIf="featureFlagService.isExperimentalFeaturesEnabled()"></div>
+     <!--  TODO: Change SVG when ready-->
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_inbox.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2">Inbox</span>
+  </a>
+
   <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
     [routerLink]="['/favorites']" routerLinkActive="Sidebar__entry--active">
     <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_heart.svg"></tsl-svg-icon>
