@@ -15,4 +15,8 @@ describe('InboxService', () => {
     service = TestBed.inject(InboxService);
     httpMock = TestBed.inject(HttpTestingController);
   });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 });
