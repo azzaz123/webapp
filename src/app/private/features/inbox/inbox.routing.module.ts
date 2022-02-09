@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
+import { NotificationsInboxComponent } from './components/notifications/notifications-inbox.component';
 import { InboxComponent } from './pages/Inbox.component';
 
 const routes: Route[] = [
@@ -8,13 +9,16 @@ const routes: Route[] = [
     path: '',
     component: InboxComponent,
     canActivate: [NgxPermissionsGuard],
-    data: {
-      // permissions: {
-      //   only: PERMISSIONS.professional,
-      //   redirectTo: '/catalog/list',
+    children: [
+      // {
+      //   path: 'messages',
+      //   loadChildren: () => null,
       // },
-      // isMyZone: true,
-    },
+      {
+        path: 'notifications',
+        component: NotificationsInboxComponent,
+      },
+    ],
   },
 ];
 
