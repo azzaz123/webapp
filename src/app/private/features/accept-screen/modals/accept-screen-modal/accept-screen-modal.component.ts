@@ -6,11 +6,10 @@ import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums
 import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { StepperComponent } from '@shared/stepper/stepper.component';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
-import { tap } from 'rxjs/operators';
-import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
+import { AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
 
 @Component({
@@ -19,14 +18,13 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
   styleUrls: ['./accept-screen-modal.component.scss'],
 })
 export class AcceptScreenModalComponent implements OnInit {
-  @ViewChild(StepperComponent) stepper: StepperComponent;
+  @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
 
   public requestId: string;
-  public acceptScreenProperties$: Observable<AcceptScreenProperties>;
-  public initializeAcceptScreenProperties$: Observable<AcceptScreenProperties>;
-  public acceptScreenCountries$: Observable<CountryOptionsAndDefault>;
+  public acceptScreenProperties$: Observable<AcceptScreenProperties> = this.acceptScreenStoreService.properties$;
+  public acceptScreenCountries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
+  public selectedCarrierPosition$: Observable<number> = this.acceptScreenStoreService.carrierSelectedIndex$;
 
-  public selectedDropOffPosition: number;
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
   public ACCEPT_SCREEN_HELP_URL: string;
@@ -35,7 +33,6 @@ export class AcceptScreenModalComponent implements OnInit {
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
-  private readonly deliveryAddressUpdateSubscription: Subscription = new Subscription();
 
   constructor(
     private acceptScreenStoreService: AcceptScreenStoreService,
@@ -44,16 +41,14 @@ export class AcceptScreenModalComponent implements OnInit {
     private customerHelpService: CustomerHelpService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.ACCEPT_SCREEN_HELP_URL = this.getHelpURL();
-    this.initializeAcceptScreenProperties$ = this.acceptScreenStoreService.initialize$(this.requestId);
-    this.initializeAcceptScreenProperties();
-    this.acceptScreenCountries$ = this.deliveryCountries.getCountriesAsOptionsAndDefault();
+    this.acceptScreenStoreService.initialize(this.requestId);
     this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
   }
 
-  public notifySelectedDropOffModeByUserChanged(newSelectedDropOffPosition: number): void {
-    this.acceptScreenStoreService.notifySelectedDropOffModeByUser(newSelectedDropOffPosition);
+  public selectNewDropOffMode(carrierIndex: number): void {
+    this.acceptScreenStoreService.selectNewDropOffMode(carrierIndex);
   }
 
   public goToDeliveryAddress(): void {
@@ -72,8 +67,7 @@ export class AcceptScreenModalComponent implements OnInit {
     this.stepper.goSpecificStep(slideId);
     this.refreshStepProperties(slideId);
     if (this.isAcceptScreenStep) {
-      this.deliveryAddressUpdateSubscription.unsubscribe();
-      this.deliveryAddressUpdateSubscription.add(this.acceptScreenStoreService.update(this.requestId).subscribe());
+      this.acceptScreenStoreService.update(this.requestId);
     }
   }
 
@@ -84,16 +78,5 @@ export class AcceptScreenModalComponent implements OnInit {
 
   private getHelpURL(): string {
     return this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
-  }
-
-  private initializeAcceptScreenProperties(): void {
-    this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$.pipe(
-      tap((acceptScreenProperties: AcceptScreenProperties) => {
-        const carrierSelectedPosition: number = acceptScreenProperties?.carriers?.findIndex(
-          (carrier: AcceptScreenCarrier) => carrier.isSelected
-        );
-        this.selectedDropOffPosition = carrierSelectedPosition;
-      })
-    );
   }
 }

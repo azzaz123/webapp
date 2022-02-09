@@ -1,4 +1,4 @@
-<div class="AcceptScreenModal modal-body" *ngIf="initializeAcceptScreenProperties$ | async">
+<div class="AcceptScreenModal modal-body">
   <div class="container">
     <div class="row">
       <div class="col p-0">
@@ -57,8 +57,8 @@
                 <tsl-delivery-radio-selector
                   *ngIf="properties.carriers?.length"
                   class="d-block"
-                  [selectedId]="selectedDropOffPosition"
-                  (changed)="notifySelectedDropOffModeByUserChanged($event)"
+                  [selectedId]="selectedCarrierPosition$ | async"
+                  (changed)="selectNewDropOffMode($event)"
                 >
                   <ng-template tslDeliveryRadioOption *ngFor="let carrier of properties.carriers">
                     <div class="AcceptScreenModal__carrierWrapper d-flex">
