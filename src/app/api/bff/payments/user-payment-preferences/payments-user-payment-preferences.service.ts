@@ -7,7 +7,9 @@ import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/use
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentsUserPaymentPreferencesService {
   constructor(private paymentUserPreferencesHttpService: PaymentsUserPaymentPreferencesHttpService) {}
 

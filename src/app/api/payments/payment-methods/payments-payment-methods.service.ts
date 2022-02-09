@@ -7,7 +7,9 @@ import { PaymentsPaymentMethodsHttpService } from '@api/payments/payment-methods
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentsPaymentMethodsService {
   constructor(private paymentMethodsHttpService: PaymentsPaymentMethodsHttpService) {}
 

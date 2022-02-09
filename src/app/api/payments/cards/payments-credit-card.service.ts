@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
-import { Observable, ReplaySubject } from 'rxjs';
-import { map, tap, catchError } from 'rxjs/operators';
-import { PaymentsCardsErrorResponseApi } from './dtos/errors/payments-cards-error-response-api.interface';
-import { PaymentsCreditCardHttpService } from './http/payments-credit-card-http.service';
-import { PaymentsCardsErrorMapper } from './mappers/errors/payments-cards-error-mapper';
-import { mapPaymentsCreditCardToCreditCard } from './mappers/responses/payments-credit-card.mapper';
+import { mapPaymentsCreditCardToCreditCard } from '@api/payments/cards/mappers/responses/payments-credit-card.mapper';
+import { PaymentsCardsErrorMapper } from '@api/payments/cards/mappers/errors/payments-cards-error-mapper';
+import { PaymentsCardsErrorResponseApi } from '@api/payments/cards/dtos/errors/payments-cards-error-response-api.interface';
+import { PaymentsCreditCardHttpService } from '@api/payments/cards/http/payments-credit-card-http.service';
 
-@Injectable()
+import { map, tap, catchError } from 'rxjs/operators';
+import { Observable, ReplaySubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentsCreditCardService {
   private readonly creditCardSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>(1);
   private errorMapper: PaymentsCardsErrorMapper = new PaymentsCardsErrorMapper();

@@ -7,13 +7,13 @@ import { PayviewStateManagementService } from '@private/features/payview/service
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'tsl-payview-overview',
-  templateUrl: './payview-overview.component.html',
-  styleUrls: ['./payview-overview.component.scss'],
+  selector: 'tsl-payview-modal',
+  templateUrl: './payview-modal.component.html',
+  styleUrls: ['./payview-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PayviewService, PayviewStateManagementService],
 })
-export class PayviewOverviewComponent implements OnInit {
+export class PayviewModalComponent implements OnInit {
   @Input() public itemHash: string;
 
   constructor(private payviewStateManagementService: PayviewStateManagementService) {}

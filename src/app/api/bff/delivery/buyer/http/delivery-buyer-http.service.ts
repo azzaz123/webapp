@@ -7,7 +7,9 @@ import { DeliveryBuyerDeliveryMethodsDto } from '@api/bff/delivery/buyer/dtos';
 
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryBuyerHttpService {
   constructor(private http: HttpClient) {}
 
@@ -18,7 +20,7 @@ export class DeliveryBuyerHttpService {
     });
   }
 
-  private get getHeaders(): { [header: string]: string | string[] } {
+  private get getHeaders(): { [header: string]: string } {
     return { 'X-AppVersion': APP_VERSION.replace(/\./g, '') };
   }
 }
