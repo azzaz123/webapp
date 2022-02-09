@@ -120,7 +120,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
         this.translateConversation();
       }
 
-      this.checkIfDeliveryContextNeedsUpdateOnNewMessage(message);
+      const shouldRefreshDeliveryContext: boolean = this.deliveryContextNeedsRefresh(message);
+      if (shouldRefreshDeliveryContext) {
+        this.refreshDeliveryContext();
+      }
     });
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED, (conversation: InboxConversation) => {
@@ -287,13 +290,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.deliveryConversationContextService.handleThirdVoiceCTAClick(this.currentConversation);
   }
 
-  private checkIfDeliveryContextNeedsUpdateOnNewMessage(newMessage: InboxMessage): void {
+  private deliveryContextNeedsRefresh(newMessage: InboxMessage): boolean {
     const isRealTimeDeliveryThirdVoice: boolean = newMessage.type === MessageType.DELIVERY;
     const isMessageInCurrentConversation: boolean = !!this.currentConversation.messages.find((m) => m.id === newMessage.id);
-    const shouldRefreshDeliveryContext = isRealTimeDeliveryThirdVoice && isMessageInCurrentConversation;
-    if (shouldRefreshDeliveryContext) {
-      this.refreshDeliveryContext();
-    }
+    return isRealTimeDeliveryThirdVoice && isMessageInCurrentConversation;
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
