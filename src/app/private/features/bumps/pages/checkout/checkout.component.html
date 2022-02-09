@@ -1,10 +1,10 @@
 <div class="page-content">
   <div class="container">
-    <div class="d-flex justify-content-between flex-lg-nowrap flex-wrap" *ngIf="itemsWithProducts; else isLoading">
+    <div class="d-flex justify-content-between flex-lg-nowrap flex-wrap Checkout" *ngIf="itemsWithProducts; else isLoading">
       <div class="mr-lg-3 w-100">
-        <div class="table-header d-flex justify-content-between mb-4">
+        <div class="Checkout__table-header d-flex justify-content-between mb-4">
           <div>
-            <a class="back d-flex align-items-center justify-content-center" [routerLink]="['/catalog/list']"
+            <a class="Checkout__back d-flex align-items-center justify-content-center" [routerLink]="['/catalog/list']"
               ><tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon> <span i18n="@@web_catalog_pages_checkout_674">Back</span></a
             >
           </div>
@@ -13,7 +13,7 @@
             <a (click)="bumpTutorial.show()" i18n="@@web_catalog_pages_checkout_563">What can features do for you?</a>
           </div>
         </div>
-        <div class="price-table">
+        <div class="Checkout__price-table">
           <tsl-checkout-item
             *ngFor="let item of itemsWithProducts"
             (itemRemoved)="removeItem($event)"
@@ -22,8 +22,8 @@
           ></tsl-checkout-item>
         </div>
       </div>
-      <div class="cart">
-        <tsl-cart [provincialBump]="provincialBump" [creditInfo]="creditInfo"></tsl-cart>
+      <div class="Checkout__cart">
+        <tsl-cart [creditInfo]="creditInfo"></tsl-cart>
       </div>
     </div>
   </div>

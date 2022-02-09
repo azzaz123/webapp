@@ -1,4 +1,4 @@
-import { takeWhile } from 'rxjs/operators';
+import { finalize, takeWhile } from 'rxjs/operators';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -17,6 +17,9 @@ import { CartBase, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { PACKS_TYPES } from '@core/payments/pack';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
+import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'tsl-cart',
@@ -26,10 +29,10 @@ import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 export class CartComponent implements OnInit, OnDestroy {
   @Input() provincialBump: boolean;
   @Input() creditInfo: CreditInfo;
+
   public cart: CartBase;
   public types: string[] = BUMP_TYPES;
   public hasSavedCard = true;
-  public cardType = 'old';
   public loading: boolean;
   public card: any;
   public showCard = false;
@@ -37,7 +40,13 @@ export class CartComponent implements OnInit, OnDestroy {
   public selectedCard = false;
   public readonly BUMP_TYPES = BUMP_TYPE;
   public readonly PACK_TYPES = PACKS_TYPES;
+  public readonly ICON_TYPE = ICON_TYPE;
 
+  public purchaseBumpsSubject = new BehaviorSubject<boolean>(false);
+
+  public get experimentReady$(): Observable<boolean> {
+    return this.purchaseBumpsSubject.asObservable();
+  }
   private active = true;
 
   constructor(
@@ -47,7 +56,8 @@ export class CartComponent implements OnInit, OnDestroy {
     private eventService: EventService,
     private router: Router,
     private uuidService: UuidService,
-    private stripeService: StripeService
+    private stripeService: StripeService,
+    private visibilityService: VisibilityApiService
   ) {
     this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
@@ -67,39 +77,59 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   public checkout(): void {
-    if (!this.cart.total || this.loading) {
+    if (this.loading) {
       return;
     }
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
     this.loading = true;
-    this.track(order);
     setTimeout(() => {
-      this.itemService.purchaseProductsWithCredits(order, orderId).subscribe(
-        (response: PurchaseProductsWithCreditsResponse) => {
-          if (-this.usedCredits > 0) {
-            localStorage.setItem('transactionType', 'bumpWithCredits');
-            localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
-          } else {
-            localStorage.setItem('transactionType', 'bump');
-          }
-          this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
-          if (response.payment_needed) {
-            this.buyStripe(orderId);
-          } else {
+      forkJoin([this.experimentReady$, this.visibilityService.bumpWithPackage(this.cart)])
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+          })
+        )
+        .subscribe(
+          () => {
             this.success();
-          }
-        },
-        (e: HttpErrorResponse) => {
-          this.loading = false;
-          if (e.error) {
-            this.errorService.show(e);
-          } else {
-            this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
-          }
-        }
-      );
+          },
+          () => {}
+        );
+      this.purchaseBumps(order, orderId);
     }, 2000);
+  }
+
+  public purchaseBumps(order: Order[], orderId: string): void {
+    if (order.length === 0) {
+      this.purchaseBumpsSubject.complete();
+      return;
+    }
+    this.track(order);
+    this.itemService.purchaseProductsWithCredits(order, orderId).subscribe(
+      (response: PurchaseProductsWithCreditsResponse) => {
+        if (-this.usedCredits > 0) {
+          localStorage.setItem('transactionType', 'bumpWithCredits');
+          localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
+        } else {
+          localStorage.setItem('transactionType', 'bump');
+        }
+        this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
+        if (response.payment_needed) {
+          this.buyStripe(orderId);
+        } else {
+          this.purchaseBumpsSubject.complete();
+        }
+      },
+      (e: HttpErrorResponse) => {
+        if (e.error) {
+          this.errorService.show(e);
+        } else {
+          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
+        }
+        this.purchaseBumpsSubject.error(e);
+      }
+    );
   }
 
   public addNewCard(): void {
@@ -133,7 +163,7 @@ export class CartComponent implements OnInit, OnDestroy {
   private managePaymentResponse(paymentResponse: string): void {
     switch (paymentResponse && paymentResponse.toUpperCase()) {
       case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.success();
+        this.purchaseBumpsSubject.complete();
         break;
       }
       default: {
@@ -180,7 +210,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   get totalToPay(): number {
-    if (!this.cart) {
+    if (!this.cart || !this.creditInfo) {
       return 0;
     }
     const totalCreditsToPay: number = this.cart.total * this.creditInfo.factor;
@@ -192,7 +222,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   get usedCredits(): number {
-    if (!this.cart) {
+    if (!this.cart || !this.creditInfo) {
       return 0;
     }
     const totalCreditsToPay: number = this.cart.total * this.creditInfo.factor;

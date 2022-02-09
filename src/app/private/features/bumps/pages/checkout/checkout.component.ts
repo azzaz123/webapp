@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemWithProducts } from '@core/item/item-response.interface';
+import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
@@ -21,7 +22,8 @@ export class CheckoutComponent implements OnInit {
     private itemService: ItemService,
     private router: Router,
     private paymentService: PaymentService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private visibilityApiService: VisibilityApiService
   ) {}
 
   ngOnInit() {
@@ -32,6 +34,7 @@ export class CheckoutComponent implements OnInit {
         this.getProductsFromSelectedItems();
       }
     });
+    this.getCreditInfo();
   }
 
   public removeItem(itemId: string): void {
@@ -46,24 +49,18 @@ export class CheckoutComponent implements OnInit {
       this.router.navigate(['catalog/list']);
       return;
     }
-    this.itemService
-      .getItemsWithAvailableProducts(this.itemService.selectedItems)
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
+    this.visibilityApiService
+      .getItemsWithProductsAndSubscriptionBumps(this.itemService.selectedItems)
+      .subscribe((itemsWithProducts) => this.setItems(itemsWithProducts));
   }
 
   private getProductsFromParamsItem(itemId: string): void {
-    this.itemService
-      .getItemsWithAvailableProducts([itemId])
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
+    this.visibilityApiService.getItemsWithProductsAndSubscriptionBumps([itemId]).subscribe((itemsWithProducts) => {
+      this.setItems(itemsWithProducts);
+    });
   }
 
-  private setItems(itemsWithProducts: ItemWithProducts[]): void {
-    if (itemsWithProducts.length) {
-      this.itemsWithProducts = itemsWithProducts;
-      this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
-    } else {
-      this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
-    }
+  private getCreditInfo(): void {
     this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {
         creditInfo.currencyName = 'wallacredits';
@@ -71,5 +68,13 @@ export class CheckoutComponent implements OnInit {
       }
       this.creditInfo = creditInfo;
     });
+  }
+
+  private setItems(itemsWithProducts: ItemWithProducts[]): void {
+    if (itemsWithProducts.length) {
+      this.itemsWithProducts = itemsWithProducts;
+    } else {
+      this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
+    }
   }
 }

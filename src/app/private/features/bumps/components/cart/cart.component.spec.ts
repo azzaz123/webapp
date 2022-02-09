@@ -17,6 +17,7 @@ import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CartComponent } from './cart.component';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -27,6 +28,7 @@ describe('CartComponent', () => {
   let router: Router;
   let eventService: EventService;
   let stripeService: StripeService;
+  let visibilityService: VisibilityApiService;
 
   const CART = new Cart();
   const CART_CHANGE: CartChange = {
@@ -86,6 +88,14 @@ describe('CartComponent', () => {
               buy() {},
             },
           },
+          {
+            provide: VisibilityApiService,
+            useValue: {
+              bumpWithPackage() {
+                return of(true);
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
@@ -101,6 +111,7 @@ describe('CartComponent', () => {
     router = TestBed.inject(Router);
     eventService = TestBed.inject(EventService);
     stripeService = TestBed.inject(StripeService);
+    visibilityService = TestBed.inject(VisibilityApiService);
     component.creditInfo = {
       currencyName: 'wallacoins',
       credit: 200,
@@ -254,15 +265,19 @@ describe('CartComponent', () => {
     });
 
     describe('error', () => {
+      beforeEach(() => {
+        spyOn(component.cart, 'prepareOrder').and.returnValue(CART_ORDER);
+        spyOn(component.cart, 'getOrderId').and.returnValue('UUID');
+
+        eventId = null;
+        component.cart = CART;
+        component.cart.total = 1;
+        component.loading = false;
+      });
+
       it('should call toastr', fakeAsync(() => {
-        spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(
-          throwError({
-            text() {
-              return '';
-            },
-          })
-        );
-        spyOn(errorService, 'i18nError');
+        spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(throwError('error'));
+        spyOn(errorService, 'i18nError').and.callThrough();
 
         component.checkout();
         tick(2000);
