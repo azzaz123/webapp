@@ -17,7 +17,7 @@ export const MOCK_CARRIER_FREE_COST: DropOffModeRequest = {
   },
   sellerCosts: mapAmountAndCurrenyToMoney({ amount: 0.0, currency: 'EUR' }),
   acceptEndpoint: 'RANDOM_ENDPOINT',
-  restrictions: 'RESTRICTIONS',
+  restrictions: 'RESTRICTIONS FREE COST',
   schedule: null,
 };
 
@@ -31,7 +31,7 @@ export const MOCK_CARRIER_ONE_EURO_COST: DropOffModeRequest = {
   },
   sellerCosts: mapAmountAndCurrenyToMoney({ amount: 1, currency: 'EUR' }),
   acceptEndpoint: 'RANDOM_ENDPOINT_2',
-  restrictions: 'RESTRICTIONS',
+  restrictions: 'RESTRICTIONS ONE EURO COST',
   schedule: null,
 };
 

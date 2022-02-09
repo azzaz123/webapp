@@ -57,7 +57,7 @@
                 <tsl-delivery-radio-selector
                   *ngIf="properties.carriers?.length"
                   class="d-block"
-                  [selectedId]="selectedCarrierIndex$ | async"
+                  [selectedId]="carrierSelectedIndex$ | async"
                   (changed)="selectNewDropOffMode($event)"
                 >
                   <ng-template tslDeliveryRadioOption *ngFor="let carrier of properties.carriers">

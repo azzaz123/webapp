@@ -29,13 +29,14 @@ import { DeliveryRadioOptionDirective } from '@private/shared/delivery-radio-sel
 import { ButtonComponent } from '@shared/button/button.component';
 
 describe('AcceptScreenModalComponent', () => {
-  const MOCK_REQUEST_ID: string = '82723gHYSA762';
-  const sellerAddressHeaderStylesSelector: string = '.AcceptScreen__sellerAddressHeader--small';
-  const fullAddressSelector: string = '#fullAddress';
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
-  const initializeAcceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
+  const carrierSelectedIndexSubjectMock: BehaviorSubject<number> = new BehaviorSubject(1);
   const countriesAsOptionsAndDefaultSubject: ReplaySubject<CountryOptionsAndDefault> = new ReplaySubject(1);
+
+  const MOCK_REQUEST_ID: string = '82723gHYSA762';
+  const sellerAddressHeaderStylesSelector: string = '.AcceptScreenModal__sellerWithAddressHeader';
   const deliveryAddressSelector = 'tsl-delivery-address';
+  const fullAddressSelector: string = '#fullAddress';
   const rejectButtonSelector: string = '#rejectButton';
   const acceptButtonSelector: string = '#acceptButton';
 
@@ -44,7 +45,6 @@ describe('AcceptScreenModalComponent', () => {
 
   let activeModal: NgbActiveModal;
   let de: DebugElement;
-
   let component: AcceptScreenModalComponent;
   let fixture: ComponentFixture<AcceptScreenModalComponent>;
   let acceptScreenStoreService: AcceptScreenStoreService;
@@ -67,16 +67,18 @@ describe('AcceptScreenModalComponent', () => {
         {
           provide: AcceptScreenStoreService,
           useValue: {
-            initialize$() {
-              return initializeAcceptScreenPropertiesSubjectMock.asObservable();
+            initialize() {
+              return acceptScreenPropertiesSubjectMock.toPromise();
             },
             update() {
-              acceptScreenPropertiesSubjectMock.next(MOCK_UPDATE_ACCEPT_SCREEN_PROPERTIES);
+              return acceptScreenPropertiesSubjectMock.toPromise();
             },
-            notifySelectedDropOffModeByUser() {},
-
+            selectNewDropOffMode() {},
             get properties$() {
               return acceptScreenPropertiesSubjectMock.asObservable();
+            },
+            get carrierSelectedIndex$() {
+              return carrierSelectedIndexSubjectMock.asObservable();
             },
           },
         },
@@ -118,7 +120,6 @@ describe('AcceptScreenModalComponent', () => {
 
   describe('When opening Accept Screen', () => {
     beforeEach(() => {
-      spyOn(acceptScreenStoreService, 'update').and.callThrough();
       spyOn(activeModal, 'close');
     });
 
@@ -154,7 +155,7 @@ describe('AcceptScreenModalComponent', () => {
           });
         });
 
-        describe('and we click on the help button', () => {
+        describe('the help button...', () => {
           let helpButtonRef: DebugElement;
 
           beforeEach(() => {
@@ -173,12 +174,19 @@ describe('AcceptScreenModalComponent', () => {
         let acceptScreenProperties: AcceptScreenProperties;
 
         beforeEach(() => {
-          initializePropertiesWithStore(MOCK_ACCEPT_SCREEN_PROPERTIES);
+          spyOn(acceptScreenStoreService, 'initialize').and.callThrough();
+          spyOn(acceptScreenStoreService, 'update').and.callThrough();
+          acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES);
 
           fixture.detectChanges();
           component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
             acceptScreenProperties = newProperties;
           });
+        });
+
+        it('should call the store to initialize properties', () => {
+          expect(acceptScreenStoreService.initialize).toHaveBeenCalledTimes(1);
+          expect(acceptScreenStoreService.initialize).toHaveBeenCalledWith(MOCK_REQUEST_ID);
         });
 
         it('should detect the accept screen as active step', () => {
@@ -216,26 +224,6 @@ describe('AcceptScreenModalComponent', () => {
           shouldRenderAcceptButton(true);
         });
 
-        it('should update the component properties', () => {
-          expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES);
-        });
-
-        describe('and we click on the address button', () => {
-          beforeEach(() => {
-            const addressButton = fixture.debugElement.query(By.css('#addressButton')).nativeElement;
-
-            addressButton.click();
-          });
-
-          it('should redirect to address screen step', () => {
-            expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS);
-          });
-
-          it('should NOT update the accept screen properties', () => {
-            shouldUpdateTheAcceptScreenProperties(false);
-          });
-        });
-
         describe('and we receive the seller address', () => {
           it('should show the address', () => {
             const fullAddress: string = fixture.debugElement.query(By.css(fullAddressSelector)).nativeElement.innerHTML;
@@ -244,9 +232,9 @@ describe('AcceptScreenModalComponent', () => {
           });
 
           it('should apply the small style in seller address header', () => {
-            const sellerAddressHeaderSmallStyle: DebugElement = fixture.debugElement.query(By.css(sellerAddressHeaderStylesSelector));
+            const sellerAddressHeaderStyle: DebugElement = fixture.debugElement.query(By.css(sellerAddressHeaderStylesSelector));
 
-            expect(sellerAddressHeaderSmallStyle).toBeTruthy();
+            expect(sellerAddressHeaderStyle).toBeTruthy();
           });
 
           it('should show the edit address button', () => {
@@ -280,46 +268,165 @@ describe('AcceptScreenModalComponent', () => {
             shouldShowDeliveryAddressButtonSpecificText(addCopy);
           });
         });
-      });
 
-      describe('and we receive accept screen properties but carriers with first option selected', () => {
-        let acceptScreenProperties: AcceptScreenProperties;
+        describe('and we receive carriers', () => {
+          const newCarrierSelectedPosition: number = 0;
 
-        beforeEach(() => {
-          acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+          it('should show carrier options', () => {
+            shouldRenderRadioSelector(true);
+          });
 
-          fixture.detectChanges();
+          it('should show carriers received', () => {
+            const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
+            expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.length);
+          });
 
-          component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
-            acceptScreenProperties = newProperties;
+          describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
+            const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.indexOf(carrier);
+
+            describe('and the selected option is provided...', () => {
+              shouldShowCarrierInformation(carrier, currentCarrierPosition);
+            });
+          });
+
+          describe('and the user selects another carrier', () => {
+            beforeEach(() => {
+              spyOn(acceptScreenStoreService, 'selectNewDropOffMode');
+
+              fixture.debugElement
+                .query(By.directive(DeliveryRadioSelectorComponent))
+                .triggerEventHandler('changed', newCarrierSelectedPosition);
+              acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+              carrierSelectedIndexSubjectMock.next(newCarrierSelectedPosition);
+
+              fixture.detectChanges();
+            });
+
+            it('should notify the new carrier selected position ', () => {
+              expect(acceptScreenStoreService.selectNewDropOffMode).toHaveBeenCalledTimes(1);
+              expect(acceptScreenStoreService.selectNewDropOffMode).toHaveBeenCalledWith(newCarrierSelectedPosition);
+            });
+
+            describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
+              const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.indexOf(carrier);
+
+              describe('and the selected option is provided...', () => {
+                shouldShowCarrierInformation(carrier, currentCarrierPosition);
+              });
+            });
           });
         });
 
-        it('should update the component properties', () => {
-          expect(acceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+        describe('and we NOT receive carriers', () => {
+          beforeEach(() => {
+            acceptScreenPropertiesSubjectMock.next({ ...MOCK_ACCEPT_SCREEN_PROPERTIES, carriers: null });
+
+            fixture.detectChanges();
+          });
+
+          it('should NOT show any carrier option', () => {
+            shouldRenderRadioSelector(false);
+          });
         });
 
-        it('should update the selected drop off position', () => {
-          const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.findIndex(
-            (carrier: AcceptScreenCarrier) => carrier.isSelected
-          );
-          expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
-        });
+        describe('and we go to the address screen step', () => {
+          beforeEach(() => {
+            const addressButton = fixture.debugElement.query(By.css('#addressButton')).nativeElement;
 
-        it('should show carrier options', () => {
-          shouldRenderRadioSelector(true);
-        });
+            addressButton.click();
+            fixture.detectChanges();
+          });
 
-        it('should show carriers received', () => {
-          const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
-          expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.length);
-        });
+          it('should redirect to address screen step', () => {
+            expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS);
+          });
 
-        describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
-          const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU.carriers.indexOf(carrier);
+          it('should not detect the accept screen as active step', () => {
+            expect(component.isAcceptScreenStep).toBeFalsy();
+          });
 
-          describe('and the selected option is provided...', () => {
-            shouldShowCarrierInformation(carrier, currentCarrierPosition);
+          it('should NOT update the accept screen properties', () => {
+            shouldUpdateTheAcceptScreenProperties(false);
+          });
+
+          describe('the header...', () => {
+            it('should show the back arrow icon', () => {
+              shouldShowArrowBackIcon(true);
+            });
+
+            it('should show the address screen translated title', () => {
+              shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS]);
+            });
+
+            it('should NOT show help button', () => {
+              shouldShowHelpButton(false);
+            });
+
+            it('should show the cross icon', () => {
+              shouldShowCrossIcon();
+            });
+
+            describe('and we click on the back button', () => {
+              beforeEach(() => {
+                const backButton = fixture.debugElement.query(By.css('#back')).nativeElement;
+
+                backButton.click();
+              });
+
+              it('should redirect to the accept screen step', () => {
+                shouldAcceptScreenActiveStep();
+              });
+
+              it('should update the accept screen properties requesting it again', () => {
+                shouldUpdateTheAcceptScreenProperties(true);
+              });
+            });
+
+            describe('and we click on the close button', () => {
+              it('should close the modal', () => {
+                shouldCloseModalWhenCrossClick();
+              });
+            });
+          });
+
+          describe('and we receive countries for the address screen', () => {
+            beforeEach(() => {
+              countriesAsOptionsAndDefaultSubject.next(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
+
+              fixture.detectChanges();
+            });
+
+            it('should show the delivery address form', () => {
+              shouldRenderDeliveryAddressForm(true);
+            });
+
+            describe('and the save delivery address succeed', () => {
+              beforeEach(() => {
+                const deliveryAddressComponent = fixture.debugElement.query(By.css(deliveryAddressSelector));
+
+                deliveryAddressComponent.triggerEventHandler('addressSaveSucced', {});
+              });
+
+              it('should redirect to the accept screen step', () => {
+                shouldAcceptScreenActiveStep();
+              });
+
+              it('should update the accept screen properties requesting it again', () => {
+                shouldUpdateTheAcceptScreenProperties(true);
+              });
+            });
+          });
+
+          describe(`and we DON'T receive countries for the address screen`, () => {
+            beforeEach(() => {
+              countriesAsOptionsAndDefaultSubject.next(null);
+
+              fixture.detectChanges();
+            });
+
+            it('should NOT show the delivery address form', () => {
+              shouldRenderDeliveryAddressForm(false);
+            });
           });
         });
       });
@@ -353,272 +460,8 @@ describe('AcceptScreenModalComponent', () => {
           expect(acceptScreenEmptyProperties).toStrictEqual(null);
         });
       });
-
-      describe('and we receive carriers', () => {
-        const newCarrierSelectedPosition: number = 0;
-
-        it('should update the selected drop off position', () => {
-          const selectedDropOffPoint: number = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.findIndex(
-            (carrier: AcceptScreenCarrier) => carrier.isSelected
-          );
-          expect(component.selectedDropOffPosition).toStrictEqual(selectedDropOffPoint);
-        });
-
-        it('should show carrier options', () => {
-          shouldRenderRadioSelector(true);
-        });
-
-        it('should show carriers received', () => {
-          const expectedCarriers: number = fixture.debugElement.queryAll(By.css('.AcceptScreenModal__carrierWrapper')).length;
-          expect(expectedCarriers).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.length);
-        });
-
-        describe.each(MOCK_ACCEPT_SCREEN_PROPERTIES.carriers)('for every carrier...', (carrier: AcceptScreenCarrier) => {
-          const currentCarrierPosition: number = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.indexOf(carrier);
-
-          describe('and the selected option is provided...', () => {
-            shouldShowCarrierInformation(carrier, currentCarrierPosition);
-          });
-        });
-
-        describe('and the user selects another carrier', () => {
-          beforeEach(() => {
-            spyOn(acceptScreenStoreService, 'notifySelectedDropOffModeByUser').and.callThrough();
-
-            fixture.debugElement
-              .query(By.directive(DeliveryRadioSelectorComponent))
-              .triggerEventHandler('changed', newCarrierSelectedPosition);
-          });
-
-          it('should notify the new carrier selected position ', () => {
-            expect(acceptScreenStoreService.notifySelectedDropOffModeByUser).toHaveBeenCalledTimes(1);
-            expect(acceptScreenStoreService.notifySelectedDropOffModeByUser).toHaveBeenCalledWith(newCarrierSelectedPosition);
-          });
-        });
-      });
-
-      describe('and we NOT receive carriers', () => {
-        beforeEach(() => {
-          acceptScreenPropertiesSubjectMock.next({ ...MOCK_ACCEPT_SCREEN_PROPERTIES, carriers: null });
-
-          fixture.detectChanges();
-        });
-
-        it('should NOT show any carrier option', () => {
-          shouldRenderRadioSelector(false);
-        });
-
-        it('should NOT define the selected drop off position', () => {
-          expect(component.selectedDropOffPosition).not.toBeDefined();
-        });
-      });
-    });
-
-    describe('and we are on the address screen step', () => {
-      beforeEach(() => {
-        component.stepper.activeId = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
-        fixture.detectChanges();
-      });
-
-      describe('the header...', () => {
-        it('should show the back arrow icon', () => {
-          shouldShowArrowBackIcon(true);
-        });
-
-        it('should show the address screen translated title', () => {
-          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS]);
-        });
-
-        it('should NOT show help button', () => {
-          shouldShowHelpButton(false);
-        });
-
-        it('should show the cross icon', () => {
-          shouldShowCrossIcon();
-        });
-
-        describe('and we click on the back button', () => {
-          beforeEach(() => {
-            const backButton = fixture.debugElement.query(By.css('#back')).nativeElement;
-
-            backButton.click();
-          });
-
-          it('should redirect to the accept screen step', () => {
-            shouldAcceptScreenActiveStep();
-          });
-
-          it('should update the accept screen properties requesting it again', () => {
-            shouldUpdateTheAcceptScreenProperties(true);
-          });
-        });
-
-        describe('and we click on the close button', () => {
-          it('should close the modal', () => {
-            shouldCloseModalWhenCrossClick();
-          });
-        });
-      });
-
-      describe('and we receive countries for the address screen', () => {
-        beforeEach(() => {
-          countriesAsOptionsAndDefaultSubject.next(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
-
-          fixture.detectChanges();
-        });
-
-        it('should show the delivery address form', () => {
-          shouldRenderDeliveryAddressForm(true);
-        });
-
-        describe('and the save delivery address succeed', () => {
-          beforeEach(() => {
-            const deliveryAddressComponent = fixture.debugElement.query(By.css(deliveryAddressSelector));
-
-            deliveryAddressComponent.triggerEventHandler('addressSaveSucced', {});
-          });
-
-          it('should redirect to the accept screen step', () => {
-            shouldAcceptScreenActiveStep();
-          });
-
-          it('should update the accept screen properties requesting it again', () => {
-            shouldUpdateTheAcceptScreenProperties(true);
-          });
-        });
-      });
-
-      describe(`and we DON'T receive countries for the address screen`, () => {
-        beforeEach(() => {
-          countriesAsOptionsAndDefaultSubject.next(null);
-
-          fixture.detectChanges();
-        });
-
-        it('should NOT show the delivery address form', () => {
-          shouldRenderDeliveryAddressForm(false);
-        });
-      });
-
-      it('should not detect the accept screen as active step', () => {
-        expect(component.isAcceptScreenStep).toBeFalsy();
-      });
-    });
-
-    describe('and we are on the map step', () => {
-      beforeEach(() => {
-        component.stepper.activeId = ACCEPT_SCREEN_STEPS.MAP;
-        fixture.detectChanges();
-      });
-
-      describe('the header...', () => {
-        it('should show the back arrow icon', () => {
-          shouldShowArrowBackIcon(true);
-        });
-
-        it('should show the map translated title', () => {
-          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.MAP]);
-        });
-
-        it('should NOT show help button', () => {
-          shouldShowHelpButton(false);
-        });
-
-        it('should show the cross icon', () => {
-          shouldShowCrossIcon();
-        });
-
-        describe('and we click on the back button', () => {
-          beforeEach(() => {
-            const backButton = fixture.debugElement.query(By.css('#back')).nativeElement;
-
-            backButton.click();
-          });
-
-          it('should redirect to the accept screen step', () => {
-            shouldAcceptScreenActiveStep();
-          });
-
-          it('should update the accept screen properties requesting it again', () => {
-            shouldUpdateTheAcceptScreenProperties(true);
-          });
-        });
-        describe('and we click on the close button', () => {
-          it('should close the modal', () => {
-            shouldCloseModalWhenCrossClick();
-          });
-        });
-      });
-
-      it('should detect the map as active step', () => {});
-
-      it('should not render the accept screen step information', () => {});
-
-      it('should not detect the accept screen as active step', () => {
-        expect(component.isAcceptScreenStep).toBeFalsy();
-      });
-    });
-
-    describe('and we are on the preference schedule step', () => {
-      beforeEach(() => {
-        component.stepper.activeId = ACCEPT_SCREEN_STEPS.SCHEDULE;
-        fixture.detectChanges();
-      });
-
-      describe('the header...', () => {
-        it('should show the back arrow icon', () => {
-          shouldShowArrowBackIcon(true);
-        });
-
-        it('should show the preference schedule translated title', () => {
-          shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.SCHEDULE]);
-        });
-
-        it('should NOT show help button', () => {
-          shouldShowHelpButton(false);
-        });
-
-        it('should show the cross icon', () => {
-          shouldShowCrossIcon();
-        });
-
-        describe('and we click on the back button', () => {
-          beforeEach(() => {
-            const backButton = fixture.debugElement.query(By.css('#back')).nativeElement;
-
-            backButton.click();
-          });
-
-          it('should redirect to the accept screen step', () => {
-            shouldAcceptScreenActiveStep();
-          });
-
-          it('should update the accept screen properties requesting it again', () => {
-            shouldUpdateTheAcceptScreenProperties(true);
-          });
-        });
-
-        describe('and we click on the close button', () => {
-          it('should close the modal', () => {
-            shouldCloseModalWhenCrossClick();
-          });
-        });
-      });
-
-      it('should detect the schedule as active step', () => {});
-
-      it('should not render the accept screen step information', () => {});
-
-      it('should not detect the accept screen as active step', () => {
-        expect(component.isAcceptScreenStep).toBeFalsy();
-      });
     });
   });
-
-  function initializePropertiesWithStore(initialProperties: AcceptScreenProperties): void {
-    initializeAcceptScreenPropertiesSubjectMock.next(initialProperties);
-    acceptScreenPropertiesSubjectMock.next(initialProperties);
-  }
 
   function shouldRenderProductCard(isShowed: boolean): void {
     const productCard: DebugElement = fixture.debugElement.query(By.directive(ProductCardComponent));
@@ -669,14 +512,8 @@ describe('AcceptScreenModalComponent', () => {
 
   function shouldUpdateTheAcceptScreenProperties(shouldBeUpdated: boolean): void {
     if (shouldBeUpdated) {
-      let newAcceptScreenProperties: AcceptScreenProperties;
-      component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
-        newAcceptScreenProperties = newProperties;
-      });
-
       expect(acceptScreenStoreService.update).toHaveBeenCalledWith(MOCK_REQUEST_ID);
       expect(acceptScreenStoreService.update).toHaveBeenCalledTimes(1);
-      expect(newAcceptScreenProperties).toStrictEqual(MOCK_UPDATE_ACCEPT_SCREEN_PROPERTIES);
     } else {
       expect(acceptScreenStoreService.update).not.toHaveBeenCalled();
     }
@@ -720,6 +557,10 @@ describe('AcceptScreenModalComponent', () => {
   }
 
   function shouldShowCarrierInformation(carrier: AcceptScreenCarrier, currentCarrierPosition: number): void {
+    const firstInformationSelector = '.carrierInformation';
+    const secondInformationSelector = '.carrierSecondaryInformation';
+    const restrictionsInformationSelector = '.AcceptScreenModal__carrierRestrictions';
+
     it('should show the carrier image', () => {
       const carrierImage: DebugElement = de.queryAll(By.css('.AcceptScreenModal__carrierIcon'))[currentCarrierPosition];
       expect(carrierImage.nativeElement.src).toStrictEqual(carrier.icon);
@@ -731,53 +572,76 @@ describe('AcceptScreenModalComponent', () => {
     });
 
     if (carrier.isSelected) {
-      it('should show first information when is provided', () => {
-        const isFirstInfoShowed: boolean = de
-          .queryAll(By.css('.carrierInformation'))
-          .some((firstInformation) => firstInformation.nativeElement.innerHTML === carrier.information);
+      describe('when the carrier is selected', () => {
+        it('should show first information when is provided', () => {
+          const isFirstInfoShowed: boolean = de
+            .queryAll(By.css(firstInformationSelector))
+            .some((firstInformation) => firstInformation.nativeElement.innerHTML === carrier.information);
 
-        if (carrier.information) {
-          expect(isFirstInfoShowed).toBe(true);
-        } else {
-          expect(isFirstInfoShowed).toBe(false);
-        }
-      });
+          if (carrier.information) {
+            expect(isFirstInfoShowed).toBe(true);
+          } else {
+            expect(isFirstInfoShowed).toBe(false);
+          }
+        });
 
-      it('should show secondary information when is provided', () => {
-        const isSecondInfoShowed: boolean = de
-          .queryAll(By.css('.carrierSecondaryInformation'))
-          .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.secondaryInformation);
+        it('should show secondary information when is provided', () => {
+          const isSecondInfoShowed: boolean = de
+            .queryAll(By.css(secondInformationSelector))
+            .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.secondaryInformation);
 
-        if (carrier.secondaryInformation) {
-          expect(isSecondInfoShowed).toBe(true);
-        } else {
-          expect(isSecondInfoShowed).toBe(false);
-        }
-      });
+          if (carrier.secondaryInformation) {
+            expect(isSecondInfoShowed).toBe(true);
+          } else {
+            expect(isSecondInfoShowed).toBe(false);
+          }
+        });
 
-      it('should show carrier restrictions', () => {
-        const areCarrierRestrictionsShowed: boolean = de
-          .queryAll(By.css('.AcceptScreenModal__carrierRestrictions'))
-          .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.restrictions);
+        it('should show carrier restrictions', () => {
+          const areCarrierRestrictionsShowed: boolean = de
+            .queryAll(By.css(restrictionsInformationSelector))
+            .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.restrictions);
 
-        expect(areCarrierRestrictionsShowed).toBe(true);
-      });
+          expect(areCarrierRestrictionsShowed).toBe(true);
+        });
 
-      it('should should show button when needed', () => {
-        const isButtonShowed: boolean = de
-          .queryAll(By.css('.carrierButton'))
-          .some((button) => button.nativeElement.textContent === carrier.buttonProperties.text);
+        it('should should show button when needed', () => {
+          const isButtonShowed: boolean = de
+            .queryAll(By.css('.carrierButton'))
+            .some((button) => button.nativeElement.textContent === carrier.buttonProperties.text);
 
-        if (carrier.buttonProperties.isShowed) {
-          expect(isButtonShowed).toBe(true);
-        } else {
-          expect(isButtonShowed).toBe(false);
-        }
+          if (carrier.buttonProperties.isShowed) {
+            expect(isButtonShowed).toBe(true);
+          } else {
+            expect(isButtonShowed).toBe(false);
+          }
+        });
       });
     } else {
-      it('should NOT show any information', () => {
-        const carrierInformationWrapper = fixture.debugElement.query(By.css('.carrierInformationWrapper'));
-        expect(carrierInformationWrapper).toBeFalsy();
+      describe('when the carrier is NOT selected', () => {
+        it('should NOT show first information', () => {
+          const isFirstInfoShowed: boolean = de
+            .queryAll(By.css(firstInformationSelector))
+            .some((firstInformation) => firstInformation.nativeElement.innerHTML === carrier.information);
+
+          expect(isFirstInfoShowed).toBe(false);
+        });
+
+        it('should NOT show secondary information', () => {
+          const isSecondInfoShowed: boolean = de
+            .queryAll(By.css(secondInformationSelector))
+            .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.secondaryInformation);
+
+          expect(isSecondInfoShowed).toBe(false);
+        });
+
+        it('should NOT show carrier restrictions', () => {
+          const areCarrierRestrictionsShowed: boolean = de
+            .queryAll(By.css(restrictionsInformationSelector))
+            .some((secondInformation) => secondInformation.nativeElement.innerHTML === carrier.restrictions);
+
+          expect(areCarrierRestrictionsShowed).toBe(false);
+        });
       });
     }
   }
