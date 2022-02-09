@@ -7,6 +7,7 @@ import { Cart } from '@shared/catalog/cart/cart';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
+import { Perks } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-checkout-item',
@@ -22,6 +23,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
   public availableDurations: Duration[];
   public isFreeOptionSelected: boolean;
   public isFreeOptionAvailable: boolean;
+  public isFreeOptionDisabled: boolean;
   public readonly BUMP_TYPES = BUMP_TYPE;
   private _selectedDuration: Duration;
   private active = true;
@@ -31,13 +33,17 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
   ngOnInit() {
     this.cartService.createInstance(new Cart());
     this.isFreeOptionAvailable = !!this.getFreeTypes().length;
+    this.isFreeOptionDisabled = !this.getFirstAvailableFreeOption() && !this.isFreeOptionSelected;
 
-    if (this.isFreeOptionAvailable) {
+    if (this.isFreeOptionAvailable && !this.isFreeOptionDisabled) {
       this.isFreeOptionSelected = true;
     }
     this.getAvailableProducts();
 
     this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
+      if (this.isFreeOptionAvailable) {
+        this.isFreeOptionDisabled = !this.getFirstAvailableFreeOption() && !this.isFreeOptionSelected;
+      }
       this.onRemoveOrClean(cartChange);
     });
   }
@@ -70,15 +76,24 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
   public getAvailableProducts(): void {
     if (this.isFreeOptionSelected) {
       this.availableTypes = this.getFreeTypes();
-      this.selectedType = this.availableTypes[0];
+      const firstAvailableType = this.getFirstAvailableFreeOption();
+      this.selectedType = this.availableTypes.find((type) => type.name === firstAvailableType.name);
       this.availableDurations = this.selectedType.durations;
       this.selectedDuration = this.selectedType.durations[0];
+      this.increaseCounter();
     } else {
       this.availableTypes = this.itemWithProducts.products;
       this.selectedType = this.itemWithProducts.products[0];
       this.availableDurations = this.selectedType.durations;
       this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_index];
     }
+  }
+
+  public toggleItem() {
+    if (!this.isFreeOptionSelected) {
+      this.decreaseCounter();
+    }
+    this.getAvailableProducts();
   }
 
   public onRemoveItem(itemId: string, type: string): void {
@@ -130,5 +145,17 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
       }
     });
     return freeTypes;
+  }
+
+  private increaseCounter(): void {
+    this.itemWithProducts.subscription.selected_tier.bumps.find((bump) => bump.name === this.selectedType.name).used++;
+  }
+
+  private decreaseCounter(): void {
+    this.itemWithProducts.subscription.selected_tier.bumps.find((bump) => bump.name === this.selectedType.name).used--;
+  }
+
+  private getFirstAvailableFreeOption(): Perks {
+    return this.itemWithProducts.subscription.selected_tier.bumps.find((bump) => bump.used < bump.quantity);
   }
 }
