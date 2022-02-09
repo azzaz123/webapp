@@ -25,6 +25,8 @@ export class OptimizelyService {
 
   public initialize(): void {
     import('@optimizely/optimizely-sdk').then((optimizelySdk) => {
+      if (environment.name === 'prod') optimizelySdk.setLogger(null);
+
       this.optimizelyClientInstance = optimizelySdk.createInstance({
         sdkKey: environment.optimizelySdkKey,
       });
