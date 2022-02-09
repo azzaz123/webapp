@@ -23,7 +23,7 @@ export class AcceptScreenModalComponent implements OnInit {
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties> = this.acceptScreenStoreService.properties$;
   public acceptScreenCountries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
-  public selectedCarrierPosition$: Observable<number> = this.acceptScreenStoreService.carrierSelectedIndex$;
+  public selectedCarrierIndex$: Observable<number> = this.acceptScreenStoreService.carrierSelectedIndex$;
 
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
