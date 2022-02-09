@@ -191,7 +191,6 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     img: '/assets/icons/pro/modals/bump-success.svg',
     title: $localize`:@@bump_selector_view_confirmation_modal_pro_user_title:Your item has been highlighted`,
     text1: $localize`:@@bump_selector_view_confirmation_modal_pro_user_descripton_1_part:It's now more visible, so you will receive more visits than ever before. Go for it!`,
-    style: MODAL_STYLE.GREEN,
     buttons: {
       primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
     },
