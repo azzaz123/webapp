@@ -10,6 +10,7 @@ const routes: Route[] = [
     component: InboxComponent,
     canActivate: [NgxPermissionsGuard],
     children: [
+      // TODO: Refactor in next tasks of NC
       // {
       //   path: 'messages',
       //   loadChildren: () => null,
