@@ -2307,7 +2307,7 @@
   dependencies:
     uuid "^3.3.2"
 
-"@optimizely/optimizely-sdk@^4.9.1":
+"@optimizely/optimizely-sdk@4.9.1":
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/@optimizely/optimizely-sdk/-/optimizely-sdk-4.9.1.tgz#2d9d3f7a18526973e2280c938dbb9cd6ac2c7c88"
   integrity sha512-BHwoXONZKOBI2DyXBc8gsYgPgGltCO42/11iFFc4oOnZFkR2UwO7PI2S7oeE2SN168ObTNhmEaJWgenIJuE00A==

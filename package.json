@@ -48,7 +48,7 @@
     "@mparticle/web-google-analytics-kit": "^2.1.12",
     "@mparticle/web-sdk": "^2.12.3",
     "@ng-bootstrap/ng-bootstrap": "6.0.3",
-    "@optimizely/optimizely-sdk": "^4.9.1",
+    "@optimizely/optimizely-sdk": "4.9.1",
     "@sentry/angular": "^6.8.0",
     "@sentry/tracing": "^6.15.0",
     "@types/faker": "^5.1.5",
