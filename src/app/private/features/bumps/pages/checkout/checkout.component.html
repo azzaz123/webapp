@@ -14,12 +14,17 @@
           </div>
         </div>
         <div class="Checkout__price-table">
-          <tsl-checkout-item
-            *ngFor="let item of itemsWithProducts"
-            (itemRemoved)="removeItem($event)"
-            [itemWithProducts]="item"
-            [creditInfo]="creditInfo"
-          ></tsl-checkout-item>
+          <ng-container *ngFor="let itemsBySubscription of itemsWithProducts">
+            <div *ngIf="itemsBySubscription.subscription">
+              <tsl-subscription-header-checkout [subscription]="itemsBySubscription.subscription"></tsl-subscription-header-checkout>
+            </div>
+            <tsl-checkout-item
+              *ngFor="let item of itemsBySubscription.items"
+              (itemRemoved)="removeItem($event)"
+              [itemWithProducts]="item"
+              [creditInfo]="creditInfo"
+            ></tsl-checkout-item>
+          </ng-container>
         </div>
       </div>
       <div class="Checkout__cart">

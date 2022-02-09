@@ -51,6 +51,7 @@ function mapItemWithProducts(itemWithProducts: ItemsWithAvailableProductsRespons
     item: mapItemsToLegacyItem(itemWithProducts),
     products: itemWithProducts.productList,
     isProvincialBump: !itemWithProducts.productList.find((product) => product.name === BUMP_TYPE.CITY_BUMP),
+    subscription: null,
   };
 }
 
@@ -78,6 +79,7 @@ export function mapItemWithProductsAndSubscriptionBumps(
       itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionPackageType =
         durationIndex > -1 ? subscription.type : null;
     });
+    itemWithProducts.subscription = subscription;
   }
   return itemWithProducts;
 }

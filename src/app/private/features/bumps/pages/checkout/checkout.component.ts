@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { ItemsBySubscription, ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
@@ -14,7 +14,7 @@ import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.compo
 })
 export class CheckoutComponent implements OnInit {
   @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
-  itemsWithProducts: ItemWithProducts[];
+  itemsWithProducts: ItemsBySubscription[];
   provincialBump: boolean;
   creditInfo: CreditInfo;
 
@@ -38,7 +38,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   public removeItem(itemId: string): void {
-    this.itemsWithProducts = this.itemsWithProducts.filter((itemWithProducts) => itemWithProducts.item.id !== itemId);
+    // this.itemsWithProducts = this.itemsWithProducts.filter((itemWithProducts) => itemWithProducts.item.id !== itemId);
     if (this.itemsWithProducts.length === 0) {
       this.router.navigate(['catalog/list']);
     }
@@ -70,9 +70,10 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  private setItems(itemsWithProducts: ItemWithProducts[]): void {
+  private setItems(itemsWithProducts: ItemsBySubscription[]): void {
     if (itemsWithProducts.length) {
       this.itemsWithProducts = itemsWithProducts;
+      console.log('test', this.itemsWithProducts);
     } else {
       this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
     }
