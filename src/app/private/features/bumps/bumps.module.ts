@@ -18,9 +18,10 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 import { VisibilityApiModule } from '@api/visibility/visibility-api.module';
+import { SubscriptionHeaderCheckoutComponent } from './components/subscription-header-checkout/subscription-header-checkout.component';
 
 @NgModule({
-  declarations: [CheckoutItemComponent, CartComponent, WallacoinComponent, bumpsRoutedComponents],
+  declarations: [CheckoutItemComponent, CartComponent, WallacoinComponent, bumpsRoutedComponents, SubscriptionHeaderCheckoutComponent],
   imports: [
     CommonModule,
     SvgIconModule,
