@@ -6,27 +6,19 @@
  */
 
 /**
- * Users views item detail screen with Reserve Button
+ * User clicks to access a Frequently Asked Question about shipping transactions
  */
-export interface ViewOthersItemDetailReserveSmoketest {
-  /**
-   * The unique identifier for an item
-   */
-  itemId: string;
+export interface ClickFAQTransactional {
   /**
    * Identifier of the category that the item belongs to
    */
   categoryId: number;
   /**
-   * Item price
+   * Identifier of the screen where the click is done
    */
-  salePrice: number;
+  screenId: 317;
   /**
-   * Item title
+   * The FAQ the user clicks on
    */
-  title: string;
-  /**
-   * Identifier of the screen that the item was viewed from
-   */
-  screenId: number;
+  FAQ: 'get started' | 'protection' | 'shippable products' | 'dimensions and weight' | 'packaging' | 'HPU';
 }

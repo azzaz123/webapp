@@ -6,7 +6,7 @@
  */
 
 /**
- * Buyer views P2P payment success screen
+ * Seller views payment offer screen
  */
 export interface ViewP2PPaymentOffer {
   /**
