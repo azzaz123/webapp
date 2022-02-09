@@ -223,9 +223,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   private manageKeywordChange(): void {
     this.subscription.add(
       this.filterParameterStore.parameters$.pipe(pairwise()).subscribe(([prev, curr]: [FilterParameter[], FilterParameter[]]) => {
-        const prevKeyword = prev.find((param) => param.key === FILTER_QUERY_PARAM_KEY.keywords)?.value;
-        const currKeyword = curr.find((param) => param.key === FILTER_QUERY_PARAM_KEY.keywords)?.value;
-        if (prevKeyword !== currKeyword) {
+        const getKeywordValue = (filters: FilterParameter[]): string => {
+          return filters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.keywords)?.value;
+        };
+
+        if (getKeywordValue(prev) !== getKeywordValue(curr)) {
           this.setResetSearchId(true);
         }
       })
