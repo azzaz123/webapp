@@ -7,16 +7,13 @@ describe('InboxComponent', () => {
   let component: InboxComponent;
   let fixture: ComponentFixture<InboxComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
-        declarations: [InboxComponent],
-        providers: [],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      declarations: [InboxComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InboxComponent);

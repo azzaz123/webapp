@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './notifications-inbox.component.html',
   styleUrls: ['./notifications-inbox.component.scss'],
 })
-export class NotificationsInboxComponent {
-  constructor() {}
-}
+export class NotificationsInboxComponent {}
