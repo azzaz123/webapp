@@ -686,6 +686,30 @@ describe('SearchComponent', () => {
     });
   });
 
+  describe('when a search with keyword is performed', () => {
+    const keyword = 'keyword';
+
+    beforeAll(() => {
+      component.setResetSearchId(false);
+      parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keyword }]);
+    });
+
+    describe('and the keyword is different', () => {
+      it('searchId should be reset', () => {
+        expect(component['resetSearchId']).toBeTruthy();
+      });
+    });
+
+    describe('and the keyword is the same', () => {
+      it('searchId should NOT be reset', () => {
+        component.setResetSearchId(false);
+        parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keyword }]);
+
+        expect(component['resetSearchId']).toBeFalsy();
+      });
+    });
+  });
+
   describe('when the user has permissions to view ads', () => {
     beforeEach(() => {
       permissionService.addPermission(PERMISSIONS.showAds);
