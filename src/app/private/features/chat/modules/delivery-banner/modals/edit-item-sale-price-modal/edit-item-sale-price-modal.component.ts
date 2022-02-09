@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 enum EDIT_ITEM_SALE_PRICE_ERROR {
   DEFAULT,
@@ -13,7 +14,7 @@ enum EDIT_ITEM_SALE_PRICE_ERROR {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditItemSalePriceModalComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private activeModal: NgbActiveModal) {}
 
   public readonly MIN_ITEM_PRICE: number = 1;
   public readonly MAX_ITEM_PRICE: number = 1000;
@@ -45,6 +46,10 @@ export class EditItemSalePriceModalComponent implements OnInit {
   public handleSubmit(): void {
     this.checkInputError();
     this.checkInvalidInput();
+  }
+
+  public handleClickCloseModal(): void {
+    this.activeModal.close();
   }
 
   private get newPriceFormControl(): FormControl {

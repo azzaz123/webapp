@@ -8,6 +8,12 @@
 .EditItemSalePriceModal {
   padding: $spacing-m;
 
+  &__close {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
   &__title {
     height: 50px;
   }
