@@ -142,7 +142,6 @@ export enum TRANSLATION_KEY {
   // TODO: Remaining keys with no explicit usage. Some of them might come from the backend so we need to keep it's string value
   //       We leave cleaning this keys after Italy release, as some of them come from some legacy parts (chat, calls..)
   //       and it is really difficult to follow the keys as this part needs a refactor
-
   TO_CLEAN_DEFAULT_ERROR_MESSAGE = 'defaultErrorMessage',
   TO_CLEAN_BULK_SOLD_ERROR = 'bulkSoldError',
   TO_CLEAN_PHONE_CALLS = 'phoneCalls',
@@ -181,4 +180,20 @@ export enum TRANSLATION_KEY {
   TO_CLEAN_CARS_ENGINE_OTHERS = 'others',
   TO_CLEAN_CARS_GEARBOX_MANUAL = 'manual',
   TO_CLEAN_CARS_GEARBOX_AUTOMATIC = 'automatic',
+  NOTIFICATIONS_VIEW_ALL_USERS_CATALOG_SECTION_TITLE = 'notifications_view_all_users_catalog_section_title',
+  NOTIFICATIONS_VIEW_ALL_USERS_CATALOG_SECTION_DESCRIPTION = 'notifications_view_all_users_catalog_section_description',
+  NOTIFICATIONS_VIEW_ALL_USERS_CATALOG_SECTION_ITEMS_EXPIRED_LABEL = 'notifications_view_all_users_catalog_section_items_expired_label',
+  NOTIFICATIONS_VIEW_ALL_USERS_SAVED_SEARCHES_SECTION_TITLE = 'notifications_view_all_users_saved_searches_section_title',
+  NOTIFICATIONS_VIEW_ALL_USERS_SAVED_SEARCHES_SECTION_DESCRIPTION = 'notifications_view_all_users_saved_searches_section_description',
+  NOTIFICATIONS_VIEW_ALL_USERS_SAVED_SEARCHES_SECTION_ALERTS_LABEL = 'notifications_view_all_users_saved_searches_section_alerts_label',
+  NOTIFICATIONS_VIEW_ALL_USERS_FAVORITES_SECTION_TITLE = 'notifications_view_all_users_favorites_section_title',
+  NOTIFICATIONS_VIEW_ALL_USERS_FAVORITES_SECTION_DESCRIPTION = 'notifications_view_all_users_favorites_section_description',
+  NOTIFICATIONS_VIEW_ALL_USERS_FAVORITES_SECTION_PRICE_DROPS_LABEL = 'notifications_view_all_users_favorites_section_price_drops_label',
+  NOTIFICATIONS_VIEW_ALL_USERS_FAVORITES_SECTION_FAVORITES_SOLD_LABEL = 'notifications_view_all_users_favorites_section_favorites_sold_label',
+  NOTIFICATIONS_VIEW_ALL_USERS_FAVORITES_SECTION_FAVORITES_RESERVED_LABEL = 'notifications_view_all_users_favorites_section_favorites_reserved_label',
+  NOTIFICATIONS_VIEW_ALL_USERS_FAVORITES_SECTION_NEW_ITEMS_LABEL = 'notifications_view_all_users_favorites_section_new_items_label',
+  NOTIFICATIONS_VIEW_ALL_USERS_ADDITIONAL_OPTIONS_SECTION_TITLE = 'notifications_view_all_users_additional_options_section_title',
+  NOTIFICATIONS_VIEW_ALL_USERS_ADDITIONAL_OPTIONS_SECTION_DESCRIPTION = 'notifications_view_all_users_additional_options_section_description',
+  NOTIFICATIONS_VIEW_ALL_USERS_ADDITIONAL_OPTIONS_SECTION_TIPS_SUGGESTIONS_LABEL = 'notifications_view_all_users_additional_options_section_tips_suggestions_label',
+  NOTIFICATIONS_VIEW_ALL_USERS_ADDITIONAL_OPTIONS_SECTION_PROMOS_NEWS_LABEL = 'notifications_view_all_users_additional_options_section_promos_news_label',
 }

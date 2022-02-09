@@ -6,7 +6,7 @@
  */
 
 /**
- * Users view the Login Verification Sent screen after trying a login with a suspicous device
+ * Users view the Login Verification Sent screen after trying a login with a suspicious device
  */
 export interface ViewLoginVerificationSent {
   /**

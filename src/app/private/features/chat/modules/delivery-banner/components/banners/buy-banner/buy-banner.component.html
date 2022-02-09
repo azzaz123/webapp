@@ -1,0 +1,18 @@
+<tsl-banner [specifications]="bannerStyleProperties">
+  <div class="BuyBanner d-flex h-100 w-100 align-content-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div class="BuyBanner__lottieWrapper">
+        <tsl-lottie [src]="lottie" [loop]="false"></tsl-lottie>
+      </div>
+      <div>
+        <span class="BuyBanner__description mr-1" i18n="@@chat_buyer_shipping_enabled_banner_starting_price_description_part_1"
+          >Shipping from</span
+        ><span class="BuyBanner__price">{{ bannerProperties.price }}</span>
+      </div>
+    </div>
+
+    <div>
+      <tsl-button (click)="handleClickBuy()" [className]="'btn-primary btn--thin'" i18n="@@chat_buyer_shipping_enabled_banner_buy_button">Buy</tsl-button>
+    </div>
+  </div>
+</tsl-banner>

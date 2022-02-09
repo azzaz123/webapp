@@ -8,6 +8,7 @@ import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import { DeviceService } from '@core/device/device.service';
 import { Market, MARKET_PROVIDER } from '../../../configs/market.config';
 import { APP_LOCALE } from '../../../configs/subdomains.config';
+import { mParticleUser } from './resources/mParticle-interfaces';
 import '@mparticle/web-google-analytics-kit';
 
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
@@ -27,6 +28,7 @@ export const COMMON_MPARTICLE_CONFIG = {
 })
 export class AnalyticsService {
   private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
+  private mParticleuser: mParticleUser;
   constructor(
     private userService: UserService,
     private deviceService: DeviceService,
@@ -36,6 +38,10 @@ export class AnalyticsService {
 
   public get mParticleReady$(): Observable<void> {
     return this._mParticleReady$.asObservable();
+  }
+
+  public setUserAttribute(key: string, value: string) {
+    this.mParticleuser.setUserAttribute(key, value);
   }
 
   public initialize(): void {
@@ -74,6 +80,7 @@ export class AnalyticsService {
     const mParticleUser = result.getUser();
 
     if (mParticleUser) {
+      this.mParticleuser = mParticleUser;
       mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
     }
   }

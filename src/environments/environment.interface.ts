@@ -17,4 +17,5 @@ export interface Environment {
   didomiKey: string;
   threatMetrixOrgId: string;
   threatMetrixProfilingDomain: string;
+  optimizelySdkKey: string;
 }

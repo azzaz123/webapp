@@ -1,0 +1,12 @@
+@import '~style/common';
+
+.BuyBanner {
+  &__lottieWrapper {
+    @include square(48px);
+  }
+
+  &__price {
+    color: $walla-main;
+    font-weight: $font-weight-chunky;
+  }
+}
