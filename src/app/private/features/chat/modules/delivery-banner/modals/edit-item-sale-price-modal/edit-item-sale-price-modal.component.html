@@ -8,15 +8,22 @@
   </h2>
 
   <div class="EditItemSalePriceModal__newPrice">
-    <form>
-      <label i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_placeholder">New price</label>
-      <input type="number" i18nPlaceholder="@@chçat_seller_shipping_enabled_price_edit_pop_up_placeholder" />
+    <form [formGroup]="newItemSalePriceForm">
+      <input
+        type="number"
+        formControlName="newPrice"
+        [ngClass]="{ 'EditItemSalePriceModal__newPriceInput--invalid': isInvalidInput }"
+        i18n-placeholder="@@chat_seller_shipping_enabled_price_edit_pop_up_placeholder"
+        placeholder="New price"
+      />
     </form>
   </div>
 
   <div class="EditItemSalePriceModal__submitButton w-100">
     <tsl-button
       class="w-100"
+      (click)="handleSubmit()"
+      [disabled]="isButtonDisabled"
       [className]="'btn-primary btn-modal-primary btn--width'"
       i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_save_button"
       >Save</tsl-button
