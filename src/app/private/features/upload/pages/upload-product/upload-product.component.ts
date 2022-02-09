@@ -44,7 +44,7 @@ import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } fr
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
-import { debounceTime, map, pairwise, take, tap } from 'rxjs/operators';
+import { debounceTime, map, pairwise, startWith, take, tap } from 'rxjs/operators';
 import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
@@ -230,6 +230,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public onSubmit(): void {
+    console.log('onSubmit', this.uploadForm);
     if (this.uploadForm.valid) {
       this.loading = true;
       this.proFeaturesComponent?.trackSubmit();
@@ -643,10 +644,12 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectShippabilityChanges(): void {
+    const supportsShipping = this.uploadForm.get('sale_conditions').get('supports_shipping').value;
+
     this.uploadForm
       .get('sale_conditions')
       .get('supports_shipping')
-      .valueChanges.pipe(pairwise())
+      .valueChanges.pipe(startWith(supportsShipping), pairwise())
       .subscribe(([prev, curr]: [boolean, boolean]) => {
         const deliveryInfo = this.uploadForm.get('delivery_info');
         if (prev !== curr) {
@@ -929,8 +932,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       this.isShippabilityAllowed = shippingToggleAllowance.category && shippingToggleAllowance.subcategory && shippingToggleAllowance.price;
       this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
       this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
-
-      this.setRequiredDeliveryInfo(this.isShippabilityAllowed);
 
       if (performRestartIfNecessary) {
         if (!this.isShippabilityAllowed) {
