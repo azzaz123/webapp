@@ -1,4 +1,4 @@
 <label [attr.for]="id" class="Toggle">
-    <input [attr.id]="id" type="checkbox" [(ngModel)]="value" (change)="onChange(value)">
+    <input [attr.id]="id" type="checkbox" [(ngModel)]="value" (change)="onChange(value)" [disabled]="isDisabled">
     <span class="Toggle-slider"></span>
   </label>
