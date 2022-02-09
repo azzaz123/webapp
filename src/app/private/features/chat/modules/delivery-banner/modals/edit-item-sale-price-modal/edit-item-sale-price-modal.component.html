@@ -1,18 +1,25 @@
 <div class="EditItemSalePriceModal">
-  <div class="EditItemSalePriceModal__close">
+  <div class="EditItemSalePriceModal__close d-flex justify-content-end mb-3">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
 
-  <div class="EditItemSalePriceModal__title" i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_title">Edit product price</div>
+  <h2 class="EditItemSalePriceModal__title text-center" i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_title">
+    Edit product price
+  </h2>
 
   <div class="EditItemSalePriceModal__newPrice">
     <form>
       <label i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_placeholder">New price</label>
-      <input type="number" i18nPlaceholder="@@chat_seller_shipping_enabled_price_edit_pop_up_placeholder" />
+      <input type="number" i18nPlaceholder="@@chçat_seller_shipping_enabled_price_edit_pop_up_placeholder" />
     </form>
   </div>
 
-  <div class="EditItemSalePriceModal__submitButton">
-    <tsl-button i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_save_button">Save</tsl-button>
+  <div class="EditItemSalePriceModal__submitButton w-100">
+    <tsl-button
+      class="w-100"
+      [className]="'btn-primary btn-modal-primary btn--width'"
+      i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_save_button"
+      >Save</tsl-button
+    >
   </div>
 </div>

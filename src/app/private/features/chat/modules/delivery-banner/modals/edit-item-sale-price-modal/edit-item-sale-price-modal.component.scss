@@ -1,0 +1,13 @@
+@import '~style/common';
+
+.EditItemSalePriceModal {
+  padding: $spacing-m;
+
+  &__title {
+    height: 50px;
+  }
+
+  &__newPrice {
+    height: 74px;
+  }
+}
