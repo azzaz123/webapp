@@ -14,10 +14,6 @@
     }
   }
 
-  &__title {
-    height: 50px;
-  }
-
   &__newPrice {
     @include hide-input-numeric-arrows();
     height: 74px;
