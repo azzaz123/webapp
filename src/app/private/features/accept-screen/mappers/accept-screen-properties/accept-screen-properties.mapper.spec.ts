@@ -21,8 +21,7 @@ import {
   MOCK_CARRIER_DROP_OFF_MODE_REQUEST_EMPTY,
   MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_FREE_AND_ONE_EURO_COST,
   MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_FREE_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
-  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_BUYER_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
-  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_CARRIER_OFFICE_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
+  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_LAST_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
 } from '@fixtures/private/delivery/accept-screen/carrier-drop-off-mode-request.fixtures.spec';
 import {
   MOCK_DELIVERY_ADDRESS,
@@ -32,8 +31,7 @@ import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import {
   MOCK_ACCEPT_SCREEN_CARRIERS,
   MOCK_ACCEPT_SCREEN_CARRIERS_2,
-  MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS,
-  MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_CARRIER_OFFICE,
+  MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_LAST_ADDRESS,
   MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties-carriers.fixtures.spec';
 
@@ -127,26 +125,13 @@ describe('mapCarrierDropOffModeToAcceptScreenCarriers', () => {
 
         describe('and one carrier is PO', () => {
           describe('and it has last address defined', () => {
-            describe('and the delivery mode was buyer address', () => {
-              it('should return the carrier mapped with secondary information defined', () => {
-                const expectedCarriers = mapCarrierDropOffModeToAcceptScreenCarriers(
-                  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_BUYER_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
-                  CARRIER_DROP_OFF_MODE.HOME_PICK_UP
-                );
+            it('should return the carrier mapped with secondary information defined', () => {
+              const expectedCarriers = mapCarrierDropOffModeToAcceptScreenCarriers(
+                MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_LAST_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
+                CARRIER_DROP_OFF_MODE.HOME_PICK_UP
+              );
 
-                expect(expectedCarriers).toEqual(MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS);
-              });
-            });
-
-            describe('and the delivery mode was carrier office', () => {
-              it('should return the carrier mapped with secondary information defined', () => {
-                const expectedCarriers = mapCarrierDropOffModeToAcceptScreenCarriers(
-                  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_CARRIER_OFFICE_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
-                  CARRIER_DROP_OFF_MODE.POST_OFFICE
-                );
-
-                expect(expectedCarriers).toEqual(MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_CARRIER_OFFICE);
-              });
+              expect(expectedCarriers).toEqual(MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_LAST_ADDRESS);
             });
           });
         });

@@ -4,7 +4,6 @@ import {
   CarrierDropOffModeRequest,
   DropOffModeRequest,
 } from '@api/core/model/delivery/carrier-drop-off-mode/carrier-drop-off-mode-request.interface';
-import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 
 export const MOCK_CARRIER_FREE_COST: DropOffModeRequest = {
@@ -50,7 +49,7 @@ export const MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED: DropOffModeRequest = {
   },
 };
 
-export const MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS: DropOffModeRequest = {
+export const MOCK_CARRIER_PO_WITH_LAST_ADDRESS: DropOffModeRequest = {
   type: CARRIER_DROP_OFF_MODE.POST_OFFICE,
   icon: 'http://localhost/random_icon.png',
   postOfficeDetails: {
@@ -59,20 +58,6 @@ export const MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS: DropOffModeRequest
     selectionRequired: true,
   },
   sellerCosts: mapAmountAndCurrenyToMoney({ amount: 4, currency: 'EUR' }),
-  acceptEndpoint: 'random value',
-  restrictions: 'RESTRICTIONS',
-  schedule: null,
-};
-
-export const MOCK_CARRIER_PO_WITH_LAST_ADDRESS_CARRIER_OFFICE: DropOffModeRequest = {
-  type: CARRIER_DROP_OFF_MODE.POST_OFFICE,
-  icon: 'http://localhost/random_icon2.png',
-  postOfficeDetails: {
-    carrier: POST_OFFICE_CARRIER.CORREOS,
-    lastAddressUsed: { id: 'asdsdbc', label: 'This is the last address used 2' },
-    selectionRequired: false,
-  },
-  sellerCosts: mapAmountAndCurrenyToMoney({ amount: 1, currency: 'EUR' }),
   acceptEndpoint: 'random value',
   restrictions: 'RESTRICTIONS',
   schedule: null,
@@ -123,10 +108,6 @@ export const MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_FREE_AND_ONE_HPU_WITH_SCHEDU
   modes: [MOCK_CARRIER_FREE_COST, MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED],
 };
 
-export const MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_BUYER_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED: CarrierDropOffModeRequest = {
-  modes: [MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS, MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED],
-};
-
-export const MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_CARRIER_OFFICE_AND_ONE_HPU_WITH_SCHEDULE_DEFINED: CarrierDropOffModeRequest = {
-  modes: [MOCK_CARRIER_PO_WITH_LAST_ADDRESS_CARRIER_OFFICE, MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED],
+export const MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_LAST_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED: CarrierDropOffModeRequest = {
+  modes: [MOCK_CARRIER_PO_WITH_LAST_ADDRESS, MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED],
 };
