@@ -345,7 +345,7 @@ describe('DeliveryAddressComponent', () => {
           spyOn(toastService, 'show');
           spyOn(component, 'initForm');
           spyOn(router, 'navigate');
-          spyOn(component.addressSaveSucced, 'emit');
+          spyOn(component.addressSaveSucceded, 'emit');
         });
 
         it('should call the event track save click event', () => {
@@ -372,7 +372,7 @@ describe('DeliveryAddressComponent', () => {
         it('should emit the save succeed', () => {
           component.onSubmit();
 
-          expect(component.addressSaveSucced.emit).toHaveBeenCalledTimes(1);
+          expect(component.addressSaveSucceded.emit).toHaveBeenCalledTimes(1);
         });
 
         describe('when redirecting to the next page...', () => {
@@ -404,7 +404,7 @@ describe('DeliveryAddressComponent', () => {
 
       describe('and the save fails...', () => {
         beforeEach(() => {
-          spyOn(component.addressSaveSucced, 'emit');
+          spyOn(component.addressSaveSucceded, 'emit');
         });
 
         describe('and when the fail is because server notifies flat and floor too long and mobile phone number is invalid', () => {
@@ -437,7 +437,7 @@ describe('DeliveryAddressComponent', () => {
           });
 
           it('should NOT emit the save succeed', () => {
-            expect(component.addressSaveSucced.emit).not.toHaveBeenCalled();
+            expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
           });
         });
 
@@ -467,7 +467,7 @@ describe('DeliveryAddressComponent', () => {
           });
 
           it('should NOT emit the save succeed', () => {
-            expect(component.addressSaveSucced.emit).not.toHaveBeenCalled();
+            expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
           });
         });
 
@@ -491,7 +491,7 @@ describe('DeliveryAddressComponent', () => {
           });
 
           it('should NOT emit the save succeed', () => {
-            expect(component.addressSaveSucced.emit).not.toHaveBeenCalled();
+            expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
           });
         });
       });
@@ -499,7 +499,7 @@ describe('DeliveryAddressComponent', () => {
 
     describe('when the form is NOT valid...', () => {
       beforeEach(() => {
-        spyOn(component.addressSaveSucced, 'emit');
+        spyOn(component.addressSaveSucceded, 'emit');
         spyOn(toastService, 'show');
         spyOn(deliveryAddressTrackEventsService, 'trackClickSaveButton');
         spyOn(component, 'onSubmit').and.callThrough();
@@ -524,7 +524,7 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should NOT emit the save succeed', () => {
-          expect(component.addressSaveSucced.emit).not.toHaveBeenCalled();
+          expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
         });
 
         describe.each(['street', 'phone_number', 'postal_code'])('the form control...', (controlName: string) => {
@@ -547,7 +547,7 @@ describe('DeliveryAddressComponent', () => {
         });
 
         it('should NOT emit the save succeed', () => {
-          expect(component.addressSaveSucced.emit).not.toHaveBeenCalled();
+          expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
         });
 
         describe.each(['street', 'full_name', 'flat_and_floor'])('the form input...', (controlName: string) => {

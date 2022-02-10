@@ -18,16 +18,16 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
   styleUrls: ['./accept-screen-modal.component.scss'],
 })
 export class AcceptScreenModalComponent implements OnInit {
-  @ViewChild(StepperComponent, { static: true }) stepper: StepperComponent;
+  @ViewChild(StepperComponent) stepper: StepperComponent;
 
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties> = this.acceptScreenStoreService.properties$;
   public acceptScreenCountries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
   public carrierSelectedIndex$: Observable<number> = this.acceptScreenStoreService.carrierSelectedIndex$;
+  public ACCEPT_SCREEN_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
 
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
-  public ACCEPT_SCREEN_HELP_URL: string;
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
 
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
@@ -42,7 +42,6 @@ export class AcceptScreenModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.ACCEPT_SCREEN_HELP_URL = this.getHelpURL();
     this.acceptScreenStoreService.initialize(this.requestId);
     this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
   }
@@ -52,31 +51,25 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   public goToDeliveryAddress(): void {
-    this.goSpecificStep(this.deliveryAddressSlideId);
+    this.goToStep(this.deliveryAddressSlideId);
   }
 
   public goToAcceptScreen(): void {
-    this.goSpecificStep(this.acceptScreenSlideId);
+    this.goToStep(this.acceptScreenSlideId);
+    this.acceptScreenStoreService.update(this.requestId);
   }
 
   public closeModal(): void {
     this.activeModal.close();
   }
 
-  private goSpecificStep(slideId: ACCEPT_SCREEN_STEPS): void {
-    this.stepper.goSpecificStep(slideId);
+  private goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
+    this.stepper.goToStep(slideId);
     this.refreshStepProperties(slideId);
-    if (this.isAcceptScreenStep) {
-      this.acceptScreenStoreService.update(this.requestId);
-    }
   }
 
   private refreshStepProperties(slideId: number): void {
     this.headerText = this.ACCEPT_SCREEN_HEADER_TRANSLATIONS[slideId];
     this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
-  }
-
-  private getHelpURL(): string {
-    return this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
   }
 }

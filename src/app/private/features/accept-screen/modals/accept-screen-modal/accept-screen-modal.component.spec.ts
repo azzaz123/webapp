@@ -124,10 +124,6 @@ describe('AcceptScreenModalComponent', () => {
     });
 
     describe('and we are on the accept screen step', () => {
-      beforeEach(() => {
-        component.stepper.activeId = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
-      });
-
       describe('the header...', () => {
         beforeEach(() => {
           fixture.detectChanges();
@@ -404,7 +400,7 @@ describe('AcceptScreenModalComponent', () => {
               beforeEach(() => {
                 const deliveryAddressComponent = fixture.debugElement.query(By.css(deliveryAddressSelector));
 
-                deliveryAddressComponent.triggerEventHandler('addressSaveSucced', {});
+                deliveryAddressComponent.triggerEventHandler('addressSaveSucceded', {});
               });
 
               it('should redirect to the accept screen step', () => {

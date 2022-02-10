@@ -32,9 +32,9 @@
         </div>
       </div>
     </div>
-    <tsl-stepper>
+    <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties">
       <ng-template step>
-        <div class="row" *ngIf="acceptScreenProperties$ | async as properties">
+        <div class="row">
           <div class="col">
             <div class="row">
               <div class="col p-0">
@@ -151,7 +151,7 @@
           *ngIf="acceptScreenCountries$ | async"
           [showTitle]="false"
           [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
-          (addressSaveSucced)="goToAcceptScreen()"
+          (addressSaveSucceded)="goToAcceptScreen()"
         ></tsl-delivery-address>
       </ng-template>
     </tsl-stepper>

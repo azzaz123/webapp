@@ -110,13 +110,13 @@ describe('StepperComponent', () => {
 
     describe('and we trigger for an specific step...', () => {
       beforeEach(() => {
-        spyOn(component, 'goSpecificStep').and.callThrough();
+        spyOn(component, 'goToStep').and.callThrough();
       });
       describe('and it is an existing step', () => {
         it('should go to the specific step', () => {
           const stepId: number = component.steps.length - 1;
 
-          component.goSpecificStep(stepId);
+          component.goToStep(stepId);
 
           expect(component.activeId).toBe(stepId);
         });
@@ -128,7 +128,7 @@ describe('StepperComponent', () => {
           const stepId: number = component.steps.length + 1;
           component.activeId = actualPage;
 
-          component.goSpecificStep(stepId);
+          component.goToStep(stepId);
 
           expect(component.activeId).toBe(actualPage);
         });
@@ -140,7 +140,7 @@ describe('StepperComponent', () => {
           const stepId: number = -1;
           component.activeId = actualPage;
 
-          component.goSpecificStep(stepId);
+          component.goToStep(stepId);
 
           expect(component.activeId).toBe(actualPage);
         });

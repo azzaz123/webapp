@@ -61,7 +61,7 @@ import { DeliveryCountriesStoreService } from '../../services/countries/delivery
 export class DeliveryAddressComponent implements OnInit, OnDestroy {
   @Input() showTitle: boolean = true;
   @Input() whereUserComes: DELIVERY_ADDRESS_PREVIOUS_PAGE;
-  @Output() addressSaveSucced: EventEmitter<void> = new EventEmitter();
+  @Output() addressSaveSucceded: EventEmitter<void> = new EventEmitter();
 
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
@@ -364,7 +364,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
           this.formComponent.initFormControl();
           this.isNewForm = false;
           this.showToast(successKey, TOAST_TYPES.SUCCESS);
-          this.addressSaveSucced.emit();
+          this.addressSaveSucceded.emit();
           this.redirect();
         },
         (errors: DeliveryAddressError[]) => this.handleAddressErrors(errors)
