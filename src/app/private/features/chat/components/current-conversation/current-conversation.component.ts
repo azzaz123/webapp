@@ -119,6 +119,11 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       if (this.currentConversation.isAutomaticallyTranslatable) {
         this.translateConversation();
       }
+
+      const shouldRefreshDeliveryContext: boolean = this.deliveryContextNeedsRefresh(message);
+      if (shouldRefreshDeliveryContext) {
+        this.refreshDeliveryContext();
+      }
     });
 
     this.eventService.subscribe(EventService.MORE_MESSAGES_LOADED, (conversation: InboxConversation) => {
@@ -144,11 +149,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
       this.openMaliciousConversationModal();
       this.isConversationChanged = true;
       this.isTopBarExpanded = this.currentConversation && isEmpty(this.currentConversation.messages);
-
-      this.deliveryConversationContextService.reset();
-      if (this.currentConversation) {
-        this.deliveryConversationContextService.update(this.currentConversation);
-      }
+      this.refreshDeliveryContext();
     }
   }
 
@@ -230,6 +231,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     return includes(ThirdVoiceReviewComponent.ALLOW_MESSAGES_TYPES, messageType);
   }
 
+  public isDeliveryThirdVoice(messageType: MessageType): boolean {
+    return messageType === MessageType.DELIVERY || messageType === MessageType.DELIVERY_GENERIC;
+  }
+
   public scrollToLastMessage(): void {
     const lastMessage = document.querySelector('.message-body');
     if (lastMessage) {
@@ -278,7 +283,17 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public handleDeliveryBannerCTAClick(deliveryBannerActionType: DELIVERY_BANNER_ACTION): void {
-    this.deliveryConversationContextService.handleClickCTA(this.currentConversation, deliveryBannerActionType);
+    this.deliveryConversationContextService.handleBannerCTAClick(this.currentConversation, deliveryBannerActionType);
+  }
+
+  public handleDeliveryThirdVoiceCTAClick(): void {
+    this.deliveryConversationContextService.handleThirdVoiceCTAClick(this.currentConversation);
+  }
+
+  private deliveryContextNeedsRefresh(newMessage: InboxMessage): boolean {
+    const isRealTimeDeliveryThirdVoice: boolean = newMessage.type === MessageType.DELIVERY;
+    const isMessageInCurrentConversation: boolean = !!this.currentConversation.messages.find((m) => m.id === newMessage.id);
+    return isRealTimeDeliveryThirdVoice && isMessageInCurrentConversation;
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
@@ -324,6 +339,13 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   private handleUserConfirmsMaliciousModal(): void {
     this.inboxConversationService.currentConversation = null;
     this.trackClickMaliciousModalCTAButton();
+  }
+
+  private refreshDeliveryContext(): void {
+    this.deliveryConversationContextService.reset();
+    if (this.currentConversation) {
+      this.deliveryConversationContextService.update(this.currentConversation);
+    }
   }
 
   private trackClickMaliciousModalCTAButton(): void {
