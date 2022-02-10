@@ -2,7 +2,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
-import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
 import { PRIVATE_PATH_PARAMS } from '@private/private-routing-constants';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';

@@ -5,7 +5,9 @@ import { map, take } from 'rxjs/operators';
 import { PaymentsWalletsHttpService } from './http/payments-wallets-http.service';
 import { mapPaymentsWalletsApiToMoney } from './mappers/responses/payments-wallets.mapper';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentsWalletsService {
   constructor(private paymentsWalletsHttpService: PaymentsWalletsHttpService) {}
 

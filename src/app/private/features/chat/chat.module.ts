@@ -33,7 +33,6 @@ import { ItemReservedComponent } from '@private/features/chat/children/item/comp
 import { ItemSoldComponent } from '@private/features/chat/children/item/components/item-sold';
 import { MaliciousConversationModalComponent } from '@private/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
 import { MessageModule } from '@private/features/chat/children/message';
-import { PaymentsWalletsModule } from '@api/payments/wallets/payments-wallets.module';
 import { PersonalDataInformationModal } from '@private/features/chat/modals/personal-data-information-modal/personal-data-information-modal.component';
 import { ScrollingMessageComponent } from '@private/features/chat/components/scrolling-message';
 import { SharedModule } from '@shared/shared.module';
@@ -63,7 +62,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     TranslateButtonModule,
     ChatApiModule,
     DeliveryBannerModule,
-    PaymentsWalletsModule,
     DeliveryConversationContextModule,
   ],
   declarations: [
