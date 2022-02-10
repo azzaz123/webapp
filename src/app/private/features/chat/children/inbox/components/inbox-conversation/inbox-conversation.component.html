@@ -45,6 +45,9 @@
             <tsl-third-voice-review [message]="conversation.lastMessage" [user]="conversation.user"
                                     [item]="conversation.item"
                                     [shortMessage]="true"></tsl-third-voice-review>
+          <p *ngIf="conversation.lastMessage && isDeliveryThirdVoice(conversation.lastMessage.type)" class="message">
+            <tsl-third-voice-delivery [message]="conversation.lastMessage"
+                                    [shortMessage]="true"></tsl-third-voice-delivery>
           </p>
         </div>
       </div>

@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { InboxItem, InboxUser, MessageType } from '@private/features/chat/core/model';
-import { eq } from 'lodash-es';
+import { Component } from '@angular/core';
+import { MessageType } from '@private/features/chat/core/model';
 import { MessageComponent } from '../../message.component';
 
 @Component({
@@ -9,10 +8,7 @@ import { MessageComponent } from '../../message.component';
   styleUrls: ['./third-voice-message.component.scss', '../../message.component.scss'],
 })
 export class ThirdVoiceMessageComponent extends MessageComponent {
-  @Input() user: InboxUser;
-  @Input() item: InboxItem;
-
   public isReview(): boolean {
-    return eq(this.message.type, MessageType.REVIEW);
+    return this.message.type === MessageType.REVIEW;
   }
 }

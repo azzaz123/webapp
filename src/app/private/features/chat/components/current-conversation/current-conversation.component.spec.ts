@@ -21,6 +21,10 @@ import {
   MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY,
   MOCK_CONVERSATION,
   InboxConversationServiceMock,
+  MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE_WITHOUT_PAYLOAD,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE,
 } from '@fixtures/chat';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
@@ -54,6 +58,7 @@ import { DeliveryConversationContextService } from '@private/features/chat/modul
 import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 import { DELIVERY_BANNER_ACTION } from '../../modules/delivery-banner/enums/delivery-banner-action.enum';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
+import { ThirdVoiceDeliveryComponent } from '../../children/message/components/third-voice-delivery/third-voice-delivery.component';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -76,7 +81,14 @@ describe('CurrentConversationComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NgxPermissionsModule.forRoot(), HttpClientTestingModule, ChatApiModule],
-        declarations: [CurrentConversationComponent, DateCalendarPipe, ScrollingMessageComponent, InputComponent, DeliveryBannerComponent],
+        declarations: [
+          CurrentConversationComponent,
+          DateCalendarPipe,
+          ScrollingMessageComponent,
+          InputComponent,
+          DeliveryBannerComponent,
+          ThirdVoiceDeliveryComponent,
+        ],
         providers: [
           EventService,
           NgbModal,
@@ -125,7 +137,8 @@ describe('CurrentConversationComponent', () => {
               bannerProperties$: mockDeliveryBannerSubject$,
               update: () => {},
               reset: () => {},
-              handleClickCTA: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION) => {},
+              handleBannerCTAClick: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION) => {},
+              handleThirdVoiceCTAClick: (conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION) => {},
             },
           },
         ],
@@ -240,13 +253,16 @@ describe('CurrentConversationComponent', () => {
 
       describe('and when the user clicks on the CTA of the banner', () => {
         it('should ask for CTA action handling to the delivery context', () => {
-          spyOn(deliveryConversationContextService, 'handleClickCTA');
+          spyOn(deliveryConversationContextService, 'handleBannerCTAClick');
           const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
           const expectedActionType: DELIVERY_BANNER_ACTION = MOCK_BUY_DELIVERY_BANNER_PROPERTIES.action;
 
           deliveryBannerElement.triggerEventHandler('clickedCTA', expectedActionType);
 
-          expect(deliveryConversationContextService.handleClickCTA).toHaveBeenCalledWith(component.currentConversation, expectedActionType);
+          expect(deliveryConversationContextService.handleBannerCTAClick).toHaveBeenCalledWith(
+            component.currentConversation,
+            expectedActionType
+          );
         });
       });
     });
@@ -262,6 +278,66 @@ describe('CurrentConversationComponent', () => {
         const deliveryBannerElement = debugElement.query(By.directive(DeliveryBannerComponent));
 
         expect(deliveryBannerElement).toBeFalsy();
+      });
+    });
+
+    describe('when conversation has delivery third voices', () => {
+      let deliveryThirdVoiceElement: DebugElement;
+
+      beforeEach(() => {
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES, false),
+        });
+        fixture.detectChanges();
+        deliveryThirdVoiceElement = debugElement.query(By.directive(ThirdVoiceDeliveryComponent));
+      });
+
+      it('should show generic delivery third voices', () => {
+        expect(deliveryThirdVoiceElement).toBeTruthy();
+      });
+
+      it('should pass message to delivery third voice', () => {
+        expect(deliveryThirdVoiceElement.componentInstance.message).toEqual(MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE);
+      });
+
+      describe('and the user clicks the CTA from the third voice', () => {
+        beforeEach(() => {
+          spyOn(deliveryConversationContextService, 'handleThirdVoiceCTAClick');
+          deliveryThirdVoiceElement.triggerEventHandler('clickedCTA', {});
+        });
+
+        it('should delegate handling the action to delivery context', () => {
+          expect(deliveryConversationContextService.handleThirdVoiceCTAClick).toHaveBeenCalledTimes(1);
+          expect(deliveryConversationContextService.handleThirdVoiceCTAClick).toHaveBeenCalledWith(
+            MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES
+          );
+        });
+      });
+    });
+
+    describe('when new third voice is received in realtime for current conversation', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(deliveryConversationContextService, 'reset');
+        spyOn(deliveryConversationContextService, 'update');
+
+        MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES.messages.push(MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE);
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES;
+        eventService.emit(EventService.MESSAGE_ADDED, MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE);
+        tick();
+      }));
+
+      afterEach(() => {
+        MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES.messages.pop();
+      });
+
+      it('should ask for delivery conversation context to reset information', () => {
+        expect(deliveryConversationContextService.reset).toHaveBeenCalledTimes(1);
+      });
+
+      it('should ask for delivery convesration context for current conversation', () => {
+        expect(deliveryConversationContextService.update).toHaveBeenCalledTimes(1);
+        expect(deliveryConversationContextService.update).toHaveBeenCalledWith(MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES);
       });
     });
   });
