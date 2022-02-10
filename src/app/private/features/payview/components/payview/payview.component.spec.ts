@@ -79,9 +79,6 @@ describe('PayviewComponent', () => {
   describe('when the Payview initializes...', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve() });
-      payviewStateManagement.itemHash$.subscribe((result: string) => {
-        itemHash = result;
-      });
 
       fixture.detectChanges();
     });
@@ -89,10 +86,6 @@ describe('PayviewComponent', () => {
     it('should open the payview overview component', () => {
       expect(modalService.open).toHaveBeenCalledTimes(1);
       expect(modalService.open).toHaveBeenCalledWith(PayviewModalComponent);
-    });
-
-    it('should set the item id passed as parameter', () => {
-      expect(itemHash).toBe(fakeItemHash);
     });
   });
 });
