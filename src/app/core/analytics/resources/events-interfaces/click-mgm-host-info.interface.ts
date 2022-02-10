@@ -12,5 +12,5 @@ export interface ClickMGMHostInfo {
   /**
    * Identifier of the screen where the user clicked to see more MGM Info
    */
-  screenId: 293;
+  screenId: 293 | 315;
 }

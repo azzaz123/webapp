@@ -117,7 +117,7 @@ $vertical-padding: $spacing-ms;
   &.btn-third-voice {
     background-color: $softblue-dark;
     font-size: $font-size-s;
-    padding: $spacing-ms $spacing-ml;
+    padding: $spacing-s $spacing-xl;
   }
   &.stripe {
     padding: $spacing-s $spacing-ml;
@@ -245,11 +245,18 @@ $vertical-padding: $spacing-ms;
   &--width {
     width: 100%;
   }
+
   &--big {
     height: 50px;
   }
 
   &--noPadding {
     padding: 0;
+  }
+
+  &--thin {
+    padding: 11px 19px;
+    line-height: 20px;
+    border: 0px;
   }
 }

@@ -30,6 +30,10 @@ div {
   @include square(40px);
 }
 
+.avatar-48 {
+  @include square(48px);
+}
+
 .avatar-50 {
   @include square(50px);
 }
@@ -38,4 +42,5 @@ div {
   background-size: cover;
   border-radius: 50%;
   background-position: center;
+  object-fit: cover;
 }

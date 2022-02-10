@@ -150,12 +150,11 @@ export class ItemService {
     }
   }
 
-  public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
+  public getPaginationItems(url: string, next?): Observable<ItemsData> {
     return this.http
       .get<HttpResponse<ItemResponse[]>>(`${environment.baseUrl}${url}`, {
         params: {
-          init: init,
-          expired: status,
+          since: next,
         },
         observe: 'response' as 'body',
       })
@@ -163,16 +162,8 @@ export class ItemService {
         map((r) => {
           const res: ItemResponse[] = r.body;
           const nextPage: string = r.headers.get('x-nextpage');
+          const params = new URLSearchParams(nextPage);
 
-          let params = {};
-          if (nextPage) {
-            nextPage.split('&').forEach((paramSplit) => {
-              const paramValues = paramSplit.split('=');
-              params[paramValues[0]] = paramValues[1];
-            });
-          }
-
-          const nextInit = params && params['init'] ? +params['init'] : null;
           let data: Item[] = [];
           if (res.length > 0) {
             data = res.map((i: ItemResponse) => {
@@ -185,7 +176,7 @@ export class ItemService {
           }
           return {
             data: data,
-            init: nextInit,
+            since: params.get('since'),
           };
         }),
         mergeMap((itemsData: ItemsData) => {
@@ -224,20 +215,8 @@ export class ItemService {
       );
   }
 
-  public mine(init: number, status?: string): Observable<ItemsData> {
-    return this.getPaginationItems(WEB_ITEMS_API_URL + '/mine/' + status, init, true);
-  }
-
-  public myFavorites(init: number): Observable<ItemsData> {
-    return this.getPaginationItems(USERS_API_URL + '/me/items/favorites', init).pipe(
-      map((itemsData: ItemsData) => {
-        itemsData.data = itemsData.data.map((item: Item) => {
-          item.favorited = true;
-          return item;
-        });
-        return itemsData;
-      })
-    );
+  public mine(next: string, status?: string): Observable<ItemsData> {
+    return this.getPaginationItems(ITEMS_API_URL + '/mine/' + status, next);
   }
 
   public deleteItem(id: string): Observable<any> {

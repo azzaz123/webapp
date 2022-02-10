@@ -11,7 +11,7 @@ import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
 import { AdSlotGroupShoppingComponentStub } from '@fixtures/shared/components/ad-slot-group-shopping.component.stub';
 import { AdComponentStub } from '@fixtures/shared/components/ad.component.stub';
 import { ItemCardListComponentStub } from '@fixtures/shared/components/item-card-list.component.stub';
-import { SearchErrorLayoutComponentStub } from '@fixtures/shared/components/search-error-layout.component.stub';
+import { SearchErrorLayoutStubComponent } from '@fixtures/shared/components/search-error-layout-stub.component';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-types.enum';
@@ -58,6 +58,8 @@ import { SortByService } from '../components/sort-filter/services/sort-by.servic
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
+import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -131,7 +133,7 @@ describe('SearchComponent', () => {
       declarations: [
         SearchComponent,
         SearchLayoutComponent,
-        SearchErrorLayoutComponentStub,
+        SearchErrorLayoutStubComponent,
         AdComponentStub,
         AdSlotGroupShoppingComponentStub,
         AdSlotShoppingComponentStub,
@@ -190,6 +192,10 @@ describe('SearchComponent', () => {
         {
           provide: SearchTrackingEventsService,
           useClass: MockSearchTrackingEventsService,
+        },
+        {
+          provide: ExperimentationService,
+          useValue: ExperimentationServiceMock,
         },
         {
           provide: SITE_URL,
@@ -676,6 +682,30 @@ describe('SearchComponent', () => {
 
       it('should set searchId reset status', () => {
         expect(component['resetSearchId']).toBeTruthy();
+      });
+    });
+  });
+
+  describe('when a search with keyword is performed', () => {
+    const keyword = 'keyword';
+
+    beforeAll(() => {
+      component.setResetSearchId(false);
+      parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keyword }]);
+    });
+
+    describe('and the keyword is different', () => {
+      it('searchId should be reset', () => {
+        expect(component['resetSearchId']).toBeTruthy();
+      });
+    });
+
+    describe('and the keyword is the same', () => {
+      it('searchId should NOT be reset', () => {
+        component.setResetSearchId(false);
+        parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keyword }]);
+
+        expect(component['resetSearchId']).toBeFalsy();
       });
     });
   });

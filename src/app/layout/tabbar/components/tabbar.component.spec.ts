@@ -349,6 +349,17 @@ describe('TabbarComponent', () => {
   });
 
   describe('when the user clicks on the home tab', () => {
+    it('should prevent the default router navigation', () => {
+      const event = new MouseEvent('click');
+      spyOn(event, 'stopPropagation');
+      spyOn(event, 'preventDefault');
+
+      component.navigateToSearchPage(event);
+
+      expect(event.stopPropagation).toHaveBeenCalledTimes(1);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+    });
+
     it('should open the Search page', () => {
       spyOn(searchNavigatorService, 'navigateWithLocationParams');
       const homeTabEl = fixture.debugElement.query(By.css(homeTabClass)).nativeElement;

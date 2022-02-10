@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FALLBACK_ITEM_SRC, FALLBACK_USER_SRC } from '../../constants/fallback-images-src-constants';
+import { FALLBACK_ITEM_SRC, FALLBACK_USER_SRC } from '@private/core/constants/fallback-images-src-constants';
 import { TransactionInfo } from '../../interfaces/transaction-info.interface';
 
 @Component({

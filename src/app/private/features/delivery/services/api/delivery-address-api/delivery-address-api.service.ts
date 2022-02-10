@@ -15,7 +15,9 @@ export const ADDRESS_ACCEPT_HEADER = (action: 'get' | 'create' | 'update') => {
 export const DELIVERY_ADDRESS_API_URL = `${environment.baseUrl}api/v3/delivery/addresses/main/`;
 export const DELIVERY_ADDRESS_ID = (addressId: string) => `${DELIVERY_ADDRESS_API_URL}${addressId}`;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryAddressApiService {
   private errorMapper: DeliveryAddressErrorMapper = new DeliveryAddressErrorMapper();
 

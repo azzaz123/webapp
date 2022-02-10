@@ -1,5 +1,4 @@
-import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
-import { CurrencyCode } from '@api/core/model/currency.interface';
+import { mapAmountAndCurrenyToMoney } from '@api/core/mappers';
 import { SellerRequestBuyer } from '@api/core/model/delivery/seller-requests/seller-request-buyer.interface';
 import { SellerRequestPaymentAndRequestStatus } from '@api/core/model/delivery/seller-requests/seller-request-payment-and-request-status.interface';
 import { SellerRequestRevenue } from '@api/core/model/delivery/seller-requests/seller-request-revenue.interface';
@@ -11,7 +10,6 @@ import { ToDomainMapper } from '@api/core/utils/types';
 import {
   SellerPaymentStatusDto,
   SellerRequestBuyerAddressDto,
-  SellerRequestCostDto,
   SellerRequestDto,
   SellerRequestPaymentAndRequestStatusDto,
   SellerRequestRevenueDto,
@@ -41,7 +39,7 @@ export const mapSellerRequestDtoToSellerRequest: ToDomainMapper<SellerRequestDto
   const creationDate: Date = new Date(input.created_at);
   const buyer: SellerRequestBuyer = getSellerRequestBuyer(input.buyer_user_hash, input.buyer_address);
   const failReason: SellerRequestPaymentAndRequestStatus = getSellerRequestPaymentAndRequestStatus(input.fail_reason);
-  const offeredPrice: Money = mapMoneyToDomain(input.offered_price);
+  const offeredPrice: Money = mapAmountAndCurrenyToMoney(input.offered_price);
   const sellerRevenue: SellerRequestRevenue = getSellerRevenue(input.seller_revenue);
   const status: SellerRequestPaymentAndRequestStatus = getSellerRequestPaymentAndRequestStatus(input.status);
 
@@ -77,10 +75,10 @@ const getSellerRequestPaymentAndRequestStatus = (
 };
 
 const getSellerRevenue = (revenue: SellerRequestRevenueDto): SellerRequestRevenue => {
-  const deliveryCost: Money = mapMoneyToDomain(revenue.delivery_cost);
-  const feesCost: Money = mapMoneyToDomain(revenue.fees_cost);
-  const itemPrice: Money = mapMoneyToDomain(revenue.item);
-  const totalPrice: Money = mapMoneyToDomain(revenue.total);
+  const deliveryCost: Money = mapAmountAndCurrenyToMoney(revenue.delivery_cost);
+  const feesCost: Money = mapAmountAndCurrenyToMoney(revenue.fees_cost);
+  const itemPrice: Money = mapAmountAndCurrenyToMoney(revenue.item);
+  const totalPrice: Money = mapAmountAndCurrenyToMoney(revenue.total);
 
   return {
     deliveryCost,
@@ -88,11 +86,4 @@ const getSellerRevenue = (revenue: SellerRequestRevenueDto): SellerRequestRevenu
     itemPrice,
     totalPrice,
   };
-};
-
-const mapMoneyToDomain = (costDto: SellerRequestCostDto): Money => {
-  return mapNumberAndCurrencyCodeToMoney({
-    number: costDto.amount,
-    currency: costDto.currency as CurrencyCode,
-  });
 };

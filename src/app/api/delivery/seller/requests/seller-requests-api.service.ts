@@ -6,7 +6,9 @@ import { SellerRequestDto } from './dtos/seller-request-dto.interface';
 import { SellerRequestsHttpService } from './http/seller-requests-http.service';
 import { mapSellerRequestDtoToSellerRequest } from './mappers/responses/seller-request.mapper';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SellerRequestsApiService {
   constructor(private sellerRequestsHttpService: SellerRequestsHttpService) {}
 
@@ -16,5 +18,17 @@ export class SellerRequestsApiService {
         return mapSellerRequestDtoToSellerRequest(dtoResponse);
       })
     );
+  }
+
+  public cancelRequest(requestId: string): Observable<void> {
+    return this.sellerRequestsHttpService.cancelRequest(requestId);
+  }
+
+  public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {
+    return this.sellerRequestsHttpService.acceptRequestPostOfficeDropOff(requestId);
+  }
+
+  public acceptRequestHomePickup(requestId: string): Observable<void> {
+    return this.sellerRequestsHttpService.acceptRequestHomePickup(requestId);
   }
 }

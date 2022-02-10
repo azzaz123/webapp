@@ -8,10 +8,10 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
   selector: 'tsl-story-toggle',
   template: `
     <h4>NgModel: {{ toggle }}</h4>
-    <tsl-toggle-form [(ngModel)]="toggle"></tsl-toggle-form>
+    <tsl-toggle-form [(ngModel)]="toggle" [isDisabled]="isDisabled"></tsl-toggle-form>
     <h4 class="mt-4">FormGroup: {{ formGroup.value.toggle }}</h4>
     <form [formGroup]="formGroup">
-      <tsl-toggle-form formControlName="toggle"></tsl-toggle-form>
+      <tsl-toggle-form formControlName="toggle" [isDisabled]="isDisabled"></tsl-toggle-form>
     </form>
   `,
 })
@@ -43,3 +43,8 @@ const Template: Story<StoryToggleFormComponent> = (args) => ({
 
 export const Default = Template.bind({});
 Default.args = {};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  isDisabled: true,
+};

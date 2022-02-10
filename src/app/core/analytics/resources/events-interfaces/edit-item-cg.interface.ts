@@ -20,7 +20,11 @@ export interface EditItemCG {
   /**
    * Item price
    */
-  salePrice: number;
+  salePrice?: number;
+  /**
+   * Change in the sale price
+   */
+  salePriceChange: number;
   /**
    * Item title
    */
@@ -52,23 +56,23 @@ export interface EditItemCG {
   /**
    * shippingAllowed
    */
-  shippingAllowed?: boolean;
-  /**
-   * If the item has the weight informed
-   */
-  shippingWeight?: number;
+  shippingAllowed: boolean;
   /**
    * Change in the shipping toggle
    */
   shippingAllowedChange?: -1 | 0 | 1;
   /**
+   * If the item has the weight informed
+   */
+  shippingWeight?: number;
+  /**
+   * If the item has a preselected weight informed
+   */
+  preselectedItemWeight?: number;
+  /**
    * Change in the shipping weight
    */
   shippingWeightChange?: number;
-  /**
-   * Change in the sale price
-   */
-  salePriceChange: number;
   /**
    * The source from which the edit item comes
    */
