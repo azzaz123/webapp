@@ -18,8 +18,6 @@ import { ConnectionAlertComponent } from '@private/features/chat/components/conn
 import { ConversationDetailsBarComponent } from '@private/features/chat/components/conversation-details-bar';
 import { CurrentConversationComponent } from '@private/features/chat/components/current-conversation';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
-import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
-import { DeliveryAddressStoreService } from '@private/features/delivery/services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryBannerModule } from '@private/features/chat/modules/delivery-banner/delivery-banner.module';
 import { DeliveryConversationContextModule } from '@private/features/chat/modules/delivery-conversation-context/delivery-conversation-context.module';
 import { InboxComponent } from '@private/features/chat/children/inbox/inbox.component';
@@ -89,7 +87,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     MaliciousConversationModalComponent,
     PersonalDataInformationModal,
   ],
-  providers: [ChatTranslationService, DeliveryAddressService, DeliveryAddressStoreService],
+  providers: [ChatTranslationService],
   exports: [InboxConversationComponent],
   entryComponents: [
     ArchiveInboxConversationComponent,
