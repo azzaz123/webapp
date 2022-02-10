@@ -5,7 +5,7 @@ import {
   MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU,
   MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenService } from '../accept-screen/accept-screen.service';
 
@@ -28,7 +28,7 @@ describe('AcceptScreenStoreService', () => {
           provide: AcceptScreenService,
           useValue: {
             getAcceptScreenProperties(): Observable<AcceptScreenProperties> {
-              return acceptScreenServiceSubjectMock.asObservable();
+              return of(acceptScreenServiceSubjectMock.value);
             },
           },
         },
@@ -99,11 +99,6 @@ describe('AcceptScreenStoreService', () => {
         service.update(MOCK_REQUEST_ID);
         tick();
       }));
-
-      it('should request the accept screen properties', () => {
-        expect(acceptScreenService.getAcceptScreenProperties).toHaveBeenCalledTimes(1);
-        expect(acceptScreenService.getAcceptScreenProperties).toHaveBeenCalledWith(MOCK_REQUEST_ID);
-      });
 
       it('should update the accept screen store properties ', () => {
         expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS);
