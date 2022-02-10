@@ -127,7 +127,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS: AcceptScreenC
     title: AcceptScreenDropOffPointTitle[MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS.type],
     price: MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS.sellerCosts.toString(),
     information: $localize`:@@accept_view_seller_po_all_delivery_method_selector_time_limit_description:You have 5 days to drop off the package.`,
-    secondaryInformation: $localize`:@@accept_view_seller_po_all_delivery_method_selector_collection_point_address_description:Drop-off point: ${'C/ sol 2-1, 08027 Barcelona'}:INTERPOLATION:`,
+    secondaryInformation: $localize`:@@accept_view_seller_po_all_delivery_method_selector_collection_point_address_description:Drop-off point: ${'This is the last address used'}:INTERPOLATION:`,
     restrictions: MOCK_CARRIER_PO_WITH_LAST_ADDRESS_BUYER_ADDRESS.restrictions,
     buttonProperties: {
       isShowed: true,
@@ -146,7 +146,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_CARRIER_OFFICE: AcceptScreen
     title: AcceptScreenDropOffPointTitle[MOCK_CARRIER_PO_WITH_LAST_ADDRESS_CARRIER_OFFICE.type],
     price: MOCK_CARRIER_PO_WITH_LAST_ADDRESS_CARRIER_OFFICE.sellerCosts.toString(),
     information: $localize`:@@accept_view_seller_po_all_delivery_method_selector_time_limit_description:You have 5 days to drop off the package.`,
-    secondaryInformation: $localize`:@@accept_view_seller_po_all_delivery_method_selector_collection_point_address_description:Drop-off point: ${'Rambla, 08010 Barcelona'}:INTERPOLATION:`,
+    secondaryInformation: $localize`:@@accept_view_seller_po_all_delivery_method_selector_collection_point_address_description:Drop-off point: ${'This is the last address used 2'}:INTERPOLATION:`,
     restrictions: MOCK_CARRIER_PO_WITH_LAST_ADDRESS_CARRIER_OFFICE.restrictions,
     buttonProperties: {
       isShowed: false,
