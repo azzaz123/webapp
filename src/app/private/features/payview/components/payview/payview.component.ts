@@ -12,11 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   template: '',
 })
 export class PayviewComponent implements OnInit {
-  constructor(
-    private modalService: NgbModal,
-    private route: ActivatedRoute,
-    private payviewStateManagementService: PayviewStateManagementService
-  ) {}
+  constructor(private modalService: NgbModal, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.loadPayviewData();
@@ -25,7 +21,6 @@ export class PayviewComponent implements OnInit {
 
   private loadPayviewData(): void {
     const itemId: string = this.route.snapshot.paramMap.get(PRIVATE_PATH_PARAMS.ID);
-    this.payviewStateManagementService.itemHash = itemId;
   }
 
   private openModal(): void {
