@@ -81,21 +81,20 @@ export class CartComponent implements OnInit, OnDestroy {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
     this.loading = true;
-    setTimeout(() => {
-      forkJoin([
-        this.experimentReady$.pipe(catchError((errors) => of({ errors }))),
-        this.visibilityService.bumpWithPackage(this.cart).pipe(catchError((errors) => of({ errors }))),
-      ])
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-          })
-        )
-        .subscribe(() => {
-          this.success();
-        });
-      this.purchaseBumps(order, orderId);
-    }, 2000);
+
+    forkJoin([
+      this.experimentReady$.pipe(catchError((errors) => of({ errors }))),
+      this.visibilityService.bumpWithPackage(this.cart).pipe(catchError((errors) => of({ errors }))),
+    ])
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(() => {
+        this.success();
+      });
+    this.purchaseBumps(order, orderId);
   }
 
   public purchaseBumps(order: Order[], orderId: string): void {
