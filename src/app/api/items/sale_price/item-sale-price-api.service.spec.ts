@@ -32,6 +32,7 @@ describe('ItemSalePriceApiService', () => {
     it('should ask to update item sale price', () => {
       service.update(MOCK_ITEM_HASH, MOCK_MONEY).subscribe();
 
+      expect(itemSalePriceHttpService.update).toHaveBeenCalledTimes(1);
       expect(itemSalePriceHttpService.update).toHaveBeenCalledWith(MOCK_ITEM_HASH, MOCK_MONEY);
     });
   });
