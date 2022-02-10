@@ -1,6 +1,6 @@
-import { Item } from '@core/item/item';
+import { PayviewItem } from '@private/features/payview/interfaces/payview-item.interface';
 
-export const MOCK_ITEM: Partial<Item> = {
+export const MOCK_PAYVIEW_ITEM: PayviewItem = {
   id: 'p61v99q1rx65',
   legacyId: null,
   owner: 'v4z4rv0lx86y',

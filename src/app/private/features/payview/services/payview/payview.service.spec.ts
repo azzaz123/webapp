@@ -14,10 +14,10 @@ import { MOCK_DELIVERY_ADDRESS_API } from '@api/fixtures/delivery/address/delive
 import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COSTS_ITEM } from '@api/fixtures/bff/delivery/costs/delivery-costs.fixtures.spec';
-import { MOCK_ITEM } from '@api/fixtures/core/item.fixtures.spec';
 import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 import { MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
 import { MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
+import { MOCK_PAYVIEW_ITEM } from '@fixtures/private/delivery/payview/payview-item.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsCreditCardService } from '@api/payments/cards';
@@ -89,7 +89,7 @@ describe('PayviewService', () => {
           provide: ItemService,
           useValue: {
             get() {
-              return of(MOCK_ITEM);
+              return of(MOCK_PAYVIEW_ITEM);
             },
           },
         },
