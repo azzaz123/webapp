@@ -2,11 +2,11 @@ import { SharedModule } from '@shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InboxService } from '../chat/core/inbox/inbox.service';
-import { InboxRoutedComponents, InboxRoutingModule } from './inbox.routing.module';
+import { InboxPageRoutedComponents, InboxPageRoutingModule } from './inbox-page.routing.module';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, InboxRoutingModule],
+  imports: [CommonModule, SharedModule, InboxPageRoutingModule],
   providers: [InboxService],
-  declarations: [InboxRoutedComponents],
+  declarations: [InboxPageRoutedComponents],
 })
-export class InboxModule {}
+export class InboxPageModule {}
