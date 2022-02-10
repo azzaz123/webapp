@@ -890,7 +890,6 @@ fetchHeaderBids = function (allowSegmentation, adSlots, definedSlots) {
 };
 
 refreshHeaderBids = function (allowSegmentation, adSlots, definedSlots) {
-    console.log('refrejca')
     var bidders = ['a9', 'prebid'];
     allowSegmentation = allowSegmentation || false;
 

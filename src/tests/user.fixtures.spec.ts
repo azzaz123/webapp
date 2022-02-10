@@ -4,7 +4,7 @@ import { Counters, Ratings, ShippingCounterResponse, UserStats } from '@core/use
 import { UserData, UserProData, UserProDataNotifications } from '@core/user/user-data.interface';
 import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
 import { Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations } from '@core/user/user-response.interface';
-import { Observable, of } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 
@@ -379,6 +379,8 @@ export const MockUserService = {
 };
 
 export class MockedUserService {
+  private _isUserReadySubject: ReplaySubject<void> = new ReplaySubject();
+
   public get(url: string): Observable<User> {
     const data: any = USER_DATA;
     return of(
@@ -403,6 +405,14 @@ export class MockedUserService {
 
   public calculateDistanceFromItem(user: User, item: Item): number {
     return USER_ITEM_DISTANCE;
+  }
+
+  get isUserReady$(): Observable<void> {
+    return this._isUserReadySubject.asObservable();
+  }
+
+  public initializeUserWithPermissions(): void {
+    this._isUserReadySubject.next();
   }
 
   get user(): User {
