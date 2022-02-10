@@ -1,4 +1,4 @@
-import { finalize, takeWhile } from 'rxjs/operators';
+import { catchError, finalize, takeWhile } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -18,7 +18,7 @@ import { PACKS_TYPES } from '@core/payments/pack';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'tsl-cart',
@@ -82,18 +82,18 @@ export class CartComponent implements OnInit, OnDestroy {
     const orderId: string = this.cart.getOrderId();
     this.loading = true;
     setTimeout(() => {
-      forkJoin([this.experimentReady$, this.visibilityService.bumpWithPackage(this.cart)])
+      forkJoin([
+        this.experimentReady$.pipe(catchError((errors) => of({ errors }))),
+        this.visibilityService.bumpWithPackage(this.cart).pipe(catchError((errors) => of({ errors }))),
+      ])
         .pipe(
           finalize(() => {
             this.loading = false;
           })
         )
-        .subscribe(
-          () => {
-            this.success();
-          },
-          () => {}
-        );
+        .subscribe(() => {
+          this.success();
+        });
       this.purchaseBumps(order, orderId);
     }, 2000);
   }
@@ -160,6 +160,7 @@ export class CartComponent implements OnInit, OnDestroy {
       }
       default: {
         this.purchaseBumpsSubject.error(paymentResponse);
+        this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
         break;
       }
     }
