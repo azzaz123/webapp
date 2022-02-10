@@ -6,22 +6,35 @@ import { Money } from '@api/core/model/money.interface';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { Observable } from 'rxjs';
-import { concatMap, map } from 'rxjs/operators';
+import { concatMap, map, tap } from 'rxjs/operators';
 import {
   BUY_DELIVERY_BANNER_PROPERTIES,
   BUYER_ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
 } from '@private/features/chat/modules/delivery-banner/constants/delivery-banner-configs';
+import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
+  private lastRequest: BuyerRequest;
+
   constructor(
     private buyerRequestsApiService: BuyerRequestsApiService,
-    private deliveryItemDetailsApiService: DeliveryItemDetailsApiService
+    private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
+    private router: Router,
+    private modalService: NgbModal,
+    private featureFlagService: FeatureFlagService
   ) {}
 
   public getBannerPropertiesAsBuyer(itemHash: string): Observable<DeliveryBanner | null> {
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
+      tap((requests) => (this.lastRequest = requests ? requests[0] : null)),
       concatMap((buyerRequests: BuyerRequest[]) => {
         return this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash).pipe(
           map((deliveryItemDetails: DeliveryItemDetails) => {
@@ -30,6 +43,20 @@ export class DeliveryConversationContextAsBuyerService {
         );
       })
     );
+  }
+
+  public handleThirdVoiceCTAClick(): void {
+    this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((enabled) => {
+      enabled ? this.redirectToTTS() : this.modalService.open(TRXAwarenessModalComponent);
+    });
+  }
+
+  private redirectToTTS(): void {
+    const isLastRequestPresent: boolean = !!this.lastRequest;
+    if (isLastRequestPresent) {
+      const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${this.lastRequest.id}`;
+      this.router.navigate([route]);
+    }
   }
 
   private mapDeliveryItemDetailsAsBuyerToProperties(
