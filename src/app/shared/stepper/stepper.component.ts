@@ -47,10 +47,21 @@ export class StepperComponent implements AfterContentInit {
     this.emitLastStep();
   }
 
+  public goToStep(stepId: number): void {
+    if (this.haveSpecificSlide(stepId)) {
+      this.activeId = stepId;
+      this.cdr.detectChanges();
+    }
+  }
+
   private emitLastStep(): void {
     if (!this.haveNextSlide()) {
       this.isInLastStep.emit();
     }
+  }
+
+  private haveSpecificSlide(stepId: number): boolean {
+    return stepId > -1 && stepId < this.steps.length;
   }
 
   private havePreviousSlide(): boolean {

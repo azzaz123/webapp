@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { DeliveryAddressApi } from '../../../interfaces/delivery-address/delivery-address-api.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryAddressStoreService {
   private readonly _deliveryAddress: BehaviorSubject<DeliveryAddressApi> = new BehaviorSubject<DeliveryAddressApi>(null);
 
