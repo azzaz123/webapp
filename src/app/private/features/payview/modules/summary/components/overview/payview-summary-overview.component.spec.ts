@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
+import { PayviewSummaryHeaderComponent } from '@private/features/payview/modules/summary/components/header/payview-summary-header.component';
 import { PayviewSummaryOverviewComponent } from '@private/features/payview/modules/summary/components/overview/payview-summary-overview.component';
 
 describe('PayviewSummaryOverviewComponent', () => {
@@ -9,7 +10,7 @@ describe('PayviewSummaryOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PayviewSummaryOverviewComponent],
+      declarations: [PayviewSummaryHeaderComponent, PayviewSummaryOverviewComponent],
       imports: [HttpClientTestingModule],
     }).compileComponents();
   });

@@ -1,20 +1,21 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
-import { DeliveryAddressStoreService } from '@private/features/delivery/services/address/delivery-address-store/delivery-address-store.service';
-import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
 import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
+import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
+import { DeliveryAddressStoreService } from '@private/features/delivery/services/address/delivery-address-store/delivery-address-store.service';
 import { ItemService } from '@core/item/item.service';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
-import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-wallets-http.service';
+import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
+import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
+import { PayviewSummaryHeaderComponent } from '@private/features/payview/modules/summary/components/header/payview-summary-header.component';
+import { PayviewSummaryOverviewComponent } from '@private/features/payview/modules/summary/components/overview/payview-summary-overview.component';
 
-import { Observable, of } from 'rxjs';
-import { PayviewState } from '../../interfaces/payview-state.interface';
-import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'tsl-fake-component',
@@ -39,7 +40,7 @@ describe('PayviewModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FakeComponent],
+      declarations: [FakeComponent, PayviewSummaryHeaderComponent, PayviewSummaryOverviewComponent],
       imports: [HttpClientTestingModule, BuyerRequestsApiModule],
       providers: [
         DeliveryAddressService,
@@ -113,7 +114,7 @@ describe('PayviewModalComponent', () => {
         expect(itemHashSpy).toBeCalledWith(null);
       }));
 
-      describe('WHEN the payview gets the state', () => {
+      describe('WHEN the state does not have a value', () => {
         beforeEach(() => {
           jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(null));
           fixture = TestBed.createComponent(FakeComponent);

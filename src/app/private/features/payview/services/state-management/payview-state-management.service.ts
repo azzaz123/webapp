@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -28,8 +28,17 @@ export class PayviewStateManagementService {
   }
 
   private getCurrentState(value: string): void {
-    this.payviewService.getCurrentState(value).subscribe((payviewState: PayviewState) => {
-      this.stateSubject.next(payviewState);
+    const subscription: Subscription = this.payviewService.getCurrentState(value).subscribe({
+      next: (payviewState: PayviewState) => {
+        this.stateSubject.next(payviewState);
+      },
+      error: () => {
+        this.stateSubject.next(null);
+        subscription.unsubscribe();
+      },
+      complete: () => {
+        subscription.unsubscribe();
+      },
     });
   }
 }
