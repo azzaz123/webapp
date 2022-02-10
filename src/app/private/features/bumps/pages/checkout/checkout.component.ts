@@ -84,7 +84,6 @@ export class CheckoutComponent implements OnInit {
   private setItems(itemsWithProducts: ItemsBySubscription[]): void {
     if (itemsWithProducts.length) {
       this.itemsWithProducts = itemsWithProducts;
-      console.log('test', this.itemsWithProducts);
     } else {
       this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
     }
