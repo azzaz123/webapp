@@ -5,7 +5,9 @@ import { DeliveryAddressApi } from '../../../interfaces/delivery-address/deliver
 import { DeliveryAddressApiService } from '../../api/delivery-address-api/delivery-address-api.service';
 import { DeliveryAddressStoreService } from '../delivery-address-store/delivery-address-store.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryAddressService {
   constructor(
     private deliveryAddressApiService: DeliveryAddressApiService,

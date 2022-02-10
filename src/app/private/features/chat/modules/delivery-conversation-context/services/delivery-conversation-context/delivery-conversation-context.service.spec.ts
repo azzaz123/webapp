@@ -23,8 +23,14 @@ describe('DeliveryConversationContextService', () => {
       providers: [
         DeliveryConversationContextService,
         { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
-        { provide: DeliveryConversationContextAsBuyerService, useValue: { getBannerPropertiesAsBuyer: () => of(null) } },
-        { provide: DeliveryConversationContextAsSellerService, useValue: { getBannerPropertiesAsSeller: () => of(null) } },
+        {
+          provide: DeliveryConversationContextAsBuyerService,
+          useValue: { getBannerPropertiesAsBuyer: () => of(null), handleThirdVoiceCTAClick: () => {} },
+        },
+        {
+          provide: DeliveryConversationContextAsSellerService,
+          useValue: { getBannerPropertiesAsSeller: () => of(null), handleThirdVoiceCTAClick: () => {} },
+        },
         { provide: NgbModal, useValue: { open: () => {} } },
       ],
     });
@@ -112,11 +118,11 @@ describe('DeliveryConversationContextService', () => {
     });
   });
 
-  describe('when handling CTA actions', () => {
+  describe('when handling banner CTA actions', () => {
     describe('and when action is to open awareness modal', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.AWARENESS_MODAL);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.AWARENESS_MODAL);
       });
 
       it('should open awareness modal', () => {
@@ -128,7 +134,7 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is open the payview', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
       });
 
       it('should open awareness modal', () => {
@@ -140,7 +146,7 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is change item price', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE);
       });
 
       it('should open awareness modal', () => {
@@ -152,12 +158,36 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is activate shipping', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleClickCTA(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING);
       });
 
       it('should open awareness modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
         expect(modalService.open).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('when handling third voice CTA click', () => {
+    describe('and when the current user is the seller', () => {
+      beforeEach(() => {
+        spyOn(deliveryConversationContextAsSellerService, 'handleThirdVoiceCTAClick');
+        service.handleThirdVoiceCTAClick(MOCK_INBOX_CONVERSATION_AS_SELLER);
+      });
+
+      it('should delegate click handling to seller context', () => {
+        expect(deliveryConversationContextAsSellerService.handleThirdVoiceCTAClick).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('and when the current user is the buyer', () => {
+      beforeEach(() => {
+        spyOn(deliveryConversationContextAsBuyerService, 'handleThirdVoiceCTAClick');
+        service.handleThirdVoiceCTAClick(MOCK_INBOX_CONVERSATION_AS_BUYER);
+      });
+
+      it('should delegate click handling to seller context', () => {
+        expect(deliveryConversationContextAsBuyerService.handleThirdVoiceCTAClick).toHaveBeenCalledTimes(1);
       });
     });
   });

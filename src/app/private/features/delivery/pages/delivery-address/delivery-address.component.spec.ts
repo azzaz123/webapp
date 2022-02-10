@@ -45,8 +45,11 @@ import { DeliveryAddressErrorTranslations } from '../../errors/constants/deliver
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
+  const boxStyleSelector = '.box';
   const countriesDropdownSelector = '#country_iso_code';
   const deleteButtonSelector = '#deleteButton';
+  const titleSectionSelector = '#titleSection';
+
   let component: DeliveryAddressComponent;
   let fixture: ComponentFixture<DeliveryAddressComponent>;
   let deliveryAddressTrackEventsService: DeliveryAddressTrackEventsService;
@@ -153,6 +156,41 @@ describe('DeliveryAddressComponent', () => {
 
   it('should define the default country', () => {
     expect(component['defaultCountry']).toStrictEqual(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT.defaultCountry);
+  });
+
+  describe('when the title...', () => {
+    beforeEach(() => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
+    });
+
+    describe('should NOT be shown', () => {
+      beforeEach(() => {
+        component.showTitle = false;
+
+        component.ngOnInit();
+        component.initForm();
+        fixture.detectChanges();
+      });
+
+      it('should NOT show the title section', () => {
+        expect(fixture.debugElement.query(By.css(titleSectionSelector))).toBeFalsy();
+      });
+    });
+
+    describe('should be shown', () => {
+      beforeEach(() => {
+        component.showTitle = true;
+
+        component.ngOnInit();
+        component.initForm();
+        fixture.detectChanges();
+      });
+
+      it('should show the title section', () => {
+        expect(fixture.debugElement.query(By.css(titleSectionSelector))).toBeTruthy();
+      });
+    });
   });
 
   describe('initForm when init...', () => {
@@ -307,6 +345,7 @@ describe('DeliveryAddressComponent', () => {
           spyOn(toastService, 'show');
           spyOn(component, 'initForm');
           spyOn(router, 'navigate');
+          spyOn(component.addressSaveSucceded, 'emit');
         });
 
         it('should call the event track save click event', () => {
@@ -328,6 +367,12 @@ describe('DeliveryAddressComponent', () => {
           component.onSubmit();
 
           expect(component.isNewForm).toBe(false);
+        });
+
+        it('should emit the save succeed', () => {
+          component.onSubmit();
+
+          expect(component.addressSaveSucceded.emit).toHaveBeenCalledTimes(1);
         });
 
         describe('when redirecting to the next page...', () => {
@@ -358,6 +403,10 @@ describe('DeliveryAddressComponent', () => {
       });
 
       describe('and the save fails...', () => {
+        beforeEach(() => {
+          spyOn(component.addressSaveSucceded, 'emit');
+        });
+
         describe('and when the fail is because server notifies flat and floor too long and mobile phone number is invalid', () => {
           beforeEach(() => {
             spyOn(toastService, 'show');
@@ -386,6 +435,10 @@ describe('DeliveryAddressComponent', () => {
           it('should set flat and floor invalid error', () => {
             expect(component.deliveryAddressForm.get('flat_and_floor').getError('invalid')).toBeTruthy();
           });
+
+          it('should NOT emit the save succeed', () => {
+            expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
+          });
         });
 
         describe('and when the fail is because server notifies postal code is invalid and not exists', () => {
@@ -412,6 +465,10 @@ describe('DeliveryAddressComponent', () => {
           it('should set postal code error', () => {
             expect(component.deliveryAddressForm.get('postal_code').getError('invalid')).toBeTruthy();
           });
+
+          it('should NOT emit the save succeed', () => {
+            expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
+          });
         });
 
         describe('and when the fail is because server notifies unique address by user', () => {
@@ -432,12 +489,17 @@ describe('DeliveryAddressComponent', () => {
               type: TOAST_TYPES.ERROR,
             });
           });
+
+          it('should NOT emit the save succeed', () => {
+            expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
+          });
         });
       });
     });
 
     describe('when the form is NOT valid...', () => {
       beforeEach(() => {
+        spyOn(component.addressSaveSucceded, 'emit');
         spyOn(toastService, 'show');
         spyOn(deliveryAddressTrackEventsService, 'trackClickSaveButton');
         spyOn(component, 'onSubmit').and.callThrough();
@@ -461,6 +523,10 @@ describe('DeliveryAddressComponent', () => {
           });
         });
 
+        it('should NOT emit the save succeed', () => {
+          expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
+        });
+
         describe.each(['street', 'phone_number', 'postal_code'])('the form control...', (controlName: string) => {
           it(`should mark ${controlName} as dirty and invalid `, () => {
             expect(component.deliveryAddressForm.get(controlName).valid).toBe(false);
@@ -478,6 +544,10 @@ describe('DeliveryAddressComponent', () => {
 
         it('should call the event track save click event ', () => {
           expect(deliveryAddressTrackEventsService.trackClickSaveButton).toHaveBeenCalledTimes(1);
+        });
+
+        it('should NOT emit the save succeed', () => {
+          expect(component.addressSaveSucceded.emit).not.toHaveBeenCalled();
         });
 
         describe.each(['street', 'full_name', 'flat_and_floor'])('the form input...', (controlName: string) => {
@@ -505,6 +575,26 @@ describe('DeliveryAddressComponent', () => {
     });
   });
 
+  describe('when the user comes from accept screen...', () => {
+    beforeEach(() => {
+      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
+      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
+      component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
+
+      component.ngOnInit();
+      component.initForm();
+      fixture.detectChanges();
+    });
+
+    it('should not appear the delete button', () => {
+      expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
+    });
+
+    it('should NOT apply the box style', () => {
+      expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeFalsy();
+    });
+  });
+
   describe('when the user comes from the pay on payview...', () => {
     beforeEach(() => {
       spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
@@ -523,9 +613,13 @@ describe('DeliveryAddressComponent', () => {
     it('should not appear the delete button', () => {
       expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
     });
+
+    it('should apply the box style', () => {
+      expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeTruthy();
+    });
   });
 
-  describe('when the user NOT comes from the pay button on payview...', () => {
+  describe('when the user comes from the payview add address...', () => {
     beforeEach(() => {
       spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
       spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
@@ -543,6 +637,10 @@ describe('DeliveryAddressComponent', () => {
     it('should not appear the delete button', () => {
       expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
     });
+
+    it('should apply the box style', () => {
+      expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeTruthy();
+    });
   });
 
   describe('when the user NOT comes from the payview...', () => {
@@ -556,6 +654,10 @@ describe('DeliveryAddressComponent', () => {
       fixture.detectChanges();
 
       expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeTruthy();
+    });
+
+    it('should apply the box style', () => {
+      expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeTruthy();
     });
   });
 

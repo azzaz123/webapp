@@ -10,20 +10,17 @@ import {
   DropOffModeTypeDto,
   LastAddressUsedDto,
   LastDeliveryModeDto,
-  PickUpPointDto,
   PostOfficeDetailsDto,
   TentativeScheduleDto,
 } from '../dtos/carrier-drop-off-mode-request-dto.interface';
 import {
-  LastAddressUsed,
-  OfficeAddress,
   TentativeSchedule,
   PostOfficeDetails,
   CarrierDropOffModeRequest,
   DropOffModeRequest,
 } from '@api/core/model/delivery/carrier-drop-off-mode';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
-import { DeliveryAddress } from '@api/core/model/delivery/address/delivery-address.interface';
+import { LastAddressUsed } from '@api/core/model/delivery/buyer/delivery-methods';
 
 const mapCarrierDropOffTypeToDomain: Record<DropOffModeTypeDto, CARRIER_DROP_OFF_MODE> = {
   POST_OFFICE: CARRIER_DROP_OFF_MODE.POST_OFFICE,
@@ -80,35 +77,7 @@ const getPostOfficeDetails = (postOfficeDetailsDto: PostOfficeDetailsDto): PostO
 };
 
 const getLastAddressUsed = (lastAddressUsedDto: LastAddressUsedDto): LastAddressUsed => {
-  return {
-    buyerAddress: getDeliveryAddress(lastAddressUsedDto.buyer_address),
-    deliveryMode: mapDeliveryModeToDomain[lastAddressUsedDto.last_delivery_mode],
-    officeAddress: getOfficeAddress(lastAddressUsedDto.pick_up_point),
-  };
-};
-
-const getDeliveryAddress = (buyerAddressDto: BuyerAddressDto): DeliveryAddress => {
-  return {
-    id: buyerAddressDto.id,
-    fullName: buyerAddressDto.full_name,
-    street: buyerAddressDto.street,
-    postalCode: buyerAddressDto.postal_code,
-    city: buyerAddressDto.city,
-    region: buyerAddressDto.region,
-    phoneNumber: buyerAddressDto.phone_number,
-    flatAndFloor: buyerAddressDto.flat_and_floor,
-    country: buyerAddressDto.country,
-  };
-};
-
-const getOfficeAddress = (pickUpPointDto: PickUpPointDto): OfficeAddress => {
-  return {
-    id: pickUpPointDto.id,
-    unit: pickUpPointDto.carrier_unit,
-    city: pickUpPointDto.city,
-    postalCode: pickUpPointDto.postal_code,
-    street: pickUpPointDto.street,
-  };
+  return lastAddressUsedDto as LastAddressUsed;
 };
 
 const getTentativeShedule = (tentativeScheduleDto: TentativeScheduleDto): TentativeSchedule => {

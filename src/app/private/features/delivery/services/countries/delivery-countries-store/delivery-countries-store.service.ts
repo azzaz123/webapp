@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryCountriesStoreService {
   private readonly _deliveryCountriesAndDefault: BehaviorSubject<CountryOptionsAndDefault> = new BehaviorSubject<CountryOptionsAndDefault>(
     null
