@@ -10,18 +10,13 @@ import {
   AcceptScreenCarrier,
   AcceptScreenCarrierButtonProperties,
 } from '@private/features/accept-screen/interfaces';
-import {
-  CarrierDropOffModeRequest,
-  DropOffModeRequest,
-  LastAddressUsed,
-  TentativeSchedule,
-} from '@api/core/model/delivery/carrier-drop-off-mode';
+import { CarrierDropOffModeRequest, DropOffModeRequest, TentativeSchedule } from '@api/core/model/delivery/carrier-drop-off-mode';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
 import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 import { Money } from '@api/core/model/money.interface';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
-import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
+import { LastAddressUsed } from '@api/core/model/delivery/buyer/delivery-methods';
 import {
   AcceptScreenDropOffPointButtonTranslations,
   AcceptScreenDropOffPointTitle,
@@ -157,20 +152,7 @@ const mapPrice: ToDomainMapper<Money, string> = (sellerCosts: Money): string => 
 };
 
 const mapDropOffPointInformation: ToDomainMapper<LastAddressUsed, string> = (lastAddressUsed: LastAddressUsed): string => {
-  if (lastAddressUsed.deliveryMode === DELIVERY_MODE.BUYER_ADDRESS && lastAddressUsed.buyerAddress) {
-    const flatAndFloor: string = lastAddressUsed.buyerAddress.flatAndFloor;
-    const checkedFloor: string = flatAndFloor ? ` ${flatAndFloor}` : '';
-
-    return `${capitalizeFirstLetter(lastAddressUsed.buyerAddress.street)}${checkedFloor}, ${
-      lastAddressUsed.buyerAddress.postalCode
-    } ${capitalizeFirstLetter(lastAddressUsed.buyerAddress.city)}`;
-  }
-
-  if (lastAddressUsed.deliveryMode === DELIVERY_MODE.CARRIER_OFFICE && lastAddressUsed.officeAddress) {
-    return `${capitalizeFirstLetter(lastAddressUsed.officeAddress.street)}, ${
-      lastAddressUsed.officeAddress.postalCode
-    } ${capitalizeFirstLetter(lastAddressUsed.officeAddress.city)}`;
-  }
+  return lastAddressUsed.label;
 };
 
 const mapDeliveryDayInformation: ToDomainMapper<TentativeSchedule, string> = (schedule: TentativeSchedule): string => {
