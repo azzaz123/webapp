@@ -12,13 +12,15 @@ import {
 } from '@private/features/accept-screen/interfaces';
 import { CarrierDropOffModeRequest, DropOffModeRequest, TentativeSchedule } from '@api/core/model/delivery/carrier-drop-off-mode';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
-import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
-import { AcceptScreenDeliveryAddress } from '../../interfaces/accept-screen-delivery-address.interface';
+import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 import { Money } from '@api/core/model/money.interface';
-import { AcceptScreenDropOffPointButtonTranslations, AcceptScreenDropOffPointTitle } from '../../constants/accept-screen-translations';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { LastAddressUsed } from '@api/core/model/delivery/buyer/delivery-methods';
+import {
+  AcceptScreenDropOffPointButtonTranslations,
+  AcceptScreenDropOffPointTitle,
+} from '@private/features/accept-screen/constants/accept-screen-translations';
 
 const navigatorLanguage: string = navigator.language;
 
@@ -35,14 +37,13 @@ export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> =
   };
 };
 
-export const mapUserToAcceptScreenSeller: ToDomainMapper<User, AcceptScreenSeller> = (seller: User): AcceptScreenSeller => {
-  // TODO: Map address when request created		Date: 2022/01/20
+export function mapUserToAcceptScreenSeller(seller: User, address: DeliveryAddressApi): AcceptScreenSeller {
   return {
     id: seller.id,
     imageUrl: mapUserToImageUrl(seller),
-    address: null,
+    fullAddress: address ? mapDeliveryAddressToSellerAddress(address) : null,
   };
-};
+}
 
 export const mapUserToAcceptScreenBuyer: ToDomainMapper<User, AcceptScreenBuyer> = (buyer: User): AcceptScreenBuyer => {
   return {
@@ -69,13 +70,9 @@ export function mapCarrierDropOffModeToAcceptScreenCarriers(
   });
 }
 
-export const mapDeliveryAddresstoAcceptScreenDeliveryAddress: ToDomainMapper<DeliveryAddressApi, AcceptScreenDeliveryAddress> = (
-  input: DeliveryAddressApi
-): AcceptScreenDeliveryAddress => {
+const mapDeliveryAddressToSellerAddress: ToDomainMapper<DeliveryAddressApi, string> = (input: DeliveryAddressApi): string => {
   const flatAndFloor: string = input.flat_and_floor ? ` ${input.flat_and_floor},` : '';
-  return {
-    fullAddress: `${input.street},${flatAndFloor} ${input.postal_code}, ${input.city}`,
-  };
+  return `${input.street},${flatAndFloor} ${input.postal_code}, ${input.city}`;
 };
 
 function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {

@@ -3,4 +3,3 @@ export * from './accept-screen-item.interface';
 export * from './accept-screen-properties.interface';
 export * from './accept-screen-seller.interface';
 export * from './accept-screen-carrier.interface';
-export * from './accept-screen-delivery-address.interface';
