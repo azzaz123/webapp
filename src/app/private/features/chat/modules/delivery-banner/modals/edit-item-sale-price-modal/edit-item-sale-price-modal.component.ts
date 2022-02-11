@@ -55,7 +55,7 @@ export class EditItemSalePriceModalComponent implements OnInit {
   }
 
   public handleSubmit(): void {
-    this.checkInputError();
+    this.checkNewPriceErrors();
     this.checkInvalidInput();
   }
 
@@ -75,7 +75,7 @@ export class EditItemSalePriceModalComponent implements OnInit {
     this.isButtonDisabled = this.newPriceFormControl.errors?.required;
   }
 
-  private checkInputError(): void {
+  private checkNewPriceErrors(): void {
     const isMinValueError: boolean = !!this.newPriceFormControl.errors?.min;
     const isMaxValueError: boolean = !!this.newPriceFormControl.errors?.max;
 

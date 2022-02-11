@@ -6,44 +6,42 @@
   <h2 class="text-center" i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_title">Edit item price</h2>
 
   <div class="EditItemSalePriceModal__newPrice">
-    <form [formGroup]="newItemSalePriceForm">
-      <input
-        type="number"
-        formControlName="newPrice"
-        [ngClass]="{ 'EditItemSalePriceModal__newPriceInput--invalid': isInvalidInput }"
-        i18n-placeholder="@@chat_seller_shipping_enabled_price_edit_pop_up_placeholder"
-        placeholder="New price"
-      />
+    <form class="d-flex flex-column justify-content-between" [formGroup]="newItemSalePriceForm" (ngSubmit)="handleSubmit()">
+      <div class="mb-4">
+        <input
+          type="number"
+          class="EditItemSalePriceModal__newPriceInput w-100 mb-1"
+          formControlName="newPrice"
+          [ngClass]="{ 'EditItemSalePriceModal__newPriceInput--invalid': isInvalidInput }"
+          i18n-placeholder="@@chat_seller_shipping_enabled_price_edit_pop_up_placeholder"
+          placeholder="New price"
+        />
+        <div class="EditItemSalePriceModal__newPriceInputError">
+          <span
+            *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.MAX"
+            i18n="@@chat_seller_price_edit_pop_up_price_out_of_range_inline_error"
+            >Products over {{ MAX_ITEM_PRICE_WITH_CURRENCY }} cannot be shipped.</span
+          >
+          <span
+            *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.MIN"
+            i18n="@@chat_seller_price_edit_pop_up_min_price_not_reached_inline_error"
+            >Products under {{ MIN_ITEM_PRICE_WITH_CURRENCY }} cannot be shipped.</span
+          >
+          <span
+            *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.DEFAULT"
+            i18n="@@chat_seller_price_edit_pop_up_generic_inline_error"
+            >Sorry, there was an error updating the price.</span
+          >
+        </div>
+      </div>
+      <tsl-button
+        class="w-100"
+        [disabled]="isButtonDisabled"
+        [type]="'submit'"
+        [className]="'btn-primary btn-modal-primary btn--width'"
+        i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_save_button"
+        >Save</tsl-button
+      >
     </form>
-
-    <span
-      *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.MAX"
-      class="EditItemSalePriceModal__newPriceInputError"
-      i18n="@@chat_seller_price_edit_pop_up_price_out_of_range_inline_error"
-      >Products over {{ MAX_ITEM_PRICE_WITH_CURRENCY }} cannot be shipped.</span
-    >
-    <span
-      *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.MIN"
-      class="EditItemSalePriceModal__newPriceInputError"
-      i18n="@@chat_seller_price_edit_pop_up_min_price_not_reached_inline_error"
-      >Products under {{ MIN_ITEM_PRICE_WITH_CURRENCY }} cannot be shipped.</span
-    >
-    <span
-      *ngIf="inputError !== null && inputError === EDIT_ITEM_SALE_PRICE_ERROR.DEFAULT"
-      class="EditItemSalePriceModal__newPriceInputError"
-      i18n="@@chat_seller_price_edit_pop_up_generic_inline_error"
-      >Sorry, there was an error updating the price.</span
-    >
-  </div>
-
-  <div class="EditItemSalePriceModal__submitButton w-100">
-    <tsl-button
-      class="w-100"
-      (click)="handleSubmit()"
-      [disabled]="isButtonDisabled"
-      [className]="'btn-primary btn-modal-primary btn--width'"
-      i18n="@@chat_seller_shipping_enabled_price_edit_pop_up_save_button"
-      >Save</tsl-button
-    >
   </div>
 </div>
