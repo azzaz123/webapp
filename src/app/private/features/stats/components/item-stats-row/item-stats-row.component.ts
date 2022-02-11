@@ -16,8 +16,8 @@ import { ITEM_STATS_ROW_ANIMATION } from './item-stats-row.animation';
 })
 export class ItemStatsRowComponent implements OnInit {
   @Input() item: Item;
-  @Output() onOpen: EventEmitter<boolean> = new EventEmitter();
-  @Input() open = false;
+  @Output() expand: EventEmitter<boolean> = new EventEmitter();
+  @Input() opened = false;
   @Input() price: string;
   public link: string;
   public publishedItemDateFormat = 'dd MMM yyyy';
@@ -42,9 +42,9 @@ export class ItemStatsRowComponent implements OnInit {
   }
 
   changeExpandedState() {
-    this.open = !this.open;
-    if (this.open) {
-      this.onOpen.emit(true);
+    this.opened = !this.opened;
+    if (this.opened) {
+      this.expand.emit(true);
     }
   }
 
