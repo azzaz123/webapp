@@ -7,25 +7,8 @@ export const MOCK_CARRIER_DROP_OFF_MODE_REQUEST_DTO: CarrierDropOffModeRequestDt
       post_office_details: {
         carrier: 'correos',
         last_address_used: {
-          buyer_address: {
-            city: 'Barcelona',
-            country: 'Spain',
-            flat_and_floor: '2-1',
-            full_name: 'AABB',
-            id: '21',
-            phone_number: '655476854',
-            postal_code: '08027',
-            region: 'Catalunya',
-            street: 'C/ Sol',
-          },
-          last_delivery_mode: 'BUYER_ADDRESS',
-          pick_up_point: {
-            carrier_unit: 2,
-            city: 'Barcelona',
-            id: '23826387263',
-            postal_code: '08010',
-            street: 'Rambla',
-          },
+          id: 'absdsfdfdc',
+          label: 'This is the last address used 3',
         },
         selection_required: false,
       },
