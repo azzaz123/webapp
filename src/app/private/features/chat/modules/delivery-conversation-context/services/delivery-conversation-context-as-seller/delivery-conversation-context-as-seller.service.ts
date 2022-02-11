@@ -10,7 +10,7 @@ export class DeliveryConversationContextAsSellerService {
   constructor(private modalService: NgbModal) {}
 
   // TODO: Implement method for getting banner properties as seller
-  public getBannerPropertiesAsSeller(itemHash: string): Observable<DeliveryBanner | null> {
+  public getBannerPropertiesAsSeller(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     return of(null);
   }
 

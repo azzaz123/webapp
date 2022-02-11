@@ -76,12 +76,10 @@ export class DeliveryConversationContextService {
   }
 
   private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner | null> {
-    const { item } = conversation;
-    const { id: itemHash } = item;
     const isCurrentUserTheSeller: boolean = this.isCurrentUserTheSeller(conversation);
     return isCurrentUserTheSeller
-      ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(itemHash)
-      : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(itemHash);
+      ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(conversation)
+      : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(conversation);
   }
 
   private openAwarenessModal(): void {

@@ -19,6 +19,7 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
+import { InboxConversation } from '@private/features/chat/core/model';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
@@ -32,7 +33,10 @@ export class DeliveryConversationContextAsBuyerService {
     private featureFlagService: FeatureFlagService
   ) {}
 
-  public getBannerPropertiesAsBuyer(itemHash: string): Observable<DeliveryBanner | null> {
+  public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
+    const { item } = conversation;
+    const { id: itemHash } = item;
+
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       tap((requests) => (this.lastRequest = requests ? requests[0] : null)),
       concatMap((buyerRequests: BuyerRequest[]) => {

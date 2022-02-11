@@ -60,7 +60,7 @@ describe('DeliveryConversationContextService', () => {
 
         it('should ask for context from the sellers perspective', () => {
           expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledWith(
-            MOCK_INBOX_CONVERSATION_AS_SELLER.item.id
+            MOCK_INBOX_CONVERSATION_AS_SELLER
           );
           expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledTimes(1);
         });
@@ -75,7 +75,7 @@ describe('DeliveryConversationContextService', () => {
 
         it('should ask for context from the buyers perspective', () => {
           expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledWith(
-            MOCK_INBOX_CONVERSATION_AS_BUYER.item.id
+            MOCK_INBOX_CONVERSATION_AS_BUYER
           );
           expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledTimes(1);
         });
