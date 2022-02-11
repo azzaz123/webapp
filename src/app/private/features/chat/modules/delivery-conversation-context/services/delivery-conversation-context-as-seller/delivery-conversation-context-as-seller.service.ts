@@ -15,19 +15,27 @@ export class DeliveryConversationContextAsSellerService {
 
   public getBannerPropertiesAsSeller(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     const { item, user: buyer } = conversation;
-    const { id: itemHash } = item;
+    const { id: itemHash, sold: isItemSold } = item;
     const { id: buyerHash } = buyer;
 
-    return this.sellerRequestsApiService.getRequestsByBuyerAndItem(buyerHash, itemHash).pipe(map(this.mapSellerRequestsToBannerProperties));
+    return this.sellerRequestsApiService.getRequestsByBuyerAndItem(buyerHash, itemHash).pipe(
+      map((response: SellerRequest[]) => {
+        return this.mapSellerRequestsToBannerProperties(response, isItemSold);
+      })
+    );
   }
 
   public handleThirdVoiceCTAClick(): void {
     this.modalService.open(TRXAwarenessModalComponent);
   }
 
-  private mapSellerRequestsToBannerProperties(sellerRequests: SellerRequest[]): DeliveryBanner | null {
+  private mapSellerRequestsToBannerProperties(sellerRequests: SellerRequest[], isItemSold: boolean): DeliveryBanner | null {
     const sellerHasNoRequests: boolean = sellerRequests.length === 0;
     const sellerHasRequests: boolean = !sellerHasNoRequests;
+
+    if (isItemSold) {
+      return null;
+    }
 
     if (sellerHasRequests) {
       return null;
