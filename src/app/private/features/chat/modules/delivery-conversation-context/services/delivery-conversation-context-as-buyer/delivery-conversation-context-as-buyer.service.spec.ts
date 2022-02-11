@@ -77,7 +77,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         });
 
-        it('should show buy bunner with price', fakeAsync(() => {
+        it('should show buy banner with price', fakeAsync(() => {
           const expectedBanner: PriceableDeliveryBanner & ActionableDeliveryBanner = {
             type: DELIVERY_BANNER_TYPE.BUY,
             action: MOCK_BUY_DELIVERY_BANNER_PROPERTIES.action,
@@ -106,7 +106,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
           tick();
         }));
 
-        fit('should redirect to TTS', () => {
+        it('should redirect to TTS', () => {
           const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUESTS[0].id}`;
 
           service.handleThirdVoiceCTAClick();
