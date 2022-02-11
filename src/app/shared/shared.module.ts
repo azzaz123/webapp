@@ -76,6 +76,7 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
 import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal.module';
 import { ItemRouteDirective } from './item-route/item-route.directive';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
+import { GenericImageModule } from './generic-image/generic-image.module';
 
 @NgModule({
   imports: [
@@ -108,6 +109,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     ItemDetailRouteModule,
     UserProfileRouteModule,
     ConfirmationModalModule,
+    GenericImageModule,
   ],
   exports: [
     SpinnerModule,
@@ -170,6 +172,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     PaymentsCardInfoModule,
     ConfirmationModalModule,
     ItemRouteDirective,
+    GenericImageModule,
   ],
   declarations: [
     RestrictInputDirective,

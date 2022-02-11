@@ -3,11 +3,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InboxService } from '../chat/core/inbox/inbox.service';
 import { InboxPageRoutedComponents, InboxPageRoutingModule } from './inbox-page.routing.module';
-import { GenericImageModule } from '@shared/generic-image/generic-image.module';
+import { NotificationsInboxComponent } from './components/notifications-inbox/notifications-inbox.component';
+import { NotificationComponent } from './components/notification/notification.component';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, InboxPageRoutingModule, GenericImageModule],
+  imports: [CommonModule, SharedModule, InboxPageRoutingModule],
   providers: [InboxService],
-  declarations: [InboxPageRoutedComponents],
+  declarations: [InboxPageRoutedComponents, NotificationsInboxComponent, NotificationComponent],
 })
 export class InboxPageModule {}

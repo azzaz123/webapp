@@ -1,7 +1,18 @@
-<div>
-  <div>
-    <tsl-generic-image [image]="''" [productStatus]="''"></tsl-generic-image>
+<div class="Notification">
+  <div class="Notification__generic">
+    <tsl-generic-image></tsl-generic-image>
+    <div class="Notification__generic_info">
+      <span class="Notification__generic_info_title">{{ notification.title }}</span>
+      <span lass="Notification__generic_info_subtitle">{{ notification.description }}</span>
+    </div>
   </div>
-  <div></div>
-  <div></div>
+
+  <div class="Notification__info">
+    <div class="Notification__info_date">
+      <span> {{ notification.date }}</span>
+    </div>
+    <div class="Notification__info_status" *ngIf="notification.isRead">
+      <span>Readed</span>
+    </div>
+  </div>
 </div>

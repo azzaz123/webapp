@@ -1,1 +1,23 @@
 @import '~style/common';
+
+.Notification {
+  display: flex;
+  justify-content: space-between;
+  &__generic {
+    &_info {
+      display: flex;
+      flex-direction: column;
+      &_title {
+        font-weight: $font-weight-chunky;
+        font-size: $font-size-l;
+        line-height: $font-size-l;
+      }
+      &_subtitle {
+        margin-top: $spacing-s;
+        line-height: $font-size-m;
+        font-weight: normal;
+        color: $blue-grey-2;
+      }
+    }
+  }
+}
