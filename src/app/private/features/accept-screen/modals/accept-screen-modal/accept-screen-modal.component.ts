@@ -63,7 +63,7 @@ export class AcceptScreenModalComponent implements OnInit {
     this.activeModal.close();
   }
 
-  private goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
+  public goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
     this.stepper.goToStep(slideId);
     this.refreshStepProperties(slideId);
   }
