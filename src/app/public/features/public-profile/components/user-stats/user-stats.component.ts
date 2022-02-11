@@ -34,14 +34,7 @@ export class UserStatsComponent implements OnInit {
     this.checkStoreAddress();
   }
 
-  private checkStoreAddress(): void {
-    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
-      this.showStoreAdress =
-        !!permissions[PERMISSIONS.subscriptions] && this.userInfo.featured && this.userService.hasStoreLocation(this.userInfo);
-    });
-  }
-
-  togglePhone(): void {
+  public togglePhone(): void {
     this.showPhone = !this.showPhone;
   }
 
@@ -55,6 +48,13 @@ export class UserStatsComponent implements OnInit {
         this.scrollIntoViewService.scrollToSelector('#map');
       });
     }
+  }
+
+  private checkStoreAddress(): void {
+    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
+      this.showStoreAdress =
+        !!permissions[PERMISSIONS.subscriptions] && this.userInfo.featured && this.userService.hasStoreLocation(this.userInfo);
+    });
   }
 
   private cleanCurrentURL(): string {
