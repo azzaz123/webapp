@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Currency } from '@api/core/model/currency.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-enum EDIT_ITEM_SALE_PRICE_ERROR {
+export enum EDIT_ITEM_SALE_PRICE_ERROR {
   DEFAULT,
   MIN,
   MAX,
@@ -26,7 +26,7 @@ export class EditItemSalePriceModalComponent implements OnInit {
   public newItemSalePriceForm: FormGroup;
   public isInvalidInput: boolean = false;
   public isButtonDisabled: boolean = true;
-  public inputError: EDIT_ITEM_SALE_PRICE_ERROR | null;
+  public inputError: EDIT_ITEM_SALE_PRICE_ERROR | null = null;
 
   constructor(private formBuilder: FormBuilder, private activeModal: NgbActiveModal) {}
 
@@ -47,8 +47,7 @@ export class EditItemSalePriceModalComponent implements OnInit {
 
   private attachListeners(): void {
     this.newPriceFormControl.valueChanges.subscribe(() => {
-      this.inputError = null;
-      this.isInvalidInput = false;
+      this.resetValidations();
       this.checkDisabledButton();
     });
   }
@@ -68,12 +67,17 @@ export class EditItemSalePriceModalComponent implements OnInit {
     return this.newItemSalePriceForm.get('newPrice') as FormControl;
   }
 
+  private resetValidations(): void {
+    this.inputError = null;
+    this.isInvalidInput = false;
+  }
+
   private checkInvalidInput(): void {
     this.isInvalidInput = this.inputError !== null;
   }
 
   private checkDisabledButton(): void {
-    this.isButtonDisabled = this.newPriceFormControl.errors?.required;
+    this.isButtonDisabled = !!this.newPriceFormControl.errors?.required;
   }
 
   private checkNewPriceErrors(): void {
