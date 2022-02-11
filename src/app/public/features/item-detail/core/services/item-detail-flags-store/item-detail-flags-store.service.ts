@@ -6,10 +6,10 @@ import { MapItemDetailFlagsStoreService } from '../map-item-detail-flags-store/m
 
 @Injectable()
 export class ItemDetailFlagsStoreService {
-  constructor(private mapItemDetailFlagsStoreService: MapItemDetailFlagsStoreService) {}
-
   private readonly _statusFlag = new BehaviorSubject<STATUS_ITEM_FLAG_TYPES>(null);
   private readonly _bumpedFlag = new BehaviorSubject<BUMPED_ITEM_FLAG_TYPES>(null);
+
+  constructor(private mapItemDetailFlagsStoreService: MapItemDetailFlagsStoreService) {}
 
   get statusFlag(): STATUS_ITEM_FLAG_TYPES {
     return this._statusFlag.getValue();
