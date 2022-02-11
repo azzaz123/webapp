@@ -16,11 +16,16 @@
 
   &__newPrice {
     @include hide-input-numeric-arrows();
-    height: 74px;
+    min-height: 74px;
   }
 
   &__newPriceInput {
-    border: 2px solid $black;
+    height: 50px;
+    line-height: 1.5;
+    padding: 6px $spacing-ms;
+    color: $blue-grey-2;
+    border: 2px solid $blue-grey-5;
+    border-radius: 6px;
 
     &--invalid {
       color: $negative-main;
@@ -29,6 +34,7 @@
   }
 
   &__newPriceInputError {
+    height: $spacing-xl;
     color: $negative-main;
     font-size: $font-size-s;
   }
