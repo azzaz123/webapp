@@ -60,7 +60,7 @@ export class UserStatsComponent implements OnInit {
   private cleanCurrentURL(): string {
     const URL = this.router.url;
     let to = URL.lastIndexOf('/');
-    to = to == -1 ? URL.length : to + 1;
+    to = to === -1 ? URL.length : to + 1;
     return URL.substring(0, to);
   }
 }
