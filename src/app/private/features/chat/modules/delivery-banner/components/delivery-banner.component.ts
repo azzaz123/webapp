@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { DELIVERY_BANNER_TYPE } from '../enums/delivery-banner-type.enum';
 import { DELIVERY_BANNER_ACTION } from '../enums/delivery-banner-action.enum';
 import { DeliveryBanner } from '../interfaces/delivery-banner.interface';
-import { BannerSpecifications } from '@shared/banner/banner-specifications.interface';
 
 @Component({
   selector: 'tsl-delivery-banner',

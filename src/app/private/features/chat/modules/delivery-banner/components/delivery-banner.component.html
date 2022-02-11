@@ -4,4 +4,9 @@
     [bannerProperties]="bannerProperties"
     (clickedCTA)="handleClickCTA($event)"
   ></tsl-buy-banner>
+  <tsl-edit-price-banner
+    *ngIf="bannerProperties.type === DELIVERY_BANNER_TYPES.EDIT_PRICE"
+    [bannerProperties]="bannerProperties"
+    (clickedCTA)="handleClickCTA($event)"
+  ></tsl-edit-price-banner>
 </div>

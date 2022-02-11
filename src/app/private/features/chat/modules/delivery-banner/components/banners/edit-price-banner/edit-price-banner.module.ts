@@ -5,5 +5,6 @@ import { EditPriceBannerComponent } from './edit-price-banner.component';
 @NgModule({
   declarations: [EditPriceBannerComponent],
   imports: [CommonModule],
+  exports: [EditPriceBannerComponent],
 })
 export class EditPriceBannerModule {}
