@@ -43,7 +43,7 @@ import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component'
   selector: 'tsl-cover-upload',
   template: '',
 })
-class MockCoverUpload {}
+class MockCoverUploadComponent {}
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -132,7 +132,7 @@ describe('ProfileInfoComponent', () => {
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
-        declarations: [ProfileInfoComponent, ProfileFormComponent, MockCoverUpload],
+        declarations: [ProfileInfoComponent, ProfileFormComponent, MockCoverUploadComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
@@ -633,7 +633,7 @@ describe('ProfileInfoComponent', () => {
         });
 
         it('should show cover field', () => {
-          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeTruthy();
+          expect(fixture.debugElement.query(By.directive(MockCoverUploadComponent))).toBeTruthy();
         });
 
         it('should show first name and last name', () => {
@@ -664,7 +664,7 @@ describe('ProfileInfoComponent', () => {
         });
 
         it('should not show cover field', () => {
-          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeFalsy();
+          expect(fixture.debugElement.query(By.directive(MockCoverUploadComponent))).toBeFalsy();
         });
 
         it('should show first name and last name', () => {
