@@ -6,6 +6,11 @@
         Have you agreed on another price? Edit it.
       </p>
     </div>
-    <tsl-button [className]="'btn-primary btn--thin'" i18n="@@chat_seller_shipping_enabled_banner_price_edit_button">Edit price</tsl-button>
+    <tsl-button
+      [className]="'btn-primary btn--thin'"
+      (click)="handleClickCTA()"
+      i18n="@@chat_seller_shipping_enabled_banner_price_edit_button"
+      >Edit price</tsl-button
+    >
   </div>
 </tsl-banner>

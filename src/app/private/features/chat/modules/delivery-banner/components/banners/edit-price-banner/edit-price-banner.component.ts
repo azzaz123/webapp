@@ -10,7 +10,7 @@ import { PriceableDeliveryBanner } from '../../../interfaces/priceable-delivery-
   templateUrl: './edit-price-banner.component.html',
   styleUrls: ['./edit-price-banner.component.scss'],
 })
-export class EditPriceBannerComponent implements ActionableDeliveryBannerComponent {
+export class EditPriceBannerComponent extends ActionableDeliveryBannerComponent {
   @Input() bannerProperties: PriceableDeliveryBanner & ActionableDeliveryBanner;
   @Output() clickedCTA: EventEmitter<DELIVERY_BANNER_ACTION> = new EventEmitter<DELIVERY_BANNER_ACTION>();
 
