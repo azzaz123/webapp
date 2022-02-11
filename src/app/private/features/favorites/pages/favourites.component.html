@@ -54,7 +54,7 @@
       </div>
       <div class="cards-container" *ngIf="selectedStatus === 'profiles'">
         <div class="card-wrapper" *ngFor="let profile of profiles">
-          <tsl-profile-card-favorite [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)">
+          <tsl-profile-card-favorite [profile]="profile" (favoriteProfileChange)="onFavoriteProfileChange($event)">
           </tsl-profile-card-favorite>
         </div>
       </div>
