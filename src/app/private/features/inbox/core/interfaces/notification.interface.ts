@@ -3,9 +3,10 @@ import { NOTIFICATION_VARIANT } from '../enums/notification-variant.enum';
 
 export interface Notification {
   variant: NOTIFICATION_VARIANT;
-  productStatus?: NOTIFICATION_PRODUCT_STATUS; // it can be a enum....? reserved, sold and lowered. Optional. Used only in product variant.
+  productStatus?: NOTIFICATION_PRODUCT_STATUS;
   isRead: boolean;
   date: Date;
   title: string;
   description: string;
+  photo: string;
 }
