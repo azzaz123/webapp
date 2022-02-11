@@ -6,7 +6,9 @@ import { PaymentsPaymentMethodsDto } from '@api/payments/payment-methods/dtos/pa
 
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentsPaymentMethodsHttpService {
   constructor(private http: HttpClient) {}
 

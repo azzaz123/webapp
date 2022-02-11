@@ -1,6 +1,6 @@
 import { Money } from '@api/core/model/money.interface';
 
-export interface DeliveryCostsItem {
+export interface DeliveryCosts {
   buyerAddressCost: Money;
   carrierOfficeCost: Money;
 }
