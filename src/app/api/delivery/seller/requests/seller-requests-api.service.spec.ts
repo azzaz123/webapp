@@ -11,6 +11,8 @@ describe('SellerRequestsApiService', () => {
   let service: SellerRequestsApiService;
   let sellerRequestsHttpService: SellerRequestsHttpService;
   const MOCK_REQUEST_ID: string = '392183AK28923';
+  const MOCK_ITEM_HASH: string = 'dqjwm31nkezo';
+  const MOCK_BUYER_HASH: string = 'mxzod8nyv4j9';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,6 +21,9 @@ describe('SellerRequestsApiService', () => {
         {
           provide: SellerRequestsHttpService,
           useValue: {
+            getRequestsByBuyerAndItem() {
+              return of([MOCK_SELLER_REQUEST_DTO, MOCK_SELLER_REQUEST_DTO]);
+            },
             getRequestInfo() {
               return of(MOCK_SELLER_REQUEST_DTO);
             },
@@ -41,6 +46,26 @@ describe('SellerRequestsApiService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('when asking to get all seller requests for specific item and buyer', () => {
+    let response: SellerRequest[];
+
+    beforeEach(fakeAsync(() => {
+      spyOn(sellerRequestsHttpService, 'getRequestsByBuyerAndItem').and.callThrough();
+
+      service.getRequestsByBuyerAndItem(MOCK_BUYER_HASH, MOCK_ITEM_HASH).subscribe((data: SellerRequest[]) => (response = data));
+      tick();
+    }));
+
+    it('should ask server for request information', () => {
+      expect(sellerRequestsHttpService.getRequestsByBuyerAndItem).toHaveBeenCalledTimes(1);
+      expect(sellerRequestsHttpService.getRequestsByBuyerAndItem).toHaveBeenCalledWith(MOCK_BUYER_HASH, MOCK_ITEM_HASH);
+    });
+
+    it('should return the request response mapped into our model domain', () => {
+      expect(JSON.stringify(response)).toStrictEqual(JSON.stringify([MOCK_SELLER_REQUEST, MOCK_SELLER_REQUEST]));
+    });
   });
 
   describe('when asking to get a seller request information', () => {
