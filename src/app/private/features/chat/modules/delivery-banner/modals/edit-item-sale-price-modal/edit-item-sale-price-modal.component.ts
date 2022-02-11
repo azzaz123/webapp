@@ -8,6 +8,7 @@ enum EDIT_ITEM_SALE_PRICE_ERROR {
   MIN,
   MAX,
 }
+
 @Component({
   selector: 'tsl-edit-item-sale-price-modal',
   templateUrl: './edit-item-sale-price-modal.component.html',
@@ -16,8 +17,6 @@ enum EDIT_ITEM_SALE_PRICE_ERROR {
 })
 export class EditItemSalePriceModalComponent implements OnInit {
   @Input() currency: Currency;
-
-  constructor(private formBuilder: FormBuilder, private activeModal: NgbActiveModal) {}
 
   public readonly MIN_ITEM_PRICE: number = 1;
   public readonly MAX_ITEM_PRICE: number = 1000;
@@ -29,10 +28,21 @@ export class EditItemSalePriceModalComponent implements OnInit {
   public isButtonDisabled: boolean = true;
   public inputError: EDIT_ITEM_SALE_PRICE_ERROR | null;
 
+  constructor(private formBuilder: FormBuilder, private activeModal: NgbActiveModal) {}
+
   ngOnInit(): void {
     this.buildForm();
     this.attachListeners();
     this.calculateErrorLiterals();
+  }
+
+  public handleSubmit(): void {
+    this.checkNewPriceErrors();
+    this.checkInvalidInput();
+  }
+
+  public handleClickCloseModal(): void {
+    this.activeModal.close();
   }
 
   private attachListeners(): void {
@@ -52,15 +62,6 @@ export class EditItemSalePriceModalComponent implements OnInit {
   private calculateErrorLiterals(): void {
     this.MIN_ITEM_PRICE_WITH_CURRENCY = `${this.MIN_ITEM_PRICE}${this.currency?.symbol}`;
     this.MAX_ITEM_PRICE_WITH_CURRENCY = `${this.MAX_ITEM_PRICE}${this.currency?.symbol}`;
-  }
-
-  public handleSubmit(): void {
-    this.checkNewPriceErrors();
-    this.checkInvalidInput();
-  }
-
-  public handleClickCloseModal(): void {
-    this.activeModal.close();
   }
 
   private get newPriceFormControl(): FormControl {
