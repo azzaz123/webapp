@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { BannerSpecifications } from '@shared/banner/banner-specifications.interface';
 import { ActionableDeliveryBannerComponent } from '../../../classes/actionable-delivery-banner.component';
 import { DELIVERY_BANNER_ACTION } from '../../../enums/delivery-banner-action.enum';
@@ -9,6 +9,7 @@ import { PriceableDeliveryBanner } from '../../../interfaces/priceable-delivery-
   selector: 'tsl-edit-price-banner',
   templateUrl: './edit-price-banner.component.html',
   styleUrls: ['./edit-price-banner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditPriceBannerComponent extends ActionableDeliveryBannerComponent {
   @Input() bannerProperties: PriceableDeliveryBanner & ActionableDeliveryBanner;
