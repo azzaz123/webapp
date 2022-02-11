@@ -28,7 +28,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { PERMISSIONS } from '@core/user/user-constants';
 import { isEqual } from 'lodash-es';
 import { Observable, of } from 'rxjs';
-import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
+import { ChangeStoreLocationModalComponent } from '../../modal/change-store-location-modal/change-store-location-modal.component';
 import { UserLocation } from '@core/user/user-response.interface';
 import { Tier } from '@core/subscriptions/subscriptions.interface';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
@@ -316,7 +316,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   }
 
   private openChangeStoreLocationModal(): void {
-    const modalRef = this.modalService.open(ChangeStoreLocationModal, {
+    const modalRef = this.modalService.open(ChangeStoreLocationModalComponent, {
       windowClass: 'change-store-location',
     });
 

@@ -36,7 +36,7 @@ import { VisibleDirectiveModule } from '@shared/directives/visible/visible.direc
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
-import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
+import { ChangeStoreLocationModalComponent } from '../../modal/change-store-location-modal/change-store-location-modal.component';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 
 @Component({
@@ -296,7 +296,7 @@ describe('ProfileInfoComponent', () => {
               fixture.detectChanges();
               component.onSubmit();
 
-              expect(modalService.open).toHaveBeenCalledWith(ChangeStoreLocationModal, { windowClass: 'change-store-location' });
+              expect(modalService.open).toHaveBeenCalledWith(ChangeStoreLocationModalComponent, { windowClass: 'change-store-location' });
               expect(modalService.open).toHaveBeenCalledTimes(1);
             });
             describe('and user wants to change location', () => {
