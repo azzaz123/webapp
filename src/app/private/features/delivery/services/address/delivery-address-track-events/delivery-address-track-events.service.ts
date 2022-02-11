@@ -10,7 +10,9 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryAddressTrackEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 

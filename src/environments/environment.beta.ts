@@ -18,6 +18,7 @@ export const environment: Environment = {
   didomiKey: '56d12b9e-69db-4641-a15a-9c19f73aed7d',
   threatMetrixOrgId: '6ldgf22r',
   threatMetrixProfilingDomain: 'clear.wallapop.com',
+  optimizelySdkKey: '62mynM5SVDrhD5aVV1xNz',
 };
 
 export const isSWEnabled = false;

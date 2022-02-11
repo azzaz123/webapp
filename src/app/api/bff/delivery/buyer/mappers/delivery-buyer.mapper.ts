@@ -1,6 +1,6 @@
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import {
-  DeliveryBuyerAddressUsed,
+  LastAddressUsed,
   DeliveryBuyerDeliveryMethod,
   DeliveryBuyerDeliveryMethods,
   DeliveryBuyerDeliveryTime,
@@ -50,7 +50,7 @@ const mapToDeliveryMethod: ToDomainMapper<DeliveryBuyerDeliveryMethodDto, Delive
     carrier: carriers[carrier] ?? null,
     deliveryTimes: deliveryTimes as DeliveryBuyerDeliveryTime,
     icon: icon,
-    lastAddressUsed: lastAddressUsed as DeliveryBuyerAddressUsed,
+    lastAddressUsed: lastAddressUsed as LastAddressUsed,
     method: methods[method] ?? null,
   };
 };

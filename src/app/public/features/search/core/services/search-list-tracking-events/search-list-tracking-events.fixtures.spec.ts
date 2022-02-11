@@ -34,6 +34,26 @@ export const MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH: AnalyticsEvent<ClickItemCar
   },
 };
 
+export const MOCK_CLICK_ITEM_CARD_EVENT_FROM_SEARCH_NO_SELLER_ID: AnalyticsEvent<ClickItemCard> = {
+  name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+  eventType: ANALYTIC_EVENT_TYPES.Navigation,
+  attributes: {
+    itemId: MOCK_ITEM_CARD.id,
+    categoryId: MOCK_ITEM_CARD.categoryId,
+    position: MOCK_ITEM_INDEX + 1,
+    screenId: SCREEN_IDS.Search,
+    searchId: MOCK_SEARCH_ID,
+    isPro: null,
+    isCarDealer: null,
+    salePrice: MOCK_ITEM_CARD.salePrice,
+    title: MOCK_ITEM_CARD.title,
+    itemDistance: MOCK_ITEM_CARD.distance,
+    shippingAllowed: !!MOCK_ITEM_CARD.saleConditions?.shipping_allowed,
+    sellerUserId: null,
+    isBumped: !!MOCK_ITEM_CARD.bumpFlags?.bumped,
+  },
+};
+
 export const MOCK_FAVOURITE_ITEM_EVENT_FROM_SEARCH: AnalyticsEvent<FavoriteItem> = {
   name: ANALYTICS_EVENT_NAMES.FavoriteItem,
   eventType: ANALYTIC_EVENT_TYPES.UserPreference,

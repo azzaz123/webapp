@@ -3,8 +3,9 @@ import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import {
   MOCK_ACCEPT_SCREEN_PROPERTIES,
   MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU,
+  MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenService } from '../accept-screen/accept-screen.service';
 
@@ -12,6 +13,8 @@ import { AcceptScreenStoreService } from './accept-screen-store.service';
 
 describe('AcceptScreenStoreService', () => {
   const MOCK_REQUEST_ID: string = '2387283dsbd';
+  const acceptScreenServiceSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(MOCK_ACCEPT_SCREEN_PROPERTIES);
+
   let service: AcceptScreenStoreService;
   let acceptScreenService: AcceptScreenService;
   let expectedAcceptScreenProperties: AcceptScreenProperties;
@@ -25,7 +28,7 @@ describe('AcceptScreenStoreService', () => {
           provide: AcceptScreenService,
           useValue: {
             getAcceptScreenProperties(): Observable<AcceptScreenProperties> {
-              return of(MOCK_ACCEPT_SCREEN_PROPERTIES);
+              return of(acceptScreenServiceSubjectMock.value);
             },
           },
         },
@@ -46,7 +49,7 @@ describe('AcceptScreenStoreService', () => {
         expectedAcceptScreenProperties = newProperties;
       });
 
-      service.initialize$(MOCK_REQUEST_ID).subscribe();
+      service.initialize(MOCK_REQUEST_ID);
       tick();
     }));
 
@@ -63,11 +66,11 @@ describe('AcceptScreenStoreService', () => {
       const carrierPositionUpdatedByUser: number = 1;
 
       beforeEach(fakeAsync(() => {
-        service.selectedDropOffModeByUser$.subscribe((newModeSelectedByUser: CARRIER_DROP_OFF_MODE) => {
-          expectedDropOffMode = newModeSelectedByUser;
+        service.carrierSelectedIndex$.subscribe((newCarrierSelected: CARRIER_DROP_OFF_MODE) => {
+          expectedDropOffMode = newCarrierSelected;
         });
 
-        service.notifySelectedDropOffModeByUser(carrierPositionUpdatedByUser);
+        service.selectNewDropOffMode(carrierPositionUpdatedByUser);
         tick();
       }));
 
@@ -86,6 +89,19 @@ describe('AcceptScreenStoreService', () => {
 
       it('should update the accept screen properties', () => {
         expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+      });
+    });
+
+    describe('and when we update the accept screen store', () => {
+      beforeEach(fakeAsync(() => {
+        acceptScreenServiceSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS);
+
+        service.update(MOCK_REQUEST_ID);
+        tick();
+      }));
+
+      it('should update the accept screen store properties ', () => {
+        expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS);
       });
     });
   });

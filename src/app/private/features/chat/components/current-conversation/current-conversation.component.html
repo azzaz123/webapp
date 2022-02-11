@@ -74,6 +74,7 @@
             </tsl-third-voice-drop-price>
             <tsl-third-voice-review *ngIf="isThirdVoiceReview(message.type)" [message]="message"
               [user]="currentConversation.user" [item]="currentConversation.item"></tsl-third-voice-review>
+            <tsl-third-voice-delivery *ngIf="isDeliveryThirdVoice(message.type)" [message]="message" (clickedCTA)="handleDeliveryThirdVoiceCTAClick()"></tsl-third-voice-delivery>
           </div>
 
           <div class="notification-container">

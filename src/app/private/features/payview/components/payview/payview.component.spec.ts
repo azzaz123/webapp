@@ -10,12 +10,13 @@ describe('PayviewComponent', () => {
   const fakeItemHash: string = 'this_is_a_fake_hash';
   const modalRef: Partial<NgbModalRef> = {
     result: Promise.resolve(),
-    componentInstance: {},
+    componentInstance: {
+      itemHash: undefined,
+    },
   };
 
   let component: PayviewComponent;
   let fixture: ComponentFixture<PayviewComponent>;
-  let itemHash: string;
   let modalService: NgbModal;
 
   beforeEach(async () => {
@@ -68,7 +69,7 @@ describe('PayviewComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(PayviewModalComponent);
     });
 
-    it('should pass the item hash to the modal component', () => {
+    it('should assign the corresponding payload to the payview modal component', () => {
       expect(modalRef.componentInstance.itemHash).toEqual(fakeItemHash);
     });
   });

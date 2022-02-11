@@ -1,11 +1,31 @@
 @import '~style/common';
 
 .AcceptScreenModal {
+  &__cursorPointer {
+    cursor: pointer;
+  }
+
+  &__bottomLine {
+    border-bottom: 1px solid $blue-grey-4;
+  }
+
+  &__sellerAddressInfoWrapper {
+    flex: 1;
+  }
+
+  &__sellerAddressInfo {
+    flex: 1;
+  }
+
+  &__sellerWithAddressHeader {
+    font-size: $font-size-s;
+    color: $blue-grey-2;
+  }
+
   &__title {
     color: $blue-grey-1;
     font-size: $font-size-s;
     font-weight: $font-weight-chunky;
-    border-bottom: 1px solid $blue-grey-4;
   }
 
   &__carrierWrapper {

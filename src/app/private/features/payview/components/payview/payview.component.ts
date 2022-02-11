@@ -14,10 +14,10 @@ export class PayviewComponent implements OnInit {
   constructor(private modalService: NgbModal, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.openModal(this.getPayviewData());
+    this.openModal(this.itemHash);
   }
 
-  private getPayviewData(): string {
+  private get itemHash(): string {
     return this.route.snapshot.paramMap.get(PRIVATE_PATH_PARAMS.ID);
   }
 
