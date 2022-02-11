@@ -4,7 +4,6 @@ import { catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { User } from './user';
 import { EventService } from '../event/event.service';
-import { Item } from '../item/item';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '@environments/environment';
@@ -19,7 +18,7 @@ import { PhoneMethodResponse } from './phone-method.interface';
 
 import { APP_VERSION } from '@environments/version';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { InboxUser, InboxItem } from '@private/features/chat/core/model';
+import { InboxUser } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
 import mParticle from '@mparticle/web-sdk';
@@ -43,8 +42,6 @@ export const USER_PASSWORD_ENDPOINT = `${USER_ENDPOINT}password`;
 export const USER_UNSUBSCRIBE_ENDPOINT = `${USER_ENDPOINT}unsubscribe/`;
 export const USER_UNSUBSCRIBE_REASONS_ENDPOINT = `${USER_UNSUBSCRIBE_ENDPOINT}reason`;
 export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`;
-export const USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT = `${USER_ENDPOINT}profile-subscription-info/`;
-export const USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT = `${USER_ENDPOINT}type`;
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool/';
 export const PROTOOL_EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}extraInfo`;
@@ -126,7 +123,7 @@ export class UserService {
     this.cookieService.remove('creditQuantity', cookieOptions);
     this.accessTokenService.deleteAccessToken();
     this.permissionService.flushPermissions();
-    this.logoutMParticle(this.event.emit(EventService.USER_LOGOUT, redirectUrl));
+    this.logoutMParticle(() => this.event.emit(EventService.USER_LOGOUT, redirectUrl));
   }
 
   public isCurrentUser(userId: string): boolean {
@@ -147,7 +144,7 @@ export class UserService {
     }
   }
 
-  public calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
+  public calculateDistanceFromItem(user: User | InboxUser): number {
     if (!user.location || !this.user.location) {
       return null;
     }
@@ -171,7 +168,7 @@ export class UserService {
   }
 
   public getUserCover(): Observable<Image> {
-    return this.http.get<Image>(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`).pipe(catchError((error) => of({} as Image)));
+    return this.http.get<Image>(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`).pipe(catchError(() => of({} as Image)));
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
@@ -279,7 +276,7 @@ export class UserService {
         this.isProUserSubject.next(this.isPro);
       }),
       tap((user) => this.setPermission(user)),
-      tap((user) => this.getStoredIsClickedProSection(user)),
+      tap(() => this.getStoredIsClickedProSection()),
       catchError((error) => {
         this.logout(null);
         return of(error);
@@ -363,13 +360,14 @@ export class UserService {
     }, interval);
   }
 
+  // FIXME: This should be handled through the analytics service
   private logoutMParticle(callback: any): void {
     const identityCallback = (result: any) => {
       if (result.getUser()) {
         return callback;
       }
     };
-    mParticle.Identity.logout({}, identityCallback);
+    mParticle.Identity.logout({ userIdentities: {} }, identityCallback);
   }
 
   private sendUserPresence() {
@@ -427,7 +425,7 @@ export class UserService {
     return (value * Math.PI) / 180;
   }
 
-  private getStoredIsClickedProSection(user: User): void {
+  private getStoredIsClickedProSection(): void {
     this._isProSectionClicked = !!this.getLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION);
   }
 }

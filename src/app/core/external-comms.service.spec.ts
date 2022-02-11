@@ -15,7 +15,7 @@ describe('ExternalCommsService', () => {
       const MOCK_BRAZE_CONFIG = { enableHtmlInAppMessages: true };
       spyOn(appboy, 'initialize');
 
-      service.initializeBrazeCommunications();
+      service.initializeBraze();
       tick();
 
       expect(appboy.initialize).toHaveBeenCalledWith(environment.appboy, MOCK_BRAZE_CONFIG);
@@ -24,7 +24,7 @@ describe('ExternalCommsService', () => {
     it('should enable displaying automatically Braze in-app messages', fakeAsync(() => {
       spyOn(appboy.display, 'automaticallyShowNewInAppMessages');
 
-      service.initializeBrazeCommunications();
+      service.initializeBraze();
       tick();
 
       expect(appboy.display.automaticallyShowNewInAppMessages).toHaveBeenCalledTimes(1);
@@ -36,7 +36,7 @@ describe('ExternalCommsService', () => {
         brazeReadyEventSent = true;
       });
 
-      service.initializeBrazeCommunications();
+      service.initializeBraze();
       tick();
 
       expect(brazeReadyEventSent).toBe(true);

@@ -1,15 +1,13 @@
 import { HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { ComponentFixtureAutoDetect, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { Item } from '@core/item/item';
 import { MockReleaseVersion } from '@core/release-version/release-version.fixtures.spec';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 import { environment } from '@environments/environment';
-import { APP_VERSION } from '@environments/version';
 import { PhoneMethod } from '@private/features/chat/core/model';
-import { ITEM_LOCATION, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ITEM_LOCATION } from '@fixtures/item.fixtures.spec';
 import {
   CUSTOM_REASON,
   IMAGE,
@@ -18,7 +16,6 @@ import {
   MOCK_USER,
   MOCK_USER_STATS,
   SELECTED_REASON,
-  USERS_STATS,
   USER_DATA,
   USER_EDIT_DATA,
   USER_EMAIL,
@@ -28,12 +25,12 @@ import {
   USER_LOCATION_COORDINATES,
   USER_PRO_DATA,
   USER_PRO_INFO_RESPONSE,
+  USERS_STATS,
 } from '@fixtures/user.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { EventService } from '../event/event.service';
-import { FeatureFlagService } from './featureflag.service';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { User } from './user';
 import { Image, UserLocation } from './user-response.interface';
@@ -43,7 +40,6 @@ import {
   LOCAL_STORAGE_TRY_PRO_SLOT,
   LOGOUT_ENDPOINT,
   PROTOOL_EXTRA_INFO_ENDPOINT,
-  UserService,
   USER_BY_ID_ENDPOINT,
   USER_COVER_IMAGE_ENDPOINT,
   USER_EMAIL_ENDPOINT,
@@ -58,6 +54,7 @@ import {
   USER_STORE_LOCATION_ENDPOINT,
   USER_UNSUBSCRIBE_ENDPOINT,
   USER_UNSUBSCRIBE_REASONS_ENDPOINT,
+  UserService,
 } from './user.service';
 import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
@@ -395,11 +392,9 @@ describe('Service: User', () => {
     describe('when the distance between users is the same...', () => {
       it('should return 0 distance', () => {
         const user: User = MOCK_USER;
-        const item: Item = MOCK_ITEM;
-        const user2: User = new User(USER_ID, null, null, ITEM_LOCATION);
-        service['_user'] = user2;
+        service['_user'] = new User(USER_ID, null, null, ITEM_LOCATION);
 
-        const distance: number = service.calculateDistanceFromItem(user, item);
+        const distance: number = service.calculateDistanceFromItem(user);
 
         expect(distance).toBe(0);
       });
@@ -417,11 +412,9 @@ describe('Service: User', () => {
           title: '08009, Barcelona',
         };
         const user: User = MOCK_USER;
-        const item: Item = MOCK_ITEM;
-        const user2: User = new User(USER_ID, null, null, CUSTOM_USER_LOCATION);
-        service['_user'] = user2;
+        service['_user'] = new User(USER_ID, null, null, CUSTOM_USER_LOCATION);
 
-        const distance: number = service.calculateDistanceFromItem(user, item);
+        const distance: number = service.calculateDistanceFromItem(user);
 
         expect(distance > 0).toBeTruthy();
       });
@@ -430,10 +423,9 @@ describe('Service: User', () => {
     describe('when our own user dont have location...', () => {
       it('should return null distance', () => {
         const user: User = new User(USER_ID);
-        const item: Item = MOCK_ITEM;
         service['_user'] = new User(USER_ID);
 
-        const distance: number = service.calculateDistanceFromItem(user, item);
+        const distance: number = service.calculateDistanceFromItem(user);
 
         expect(distance).toBeNull();
       });

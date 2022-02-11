@@ -98,11 +98,11 @@ describe('AppComponent', () => {
     });
 
     it('should initialize external Braze communications', () => {
-      spyOn(externalCommsService, 'initializeBrazeCommunications');
+      spyOn(externalCommsService, 'initializeBraze');
 
       component.ngOnInit();
 
-      expect(externalCommsService.initializeBrazeCommunications).toHaveBeenCalledTimes(1);
+      expect(externalCommsService.initializeBraze).toHaveBeenCalledTimes(1);
     });
   });
 });

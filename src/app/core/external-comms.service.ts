@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable, ReplaySubject } from 'rxjs';
 
@@ -12,26 +12,25 @@ export class ExternalCommsService {
     return this._brazeReady$.asObservable();
   }
 
-  public initializeBrazeCommunications(): void {
-    this.loadBrazeLibraryDynamically()
+  public initializeBraze(): void {
+    this.loadBraze()
       .then(() => {
-        this.initializeBrazeConfiguration();
-        this.showBrazeInappMessages();
+        this.configureBraze();
       })
       .finally(() => {
         this._brazeReady$.next();
       });
   }
 
-  private loadBrazeLibraryDynamically(): Promise<void> {
+  private loadBraze(): Promise<void> {
     return import('@mparticle/web-appboy-kit');
   }
 
-  private initializeBrazeConfiguration(): void {
-    appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true });
-  }
-
-  private showBrazeInappMessages(): void {
+  private configureBraze(): void {
+    appboy.initialize(environment.appboy, { enableHtmlInAppMessages: true, manageServiceWorkerExternally: true });
+    if (isDevMode()) {
+      appboy.toggleAppboyLogging();
+    }
     appboy.display.automaticallyShowNewInAppMessages();
   }
 }
