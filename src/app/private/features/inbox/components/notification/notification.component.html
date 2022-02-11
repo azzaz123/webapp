@@ -1,9 +1,9 @@
 <div class="Notification">
   <div class="Notification__generic">
-    <tsl-generic-image></tsl-generic-image>
+    <tsl-generic-image [image]="notification.image" [productStatus]="notification.productStatus"></tsl-generic-image>
     <div class="Notification__generic_info">
       <span class="Notification__generic_info_title">{{ notification.title }}</span>
-      <span lass="Notification__generic_info_subtitle">{{ notification.description }}</span>
+      <span class="Notification__generic_info_description">{{ notification.description }}</span>
     </div>
   </div>
 

@@ -8,5 +8,5 @@ export interface Notification {
   date: Date;
   title: string;
   description: string;
-  photo: string;
+  image: string;
 }

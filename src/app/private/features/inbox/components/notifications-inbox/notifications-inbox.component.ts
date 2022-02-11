@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { NOTIFICATION_PRODUCT_STATUS } from '../../core/enums/notification-product-status.enum';
-import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
 import { Notification } from '../../core/interfaces/notification.interface';
 
 @Component({

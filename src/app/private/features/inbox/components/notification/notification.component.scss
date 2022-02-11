@@ -3,20 +3,31 @@
 .Notification {
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  height: 100px;
+  background: $white;
+  border-radius: $border-radius;
+  padding: $spacing-m;
   &__generic {
     &_info {
       display: flex;
       flex-direction: column;
+      height: 100%;
+      justify-content: space-around;
       &_title {
         font-weight: $font-weight-chunky;
         font-size: $font-size-l;
         line-height: $font-size-l;
       }
-      &_subtitle {
+      &_description {
         margin-top: $spacing-s;
         line-height: $font-size-m;
         font-weight: normal;
         color: $blue-grey-2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 300px;
       }
     }
   }

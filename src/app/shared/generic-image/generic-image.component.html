@@ -1,10 +1,9 @@
 <div
   tslsanitizedBackground="{{image}}">
-  <!--<span class="overlay" *ngIf="item?.featured || item?.sold || item?.reserved || item?.purchases || item?.notAvailable"></span>
-   <span class="not-available" *ngIf="(item?.notAvailable || inboxItem?.notAvailable || inboxItem?.unpublished) && showAvailableStatus">
+   <span>
     <tsl-svg-icon src="/assets/icons/warning.svg"></tsl-svg-icon>
   </span>
-  <span class="sold" *ngIf="item?.sold && !item?.notAvailable">
+  <!--<span class="sold" *ngIf="item?.sold && !item?.notAvailable">
     <tsl-svg-icon src="/assets/icons/sold.svg"></tsl-svg-icon>
   </span>
   <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured && !item?.purchases && !item?.notAvailable">
