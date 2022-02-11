@@ -28,8 +28,6 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   let modalService: NgbModal;
   let router: Router;
 
-  const MOCK_ITEM_HASH: string = MOCK_INBOX_CONVERSATION_AS_BUYER.item.id;
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
