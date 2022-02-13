@@ -3,8 +3,11 @@
 .nav {
   &.filters-nav {
     display: inline-block;
-    height: 38px;
     line-height: $line-height-xl;
+    overflow-x: auto;
+    overflow-y: hidden;
+    @include hide-scroll-bars();
+
     a {
       display: inline-block;
       font-size: $font-size-xs;
@@ -15,6 +18,7 @@
       text-transform: uppercase;
       font-weight: $font-weight-chunky;
       padding: 0;
+      white-space: nowrap;
       &:hover {
         color: darken($blue-grey-2, 10%);
       }

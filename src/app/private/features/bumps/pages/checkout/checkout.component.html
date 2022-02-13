@@ -28,7 +28,7 @@
         </ng-container>
       </div>
       <div class="Checkout__cart">
-        <tsl-cart [creditInfo]="creditInfo"></tsl-cart>
+        <tsl-cart [creditInfo]="creditInfo" (confirmAction)="onConfirm()"></tsl-cart>
       </div>
     </div>
   </div>

@@ -5,9 +5,12 @@ import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.component';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 
 @Component({
   selector: 'tsl-checkout',
@@ -26,6 +29,7 @@ export class CheckoutComponent implements OnInit {
     private paymentService: PaymentService,
     private route: ActivatedRoute,
     private visibilityApiService: VisibilityApiService,
+    private modalService: NgbModal,
     private userService: UserService
   ) {}
 
@@ -55,6 +59,25 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
+  public onConfirm(): void {
+    this.itemService.deselectItems();
+    this.itemService.selectedAction = null;
+
+    const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
+      windowClass: 'pro-modal',
+    });
+
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_success];
+
+    modalRef.result.then(
+      () => {
+        this.router.navigate(['catalog/list']);
+      },
+      () => {
+        this.router.navigate(['catalog/list']);
+      }
+    );
+  }
   private getProductsFromSelectedItems(): void {
     if (!this.itemService.selectedItems.length) {
       this.router.navigate(['catalog/list']);

@@ -27,6 +27,8 @@ import { ItemChangeEvent } from '../../core/item-change.interface';
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -154,15 +156,12 @@ describe('CatalogItemComponent', () => {
 
     beforeEach(fakeAsync(() => {
       item = MOCK_ITEM;
-      spyOn(component, 'select');
+      spyOn(router, 'navigate').and.callThrough();
       component.featureItem(item);
     }));
 
-    it('should set selectedAction', () => {
-      expect(itemService.selectedAction).toBe('feature');
-    });
-    it('should call select', () => {
-      expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
+    it('should navigate to checkout', () => {
+      expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: item.id }]);
     });
   });
 

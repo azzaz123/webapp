@@ -1,4 +1,4 @@
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, ReplaySubject } from 'rxjs';
 
 import { catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
@@ -63,6 +63,7 @@ export const LOCAL_STORAGE_SUGGEST_PRO_SHOWN = 'suggest-pro-shown';
 })
 export class UserService {
   private _user: User;
+  private readonly _isUserReadySubject: ReplaySubject<void> = new ReplaySubject();
   private _users: User[] = [];
   private presenceInterval: any;
   private _isProSectionClicked: boolean;
@@ -81,6 +82,10 @@ export class UserService {
 
   get user(): User {
     return this._user;
+  }
+
+  get isUserReady$(): Observable<void> {
+    return this._isUserReadySubject.asObservable();
   }
 
   get isPro(): boolean {
@@ -270,6 +275,7 @@ export class UserService {
     return this.getLoggedUserInformation().pipe(
       tap((user) => {
         this._user = user;
+        this._isUserReadySubject.next();
         this.isProUserSubject.next(this.isPro);
       }),
       tap((user) => this.setPermission(user)),

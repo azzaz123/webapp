@@ -6,19 +6,11 @@
  */
 
 /**
- * User uploads or edits a RealEstate product location
+ * The account of the user is correctly deleted
  */
-export interface ItemRELocation {
+export interface AccountDeleted {
   /**
-   * The unique identifier for an item
+   * Identifier of the screen
    */
-  itemId: string;
-  /**
-   * Item region
-   */
-  region: string;
-  /**
-   * Real State Operation
-   */
-  operation: string;
+  screenId: 233;
 }
