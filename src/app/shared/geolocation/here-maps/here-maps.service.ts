@@ -61,9 +61,9 @@ export class HereMapsService {
       combineLatest([
         this.isServiceReady$(),
         // UNCOMMENT WHEN NECESSARY
-        // this.isUIReady$(),
-        // this.isUICSSReady$(),
-        // this.isEventsReady$()
+        this.isUIReady$(),
+        this.isUICSSReady$(),
+        this.isEventsReady$(),
       ])
     )
       .pipe(finalize(() => this.isLibraryLoadingSubject.next(false)))
