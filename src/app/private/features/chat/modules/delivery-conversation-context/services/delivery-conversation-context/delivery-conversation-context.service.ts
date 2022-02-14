@@ -56,7 +56,7 @@ export class DeliveryConversationContextService {
       return this.openAwarenessModal();
     }
 
-    if (bannerActionType === DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE) {
+    if (bannerActionType === DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE) {
       return this.openAwarenessModal();
     }
 

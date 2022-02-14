@@ -146,7 +146,7 @@ describe('DeliveryConversationContextService', () => {
     describe('and when action is change item price', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE);
       });
 
       it('should open awareness modal', () => {
