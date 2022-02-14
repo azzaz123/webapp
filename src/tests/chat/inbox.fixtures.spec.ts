@@ -368,6 +368,17 @@ export const MOCK_INBOX_ITEM_MINE: InboxItem = new InboxItem(
   CATEGORY_IDS.GAMES_CONSOLES
 );
 
+export const MOCK_INBOX_ITEM_MINE_AND_SOLD: InboxItem = new InboxItem(
+  'itemHash',
+  { amount: 288, currency: 'EUR' },
+  'Item title',
+  InboxItemPlaceholder.mainImage,
+  'web-slug',
+  InboxItemStatus.SOLD,
+  true,
+  CATEGORY_IDS.GAMES_CONSOLES
+);
+
 export const MOCK_INBOX_ITEM_NOT_MINE: InboxItem = new InboxItem(
   'itemHash',
   { amount: 288, currency: 'EUR' },
@@ -410,6 +421,41 @@ export const MOCK_INBOX_TRANSLATED_MESSAGES: InboxMessage[] = MOCK_INBOX_MESSAGE
   }
 );
 
+export const MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE: InboxMessage = new InboxMessage(
+  '5d0614b7-d9af-4bc4-ae8c-d984f60f1695',
+  '0j2y2ro33nzy',
+  'Payment complete! Time for the seller to make the shipment.',
+  undefined,
+  undefined,
+  new Date(),
+  MessageStatus.RECEIVED,
+  MessageType.DELIVERY,
+  { text: 'Payment complete! Time for the seller to make the shipment.', type: 'delivery' }
+);
+
+export const MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE: InboxMessage = new InboxMessage(
+  '5d0614b7-d9af-4bc4-ae8c-d984f60f1695',
+  '0j2y2ro33nzy',
+  'Payment complete! Time for the seller to make the shipment.',
+  undefined,
+  undefined,
+  new Date(),
+  MessageStatus.RECEIVED,
+  MessageType.DELIVERY_GENERIC,
+  { text: 'Payment complete! Time for the seller to make the shipment.', type: 'delivery' }
+);
+
+export const MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE_WITHOUT_PAYLOAD: InboxMessage = new InboxMessage(
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.id,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.thread,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.text,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.from,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.fromSelf,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.date,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.status,
+  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.type
+);
+
 export const MOCK_INBOX_CONVERSATION_BASIC: InboxConversation = new InboxConversation(
   'abcd',
   new Date(),
@@ -441,6 +487,19 @@ export const MOCK_INBOX_CONVERSATION_AS_SELLER: InboxConversation = new InboxCon
   new Date(),
   MOCK_INBOX_USER,
   MOCK_INBOX_ITEM_MINE,
+  'bli',
+  MOCK_INBOX_MESSAGES,
+  false,
+  CONVERSATION_PHONE,
+  288,
+  MOCK_INBOX_MESSAGES[0]
+);
+
+export const MOCK_INBOX_CONVERSATION_AS_SELLER_WITH_SOLD_ITEM: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM_MINE_AND_SOLD,
   'bli',
   MOCK_INBOX_MESSAGES,
   false,
@@ -517,3 +576,14 @@ export const MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICA
   true
 );
 MOCK_INBOX_TRANSLATABLE_CONVERSATION_MARKED_TO_TRANSLATE_AUTOMATICALLY.isAutomaticallyTranslatable = true;
+
+export const MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM,
+  '1',
+  [MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE, ...MOCK_INBOX_CONVERSATION_BASIC.messages],
+  false,
+  ''
+);

@@ -10,7 +10,9 @@ import { QueryParams } from '@api/core/utils/types';
 
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryBuyerCalculatorHttpService {
   constructor(private http: HttpClient) {}
 

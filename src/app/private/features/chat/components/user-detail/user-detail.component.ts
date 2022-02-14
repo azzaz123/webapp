@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { User } from '@core/user/user';
 import { UserInfoResponse } from '@core/user/user-info.interface';
 import { UserService } from '@core/user/user.service';
@@ -8,12 +8,10 @@ import { UserService } from '@core/user/user.service';
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss'],
 })
-export class UserDetailComponent implements OnInit, OnChanges {
+export class UserDetailComponent implements OnChanges {
   @Input() user: User;
 
   constructor(private userService: UserService) {}
-
-  ngOnInit() {}
 
   ngOnChanges(changes?: SimpleChanges) {
     if (changes.user) {

@@ -1,63 +1,159 @@
-<div class="modal-body" *ngIf="initializeAcceptScreenProperties$ | async">
-  <div *ngIf="acceptScreenProperties$ | async as properties" class="container">
+<div class="AcceptScreenModal modal-body">
+  <div class="container">
     <div class="row">
       <div class="col p-0">
-        <tsl-product-card
-          class="d-block mb-4"
-          [buyer]="properties.buyer"
-          [item]="properties.item"
-          [offeredPrice]="properties.request.offeredPrice"
-        ></tsl-product-card>
+        <div class="d-flex justify-content-between mb-4">
+          <a class="d-flex" (click)="goToAcceptScreen()" [ngClass]="{ AcceptScreenModal__cursorPointer: !isAcceptScreenStep }">
+            <tsl-svg-icon
+              id="back"
+              *ngIf="!isAcceptScreenStep"
+              src="/assets/icons/back-arrow.svg"
+              class="AcceptScreenModal__cursorPointer align-self-center mr-3"
+            ></tsl-svg-icon>
+            <span class="p-0" id="headerText">{{ headerText }}</span>
+          </a>
+          <div class="d-flex">
+            <a
+              *ngIf="isAcceptScreenStep"
+              class="mr-4"
+              [href]="ACCEPT_SCREEN_HELP_URL"
+              target="_blank"
+              i18n="@@accept_view_seller_top_bar_help_title"
+              id="help"
+              >Help</a
+            >
+            <tsl-svg-icon
+              id="cross"
+              src="/assets/icons/cross.svg"
+              class="AcceptScreenModal__cursorPointer align-self-center"
+              (click)="closeModal()"
+            ></tsl-svg-icon>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col p-0">
-        <h2 class="AcceptScreenModal__title pb-2" i18n="@@accept_view_seller_delivery_method_selector_title">How to send it?</h2>
-        <tsl-delivery-radio-selector
-          *ngIf="properties.carriers?.length"
-          class="d-block"
-          [selectedId]="selectedDropOffPosition"
-          (changed)="notifySelectedDropOffModeByUserChanged($event)"
-        >
-          <ng-template tslDeliveryRadioOption *ngFor="let carrier of properties.carriers">
-            <div class="AcceptScreenModal__carrierWrapper d-flex">
-              <div class="AcceptScreenModal__carrierIconWrapper mr-3">
-                <img class="AcceptScreenModal__carrierIcon" alt="carrier image" [src]="carrier.icon" />
+    <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties">
+      <ng-template step>
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <div class="col p-0">
+                <tsl-product-card
+                  class="d-block"
+                  [buyer]="properties.buyer"
+                  [item]="properties.item"
+                  [offeredPrice]="properties.request.offeredPrice"
+                ></tsl-product-card>
               </div>
-              <div class="align-self-center">
-                <span id="carrierTitle" class="mb-2"
-                  >{{ carrier.title }} <b>{{ carrier.price }}</b></span
+            </div>
+            <div class="row mt-4">
+              <div class="col p-0">
+                <h2
+                  class="AcceptScreenModal__title AcceptScreenModal__bottomLine pb-2"
+                  i18n="@@accept_view_seller_delivery_method_selector_title"
                 >
-                <div id="carrierInformationWrapper" *ngIf="carrier.isSelected">
-                  <span *ngIf="carrier.information" id="carrierInformation" class="AcceptScreenModal__carrierInformation d-block mt-2">{{
-                    carrier.information
-                  }}</span>
-                  <span
-                    *ngIf="carrier.secondaryInformation"
-                    id="carrierSecondaryInformation"
-                    class="AcceptScreenModal__carrierInformation d-block mt-2"
-                    >{{ carrier.secondaryInformation }}</span
-                  >
-                  <span class="AcceptScreenModal__carrierRestrictions d-block p-2 mt-2">{{ carrier.restrictions }}</span>
-                  <tsl-button id="carrierButton" *ngIf="carrier.buttonProperties.isShowed" class="mt-3 mb-1" className="btn-secondary">{{
-                    carrier.buttonProperties.text
-                  }}</tsl-button>
+                  How to send it?
+                </h2>
+                <tsl-delivery-radio-selector
+                  *ngIf="properties.carriers?.length"
+                  class="d-block"
+                  [selectedId]="carrierSelectedIndex$ | async"
+                  (changed)="selectNewDropOffMode($event)"
+                >
+                  <ng-template tslDeliveryRadioOption *ngFor="let carrier of properties.carriers">
+                    <div class="AcceptScreenModal__carrierWrapper d-flex">
+                      <div class="AcceptScreenModal__carrierIconWrapper mr-3">
+                        <img class="AcceptScreenModal__carrierIcon" alt="carrier image" [src]="carrier.icon" />
+                      </div>
+                      <div class="align-self-center">
+                        <span class="mb-2 carrierTitle"
+                          >{{ carrier.title }} <b>{{ carrier.price }}</b></span
+                        >
+                        <div *ngIf="carrier.isSelected" class="carrierInformationWrapper">
+                          <span *ngIf="carrier.information" class="AcceptScreenModal__carrierInformation d-block mt-2 carrierInformation">{{
+                            carrier.information
+                          }}</span>
+                          <span
+                            *ngIf="carrier.secondaryInformation"
+                            class="AcceptScreenModal__carrierInformation d-block mt-2 carrierSecondaryInformation"
+                            >{{ carrier.secondaryInformation }}</span
+                          >
+                          <span class="AcceptScreenModal__carrierRestrictions d-block p-2 mt-2">{{ carrier.restrictions }}</span>
+                          <tsl-button *ngIf="carrier.buttonProperties.isShowed" class="mt-3 mb-1 carrierButton" className="btn-secondary">{{
+                            carrier.buttonProperties.text
+                          }}</tsl-button>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </tsl-delivery-radio-selector>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col p-0">
+                <h2 class="AcceptScreenModal__title AcceptScreenModal__bottomLine pb-2" i18n="@@accept_view_seller_sender_details_title">
+                  Your data
+                </h2>
+                <div id="sellerAddressSection" class="AcceptScreenModal__bottomLine d-flex py-2 align-items-center justify-content-between">
+                  <div class="AcceptScreenModal__sellerAddressInfoWrapper d-flex text-truncate">
+                    <tsl-user-avatar [imageUrl]="properties.seller.imageUrl" [size]="48"></tsl-user-avatar>
+                    <div
+                      class="AcceptScreenModal__sellerAddressInfo d-flex flex-column text-truncate mx-2"
+                      [ngClass]="{ 'align-self-center': !properties.seller.fullAddress }"
+                    >
+                      <span
+                        [ngClass]="{ AcceptScreenModal__sellerWithAddressHeader: properties.seller.fullAddress }"
+                        class="text-truncate"
+                        i18n="@@accept_view_seller_sender_details_label"
+                        >Sender</span
+                      >
+                      <span id="fullAddress" *ngIf="properties.seller.fullAddress" class="text-truncate">{{
+                        properties.seller.fullAddress
+                      }}</span>
+                    </div>
+                  </div>
+                  <tsl-button id="addressButton" class="d-flex" className="btn btn-link btn--noPadding" (click)="goToDeliveryAddress()">
+                    <span
+                      *ngIf="!properties.seller.fullAddress"
+                      id="addressButtonCopy"
+                      i18n="@@accept_view_seller_sender_details_add_button"
+                      >Add</span
+                    >
+                    <span
+                      *ngIf="properties.seller.fullAddress"
+                      id="addressButtonCopy"
+                      i18n="@@accept_view_seller_sender_details_edit_button"
+                      >Edit</span
+                    >
+                  </tsl-button>
                 </div>
               </div>
             </div>
-          </ng-template>
-        </tsl-delivery-radio-selector>
-      </div>
-    </div>
-    <div class="mt-3 row justify-content-center align-self-center">
-      <div class="col-12 col-md-7 p-0">
-        <tsl-button id="rejectButton" className="btn btn-block btn-link" class="mb-4" i18n="@@accept_view_seller_bottom_bar_reject_button"
-          >Reject</tsl-button
-        >
-        <tsl-button id="acceptButton" className="btn btn-block btn-primary" i18n="@@accept_view_seller_bottom_bar_accept_button"
-          >Confirm</tsl-button
-        >
-      </div>
-    </div>
+            <div class="row mt-4 justify-content-center align-self-center">
+              <div class="col-12 col-md-7 p-0">
+                <tsl-button
+                  id="rejectButton"
+                  className="btn btn-block btn-link"
+                  class="mb-4"
+                  i18n="@@accept_view_seller_bottom_bar_reject_button"
+                  >Reject</tsl-button
+                >
+                <tsl-button id="acceptButton" className="btn btn-block btn-primary" i18n="@@accept_view_seller_bottom_bar_accept_button"
+                  >Confirm</tsl-button
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template step>
+        <tsl-delivery-address
+          *ngIf="acceptScreenCountries$ | async"
+          [showTitle]="false"
+          [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
+          (addressSaveSucceded)="goToAcceptScreen()"
+        ></tsl-delivery-address>
+      </ng-template>
+    </tsl-stepper>
   </div>
 </div>

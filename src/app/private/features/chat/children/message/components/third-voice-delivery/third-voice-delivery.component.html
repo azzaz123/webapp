@@ -1,0 +1,15 @@
+<tsl-third-voice-message *ngIf="!shortMessage" [message]="message">
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <span>{{ message.text }}</span>
+    <tsl-button
+      class="mt-1"
+      *ngIf="isCTAVisible"
+      [className]="'btn-third-voice'"
+      (click)="handleClickCTA()"
+      i18n="@@chat_buyer_all_all_third_voice_button"
+      >View</tsl-button
+    >
+  </div>
+</tsl-third-voice-message>
+
+<span *ngIf="shortMessage">{{ message.text }}</span>

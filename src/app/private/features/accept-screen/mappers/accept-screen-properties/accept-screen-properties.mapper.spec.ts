@@ -4,36 +4,29 @@ import {
   mapItemToAcceptScreenItem,
   mapUserToAcceptScreenBuyer,
   mapUserToAcceptScreenSeller,
-  mapDeliveryAddresstoAcceptScreenDeliveryAddress,
 } from './accept-screen-properties.mapper';
 import {
   MOCK_ACCEPT_SCREEN_ITEM_WITHOUT_IMAGE,
+  MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE,
   MOCK_ACCEPT_SCREEN_ITEM,
   MOCK_ACCEPT_SCREEN_BUYER,
   MOCK_ACCEPT_SCREEN_SELLER,
-  MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE,
+  MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_ADDRESS,
   MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE,
-  MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS,
-  MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { MOCK_USER, MOCK_OTHER_USER, MOCK_USER_WITHOUT_IMAGE, MOCK_OTHER_USER_WITHOUT_IMAGE } from '@fixtures/user.fixtures.spec';
 import {
   MOCK_CARRIER_DROP_OFF_MODE_REQUEST_EMPTY,
   MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_FREE_AND_ONE_EURO_COST,
   MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_FREE_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
-  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_BUYER_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
-  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_CARRIER_OFFICE_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
+  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_LAST_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
 } from '@fixtures/private/delivery/accept-screen/carrier-drop-off-mode-request.fixtures.spec';
-import {
-  MOCK_DELIVERY_ADDRESS,
-  MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR,
-} from '@fixtures/private/delivery/delivery-address.fixtures.spec';
+import { MOCK_DELIVERY_ADDRESS } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import {
   MOCK_ACCEPT_SCREEN_CARRIERS,
   MOCK_ACCEPT_SCREEN_CARRIERS_2,
-  MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS,
-  MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_CARRIER_OFFICE,
+  MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_LAST_ADDRESS,
   MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties-carriers.fixtures.spec';
 
@@ -61,7 +54,7 @@ describe('mapUserToAcceptScreenSeller', () => {
   describe('when asking for seller map', () => {
     describe('and seller has image', () => {
       it('should return correctly mapped seller', () => {
-        const expectedSeller = mapUserToAcceptScreenSeller(MOCK_USER);
+        const expectedSeller = mapUserToAcceptScreenSeller(MOCK_USER, MOCK_DELIVERY_ADDRESS);
 
         expect(expectedSeller).toEqual(MOCK_ACCEPT_SCREEN_SELLER);
       });
@@ -69,9 +62,17 @@ describe('mapUserToAcceptScreenSeller', () => {
 
     describe('and seller has NO image', () => {
       it('should return correctly mapped seller with PLACEHOLDER AVATAR', () => {
-        const expectedSeller = mapUserToAcceptScreenSeller(MOCK_USER_WITHOUT_IMAGE);
+        const expectedSeller = mapUserToAcceptScreenSeller(MOCK_USER_WITHOUT_IMAGE, MOCK_DELIVERY_ADDRESS);
 
         expect(expectedSeller).toEqual(MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_IMAGE);
+      });
+    });
+
+    describe('and seller has NO address', () => {
+      it('should return correctly mapped seller with empty address', () => {
+        const expectedSeller = mapUserToAcceptScreenSeller(MOCK_USER, null);
+
+        expect(expectedSeller).toEqual(MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_ADDRESS);
       });
     });
   });
@@ -127,26 +128,13 @@ describe('mapCarrierDropOffModeToAcceptScreenCarriers', () => {
 
         describe('and one carrier is PO', () => {
           describe('and it has last address defined', () => {
-            describe('and the delivery mode was buyer address', () => {
-              it('should return the carrier mapped with secondary information defined', () => {
-                const expectedCarriers = mapCarrierDropOffModeToAcceptScreenCarriers(
-                  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_BUYER_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
-                  CARRIER_DROP_OFF_MODE.HOME_PICK_UP
-                );
+            it('should return the carrier mapped with secondary information defined', () => {
+              const expectedCarriers = mapCarrierDropOffModeToAcceptScreenCarriers(
+                MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_LAST_ADDRESS_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
+                CARRIER_DROP_OFF_MODE.HOME_PICK_UP
+              );
 
-                expect(expectedCarriers).toEqual(MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_BUYER_ADDRESS);
-              });
-            });
-
-            describe('and the delivery mode was carrier office', () => {
-              it('should return the carrier mapped with secondary information defined', () => {
-                const expectedCarriers = mapCarrierDropOffModeToAcceptScreenCarriers(
-                  MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_PO_WITH_CARRIER_OFFICE_AND_ONE_HPU_WITH_SCHEDULE_DEFINED,
-                  CARRIER_DROP_OFF_MODE.POST_OFFICE
-                );
-
-                expect(expectedCarriers).toEqual(MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_CARRIER_OFFICE);
-              });
+              expect(expectedCarriers).toEqual(MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_LAST_ADDRESS);
             });
           });
         });
@@ -170,24 +158,6 @@ describe('mapCarrierDropOffModeToAcceptScreenCarriers', () => {
 
         expect(expectedCarriers).toEqual([]);
       });
-    });
-  });
-});
-
-describe('mapDeliveryAddresstoAcceptScreenDeliveryAddress', () => {
-  describe('and the delivery address has flat and floor', () => {
-    it('should return correctly mapped delivery address', () => {
-      const expectedDeliveryAddress = mapDeliveryAddresstoAcceptScreenDeliveryAddress(MOCK_DELIVERY_ADDRESS);
-
-      expect(expectedDeliveryAddress).toEqual(MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS);
-    });
-  });
-
-  describe('and the delivery address has NOT flat and floor', () => {
-    it('should return correctly mapped delivery address', () => {
-      const expectedDeliveryAddress = mapDeliveryAddresstoAcceptScreenDeliveryAddress(MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR);
-
-      expect(expectedDeliveryAddress).toEqual(MOCK_ACCEPT_SCREEN_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR);
     });
   });
 });
