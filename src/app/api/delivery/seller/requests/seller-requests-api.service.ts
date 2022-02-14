@@ -19,4 +19,16 @@ export class SellerRequestsApiService {
       })
     );
   }
+
+  public cancelRequest(requestId: string): Observable<void> {
+    return this.sellerRequestsHttpService.cancelRequest(requestId);
+  }
+
+  public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {
+    return this.sellerRequestsHttpService.acceptRequestPostOfficeDropOff(requestId);
+  }
+
+  public acceptRequestHomePickup(requestId: string): Observable<void> {
+    return this.sellerRequestsHttpService.acceptRequestHomePickup(requestId);
+  }
 }

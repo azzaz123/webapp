@@ -1,5 +1,5 @@
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/analytics-constants';
-import { OptimizelyDecideOption, UserAttributes } from '@optimizely/optimizely-sdk';
+import { OptimizelyDecideOption, UserAttributes } from '@optimizely/optimizely-sdk/lib/shared_types';
 import { OPTIMIZELY_FLAG_KEYS } from './resources/optimizely-flag-keys';
 
 export interface FlagsParamInterface {

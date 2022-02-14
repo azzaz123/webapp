@@ -42,5 +42,6 @@ import { DeliveryAddressResolver } from './resolvers/delivery-address.resolver';
     DeliveryAddressTrackEventsService,
     DeliveryAddressResolver,
   ],
+  exports: [deliveryAddressRoutedComponents],
 })
 export class DeliveryAddressModule {}

@@ -70,7 +70,9 @@ function mapTiers(tiersDto: TierDto[]): Tier[] {
   const tiers: Tier[] = tiersDto.map((tierDto) => {
     const tier: Tier = {
       ...tierDto,
-      limit: tierDto.perks.find((perk) => perk.name === PERK_NAMES.LIMIT)?.quantity,
+      limit: tierDto.perks.find((perk) => perk.name === PERK_NAMES.LIMIT)
+        ? tierDto.perks.find((perk) => perk.name === PERK_NAMES.LIMIT).quantity
+        : tierDto.limit,
       bumps: tierDto.perks.filter((perks) => BUMP_PERKS.includes(perks.name)),
     };
 

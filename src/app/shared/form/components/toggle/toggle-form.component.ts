@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, forwardRef } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UuidService } from '@core/uuid/uuid.service';
 import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-component';
@@ -16,6 +16,7 @@ import { AbstractFormComponent } from '@shared/form/abstract-form/abstract-form-
   ],
 })
 export class ToggleFormComponent extends AbstractFormComponent<boolean> {
+  @Input() isDisabled: boolean;
   public id = this.uuidService.getUUID();
   constructor(private uuidService: UuidService, private cdr: ChangeDetectorRef) {
     super();
