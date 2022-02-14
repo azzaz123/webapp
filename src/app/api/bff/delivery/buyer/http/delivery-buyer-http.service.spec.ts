@@ -33,7 +33,7 @@ describe('DeliveryBuyerHttpService', () => {
       const itemId: string = 'the_item_id';
 
       service.getDeliveryMethods(itemId).subscribe((data) => (response = data));
-      const req: TestRequest = httpMock.expectOne(DELIVERY_BUYER_DELIVERY_METHODS_ENDPOINT(itemId));
+      const req: TestRequest = httpMock.expectOne(`${DELIVERY_BUYER_DELIVERY_METHODS_ENDPOINT}?item_hash=${itemId}`);
       req.flush(MOCK_DELIVERY_BUYER_DELIVERY_METHODS_RESPONSE);
 
       expect(req.request.method).toBe('GET');
