@@ -368,6 +368,17 @@ export const MOCK_INBOX_ITEM_MINE: InboxItem = new InboxItem(
   CATEGORY_IDS.GAMES_CONSOLES
 );
 
+export const MOCK_INBOX_ITEM_MINE_AND_SOLD: InboxItem = new InboxItem(
+  'itemHash',
+  { amount: 288, currency: 'EUR' },
+  'Item title',
+  InboxItemPlaceholder.mainImage,
+  'web-slug',
+  InboxItemStatus.SOLD,
+  true,
+  CATEGORY_IDS.GAMES_CONSOLES
+);
+
 export const MOCK_INBOX_ITEM_NOT_MINE: InboxItem = new InboxItem(
   'itemHash',
   { amount: 288, currency: 'EUR' },
@@ -476,6 +487,19 @@ export const MOCK_INBOX_CONVERSATION_AS_SELLER: InboxConversation = new InboxCon
   new Date(),
   MOCK_INBOX_USER,
   MOCK_INBOX_ITEM_MINE,
+  'bli',
+  MOCK_INBOX_MESSAGES,
+  false,
+  CONVERSATION_PHONE,
+  288,
+  MOCK_INBOX_MESSAGES[0]
+);
+
+export const MOCK_INBOX_CONVERSATION_AS_SELLER_WITH_SOLD_ITEM: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM_MINE_AND_SOLD,
   'bli',
   MOCK_INBOX_MESSAGES,
   false,

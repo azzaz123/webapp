@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { SubscriptionsHttpService } from './subscriptions-http.service';
-import { SubscriptionsV3Response } from '../subscriptions.interface';
 import { SUBSCRIPTIONS_V3_ENDPOINT } from './endpoints';
 import { MOCK_RESPONSE_V3_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
+import { SubscriptionsV3Response } from '../dtos/subscriptions/subscription-response.interface';
 
 describe('SubscriptionsHttpService', () => {
   let service: SubscriptionsHttpService;
