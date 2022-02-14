@@ -74,15 +74,15 @@ export class InboxComponent implements OnInit, OnDestroy {
   public archivedConversations: InboxConversation[] = [];
   public showNewMessagesToast = false;
   public componentState: InboxState;
+  public errorRetrievingInbox = false;
+  public errorRetrievingArchived = false;
+  public isProfessional: boolean;
+  public subscriptions: Subscription = new Subscription();
+
   private _loading = false;
   private _loadingMore = false;
   private conversationElementHeight = 100;
-  public errorRetrievingInbox = false;
-  public errorRetrievingArchived = false;
   private conversation: InboxConversation;
-  public isProfessional: boolean;
-
-  subscriptions: Subscription = new Subscription();
 
   constructor(
     private inboxService: InboxService,
@@ -166,32 +166,9 @@ export class InboxComponent implements OnInit, OnDestroy {
     );
   }
 
-  private setStatusesAfterLoadConversations() {
-    this.loading = false;
-    this.loadingMore = false;
-    this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
-    this.errorRetrievingArchived = this.inboxService.errorRetrievingArchived;
-  }
-
   ngOnDestroy() {
     this.unselectCurrentConversation();
     this.subscriptions.unsubscribe();
-  }
-
-  private onInboxReady(conversations: InboxConversation[], callMethodClient: string) {
-    this.setStatusesAfterLoadConversations();
-    this.showInbox();
-    this.sendLogWithNumberOfConversationsByConversationId(conversations, callMethodClient);
-  }
-
-  private bindNewMessageToast() {
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
-      if (message.fromSelf && this.conversation.id === message.thread) {
-        this.scrollToTop();
-      } else {
-        this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
-      }
-    });
   }
 
   public showInbox() {
@@ -247,6 +224,29 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   public shouldDisplayHeader(): boolean {
     return this.hasArchivedConversations() || this.hasConversations();
+  }
+
+  private setStatusesAfterLoadConversations() {
+    this.loading = false;
+    this.loadingMore = false;
+    this.errorRetrievingInbox = this.inboxService.errorRetrievingInbox;
+    this.errorRetrievingArchived = this.inboxService.errorRetrievingArchived;
+  }
+
+  private onInboxReady(conversations: InboxConversation[], callMethodClient: string) {
+    this.setStatusesAfterLoadConversations();
+    this.showInbox();
+    this.sendLogWithNumberOfConversationsByConversationId(conversations, callMethodClient);
+  }
+
+  private bindNewMessageToast() {
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: InboxMessage) => {
+      if (message.fromSelf && this.conversation.id === message.thread) {
+        this.scrollToTop();
+      } else {
+        this.showNewMessagesToast = this.scrollPanel.nativeElement.scrollTop > this.conversationElementHeight * 0.75;
+      }
+    });
   }
 
   private unselectCurrentConversation() {

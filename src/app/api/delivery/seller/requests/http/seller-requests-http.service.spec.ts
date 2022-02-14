@@ -6,6 +6,7 @@ import {
   SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID,
   SELLER_REQUESTS_ACCEPT_POST_OFFICE_DROP_OFF_ENDPOINT_WITH_REQUEST_ID,
   SELLER_REQUESTS_ACCEPT_HOME_PICKUP_ENDPOINT_WITH_REQUEST_ID,
+  SELLER_REQUESTS_ENDPOINT,
 } from './endpoints';
 
 import { SellerRequestsHttpService } from './seller-requests-http.service';
@@ -13,6 +14,9 @@ import { APP_VERSION } from '@environments/version';
 
 describe('SellerRequestsHttpService', () => {
   const MOCK_SELLER_REQUEST_ID: string = '23203821337';
+  const MOCK_ITEM_HASH: string = 'dqjwm31nkezo';
+  const MOCK_BUYER_HASH: string = 'mxzod8nyv4j9';
+
   let service: SellerRequestsHttpService;
   let httpMock: HttpTestingController;
 
@@ -31,6 +35,18 @@ describe('SellerRequestsHttpService', () => {
 
   afterEach(() => {
     httpMock.verify();
+  });
+
+  describe('when asking to get the seller requests by buyer and item to server', () => {
+    it('should ask server for all requests done by the buyer for the item', () => {
+      const expectedUrl: string = `${SELLER_REQUESTS_ENDPOINT}?buyer_user_hash=${MOCK_BUYER_HASH}&item_hash=${MOCK_ITEM_HASH}`;
+
+      service.getRequestsByBuyerAndItem(MOCK_BUYER_HASH, MOCK_ITEM_HASH).subscribe();
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
+      req.flush([MOCK_SELLER_REQUEST_DTO, MOCK_SELLER_REQUEST_DTO]);
+
+      expect(req.request.method).toBe('GET');
+    });
   });
 
   describe('when asking to get the seller request by id to server', () => {
