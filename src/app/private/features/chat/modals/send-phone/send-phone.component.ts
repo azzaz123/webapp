@@ -17,9 +17,10 @@ import { ItemDetailRoutePipe } from '@shared/pipes';
   styleUrls: ['./send-phone.component.scss'],
 })
 export class SendPhoneComponent implements OnInit {
+  @ViewChild('phoneInput', { static: true }) phoneField: ElementRef;
+
   public conversation: InboxConversation;
   public sendPhoneForm: FormGroup;
-  @ViewChild('phoneInput', { static: true }) phoneField: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -36,10 +37,6 @@ export class SendPhoneComponent implements OnInit {
 
   ngOnInit() {
     this.phoneField.nativeElement.focus();
-  }
-
-  private phoneNumberFormatValidator(control: FormControl) {
-    return isValidNumber(control.value, 'ES', metadata) ? null : { invalid: true };
   }
 
   public handleSubmit() {
@@ -80,5 +77,9 @@ export class SendPhoneComponent implements OnInit {
   dismiss() {
     const itemUrl = this.itemDetailRoutePipe.transform(this.conversation.item.itemSlug);
     window.location.href = itemUrl;
+  }
+
+  private phoneNumberFormatValidator(control: FormControl) {
+    return isValidNumber(control.value, 'ES', metadata) ? null : { invalid: true };
   }
 }

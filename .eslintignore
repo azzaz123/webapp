@@ -1,15 +1,5 @@
 
 # Please remove the directories from here once all the linting errors of the directory have been fixed
 
-# PROs
-
-# WALLET-CHAT
-/src/app/private/features/chat
-
-# FINDING
-
-
 # T&S
 /src/app/public/features/register
-
-

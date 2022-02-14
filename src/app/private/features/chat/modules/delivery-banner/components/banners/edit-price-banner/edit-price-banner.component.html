@@ -1,0 +1,16 @@
+<tsl-banner [specifications]="bannerStyleProperties">
+  <div class="EditPriceBanner d-flex justify-content-between">
+    <div class="EditPriceBanner__infoWrapper w-100 d-flex align-items-center">
+      <tsl-svg-icon [src]="PRICE_NEGOTIATION_ICON_URL"></tsl-svg-icon>
+      <p class="EditPriceBanner__description m-0" i18n="@@chat_seller_shipping_enabled_banner_price_edit_description">
+        Have you agreed on another price? Edit it.
+      </p>
+    </div>
+    <tsl-button
+      [className]="'btn basic btn--thin'"
+      (click)="handleClickCTA()"
+      i18n="@@chat_seller_shipping_enabled_banner_price_edit_button"
+      >Edit price</tsl-button
+    >
+  </div>
+</tsl-banner>
