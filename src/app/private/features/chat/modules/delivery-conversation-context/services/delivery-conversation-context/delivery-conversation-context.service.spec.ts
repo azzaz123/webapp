@@ -29,7 +29,7 @@ describe('DeliveryConversationContextService', () => {
         },
         {
           provide: DeliveryConversationContextAsSellerService,
-          useValue: { getBannerPropertiesAsSeller: () => of(null), handleThirdVoiceCTAClick: () => {} },
+          useValue: { getBannerPropertiesAsSeller: () => of(null), handleBannerCTAClick: () => {}, handleThirdVoiceCTAClick: () => {} },
         },
         { provide: NgbModal, useValue: { open: () => {} } },
       ],
@@ -60,7 +60,7 @@ describe('DeliveryConversationContextService', () => {
 
         it('should ask for context from the sellers perspective', () => {
           expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledWith(
-            MOCK_INBOX_CONVERSATION_AS_SELLER.item.id
+            MOCK_INBOX_CONVERSATION_AS_SELLER
           );
           expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledTimes(1);
         });
@@ -75,7 +75,7 @@ describe('DeliveryConversationContextService', () => {
 
         it('should ask for context from the buyers perspective', () => {
           expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledWith(
-            MOCK_INBOX_CONVERSATION_AS_BUYER.item.id
+            MOCK_INBOX_CONVERSATION_AS_BUYER
           );
           expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledTimes(1);
         });
@@ -143,15 +143,17 @@ describe('DeliveryConversationContextService', () => {
       });
     });
 
-    describe('and when action is change item price', () => {
+    describe('and when action is edit item sale price', () => {
       beforeEach(() => {
-        spyOn(modalService, 'open');
-        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE);
+        spyOn(deliveryConversationContextAsSellerService, 'handleBannerCTAClick');
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE);
       });
 
       it('should open awareness modal', () => {
-        expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
-        expect(modalService.open).toHaveBeenCalledTimes(1);
+        expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledWith(
+          DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE
+        );
+        expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledTimes(1);
       });
     });
 
