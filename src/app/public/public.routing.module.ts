@@ -16,11 +16,6 @@ const routes: Route[] = [
         loadChildren: () => import('./features/login/login.module').then((m) => m.LoginModule),
       },
       {
-        path: PUBLIC_PATHS.REGISTER,
-        canLoad: [DevelopmentGuard],
-        loadChildren: () => import('./features/register/register.module').then((m) => m.RegisterModule),
-      },
-      {
         path: `${PUBLIC_PATHS.USER_DETAIL}/:${PUBLIC_PATH_PARAMS.WEBSLUG}`,
         loadChildren: () => import('./features/public-profile/public-profile.module').then((m) => m.PublicProfileModule),
       },
