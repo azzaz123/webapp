@@ -15,7 +15,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'tsl-story-notifications-container',
   template: `
-    {{ notifications.length }}
     <div class="container" *ngFor="let notification of notifications">
       <tsl-notification [notification]="notification"></tsl-notification>
     </div>
@@ -70,7 +69,7 @@ Default.args = {
       variant: NOTIFICATION_VARIANT.PRODUCT,
       productStatus: NOTIFICATION_PRODUCT_STATUS.RESERVED,
       isRead: false,
-      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 600000000),
       title: 'Product reserved',
       description:
         'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
@@ -79,7 +78,7 @@ Default.args = {
     {
       variant: NOTIFICATION_VARIANT.PRODUCT,
       productStatus: NOTIFICATION_PRODUCT_STATUS.SOLD,
-      isRead: false,
+      isRead: true,
       date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
       title: 'Product sold',
       description:
@@ -90,8 +89,18 @@ Default.args = {
       variant: NOTIFICATION_VARIANT.HIGHLIGHTED,
       productStatus: undefined,
       isRead: true,
-      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 6000000),
       title: 'Highlighted card',
+      description:
+        'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
+      image: 'https://picsum.photos/200/300',
+    },
+    {
+      variant: NOTIFICATION_VARIANT.PINNED,
+      productStatus: undefined,
+      isRead: false,
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      title: 'Pinned card',
       description:
         'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
       image: 'https://picsum.photos/200/300',

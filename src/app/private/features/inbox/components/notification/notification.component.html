@@ -1,4 +1,10 @@
-<div class="Notification" [ngClass]="notification.variant === NOTIFNOTIFICATION_VARIANT.HIGHLIGHTED && 'highlighted'">
+<div
+  class="Notification"
+  [ngClass]="{
+    'Notification--highlighted': notification.variant === NOTIFNOTIFICATION_VARIANT.HIGHLIGHTED,
+    'Notification--pinned': notification.variant === NOTIFNOTIFICATION_VARIANT.PINNED
+  }"
+>
   <div class="Notification__generic">
     <tsl-generic-image [image]="notification.image" [productStatus]="notification.productStatus"></tsl-generic-image>
     <div class="Notification__generic_info">

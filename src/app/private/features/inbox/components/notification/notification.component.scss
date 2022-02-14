@@ -6,11 +6,15 @@
   width: 100%;
   height: 100px;
   background: $white;
-  border-radius: $border-radius;
+
   padding: $spacing-m;
   position: relative;
-  &.highlighted {
+  &--highlighted {
     background-color: #85ffd3;
+  }
+  &--pinned {
+    border-radius: $border-radius;
+    border: 1px solid $blue-grey-4;
   }
   &__generic {
     display: flex;
