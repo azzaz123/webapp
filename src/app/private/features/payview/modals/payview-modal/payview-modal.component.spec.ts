@@ -1,6 +1,6 @@
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
@@ -32,7 +32,9 @@ class FakeComponent extends PayviewModalComponent {
 
 describe('PayviewModalComponent', () => {
   const fakeItemHash: string = 'This_is_a_fake_item_hash';
-  const payviewModalSummarySelector: string = '.PayviewModal_Summary';
+  const payviewModalSummary: string = '.PayviewModal';
+  const payviewModalSummarySelector: string = `${payviewModalSummary}__summary`;
+  const payviewModalSummarySpinner: string = `${payviewModalSummary}__spinner`;
   const payviewSummaryOverviewSelector: string = 'tsl-payview-summary-overview';
 
   let component: PayviewModalComponent;
@@ -97,6 +99,11 @@ describe('PayviewModalComponent', () => {
 
           expect(summaryBlock).toBeTruthy();
         });
+
+        it('should not show the loading animation', fakeAsync(() => {
+          const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSummarySpinner));
+          expect(loadingContainerRef).toBeFalsy();
+        }));
       });
     });
 
@@ -116,6 +123,11 @@ describe('PayviewModalComponent', () => {
       it('should assign the current item hash', fakeAsync(() => {
         expect(itemHashSpy).toBeCalledTimes(1);
         expect(itemHashSpy).toBeCalledWith(null);
+      }));
+
+      it('should show the loading animation', fakeAsync(() => {
+        const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSummarySpinner));
+        expect(loadingContainerRef).toBeTruthy();
       }));
 
       describe('WHEN the state does not have a value', () => {
