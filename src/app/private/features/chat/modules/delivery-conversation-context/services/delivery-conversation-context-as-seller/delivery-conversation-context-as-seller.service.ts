@@ -7,7 +7,9 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SELLER_EDIT_PRICE_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
+import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
+import { EditItemSalePriceModalComponent } from '../../../delivery-banner/components/banners/edit-price-banner/modals/edit-item-sale-price-modal/edit-item-sale-price-modal.component';
 
 @Injectable()
 export class DeliveryConversationContextAsSellerService {
@@ -25,8 +27,17 @@ export class DeliveryConversationContextAsSellerService {
     );
   }
 
+  public handleBannerCTAClick(action: DELIVERY_BANNER_ACTION): void {
+    if (action === DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE) {
+      this.modalService.open(EditItemSalePriceModalComponent);
+      return;
+    }
+
+    return this.openAwarenessModal();
+  }
+
   public handleThirdVoiceCTAClick(): void {
-    this.modalService.open(TRXAwarenessModalComponent);
+    this.openAwarenessModal();
   }
 
   private mapSellerRequestsToBannerProperties(sellerRequests: SellerRequest[], isItemSold: boolean): DeliveryBanner | null {
@@ -46,5 +57,9 @@ export class DeliveryConversationContextAsSellerService {
     }
 
     return null;
+  }
+
+  private openAwarenessModal(): void {
+    this.modalService.open(TRXAwarenessModalComponent);
   }
 }
