@@ -9,13 +9,15 @@ import {
   ChangeDetectionStrategy,
   Inject,
   LOCALE_ID,
+  OnDestroy,
 } from '@angular/core';
 import { Location, LocationWithRatio } from '@api/core/model';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { distinctUntilChanged, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-movable-map',
@@ -23,7 +25,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
   styleUrls: ['./movable-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MovableMapComponent implements AfterViewInit {
+export class MovableMapComponent implements AfterViewInit, OnDestroy {
   @Input() centerCoordinates: Location;
   @Input() markers: Location[] = [];
   @Input() zoom: number = 8;
@@ -37,12 +39,17 @@ export class MovableMapComponent implements AfterViewInit {
 
   public readonly loading$ = this.hereMapsService.isLibraryLoading$();
   private map: H.Map;
+  private mapSubscription: Subscription = new Subscription();
 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
 
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.centerCoordinates = this.centerCoordinates || this.fallbackCenterCoordinates;
     this.initHereMaps();
+  }
+
+  ngOnDestroy(): void {
+    this.mapSubscription.unsubscribe();
   }
 
   private initializeMap(): H.Map {
@@ -97,14 +104,16 @@ export class MovableMapComponent implements AfterViewInit {
   }
 
   private initHereMaps(): void {
-    this.hereMapsService
-      .initScript()
-      .pipe(distinctUntilChanged())
-      .subscribe((isReady: boolean) => {
-        if (isReady) {
-          this.map = this.initializeMap();
-        }
-      });
+    this.mapSubscription.add(
+      this.hereMapsService
+        .initScript()
+        .pipe(distinctUntilChanged())
+        .subscribe((isReady: boolean) => {
+          if (isReady) {
+            this.map = this.initializeMap();
+          }
+        })
+    );
   }
 
   private get fallbackCenterCoordinates(): Location {
