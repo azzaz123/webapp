@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { Image } from '@core/user/user-response.interface';
 
 @Component({
@@ -16,11 +17,23 @@ export class PayviewSummaryHeaderComponent {
 
   constructor() {}
 
+  public get address(): string {
+    return this.deliveryMethod.lastAddressUsed.label;
+  }
+
   public get deliveryTime(): string {
     return `${this.deliveryMethod.deliveryTimes.from}-${this.deliveryMethod.deliveryTimes.to}`;
   }
 
   public get imageUrl(): string {
-    return this.image?.urls_by_size.small;
+    return this.image.urls_by_size.small;
+  }
+
+  public get isHome(): boolean {
+    return this.deliveryMethod.method === DELIVERY_MODE.BUYER_ADDRESS;
+  }
+
+  public get isOffice(): boolean {
+    return this.deliveryMethod.method === DELIVERY_MODE.CARRIER_OFFICE;
   }
 }

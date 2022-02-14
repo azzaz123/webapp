@@ -1,13 +1,35 @@
 @import '~style/mixins/_mixins.scss';
+@import '~web-styleguide/scss/colors';
 @import '~web-styleguide/scss/spacing';
+@import '~web-styleguide/scss/text';
+
+$spacing-14: 14px;
 
 .PayviewSummaryHeader {
   background: rgba(236, 239, 241, 0.7);
   border-radius: 10px;
+  font-size: $spacing-14;
   padding-right: $spacing-ml;
 
+  &__imageWrapper {
+    margin-right: $spacing-ms;
+  }
   &__image {
     @include square(70px);
     border-radius: 5px;
+  }
+  &__deliveryEtaWrapper {
+    padding: 0 0 $spacing-xxs 0;
+  }
+  &__deliveryAddressWrapper {
+    padding: $spacing-xxs 0 0 0;
+  }
+  &__deliveryEtaTitle,
+  &__deliveryAddressTitle {
+    color: $blue-grey-2;
+  }
+  &__deliveryEta,
+  &__deliveryAddress {
+    font-weight: $font-weight-chunky;
   }
 }
