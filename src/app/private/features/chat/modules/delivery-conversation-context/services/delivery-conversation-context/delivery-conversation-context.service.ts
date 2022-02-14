@@ -13,15 +13,15 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 
 @Injectable()
 export class DeliveryConversationContextService {
+  private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private featureFlagService: FeatureFlagService,
     private deliveryConversationContextAsBuyerService: DeliveryConversationContextAsBuyerService,
     private deliveryConversationContextAsSellerService: DeliveryConversationContextAsSellerService,
     private modalService: NgbModal
   ) {}
-
-  private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
-  private subscriptions: Subscription[] = [];
 
   public get bannerProperties$(): Observable<DeliveryBanner | null> {
     return this._bannerProperties$.asObservable();
@@ -56,8 +56,8 @@ export class DeliveryConversationContextService {
       return this.openAwarenessModal();
     }
 
-    if (bannerActionType === DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE) {
-      return this.openAwarenessModal();
+    if (bannerActionType === DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE) {
+      return this.deliveryConversationContextAsSellerService.handleBannerCTAClick(bannerActionType);
     }
 
     if (bannerActionType === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
@@ -76,12 +76,10 @@ export class DeliveryConversationContextService {
   }
 
   private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner | null> {
-    const { item } = conversation;
-    const { id: itemHash } = item;
     const isCurrentUserTheSeller: boolean = this.isCurrentUserTheSeller(conversation);
     return isCurrentUserTheSeller
-      ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(itemHash)
-      : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(itemHash);
+      ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(conversation)
+      : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(conversation);
   }
 
   private openAwarenessModal(): void {

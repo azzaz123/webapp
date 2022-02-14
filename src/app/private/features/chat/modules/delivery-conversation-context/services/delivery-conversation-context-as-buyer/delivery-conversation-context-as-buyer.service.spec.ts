@@ -6,6 +6,7 @@ import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requ
 import { MOCK_BUYER_REQUESTS } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 import { MOCK_DELIVERY_ITEM_DETAILS } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
 import { FeatureFlagService } from '@core/user/featureflag.service';
+import { MOCK_INBOX_CONVERSATION_AS_BUYER } from '@fixtures/chat';
 import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -26,8 +27,6 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   let featureFlagService: FeatureFlagService;
   let modalService: NgbModal;
   let router: Router;
-
-  const MOCK_ITEM_HASH: string = 'abcd';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -61,7 +60,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       });
 
       it('should hide banner', fakeAsync(() => {
-        service.getBannerPropertiesAsBuyer(MOCK_ITEM_HASH).subscribe((result) => {
+        service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
           expect(result).toBeFalsy();
         });
         tick();
@@ -78,14 +77,14 @@ describe('DeliveryConversationContextAsBuyerService', () => {
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         });
 
-        it('should show buy bunner with price', fakeAsync(() => {
+        it('should show buy banner with price', fakeAsync(() => {
           const expectedBanner: PriceableDeliveryBanner & ActionableDeliveryBanner = {
             type: DELIVERY_BANNER_TYPE.BUY,
             action: MOCK_BUY_DELIVERY_BANNER_PROPERTIES.action,
             price: MOCK_DELIVERY_ITEM_DETAILS.minimumPurchaseCost,
           };
 
-          service.getBannerPropertiesAsBuyer(MOCK_ITEM_HASH).subscribe((result) => {
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
             expect(result).toEqual(expectedBanner);
           });
           tick();
@@ -103,11 +102,11 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       describe('and when there is last buyer request', () => {
         beforeEach(fakeAsync(() => {
           spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUESTS));
-          service.getBannerPropertiesAsBuyer(MOCK_ITEM_HASH).subscribe();
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
           tick();
         }));
 
-        fit('should redirect to TTS', () => {
+        it('should redirect to TTS', () => {
           const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUESTS[0].id}`;
 
           service.handleThirdVoiceCTAClick();
@@ -120,7 +119,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       describe('and when there is no last buyer request', () => {
         beforeEach(fakeAsync(() => {
           spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([]));
-          service.getBannerPropertiesAsBuyer(MOCK_ITEM_HASH).subscribe();
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
           tick();
         }));
 
