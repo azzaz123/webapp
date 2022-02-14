@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Duration, Product } from '@core/item/item-response.interface';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
@@ -13,6 +13,7 @@ import { Perks } from '@core/subscriptions/subscriptions.interface';
 export class CheckoutItemComponent implements OnInit, OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
+  @Input() availableFreeBumps: number;
   @Output() itemChanged: EventEmitter<SelectedProduct> = new EventEmitter();
   @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
   public selectedType: Product;
@@ -28,7 +29,7 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.isFreeOptionAvailable = !!this.getFreeTypes().length;
-    this.isFreeOptionDisabled = !this.getFirstAvailableFreeOption() && !this.isFreeOptionSelected;
+    this.isFreeOptionDisabled = this.availableFreeBumps === 0;
 
     if (this.isFreeOptionAvailable && !this.isFreeOptionDisabled) {
       this.isFreeOptionSelected = true;
@@ -49,9 +50,6 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
     if (this.creditInfo && !this.selectedType) {
       this.selectType(this.itemWithProducts.products[0]);
     }
-    if (this.isFreeOptionAvailable) {
-      this.isFreeOptionDisabled = !this.getFirstAvailableFreeOption() && !this.isFreeOptionSelected;
-    }
   }
 
   public getAvailableProducts(): void {
@@ -61,7 +59,6 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
       this.selectedType = this.availableTypes.find((type) => type.name === firstAvailableType.name);
       this.availableDurations = this.selectedType.durations;
       this.selectedDuration = this.selectedType.durations[0];
-      this.increaseCounter();
     } else {
       this.availableTypes = this.itemWithProducts.products;
       this.selectedType = this.itemWithProducts.products[0];
@@ -70,10 +67,7 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
     }
   }
 
-  public toggleItem() {
-    if (!this.isFreeOptionSelected) {
-      this.decreaseCounter();
-    }
+  public toggleItem(): void {
     this.getAvailableProducts();
   }
 
@@ -119,14 +113,6 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
       }
     });
     return freeTypes;
-  }
-
-  private increaseCounter(): void {
-    // this.itemWithProducts.subscription.selected_tier.bumps.find((bump) => bump.name === this.selectedType.name).used++;
-  }
-
-  private decreaseCounter(): void {
-    // this.itemWithProducts.subscription.selected_tier.bumps.find((bump) => bump.name === this.selectedType.name).used--;
   }
 
   private getFirstAvailableFreeOption(): Perks {

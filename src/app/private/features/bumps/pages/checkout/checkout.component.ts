@@ -22,7 +22,7 @@ export class CheckoutComponent implements OnInit {
   public itemsWithProducts: ItemsBySubscription[];
   public creditInfo: CreditInfo;
   public user: User;
-  private itemsSelected: SelectedProduct[] = [];
+  public itemsSelected: SelectedProduct[] = [];
 
   constructor(
     private itemService: ItemService,
@@ -63,15 +63,17 @@ export class CheckoutComponent implements OnInit {
     if (this.itemsWithProducts.length === 0) {
       this.router.navigate(['catalog/list']);
     }
+    this.refreshCounters(productIndex);
   }
 
-  public onChangeItem(newItem: SelectedProduct): void {
+  public onChangeItem(newItem: SelectedProduct, productIndex: number): void {
     const indexCart = this.itemsSelected.findIndex((item) => item.item.id === newItem.item.id);
     if (indexCart > -1) {
       this.itemsSelected[indexCart] = newItem;
     } else {
       this.itemsSelected.push(newItem);
     }
+    this.refreshCounters(productIndex);
   }
 
   public onConfirm(): void {
@@ -124,6 +126,16 @@ export class CheckoutComponent implements OnInit {
       this.itemsWithProducts = itemsWithProducts;
     } else {
       this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
+    }
+  }
+
+  private refreshCounters(productIndex: number): void {
+    if (this.itemsWithProducts[productIndex].subscription.selected_tier) {
+      const items = this.itemsWithProducts[productIndex].subscription.selected_tier.bumps.reduce((a, b) => a + b.quantity - b.used, 0);
+      const used = this.itemsSelected.filter(
+        (items) => items.isFree && items.duration.subscriptionPackageType === this.itemsWithProducts[productIndex].subscription.type
+      ).length;
+      this.itemsWithProducts[productIndex].availableFreeBumps = items - used;
     }
   }
 }

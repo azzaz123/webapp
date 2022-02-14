@@ -53,24 +53,28 @@ export class VisibilityApiService {
             this.subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId)
           )
         );
-        const a = groupBy(itemsByProducts, 'subscription.type');
-
-        const b: ItemsBySubscription[] = [];
-        const keys = Object.keys(a);
-        for (const key of keys) {
-          if (key === undefined) {
-            b.push({
-              items: a[key],
+        const itemsBySubscriptionType = groupBy(itemsByProducts, 'subscription.type');
+        const subscriptionsKeys = Object.keys(itemsBySubscriptionType);
+        const itemsBySubscription: ItemsBySubscription[] = [];
+        for (const key of subscriptionsKeys) {
+          if (key === 'undefined') {
+            itemsBySubscription.push({
+              items: itemsBySubscriptionType[key],
               subscription: null,
+              availableFreeBumps: null,
             });
           } else {
-            b.unshift({
-              items: a[key],
-              subscription: a[key][0].subscription,
+            itemsBySubscription.unshift({
+              items: itemsBySubscriptionType[key],
+              subscription: itemsBySubscriptionType[key][0].subscription,
+              availableFreeBumps: itemsBySubscriptionType[key][0].subscription.selected_tier.bumps.reduce(
+                (a, b) => a + b.quantity - b.used,
+                0
+              ),
             });
           }
         }
-        return b;
+        return itemsBySubscription;
       })
     );
   }

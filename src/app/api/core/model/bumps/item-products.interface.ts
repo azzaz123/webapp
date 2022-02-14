@@ -13,6 +13,7 @@ export interface ItemWithProducts {
 export interface ItemsBySubscription {
   items: ItemWithProducts[];
   subscription: SubscriptionsResponse;
+  availableFreeBumps: number;
 }
 
 export interface ProductMapped extends Product {

@@ -1,6 +1,11 @@
 <div class="CheckoutItem d-flex flex-column p-4">
   <div *ngIf="isFreeOptionAvailable" class="CheckoutItem__subscription pb-3 mb-3 pb-md-0 d-flex align-items-center">
-    <tsl-toggle-form [(ngModel)]="isFreeOptionSelected" (ngModelChange)="getAvailableProducts()"> </tsl-toggle-form>
+    <tsl-toggle-form
+      [(ngModel)]="isFreeOptionSelected"
+      [isDisabled]="!isFreeOptionSelected && !availableFreeBumps"
+      (ngModelChange)="getAvailableProducts()"
+    >
+    </tsl-toggle-form>
     <span class="ml-2">Use bumps from my subscription </span>
     <div class="ml-auto d-flex align-items-center CheckoutItem__delete" (click)="onRemoveItem(itemWithProducts.item.id, selectedType.name)">
       <span class="d-none d-sm-flex mr-2">Delete</span>

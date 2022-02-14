@@ -21,9 +21,10 @@
             <tsl-checkout-item
               *ngFor="let item of itemsBySubscription.items"
               (itemRemoved)="onRemoveItem($event, productIndex)"
-              (itemChanged)="onChangeItem($event)"
+              (itemChanged)="onChangeItem($event, productIndex)"
               [itemWithProducts]="item"
               [creditInfo]="creditInfo"
+              [availableFreeBumps]="itemsBySubscription.availableFreeBumps"
             ></tsl-checkout-item>
           </div>
         </ng-container>
