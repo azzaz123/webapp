@@ -3,9 +3,11 @@ import { ChangeDetectorRef, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ItemSalePriceApiService } from '@api/items/sale_price';
 import { MOCK_INBOX_CONVERSATION_AS_SELLER } from '@fixtures/chat';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from '@shared/button/button.component';
+import { of } from 'rxjs';
 
 import { EditItemSalePriceModalComponent, EDIT_ITEM_SALE_PRICE_ERROR } from './edit-item-sale-price-modal.component';
 
@@ -25,7 +27,11 @@ describe('EditItemSalePriceModalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, FormsModule, ReactiveFormsModule],
       declarations: [EditItemSalePriceModalComponent, ButtonComponent],
-      providers: [FormBuilder, { provide: NgbActiveModal, useValue: { close: () => {} } }],
+      providers: [
+        FormBuilder,
+        { provide: NgbActiveModal, useValue: { close: () => {} } },
+        { provide: ItemSalePriceApiService, useValue: { update: () => of({}) } },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

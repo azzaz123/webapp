@@ -1,9 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { mapCurrencyCodeToCurrency } from '@api/core/mappers';
+import { mapCurrencyCodeToCurrency, mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { Currency, CurrencyCode, CurrencySymbol } from '@api/core/model/currency.interface';
+import { Money } from '@api/core/model/money.interface';
+import { ItemSalePriceApiService } from '@api/items/sale_price';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxItem } from '@private/features/chat/core/model';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 export enum EDIT_ITEM_SALE_PRICE_ERROR {
   DEFAULT,
@@ -26,11 +30,17 @@ export class EditItemSalePriceModalComponent implements OnInit {
   public MIN_ITEM_PRICE_WITH_CURRENCY: string;
   public MAX_ITEM_PRICE_WITH_CURRENCY: string;
   public newItemSalePriceForm: FormGroup;
+  public loading: boolean = false;
   public isInvalidInput: boolean = false;
   public isButtonDisabled: boolean = true;
   public inputError: EDIT_ITEM_SALE_PRICE_ERROR | null = null;
 
-  constructor(private formBuilder: FormBuilder, private activeModal: NgbActiveModal) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private changeDetectorRef: ChangeDetectorRef,
+    private activeModal: NgbActiveModal,
+    private itemSalePriceApiService: ItemSalePriceApiService
+  ) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -39,17 +49,17 @@ export class EditItemSalePriceModalComponent implements OnInit {
   }
 
   public handleSubmit(): void {
-    this.checkNewPriceErrors();
-    this.checkInvalidInput();
+    this.checkVisualValidations();
+    this.checkSubmit();
   }
 
   public handleClickCloseModal(): void {
-    this.activeModal.close();
+    this.closeModal();
   }
 
   private attachListeners(): void {
     this.newPriceFormControl.valueChanges.subscribe(() => {
-      this.resetValidations();
+      this.resetVisualValidations();
       this.checkDisabledButton();
     });
   }
@@ -58,6 +68,10 @@ export class EditItemSalePriceModalComponent implements OnInit {
     this.newItemSalePriceForm = this.formBuilder.group({
       newPrice: [null, [Validators.required, Validators.min(this.MIN_ITEM_PRICE), Validators.max(this.MAX_ITEM_PRICE)]],
     });
+  }
+
+  private closeModal(): void {
+    this.activeModal.close();
   }
 
   private calculateErrorLiterals(): void {
@@ -76,9 +90,16 @@ export class EditItemSalePriceModalComponent implements OnInit {
     return mapCurrencyCodeToCurrency(currencyCode as CurrencyCode);
   }
 
-  private resetValidations(): void {
+  private resetVisualValidations(): void {
     this.inputError = null;
     this.isInvalidInput = false;
+    this.changeDetectorRef.markForCheck();
+  }
+
+  private checkVisualValidations(): void {
+    this.checkNewPriceErrors();
+    this.checkInvalidInput();
+    this.changeDetectorRef.markForCheck();
   }
 
   private checkInvalidInput(): void {
@@ -86,7 +107,7 @@ export class EditItemSalePriceModalComponent implements OnInit {
   }
 
   private checkDisabledButton(): void {
-    this.isButtonDisabled = !!this.newPriceFormControl.errors?.required;
+    this.isButtonDisabled = !!this.newPriceFormControl.errors?.required || this.loading;
   }
 
   private checkNewPriceErrors(): void {
@@ -102,5 +123,43 @@ export class EditItemSalePriceModalComponent implements OnInit {
       this.inputError = EDIT_ITEM_SALE_PRICE_ERROR.MAX;
       return;
     }
+  }
+
+  private checkSubmit(): void {
+    const isValidForm = this.newItemSalePriceForm.valid;
+    if (isValidForm) {
+      this.loading = true;
+
+      this.generateRequestToApi().subscribe(
+        () => {
+          this.closeModal();
+          this.updateItemPriceAmountByReference();
+        },
+        () => {
+          this.inputError = EDIT_ITEM_SALE_PRICE_ERROR.DEFAULT;
+          this.loading = false;
+          this.checkVisualValidations();
+        }
+      );
+    }
+  }
+
+  private get newPriceFromForm(): Money {
+    const number: number = this.newPriceFormControl.value;
+    const currency: CurrencyCode = this.currencyFromInboxItem.code;
+    const money: Money = mapNumberAndCurrencyCodeToMoney({ number, currency });
+    return money;
+  }
+
+  private generateRequestToApi(): Observable<any> {
+    const newPrice: Money = this.newPriceFromForm;
+    const { id: itemHash } = this.item;
+    return this.itemSalePriceApiService.update(itemHash, newPrice).pipe(take(1));
+  }
+
+  private updateItemPriceAmountByReference(): void {
+    const newPrice: Money = this.newPriceFromForm;
+    const { amount } = newPrice;
+    this.item.price.amount = amount.total;
   }
 }
