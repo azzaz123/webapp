@@ -1,0 +1,41 @@
+@import '~style/common';
+
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+.EditItemSalePriceModal {
+  padding: $spacing-m;
+
+  &__close {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__newPrice {
+    @include hide-input-numeric-arrows();
+    min-height: 74px;
+  }
+
+  &__newPriceInput {
+    height: 50px;
+    line-height: 1.5;
+    padding: 6px $spacing-ms;
+    color: $blue-grey-2;
+    border: 2px solid $blue-grey-5;
+    border-radius: 6px;
+
+    &--invalid {
+      color: $negative-main;
+      border: 2px solid $negative-main;
+    }
+  }
+
+  &__newPriceInputError {
+    height: $spacing-xl;
+    color: $negative-main;
+    font-size: $font-size-s;
+  }
+}
