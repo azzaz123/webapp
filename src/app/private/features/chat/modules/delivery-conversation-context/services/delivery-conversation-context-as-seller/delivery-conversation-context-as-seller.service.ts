@@ -27,9 +27,11 @@ export class DeliveryConversationContextAsSellerService {
     );
   }
 
-  public handleBannerCTAClick(action: DELIVERY_BANNER_ACTION): void {
+  public handleBannerCTAClick(conversation: InboxConversation, action: DELIVERY_BANNER_ACTION): void {
     if (action === DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE) {
-      this.modalService.open(EditItemSalePriceModalComponent);
+      const { item } = conversation;
+      const modalRef = this.modalService.open(EditItemSalePriceModalComponent).componentInstance;
+      modalRef.item = item;
       return;
     }
 

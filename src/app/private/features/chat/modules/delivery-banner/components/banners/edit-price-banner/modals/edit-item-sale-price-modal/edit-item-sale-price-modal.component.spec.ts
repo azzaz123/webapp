@@ -3,6 +3,7 @@ import { ChangeDetectorRef, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { MOCK_INBOX_CONVERSATION_AS_SELLER } from '@fixtures/chat';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from '@shared/button/button.component';
 
@@ -34,6 +35,7 @@ describe('EditItemSalePriceModalComponent', () => {
     cd = fixture.debugElement.injector.get<ChangeDetectorRef>(ChangeDetectorRef);
     activeModal = TestBed.inject(NgbActiveModal);
     component = fixture.componentInstance;
+    component.item = MOCK_INBOX_CONVERSATION_AS_SELLER.item;
     fixture.detectChanges();
 
     spyOnHandleSubmit = spyOn(component, 'handleSubmit').and.callThrough();

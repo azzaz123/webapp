@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Currency } from '@api/core/model/currency.interface';
+import { mapCurrencyCodeToCurrency } from '@api/core/mappers';
+import { Currency, CurrencyCode, CurrencySymbol } from '@api/core/model/currency.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { InboxItem } from '@private/features/chat/core/model';
 
 export enum EDIT_ITEM_SALE_PRICE_ERROR {
   DEFAULT,
@@ -16,7 +18,7 @@ export enum EDIT_ITEM_SALE_PRICE_ERROR {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditItemSalePriceModalComponent implements OnInit {
-  @Input() currency: Currency;
+  @Input() item: InboxItem;
 
   public readonly MIN_ITEM_PRICE: number = 1;
   public readonly MAX_ITEM_PRICE: number = 1000;
@@ -59,12 +61,19 @@ export class EditItemSalePriceModalComponent implements OnInit {
   }
 
   private calculateErrorLiterals(): void {
-    this.MIN_ITEM_PRICE_WITH_CURRENCY = `${this.MIN_ITEM_PRICE}${this.currency?.symbol}`;
-    this.MAX_ITEM_PRICE_WITH_CURRENCY = `${this.MAX_ITEM_PRICE}${this.currency?.symbol}`;
+    const currency: Currency = this.currencyFromInboxItem;
+    const currencySymbol: CurrencySymbol = currency.symbol;
+    this.MIN_ITEM_PRICE_WITH_CURRENCY = `${this.MIN_ITEM_PRICE}${currencySymbol}`;
+    this.MAX_ITEM_PRICE_WITH_CURRENCY = `${this.MAX_ITEM_PRICE}${currencySymbol}`;
   }
 
   private get newPriceFormControl(): FormControl {
     return this.newItemSalePriceForm.get('newPrice') as FormControl;
+  }
+
+  private get currencyFromInboxItem(): Currency {
+    const { currency: currencyCode } = this.item.price;
+    return mapCurrencyCodeToCurrency(currencyCode as CurrencyCode);
   }
 
   private resetValidations(): void {
