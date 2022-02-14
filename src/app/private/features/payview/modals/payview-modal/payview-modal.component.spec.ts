@@ -14,7 +14,9 @@ import { PayviewModalComponent } from '@private/features/payview/modals/payview-
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
 import { PayviewSummaryHeaderComponent } from '@private/features/payview/modules/summary/components/header/payview-summary-header.component';
 import { PayviewSummaryOverviewComponent } from '@private/features/payview/modules/summary/components/overview/payview-summary-overview.component';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 
 @Component({
@@ -30,7 +32,8 @@ class FakeComponent extends PayviewModalComponent {
 
 describe('PayviewModalComponent', () => {
   const fakeItemHash: string = 'This_is_a_fake_item_hash';
-  const payviewOverviewSummarySelector: string = '.PayviewOverview_Summary';
+  const payviewModalSummarySelector: string = '.PayviewModal_Summary';
+  const payviewSummaryOverviewSelector: string = 'tsl-payview-summary-overview';
 
   let component: PayviewModalComponent;
   let debugElement: DebugElement;
@@ -40,12 +43,13 @@ describe('PayviewModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FakeComponent, PayviewSummaryHeaderComponent, PayviewSummaryOverviewComponent],
+      declarations: [FakeComponent, PayviewSummaryHeaderComponent, PayviewSummaryOverviewComponent, SvgIconComponent],
       imports: [HttpClientTestingModule, BuyerRequestsApiModule],
       providers: [
         DeliveryAddressService,
         DeliveryAddressStoreService,
         ItemService,
+        NgbActiveModal,
         PaymentsWalletsService,
         PaymentsWalletsHttpService,
         PayviewStateManagementService,
@@ -89,7 +93,7 @@ describe('PayviewModalComponent', () => {
         });
 
         it('should show the summary block', () => {
-          const summaryBlock = debugElement.query(By.css(payviewOverviewSummarySelector));
+          const summaryBlock = debugElement.query(By.css(payviewModalSummarySelector));
 
           expect(summaryBlock).toBeTruthy();
         });
@@ -125,9 +129,38 @@ describe('PayviewModalComponent', () => {
         });
 
         it('should not show the summary block', () => {
-          const summaryBlock = debugElement.query(By.css(payviewOverviewSummarySelector));
+          const summaryBlock = debugElement.query(By.css(payviewModalSummarySelector));
 
           expect(summaryBlock).toBeFalsy();
+        });
+
+        it('should show the summary overview component', () => {
+          const summaryOverviewComponent = debugElement.query(By.css(payviewSummaryOverviewSelector));
+
+          expect(summaryOverviewComponent).toBeFalsy();
+        });
+      });
+
+      describe('WHEN the state has a value', () => {
+        beforeEach(() => {
+          jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+          fixture = TestBed.createComponent(FakeComponent);
+          component = fixture.componentInstance;
+          debugElement = fixture.debugElement;
+
+          fixture.detectChanges();
+        });
+
+        it('should show the summary block', () => {
+          const summaryBlock = debugElement.query(By.css(payviewModalSummarySelector));
+
+          expect(summaryBlock).toBeTruthy();
+        });
+
+        it('should show the summary overview component', () => {
+          const summaryOverviewComponent = debugElement.query(By.css(payviewSummaryOverviewSelector));
+
+          expect(summaryOverviewComponent).toBeTruthy();
         });
       });
     });

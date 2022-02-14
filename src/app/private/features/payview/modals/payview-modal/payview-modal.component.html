@@ -1,5 +1,5 @@
-<div class="PayviewOverview d-flex w-100 h-100 flex-column">
-  <div class="PayviewOverview_Summary" *ngIf="payviewState$ | async as payviewState">
+<div class="PayviewModal d-flex w-100 h-100 flex-column">
+  <div class="PayviewModal_Summary" *ngIf="payviewState$ | async as payviewState">
     <tsl-payview-summary-overview
       [deliveryMethods]="payviewState.delivery.methods"
       [item]="payviewState.item"
