@@ -666,6 +666,8 @@
     "web_chat_modals_unblock_user_193": "Desbloquear",
     "chat_buyer_shipping_enabled_banner_starting_price_description_part_1": "Envío desde",
     "chat_buyer_shipping_enabled_banner_buy_button": "Comprar",
+    "chat_seller_shipping_enabled_banner_price_edit_description": "¿Has acordado otro precio? Edítalo y listo.",
+    "chat_seller_shipping_enabled_banner_price_edit_button": "Editar precio",
     "chat_seller_shipping_enabled_price_edit_pop_up_title": "Edita el precio del producto",
     "chat_seller_shipping_enabled_price_edit_pop_up_placeholder": "Nuevo precio",
     "chat_seller_price_edit_pop_up_price_out_of_range_inline_error": "Los productos de más de {$INTERPOLATION} no se pueden enviar.",

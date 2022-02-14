@@ -22,6 +22,7 @@
     "test-coverage": "yarn test-once --coverage && ./scripts/tests/open-coverage.sh",
     "test-clean": "rm -rf ./coverage && yarn test-once --clearCache",
     "lint": "ng lint",
+    "pretty": "yarn pretty-quick",
     "e2e": "ng e2e",
     "mparticle": "yarn install && yarn upgrade mparticle_json_validation && node scripts/mparticle.js",
     "analyze-bundle": "yarn buildprod --statsJson=true && yarn webpack-bundle-analyzer dist/es/stats.json",

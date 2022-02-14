@@ -26,7 +26,10 @@ githooks
 /src/app/private/features/wallacoins/**/*.html
 
 # CHAT
-/src/app/private/features/chat/**/*.html
+/src/app/private/features/chat/children/**/*.html
+/src/app/private/features/chat/components/**/*.html
+/src/app/private/features/chat/core/**/*.html
+/src/app/private/features/chat/modals/**/*.html
 
 # ENGAGEMENT
 /src/app/private/features/favorites/**/*.html

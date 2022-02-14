@@ -12,6 +12,14 @@ import { mapSellerRequestDtoToSellerRequest } from './mappers/responses/seller-r
 export class SellerRequestsApiService {
   constructor(private sellerRequestsHttpService: SellerRequestsHttpService) {}
 
+  public getRequestsByBuyerAndItem(buyerHash: string, itemHash: string): Observable<SellerRequest[]> {
+    return this.sellerRequestsHttpService.getRequestsByBuyerAndItem(buyerHash, itemHash).pipe(
+      map((dtoResponse: SellerRequestDto[]) => {
+        return dtoResponse.map((sellerRequest) => mapSellerRequestDtoToSellerRequest(sellerRequest));
+      })
+    );
+  }
+
   public getRequestInfo(requestId: string): Observable<SellerRequest> {
     return this.sellerRequestsHttpService.getRequestInfo(requestId).pipe(
       map((dtoResponse: SellerRequestDto) => {
