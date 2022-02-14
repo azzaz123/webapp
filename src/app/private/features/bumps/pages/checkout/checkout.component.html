@@ -20,7 +20,8 @@
             </div>
             <tsl-checkout-item
               *ngFor="let item of itemsBySubscription.items"
-              (itemRemoved)="removeItem($event, productIndex)"
+              (itemRemoved)="onRemoveItem($event, productIndex)"
+              (itemChanged)="onChangeItem($event)"
               [itemWithProducts]="item"
               [creditInfo]="creditInfo"
             ></tsl-checkout-item>
@@ -28,7 +29,7 @@
         </ng-container>
       </div>
       <div class="Checkout__cart">
-        <tsl-cart [creditInfo]="creditInfo" (confirmAction)="onConfirm()"></tsl-cart>
+        <tsl-cart [creditInfo]="creditInfo" [selectedItems]="itemsSelected" (confirmAction)="onConfirm()"></tsl-cart>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemsBySubscription } from '@api/core/model/bumps/item-products.interface';
+import { ItemsBySubscription, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
@@ -22,6 +22,7 @@ export class CheckoutComponent implements OnInit {
   public itemsWithProducts: ItemsBySubscription[];
   public creditInfo: CreditInfo;
   public user: User;
+  private itemsSelected: SelectedProduct[] = [];
 
   constructor(
     private itemService: ItemService,
@@ -45,7 +46,7 @@ export class CheckoutComponent implements OnInit {
     this.user = this.userService.user;
   }
 
-  public removeItem(itemId: string, productIndex: number): void {
+  public onRemoveItem(itemId: string, productIndex: number): void {
     this.itemsWithProducts[productIndex].items = this.itemsWithProducts[productIndex].items.filter(
       (itemWithProducts) => itemWithProducts.item.id !== itemId
     );
@@ -54,8 +55,22 @@ export class CheckoutComponent implements OnInit {
       this.itemsWithProducts.splice(productIndex, 1);
     }
 
+    const indexCart = this.itemsSelected.findIndex((item) => item.item.id === itemId);
+    if (indexCart > -1) {
+      this.itemsSelected.splice(indexCart, 1);
+    }
+
     if (this.itemsWithProducts.length === 0) {
       this.router.navigate(['catalog/list']);
+    }
+  }
+
+  public onChangeItem(newItem: SelectedProduct): void {
+    const indexCart = this.itemsSelected.findIndex((item) => item.item.id === newItem.item.id);
+    if (indexCart > -1) {
+      this.itemsSelected[indexCart] = newItem;
+    } else {
+      this.itemsSelected.push(newItem);
     }
   }
 

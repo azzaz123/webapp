@@ -5,19 +5,19 @@
       class="Cart__wrapper pb-3 mb-4"
       [class.has-financial-card]="hasSavedCard"
       [class.no-credit]="!creditInfo?.credit"
-      [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit"
+      [class.no-discount]="!creditInfo?.credit"
     >
       <div class="overflow-auto h-100">
-        <ul *ngIf="cart" class="Cart__list">
-          <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length">
+        <ul *ngIf="selectedItems" class="Cart__list">
+          <li *ngFor="let cartItem of selectedItems">
             <ul>
-              <li *ngFor="let cartItem of cart[type].cartItems" class="d-flex flex-column">
+              <li class="d-flex flex-column">
                 <div class="d-flex mb-2">
                   <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
                   <div class="d-flex w-100 flex-column justify-content-center">
                     <div class="d-flex justify-content-between">
                       <div>
-                        <span [ngSwitch]="type">
+                        <span [ngSwitch]="cartItem.productType">
                           <ng-container *ngSwitchCase="BUMP_TYPES.ZONE_BUMP">
                             <ng-container *ngIf="!cartItem.isProvincialBump" i18n="@@web_cart_454">Local</ng-container>
                             <ng-container *ngIf="cartItem.isProvincialBump" i18n="@@web_cart_455">Provincial</ng-container>
