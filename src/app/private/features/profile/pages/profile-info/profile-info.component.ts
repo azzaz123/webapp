@@ -221,7 +221,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public openBecomeProModal(field: ANALYTICS_FIELDS): void {
     if (!this.isPro) {
       this.trackClickEditProField(field);
-      if (this.hasTrialAvailable === null) {
+      if (!this.hasTrialAvailable) {
         this.getTrialAvailable(() => this.manageModal());
         return;
       }
