@@ -3,10 +3,10 @@ import { InboxConversation, InboxMessage } from '@private/features/chat/core/mod
 
 @Directive()
 export abstract class MessageComponent {
-  private readonly HTML_REGEX = /<[a-z][\s\S]*>/i;
-
   @Input() message: InboxMessage;
   @Input() currentConversation: InboxConversation;
+
+  private readonly HTML_REGEX = /<[a-z][\s\S]*>/i;
 
   public containsHTMLTag(message: string): boolean {
     return this.HTML_REGEX.test(message);

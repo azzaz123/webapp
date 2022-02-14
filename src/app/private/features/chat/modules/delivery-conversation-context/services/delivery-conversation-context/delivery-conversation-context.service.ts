@@ -13,15 +13,15 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 
 @Injectable()
 export class DeliveryConversationContextService {
+  private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private featureFlagService: FeatureFlagService,
     private deliveryConversationContextAsBuyerService: DeliveryConversationContextAsBuyerService,
     private deliveryConversationContextAsSellerService: DeliveryConversationContextAsSellerService,
     private modalService: NgbModal
   ) {}
-
-  private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
-  private subscriptions: Subscription[] = [];
 
   public get bannerProperties$(): Observable<DeliveryBanner | null> {
     return this._bannerProperties$.asObservable();
