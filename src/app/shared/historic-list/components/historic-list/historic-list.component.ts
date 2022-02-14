@@ -38,6 +38,6 @@ export class HistoricListComponent implements OnChanges {
   }
 
   private checkHistoricListEmpty(): void {
-    this.isHistoricListEmpty = this.historicList?.elements.length === 0;
+    this.isHistoricListEmpty = this.historicList?.elements.length == 0;
   }
 }
