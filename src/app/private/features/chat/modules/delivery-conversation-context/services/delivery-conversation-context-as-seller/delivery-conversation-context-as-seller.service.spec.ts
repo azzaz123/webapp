@@ -88,7 +88,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
 
       it('should open the edit item sale price modal', () => {
         expect(modalService.open).toHaveBeenCalledTimes(1);
-        expect(modalService.open).toHaveBeenCalledWith(EditItemSalePriceModalComponent);
+        expect(modalService.open).toHaveBeenCalledWith(EditItemSalePriceModalComponent, { windowClass: 'modal-small' });
       });
 
       it('should pass data to modal', () => {

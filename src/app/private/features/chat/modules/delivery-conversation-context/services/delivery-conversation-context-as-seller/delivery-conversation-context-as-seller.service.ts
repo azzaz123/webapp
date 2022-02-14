@@ -30,7 +30,7 @@ export class DeliveryConversationContextAsSellerService {
   public handleBannerCTAClick(conversation: InboxConversation, action: DELIVERY_BANNER_ACTION): void {
     if (action === DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE) {
       const { item } = conversation;
-      const modalRef = this.modalService.open(EditItemSalePriceModalComponent).componentInstance;
+      const modalRef = this.modalService.open(EditItemSalePriceModalComponent, { windowClass: 'modal-small' }).componentInstance;
       modalRef.item = item;
       return;
     }
