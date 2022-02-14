@@ -47,14 +47,6 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  private routeParamsSubscription(): Subscription {
-    return this.route.parent.params.subscribe((params) => {
-      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
-      this.userId = this.slugsUtilService.getUUIDfromSlug(webSlug);
-      this.loadItems();
-    });
-  }
-
   public toggleFavourite(itemCard: ItemCard): void {
     if (itemCard.ownerId) {
       this.userService
@@ -66,6 +58,28 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
     } else {
       this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard);
     }
+  }
+
+  public loadMore(): void {
+    this.loadItems();
+  }
+
+  public itemCardClicked({ itemCard, index }: ClickedItemCard): void {
+    if (itemCard.ownerId) {
+      this.userService.get(itemCard.ownerId).subscribe((user: User) => {
+        this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, index, user);
+      });
+    } else {
+      this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, index);
+    }
+  }
+
+  private routeParamsSubscription(): Subscription {
+    return this.route.parent.params.subscribe((params) => {
+      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
+      this.userId = this.slugsUtilService.getUUIDfromSlug(webSlug);
+      this.loadItems();
+    });
   }
 
   private loadItems(): void {
@@ -85,20 +99,6 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
         }, this.onError);
     } catch (err: any) {
       this.onError();
-    }
-  }
-
-  public loadMore(): void {
-    this.loadItems();
-  }
-
-  public itemCardClicked({ itemCard, index }: ClickedItemCard): void {
-    if (itemCard.ownerId) {
-      this.userService.get(itemCard.ownerId).subscribe((user: User) => {
-        this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, index, user);
-      });
-    } else {
-      this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, index);
     }
   }
 
