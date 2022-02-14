@@ -1,4 +1,29 @@
+$small-screen: 414px;
+$extra-small-screen: 375px;
+
 .MovableMap {
-  height: 200px;
+  height: 625px;
   width: 425px;
+  border-radius: 0.3rem;
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 525px;
+  }
+
+  @media (max-width: $small-screen) {
+    width: 360px;
+    margin-left: -15px;
+  }
+  @media (max-width: 413px) and (min-width: 376px) {
+    width: 340px;
+    margin-left: -15px;
+  }
+
+  @media (max-width: $extra-small-screen) {
+    height: 510px;
+    width: 300px;
+  }
 }
