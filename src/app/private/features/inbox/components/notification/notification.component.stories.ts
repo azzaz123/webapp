@@ -10,6 +10,8 @@ import { NOTIFICATION_PRODUCT_STATUS } from '../../core/enums/notification-produ
 import { GenericImageComponent } from '@shared/generic-image/generic-image.component';
 import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { GenericImageModule } from '@shared/generic-image/generic-image.module';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'tsl-story-notifications-container',
   template: `
@@ -27,8 +29,8 @@ export default {
   component: StoryNotificationComponent,
   decorators: [
     moduleMetadata({
-      declarations: [StoryNotificationComponent, NotificationComponent, GenericImageComponent],
-      imports: [CommonModule],
+      declarations: [StoryNotificationComponent, NotificationComponent],
+      imports: [CommonModule, SvgIconModule, GenericImageModule, HttpClientModule],
       providers: [],
     }),
   ],
@@ -47,10 +49,10 @@ Default.args = {
   notifications: [
     {
       variant: NOTIFICATION_VARIANT.GENERAL,
-      productStatus: null,
-      isRead: false,
-      date: new Date().getTime(),
-      title: 'My new notification',
+      productStatus: undefined,
+      isRead: true,
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      title: 'My general notification',
       description: 'Cupidatat ad nostrud cillum',
       image: 'https://picsum.photos/200/300',
     },
@@ -58,8 +60,38 @@ Default.args = {
       variant: NOTIFICATION_VARIANT.PRODUCT,
       productStatus: NOTIFICATION_PRODUCT_STATUS.LOWERED,
       isRead: false,
-      date: new Date().getTime(),
-      title: 'My new notification',
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      title: 'Product price lowered',
+      description:
+        'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
+      image: 'https://picsum.photos/200/300',
+    },
+    {
+      variant: NOTIFICATION_VARIANT.PRODUCT,
+      productStatus: NOTIFICATION_PRODUCT_STATUS.RESERVED,
+      isRead: false,
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      title: 'Product reserved',
+      description:
+        'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
+      image: 'https://picsum.photos/200/300',
+    },
+    {
+      variant: NOTIFICATION_VARIANT.PRODUCT,
+      productStatus: NOTIFICATION_PRODUCT_STATUS.SOLD,
+      isRead: false,
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      title: 'Product sold',
+      description:
+        'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
+      image: 'https://picsum.photos/200/300',
+    },
+    {
+      variant: NOTIFICATION_VARIANT.HIGHLIGHTED,
+      productStatus: undefined,
+      isRead: true,
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      title: 'Highlighted card',
       description:
         'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
       image: 'https://picsum.photos/200/300',

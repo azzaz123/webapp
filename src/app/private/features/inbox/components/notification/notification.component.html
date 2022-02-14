@@ -1,4 +1,4 @@
-<div class="Notification">
+<div class="Notification" [ngClass]="notification.variant === NOTIFNOTIFICATION_VARIANT.HIGHLIGHTED && 'highlighted'">
   <div class="Notification__generic">
     <tsl-generic-image [image]="notification.image" [productStatus]="notification.productStatus"></tsl-generic-image>
     <div class="Notification__generic_info">
@@ -7,12 +7,12 @@
     </div>
   </div>
 
-  <div class="Notification__info">
-    <div class="Notification__info_date">
-      <span> {{ notification.date }}</span>
+  <div class="Notification__aditional-info">
+    <div class="Notification__aditional-info_date">
+      <span> {{ _momentsAgo }}</span>
     </div>
-    <div class="Notification__info_status" *ngIf="notification.isRead">
-      <span>Readed</span>
+    <div class="Notification__aditional-info_status" *ngIf="!notification.isRead">
+      <div class="new-notification"></div>
     </div>
   </div>
 </div>

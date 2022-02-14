@@ -1,12 +1,8 @@
 <div
-  tslsanitizedBackground="{{image}}">
-   <span>
-    <tsl-svg-icon src="/assets/icons/warning.svg"></tsl-svg-icon>
-  </span>
-  <!--<span class="sold" *ngIf="item?.sold && !item?.notAvailable">
-    <tsl-svg-icon src="/assets/icons/sold.svg"></tsl-svg-icon>
-  </span>
-  <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured && !item?.purchases && !item?.notAvailable">
-    <tsl-svg-icon src="/assets/icons/reserved.svg"></tsl-svg-icon>
-  </span> -->
+  tslsanitizedBackground="{{image}}" class="GenericImage">
+  <div *ngIf="productStatus" [ngSwitch]="productStatus" class="GenericImage__badge">
+    <tsl-svg-icon class="ItemCard__icon ItemCard__icon--left ItemCard__icon--small position-absolute d-flex justify-content-center align-items-center" *ngSwitchCase="NOTIFICATION_PRODUCT_STATUS.RESERVED" src="/assets/icons/item-card/reserved.svg"></tsl-svg-icon>
+    <tsl-svg-icon class="ItemCard__icon ItemCard__icon--left ItemCard__icon--small position-absolute d-flex justify-content-center align-items-center sold" *ngSwitchCase="NOTIFICATION_PRODUCT_STATUS.SOLD" src="/assets/icons/item-card/sold.svg"></tsl-svg-icon>
+    <tsl-svg-icon class="ItemCard__icon ItemCard__icon--left ItemCard__icon--small position-absolute d-flex justify-content-center align-items-center" *ngSwitchCase="NOTIFICATION_PRODUCT_STATUS.LOWERED" src="/assets/icons/save_money.svg"></tsl-svg-icon>
+  </div>
 </div>

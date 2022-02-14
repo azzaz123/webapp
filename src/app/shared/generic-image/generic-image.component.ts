@@ -8,7 +8,8 @@ import { NOTIFICATION_PRODUCT_STATUS } from '@private/features/inbox/core/enums/
 })
 export class GenericImageComponent {
   @Input() image: string;
-  @Input() productStatus?: NOTIFICATION_PRODUCT_STATUS = null;
+  @Input() productStatus: NOTIFICATION_PRODUCT_STATUS;
+  public NOTIFICATION_PRODUCT_STATUS = NOTIFICATION_PRODUCT_STATUS;
 
   constructor() {}
 }
