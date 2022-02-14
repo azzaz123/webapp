@@ -58,10 +58,6 @@ describe('CartComponent', () => {
           {
             provide: ItemService,
             useValue: {
-              purchaseProducts() {
-                return of({});
-              },
-              deselectItems() {},
               purchaseProductsWithCredits() {
                 return of({
                   payment_needed: true,
@@ -219,14 +215,6 @@ describe('CartComponent', () => {
         component.loading = false;
       });
 
-      it('should set localStorage with transaction type', fakeAsync(() => {
-        component.creditInfo.credit = 0;
-        component.checkout();
-        tick(2000);
-
-        expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'bump');
-      }));
-
       it('should emit TOTAL_CREDITS_UPDATED event', fakeAsync(() => {
         component.checkout();
         tick(2000);
@@ -242,24 +230,15 @@ describe('CartComponent', () => {
               items_failed: [],
             })
           );
-          spyOn(itemService, 'deselectItems');
-          spyOn(router, 'navigate');
-          itemService.selectedAction = 'feature';
         });
 
-        it('should redirect to code 200', fakeAsync(() => {
+        it('should emit event', fakeAsync(() => {
+          spyOn(component.confirmAction, 'emit').and.callThrough();
           component.checkout();
-          tick(2000);
+          tick();
 
-          expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
-        }));
-
-        it('should call deselectItems', fakeAsync(() => {
-          component.checkout();
-          tick(2000);
-
-          expect(itemService.deselectItems).toHaveBeenCalled();
-          expect(itemService.selectedAction).toBeNull();
+          expect(component.confirmAction.emit).toBeCalledTimes(1);
+          expect(component.confirmAction.emit).toHaveBeenCalledWith();
         }));
       });
     });
@@ -308,30 +287,6 @@ describe('CartComponent', () => {
       CART.total = 5;
 
       expect(component.totalToPay).toBe(3);
-    });
-  });
-
-  describe('usedCredits', () => {
-    beforeEach(() => {
-      component.cart = null;
-    });
-
-    it('should return 0 if no cart', () => {
-      expect(component.usedCredits).toBe(0);
-    });
-
-    it('should return -credits if credits to pay < user credits', () => {
-      component.cart = CART;
-      CART.total = 1;
-
-      expect(component.usedCredits).toBe(-100);
-    });
-
-    it('should return -creditInfo.credit otherwise', () => {
-      component.cart = CART;
-      CART.total = 5;
-
-      expect(component.usedCredits).toBe(-200);
     });
   });
 });

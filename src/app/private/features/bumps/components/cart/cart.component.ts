@@ -1,6 +1,5 @@
-import { finalize, takeWhile } from 'rxjs/operators';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { catchError, finalize, takeWhile } from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { CartService } from '@shared/catalog/cart/cart.service';
@@ -19,7 +18,7 @@ import { PACKS_TYPES } from '@core/payments/pack';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'tsl-cart',
@@ -27,8 +26,8 @@ import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit, OnDestroy {
-  @Input() provincialBump: boolean;
   @Input() creditInfo: CreditInfo;
+  @Output() confirmAction: EventEmitter<void> = new EventEmitter<void>();
 
   public cart: CartBase;
   public types: string[] = BUMP_TYPES;
@@ -54,7 +53,6 @@ export class CartComponent implements OnInit, OnDestroy {
     private itemService: ItemService,
     private errorService: ErrorsService,
     private eventService: EventService,
-    private router: Router,
     private uuidService: UuidService,
     private stripeService: StripeService,
     private visibilityService: VisibilityApiService
@@ -83,21 +81,20 @@ export class CartComponent implements OnInit, OnDestroy {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
     this.loading = true;
-    setTimeout(() => {
-      forkJoin([this.experimentReady$, this.visibilityService.bumpWithPackage(this.cart)])
-        .pipe(
-          finalize(() => {
-            this.loading = false;
-          })
-        )
-        .subscribe(
-          () => {
-            this.success();
-          },
-          () => {}
-        );
-      this.purchaseBumps(order, orderId);
-    }, 2000);
+
+    forkJoin([
+      this.experimentReady$.pipe(catchError((errors) => of({ errors }))),
+      this.visibilityService.bumpWithPackage(this.cart).pipe(catchError((errors) => of({ errors }))),
+    ])
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(() => {
+        this.success();
+      });
+    this.purchaseBumps(order, orderId);
   }
 
   public purchaseBumps(order: Order[], orderId: string): void {
@@ -108,12 +105,6 @@ export class CartComponent implements OnInit, OnDestroy {
     this.track(order);
     this.itemService.purchaseProductsWithCredits(order, orderId).subscribe(
       (response: PurchaseProductsWithCreditsResponse) => {
-        if (-this.usedCredits > 0) {
-          localStorage.setItem('transactionType', 'bumpWithCredits');
-          localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
-        } else {
-          localStorage.setItem('transactionType', 'bump');
-        }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
           this.buyStripe(orderId);
@@ -167,7 +158,8 @@ export class CartComponent implements OnInit, OnDestroy {
         break;
       }
       default: {
-        this.router.navigate(['catalog/list', { code: -1 }]);
+        this.purchaseBumpsSubject.error(paymentResponse);
+        this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
         break;
       }
     }
@@ -185,9 +177,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private success(): void {
-    this.itemService.deselectItems();
-    this.itemService.selectedAction = null;
-    this.router.navigate(['catalog/list', { code: 200 }]);
+    this.confirmAction.emit();
   }
 
   private track(order: Order[]): void {
@@ -218,18 +208,6 @@ export class CartComponent implements OnInit, OnDestroy {
       return 0;
     } else {
       return this.cart.total - this.creditInfo.credit / this.creditInfo.factor;
-    }
-  }
-
-  get usedCredits(): number {
-    if (!this.cart || !this.creditInfo) {
-      return 0;
-    }
-    const totalCreditsToPay: number = this.cart.total * this.creditInfo.factor;
-    if (totalCreditsToPay < this.creditInfo.credit) {
-      return -totalCreditsToPay;
-    } else {
-      return -this.creditInfo.credit;
     }
   }
 }

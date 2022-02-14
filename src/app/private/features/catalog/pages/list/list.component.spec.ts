@@ -53,7 +53,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject } from 'rxjs';
 import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
-import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ListComponent } from './list.component';
 import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Counters } from '@core/user/user-stats.interface';
@@ -367,19 +366,6 @@ describe('ListComponent', () => {
       });
     });
 
-    it('should open bump confirmation modal', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('bump');
-      spyOn(localStorage, 'removeItem');
-      component.ngOnInit();
-      tick();
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
-      expect(localStorage.removeItem).toHaveBeenCalled();
-    }));
-
     it('should reset page on router event', fakeAsync(() => {
       spyOn<any>(component, 'getItems');
       component['nextPage'] = '40';
@@ -538,43 +524,6 @@ describe('ListComponent', () => {
         backdrop: 'static',
         windowClass: 'modal-standard',
       });
-    }));
-
-    it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('bump');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-    }));
-
-    it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('bumpWithCredits');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionSpent');
     }));
 
     it('should set selectedItems with items', () => {

@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { CheckoutComponent } from './checkout.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -10,6 +10,9 @@ import { PaymentService } from '@core/payments/payment.service';
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED } from '@fixtures/bump-package.fixtures.spec';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
@@ -20,6 +23,8 @@ describe('CheckoutComponent', () => {
   let spyCall;
   let route: ActivatedRoute;
   let visibilityService: VisibilityApiService;
+  let modalService: NgbModal;
+  let componentInstance: any = {};
 
   const SELECTED_ITEMS = ['1', '2', '3'];
 
@@ -31,6 +36,7 @@ describe('CheckoutComponent', () => {
           {
             provide: ItemService,
             useValue: {
+              deselectItems() {},
               selectedItems: SELECTED_ITEMS,
             },
           },
@@ -62,6 +68,17 @@ describe('CheckoutComponent', () => {
               },
             },
           },
+          {
+            provide: NgbModal,
+            useValue: {
+              open() {
+                return {
+                  result: Promise.resolve(),
+                  componentInstance: componentInstance,
+                };
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -77,6 +94,7 @@ describe('CheckoutComponent', () => {
     route = TestBed.inject(ActivatedRoute);
     visibilityService = TestBed.inject(VisibilityApiService);
     spyCall = spyOn(visibilityService, 'getItemsWithProductsAndSubscriptionBumps').and.callThrough();
+    modalService = TestBed.inject(NgbModal);
     fixture.detectChanges();
   });
 
@@ -151,5 +169,51 @@ describe('CheckoutComponent', () => {
         factor: 1,
       });
     });
+  });
+
+  describe('Confirm action', () => {
+    let spyModal: jasmine.Spy;
+    beforeEach(() => {
+      spyModal = spyOn(modalService, 'open').and.callThrough();
+      spyOn(router, 'navigate').and.callThrough();
+      spyOn(itemService, 'deselectItems').and.callThrough();
+      component['modalRef'] = <any>{
+        componentInstance: componentInstance,
+      };
+      itemService.selectedAction = 'feature';
+      component.onConfirm();
+    });
+
+    describe('Modal', () => {
+      it('should open modal', () => {
+        expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
+        });
+        expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_success]);
+      });
+
+      describe('and accept modal', () => {
+        it('should navigate to catalog', () => {
+          expect(router.navigate).toBeCalledTimes(1);
+          expect(router.navigate).toBeCalledWith(['catalog/list']);
+        });
+      });
+
+      describe('and dismiss modal', () => {
+        beforeEach(() => {
+          spyModal.and.returnValue({ result: Promise.reject(), componentInstance });
+        });
+        it('should navigate to catalog', () => {
+          expect(router.navigate).toBeCalledTimes(1);
+          expect(router.navigate).toBeCalledWith(['catalog/list']);
+        });
+      });
+    });
+
+    it('should call deselectItems', fakeAsync(() => {
+      tick();
+      expect(itemService.deselectItems).toHaveBeenCalled();
+      expect(itemService.selectedAction).toBeNull();
+    }));
   });
 });

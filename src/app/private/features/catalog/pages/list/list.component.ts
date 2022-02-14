@@ -56,9 +56,7 @@ import { Subscription } from 'rxjs';
 import { take, takeWhile } from 'rxjs/operators';
 import { STATUS } from '../../components/selected-items/selected-product.interface';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
-import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 
-const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purchaseListingFeeWithCredits'];
 export const SORTS: ISort[] = [
   {
     value: SORT_KEYS.DATE_DESC,
@@ -204,44 +202,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
-        if (params && params.code) {
-          const modals = {
-            bump: BumpConfirmationModalComponent,
-          };
-          const transactionType = localStorage.getItem('transactionType');
-          let modalType = transactionType === 'bumpWithCredits' ? 'bump' : transactionType;
-          let modal;
-
-          if (params.code === '-1') {
-            modal = modals.bump;
-          } else {
-            modal = modalType && modals[modalType] ? modals[modalType] : null;
-          }
-          if (!modal) {
-            return;
-          }
-          let modalRef: NgbModalRef = this.modalService.open(modal, {
-            windowClass: 'modal-standard',
-            backdrop: 'static',
-          });
-          modalRef.componentInstance.code = params.code;
-          modalRef.componentInstance.creditUsed = TRANSACTIONS_WITH_CREDITS.includes(transactionType);
-          modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
-          modalRef.result.then(
-            () => {
-              modalRef = null;
-              localStorage.removeItem('transactionType');
-              localStorage.removeItem('transactionSpent');
-              this.router.navigate(['catalog/list']);
-            },
-            () => {
-              modalRef = null;
-              localStorage.removeItem('transactionType');
-              localStorage.removeItem('transactionSpent');
-              this.router.navigate(['wallacoins']);
-            }
-          );
-        }
         if (params && params.created) {
           this.showBumpSuggestionModal(params.itemId);
         } else if (params && params.updated) {
