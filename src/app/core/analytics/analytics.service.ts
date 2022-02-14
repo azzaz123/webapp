@@ -31,7 +31,6 @@ export const COMMON_MPARTICLE_CONFIG = {
 })
 export class AnalyticsService {
   private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
-  private mParticleuser: MPUser;
   constructor(
     private userService: UserService,
     private deviceService: DeviceService,
@@ -43,8 +42,20 @@ export class AnalyticsService {
     return this._mParticleReady$.asObservable();
   }
 
+  public get market(): Market {
+    return this._market;
+  }
+
+  public get appLocale(): APP_LOCALE {
+    return this._localeId;
+  }
+
+  public getMPUser(): MPUser | undefined {
+    return mParticle.Identity.getCurrentUser();
+  }
+
   public setUserAttribute(key: string, value: string) {
-    this.mParticleuser.setUserAttribute(key, value);
+    this.getMPUser()?.setUserAttribute(key, value);
   }
 
   public initialize(): void {
@@ -71,19 +82,14 @@ export class AnalyticsService {
     mParticle.logPageView(page.name, page.attributes as any, page.flags as any);
   }
 
-  get market(): Market {
-    return this._market;
-  }
-
-  get appLocale(): APP_LOCALE {
-    return this._localeId;
+  public loginUser(userIdentities: UserIdentities, callback: () => void): void {
+    mParticle.Identity.login({ userIdentities }, callback);
   }
 
   private mParticleIdentityCallback(result: IdentityResult): void {
     const mParticleUser = result.getUser();
 
     if (mParticleUser) {
-      this.mParticleuser = mParticleUser;
       mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
     }
   }
