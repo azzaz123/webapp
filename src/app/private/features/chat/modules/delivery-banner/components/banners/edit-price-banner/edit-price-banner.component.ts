@@ -9,7 +9,7 @@ import { ActionableDeliveryBannerComponent } from '../../../classes/actionable-d
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditPriceBannerComponent extends ActionableDeliveryBannerComponent {
-  public readonly PRICE_NEGOTIATION_ICON_URL = 'assets/icons/price-negotiation.svg';
+  public readonly PRICE_NEGOTIATION_ICON_URL: string = 'assets/icons/price-negotiation.svg';
   public readonly bannerStyleProperties: BannerSpecifications = {
     dismissible: false,
     type: 'info',
