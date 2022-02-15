@@ -9,11 +9,12 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   styleUrls: ['./item-fullscreen-carousel.component.scss'],
 })
 export class ItemFullScreenCarouselComponent {
-  public hidden = true;
   @Input() item: Item;
   @Input() images: string[];
   @Input() imageIndex: number = 0;
   @Output() favouritedItemChange: EventEmitter<void> = new EventEmitter();
+
+  public hidden = true;
 
   constructor(
     public deviceDetectorService: DeviceDetectorService,

@@ -29,7 +29,7 @@ describe('DeliveryConversationContextService', () => {
         },
         {
           provide: DeliveryConversationContextAsSellerService,
-          useValue: { getBannerPropertiesAsSeller: () => of(null), handleThirdVoiceCTAClick: () => {} },
+          useValue: { getBannerPropertiesAsSeller: () => of(null), handleBannerCTAClick: () => {}, handleThirdVoiceCTAClick: () => {} },
         },
         { provide: NgbModal, useValue: { open: () => {} } },
       ],
@@ -143,15 +143,17 @@ describe('DeliveryConversationContextService', () => {
       });
     });
 
-    describe('and when action is change item price', () => {
+    describe('and when action is edit item sale price', () => {
       beforeEach(() => {
-        spyOn(modalService, 'open');
-        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE);
+        spyOn(deliveryConversationContextAsSellerService, 'handleBannerCTAClick');
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE);
       });
 
       it('should open awareness modal', () => {
-        expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
-        expect(modalService.open).toHaveBeenCalledTimes(1);
+        expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledWith(
+          DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE
+        );
+        expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledTimes(1);
       });
     });
 

@@ -38,6 +38,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 export class ItemDetailComponent implements OnInit, OnDestroy {
   @ViewChild(ItemFullScreenCarouselComponent, { static: true })
   itemDetailImagesModal: ItemFullScreenCarouselComponent;
+
   public recommendedItems$: Observable<ItemCardsWithRecommenedType>;
   public readonly deviceType: typeof DeviceType = DeviceType;
   public device: DeviceType;
@@ -45,10 +46,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   public adsAffiliationSlotConfiguration: AdSlotConfiguration[];
   public adsAffiliationsLoaded$: Observable<boolean>;
   public renderMap = false;
+  public readonly PERMISSIONS = PERMISSIONS;
+
   private subscriptions: Subscription = new Subscription();
   private itemDetail: ItemDetail;
-
-  public readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private itemDetailStoreService: ItemDetailStoreService,

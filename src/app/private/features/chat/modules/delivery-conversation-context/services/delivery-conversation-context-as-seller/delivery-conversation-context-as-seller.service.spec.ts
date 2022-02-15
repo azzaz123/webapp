@@ -5,7 +5,9 @@ import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { of } from 'rxjs';
+import { EditItemSalePriceModalComponent } from '../../../delivery-banner/components/banners/edit-price-banner/modals/edit-item-sale-price-modal/edit-item-sale-price-modal.component';
 import { SELLER_EDIT_PRICE_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
+import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
 
 import { DeliveryConversationContextAsSellerService } from './delivery-conversation-context-as-seller.service';
@@ -72,6 +74,32 @@ describe('DeliveryConversationContextAsSellerService', () => {
         });
         tick();
       }));
+    });
+  });
+
+  describe('when handling banner CTA clicked', () => {
+    describe('when the action is to edit the item price', () => {
+      beforeEach(() => {
+        spyOn(modalService, 'open');
+        service.handleBannerCTAClick(DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE);
+      });
+
+      it('should open the edit item sale price modal', () => {
+        expect(modalService.open).toHaveBeenCalledTimes(1);
+        expect(modalService.open).toHaveBeenCalledWith(EditItemSalePriceModalComponent);
+      });
+    });
+
+    describe('when the action is not managed', () => {
+      beforeEach(() => {
+        spyOn(modalService, 'open');
+        service.handleBannerCTAClick(DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
+      });
+
+      it('should open TRX awareness modal', () => {
+        expect(modalService.open).toHaveBeenCalledTimes(1);
+        expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+      });
     });
   });
 

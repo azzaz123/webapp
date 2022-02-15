@@ -1,4 +1,4 @@
-<div class="item" [ngClass]="{'active': open}">
+<div class="item" [ngClass]="{'active': opened}">
   <div class="row" (click)="changeExpandedState()">
     <div class="col-6 col-item-title">
       <a 
@@ -33,7 +33,7 @@
       <tsl-svg-icon src="/assets/icons/caret.svg"></tsl-svg-icon>
     </div>
   </div>
-  <div class="stats-expanded" [@collapse]="!open">
+  <div class="stats-expanded" [@collapse]="!opened">
     <div class="graphs-container" *ngIf="statsData">
       <div class="charts-box">
         <div class="header">
