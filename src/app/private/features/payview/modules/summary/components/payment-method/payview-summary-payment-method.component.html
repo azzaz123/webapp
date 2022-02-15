@@ -1,0 +1,19 @@
+<div class="PayviewSummaryPaymentMethod" *ngIf="showPaymentMethod">
+  <div class="PayviewSummaryPaymentMethod__content d-flex justify-content-start">
+    <tsl-svg-icon [src]="icon" height="48" width="48"></tsl-svg-icon>
+    <div class="PayviewSummaryPaymentMethod__paymentMethod d-flex flex-column align-items-start">
+      <span class="PayviewSummaryPaymentMethod__paymentMethodTitle" i18n="@@pay_view_buyer_summary_payment_payment_method_label"
+        >Método de pago:</span
+      >
+      <span *ngIf="isPayPal" class="PayviewSummaryPaymentMethod__paymentMethodCurrent" i18n="@@pay_view_buyer_summary_payment_paypal_label"
+        >PayPal</span
+      >
+      <span
+        *ngIf="isCreditCard"
+        class="PayviewSummaryPaymentMethod__paymentMethodCurrent d-inline"
+        i18n="@@checkout_summary_view_buyer_edit_list_payment_info_card_masked_number_label"
+        >Tarjeta bancaria •••• {{ creditCardLastFourDigits }}</span
+      >
+    </div>
+  </div>
+</div>
