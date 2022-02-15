@@ -1,32 +1,24 @@
+@import '~style/common';
+
 .SubscriptionHeaderCheckout {
-  margin-bottom: 20px;
-  font-weight: bold;
+  margin-bottom: $spacing-ml;
+  font-weight: $font-weight-chunky;
   &__title {
-    font-size: 20px;
-    margin-right: 12px;
+    font-size: $font-size-l;
+    margin-right: $spacing-ms;
   }
 
   &__counter {
     &:not(:last-child) {
-      margin-right: 12px;
+      margin-right: $spacing-ms;
     }
-    background: #385ef9;
+    background: $skyblue-main;
     border-radius: 16px;
-    padding: 4px 12px;
-    color: white;
-
-    &--citybump {
-      background: #a3fbff;
-      color: #0b2db0;
-    }
-
-    &--countrybump {
-      color: #a3fbff;
-      background: #0b2db0;
-    }
+    padding: $spacing-xs $spacing-ms;
+    color: $white;
 
     &--completed {
-      background: #fd6c67;
+      background: $negative-main;
     }
   }
 }
