@@ -27,6 +27,10 @@ export class UserReviewsComponent implements OnInit {
     this.loadItems();
   }
 
+  public loadMore(): void {
+    this.loadItems();
+  }
+
   private loadItems(): void {
     this.loading = true;
 
@@ -44,10 +48,6 @@ export class UserReviewsComponent implements OnInit {
     } catch (err: any) {
       this.onError();
     }
-  }
-
-  public loadMore(): void {
-    this.loadItems();
   }
 
   private onError(): void {

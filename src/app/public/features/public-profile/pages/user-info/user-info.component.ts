@@ -14,13 +14,14 @@ import { PublicProfileService } from '../../core/services/public-profile.service
   styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
   public coordinates: Coordinate;
   public user: User;
   public userValidations: UserValidations;
   public userResponseRate: string;
   public readonly PERMISSIONS = PERMISSIONS;
   public storeLocation: Coordinate;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private publicProfileService: PublicProfileService,
