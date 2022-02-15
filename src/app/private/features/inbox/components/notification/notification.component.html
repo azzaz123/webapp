@@ -1,5 +1,6 @@
 <div
   class="Notification"
+  *ngIf="notification"
   [ngClass]="{
     'Notification--highlighted': notification.variant === NOTIFNOTIFICATION_VARIANT.HIGHLIGHTED,
     'Notification--pinned': notification.variant === NOTIFNOTIFICATION_VARIANT.PINNED

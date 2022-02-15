@@ -13,22 +13,16 @@ import { By } from '@angular/platform-browser';
 describe('GenericImageComponent', () => {
   let component: GenericImageComponent;
   let fixture: ComponentFixture<GenericImageComponent>;
-  let permissionService: NgxPermissionsService;
-
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NgxPermissionsModule.forRoot()],
-        declarations: [GenericImageComponent, SanitizedBackgroundDirective],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      }).compileComponents();
-    })
-  );
+  let element: HTMLElement;
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GenericImageComponent);
-    permissionService = TestBed.inject(NgxPermissionsService);
     component = fixture.componentInstance;
+    element = fixture.nativeElement;
     fixture.detectChanges();
+  });
+
+  it('should create component', () => {
+    expect(component).toBeTruthy();
   });
 });

@@ -43,6 +43,7 @@
   }
   &__aditional-info {
     &_date {
+      white-space: nowrap;
       span {
         color: $blue-grey-2;
       }

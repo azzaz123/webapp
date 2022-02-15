@@ -1,17 +1,14 @@
 import { Story } from '@storybook/angular/types-6-0';
 import { moduleMetadata } from '@storybook/angular';
 import { CommonModule } from '@angular/common';
-import { CancelBubbleModule } from '@public/shared/components/cancel-bubble/cancel-bubble.module';
 import { Component, Input } from '@angular/core';
 import { NotificationComponent } from './notification.component';
 import { Notification } from '../../core/interfaces/notification.interface';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
 import { NOTIFICATION_PRODUCT_STATUS } from '../../core/enums/notification-product-status.enum';
-import { GenericImageComponent } from '@shared/generic-image/generic-image.component';
-import { SanitizedBackgroundModule } from '@shared/sanitized-background/sanitized-background.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { GenericImageModule } from '@shared/generic-image/generic-image.module';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'tsl-story-notifications-container',
   template: `
