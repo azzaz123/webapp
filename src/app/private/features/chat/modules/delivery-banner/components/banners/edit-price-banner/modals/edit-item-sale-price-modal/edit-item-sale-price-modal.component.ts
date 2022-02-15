@@ -151,7 +151,7 @@ export class EditItemSalePriceModalComponent implements OnInit {
     return money;
   }
 
-  private generateRequestToApi(): Observable<any> {
+  private generateRequestToApi(): Observable<void | never> {
     const newPrice: Money = this.newPriceFromForm;
     const { id: itemHash } = this.item;
     return this.itemSalePriceApiService.update(itemHash, newPrice).pipe(take(1));
