@@ -9,14 +9,14 @@ import { Notification } from '../../core/interfaces/notification.interface';
   styleUrls: ['./notifications-inbox.component.scss'],
 })
 export class NotificationsInboxComponent implements OnInit {
-  public notifications: Notification[];
+  public notifications: Notification[] = [];
   constructor(private analyticsService: AnalyticsService) {}
 
   ngOnInit(): void {
     this.trackViewNotificationCenter();
   }
 
-  private trackViewNotificationCenter(): void {
+  public trackViewNotificationCenter(): void {
     const event: AnalyticsPageView<ViewNotificationCenter> = {
       name: ANALYTICS_EVENT_NAMES.ViewNotificationCenter,
       attributes: {
