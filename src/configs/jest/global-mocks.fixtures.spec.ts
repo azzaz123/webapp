@@ -181,17 +181,17 @@ export const MOCK_SCREEN: { width: number; height: number } = {
 };
 
 export const MOCK_HERE_MAPS: any = {
-  Map: null,
+  Map: () => {},
   clustering: null,
   data: null,
   geo: null,
   map: null,
-  mapevents: null,
+  mapevents: {},
   util: null,
   math: null,
   net: null,
   service: { Platform: (e) => e },
-  ui: null,
+  ui: {},
 };
 
 export class MockIntersectionObserver implements Partial<IntersectionObserver> {
