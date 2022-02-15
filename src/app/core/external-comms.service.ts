@@ -22,6 +22,10 @@ export class ExternalCommsService {
       });
   }
 
+  public openBrazeSession(): void {
+    appboy.openSession();
+  }
+
   private loadBraze(): Promise<void> {
     return import('@mparticle/web-appboy-kit');
   }
