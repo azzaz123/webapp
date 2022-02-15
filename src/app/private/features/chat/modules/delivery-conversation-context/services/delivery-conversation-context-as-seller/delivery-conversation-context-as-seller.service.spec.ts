@@ -1,9 +1,13 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { SellerRequestsApiService } from '@api/delivery/seller/requests/seller-requests-api.service';
 import { MOCK_INBOX_CONVERSATION_AS_SELLER, MOCK_INBOX_CONVERSATION_AS_SELLER_WITH_SOLD_ITEM } from '@fixtures/chat';
-import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
+import { MOCK_PENDING_SELLER_REQUEST, MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { EditItemSalePriceModalComponent } from '../../../delivery-banner/components/banners/edit-price-banner/modals/edit-item-sale-price-modal/edit-item-sale-price-modal.component';
 import { SELLER_EDIT_PRICE_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
@@ -14,11 +18,13 @@ import { DeliveryConversationContextAsSellerService } from './delivery-conversat
 
 describe('DeliveryConversationContextAsSellerService', () => {
   let service: DeliveryConversationContextAsSellerService;
+  let router: Router;
   let modalService: NgbModal;
   let sellerRequestsApiService: SellerRequestsApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       providers: [
         DeliveryConversationContextAsSellerService,
         { provide: NgbModal, useValue: { open: () => {} } },
@@ -27,6 +33,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
     });
     service = TestBed.inject(DeliveryConversationContextAsSellerService);
     modalService = TestBed.inject(NgbModal);
+    router = TestBed.inject(Router);
     sellerRequestsApiService = TestBed.inject(SellerRequestsApiService);
   });
 
@@ -104,14 +111,50 @@ describe('DeliveryConversationContextAsSellerService', () => {
   });
 
   describe('when handling CTA button', () => {
-    beforeEach(() => {
-      spyOn(modalService, 'open');
-      service.handleThirdVoiceCTAClick();
+    describe('and when conversation has a pending request as the last request', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(sellerRequestsApiService, 'getRequestsByBuyerAndItem').and.returnValue(of([MOCK_SELLER_REQUEST]));
+        service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe();
+        tick();
+      }));
+
+      it('should open the accept screen', () => {
+        const expectedUrl: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_SELLER_REQUEST.id}`;
+        spyOn(router, 'navigate');
+
+        service.handleThirdVoiceCTAClick();
+
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
     });
 
-    it('should open TRX awareness modal', () => {
-      expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+    describe('and when conversation has a non pending request as the last request', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(sellerRequestsApiService, 'getRequestsByBuyerAndItem').and.returnValue(
+          of([MOCK_SELLER_REQUEST, MOCK_PENDING_SELLER_REQUEST])
+        );
+        service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe();
+        tick();
+      }));
+
+      it('should open the TTS', () => {
+        const expectedUrl: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_SELLER_REQUEST.id}`;
+        spyOn(router, 'navigate');
+
+        service.handleThirdVoiceCTAClick();
+
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
+    });
+
+    describe('and when last request did not load', () => {
+      it('should do nothing', () => {
+        spyOn(router, 'navigate');
+
+        service.handleThirdVoiceCTAClick();
+
+        expect(router.navigate).not.toHaveBeenCalled();
+      });
     });
   });
 });
