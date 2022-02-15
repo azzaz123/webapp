@@ -1,13 +1,12 @@
 import { AvailableFilterConfig } from '../../../types/available-filter-config.type';
 import { FILTER_TYPES } from '../../../enums/filter-types/filter-types.enum';
 import { FILTER_QUERY_PARAM_KEY } from '../../../../enums/filter-query-param-key.enum';
-import { COMMON_CONFIGURATION_ID } from '@public/shared/components/filters/core/enums/configuration-ids/common-configuration-ids.enum';
 import { PHONE_N_ACCESORIES_CONFIGURATION_ID } from '../../../enums/configuration-ids/phone-n-accessories-ids.enum';
 import { MULTISELECT_FILTER_BUBBLE_VARIANT } from '@public/shared/components/filters/components/multi-select-filter/enum/multi-select-filter-bubble-variant.enum';
 
 export const PHONE_N_ACCESSORIES_FILTERS: AvailableFilterConfig[] = [
   {
-    id: COMMON_CONFIGURATION_ID.BRAND_MODEL,
+    id: PHONE_N_ACCESORIES_CONFIGURATION_ID.BRAND_MODEL,
     type: FILTER_TYPES.SUGGESTER,
     title: $localize`:@@web_filter_phone_n_accessories_brand_title:Brand and model`,
     bubblePlaceholder: $localize`:@@web_filter_phone_n_accessories_brand_bubble_placeholder:Brand and model`,

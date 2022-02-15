@@ -151,6 +151,7 @@ describe('DeliveryConversationContextService', () => {
 
       it('should open awareness modal', () => {
         expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledWith(
+          MOCK_INBOX_CONVERSATION_BASIC,
           DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE
         );
         expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledTimes(1);
