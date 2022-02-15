@@ -13,8 +13,10 @@ describe('PayviewSummaryHeaderComponent', () => {
   const payviewSummaryHeader: string = '.PayviewSummaryHeader';
   const payviewSummaryHeaderImage: string = `${payviewSummaryHeader}__image`;
   const payviewSummaryHeaderDeliveryEta: string = `${payviewSummaryHeader}__deliveryEta`;
+  const payviewSummaryHeaderDeliveryEtaWrapper: string = `${payviewSummaryHeader}__deliveryEtaWrapper`;
   const payviewSummaryHeaderDeliveryAddressTitle: string = `${payviewSummaryHeader}__deliveryAddressTitle`;
   const payviewSummaryHeaderDeliveryAddress: string = `${payviewSummaryHeader}__deliveryAddress`;
+  const payviewSummaryHeaderDeliveryAddressWrapper: string = `${payviewSummaryHeader}__deliveryAddressWrapper`;
 
   let component: PayviewSummaryHeaderComponent;
   let debugElement: DebugElement;
@@ -169,6 +171,44 @@ describe('PayviewSummaryHeaderComponent', () => {
       const image = debugElement.query(By.css(payviewSummaryHeaderImage));
 
       expect((image.nativeElement as HTMLImageElement).alt).toBe(component.title);
+    });
+  });
+
+  describe('WHEN there is no delivery times', () => {
+    beforeEach(() => {
+      fixture = TestBed.createComponent(PayviewSummaryHeaderComponent);
+      component = fixture.componentInstance;
+      debugElement = fixture.debugElement;
+
+      component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.current;
+      component.deliveryMethod.deliveryTimes = null;
+
+      fixture.detectChanges();
+    });
+
+    it('should not show the summary delivery eta block', () => {
+      const target = debugElement.query(By.css(payviewSummaryHeaderDeliveryEtaWrapper));
+
+      expect(target).toBeFalsy();
+    });
+  });
+
+  describe('WHEN there is no last delivery address', () => {
+    beforeEach(() => {
+      fixture = TestBed.createComponent(PayviewSummaryHeaderComponent);
+      component = fixture.componentInstance;
+      debugElement = fixture.debugElement;
+
+      component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.current;
+      component.deliveryMethod.lastAddressUsed = null;
+
+      fixture.detectChanges();
+    });
+
+    it('should not show the summary delivery eta block', () => {
+      const target = debugElement.query(By.css(payviewSummaryHeaderDeliveryAddressWrapper));
+
+      expect(target).toBeFalsy();
     });
   });
 });
