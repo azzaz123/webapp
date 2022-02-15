@@ -3,5 +3,6 @@ import { AskSellerForShippingBannerComponent } from './ask-seller-for-shipping-b
 
 @NgModule({
   declarations: [AskSellerForShippingBannerComponent],
+  exports: [AskSellerForShippingBannerComponent],
 })
 export class AskSellerForShippingBannerModule {}
