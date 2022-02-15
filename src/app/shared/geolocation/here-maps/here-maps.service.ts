@@ -101,7 +101,9 @@ export class HereMapsService {
           return of(true);
         }
 
-        this.appendCoreToDOM();
+        if (!coreScriptRef) {
+          this.appendCoreToDOM();
+        }
 
         if (!window['H']) {
           return throwError(null);
@@ -138,7 +140,9 @@ export class HereMapsService {
           return of(true);
         }
 
-        this.appendServiceToDOM();
+        if (!serviceScriptRef) {
+          this.appendServiceToDOM();
+        }
 
         if (!H.service) {
           return throwError(null);
@@ -168,7 +172,9 @@ export class HereMapsService {
           isReady$.next(true);
           return of(true);
         }
-        this.appendUIToDOM();
+        if (!uiScriptRef) {
+          this.appendUIToDOM();
+        }
         if (!H.ui) {
           return throwError(null);
         }
@@ -192,9 +198,8 @@ export class HereMapsService {
           isReady$.next(true);
           return of(true);
         }
-        this.appendUICSStoDOM();
         if (!uiCssRef) {
-          return throwError(null);
+          this.appendUICSStoDOM();
         }
         return of(false);
       }),
@@ -216,7 +221,9 @@ export class HereMapsService {
           isReady$.next(true);
           return of(true);
         }
-        this.appendEventsToDOM();
+        if (!eventsRef) {
+          this.appendEventsToDOM();
+        }
         if (!H.mapevents) {
           return throwError(null);
         }
