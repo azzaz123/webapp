@@ -34,14 +34,15 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
   @Input() ratio: number = 1;
 
   @Output() dragEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
-  @Output()
-  markerClick: EventEmitter<Location> = new EventEmitter();
+  @Output() markerClick: EventEmitter<Location> = new EventEmitter();
+  @Output() tapMapOutsideMarker: EventEmitter<boolean> = new EventEmitter();
   @ViewChild('map', { static: true })
   mapEl: ElementRef;
 
   public readonly loading$ = this.hereMapsService.isLibraryLoading$();
   private map: H.Map;
   private group: H.map.Group;
+  private standardIcon: H.map.Icon;
   private mapSubscription: Subscription = new Subscription();
 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
@@ -67,6 +68,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
 
     this.emitOnDragEnd(map);
     this.addGroupMarker(map);
+    this.onTapMapOutsideMarker(map);
 
     return map;
   }
@@ -87,11 +89,26 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
 
   private addGroupMarker(map: H.Map): void {
     this.group = new H.map.Group();
+    this.standardIcon = new H.map.Icon(STANDARD_ICON);
     map.addObject(this.group);
 
     this.emitOnTapMarker();
 
     this.markers.forEach((marker: Location) => this.addMarkerToGroup({ lng: marker.longitude, lat: marker.latitude }));
+  }
+
+  private onTapMapOutsideMarker(map: H.Map): void {
+    map.addEventListener('tap', (event: H.util.Event) => {
+      const isNotAMarker: boolean = !event.target.hasOwnProperty('icon');
+
+      if (isNotAMarker) {
+        this.tapMapOutsideMarker.emit(true);
+        this.group.getObjects().forEach((marker: H.map.Marker) => {
+          marker.setIcon(this.standardIcon);
+          marker.setData({ status: MARKER_STATUS.NON_SELECTED });
+        });
+      }
+    });
   }
 
   private emitOnTapMarker(): void {
@@ -102,9 +119,8 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
   }
 
   private addMarkerToGroup(coordinate: H.geo.IPoint): void {
-    const standardIcon: H.map.Icon = new H.map.Icon(STANDARD_ICON);
-    const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: standardIcon });
-    this.setMarkersSelection(standardMarker, standardIcon);
+    const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: this.standardIcon });
+    this.setMarkerSelection(standardMarker);
     this.group.addObject(standardMarker);
   }
 
@@ -121,27 +137,27 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  private setMarkersSelection(standardMarker: H.map.Marker, standardIcon: H.map.Icon): void {
+  private setMarkerSelection(marker: H.map.Marker): void {
     const selectedIcon: H.map.Icon = new H.map.Icon(SELECTED_ICON);
-    standardMarker.setData({ status: MARKER_STATUS.NON_SELECTED });
+    marker.setData({ status: MARKER_STATUS.NON_SELECTED });
 
-    standardMarker.addEventListener('tap', () => {
-      const markerNotSelected: boolean = standardMarker.getData().status === MARKER_STATUS.NON_SELECTED;
+    marker.addEventListener('tap', () => {
+      const markerNotSelected: boolean = marker.getData().status === MARKER_STATUS.NON_SELECTED;
       if (markerNotSelected) {
-        standardMarker.setIcon(selectedIcon);
-        standardMarker.setData({ status: MARKER_STATUS.SELECTED });
-        this.setAllOtherMarkersToNonSelected(standardMarker, standardIcon);
+        marker.setIcon(selectedIcon);
+        marker.setData({ status: MARKER_STATUS.SELECTED });
+        this.setAllOtherMarkersToNonSelected(marker);
       } else {
-        standardMarker.setIcon(standardIcon);
-        standardMarker.setData({ status: MARKER_STATUS.NON_SELECTED });
+        marker.setIcon(this.standardIcon);
+        marker.setData({ status: MARKER_STATUS.NON_SELECTED });
       }
     });
   }
 
-  private setAllOtherMarkersToNonSelected(currentMarker: H.map.Marker, standardIcon: H.map.Icon): void {
+  private setAllOtherMarkersToNonSelected(currentMarker: H.map.Marker): void {
     this.group.getObjects().forEach((marker: H.map.Marker) => {
       if (marker !== currentMarker) {
-        marker.setIcon(standardIcon);
+        marker.setIcon(this.standardIcon);
         marker.setData({ status: MARKER_STATUS.NON_SELECTED });
       }
     });
