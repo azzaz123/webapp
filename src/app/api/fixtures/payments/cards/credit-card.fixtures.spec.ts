@@ -84,3 +84,12 @@ export const mockPaymentsUpdateSyncCreditCardRequest: PaymentsSyncCreditCardApi 
   registration_id: mockTokenizerInformationResponse.id,
   token: mockCardTokenizedResponse,
 };
+
+export const MOCK_CREDIT_CARD: CreditCard = {
+  id: 'eb07a330-f1e6-4816-8e85-9246323fd614',
+  brand: 'visa',
+  lastFourDigits: '6596',
+  ownerFullName: 'test',
+  expirationDate: new Date('2025-08-01T00:00:00.000Z'),
+  provider: 'mangopay',
+};

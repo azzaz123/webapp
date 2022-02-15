@@ -15,7 +15,7 @@ import { InboxConversationService } from './core/inbox/inbox-conversation.servic
 import { InboxService } from './core/inbox/inbox.service';
 import { InboxConversation, PhoneMethod } from './core/model';
 import { SendPhoneComponent } from './modals';
-import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
+import { PersonalDataInformationModalComponent } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 
 @Component({
   selector: 'tsl-chat',
@@ -180,7 +180,7 @@ export class ChatComponent implements OnInit {
   private openPersonalDataWarningModal(conversation: InboxConversation): void {
     const itemUrl = this.itemDetailRoutePipe.transform(conversation.item.itemSlug);
     this.modalService
-      .open(PersonalDataInformationModal, { windowClass: 'warning' })
+      .open(PersonalDataInformationModalComponent, { windowClass: 'warning' })
       .result.then(() => (window.location.href = itemUrl))
       .catch(() => null);
   }

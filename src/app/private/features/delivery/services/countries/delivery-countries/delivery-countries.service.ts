@@ -10,7 +10,9 @@ import {
 import { DeliveryCountriesApiService } from '../../api/delivery-countries-api/delivery-countries-api.service';
 import { DeliveryCountriesStoreService } from '../delivery-countries-store/delivery-countries-store.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryCountriesService {
   constructor(
     private deliveryCountriesApiService: DeliveryCountriesApiService,

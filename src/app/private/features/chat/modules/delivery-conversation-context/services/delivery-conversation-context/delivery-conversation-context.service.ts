@@ -13,15 +13,15 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 
 @Injectable()
 export class DeliveryConversationContextService {
+  private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private featureFlagService: FeatureFlagService,
     private deliveryConversationContextAsBuyerService: DeliveryConversationContextAsBuyerService,
     private deliveryConversationContextAsSellerService: DeliveryConversationContextAsSellerService,
     private modalService: NgbModal
   ) {}
-
-  private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
-  private subscriptions: Subscription[] = [];
 
   public get bannerProperties$(): Observable<DeliveryBanner | null> {
     return this._bannerProperties$.asObservable();
@@ -47,7 +47,7 @@ export class DeliveryConversationContextService {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  public handleClickCTA(conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION): void {
+  public handleBannerCTAClick(conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION): void {
     if (bannerActionType === DELIVERY_BANNER_ACTION.AWARENESS_MODAL) {
       return this.openAwarenessModal();
     }
@@ -56,8 +56,8 @@ export class DeliveryConversationContextService {
       return this.openAwarenessModal();
     }
 
-    if (bannerActionType === DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE) {
-      return this.openAwarenessModal();
+    if (bannerActionType === DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE) {
+      return this.deliveryConversationContextAsSellerService.handleBannerCTAClick(bannerActionType);
     }
 
     if (bannerActionType === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
@@ -67,15 +67,28 @@ export class DeliveryConversationContextService {
     return this.openAwarenessModal();
   }
 
+  public handleThirdVoiceCTAClick(conversation: InboxConversation): void {
+    const isCurrentUserTheSeller: boolean = this.isCurrentUserTheSeller(conversation);
+
+    isCurrentUserTheSeller
+      ? this.deliveryConversationContextAsSellerService.handleThirdVoiceCTAClick()
+      : this.deliveryConversationContextAsBuyerService.handleThirdVoiceCTAClick();
+  }
+
   private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner | null> {
-    const { item } = conversation;
-    const { id: itemHash, isMine } = item;
-    return isMine
-      ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(itemHash)
-      : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(itemHash);
+    const isCurrentUserTheSeller: boolean = this.isCurrentUserTheSeller(conversation);
+    return isCurrentUserTheSeller
+      ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(conversation)
+      : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(conversation);
   }
 
   private openAwarenessModal(): void {
     this.modalService.open(TRXAwarenessModalComponent);
+  }
+
+  private isCurrentUserTheSeller(conversation: InboxConversation): boolean {
+    const { item } = conversation;
+    const { isMine } = item;
+    return isMine;
   }
 }

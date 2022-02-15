@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
+import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { DeliveryCostsHttpService } from '@api/bff/delivery/costs/http/delivery-costs-http.service';
-import { DeliveryCostsItem } from '@api/bff/delivery/costs/interfaces/delivery-costs-item.interface';
 import { DeliveryCostsService } from '@api/bff/delivery/costs/delivery-costs.service';
 import { MOCK_DELIVERY_COSTS_ITEM, MOCK_DELIVERY_COSTS_RESPONSE } from '@api/fixtures/bff/delivery/costs/delivery-costs.fixtures.spec';
 
@@ -39,7 +39,7 @@ describe('DeliveryCostsService', () => {
     });
 
     it('should map server response to web context', () => {
-      let response: DeliveryCostsItem;
+      let response: DeliveryCosts;
 
       service.getCosts(fakeItemId).subscribe((data) => (response = data));
 

@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 
 export const DELIVERY_COUNTRIES_API_URL = `${environment.baseUrl}api/v3/delivery/countries/`;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryCountriesApiService {
   constructor(private http: HttpClient) {}
 

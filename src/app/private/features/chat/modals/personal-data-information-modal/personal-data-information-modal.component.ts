@@ -6,6 +6,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './personal-data-information-modal.component.html',
   styleUrls: ['./personal-data-information-modal.component.scss'],
 })
-export class PersonalDataInformationModal {
+export class PersonalDataInformationModalComponent {
   constructor(public activeModal: NgbActiveModal) {}
 }

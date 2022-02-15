@@ -210,18 +210,80 @@ describe('SuggesterFilterComponent', () => {
     });
 
     describe('... changes', () => {
-      it('should ask for new options', fakeAsync(() => {
-        spyOn(optionService, 'getOptions').and.returnValue(of([]));
-        const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
+      describe('with options on init', () => {
+        beforeEach(() => {
+          component.config = optionsOnInitConfig;
+          fixture.detectChanges();
+        });
 
-        input.value = 'my search';
-        input.dispatchEvent(new Event('input'));
-        tick(1000);
-        fixture.detectChanges();
+        describe('with search text', () => {
+          it('should ask for new options with text parameter', fakeAsync(() => {
+            spyOn(optionService, 'getOptions').and.returnValue(of([]));
+            const searchText = 'my search';
+            const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
 
-        expect(optionService.getOptions).toHaveBeenCalledTimes(1);
-        expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id, { text: 'my search' });
-      }));
+            input.value = searchText;
+            input.dispatchEvent(new Event('input'));
+            tick(1000);
+            fixture.detectChanges();
+
+            expect(optionService.getOptions).toHaveBeenCalledTimes(1);
+            expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id, { text: searchText });
+          }));
+        });
+
+        describe('without search text', () => {
+          it('should ask for new options with null text parameter', fakeAsync(() => {
+            spyOn(optionService, 'getOptions').and.returnValue(of([]));
+            const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
+
+            input.value = '';
+            input.dispatchEvent(new Event('input'));
+            tick(1000);
+            fixture.detectChanges();
+
+            expect(optionService.getOptions).toHaveBeenCalledTimes(1);
+            expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id, { text: null });
+          }));
+        });
+      });
+
+      describe('without options on init', () => {
+        beforeEach(() => {
+          component.config = basicConfig;
+          fixture.detectChanges();
+        });
+
+        describe('with search text', () => {
+          it('should ask for new options with text parameter', fakeAsync(() => {
+            spyOn(optionService, 'getOptions').and.returnValue(of([]));
+            const searchText = 'my search';
+            const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
+
+            input.value = searchText;
+            input.dispatchEvent(new Event('input'));
+            tick(1000);
+            fixture.detectChanges();
+
+            expect(optionService.getOptions).toHaveBeenCalledTimes(1);
+            expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id, { text: searchText });
+          }));
+        });
+
+        describe('without search text', () => {
+          it('should ask NOT for new options without text parameter', fakeAsync(() => {
+            spyOn(optionService, 'getOptions').and.returnValue(of([]));
+            const input: HTMLInputElement = debugElement.query(By.css('.SuggesterFilter__search_box_input')).nativeElement;
+
+            input.value = '';
+            input.dispatchEvent(new Event('input'));
+            tick(1000);
+            fixture.detectChanges();
+
+            expect(optionService.getOptions).toHaveBeenCalledTimes(0);
+          }));
+        });
+      });
     });
   });
 

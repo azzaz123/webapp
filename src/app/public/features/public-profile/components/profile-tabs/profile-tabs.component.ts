@@ -8,10 +8,10 @@ import { ProfileTab, PROFILE_TABS } from './constants/profile-tab-constants';
   styleUrls: ['./profile-tabs.component.scss'],
 })
 export class ProfileTabsComponent implements OnInit {
+  @Input() userStats = {};
+
   readonly PROFILE_TABS = PROFILE_TABS;
   readonly INFO_TAB_PATH = PUBLIC_PROFILE_PATHS.INFO;
-
-  @Input() userStats = {};
 
   constructor() {}
 

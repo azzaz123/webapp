@@ -175,6 +175,14 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
       method: 'formatObjectType',
     },
   },
+  [PHONE_N_ACCESORIES_CONFIGURATION_ID.BRAND_MODEL]: {
+    apiConfiguration: {
+      method: 'getPhoneNAccessoriesBrandsAndModels',
+    },
+    mapperConfiguration: {
+      method: 'formatBrandModel',
+    },
+  },
   [COMMON_CONSUMER_GOODS_CONFIGURATION_ID.OBJECT_TYPE]: {
     apiConfiguration: {
       method: 'getObjectTypesByCategoryIdWithChildren',
