@@ -75,7 +75,7 @@ export class DeliveryConversationContextAsBuyerService {
     }
 
     if (noDeliveryItemDetails) {
-      return null;
+      return ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES;
     }
 
     if (buyerHasRequests) {

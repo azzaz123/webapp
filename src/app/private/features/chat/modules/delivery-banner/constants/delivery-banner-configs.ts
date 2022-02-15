@@ -14,7 +14,7 @@ export const BUY_DELIVERY_BANNER_PROPERTIES = (price: Money): PriceableDeliveryB
   return bannerProperties;
 };
 
-export const BUYER_ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES: DeliveryBanner = {
+export const ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES: DeliveryBanner = {
   type: DELIVERY_BANNER_TYPE.ASK_SELLER_FOR_SHIPPING,
 };
 

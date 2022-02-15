@@ -14,6 +14,7 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
+import { ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
 import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
 import { PriceableDeliveryBanner } from '../../../delivery-banner/interfaces/priceable-delivery-banner.interface';
@@ -97,6 +98,30 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
             service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
               expect(result).toEqual(expectedBanner);
+            });
+            tick();
+          }));
+        });
+      });
+
+      fdescribe('and server responses without buy cost price', () => {
+        beforeEach(() => {
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(null));
+        });
+
+        describe('and when the item was sold', () => {
+          it('should hide banner', fakeAsync(() => {
+            service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER_WITH_SOLD_ITEM).subscribe((result) => {
+              expect(result).toBeFalsy();
+            });
+            tick();
+          }));
+        });
+
+        describe('and when the item was not sold', () => {
+          it('should show ask seller for shipping', fakeAsync(() => {
+            service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
+              expect(result).toEqual(ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES);
             });
             tick();
           }));
