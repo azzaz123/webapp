@@ -1,19 +1,27 @@
+import { Location } from '@api/core/model';
 import { HttpClientModule } from '@angular/common/http';
 import { DebugElement, LOCALE_ID } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { HereMapServiceMock } from '@fixtures/here-maps-service.fixtures.spec';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
 import { SpinnerComponent } from '@shared/spinner/spinner.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { BehaviorSubject } from 'rxjs';
 
 import { MovableMapComponent } from './movable-map.component';
+import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 
 describe('MovableMapComponent', () => {
   const initScriptSubjectMock: BehaviorSubject<boolean> = new BehaviorSubject(false);
   const isLibraryLoadingSubjectMock: BehaviorSubject<boolean> = new BehaviorSubject(true);
-
+  const MOCK_CENTER_COORDINATES: Location = {
+    latitude: 12,
+    longitude: 11,
+  };
+  const FALLBACK_CENTER_COORDINATES: Location = {
+    latitude: +DEFAULT_LOCATIONS['es'].latitude,
+    longitude: +DEFAULT_LOCATIONS['es'].longitude,
+  };
   let component: MovableMapComponent;
   let fixture: ComponentFixture<MovableMapComponent>;
   let hereMapsService: HereMapsService;
@@ -26,7 +34,23 @@ describe('MovableMapComponent', () => {
         { provide: LOCALE_ID, useValue: `es` },
         {
           provide: HereMapsService,
-          useClass: HereMapServiceMock,
+          useValue: {
+            platform: {
+              createDefaultLayers() {
+                return {
+                  normal: {
+                    map: 'map',
+                  },
+                };
+              },
+            },
+            isLibraryLoading$() {
+              return isLibraryLoadingSubjectMock.asObservable();
+            },
+            initScript() {
+              return initScriptSubjectMock.asObservable();
+            },
+          },
         },
       ],
     }).compileComponents();
@@ -44,8 +68,8 @@ describe('MovableMapComponent', () => {
 
   describe('when initialize component...', () => {
     beforeEach(() => {
-      spyOn(hereMapsService, 'isLibraryLoading$').and.returnValue(isLibraryLoadingSubjectMock.asObservable());
-      spyOn(hereMapsService, 'initScript').and.returnValue(initScriptSubjectMock.asObservable());
+      spyOn(hereMapsService, 'isLibraryLoading$').and.callThrough();
+      spyOn(hereMapsService, 'initScript').and.callThrough();
       spyOn(hereMapsService.platform, 'createDefaultLayers');
     });
 
@@ -106,11 +130,25 @@ describe('MovableMapComponent', () => {
     });
 
     describe('and we provide center coordenates', () => {
-      it('should keep the center coordenates provided', () => {});
+      beforeEach(() => {
+        component.centerCoordinates = MOCK_CENTER_COORDINATES;
+        fixture.detectChanges();
+      });
+
+      it('should keep the center coordenates provided', () => {
+        expect(component.centerCoordinates).toStrictEqual(MOCK_CENTER_COORDINATES);
+      });
     });
 
     describe(`and we DON'T provide center coordenates`, () => {
-      it('should set the fallback center coordenates', () => {});
+      beforeEach(() => {
+        component.centerCoordinates = null;
+        fixture.detectChanges();
+      });
+
+      it('should set the fallback center coordenates', () => {
+        expect(component.centerCoordinates).toStrictEqual(FALLBACK_CENTER_COORDINATES);
+      });
     });
   });
 

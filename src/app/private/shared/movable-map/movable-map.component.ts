@@ -17,7 +17,7 @@ import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constan
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
 import { Subscription } from 'rxjs';
-import { distinctUntilChanged, tap } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-movable-map',
