@@ -18,6 +18,8 @@ import { LabeledSearchLocation } from '@public/features/search/core/services/int
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { STANDARD_ICON, SELECTED_ICON } from './constants/map-icons.constants';
+import { MARKER_STATUS } from './constants/marker-status.enum';
 
 @Component({
   selector: 'tsl-movable-map',
@@ -39,6 +41,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
 
   public readonly loading$ = this.hereMapsService.isLibraryLoading$();
   private map: H.Map;
+  private group: H.map.Group;
   private mapSubscription: Subscription = new Subscription();
 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
@@ -83,24 +86,26 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
   }
 
   private addGroupMarker(map: H.Map): void {
-    const group: H.map.Group = new H.map.Group();
-    map.addObject(group);
+    this.group = new H.map.Group();
+    map.addObject(this.group);
 
-    this.emitOnTapMarker(group);
+    this.emitOnTapMarker();
 
-    this.markers.forEach((marker: Location) => this.addMarkerToGroup(group, { lng: marker.longitude, lat: marker.latitude }));
+    this.markers.forEach((marker: Location) => this.addMarkerToGroup({ lng: marker.longitude, lat: marker.latitude }));
   }
 
-  private emitOnTapMarker(group: H.map.Group): void {
-    group.addEventListener('tap', (evt: H.util.Event) => {
+  private emitOnTapMarker(): void {
+    this.group.addEventListener('tap', (evt: H.util.Event) => {
       const currentLocation: H.geo.IPoint = evt.target.b;
       this.markerClick.emit({ latitude: currentLocation.lat, longitude: currentLocation.lng });
     });
   }
 
-  private addMarkerToGroup(group: H.map.Group, coordinate: H.geo.IPoint): void {
-    const marker: H.map.Marker = new H.map.Marker(coordinate);
-    group.addObject(marker);
+  private addMarkerToGroup(coordinate: H.geo.IPoint): void {
+    const standardIcon: H.map.Icon = new H.map.Icon(STANDARD_ICON);
+    const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: standardIcon });
+    this.setMarkersSelection(standardMarker, standardIcon);
+    this.group.addObject(standardMarker);
   }
 
   private initHereMaps(): void {
@@ -114,6 +119,32 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
           }
         })
     );
+  }
+
+  private setMarkersSelection(standardMarker: H.map.Marker, standardIcon: H.map.Icon): void {
+    const selectedIcon: H.map.Icon = new H.map.Icon(SELECTED_ICON);
+    standardMarker.setData({ status: MARKER_STATUS.NON_SELECTED });
+
+    standardMarker.addEventListener('tap', () => {
+      const markerNotSelected: boolean = standardMarker.getData().status === MARKER_STATUS.NON_SELECTED;
+      if (markerNotSelected) {
+        standardMarker.setIcon(selectedIcon);
+        standardMarker.setData({ status: MARKER_STATUS.SELECTED });
+        this.setAllOtherMarkersToNonSelected(standardMarker, standardIcon);
+      } else {
+        standardMarker.setIcon(standardIcon);
+        standardMarker.setData({ status: MARKER_STATUS.NON_SELECTED });
+      }
+    });
+  }
+
+  private setAllOtherMarkersToNonSelected(currentMarker: H.map.Marker, standardIcon: H.map.Icon): void {
+    this.group.getObjects().forEach((marker: H.map.Marker) => {
+      if (marker !== currentMarker) {
+        marker.setIcon(standardIcon);
+        marker.setData({ status: MARKER_STATUS.NON_SELECTED });
+      }
+    });
   }
 
   private get fallbackCenterCoordinates(): Location {
