@@ -5,8 +5,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxConversation } from '@private/features/chat/core/model';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { Observable } from 'rxjs';
+import { EDIT_PRICE_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
 import { map, tap } from 'rxjs/operators';
-import { SELLER_EDIT_PRICE_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
 import { EditItemSalePriceModalComponent } from '../../../delivery-banner/components/banners/edit-price-banner/modals/edit-item-sale-price-modal/edit-item-sale-price-modal.component';
@@ -78,7 +78,7 @@ export class DeliveryConversationContextAsSellerService {
     }
 
     if (sellerHasNoRequests) {
-      return SELLER_EDIT_PRICE_BANNER_PROPERTIES;
+      return EDIT_PRICE_BANNER_PROPERTIES;
     }
 
     return null;

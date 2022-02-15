@@ -10,7 +10,7 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { EditItemSalePriceModalComponent } from '../../../delivery-banner/components/banners/edit-price-banner/modals/edit-item-sale-price-modal/edit-item-sale-price-modal.component';
-import { SELLER_EDIT_PRICE_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
+import { EDIT_PRICE_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
 
@@ -61,7 +61,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
       });
 
       it('should show edit price banner', fakeAsync(() => {
-        const expectedBanner: ActionableDeliveryBanner = SELLER_EDIT_PRICE_BANNER_PROPERTIES;
+        const expectedBanner: ActionableDeliveryBanner = EDIT_PRICE_BANNER_PROPERTIES;
 
         service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe((result) => {
           expect(result).toEqual(expectedBanner);
