@@ -3,7 +3,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, DebugElement, Input } from '@angular
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
-import { SELLER_EDIT_PRICE_BANNER_PROPERTIES } from '../constants/delivery-banner-configs';
+import { EDIT_PRICE_BANNER_PROPERTIES } from '../constants/delivery-banner-configs';
 import { DELIVERY_BANNER_ACTION } from '../enums/delivery-banner-action.enum';
 import { DeliveryBanner } from '../interfaces/delivery-banner.interface';
 import { BuyBannerComponent } from './banners/buy-banner/buy-banner.component';
@@ -78,7 +78,7 @@ describe('DeliveryBannerComponent', () => {
     let editPriceBannerElement: DebugElement;
 
     beforeEach(() => {
-      component.bannerProperties = SELLER_EDIT_PRICE_BANNER_PROPERTIES;
+      component.bannerProperties = EDIT_PRICE_BANNER_PROPERTIES;
       fixture.detectChanges();
       editPriceBannerElement = fixture.debugElement.query(By.directive(EditPriceBannerComponent));
     });
@@ -90,18 +90,18 @@ describe('DeliveryBannerComponent', () => {
     it('should set banner properties to edit price banner', () => {
       const editBannerInstance: EditPriceBannerComponent = editPriceBannerElement.componentInstance;
 
-      expect(editBannerInstance.bannerProperties).toEqual(SELLER_EDIT_PRICE_BANNER_PROPERTIES);
+      expect(editBannerInstance.bannerProperties).toEqual(EDIT_PRICE_BANNER_PROPERTIES);
     });
 
     describe('when user clicks on banner', () => {
       beforeEach(() => {
         spyOn(component, 'clickedCTA');
-        editPriceBannerElement.triggerEventHandler('clickedCTA', SELLER_EDIT_PRICE_BANNER_PROPERTIES.action);
+        editPriceBannerElement.triggerEventHandler('clickedCTA', EDIT_PRICE_BANNER_PROPERTIES.action);
       });
 
       it('should notify user clicked on banner', () => {
         expect(component.clickedCTA).toHaveBeenCalledTimes(1);
-        expect(component.clickedCTA).toHaveBeenCalledWith(SELLER_EDIT_PRICE_BANNER_PROPERTIES.action);
+        expect(component.clickedCTA).toHaveBeenCalledWith(EDIT_PRICE_BANNER_PROPERTIES.action);
       });
     });
   });

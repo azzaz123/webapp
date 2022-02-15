@@ -664,6 +664,7 @@
     "web_chat_modals_unblock_user_192": "You'll be able to send or receive messages from this user again. Do you wish to continue?",
     "web_chat_modals_unblock_user_650": "Cancel",
     "web_chat_modals_unblock_user_193": "Unblock",
+    "chat_buyer_shipping_disabled_banner_description": "The seller prefers to sell in person. Ask him and he might send it to you.",
     "chat_buyer_shipping_enabled_banner_starting_price_description_part_1": "Shipping from",
     "chat_buyer_shipping_enabled_banner_buy_button": "Buy",
     "chat_seller_shipping_enabled_banner_price_edit_description": "Have you agreed on another price? Edit it.",

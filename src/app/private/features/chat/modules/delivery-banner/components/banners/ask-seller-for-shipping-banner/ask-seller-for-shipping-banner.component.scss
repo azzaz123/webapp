@@ -1,0 +1,7 @@
+@import '~style/common';
+
+.AskSellerForShipping {
+  &__icon {
+    margin-right: $spacer * 0.625;
+  }
+}
