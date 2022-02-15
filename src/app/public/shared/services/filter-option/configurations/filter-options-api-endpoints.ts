@@ -21,4 +21,7 @@ export const FILTER_OPTIONS_API_ENDPOINTS = {
     SIZE: '/fashion/keys/size',
     BRAND: '/suggesters/fashion/brand',
   },
+  PHONE_N_ACCESSORIES: {
+    BRAND_MODEL: '/suggesters/cellphones/brand-model',
+  },
 };
