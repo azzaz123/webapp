@@ -70,7 +70,7 @@ describe('ProfileCardFavoriteComponent', () => {
 
   describe('removeFavorite', () => {
     beforeEach(() => {
-      spyOn(component.onFavoriteProfileChange, 'emit');
+      spyOn(component.favoriteProfileChange, 'emit');
     });
     it('should set favorited property to false', () => {
       component.profile.favorited = true;
@@ -79,7 +79,7 @@ describe('ProfileCardFavoriteComponent', () => {
     });
     it('should call onFavoriteChange emit method', () => {
       component.removeFavorite();
-      expect(component.onFavoriteProfileChange.emit).toHaveBeenCalledWith(MOCK_PROFILE);
+      expect(component.favoriteProfileChange.emit).toHaveBeenCalledWith(MOCK_PROFILE);
     });
   });
 

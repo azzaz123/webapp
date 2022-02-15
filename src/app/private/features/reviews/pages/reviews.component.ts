@@ -12,13 +12,14 @@ import { UserReviewService } from '../core/user-review.service';
   styleUrls: ['./reviews.component.scss'],
 })
 export class ReviewsComponent implements OnInit {
-  public reviews: Review[] = [];
-  public loading = true;
-  private init = 0;
   public end: boolean;
   public scrollTop: number;
   public userScore: number;
   public numberOfReviews: number;
+  public reviews: Review[] = [];
+  public loading = true;
+
+  private init = 0;
 
   constructor(private myReviewsService: UserReviewService, private userService: UserService) {}
 

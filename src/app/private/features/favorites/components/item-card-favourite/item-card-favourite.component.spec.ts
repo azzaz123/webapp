@@ -93,7 +93,7 @@ describe('ItemCardFavouriteComponent', () => {
 
   describe('removeFavorite', () => {
     beforeEach(() => {
-      spyOn(component.onFavoriteChange, 'emit');
+      spyOn(component.favoriteChange, 'emit');
     });
     it('should set favorited property to false', () => {
       component.item.favorited = true;
@@ -102,7 +102,7 @@ describe('ItemCardFavouriteComponent', () => {
     });
     it('should call onFavoriteChange emit method', () => {
       component.removeFavorite();
-      expect(component.onFavoriteChange.emit).toHaveBeenCalledWith(MOCK_ITEM);
+      expect(component.favoriteChange.emit).toHaveBeenCalledWith(MOCK_ITEM);
     });
   });
 

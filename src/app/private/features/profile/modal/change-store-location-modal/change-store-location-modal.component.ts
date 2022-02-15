@@ -6,6 +6,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './change-store-location-modal.component.html',
   styleUrls: ['./change-store-location-modal.component.scss'],
 })
-export class ChangeStoreLocationModal {
+export class ChangeStoreLocationModalComponent {
   constructor(public activeModal: NgbActiveModal) {}
 }

@@ -18,11 +18,11 @@ import { PERMISSIONS } from '@core/user/user-constants';
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements CanComponentDeactivate {
+  @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
+
   public profileForm: FormGroup;
   public user: User;
   public loading = false;
-  @ViewChild(ProfileFormComponent, { static: true })
-  formComponent: ProfileFormComponent;
   public readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
@@ -72,14 +72,14 @@ export class AccountComponent implements CanComponentDeactivate {
     return this.formComponent.canExit();
   }
 
-  private dateValidator(c: FormControl) {
-    const dateRegEx = new RegExp(/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/);
-    return dateRegEx.test(c.value) ? null : { date: true };
-  }
-
   public openUnsubscribeModal() {
     this.modalService.open(UnsubscribeModalComponent, {
       windowClass: 'unsubscribe',
     });
+  }
+
+  private dateValidator(c: FormControl) {
+    const dateRegEx = new RegExp(/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/);
+    return dateRegEx.test(c.value) ? null : { date: true };
   }
 }
