@@ -36,6 +36,7 @@ describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const sellerAddressHeaderStylesSelector: string = '.AcceptScreenModal__sellerWithAddressHeader';
   const deliveryAddressSelector: string = 'tsl-delivery-address';
+  const mapSelector: string = 'tsl-movable-map';
   const fullAddressSelector: string = '#fullAddress';
   const rejectButtonSelector: string = '#rejectButton';
   const acceptButtonSelector: string = '#acceptButton';
@@ -290,7 +291,7 @@ describe('AcceptScreenModalComponent', () => {
                 (carrier) => carrier.isSelected
               ).buttonProperties.redirectStep;
               beforeEach(() => {
-                spyOn(component.stepper, 'goToStep');
+                spyOn(component.stepper, 'goToStep').and.callThrough();
                 const carrierButton = fixture.debugElement.query(By.css('.carrierButton')).nativeElement;
 
                 carrierButton.click();
@@ -326,8 +327,16 @@ describe('AcceptScreenModalComponent', () => {
                 });
               });
 
+              it('should redirect to map step', () => {
+                expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.MAP);
+              });
+
               it('should not detect the accept screen step as active', () => {
                 expect(component.isAcceptScreenStep).toBe(false);
+              });
+
+              it('should show the map', () => {
+                expect(fixture.debugElement.query(By.css(mapSelector))).toBeTruthy();
               });
             });
           });
