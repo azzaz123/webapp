@@ -86,21 +86,27 @@ describe('DeliveryConversationContextAsSellerService', () => {
 
   describe('when handling banner CTA clicked', () => {
     describe('when the action is to edit the item price', () => {
+      let mockEditPriceModalInstance: Partial<EditItemSalePriceModalComponent> = { item: null };
+
       beforeEach(() => {
-        spyOn(modalService, 'open');
-        service.handleBannerCTAClick(DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE);
+        spyOn(modalService, 'open').and.returnValue({ componentInstance: mockEditPriceModalInstance });
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_SELLER, DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE);
       });
 
       it('should open the edit item sale price modal', () => {
         expect(modalService.open).toHaveBeenCalledTimes(1);
-        expect(modalService.open).toHaveBeenCalledWith(EditItemSalePriceModalComponent);
+        expect(modalService.open).toHaveBeenCalledWith(EditItemSalePriceModalComponent, { windowClass: 'modal-small' });
+      });
+
+      it('should pass data to modal', () => {
+        expect(mockEditPriceModalInstance.item).toEqual(MOCK_INBOX_CONVERSATION_AS_SELLER.item);
       });
     });
 
     describe('when the action is not managed', () => {
       beforeEach(() => {
         spyOn(modalService, 'open');
-        service.handleBannerCTAClick(DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_SELLER, DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
       });
 
       it('should open TRX awareness modal', () => {
