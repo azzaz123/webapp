@@ -25,7 +25,6 @@ export class OptimizelyService {
 
   public initialize(): void {
     import('@optimizely/optimizely-sdk').then((optimizelySdk) => {
-      import('@mparticle/web-optimizely-kit');
       if (environment.name === 'prod') {
         optimizelySdk.setLogger(null);
       }
