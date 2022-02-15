@@ -174,6 +174,12 @@ describe('PayviewModalComponent', () => {
 
           expect(summaryOverviewComponent).toBeTruthy();
         });
+
+        it('should pass the payview state to the summary overview component', () => {
+          const summaryOverviewComponent = debugElement.query(By.css(payviewSummaryOverviewSelector));
+
+          expect((summaryOverviewComponent.componentInstance as PayviewSummaryOverviewComponent).payviewState).toEqual(MOCK_PAYVIEW_STATE);
+        });
       });
     });
   });

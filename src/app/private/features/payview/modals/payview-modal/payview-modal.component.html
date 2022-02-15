@@ -6,9 +6,6 @@
     <tsl-svg-icon width="64" height="64" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
   </div>
   <div class="PayviewModal__summary" *ngIf="payviewState$ | async as payviewState">
-    <tsl-payview-summary-overview
-      [deliveryMethods]="payviewState.delivery.methods"
-      [item]="payviewState.item"
-    ></tsl-payview-summary-overview>
+    <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
   </div>
 </div>
