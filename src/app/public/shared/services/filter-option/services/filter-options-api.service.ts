@@ -58,6 +58,12 @@ export class FilterOptionsApiService {
     return this.get<BrandModel[]>(FILTER_OPTIONS_API_ENDPOINTS.BRAND_MODEL, params);
   }
 
+  public getPhoneNAccessoriesBrandsAndModels(params: QueryParams): Observable<HttpResponse<BrandModel[]>>;
+  public getPhoneNAccessoriesBrandsAndModels(params: QueryParams, paginationOptions: PaginationOptions): Observable<HttpResponse<unknown>>;
+  public getPhoneNAccessoriesBrandsAndModels(params: QueryParams): Observable<HttpResponse<unknown>> {
+    return this.get<BrandModel[]>(FILTER_OPTIONS_API_ENDPOINTS.PHONE_N_ACCESSORIES.BRAND_MODEL, params);
+  }
+
   public getCarBrandsAndModels(params: QueryParams): Observable<HttpResponse<BrandModel[]>>;
   public getCarBrandsAndModels(params: QueryParams, paginationOptions: PaginationOptions): Observable<HttpResponse<unknown>>;
   public getCarBrandsAndModels(params: QueryParams): Observable<HttpResponse<unknown>> {
