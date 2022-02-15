@@ -8,6 +8,8 @@
               id="cross"
               src="/assets/icons/cross.svg"
               class="PayviewSummary__close align-self-center"
+              height="16"
+              width="16"
               (click)="closeModal()"
             ></tsl-svg-icon>
             <div class="PayviewSummary__windowHeader d-flex w-100 justify-content-between">
@@ -27,7 +29,9 @@
       <div class="PayviewSummary__header" *ngIf="showHeader">
         <tsl-payview-summary-header [deliveryMethod]="deliveryMethod" [image]="image" [title]="title"></tsl-payview-summary-header>
       </div>
-      <div class="PayviewSummary__body"></div>
+      <div class="PayviewSummary__body" *ngIf="showBody">
+        <tsl-payview-summary-cost-detail [costs]="costs" [productName]="title"></tsl-payview-summary-cost-detail>
+      </div>
       <div class="PayviewSummary__footer"></div>
     </div>
   </div>

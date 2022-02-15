@@ -4,8 +4,8 @@ import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
-import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
-import { MOCK_PAYVIEW_ITEM } from '@fixtures/private/delivery/payview/payview-item.fixtures.spec';
+import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
+import { PayviewSummaryCostDetailComponent } from '@private/features/payview/modules/summary/components/cost-detail/payview-summary-cost-detail.component';
 import { PayviewSummaryHeaderComponent } from '@private/features/payview/modules/summary/components/header/payview-summary-header.component';
 import { PayviewSummaryOverviewComponent } from '@private/features/payview/modules/summary/components/overview/payview-summary-overview.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
@@ -16,6 +16,7 @@ describe('PayviewSummaryOverviewComponent', () => {
   const fakeHelpUrl: string = 'http://this_is_a_fake_help_url/';
   const payviewSummary: string = '.PayviewSummary';
   const payviewSummaryClose: string = `${payviewSummary}__close`;
+  const payviewSummaryCostDetail: string = 'tsl-payview-summary-cost-detail';
   const payviewSummaryHeader: string = 'tsl-payview-summary-header';
   const payviewSummaryHelp: string = '#helpLink';
 
@@ -27,7 +28,7 @@ describe('PayviewSummaryOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PayviewSummaryHeaderComponent, PayviewSummaryOverviewComponent, SvgIconComponent],
+      declarations: [PayviewSummaryCostDetailComponent, PayviewSummaryHeaderComponent, PayviewSummaryOverviewComponent, SvgIconComponent],
       imports: [HttpClientTestingModule],
       providers: [
         {
@@ -48,6 +49,8 @@ describe('PayviewSummaryOverviewComponent', () => {
       fixture = TestBed.createComponent(PayviewSummaryOverviewComponent);
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
+
+      component.payviewState = MOCK_PAYVIEW_STATE;
 
       activeModalService = TestBed.inject(NgbActiveModal);
       customerHelpService = TestBed.inject(CustomerHelpService);
@@ -95,8 +98,7 @@ describe('PayviewSummaryOverviewComponent', () => {
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
 
-        component.deliveryMethods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS;
-        component.item = MOCK_PAYVIEW_ITEM;
+        component.payviewState = MOCK_PAYVIEW_STATE;
 
         fixture.detectChanges();
       });
@@ -110,19 +112,49 @@ describe('PayviewSummaryOverviewComponent', () => {
       it('should assign the corresponding delivery method', () => {
         const target = debugElement.query(By.css(payviewSummaryHeader));
 
-        expect(target.componentInstance.deliveryMethod).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.current);
+        expect(target.componentInstance.deliveryMethod).toEqual(MOCK_PAYVIEW_STATE.delivery.methods.current);
       });
 
       it('should assign the corresponding image', () => {
         const target = debugElement.query(By.css(payviewSummaryHeader));
 
-        expect(target.componentInstance.image).toEqual(MOCK_PAYVIEW_ITEM.mainImage);
+        expect(target.componentInstance.image).toEqual(MOCK_PAYVIEW_STATE.item.mainImage);
       });
 
       it('should assign the corresponding title', () => {
         const target = debugElement.query(By.css(payviewSummaryHeader));
 
-        expect(target.componentInstance.title).toEqual(MOCK_PAYVIEW_ITEM.title);
+        expect(target.componentInstance.title).toEqual(MOCK_PAYVIEW_STATE.item.title);
+      });
+    });
+
+    describe('WHEN the costs and the product name have been reported', () => {
+      beforeEach(() => {
+        fixture = TestBed.createComponent(PayviewSummaryOverviewComponent);
+        component = fixture.componentInstance;
+        debugElement = fixture.debugElement;
+
+        component.payviewState = MOCK_PAYVIEW_STATE;
+
+        fixture.detectChanges();
+      });
+
+      it('should show the summary cost detail', () => {
+        const target = debugElement.query(By.css(payviewSummaryCostDetail));
+
+        expect(target).toBeTruthy();
+      });
+
+      it('should assign the corresponding costs', () => {
+        const target = debugElement.query(By.css(payviewSummaryCostDetail));
+
+        expect((target.componentInstance as PayviewSummaryCostDetailComponent).costs).toEqual(MOCK_PAYVIEW_STATE.costs);
+      });
+
+      it('should assign the corresponding product name', () => {
+        const target = debugElement.query(By.css(payviewSummaryCostDetail));
+
+        expect((target.componentInstance as PayviewSummaryCostDetailComponent).productName).toEqual(MOCK_PAYVIEW_STATE.item.title);
       });
     });
   });

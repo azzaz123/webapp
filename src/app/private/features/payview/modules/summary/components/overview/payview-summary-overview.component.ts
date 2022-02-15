@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
-import { DeliveryBuyerDeliveryMethod, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { I18nService } from '@core/i18n/i18n.service';
 import { Image } from '@core/user/user-response.interface';
-import { PayviewItem } from '@private/features/payview/interfaces/payview-item.interface';
+import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
 
 @Component({
   selector: 'tsl-payview-summary-overview',
@@ -16,8 +17,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayviewSummaryOverviewComponent {
-  @Input() public item: PayviewItem;
-  @Input() public deliveryMethods: DeliveryBuyerDeliveryMethods;
+  @Input() public payviewState: PayviewState;
 
   constructor(private activeModal: NgbActiveModal, private customerHelpService: CustomerHelpService, private i18n: I18nService) {}
 
@@ -25,8 +25,12 @@ export class PayviewSummaryOverviewComponent {
     this.activeModal.close();
   }
 
+  public get costs(): DeliveryBuyerCalculatorCosts {
+    return this.payviewState.costs;
+  }
+
   public get deliveryMethod(): DeliveryBuyerDeliveryMethod {
-    return this.deliveryMethods.current;
+    return this.payviewState.delivery.methods.current;
   }
 
   public get helpUrl(): string {
@@ -34,15 +38,19 @@ export class PayviewSummaryOverviewComponent {
   }
 
   public get image(): Image {
-    return this.item.mainImage;
+    return this.payviewState.item.mainImage;
+  }
+
+  public get showBody(): boolean {
+    return !!this.payviewState.costs;
   }
 
   public get showHeader(): boolean {
-    return !!this.item && !!this.deliveryMethods;
+    return !!this.payviewState.item && !!this.payviewState.delivery.methods;
   }
 
   public get title(): string {
-    return this.item.title;
+    return this.payviewState.item.title;
   }
 
   public get wallapop(): string {
