@@ -73,7 +73,11 @@ function mapTiers(tiersDto: TierDto[]): Tier[] {
       limit: tierDto.perks.find((perk) => perk.name === PERK_NAMES.LIMIT)
         ? tierDto.perks.find((perk) => perk.name === PERK_NAMES.LIMIT).quantity
         : tierDto.limit,
-      bumps: tierDto.perks.filter((perks) => BUMP_PERKS.includes(perks.name)),
+      bumps: tierDto.perks
+        .filter((perks) => BUMP_PERKS.includes(perks.name))
+        .map((bump) => {
+          return { ...bump, used: bump.used ? bump.used : 0, duration_days: bump.duration_days ? bump.duration_days : 0 };
+        }),
     };
 
     const mappedCurrencyCharacter = CURRENCY_SYMBOLS[tier.currency];

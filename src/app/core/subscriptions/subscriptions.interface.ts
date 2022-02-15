@@ -15,7 +15,7 @@ export interface Tier {
   discount: TierDiscount;
   is_basic: boolean;
   perks: Perks[];
-  bumps: Perks[];
+  bumps: Bumps[];
 }
 
 export interface Perks {
@@ -23,6 +23,11 @@ export interface Perks {
   quantity: number;
   used?: number;
   duration_days?: number;
+}
+
+export interface Bumps extends Perks {
+  used: number;
+  duration_days: number;
 }
 
 export interface TierDiscount {
