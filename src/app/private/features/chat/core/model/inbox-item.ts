@@ -78,6 +78,10 @@ export class InboxItem {
     return this._price;
   }
 
+  set price(newPrice: InboxItemPrice) {
+    this._price = newPrice;
+  }
+
   get title(): string {
     return this._title;
   }
