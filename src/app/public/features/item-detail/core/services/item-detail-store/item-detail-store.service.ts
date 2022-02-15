@@ -14,6 +14,8 @@ import { ItemFavouritesService } from '@public/core/services/item-favourites/ite
 
 @Injectable()
 export class ItemDetailStoreService {
+  private readonly _itemDetail = new BehaviorSubject<ItemDetail>(null);
+
   constructor(
     private itemDetailService: ItemDetailService,
     private mapItemDetailStoreService: MapItemDetailStoreService,
@@ -21,8 +23,6 @@ export class ItemDetailStoreService {
     private itemDetailFlagsStoreService: ItemDetailFlagsStoreService,
     private itemFavouritesService: ItemFavouritesService
   ) {}
-
-  private readonly _itemDetail = new BehaviorSubject<ItemDetail>(null);
 
   get itemDetail(): ItemDetail {
     return this._itemDetail.getValue();

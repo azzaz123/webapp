@@ -1,7 +1,7 @@
-import { DeliveryCostsItem } from '@api/bff/delivery/costs/interfaces/delivery-costs-item.interface';
-import { DeliveryCostsItemDto } from '@api/bff/delivery/costs/dtos';
+import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
+import { DeliveryCostsDto } from '@api/bff/delivery/costs/dtos';
 
-export const MOCK_DELIVERY_COSTS_ITEM: DeliveryCostsItem = {
+export const MOCK_DELIVERY_COSTS_ITEM: DeliveryCosts = {
   buyerAddressCost: {
     amount: {
       integer: 13,
@@ -26,7 +26,7 @@ export const MOCK_DELIVERY_COSTS_ITEM: DeliveryCostsItem = {
   },
 };
 
-export const MOCK_DELIVERY_COSTS_RESPONSE: DeliveryCostsItemDto = {
+export const MOCK_DELIVERY_COSTS_RESPONSE: DeliveryCostsDto = {
   buyer_address_cost: { amount: 13.95, currency: 'EUR' },
   carrier_office_cost: { amount: 11.95, currency: 'EUR' },
 };

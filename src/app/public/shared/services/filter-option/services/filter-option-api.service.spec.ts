@@ -202,6 +202,15 @@ describe('FilterOptionsApiService', () => {
     });
   });
 
+  describe('when we need phone n accessories options', () => {
+    describe('for getting brand and model options', () => {
+      it('should retrieve options', () => {
+        service.getPhoneNAccessoriesBrandsAndModels(defaultParams).subscribe();
+        expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.PHONE_N_ACCESSORIES.BRAND_MODEL, defaultParams);
+      });
+    });
+  });
+
   function expectGetHttpQuery(path: string, params?: Record<string, string>, headers?: HttpHeaders): void {
     const testParams = new HttpParams({
       fromObject: params,

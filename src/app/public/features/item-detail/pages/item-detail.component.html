@@ -12,7 +12,7 @@
 
         <div class="ItemDetail__content w-100">
 
-            <tsl-item-detail-placeholder *ngIf="!(itemDetail$ | async)"></tsl-item-detail-placeholder>
+            <tsl-item-detail-placeholder *ngIf="(itemDetail$ | async) === false"></tsl-item-detail-placeholder>
 
             <div tslAdSlotGroup class="ItemDetail__card px-4 pb-5" *ngIf="itemDetail$ | async as itemDetail">
                 <tsl-item-detail-header [user]="itemDetail.user" [item]="itemDetail.item"

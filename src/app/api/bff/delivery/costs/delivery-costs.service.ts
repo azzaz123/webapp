@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 
-import { DeliveryCostsItem } from '@api/bff/delivery/costs/interfaces/delivery-costs-item.interface';
+import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { DeliveryCostsHttpService } from '@api/bff/delivery/costs/http/delivery-costs-http.service';
-import { mapDeliveryCostsItemDtoToDeliveryCostsItem } from '@api/bff/delivery/costs/mappers/delivery-costs.mapper';
+import { mapDeliveryCostsDtoToDeliveryCosts } from '@api/bff/delivery/costs/mappers/delivery-costs.mapper';
 
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryCostsService {
   constructor(private deliveryCostsHttpService: DeliveryCostsHttpService) {}
 
-  public getCosts(itemId: string): Observable<DeliveryCostsItem> {
-    return this.deliveryCostsHttpService.getCosts(itemId).pipe(map(mapDeliveryCostsItemDtoToDeliveryCostsItem));
+  public getCosts(itemId: string): Observable<DeliveryCosts> {
+    return this.deliveryCostsHttpService.getCosts(itemId).pipe(map(mapDeliveryCostsDtoToDeliveryCosts));
   }
 }

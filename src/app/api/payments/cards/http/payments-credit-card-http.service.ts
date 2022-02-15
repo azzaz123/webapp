@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
 import { UuidService } from '@core/uuid/uuid.service';
@@ -14,7 +14,9 @@ import { PaymentsSyncCreditCardApi } from '../dtos/requests';
 import { PaymentsCreditCardApi, TokenizerInformationApi } from '../dtos/responses';
 import { PAYMENTS_CREDIT_CARDS_ENDPOINT, PAYMENTS_CREDIT_CARDS_TOKENIZER_ENDPOINT } from './endpoints';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentsCreditCardHttpService {
   constructor(private http: HttpClient, private uuidService: UuidService) {}
 

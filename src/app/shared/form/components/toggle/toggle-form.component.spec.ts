@@ -66,4 +66,26 @@ describe('ToggleFormComponent', () => {
       });
     });
   });
+
+  describe('and is disabled', () => {
+    beforeEach(() => {
+      component.isDisabled = true;
+      fixture.detectChanges();
+    });
+
+    it('should be disabled', () => {
+      expect(el.querySelector('input[disabled]')).toBeTruthy();
+    });
+  });
+
+  describe('and is enabled', () => {
+    beforeEach(() => {
+      component.isDisabled = false;
+      fixture.detectChanges();
+    });
+
+    it('should be enable', () => {
+      expect(el.querySelector('input[disabled]')).toBeFalsy();
+    });
+  });
 });

@@ -78,24 +78,24 @@ describe('ItemStatsRowComponent', () => {
 
   describe('changeExpandedState', () => {
     it('should toggle open', () => {
-      component.open = true;
+      component.opened = true;
 
       component.changeExpandedState();
 
-      expect(component.open).toBe(false);
+      expect(component.opened).toBe(false);
 
       component.changeExpandedState();
 
-      expect(component.open).toBe(true);
+      expect(component.opened).toBe(true);
     });
 
     it('should emit open event', () => {
-      component.open = false;
-      spyOn(component.onOpen, 'emit');
+      component.opened = false;
+      spyOn(component.expand, 'emit');
 
       component.changeExpandedState();
 
-      expect(component.onOpen.emit).toHaveBeenCalledWith(true);
+      expect(component.expand.emit).toHaveBeenCalledWith(true);
     });
   });
 });

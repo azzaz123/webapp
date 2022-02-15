@@ -1,7 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
+import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
+import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
+import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
+import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
+import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
+import { AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
 
 @Component({
@@ -10,26 +18,58 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
   styleUrls: ['./accept-screen-modal.component.scss'],
 })
 export class AcceptScreenModalComponent implements OnInit {
+  @ViewChild(StepperComponent) stepper: StepperComponent;
+
   public requestId: string;
-  public acceptScreenProperties$: Observable<AcceptScreenProperties>;
-  public initializeAcceptScreenProperties$: Observable<AcceptScreenProperties>;
-  public selectedDropOffPosition: number;
+  public acceptScreenProperties$: Observable<AcceptScreenProperties> = this.acceptScreenStoreService.properties$;
+  public acceptScreenCountries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
+  public carrierSelectedIndex$: Observable<number> = this.acceptScreenStoreService.carrierSelectedIndex$;
+  public ACCEPT_SCREEN_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
 
-  constructor(private acceptScreenStoreService: AcceptScreenStoreService) {}
+  public headerText: string;
+  public isAcceptScreenStep: boolean = true;
+  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
 
-  ngOnInit(): void {
-    this.initializeAcceptScreenProperties$ = this.acceptScreenStoreService.initialize$(this.requestId);
-    this.acceptScreenProperties$ = this.acceptScreenStoreService.properties$.pipe(
-      tap((acceptScreenProperties: AcceptScreenProperties) => {
-        const carrierSelectedPosition: number = acceptScreenProperties?.carriers?.findIndex(
-          (carrier: AcceptScreenCarrier) => carrier.isSelected
-        );
-        this.selectedDropOffPosition = carrierSelectedPosition;
-      })
-    );
+  private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
+  private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
+  private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
+
+  constructor(
+    private acceptScreenStoreService: AcceptScreenStoreService,
+    private deliveryCountries: DeliveryCountriesService,
+    private activeModal: NgbActiveModal,
+    private customerHelpService: CustomerHelpService
+  ) {}
+
+  ngOnInit() {
+    this.acceptScreenStoreService.initialize(this.requestId);
+    this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
   }
 
-  public notifySelectedDropOffModeByUserChanged(newSelectedDropOffPosition: number): void {
-    this.acceptScreenStoreService.notifySelectedDropOffModeByUser(newSelectedDropOffPosition);
+  public selectNewDropOffMode(carrierIndex: number): void {
+    this.acceptScreenStoreService.selectNewDropOffMode(carrierIndex);
+  }
+
+  public goToDeliveryAddress(): void {
+    this.goToStep(this.deliveryAddressSlideId);
+  }
+
+  public goToAcceptScreen(): void {
+    this.goToStep(this.acceptScreenSlideId);
+    this.acceptScreenStoreService.update(this.requestId);
+  }
+
+  public closeModal(): void {
+    this.activeModal.close();
+  }
+
+  private goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
+    this.stepper.goToStep(slideId);
+    this.refreshStepProperties(slideId);
+  }
+
+  private refreshStepProperties(slideId: number): void {
+    this.headerText = this.ACCEPT_SCREEN_HEADER_TRANSLATIONS[slideId];
+    this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
   }
 }

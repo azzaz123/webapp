@@ -10,14 +10,16 @@ import { Subject } from 'rxjs';
   styleUrls: ['./items-stats.component.scss'],
 })
 export class ItemsStatsComponent implements OnInit {
-  public items: Item[] = [];
-  private since: string = null;
-  public end: boolean;
-  public opens: boolean[] = [];
-  public prices: CheapestProducts;
   @Input() paginate: Subject<boolean>;
   @Output() stopPagination = new EventEmitter<boolean>();
   @Output() isLoading = new EventEmitter<boolean>();
+
+  public items: Item[] = [];
+  public end: boolean;
+  public opens: boolean[] = [];
+  public prices: CheapestProducts;
+
+  private since: string = null;
 
   constructor(private itemService: ItemService) {}
 
@@ -26,6 +28,11 @@ export class ItemsStatsComponent implements OnInit {
     this.paginate.subscribe((event) => {
       this.getItems(true);
     });
+  }
+
+  public onOpen(index: number) {
+    this.opens = this.items.map((_) => false);
+    this.opens[index] = true;
   }
 
   private getItems(append?: boolean) {
@@ -46,11 +53,6 @@ export class ItemsStatsComponent implements OnInit {
         this.getProductsFromItems();
       }
     });
-  }
-
-  public onOpen(index: number) {
-    this.opens = this.items.map((_) => false);
-    this.opens[index] = true;
   }
 
   private getProductsFromItems() {
