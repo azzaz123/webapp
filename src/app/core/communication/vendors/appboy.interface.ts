@@ -6,10 +6,7 @@ export interface Appboy {
 
   initialize(
     apiKey: string,
-    config: {
-      enableHtmlInAppMessages?: boolean;
-      manageServiceWorkerExternally?: boolean;
-    }
+    config: { enableHtmlInAppMessages: boolean; manageServiceWorkerExternally: boolean; enableLogging: boolean }
   ): void;
 
   openSession(): void;
