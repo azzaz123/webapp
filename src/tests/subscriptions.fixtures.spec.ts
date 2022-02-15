@@ -543,6 +543,8 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS: SubscriptionsV3Response[] = 
           {
             name: PERK_NAMES.CITYBUMP,
             quantity: 12,
+            used: 5,
+            duration_days: 6,
           },
         ],
       },
@@ -559,10 +561,81 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS: SubscriptionsV3Response[] = 
           {
             name: PERK_NAMES.CITYBUMP,
             quantity: 12,
+            used: 5,
+            duration_days: 6,
           },
           {
             name: PERK_NAMES.ZONEBUMP,
             quantity: 8,
+            used: 5,
+            duration_days: 6,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c07',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
+  },
+];
+
+export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED: SubscriptionsResponse[] = [
+  {
+    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+    tiers: [
+      {
+        ...TIER_NO_DISCOUNT_NO_BASIC,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: PERK_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+          },
+        ],
+        bumps: [
+          {
+            name: PERK_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT_NO_MAPPED,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: PERK_NAMES.CITYBUMP,
+            quantity: 12,
+          },
+          {
+            name: PERK_NAMES.ZONEBUMP,
+            quantity: 8,
+          },
+        ],
+        bumps: [
+          {
+            name: PERK_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+          },
+          {
+            name: PERK_NAMES.ZONEBUMP,
+            quantity: 8,
+            used: 5,
+            duration_days: 6,
           },
         ],
       },
