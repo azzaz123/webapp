@@ -24,15 +24,14 @@ export class SubscriptionTierSelectorComponent {
   }
 
   public getLimitText(tier: Tier): string {
-    return tier.limit ? this.getTextWithLimit(tier) : $localize`:@@web_profile_pages_subscription_586:List without limits`;
+    return tier.limit
+      ? this.getTextWithLimit(tier)
+      : $localize`:@@pro_subscription_purchase_subscription_details_list_unlimited_tier_text:Manage unlimited active item`;
   }
 
   private getTextWithLimit(tier: Tier): string {
-    if (tier.is_basic) {
-      return $localize`:@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_description:List up to ${tier.limit}:INTERPOLATION: items and boost your sales`;
-    }
     return this.subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE
       ? $localize`:@@web_profile_pages_subscription_332:List up to ${tier.limit} real estate`
-      : $localize`:@@web_profile_pages_subscription_325:List up to ${tier.limit} items`;
+      : $localize`:@@pro_subscription_purchase_subscription_details_list_tier_text:Manage up to ${tier.limit}:INTERPOLATION: items`;
   }
 }
