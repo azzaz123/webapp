@@ -157,6 +157,32 @@ export const TIER_2_WITH_DISCOUNT: Tier = {
   ],
 };
 
+export const TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP: Tier = {
+  ...TIER_WITH_DISCOUNT,
+  id: 'plan_FWuFVeTHEDyECz',
+  limit: 50,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 50,
+    },
+    {
+      name: PERK_NAMES.ZONEBUMP,
+      quantity: 50,
+      used: 2,
+      duration_days: 2,
+    },
+  ],
+  bumps: [
+    {
+      name: PERK_NAMES.ZONEBUMP,
+      quantity: 50,
+      used: 2,
+      duration_days: 2,
+    },
+  ],
+};
+
 export const TIER_WITH_DISCOUNT_WITHOUT_LIMIT: Tier = {
   ...TIER_WITH_DISCOUNT,
   id: 'plan_FWuFVeTHEDyECe',

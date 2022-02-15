@@ -1,13 +1,15 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { cloneDeep } from 'lodash-es';
 import {
   FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION,
   FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
   MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
-  MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+  TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP,
   TIER_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 
@@ -20,6 +22,7 @@ describe('SubscriptionTierSelectorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SubscriptionTierSelectorComponent],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(SubscriptionTierSelectorComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -79,7 +82,7 @@ describe('SubscriptionTierSelectorComponent', () => {
         const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.GenericCard__subtitle')).nativeElement;
 
         expect(tierTitle.textContent).toBe(
-          $localize`:@@pro_subscription_purchase_non_subscribed_users_cg_basic_plan_description:List up to ${component.subscription.tiers[0].limit}:INTERPOLATION: items and boost your sales`
+          $localize`:@@pro_subscription_purchase_subscription_details_list_tier_text:Manage up to ${component.subscription.tiers[0].limit}:INTERPOLATION: items`
         );
       });
     });
@@ -99,7 +102,9 @@ describe('SubscriptionTierSelectorComponent', () => {
       it('should show title', () => {
         const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[1].query(By.css('.Card__title')).nativeElement;
 
-        expect(tierTitle.textContent).toBe($localize`:@@web_profile_pages_subscription_586:List without limits`);
+        expect(tierTitle.textContent).toBe(
+          $localize`:@@pro_subscription_purchase_subscription_details_list_unlimited_tier_text:Manage unlimited active item`
+        );
       });
     });
   });
@@ -152,6 +157,51 @@ describe('SubscriptionTierSelectorComponent', () => {
           expect(tierDescriptionText).toEqual(`${tier.price}${expectedMonthlyPriceText} ${expectedDateText}`);
           expect(classDiscounted).toBeTruthy();
         });
+      });
+    });
+  });
+
+  describe('Benefits', () => {
+    describe('has bumps', () => {
+      beforeEach(() => {
+        component.subscription = cloneDeep(FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION);
+        component.subscription.tiers[0] = TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP;
+        component.selectedTier = component.subscription.tiers[0];
+        fixture.detectChanges();
+      });
+      it('should show bumps data', () => {
+        const tier = component.subscription.tiers[0];
+        const tierBenefit = fixture.debugElement
+          .queryAll(By.css('.Card'))[0]
+          .query(By.css('.Card__benefits--large'))
+          .queryAll(By.css('div'));
+        const expectBenefit = $localize`:@@pro_subscription_purchase_subscription_details_list_tier_text:Manage up to ${tier.limit}:INTERPOLATION: items`;
+
+        expect(tierBenefit[0].nativeElement.textContent).toEqual(`${expectBenefit}`);
+      });
+      it('should show limit data', () => {
+        const tier = component.subscription.tiers[0];
+        const tierBenefit = fixture.debugElement
+          .queryAll(By.css('.Card'))[0]
+          .query(By.css('.Card__benefits--large'))
+          .queryAll(By.css('div'));
+        const expectBenefit = $localize`:@@pro_subscription_purchase_subscription_details_list_monthly_bumps_text:Highlight ${tier.bumps[0].quantity} items monthly (duration: ${tier.bumps[0].duration_days} days)`;
+
+        expect(tierBenefit[1].nativeElement.textContent).toEqual(`${expectBenefit}`);
+      });
+    });
+    describe('has not bumps', () => {
+      beforeEach(() => {
+        component.subscription = FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION;
+        component.selectedTier = FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION.tiers[0];
+        fixture.detectChanges();
+      });
+      it('should show limit data', () => {
+        const tier = component.subscription.tiers[0];
+        const tierBenefit = fixture.debugElement.queryAll(By.css('.Card'))[0].query(By.css('.Card__benefits')).nativeElement;
+        const expectBenefit = $localize`:@@pro_subscription_purchase_subscription_details_list_tier_text:Manage up to ${tier.limit}:INTERPOLATION: items`;
+
+        expect(tierBenefit.textContent).toEqual(`${expectBenefit}`);
       });
     });
   });
