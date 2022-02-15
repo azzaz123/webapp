@@ -10,7 +10,6 @@ import { Market, MARKET_PROVIDER } from '../../../configs/market.config';
 import { APP_LOCALE } from '../../../configs/subdomains.config';
 import { mParticleUser } from './resources/mParticle-interfaces';
 import '@mparticle/web-google-analytics-kit';
-import '@mparticle/web-optimizely-kit';
 
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
