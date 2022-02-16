@@ -14,7 +14,7 @@ import { COLORS } from '@core/colors/colors-constants';
 })
 export class ProfileCardFavoriteComponent {
   @Input() profile: Profile;
-  @Output() onFavoriteProfileChange: EventEmitter<Profile> = new EventEmitter();
+  @Output() favoriteProfileChange: EventEmitter<Profile> = new EventEmitter();
 
   constructor(private modalService: NgbModal, private profileService: ProfileService, private i18nService: I18nService) {}
 
@@ -48,7 +48,7 @@ export class ProfileCardFavoriteComponent {
   removeFavorite() {
     this.profileService.favoriteItem(this.profile.id, false).subscribe(() => {
       this.profile.favorited = false;
-      this.onFavoriteProfileChange.emit(this.profile);
+      this.favoriteProfileChange.emit(this.profile);
     });
   }
 }
