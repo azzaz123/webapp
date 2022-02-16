@@ -9,6 +9,7 @@ import { NOTIFICATION_PRODUCT_STATUS } from '../../core/enums/notification-produ
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { GenericImageModule } from '@shared/generic-image/generic-image.module';
 import { HttpClientModule } from '@angular/common/http';
+
 @Component({
   selector: 'tsl-story-notifications-container',
   template: `

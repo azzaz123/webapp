@@ -2,8 +2,8 @@
   class="Notification"
   *ngIf="notification"
   [ngClass]="{
-    'Notification--highlighted': notification.variant === NOTIFNOTIFICATION_VARIANT.HIGHLIGHTED,
-    'Notification--pinned': notification.variant === NOTIFNOTIFICATION_VARIANT.PINNED
+    'Notification--highlighted': notification.variant === NOTIFICATION_VARIANT.HIGHLIGHTED,
+    'Notification--pinned': notification.variant === NOTIFICATION_VARIANT.PINNED
   }"
 >
   <div class="Notification__generic">
@@ -16,10 +16,10 @@
 
   <div class="Notification__aditional-info">
     <div class="Notification__aditional-info_date">
-      <span> {{ _momentsAgo }}</span>
+      <span> {{ momentsAgo }}</span>
     </div>
     <div class="Notification__aditional-info_status" *ngIf="!notification.isRead">
-      <div class="new-notification"></div>
+      <div class="Notification__bullet"></div>
     </div>
   </div>
 </div>
