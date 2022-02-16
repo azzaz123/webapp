@@ -1,9 +1,14 @@
 <div
-  tslsanitizedBackground="{{ image }}"
+  *ngIf="notification"
+  tslsanitizedBackground="{{ notification.image }}"
   class="NotificationImage"
-  [ngClass]="productStatus ? 'NotificationImage--rounded' : 'NotificationImage--circle'"
+  [ngClass]="
+    notification.productStatus || notification.variant === NOTIFICATION_VARIANT.PINNED
+      ? 'NotificationImage--rounded'
+      : 'NotificationImage--circle'
+  "
 >
-  <div *ngIf="productStatus" [ngSwitch]="productStatus" class="NotificationImage__badge">
+  <div *ngIf="notification.productStatus" [ngSwitch]="notification.productStatus" class="NotificationImage__badge">
     <tsl-svg-icon
       class="ItemCard__icon ItemCard__icon--left ItemCard__icon--small position-absolute d-flex justify-content-center align-items-center"
       *ngSwitchCase="NOTIFICATION_PRODUCT_STATUS.RESERVED"
