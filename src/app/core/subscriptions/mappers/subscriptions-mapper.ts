@@ -1,5 +1,7 @@
 import {
-  BUMP_PERKS,
+  Bumps,
+  BUMP_NAMES,
+  Perks,
   PERK_NAMES,
   SubscriptionsResponse,
   SUBSCRIPTION_CATEGORY_TYPES,
@@ -73,11 +75,7 @@ function mapTiers(tiersDto: TierDto[]): Tier[] {
       limit: tierDto.perks.find((perk) => perk.name === PERK_NAMES.LIMIT)
         ? tierDto.perks.find((perk) => perk.name === PERK_NAMES.LIMIT).quantity
         : tierDto.limit,
-      bumps: tierDto.perks
-        .filter((perks) => BUMP_PERKS.includes(perks.name))
-        .map((bump) => {
-          return { ...bump, used: bump.used ? bump.used : 0, duration_days: bump.duration_days ? bump.duration_days : 0 };
-        }),
+      bumps: mapBumps(tierDto.perks),
     };
 
     const mappedCurrencyCharacter = CURRENCY_SYMBOLS[tier.currency];
@@ -91,4 +89,19 @@ function mapTiers(tiersDto: TierDto[]): Tier[] {
     return tier;
   });
   return tiers;
+}
+
+function mapBumps(perks: Perks[]): Bumps[] {
+  const bumps: Bumps[] = [];
+  perks
+    .filter((perks) => Object.values(BUMP_NAMES).includes(perks.name as BUMP_NAMES))
+    .map((bump) => {
+      bumps.push({
+        ...bump,
+        name: bump.name as BUMP_NAMES,
+        used: bump.used ? bump.used : 0,
+        duration_days: bump.duration_days ? bump.duration_days : 0,
+      });
+    });
+  return bumps;
 }

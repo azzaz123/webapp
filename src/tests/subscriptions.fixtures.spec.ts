@@ -8,6 +8,7 @@ import {
   TierDiscount,
   SUBSCRIPTION_CATEGORY_TYPES,
   PERK_NAMES,
+  BUMP_NAMES,
 } from '../app/core/subscriptions/subscriptions.interface';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
@@ -167,7 +168,7 @@ export const TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP: Tier = {
       quantity: 50,
     },
     {
-      name: PERK_NAMES.ZONEBUMP,
+      name: BUMP_NAMES.ZONEBUMP,
       quantity: 50,
       used: 2,
       duration_days: 2,
@@ -175,7 +176,7 @@ export const TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP: Tier = {
   ],
   bumps: [
     {
-      name: PERK_NAMES.ZONEBUMP,
+      name: BUMP_NAMES.ZONEBUMP,
       quantity: 50,
       used: 2,
       duration_days: 2,
@@ -541,7 +542,7 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS: SubscriptionsV3Response[] = 
         perks: [
           { name: PERK_NAMES.LIMIT, quantity: 5 },
           {
-            name: PERK_NAMES.CITYBUMP,
+            name: BUMP_NAMES.CITYBUMP,
             quantity: 12,
             used: 5,
             duration_days: 6,
@@ -559,13 +560,13 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS: SubscriptionsV3Response[] = 
         perks: [
           { name: PERK_NAMES.LIMIT, quantity: 5 },
           {
-            name: PERK_NAMES.CITYBUMP,
+            name: BUMP_NAMES.CITYBUMP,
             quantity: 12,
             used: 5,
             duration_days: 6,
           },
           {
-            name: PERK_NAMES.ZONEBUMP,
+            name: BUMP_NAMES.ZONEBUMP,
             quantity: 8,
             used: 5,
             duration_days: 6,
@@ -590,7 +591,7 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED: SubscriptionsResponse
         perks: [
           { name: PERK_NAMES.LIMIT, quantity: 5 },
           {
-            name: PERK_NAMES.CITYBUMP,
+            name: BUMP_NAMES.CITYBUMP,
             quantity: 12,
             used: 5,
             duration_days: 6,
@@ -598,7 +599,7 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED: SubscriptionsResponse
         ],
         bumps: [
           {
-            name: PERK_NAMES.CITYBUMP,
+            name: BUMP_NAMES.CITYBUMP,
             quantity: 12,
             used: 5,
             duration_days: 6,
@@ -616,23 +617,23 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED: SubscriptionsResponse
         perks: [
           { name: PERK_NAMES.LIMIT, quantity: 5 },
           {
-            name: PERK_NAMES.CITYBUMP,
+            name: BUMP_NAMES.CITYBUMP,
             quantity: 12,
           },
           {
-            name: PERK_NAMES.ZONEBUMP,
+            name: BUMP_NAMES.ZONEBUMP,
             quantity: 8,
           },
         ],
         bumps: [
           {
-            name: PERK_NAMES.CITYBUMP,
+            name: BUMP_NAMES.CITYBUMP,
             quantity: 12,
             used: 5,
             duration_days: 6,
           },
           {
-            name: PERK_NAMES.ZONEBUMP,
+            name: BUMP_NAMES.ZONEBUMP,
             quantity: 8,
             used: 5,
             duration_days: 6,
