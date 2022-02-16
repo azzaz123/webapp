@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { NOTIFICATION_PRODUCT_STATUS } from '../../core/enums/notification-product-status.enum';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
 import { Notification } from '../../core/interfaces/notification.interface';
 import { NotificationComponent } from './notification.component';
