@@ -1,11 +1,17 @@
 @import 'src/style/common';
 
-.GenericImage {
+.NotificationImage {
   width: 75px;
   height: 75px;
   margin-right: $spacing-m;
-  border-radius: $border-radius;
   position: relative;
+  &--rounded {
+    border-radius: $border-radius;
+  }
+  &--circle {
+    border-radius: 50%;
+  }
+
   &__badge {
     width: 25px;
     height: 25px;

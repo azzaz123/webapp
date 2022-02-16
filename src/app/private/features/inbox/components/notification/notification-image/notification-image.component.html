@@ -1,5 +1,9 @@
-<div tslsanitizedBackground="{{ image }}" class="GenericImage">
-  <div *ngIf="productStatus" [ngSwitch]="productStatus" class="GenericImage__badge">
+<div
+  tslsanitizedBackground="{{ image }}"
+  class="NotificationImage"
+  [ngClass]="productStatus ? 'NotificationImage--rounded' : 'NotificationImage--circle'"
+>
+  <div *ngIf="productStatus" [ngSwitch]="productStatus" class="NotificationImage__badge">
     <tsl-svg-icon
       class="ItemCard__icon ItemCard__icon--left ItemCard__icon--small position-absolute d-flex justify-content-center align-items-center"
       *ngSwitchCase="NOTIFICATION_PRODUCT_STATUS.RESERVED"

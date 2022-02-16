@@ -4,9 +4,8 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 100px;
+  max-height: 150px;
   background: $white;
-
   padding: $spacing-m;
   position: relative;
   &--highlighted {
@@ -16,48 +15,54 @@
     border-radius: $border-radius;
     border: 1px solid $blue-grey-4;
   }
-  &__generic {
+
+  &__info {
+    width: 100%;
     display: flex;
     align-items: center;
-    &_info {
+    flex-direction: column;
+    justify-content: space-around;
+    position: relative;
+    .Notification__title {
       display: flex;
-      flex-direction: column;
-      height: 100%;
-      justify-content: space-around;
-      &_title {
+      justify-content: space-between;
+      width: 100%;
+      > span {
         font-weight: $font-weight-chunky;
         font-size: $font-size-l;
         line-height: $font-size-l;
       }
-      &_description {
-        margin-top: $spacing-s;
+      .Notification__date {
+        white-space: nowrap;
+        span {
+          color: $blue-grey-2;
+        }
+      }
+    }
+
+    .Notification__description {
+      width: 100%;
+      span {
         line-height: $font-size-m;
         font-weight: normal;
         color: $blue-grey-2;
-        white-space: nowrap;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
         overflow: hidden;
-        text-overflow: ellipsis;
-        width: 300px;
       }
-    }
-  }
-  &__aditional-info {
-    &_date {
-      white-space: nowrap;
-      span {
-        color: $blue-grey-2;
-      }
-    }
-    &_status {
+
       .Notification__bullet {
         position: absolute;
-        bottom: 10px;
-        right: 10px;
-        width: 10px;
-        height: 10px;
-        border: 2px solid $white;
-        background-color: $negative-main;
-        border-radius: 100%;
+        bottom: 0;
+        right: 0;
+        div {
+          width: 10px;
+          height: 10px;
+          border: 2px solid $white;
+          background-color: $negative-main;
+          border-radius: 100%;
+        }
       }
     }
   }

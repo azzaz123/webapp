@@ -6,20 +6,23 @@
     'Notification--pinned': notification.variant === NOTIFICATION_VARIANT.PINNED
   }"
 >
-  <div class="Notification__generic">
+  <div class="Notification__image">
     <tsl-generic-image [image]="notification.image" [productStatus]="notification.productStatus"></tsl-generic-image>
-    <div class="Notification__generic_info">
-      <span class="Notification__generic_info_title">{{ notification.title }}</span>
-      <span class="Notification__generic_info_description">{{ notification.description }}</span>
-    </div>
   </div>
 
-  <div class="Notification__aditional-info">
-    <div class="Notification__aditional-info_date">
-      <span> {{ momentsAgo }}</span>
+  <div class="Notification__info">
+    <div class="Notification__title">
+      <span>{{ notification.title }}</span>
+      <div class="Notification__date">
+        <span> {{ momentsAgo }}</span>
+      </div>
     </div>
-    <div class="Notification__aditional-info_status" *ngIf="!notification.isRead">
-      <div class="Notification__bullet"></div>
+
+    <div class="Notification__description">
+      <span>{{ notification.description }}</span>
+      <div class="Notification__bullet" *ngIf="!notification.isRead">
+        <div></div>
+      </div>
     </div>
   </div>
 </div>
