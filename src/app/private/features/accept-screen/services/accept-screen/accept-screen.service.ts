@@ -61,6 +61,10 @@ export class AcceptScreenService {
     );
   }
 
+  public rejectRequest(requestId: string): Observable<void> {
+    return this.sellerRequestApiService.cancelRequest(requestId);
+  }
+
   private getSellerRequest(requestId: string): Observable<SellerRequest> {
     return this.sellerRequestApiService.getRequestInfo(requestId);
   }
