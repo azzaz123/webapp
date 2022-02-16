@@ -107,7 +107,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
 
   private onTapMapOutsideMarker(map: H.Map): void {
     map.addEventListener('tap', (event: H.util.Event) => {
-      const isNotAMarker: boolean = !event.target.hasOwnProperty('icon');
+      const isNotAMarker: boolean = !(event.target instanceof H.map.Marker);
 
       if (isNotAMarker) {
         this.tapMapOffMarker.emit(true);
@@ -142,6 +142,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
         .subscribe((isReady: boolean) => {
           if (isReady) {
             this.map = this.initializeMap();
+            window.addEventListener('resize', () => this.map.getViewPort().resize());
           }
         })
     );
