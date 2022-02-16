@@ -77,4 +77,15 @@ describe('NotificationComponent', () => {
       expect(pinnedNotification).toBeTruthy();
     });
   });
+
+  describe(`If  pinned notification is not readed`, () => {
+    beforeEach(() => {
+      component.notification = pinnedNotification;
+      fixture.detectChanges();
+    });
+    it('should render red bullet', () => {
+      const notificationBullet: DebugElement = fixture.debugElement.query(By.css('.Notification__bullet'));
+      expect(notificationBullet).toBeTruthy();
+    });
+  });
 });
