@@ -5,6 +5,7 @@
     'Notification--highlighted': notification.variant === NOTIFNOTIFICATION_VARIANT.HIGHLIGHTED,
     'Notification--pinned': notification.variant === NOTIFNOTIFICATION_VARIANT.PINNED
   }"
+  (click)="handleNotificationClick()"
 >
   <div class="Notification__generic">
     <tsl-generic-image [image]="notification.image" [productStatus]="notification.productStatus"></tsl-generic-image>
