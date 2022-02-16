@@ -25,7 +25,6 @@ export class NotificationsInboxComponent implements OnInit {
         numberOfUnreadNotifications: this.notifications.map((notification) => !notification.isRead).length,
       },
     };
-
     this.analyticsService.trackPageView(event);
   }
 }
