@@ -21,16 +21,20 @@ export class PayviewComponent implements OnInit {
     return this.activatedRoute.snapshot.paramMap.get(PRIVATE_PATH_PARAMS.ID);
   }
 
+  private navigateToChat(): void {
+    this.route.navigate([PRIVATE_PATHS.CHAT]);
+  }
+
   private openModal(itemHash: string): void {
     const modalRef = this.modalService.open(PayviewModalComponent);
     modalRef.componentInstance.itemHash = itemHash;
 
     modalRef.result.then(
       () => {
-        this.route.navigate([PRIVATE_PATHS.CHAT]);
+        this.navigateToChat();
       },
       () => {
-        this.route.navigate([PRIVATE_PATHS.CHAT]);
+        this.navigateToChat();
       }
     );
   }

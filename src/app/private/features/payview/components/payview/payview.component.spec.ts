@@ -95,7 +95,7 @@ describe('PayviewComponent', () => {
         modalRef.dismiss();
         tick();
 
-        expect(router.navigate).toHaveBeenCalledWith(['chat']);
+        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
       }));
     });
   });

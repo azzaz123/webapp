@@ -109,7 +109,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
         const target = debugElement.query(By.css(payviewSummaryCostDetailInsuranceTitle));
 
         expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain(
-          $localize`:@@web_pay_view_buyer_summary_insurance_label:Seguro`
+          $localize`:@@web_pay_view_buyer_summary_insurance_label:Insurance`
         );
       });
 
@@ -127,7 +127,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
       it('should show the shipping title', () => {
         const target = debugElement.query(By.css(payviewSummaryCostDetailShippingTitle));
 
-        expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain($localize`:@@pay_view_buyer_summary_shipping_label:Envío`);
+        expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain($localize`:@@pay_view_buyer_summary_shipping_label:Delivery`);
       });
 
       it('should show the shipping cost', () => {

@@ -10,14 +10,16 @@
           <div class="PayviewSummaryCostDetail__insurance d-flex justify-content-between">
             <div class="d-flex flex-nowrap align-items-center">
               <tsl-svg-icon class="mr-1" [src]="'./assets/icons/payview/safe-shipping.svg'"></tsl-svg-icon>
-              <span class="PayviewSummaryCostDetail__insuranceTitle pl-1" i18n="@@web_pay_view_buyer_summary_insurance_label">Seguro</span>
+              <span class="PayviewSummaryCostDetail__insuranceTitle pl-1" i18n="@@web_pay_view_buyer_summary_insurance_label"
+                >Insurance</span
+              >
             </div>
             <span class="PayviewSummaryCostDetail__insuranceCost">{{ insuranceCost }}</span>
           </div>
           <div class="PayviewSummaryCostDetail__shipping d-flex justify-content-between">
             <div class="d-flex flex-nowrap align-items-center">
               <tsl-svg-icon class="mr-1" [src]="'./assets/icons/payview/car-bodytype-van.svg'"></tsl-svg-icon>
-              <span class="PayviewSummaryCostDetail__shippingTitle pl-1" i18n="@@pay_view_buyer_summary_shipping_label">Envío</span>
+              <span class="PayviewSummaryCostDetail__shippingTitle pl-1" i18n="@@pay_view_buyer_summary_shipping_label">Delivery</span>
             </div>
             <span class="PayviewSummaryCostDetail__shippingCost">{{ shippingCost }}</span>
           </div>

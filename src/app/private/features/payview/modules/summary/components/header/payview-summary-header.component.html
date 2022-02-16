@@ -7,10 +7,10 @@
       <div class="PayviewSummaryHeader__deliveryInfo d-flex flex-column justify-content-center text-truncate">
         <div class="PayviewSummaryHeader__deliveryEtaWrapper d-inline text-truncate">
           <span class="PayviewSummaryHeader__deliveryEtaTitle" i18n="@@pay_view_buyer_all_all_summary_eta_time_description"
-            >Entrega estimada en{{ '' }}</span
+            >Delivery expected in {{ '' }}</span
           >
           <span class="PayviewSummaryHeader__deliveryEta pl-1" i18n="@@pay_view_buyer_all_all_summary_eta_time_days"
-            >{{ deliveryTime }} días</span
+            >{{ deliveryTime }} days</span
           >
         </div>
         <div class="PayviewSummaryHeader__deliveryAddressWrapper d-inline text-truncate">
@@ -18,13 +18,13 @@
             *ngIf="isOffice"
             class="PayviewSummaryHeader__deliveryAddressTitle"
             i18n="@@pay_view_buyer_po_po_summary_eta_office_description"
-            >Punto de recogida:{{ '' }}</span
+            >Pick-up point: {{ '' }}</span
           >
           <span
             *ngIf="isHome"
             class="PayviewSummaryHeader__deliveryAddressTitle"
             i18n="@@pay_view_buyer_all_ba_summary_eta_address_description"
-            >Dirección:{{ '' }}</span
+            >Address: {{ '' }}</span
           >
           <span class="PayviewSummaryHeader__deliveryAddress pl-1">{{ address }}</span>
         </div>
