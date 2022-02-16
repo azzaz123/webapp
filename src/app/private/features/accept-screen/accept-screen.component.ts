@@ -13,7 +13,7 @@ export class AcceptScreenComponent implements OnInit {
 
   ngOnInit(): void {
     const requestId: string = this.route.snapshot.paramMap.get(PRIVATE_PATH_PARAMS.ID);
-    const modalRef = this.modalService.open(AcceptScreenModalComponent);
+    const modalRef = this.modalService.open(AcceptScreenModalComponent, { windowClass: 'delivery' });
     modalRef.componentInstance.requestId = requestId;
 
     modalRef.result.then(

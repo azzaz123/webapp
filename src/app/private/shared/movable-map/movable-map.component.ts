@@ -35,7 +35,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
 
   @Output() dragEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
   @Output() markerClick: EventEmitter<Location> = new EventEmitter();
-  @Output() tapMapOutsideMarker: EventEmitter<boolean> = new EventEmitter();
+  @Output() tapMapOffMarker: EventEmitter<boolean> = new EventEmitter();
   @ViewChild('map', { static: true })
   mapEl: ElementRef;
 
@@ -69,7 +69,6 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
     this.emitOnDragEnd(map);
     this.addGroupMarker(map);
     this.onTapMapOutsideMarker(map);
-
     return map;
   }
 
@@ -102,10 +101,9 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
       const isNotAMarker: boolean = !event.target.hasOwnProperty('icon');
 
       if (isNotAMarker) {
-        this.tapMapOutsideMarker.emit(true);
+        this.tapMapOffMarker.emit(true);
         this.group.getObjects().forEach((marker: H.map.Marker) => {
-          marker.setIcon(this.standardIcon);
-          marker.setData({ status: MARKER_STATUS.NON_SELECTED });
+          marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
         });
       }
     });
@@ -143,13 +141,12 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
 
     marker.addEventListener('tap', () => {
       const markerNotSelected: boolean = marker.getData().status === MARKER_STATUS.NON_SELECTED;
+
       if (markerNotSelected) {
-        marker.setIcon(selectedIcon);
-        marker.setData({ status: MARKER_STATUS.SELECTED });
+        marker.setIcon(selectedIcon), marker.setData({ status: MARKER_STATUS.SELECTED });
         this.setAllOtherMarkersToNonSelected(marker);
       } else {
-        marker.setIcon(this.standardIcon);
-        marker.setData({ status: MARKER_STATUS.NON_SELECTED });
+        marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
       }
     });
   }
@@ -157,8 +154,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
   private setAllOtherMarkersToNonSelected(currentMarker: H.map.Marker): void {
     this.group.getObjects().forEach((marker: H.map.Marker) => {
       if (marker !== currentMarker) {
-        marker.setIcon(this.standardIcon);
-        marker.setData({ status: MARKER_STATUS.NON_SELECTED });
+        marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
       }
     });
   }

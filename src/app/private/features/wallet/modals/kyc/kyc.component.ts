@@ -12,7 +12,7 @@ import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
 export class KYCComponent implements OnInit {
   public readonly WALLET_BALANCE_LINK = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}`;
   public readonly KYCModalOptions: NgbModalOptions = {
-    windowClass: 'kyc',
+    windowClass: 'delivery',
     beforeDismiss: () => {
       return window.confirm(this.KYCModalCloseWarningCopy);
     },
