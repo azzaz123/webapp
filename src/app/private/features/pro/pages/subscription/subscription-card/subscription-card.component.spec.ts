@@ -246,7 +246,7 @@ describe('SubscriptionCardComponent', () => {
       it('should show text related to bumps', () => {
         const text: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__price')).nativeElement;
 
-        expect(text.textContent).toContain('With option to highlight several items per month at no extra cost.');
+        expect(text.textContent).toContain("You'll be able to highlight several items each month at no extra cost.");
       });
     });
 
@@ -254,7 +254,7 @@ describe('SubscriptionCardComponent', () => {
       it('should show text related to bumps', () => {
         const text: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__price')).nativeElement;
 
-        expect(text.textContent).not.toContain('With option to highlight several items per month at no extra cost.');
+        expect(text.textContent).not.toContain("You'll be able to highlight several items each month at no extra cost.");
       });
     });
   });

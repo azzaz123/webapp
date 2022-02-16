@@ -31,8 +31,9 @@
         </div>
         <div class="text-md-left">
           <b
-            ><span>{{ subscription.selected_tier.bumps[0].used }}/{{ subscription.selected_tier.bumps[0].quantity }}</span>
-            <span ngPreserveWhitespaces> </span>
+            ><span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_bumps_applied_text"
+              >{{ subscription.selected_tier.bumps[0].used }}/{{ subscription.selected_tier.bumps[0].quantity }} items highlighted</span
+            >
           </b>
         </div>
       </div>
@@ -43,7 +44,9 @@
     <div class="SubscriptionCard__price text-md-left mb-2">
       <ng-container *ngIf="!isSubscribed; else subscriptionPrice">
         <tsl-subscription-price-discount [subscription]="subscription" [tierDiscount]="tierDiscount"> </tsl-subscription-price-discount>
-        <span *ngIf="hasBumpsAvailable">With option to highlight several items per month at no extra cost.</span>
+        <span i18n="@@pro_subscription_purchase_non_subscribed_visibility_feature_description" *ngIf="hasBumpsAvailable"
+          >You'll be able to highlight several items each month at no extra cost.</span
+        >
       </ng-container>
       <ng-template #subscriptionPrice>
         <span i18n="@@web_profile_pages_subscription_326"
