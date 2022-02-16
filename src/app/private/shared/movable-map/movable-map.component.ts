@@ -101,7 +101,6 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     this.standardIcon = new H.map.Icon(STANDARD_ICON);
     map.addObject(this.group);
 
-    this.emitOnTapMarker();
     this.addMarkers();
   }
 
@@ -115,13 +114,6 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
           marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
         });
       }
-    });
-  }
-
-  private emitOnTapMarker(): void {
-    this.group.addEventListener('tap', (evt: H.util.Event) => {
-      const currentLocation: H.geo.IPoint = evt.target.b;
-      this.markerClick.emit({ latitude: currentLocation.lat, longitude: currentLocation.lng });
     });
   }
 
@@ -151,7 +143,8 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     const selectedIcon: H.map.Icon = new H.map.Icon(SELECTED_ICON);
     marker.setData({ status: MARKER_STATUS.NON_SELECTED });
 
-    marker.addEventListener('tap', () => {
+    marker.addEventListener('tap', (event: H.util.Event) => {
+      this.emitLocationOnTapMarker(event);
       const markerNotSelected: boolean = marker.getData().status === MARKER_STATUS.NON_SELECTED;
 
       if (markerNotSelected) {
@@ -161,6 +154,11 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
         marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
       }
     });
+  }
+
+  private emitLocationOnTapMarker(event: H.util.Event): void {
+    const currentLocation: H.geo.IPoint = event.target.b;
+    this.markerClick.emit({ latitude: currentLocation.lat, longitude: currentLocation.lng });
   }
 
   private setAllOtherMarkersToNonSelected(currentMarker: H.map.Marker): void {
