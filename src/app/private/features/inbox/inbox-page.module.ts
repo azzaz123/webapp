@@ -4,11 +4,11 @@ import { CommonModule } from '@angular/common';
 import { InboxService } from '../chat/core/inbox/inbox.service';
 import { InboxPageRoutedComponents, InboxPageRoutingModule } from './inbox-page.routing.module';
 import { NotificationsInboxComponent } from './components/notifications-inbox/notifications-inbox.component';
-import { NotificationComponent } from './components/notification/notification.component';
+import { NotificationModule } from '@private/features/inbox/components/notification/notification.module';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, InboxPageRoutingModule],
+  imports: [CommonModule, SharedModule, InboxPageRoutingModule, NotificationModule],
   providers: [InboxService],
-  declarations: [InboxPageRoutedComponents, NotificationsInboxComponent, NotificationComponent],
+  declarations: [InboxPageRoutedComponents, NotificationsInboxComponent],
 })
 export class InboxPageModule {}

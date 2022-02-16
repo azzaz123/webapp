@@ -18,7 +18,7 @@ import { Notification } from '../../core/interfaces/notification.interface';
 })
 export class NotificationComponent {
   @Input() notification: Notification;
-  public NOTIFNOTIFICATION_VARIANT = NOTIFICATION_VARIANT;
+  public NOTIFICATION_VARIANT = NOTIFICATION_VARIANT;
 
   constructor(private analyticsService: AnalyticsService) {}
 
@@ -45,7 +45,7 @@ export class NotificationComponent {
     return this.notification.variant === NOTIFICATION_VARIANT.PINNED ? true : false;
   }
 
-  get _momentsAgo() {
+  get momentsAgo(): string {
     return moment(this.notification.date).fromNow();
   }
 }

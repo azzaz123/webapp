@@ -3,10 +3,10 @@ import { NOTIFICATION_PRODUCT_STATUS } from '@private/features/inbox/core/enums/
 
 @Component({
   selector: 'tsl-generic-image',
-  templateUrl: './generic-image.component.html',
-  styleUrls: ['./generic-image.component.scss'],
+  templateUrl: './notification-image.component.html',
+  styleUrls: ['./notification-image.component.scss'],
 })
-export class GenericImageComponent {
+export class NotificationImageComponent {
   @Input() image: string;
   @Input() productStatus: NOTIFICATION_PRODUCT_STATUS;
   public NOTIFICATION_PRODUCT_STATUS = NOTIFICATION_PRODUCT_STATUS;
