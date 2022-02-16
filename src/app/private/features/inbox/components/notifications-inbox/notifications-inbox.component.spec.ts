@@ -1,9 +1,12 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { AnalyticsPageView, ViewNotificationCenter, ANALYTICS_EVENT_NAMES, SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
+import { Notification } from '../../core/interfaces/notification.interface';
 import { NotificationsInboxComponent } from './notifications-inbox.component';
 
 describe('NotificationsInboxComponent', () => {
@@ -11,6 +14,19 @@ describe('NotificationsInboxComponent', () => {
   let fixture: ComponentFixture<NotificationsInboxComponent>;
   let analyticsService: AnalyticsService;
   let element: HTMLElement;
+
+  const notifications: Notification[] = [
+    {
+      variant: NOTIFICATION_VARIANT.GENERAL,
+      productStatus: undefined,
+      isRead: true,
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      title: 'My general notification',
+      description: 'Cupidatat ad nostrud cillum',
+      image: 'https://picsum.photos/200/300',
+    },
+  ];
+
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
@@ -29,6 +45,7 @@ describe('NotificationsInboxComponent', () => {
       }).compileComponents();
     })
   );
+
   beforeEach(() => {
     fixture = TestBed.createComponent(NotificationsInboxComponent);
     component = fixture.componentInstance;
@@ -63,5 +80,17 @@ describe('NotificationsInboxComponent', () => {
       expect(component.trackViewNotificationCenter).toHaveBeenCalled();
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
     }));
+
+    describe(`If receive notifications`, () => {
+      beforeEach(() => {
+        component.notifications = notifications;
+        fixture.detectChanges();
+      });
+
+      it('should render at least one notification component', () => {
+        const notification: DebugElement = fixture.debugElement.query(By.css('tsl-notification'));
+        expect(notification).toBeTruthy();
+      });
+    });
   });
 });
