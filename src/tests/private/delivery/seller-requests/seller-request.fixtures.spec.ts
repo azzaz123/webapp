@@ -31,3 +31,11 @@ export const MOCK_SELLER_REQUEST: SellerRequest = {
     request: SELLER_REQUEST_STATUS.ACCEPTED,
   },
 };
+
+export const MOCK_PENDING_SELLER_REQUEST: SellerRequest = {
+  ...MOCK_SELLER_REQUEST,
+  status: {
+    payment: SELLER_PAYMENT_STATUS.SUCCEEDED,
+    request: SELLER_REQUEST_STATUS.PENDING,
+  },
+};
