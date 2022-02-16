@@ -61,6 +61,7 @@ describe('NotificationComponent', () => {
       component.notification = highlightedNotification;
       fixture.detectChanges();
     });
+
     it('should render a highlighted notification', () => {
       const highlightedNotification: DebugElement = fixture.debugElement.query(By.css('.Notification--highlighted'));
       expect(highlightedNotification).toBeTruthy();
@@ -72,17 +73,19 @@ describe('NotificationComponent', () => {
       component.notification = pinnedNotification;
       fixture.detectChanges();
     });
+
     it('should render a highlighted notification', () => {
       const pinnedNotification: DebugElement = fixture.debugElement.query(By.css('.Notification--pinned'));
       expect(pinnedNotification).toBeTruthy();
     });
   });
 
-  describe(`If  pinned notification is not readed`, () => {
+  describe(`If pinned notification is not readed`, () => {
     beforeEach(() => {
       component.notification = pinnedNotification;
       fixture.detectChanges();
     });
+
     it('should render red bullet', () => {
       const notificationBullet: DebugElement = fixture.debugElement.query(By.css('.Notification__bullet'));
       expect(notificationBullet).toBeTruthy();

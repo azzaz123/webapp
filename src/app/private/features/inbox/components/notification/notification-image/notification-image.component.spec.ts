@@ -42,6 +42,7 @@ describe('NotificationImageComponent', () => {
       component.productStatus = undefined;
       fixture.detectChanges();
     });
+
     it('should render a circle image', () => {
       const highlightedNotification: DebugElement = fixture.debugElement.query(By.css('.NotificationImage--circle'));
       expect(highlightedNotification).toBeTruthy();
@@ -54,10 +55,12 @@ describe('NotificationImageComponent', () => {
       component.productStatus = productStatusReserved;
       fixture.detectChanges();
     });
+
     it('should render a rounded image', () => {
       const highlightedNotification: DebugElement = fixture.debugElement.query(By.css('.NotificationImage--rounded'));
       expect(highlightedNotification).toBeTruthy();
     });
+
     it('should render a reserved badge with icon', () => {
       const highlightedNotification: DebugElement = fixture.debugElement.query(By.css('tsl-svg-icon'));
       expect(highlightedNotification).toBeTruthy();

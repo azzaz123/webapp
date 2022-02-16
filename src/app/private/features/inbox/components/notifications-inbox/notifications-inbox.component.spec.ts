@@ -50,6 +50,7 @@ describe('NotificationsInboxComponent', () => {
       component.notifications = notifications;
       fixture.detectChanges();
     });
+
     it('should render at least one notification component', () => {
       const notification: DebugElement = fixture.debugElement.query(By.css('tsl-notification'));
       expect(notification).toBeTruthy();
