@@ -277,10 +277,12 @@ export const ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED: ItemWithProducts[] = [
     item: ITEM_1_MAPPED,
     products: PRODUCT_LIST_WITHOUT_CITY,
     isProvincialBump: true,
+    subscription: null,
   },
   {
     isProvincialBump: false,
     item: ITEM_2_MAPPED,
     products: PRODUCT_LIST,
+    subscription: null,
   },
 ];
