@@ -37,7 +37,8 @@ export class CartComponent {
       return;
     }
     if (this.totalToPay > 0 && !this.card) {
-      return this.errorService.i18nError(TRANSLATION_KEY.NO_CARD_SELECTED_ERROR);
+      this.errorService.i18nError(TRANSLATION_KEY.NO_CARD_SELECTED_ERROR);
+      return;
     }
 
     this.loading = true;

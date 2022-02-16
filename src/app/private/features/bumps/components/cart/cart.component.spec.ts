@@ -18,6 +18,8 @@ import { CartService } from '@shared/catalog/cart/cart.service';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CartComponent } from './cart.component';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
+import { MOCK_ITEMS_TO_BUY_FREE, MOCK_ITEMS_TO_BUY_WITHOUT_FREE } from '@fixtures/visibility.fixtures.spec';
+import { PACKS_TYPES } from '@core/payments/pack';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -87,8 +89,8 @@ describe('CartComponent', () => {
           {
             provide: VisibilityApiService,
             useValue: {
-              bumpWithPackage() {
-                return of(true);
+              buyBumps() {
+                return of([true]);
               },
             },
           },
@@ -109,25 +111,11 @@ describe('CartComponent', () => {
     stripeService = TestBed.inject(StripeService);
     visibilityService = TestBed.inject(VisibilityApiService);
     component.creditInfo = {
-      currencyName: 'wallacoins',
-      credit: 200,
-      factor: 100,
+      currencyName: PACKS_TYPES.WALLACREDITS,
+      credit: 20,
+      factor: 1,
     };
     fixture.detectChanges();
-  });
-
-  describe('ngOnInit', () => {
-    it('should call createInstance cartService method', () => {
-      spyOn(cartService, 'createInstance').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(cartService.createInstance).toHaveBeenCalledWith(new Cart());
-    });
-
-    it('should set cart', () => {
-      expect(component.cart).toEqual(CART);
-    });
   });
 
   describe('hasCard', () => {
@@ -174,54 +162,20 @@ describe('CartComponent', () => {
     });
   });
 
-  describe('ngOnDestroy', () => {
-    it('should set active false', () => {
-      component.ngOnDestroy();
-
-      expect(component['active']).toBeFalsy();
-    });
-
-    it('should call clean', () => {
-      spyOn(cartService, 'clean');
-
-      component.ngOnDestroy();
-
-      expect(cartService.clean).toHaveBeenCalled();
-    });
-  });
-
   describe('checkout', () => {
-    let eventId: string;
+    it('should not proceed if loading', () => {
+      spyOn(visibilityService, 'buyBumps').and.callThrough();
+      component.loading = true;
 
-    it('should not proceed if cart is empty or loading', () => {
-      spyOn(itemService, 'purchaseProductsWithCredits').and.callThrough();
+      component.checkout();
 
-      component.cart = CART;
-      component.cart.total = null;
-
-      expect(itemService.purchaseProductsWithCredits).not.toHaveBeenCalled();
+      expect(visibilityService.buyBumps).not.toHaveBeenCalled();
     });
 
     describe('success', () => {
       beforeEach(() => {
-        spyOn(component.cart, 'prepareOrder').and.returnValue(CART_ORDER);
-        spyOn(component.cart, 'getOrderId').and.returnValue('UUID');
-        spyOn(localStorage, 'setItem');
-        spyOn(eventService, 'emit');
-
-        eventId = null;
-        component.cart = CART;
-        component.cart.total = 1;
         component.loading = false;
       });
-
-      it('should emit TOTAL_CREDITS_UPDATED event', fakeAsync(() => {
-        component.checkout();
-        tick(2000);
-
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED);
-      }));
-
       describe('with payment_needed false', () => {
         beforeEach(() => {
           spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(
@@ -245,21 +199,15 @@ describe('CartComponent', () => {
 
     describe('error', () => {
       beforeEach(() => {
-        spyOn(component.cart, 'prepareOrder').and.returnValue(CART_ORDER);
-        spyOn(component.cart, 'getOrderId').and.returnValue('UUID');
+        spyOn(visibilityService, 'buyBumps').and.returnValue(of([{ hasError: true }]));
 
-        eventId = null;
-        component.cart = CART;
-        component.cart.total = 1;
         component.loading = false;
       });
 
       it('should call toastr', fakeAsync(() => {
-        spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(throwError('error'));
         spyOn(errorService, 'i18nError').and.callThrough();
 
         component.checkout();
-        tick(2000);
 
         expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BUMP_ERROR);
       }));
@@ -268,25 +216,78 @@ describe('CartComponent', () => {
 
   describe('totalToPay', () => {
     beforeEach(() => {
-      component.cart = null;
+      component.selectedItems = MOCK_ITEMS_TO_BUY_WITHOUT_FREE;
     });
 
-    it('should return 0 if no cart', () => {
-      expect(component.totalToPay).toBe(0);
+    describe('and has not items', () => {
+      beforeEach(() => {
+        component.selectedItems = [];
+        fixture.detectChanges();
+      });
+      it('should return 0', () => {
+        expect(component.totalToPay).toBe(0);
+      });
     });
 
-    it('should return 0 if credits to pay < user credits', () => {
-      component.cart = CART;
-      CART.total = 1;
-
-      expect(component.totalToPay).toBe(0);
+    describe('and has not items', () => {
+      beforeEach(() => {
+        component.creditInfo = null;
+        fixture.detectChanges();
+      });
+      it('should return 0', () => {
+        expect(component.totalToPay).toBe(0);
+      });
     });
 
-    it('should return the total to pay otherwise', () => {
-      component.cart = CART;
-      CART.total = 5;
+    describe('and items all items free', () => {
+      beforeEach(() => {
+        component.creditInfo = null;
+        fixture.detectChanges();
+      });
+      it('should return 0', () => {
+        expect(component.totalToPay).toBe(0);
+      });
+    });
 
-      expect(component.totalToPay).toBe(3);
+    describe('and items all items free', () => {
+      beforeEach(() => {
+        component.selectedItems = MOCK_ITEMS_TO_BUY_FREE;
+        fixture.detectChanges();
+      });
+      it('should return 0', () => {
+        expect(component.totalToPay).toBe(0);
+      });
+    });
+
+    describe('and no free items', () => {
+      beforeEach(() => {
+        fixture.detectChanges();
+      });
+      describe('and has credits', () => {
+        describe('and credits is less than total to pay', () => {
+          it('should return total to pay less credits', () => {
+            expect(component.totalToPay).toBe(
+              component.selectedItems.reduce((a, b) => +b.duration.market_code + a, 0) - component.creditInfo.credit
+            );
+          });
+        });
+        describe('and credits is more than total to pay', () => {
+          beforeEach(() => {
+            component.creditInfo.credit = 200;
+          });
+          it('should return total to pay less credits', () => {
+            expect(component.totalToPay).toBe(0);
+          });
+        });
+      });
+      describe('and has no credits', () => {
+        beforeEach(() => {
+          component.creditInfo.credit = 0;
+        });
+        it('should return total to pay', () => {
+          expect(component.totalToPay).toBe(component.selectedItems.reduce((a, b) => +b.duration.market_code + a, 0));
+        });
+      });
     });
   });
 });
