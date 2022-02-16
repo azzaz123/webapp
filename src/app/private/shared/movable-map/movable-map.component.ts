@@ -10,6 +10,7 @@ import {
   Inject,
   LOCALE_ID,
   OnDestroy,
+  OnChanges,
 } from '@angular/core';
 import { Location, LocationWithRatio } from '@api/core/model';
 import { APP_LOCALE } from '@configs/subdomains.config';
@@ -27,7 +28,7 @@ import { MARKER_STATUS } from './constants/marker-status.enum';
   styleUrls: ['./movable-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MovableMapComponent implements AfterViewInit, OnDestroy {
+export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() centerCoordinates: Location;
   @Input() markers: Location[] = [];
   @Input() zoom: number = 8;
@@ -50,6 +51,14 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.centerCoordinates = this.centerCoordinates || this.fallbackCenterCoordinates;
     this.initHereMaps();
+  }
+
+  ngOnChanges() {
+    if (this.map) {
+      this.map.setCenter({ lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude });
+      this.map.setZoom(this.zoom);
+      this.addGroupMarker(this.map);
+    }
   }
 
   ngOnDestroy(): void {
@@ -88,13 +97,13 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
   }
 
   private addGroupMarker(map: H.Map): void {
+    map.removeObjects(map.getObjects());
     this.group = new H.map.Group();
     this.standardIcon = new H.map.Icon(STANDARD_ICON);
     map.addObject(this.group);
 
     this.emitOnTapMarker();
-
-    this.markers.forEach((marker: Location) => this.addMarkerToGroup({ lng: marker.longitude, lat: marker.latitude }));
+    this.addMarkers();
   }
 
   private onTapMapOutsideMarker(map: H.Map): void {
@@ -118,10 +127,13 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  private addMarkerToGroup(coordinate: H.geo.IPoint): void {
-    const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: this.standardIcon });
-    this.setMarkerSelection(standardMarker);
-    this.group.addObject(standardMarker);
+  private addMarkers(): void {
+    this.markers.forEach((marker: Location) => {
+      const coordinate: H.geo.IPoint = { lng: marker.longitude, lat: marker.latitude };
+      const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: this.standardIcon });
+      this.setMarkerSelection(standardMarker);
+      this.group.addObject(standardMarker);
+    });
   }
 
   private initHereMaps(): void {
