@@ -24,18 +24,17 @@ import { PERMISSIONS } from '@core/user/user-constants';
   styleUrls: ['./public-profile.component.scss'],
 })
 export class PublicProfileComponent implements OnInit, OnDestroy {
+  public readonly adSlot: AdSlotConfiguration = PUBLIC_PROFILE_AD;
+  public readonly PERMISSIONS = PERMISSIONS;
   public userId: string;
   public userStats: UserStats;
   public userInfo: User;
   public loading = false;
   public isFavourited = false;
   public reviews: Review[];
+  public isMobile: boolean;
+
   private subscriptions: Subscription[] = [];
-
-  isMobile: boolean;
-
-  readonly adSlot: AdSlotConfiguration = PUBLIC_PROFILE_AD;
-  readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private route: ActivatedRoute,

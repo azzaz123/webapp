@@ -16,10 +16,37 @@
       </ng-template>
     </tsl-discount-badge>
     <div class="SubscriptionCard__title mb-1">{{ subscription.category_name }}</div>
-    <div class="SubscriptionCard__subtitle mb-1">{{ descriptionText }}</div>
+    <ng-container *ngIf="subscription.selected_tier?.bumps.length; else noBumps">
+      <div class="SubscriptionCard__benefits mb-2">
+        <div class="d-flex mb-2">
+          <tsl-svg-icon class="mr-2 mt-1" src="/assets/icons/check.svg"></tsl-svg-icon>
+          <span>{{ descriptionText }}</span>
+        </div>
+        <div class="d-flex mb-2">
+          <tsl-svg-icon class="mr-2 mt-1" src="/assets/icons/check.svg"></tsl-svg-icon>
+          <span i18n="@@pro_subscription_purchase_subscription_details_list_monthly_bumps_text"
+            >Highlight {{ subscription.selected_tier.bumps[0].quantity }} items monthly (duration:
+            {{ subscription.selected_tier.bumps[0].duration_days }} days)</span
+          >
+        </div>
+        <div class="text-md-left">
+          <b
+            ><span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_bumps_applied_text"
+              >{{ subscription.selected_tier.bumps[0].used }}/{{ subscription.selected_tier.bumps[0].quantity }} items highlighted</span
+            >
+          </b>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noBumps>
+      <div class="SubscriptionCard__subtitle mb-1">{{ descriptionText }}</div>
+    </ng-template>
     <div class="SubscriptionCard__price text-md-left mb-2">
       <ng-container *ngIf="!isSubscribed; else subscriptionPrice">
         <tsl-subscription-price-discount [subscription]="subscription" [tierDiscount]="tierDiscount"> </tsl-subscription-price-discount>
+        <span i18n="@@pro_subscription_purchase_non_subscribed_visibility_feature_description" *ngIf="hasBumpsAvailable"
+          >You'll be able to highlight several items each month at no extra cost.</span
+        >
       </ng-container>
       <ng-template #subscriptionPrice>
         <span i18n="@@web_profile_pages_subscription_326"

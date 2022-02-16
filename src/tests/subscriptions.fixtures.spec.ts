@@ -8,6 +8,7 @@ import {
   TierDiscount,
   SUBSCRIPTION_CATEGORY_TYPES,
   PERK_NAMES,
+  BUMP_NAMES,
 } from '../app/core/subscriptions/subscriptions.interface';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
@@ -153,6 +154,32 @@ export const TIER_2_WITH_DISCOUNT: Tier = {
     {
       name: PERK_NAMES.LIMIT,
       quantity: 50,
+    },
+  ],
+};
+
+export const MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP: Tier = {
+  ...TIER_WITH_DISCOUNT,
+  id: 'plan_FWuFVeTHEDyECz',
+  limit: 50,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 50,
+    },
+    {
+      name: BUMP_NAMES.ZONEBUMP,
+      quantity: 50,
+      used: 2,
+      duration_days: 2,
+    },
+  ],
+  bumps: [
+    {
+      name: BUMP_NAMES.ZONEBUMP,
+      quantity: 50,
+      used: 2,
+      duration_days: 2,
     },
   ],
 };
@@ -515,8 +542,10 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS: SubscriptionsV3Response[] = 
         perks: [
           { name: PERK_NAMES.LIMIT, quantity: 5 },
           {
-            name: PERK_NAMES.CITYBUMP,
+            name: BUMP_NAMES.CITYBUMP,
             quantity: 12,
+            used: 5,
+            duration_days: 6,
           },
         ],
       },
@@ -531,12 +560,83 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS: SubscriptionsV3Response[] = 
         perks: [
           { name: PERK_NAMES.LIMIT, quantity: 5 },
           {
-            name: PERK_NAMES.CITYBUMP,
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+          },
+          {
+            name: BUMP_NAMES.ZONEBUMP,
+            quantity: 8,
+            used: 5,
+            duration_days: 6,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c07',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
+  },
+];
+
+export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED: SubscriptionsResponse[] = [
+  {
+    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+    tiers: [
+      {
+        ...TIER_NO_DISCOUNT_NO_BASIC,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+          },
+        ],
+        bumps: [
+          {
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT_NO_MAPPED,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.CITYBUMP,
             quantity: 12,
           },
           {
-            name: PERK_NAMES.ZONEBUMP,
+            name: BUMP_NAMES.ZONEBUMP,
             quantity: 8,
+          },
+        ],
+        bumps: [
+          {
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+          },
+          {
+            name: BUMP_NAMES.ZONEBUMP,
+            quantity: 8,
+            used: 5,
+            duration_days: 6,
           },
         ],
       },

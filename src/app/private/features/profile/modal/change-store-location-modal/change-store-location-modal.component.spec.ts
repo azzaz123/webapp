@@ -3,17 +3,17 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from '@shared/button/button.component';
-import { ChangeStoreLocationModal } from './change-store-location-modal.component';
+import { ChangeStoreLocationModalComponent } from './change-store-location-modal.component';
 
 describe('ChangeStoreLocationModal', () => {
-  let component: ChangeStoreLocationModal;
-  let fixture: ComponentFixture<ChangeStoreLocationModal>;
+  let component: ChangeStoreLocationModalComponent;
+  let fixture: ComponentFixture<ChangeStoreLocationModalComponent>;
   let activeModal: NgbActiveModal;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ChangeStoreLocationModal, ButtonComponent],
+        declarations: [ChangeStoreLocationModalComponent, ButtonComponent],
         providers: [NgbActiveModal],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -21,7 +21,7 @@ describe('ChangeStoreLocationModal', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ChangeStoreLocationModal);
+    fixture = TestBed.createComponent(ChangeStoreLocationModalComponent);
     component = fixture.componentInstance;
     activeModal = TestBed.inject(NgbActiveModal);
     spyOn(activeModal, 'close').and.callThrough();

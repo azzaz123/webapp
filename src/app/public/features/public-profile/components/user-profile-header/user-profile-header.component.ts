@@ -10,11 +10,11 @@ import { PERMISSIONS } from '@core/user/user-constants';
   styleUrls: ['./user-profile-header.component.scss'],
 })
 export class UserProfileHeaderComponent implements OnInit {
-  public readonly USER_INFO_SIZE = USER_INFO_SIZE;
-  public readonly PERMISSIONS = PERMISSIONS;
   @Input() userStats: UserStats;
   @Input() userInfo: User;
 
+  public readonly USER_INFO_SIZE = USER_INFO_SIZE;
+  public readonly PERMISSIONS = PERMISSIONS;
   public isProAndHasDescription = false;
 
   constructor() {}

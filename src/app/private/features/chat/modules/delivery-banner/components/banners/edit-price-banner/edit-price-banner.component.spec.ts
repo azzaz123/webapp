@@ -2,7 +2,7 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '@shared/button/button.component';
-import { SELLER_EDIT_PRICE_BANNER_PROPERTIES } from '../../../constants/delivery-banner-configs';
+import { EDIT_PRICE_BANNER_PROPERTIES } from '../../../constants/delivery-banner-configs';
 
 import { EditPriceBannerComponent } from './edit-price-banner.component';
 
@@ -20,7 +20,7 @@ describe('EditPriceBannerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditPriceBannerComponent);
     component = fixture.componentInstance;
-    component.bannerProperties = SELLER_EDIT_PRICE_BANNER_PROPERTIES;
+    component.bannerProperties = EDIT_PRICE_BANNER_PROPERTIES;
     fixture.detectChanges();
   });
 
@@ -37,7 +37,7 @@ describe('EditPriceBannerComponent', () => {
 
     it('should emit the action', () => {
       expect(component.clickedCTA.emit).toHaveBeenCalledTimes(1);
-      expect(component.clickedCTA.emit).toHaveBeenCalledWith(SELLER_EDIT_PRICE_BANNER_PROPERTIES.action);
+      expect(component.clickedCTA.emit).toHaveBeenCalledWith(EDIT_PRICE_BANNER_PROPERTIES.action);
     });
   });
 });
