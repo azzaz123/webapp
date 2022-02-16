@@ -835,7 +835,7 @@
     "web_add_card": "Aggiungi carta di credito",
     "pro_subscription_purchase_tier_list_discount_label": "{$INTERPOLATION}% di sconto!",
     "web_subscription_price_discount_days_trial_free": "{$INTERPOLATION}-giornata di prova gratuita",
-    "pro_subscription_purchase_subscription_details_list_monthly_bumps_text": " Destaca {$INTERPOLATION} en {$INTERPOLATION_1} durante {$INTERPOLATION_2} dias",
+    "pro_subscription_purchase_subscription_details_list_monthly_bumps_text": "Highlight {$INTERPOLATION} items monthly (duration: {$INTERPOLATION_1} days)",
     "pro_manage_subscriptions_view_active_subscriptions_details_bumps_applied_text": "{$INTERPOLATION}/{$INTERPOLATION_1}",
     "pro_subscription_purchase_non_subscribed_visibility_feature_description": "With option to highlight several items per month at no extra cost.",
     "web_profile_pages_subscription_326": "{$INTERPOLATION}{$INTERPOLATION_1}/mese",
