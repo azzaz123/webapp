@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { MovableMapComponent } from './movable-map.component';
 import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
+import { MOCK_HERE_MAPS } from '@configs/jest/global-mocks.fixtures.spec';
 
 describe('MovableMapComponent', () => {
   const initScriptSubjectMock: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -38,8 +39,10 @@ describe('MovableMapComponent', () => {
             platform: {
               createDefaultLayers() {
                 return {
-                  normal: {
-                    map: 'map',
+                  vector: {
+                    normal: {
+                      map: 'map',
+                    },
                   },
                 };
               },
@@ -57,9 +60,12 @@ describe('MovableMapComponent', () => {
   });
 
   beforeEach(() => {
+    window['H'] = MOCK_HERE_MAPS;
+
     fixture = TestBed.createComponent(MovableMapComponent);
     component = fixture.componentInstance;
     hereMapsService = TestBed.inject(HereMapsService);
+    component.markers = [MOCK_CENTER_COORDINATES, MOCK_CENTER_COORDINATES, MOCK_CENTER_COORDINATES];
   });
 
   it('should create', () => {
@@ -70,7 +76,7 @@ describe('MovableMapComponent', () => {
     beforeEach(() => {
       spyOn(hereMapsService, 'isLibraryLoading$').and.callThrough();
       spyOn(hereMapsService, 'initScript').and.callThrough();
-      spyOn(hereMapsService.platform, 'createDefaultLayers');
+      spyOn(hereMapsService.platform, 'createDefaultLayers').and.callThrough();
     });
 
     it('should init the here maps', () => {
@@ -98,6 +104,12 @@ describe('MovableMapComponent', () => {
 
     describe('and the map is ready', () => {
       beforeEach(() => {
+        spyOn(H.map, 'Icon').and.callFake(() => {});
+        spyOn(H, 'Map').and.callFake(() => {});
+        spyOn(H.mapevents, 'Behavior').and.callFake(() => {});
+        spyOn(H.mapevents, 'MapEvents').and.callFake(() => {});
+        spyOn(H.ui.UI, 'createDefault').and.callFake(() => {});
+
         initScriptSubjectMock.next(true);
         isLibraryLoadingSubjectMock.next(false);
 
@@ -110,22 +122,15 @@ describe('MovableMapComponent', () => {
 
       it('should create the map ', () => {
         expect(hereMapsService.platform.createDefaultLayers).toHaveBeenCalledTimes(1);
+        expect(window['H'].Map).toHaveBeenCalledTimes(1);
       });
 
-      it('should create the map behavior', () => {});
-
-      it('should create the map UI', () => {});
-
-      describe('and we make a dragend event on the map', () => {
-        it('should emit the updated location', () => {});
+      it('should create the map behavior', () => {
+        expect(window['H'].mapevents.Behavior).toHaveBeenCalledTimes(1);
       });
 
-      describe('and we receive markers', () => {
-        it('should add the markers in the map', () => {});
-
-        describe('and we tap on one marker', () => {
-          it('should emit the marker click', () => {});
-        });
+      it('should create the map UI', () => {
+        expect(window['H'].ui.UI.createDefault).toHaveBeenCalledTimes(1);
       });
     });
 
