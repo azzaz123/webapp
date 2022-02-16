@@ -10,9 +10,9 @@ import { Notification } from '../../core/interfaces/notification.interface';
 })
 export class NotificationComponent {
   @Input() notification: Notification;
-  public NOTIFNOTIFICATION_VARIANT = NOTIFICATION_VARIANT;
+  public NOTIFICATION_VARIANT = NOTIFICATION_VARIANT;
 
-  get _momentsAgo() {
+  get momentsAgo(): string {
     return moment(this.notification.date).fromNow();
   }
 }
