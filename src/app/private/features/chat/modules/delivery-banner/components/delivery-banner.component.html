@@ -17,5 +17,6 @@
   <tsl-activate-shipping-banner
     *ngIf="bannerProperties.type === DELIVERY_BANNER_TYPES.ACTIVATE_SHIPPING"
     [bannerProperties]="bannerProperties"
+    (clickedCTA)="handleClickCTA($event)"
   ></tsl-activate-shipping-banner>
 </div>
