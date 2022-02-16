@@ -7,8 +7,8 @@ import { Notification } from '../../core/interfaces/notification.interface';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
 import { NOTIFICATION_PRODUCT_STATUS } from '../../core/enums/notification-product-status.enum';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
-import { GenericImageModule } from '@shared/generic-image/generic-image.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NotificationImageModule } from '@private/features/inbox/components/notification/notification-image/notification-image.module';
 
 @Component({
   selector: 'tsl-story-notifications-container',
@@ -27,7 +27,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StoryNotificationComponent, NotificationComponent],
-      imports: [CommonModule, SvgIconModule, GenericImageModule, HttpClientModule],
+      imports: [CommonModule, SvgIconModule, HttpClientModule, NotificationImageModule],
       providers: [],
     }),
   ],

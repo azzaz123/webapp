@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { GenericImageComponent } from './generic-image.component';
+import { NotificationImageComponent } from './notification-image.component';
 
-describe('GenericImageComponent', () => {
-  let component: GenericImageComponent;
-  let fixture: ComponentFixture<GenericImageComponent>;
+describe('NotificationImageComponent', () => {
+  let component: NotificationImageComponent;
+  let fixture: ComponentFixture<NotificationImageComponent>;
   let element: HTMLElement;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GenericImageComponent);
+    fixture = TestBed.createComponent(NotificationImageComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fixture.detectChanges();
