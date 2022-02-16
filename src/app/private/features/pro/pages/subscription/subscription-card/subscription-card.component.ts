@@ -42,17 +42,15 @@ export class SubscriptionCardComponent {
 
   get subscriptionBodyText(): string {
     return this.subscription.selected_tier.limit
-      ? this.getTextWithLimit(this.subscription.selected_tier.limit)
-      : $localize`:@@web_profile_pages_subscription_586:List without limits`;
-  }
-
-  private getTextWithLimit(limit: number): string {
-    return this.subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE
-      ? $localize`:@@web_profile_pages_subscription_332:List up to ${limit} real estate`
-      : $localize`:@@web_profile_pages_subscription_325:List up to ${limit} items`;
+      ? $localize`:@@pro_subscription_purchase_subscription_details_list_tier_text:Manage up to ${this.subscription.selected_tier.limit}:INTERPOLATION: items`
+      : $localize`:@@pro_subscription_purchase_subscription_details_list_unlimited_tier_text:Manage unlimited active item`;
   }
 
   get iconSrc(): string {
     return `/assets/images/subscriptions/types/${this.subscription.category_icon}.svg`;
+  }
+
+  get hasBumpsAvailable(): boolean {
+    return !!this.subscription.tiers.find((tier) => tier.bumps.length);
   }
 }

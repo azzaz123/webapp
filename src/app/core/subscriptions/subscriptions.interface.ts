@@ -15,14 +15,21 @@ export interface Tier {
   discount: TierDiscount;
   is_basic: boolean;
   perks: Perks[];
-  bumps: Perks[];
+  bumps: Bumps[];
 }
 
 export interface Perks {
-  name: PERK_NAMES;
+  name: PERK_NAMES | BUMP_NAMES;
   quantity: number;
   used?: number;
   duration_days?: number;
+}
+
+export interface Bumps {
+  name: BUMP_NAMES;
+  quantity: number;
+  used: number;
+  duration_days: number;
 }
 
 export interface TierDiscount {
@@ -50,13 +57,14 @@ export enum SUBSCRIPTION_CATEGORY_TYPES {
 }
 
 export enum PERK_NAMES {
-  ZONEBUMP = 'zonebump',
-  CITYBUMP = 'citybump',
-  COUNTRYBUMP = 'countrybump',
   LIMIT = 'limit',
 }
 
-export const BUMP_PERKS = [PERK_NAMES.CITYBUMP, PERK_NAMES.COUNTRYBUMP, PERK_NAMES.ZONEBUMP];
+export enum BUMP_NAMES {
+  ZONEBUMP = 'zonebump',
+  CITYBUMP = 'citybump',
+  COUNTRYBUMP = 'countrybump',
+}
 export interface SubscriptionsResponse {
   id?: string;
   category_id: number;
