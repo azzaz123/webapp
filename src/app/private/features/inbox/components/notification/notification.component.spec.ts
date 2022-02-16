@@ -51,7 +51,6 @@ describe('NotificationComponent', () => {
           {
             provide: AnalyticsService,
             useValue: {
-              trackPageView: () => {},
               trackEvent: () => {},
             },
           },
