@@ -56,16 +56,7 @@ export class HereMapsService {
 
   private loadScript(): void {
     this.isLibraryLoadingSubject.next(true);
-    concat(
-      this.isCoreReady$(),
-      combineLatest([
-        this.isServiceReady$(),
-        // UNCOMMENT WHEN NECESSARY
-        this.isUIReady$(),
-        this.isUICSSReady$(),
-        this.isEventsReady$(),
-      ])
-    )
+    concat(this.isCoreReady$(), combineLatest([this.isServiceReady$(), this.isUIReady$(), this.isUICSSReady$(), this.isEventsReady$()]))
       .pipe(finalize(() => this.isLibraryLoadingSubject.next(false)))
       .subscribe(
         (next) => next,

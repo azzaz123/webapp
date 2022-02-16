@@ -3,8 +3,6 @@ import { MOCK_HERE_MAPS } from '../../../../configs/jest/global-mocks.fixtures.s
 import {
   CHECK_INTERVAL_MS,
   GEO_APP_API_KEY,
-  GEO_APP_CODE,
-  GEO_APP_ID,
   HereMapsService,
   HERE_MAPS_CORE_LEGACY_REF_ID,
   HERE_MAPS_CORE_LEGACY_URL,
@@ -24,6 +22,13 @@ import {
 } from './here-maps.service';
 
 describe('HereMapsService', () => {
+  const CORE_INTERVAL_MS: number = CHECK_INTERVAL_MS * 2;
+  const NEW_PLATOFRM_INTERVAL_MS: number = CHECK_INTERVAL_MS;
+  const SERVICE_LEGACY_INTERVAL_MS: number = CHECK_INTERVAL_MS;
+  const OTHERS_INTERVAL_MS: number = CHECK_INTERVAL_MS * 2;
+  const TOTAL_DEPENDENCIES_INTERVAL_MS: number =
+    CORE_INTERVAL_MS + NEW_PLATOFRM_INTERVAL_MS + SERVICE_LEGACY_INTERVAL_MS + OTHERS_INTERVAL_MS;
+
   let service: HereMapsService;
 
   const scriptIDs: string[] = [
@@ -124,7 +129,7 @@ describe('HereMapsService', () => {
       tick(CHECK_INTERVAL_MS);
       expect(document.head.appendChild).toHaveBeenCalledWith(expectedCoreLegacyScript);
 
-      tick(CHECK_INTERVAL_MS * 2);
+      tick(CORE_INTERVAL_MS);
       expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceScript);
       expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceUIReadyScript);
       expect(document.head.appendChild).toHaveBeenCalledWith(expectedServiceUICSSReady);
@@ -150,7 +155,7 @@ describe('HereMapsService', () => {
     beforeEach(fakeAsync(() => {
       spyOn(H.service, 'Platform').and.callFake(() => {});
       service.initScript().subscribe();
-      tick(CHECK_INTERVAL_MS * 6); // core time (2 * interval) + others time (2 * interval) + service legacy (1 interval) + new platform (1 interval)
+      tick(TOTAL_DEPENDENCIES_INTERVAL_MS);
     }));
 
     it('should not add any script again', fakeAsync(() => {
@@ -163,29 +168,27 @@ describe('HereMapsService', () => {
     }));
   });
 
-  xdescribe('when here Maps fails loading', () => {
+  describe('when here Maps fails loading', () => {
     it('should retry if core script fails', fakeAsync(() => {
       window['H'] = null;
       spyOn(document.head, 'appendChild').and.callThrough();
-
       let isReady: boolean;
       let isLoading: boolean;
-
       const scriptSubscription = service.initScript().subscribe((value) => {
         isReady = value;
       });
-
       const loadingSubscription = service.isLibraryLoading$().subscribe((value) => {
         isLoading = value;
       });
 
-      expect(isLoading).toBeTruthy();
+      expect(isLoading).toBe(true);
       expect(isReady).toBe(false);
 
-      tick(CHECK_INTERVAL_MS * 6 * RETRY_AMOUNT);
+      tick(TOTAL_DEPENDENCIES_INTERVAL_MS * RETRY_AMOUNT);
       expect(isReady).toBe(false);
       expect(isLoading).toBe(false);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(1 + RETRY_AMOUNT);
+      // Legacy and core appended to DOM
+      expect(document.head.appendChild).toHaveBeenCalledTimes(2);
 
       scriptSubscription.unsubscribe();
       loadingSubscription.unsubscribe();
@@ -206,13 +209,13 @@ describe('HereMapsService', () => {
         isLoading = value;
       });
 
-      expect(isLoading).toBeTruthy();
+      expect(isLoading).toBe(true);
       expect(isReady).toBe(false);
 
-      tick(CHECK_INTERVAL_MS * 2 + CHECK_INTERVAL_MS + CHECK_INTERVAL_MS * RETRY_AMOUNT);
+      tick(TOTAL_DEPENDENCIES_INTERVAL_MS * RETRY_AMOUNT);
       expect(isReady).toBe(false);
       expect(isLoading).toBe(false);
-      expect(document.head.appendChild).toHaveBeenCalledTimes(1 + 1 + RETRY_AMOUNT);
+      expect(document.head.appendChild).toHaveBeenCalledTimes(scriptIDs.length);
 
       scriptSubscription.unsubscribe();
       loadingSubscription.unsubscribe();
