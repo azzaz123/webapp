@@ -7,7 +7,7 @@ import {
   MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
-  TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP,
+  MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP,
   TIER_WITH_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { DiscountBadgeComponent } from '@private/features/pro/components/discount-badge/discount-badge.component';
@@ -240,7 +240,7 @@ describe('SubscriptionCardComponent', () => {
     describe('and has bumps', () => {
       beforeEach(() => {
         component.subscription = cloneDeep(MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED);
-        component.subscription.tiers[0] = TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP;
+        component.subscription.tiers[0] = MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP;
         fixture.detectChanges();
       });
       it('should show text related to bumps', () => {

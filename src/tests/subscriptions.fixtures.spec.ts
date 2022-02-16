@@ -158,7 +158,7 @@ export const TIER_2_WITH_DISCOUNT: Tier = {
   ],
 };
 
-export const TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP: Tier = {
+export const MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP: Tier = {
   ...TIER_WITH_DISCOUNT,
   id: 'plan_FWuFVeTHEDyECz',
   limit: 50,

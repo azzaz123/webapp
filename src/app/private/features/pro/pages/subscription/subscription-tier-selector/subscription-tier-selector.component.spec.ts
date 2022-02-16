@@ -9,7 +9,7 @@ import {
   FREE_TRIAL_AVAILABLE_SUBSCRIPTION,
   MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED_NO_DISCOUNTS,
   MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
-  TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP,
+  MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP,
   TIER_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 
@@ -165,7 +165,7 @@ describe('SubscriptionTierSelectorComponent', () => {
     describe('has bumps', () => {
       beforeEach(() => {
         component.subscription = cloneDeep(FREE_TRIAL_AVAILABLE_NO_DISCOUNTS_SUBSCRIPTION);
-        component.subscription.tiers[0] = TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP;
+        component.subscription.tiers[0] = MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP;
         component.selectedTier = component.subscription.tiers[0];
         fixture.detectChanges();
       });
