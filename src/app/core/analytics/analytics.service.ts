@@ -1,5 +1,6 @@
 import { Observable, ReplaySubject } from 'rxjs';
 import mParticle, { IdentityResult, MPConfiguration, UserIdentities, User as MPUser } from '@mparticle/web-sdk';
+import appboyKit from '@mparticle/web-appboy-kit';
 import { UserService } from './../user/user.service';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { environment } from '@environments/environment';
@@ -8,6 +9,8 @@ import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import { DeviceService } from '@core/device/device.service';
 import { Market, MARKET_PROVIDER } from '@configs/market.config';
 import { APP_LOCALE } from '@configs/subdomains.config';
+
+// FIXME: This kits probably need to be registered
 import '@mparticle/web-google-analytics-kit';
 import '@mparticle/web-optimizely-kit';
 
@@ -102,6 +105,7 @@ export class AnalyticsService {
   }
 
   private initializeMParticleSDK(config: MPConfiguration): void {
+    appboyKit.register(config);
     mParticle.init(environment.mParticleKey, config);
     mParticle.ready(() => {
       this._mParticleReady$.next();

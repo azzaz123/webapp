@@ -16,14 +16,11 @@ export class ExternalCommsService {
   }
 
   public initializeBraze(): void {
-    this.loadBraze()
-      .then(() => {
-        this.configureBraze();
-        this.openBrazeSession();
-      })
-      .finally(() => {
-        this._brazeReady$.next();
-      });
+    if (appboy) {
+      this.configureBraze();
+      this.openBrazeSession();
+      this._brazeReady$.next();
+    }
   }
 
   public openBrazeSession(): void {
@@ -32,10 +29,6 @@ export class ExternalCommsService {
     } else {
       appboy.openSession();
     }
-  }
-
-  private loadBraze(): Promise<void> {
-    return import('@mparticle/web-appboy-kit');
   }
 
   private configureBraze(): void {
