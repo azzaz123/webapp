@@ -366,7 +366,7 @@ describe('AcceptScreenModalComponent', () => {
               beforeEach(() => {
                 spyOn(acceptScreenStoreService, 'rejectRequest').and.returnValue(throwError('network error :P'));
                 spyOn(errorService, 'i18nError');
-                const rejectButton = fixture.debugElement.query(By.css('#rejectButton')).nativeElement;
+                const rejectButton = fixture.debugElement.query(By.css(rejectButtonSelector)).nativeElement;
 
                 rejectButton.click();
               });
@@ -395,7 +395,7 @@ describe('AcceptScreenModalComponent', () => {
               beforeEach(() => {
                 spyOn(router, 'navigate');
                 spyOn(acceptScreenStoreService, 'rejectRequest').and.returnValue(of(null));
-                const rejectButton = fixture.debugElement.query(By.css('#rejectButton')).nativeElement;
+                const rejectButton = fixture.debugElement.query(By.css(rejectButtonSelector)).nativeElement;
 
                 rejectButton.click();
               });
