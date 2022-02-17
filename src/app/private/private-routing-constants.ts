@@ -10,6 +10,7 @@ export enum PRIVATE_PATHS {
   CHAT = 'chat',
   BUMPS = 'bumps',
   ACCEPT_SCREEN = 'accept',
+  INBOX = 'inbox',
   PAYVIEW = 'payview',
 }
 
