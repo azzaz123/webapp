@@ -8,6 +8,8 @@ import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum
 import { NOTIFICATION_PRODUCT_STATUS } from '../../core/enums/notification-product-status.enum';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { HttpClientModule } from '@angular/common/http';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { NotificationImageModule } from '@private/features/inbox/components/notification/notification-image/notification-image.module';
 
 @Component({
@@ -28,7 +30,12 @@ export default {
     moduleMetadata({
       declarations: [StoryNotificationComponent, NotificationComponent],
       imports: [CommonModule, SvgIconModule, HttpClientModule, NotificationImageModule],
-      providers: [],
+      providers: [
+        {
+          provide: AnalyticsService,
+          useClass: MockAnalyticsService,
+        },
+      ],
     }),
   ],
 };
@@ -36,8 +43,7 @@ export default {
 const Template: Story<StoryNotificationComponent> = (args) => ({
   props: args,
   template: `
-  <tsl-story-notifications-container [notifications]="notifications"></tsl-story-notifications-container>
-    `,
+  <tsl-story-notifications-container [notifications]="notifications"></tsl-story-notifications-container>`,
 });
 
 export const Default = Template.bind({});
