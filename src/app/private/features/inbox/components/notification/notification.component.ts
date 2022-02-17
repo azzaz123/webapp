@@ -22,7 +22,7 @@ export class NotificationComponent {
 
   constructor(private analyticsService: AnalyticsService) {}
 
-  public handleNotificationClick() {
+  public handleNotificationClick(): void {
     this.trackClickNotification();
   }
 
@@ -41,8 +41,8 @@ export class NotificationComponent {
     this.analyticsService.trackEvent(event);
   }
 
-  private _isPinned() {
-    return this.notification.variant === NOTIFICATION_VARIANT.PINNED ? true : false;
+  private _isPinned(): boolean {
+    return this.notification.variant === NOTIFICATION_VARIANT.PINNED;
   }
 
   get momentsAgo(): string {
