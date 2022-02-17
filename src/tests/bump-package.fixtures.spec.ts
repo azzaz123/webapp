@@ -1,6 +1,6 @@
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { ItemsBySubscription, ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
 import { BumpsPackageBalanceDTO } from '@api/visibility/dtos/bumps/bumps-package-balance.interface';
 import { Item } from '@core/item/item';
 import { ItemContent, ItemsWithAvailableProductsResponse, Product } from '@core/item/item-response.interface';
@@ -284,5 +284,13 @@ export const ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED: ItemWithProducts[] = [
     item: ITEM_2_MAPPED,
     products: PRODUCT_LIST,
     subscription: null,
+  },
+];
+
+export const ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED_BY_SUBSCRIPTION_NO_SUB: ItemsBySubscription[] = [
+  {
+    subscription: null,
+    items: ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED,
+    availableFreeBumps: null,
   },
 ];

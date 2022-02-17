@@ -1,20 +1,12 @@
-import { throwError, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ErrorsService } from '@core/errors/errors.service';
-import { EventService } from '@core/event/event.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { ItemService } from '@core/item/item.service';
-import { StripeService } from '@core/stripe/stripe.service';
-import { ITEM_ID, CART_ORDER } from '@fixtures/item.fixtures.spec';
 import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
-import { Cart } from '@shared/catalog/cart/cart';
-import { CartChange } from '@shared/catalog/cart/cart-item.interface';
-import { CartService } from '@shared/catalog/cart/cart.service';
 import { CustomCurrencyPipe } from '@shared/pipes';
 import { CartComponent } from './cart.component';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
@@ -24,21 +16,8 @@ import { PACKS_TYPES } from '@core/payments/pack';
 describe('CartComponent', () => {
   let component: CartComponent;
   let fixture: ComponentFixture<CartComponent>;
-  let cartService: CartService;
-  let itemService: ItemService;
   let errorService: ErrorsService;
-  let router: Router;
-  let eventService: EventService;
-  let stripeService: StripeService;
   let visibilityService: VisibilityApiService;
-
-  const CART = new Cart();
-  const CART_CHANGE: CartChange = {
-    action: 'add',
-    cart: CART,
-    itemId: ITEM_ID,
-    type: 'citybump',
-  };
 
   beforeEach(
     waitForAsync(() => {
@@ -47,43 +26,11 @@ describe('CartComponent', () => {
         declarations: [CartComponent, CustomCurrencyPipe],
         providers: [
           DecimalPipe,
-          EventService,
-          {
-            provide: CartService,
-            useValue: {
-              cart$: of(CART_CHANGE),
-              createInstance() {},
-              remove() {},
-              clean() {},
-            },
-          },
-          {
-            provide: ItemService,
-            useValue: {
-              purchaseProductsWithCredits() {
-                return of({
-                  payment_needed: true,
-                });
-              },
-            },
-          },
           {
             provide: ErrorsService,
             useValue: {
               i18nError() {},
               show() {},
-            },
-          },
-          {
-            provide: Router,
-            useValue: {
-              navigate() {},
-            },
-          },
-          {
-            provide: StripeService,
-            useValue: {
-              buy() {},
             },
           },
           {
@@ -103,12 +50,7 @@ describe('CartComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CartComponent);
     component = fixture.componentInstance;
-    cartService = TestBed.inject(CartService);
-    itemService = TestBed.inject(ItemService);
     errorService = TestBed.inject(ErrorsService);
-    router = TestBed.inject(Router);
-    eventService = TestBed.inject(EventService);
-    stripeService = TestBed.inject(StripeService);
     visibilityService = TestBed.inject(VisibilityApiService);
     component.creditInfo = {
       currencyName: PACKS_TYPES.WALLACREDITS,
@@ -176,25 +118,15 @@ describe('CartComponent', () => {
       beforeEach(() => {
         component.loading = false;
       });
-      describe('with payment_needed false', () => {
-        beforeEach(() => {
-          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(
-            of({
-              payment_needed: false,
-              items_failed: [],
-            })
-          );
-        });
 
-        it('should emit event', fakeAsync(() => {
-          spyOn(component.confirmAction, 'emit').and.callThrough();
-          component.checkout();
-          tick();
+      it('should emit event', fakeAsync(() => {
+        spyOn(component.confirmAction, 'emit').and.callThrough();
+        component.checkout();
+        tick();
 
-          expect(component.confirmAction.emit).toBeCalledTimes(1);
-          expect(component.confirmAction.emit).toHaveBeenCalledWith();
-        }));
-      });
+        expect(component.confirmAction.emit).toBeCalledTimes(1);
+        expect(component.confirmAction.emit).toHaveBeenCalledWith();
+      }));
     });
 
     describe('error', () => {

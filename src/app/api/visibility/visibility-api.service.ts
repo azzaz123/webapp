@@ -36,11 +36,6 @@ export class VisibilityApiService {
     return this.bumpsHttpService.getBalance(userId).pipe(map(mapBalance));
   }
 
-  public bumpWithPackage(cart: SelectedProduct[]): Observable<unknown> {
-    const itemsMapped = mapFreeBumpsPurchase(cart, this.uuidService);
-    return this.bumpsHttpService.useBumpPackage(itemsMapped);
-  }
-
   public getItemsWithProductsAndSubscriptionBumps(ids: string[]): Observable<ItemsBySubscription[]> {
     return forkJoin([
       this.bumpsHttpService.getItemsWithAvailableProducts(ids).pipe(map(mapItemsWithProducts)),
@@ -83,7 +78,7 @@ export class VisibilityApiService {
     selectedItems: SelectedProduct[],
     hasSavedCard: boolean,
     savedCard: boolean,
-    card: boolean
+    card: unknown
   ): Observable<BumpRequestSubject[]> {
     const subscriptionBumps: SelectedProduct[] = [];
     const stripeBumps: SelectedProduct[] = [];
@@ -124,7 +119,7 @@ export class VisibilityApiService {
     return forkJoin(subscriptions);
   }
 
-  private purchaseStripeBumps(order: Order[], orderId: string, hasSavedCard: boolean, savedCard: boolean, card: any): void {
+  private purchaseStripeBumps(order: Order[], orderId: string, hasSavedCard: boolean, savedCard: boolean, card: unknown): void {
     this.stripeResponseSubject.next({ loading: true });
     this.itemService.purchaseProductsWithCredits(order, orderId).subscribe(
       (response: PurchaseProductsWithCreditsResponse) => {
@@ -142,6 +137,11 @@ export class VisibilityApiService {
       }
     );
     this.cartService.clean();
+  }
+
+  private bumpWithPackage(cart: SelectedProduct[]): Observable<unknown> {
+    const itemsMapped = mapFreeBumpsPurchase(cart, this.uuidService);
+    return this.bumpsHttpService.useBumpPackage(itemsMapped);
   }
 
   private managePaymentResponse(paymentResponse: string): void {
