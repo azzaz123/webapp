@@ -58,6 +58,10 @@ export class DeliveryConversationContextAsSellerService {
       return;
     }
 
+    if (action === DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING) {
+      return this.navigateToEditItemShippingToggle(conversation);
+    }
+
     return this.openAwarenessModal();
   }
 
@@ -78,6 +82,13 @@ export class DeliveryConversationContextAsSellerService {
 
   private navigateToAcceptScreen(requestId: string): void {
     const route: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
+    this.router.navigate([route]);
+  }
+
+  private navigateToEditItemShippingToggle(conversation: InboxConversation): void {
+    const { item } = conversation;
+    const { id: itemHash } = item;
+    const route: string = `${PRIVATE_PATHS.CATALOG}/${CATALOG_PATHS.EDIT}/${itemHash}/${UPLOAD_PATHS.ACTIVATE_SHIPPING}`;
     this.router.navigate([route]);
   }
 

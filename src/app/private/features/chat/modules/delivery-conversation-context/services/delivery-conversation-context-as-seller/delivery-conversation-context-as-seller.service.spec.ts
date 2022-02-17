@@ -12,8 +12,10 @@ import { MOCK_DELIVERY_ITEM_DETAILS_WITH_SHIPPING_DISABLED_DTO } from '@api/fixt
 import { MOCK_INBOX_CONVERSATION_AS_SELLER, MOCK_INBOX_CONVERSATION_AS_SELLER_WITH_SOLD_ITEM } from '@fixtures/chat';
 import { MOCK_PENDING_SELLER_REQUEST, MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
+import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { EditItemSalePriceModalComponent } from '../../../delivery-banner/components/banners/edit-price-banner/modals/edit-item-sale-price-modal/edit-item-sale-price-modal.component';
@@ -137,6 +139,21 @@ describe('DeliveryConversationContextAsSellerService', () => {
 
       it('should pass data to modal', () => {
         expect(mockEditPriceModalInstance.item).toEqual(MOCK_INBOX_CONVERSATION_AS_SELLER.item);
+      });
+    });
+
+    describe('when the action is to activate shipping for item', () => {
+      beforeEach(() => {
+        spyOn(router, 'navigate');
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_SELLER, DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING);
+      });
+
+      it('should navigate to edit item', () => {
+        const expectedUrl: string = `${PRIVATE_PATHS.CATALOG}/${CATALOG_PATHS.EDIT}/${MOCK_INBOX_CONVERSATION_AS_SELLER.item.id}/${UPLOAD_PATHS.ACTIVATE_SHIPPING}`;
+
+        service.handleThirdVoiceCTAClick();
+
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
       });
     });
 
