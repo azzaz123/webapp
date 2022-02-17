@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MOCK_SELECTED_CARRIER_OFFICE_DTO } from '@api/fixtures/delivery/carrier-office-addresses/selected-carrier-office-dto.fixture.spec';
+import { MOCK_SELECTED_CARRIER_OFFICE_DTO } from '@api/fixtures/delivery/carrier-office-addresses/selected-carrier-office-dto.fixtures.spec';
 import { CarrierOfficeAddressesHttpService } from './carrier-office-addresses-http.service';
 import { CREATE_SELECTED_CARRIER_OFFICE_ENDPOINT, UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT } from './endpoints';
 

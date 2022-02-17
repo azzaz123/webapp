@@ -4,7 +4,7 @@ export interface SelectedCarrierOffice {
   postalCode: string;
   country: string;
   street: string;
-  name?: string;
+  name: string;
   carrierOfficeId: string;
   carrier: string;
 }

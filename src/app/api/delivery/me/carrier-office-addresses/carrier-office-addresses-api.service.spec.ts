@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { MOCK_SELECTED_CARRIER_OFFICE_DTO } from '@api/fixtures/delivery/carrier-office-addresses/selected-carrier-office-dto.fixture.spec';
+import { MOCK_SELECTED_CARRIER_OFFICE_DTO } from '@api/fixtures/delivery/carrier-office-addresses/selected-carrier-office-dto.fixtures.spec';
 import { MOCK_SELECTED_CARRIER_OFFICE } from '@fixtures/private/delivery/selected-carrier-office/selected-carrier-office.fixtures.spec';
 import { of } from 'rxjs';
 
