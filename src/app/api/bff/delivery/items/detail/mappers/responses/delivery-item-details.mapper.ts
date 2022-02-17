@@ -10,12 +10,13 @@ type DeliveryCostsDto = InnerType<DeliveryItemDetailsDto, 'delivery_costs'>;
 export const mapDeliveryItemDetailsDtoToDeliveryItemDetails: ToDomainMapper<DeliveryItemDetailsDto, DeliveryItemDetails> = (
   input: DeliveryItemDetailsDto
 ) => {
-  const { delivery_costs, shipping_allowed: isShippingAllowed } = input;
+  const { delivery_costs, shipping_allowed: isShippingAllowed, shippable: isShippable } = input;
   const minimumPurchaseCost = getLowestCostFromDeliveryCost(delivery_costs);
 
   const deliveryItemDetails: DeliveryItemDetails = {
     minimumPurchaseCost,
     isShippingAllowed,
+    isShippable,
   };
 
   return deliveryItemDetails;
