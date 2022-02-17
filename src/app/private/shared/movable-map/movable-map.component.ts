@@ -24,6 +24,7 @@ import {
   SELECTED_ICON,
   METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL,
   HALF_CIRCUMFERENCE_DEGREES,
+  DEFAULT_VALUE_ZOOM,
 } from './constants/map.constants';
 import { MARKER_STATUS } from './constants/marker-status.enum';
 
@@ -36,8 +37,7 @@ import { MARKER_STATUS } from './constants/marker-status.enum';
 export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() centerCoordinates: Location;
   @Input() markers: Location[] = [];
-  @Input() zoom: number = 8;
-  @Input() ratio: number = 1;
+  @Input() zoom: number = DEFAULT_VALUE_ZOOM;
 
   @Output() mapViewChangeEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
   @Output() markerClick: EventEmitter<Location> = new EventEmitter();
@@ -74,7 +74,6 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     const defaultLayers: H.service.DefaultLayers = this.hereMapsService.platform.createDefaultLayers();
     const map: H.Map = new H.Map(this.mapEl.nativeElement, defaultLayers.vector.normal.map, {
       zoom: this.zoom,
-      pixelRatio: this.ratio,
       center: { lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude },
     });
     const implementInteractions: H.mapevents.Behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
