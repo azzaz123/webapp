@@ -10,7 +10,7 @@
   padding: $spacing-m;
   position: relative;
   &--highlighted {
-    background-color: #85ffd3;
+    background-color: $positive-soft;
   }
   &--pinned {
     border-radius: $border-radius;
@@ -58,13 +58,11 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        div {
-          width: 12px;
-          height: 12px;
-          border: 2px solid $white;
-          background-color: $negative-main;
-          border-radius: 100%;
-        }
+        width: 12px;
+        height: 12px;
+        border: 2px solid $white;
+        background-color: $negative-main;
+        border-radius: 100%;
       }
     }
   }

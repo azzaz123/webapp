@@ -22,7 +22,7 @@ export class NotificationsInboxComponent implements OnInit {
       attributes: {
         screenId: SCREEN_IDS.NotificationCenter,
         numberOfTotalNotifications: this.notifications.length,
-        numberOfUnreadNotifications: this.notifications.map((notification) => !notification.isRead).length,
+        numberOfUnreadNotifications: this.notifications.filter((notification) => !notification.isRead).length,
       },
     };
     this.analyticsService.trackPageView(event);

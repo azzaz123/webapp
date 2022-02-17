@@ -13,9 +13,35 @@ describe('NotificationImageComponent', () => {
   let fixture: ComponentFixture<NotificationImageComponent>;
   let element: HTMLElement;
 
+  const srcReservedBadge = '/assets/icons/item-card/reserved.svg';
+  const srcSoldBadge = '/assets/icons/item-card/sold.svg';
+  const srcSaveMoneyBadge = '/assets/icons/save_money.svg';
+
   const notificationProductStatusReserved: Notification = {
     variant: NOTIFICATION_VARIANT.PRODUCT,
     productStatus: NOTIFICATION_PRODUCT_STATUS.RESERVED,
+    isRead: false,
+    date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 600000000),
+    title: 'Product reserved',
+    description:
+      'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
+    image: 'https://picsum.photos/200/300',
+  };
+
+  const notificationProductStatusSold: Notification = {
+    variant: NOTIFICATION_VARIANT.PRODUCT,
+    productStatus: NOTIFICATION_PRODUCT_STATUS.SOLD,
+    isRead: false,
+    date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 600000000),
+    title: 'Product reserved',
+    description:
+      'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
+    image: 'https://picsum.photos/200/300',
+  };
+
+  const notificationProductStatusLowered: Notification = {
+    variant: NOTIFICATION_VARIANT.PRODUCT,
+    productStatus: NOTIFICATION_PRODUCT_STATUS.LOWERED,
     isRead: false,
     date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 600000000),
     title: 'Product reserved',
@@ -78,9 +104,43 @@ describe('NotificationImageComponent', () => {
       expect(highlightedNotification).toBeTruthy();
     });
 
-    it('should render a reserved badge with icon', () => {
-      const highlightedNotification: DebugElement = fixture.debugElement.query(By.css('tsl-svg-icon'));
-      expect(highlightedNotification).toBeTruthy();
+    it('badge src should be reserved badge', () => {
+      const highlightedSvgNotification: DebugElement = fixture.debugElement.query(By.css('tsl-svg-icon'));
+      expect(highlightedSvgNotification.attributes.src).toEqual(srcReservedBadge);
+    });
+  });
+
+  describe(`If receive a notification about reserved product`, () => {
+    beforeEach(() => {
+      component.notification = notificationProductStatusSold;
+      fixture.detectChanges();
+    });
+
+    it('should render a rounded image', () => {
+      const soldProductNotification: DebugElement = fixture.debugElement.query(By.css('.NotificationImage--rounded'));
+      expect(soldProductNotification).toBeTruthy();
+    });
+
+    it('badge src should be sold badge', () => {
+      const notificationSvgProductStatusSold: DebugElement = fixture.debugElement.query(By.css('tsl-svg-icon'));
+      expect(notificationSvgProductStatusSold.attributes.src).toEqual(srcSoldBadge);
+    });
+  });
+
+  describe(`If receive a notification about reserved product`, () => {
+    beforeEach(() => {
+      component.notification = notificationProductStatusLowered;
+      fixture.detectChanges();
+
+      it('should render a rounded image', () => {
+        const loweredProductNotification: DebugElement = fixture.debugElement.query(By.css('.NotificationImage--rounded'));
+        expect(loweredProductNotification).toBeTruthy();
+      });
+
+      it('badge src should be save money badge', () => {
+        const notificationSvgProductStatusLowered: DebugElement = fixture.debugElement.query(By.css('tsl-svg-icon'));
+        expect(notificationSvgProductStatusLowered.attributes.src).toEqual(srcSaveMoneyBadge);
+      });
     });
   });
 });

@@ -8,7 +8,11 @@
       : 'NotificationImage--circle'
   "
 >
-  <div *ngIf="notification.productStatus" [ngSwitch]="notification.productStatus" class="NotificationImage__badge">
+  <div
+    *ngIf="notification.productStatus"
+    [ngSwitch]="notification.productStatus"
+    class="NotificationImage__badge d-flex justify-content-center align-items-center"
+  >
     <tsl-svg-icon
       class="ItemCard__icon ItemCard__icon--left ItemCard__icon--small position-absolute d-flex justify-content-center align-items-center"
       *ngSwitchCase="NOTIFICATION_PRODUCT_STATUS.RESERVED"
