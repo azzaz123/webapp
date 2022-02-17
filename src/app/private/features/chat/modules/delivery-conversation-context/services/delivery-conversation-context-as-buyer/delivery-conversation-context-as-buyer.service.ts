@@ -6,7 +6,10 @@ import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requ
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { Observable } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
-import { BUY_DELIVERY_BANNER_PROPERTIES } from '@private/features/chat/modules/delivery-banner/constants/delivery-banner-configs';
+import {
+  ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
+  BUY_DELIVERY_BANNER_PROPERTIES,
+} from '@private/features/chat/modules/delivery-banner/constants/delivery-banner-configs';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -30,14 +33,14 @@ export class DeliveryConversationContextAsBuyerService {
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     const { item } = conversation;
-    const { id: itemHash } = item;
+    const { id: itemHash, sold } = item;
 
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       tap((requests) => (this.lastRequest = requests ? requests[0] : null)),
       concatMap((buyerRequests: BuyerRequest[]) => {
         return this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash).pipe(
           map((deliveryItemDetails: DeliveryItemDetails) => {
-            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, deliveryItemDetails);
+            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, sold, deliveryItemDetails);
           })
         );
       })
@@ -60,14 +63,19 @@ export class DeliveryConversationContextAsBuyerService {
 
   private mapDeliveryDetailsAsBuyerToBannerProperties(
     buyerRequests: BuyerRequest[],
+    isItemSold: boolean,
     deliveryItemDetails?: DeliveryItemDetails
   ): DeliveryBanner {
     const noDeliveryItemDetails: boolean = !deliveryItemDetails;
     const buyerHasNoRequests: boolean = buyerRequests.length === 0;
     const buyerHasRequests: boolean = !buyerHasNoRequests;
 
-    if (noDeliveryItemDetails) {
+    if (isItemSold) {
       return null;
+    }
+
+    if (noDeliveryItemDetails) {
+      return ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES;
     }
 
     if (buyerHasRequests) {
