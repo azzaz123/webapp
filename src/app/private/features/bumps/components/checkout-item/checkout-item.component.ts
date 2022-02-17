@@ -31,7 +31,7 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
   constructor(private modalService: NgbModal) {}
 
   ngOnInit() {
-    this.isFreeOptionAvailable = !!this.getFreeTypes().length;
+    this.isFreeOptionAvailable = !!this.getFirstAvailableFreeOption();
     this.isFreeOptionDisabled = this.availableFreeBumps === 0;
 
     if (this.isFreeOptionAvailable && !this.isFreeOptionDisabled) {
@@ -130,6 +130,9 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
   }
 
   private getFirstAvailableFreeOption(): Perks {
-    return this.itemWithProducts.subscription?.selected_tier.bumps.find((bump) => bump.used < bump.quantity);
+    if (!this.itemWithProducts.subscription?.selected_tier) {
+      return null;
+    }
+    return this.itemWithProducts.subscription?.selected_tier?.bumps.find((bump) => bump.used < bump.quantity);
   }
 }

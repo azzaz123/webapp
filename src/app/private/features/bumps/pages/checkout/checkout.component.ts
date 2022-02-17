@@ -130,7 +130,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   private refreshCounters(productIndex: number): void {
-    if (this.itemsWithProducts[productIndex].subscription.selected_tier) {
+    if (this.itemsWithProducts[productIndex].subscription?.selected_tier) {
       const items = this.itemsWithProducts[productIndex].subscription.selected_tier.bumps.reduce((a, b) => a + b.quantity - b.used, 0);
       const used = this.itemsSelected.filter(
         (items) => items.isFree && items.duration.subscriptionPackageType === this.itemsWithProducts[productIndex].subscription.type
