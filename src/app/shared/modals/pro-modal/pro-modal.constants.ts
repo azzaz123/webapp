@@ -17,6 +17,7 @@ export enum PRO_MODAL_TYPE {
   cancel_subscription,
   continue_subscription,
   bump_success,
+  bump_limit,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -191,6 +192,16 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     img: '/assets/icons/pro/modals/bump-success.svg',
     title: $localize`:@@bump_selector_view_confirmation_modal_pro_user_title:Your item has been highlighted`,
     text1: $localize`:@@bump_selector_view_confirmation_modal_pro_user_descripton_1_part:It's now more visible, so you will receive more visits than ever before. Go for it!`,
+    buttons: {
+      primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
+    },
+  },
+  [PRO_MODAL_TYPE.bump_limit]: {
+    img: '/assets/icons/pro/modals/bump-error.svg',
+    title: $localize`:@@bump_selector_view_confirmation_modal_pro_user_title:You have not bumps left`,
+    text1: $localize`:@@bump_selector_view_confirmation_modal_pro_user_descripton_1_part:Unselect other products to bump this one`,
+    text2: $localize`:@@bump_selector_view_confirmation_modal_pro_user_descripton_1_part:Description part 1`,
+    style: MODAL_STYLE.GREEN,
     buttons: {
       primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
     },
