@@ -12,6 +12,8 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { MOCK_SUBSCRIPTION_SLOT_CARS, MOCK_SUBSCRIPTION_SLOT_REAL_ESTATE } from '@fixtures/subscription-slots.fixtures.spec';
+import { MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP, TIER_2_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
+import { By } from '@angular/platform-browser';
 
 describe('SubscriptionsSlotItemComponent', () => {
   let component: SubscriptionsSlotItemComponent;
@@ -112,6 +114,30 @@ describe('SubscriptionsSlotItemComponent', () => {
       component.onClick(MOCK_SUBSCRIPTION_SLOT_CARS, event);
 
       expect(analyticsService.trackEvent).not.toHaveBeenCalled();
+    });
+
+    describe('available bumps', () => {
+      describe('and has bumps', () => {
+        it('should show counter', () => {
+          component.subscriptionSlot.subscription.selected_tier = MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP;
+
+          fixture.detectChanges();
+          const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+
+          expect(descriptions[1].nativeElement.textContent).toContain(MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP.bumps[0].quantity);
+          expect(descriptions[1].nativeElement.textContent).toContain(MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP.bumps[0].used);
+        });
+      });
+      describe('and has not bumps', () => {
+        it('should not show counter', () => {
+          component.subscriptionSlot.subscription.selected_tier = TIER_2_WITH_DISCOUNT;
+
+          fixture.detectChanges();
+          const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+
+          expect(descriptions[1]).toBeFalsy();
+        });
+      });
     });
   });
 });

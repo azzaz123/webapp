@@ -14,7 +14,12 @@
     <div class="SubscriptionsSlotItem__description">
       <span i18n="@@web_subscriptions_slot_item_publish_more_without_category_name">You can list
         <b>{{subscriptionSlot.available}}</b> more
+        {{subscriptionSlot.available}}
       </span>
+    </div>
+    <div *ngIf="subscriptionSlot.subscription.selected_tier.bumps[0] as zoneBump" class="SubscriptionsSlotItem__description">
+      <b>{{zoneBump.used}}/{{zoneBump.quantity}}</b><span ngPreserveWhitespaces> </span>
+      <span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_bumps_applied_text_no_placeholders">items highlighted</span>
     </div>
   </div>
 
