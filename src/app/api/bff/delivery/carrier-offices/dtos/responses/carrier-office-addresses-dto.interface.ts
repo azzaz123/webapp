@@ -1,6 +1,6 @@
 import { CarrierDto } from '@api/delivery/carrier-drop-off-mode/request/dtos/carrier-drop-off-mode-request-dto.interface';
 
-export interface CarrierOfficeAdressesDto {
+export interface CarrierOfficeAddressesDto {
   offices: CarrierOfficeInfoDto[];
 }
 

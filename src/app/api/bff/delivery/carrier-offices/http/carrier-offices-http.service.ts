@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CarrierDto } from '@api/delivery/carrier-drop-off-mode/request/dtos/carrier-drop-off-mode-request-dto.interface';
 import { Observable } from 'rxjs';
-import { CarrierOfficeAdressesDto } from '../dtos/responses/carrier-office-adresses-dto.interface';
+import { CarrierOfficeAddressesDto } from '../dtos/responses/carrier-office-addresses-dto.interface';
 import { CARRIER_OFFICE_ADDRESSES_URL } from './endpoints';
 
 @Injectable({
@@ -16,8 +16,8 @@ export class CarrierOfficesHttpService {
     longitude: number,
     radiusKm: number,
     carrier: CarrierDto
-  ): Observable<CarrierOfficeAdressesDto> {
-    return this.http.get<CarrierOfficeAdressesDto>(CARRIER_OFFICE_ADDRESSES_URL, {
+  ): Observable<CarrierOfficeAddressesDto> {
+    return this.http.get<CarrierOfficeAddressesDto>(CARRIER_OFFICE_ADDRESSES_URL, {
       params: {
         latitude,
         longitude,

@@ -1,7 +1,7 @@
 import {
-  CarrierOfficeAdressesDto,
+  CarrierOfficeAddressesDto,
   CarrierOfficeInfoDto,
-} from '@api/bff/delivery/carrier-offices/dtos/responses/carrier-office-adresses-dto.interface';
+} from '@api/bff/delivery/carrier-offices/dtos/responses/carrier-office-addresses-dto.interface';
 
 export const MOCK_CARRIER_OFFICE_INFO_DTO: CarrierOfficeInfoDto = {
   carrier: 'correos',
@@ -28,6 +28,6 @@ export const MOCK_CARRIER_OFFICE_INFO_2_DTO: CarrierOfficeInfoDto = {
   street: 'Andsuhid',
 };
 
-export const MOCK_CARRIER_OFFICES_ADDRESSES_DTO: CarrierOfficeAdressesDto = {
+export const MOCK_CARRIER_OFFICES_ADDRESSES_DTO: CarrierOfficeAddressesDto = {
   offices: [MOCK_CARRIER_OFFICE_INFO_DTO, MOCK_CARRIER_OFFICE_INFO_2_DTO],
 };
