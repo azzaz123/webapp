@@ -7,7 +7,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [NotificationImageComponent],
-  imports: [CommonModule, SvgIconModule, SanitizedBackgroundModule, NgxPermissionsModule.forChild()],
+  imports: [CommonModule, SvgIconModule, SanitizedBackgroundModule],
   exports: [NotificationImageComponent],
 })
 export class NotificationImageModule {}
