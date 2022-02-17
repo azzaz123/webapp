@@ -62,7 +62,7 @@ describe('AcceptScreenComponent', () => {
     it('should open the accept screen modal', () => {
       expect(modalRef.componentInstance.requestId).toEqual(MOCK_REQUEST_ID);
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(AcceptScreenModalComponent);
+      expect(modalService.open).toHaveBeenCalledWith(AcceptScreenModalComponent, { windowClass: 'delivery' });
     });
   });
 });
