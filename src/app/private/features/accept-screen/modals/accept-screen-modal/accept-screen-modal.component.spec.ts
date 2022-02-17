@@ -425,7 +425,7 @@ describe('AcceptScreenModalComponent', () => {
             beforeEach(() => {
               spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance: { ConfirmationModalComponent } });
               spyOn(acceptScreenStoreService, 'rejectRequest').and.returnValue(of(null));
-              const rejectButton = fixture.debugElement.query(By.css('#rejectButton')).nativeElement;
+              const rejectButton = fixture.debugElement.query(By.css(rejectButtonSelector)).nativeElement;
 
               rejectButton.click();
             });
