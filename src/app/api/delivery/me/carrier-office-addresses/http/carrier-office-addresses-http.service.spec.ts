@@ -32,6 +32,7 @@ describe('CarrierOfficeAddressesHttpService', () => {
       req.flush({});
 
       expect(req.request.method).toBe('POST');
+      expect(req.request.url).toEqual(CREATE_SELECTED_CARRIER_OFFICE_ENDPOINT);
       expect(req.request.body).toStrictEqual({
         selectedOffice: MOCK_SELECTED_CARRIER_OFFICE_DTO,
       });
@@ -40,11 +41,13 @@ describe('CarrierOfficeAddressesHttpService', () => {
 
   describe('when asking to update a selected carrier office', () => {
     it('should ask server to update it', () => {
+      const expectedUrl: string = UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT(MOCK_SELECTED_CARRIER_ID);
       service.updateSelectedCarrierOffice(MOCK_SELECTED_CARRIER_ID, MOCK_SELECTED_CARRIER_OFFICE_DTO).subscribe();
-      const req: TestRequest = httpMock.expectOne(UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT(MOCK_SELECTED_CARRIER_ID));
+      const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
       expect(req.request.method).toBe('PUT');
+      expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.body).toStrictEqual({
         selectedOffice: MOCK_SELECTED_CARRIER_OFFICE_DTO,
       });
