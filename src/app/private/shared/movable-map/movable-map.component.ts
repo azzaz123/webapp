@@ -19,7 +19,12 @@ import { LabeledSearchLocation } from '@public/features/search/core/services/int
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { STANDARD_ICON, SELECTED_ICON } from './constants/map-icons.constants';
+import {
+  STANDARD_ICON,
+  SELECTED_ICON,
+  METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL,
+  HALF_CIRCUMFERENCE_DEGREES,
+} from './constants/map.constants';
 import { MARKER_STATUS } from './constants/marker-status.enum';
 
 @Component({
@@ -34,7 +39,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   @Input() zoom: number = 8;
   @Input() ratio: number = 1;
 
-  @Output() dragEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
+  @Output() mapViewChangeEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
   @Output() markerClick: EventEmitter<Location> = new EventEmitter();
   @Output() tapMapOffMarker: EventEmitter<boolean> = new EventEmitter();
   @ViewChild('map', { static: true })
@@ -75,22 +80,20 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     const implementInteractions: H.mapevents.Behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
     const defaultUI: H.ui.UI = H.ui.UI.createDefault(map, defaultLayers);
 
-    this.emitOnDragEnd(map);
+    this.emitLocationAndRadius(map);
     this.addGroupMarker(map);
     this.onTapMapOutsideMarker(map);
     return map;
   }
 
-  private emitOnDragEnd(map: H.Map): void {
-    map.addEventListener('dragend', () => {
+  private emitLocationAndRadius(map: H.Map): void {
+    map.addEventListener('mapviewchangeend', () => {
       const updatedLocation: H.geo.IPoint = map.getCenter();
-      // TODO: Change it to radio		Date: 2022/02/14
       const updatedZoom: number = map.getZoom();
-
-      this.dragEnd.emit({
+      this.mapViewChangeEnd.emit({
         latitude: updatedLocation.lat,
         longitude: updatedLocation.lng,
-        ratioInKm: updatedZoom,
+        ratioInKm: this.getRadiusInKm(updatedZoom, updatedLocation.lat),
       });
     });
   }
@@ -115,6 +118,12 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
         });
       }
     });
+  }
+
+  private getRadiusInKm(zoom: number, latitude: number): number {
+    return (
+      (METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL * Math.cos((latitude * Math.PI) / HALF_CIRCUMFERENCE_DEGREES)) / Math.pow(2, zoom)
+    );
   }
 
   private addMarkers(): void {
