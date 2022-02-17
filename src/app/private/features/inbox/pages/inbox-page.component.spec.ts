@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { InboxComponent } from './inbox.component';
+import { InboxPageComponent } from './inbox-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('InboxComponent', () => {
-  let component: InboxComponent;
-  let fixture: ComponentFixture<InboxComponent>;
+  let component: InboxPageComponent;
+  let fixture: ComponentFixture<InboxPageComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [InboxComponent],
+      declarations: [InboxPageComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InboxComponent);
+    fixture = TestBed.createComponent(InboxPageComponent);
     component = fixture.componentInstance;
   });
 
