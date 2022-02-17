@@ -1,6 +1,6 @@
 import { mapSubscriptions, subscriptionMapper } from './subscriptions-mapper';
 import { MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS, MOCK_RESPONSE_V3_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
-import { BUMP_PERKS } from '../subscriptions.interface';
+import { BUMP_NAMES } from '../subscriptions.interface';
 
 describe('SubscriptionsMapper', () => {
   describe('getSubscriptions', () => {
@@ -62,7 +62,7 @@ describe('SubscriptionsMapper', () => {
         const subscriptionsMapped = mapSubscriptions(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS);
 
         subscriptionsMapped[0].tiers.forEach((tier) => {
-          const expected = tier.perks.filter((bumps) => BUMP_PERKS.includes(bumps.name));
+          const expected = tier.perks.filter((bumps) => Object.values(BUMP_NAMES).includes(bumps.name as BUMP_NAMES));
           expect(tier.bumps).toEqual(expected);
           expect(tier.bumps.length).toEqual(1);
         });
@@ -73,7 +73,7 @@ describe('SubscriptionsMapper', () => {
         const subscriptionsMapped = mapSubscriptions(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS);
 
         subscriptionsMapped[1].tiers.forEach((tier) => {
-          const expected = tier.perks.filter((bumps) => BUMP_PERKS.includes(bumps.name));
+          const expected = tier.perks.filter((bumps) => Object.values(BUMP_NAMES).includes(bumps.name as BUMP_NAMES));
           expect(tier.bumps).toEqual(expected);
           expect(tier.bumps.length).toEqual(2);
         });

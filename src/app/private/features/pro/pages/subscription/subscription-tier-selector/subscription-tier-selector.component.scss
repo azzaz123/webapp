@@ -10,14 +10,8 @@
 
     &__title {
       font-size: $font-size-l;
-      line-height: $line-height-xxl;
-      &--large {
-        font-size: $font-size-xl;
-        font-weight: $font-weight-chunky;
-      }
-      &--small {
-        line-height: $line-height-l;
-      }
+      line-height: $line-height-l;
+      font-weight: $font-weight-chunky;
     }
 
     &__description {
@@ -27,6 +21,18 @@
       &--discounted {
         text-decoration: line-through;
         color: $blue-grey-3;
+      }
+    }
+
+    &__benefits {
+      color: $blue-grey-2;
+      font-size: $font-size-s;
+      line-height: $line-height-m;
+      &--large {
+        tsl-svg-icon ::ng-deep path {
+          fill: $blue-grey-3;
+        }
+        border-top: 1px solid $blue-grey-5;
       }
     }
 
@@ -50,6 +56,12 @@
       .Card__description {
         color: $blue-grey-1;
       }
+      .Card__benefits {
+        color: $blue-grey-1;
+        tsl-svg-icon ::ng-deep path {
+          fill: $blue-grey-1;
+        }
+      }
     }
 
     &--noHover {
@@ -66,6 +78,12 @@
       .Card__description--discounted,
       .Card__footer {
         color: $white !important;
+      }
+      .Card__benefits {
+        color: $white !important;
+        tsl-svg-icon ::ng-deep path {
+          fill: $white !important;
+        }
       }
     }
   }
