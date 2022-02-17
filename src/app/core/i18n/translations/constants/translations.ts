@@ -199,5 +199,6 @@ export const translations: Translations = {
   [TRANSLATION_KEY.NOTIFICATIONS_VIEW_ALL_USERS_ADDITIONAL_OPTIONS_SECTION_PROMOS_NEWS_LABEL]: $localize`:@@notifications_view_all_users_additional_options_section_promos_news_label:Promotions & new features`,
   [TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_TITLE]: $localize`:@@accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_title:Do you confirm that you won't ship the product?`,
   [TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_DESCRIPTION]: $localize`:@@accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_description:If you confirm, the sale will be cancelled and your product will be back on sale.`,
-  [TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_CANCEL_BUTTON]: $localize`:@@accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_continue_button:Confirm`,
+  [TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_CONTINUE_BUTTON]: $localize`:@@accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_continue_button:Confirm`,
+  [TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_BACK_BUTTON]: $localize`:@@accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_back_button:Back`,
 };

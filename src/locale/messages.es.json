@@ -298,6 +298,7 @@
     "accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_title": "¿Confirmas que no vas a enviar el producto?",
     "accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_description": "Al confirmar, la venta se cancelará y tu producto volverá a estar a la venta.",
     "accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_continue_button": "Confirmar",
+    "accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_back_button": "Volver",
     "web_condition_un_opened": "Sin abrir",
     "web_condition_unworn": "Sin estrenar",
     "web_condition_in_box": "En su caja",
