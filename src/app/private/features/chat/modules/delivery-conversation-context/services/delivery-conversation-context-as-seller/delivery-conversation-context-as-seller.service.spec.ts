@@ -5,6 +5,7 @@ import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/de
 import { SellerRequestsApiService } from '@api/delivery/seller/requests/seller-requests-api.service';
 import {
   MOCK_DELIVERY_ITEM_DETAILS,
+  MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE,
   MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED,
 } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
 import { MOCK_DELIVERY_ITEM_DETAILS_WITH_SHIPPING_DISABLED_DTO } from '@api/fixtures/delivery/item/detail/delivery-item-details-dto.fixtures.spec';
@@ -105,9 +106,10 @@ describe('DeliveryConversationContextAsSellerService', () => {
       });
     });
 
-    describe('when the item is already sold', () => {
+    describe('when the item is not shippable', () => {
       beforeEach(() => {
         spyOn(sellerRequestsApiService, 'getRequestsByBuyerAndItem').and.returnValue(of([]));
+        spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE));
       });
 
       it('should hide banner', fakeAsync(() => {
