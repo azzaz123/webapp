@@ -55,6 +55,22 @@ describe('NotificationComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe(`If receive a notification`, () => {
+    beforeEach(() => {
+      component.notification = highlightedNotification;
+      fixture.detectChanges();
+    });
+
+    it('should render related fields', () => {
+      const titleNotification: DebugElement = fixture.debugElement.query(By.css('.Notification__title span'));
+      const dateNotification: DebugElement = fixture.debugElement.query(By.css('.Notification__date span'));
+      const descriptionNotification: DebugElement = fixture.debugElement.query(By.css('.Notification__description span'));
+      expect(titleNotification).toBeTruthy();
+      expect(dateNotification).toBeTruthy();
+      expect(descriptionNotification).toBeTruthy();
+    });
+  });
+
   describe(`If receive highlighted notification`, () => {
     beforeEach(() => {
       component.notification = highlightedNotification;
