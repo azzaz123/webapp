@@ -3,7 +3,11 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/delivery-item-details-api.service';
 import { SellerRequestsApiService } from '@api/delivery/seller/requests/seller-requests-api.service';
-import { MOCK_DELIVERY_ITEM_DETAILS } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
+import {
+  MOCK_DELIVERY_ITEM_DETAILS,
+  MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED,
+} from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
+import { MOCK_DELIVERY_ITEM_DETAILS_WITH_SHIPPING_DISABLED_DTO } from '@api/fixtures/delivery/item/detail/delivery-item-details-dto.fixtures.spec';
 import { MOCK_INBOX_CONVERSATION_AS_SELLER, MOCK_INBOX_CONVERSATION_AS_SELLER_WITH_SOLD_ITEM } from '@fixtures/chat';
 import { MOCK_PENDING_SELLER_REQUEST, MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -85,7 +89,9 @@ describe('DeliveryConversationContextAsSellerService', () => {
 
       describe('and when seller has NOT activated the shipping toggle for item', () => {
         beforeEach(() => {
-          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(null));
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(
+            of(MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED)
+          );
         });
 
         it('should show activate shipping banner', fakeAsync(() => {

@@ -19,6 +19,8 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { Router } from '@angular/router';
 import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/delivery-item-details-api.service';
 import { DeliveryItemDetails } from '@api/core/model/delivery/item-detail/delivery-item-details.interface';
+import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
+import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
 
 @Injectable()
 export class DeliveryConversationContextAsSellerService {
@@ -86,17 +88,13 @@ export class DeliveryConversationContextAsSellerService {
   ): DeliveryBanner | null {
     const sellerHasNoRequests: boolean = sellerRequests.length === 0;
     const sellerHasRequests: boolean = !sellerHasNoRequests;
-    const noDeliveryItemDetails: boolean = !deliveryItemDetails;
+    const isShippingNotAllowed: boolean = !deliveryItemDetails?.isShippingAllowed;
 
-    if (isItemSold) {
+    if (isItemSold || sellerHasRequests) {
       return null;
     }
 
-    if (sellerHasRequests) {
-      return null;
-    }
-
-    if (noDeliveryItemDetails) {
+    if (isShippingNotAllowed) {
       return ACTIVATE_SHIPPING_BANNER_PROPERTIES;
     }
 
