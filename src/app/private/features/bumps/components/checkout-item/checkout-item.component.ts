@@ -4,6 +4,9 @@ import { CreditInfo } from '@core/payments/payment.interface';
 import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { Perks } from '@core/subscriptions/subscriptions.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 
 @Component({
   selector: 'tsl-checkout-item',
@@ -25,7 +28,7 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
   public readonly BUMP_TYPES = BUMP_TYPE;
   private _selectedDuration: Duration;
 
-  constructor() {}
+  constructor(private modalService: NgbModal) {}
 
   ngOnInit() {
     this.isFreeOptionAvailable = !!this.getFreeTypes().length;
@@ -68,7 +71,18 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
   }
 
   public toggleItem(): void {
-    this.getAvailableProducts();
+    if (this.isFreeOptionSelected && !this.availableFreeBumps) {
+      const modalRef = this.modalService.open(ProModalComponent, { windowClass: 'pro-modal' });
+      modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_limit];
+      modalRef.result.then(
+        () => {
+          this.isFreeOptionSelected = false;
+        },
+        () => (this.isFreeOptionSelected = false)
+      );
+    } else {
+      this.getAvailableProducts();
+    }
   }
 
   public onRemoveItem(itemId: string, type: string): void {
