@@ -15,7 +15,7 @@ const mapOfficeAddress: ToDomainMapper<CarrierOfficeInfoDto, CarrierOfficeInfo> 
 ): CarrierOfficeInfo => {
   return {
     id: officeInfoDto.carrier_office_id,
-    name: officeInfoDto.name,
+    name: officeInfoDto.name || null,
     carrier: officeInfoDto.carrier,
     city: officeInfoDto.city,
     street: officeInfoDto.street,
