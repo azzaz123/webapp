@@ -21,7 +21,6 @@ import { ACCEPT_SCREEN_DELIVERY_ADDRESS, ACCEPT_SCREEN_HEADER_TRANSLATIONS } fro
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { CarrierDropOffModeRequest } from '@api/core/model/delivery/carrier-drop-off-mode';
-import { SELLER_REQUEST_CANCEL_STATUS } from '@api/core/model/delivery/seller-requests/seller-request-cancel-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -63,7 +62,7 @@ export class AcceptScreenService {
   }
 
   public rejectRequest(requestId: string): Observable<void> {
-    return this.sellerRequestApiService.cancelRequest(requestId, SELLER_REQUEST_CANCEL_STATUS.REJECTED);
+    return this.sellerRequestApiService.cancelRequest(requestId);
   }
 
   private getSellerRequest(requestId: string): Observable<SellerRequest> {

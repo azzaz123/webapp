@@ -11,7 +11,6 @@ import {
 
 import { SellerRequestsHttpService } from './seller-requests-http.service';
 import { APP_VERSION } from '@environments/version';
-import { SELLER_REQUEST_CANCEL_STATUS } from '@api/core/model/delivery/seller-requests/seller-request-cancel-status.enum';
 
 describe('SellerRequestsHttpService', () => {
   const MOCK_SELLER_REQUEST_ID: string = '23203821337';
@@ -68,13 +67,13 @@ describe('SellerRequestsHttpService', () => {
     it('should call to the corresponding cancel request endpoint', () => {
       const expectedUrl: string = SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(MOCK_SELLER_REQUEST_ID);
 
-      service.cancelRequest(MOCK_SELLER_REQUEST_ID, SELLER_REQUEST_CANCEL_STATUS.REJECTED).subscribe();
+      service.cancelRequest(MOCK_SELLER_REQUEST_ID).subscribe();
       const cancelRequest: TestRequest = httpMock.expectOne(expectedUrl);
       cancelRequest.flush({});
 
       expect(cancelRequest.request.url).toEqual(expectedUrl);
       expect(cancelRequest.request.method).toBe('PATCH');
-      expect(cancelRequest.request.body).toStrictEqual({ status: SELLER_REQUEST_CANCEL_STATUS.REJECTED });
+      expect(cancelRequest.request.body).toStrictEqual({ status: 'rejected' });
     });
   });
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SELLER_REQUEST_CANCEL_STATUS } from '@api/core/model/delivery/seller-requests/seller-request-cancel-status.enum';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -29,8 +28,8 @@ export class SellerRequestsApiService {
     );
   }
 
-  public cancelRequest(requestId: string, status: SELLER_REQUEST_CANCEL_STATUS): Observable<void> {
-    return this.sellerRequestsHttpService.cancelRequest(requestId, status);
+  public cancelRequest(requestId: string): Observable<void> {
+    return this.sellerRequestsHttpService.cancelRequest(requestId);
   }
 
   public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {
