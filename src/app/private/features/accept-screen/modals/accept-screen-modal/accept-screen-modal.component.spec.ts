@@ -381,6 +381,10 @@ describe('AcceptScreenModalComponent', () => {
                 expect(acceptScreenStoreService.rejectRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
               });
 
+              it('should NOT close the modal', () => {
+                expect(activeModal.close).not.toHaveBeenCalled();
+              });
+
               it('should show generic error message', () => {
                 expect(errorService.i18nError).toHaveBeenCalledTimes(1);
                 expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
@@ -409,6 +413,10 @@ describe('AcceptScreenModalComponent', () => {
               it('should redirect the user to the TTS', () => {
                 expect(router.navigate).toHaveBeenCalledTimes(1);
                 expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+              });
+
+              it('should close the modal', () => {
+                expect(activeModal.close).toHaveBeenCalledTimes(1);
               });
             });
           });

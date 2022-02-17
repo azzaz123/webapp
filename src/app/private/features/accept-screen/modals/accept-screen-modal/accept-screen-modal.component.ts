@@ -97,6 +97,7 @@ export class AcceptScreenModalComponent implements OnInit {
     this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
       () => {
         this.redirectToTTS(this.requestId);
+        this.closeModal();
       },
       () => {
         this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
