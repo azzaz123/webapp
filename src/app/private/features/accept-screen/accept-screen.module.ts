@@ -1,3 +1,4 @@
+import { SearchableMovableMapModule } from '@private/shared/searchable-movable-map/searchable-movable-map.module';
 import { NgModule } from '@angular/core';
 import { acceptScreenRoutedComponents, AcceptScreenRoutingModule } from './accept-screen.routing.module';
 import { CommonModule } from '@angular/common';
@@ -22,6 +23,7 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
     SvgIconModule,
     CustomCurrencyModule,
     DeliveryRadioSelectorModule,
+    SearchableMovableMapModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent],
 })
