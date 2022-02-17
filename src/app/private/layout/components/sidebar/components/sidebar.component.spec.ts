@@ -132,6 +132,14 @@ describe('SidebarComponent', () => {
               getPageUrl() {},
             },
           },
+          {
+            provide: FeatureFlagService,
+            useValue: {
+              isExperimentalFeaturesEnabled() {
+                return true;
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
