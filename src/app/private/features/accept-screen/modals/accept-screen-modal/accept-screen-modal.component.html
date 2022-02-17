@@ -1,33 +1,35 @@
 <div class="AcceptScreenModal modal-body p-0">
-  <div class="container">
-    <div class="AcceptScreenModal__header row px-2 py-3">
-      <div class="col">
-        <div class="d-flex justify-content-between">
-          <a class="d-flex" (click)="goToAcceptScreen()" [ngClass]="{ AcceptScreenModal__cursorPointer: !isAcceptScreenStep }">
-            <tsl-svg-icon
-              id="back"
-              *ngIf="!isAcceptScreenStep"
-              src="/assets/icons/back-arrow.svg"
-              class="AcceptScreenModal__cursorPointer align-self-center mr-3"
-            ></tsl-svg-icon>
-            <span class="p-0" id="headerText">{{ headerText }}</span>
-          </a>
-          <div class="d-flex">
-            <a
-              *ngIf="isAcceptScreenStep"
-              class="mr-4"
-              [href]="ACCEPT_SCREEN_HELP_URL"
-              target="_blank"
-              i18n="@@accept_view_seller_top_bar_help_title"
-              id="help"
-              >Help</a
-            >
-            <tsl-svg-icon
-              id="cross"
-              src="/assets/icons/cross.svg"
-              class="AcceptScreenModal__cursorPointer align-self-center"
-              (click)="closeModal()"
-            ></tsl-svg-icon>
+  <div class="AcceptScreenModal__header">
+    <div class="container">
+      <div class="row px-2 py-3">
+        <div class="col">
+          <div class="d-flex justify-content-between">
+            <a class="d-flex" (click)="goToAcceptScreen()" [ngClass]="{ AcceptScreenModal__cursorPointer: !isAcceptScreenStep }">
+              <tsl-svg-icon
+                id="back"
+                *ngIf="!isAcceptScreenStep"
+                src="/assets/icons/back-arrow.svg"
+                class="AcceptScreenModal__cursorPointer align-self-center mr-3"
+              ></tsl-svg-icon>
+              <span class="p-0" id="headerText">{{ headerText }}</span>
+            </a>
+            <div class="d-flex">
+              <a
+                *ngIf="isAcceptScreenStep"
+                class="mr-4"
+                [href]="ACCEPT_SCREEN_HELP_URL"
+                target="_blank"
+                i18n="@@accept_view_seller_top_bar_help_title"
+                id="help"
+                >Help</a
+              >
+              <tsl-svg-icon
+                id="cross"
+                src="/assets/icons/cross.svg"
+                class="AcceptScreenModal__cursorPointer align-self-center"
+                (click)="closeModal()"
+              ></tsl-svg-icon>
+            </div>
           </div>
         </div>
       </div>
