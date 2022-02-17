@@ -1,4 +1,5 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { SELLER_REQUEST_CANCEL_STATUS } from '@api/core/model/delivery/seller-requests/seller-request-cancel-status.enum';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { MOCK_SELLER_REQUEST_DTO } from '@api/fixtures/delivery/seller/requests/seller-request-dto.fixtures.spec';
 import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
@@ -92,13 +93,13 @@ describe('SellerRequestsApiService', () => {
     beforeEach(fakeAsync(() => {
       spyOn(sellerRequestsHttpService, 'cancelRequest').and.callThrough();
 
-      service.cancelRequest(MOCK_REQUEST_ID).subscribe();
+      service.cancelRequest(MOCK_REQUEST_ID, SELLER_REQUEST_CANCEL_STATUS.REJECTED).subscribe();
       tick();
     }));
 
     it('should ask server to cancel the request', () => {
       expect(sellerRequestsHttpService.cancelRequest).toHaveBeenCalledTimes(1);
-      expect(sellerRequestsHttpService.cancelRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      expect(sellerRequestsHttpService.cancelRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID, SELLER_REQUEST_CANCEL_STATUS.REJECTED);
     });
   });
 

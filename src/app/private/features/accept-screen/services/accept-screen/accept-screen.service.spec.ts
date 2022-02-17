@@ -20,6 +20,7 @@ import { DeliveryAddressApiService } from '@private/features/delivery/services/a
 import { MOCK_DELIVERY_ADDRESS } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { ACCEPT_SCREEN_DELIVERY_ADDRESS, ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
+import { SELLER_REQUEST_CANCEL_STATUS } from '@api/core/model/delivery/seller-requests/seller-request-cancel-status.enum';
 
 describe('AcceptScreenService', () => {
   const MOCK_REQUEST_ID = 'dfsd34dss12';
@@ -39,6 +40,9 @@ describe('AcceptScreenService', () => {
           useValue: {
             getRequestInfo() {
               return of(MOCK_SELLER_REQUEST);
+            },
+            cancelRequest() {
+              return of({});
             },
           },
         },
@@ -147,6 +151,18 @@ describe('AcceptScreenService', () => {
       it('should return the properties mapped', () => {
         expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS));
       });
+    });
+  });
+
+  describe('when asking to reject the request', () => {
+    beforeEach(() => {
+      spyOn(sellerRequestApiService, 'cancelRequest').and.callThrough();
+
+      acceptScreenService.rejectRequest(MOCK_REQUEST_ID).subscribe();
+    });
+
+    it('should ask to reject the request', () => {
+      expect(sellerRequestApiService.cancelRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID, SELLER_REQUEST_CANCEL_STATUS.REJECTED);
     });
   });
 

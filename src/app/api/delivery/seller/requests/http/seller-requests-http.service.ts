@@ -10,6 +10,7 @@ import {
   SELLER_REQUESTS_ENDPOINT,
 } from './endpoints';
 import { mapBuyerAndItemHashToSellerRequestsParams } from '../mappers/requests/seller-requests-params.mapper';
+import { SELLER_REQUEST_CANCEL_STATUS } from '@api/core/model/delivery/seller-requests/seller-request-cancel-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -26,8 +27,10 @@ export class SellerRequestsHttpService {
     return this.http.get<SellerRequestDto>(SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(requestId));
   }
 
-  public cancelRequest(requestId: string): Observable<void> {
-    return this.http.patch<void>(SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(requestId), null);
+  public cancelRequest(requestId: string, status: SELLER_REQUEST_CANCEL_STATUS): Observable<void> {
+    return this.http.patch<void>(SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(requestId), {
+      status,
+    });
   }
 
   public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {
