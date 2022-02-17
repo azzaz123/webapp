@@ -12,7 +12,7 @@ type DeliveryCostDto = BuyerAddressCostDto | CarrierOfficeCostDto;
 export const mapDeliveryItemDetailsDtoToDeliveryItemDetails: ToDomainMapper<DeliveryItemDetailsDto, DeliveryItemDetails | null> = (
   input: DeliveryItemDetailsDto
 ) => {
-  const { delivery_costs } = input;
+  const { delivery_costs, shipping_allowed: isShippingAllowed } = input;
   const isDeliveryCostsNull: boolean = !delivery_costs;
   if (isDeliveryCostsNull) {
     return null;
@@ -27,6 +27,7 @@ export const mapDeliveryItemDetailsDtoToDeliveryItemDetails: ToDomainMapper<Deli
       number: minimumPurchaseCostRaw.amount,
       currency: minimumPurchaseCostRaw.currency as CurrencyCode,
     }),
+    isShippingAllowed,
   };
 
   return deliveryItemDetails;

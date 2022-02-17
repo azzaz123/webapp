@@ -3,4 +3,5 @@ import { DeliveryItemDetails } from '@api/core/model/delivery/item-detail/delive
 
 export const MOCK_DELIVERY_ITEM_DETAILS: DeliveryItemDetails = {
   minimumPurchaseCost: mapNumberAndCurrencyCodeToMoney({ number: 2.5, currency: 'EUR' }),
+  isShippingAllowed: true,
 };
