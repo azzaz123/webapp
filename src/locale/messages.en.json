@@ -886,6 +886,7 @@
     "web_add_new_subscription_modal_step3_subtitle": "For services other than subscriptions (e.g. visibility packs) you won't receive invoices.",
     "pro_subscription_purchase_non_subscribed_users_cg_basic_plan_title": "Basic",
     "pro_subscription_purchase_tier_list_items_number_label": "items",
+    "web_profile_pages_subscription_586": "List without limits",
     "web_after_free_trial": "after free trial",
     "pro_subscription_purchase_tier_list_discount_limit_date_label": "Enjoy the discount until {$INTERPOLATION}",
     "web_continue_subscription_title": "Would you like to stay subscribed to Wallapop PRO {$INTERPOLATION}?",
