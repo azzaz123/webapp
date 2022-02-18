@@ -1,7 +1,9 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/delivery-item-details-api.service';
 import { SellerRequestsApiService } from '@api/delivery/seller/requests/seller-requests-api.service';
+import { MOCK_DELIVERY_ITEM_DETAILS } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
 import { MOCK_INBOX_CONVERSATION_AS_SELLER, MOCK_INBOX_CONVERSATION_AS_SELLER_WITH_SOLD_ITEM } from '@fixtures/chat';
 import { MOCK_PENDING_SELLER_REQUEST, MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +12,10 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { EditItemSalePriceModalComponent } from '../../../delivery-banner/components/banners/edit-price-banner/modals/edit-item-sale-price-modal/edit-item-sale-price-modal.component';
-import { EDIT_PRICE_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
+import {
+  ACTIVATE_SHIPPING_BANNER_PROPERTIES,
+  EDIT_PRICE_BANNER_PROPERTIES,
+} from '../../../delivery-banner/constants/delivery-banner-configs';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
 
@@ -21,6 +26,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
   let router: Router;
   let modalService: NgbModal;
   let sellerRequestsApiService: SellerRequestsApiService;
+  let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,12 +35,14 @@ describe('DeliveryConversationContextAsSellerService', () => {
         DeliveryConversationContextAsSellerService,
         { provide: NgbModal, useValue: { open: () => {} } },
         { provide: SellerRequestsApiService, useValue: { getRequestsByBuyerAndItem: () => {} } },
+        { provide: DeliveryItemDetailsApiService, useValue: { getDeliveryDetailsByItemHash: () => of({}) } },
       ],
     });
     service = TestBed.inject(DeliveryConversationContextAsSellerService);
     modalService = TestBed.inject(NgbModal);
     router = TestBed.inject(Router);
     sellerRequestsApiService = TestBed.inject(SellerRequestsApiService);
+    deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
   });
 
   it('should be created', () => {
@@ -60,14 +68,35 @@ describe('DeliveryConversationContextAsSellerService', () => {
         spyOn(sellerRequestsApiService, 'getRequestsByBuyerAndItem').and.returnValue(of([]));
       });
 
-      it('should show edit price banner', fakeAsync(() => {
-        const expectedBanner: ActionableDeliveryBanner = EDIT_PRICE_BANNER_PROPERTIES;
-
-        service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe((result) => {
-          expect(result).toEqual(expectedBanner);
+      describe('and when seller activated the shipping toggle for item', () => {
+        beforeEach(() => {
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         });
-        tick();
-      }));
+
+        it('should show edit price banner', fakeAsync(() => {
+          const expectedBanner: ActionableDeliveryBanner = EDIT_PRICE_BANNER_PROPERTIES;
+
+          service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe((result) => {
+            expect(result).toEqual(expectedBanner);
+          });
+          tick();
+        }));
+      });
+
+      describe('and when seller has NOT activated the shipping toggle for item', () => {
+        beforeEach(() => {
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(null));
+        });
+
+        it('should show activate shipping banner', fakeAsync(() => {
+          const expectedBanner: ActionableDeliveryBanner = ACTIVATE_SHIPPING_BANNER_PROPERTIES;
+
+          service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe((result) => {
+            expect(result).toEqual(expectedBanner);
+          });
+          tick();
+        }));
+      });
     });
 
     describe('when the item is already sold', () => {
@@ -116,7 +145,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
     });
   });
 
-  describe('when handling CTA button', () => {
+  describe('when handling third voices CTA button', () => {
     describe('and when conversation has a pending request as the last request', () => {
       beforeEach(fakeAsync(() => {
         spyOn(sellerRequestsApiService, 'getRequestsByBuyerAndItem').and.returnValue(of([MOCK_SELLER_REQUEST]));
