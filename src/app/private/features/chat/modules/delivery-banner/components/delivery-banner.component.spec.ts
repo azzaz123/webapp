@@ -132,7 +132,7 @@ describe('DeliveryBannerComponent', () => {
       expect(editBannerInstance.bannerProperties).toEqual(ACTIVATE_SHIPPING_BANNER_PROPERTIES);
     });
 
-    describe('when user clicks on banner', () => {
+    describe('when user clicks on banner CTA', () => {
       beforeEach(() => {
         spyOn(component, 'clickedCTA');
         editPriceBannerElement.triggerEventHandler('clickedCTA', ACTIVATE_SHIPPING_BANNER_PROPERTIES.action);
