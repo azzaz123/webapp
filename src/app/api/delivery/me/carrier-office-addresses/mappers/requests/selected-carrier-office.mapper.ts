@@ -1,14 +1,14 @@
-import { ToDomainMapper } from '@api/core/utils/types';
+import { CarrierOfficeInfo } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
 import { SelectedCarrierOfficeDto } from '../../dtos/requests/selected-carrier-office-dto.interface';
-import { SelectedCarrierOffice } from '@api/core/model/delivery/selected-carrier-office/selected-carrier-office.interface';
 
-export const mapSelectedCarrierOfficeToSelectedCarrierOfficeDto: ToDomainMapper<SelectedCarrierOffice, SelectedCarrierOfficeDto> = (
-  input: SelectedCarrierOffice
-) => {
-  const { id, city, postalCode: postal_code, country, street, name, carrierOfficeId: carrier_office_id, carrier } = input;
+export function mapCarrierOfficeInfoToSelectedCarrierOfficeDto(
+  userCarrierOfficeId: string,
+  input: CarrierOfficeInfo
+): SelectedCarrierOfficeDto {
+  const { city, postalCode: postal_code, country, street, name, id: carrier_office_id, carrier } = input;
 
   return {
-    id,
+    id: userCarrierOfficeId,
     city,
     postal_code,
     country,
@@ -17,4 +17,4 @@ export const mapSelectedCarrierOfficeToSelectedCarrierOfficeDto: ToDomainMapper<
     carrier_office_id,
     carrier,
   };
-};
+}

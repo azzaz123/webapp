@@ -1,25 +1,27 @@
 import { Injectable } from '@angular/core';
-import { SelectedCarrierOffice } from '@api/core/model/delivery/selected-carrier-office/selected-carrier-office.interface';
+import { CarrierOfficeInfo } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
+import { UuidService } from '@core/uuid/uuid.service';
 import { Observable } from 'rxjs';
 import { CarrierOfficeAddressesHttpService } from './http/carrier-office-addresses-http.service';
-import { mapSelectedCarrierOfficeToSelectedCarrierOfficeDto } from './mappers/requests/selected-carrier-office.mapper';
+import { mapCarrierOfficeInfoToSelectedCarrierOfficeDto } from './mappers/requests/selected-carrier-office.mapper';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CarrierOfficeAddressesApiService {
-  constructor(private carrierOfficeAddressesHttpService: CarrierOfficeAddressesHttpService) {}
+  constructor(private carrierOfficeAddressesHttpService: CarrierOfficeAddressesHttpService, private uuidService: UuidService) {}
 
-  public createSelectedCarrierOffice(selectedOffice: SelectedCarrierOffice): Observable<void> {
+  public createSelectedCarrierOffice(selectedOffice: CarrierOfficeInfo): Observable<void> {
+    const userCarrierOfficeId: string = this.uuidService.getUUID();
     return this.carrierOfficeAddressesHttpService.createSelectedCarrierOffice(
-      mapSelectedCarrierOfficeToSelectedCarrierOfficeDto(selectedOffice)
+      mapCarrierOfficeInfoToSelectedCarrierOfficeDto(userCarrierOfficeId, selectedOffice)
     );
   }
 
-  public updateSelectedCarrierOffice(carrierId: string, selectedOffice: SelectedCarrierOffice): Observable<void> {
+  public updateSelectedCarrierOffice(officeId: string, selectedOffice: CarrierOfficeInfo): Observable<void> {
     return this.carrierOfficeAddressesHttpService.updateSelectedCarrierOffice(
-      carrierId,
-      mapSelectedCarrierOfficeToSelectedCarrierOfficeDto(selectedOffice)
+      officeId,
+      mapCarrierOfficeInfoToSelectedCarrierOfficeDto(officeId, selectedOffice)
     );
   }
 }

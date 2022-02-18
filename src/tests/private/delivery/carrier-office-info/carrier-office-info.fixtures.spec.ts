@@ -1,6 +1,6 @@
 import { CarrierOfficeInfo } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
 
-const MOCK_CARRIER_OFFICE_INFO: CarrierOfficeInfo = {
+export const MOCK_CARRIER_OFFICE_INFO: CarrierOfficeInfo = {
   carrier: 'correos',
   id: '82378',
   city: 'Madrid',
@@ -13,7 +13,7 @@ const MOCK_CARRIER_OFFICE_INFO: CarrierOfficeInfo = {
   street: 'C/ Sol Abcd',
 };
 
-const MOCK_CARRIER_OFFICE_INFO_2: CarrierOfficeInfo = {
+export const MOCK_CARRIER_OFFICE_INFO_2: CarrierOfficeInfo = {
   carrier: 'SEUR',
   id: 'office ID',
   name: null,
