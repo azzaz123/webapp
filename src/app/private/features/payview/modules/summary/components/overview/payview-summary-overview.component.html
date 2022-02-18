@@ -1,0 +1,39 @@
+<div class="PayviewSummary d-flex w-100 flex-column">
+  <div class="container">
+    <div class="row">
+      <div class="col p-0">
+        <div class="d-flex justify-content-between mb-3">
+          <div class="d-flex w-100 p-3">
+            <tsl-svg-icon
+              id="cross"
+              src="/assets/icons/cross.svg"
+              class="PayviewSummary__close align-self-center"
+              height="16"
+              width="16"
+              (click)="closeModal()"
+            ></tsl-svg-icon>
+            <div class="PayviewSummary__windowHeader d-flex w-100 justify-content-between">
+              <span i18n="@@pay_view_buyer_top_bar_title">Make a purchase</span>
+              <a class="mr-4" [href]="helpUrl" target="_blank" i18n="@@pay_view_buyer_top_bar_link" id="helpLink">Help</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="PayviewSummary__content p-1">
+      <div class="PayviewSummary__thankyou">
+        <span i18n="@@pay_view_buyer_plain_text_inspirational_quote">Thanks for being part of {{ '' }}</span>
+        <span class="PayviewSummary__thankyou--walla pl-1" i18n="@@pay_view_buyer_plain_text_inspirational_quote_wallapop_name"
+          >Wallapop</span
+        >
+      </div>
+      <div class="PayviewSummary__header" *ngIf="showHeader">
+        <tsl-payview-summary-header [deliveryMethod]="deliveryMethod" [image]="image" [title]="title"></tsl-payview-summary-header>
+      </div>
+      <div class="PayviewSummary__body" *ngIf="showBody">
+        <tsl-payview-summary-cost-detail [costs]="costs" [productName]="title"></tsl-payview-summary-cost-detail>
+      </div>
+      <div class="PayviewSummary__footer"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+@import '~style/common';
+
+$border-radius-10: 10px;
+$spacing-14: 14px;
+$spacing-28: 28px;
+
+.PayviewSummaryCostDetail {
+  padding-top: $spacing-ml;
+
+  &__square {
+    background: $white;
+    border-radius: $border-radius-10;
+    box-shadow: 0px 2px 6px rgba(37, 50, 56, 0.15);
+    padding: $spacing-ml $spacing-ms;
+  }
+
+  &__details {
+    border-bottom: 1px solid $blue-grey-5;
+    padding-bottom: $spacing-28;
+  }
+
+  &__product {
+    font-size: $spacing-ml;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__insurance,
+  &__shipping {
+    font-size: $spacing-14;
+  }
+
+  &__insurance {
+    margin-top: $spacing-ml;
+  }
+
+  &__shipping {
+    margin-top: $spacing-ms;
+  }
+
+  &__total {
+    margin-top: $spacing-ml;
+  }
+
+  &__totalTitle,
+  &__totalCost {
+    font-weight: $font-weight-chunky;
+  }
+
+  &__totalTitle {
+    font-size: $spacing-m;
+  }
+
+  &__totalCost {
+    font-size: $spacing-xl;
+  }
+}
