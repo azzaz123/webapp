@@ -95,7 +95,7 @@ describe('PayviewSummaryHeaderComponent', () => {
     });
 
     it('should show the estimated delivery time', () => {
-      const expected: string = `${component.deliveryMethod.deliveryTimes.from}-${component.deliveryMethod.deliveryTimes.to} días`;
+      const expected: string = `${component.deliveryMethod.deliveryTimes.from}-${component.deliveryMethod.deliveryTimes.to} days`;
       const target = debugElement.query(By.css(payviewSummaryHeaderDeliveryEta));
 
       expect(target.nativeElement.innerHTML).toBe(expected);
@@ -117,7 +117,7 @@ describe('PayviewSummaryHeaderComponent', () => {
     });
 
     it('should show "Dirección"', () => {
-      const expected: string = 'Dirección:';
+      const expected: string = 'Address: ';
       const target = debugElement.query(By.css(payviewSummaryHeaderDeliveryAddressTitle));
 
       expect(target.nativeElement.innerHTML).toContain(expected);
@@ -133,7 +133,7 @@ describe('PayviewSummaryHeaderComponent', () => {
     });
 
     it('should show "Punto de recogida:"', () => {
-      const expected: string = 'Punto de recogida:';
+      const expected: string = 'Pick-up point:';
       const target = debugElement.query(By.css(payviewSummaryHeaderDeliveryAddressTitle));
 
       expect(target.nativeElement.innerHTML).toContain(expected);

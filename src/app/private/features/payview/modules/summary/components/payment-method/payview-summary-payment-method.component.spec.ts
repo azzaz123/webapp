@@ -7,7 +7,6 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 import { By } from '@angular/platform-browser';
-import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 
 describe('PayviewSummaryPaymentMethodComponent', () => {
   const iconPath: string = './assets/icons/payview';
@@ -82,14 +81,13 @@ describe('PayviewSummaryPaymentMethodComponent', () => {
           component = fixture.componentInstance;
           debugElement = fixture.debugElement;
           component.paymentMethod = { ...MOCK_PAYVIEW_STATE }.payment.preferences.preferences;
-          component.creditCard = MOCK_CREDIT_CARD;
           component.paymentMethod.paymentMethod = PaymentMethod.CREDIT_CARD;
 
           fixture.detectChanges();
         });
 
         it('should show credit card as a selected method', () => {
-          const expected: string = $localize`:@@checkout_summary_view_buyer_edit_list_payment_info_card_masked_number_label:Tarjeta bancaria •••• ${MOCK_CREDIT_CARD.lastFourDigits}`;
+          const expected: string = $localize`:@@checkout_summary_view_buyer_edit_list_payment_info_card_masked_number_label:Credit card`;
           const target = debugElement.query(By.css(payviewSummaryPaymentMethodCurrent));
 
           expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain(expected);

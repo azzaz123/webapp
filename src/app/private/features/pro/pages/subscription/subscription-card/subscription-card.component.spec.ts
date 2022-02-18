@@ -3,14 +3,17 @@ import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
+  MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED,
   MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
   MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+  MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP,
   TIER_WITH_DISCOUNT,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { DiscountBadgeComponent } from '@private/features/pro/components/discount-badge/discount-badge.component';
 import { ButtonComponent } from '@shared/button/button.component';
 import { SubscriptionCardComponent } from './subscription-card.component';
+import { cloneDeep } from 'lodash-es';
 
 describe('SubscriptionCardComponent', () => {
   let component: SubscriptionCardComponent;
@@ -40,7 +43,7 @@ describe('SubscriptionCardComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should be shown as suscribed card design', () => {
+    it('should be shown as subscribed card design', () => {
       const card = fixture.debugElement.query(By.css('.SubscriptionCard--subscribed'));
 
       expect(card).toBeTruthy();
@@ -76,28 +79,17 @@ describe('SubscriptionCardComponent', () => {
     });
 
     describe('and has tier limit', () => {
-      describe('and is real estate', () => {
-        beforeEach(() => {
-          component.subscription = MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED;
-          component.isSubscribed = true;
-          fixture.detectChanges();
-        });
-        it('should show tier limit', () => {
-          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
-
-          expect(info.textContent).toContain(
-            $localize`:@@web_profile_pages_subscription_332:List up to ${component.subscription.selected_tier.limit} real estate`
-          );
-        });
+      beforeEach(() => {
+        component.subscription = MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED;
+        component.isSubscribed = true;
+        fixture.detectChanges();
       });
-      describe('and is not Real estate', () => {
-        it('should show tier limit', () => {
-          const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
+      it('should show tier limit', () => {
+        const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
 
-          expect(info.textContent).toContain(
-            $localize`:@@web_profile_pages_subscription_325:List up to ${component.subscription.selected_tier.limit} items`
-          );
-        });
+        expect(info.textContent).toContain(
+          $localize`:@@pro_subscription_purchase_subscription_details_list_tier_text:Manage up to ${component.subscription.selected_tier.limit}:INTERPOLATION: items`
+        );
       });
     });
 
@@ -108,7 +100,38 @@ describe('SubscriptionCardComponent', () => {
         fixture.detectChanges();
         const info: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__subtitle')).nativeElement;
 
-        expect(info.textContent).toContain($localize`:@@web_profile_pages_subscription_586:List without limits`);
+        expect(info.textContent).toContain(
+          $localize`:@@pro_subscription_purchase_subscription_details_list_unlimited_tier_text:Manage unlimited active item`
+        );
+      });
+    });
+
+    describe('and has bumps', () => {
+      beforeEach(() => {
+        component.subscription = cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED[0]);
+        component.subscription.selected_tier = component.subscription.tiers[0];
+        component.isSubscribed = true;
+        fixture.detectChanges();
+      });
+
+      it('should show limit', () => {
+        const benefits = fixture.debugElement.query(By.css('.SubscriptionCard__benefits')).queryAll(By.css('div'));
+        expect(benefits[0].nativeElement.textContent).toEqual(
+          $localize`:@@pro_subscription_purchase_subscription_details_list_tier_text:Manage up to ${component.subscription.selected_tier.limit}:INTERPOLATION: items`
+        );
+      });
+
+      it('should show bumps', () => {
+        const benefits = fixture.debugElement.query(By.css('.SubscriptionCard__benefits')).queryAll(By.css('div'));
+        expect(benefits[1].nativeElement.textContent).toEqual(
+          $localize`:@@pro_subscription_purchase_subscription_details_list_monthly_bumps_text:Highlight ${component.subscription.selected_tier.bumps[0].quantity} items monthly (duration: ${component.subscription.selected_tier.bumps[0].duration_days} days)`
+        );
+      });
+
+      it('should show counters', () => {
+        const benefits = fixture.debugElement.query(By.css('.SubscriptionCard__benefits')).queryAll(By.css('div'));
+        expect(benefits[2].nativeElement.textContent).toContain(component.subscription.selected_tier.bumps[0].used);
+        expect(benefits[2].nativeElement.textContent).toContain(component.subscription.selected_tier.bumps[0].quantity);
       });
     });
 
@@ -145,7 +168,7 @@ describe('SubscriptionCardComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should not be shown as suscribed card design', () => {
+    it('should not be shown as subscribed card design', () => {
       const card = fixture.debugElement.query(By.css('.SubscriptionCard--subscribed'));
 
       expect(card).toBeFalsy();
@@ -213,6 +236,27 @@ describe('SubscriptionCardComponent', () => {
 
       expect(title.textContent).toEqual(component.subscription.category_name);
     });
+
+    describe('and has bumps', () => {
+      beforeEach(() => {
+        component.subscription = cloneDeep(MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED);
+        component.subscription.tiers[0] = MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP;
+        fixture.detectChanges();
+      });
+      it('should show text related to bumps', () => {
+        const text: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__price')).nativeElement;
+
+        expect(text.textContent).toContain("You'll be able to highlight several items each month at no extra cost.");
+      });
+    });
+
+    describe('and not has bumps', () => {
+      it('should show text related to bumps', () => {
+        const text: HTMLElement = fixture.debugElement.query(By.css('.SubscriptionCard__price')).nativeElement;
+
+        expect(text.textContent).not.toContain("You'll be able to highlight several items each month at no extra cost.");
+      });
+    });
   });
 
   describe('CTA button', () => {
@@ -255,7 +299,7 @@ describe('SubscriptionCardComponent', () => {
         component.isMobile = true;
         fixture.detectChanges();
       });
-      it('should be shown withot desktop view', () => {
+      it('should be shown without desktop view', () => {
         const card = fixture.debugElement.query(By.css('.SubscriptionCard--desktop'));
 
         expect(card).toBeFalsy();

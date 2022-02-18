@@ -183,12 +183,6 @@ describe('PayviewSummaryOverviewComponent', () => {
         expect(target).toBeTruthy();
       });
 
-      it('should assign the corresponding card', () => {
-        const target = debugElement.query(By.css(payviewSummaryPaymentMethod));
-
-        expect((target.componentInstance as PayviewSummaryPaymentMethodComponent).creditCard).toEqual(MOCK_PAYVIEW_STATE.payment.card);
-      });
-
       it('should assign the corresponding payment method', () => {
         const target = debugElement.query(By.css(payviewSummaryPaymentMethod));
 

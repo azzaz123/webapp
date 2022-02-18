@@ -66,8 +66,4 @@ export class PayviewSummaryOverviewComponent {
   public get title(): string {
     return this.payviewState.item.title;
   }
-
-  public get wallapop(): string {
-    return $localize`:@@pay_view_buyer_plain_text_inspirational_quote_wallapop_name:Wallapop`;
-  }
 }

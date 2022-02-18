@@ -23,9 +23,15 @@
   }
 
   &__content {
-    max-width: 500px;
+    max-width: 510px;
     @include media-breakpoint-down(sm) {
       padding: $spacing-m;
+    }
+  }
+
+  &__benefits {
+    tsl-svg-icon ::ng-deep path {
+      fill: $blue-grey-3;
     }
   }
 

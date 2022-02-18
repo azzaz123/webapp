@@ -12,8 +12,6 @@ export class PayviewSummaryCostDetailComponent {
   @Input() public costs: DeliveryBuyerCalculatorCosts;
   @Input() public productName: string;
 
-  constructor() {}
-
   public get insuranceCost(): string {
     return `${this.costs.buyerCost.fees.amount.toString()}${this.costs.buyerCost.fees.currency.symbol}`;
   }
