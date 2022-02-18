@@ -62,7 +62,7 @@ export class AcceptScreenService {
   }
 
   public rejectRequest(requestId: string): Observable<void> {
-    return this.sellerRequestApiService.cancelRequest(requestId);
+    return this.sellerRequestApiService.rejectRequest(requestId);
   }
 
   private getSellerRequest(requestId: string): Observable<SellerRequest> {

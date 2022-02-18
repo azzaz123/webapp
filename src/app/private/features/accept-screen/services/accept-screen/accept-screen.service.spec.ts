@@ -40,7 +40,7 @@ describe('AcceptScreenService', () => {
             getRequestInfo() {
               return of(MOCK_SELLER_REQUEST);
             },
-            cancelRequest() {
+            rejectRequest() {
               return of({});
             },
           },
@@ -155,13 +155,13 @@ describe('AcceptScreenService', () => {
 
   describe('when asking to reject the request', () => {
     beforeEach(() => {
-      spyOn(sellerRequestApiService, 'cancelRequest').and.callThrough();
+      spyOn(sellerRequestApiService, 'rejectRequest').and.callThrough();
 
       acceptScreenService.rejectRequest(MOCK_REQUEST_ID).subscribe();
     });
 
     it('should ask to reject the request', () => {
-      expect(sellerRequestApiService.cancelRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      expect(sellerRequestApiService.rejectRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });
 
