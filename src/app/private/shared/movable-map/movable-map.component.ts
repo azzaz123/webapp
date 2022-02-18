@@ -120,7 +120,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   private getRadiusInKm(zoom: number, latitude: number): number {
-    return (
+    return Math.round(
       (METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL * Math.cos((latitude * Math.PI) / HALF_CIRCUMFERENCE_DEGREES)) / Math.pow(2, zoom)
     );
   }
