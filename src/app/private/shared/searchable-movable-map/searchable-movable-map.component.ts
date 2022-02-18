@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { GeolocationService } from '@core/geolocation/geolocation.service';
+import { ItemPlace } from '@core/geolocation/geolocation-response.interface';
 
 const HALF_SECOND: number = 500;
 
@@ -12,17 +15,25 @@ const HALF_SECOND: number = 500;
 export class SearchableMovableMapComponent implements OnInit {
   public readonly SEARCH_LOCATION_PLACEHOLDER = $localize`:@@map_view_all_users_all_all_searchbox_placeholder:Busca por dirección...`;
   public searchLocationForm: FormGroup;
-  public locationName: string;
+  public searchLocation: string;
+  public locationSuggestions: string[];
 
-  constructor(private buildForm: FormBuilder) {}
+  constructor(private buildForm: FormBuilder, private geoLocationService: GeolocationService) {}
 
   ngOnInit(): void {
     this.createLocationForm();
   }
 
-  public resetKeyword(): void {
-    this.searchLocationForm.reset();
+  public resetSearchQuery(): void {
+    this.searchLocationForm.controls.searchLocation.reset();
   }
+
+  public search = (text$: Observable<string>): Observable<string[]> =>
+    text$.pipe(
+      debounceTime(HALF_SECOND),
+      distinctUntilChanged(),
+      switchMap((searchLocation) => this.getLocationSuggestions(searchLocation))
+    );
 
   private createLocationForm(): void {
     this.searchLocationForm = this.buildForm.group({
@@ -35,8 +46,15 @@ export class SearchableMovableMapComponent implements OnInit {
     this.searchLocationForm
       .get('searchLocation')
       .valueChanges.pipe(debounceTime(HALF_SECOND), distinctUntilChanged())
-      .subscribe((query) => {
-        this.locationName = query;
+      .subscribe((searchQuery) => {
+        this.searchLocation = searchQuery;
       });
+  }
+
+  private getLocationSuggestions(locationName: string): Observable<string[]> {
+    return this.geoLocationService.search(locationName).pipe(
+      map((locations: ItemPlace[]) => locations.map(({ description }) => description)),
+      catchError(() => of([]))
+    );
   }
 }
