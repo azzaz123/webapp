@@ -102,9 +102,7 @@ describe('SubscriptionTierSelectorComponent', () => {
       it('should show title', () => {
         const tierTitle = fixture.debugElement.queryAll(By.css('.Card'))[1].query(By.css('.Card__title')).nativeElement;
 
-        expect(tierTitle.textContent).toBe(
-          $localize`:@@pro_subscription_purchase_subscription_details_list_unlimited_tier_text:Manage unlimited active item`
-        );
+        expect(tierTitle.textContent).toBe($localize`:@@web_profile_pages_subscription_586:List without limits`);
       });
     });
   });
