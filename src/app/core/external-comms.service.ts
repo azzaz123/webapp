@@ -26,17 +26,17 @@ export class ExternalCommsService {
   public openBrazeSession(): void {
     if (this.userService.isLogged) {
       appboy.changeUser(this.userService.user.id);
-    } else {
-      appboy.openSession();
     }
+    appboy.openSession();
   }
 
   private configureBraze(): void {
+    if (isDevMode()) {
+      appboy.toggleAppboyLogging();
+    }
     appboy.initialize(environment.appboy, {
       enableHtmlInAppMessages: true,
       manageServiceWorkerExternally: true,
-      enableLogging: isDevMode(),
     });
-    appboy.display.automaticallyShowNewInAppMessages();
   }
 }
