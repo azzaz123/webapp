@@ -38,6 +38,10 @@ export class AcceptScreenStoreService {
     this.properties = { ...currentProperties, carriers: newCarriers };
   }
 
+  public rejectRequest(requestId: string): Observable<void> {
+    return this.acceptScreenService.rejectRequest(requestId);
+  }
+
   public get properties$(): Observable<AcceptScreenProperties> {
     return this.propertiesSubject.pipe(filter((properties: AcceptScreenProperties) => !!properties));
   }

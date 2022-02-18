@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +16,7 @@ export class PayviewStateManagementService {
 
   public set itemHash(value: string) {
     this.itemHashSubject.next(value);
-    this.payviewService.getCurrentState(value).subscribe((payviewState: PayviewState) => {
-      this.stateSubject.next(payviewState);
-    });
+    !!value ? this.getCurrentState(value) : this.stateSubject.next(null);
   }
 
   public get itemHash$(): Observable<string> {
@@ -27,5 +25,20 @@ export class PayviewStateManagementService {
 
   public get payViewState$(): Observable<PayviewState> {
     return this.stateSubject.asObservable();
+  }
+
+  private getCurrentState(value: string): void {
+    const subscription: Subscription = this.payviewService.getCurrentState(value).subscribe({
+      next: (payviewState: PayviewState) => {
+        this.stateSubject.next(payviewState);
+      },
+      error: () => {
+        this.stateSubject.next(null);
+        subscription.unsubscribe();
+      },
+      complete: () => {
+        subscription.unsubscribe();
+      },
+    });
   }
 }

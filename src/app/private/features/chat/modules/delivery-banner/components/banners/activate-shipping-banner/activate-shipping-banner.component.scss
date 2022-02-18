@@ -1,0 +1,22 @@
+@import '~style/common';
+
+.ActivateShipping {
+  &__icon {
+    margin-right: $spacer * 0.625;
+  }
+
+  &__helpLink {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__helpLinkText {
+    color: $walla-main;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__button {
+    font-weight: $font-weight-chunky;
+  }
+}

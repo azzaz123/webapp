@@ -6,14 +6,14 @@ import {
   MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU,
   MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
-import { of, ReplaySubject, BehaviorSubject } from 'rxjs';
+import { of, ReplaySubject, BehaviorSubject, throwError } from 'rxjs';
 import { AcceptScreenProperties } from '../../interfaces';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
 import { StepDirective } from '@shared/stepper/step.directive';
@@ -27,6 +27,13 @@ import { DeliveryRadioSelectorComponent } from '@private/shared/delivery-radio-s
 import { AcceptScreenCarrier } from '../../interfaces/accept-screen-carrier.interface';
 import { DeliveryRadioOptionDirective } from '@private/shared/delivery-radio-selector/delivery-radio-option.directive';
 import { ButtonComponent } from '@shared/button/button.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ErrorsService } from '@core/errors/errors.service';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { Router } from '@angular/router';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 describe('AcceptScreenModalComponent', () => {
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
@@ -48,10 +55,13 @@ describe('AcceptScreenModalComponent', () => {
   let component: AcceptScreenModalComponent;
   let fixture: ComponentFixture<AcceptScreenModalComponent>;
   let acceptScreenStoreService: AcceptScreenStoreService;
+  let modalService: NgbModal;
+  let errorService: ErrorsService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeliveryRadioSelectorModule],
+      imports: [DeliveryRadioSelectorModule, RouterTestingModule],
       declarations: [
         AcceptScreenModalComponent,
         ProductCardComponent,
@@ -80,6 +90,7 @@ describe('AcceptScreenModalComponent', () => {
             get carrierSelectedIndex$() {
               return carrierSelectedIndexSubjectMock.asObservable();
             },
+            rejectRequest() {},
           },
         },
         {
@@ -99,6 +110,23 @@ describe('AcceptScreenModalComponent', () => {
           },
         },
         NgbActiveModal,
+        {
+          provide: ErrorsService,
+          useValue: {
+            i18nError() {},
+          },
+        },
+        {
+          provide: NgbModal,
+          useValue: {
+            open() {
+              return {
+                result: Promise.resolve({}),
+                componentInstance: {},
+              };
+            },
+          },
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -112,6 +140,9 @@ describe('AcceptScreenModalComponent', () => {
     de = fixture.debugElement;
     component.requestId = MOCK_REQUEST_ID;
     activeModal = TestBed.inject(NgbActiveModal);
+    modalService = TestBed.inject(NgbModal);
+    errorService = TestBed.inject(ErrorsService);
+    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
@@ -322,6 +353,91 @@ describe('AcceptScreenModalComponent', () => {
 
           it('should NOT show any carrier option', () => {
             shouldRenderRadioSelector(false);
+          });
+        });
+
+        describe('and we click on the reject button', () => {
+          describe('and we click on the confirm button', () => {
+            beforeEach(() => {
+              spyOn(modalService, 'open').and.callThrough();
+            });
+
+            describe('and the petition fails...', () => {
+              beforeEach(() => {
+                spyOn(acceptScreenStoreService, 'rejectRequest').and.returnValue(throwError('network error :P'));
+                spyOn(errorService, 'i18nError');
+                const rejectButton = fixture.debugElement.query(By.css(rejectButtonSelector)).nativeElement;
+
+                rejectButton.click();
+              });
+
+              it('should open the reject request modal', () => {
+                expect(modalService.open).toHaveBeenCalledTimes(1);
+                expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+              });
+
+              it('should reject request', () => {
+                expect(acceptScreenStoreService.rejectRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.rejectRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should NOT close the modal', () => {
+                expect(activeModal.close).not.toHaveBeenCalled();
+              });
+
+              it('should show generic error message', () => {
+                expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+              });
+            });
+
+            describe('and the petition succeed', () => {
+              beforeEach(() => {
+                spyOn(router, 'navigate');
+                spyOn(acceptScreenStoreService, 'rejectRequest').and.returnValue(of(null));
+                const rejectButton = fixture.debugElement.query(By.css(rejectButtonSelector)).nativeElement;
+
+                rejectButton.click();
+              });
+
+              it('should open the reject request modal', () => {
+                expect(modalService.open).toHaveBeenCalledTimes(1);
+                expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+              });
+
+              it('should reject request', () => {
+                expect(acceptScreenStoreService.rejectRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.rejectRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should redirect the user to the TTS', () => {
+                expect(router.navigate).toHaveBeenCalledTimes(1);
+                expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+              });
+
+              it('should close the modal', () => {
+                expect(activeModal.close).toHaveBeenCalledTimes(1);
+              });
+            });
+          });
+
+          describe('and we click on the cancel button', () => {
+            beforeEach(() => {
+              spyOn(modalService, 'open').and.returnValue({ result: Promise.reject(), componentInstance: { ConfirmationModalComponent } });
+              spyOn(acceptScreenStoreService, 'rejectRequest').and.returnValue(of(null));
+              const rejectButton = fixture.debugElement.query(By.css(rejectButtonSelector)).nativeElement;
+
+              rejectButton.click();
+            });
+
+            it('should open the reject request modal', () => {
+              expect(modalService.open).toHaveBeenCalledTimes(1);
+              expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+            });
+
+            it('should not reject the request', () => {
+              expect(acceptScreenStoreService.rejectRequest).not.toHaveBeenCalled();
+            });
           });
         });
 
