@@ -1,7 +1,13 @@
 <div class="container">
   <div class="row w-100">
     <form [formGroup]="searchLocationForm" class="SearchBox">
-      <input class="SearchBox__input" formControlName="searchLocation" type="text" class="form-control" placeholder="search" />
+      <input
+        class="SearchBox__input"
+        formControlName="searchLocation"
+        type="text"
+        class="form-control"
+        [placeholder]="SEARCH_LOCATION_PLACEHOLDER"
+      />
       <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
       <tsl-svg-icon
         *ngIf="locationName"

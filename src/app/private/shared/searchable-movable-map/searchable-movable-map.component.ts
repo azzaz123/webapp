@@ -10,6 +10,7 @@ const HALF_SECOND: number = 500;
   styleUrls: ['./searchable-movable-map.component.scss'],
 })
 export class SearchableMovableMapComponent implements OnInit {
+  public readonly SEARCH_LOCATION_PLACEHOLDER = $localize`:@@map_view_all_users_all_all_searchbox_placeholder:Busca por dirección...`;
   public searchLocationForm: FormGroup;
   public locationName: string;
 
