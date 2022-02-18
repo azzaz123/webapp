@@ -14,7 +14,7 @@ export class CarrierOfficeAddressesHttpService {
     return this.http.post<void>(CREATE_SELECTED_CARRIER_OFFICE_ENDPOINT, { selectedOffice });
   }
 
-  public updateSelectedCarrierOffice(carrierId: string, selectedOffice: SelectedCarrierOfficeDto): Observable<void> {
-    return this.http.put<void>(UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT(carrierId), { selectedOffice });
+  public updateSelectedCarrierOffice(officeId: string, selectedOffice: SelectedCarrierOfficeDto): Observable<void> {
+    return this.http.put<void>(UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT(officeId), { selectedOffice });
   }
 }

@@ -5,7 +5,7 @@ import { CarrierOfficeAddressesHttpService } from './carrier-office-addresses-ht
 import { CREATE_SELECTED_CARRIER_OFFICE_ENDPOINT, UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT } from './endpoints';
 
 describe('CarrierOfficeAddressesHttpService', () => {
-  const MOCK_SELECTED_CARRIER_ID = 'ajbdsijd2e923nwsd';
+  const MOCK_SELECTED_OFFICE_ID = 'ajbdsijd2e923nwsd';
   let service: CarrierOfficeAddressesHttpService;
   let httpMock: HttpTestingController;
 
@@ -41,8 +41,8 @@ describe('CarrierOfficeAddressesHttpService', () => {
 
   describe('when asking to update a selected carrier office', () => {
     it('should ask server to update it', () => {
-      const expectedUrl: string = UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT(MOCK_SELECTED_CARRIER_ID);
-      service.updateSelectedCarrierOffice(MOCK_SELECTED_CARRIER_ID, MOCK_SELECTED_CARRIER_OFFICE_DTO).subscribe();
+      const expectedUrl: string = UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT(MOCK_SELECTED_OFFICE_ID);
+      service.updateSelectedCarrierOffice(MOCK_SELECTED_OFFICE_ID, MOCK_SELECTED_CARRIER_OFFICE_DTO).subscribe();
       const req: TestRequest = httpMock.expectOne(expectedUrl);
       req.flush({});
 
