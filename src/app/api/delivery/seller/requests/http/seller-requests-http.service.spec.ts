@@ -67,13 +67,13 @@ describe('SellerRequestsHttpService', () => {
     it('should call to the corresponding cancel request endpoint', () => {
       const expectedUrl: string = SELLER_REQUESTS_ENDPOINT_WITH_REQUEST_ID(MOCK_SELLER_REQUEST_ID);
 
-      service.cancelRequest(MOCK_SELLER_REQUEST_ID).subscribe();
-      const cancelRequest: TestRequest = httpMock.expectOne(expectedUrl);
-      cancelRequest.flush({});
+      service.rejectRequest(MOCK_SELLER_REQUEST_ID).subscribe();
+      const rejectRequest: TestRequest = httpMock.expectOne(expectedUrl);
+      rejectRequest.flush({});
 
-      expect(cancelRequest.request.url).toEqual(expectedUrl);
-      expect(cancelRequest.request.method).toBe('PATCH');
-      expect(cancelRequest.request.body).toBe(null);
+      expect(rejectRequest.request.url).toEqual(expectedUrl);
+      expect(rejectRequest.request.method).toBe('PATCH');
+      expect(rejectRequest.request.body).toStrictEqual({ status: 'rejected' });
     });
   });
 

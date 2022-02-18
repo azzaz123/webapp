@@ -139,7 +139,11 @@
             </div>
             <div class="row mt-4 justify-content-center align-self-center mb-2">
               <div class="col-12 col-md-7">
-                <tsl-button id="rejectButton" className="btn btn-block btn-link" i18n="@@accept_view_seller_bottom_bar_reject_button"
+                <tsl-button
+                  id="rejectButton"
+                  className="btn btn-block btn-link"
+                  i18n="@@accept_view_seller_bottom_bar_reject_button"
+                  (click)="openRejectRequestModal()"
                   >Reject</tsl-button
                 >
               </div>

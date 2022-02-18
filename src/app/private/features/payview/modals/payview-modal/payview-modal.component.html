@@ -1,3 +1,11 @@
-<div class="d-flex w-100 h-75 p-5">
-  <h1><pre>Payview is coming!!!</pre></h1>
+<div class="PayviewModal d-flex w-100 h-100 flex-column">
+  <div
+    *ngIf="(payviewState$ | async) === null"
+    class="PayviewModal__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
+  >
+    <tsl-svg-icon width="64" height="64" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+  </div>
+  <div class="PayviewModal__summary" *ngIf="payviewState$ | async as payviewState">
+    <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
+  </div>
 </div>
