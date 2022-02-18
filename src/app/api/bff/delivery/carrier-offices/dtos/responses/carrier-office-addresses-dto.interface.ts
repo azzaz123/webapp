@@ -1,4 +1,4 @@
-import { CarrierDto } from '@api/delivery/carrier-drop-off-mode/request/dtos/carrier-drop-off-mode-request-dto.interface';
+export type CarrierDto = 'SEUR' | 'POSTE_ITALIANE' | 'correos';
 
 export interface CarrierOfficeAddressesDto {
   offices: CarrierOfficeInfoDto[];

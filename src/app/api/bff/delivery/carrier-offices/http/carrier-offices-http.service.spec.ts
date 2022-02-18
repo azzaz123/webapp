@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MOCK_CARRIER_OFFICES_ADDRESSES_DTO } from '@api/fixtures/delivery/carrier-offices/carrier-offices-dto.fixtures.spec';
-import { CarrierDto } from '@api/delivery/carrier-drop-off-mode/request/dtos/carrier-drop-off-mode-request-dto.interface';
+import { CarrierDto } from '@api/bff/delivery/carrier-offices/dtos/responses/carrier-office-addresses-dto.interface';
 import { CarrierOfficesHttpService } from './carrier-offices-http.service';
 import { CARRIER_OFFICE_ADDRESSES_URL } from './endpoints';
 

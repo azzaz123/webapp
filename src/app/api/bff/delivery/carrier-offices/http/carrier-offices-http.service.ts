@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CarrierDto } from '@api/delivery/carrier-drop-off-mode/request/dtos/carrier-drop-off-mode-request-dto.interface';
+import { CarrierDto } from '@api/bff/delivery/carrier-offices/dtos/responses/carrier-office-addresses-dto.interface';
 import { Observable } from 'rxjs';
 import { CarrierOfficeAddressesDto } from '../dtos/responses/carrier-office-addresses-dto.interface';
 import { CARRIER_OFFICE_ADDRESSES_URL } from './endpoints';
