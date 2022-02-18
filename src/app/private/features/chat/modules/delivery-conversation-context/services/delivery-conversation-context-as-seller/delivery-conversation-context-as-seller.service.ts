@@ -19,6 +19,8 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { Router } from '@angular/router';
 import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/delivery-item-details-api.service';
 import { DeliveryItemDetails } from '@api/core/model/delivery/item-detail/delivery-item-details.interface';
+import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
+import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
 
 @Injectable()
 export class DeliveryConversationContextAsSellerService {
@@ -33,7 +35,7 @@ export class DeliveryConversationContextAsSellerService {
 
   public getBannerPropertiesAsSeller(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     const { item, user: buyer } = conversation;
-    const { id: itemHash, sold: isItemSold } = item;
+    const { id: itemHash } = item;
     const { id: buyerHash } = buyer;
 
     return this.sellerRequestsApiService.getRequestsByBuyerAndItem(buyerHash, itemHash).pipe(
@@ -41,7 +43,7 @@ export class DeliveryConversationContextAsSellerService {
       concatMap((sellerRequests: SellerRequest[]) => {
         return this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash).pipe(
           map((deliveryItemDetails: DeliveryItemDetails) => {
-            return this.mapSellerRequestsToBannerProperties(isItemSold, sellerRequests, deliveryItemDetails);
+            return this.mapSellerRequestsToBannerProperties(sellerRequests, deliveryItemDetails);
           })
         );
       })
@@ -54,6 +56,10 @@ export class DeliveryConversationContextAsSellerService {
       const modalRef = this.modalService.open(EditItemSalePriceModalComponent, { windowClass: 'modal-small' }).componentInstance;
       modalRef.item = item;
       return;
+    }
+
+    if (action === DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING) {
+      return this.navigateToEditItemShippingToggle(conversation);
     }
 
     return this.openAwarenessModal();
@@ -79,24 +85,27 @@ export class DeliveryConversationContextAsSellerService {
     this.router.navigate([route]);
   }
 
+  private navigateToEditItemShippingToggle(conversation: InboxConversation): void {
+    const { item } = conversation;
+    const { id: itemHash } = item;
+    const route: string = `${PRIVATE_PATHS.CATALOG}/${CATALOG_PATHS.EDIT}/${itemHash}/${UPLOAD_PATHS.ACTIVATE_SHIPPING}`;
+    this.router.navigate([route]);
+  }
+
   private mapSellerRequestsToBannerProperties(
-    isItemSold: boolean,
     sellerRequests: SellerRequest[],
     deliveryItemDetails: DeliveryItemDetails | null
   ): DeliveryBanner | null {
     const sellerHasNoRequests: boolean = sellerRequests.length === 0;
     const sellerHasRequests: boolean = !sellerHasNoRequests;
-    const noDeliveryItemDetails: boolean = !deliveryItemDetails;
+    const isShippingNotAllowed: boolean = !deliveryItemDetails.isShippingAllowed;
+    const isNotShippable: boolean = !deliveryItemDetails.isShippable;
 
-    if (isItemSold) {
+    if (isNotShippable || sellerHasRequests) {
       return null;
     }
 
-    if (sellerHasRequests) {
-      return null;
-    }
-
-    if (noDeliveryItemDetails) {
+    if (isShippingNotAllowed) {
       return ACTIVATE_SHIPPING_BANNER_PROPERTIES;
     }
 
