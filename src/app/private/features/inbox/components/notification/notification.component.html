@@ -1,0 +1,27 @@
+<div
+  class="Notification"
+  *ngIf="notification"
+  [ngClass]="{
+    'Notification--highlighted': notification.variant === NOTIFICATION_VARIANT.HIGHLIGHTED,
+    'Notification--pinned': notification.variant === NOTIFICATION_VARIANT.PINNED
+  }"
+  (click)="handleNotificationClick()"
+>
+  <div class="Notification__image">
+    <tsl-notification-image [notification]="notification"></tsl-notification-image>
+  </div>
+
+  <div class="Notification__info">
+    <div class="Notification__title">
+      <span>{{ notification.title }}</span>
+      <div class="Notification__date">
+        <span> {{ momentsAgo }}</span>
+      </div>
+    </div>
+
+    <div class="Notification__description">
+      <span>{{ notification.description }}</span>
+      <div class="Notification__bullet" *ngIf="!notification.isRead"></div>
+    </div>
+  </div>
+</div>

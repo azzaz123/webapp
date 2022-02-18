@@ -1,33 +1,30 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ActivatedRoute } from '@angular/router';
-import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
-import { DeliveryAddressApiService } from '@private/features/delivery/services/api/delivery-address-api/delivery-address-api.service';
-import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
-import { DeliveryAddressStoreService } from '@private/features/delivery/services/address/delivery-address-store/delivery-address-store.service';
-import { DeliveryBuyerCalculatorModule } from '@api/delivery/buyer/calculator/delivery-buyer-calculator.module';
-import { DeliveryBuyerModule } from '@api/bff/delivery/buyer/delivery-buyer.module';
-import { DeliveryCostsModule } from '@api/bff/delivery/costs/delivery-costs.module';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ItemService } from '@core/item/item.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PaymentsCreditCardModule } from '@api/payments/cards';
-import { PaymentsPaymentMethodsModule } from '@api/payments/payment-methods/payments-payment-methods.module';
-import { PaymentsUserPaymentPreferencesModule } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.module';
-import { PaymentsWalletsModule } from '@api/payments/wallets/payments-wallets.module';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { PayviewComponent } from '@private/features/payview/components/payview/payview.component';
 import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
-import { PayviewService } from '@private/features/payview/services/payview/payview.service';
-import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
+
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+
+@Component({
+  selector: 'tsl-blank',
+  template: '',
+})
+class FakeComponent {}
 
 describe('PayviewComponent', () => {
+  const chatPath: string = PRIVATE_PATHS.CHAT;
   const fakeItemHash: string = 'this_is_a_fake_hash';
 
   let component: PayviewComponent;
   let fixture: ComponentFixture<PayviewComponent>;
-  let itemHash: string;
+  let modalRef: NgbModalRef;
   let modalService: NgbModal;
-  let payviewStateManagement: PayviewStateManagementService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -43,49 +40,63 @@ describe('PayviewComponent', () => {
             },
           },
         },
-        DeliveryAddressService,
-        DeliveryAddressApiService,
-        DeliveryAddressStoreService,
-        ItemService,
-        PayviewService,
-        PayviewStateManagementService,
+        NgbModal,
       ],
 
-      imports: [
-        HttpClientTestingModule,
-        BuyerRequestsApiModule,
-        DeliveryBuyerModule,
-        DeliveryBuyerCalculatorModule,
-        DeliveryCostsModule,
-        PaymentsCreditCardModule,
-        PaymentsPaymentMethodsModule,
-        PaymentsUserPaymentPreferencesModule,
-        PaymentsWalletsModule,
-      ],
+      imports: [HttpClientTestingModule, RouterTestingModule],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PayviewComponent);
-    modalService = TestBed.inject(NgbModal);
-    component = fixture.componentInstance;
-    payviewStateManagement = TestBed.inject(PayviewStateManagementService);
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('when the Payview initializes...', () => {
     beforeEach(() => {
-      spyOn(modalService, 'open').and.returnValue({ result: Promise.resolve() });
+      fixture = TestBed.createComponent(PayviewComponent);
+      component = fixture.componentInstance;
 
+      modalService = TestBed.inject(NgbModal);
+      modalRef = modalService.open(FakeComponent);
+      router = TestBed.inject(Router);
+
+      spyOn(modalService, 'open').and.returnValue(modalRef);
       fixture.detectChanges();
     });
 
-    it('should open the payview overview component', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('should open the payview modal component', () => {
       expect(modalService.open).toHaveBeenCalledTimes(1);
       expect(modalService.open).toHaveBeenCalledWith(PayviewModalComponent);
+    });
+
+    it('should assign the corresponding payload to the payview modal component', () => {
+      expect(modalRef.componentInstance.itemHash).toEqual(fakeItemHash);
+    });
+
+    describe('WHEN Modal closes', () => {
+      beforeEach(() => {
+        spyOn(router, 'navigate');
+      });
+
+      it('should navigate to chat', fakeAsync(() => {
+        modalRef.close();
+        tick();
+
+        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
+      }));
+    });
+
+    describe('WHEN Modal dismisses', () => {
+      beforeEach(() => {
+        spyOn(router, 'navigate');
+      });
+
+      it('should navigate to chat', fakeAsync(() => {
+        modalRef.dismiss();
+        tick();
+
+        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
+      }));
     });
   });
 });

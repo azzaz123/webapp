@@ -28,6 +28,7 @@ export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS_RESPONSE: DeliveryBuyerDeliver
   ],
   default: { index: 1 },
 };
+
 export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods = {
   deliveryMethods: [
     {
@@ -52,4 +53,14 @@ export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods 
     },
   ],
   default: { index: 1 },
+  current: {
+    method: DELIVERY_MODE.BUYER_ADDRESS,
+    icon: 'http://prod-delivery-resources.wallapop.com/default_home.png',
+    carrier: null,
+    deliveryTimes: { from: 3, to: 7 },
+    lastAddressUsed: {
+      id: 'dedfa0ab-d4bd-48da-acf6-f7976d2877d5',
+      label: 'calle jtrx 6, 1, 08199 Montserrat, España',
+    },
+  },
 };

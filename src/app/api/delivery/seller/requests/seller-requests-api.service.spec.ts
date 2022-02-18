@@ -27,7 +27,7 @@ describe('SellerRequestsApiService', () => {
             getRequestInfo() {
               return of(MOCK_SELLER_REQUEST_DTO);
             },
-            cancelRequest() {
+            rejectRequest() {
               return of();
             },
             acceptRequestPostOfficeDropOff() {
@@ -90,15 +90,15 @@ describe('SellerRequestsApiService', () => {
 
   describe('when asking to cancel a request', () => {
     beforeEach(fakeAsync(() => {
-      spyOn(sellerRequestsHttpService, 'cancelRequest').and.callThrough();
+      spyOn(sellerRequestsHttpService, 'rejectRequest').and.callThrough();
 
-      service.cancelRequest(MOCK_REQUEST_ID).subscribe();
+      service.rejectRequest(MOCK_REQUEST_ID).subscribe();
       tick();
     }));
 
     it('should ask server to cancel the request', () => {
-      expect(sellerRequestsHttpService.cancelRequest).toHaveBeenCalledTimes(1);
-      expect(sellerRequestsHttpService.cancelRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      expect(sellerRequestsHttpService.rejectRequest).toHaveBeenCalledTimes(1);
+      expect(sellerRequestsHttpService.rejectRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });
 
