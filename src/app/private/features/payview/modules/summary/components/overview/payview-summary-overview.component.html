@@ -34,7 +34,7 @@
         <tsl-payview-summary-cost-detail [costs]="costs" [productName]="title"></tsl-payview-summary-cost-detail>
       </div>
       <div class="PayviewSummary__footer position-relative" *ngIf="showPaymentMethod">
-        <tsl-payview-summary-payment-method [paymentMethod]="paymentMethod"></tsl-payview-summary-payment-method>
+        <tsl-payview-summary-payment-method [creditCard]="creditCard" [paymentMethod]="paymentMethod"></tsl-payview-summary-payment-method>
       </div>
     </div>
   </div>
