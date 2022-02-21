@@ -1,24 +1,43 @@
+import {
+  DeliverySchedule,
+  DeliveryScheduleOption,
+  DeliveryUserSchedule,
+} from '@api/core/model/delivery/schedule/delivery-schedule.interface';
+import { SCHEDULE_TYPE } from '@api/core/model/delivery/schedule/schedule-type.type';
 import { ToDomainMapper } from '@api/core/utils/types';
-import { DeliveryScheduleDto, ScheduleOptionDto, UserScheduleDto } from '../dtos/responses/delivery-schedule-dto.interface';
+import {
+  DeliveryScheduleDto,
+  ScheduleOptionDto,
+  UserScheduleDto,
+  ScheduleTypeDto,
+} from '../dtos/responses/delivery-schedule-dto.interface';
 
-export const mapUserScheduleDtoUserSchedule: ToDomainMapper<DeliveryScheduleDto, any> = (input: DeliveryScheduleDto): any => {
+const timeRange: Record<ScheduleTypeDto, SCHEDULE_TYPE> = {
+  afternoon: SCHEDULE_TYPE.AFTERNOON,
+  'all day': SCHEDULE_TYPE.ALL_DAY,
+  morning: SCHEDULE_TYPE.MORNING,
+};
+
+export const mapUserScheduleDtoUserSchedule: ToDomainMapper<DeliveryScheduleDto, DeliverySchedule> = (input: DeliveryScheduleDto): any => {
   return {
     scheduleOptions: input.schedule_options.map(mapScheduleOptionsDtoToScheduleOptions),
-    user_schedule: mapUserScheduleDtoToUserScheduleDto(input.user_schedule),
+    userSchedule: mapUserScheduleDtoToUserScheduleDto(input.user_schedule),
   };
 };
 
-const mapScheduleOptionsDtoToScheduleOptions: ToDomainMapper<ScheduleOptionDto, any> = (scheduleOption: ScheduleOptionDto): any => {
+const mapScheduleOptionsDtoToScheduleOptions: ToDomainMapper<ScheduleOptionDto, DeliveryScheduleOption> = (
+  scheduleOption: ScheduleOptionDto
+): any => {
   return {
-    scheduleTimeRange: scheduleOption.schedule_time_range,
-    startTimeRange: scheduleOption.pickup_start_date,
-    endTimeRange: scheduleOption.pickup_end_date,
+    scheduleTimeRange: timeRange[scheduleOption.schedule_time_range],
+    startTimeRange: new Date(scheduleOption.pickup_start_date),
+    endTimeRange: new Date(scheduleOption.pickup_end_date),
   };
 };
 
-const mapUserScheduleDtoToUserScheduleDto: ToDomainMapper<UserScheduleDto, any> = (userSchedule: UserScheduleDto): any => {
+const mapUserScheduleDtoToUserScheduleDto: ToDomainMapper<UserScheduleDto, DeliveryUserSchedule> = (userSchedule: UserScheduleDto): any => {
   return {
     id: userSchedule.id,
-    scheduleTimeRange: userSchedule.schedule_time_range,
+    scheduleTimeRange: timeRange[userSchedule.schedule_time_range],
   };
 };
