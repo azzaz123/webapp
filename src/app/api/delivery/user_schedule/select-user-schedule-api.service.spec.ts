@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { SelectUserScheduleHttpService } from './http/select-user-schedule-http.service';
 import { mapScheduleTypeDomainToDto } from './mappers/requests/schedule-type.mapper';
 
-import { SelectUserScheduleApiService } from './user-schedule-api.service';
+import { SelectUserScheduleApiService } from './select-user-schedule-api.service';
 
 describe('SelectUserScheduleApiService', () => {
   let service: SelectUserScheduleApiService;
@@ -16,7 +16,7 @@ describe('SelectUserScheduleApiService', () => {
         {
           provide: SelectUserScheduleHttpService,
           useValue: {
-            selectHomePickUpDeliverySchedule(): Observable<void> {
+            homePickUpDeliverySchedule(): Observable<void> {
               return of(null);
             },
           },
