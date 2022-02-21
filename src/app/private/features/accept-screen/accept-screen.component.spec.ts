@@ -4,7 +4,7 @@ import { AcceptScreenComponent } from './accept-screen.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AcceptScreenModalComponent } from './modals/accept-screen-modal/accept-screen-modal.component';
 import { ActivatedRoute } from '@angular/router';
-import { DELIVERY_MODAL } from '../delivery/constants/delivery-constants';
+import { DELIVERY_MODAL_CLASSNAME } from '../delivery/constants/delivery-constants';
 
 describe('AcceptScreenComponent', () => {
   const modalRef: Partial<NgbModalRef> = {
@@ -63,7 +63,7 @@ describe('AcceptScreenComponent', () => {
     it('should open the accept screen modal', () => {
       expect(modalRef.componentInstance.requestId).toEqual(MOCK_REQUEST_ID);
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(AcceptScreenModalComponent, { windowClass: DELIVERY_MODAL });
+      expect(modalService.open).toHaveBeenCalledWith(AcceptScreenModalComponent, { windowClass: DELIVERY_MODAL_CLASSNAME });
     });
   });
 });

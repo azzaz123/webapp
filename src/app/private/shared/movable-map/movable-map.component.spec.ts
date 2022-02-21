@@ -134,24 +134,24 @@ describe('MovableMapComponent', () => {
       });
     });
 
-    describe('and we provide center coordenates', () => {
+    describe('and we provide center coordinates', () => {
       beforeEach(() => {
         component.centerCoordinates = MOCK_CENTER_COORDINATES;
         fixture.detectChanges();
       });
 
-      it('should keep the center coordenates provided', () => {
+      it('should keep the center coordinates provided', () => {
         expect(component.centerCoordinates).toStrictEqual(MOCK_CENTER_COORDINATES);
       });
     });
 
-    describe(`and we DON'T provide center coordenates`, () => {
+    describe(`and we DON'T provide center coordinates`, () => {
       beforeEach(() => {
         component.centerCoordinates = null;
         fixture.detectChanges();
       });
 
-      it('should set the fallback center coordenates', () => {
+      it('should set the fallback center coordinates', () => {
         expect(component.centerCoordinates).toStrictEqual(FALLBACK_CENTER_COORDINATES);
       });
     });

@@ -1,1 +1,1 @@
-export const DELIVERY_MODAL: string = 'delivery';
+export const DELIVERY_MODAL_CLASSNAME: string = 'delivery';
