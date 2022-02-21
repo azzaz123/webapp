@@ -1,5 +1,5 @@
 <div class="box">
-  <div *ngFor="let notification of notifications">
+  <div *ngFor="let notification of notifications; let last = last" [ngClass]="{ notlast: !last }">
     <tsl-notification [notification]="notification"></tsl-notification>
   </div>
 </div>

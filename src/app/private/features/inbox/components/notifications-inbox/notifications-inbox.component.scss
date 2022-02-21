@@ -1,1 +1,11 @@
 @import '~style/common';
+
+.box {
+  padding: $spacing-ml;
+}
+
+.notlast {
+  border-bottom: 1px solid $blue-grey-4;
+  padding: 0px 0 $spacing-ml;
+  margin: 0 0 $spacing-ml;
+}
