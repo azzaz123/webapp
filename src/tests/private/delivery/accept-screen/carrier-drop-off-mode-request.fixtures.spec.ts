@@ -12,7 +12,7 @@ export const MOCK_CARRIER_FREE_COST: DropOffModeRequest = {
   postOfficeDetails: {
     carrier: POST_OFFICE_CARRIER.CORREOS,
     lastAddressUsed: null,
-    selectionRequired: false,
+    selectionRequired: true,
   },
   sellerCosts: mapAmountAndCurrenyToMoney({ amount: 0.0, currency: 'EUR' }),
   acceptEndpoint: 'RANDOM_ENDPOINT',

@@ -1,6 +1,23 @@
 @import '~style/common';
 
+:host {
+  height: inherit;
+}
+
 .AcceptScreenModal {
+  height: inherit;
+
+  &__header {
+    top: 0;
+    z-index: 1;
+    background-color: $white;
+  }
+
+  &__confirmButton {
+    bottom: 0;
+    background-color: $white;
+  }
+
   &__cursorPointer {
     cursor: pointer;
   }

@@ -10,6 +10,7 @@ import { ButtonModule } from '@shared/button/button.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { MovableMapModule } from '@private/shared/movable-map/movable-map.module';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
     SvgIconModule,
     CustomCurrencyModule,
     DeliveryRadioSelectorModule,
+    MovableMapModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent],
 })

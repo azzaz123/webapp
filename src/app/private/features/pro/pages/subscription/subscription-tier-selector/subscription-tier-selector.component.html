@@ -23,9 +23,7 @@
                 <span>{{ tier.limit }}</span
                 ><span ngPreserveWhitespaces> </span><span i18n="@@pro_subscription_purchase_tier_list_items_number_label">items</span>
               </ng-container>
-              <span *ngIf="!tier.limit" i18n="@@pro_subscription_purchase_subscription_details_list_unlimited_tier_text"
-                >Manage unlimited active item</span
-              >
+              <span *ngIf="!tier.limit" i18n="@@web_profile_pages_subscription_586">List without limits</span>
             </div>
           </ng-template>
           <div class="Card__description">

@@ -181,17 +181,38 @@ export const MOCK_SCREEN: { width: number; height: number } = {
 };
 
 export const MOCK_HERE_MAPS: any = {
-  Map: null,
+  Map: {
+    addEventListener: () => {},
+    getZoom: () => {},
+    setZoom: () => {},
+    getCenter: () => {},
+    setCenter: () => {},
+    addObject: () => {},
+    removeObject: () => {},
+  },
   clustering: null,
   data: null,
-  geo: null,
-  map: null,
-  mapevents: null,
+  geo: {
+    IPoint: (e) => e,
+  },
+  map: {
+    Marker: (e) => e,
+    Icon: (e) => e,
+    Group: (e) => e,
+  },
+  mapevents: {
+    Behavior: (e) => e,
+    MapEvents: (e) => e,
+  },
   util: null,
   math: null,
   net: null,
-  service: { Platform: (e) => e },
-  ui: null,
+  service: { Platform: (e) => e, DefaultLayers: (e) => e },
+  ui: {
+    UI: {
+      createDefault: (e) => e,
+    },
+  },
 };
 
 export class MockIntersectionObserver implements Partial<IntersectionObserver> {
