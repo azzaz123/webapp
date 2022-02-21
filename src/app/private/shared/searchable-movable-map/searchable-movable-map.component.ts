@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap, filter } from 'rxjs/operators';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -6,6 +6,7 @@ import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { ItemPlace } from '@core/geolocation/geolocation-response.interface';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { Coordinate } from '@core/geolocation/address-response.interface';
+import { Location } from '@api/core/model';
 
 const HALF_SECOND: number = 500;
 
@@ -15,6 +16,8 @@ const HALF_SECOND: number = 500;
   styleUrls: ['./searchable-movable-map.component.scss'],
 })
 export class SearchableMovableMapComponent implements OnInit, OnDestroy {
+  @Output() locationCoordinates: EventEmitter<Location> = new EventEmitter();
+
   public readonly SEARCH_LOCATION_PLACEHOLDER = $localize`:@@map_view_all_users_all_all_searchbox_placeholder:Busca por dirección...`;
   public searchLocationForm: FormGroup;
   public searchLocation: string;
@@ -28,10 +31,10 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
     this.createLocationForm();
     this.subscriptions.add(
       this.onSelectLocationSuggestion().subscribe((location: LabeledSearchLocation) => {
-        this.searchLocationForm.setValue({
-          searchLocation: location.label,
-          searchLatitude: +location.latitude,
-          searchLongitude: +location.longitude,
+        this.searchLocationForm.setValue({ searchLocation: location.label });
+        this.locationCoordinates.emit({
+          latitude: +location.latitude,
+          longitude: +location.longitude,
         });
       })
     );
@@ -64,6 +67,7 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
       switchMap((locationName: string) => this.getLatitudeAndLongitudeFromLocationName(locationName))
     );
   }
+
   public selectSuggestion(locationName: string) {
     this.selectedSuggestionSubject.next(locationName);
   }
@@ -71,8 +75,6 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   private createLocationForm(): void {
     this.searchLocationForm = this.buildForm.group({
       searchLocation: [],
-      searchLatitude: [],
-      searchLongitude: [],
     });
   }
 
