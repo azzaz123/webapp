@@ -8,16 +8,13 @@
   height: inherit;
 
   &__header {
-    position: sticky;
     top: 0;
     z-index: 1;
     background-color: $white;
   }
 
   &__confirmButton {
-    position: sticky;
     bottom: 0;
-    align-self: flex-end;
     background-color: $white;
   }
 

@@ -42,6 +42,7 @@ describe('AcceptScreenModalComponent', () => {
 
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const sellerAddressHeaderStylesSelector: string = '.AcceptScreenModal__sellerWithAddressHeader';
+  const carrierButtonSelector: string = '.AcceptScreenModal__carrierButton';
   const deliveryAddressSelector: string = 'tsl-delivery-address';
   const mapSelector: string = 'tsl-movable-map';
   const fullAddressSelector: string = '#fullAddress';
@@ -323,7 +324,7 @@ describe('AcceptScreenModalComponent', () => {
               ).buttonProperties.redirectStep;
               beforeEach(() => {
                 spyOn(component.stepper, 'goToStep').and.callThrough();
-                const carrierButton = fixture.debugElement.query(By.css('.carrierButton')).nativeElement;
+                const carrierButton = fixture.debugElement.query(By.css(carrierButtonSelector)).nativeElement;
 
                 carrierButton.click();
                 fixture.detectChanges();
@@ -775,7 +776,7 @@ describe('AcceptScreenModalComponent', () => {
 
         it('should should show button when needed', () => {
           const isButtonShowed: boolean = de
-            .queryAll(By.css('.carrierButton'))
+            .queryAll(By.css(carrierButtonSelector))
             .some((button) => button.nativeElement.textContent === carrier.buttonProperties.text);
 
           if (carrier.buttonProperties.isShowed) {

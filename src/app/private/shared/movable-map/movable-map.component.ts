@@ -35,7 +35,7 @@ import { MARKER_STATUS } from './constants/marker-status.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges {
-  @Input() centerCoordinates: Location;
+  @Input() centerCoordinates: Location = this.fallbackCenterCoordinates;
   @Input() markers: Location[] = [];
   @Input() zoom: number = DEFAULT_VALUE_ZOOM;
 
@@ -54,7 +54,6 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
 
   ngAfterViewInit(): void {
-    this.centerCoordinates = this.centerCoordinates || this.fallbackCenterCoordinates;
     this.initHereMaps();
   }
 
