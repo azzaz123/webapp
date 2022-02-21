@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { ItemsBySubscription, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { User } from '@core/user/user';
+import { UserService } from '@core/user/user.service';
 import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.component';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
@@ -17,9 +19,10 @@ import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.
 })
 export class CheckoutComponent implements OnInit {
   @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
-  itemsWithProducts: ItemWithProducts[];
-  provincialBump: boolean;
-  creditInfo: CreditInfo;
+  public itemsWithProducts: ItemsBySubscription[];
+  public creditInfo: CreditInfo;
+  public user: User;
+  public itemsSelected: SelectedProduct[] = [];
 
   constructor(
     private itemService: ItemService,
@@ -27,7 +30,8 @@ export class CheckoutComponent implements OnInit {
     private paymentService: PaymentService,
     private route: ActivatedRoute,
     private visibilityApiService: VisibilityApiService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -39,13 +43,37 @@ export class CheckoutComponent implements OnInit {
       }
     });
     this.getCreditInfo();
+    this.user = this.userService.user;
   }
 
-  public removeItem(itemId: string): void {
-    this.itemsWithProducts = this.itemsWithProducts.filter((itemWithProducts) => itemWithProducts.item.id !== itemId);
+  public onRemoveItem(itemId: string, productIndex: number): void {
+    this.itemsWithProducts[productIndex].items = this.itemsWithProducts[productIndex].items.filter(
+      (itemWithProducts) => itemWithProducts.item.id !== itemId
+    );
+
+    if (this.itemsWithProducts[productIndex].items.length === 0) {
+      this.itemsWithProducts.splice(productIndex, 1);
+    }
+
+    const indexCart = this.itemsSelected.findIndex((item) => item.item.id === itemId);
+    if (indexCart > -1) {
+      this.itemsSelected.splice(indexCart, 1);
+    }
+
     if (this.itemsWithProducts.length === 0) {
       this.router.navigate(['catalog/list']);
     }
+    this.refreshCounters(productIndex);
+  }
+
+  public onChangeItem(newItem: SelectedProduct, productIndex: number): void {
+    const indexCart = this.itemsSelected.findIndex((itemSelected) => itemSelected.item.id === newItem.item.id);
+    if (indexCart > -1) {
+      this.itemsSelected[indexCart] = newItem;
+    } else {
+      this.itemsSelected.push(newItem);
+    }
+    this.refreshCounters(productIndex);
   }
 
   public onConfirm(): void {
@@ -93,11 +121,21 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  private setItems(itemsWithProducts: ItemWithProducts[]): void {
+  private setItems(itemsWithProducts: ItemsBySubscription[]): void {
     if (itemsWithProducts.length) {
       this.itemsWithProducts = itemsWithProducts;
     } else {
       this.router.navigate(['pro/catalog/list', { alreadyFeatured: true }]);
+    }
+  }
+
+  private refreshCounters(productIndex: number): void {
+    if (this.itemsWithProducts[productIndex].subscription?.selected_tier) {
+      const items = this.itemsWithProducts[productIndex].subscription.selected_tier.bumps.reduce((a, b) => a + b.quantity - b.used, 0);
+      const used = this.itemsSelected.filter(
+        (items) => items.isFree && items.duration.subscriptionPackageType === this.itemsWithProducts[productIndex].subscription.type
+      ).length;
+      this.itemsWithProducts[productIndex].availableFreeBumps = items - used;
     }
   }
 }

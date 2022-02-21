@@ -1,45 +1,40 @@
-import { takeWhile } from 'rxjs/operators';
-import { Component, Input, OnDestroy, OnInit, OnChanges, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Duration, Product } from '@core/item/item-response.interface';
-import { CartService } from '@shared/catalog/cart/cart.service';
-import { CartChange } from '@shared/catalog/cart/cart-item.interface';
-import { Cart } from '@shared/catalog/cart/cart';
 import { CreditInfo } from '@core/payments/payment.interface';
-import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
+import { Perks } from '@core/subscriptions/subscriptions.interface';
 
 @Component({
   selector: 'tsl-checkout-item',
   templateUrl: './checkout-item.component.html',
   styleUrls: ['./checkout-item.component.scss'],
 })
-export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class CheckoutItemComponent implements OnInit, OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
+  @Input() availableFreeBumps: number;
+  @Output() itemChanged: EventEmitter<SelectedProduct> = new EventEmitter();
   @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
   public selectedType: Product;
   public availableTypes: Product[];
   public availableDurations: Duration[];
   public isFreeOptionSelected: boolean;
   public isFreeOptionAvailable: boolean;
+  public isFreeOptionDisabled: boolean;
   public readonly BUMP_TYPES = BUMP_TYPE;
   private _selectedDuration: Duration;
-  private active = true;
 
-  constructor(private cartService: CartService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.cartService.createInstance(new Cart());
     this.isFreeOptionAvailable = !!this.getFreeTypes().length;
+    this.isFreeOptionDisabled = this.availableFreeBumps === 0;
 
-    if (this.isFreeOptionAvailable) {
+    if (this.isFreeOptionAvailable && !this.isFreeOptionDisabled) {
       this.isFreeOptionSelected = true;
     }
     this.getAvailableProducts();
-
-    this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
-      this.onRemoveOrClean(cartChange);
-    });
   }
 
   get selectedDuration(): Duration {
@@ -51,26 +46,17 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
     this.addToCart();
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.addToCart(); // TODO FIX CART MANAGE
-    });
-  }
-
   ngOnChanges() {
     if (this.creditInfo && !this.selectedType) {
       this.selectType(this.itemWithProducts.products[0]);
     }
   }
 
-  ngOnDestroy() {
-    this.active = false;
-  }
-
   public getAvailableProducts(): void {
     if (this.isFreeOptionSelected) {
       this.availableTypes = this.getFreeTypes();
-      this.selectedType = this.availableTypes[0];
+      const firstAvailableType = this.getFirstAvailableFreeOption();
+      this.selectedType = this.availableTypes.find((type) => type.name === firstAvailableType.name);
       this.availableDurations = this.selectedType.durations;
       this.selectedDuration = this.selectedType.durations[0];
     } else {
@@ -81,8 +67,11 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
   }
 
-  public onRemoveItem(itemId: string, type: string): void {
-    this.cartService.remove(itemId, type);
+  public toggleItem(): void {
+    this.getAvailableProducts();
+  }
+
+  public onRemoveItem(itemId: string): void {
     this.itemRemoved.emit(itemId);
   }
 
@@ -103,21 +92,15 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
   }
 
   private addToCart(): void {
-    const cartItem: any = {
+    const cartItem: SelectedProduct = {
       item: this.itemWithProducts.item,
+      productType: this.selectedType.name,
       duration: this.selectedDuration,
       isFree: this.isFreeOptionSelected,
       isProvincialBump: this.itemWithProducts.isProvincialBump,
     };
 
-    this.cartService.add(cartItem, this.selectedType.name);
-  }
-
-  private onRemoveOrClean(cartChange: CartChange): void {
-    if ((cartChange.action === 'remove' && cartChange.itemId === this.itemWithProducts.item.id) || cartChange.action === 'clean') {
-      this.selectedType = undefined;
-      this.selectedDuration = undefined;
-    }
+    this.itemChanged.emit(cartItem);
   }
 
   private getFreeTypes(): Product[] {
@@ -130,5 +113,9 @@ export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges, Afte
       }
     });
     return freeTypes;
+  }
+
+  private getFirstAvailableFreeOption(): Perks {
+    return this.itemWithProducts.subscription?.selected_tier.bumps.find((bump) => bump.used < bump.quantity);
   }
 }

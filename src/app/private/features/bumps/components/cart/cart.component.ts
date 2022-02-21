@@ -1,39 +1,28 @@
-import { catchError, finalize, takeWhile } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { CartService } from '@shared/catalog/cart/cart.service';
 import { ErrorsService } from '@core/errors/errors.service';
-import { EventService } from '@core/event/event.service';
-import { Order, PurchaseProductsWithCreditsResponse } from '@core/item/item-response.interface';
-import { ItemService } from '@core/item/item.service';
 import { CreditInfo, FinancialCardOption } from '@core/payments/payment.interface';
-import { PAYMENT_RESPONSE_STATUS, PAYMENT_METHOD } from '@core/payments/payment.service';
-import { StripeService } from '@core/stripe/stripe.service';
-import { UuidService } from '@core/uuid/uuid.service';
-import { Cart } from '@shared/catalog/cart/cart';
-import { CartBase, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
-import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { PACKS_TYPES } from '@core/payments/pack';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
-import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
+import { SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'tsl-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
 })
-export class CartComponent implements OnInit, OnDestroy {
+export class CartComponent {
   @Input() creditInfo: CreditInfo;
+  @Input() selectedItems: SelectedProduct[];
   @Output() confirmAction: EventEmitter<void> = new EventEmitter<void>();
 
-  public cart: CartBase;
-  public types: string[] = BUMP_TYPES;
   public hasSavedCard = true;
   public loading: boolean;
-  public card: any;
+  public card: FinancialCardOption | unknown;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
@@ -41,86 +30,38 @@ export class CartComponent implements OnInit, OnDestroy {
   public readonly PACK_TYPES = PACKS_TYPES;
   public readonly ICON_TYPE = ICON_TYPE;
 
-  public purchaseBumpsSubject = new BehaviorSubject<boolean>(false);
-
-  public get experimentReady$(): Observable<boolean> {
-    return this.purchaseBumpsSubject.asObservable();
-  }
-  private active = true;
-
-  constructor(
-    private cartService: CartService,
-    private itemService: ItemService,
-    private errorService: ErrorsService,
-    private eventService: EventService,
-    private uuidService: UuidService,
-    private stripeService: StripeService,
-    private visibilityService: VisibilityApiService
-  ) {
-    this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
-      this.cart = cartChange.cart;
-    });
-  }
-
-  ngOnInit() {
-    this.cartService.createInstance(new Cart());
-    this.eventService.subscribe('paymentResponse', (response) => {
-      this.managePaymentResponse(response);
-    });
-  }
-
-  ngOnDestroy() {
-    this.active = false;
-    this.cartService.clean();
-  }
+  constructor(private errorService: ErrorsService, private visibilityService: VisibilityApiService) {}
 
   public checkout(): void {
     if (this.loading) {
       return;
     }
-    const order: Order[] = this.cart.prepareOrder();
-    const orderId: string = this.cart.getOrderId();
+    if (this.totalToPay > 0 && !this.card) {
+      this.errorService.i18nError(TRANSLATION_KEY.NO_CARD_SELECTED_ERROR);
+      return;
+    }
+
     this.loading = true;
 
-    forkJoin([
-      this.experimentReady$.pipe(catchError((errors) => of({ errors }))),
-      this.visibilityService.bumpWithPackage(this.cart).pipe(catchError((errors) => of({ errors }))),
-    ])
+    this.visibilityService
+      .buyBumps(this.selectedItems, this.hasSavedCard, this.savedCard, this.card)
       .pipe(
         finalize(() => {
           this.loading = false;
         })
       )
-      .subscribe(() => {
-        this.success();
+      .subscribe(([...next]) => {
+        const errors = next.filter((value) => value.hasError);
+        if (errors.length) {
+          if (errors[0].error instanceof HttpErrorResponse) {
+            this.errorService.show(errors[0].error);
+          } else {
+            this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
+          }
+        } else {
+          this.success();
+        }
       });
-    this.purchaseBumps(order, orderId);
-  }
-
-  public purchaseBumps(order: Order[], orderId: string): void {
-    if (order.length === 0) {
-      this.purchaseBumpsSubject.complete();
-      return;
-    }
-    this.track(order);
-    this.itemService.purchaseProductsWithCredits(order, orderId).subscribe(
-      (response: PurchaseProductsWithCreditsResponse) => {
-        this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
-        if (response.payment_needed) {
-          this.buyStripe(orderId);
-        } else {
-          this.purchaseBumpsSubject.complete();
-        }
-      },
-      (e: HttpErrorResponse) => {
-        if (e.error) {
-          this.errorService.show(e);
-        } else {
-          this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
-        }
-        this.purchaseBumpsSubject.error(e);
-      }
-    );
   }
 
   public addNewCard(): void {
@@ -147,67 +88,24 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
-  public setCardInfo(card: any): void {
+  public setCardInfo(card: unknown): void {
     this.card = card;
-  }
-
-  private managePaymentResponse(paymentResponse: string): void {
-    switch (paymentResponse && paymentResponse.toUpperCase()) {
-      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.purchaseBumpsSubject.complete();
-        break;
-      }
-      default: {
-        this.purchaseBumpsSubject.error(paymentResponse);
-        this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
-        break;
-      }
-    }
-  }
-
-  private buyStripe(orderId: string): void {
-    const paymentId: string = this.uuidService.getUUID();
-
-    if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
-    } else {
-      this.loading = false;
-      this.errorService.i18nError(TRANSLATION_KEY.NO_CARD_SELECTED_ERROR);
-    }
   }
 
   private success(): void {
     this.confirmAction.emit();
   }
 
-  private track(order: Order[]): void {
-    const result = order.map((purchase) => ({
-      item_id: purchase.item_id,
-      bump_type: purchase.product_id,
-    }));
-    const itemsIds = Object.keys(order).map((key) => order[key].item_id);
-
-    const payment_method = PAYMENT_METHOD.STRIPE;
-    const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
-
-    ga('send', 'event', 'Item', 'bump-cart');
-    fbq('track', 'Purchase', {
-      value: this.cart.total,
-      currency: 'EUR',
-      content_ids: itemsIds,
-      content_type: 'product',
-    });
-  }
-
   get totalToPay(): number {
-    if (!this.cart || !this.creditInfo) {
+    if (!this.selectedItems?.length || !this.creditInfo) {
       return 0;
     }
-    const totalCreditsToPay: number = this.cart.total * this.creditInfo.factor;
+    const total = this.selectedItems.reduce((a, b) => (b.isFree ? a : +b.duration.market_code + a), 0);
+    const totalCreditsToPay: number = total * this.creditInfo.factor;
     if (totalCreditsToPay < this.creditInfo.credit) {
       return 0;
     } else {
-      return this.cart.total - this.creditInfo.credit / this.creditInfo.factor;
+      return total - this.creditInfo.credit / this.creditInfo.factor;
     }
   }
 }

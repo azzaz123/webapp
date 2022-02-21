@@ -1,6 +1,6 @@
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { BumpPackageBalance, BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { Item } from '@core/item/item';
 import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
@@ -25,21 +25,15 @@ function mapBump(bump: BumpsPackageBalanceDTO): BumpsPackageBalance {
   return bumpMapped;
 }
 
-export function mapFreeBumpsPurchase(cart: CartBase, uuidService: UuidService): BumpsPackageUseDTO[] {
-  const ordersArray: BumpsPackageUseDTO[] = [];
-  BUMP_TYPES.forEach((type: string) => {
-    cart[type].cartItems.map((cartItem: CartItem) => {
-      if (cartItem.isFree) {
-        let orderParsed = {
-          id: uuidService.getUUID(),
-          type,
-          item_id: cartItem.item.id,
-        };
-        ordersArray.push(orderParsed);
-      }
-    });
+export function mapFreeBumpsPurchase(cart: SelectedProduct[], uuidService: UuidService): BumpsPackageUseDTO[] {
+  return cart.map((cartItem) => {
+    let orderParsed: BumpsPackageUseDTO = {
+      id: uuidService.getUUID(),
+      type: cartItem.productType,
+      item_id: cartItem.item.id,
+    };
+    return orderParsed;
   });
-  return ordersArray;
 }
 
 export function mapItemsWithProducts(itemsWithProducts: ItemsWithAvailableProductsResponse[]): ItemWithProducts[] {
@@ -51,6 +45,7 @@ function mapItemWithProducts(itemWithProducts: ItemsWithAvailableProductsRespons
     item: mapItemsToLegacyItem(itemWithProducts),
     products: itemWithProducts.productList,
     isProvincialBump: !itemWithProducts.productList.find((product) => product.name === BUMP_TYPE.CITY_BUMP),
+    subscription: null,
   };
 }
 
@@ -78,6 +73,7 @@ export function mapItemWithProductsAndSubscriptionBumps(
       itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionPackageType =
         durationIndex > -1 ? subscription.type : null;
     });
+    itemWithProducts.subscription = subscription;
   }
   return itemWithProducts;
 }

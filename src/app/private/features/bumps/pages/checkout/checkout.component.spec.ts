@@ -13,6 +13,8 @@ import { ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED } from '@fixtures/bump-package.fix
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { UserService } from '@core/user/user.service';
+import { MockUserService } from '@fixtures/user.fixtures.spec';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
@@ -78,6 +80,10 @@ describe('CheckoutComponent', () => {
                 };
               },
             },
+          },
+          {
+            provide: UserService,
+            useValue: MockUserService,
           },
         ],
         schemas: [NO_ERRORS_SCHEMA],

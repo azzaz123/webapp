@@ -1,11 +1,19 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Item } from '@core/item/item';
 import { Duration, Product } from '@core/item/item-response.interface';
-import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse, SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 
 export interface ItemWithProducts {
   item: Item;
   products: ProductMapped[];
+  subscription: SubscriptionsResponse;
   isProvincialBump: boolean;
+}
+
+export interface ItemsBySubscription {
+  items: ItemWithProducts[];
+  subscription: SubscriptionsResponse;
+  availableFreeBumps: number;
 }
 
 export interface ProductMapped extends Product {
@@ -15,4 +23,18 @@ export interface ProductMapped extends Product {
 export interface DurationMapped extends Duration {
   isFreeOption?: boolean;
   subscriptionPackageType?: SUBSCRIPTION_CATEGORY_TYPES;
+}
+
+export interface SelectedProduct {
+  item: Item;
+  productType: string;
+  duration: DurationMapped;
+  isFree: boolean;
+  isProvincialBump: boolean;
+}
+
+export interface BumpRequestSubject {
+  hasError?: boolean;
+  error?: unknown | HttpErrorResponse;
+  loading?: boolean;
 }
