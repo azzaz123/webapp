@@ -4,13 +4,13 @@ import { InboxMessageApi } from './api';
 export enum MessageType {
   /* Projections and realtime */
   TEXT = 'text',
+  REVIEW = 'review',
+  SHIPPING_KEYWORDS = 'shipping_keywords_in_message_detected',
   /** Projections */
   PRICE_DROP = 'price_drop',
   DELIVERY_GENERIC = 'delivery_generic',
-  SHIPPING_KEYWORDS = 'shipping_keywords_in_message_detected',
   /** Real Time Service */
   DROP_PRICE = 'drop_price',
-  REVIEW = 'review',
   DELIVERY = 'delivery',
 }
 
