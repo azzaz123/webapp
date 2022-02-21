@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Notification } from '@api/core/model/notification/notification.interface';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 import { AnalyticsPageView, ViewNotificationCenter, ANALYTICS_EVENT_NAMES, SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { Notification } from '../../core/interfaces/notification.interface';
 
 @Component({
   selector: 'tsl-notifications-inbox',
@@ -10,9 +11,11 @@ import { Notification } from '../../core/interfaces/notification.interface';
 })
 export class NotificationsInboxComponent implements OnInit {
   public notifications: Notification[] = [];
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService, private notificationApiService: NotificationApiService) {}
 
   ngOnInit(): void {
+    this.notifications = this.notificationApiService.getCachedContentCards();
+    console.log(this.notifications);
     this.trackViewNotificationCenter();
   }
 

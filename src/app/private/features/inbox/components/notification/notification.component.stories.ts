@@ -3,7 +3,7 @@ import { moduleMetadata } from '@storybook/angular';
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { NotificationComponent } from './notification.component';
-import { Notification } from '../../core/interfaces/notification.interface';
+import { Notification } from '../../../../../api/core/model/notification/notification.interface';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
 import { NOTIFICATION_PRODUCT_STATUS } from '../../core/enums/notification-product-status.enum';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';

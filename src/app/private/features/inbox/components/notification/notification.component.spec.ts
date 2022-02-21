@@ -12,7 +12,7 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
-import { Notification } from '../../core/interfaces/notification.interface';
+import { Notification } from '../../../../../api/core/model/notification/notification.interface';
 import { NotificationComponent } from './notification.component';
 
 describe('NotificationComponent', () => {

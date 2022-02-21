@@ -6,7 +6,7 @@ import { AnalyticsPageView, ViewNotificationCenter, ANALYTICS_EVENT_NAMES, SCREE
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
-import { Notification } from '../../core/interfaces/notification.interface';
+import { Notification } from '../../../../../api/core/model/notification/notification.interface';
 import { NotificationsInboxComponent } from './notifications-inbox.component';
 
 describe('NotificationsInboxComponent', () => {

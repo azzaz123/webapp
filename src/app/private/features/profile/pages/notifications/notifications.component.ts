@@ -18,6 +18,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./notifications.component.scss'],
 })
 export class NotificationsComponent implements OnInit {
+  // TODO
+  // RENAME ALL RELATED WITH NOTIFICATIONS ======> COMUNICATION CONSENT (COMPONENT, API (APP/API/NOTIFICATIONS), FIXTURES...)
   public allowSegmentation: boolean;
   public notificationsSettings$: Observable<NotificationSettings[]> = this.getMyNotificationsSettings();
 
