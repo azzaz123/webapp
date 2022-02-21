@@ -7,10 +7,10 @@ import { GET_DELIVERY_SCHEDULES_ENDPOINT } from './endpoints';
 @Injectable({
   providedIn: 'root',
 })
-export class UserScheduleHttpService {
+export class GetUserScheduleHttpService {
   constructor(private http: HttpClient) {}
 
-  public getHomePickUpDeliverySchedules(): Observable<DeliveryScheduleDto> {
+  public homePickUpDeliverySchedules(): Observable<DeliveryScheduleDto> {
     return this.http.get<DeliveryScheduleDto>(GET_DELIVERY_SCHEDULES_ENDPOINT);
   }
 }
