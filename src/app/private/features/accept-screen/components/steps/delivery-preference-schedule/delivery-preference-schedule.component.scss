@@ -1,0 +1,11 @@
+@import '~style/common';
+
+.DeliveryPreferenceSchedule {
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: 400;
+  }
+  &__text {
+    color: $blue-grey-1;
+  }
+}

@@ -93,6 +93,11 @@ export class AcceptScreenModalComponent implements OnInit {
     );
   }
 
+  public goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
+    this.stepper.goToStep(slideId);
+    this.refreshStepProperties(slideId);
+  }
+
   private rejectRequest(): void {
     this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
       () => {
@@ -103,11 +108,6 @@ export class AcceptScreenModalComponent implements OnInit {
         this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
       }
     );
-  }
-
-  private goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
-    this.stepper.goToStep(slideId);
-    this.refreshStepProperties(slideId);
   }
 
   private refreshStepProperties(slideId: number): void {

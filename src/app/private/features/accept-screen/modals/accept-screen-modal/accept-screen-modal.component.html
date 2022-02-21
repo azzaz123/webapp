@@ -79,9 +79,13 @@
                             >{{ carrier.secondaryInformation }}</span
                           >
                           <span class="AcceptScreenModal__carrierRestrictions d-block p-2 mt-2">{{ carrier.restrictions }}</span>
-                          <tsl-button *ngIf="carrier.buttonProperties.isShowed" class="mt-3 mb-1 carrierButton" className="btn-secondary">{{
-                            carrier.buttonProperties.text
-                          }}</tsl-button>
+                          <tsl-button
+                            *ngIf="carrier.buttonProperties.isShowed"
+                            (click)="goToStep(carrier.buttonProperties.redirectStep)"
+                            class="mt-3 mb-1 carrierButton"
+                            className="btn-secondary"
+                            >{{ carrier.buttonProperties.text }}</tsl-button
+                          >
                         </div>
                       </div>
                     </div>
@@ -154,6 +158,9 @@
           [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
           (addressSaveSucceded)="goToAcceptScreen()"
         ></tsl-delivery-address>
+      </ng-template>
+      <ng-template step>
+        <tsl-delivery-preference-schedule></tsl-delivery-preference-schedule>
       </ng-template>
     </tsl-stepper>
   </div>

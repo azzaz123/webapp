@@ -10,6 +10,7 @@ import { ButtonModule } from '@shared/button/button.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { DeliveryPreferenceScheduleComponent } from './components/steps/delivery-preference-schedule/delivery-preference-schedule.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,6 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
     CustomCurrencyModule,
     DeliveryRadioSelectorModule,
   ],
-  declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent],
+  declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent, DeliveryPreferenceScheduleComponent],
 })
 export class AcceptScreenModule {}
