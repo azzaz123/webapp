@@ -8,7 +8,7 @@ import { LabeledSearchLocation } from '@public/features/search/core/services/int
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Location } from '@api/core/model';
 
-const HALF_SECOND: number = 500;
+export const HALF_SECOND: number = 500;
 
 @Component({
   selector: 'tsl-searchable-movable-map',
@@ -16,7 +16,7 @@ const HALF_SECOND: number = 500;
   styleUrls: ['./searchable-movable-map.component.scss'],
 })
 export class SearchableMovableMapComponent implements OnInit, OnDestroy {
-  @Output() locationCoordinates: EventEmitter<Location> = new EventEmitter();
+  @Output() selectedLocationCoordinates: EventEmitter<Location> = new EventEmitter();
 
   public readonly SEARCH_LOCATION_PLACEHOLDER = $localize`:@@map_view_all_users_all_all_searchbox_placeholder:Busca por dirección...`;
   public searchLocationForm: FormGroup;
@@ -32,7 +32,7 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.onSelectLocationSuggestion().subscribe((location: LabeledSearchLocation) => {
         this.searchLocationForm.setValue({ searchLocation: location.label });
-        this.locationCoordinates.emit({
+        this.selectedLocationCoordinates.emit({
           latitude: +location.latitude,
           longitude: +location.longitude,
         });

@@ -6,6 +6,7 @@
     [placeholder]="SEARCH_LOCATION_PLACEHOLDER"
     [ngbTypeahead]="search"
     (selectItem)="selectSuggestion($event.item)"
+    [resultTemplate]="locationTemplate"
   />
   <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
   <tsl-svg-icon
@@ -17,4 +18,10 @@
     height="21"
   >
   </tsl-svg-icon>
+
+  <ng-template #locationTemplate let-location="result">
+    <div class="SearchBox__suggestion d-flex flex-column justify-content-center">
+      <span>{{ location }}</span>
+    </div>
+  </ng-template>
 </div>
