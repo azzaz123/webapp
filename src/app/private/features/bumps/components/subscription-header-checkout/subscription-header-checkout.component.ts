@@ -8,6 +8,4 @@ import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interfa
 })
 export class SubscriptionHeaderCheckoutComponent {
   @Input() subscription: SubscriptionsResponse;
-
-  constructor() {}
 }

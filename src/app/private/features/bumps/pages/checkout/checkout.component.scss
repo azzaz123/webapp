@@ -40,7 +40,7 @@
 
   &__items {
     &:not(:first-child) {
-      margin-top: 32px;
+      margin-top: $spacing-xl;
     }
   }
 
