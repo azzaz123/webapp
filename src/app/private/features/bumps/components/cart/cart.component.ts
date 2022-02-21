@@ -22,7 +22,7 @@ export class CartComponent {
 
   public hasSavedCard = true;
   public loading: boolean;
-  public card: any;
+  public card: FinancialCardOption | unknown;
   public showCard = false;
   public savedCard = true;
   public selectedCard = false;
@@ -88,7 +88,7 @@ export class CartComponent {
     }
   }
 
-  public setCardInfo(card: any): void {
+  public setCardInfo(card: unknown): void {
     this.card = card;
   }
 

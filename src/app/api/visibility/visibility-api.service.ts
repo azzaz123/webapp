@@ -145,16 +145,9 @@ export class VisibilityApiService {
   }
 
   private managePaymentResponse(paymentResponse: string): void {
-    switch (paymentResponse && paymentResponse.toUpperCase()) {
-      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.stripeResponseSubject.complete();
-        break;
-      }
-      default: {
-        this.stripeResponseSubject.next({ hasError: true, error: paymentResponse });
-        this.stripeResponseSubject.complete();
-        break;
-      }
+    if (paymentResponse && paymentResponse.toUpperCase() !== PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
+      this.stripeResponseSubject.next({ hasError: true, error: paymentResponse });
     }
+    this.stripeResponseSubject.complete();
   }
 }

@@ -67,7 +67,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   public onChangeItem(newItem: SelectedProduct, productIndex: number): void {
-    const indexCart = this.itemsSelected.findIndex((item) => item.item.id === newItem.item.id);
+    const indexCart = this.itemsSelected.findIndex((itemSelected) => itemSelected.item.id === newItem.item.id);
     if (indexCart > -1) {
       this.itemsSelected[indexCart] = newItem;
     } else {

@@ -40,6 +40,9 @@ describe('AcceptScreenService', () => {
             getRequestInfo() {
               return of(MOCK_SELLER_REQUEST);
             },
+            rejectRequest() {
+              return of({});
+            },
           },
         },
         {
@@ -147,6 +150,18 @@ describe('AcceptScreenService', () => {
       it('should return the properties mapped', () => {
         expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS));
       });
+    });
+  });
+
+  describe('when asking to reject the request', () => {
+    beforeEach(() => {
+      spyOn(sellerRequestApiService, 'rejectRequest').and.callThrough();
+
+      acceptScreenService.rejectRequest(MOCK_REQUEST_ID).subscribe();
+    });
+
+    it('should ask to reject the request', () => {
+      expect(sellerRequestApiService.rejectRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });
 

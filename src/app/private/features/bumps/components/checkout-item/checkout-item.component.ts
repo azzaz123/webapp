@@ -85,7 +85,7 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
     }
   }
 
-  public onRemoveItem(itemId: string, type: string): void {
+  public onRemoveItem(itemId: string): void {
     this.itemRemoved.emit(itemId);
   }
 
