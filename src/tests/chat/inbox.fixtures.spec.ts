@@ -622,3 +622,14 @@ export const MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES: InboxConversati
   false,
   ''
 );
+
+export const MOCK_INBOX_CONVERSATION_WITH_SHIPPING_KEYWORDS_THIRD_VOICES: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM,
+  '1',
+  [MOCK_INBOX_THIRD_VOICE_SHIPPING_KEYWORDS, ...MOCK_INBOX_CONVERSATION_BASIC.messages],
+  false,
+  ''
+);
