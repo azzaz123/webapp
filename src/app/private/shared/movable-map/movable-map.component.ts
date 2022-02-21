@@ -40,8 +40,8 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   @Input() zoom: number = DEFAULT_VALUE_ZOOM;
 
   @Output() mapViewChangeEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
-  @Output() markerClick: EventEmitter<Location> = new EventEmitter();
-  @Output() tapMapOffMarker: EventEmitter<void> = new EventEmitter();
+  @Output() tapMarker: EventEmitter<Location> = new EventEmitter();
+  @Output() tapMap: EventEmitter<void> = new EventEmitter();
   @ViewChild('map', { static: true })
   mapEl: ElementRef;
 
@@ -110,7 +110,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
       const isNotAMarker: boolean = !(event.target instanceof H.map.Marker);
 
       if (isNotAMarker) {
-        this.tapMapOffMarker.emit();
+        this.tapMap.emit();
         this.group.getObjects().forEach((marker: H.map.Marker) => {
           marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
         });
@@ -166,7 +166,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
 
   private emitLocationOnTapMarker(event: H.util.Event): void {
     const currentLocation: H.geo.IPoint = event.target.b;
-    this.markerClick.emit({ latitude: currentLocation.lat, longitude: currentLocation.lng });
+    this.tapMarker.emit({ latitude: currentLocation.lat, longitude: currentLocation.lng });
   }
 
   private setAllOtherMarkersToNonSelected(currentMarker: H.map.Marker): void {
