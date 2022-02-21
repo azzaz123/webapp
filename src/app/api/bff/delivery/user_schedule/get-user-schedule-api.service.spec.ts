@@ -3,29 +3,29 @@ import { DeliverySchedule } from '@api/core/model/delivery/schedule/delivery-sch
 import { MOCK_USER_DELIVERY_SCHEDULE_DTO } from '@api/fixtures/delivery/user-schedule/user-delivery-schedule.dto.fixtures.spec';
 import { MOCK_DELIVERY_SCHEDULE } from '@fixtures/private/delivery/schedule/delivery-schedule.fixtures.spec';
 import { of } from 'rxjs';
-import { UserScheduleHttpService } from './http/user-schedule-http.service';
+import { GetUserScheduleHttpService } from './http/get-user-schedule-http.service';
 
-import { UserScheduleApiService } from './user-schedule-api.service';
+import { GetUserScheduleApiService } from './get-user-schedule-api.service';
 
-describe('UserScheduleApiService', () => {
-  let service: UserScheduleApiService;
-  let userScheduleHttpService: UserScheduleHttpService;
+describe('GetUserScheduleApiService', () => {
+  let service: GetUserScheduleApiService;
+  let getUserScheduleHttpService: GetUserScheduleHttpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: UserScheduleHttpService,
+          provide: GetUserScheduleHttpService,
           useValue: {
-            getHomePickUpDeliverySchedules() {
+            homePickUpDeliverySchedules() {
               return of(MOCK_USER_DELIVERY_SCHEDULE_DTO);
             },
           },
         },
       ],
     });
-    service = TestBed.inject(UserScheduleApiService);
-    userScheduleHttpService = TestBed.inject(UserScheduleHttpService);
+    service = TestBed.inject(GetUserScheduleApiService);
+    getUserScheduleHttpService = TestBed.inject(GetUserScheduleHttpService);
   });
 
   it('should be created', () => {
@@ -36,14 +36,14 @@ describe('UserScheduleApiService', () => {
     let result: DeliverySchedule;
 
     beforeEach(() => {
-      spyOn(userScheduleHttpService, 'getHomePickUpDeliverySchedules').and.callThrough();
-      service.getHomePickUpDeliverySchedules().subscribe((mappedSchedule: DeliverySchedule) => {
+      spyOn(getUserScheduleHttpService, 'homePickUpDeliverySchedules').and.callThrough();
+      service.homePickUpDeliverySchedules().subscribe((mappedSchedule: DeliverySchedule) => {
         result = mappedSchedule;
       });
     });
 
     it('should call the http service', () => {
-      expect(userScheduleHttpService.getHomePickUpDeliverySchedules).toHaveBeenCalledTimes(1);
+      expect(getUserScheduleHttpService.homePickUpDeliverySchedules).toHaveBeenCalledTimes(1);
     });
 
     it('should return the delivery schedule mapped', () => {

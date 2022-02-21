@@ -4,17 +4,17 @@ import { MOCK_USER_DELIVERY_SCHEDULE_DTO } from '@api/fixtures/delivery/user-sch
 import { DeliveryScheduleDto } from '../dtos/responses/delivery-schedule-dto.interface';
 import { GET_DELIVERY_SCHEDULES_ENDPOINT } from './endpoints';
 
-import { UserScheduleHttpService } from './user-schedule-http.service';
+import { GetUserScheduleHttpService } from './get-user-schedule-http.service';
 
-describe('UserScheduleHttpService', () => {
-  let service: UserScheduleHttpService;
+describe('GetUserScheduleHttpService', () => {
+  let service: GetUserScheduleHttpService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(UserScheduleHttpService);
+    service = TestBed.inject(GetUserScheduleHttpService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -30,7 +30,7 @@ describe('UserScheduleHttpService', () => {
     let response: DeliveryScheduleDto;
 
     beforeEach(() => {
-      service.getHomePickUpDeliverySchedules().subscribe((dto: DeliveryScheduleDto) => {
+      service.homePickUpDeliverySchedules().subscribe((dto: DeliveryScheduleDto) => {
         response = dto;
       });
     });
