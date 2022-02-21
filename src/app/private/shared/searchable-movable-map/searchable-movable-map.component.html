@@ -5,6 +5,7 @@
     type="text"
     [placeholder]="SEARCH_LOCATION_PLACEHOLDER"
     [ngbTypeahead]="search"
+    (selectItem)="selectSuggestion($event.item)"
   />
   <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
   <tsl-svg-icon
