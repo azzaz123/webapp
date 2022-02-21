@@ -1,0 +1,22 @@
+<tsl-banner [specifications]="bannerStyleProperties">
+  <div class="ActivateShipping d-flex justify-content-between">
+    <div class="w-100 d-flex align-items-center">
+      <tsl-svg-icon class="ActivateShipping__icon" [src]="ACTIVATE_SHIPPING_ICON_URL"></tsl-svg-icon>
+      <p class="mb-0">
+        <span class="ActivateShipping__description m-0" i18n="@@chat_seller_shipping_disabled_banner_description">
+          Ship it for free. And sell it faster!
+        </span>
+        <a [href]="ACTIVATE_SHIPPING_HELP_URL" target="_blank" class="ActivateShipping__helpLink">
+          <span class="ActivateShipping__helpLinkText" i18n="@@chat_seller_shipping_disabled_banner_faqs_link">Learn more</span>
+        </a>
+      </p>
+    </div>
+    <tsl-button
+      class="ActivateShipping__button"
+      [className]="'btn btn-primary btn--thin'"
+      (click)="handleClickCTA()"
+      i18n="@@chat_seller_shipping_disabled_banner_button"
+      >Activate</tsl-button
+    >
+  </div>
+</tsl-banner>

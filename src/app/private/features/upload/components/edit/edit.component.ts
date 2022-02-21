@@ -19,8 +19,9 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
 
   public item: Item;
   public urgentPrice: string = null;
-  public itemTypes: any = ITEM_TYPES;
-  public isReactivation = false;
+  public itemTypes: typeof ITEM_TYPES = ITEM_TYPES;
+  public isReactivation: boolean = false;
+  public isActivateShipping: boolean = false;
 
   private hasNotSavedChanges: boolean;
 
@@ -44,6 +45,7 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
   ngOnInit() {
     this.item = this.route.snapshot.data['item'];
     this.isReactivation = this.router.url.endsWith(UPLOAD_PATHS.REACTIVATE);
+    this.isActivateShipping = this.router.url.endsWith(UPLOAD_PATHS.ACTIVATE_SHIPPING);
 
     this.editTrackingEventService.viewTrackingReady$.pipe(take(1)).subscribe(() => {
       this.editTrackingEventService.trackViewEditItemEvent(this.item.categoryId, this.isReactivation);
