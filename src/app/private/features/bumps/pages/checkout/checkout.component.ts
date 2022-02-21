@@ -67,7 +67,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   public onChangeItem(newItem: SelectedProduct, productIndex: number): void {
-    const indexCart = this.itemsSelected.findIndex((item) => item.item.id === newItem.item.id);
+    const indexCart = this.itemsSelected.findIndex((itemSelected) => itemSelected.item.id === newItem.item.id);
     if (indexCart > -1) {
       this.itemsSelected[indexCart] = newItem;
     } else {
@@ -130,7 +130,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   private refreshCounters(productIndex: number): void {
-    if (this.itemsWithProducts[productIndex].subscription.selected_tier) {
+    if (this.itemsWithProducts[productIndex].subscription?.selected_tier) {
       const items = this.itemsWithProducts[productIndex].subscription.selected_tier.bumps.reduce((a, b) => a + b.quantity - b.used, 0);
       const used = this.itemsSelected.filter(
         (items) => items.isFree && items.duration.subscriptionPackageType === this.itemsWithProducts[productIndex].subscription.type
