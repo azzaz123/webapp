@@ -6,17 +6,28 @@
     <span class="DeliveryPreferenceSchedule__text d-block mb-3" i18n="@@time_slot_view_seller_hpu_ba_description_with_details"
       >The pick up will be on {{ '' }}. The courier company will try to adhere to the slot you indicated.</span
     >
-    <tsl-button i18n="@@time_slot_view_seller_hpu_ba_all_day_button" className="btn-secondary btn-block mb-3"
+    <tsl-button
+      i18n="@@time_slot_view_seller_hpu_ba_all_day_button"
+      className="btn-secondary btn-block mb-3"
+      (click)="selectScheduleTypePreference(SCHEDULE_TYPE.ALL_DAY)"
       >All day (from {{ '' }} to {{ '' }})</tsl-button
     >
-    <tsl-button i18n="@@time_slot_view_seller_hpu_ba_morning_button" className="btn-secondary btn-block mb-3"
+    <tsl-button
+      i18n="@@time_slot_view_seller_hpu_ba_morning_button"
+      className="btn-secondary btn-block mb-3"
+      (click)="selectScheduleTypePreference(SCHEDULE_TYPE.MORNING)"
       >Morning (from {{ '' }} to {{ '' }})</tsl-button
     >
-    <tsl-button i18n="@@time_slot_view_seller_hpu_ba_afternoon_button" className="btn-secondary btn-block"
+    <tsl-button
+      i18n="@@time_slot_view_seller_hpu_ba_afternoon_button"
+      className="btn-secondary btn-block"
+      (click)="selectScheduleTypePreference(SCHEDULE_TYPE.AFTERNOON)"
       >Afternoon (from {{ '' }} to {{ '' }})</tsl-button
     >
   </div>
   <div>
-    <tsl-button i18n="@@time_slot_view_seller_hpu_ba_save_button" className="btn-primary btn-block">Save</tsl-button>
+    <tsl-button i18n="@@time_slot_view_seller_hpu_ba_save_button" className="btn-primary btn-block" (click)="savePreference()"
+      >Save</tsl-button
+    >
   </div>
 </div>
