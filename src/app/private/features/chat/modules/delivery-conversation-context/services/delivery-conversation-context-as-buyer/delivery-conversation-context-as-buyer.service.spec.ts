@@ -104,7 +104,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         });
       });
 
-      fdescribe('and server responses without buy cost price', () => {
+      describe('and server responses without buy cost price', () => {
         beforeEach(() => {
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(null));
         });

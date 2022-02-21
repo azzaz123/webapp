@@ -53,7 +53,7 @@ export class DeliveryConversationContextService {
     }
 
     if (bannerActionType === DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING) {
-      return this.openAwarenessModal();
+      return this.deliveryConversationContextAsSellerService.handleBannerCTAClick(conversation, bannerActionType);
     }
 
     if (bannerActionType === DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE) {
