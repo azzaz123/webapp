@@ -42,13 +42,14 @@ describe('AcceptScreenModalComponent', () => {
 
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const sellerAddressHeaderStylesSelector: string = '.AcceptScreenModal__sellerWithAddressHeader';
-  const deliveryAddressSelector = 'tsl-delivery-address';
+  const carrierButtonSelector: string = '.AcceptScreenModal__carrierButton';
+  const deliveryAddressSelector: string = 'tsl-delivery-address';
+  const mapSelector: string = 'tsl-movable-map';
   const fullAddressSelector: string = '#fullAddress';
   const rejectButtonSelector: string = '#rejectButton';
   const acceptButtonSelector: string = '#acceptButton';
 
   const MOCK_ACCEPT_SCREEN_HELP_URL = 'MOCK_ACCEPT_SCREEN_HELP_URL';
-  const MOCK_UPDATE_ACCEPT_SCREEN_PROPERTIES = MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS;
 
   let activeModal: NgbActiveModal;
   let de: DebugElement;
@@ -313,6 +314,62 @@ describe('AcceptScreenModalComponent', () => {
 
             describe('and the selected option is provided...', () => {
               shouldShowCarrierInformation(carrier, currentCarrierPosition);
+            });
+          });
+
+          describe('and we click on the carrier button', () => {
+            describe('and we need to redirect to the map', () => {
+              const MOCK_SELECTED_CARRIER_REDIRECT_STEP: ACCEPT_SCREEN_STEPS = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.find(
+                (carrier) => carrier.isSelected
+              ).buttonProperties.redirectStep;
+              beforeEach(() => {
+                spyOn(component.stepper, 'goToStep').and.callThrough();
+                const carrierButton = fixture.debugElement.query(By.css(carrierButtonSelector)).nativeElement;
+
+                carrierButton.click();
+                fixture.detectChanges();
+              });
+
+              it('should go to the provided step', () => {
+                expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+                expect(component.stepper.goToStep).toHaveBeenCalledWith(MOCK_SELECTED_CARRIER_REDIRECT_STEP);
+              });
+
+              describe('the header...', () => {
+                it('should show the back arrow icon', () => {
+                  shouldShowArrowBackIcon(true);
+                });
+
+                it('should show the accept screen translated title', () => {
+                  shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[MOCK_SELECTED_CARRIER_REDIRECT_STEP]);
+                });
+
+                it('should NOT show help button', () => {
+                  shouldShowHelpButton(false);
+                });
+
+                it('should show the cross icon', () => {
+                  shouldShowCrossIcon();
+                });
+
+                describe('and we click on the close button', () => {
+                  it('should close the modal', () => {
+                    shouldCloseModalWhenCrossClick();
+                  });
+                });
+              });
+
+              it('should redirect to map step', () => {
+                expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.MAP);
+              });
+
+              it('should not detect the accept screen step as active', () => {
+                expect(component.isAcceptScreenStep).toBe(false);
+              });
+
+              it('should show the map', () => {
+                expect(fixture.debugElement.query(By.css(mapSelector))).toBeTruthy();
+              });
             });
           });
 
@@ -719,7 +776,7 @@ describe('AcceptScreenModalComponent', () => {
 
         it('should should show button when needed', () => {
           const isButtonShowed: boolean = de
-            .queryAll(By.css('.carrierButton'))
+            .queryAll(By.css(carrierButtonSelector))
             .some((button) => button.nativeElement.textContent === carrier.buttonProperties.text);
 
           if (carrier.buttonProperties.isShowed) {
