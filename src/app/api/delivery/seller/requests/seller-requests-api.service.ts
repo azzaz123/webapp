@@ -28,8 +28,8 @@ export class SellerRequestsApiService {
     );
   }
 
-  public cancelRequest(requestId: string): Observable<void> {
-    return this.sellerRequestsHttpService.cancelRequest(requestId);
+  public rejectRequest(requestId: string): Observable<void> {
+    return this.sellerRequestsHttpService.rejectRequest(requestId);
   }
 
   public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {

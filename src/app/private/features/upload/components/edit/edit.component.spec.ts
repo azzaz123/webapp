@@ -1,24 +1,28 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '@shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { of } from 'rxjs';
 import { EditTrackingEventService } from '../../core/services/edit-tracking-event/edit-tracking-event.service';
+import { UPLOAD_PATHS } from '../../upload-routing-constants';
 import { EditComponent } from './edit.component';
 
 describe('EditComponent', () => {
   let component: EditComponent;
   let fixture: ComponentFixture<EditComponent>;
   let modalService: NgbModal;
+  let router: Router;
   let analyticsService: AnalyticsService;
   let editTrackingEventService: EditTrackingEventService;
-  const componentInstance: any = {};
+  const componentInstance: Partial<ExitConfirmationModalComponent> = {};
 
   beforeEach(
     waitForAsync(() => {
@@ -65,9 +69,11 @@ describe('EditComponent', () => {
           },
           {
             provide: Router,
-            useValue: {
-              navigate() {},
-              url: '',
+            useClass: class MockRouter {
+              get url() {
+                return '';
+              }
+              navigate() {}
             },
           },
           {
@@ -90,6 +96,7 @@ describe('EditComponent', () => {
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
     modalService = TestBed.inject(NgbModal);
+    router = TestBed.inject(Router);
     analyticsService = TestBed.inject(AnalyticsService);
     editTrackingEventService = TestBed.inject(EditTrackingEventService);
   });
@@ -105,6 +112,17 @@ describe('EditComponent', () => {
       analyticsService.initialize();
 
       expect(editTrackingEventService.trackViewEditItemEvent).toHaveBeenCalledWith(component.item.categoryId, component.isReactivation);
+    });
+
+    describe('when urls is set for activate shipping', () => {
+      beforeEach(() => {
+        jest.spyOn(router, 'url', 'get').mockReturnValue(UPLOAD_PATHS.ACTIVATE_SHIPPING);
+        component.ngOnInit();
+      });
+
+      it('should notify to activate shipping to upload product', () => {
+        expect(component.isActivateShipping).toEqual(true);
+      });
     });
   });
 

@@ -160,13 +160,16 @@ describe('DeliveryConversationContextService', () => {
 
     describe('and when action is activate shipping', () => {
       beforeEach(() => {
-        spyOn(modalService, 'open');
+        spyOn(deliveryConversationContextAsSellerService, 'handleBannerCTAClick');
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING);
       });
 
       it('should open awareness modal', () => {
-        expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
-        expect(modalService.open).toHaveBeenCalledTimes(1);
+        expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledWith(
+          MOCK_INBOX_CONVERSATION_BASIC,
+          DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING
+        );
+        expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledTimes(1);
       });
     });
   });

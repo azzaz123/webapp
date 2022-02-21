@@ -1,4 +1,5 @@
 export const UPLOAD_PATHS = {
+  ACTIVATE_SHIPPING: 'activate-shipping',
   REACTIVATE: 'reactivate',
 };
 
