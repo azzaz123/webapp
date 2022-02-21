@@ -3,26 +3,33 @@
     <h1 class="DeliveryPreferenceSchedule__title DeliveryPreferenceSchedule__text mb-3" i18n="@@time_slot_view_seller_hpu_ba_title">
       Which time slot is best for you?
     </h1>
-    <span class="DeliveryPreferenceSchedule__text d-block mb-3" i18n="@@time_slot_view_seller_hpu_ba_description_with_details"
-      >The pick up will be on {{ '' }}. The courier company will try to adhere to the slot you indicated.</span
+    <span
+      *ngIf="selectedSchedule"
+      class="DeliveryPreferenceSchedule__text d-block mb-3"
+      i18n="@@time_slot_view_seller_hpu_ba_description_with_details"
+      >The pick up will be on {{ selectedSchedule.scheduleTimeRange }}. The courier company will try to adhere to the slot you
+      indicated.</span
     >
     <tsl-button
+      *ngIf="allDayDeliverySchedule"
       i18n="@@time_slot_view_seller_hpu_ba_all_day_button"
       className="btn-secondary btn-block mb-3"
       (click)="selectScheduleTypePreference(SCHEDULE_TYPE.ALL_DAY)"
-      >All day (from {{ '' }} to {{ '' }})</tsl-button
+      >All day (from {{ allDayDeliverySchedule.startTimeRange }} to {{ allDayDeliverySchedule.endTimeRange }})</tsl-button
     >
     <tsl-button
+      *ngIf="morningDeliverySchedule"
       i18n="@@time_slot_view_seller_hpu_ba_morning_button"
       className="btn-secondary btn-block mb-3"
       (click)="selectScheduleTypePreference(SCHEDULE_TYPE.MORNING)"
-      >Morning (from {{ '' }} to {{ '' }})</tsl-button
+      >Morning (from {{ morningDeliverySchedule.startTimeRange }} to {{ morningDeliverySchedule.endTimeRange }})</tsl-button
     >
     <tsl-button
+      *ngIf="afternoonDeliverySchedule"
       i18n="@@time_slot_view_seller_hpu_ba_afternoon_button"
       className="btn-secondary btn-block"
       (click)="selectScheduleTypePreference(SCHEDULE_TYPE.AFTERNOON)"
-      >Afternoon (from {{ '' }} to {{ '' }})</tsl-button
+      >Afternoon (from {{ afternoonDeliverySchedule.startTimeRange }} to {{ afternoonDeliverySchedule.endTimeRange }})</tsl-button
     >
   </div>
   <div>
