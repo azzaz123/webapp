@@ -24,6 +24,7 @@ export class NotificationComponent {
 
   public handleNotificationClick(): void {
     this.trackClickNotification();
+    if (this.notification.url) window.location.href = this.notification.url;
   }
 
   public trackClickNotification(): void {

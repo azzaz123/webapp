@@ -17,6 +17,7 @@ export function mapNotificationsFromBraze(notifications: NotificationDto[]): Not
       title: notification.title,
       description: notification.description,
       image: notification.imageUrl,
+      url: notification.url,
     };
   });
 }

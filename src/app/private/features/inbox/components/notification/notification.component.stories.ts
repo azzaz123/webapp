@@ -51,6 +51,16 @@ export const Default = Template.bind({});
 Default.args = {
   notifications: [
     {
+      variant: NOTIFICATION_VARIANT.PINNED,
+      productStatus: undefined,
+      isRead: false,
+      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
+      title: 'Pinned card',
+      description:
+        'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
+      image: 'https://picsum.photos/200/300',
+    },
+    {
       variant: NOTIFICATION_VARIANT.GENERAL,
       productStatus: undefined,
       isRead: true,
@@ -95,16 +105,6 @@ Default.args = {
       isRead: true,
       date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 6000000),
       title: 'Highlighted card',
-      description:
-        'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
-      image: 'https://picsum.photos/200/300',
-    },
-    {
-      variant: NOTIFICATION_VARIANT.PINNED,
-      productStatus: undefined,
-      isRead: false,
-      date: new Date(new Date().getTime() - Math.floor(Math.random() * 10 + 1) * 60000),
-      title: 'Pinned card',
       description:
         'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
       image: 'https://picsum.photos/200/300',
