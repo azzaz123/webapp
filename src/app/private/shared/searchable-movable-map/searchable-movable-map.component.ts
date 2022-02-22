@@ -28,7 +28,7 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   constructor(private buildForm: FormBuilder, private geoLocationService: GeolocationService) {}
 
   ngOnInit(): void {
-    this.createLocationForm();
+    this.buildSearchLocationForm();
     this.subscriptions.add(
       this.onSelectLocationSuggestion().subscribe((location: LabeledSearchLocation) => {
         this.searchLocationForm.setValue({ searchLocation: location.label });
@@ -38,7 +38,6 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
         });
       })
     );
-    this.subscriptions.add(this.searchSubscription());
   }
 
   ngOnDestroy(): void {
@@ -68,30 +67,25 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
     );
   }
 
-  public selectSuggestion(locationName: string) {
+  public selectSuggestion(locationName: string): void {
     this.selectedSuggestionSubject.next(locationName);
   }
 
-  private createLocationForm(): void {
+  private buildSearchLocationForm(): void {
     this.searchLocationForm = this.buildForm.group({
       searchLocation: [],
     });
   }
 
-  private searchSubscription(): void {
-    this.searchLocationForm
-      .get('searchLocation')
-      .valueChanges.pipe(debounceTime(HALF_SECOND), distinctUntilChanged())
-      .subscribe((searchQuery) => {
-        this.searchLocation = searchQuery;
-      });
-  }
-
   private getLocationSuggestions(locationName: string): Observable<string[]> {
     return this.geoLocationService.search(locationName).pipe(
-      map((locations: ItemPlace[]) => locations.map(({ description }) => description)),
+      map((locations: ItemPlace[]) => locations.map(({ description }) => this.reverseDescriptionWithCountryAtTheEnd(description))),
       catchError(() => of([]))
     );
+  }
+
+  private reverseDescriptionWithCountryAtTheEnd(description: string): string {
+    return description.split(',').reverse().join();
   }
 
   private getLatitudeAndLongitudeFromLocationName(locationName: string): Observable<LabeledSearchLocation> {

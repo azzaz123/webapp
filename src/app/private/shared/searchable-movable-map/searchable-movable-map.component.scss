@@ -75,3 +75,21 @@
     }
   }
 }
+:host ::ng-deep .dropdown-menu {
+  width: 100%;
+}
+:host ::ng-deep .dropdown-item {
+  background-color: transparent;
+  cursor: pointer;
+  color: $blue-grey-1;
+  border-bottom: 1px solid $blue-grey-5;
+  transition: all 0.15s linear;
+
+  .SearchBox__suggestion {
+    min-height: 57px;
+  }
+
+  &.active {
+    background-color: $blue-grey-5;
+  }
+}

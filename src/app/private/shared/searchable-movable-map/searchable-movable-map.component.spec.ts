@@ -13,6 +13,8 @@ import { of } from 'rxjs';
 import { CoordinateMother } from '../../../../tests/core/geolocation/coordinate.mother';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { DebugElement } from '@angular/core';
+import { MovableMapComponent } from '../movable-map/movable-map.component';
+import { SpinnerComponent } from '@shared/spinner/spinner.component';
 
 describe('SearchableMovableMapComponent', () => {
   let component: SearchableMovableMapComponent;
@@ -27,7 +29,7 @@ describe('SearchableMovableMapComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule, NgbTypeaheadModule, SvgIconModule],
-      declarations: [SearchableMovableMapComponent],
+      declarations: [SearchableMovableMapComponent, MovableMapComponent, SpinnerComponent],
       providers: [
         {
           provide: GeolocationService,
@@ -63,6 +65,10 @@ describe('SearchableMovableMapComponent', () => {
 
     it('should apply the glass style', () => {
       expect(fixture.debugElement.query(By.css(searchBoxGlassSelector))).toBeTruthy();
+    });
+
+    it('should render the map', () => {
+      expect(fixture.debugElement.query(By.directive(MovableMapComponent))).toBeTruthy();
     });
   });
 
@@ -113,14 +119,17 @@ describe('SearchableMovableMapComponent', () => {
       });
     });
 
-    it('should set the location name', () => {
-      expect(component.searchLocationForm.controls['searchLocation'].value).toEqual(MOCK_LOCATION_SUGGESTIONS[0].description);
+    it('should set the location name with country at the end', () => {
+      const searchLocationFormValue: string = component.searchLocationForm.controls.searchLocation.value;
+      const locationWithCountryAtTheEnd: string = MOCK_LOCATION_SUGGESTIONS[0].description.split(',').reverse().join();
+
+      expect(searchLocationFormValue).toEqual(locationWithCountryAtTheEnd);
     });
   });
 
   describe('when clicking the reset button', () => {
     beforeEach(() => {
-      component.searchLocation = MOCK_CITY_NAME;
+      component.searchLocationForm.controls.searchLocation.setValue(MOCK_CITY_NAME);
       fixture.detectChanges();
     });
     it('should reset the current typed location', fakeAsync(() => {
@@ -129,7 +138,7 @@ describe('SearchableMovableMapComponent', () => {
       resetElement.triggerEventHandler('click', {});
       tick(HALF_SECOND);
 
-      expect(component.searchLocation).toBeNull();
+      expect(component.searchLocationForm.controls.searchLocation.value).toBeNull();
       flush();
     }));
   });

@@ -1,27 +1,30 @@
-<div [formGroup]="searchLocationForm" class="SearchBox">
-  <input
-    class="SearchBox__input"
-    formControlName="searchLocation"
-    type="text"
-    [placeholder]="SEARCH_LOCATION_PLACEHOLDER"
-    [ngbTypeahead]="search"
-    (selectItem)="selectSuggestion($event.item)"
-    [resultTemplate]="locationTemplate"
-  />
-  <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
-  <tsl-svg-icon
-    *ngIf="searchLocation"
-    (click)="resetSearchQuery()"
-    class="SearchBox__reset"
-    src="/assets/icons/top-bar/search-box-reset.svg"
-    width="21"
-    height="21"
-  >
-  </tsl-svg-icon>
+<div class="container">
+  <div [formGroup]="searchLocationForm" class="SearchBox p-2">
+    <input
+      class="SearchBox__input"
+      formControlName="searchLocation"
+      type="text"
+      [placeholder]="SEARCH_LOCATION_PLACEHOLDER"
+      [ngbTypeahead]="search"
+      (selectItem)="selectSuggestion($event.item)"
+      [resultTemplate]="locationTemplate"
+    />
+    <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
+    <tsl-svg-icon
+      *ngIf="searchLocationForm.controls.searchLocation.value"
+      (click)="resetSearchQuery()"
+      class="SearchBox__reset"
+      src="/assets/icons/top-bar/search-box-reset.svg"
+      width="21"
+      height="21"
+    >
+    </tsl-svg-icon>
 
-  <ng-template #locationTemplate let-location="result">
-    <div class="SearchBox__suggestion d-flex flex-column justify-content-center">
-      <span>{{ location }}</span>
-    </div>
-  </ng-template>
+    <ng-template #locationTemplate let-location="result">
+      <div class="SearchBox__suggestion d-flex flex-column justify-content-center text-truncate">
+        <span>{{ location }}</span>
+      </div>
+    </ng-template>
+  </div>
 </div>
+<tsl-movable-map [centerCoordinates]="selectedLocationCoordinates | async"></tsl-movable-map>
