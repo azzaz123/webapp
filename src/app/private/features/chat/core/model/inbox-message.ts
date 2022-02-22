@@ -2,13 +2,15 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
 import { InboxMessageApi } from './api';
 
 export enum MessageType {
+  /* Projections and realtime */
   TEXT = 'text',
+  REVIEW = 'review',
+  SHIPPING_KEYWORDS = 'shipping_keywords_in_message_detected',
   /** Projections */
   PRICE_DROP = 'price_drop',
   DELIVERY_GENERIC = 'delivery_generic',
   /** Real Time Service */
   DROP_PRICE = 'drop_price',
-  REVIEW = 'review',
   DELIVERY = 'delivery',
 }
 
@@ -28,6 +30,7 @@ export const MESSAGES_WHITE_LIST = [
   // and hiding the components gets worse. Until then, this allows us to test delivery features with the flag
   FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.DELIVERY : null,
   FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.DELIVERY_GENERIC : null,
+  FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.SHIPPING_KEYWORDS : null,
 ];
 
 export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];

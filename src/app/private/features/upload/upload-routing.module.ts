@@ -27,6 +27,14 @@ const routes: Route[] = [
       item: ItemResolverService,
     },
   },
+  {
+    path: `:${UPLOAD_PATH_PARAMS.ID}/${UPLOAD_PATHS.ACTIVATE_SHIPPING}`,
+    component: EditComponent,
+    canDeactivate: [ExitConfirmGuard],
+    resolve: {
+      item: ItemResolverService,
+    },
+  },
 ];
 
 @NgModule({
