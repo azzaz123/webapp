@@ -22,7 +22,7 @@ export class PayviewDeliveryOverviewComponent {
   }
 
   public get showDelivery(): boolean {
-    return !!this.payviewState.delivery;
+    return !!this.payviewState?.delivery;
   }
 
   public get showDeliveryPoints(): boolean {
