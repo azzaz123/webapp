@@ -11,11 +11,15 @@
     <div class="SubscriptionsSlotItem__title">
       <span i18n="@@web_manage_catalog_subscription">Manage {{subscriptionSlot.subscription.category_name}}</span>
     </div>
-    <div class="SubscriptionsSlotItem__description">
-      <span i18n="@@web_subscriptions_slot_item_publish_more_without_category_name">You can list
-        <b>{{subscriptionSlot.available}}</b> more
-      </span>
+    <div *ngIf="subscriptionSlot.limit; else noLimitText" class="SubscriptionsSlotItem__description">
+      <b>{{subscriptionSlot.limit - subscriptionSlot.available }}/{{subscriptionSlot.limit}}</b><span ngPreserveWhitespaces> </span>
+      <span i18n="@@pro_catalog_manager_active_items_counter">active items</span>
     </div>
+    <ng-template #noLimitText>
+      <div class="SubscriptionsSlotItem__description">
+        <span i18n="@@pro_catalog_manager_unlimited_active_items_label">Unlimited active items</span>
+      </div>
+    </ng-template>
     <div *ngIf="subscriptionSlot.subscription.selected_tier.bumps[0] as zoneBump" class="SubscriptionsSlotItem__description">
       <b>{{zoneBump.used}}/{{zoneBump.quantity}}</b><span ngPreserveWhitespaces> </span>
       <span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_bumps_applied_text_no_placeholders">items highlighted</span>
