@@ -12,6 +12,8 @@ import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-sele
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { DeliveryPreferenceScheduleComponent } from './components/steps/delivery-preference-schedule/delivery-preference-schedule.component';
 import { MovableMapModule } from '@private/shared/movable-map/movable-map.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -25,6 +27,9 @@ import { MovableMapModule } from '@private/shared/movable-map/movable-map.module
     CustomCurrencyModule,
     DeliveryRadioSelectorModule,
     MovableMapModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbButtonsModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent, DeliveryPreferenceScheduleComponent],
 })
