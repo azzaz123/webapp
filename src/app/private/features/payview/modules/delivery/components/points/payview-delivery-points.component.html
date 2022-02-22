@@ -2,10 +2,10 @@
   <tsl-delivery-radio-selector class="d-block" [selectedId]="selectedDeliveryMethodIndex" (changed)="selectPoint($event)">
     <ng-template tslDeliveryRadioOption *ngFor="let deliveryMethod of deliveryMethods; index as index; even as even">
       <div class="PayviewDeliveryPoints__pointWrapper d-flex mr-2 mr-lg-3">
-        <div class="PayviewDeliveryPoints__pointIconWrapper mr-3">
+        <div class="PayviewDeliveryPoints__pointIconWrapper mr-2">
           <img class="PayviewDeliveryPoints__pointIcon" alt="deliveryMethod image" [src]="deliveryMethod.icon" />
         </div>
-        <div class="align-self-center">
+        <div class="align-self-center ml-1">
           <div class="PayviewDeliveryPoints__pointDescription">
             <span *ngIf="isPickUpPoint(deliveryMethod)" class="mb-2" i18n="@@pay_view_buyer_delivery_method_po_selector_title"
               >Pick-up point</span
