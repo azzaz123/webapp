@@ -14,12 +14,18 @@ import { ThirdVoiceDeliveryComponent } from './third-voice-delivery.component';
 @Component({
   selector: 'tsl-test-wrapper',
   template: `
-    <tsl-third-voice-delivery [message]="message" [shortMessage]="shortMessage" (clickedCTA)="clickedCTA()"></tsl-third-voice-delivery>
+    <tsl-third-voice-delivery
+      [message]="message"
+      [shortMessage]="shortMessage"
+      [loading]="loading"
+      (clickedCTA)="clickedCTA()"
+    ></tsl-third-voice-delivery>
   `,
 })
 class TestWrapperComponent {
   @Input() message: InboxMessage;
   @Input() shortMessage: boolean;
+  @Input() loading: boolean;
   clickedCTA(): void {}
 }
 
@@ -77,6 +83,32 @@ describe('ThirdVoiceDeliveryComponent', () => {
 
         it('should notify click', () => {
           expect(component.clickedCTA).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and when loading', () => {
+        beforeEach(() => {
+          component.loading = true;
+          fixture.detectChanges();
+        });
+
+        it('should set the button with loading state', () => {
+          const thirdVoiceCTAElement: DebugElement = fixture.debugElement.query(By.directive(ButtonComponent));
+
+          expect(thirdVoiceCTAElement.componentInstance.loading).toEqual(true);
+        });
+      });
+
+      describe('and when NOT loading', () => {
+        beforeEach(() => {
+          component.loading = false;
+          fixture.detectChanges();
+        });
+
+        it('should set the button with no loading state', () => {
+          const thirdVoiceCTAElement: DebugElement = fixture.debugElement.query(By.directive(ButtonComponent));
+
+          expect(thirdVoiceCTAElement.componentInstance.loading).toEqual(false);
         });
       });
     });
