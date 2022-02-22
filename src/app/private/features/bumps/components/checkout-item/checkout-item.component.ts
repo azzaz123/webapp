@@ -3,7 +3,7 @@ import { Duration, Product } from '@core/item/item-response.interface';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
-import { Perks } from '@core/subscriptions/subscriptions.interface';
+import { Bumps } from '@core/subscriptions/subscriptions.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
@@ -78,19 +78,6 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
     this.getAvailableProducts();
   }
 
-  private showBumpLimitModal(): void {
-    const modalRef = this.modalService.open(ProModalComponent, { windowClass: 'pro-modal' });
-    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_limit];
-    modalRef.result.then(
-      () => {
-        this.isFreeOptionSelected = false;
-      },
-      () => {
-        this.isFreeOptionSelected = false;
-      }
-    );
-  }
-
   public onRemoveItem(itemId: string): void {
     this.itemRemoved.emit(itemId);
   }
@@ -135,10 +122,23 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
     return freeTypes;
   }
 
-  private getFirstAvailableFreeOption(): Perks {
+  private getFirstAvailableFreeOption(): Bumps {
     if (!this.itemWithProducts.subscription?.selected_tier) {
       return null;
     }
     return this.itemWithProducts.subscription?.selected_tier?.bumps.find((bump) => bump.used < bump.quantity);
+  }
+
+  private showBumpLimitModal(): void {
+    const modalRef = this.modalService.open(ProModalComponent, { windowClass: 'pro-modal' });
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_limit];
+    modalRef.result.then(
+      () => {
+        this.isFreeOptionSelected = false;
+      },
+      () => {
+        this.isFreeOptionSelected = false;
+      }
+    );
   }
 }

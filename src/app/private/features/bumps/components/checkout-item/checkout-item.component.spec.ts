@@ -41,6 +41,7 @@ describe('CheckoutItemComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutItemComponent);
+    modalService = TestBed.inject(NgbModal);
     component = fixture.componentInstance;
     component.itemWithProducts = ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0];
     component.creditInfo = {
@@ -152,12 +153,13 @@ describe('CheckoutItemComponent', () => {
         });
         expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_limit]);
       });
-      it('should unselect items', () => {
+      it('should unselect items', fakeAsync(() => {
         component.toggleItem();
+        tick();
         fixture.detectChanges();
 
         expect(component.isFreeOptionSelected).toBe(false);
-      });
+      }));
     });
   });
 });
