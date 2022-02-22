@@ -16,7 +16,7 @@ import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.
 export class CheckoutItemComponent implements OnInit, OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
-  @Input() availableFreeBumps: number;
+  @Input() availableFreeBumps: number = 0;
   @Output() itemChanged: EventEmitter<SelectedProduct> = new EventEmitter();
   @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
   public selectedType: Product;
@@ -72,17 +72,23 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
 
   public toggleItem(): void {
     if (this.isFreeOptionSelected && !this.availableFreeBumps) {
-      const modalRef = this.modalService.open(ProModalComponent, { windowClass: 'pro-modal' });
-      modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_limit];
-      modalRef.result.then(
-        () => {
-          this.isFreeOptionSelected = false;
-        },
-        () => (this.isFreeOptionSelected = false)
-      );
-    } else {
-      this.getAvailableProducts();
+      this.showBumpLimitModal();
+      return;
     }
+    this.getAvailableProducts();
+  }
+
+  private showBumpLimitModal(): void {
+    const modalRef = this.modalService.open(ProModalComponent, { windowClass: 'pro-modal' });
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_limit];
+    modalRef.result.then(
+      () => {
+        this.isFreeOptionSelected = false;
+      },
+      () => {
+        this.isFreeOptionSelected = false;
+      }
+    );
   }
 
   public onRemoveItem(itemId: string): void {
