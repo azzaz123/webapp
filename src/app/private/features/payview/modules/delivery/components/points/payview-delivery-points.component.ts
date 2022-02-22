@@ -32,7 +32,11 @@ export class PayviewDeliveryPointsComponent {
     // TODO -> Change current selection and deselect previous selection
   }
 
+  public get showDeliveryMethods(): boolean {
+    return !!this.deliveryMethods && !!this.deliveryCosts;
+  }
+
   private toString(money: Money): string {
-    return `${money.amount.toString()}${money.currency.symbol}`;
+    return !!money ? `${money.amount.toString()}${money.currency.symbol}` : '';
   }
 }
