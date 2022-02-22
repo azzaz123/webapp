@@ -1,0 +1,5 @@
+export enum SCHEDULE_TYPE {
+  ALL_DAY,
+  MORNING,
+  AFTERNOON,
+}
