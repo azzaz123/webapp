@@ -1,11 +1,11 @@
-@import '~web-styleguide/scss/colors';
-@import '~web-styleguide/scss/spacing';
+@use 'sass:math';
+@import '~style/common';
 
-$spacing-10: 10px;
-$spacing-14: 14px;
+$spacing-10: math.div(10px, 16px) * $spacer;
+$spacing-14: math.div(14px, 16px) * $spacer;
 
 .PayviewSummaryPaymentMethod {
-  background: rgba(236, 239, 241, 0.7);
+  background: $payview-summary-grey;
   border-radius: $spacing-10;
   margin-top: -$spacing-m;
   padding-top: $spacing-m;
