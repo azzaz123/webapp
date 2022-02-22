@@ -2,10 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DeliveryBannerComponent } from './components/delivery-banner.component';
 import { BannerModule } from '@shared/banner/banner.module';
-import { BuyBannerModule, EditPriceBannerModule } from './components/banners';
-import { AskSellerForShippingBannerModule } from './components/banners/ask-seller-for-shipping-banner/ask-seller-for-shipping-banner.module';
+import {
+  ActivateShippingBannerModule,
+  AskSellerForShippingBannerModule,
+  BuyBannerModule,
+  EditPriceBannerModule,
+} from './components/banners';
 
-const chatBannerModules = [BuyBannerModule, EditPriceBannerModule, AskSellerForShippingBannerModule];
+const chatBannerModules = [BuyBannerModule, EditPriceBannerModule, AskSellerForShippingBannerModule, ActivateShippingBannerModule];
 
 @NgModule({
   imports: [CommonModule, BannerModule, ...chatBannerModules],

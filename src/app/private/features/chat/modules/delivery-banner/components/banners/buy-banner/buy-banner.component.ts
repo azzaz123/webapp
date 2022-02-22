@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BannerSpecifications } from '@shared/banner/banner-specifications.interface';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ActionableDeliveryBannerComponent } from '../../../classes/actionable-delivery-banner.component';
-import { DELIVERY_BANNER_ACTION } from '../../../enums/delivery-banner-action.enum';
 import { ActionableDeliveryBanner } from '../../../interfaces/actionable-delivery-banner.interface';
 import { PriceableDeliveryBanner } from '../../../interfaces/priceable-delivery-banner.interface';
 
@@ -13,12 +11,6 @@ import { PriceableDeliveryBanner } from '../../../interfaces/priceable-delivery-
 })
 export class BuyBannerComponent extends ActionableDeliveryBannerComponent {
   @Input() bannerProperties: PriceableDeliveryBanner & ActionableDeliveryBanner;
-
-  public readonly bannerStyleProperties: BannerSpecifications = {
-    dismissible: false,
-    type: 'info',
-    isFullHeight: true,
-  };
 
   public readonly lotties: string[] = [
     'https://prod-delivery-resources.wallapop.com/chat-banner/box.json',

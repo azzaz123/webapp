@@ -17,10 +17,7 @@ describe('PayviewSummaryOverviewComponent', () => {
   const fakeHelpUrl: string = 'http://this_is_a_fake_help_url/';
   const payviewSummary: string = '.PayviewSummary';
   const payviewSummaryClose: string = `${payviewSummary}__close`;
-  const payviewSummaryCostDetail: string = 'tsl-payview-summary-cost-detail';
-  const payviewSummaryHeader: string = 'tsl-payview-summary-header';
   const payviewSummaryHelp: string = '#helpLink';
-  const payviewSummaryPaymentMethod: string = 'tsl-payview-summary-payment-method';
 
   let activeModalService: NgbActiveModal;
   let component: PayviewSummaryOverviewComponent;
@@ -112,25 +109,25 @@ describe('PayviewSummaryOverviewComponent', () => {
       });
 
       it('should show the summary header', () => {
-        const target = debugElement.query(By.css(payviewSummaryHeader));
+        const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target).toBeTruthy();
       });
 
       it('should assign the corresponding delivery method', () => {
-        const target = debugElement.query(By.css(payviewSummaryHeader));
+        const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target.componentInstance.deliveryMethod).toEqual(MOCK_PAYVIEW_STATE.delivery.methods.current);
       });
 
       it('should assign the corresponding image', () => {
-        const target = debugElement.query(By.css(payviewSummaryHeader));
+        const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target.componentInstance.image).toEqual(MOCK_PAYVIEW_STATE.item.mainImage);
       });
 
       it('should assign the corresponding title', () => {
-        const target = debugElement.query(By.css(payviewSummaryHeader));
+        const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target.componentInstance.title).toEqual(MOCK_PAYVIEW_STATE.item.title);
       });
@@ -148,19 +145,19 @@ describe('PayviewSummaryOverviewComponent', () => {
       });
 
       it('should show the summary cost detail', () => {
-        const target = debugElement.query(By.css(payviewSummaryCostDetail));
+        const target = debugElement.query(By.directive(PayviewSummaryCostDetailComponent));
 
         expect(target).toBeTruthy();
       });
 
       it('should assign the corresponding costs', () => {
-        const target = debugElement.query(By.css(payviewSummaryCostDetail));
+        const target = debugElement.query(By.directive(PayviewSummaryCostDetailComponent));
 
         expect((target.componentInstance as PayviewSummaryCostDetailComponent).costs).toEqual(MOCK_PAYVIEW_STATE.costs);
       });
 
       it('should assign the corresponding product name', () => {
-        const target = debugElement.query(By.css(payviewSummaryCostDetail));
+        const target = debugElement.query(By.directive(PayviewSummaryCostDetailComponent));
 
         expect((target.componentInstance as PayviewSummaryCostDetailComponent).productName).toEqual(MOCK_PAYVIEW_STATE.item.title);
       });
@@ -178,19 +175,19 @@ describe('PayviewSummaryOverviewComponent', () => {
       });
 
       it('should show the summary payment method', () => {
-        const target = debugElement.query(By.css(payviewSummaryPaymentMethod));
+        const target = debugElement.query(By.directive(PayviewSummaryPaymentMethodComponent));
 
         expect(target).toBeTruthy();
       });
 
       it('should assign the corresponding card', () => {
-        const target = debugElement.query(By.css(payviewSummaryPaymentMethod));
+        const target = debugElement.query(By.directive(PayviewSummaryPaymentMethodComponent));
 
-        expect((target.componentInstance as PayviewSummaryPaymentMethodComponent).creditCard).toEqual(MOCK_PAYVIEW_STATE.payment.card);
+        expect(target.componentInstance.creditCard).toEqual(MOCK_PAYVIEW_STATE.payment.card);
       });
 
       it('should assign the corresponding payment method', () => {
-        const target = debugElement.query(By.css(payviewSummaryPaymentMethod));
+        const target = debugElement.query(By.directive(PayviewSummaryPaymentMethodComponent));
 
         expect((target.componentInstance as PayviewSummaryPaymentMethodComponent).paymentMethod).toEqual(
           MOCK_PAYVIEW_STATE.payment.preferences.preferences
@@ -212,7 +209,7 @@ describe('PayviewSummaryOverviewComponent', () => {
       });
 
       it('should not show the summary header', () => {
-        const target = debugElement.query(By.css(payviewSummaryHeader));
+        const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target).toBeFalsy();
       });
@@ -232,7 +229,7 @@ describe('PayviewSummaryOverviewComponent', () => {
       });
 
       it('should not show the summary header', () => {
-        const target = debugElement.query(By.css(payviewSummaryHeader));
+        const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target).toBeFalsy();
       });
@@ -252,7 +249,7 @@ describe('PayviewSummaryOverviewComponent', () => {
       });
 
       it('should not show the summary body', () => {
-        const target = debugElement.query(By.css(payviewSummaryCostDetail));
+        const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target).toBeFalsy();
       });
@@ -273,7 +270,7 @@ describe('PayviewSummaryOverviewComponent', () => {
       });
 
       it('should not show the summary footer', () => {
-        const target = debugElement.query(By.css(payviewSummaryPaymentMethod));
+        const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target).toBeFalsy();
       });

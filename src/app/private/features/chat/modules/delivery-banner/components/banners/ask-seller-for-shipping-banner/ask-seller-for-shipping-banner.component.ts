@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BannerSpecifications } from '@shared/banner/banner-specifications.interface';
 import { AbstractDeliveryBannerComponent } from '../../../classes/abstract-delivery-banner.component';
 
 @Component({
@@ -10,10 +9,4 @@ import { AbstractDeliveryBannerComponent } from '../../../classes/abstract-deliv
 })
 export class AskSellerForShippingBannerComponent extends AbstractDeliveryBannerComponent {
   public readonly iconPath: string = 'assets/icons/crossed-box.svg';
-
-  public readonly bannerStyleProperties: BannerSpecifications = {
-    dismissible: false,
-    type: 'info',
-    isFullHeight: true,
-  };
 }
