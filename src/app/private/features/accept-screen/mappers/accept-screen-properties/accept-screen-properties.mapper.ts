@@ -156,12 +156,13 @@ const mapDropOffPointInformation: ToDomainMapper<LastAddressUsed, string> = (las
 };
 
 const mapDeliveryDayInformation: ToDomainMapper<TentativeSchedule, string> = (schedule: TentativeSchedule): string => {
-  const weekDay: string = schedule.pickUpStartDate.toLocaleDateString(navigatorLanguage, { weekday: 'long' }).toLowerCase();
-  const completeDate: string = schedule.pickUpStartDate
-    .toLocaleDateString(navigatorLanguage, { day: 'numeric', month: 'long', year: 'numeric' })
-    .replace(',', '')
-    .toLowerCase();
-  const hourStart: string = getHourAndMinutesFromDate(schedule.pickUpStartDate);
+  const startDate: Date = schedule.pickUpStartDate;
+  const weekDay: string = capitalizeFirstLetter(startDate.toLocaleDateString(navigatorLanguage, { weekday: 'long' }).toLowerCase());
+  const month: string = startDate.toLocaleDateString(navigatorLanguage, {
+    month: 'long',
+  });
+  const completeDate: string = `${startDate.getUTCDate()} ${month} ${startDate.getFullYear()}`;
+  const hourStart: string = getHourAndMinutesFromDate(startDate);
   const hourEnd: string = getHourAndMinutesFromDate(schedule.pickUpEndDate);
 
   return `${weekDay}, ${completeDate}, ${hourStart} - ${hourEnd}.`;
@@ -171,6 +172,7 @@ const getHourAndMinutesFromDate: ToDomainMapper<Date, string> = (date: Date): st
   return date.toLocaleTimeString(navigatorLanguage, {
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   });
 };
 
