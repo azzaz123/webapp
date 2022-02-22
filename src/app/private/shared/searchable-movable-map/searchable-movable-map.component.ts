@@ -18,7 +18,7 @@ export const HALF_SECOND: number = 500;
 export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   @Output() selectedLocationCoordinates: EventEmitter<Location> = new EventEmitter();
 
-  public readonly SEARCH_LOCATION_PLACEHOLDER = $localize`:@@map_view_all_users_all_all_searchbox_placeholder:Busca por dirección...`;
+  public readonly SEARCH_LOCATION_PLACEHOLDER = $localize`:@@collection_point_map_all_users_all_all_searchbox_placeholder:Busca por dirección...`;
   public searchLocationForm: FormGroup;
   public searchLocation: string;
   public locationSuggestions: string[];
