@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap, filter } from 'rxjs/operators';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -14,6 +14,7 @@ export const HALF_SECOND: number = 500;
   selector: 'tsl-searchable-movable-map',
   templateUrl: './searchable-movable-map.component.html',
   styleUrls: ['./searchable-movable-map.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   @Output() selectedLocationCoordinates: EventEmitter<Location> = new EventEmitter();
@@ -84,7 +85,7 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   }
 
   private reverseDescriptionWithCountryAtTheEnd(description: string): string {
-    return description.split(',').reverse().join();
+    return description.split(',').reverse().join(', ');
   }
 
   private getLatitudeAndLongitudeFromLocationName(locationName: string): Observable<LabeledSearchLocation> {

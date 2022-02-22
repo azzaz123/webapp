@@ -12,7 +12,7 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { CoordinateMother } from '../../../../tests/core/geolocation/coordinate.mother';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { DebugElement } from '@angular/core';
+import { DebugElement, ChangeDetectorRef } from '@angular/core';
 import { MovableMapComponent } from '../movable-map/movable-map.component';
 import { SpinnerComponent } from '@shared/spinner/spinner.component';
 import { Coordinate } from '@core/geolocation/address-response.interface';
@@ -25,6 +25,8 @@ describe('SearchableMovableMapComponent', () => {
   const searchBoxSelector: string = '.SearchBox';
   const searchBoxInputSelector: string = '.SearchBox__input';
   const searchBoxGlassSelector: string = '.SearchBox__glass';
+  const searchBoxSuggestionSelector: string = '.SearchBox__suggestion';
+  const searchBoxResetSelector: string = '.SearchBox__reset';
   const MOCK_CITY_NAME: string = 'Rubí';
 
   beforeEach(async () => {
@@ -104,7 +106,7 @@ describe('SearchableMovableMapComponent', () => {
       tick(HALF_SECOND);
       fixture.detectChanges();
 
-      const suggestion: DebugElement = fixture.debugElement.query(By.css('.SearchBox__suggestion'));
+      const suggestion: DebugElement = fixture.debugElement.query(By.css(searchBoxSuggestionSelector));
       suggestion.nativeNode.click();
       tick(HALF_SECOND);
 
@@ -120,7 +122,7 @@ describe('SearchableMovableMapComponent', () => {
 
     it('should set the location name with country at the end', () => {
       const searchLocationFormValue: string = component.searchLocationForm.controls.searchLocation.value;
-      const locationWithCountryAtTheEnd: string = MOCK_LOCATION_SUGGESTIONS[0].description.split(',').reverse().join();
+      const locationWithCountryAtTheEnd: string = MOCK_LOCATION_SUGGESTIONS[0].description.split(',').reverse().join(', ');
 
       expect(searchLocationFormValue).toEqual(locationWithCountryAtTheEnd);
     });
@@ -128,13 +130,15 @@ describe('SearchableMovableMapComponent', () => {
 
   describe('when clicking the reset button', () => {
     beforeEach(() => {
+      const changeDetectorRef = fixture.debugElement.injector.get<ChangeDetectorRef>(ChangeDetectorRef);
+
       component.searchLocationForm.controls.searchLocation.setValue(MOCK_CITY_NAME);
-      fixture.detectChanges();
+      changeDetectorRef.detectChanges();
     });
     it('should reset the current typed location', fakeAsync(() => {
-      const resetElement: DebugElement = fixture.debugElement.query(By.css('.SearchBox__reset'));
+      const resetButton: DebugElement = fixture.debugElement.query(By.css(searchBoxResetSelector));
 
-      resetElement.triggerEventHandler('click', {});
+      resetButton.triggerEventHandler('click', {});
       tick(HALF_SECOND);
 
       expect(component.searchLocationForm.controls.searchLocation.value).toBeNull();
