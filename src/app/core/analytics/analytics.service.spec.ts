@@ -5,7 +5,7 @@ import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec'
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import mParticle from '@mparticle/web-sdk';
 import { DeviceService } from '@core/device/device.service';
-import { MARKET_PROVIDER } from '../../../configs/market.config';
+import { MARKET_PROVIDER } from '@configs/market.config';
 import { LOCALE_ID } from '@angular/core';
 import { APP_LOCALE_MOCK, MARKET_MOCK } from '@fixtures/analytics.fixtures.spec';
 
@@ -114,6 +114,7 @@ describe('AnalyticsService', () => {
           identityCallback: expect.anything(),
           isDevelopmentMode: expect.anything(),
           dataPlan: expect.anything(),
+          kits: expect.anything(),
         });
       });
     });
@@ -132,6 +133,7 @@ describe('AnalyticsService', () => {
           identityCallback: expect.anything(),
           isDevelopmentMode: expect.anything(),
           dataPlan: expect.anything(),
+          kits: expect.anything(),
         });
       });
     });

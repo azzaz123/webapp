@@ -85,7 +85,7 @@ export class AnalyticsService {
     mParticle.logPageView(page.name, page.attributes as any, page.flags as any);
   }
 
-  public loginUser(userIdentities: UserIdentities, callback: () => void): void {
+  public loginUser(userIdentities: UserIdentities, callback?: () => void): void {
     mParticle.Identity.login({ userIdentities }, callback);
   }
 

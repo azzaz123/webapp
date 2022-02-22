@@ -27,16 +27,13 @@ export class LoginService {
     @Inject(WINDOW_TOKEN) private window: Window
   ) {}
 
-  public login(body: LoginRequest, callback: () => void): Observable<LoginResponse> {
+  public login(body: LoginRequest, callback?: () => void): Observable<LoginResponse> {
     body.metadata = this.getMetadata();
     return this.httpClient.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body).pipe(
       tap((r) => {
         this.storeData(r);
 
-        // This method call's purpose is to simulate web SEO's login behaviour in production
-        this.analyticsService.loginUser({ customerid: r.registerInfo.userUUID, email: body.emailAddress }, () => {
-          callback();
-        });
+        this.analyticsService.loginUser({ customerid: r.registerInfo.userUUID, email: body.emailAddress }, callback);
       })
     );
   }

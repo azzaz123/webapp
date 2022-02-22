@@ -56,7 +56,7 @@ import {
   USER_UNSUBSCRIBE_REASONS_ENDPOINT,
   UserService,
 } from './user.service';
-import mParticle from '@mparticle/web-sdk';
+import mParticle, { UserIdentities } from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
 import { LOCALE_ID } from '@angular/core';
 import { StoreLocation, StoreLocationResponse } from '@core/geolocation/address-response.interface';
@@ -360,6 +360,7 @@ describe('Service: User', () => {
     });
 
     it('should call deleteAccessToken and call event passing direct url and call flush permissions', () => {
+      spyOn(mParticle.Identity, 'logout').and.callFake((userIdentities: UserIdentities, callback) => callback({ getUser: () => true }));
       const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
 
       service.logout('redirect_url').subscribe();
@@ -372,7 +373,7 @@ describe('Service: User', () => {
     });
 
     it('should call mparticle logout', () => {
-      spyOn(mParticle.Identity, 'logout');
+      spyOn(mParticle.Identity, 'logout').and.callFake((userIdentities: UserIdentities, callback) => callback({ getUser: () => true }));
       const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
 
       service.logout('redirect_url').subscribe();

@@ -21,7 +21,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { InboxUser } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
-import mParticle from '@mparticle/web-sdk';
+import mParticle, { IdentityResult } from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { SITE_URL } from '@configs/site-url.config';
@@ -361,10 +361,10 @@ export class UserService {
   }
 
   // FIXME: This should be handled through the analytics service
-  private logoutMParticle(callback: any): void {
-    const identityCallback = (result: any) => {
+  private logoutMParticle(callback: () => void): void {
+    const identityCallback = (result: IdentityResult) => {
       if (result.getUser()) {
-        return callback;
+        callback();
       }
     };
     mParticle.Identity.logout({ userIdentities: {} }, identityCallback);

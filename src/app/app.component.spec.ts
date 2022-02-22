@@ -14,6 +14,8 @@ import { MockSessionService } from '@fixtures/session-service.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 
 import { AppComponent } from './app.component';
+import { UserService } from '@core/user/user.service';
+import { MockUserService } from '@fixtures/user.fixtures.spec';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -35,6 +37,7 @@ describe('AppComponent', () => {
         { provide: SessionService, useClass: MockSessionService },
         { provide: DeviceService, useValue: MockDeviceService },
         { provide: CookieService, useValue: MockCookieService },
+        { provide: UserService, useValue: MockUserService },
         {
           provide: StandaloneService,
           useValue: { standalone: false },
