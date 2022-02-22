@@ -4,7 +4,7 @@ export interface Appboy {
     toggleContentCards(): void;
   };
 
-  initialize(apiKey: string, config: { enableHtmlInAppMessages: boolean; manageServiceWorkerExternally: boolean }): void;
+  initialize(apiKey: string, config: { manageServiceWorkerExternally: boolean }): void;
 
   openSession(): void;
   changeUser(id: string): void;

@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       this.loginService
         .login(this.loginForm.value, () => {
           this.router.navigate(['/chat']);
-          window.location.reload(true);
+          window.location.reload();
         })
         .subscribe({
           error: (res) => {

@@ -56,7 +56,8 @@ import {
   USER_UNSUBSCRIBE_REASONS_ENDPOINT,
   UserService,
 } from './user.service';
-import mParticle, { UserIdentities } from '@mparticle/web-sdk';
+import * as mParticle from '@mparticle/web-sdk';
+import { UserIdentities } from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
 import { LOCALE_ID } from '@angular/core';
 import { StoreLocation, StoreLocationResponse } from '@core/geolocation/address-response.interface';
@@ -65,13 +66,9 @@ import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 
 jest.mock('@mparticle/web-sdk', () => ({
-  __esModule: true,
-  default: {
-    Identity: {
-      logout: () => null,
-    },
+  Identity: {
+    logout: () => null,
   },
-  namedExport: 'mParticle',
 }));
 
 describe('Service: User', () => {

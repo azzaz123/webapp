@@ -11,7 +11,6 @@ import { LoginRequest } from '../interfaces/login.request';
 import { LoginResponse } from '../interfaces/login.response';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { ExternalCommsService } from '@core/external-comms.service';
 
 export const LOGIN_ENDPOINT = 'api/v3/users/access/login';
 
@@ -23,7 +22,6 @@ export class LoginService {
     private accessTokenService: AccessTokenService,
     private deviceService: DeviceService,
     private analyticsService: AnalyticsService,
-    private externalComms: ExternalCommsService,
     @Inject(WINDOW_TOKEN) private window: Window
   ) {}
 

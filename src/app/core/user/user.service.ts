@@ -21,7 +21,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { InboxUser } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
-import mParticle, { IdentityResult } from '@mparticle/web-sdk';
+import * as mParticle from '@mparticle/web-sdk';
+import { IdentityResult } from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { SITE_URL } from '@configs/site-url.config';

@@ -3,32 +3,28 @@ import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
-import mParticle from '@mparticle/web-sdk';
 import { DeviceService } from '@core/device/device.service';
 import { MARKET_PROVIDER } from '@configs/market.config';
 import { LOCALE_ID } from '@angular/core';
 import { APP_LOCALE_MOCK, MARKET_MOCK } from '@fixtures/analytics.fixtures.spec';
+import * as mParticle from '@mparticle/web-sdk';
 
 const user = {
   setUserAttribute: () => {},
 };
 
 jest.mock('@mparticle/web-sdk', () => ({
-  __esModule: true,
-  default: {
-    init: (key, config) => {
-      config.identityCallback({
-        getUser: () => user,
-      });
-    },
-    logEvent: (_eventName, _eventType, _eventAttributes) => {},
-    logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
-    ready: () => {},
-    Identity: {
-      getCurrentUser: () => user,
-    },
+  init: (key, config) => {
+    config.identityCallback({
+      getUser: () => user,
+    });
   },
-  namedExport: 'mParticle',
+  logEvent: (_eventName, _eventType, _eventAttributes) => {},
+  logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
+  ready: () => {},
+  Identity: {
+    getCurrentUser: () => user,
+  },
 }));
 
 describe('AnalyticsService', () => {
@@ -71,7 +67,6 @@ describe('AnalyticsService', () => {
   describe('initialize', () => {
     describe('when there is an identifier in cookies', () => {
       it('should initialize the analytics library with existing identifier', () => {
-        let user = mParticle.Identity.getCurrentUser();
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(user, 'setUserAttribute');
         spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');

@@ -16,7 +16,7 @@ describe('ExternalCommsService', () => {
 
   describe('when initializing Braze communications', () => {
     it('should initialize Braze configuration', fakeAsync(() => {
-      const MOCK_BRAZE_CONFIG = { enableHtmlInAppMessages: true, manageServiceWorkerExternally: true };
+      const MOCK_BRAZE_CONFIG = { manageServiceWorkerExternally: true };
       spyOn(appboy, 'initialize');
 
       service.initializeBraze();

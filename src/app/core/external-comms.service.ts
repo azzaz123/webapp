@@ -16,11 +16,9 @@ export class ExternalCommsService {
   }
 
   public initializeBraze(): void {
-    if (appboy) {
-      this.configureBraze();
-      this.openBrazeSession();
-      this._brazeReady$.next();
-    }
+    this.configureBraze();
+    this.openBrazeSession();
+    this._brazeReady$.next();
   }
 
   public openBrazeSession(): void {
@@ -35,7 +33,6 @@ export class ExternalCommsService {
       appboy.toggleAppboyLogging();
     }
     appboy.initialize(environment.appboy, {
-      enableHtmlInAppMessages: true,
       manageServiceWorkerExternally: true,
     });
   }

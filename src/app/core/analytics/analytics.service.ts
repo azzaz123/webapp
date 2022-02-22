@@ -1,5 +1,6 @@
 import { Observable, ReplaySubject } from 'rxjs';
-import mParticle, { IdentityResult, MPConfiguration, UserIdentities, User as MPUser } from '@mparticle/web-sdk';
+import * as mParticle from '@mparticle/web-sdk';
+import { User as MPUser, Identity, IdentityResult, MPConfiguration, UserIdentities } from '@mparticle/web-sdk';
 import appboyKit from '@mparticle/web-appboy-kit';
 import { UserService } from './../user/user.service';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
@@ -53,10 +54,6 @@ export class AnalyticsService {
     return this._localeId;
   }
 
-  public getMPUser(): MPUser | undefined {
-    return mParticle.Identity.getCurrentUser();
-  }
-
   public setUserAttribute(key: string, value: string) {
     this.getMPUser()?.setUserAttribute(key, value);
   }
@@ -86,7 +83,11 @@ export class AnalyticsService {
   }
 
   public loginUser(userIdentities: UserIdentities, callback?: () => void): void {
-    mParticle.Identity.login({ userIdentities }, callback);
+    Identity.login({ userIdentities }, callback);
+  }
+
+  private getMPUser(): MPUser | undefined {
+    return Identity.getCurrentUser();
   }
 
   private mParticleIdentityCallback(result: IdentityResult): void {
