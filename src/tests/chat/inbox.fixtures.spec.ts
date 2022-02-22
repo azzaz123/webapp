@@ -467,6 +467,17 @@ export const MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE_WITHOUT_PAYLOAD: In
   MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.type
 );
 
+export const MOCK_INBOX_THIRD_VOICE_SHIPPING_KEYWORDS: InboxMessage = new InboxMessage(
+  '5d0614b7-d9af-4bc4-ae8c-d984f60f1695',
+  '0j2y2ro33nzy',
+  'Haz envíos 100% seguros a través de Wallapop Envíos y ¡ahórrate los sustos!',
+  undefined,
+  undefined,
+  new Date(),
+  MessageStatus.RECEIVED,
+  MessageType.SHIPPING_KEYWORDS
+);
+
 export const MOCK_INBOX_CONVERSATION_BASIC: InboxConversation = new InboxConversation(
   'abcd',
   new Date(),
@@ -608,6 +619,17 @@ export const MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES: InboxConversati
   MOCK_INBOX_ITEM,
   '1',
   [MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE, ...MOCK_INBOX_CONVERSATION_BASIC.messages],
+  false,
+  ''
+);
+
+export const MOCK_INBOX_CONVERSATION_WITH_SHIPPING_KEYWORDS_THIRD_VOICES: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM,
+  '1',
+  [MOCK_INBOX_THIRD_VOICE_SHIPPING_KEYWORDS, ...MOCK_INBOX_CONVERSATION_BASIC.messages],
   false,
   ''
 );

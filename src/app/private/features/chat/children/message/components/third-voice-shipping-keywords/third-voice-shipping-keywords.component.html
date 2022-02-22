@@ -1,0 +1,5 @@
+<tsl-third-voice-message *ngIf="!shortMessage" [message]="message">
+    <span>{{ message.text }}</span>
+</tsl-third-voice-message>
+
+<span *ngIf="shortMessage">{{ message.text }}</span>
