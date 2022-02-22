@@ -10,6 +10,7 @@ import {
   MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES,
   MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE,
   MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE,
+  MOCK_INBOX_THIRD_VOICE_SHIPPING_KEYWORDS,
 } from '@fixtures/chat';
 import { DateCalendarPipe } from 'app/shared/pipes';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -18,6 +19,7 @@ import { InboxConversationComponent } from './inbox-conversation.component';
 import { MomentCalendarSpecService } from '@core/i18n/moment/moment-calendar-spec.service';
 import { ThirdVoiceDeliveryComponent } from '../../../message/components/third-voice-delivery/third-voice-delivery.component';
 import { By } from '@angular/platform-browser';
+import { ThirdVoiceShippingKeywordsComponent } from '../../../message';
 
 describe('Component: Conversation', () => {
   let inboxConversationService: InboxConversationService;
@@ -28,7 +30,7 @@ describe('Component: Conversation', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CommonModule, NgxPermissionsModule.forRoot()],
-        declarations: [InboxConversationComponent, DateCalendarPipe, ThirdVoiceDeliveryComponent],
+        declarations: [InboxConversationComponent, DateCalendarPipe, ThirdVoiceDeliveryComponent, ThirdVoiceShippingKeywordsComponent],
         providers: [
           I18nService,
           MomentCalendarSpecService,
@@ -155,6 +157,20 @@ describe('Component: Conversation', () => {
         const deliveryThirdVoice: DebugElement = fixture.debugElement.query(By.directive(ThirdVoiceDeliveryComponent));
 
         expect(deliveryThirdVoice).toBeTruthy();
+      });
+    });
+
+    describe('and when it is a shipping keyword third voice type', () => {
+      beforeEach(() => {
+        MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES.lastMessage = MOCK_INBOX_THIRD_VOICE_SHIPPING_KEYWORDS;
+        component.conversation = MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES;
+        fixture.detectChanges();
+      });
+
+      it('should display the third voice', () => {
+        const shippingKeywordsThirdVoice: DebugElement = fixture.debugElement.query(By.directive(ThirdVoiceShippingKeywordsComponent));
+
+        expect(shippingKeywordsThirdVoice).toBeTruthy();
       });
     });
   });
