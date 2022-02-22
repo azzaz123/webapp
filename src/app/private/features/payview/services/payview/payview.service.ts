@@ -100,7 +100,7 @@ export class PayviewService {
   }
 
   private get card(): Observable<CreditCard> {
-    return this.creditCardService.get();
+    return this.creditCardService.get().pipe(catchError(() => of(null)));
   }
 
   private getCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
