@@ -6,6 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PayviewDeliveryOverviewComponent } from '@private/features/payview/modules/delivery/components/overview/payview-delivery-overview.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
+import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 
 describe('PayviewDeliveryOverviewComponent', () => {
   const fakeHelpUrl: string = 'http://this_is_a_fake_help_url/';
@@ -42,17 +43,13 @@ describe('PayviewDeliveryOverviewComponent', () => {
       customerHelpService = TestBed.inject(CustomerHelpService);
       spyOn(customerHelpService, 'getPageUrl').and.callThrough();
 
+      component.payviewState = MOCK_PAYVIEW_STATE;
+
       fixture.detectChanges();
     });
 
     it('should create', () => {
       expect(component).toBeTruthy();
-    });
-
-    it('should show the help link', () => {
-      const target = debugElement.query(By.css(payviewSummaryHelp));
-
-      expect(target).toBeTruthy();
     });
 
     it('should assign the corresponding help link', () => {
