@@ -15,6 +15,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { DebugElement } from '@angular/core';
 import { MovableMapComponent } from '../movable-map/movable-map.component';
 import { SpinnerComponent } from '@shared/spinner/spinner.component';
+import { Coordinate } from '@core/geolocation/address-response.interface';
 
 describe('SearchableMovableMapComponent', () => {
   let component: SearchableMovableMapComponent;
@@ -50,25 +51,23 @@ describe('SearchableMovableMapComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when the search box initializes... ', () => {
+  describe('when the searchable movable map initializes... ', () => {
     it('should create the search form', () => {
       expect(component.searchLocationForm.contains('searchLocation')).toBeTruthy();
     });
 
-    it('should apply the search box style', () => {
-      expect(fixture.debugElement.query(By.css(searchBoxSelector))).toBeTruthy();
-    });
-
-    it('should apply the input style', () => {
-      expect(fixture.debugElement.query(By.css(searchBoxInputSelector))).toBeTruthy();
-    });
-
-    it('should apply the glass style', () => {
-      expect(fixture.debugElement.query(By.css(searchBoxGlassSelector))).toBeTruthy();
-    });
-
     it('should render the map', () => {
       expect(fixture.debugElement.query(By.directive(MovableMapComponent))).toBeTruthy();
+    });
+
+    describe.each([
+      ['search box', searchBoxSelector],
+      ['input', searchBoxInputSelector],
+      ['glass', searchBoxGlassSelector],
+    ])('the search box', (description: string, selector: string): void => {
+      it(`should apply the ${description} style `, () => {
+        expect(fixture.debugElement.query(By.css(selector))).toBeTruthy();
+      });
     });
   });
 
@@ -87,7 +86,7 @@ describe('SearchableMovableMapComponent', () => {
   });
 
   describe('when the user selects a location from the search box suggester', () => {
-    const MOCK_COORDINATE = CoordinateMother.random();
+    const MOCK_COORDINATE: Coordinate = CoordinateMother.random();
 
     beforeEach(fakeAsync(() => {
       const searchBoxInput: DebugElement = fixture.debugElement.query(By.css(searchBoxInputSelector));
