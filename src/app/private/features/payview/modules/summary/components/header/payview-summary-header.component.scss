@@ -1,12 +1,9 @@
-@import '~style/mixins/_mixins.scss';
-@import '~web-styleguide/scss/colors';
-@import '~web-styleguide/scss/spacing';
-@import '~web-styleguide/scss/text';
+@import '~style/common';
 
 $spacing-14: 14px;
 
 .PayviewSummaryHeader {
-  background: rgba(236, 239, 241, 0.7);
+  background: $payview-summary-grey;
   border-radius: 10px;
   font-size: $spacing-14;
   padding-right: $spacing-ml;
