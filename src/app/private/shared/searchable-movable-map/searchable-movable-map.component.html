@@ -27,4 +27,10 @@
     </ng-template>
   </div>
 </div>
-<tsl-movable-map [centerCoordinates]="selectedLocationCoordinates | async"></tsl-movable-map>
+<tsl-movable-map
+  [markers]="mapMarkers"
+  [centerCoordinates]="selectedLocationCoordinates | async"
+  (tapMap)="onTapMap()"
+  (tapMarker)="onTapMarker($event)"
+  (mapViewChangeEnd)="onMapViewChangeEnd($event)"
+></tsl-movable-map>

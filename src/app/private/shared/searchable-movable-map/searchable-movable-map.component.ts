@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap, filter } from 'rxjs/operators';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { ItemPlace } from '@core/geolocation/geolocation-response.interface';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Location } from '@api/core/model';
+import { LocationWithRatio } from '@api/core/model/location/location';
 
 export const HALF_SECOND: number = 500;
 
@@ -17,7 +18,13 @@ export const HALF_SECOND: number = 500;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchableMovableMapComponent implements OnInit, OnDestroy {
+  @Input() mapCenterCoordinates: Location;
+  @Input() mapMarkers: Location[] = [];
+
   @Output() selectedLocationCoordinates: EventEmitter<Location> = new EventEmitter();
+  @Output() mapViewChangeEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
+  @Output() tapMarker: EventEmitter<Location> = new EventEmitter();
+  @Output() tapMap: EventEmitter<void> = new EventEmitter();
 
   public readonly SEARCH_LOCATION_PLACEHOLDER: string = $localize`:@@collection_point_map_all_users_all_all_searchbox_placeholder:Busca por dirección...`;
   public searchLocationForm: FormGroup;
@@ -69,6 +76,18 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
 
   public selectSuggestion(locationName: string): void {
     this.selectedSuggestionSubject.next(locationName);
+  }
+
+  public onTapMap(): void {
+    this.tapMap.emit();
+  }
+
+  public onTapMarker(tappedMarker: Location): void {
+    this.tapMarker.emit(tappedMarker);
+  }
+
+  public onMapViewChangeEnd(centerCoordinatesWithRadius: LocationWithRatio): void {
+    this.mapViewChangeEnd.emit(centerCoordinatesWithRadius);
   }
 
   private buildSearchLocationForm(): void {
