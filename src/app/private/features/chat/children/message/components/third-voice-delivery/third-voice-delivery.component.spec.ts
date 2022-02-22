@@ -86,29 +86,39 @@ describe('ThirdVoiceDeliveryComponent', () => {
         });
       });
 
-      describe('and when loading', () => {
+      describe('and when NOT loading', () => {
+        let thirdVoiceCTAElement: DebugElement;
+
         beforeEach(() => {
           component.loading = true;
           fixture.detectChanges();
+          thirdVoiceCTAElement = fixture.debugElement.query(By.directive(ButtonComponent));
         });
 
         it('should set the button with loading state', () => {
-          const thirdVoiceCTAElement: DebugElement = fixture.debugElement.query(By.directive(ButtonComponent));
-
           expect(thirdVoiceCTAElement.componentInstance.loading).toEqual(true);
+        });
+
+        it('should disable the button', () => {
+          expect(thirdVoiceCTAElement.componentInstance.disabled).toEqual(true);
         });
       });
 
       describe('and when NOT loading', () => {
+        let thirdVoiceCTAElement: DebugElement;
+
         beforeEach(() => {
           component.loading = false;
           fixture.detectChanges();
+          thirdVoiceCTAElement = fixture.debugElement.query(By.directive(ButtonComponent));
         });
 
         it('should set the button with no loading state', () => {
-          const thirdVoiceCTAElement: DebugElement = fixture.debugElement.query(By.directive(ButtonComponent));
-
           expect(thirdVoiceCTAElement.componentInstance.loading).toEqual(false);
+        });
+
+        it('should enable the button', () => {
+          expect(thirdVoiceCTAElement.componentInstance.disabled).toEqual(false);
         });
       });
     });
