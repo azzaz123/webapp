@@ -18,7 +18,9 @@ const timeRange: Record<ScheduleTypeDto, SCHEDULE_TYPE> = {
   morning: SCHEDULE_TYPE.MORNING,
 };
 
-export const mapUserScheduleDtoUserSchedule: ToDomainMapper<DeliveryScheduleDto, DeliverySchedule> = (input: DeliveryScheduleDto): any => {
+export const mapUserScheduleDtoUserSchedule: ToDomainMapper<DeliveryScheduleDto, DeliverySchedule> = (
+  input: DeliveryScheduleDto
+): DeliverySchedule => {
   return {
     scheduleOptions: input.schedule_options.map(mapScheduleOptionsDtoToScheduleOptions),
     userSchedule: mapUserScheduleDtoToUserScheduleDto(input.user_schedule),
@@ -27,7 +29,7 @@ export const mapUserScheduleDtoUserSchedule: ToDomainMapper<DeliveryScheduleDto,
 
 const mapScheduleOptionsDtoToScheduleOptions: ToDomainMapper<ScheduleOptionDto, DeliveryScheduleOption> = (
   scheduleOption: ScheduleOptionDto
-): any => {
+): DeliveryScheduleOption => {
   return {
     scheduleTimeRange: timeRange[scheduleOption.schedule_time_range],
     startTimeRange: new Date(scheduleOption.pickup_start_date),
@@ -35,7 +37,9 @@ const mapScheduleOptionsDtoToScheduleOptions: ToDomainMapper<ScheduleOptionDto, 
   };
 };
 
-const mapUserScheduleDtoToUserScheduleDto: ToDomainMapper<UserScheduleDto, DeliveryUserSchedule> = (userSchedule: UserScheduleDto): any => {
+const mapUserScheduleDtoToUserScheduleDto: ToDomainMapper<UserScheduleDto, DeliveryUserSchedule> = (
+  userSchedule: UserScheduleDto
+): DeliveryUserSchedule => {
   return {
     id: userSchedule.id,
     scheduleTimeRange: timeRange[userSchedule.schedule_time_range],

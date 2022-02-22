@@ -223,6 +223,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     return messageType === MessageType.DELIVERY || messageType === MessageType.DELIVERY_GENERIC;
   }
 
+  public isShippingKeywordsThirdVoice(messageType: MessageType): boolean {
+    return messageType === MessageType.SHIPPING_KEYWORDS;
+  }
+
   public scrollToLastMessage(): void {
     const lastMessage = document.querySelector('.message-body');
     if (lastMessage) {
