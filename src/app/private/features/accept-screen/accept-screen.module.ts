@@ -12,7 +12,7 @@ import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-sele
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { DeliveryPreferenceScheduleComponent } from './components/steps/delivery-preference-schedule/delivery-preference-schedule.component';
 import { MovableMapModule } from '@private/shared/movable-map/movable-map.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -28,7 +28,6 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
     DeliveryRadioSelectorModule,
     MovableMapModule,
     FormsModule,
-    ReactiveFormsModule,
     NgbButtonsModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent, DeliveryPreferenceScheduleComponent],

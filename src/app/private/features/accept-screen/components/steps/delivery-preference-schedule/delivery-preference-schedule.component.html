@@ -33,7 +33,12 @@
           </div>
         </div>
         <div class="row position-sticky text-center justify-content-center">
-          <tsl-button class="col" [type]="'submit'" i18n="@@time_slot_view_seller_hpu_ba_save_button" className="btn-primary btn-block"
+          <tsl-button
+            class="col"
+            [type]="'submit'"
+            [disabled]="selectedSchedule === null"
+            i18n="@@time_slot_view_seller_hpu_ba_save_button"
+            className="btn-primary btn-block"
             >Save</tsl-button
           >
         </div>

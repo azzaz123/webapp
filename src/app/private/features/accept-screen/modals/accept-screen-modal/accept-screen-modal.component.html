@@ -172,7 +172,10 @@
       ></tsl-delivery-address>
     </ng-template>
     <ng-template step>
-      <tsl-delivery-preference-schedule [deliveryPickUpDay]="deliveryPickUpDay$ | async"></tsl-delivery-preference-schedule>
+      <tsl-delivery-preference-schedule
+        [deliveryPickUpDay]="deliveryPickUpDay$ | async"
+        (scheduleSaveSucceded)="goToAcceptScreen()"
+      ></tsl-delivery-preference-schedule>
     </ng-template>
     <ng-template step><tsl-movable-map></tsl-movable-map></ng-template>
   </tsl-stepper>
