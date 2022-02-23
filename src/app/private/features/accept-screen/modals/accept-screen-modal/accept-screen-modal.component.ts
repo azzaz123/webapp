@@ -1,10 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { COLORS } from '@core/colors/colors-constants';
+import { ErrorsService } from '@core/errors/errors.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
 import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/delivery-countries/delivery-countries-api.interface';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable } from 'rxjs';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
@@ -38,7 +46,11 @@ export class AcceptScreenModalComponent implements OnInit {
     private acceptScreenStoreService: AcceptScreenStoreService,
     private deliveryCountries: DeliveryCountriesService,
     private activeModal: NgbActiveModal,
-    private customerHelpService: CustomerHelpService
+    private customerHelpService: CustomerHelpService,
+    private modalService: NgbModal,
+    private router: Router,
+    private errorService: ErrorsService,
+    private i18nService: I18nService
   ) {}
 
   ngOnInit() {
@@ -62,14 +74,48 @@ export class AcceptScreenModalComponent implements OnInit {
   public closeModal(): void {
     this.activeModal.close();
   }
-
-  private goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
+  public goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
     this.stepper.goToStep(slideId);
     this.refreshStepProperties(slideId);
+  }
+
+  public openRejectRequestModal(): void {
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.properties = {
+      title: this.i18nService.translate(TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_TITLE),
+      description: this.i18nService.translate(TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_DESCRIPTION),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_CONTINUE_BUTTON),
+      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_BACK_BUTTON),
+      confirmColor: COLORS.NEGATIVE_MAIN,
+    };
+
+    modalRef.result.then(
+      () => {
+        this.rejectRequest();
+      },
+      () => {}
+    );
+  }
+
+  private rejectRequest(): void {
+    this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
+      () => {
+        this.redirectToTTS(this.requestId);
+        this.closeModal();
+      },
+      () => {
+        this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+      }
+    );
   }
 
   private refreshStepProperties(slideId: number): void {
     this.headerText = this.ACCEPT_SCREEN_HEADER_TRANSLATIONS[slideId];
     this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
+  }
+
+  private redirectToTTS(requestId: string): void {
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
+    this.router.navigate([pathToTransactionTracking]);
   }
 }

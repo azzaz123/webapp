@@ -1872,6 +1872,29 @@ describe('UploadProductComponent', () => {
     });
   });
 
+  describe('when is activate shipping', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(component.shippingSectionElement.nativeElement, 'scrollIntoView');
+      component.isActivateShipping = true;
+      component.item = MOCK_ITEM;
+
+      component.ngOnInit();
+      tick(component.DEBOUNCE_TIME_MS + 1);
+      fixture.detectChanges();
+    }));
+
+    it('should set the shipping toggle to checked', () => {
+      const supportsShippingFormValue: boolean = component.uploadForm.get('sale_conditions').get('supports_shipping').value;
+
+      expect(supportsShippingFormValue).toEqual(true);
+    });
+
+    it('should scroll browser view to shipping section', () => {
+      expect(component.shippingSectionElement.nativeElement.scrollIntoView).toHaveBeenCalledTimes(1);
+      expect(component.shippingSectionElement.nativeElement.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' });
+    });
+  });
+
   describe('if shipping toggle is enabled', () => {
     const shippabilitySectionSelector = '#shippabilitySection';
 

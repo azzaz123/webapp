@@ -38,7 +38,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS: AcceptScreenCarrier[] = [
     secondaryInformation: null,
     restrictions: MOCK_CARRIER_FREE_COST.restrictions,
     buttonProperties: {
-      isShowed: false,
+      isShowed: true,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_FREE_COST.type],
       redirectStep: ACCEPT_SCREEN_STEPS.MAP,
     },
@@ -78,7 +78,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED: AcceptScr
     secondaryInformation: null,
     restrictions: MOCK_CARRIER_FREE_COST.restrictions,
     buttonProperties: {
-      isShowed: false,
+      isShowed: true,
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_FREE_COST.type],
       redirectStep: ACCEPT_SCREEN_STEPS.MAP,
     },

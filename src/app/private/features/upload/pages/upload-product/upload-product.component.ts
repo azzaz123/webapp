@@ -80,12 +80,14 @@ function isObjectTypeRequiredValidator(formControl: AbstractControl) {
 export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
   @Input() categoryId: string;
   @Input() item: Item;
-  @Input() isReactivation = false;
+  @Input() isReactivation: boolean = false;
+  @Input() isActivateShipping: boolean = false;
   @Output() validationError: EventEmitter<any> = new EventEmitter();
   @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() categorySelected = new EventEmitter<string>();
   @Input() suggestionValue: string;
   @ViewChild('title', { static: true }) titleField: ElementRef;
+  @ViewChild('shippingSection', { static: false }) shippingSectionElement: ElementRef;
   @ViewChild(ProFeaturesComponent) proFeaturesComponent: ProFeaturesComponent;
 
   MAX_DESCRIPTION_LENGTH = 640;
@@ -128,6 +130,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly DEFAULT_MAX_HASHTAGS = 5;
+  public readonly DEBOUNCE_TIME_MS = 500;
 
   private focused: boolean;
   private oldFormValue: any;
@@ -179,9 +182,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       if (this.item) {
         this.initializeEditForm();
 
-        this.dataReadyToValidate$.pipe(debounceTime(500), take(1)).subscribe(() => {
+        this.dataReadyToValidate$.pipe(debounceTime(this.DEBOUNCE_TIME_MS), take(1)).subscribe(() => {
           if (this.isReactivation) {
             this.itemReactivationService.reactivationValidation(this.uploadForm);
+          }
+
+          if (this.isActivateShipping) {
+            this.handleActivateShipping();
           }
         });
       }
@@ -971,5 +978,14 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     ).subscribe(() => {
       this.updateShippingToggleStatus(this.isShippabilityAllowed);
     });
+  }
+
+  private handleActivateShipping(): void {
+    this.restartShippingToggleFormData(true);
+    this.scrollToShippingCheckbox();
+  }
+
+  private scrollToShippingCheckbox(): void {
+    this.shippingSectionElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
