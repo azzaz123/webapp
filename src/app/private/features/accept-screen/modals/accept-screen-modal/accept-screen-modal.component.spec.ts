@@ -13,7 +13,7 @@ import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
 import { StepDirective } from '@shared/stepper/step.directive';
@@ -34,6 +34,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { Router } from '@angular/router';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off-mode.type';
 
 describe('AcceptScreenModalComponent', () => {
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
@@ -92,6 +93,8 @@ describe('AcceptScreenModalComponent', () => {
               return carrierSelectedIndexSubjectMock.asObservable();
             },
             rejectRequest() {},
+            acceptRequestPostOfficeDropOff() {},
+            acceptRequestHomePickup() {},
           },
         },
         {
@@ -595,6 +598,106 @@ describe('AcceptScreenModalComponent', () => {
 
             it('should NOT show the delivery address form', () => {
               shouldRenderDeliveryAddressForm(false);
+            });
+          });
+        });
+
+        describe('and we click on the accept button', () => {
+          describe('and the selected drop off mode is post office', () => {
+            beforeEach(() => {
+              carrierSelectedIndexSubjectMock.next(CARRIER_DROP_OFF_MODE.POST_OFFICE);
+            });
+            describe('and the petition fails...', () => {
+              beforeEach(() => {
+                spyOn(acceptScreenStoreService, 'acceptRequestPostOfficeDropOff').and.returnValue(throwError('error'));
+                spyOn(errorService, 'i18nError');
+                const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+                acceptButton.click();
+              });
+
+              it('should call to server to accept request', () => {
+                expect(acceptScreenStoreService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should show generic error message', () => {
+                expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+              });
+            });
+
+            describe('and the petition succeeds', () => {
+              beforeEach(() => {
+                spyOn(router, 'navigate');
+                spyOn(acceptScreenStoreService, 'acceptRequestPostOfficeDropOff').and.returnValue(of(null));
+                const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+                acceptButton.click();
+              });
+
+              it('should accept request', () => {
+                expect(acceptScreenStoreService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should redirect the user to the TTS', () => {
+                expect(router.navigate).toHaveBeenCalledTimes(1);
+                expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+              });
+
+              it('should close the modal', () => {
+                expect(activeModal.close).toHaveBeenCalledTimes(1);
+              });
+            });
+          });
+
+          describe('and the selected drop off mode is HOME PICK UP', () => {
+            beforeEach(() => {
+              carrierSelectedIndexSubjectMock.next(CARRIER_DROP_OFF_MODE.HOME_PICK_UP);
+            });
+            describe('and the petition fails...', () => {
+              beforeEach(() => {
+                spyOn(acceptScreenStoreService, 'acceptRequestHomePickup').and.returnValue(throwError('error'));
+                spyOn(errorService, 'i18nError');
+                const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+                acceptButton.click();
+              });
+
+              it('should call to server to accept request', () => {
+                expect(acceptScreenStoreService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should show generic error message', () => {
+                expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+              });
+            });
+
+            describe('and the petition succeeds', () => {
+              beforeEach(() => {
+                spyOn(router, 'navigate');
+                spyOn(acceptScreenStoreService, 'acceptRequestHomePickup').and.returnValue(of(null));
+                const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+                acceptButton.click();
+              });
+
+              it('should accept request', () => {
+                expect(acceptScreenStoreService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should redirect the user to the TTS', () => {
+                expect(router.navigate).toHaveBeenCalledTimes(1);
+                expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+              });
+
+              it('should close the modal', () => {
+                expect(activeModal.close).toHaveBeenCalledTimes(1);
+              });
             });
           });
         });

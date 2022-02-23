@@ -90,8 +90,8 @@ describe('SellerRequestsHttpService', () => {
       expect(acceptRequest.request.method).toBe('POST');
     });
 
-    it('should ask the server with an empty request', () => {
-      expect(acceptRequest.request.body).toBe(null);
+    it('should ask the server with the transaction id', () => {
+      expect(acceptRequest.request.body).toStrictEqual({ transaction_id: MOCK_SELLER_REQUEST_ID });
     });
 
     it('should have the App version header', () => {
@@ -100,16 +100,24 @@ describe('SellerRequestsHttpService', () => {
   });
 
   describe('when asking to accept the request by id with home pickup mode', () => {
-    it('should call to the corresponding accept request endpoint', () => {
-      const expectedUrl: string = SELLER_REQUESTS_ACCEPT_HOME_PICKUP_ENDPOINT_WITH_REQUEST_ID(MOCK_SELLER_REQUEST_ID);
-
+    const expectedUrl: string = SELLER_REQUESTS_ACCEPT_HOME_PICKUP_ENDPOINT_WITH_REQUEST_ID(MOCK_SELLER_REQUEST_ID);
+    let acceptRequest: TestRequest;
+    beforeEach(() => {
       service.acceptRequestHomePickup(MOCK_SELLER_REQUEST_ID).subscribe();
-      const acceptRequest: TestRequest = httpMock.expectOne(expectedUrl);
+      acceptRequest = httpMock.expectOne(expectedUrl);
       acceptRequest.flush({});
+    });
 
-      expect(acceptRequest.request.url).toEqual(expectedUrl);
+    it('should ask the server with valid petition type', () => {
       expect(acceptRequest.request.method).toBe('POST');
-      expect(acceptRequest.request.body).toBe(null);
+    });
+
+    it('should ask the server with the transaction id', () => {
+      expect(acceptRequest.request.body).toStrictEqual({ transaction_id: MOCK_SELLER_REQUEST_ID });
+    });
+
+    it('should have the App version header', () => {
+      expect(acceptRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
   });
 });

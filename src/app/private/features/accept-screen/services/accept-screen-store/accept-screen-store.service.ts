@@ -38,6 +38,14 @@ export class AcceptScreenStoreService {
     this.properties = { ...currentProperties, carriers: newCarriers };
   }
 
+  public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {
+    return this.acceptScreenService.acceptRequestPostOfficeDropOff(requestId);
+  }
+
+  public acceptRequestHomePickup(requestId: string): Observable<void> {
+    return this.acceptScreenService.acceptRequestHomePickup(requestId);
+  }
+
   public rejectRequest(requestId: string): Observable<void> {
     return this.acceptScreenService.rejectRequest(requestId);
   }
