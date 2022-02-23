@@ -7,8 +7,7 @@ import { PACKS_TYPES } from '@core/payments/pack';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
-import { SelectedProduct } from '@api/core/model/bumps/item-products.interface';
-import { HttpErrorResponse } from '@angular/common/http';
+import { BumpRequestSubject, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 
 @Component({
   selector: 'tsl-cart',
@@ -19,6 +18,7 @@ export class CartComponent {
   @Input() creditInfo: CreditInfo;
   @Input() selectedItems: SelectedProduct[];
   @Output() confirmAction: EventEmitter<void> = new EventEmitter<void>();
+  @Output() errorAction: EventEmitter<BumpRequestSubject[]> = new EventEmitter<BumpRequestSubject[]>();
 
   public hasSavedCard = true;
   public loading: boolean;
@@ -51,16 +51,8 @@ export class CartComponent {
         })
       )
       .subscribe(([...next]) => {
-        const errors = next.filter((value) => value.hasError);
-        if (errors.length) {
-          if (errors[0].error instanceof HttpErrorResponse) {
-            this.errorService.show(errors[0].error);
-          } else {
-            this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
-          }
-        } else {
-          this.success();
-        }
+        const errors = next.filter((value) => value?.hasError);
+        errors.length ? this.error(errors) : this.success();
       });
   }
 
@@ -94,6 +86,10 @@ export class CartComponent {
 
   private success(): void {
     this.confirmAction.emit();
+  }
+
+  private error(errors: BumpRequestSubject[]): void {
+    this.errorAction.emit(errors);
   }
 
   get totalToPay(): number {
