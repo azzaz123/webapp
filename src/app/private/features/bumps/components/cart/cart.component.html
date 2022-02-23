@@ -3,7 +3,7 @@
   <div class="d-flex flex-column h-100">
     <div
       class="Cart__wrapper pb-3 mb-4"
-      [class.has-financial-card]="hasSavedCard"
+      [class.has-financial-card]="hasSavedCards"
       [class.no-credit]="!creditInfo?.credit"
       [class.no-discount]="!creditInfo?.credit"
     >
@@ -64,14 +64,16 @@
     </div>
     <div *ngIf="totalToPay > 0">
       <tsl-stripe-card-selection
-        *ngIf="hasSavedCard && savedCard"
+        *ngIf="!isNewCard"
         (handleSelectExistingCard)="setSavedCard($event)"
-        (hasCard)="hasCard($event)"
+        (hasCard)="setHasCards($event)"
       ></tsl-stripe-card-selection>
-      <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="savedCard" i18n="@@web_cart_681">Add another credit card</div>
-      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="showCard && hasSavedCard" i18n="@@web_cart_682">Use saved card</div>
+      <div class="Cart__NewCard--add" (click)="addNewCard()" *ngIf="!isNewCard" i18n="@@web_cart_681">Add another credit card</div>
+      <div class="Cart__NewCard--used" (click)="removeNewCard()" *ngIf="hasSavedCards && isNewCard" i18n="@@web_cart_682">
+        Use saved card
+      </div>
       <tsl-stripe-card-element
-        *ngIf="showCard"
+        *ngIf="isNewCard"
         [type]="'cart'"
         [cart]="cart"
         (stripeCardToken)="checkout($event)"
@@ -80,7 +82,7 @@
       ></tsl-stripe-card-element>
     </div>
     <tsl-button
-      [hidden]="!savedCard && totalToPay > 0"
+      *ngIf="!isNewCard"
       [disabled]="loading"
       [loading]="loading"
       (click)="checkout()"

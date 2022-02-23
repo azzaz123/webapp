@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemsBySubscription, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import { BumpRequestSubject, BUMP_SERVICE_TYPE, ItemsBySubscription, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { ItemService } from '@core/item/item.service';
 import { CreditInfo } from '@core/payments/payment.interface';
@@ -23,6 +23,12 @@ export class CheckoutComponent implements OnInit {
   public creditInfo: CreditInfo;
   public user: User;
   public itemsSelected: SelectedProduct[] = [];
+
+  errorMapper = {
+    409: PRO_MODAL_TYPE.bump_error_limit_reached,
+    404: PRO_MODAL_TYPE.bump_error_not_found,
+    500: PRO_MODAL_TYPE.bump_error_generic,
+  };
 
   constructor(
     private itemService: ItemService,
@@ -84,7 +90,8 @@ export class CheckoutComponent implements OnInit {
       windowClass: 'pro-modal',
     });
 
-    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_success];
+    modalRef.componentInstance.modalConfig =
+      this.itemsSelected.length > 1 ? modalConfig[PRO_MODAL_TYPE.bump_success_plural] : modalConfig[PRO_MODAL_TYPE.bump_success];
 
     modalRef.result.then(
       () => {
@@ -95,6 +102,28 @@ export class CheckoutComponent implements OnInit {
       }
     );
   }
+
+  public onError(errors: BumpRequestSubject[]): void {
+    const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
+      windowClass: 'pro-modal',
+    });
+
+    if (errors.length === 1) {
+      if (errors[0].service === BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS) {
+        if (Object.keys(this.errorMapper).includes(errors[1].error.toString())) {
+          modalRef.componentInstance.modalConfig = modalConfig[this.errorMapper[errors[1].error.toString()]];
+        } else {
+          modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
+        }
+      }
+      if (errors[0].service === BUMP_SERVICE_TYPE.STRIPE) {
+        modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
+      }
+      return;
+    }
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
+  }
+
   private getProductsFromSelectedItems(): void {
     if (!this.itemService.selectedItems.length) {
       this.router.navigate(['catalog/list']);

@@ -35,7 +35,7 @@ export class StripeService {
     });
   }
 
-  public buy(orderId: string, paymentId: string, hasSavedCard: boolean, isSaved: boolean, card: any): void {
+  public buy(orderId: string, paymentId: string, hasSavedCard: boolean, isSaved: boolean, card: any, preventRedirect = false): void {
     if (!hasSavedCard || (hasSavedCard && !isSaved)) {
       this.paymentService.paymentIntents(orderId, paymentId).subscribe((response: PaymentIntents) => {
         this.payment(response.token, card).then((response: any) => {
@@ -54,6 +54,9 @@ export class StripeService {
           }
         },
         () => {
+          if (preventRedirect) {
+            return;
+          }
           this.router.navigate(['catalog/list', { code: -1 }]);
         }
       );

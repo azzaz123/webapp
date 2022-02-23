@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { BumpRequestSubject, ItemsBySubscription, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import { BumpRequestSubject, BUMP_SERVICE_TYPE, ItemsBySubscription, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CartBase } from '@shared/catalog/cart/cart-base';
@@ -17,6 +17,7 @@ import { ItemService } from '@core/item/item.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PAYMENT_RESPONSE_STATUS } from '@core/payments/payment.service';
 import { StripeService } from '@core/stripe/stripe.service';
+import { FinancialCardOption } from '@core/payments/payment.interface';
 
 @Injectable()
 export class VisibilityApiService {
@@ -76,9 +77,9 @@ export class VisibilityApiService {
 
   public buyBumps(
     selectedItems: SelectedProduct[],
-    hasSavedCard: boolean,
-    savedCard: boolean,
-    card: unknown
+    hasSavedCards: boolean,
+    isNewCard: boolean,
+    card: FinancialCardOption | stripe.elements.Element
   ): Observable<BumpRequestSubject[]> {
     const subscriptionBumps: SelectedProduct[] = [];
     const stripeBumps: SelectedProduct[] = [];
@@ -106,33 +107,45 @@ export class VisibilityApiService {
       setTimeout(() => {
         const order: Order[] = cart.prepareOrder();
         const orderId: string = cart.getOrderId();
-        this.purchaseStripeBumps(order, orderId, hasSavedCard, savedCard, card);
+        this.purchaseStripeBumps(order, orderId, hasSavedCards, isNewCard, card);
       });
 
-      subscriptions.push(this.stripeResponseSubject.pipe(catchError((error) => of({ hasError: true, error }))));
+      subscriptions.push(
+        this.stripeResponseSubject.pipe(catchError((error) => of({ hasError: true, error, service: BUMP_SERVICE_TYPE.STRIPE })))
+      );
     }
 
     if (subscriptionBumps.length) {
-      subscriptions.push(this.bumpWithPackage(subscriptionBumps).pipe(catchError((error) => of({ hasError: true, error }))));
+      subscriptions.push(
+        this.bumpWithPackage(subscriptionBumps).pipe(
+          catchError((error: HttpErrorResponse) => of({ hasError: true, error, service: BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS }))
+        )
+      );
     }
 
     return forkJoin(subscriptions);
   }
 
-  private purchaseStripeBumps(order: Order[], orderId: string, hasSavedCard: boolean, savedCard: boolean, card: unknown): void {
-    this.stripeResponseSubject.next({ loading: true });
+  private purchaseStripeBumps(
+    order: Order[],
+    orderId: string,
+    hasSavedCard: boolean,
+    isNewCard: boolean,
+    card: FinancialCardOption | stripe.elements.Element
+  ): void {
+    this.stripeResponseSubject.next();
     this.itemService.purchaseProductsWithCredits(order, orderId).subscribe(
       (response: PurchaseProductsWithCreditsResponse) => {
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
           const paymentId: string = this.uuidService.getUUID();
-          this.stripeService.buy(orderId, paymentId, hasSavedCard, savedCard, card);
+          this.stripeService.buy(orderId, paymentId, hasSavedCard, !isNewCard, card, true);
         } else {
           this.stripeResponseSubject.complete();
         }
       },
       (e: HttpErrorResponse) => {
-        this.stripeResponseSubject.next({ hasError: true, error: e });
+        this.stripeResponseSubject.next({ hasError: true, error: e, service: BUMP_SERVICE_TYPE.STRIPE });
         this.stripeResponseSubject.complete();
       }
     );
@@ -146,7 +159,7 @@ export class VisibilityApiService {
 
   private managePaymentResponse(paymentResponse: string): void {
     if (paymentResponse && paymentResponse.toUpperCase() !== PAYMENT_RESPONSE_STATUS.SUCCEEDED) {
-      this.stripeResponseSubject.next({ hasError: true, error: paymentResponse });
+      this.stripeResponseSubject.next({ hasError: true, error: paymentResponse, service: BUMP_SERVICE_TYPE.STRIPE });
     }
     this.stripeResponseSubject.complete();
   }

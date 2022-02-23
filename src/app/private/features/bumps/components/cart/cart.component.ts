@@ -20,12 +20,10 @@ export class CartComponent {
   @Output() confirmAction: EventEmitter<void> = new EventEmitter<void>();
   @Output() errorAction: EventEmitter<BumpRequestSubject[]> = new EventEmitter<BumpRequestSubject[]>();
 
-  public hasSavedCard = true;
+  public hasSavedCards = true;
+  public isNewCard = false;
   public loading: boolean;
-  public card: FinancialCardOption | unknown;
-  public showCard = false;
-  public savedCard = true;
-  public selectedCard = false;
+  public card: FinancialCardOption | stripe.elements.Element;
   public readonly BUMP_TYPES = BUMP_TYPE;
   public readonly PACK_TYPES = PACKS_TYPES;
   public readonly ICON_TYPE = ICON_TYPE;
@@ -44,7 +42,7 @@ export class CartComponent {
     this.loading = true;
 
     this.visibilityService
-      .buyBumps(this.selectedItems, this.hasSavedCard, this.savedCard, this.card)
+      .buyBumps(this.selectedItems, this.hasSavedCards, this.isNewCard, this.card)
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -57,30 +55,28 @@ export class CartComponent {
   }
 
   public addNewCard(): void {
-    this.showCard = true;
-    this.savedCard = false;
+    this.isNewCard = true;
+    this.card = null;
   }
 
   public removeNewCard(): void {
-    this.showCard = false;
-    this.savedCard = true;
+    this.isNewCard = false;
+    this.card = null;
   }
 
   public setSavedCard(selectedCard: FinancialCardOption): void {
-    this.showCard = false;
-    this.savedCard = true;
-    this.selectedCard = true;
     this.setCardInfo(selectedCard);
   }
 
-  public hasCard(hasCard: boolean): void {
-    this.hasSavedCard = hasCard;
-    if (!hasCard) {
+  public setHasCards(hasCards: boolean): void {
+    this.hasSavedCards = hasCards;
+    this.isNewCard = !hasCards;
+    if (this.isNewCard) {
       this.addNewCard();
     }
   }
 
-  public setCardInfo(card: unknown): void {
+  public setCardInfo(card: FinancialCardOption | stripe.elements.Element): void {
     this.card = card;
   }
 

@@ -37,4 +37,10 @@ export interface BumpRequestSubject {
   hasError?: boolean;
   error?: unknown | HttpErrorResponse;
   loading?: boolean;
+  service?: BUMP_SERVICE_TYPE;
+}
+
+export enum BUMP_SERVICE_TYPE {
+  STRIPE = 'stripe',
+  SUBSCRIPTION_BUMPS = 'subscriptionBumps',
 }
