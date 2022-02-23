@@ -6,8 +6,8 @@ import { of } from 'rxjs';
 import {
   communicationsConsentIdToModify,
   communicationsConsentResponseFixture,
-} from '@api/fixtures/notifications/communications-consent-response.fixture';
-import { mappedCommunicationsConsentGroup } from '@api/fixtures/notifications/communications-consent-group.fixture';
+} from '@api/fixtures/comunications-consent/communications-consent-response.fixture';
+import { mappedCommunicationsConsentGroup } from '@api/fixtures/comunications-consent/communications-consent-group.fixture';
 import { CommunicationsConsentHttpService } from '@api/communications-consent/http/communications-consent-http.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';

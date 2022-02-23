@@ -6,7 +6,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import {
   communicationsConsentIdToModify,
   communicationsConsentResponseFixture,
-} from '@api/fixtures/notifications/communications-consent-response.fixture';
+} from '@api/fixtures/comunications-consent/communications-consent-response.fixture';
 import { COMMUNICATIONS_CONSENT_SET_ENDPOINT, COMMUNICATIONS_CONSENT_ENDPOINT } from '@api/communications-consent/http/endpoints';
 
 describe('CommunicationsConsentHttpService', () => {

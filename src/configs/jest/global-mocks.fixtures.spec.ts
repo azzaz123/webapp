@@ -12,7 +12,7 @@ export const MOCK_APPBOY = {
   changeUser: (_userId) => {},
   openSession: () => {},
   logContentCardsDisplayed: () => {},
-  getCachedContentCards: (): NotificationDto[] => {},
+  getCachedContentCards: () => {},
 };
 
 export const MOCK_GA = () => {};

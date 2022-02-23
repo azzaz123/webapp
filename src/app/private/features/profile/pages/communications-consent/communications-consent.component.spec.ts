@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { CommunicationsConsentComponent } from './communications-consent.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { By } from '@angular/platform-browser';
-import { mappedCommunicationsConsentGroup } from '@api/fixtures/notifications/communications-consent-group.fixture';
+import { mappedCommunicationsConsentGroup } from '@api/fixtures/comunications-consent/communications-consent-group.fixture';
 import { CommunicationsConsentApiService } from '@api/communications-consent/communications-consent-api.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { FormsModule } from '@angular/forms';

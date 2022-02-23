@@ -44,7 +44,7 @@ describe('NotificationsInboxComponent', () => {
           {
             provide: NotificationApiService,
             useValue: {
-              getCachedContentCards: () => notifications,
+              getNotifications: () => notifications,
             },
           },
         ],

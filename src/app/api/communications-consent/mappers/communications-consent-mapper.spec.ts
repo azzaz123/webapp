@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { communicationsConsentResponseFixture } from '@api/fixtures/notifications/communications-consent-response.fixture';
-import { mappedCommunicationsConsentGroup } from '@api/fixtures/notifications/communications-consent-group.fixture';
+import { communicationsConsentResponseFixture } from '@api/fixtures/comunications-consent/communications-consent-response.fixture';
+import { mappedCommunicationsConsentGroup } from '@api/fixtures/comunications-consent/communications-consent-group.fixture';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { mapCommunicationsConsentGroup } from './communications-consent-mapper';
