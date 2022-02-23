@@ -32,13 +32,13 @@ describe('CommunicationsConsentComponent', () => {
           {
             provide: CommunicationsConsentApiService,
             useValue: {
-              getMyNotificationsSettings() {
+              getCommunicationsConsentSettings() {
                 return of(mappedCommunicationsConsentGroup);
               },
-              setNotificationEnable() {
+              setConsentEnable() {
                 return of(null);
               },
-              setNotificationDisabled() {
+              setConsentDisabled() {
                 return of(null);
               },
             },

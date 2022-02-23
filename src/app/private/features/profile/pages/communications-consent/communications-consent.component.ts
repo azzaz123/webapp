@@ -11,7 +11,7 @@ import {
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { CommunicationsConsentApiService } from '@api/communications-consent/communications-consent-api.service';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 @Component({
   selector: 'tsl-communications-consent',
   templateUrl: './communications-consent.component.html',
@@ -19,7 +19,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class CommunicationsConsentComponent implements OnInit {
   public allowSegmentation: boolean;
-  private _settingsSubject: Subject<CommunicationsConsentGroup[]> = new Subject<CommunicationsConsentGroup[]>();
+  private _settingsSubject: BehaviorSubject<CommunicationsConsentGroup[]> = new BehaviorSubject<CommunicationsConsentGroup[]>([]);
 
   constructor(private consentApiService: CommunicationsConsentApiService, private analyticsService: AnalyticsService) {}
 
