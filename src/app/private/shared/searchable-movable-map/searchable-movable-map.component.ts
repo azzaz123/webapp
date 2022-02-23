@@ -9,7 +9,7 @@ import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Location } from '@api/core/model';
 import { LocationWithRatio } from '@api/core/model/location/location';
 
-export const HALF_SECOND: number = 500;
+export const HALF_SECOND_IN_MS: number = 500;
 
 @Component({
   selector: 'tsl-searchable-movable-map',
@@ -25,7 +25,6 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   @Output() tapMarker: EventEmitter<Location> = new EventEmitter();
   @Output() tapMap: EventEmitter<void> = new EventEmitter();
 
-  public readonly SEARCH_LOCATION_PLACEHOLDER: string = $localize`:@@collection_point_map_all_users_all_all_searchbox_placeholder:Busca por dirección...`;
   public searchLocationForm: FormGroup;
   public locationSuggestions: string[];
   private readonly selectedSuggestionSubject: Subject<string> = new Subject<string>();
@@ -39,16 +38,7 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.buildSearchLocationForm();
-    this.subscriptions.add(
-      this.onSelectLocationSuggestion().subscribe((location: LabeledSearchLocation) => {
-        this.searchLocationForm.setValue({ searchLocation: location.label });
-        this.mapCenterCoordinates = {
-          latitude: +location.latitude,
-          longitude: +location.longitude,
-        };
-        this.changeDetectorRef.detectChanges();
-      })
-    );
+    this.handleSelectLocationSuggestion();
   }
 
   ngOnDestroy(): void {
@@ -65,7 +55,7 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
 
   public search = (text$: Observable<string>): Observable<string[]> =>
     text$.pipe(
-      debounceTime(HALF_SECOND),
+      debounceTime(HALF_SECOND_IN_MS),
       distinctUntilChanged(),
       switchMap((searchLocation) => this.getLocationSuggestions(searchLocation))
     );
@@ -98,6 +88,19 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
     this.searchLocationForm = this.buildForm.group({
       searchLocation: [],
     });
+  }
+
+  private handleSelectLocationSuggestion(): void {
+    this.subscriptions.add(
+      this.onSelectLocationSuggestion().subscribe((location: LabeledSearchLocation) => {
+        this.searchLocationForm.setValue({ searchLocation: location.label });
+        this.mapCenterCoordinates = {
+          latitude: +location.latitude,
+          longitude: +location.longitude,
+        };
+        this.changeDetectorRef.detectChanges();
+      })
+    );
   }
 
   private getLocationSuggestions(locationName: string): Observable<string[]> {

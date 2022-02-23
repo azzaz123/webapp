@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed, flush, tick, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
-import { SearchableMovableMapComponent, HALF_SECOND } from './searchable-movable-map.component';
+import { SearchableMovableMapComponent, HALF_SECOND_IN_MS } from './searchable-movable-map.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -80,10 +80,10 @@ describe('SearchableMovableMapComponent', () => {
 
       searchBoxInput.nativeElement.value = MOCK_CITY_NAME;
       searchBoxInput.nativeElement.dispatchEvent(new Event('input'));
-      tick(HALF_SECOND);
+      tick(HALF_SECOND_IN_MS);
 
       expect(geoLocationService.search).toHaveBeenCalledWith(MOCK_CITY_NAME);
-      flush();
+      tick(HALF_SECOND_IN_MS);
     }));
   });
 
@@ -102,14 +102,12 @@ describe('SearchableMovableMapComponent', () => {
 
       searchBoxInput.nativeElement.value = MOCK_CITY_NAME;
       searchBoxInput.nativeElement.dispatchEvent(new Event('input'));
-      tick(HALF_SECOND);
+      tick(HALF_SECOND_IN_MS);
       fixture.detectChanges();
 
       const suggestion: DebugElement = fixture.debugElement.query(By.css(searchBoxSuggestionSelector));
       suggestion.nativeNode.click();
-      tick(HALF_SECOND);
-
-      flush();
+      tick(HALF_SECOND_IN_MS);
     }));
 
     it('should set the latitude and longitude for the selected location', () => {
@@ -138,10 +136,9 @@ describe('SearchableMovableMapComponent', () => {
       const resetButton: DebugElement = fixture.debugElement.query(By.css(searchBoxResetSelector));
 
       resetButton.triggerEventHandler('click', {});
-      tick(HALF_SECOND);
+      tick(HALF_SECOND_IN_MS);
 
       expect(component.searchLocationForm.controls.searchLocation.value).toBeNull();
-      flush();
     }));
   });
 });

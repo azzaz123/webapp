@@ -1,22 +1,21 @@
 <div class="container">
-  <div [formGroup]="searchLocationForm" class="SearchBox p-2">
+  <div [formGroup]="searchLocationForm" class="SearchBox p-2 position-relative w-100">
     <input
-      class="SearchBox__input"
+      class="SearchBox__input position-relative overflow-hidden"
       formControlName="searchLocation"
       type="text"
-      [placeholder]="SEARCH_LOCATION_PLACEHOLDER"
+      i18n-placeholder="@@collection_point_map_all_users_all_all_searchbox_placeholder"
+      placeholder="Search by address..."
       [ngbTypeahead]="search"
       (selectItem)="selectSuggestion($event.item)"
       [resultTemplate]="locationTemplate"
     />
-    <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
+    <tsl-svg-icon class="SearchBox__glass position-absolute" src="/assets/icons/glass_icon.svg"></tsl-svg-icon>
     <tsl-svg-icon
       *ngIf="searchLocationForm.controls.searchLocation.value"
       (click)="resetSearchQuery()"
-      class="SearchBox__reset"
+      class="SearchBox__reset position-absolute"
       src="/assets/icons/top-bar/search-box-reset.svg"
-      width="21"
-      height="21"
     >
     </tsl-svg-icon>
 
