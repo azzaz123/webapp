@@ -5,6 +5,7 @@ import {
   MOCK_ACCEPT_SCREEN_PROPERTIES,
   MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU,
   MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS,
+  MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { of, ReplaySubject, BehaviorSubject, throwError } from 'rxjs';
 import { AcceptScreenProperties } from '../../interfaces';
@@ -13,7 +14,7 @@ import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
 import { StepDirective } from '@shared/stepper/step.directive';
@@ -40,11 +41,13 @@ describe('AcceptScreenModalComponent', () => {
   const carrierSelectedIndexSubjectMock: BehaviorSubject<number> = new BehaviorSubject(1);
   const countriesAsOptionsAndDefaultSubject: ReplaySubject<CountryOptionsAndDefault> = new ReplaySubject(1);
 
+  const MOCK_DELIVERY_DAY: string = 'Lalalalala';
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const sellerAddressHeaderStylesSelector: string = '.AcceptScreenModal__sellerWithAddressHeader';
   const carrierButtonSelector: string = '.AcceptScreenModal__carrierButton';
   const deliveryAddressSelector: string = 'tsl-delivery-address';
   const mapSelector: string = 'tsl-movable-map';
+  const scheduleSelector: string = 'tsl-delivery-preference-schedule';
   const fullAddressSelector: string = '#fullAddress';
   const rejectButtonSelector: string = '#rejectButton';
   const acceptButtonSelector: string = '#acceptButton';
@@ -90,6 +93,9 @@ describe('AcceptScreenModalComponent', () => {
             },
             get carrierSelectedIndex$() {
               return carrierSelectedIndexSubjectMock.asObservable();
+            },
+            get deliveryPickUpDay$() {
+              return of(MOCK_DELIVERY_DAY);
             },
             rejectRequest() {},
           },
@@ -318,12 +324,15 @@ describe('AcceptScreenModalComponent', () => {
           });
 
           describe('and we click on the carrier button', () => {
+            beforeEach(() => {
+              spyOn(component.stepper, 'goToStep').and.callThrough();
+            });
+
             describe('and we need to redirect to the map', () => {
               const MOCK_SELECTED_CARRIER_REDIRECT_STEP: ACCEPT_SCREEN_STEPS = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.find(
                 (carrier) => carrier.isSelected
               ).buttonProperties.redirectStep;
               beforeEach(() => {
-                spyOn(component.stepper, 'goToStep').and.callThrough();
                 const carrierButton = fixture.debugElement.query(By.css(carrierButtonSelector)).nativeElement;
 
                 carrierButton.click();
@@ -369,6 +378,69 @@ describe('AcceptScreenModalComponent', () => {
 
               it('should show the map', () => {
                 expect(fixture.debugElement.query(By.css(mapSelector))).toBeTruthy();
+              });
+            });
+
+            describe('and we need to redirect to the selection schedule preference', () => {
+              let expectedDeliveryDay: string;
+              const MOCK_SELECTED_CARRIER_REDIRECT_STEP: ACCEPT_SCREEN_STEPS =
+                MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED.carriers.find((carrier) => carrier.isSelected)
+                  .buttonProperties.redirectStep;
+              beforeEach(() => {
+                acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED);
+
+                acceptScreenStoreService.deliveryPickUpDay$.subscribe((day: string) => (expectedDeliveryDay = day));
+                fixture.detectChanges();
+                const carrierButton = fixture.debugElement.query(By.css(carrierButtonSelector)).nativeElement;
+
+                carrierButton.click();
+                fixture.detectChanges();
+              });
+
+              it('should go to the provided step', () => {
+                expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+                expect(component.stepper.goToStep).toHaveBeenCalledWith(MOCK_SELECTED_CARRIER_REDIRECT_STEP);
+              });
+              describe('and we get the delivery pick up day', () => {
+                it('should return the store provided value', () => {
+                  expect(expectedDeliveryDay).toStrictEqual(MOCK_DELIVERY_DAY);
+                });
+              });
+
+              describe('the header...', () => {
+                it('should show the back arrow icon', () => {
+                  shouldShowArrowBackIcon(true);
+                });
+
+                it('should show the accept screen translated title', () => {
+                  shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[MOCK_SELECTED_CARRIER_REDIRECT_STEP]);
+                });
+
+                it('should NOT show help button', () => {
+                  shouldShowHelpButton(false);
+                });
+
+                it('should show the cross icon', () => {
+                  shouldShowCrossIcon();
+                });
+
+                describe('and we click on the close button', () => {
+                  it('should close the modal', () => {
+                    shouldCloseModalWhenCrossClick();
+                  });
+                });
+              });
+
+              it('should redirect to schedule step', () => {
+                expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.SCHEDULE);
+              });
+
+              it('should not detect the accept screen step as active', () => {
+                expect(component.isAcceptScreenStep).toBe(false);
+              });
+
+              it('should show the schedule', () => {
+                expect(fixture.debugElement.query(By.css(scheduleSelector))).toBeTruthy();
               });
             });
           });
