@@ -55,7 +55,7 @@ const notifications: NotificationMapper = {
     TRANSLATION_KEY.NOTIFICATIONS_VIEW_ALL_USERS_ADDITIONAL_OPTIONS_SECTION_PROMOS_NEWS_LABEL,
 };
 
-function mapBackendyNotificationCopyToFrontend(key: BackendNotificationKeys): TRANSLATION_KEY {
+function mapBackendNotificationCopyToFrontend(key: BackendNotificationKeys): TRANSLATION_KEY {
   return notifications[key];
 }
 
@@ -65,8 +65,8 @@ export function mapNotificationsSettings(
 ): NotificationSettings[] {
   return notificationSettings.map(({ subtitle, title, notifications }: NotificationsSettingsDto) => {
     return {
-      title: i18nService.translate(mapBackendyNotificationCopyToFrontend(title)),
-      subtitle: i18nService.translate(mapBackendyNotificationCopyToFrontend(subtitle)),
+      title: i18nService.translate(mapBackendNotificationCopyToFrontend(title)),
+      subtitle: i18nService.translate(mapBackendNotificationCopyToFrontend(subtitle)),
       notifications: mapNotifications(notifications, i18nService),
     };
   });
@@ -75,7 +75,7 @@ export function mapNotifications(notifications: NotificationsDto[], i18nService:
   return notifications.map(({ id, title, enabled }: NotificationsDto) => {
     return {
       id,
-      title: i18nService.translate(mapBackendyNotificationCopyToFrontend(title)),
+      title: i18nService.translate(mapBackendNotificationCopyToFrontend(title)),
       enabled,
     };
   });

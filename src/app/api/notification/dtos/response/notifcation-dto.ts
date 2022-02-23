@@ -20,7 +20,14 @@ export interface NotificationDto {
 
 interface NotificationExtraDto {
   feed_type: string;
-  notification_layout: string;
-  notification_type: string;
+  notification_layout: NOTIFICATION_LAYOUT;
+  notification_type: 'notification_center';
   badge_state: NOTIFICATION_PRODUCT_STATUS;
+}
+
+export enum NOTIFICATION_LAYOUT {
+  SQUARED = 'squared',
+  ROUND = 'round',
+  PINNED = 'pinned',
+  HIGHLIGHTED = 'highlighted',
 }
