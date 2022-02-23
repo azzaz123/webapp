@@ -1,5 +1,5 @@
-import { NOTIFICATION_PRODUCT_STATUS } from '../../../../private/features/inbox/core/enums/notification-product-status.enum';
-import { NOTIFICATION_VARIANT } from '../../../../private/features/inbox/core/enums/notification-variant.enum';
+import { NOTIFICATION_PRODUCT_STATUS } from '@private/features/inbox/core/enums/notification-product-status.enum';
+import { NOTIFICATION_VARIANT } from '@private/features/inbox/core/enums/notification-variant.enum';
 
 export interface Notification {
   variant: NOTIFICATION_VARIANT;
