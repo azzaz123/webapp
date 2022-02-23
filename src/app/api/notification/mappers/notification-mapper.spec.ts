@@ -4,11 +4,11 @@
 // import { mappedNotificationsSettings } from '@api/fixtures/notifications/notifications.fixture';
 // import { I18nService } from '@core/i18n/i18n.service';
 // import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-// import { mapNotificationsSettings } from './notifications-copies-mapper';
-
+// import { mapNotificationsSettings } from '@api/notifications/mappers/notifications-copies-mapper';
+//
 // describe('NotificationsSettingsMapper', () => {
 //   let i18nService: I18nService;
-
+//
 //   beforeEach(
 //     waitForAsync(() => {
 //       TestBed.configureTestingModule({
@@ -28,11 +28,11 @@
 //       }).compileComponents();
 //     })
 //   );
-
+//
 //   beforeEach(() => {
 //     i18nService = TestBed.inject(I18nService);
 //   });
-
+//
 //   describe('mapNotificationSettings', () => {
 //     it('should map', () => {
 //       const items = mapNotificationsSettings(notificationsSettingsResponseFixture.notificationGroups, i18nService);
