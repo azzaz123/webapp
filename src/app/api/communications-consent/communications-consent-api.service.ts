@@ -11,7 +11,7 @@ import { CommunicationsConsentHttpService } from '@api/communications-consent/ht
 export class CommunicationsConsentApiService {
   public constructor(private httpService: CommunicationsConsentHttpService, private i18nService: I18nService) {}
 
-  public getMyNotificationsSettings(): Observable<CommunicationsConsentGroup[]> {
+  public getCommunicationsConsentSettings(): Observable<CommunicationsConsentGroup[]> {
     return this.httpService.getMyNotificationsSettings().pipe(
       map(({ notificationGroups }: CommunicationsConsentResponseDto) => {
         return mapCommunicationsConsentGroup(notificationGroups, this.i18nService);
@@ -19,11 +19,11 @@ export class CommunicationsConsentApiService {
     );
   }
 
-  public setNotificationEnable(notificationId): Observable<void> {
+  public setConsentEnable(notificationId): Observable<void> {
     return this.httpService.setNotificationEnable(notificationId);
   }
 
-  public setNotificationDisabled(notificationId): Observable<void> {
+  public setConsentDisabled(notificationId): Observable<void> {
     return this.httpService.setNotificationDisabled(notificationId);
   }
 }

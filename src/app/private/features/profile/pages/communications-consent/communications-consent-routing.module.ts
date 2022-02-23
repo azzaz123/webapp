@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { ExitConfirmGuard } from '@core/guards/exit-confirm.guard';
-import { NotificationsComponent } from './notifications.component';
+import { CommunicationsConsentComponent } from './communications-consent.component';
 
 const routes: Route[] = [
   {
     path: '',
-    component: NotificationsComponent,
+    component: CommunicationsConsentComponent,
     canDeactivate: [ExitConfirmGuard],
     data: {
       isMyZone: true,
@@ -20,6 +20,6 @@ const routes: Route[] = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class NotificationsRoutingModule {}
+export class CommunicationsConsentRoutingModule {}
 
-export const NotificationsRoutedComponents = [NotificationsComponent];
+export const CommunicationsConsentRoutedComponents = [CommunicationsConsentComponent];

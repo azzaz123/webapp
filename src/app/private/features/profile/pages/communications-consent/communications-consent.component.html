@@ -1,4 +1,4 @@
-<ng-container *ngIf="notificationsSettings$ | async as notificationsSettingsGroupList">
+<ng-container *ngIf="consentSettings$ | async as notificationsSettingsGroupList">
   <div class="NotificationsContainer box profile-box">
     <div *ngFor="let notificationsSettings of notificationsSettingsGroupList" class="NotificationsSettings">
       <div class="NotificationsSettings__title">

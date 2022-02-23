@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { NotificationsComponent } from './notifications.component';
+import { CommunicationsConsentComponent } from './communications-consent.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { By } from '@angular/platform-browser';
 import { mappedCommunicationsConsentGroup } from '@api/fixtures/notifications/communications-consent-group.fixture';
@@ -18,9 +18,9 @@ import {
   UpdateNotificationSetting,
 } from '@core/analytics/analytics-constants';
 
-describe('NotificationsComponent', () => {
-  let component: NotificationsComponent;
-  let fixture: ComponentFixture<NotificationsComponent>;
+describe('CommunicationsConsentComponent', () => {
+  let component: CommunicationsConsentComponent;
+  let fixture: ComponentFixture<CommunicationsConsentComponent>;
   let notificationsApiService: CommunicationsConsentApiService;
   let analyticsService: AnalyticsService;
 
@@ -51,14 +51,14 @@ describe('NotificationsComponent', () => {
             },
           },
         ],
-        declarations: [NotificationsComponent],
+        declarations: [CommunicationsConsentComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NotificationsComponent);
+    fixture = TestBed.createComponent(CommunicationsConsentComponent);
     component = fixture.componentInstance;
     notificationsApiService = TestBed.inject(CommunicationsConsentApiService);
     analyticsService = TestBed.inject(AnalyticsService);
@@ -67,8 +67,8 @@ describe('NotificationsComponent', () => {
 
   describe('init', () => {
     beforeEach(fakeAsync(() => {
-      spyOn(component, 'getMyNotificationsSettings').and.callThrough();
-      spyOn(notificationsApiService, 'getMyNotificationsSettings').and.callThrough();
+      spyOn(component, 'getConsentSettings').and.callThrough();
+      spyOn(notificationsApiService, 'getCommunicationsConsentSettings').and.callThrough();
       spyOn(analyticsService, 'trackPageView').and.callThrough();
       component.ngOnInit();
       tick();
@@ -82,8 +82,8 @@ describe('NotificationsComponent', () => {
       },
     };
 
-    it('should call getMyNotificationsSettings when component init and track page view', fakeAsync(() => {
-      expect(component.getMyNotificationsSettings).toHaveBeenCalled();
+    it('should call getConsentSettings when component init and track page view', fakeAsync(() => {
+      expect(component.getConsentSettings).toHaveBeenCalled();
       expect(analyticsService.trackPageView).toHaveBeenCalledWith(event);
     }));
 
@@ -96,7 +96,7 @@ describe('NotificationsComponent', () => {
   describe('should disable notification', () => {
     beforeEach(fakeAsync(() => {
       spyOn(component, 'handleChange').and.callThrough();
-      spyOn(notificationsApiService, 'setNotificationDisabled').and.callThrough();
+      spyOn(notificationsApiService, 'setConsentDisabled').and.callThrough();
       spyOn(analyticsService, 'trackEvent').and.callThrough();
       const notificationLabelToggle = fixture.debugElement.query(By.css('.NotificationsSettings__details_toggle')).nativeNode.childNodes[0];
       notificationLabelToggle.click();
@@ -115,7 +115,7 @@ describe('NotificationsComponent', () => {
 
     it('it should disable a enabled notification when clicked and track new event', () => {
       expect(component.handleChange).toHaveBeenCalled();
-      expect(notificationsApiService.setNotificationDisabled).toHaveBeenCalled();
+      expect(notificationsApiService.setConsentDisabled).toHaveBeenCalled();
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
     });
   });
@@ -123,7 +123,7 @@ describe('NotificationsComponent', () => {
   describe('should enable notification', () => {
     beforeEach(() => {
       spyOn(component, 'handleChange').and.callThrough();
-      spyOn(notificationsApiService, 'setNotificationEnable').and.callThrough();
+      spyOn(notificationsApiService, 'setConsentEnable').and.callThrough();
       spyOn(analyticsService, 'trackEvent').and.callThrough();
       const notificationLabelToggle = fixture.debugElement.query(By.css('.NotificationsSettings__details_toggle')).nativeNode.childNodes[0];
       notificationLabelToggle.click();
@@ -142,7 +142,7 @@ describe('NotificationsComponent', () => {
 
     it('it should enable a disabled notification when clicked and track new event', () => {
       expect(component.handleChange).toHaveBeenCalled();
-      expect(notificationsApiService.setNotificationEnable).toHaveBeenCalled();
+      expect(notificationsApiService.setConsentEnable).toHaveBeenCalled();
       expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
     });
   });

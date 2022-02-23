@@ -45,20 +45,20 @@ describe('CommunicationsConsentApiService', () => {
     it('should retrieve notifications items', () => {
       let notificationsSettings: CommunicationsConsentGroup[];
       spyOn(httpService, 'getMyNotificationsSettings').and.returnValue(of(communicationsConsentResponseFixture));
-      service.getMyNotificationsSettings().subscribe((data: CommunicationsConsentGroup[]) => (notificationsSettings = data));
+      service.getCommunicationsConsentSettings().subscribe((data: CommunicationsConsentGroup[]) => (notificationsSettings = data));
       expect(notificationsSettings).toEqual(mappedCommunicationsConsentGroup);
     });
 
     it('should disable notification', (done) => {
       spyOn(httpService, 'setNotificationDisabled').and.returnValue(of(null));
-      service.setNotificationDisabled(`${communicationsConsentIdToModify}`).subscribe(() => {
+      service.setConsentDisabled(`${communicationsConsentIdToModify}`).subscribe(() => {
         done();
       });
     });
 
     it('should enable notification', (done) => {
       spyOn(httpService, 'setNotificationEnable').and.returnValue(of(null));
-      service.setNotificationEnable(`${communicationsConsentIdToModify}`).subscribe(() => {
+      service.setConsentEnable(`${communicationsConsentIdToModify}`).subscribe(() => {
         done();
       });
     });
