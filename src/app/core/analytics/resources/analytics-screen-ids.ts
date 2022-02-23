@@ -149,4 +149,7 @@ export enum SCREEN_IDS {
   ProBumpItemPurchaseOption = 319,
   NotificationSettings = 320,
   LoginRegisterMessage = 321,
+  LeavePhoneNumberPRO = 322,
+  MyFavoriteSearchesSection = 323,
+  BumpCheckout = 324,
 }
