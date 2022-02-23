@@ -1,7 +1,7 @@
 <div *ngIf="availableSchedules" class="DeliveryPreferenceSchedule container h-100">
   <div class="row h-100 justify-content-center">
     <div class="col col-md-10 p-md-0 h-100">
-      <form [formGroup]="scheduleForm" (submit)="savePreference()" class="d-flex flex-column justify-between h-100">
+      <form (submit)="savePreference()" class="d-flex flex-column justify-between h-100">
         <div class="DeliveryPreferenceSchedule__formWrapper row">
           <div class="col">
             <h1 class="DeliveryPreferenceSchedule__title DeliveryPreferenceSchedule__text mb-3" i18n="@@time_slot_view_seller_hpu_ba_title">
@@ -10,7 +10,7 @@
             <span class="DeliveryPreferenceSchedule__text d-block mb-3" i18n="@@time_slot_view_seller_hpu_ba_description_with_details"
               >The pick up will be on {{ deliveryPickUpDay }}. The courier company will try to adhere to the slot you indicated.</span
             >
-            <div ngbRadioGroup name="radioBasic" formControlName="selected">
+            <div ngbRadioGroup name="radioBasic" [(ngModel)]="selectedSchedule">
               <label ngbButtonLabel class="DeliveryPreferenceSchedule__scheduleOption custom-radio d-block text-center mb-3">
                 <input ngbButton type="radio" [value]="SCHEDULE_TYPE.ALL_DAY" [id]="SCHEDULE_TYPE.ALL_DAY" />
                 <span i18n="@@time_slot_view_seller_hpu_ba_all_day_button">

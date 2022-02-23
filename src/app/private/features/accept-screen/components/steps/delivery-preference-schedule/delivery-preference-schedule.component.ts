@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { GetUserScheduleApiService } from '@api/bff/delivery/user_schedule/get-user-schedule-api.service';
 import { DeliverySchedule, DeliveryScheduleOptions } from '@api/core/model/delivery/schedule/delivery-schedule.interface';
 import { SCHEDULE_TYPE } from '@api/core/model/delivery/schedule/schedule-type.type';
@@ -12,9 +12,7 @@ import { SelectUserScheduleApiService } from '@api/delivery/user_schedule/select
 })
 export class DeliveryPreferenceScheduleComponent implements OnInit {
   @Input() deliveryPickUpDay: string;
-  public scheduleForm: FormGroup = this.fb.group({
-    selected: ['', [Validators.required]],
-  });
+  public selectedSchedule: SCHEDULE_TYPE;
   public availableSchedules: DeliveryScheduleOptions;
   public readonly SCHEDULE_TYPE = SCHEDULE_TYPE;
 
@@ -31,7 +29,7 @@ export class DeliveryPreferenceScheduleComponent implements OnInit {
   }
 
   public savePreference(): void {
-    this.selectUserScheduleApiService.homePickUpDeliverySchedule(this.scheduleId, this.scheduleForm.get('selected').value).subscribe(
+    this.selectUserScheduleApiService.homePickUpDeliverySchedule(this.scheduleId, this.selectedSchedule).subscribe(
       () => {},
       () => {}
     );
@@ -41,7 +39,7 @@ export class DeliveryPreferenceScheduleComponent implements OnInit {
     this.getUserScheduleApiService.homePickUpDeliverySchedules().subscribe((schedule: DeliverySchedule) => {
       this.availableSchedules = schedule.scheduleOptions;
       this.scheduleId = schedule.userSchedule.id;
-      this.scheduleForm.get('selected').setValue(schedule.userSchedule.scheduleTimeRange);
+      this.selectedSchedule = schedule.userSchedule.scheduleTimeRange;
     });
   }
 }
