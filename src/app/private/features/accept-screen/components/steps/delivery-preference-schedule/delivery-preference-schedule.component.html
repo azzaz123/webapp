@@ -8,7 +8,7 @@
               Which time slot is best for you?
             </h1>
             <span class="DeliveryPreferenceSchedule__text d-block mb-3" i18n="@@time_slot_view_seller_hpu_ba_description_with_details"
-              >The pick up will be on {{ '' }}. The courier company will try to adhere to the slot you indicated.</span
+              >The pick up will be on {{ deliveryPickUpDay }}. The courier company will try to adhere to the slot you indicated.</span
             >
             <div ngbRadioGroup name="radioBasic" formControlName="selected">
               <label ngbButtonLabel class="DeliveryPreferenceSchedule__scheduleOption custom-radio d-block text-center mb-3">
@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="row position-sticky text-center justify-content-center">
-          <tsl-button class="col" type="submit" i18n="@@time_slot_view_seller_hpu_ba_save_button" className="btn-primary btn-block"
+          <tsl-button class="col" [type]="'submit'" i18n="@@time_slot_view_seller_hpu_ba_save_button" className="btn-primary btn-block"
             >Save</tsl-button
           >
         </div>

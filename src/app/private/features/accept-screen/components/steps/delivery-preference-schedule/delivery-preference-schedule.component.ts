@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GetUserScheduleApiService } from '@api/bff/delivery/user_schedule/get-user-schedule-api.service';
 import { DeliverySchedule, DeliveryScheduleOptions } from '@api/core/model/delivery/schedule/delivery-schedule.interface';
@@ -11,6 +11,7 @@ import { SelectUserScheduleApiService } from '@api/delivery/user_schedule/select
   styleUrls: ['./delivery-preference-schedule.component.scss'],
 })
 export class DeliveryPreferenceScheduleComponent implements OnInit {
+  @Input() deliveryPickUpDay: string;
   public scheduleForm: FormGroup = this.fb.group({
     selected: ['', [Validators.required]],
   });
