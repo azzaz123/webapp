@@ -19,8 +19,8 @@ describe('NotificationApiService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('should get notifications', () => {
-    it('when calls getNotifications', () => {
+  describe('When calls getNotifications', () => {
+    it('should return value with type of notifications', () => {
       spyOn(service, 'getNotifications').and.returnValue(of(notificationsDto));
     });
   });
