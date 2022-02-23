@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap, filter } from 'rxjs/operators';
 import { Observable, of, Subject, Subscription } from 'rxjs';
@@ -21,7 +21,6 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   @Input() mapCenterCoordinates: Location;
   @Input() mapMarkers: Location[] = [];
 
-  @Output() selectedLocationCoordinates: EventEmitter<Location> = new EventEmitter();
   @Output() mapViewChangeEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
   @Output() tapMarker: EventEmitter<Location> = new EventEmitter();
   @Output() tapMap: EventEmitter<void> = new EventEmitter();
@@ -32,17 +31,22 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   private readonly selectedSuggestionSubject: Subject<string> = new Subject<string>();
   private subscriptions = new Subscription();
 
-  constructor(private buildForm: FormBuilder, private geoLocationService: GeolocationService) {}
+  constructor(
+    private buildForm: FormBuilder,
+    private geoLocationService: GeolocationService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.buildSearchLocationForm();
     this.subscriptions.add(
       this.onSelectLocationSuggestion().subscribe((location: LabeledSearchLocation) => {
         this.searchLocationForm.setValue({ searchLocation: location.label });
-        this.selectedLocationCoordinates.emit({
+        this.mapCenterCoordinates = {
           latitude: +location.latitude,
           longitude: +location.longitude,
-        });
+        };
+        this.changeDetectorRef.detectChanges();
       })
     );
   }

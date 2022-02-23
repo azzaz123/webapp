@@ -29,7 +29,7 @@
 </div>
 <tsl-movable-map
   [markers]="mapMarkers"
-  [centerCoordinates]="selectedLocationCoordinates | async"
+  [centerCoordinates]="mapCenterCoordinates"
   (tapMap)="onTapMap()"
   (tapMarker)="onTapMarker($event)"
   (mapViewChangeEnd)="onMapViewChangeEnd($event)"

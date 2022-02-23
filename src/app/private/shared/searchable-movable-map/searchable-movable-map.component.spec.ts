@@ -99,7 +99,6 @@ describe('SearchableMovableMapComponent', () => {
           name: MOCK_LOCATION_SUGGESTIONS[0].description,
         })
       );
-      spyOn(component.selectedLocationCoordinates, 'emit');
 
       searchBoxInput.nativeElement.value = MOCK_CITY_NAME;
       searchBoxInput.nativeElement.dispatchEvent(new Event('input'));
@@ -114,7 +113,7 @@ describe('SearchableMovableMapComponent', () => {
     }));
 
     it('should set the latitude and longitude for the selected location', () => {
-      expect(component.selectedLocationCoordinates.emit).toHaveBeenCalledWith({
+      expect(component.mapCenterCoordinates).toStrictEqual({
         [FILTER_QUERY_PARAM_KEY.latitude]: MOCK_COORDINATE.latitude,
         [FILTER_QUERY_PARAM_KEY.longitude]: MOCK_COORDINATE.longitude,
       });
@@ -124,7 +123,7 @@ describe('SearchableMovableMapComponent', () => {
       const searchLocationFormValue: string = component.searchLocationForm.controls.searchLocation.value;
       const locationWithCountryAtTheEnd: string = MOCK_LOCATION_SUGGESTIONS[0].description.split(',').reverse().join(', ');
 
-      expect(searchLocationFormValue).toEqual(locationWithCountryAtTheEnd);
+      expect(searchLocationFormValue).toStrictEqual(locationWithCountryAtTheEnd);
     });
   });
 
