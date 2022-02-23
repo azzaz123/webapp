@@ -1,9 +1,9 @@
 // import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 // import { TestBed, waitForAsync } from '@angular/core/testing';
-// import { mappedNotificationsSettings } from '@api/fixtures/notifications/notifications.fixture';
+// import { mappedCommunicationsConsentGroup } from '@api/fixtures/notifications/notifications.fixture';
 // import { mapNotificationsFromBraze } from '@api/notification/mappers/notification-mapper';
 //
-// describe('NotificationMapper', () => {
+// describe('CommunicationsConsentMapper', () => {
 //   beforeEach(
 //     waitForAsync(() => {
 //       TestBed.configureTestingModule({
@@ -18,7 +18,7 @@
 //   describe('mapNotificationSettings', () => {
 //     it('should map', () => {
 //       const items = mapNotificationsFromBraze();
-//       expect(items).toEqual(mappedNotificationsSettings);
+//       expect(items).toEqual(mappedCommunicationsConsentGroup);
 //     });
 //   });
 // });

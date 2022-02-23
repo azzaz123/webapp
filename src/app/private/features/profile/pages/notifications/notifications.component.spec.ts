@@ -4,8 +4,8 @@ import { of } from 'rxjs';
 import { NotificationsComponent } from './notifications.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { By } from '@angular/platform-browser';
-import { mappedNotificationsSettings } from '@api/fixtures/notifications/notifications.fixture';
-import { NotificationsApiService } from '@api/notifications/notifications-api.service';
+import { mappedCommunicationsConsentGroup } from '@api/fixtures/notifications/communications-consent-group.fixture';
+import { CommunicationsConsentApiService } from '@api/communications-consent/communications-consent-api.service';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { FormsModule } from '@angular/forms';
 import {
@@ -21,7 +21,7 @@ import {
 describe('NotificationsComponent', () => {
   let component: NotificationsComponent;
   let fixture: ComponentFixture<NotificationsComponent>;
-  let notificationsApiService: NotificationsApiService;
+  let notificationsApiService: CommunicationsConsentApiService;
   let analyticsService: AnalyticsService;
 
   beforeEach(
@@ -30,10 +30,10 @@ describe('NotificationsComponent', () => {
         imports: [FormsModule, NgxPermissionsModule.forRoot()],
         providers: [
           {
-            provide: NotificationsApiService,
+            provide: CommunicationsConsentApiService,
             useValue: {
               getMyNotificationsSettings() {
-                return of(mappedNotificationsSettings);
+                return of(mappedCommunicationsConsentGroup);
               },
               setNotificationEnable() {
                 return of(null);
@@ -60,7 +60,7 @@ describe('NotificationsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NotificationsComponent);
     component = fixture.componentInstance;
-    notificationsApiService = TestBed.inject(NotificationsApiService);
+    notificationsApiService = TestBed.inject(CommunicationsConsentApiService);
     analyticsService = TestBed.inject(AnalyticsService);
     fixture.detectChanges();
   });
@@ -109,7 +109,7 @@ describe('NotificationsComponent', () => {
       attributes: {
         screenId: SCREEN_IDS.NotificationSettings,
         consent: false,
-        notificationId: mappedNotificationsSettings[0].notifications[0].id,
+        notificationId: mappedCommunicationsConsentGroup[0].notifications[0].id,
       },
     };
 
@@ -136,7 +136,7 @@ describe('NotificationsComponent', () => {
       attributes: {
         screenId: SCREEN_IDS.NotificationSettings,
         consent: true,
-        notificationId: mappedNotificationsSettings[0].notifications[0].id,
+        notificationId: mappedCommunicationsConsentGroup[0].notifications[0].id,
       },
     };
 

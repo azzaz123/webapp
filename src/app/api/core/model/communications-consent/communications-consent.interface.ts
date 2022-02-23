@@ -1,4 +1,4 @@
-export interface NotificationConsent {
+export interface CommunicationsConsent {
   id: string;
   title: string;
   enabled: boolean;

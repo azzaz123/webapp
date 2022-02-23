@@ -1,10 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { notificationsSettingsResponseFixture } from '@api/fixtures/notifications/notifications-response.fixture';
-import { mappedNotificationsSettings } from '@api/fixtures/notifications/notifications.fixture';
+import { communicationsConsentResponseFixture } from '@api/fixtures/notifications/communications-consent-response.fixture';
+import { mappedCommunicationsConsentGroup } from '@api/fixtures/notifications/communications-consent-group.fixture';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { mapNotificationsSettings } from './notifications-copies-mapper';
+import { mapCommunicationsConsentGroup } from './communications-consent-mapper';
 
 describe('NotificationsSettingsMapper', () => {
   let i18nService: I18nService;
@@ -35,8 +35,8 @@ describe('NotificationsSettingsMapper', () => {
 
   describe('mapNotificationSettings', () => {
     it('should map', () => {
-      const items = mapNotificationsSettings(notificationsSettingsResponseFixture.notificationGroups, i18nService);
-      expect(items).toEqual(mappedNotificationsSettings);
+      const items = mapCommunicationsConsentGroup(communicationsConsentResponseFixture.notificationGroups, i18nService);
+      expect(items).toEqual(mappedCommunicationsConsentGroup);
     });
   });
 });

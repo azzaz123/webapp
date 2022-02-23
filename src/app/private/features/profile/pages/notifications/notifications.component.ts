@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationConsent, NotificationSettings } from '@api/core/model/notifications';
+import { CommunicationsConsent, CommunicationsConsentGroup } from '@api/core/model/communications-consent';
 import {
   AnalyticsEvent,
   AnalyticsPageView,
@@ -10,7 +10,7 @@ import {
   ViewNotificationSettings,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { NotificationsApiService } from '@api/notifications/notifications-api.service';
+import { CommunicationsConsentApiService } from '@api/communications-consent/communications-consent-api.service';
 import { Observable } from 'rxjs';
 @Component({
   selector: 'tsl-notifications',
@@ -21,9 +21,9 @@ export class NotificationsComponent implements OnInit {
   // TODO
   // RENAME ALL RELATED WITH NOTIFICATIONS ======> COMUNICATION CONSENT (COMPONENT, API (APP/API/NOTIFICATIONS), FIXTURES...)
   public allowSegmentation: boolean;
-  public notificationsSettings$: Observable<NotificationSettings[]> = this.getMyNotificationsSettings();
+  public notificationsSettings$: Observable<CommunicationsConsentGroup[]> = this.getMyNotificationsSettings();
 
-  constructor(private notificationsApiService: NotificationsApiService, private analyticsService: AnalyticsService) {}
+  constructor(private notificationsApiService: CommunicationsConsentApiService, private analyticsService: AnalyticsService) {}
 
   ngOnInit(): void {
     this.getMyNotificationsSettings();
@@ -34,7 +34,7 @@ export class NotificationsComponent implements OnInit {
     return this.notificationsApiService.getMyNotificationsSettings();
   }
 
-  public handleChange(notification: NotificationConsent) {
+  public handleChange(notification: CommunicationsConsent) {
     const { id, enabled } = notification;
 
     if (enabled) {
