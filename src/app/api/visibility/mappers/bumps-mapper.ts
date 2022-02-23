@@ -6,10 +6,8 @@ import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.int
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { BUMP_TYPES, CartBase } from '@shared/catalog/cart/cart-base';
-import { CartItem } from '@shared/catalog/cart/cart-item.interface';
 import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
-import { BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
+import { BumpPackageUseDTO, BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
 
 export function mapBalance(bumps: BumpsPackageBalanceDTO[]): BumpsPackageBalance[] {
   return bumps.map(mapBump);
@@ -25,15 +23,18 @@ function mapBump(bump: BumpsPackageBalanceDTO): BumpsPackageBalance {
   return bumpMapped;
 }
 
-export function mapFreeBumpsPurchase(cart: SelectedProduct[], uuidService: UuidService): BumpsPackageUseDTO[] {
-  return cart.map((cartItem) => {
-    let orderParsed: BumpsPackageUseDTO = {
-      id: uuidService.getUUID(),
-      type: cartItem.productType,
-      item_id: cartItem.item.id,
-    };
-    return orderParsed;
-  });
+export function mapFreeBumpsPurchase(cart: SelectedProduct[], uuidService: UuidService): BumpsPackageUseDTO {
+  return {
+    bumps: cart.map((cartItem) => {
+      let orderParsed: BumpPackageUseDTO = {
+        id: uuidService.getUUID(),
+        type: cartItem.productType,
+        item_id: cartItem.item.id,
+        duration_days: cartItem.duration.duration / 24,
+      };
+      return orderParsed;
+    }),
+  };
 }
 
 export function mapItemsWithProducts(itemsWithProducts: ItemsWithAvailableProductsResponse[]): ItemWithProducts[] {

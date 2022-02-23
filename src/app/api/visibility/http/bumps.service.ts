@@ -14,7 +14,7 @@ export class BumpsHttpService {
     return this.httpClient.get<BumpsPackageBalanceDTO[]>(BUMPS_PACKAGE_BALANCE(userId));
   }
 
-  public useBumpPackage(cart: BumpsPackageUseDTO[]): Observable<void> {
+  public useBumpPackage(cart: BumpsPackageUseDTO): Observable<void> {
     return this.httpClient.post<void>(BUMPS_PACKAGE_USE, cart);
   }
 
