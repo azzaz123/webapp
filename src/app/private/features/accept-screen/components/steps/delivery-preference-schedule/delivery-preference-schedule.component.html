@@ -8,27 +8,30 @@
         >
           Which time slot is best for you?
         </h1>
-        <span class="DeliveryPreferenceSchedule__text d-block mb-3" i18n="@@time_slot_view_seller_hpu_ba_description_with_details"
+        <span
+          id="pickUpDay"
+          class="DeliveryPreferenceSchedule__text d-block mb-3"
+          i18n="@@time_slot_view_seller_hpu_ba_description_with_details"
           >The pick up will be on {{ deliveryPickUpDay }}. The courier company will try to adhere to the slot you indicated.</span
         >
         <div ngbRadioGroup name="radioBasic" [(ngModel)]="selectedSchedule">
           <label ngbButtonLabel class="DeliveryPreferenceSchedule__scheduleOption custom-radio d-block text-center mb-3">
             <input ngbButton type="radio" [value]="SCHEDULE_TYPE.ALL_DAY" [id]="SCHEDULE_TYPE.ALL_DAY" />
-            <span i18n="@@time_slot_view_seller_hpu_ba_all_day_button">
-              All day (from {{ availableSchedules.allDay.startTimeRange }} to {{ availableSchedules.allDay.endTimeRange }})
-            </span>
+            <span i18n="@@time_slot_view_seller_hpu_ba_all_day_button" id="allDayOptionDescription"
+              >All day (from {{ availableSchedules.allDay.startTimeRange }} to {{ availableSchedules.allDay.endTimeRange }})</span
+            >
           </label>
           <label ngbButtonLabel class="DeliveryPreferenceSchedule__scheduleOption custom-radio d-block text-center mb-3">
             <input ngbButton type="radio" [value]="SCHEDULE_TYPE.MORNING" [id]="SCHEDULE_TYPE.MORNING" />
-            <span i18n="@@time_slot_view_seller_hpu_ba_morning_button">
-              Morning (from {{ availableSchedules.morning.startTimeRange }} to {{ availableSchedules.morning.endTimeRange }})
-            </span>
+            <span i18n="@@time_slot_view_seller_hpu_ba_morning_button" id="morningOptionDescription"
+              >Morning (from {{ availableSchedules.morning.startTimeRange }} to {{ availableSchedules.morning.endTimeRange }})</span
+            >
           </label>
           <label ngbButtonLabel class="DeliveryPreferenceSchedule__scheduleOption custom-radio d-block text-center">
             <input ngbButton type="radio" [value]="SCHEDULE_TYPE.AFTERNOON" [id]="SCHEDULE_TYPE.AFTERNOON" class="custom-radio" />
-            <span i18n="@@time_slot_view_seller_hpu_ba_afternoon_button">
-              Afternoon (from {{ availableSchedules.afternoon.startTimeRange }} to {{ availableSchedules.afternoon.endTimeRange }})
-            </span>
+            <span i18n="@@time_slot_view_seller_hpu_ba_afternoon_button" id="afternoonOptionDescription"
+              >Afternoon (from {{ availableSchedules.afternoon.startTimeRange }} to {{ availableSchedules.afternoon.endTimeRange }})</span
+            >
           </label>
         </div>
       </div>
