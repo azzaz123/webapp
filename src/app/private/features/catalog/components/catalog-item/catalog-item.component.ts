@@ -15,6 +15,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ItemDetailRoutePipe } from '@shared/pipes';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -67,6 +68,7 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public featureItem(item: Item): void {
+    this.catalogItemTrackingEventService.trackClickBumpItems(1);
     this.router.navigate([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: item.id }]);
   }
 

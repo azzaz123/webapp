@@ -9,6 +9,7 @@ import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { HttpErrorResponse } from '@angular/common/http';
+import { BumpsTrackingEventsService } from '../../services/bumps-tracking-events.service';
 
 @Component({
   selector: 'tsl-cart',
@@ -30,7 +31,11 @@ export class CartComponent {
   public readonly PACK_TYPES = PACKS_TYPES;
   public readonly ICON_TYPE = ICON_TYPE;
 
-  constructor(private errorService: ErrorsService, private visibilityService: VisibilityApiService) {}
+  constructor(
+    private errorService: ErrorsService,
+    private visibilityService: VisibilityApiService,
+    private bumpsTrackingEventsService: BumpsTrackingEventsService
+  ) {}
 
   public checkout(): void {
     if (this.loading) {
@@ -42,6 +47,8 @@ export class CartComponent {
     }
 
     this.loading = true;
+
+    this.bumpsTrackingEventsService.trackPayBumpItems(this.selectedItems, this.totalToPay);
 
     this.visibilityService
       .buyBumps(this.selectedItems, this.hasSavedCard, this.savedCard, this.card)

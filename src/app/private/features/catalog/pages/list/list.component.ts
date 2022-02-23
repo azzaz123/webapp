@@ -846,6 +846,7 @@ export class ListComponent implements OnInit, OnDestroy {
         screenId: SCREEN_IDS.MyCatalog,
         numberOfItems: this.counters.publish,
         proSubscriptionBanner: this.showTryProSlot,
+        isPro: this.user.featured,
       },
     };
     this.analyticsService.trackPageView(event);

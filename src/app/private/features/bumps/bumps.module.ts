@@ -19,9 +19,11 @@ import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.mod
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 import { VisibilityApiModule } from '@api/visibility/visibility-api.module';
 import { SubscriptionHeaderCheckoutComponent } from './components/subscription-header-checkout/subscription-header-checkout.component';
+import { BumpsTrackingEventsService } from './services/bumps-tracking-events.service';
 
 @NgModule({
   declarations: [CheckoutItemComponent, CartComponent, WallacoinComponent, bumpsRoutedComponents, SubscriptionHeaderCheckoutComponent],
+  providers: [BumpsTrackingEventsService],
   imports: [
     CommonModule,
     SvgIconModule,
