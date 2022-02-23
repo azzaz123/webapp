@@ -16,7 +16,7 @@ export class NotificationsInboxComponent implements OnInit {
   ngOnInit(): void {
     this.notifications = this.notificationApiService.getCachedContentCards();
     this.trackViewNotificationCenter();
-    //appboy.logContentCardsDisplayed();
+    appboy.logContentCardsDisplayed();
   }
 
   public trackViewNotificationCenter(): void {
