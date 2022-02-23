@@ -1,33 +1,28 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { ExternalCommsService } from './external-comms.service';
+import { UserService } from '@core/user/user.service';
+import { MockUserService } from '@fixtures/user.fixtures.spec';
 
 describe('ExternalCommsService', () => {
   let service: ExternalCommsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [{ provide: UserService, useValue: MockUserService }],
+    });
     service = TestBed.inject(ExternalCommsService);
   });
 
   describe('when initializing Braze communications', () => {
     it('should initialize Braze configuration', fakeAsync(() => {
-      const MOCK_BRAZE_CONFIG = { enableHtmlInAppMessages: true };
+      const MOCK_BRAZE_CONFIG = { manageServiceWorkerExternally: true };
       spyOn(appboy, 'initialize');
 
-      service.initializeBrazeCommunications();
+      service.initializeBraze();
       tick();
 
       expect(appboy.initialize).toHaveBeenCalledWith(environment.appboy, MOCK_BRAZE_CONFIG);
-    }));
-
-    it('should enable displaying automatically Braze in-app messages', fakeAsync(() => {
-      spyOn(appboy.display, 'automaticallyShowNewInAppMessages');
-
-      service.initializeBrazeCommunications();
-      tick();
-
-      expect(appboy.display.automaticallyShowNewInAppMessages).toHaveBeenCalledTimes(1);
     }));
 
     it('should emit an event when the Braze library is ready to be used', fakeAsync(() => {
@@ -36,7 +31,7 @@ describe('ExternalCommsService', () => {
         brazeReadyEventSent = true;
       });
 
-      service.initializeBrazeCommunications();
+      service.initializeBraze();
       tick();
 
       expect(brazeReadyEventSent).toBe(true);
