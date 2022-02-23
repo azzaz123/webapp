@@ -1,7 +1,6 @@
 import { Observable, ReplaySubject } from 'rxjs';
-import * as mParticle from '@mparticle/web-sdk';
-import { User as MPUser, Identity, IdentityResult, MPConfiguration, UserIdentities } from '@mparticle/web-sdk';
-import appboyKit from '@mparticle/web-appboy-kit';
+import { mParticle, appboyKit } from './mparticle.constants';
+import { IdentityResult, MPConfiguration, UserIdentities, User as MPUser } from '@mparticle/web-sdk';
 import { UserService } from './../user/user.service';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { environment } from '@environments/environment';
@@ -83,11 +82,11 @@ export class AnalyticsService {
   }
 
   public loginUser(userIdentities: UserIdentities, callback?: () => void): void {
-    Identity.login({ userIdentities }, callback);
+    mParticle.Identity.login({ userIdentities }, callback);
   }
 
   private getMPUser(): MPUser | undefined {
-    return Identity.getCurrentUser();
+    return mParticle.Identity.getCurrentUser();
   }
 
   private mParticleIdentityCallback(result: IdentityResult): void {

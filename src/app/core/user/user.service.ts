@@ -21,11 +21,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { InboxUser } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
-import * as mParticle from '@mparticle/web-sdk';
-import { IdentityResult } from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { SITE_URL } from '@configs/site-url.config';
+import { mParticle } from '@core/analytics/mparticle.constants';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -363,7 +362,7 @@ export class UserService {
 
   // FIXME: This should be handled through the analytics service
   private logoutMParticle(callback: () => void): void {
-    const identityCallback = (result: IdentityResult) => {
+    const identityCallback = (result: mParticle.IdentityResult) => {
       if (result.getUser()) {
         callback();
       }

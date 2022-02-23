@@ -7,23 +7,28 @@ import { DeviceService } from '@core/device/device.service';
 import { MARKET_PROVIDER } from '@configs/market.config';
 import { LOCALE_ID } from '@angular/core';
 import { APP_LOCALE_MOCK, MARKET_MOCK } from '@fixtures/analytics.fixtures.spec';
-import * as mParticle from '@mparticle/web-sdk';
+import { mParticle } from '@core/analytics/mparticle.constants';
 
 const user = {
   setUserAttribute: () => {},
 };
 
-jest.mock('@mparticle/web-sdk', () => ({
-  init: (key, config) => {
-    config.identityCallback({
-      getUser: () => user,
-    });
+jest.mock('@core/analytics/mparticle.constants', () => ({
+  mParticle: {
+    init: (key, config) => {
+      config.identityCallback({
+        getUser: () => user,
+      });
+    },
+    logEvent: (_eventName, _eventType, _eventAttributes) => {},
+    logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
+    ready: () => {},
+    Identity: {
+      getCurrentUser: () => user,
+    },
   },
-  logEvent: (_eventName, _eventType, _eventAttributes) => {},
-  logPageView: (_pageName, _pageAttributes, _pageFlags) => {},
-  ready: () => {},
-  Identity: {
-    getCurrentUser: () => user,
+  appboyKit: {
+    register: () => {},
   },
 }));
 
@@ -109,7 +114,6 @@ describe('AnalyticsService', () => {
           identityCallback: expect.anything(),
           isDevelopmentMode: expect.anything(),
           dataPlan: expect.anything(),
-          kits: expect.anything(),
         });
       });
     });
@@ -128,7 +132,6 @@ describe('AnalyticsService', () => {
           identityCallback: expect.anything(),
           isDevelopmentMode: expect.anything(),
           dataPlan: expect.anything(),
-          kits: expect.anything(),
         });
       });
     });

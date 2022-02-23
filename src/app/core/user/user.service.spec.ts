@@ -56,18 +56,20 @@ import {
   USER_UNSUBSCRIBE_REASONS_ENDPOINT,
   UserService,
 } from './user.service';
-import * as mParticle from '@mparticle/web-sdk';
-import { UserIdentities } from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
 import { LOCALE_ID } from '@angular/core';
 import { StoreLocation, StoreLocationResponse } from '@core/geolocation/address-response.interface';
 import { cloneDeep } from 'lodash-es';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { mParticle } from '@core/analytics/mparticle.constants';
+import { UserIdentities } from '@mparticle/web-sdk';
 
-jest.mock('@mparticle/web-sdk', () => ({
-  Identity: {
-    logout: () => null,
+jest.mock('@core/analytics/mparticle.constants', () => ({
+  mParticle: {
+    Identity: {
+      logout: () => null,
+    },
   },
 }));
 
