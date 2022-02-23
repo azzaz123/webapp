@@ -5,17 +5,19 @@ import { SCHEDULE_TYPE } from '@api/core/model/delivery/schedule/schedule-type.t
 import { SelectUserScheduleApiService } from '@api/delivery/user_schedule/select-user-schedule-api.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-delivery-preference-schedule',
   templateUrl: './delivery-preference-schedule.component.html',
   styleUrls: ['./delivery-preference-schedule.component.scss'],
 })
-export class DeliveryPreferenceScheduleComponent implements OnInit {
+export class DeliveryPreferenceScheduleComponent {
   @Input() deliveryPickUpDay: string;
   @Output() scheduleSaveSucceded: EventEmitter<void> = new EventEmitter();
+  public availableSchedules$: Observable<DeliveryScheduleOptions> = this.getSchedules();
   public selectedSchedule: SCHEDULE_TYPE;
-  public availableSchedules: DeliveryScheduleOptions;
   public readonly SCHEDULE_TYPE = SCHEDULE_TYPE;
 
   private scheduleId: string;
@@ -25,10 +27,6 @@ export class DeliveryPreferenceScheduleComponent implements OnInit {
     private getUserScheduleApiService: GetUserScheduleApiService,
     private errorsService: ErrorsService
   ) {}
-
-  ngOnInit(): void {
-    this.getSchedules();
-  }
 
   public savePreference(): void {
     this.selectUserScheduleApiService.homePickUpDeliverySchedule(this.scheduleId, this.selectedSchedule).subscribe(
@@ -41,16 +39,18 @@ export class DeliveryPreferenceScheduleComponent implements OnInit {
     );
   }
 
-  private getSchedules(): void {
-    this.getUserScheduleApiService.homePickUpDeliverySchedules().subscribe(
-      (schedule: DeliverySchedule) => {
-        this.availableSchedules = schedule.scheduleOptions;
-        this.scheduleId = schedule.userSchedule.id;
-        this.selectedSchedule = schedule.userSchedule.scheduleTimeRange;
-      },
-      () => {
-        this.showToastError(TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR);
-      }
+  private getSchedules(): Observable<DeliveryScheduleOptions> {
+    return this.getUserScheduleApiService.homePickUpDeliverySchedules().pipe(
+      tap(
+        (schedule: DeliverySchedule) => {
+          this.scheduleId = schedule.userSchedule.id;
+          this.selectedSchedule = schedule.userSchedule.scheduleTimeRange;
+        },
+        () => {
+          this.showToastError(TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR);
+        }
+      ),
+      map((schedule: DeliverySchedule) => schedule.scheduleOptions)
     );
   }
 
