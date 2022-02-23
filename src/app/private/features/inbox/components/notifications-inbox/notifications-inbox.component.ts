@@ -14,7 +14,7 @@ export class NotificationsInboxComponent implements OnInit {
   constructor(private analyticsService: AnalyticsService, private notificationApiService: NotificationApiService) {}
 
   ngOnInit(): void {
-    this.notifications = this.notificationApiService.getCachedContentCards();
+    this.notifications = this.notificationApiService.getNotifications();
     this.trackViewNotificationCenter();
     appboy.logContentCardsDisplayed();
   }

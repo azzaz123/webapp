@@ -1,5 +1,6 @@
 import { DidomiLibrary } from '@core/ads/vendors/didomi/didomi.interface';
 import { ThreatMetrixLibrary } from 'app/core/trust-and-safety/threat-metrix.interface';
+import { NotificationDto } from '@api/notification/dtos/response/notifcation-dto';
 
 export const MOCK_APPBOY = {
   initialize: () => {},
@@ -11,6 +12,7 @@ export const MOCK_APPBOY = {
   changeUser: (_userId) => {},
   openSession: () => {},
   logContentCardsDisplayed: () => {},
+  getCachedContentCards: (): NotificationDto[] => {},
 };
 
 export const MOCK_GA = () => {};
