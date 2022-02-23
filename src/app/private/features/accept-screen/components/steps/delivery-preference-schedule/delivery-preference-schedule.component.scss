@@ -25,4 +25,9 @@
       color: $blue-grey-2;
     }
   }
+
+  &__confirmButton {
+    bottom: 0;
+    background-color: $white;
+  }
 }
