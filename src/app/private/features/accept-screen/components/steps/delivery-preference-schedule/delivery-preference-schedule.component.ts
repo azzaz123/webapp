@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GetUserScheduleApiService } from '@api/bff/delivery/user_schedule/get-user-schedule-api.service';
 import { DeliverySchedule, DeliveryScheduleOptions } from '@api/core/model/delivery/schedule/delivery-schedule.interface';
 import { SCHEDULE_TYPE } from '@api/core/model/delivery/schedule/schedule-type.type';
@@ -12,6 +12,7 @@ import { map, tap } from 'rxjs/operators';
   selector: 'tsl-delivery-preference-schedule',
   templateUrl: './delivery-preference-schedule.component.html',
   styleUrls: ['./delivery-preference-schedule.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeliveryPreferenceScheduleComponent {
   @Input() deliveryPickUpDay: string;
