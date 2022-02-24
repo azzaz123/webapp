@@ -61,7 +61,7 @@ export class DeliveryConversationContextService {
     }
 
     if (bannerActionType === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
-      return this.openAwarenessModal();
+      return this.deliveryConversationContextAsBuyerService.handleBannerCTAClick(conversation, bannerActionType);
     }
 
     return this.openAwarenessModal();
