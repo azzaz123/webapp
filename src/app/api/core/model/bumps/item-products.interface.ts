@@ -34,10 +34,10 @@ export interface SelectedProduct {
 }
 
 export interface BumpRequestSubject {
+  service?: BUMP_SERVICE_TYPE;
   hasError?: boolean;
   error?: unknown | HttpErrorResponse;
-  loading?: boolean;
-  service?: BUMP_SERVICE_TYPE;
+  errorCode?: number;
 }
 
 export enum BUMP_SERVICE_TYPE {

@@ -11,6 +11,8 @@ import { UserService } from '@core/user/user.service';
 import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.component';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { PACKS_TYPES } from '@core/payments/pack';
+import { ProModalConfig } from '@shared/modals/pro-modal/pro-modal.interface';
 
 @Component({
   selector: 'tsl-checkout',
@@ -24,7 +26,7 @@ export class CheckoutComponent implements OnInit {
   public user: User;
   public itemsSelected: SelectedProduct[] = [];
 
-  errorMapper = {
+  private readonly freeBumpsErrorMapper: Record<number, Partial<PRO_MODAL_TYPE>> = {
     409: PRO_MODAL_TYPE.bump_error_limit_reached,
     404: PRO_MODAL_TYPE.bump_error_not_found,
     500: PRO_MODAL_TYPE.bump_error_generic,
@@ -69,6 +71,7 @@ export class CheckoutComponent implements OnInit {
     if (this.itemsWithProducts.length === 0) {
       this.router.navigate(['catalog/list']);
     }
+    this.itemsSelected = [...this.itemsSelected];
     this.refreshCounters(productIndex);
   }
 
@@ -79,6 +82,7 @@ export class CheckoutComponent implements OnInit {
     } else {
       this.itemsSelected.push(newItem);
     }
+    this.itemsSelected = [...this.itemsSelected];
     this.refreshCounters(productIndex);
   }
 
@@ -109,19 +113,33 @@ export class CheckoutComponent implements OnInit {
     });
 
     if (errors.length === 1) {
-      if (errors[0].service === BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS) {
-        if (Object.keys(this.errorMapper).includes(errors[1].error.toString())) {
-          modalRef.componentInstance.modalConfig = modalConfig[this.errorMapper[errors[1].error.toString()]];
-        } else {
-          modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
-        }
-      }
-      if (errors[0].service === BUMP_SERVICE_TYPE.STRIPE) {
-        modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
-      }
+      this.configSingleErrorModal(errors[0], modalRef);
       return;
     }
-    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
+    this.configMultiErrorModal(errors, modalRef);
+  }
+
+  private configSingleErrorModal(error: BumpRequestSubject, modalRef: NgbModalRef): void {
+    if (error.service === BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS) {
+      modalRef.componentInstance.modalConfig = this.getFreeBumpsModalConfig(error);
+    }
+    if (error.service === BUMP_SERVICE_TYPE.STRIPE) {
+      modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
+    }
+  }
+
+  private getFreeBumpsModalConfig(error: BumpRequestSubject): ProModalConfig {
+    const errorCode = error.errorCode.toString();
+    if (Object.keys(this.freeBumpsErrorMapper).includes(errorCode)) {
+      return modalConfig[this.freeBumpsErrorMapper[errorCode]];
+    }
+    return modalConfig[PRO_MODAL_TYPE.bump_error_generic];
+  }
+
+  private configMultiErrorModal(errors: BumpRequestSubject[], modalRef: NgbModalRef): void {
+    let errorModalConfig: ProModalConfig = modalRef.componentInstance.modalConfig;
+    errorModalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
+    errorModalConfig.text2 = this.getFreeBumpsModalConfig(errors[0]).text1;
   }
 
   private getProductsFromSelectedItems(): void {
@@ -143,7 +161,7 @@ export class CheckoutComponent implements OnInit {
   private getCreditInfo(): void {
     this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {
-        creditInfo.currencyName = 'wallacredits';
+        creditInfo.currencyName = PACKS_TYPES.WALLACREDITS;
         creditInfo.factor = 1;
       }
       this.creditInfo = creditInfo;

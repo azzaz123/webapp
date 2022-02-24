@@ -46,18 +46,22 @@
         </ul>
       </div>
     </div>
-    <div class="walla-total" *ngIf="creditInfo?.credit">
-      <span class="label" i18n="@@web_cart_618">Total</span>
-      <span class="price">
-        {{ cart?.total * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
-        <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
-      </span>
-    </div>
-    <div class="credit" *ngIf="creditInfo?.credit && creditInfo?.currencyName === PACK_TYPES.WALLACREDITS">
-      <span class="label">
-        {{ creditInfo?.credit | customCurrency: creditInfo?.currencyName }} <span i18n="@@web_cart_666">credit</span>
-      </span>
-    </div>
+    <ng-container *ngIf="total > 0 && creditsToPay > 0">
+      <div class="walla-total">
+        <span class="label" i18n="@@web_cart_618">Total</span>
+        <span class="price">
+          {{ total | customCurrency }}
+        </span>
+      </div>
+      <div class="credit">
+        <span class="label">
+          {{ creditInfo?.credit | customCurrency: creditInfo?.currencyName }} <span i18n="@@web_cart_666">credit</span>
+        </span>
+        <span class="price">
+          {{ creditsToPay * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
+        </span>
+      </div>
+    </ng-container>
     <div class="total pb-2 mb-2">
       <span class="label" i18n="@@web_cart_621">Total to pay</span>
       <span class="price">{{ totalToPay | customCurrency }}</span>

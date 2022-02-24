@@ -118,7 +118,9 @@ export class VisibilityApiService {
     if (subscriptionBumps.length) {
       subscriptions.push(
         this.bumpWithPackage(subscriptionBumps).pipe(
-          catchError((error: HttpErrorResponse) => of({ hasError: true, error, service: BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS }))
+          catchError((error: HttpErrorResponse) =>
+            of({ hasError: true, error, errorCode: error.status, service: BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS })
+          )
         )
       );
     }
@@ -133,7 +135,7 @@ export class VisibilityApiService {
     isNewCard: boolean,
     card: FinancialCardOption | stripe.elements.Element
   ): void {
-    this.stripeResponseSubject.next();
+    this.stripeResponseSubject.next({ service: BUMP_SERVICE_TYPE.STRIPE });
     this.itemService.purchaseProductsWithCredits(order, orderId).subscribe(
       (response: PurchaseProductsWithCreditsResponse) => {
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
@@ -145,7 +147,7 @@ export class VisibilityApiService {
         }
       },
       (e: HttpErrorResponse) => {
-        this.stripeResponseSubject.next({ hasError: true, error: e, service: BUMP_SERVICE_TYPE.STRIPE });
+        this.stripeResponseSubject.next({ hasError: true, error: e, service: BUMP_SERVICE_TYPE.STRIPE, errorCode: e.status });
         this.stripeResponseSubject.complete();
       }
     );
