@@ -12,8 +12,10 @@ import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
+import { PayviewSummaryCostDetailComponent } from '@private/features/payview/modules/summary/components/cost-detail/payview-summary-cost-detail.component';
 import { PayviewSummaryHeaderComponent } from '@private/features/payview/modules/summary/components/header/payview-summary-header.component';
 import { PayviewSummaryOverviewComponent } from '@private/features/payview/modules/summary/components/overview/payview-summary-overview.component';
+import { PayviewSummaryPaymentMethodComponent } from '@private/features/payview/modules/summary/components/payment-method/payview-summary-payment-method.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -45,7 +47,14 @@ describe('PayviewModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FakeComponent, PayviewSummaryHeaderComponent, PayviewSummaryOverviewComponent, SvgIconComponent],
+      declarations: [
+        FakeComponent,
+        PayviewSummaryCostDetailComponent,
+        PayviewSummaryHeaderComponent,
+        PayviewSummaryOverviewComponent,
+        PayviewSummaryPaymentMethodComponent,
+        SvgIconComponent,
+      ],
       imports: [HttpClientTestingModule, BuyerRequestsApiModule],
       providers: [
         DeliveryAddressService,
