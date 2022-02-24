@@ -45,10 +45,6 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  get selectedSuggestion$(): Observable<string> {
-    return this.selectedSuggestionSubject.asObservable();
-  }
-
   public resetSearchQuery(): void {
     this.searchLocationForm.controls.searchLocation.reset();
   }
@@ -126,5 +122,9 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
       longitude: `${coordinate.longitude}`,
       label: `${coordinate.name}`,
     };
+  }
+
+  private get selectedSuggestion$(): Observable<string> {
+    return this.selectedSuggestionSubject.asObservable();
   }
 }

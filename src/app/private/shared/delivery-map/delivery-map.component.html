@@ -1,1 +1,6 @@
-<tsl-searchable-movable-map></tsl-searchable-movable-map>
+<div *ngIf="initialOffices$ | async">
+  <tsl-searchable-movable-map
+    [mapMarkers]="markers$ | async"
+    [mapCenterCoordinates]="initialCenterCoordinates$ | async"
+  ></tsl-searchable-movable-map>
+</div>
