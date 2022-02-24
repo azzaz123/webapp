@@ -1,4 +1,3 @@
-import { SearchableMovableMapModule } from '@private/shared/searchable-movable-map/searchable-movable-map.module';
 import { NgModule } from '@angular/core';
 import { acceptScreenRoutedComponents, AcceptScreenRoutingModule } from './accept-screen.routing.module';
 import { CommonModule } from '@angular/common';
@@ -11,6 +10,7 @@ import { ButtonModule } from '@shared/button/button.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { DeliveryMapModule } from '@private/shared/delivery-map/delivery-map.module';
 
 @NgModule({
   imports: [
@@ -23,7 +23,7 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
     SvgIconModule,
     CustomCurrencyModule,
     DeliveryRadioSelectorModule,
-    SearchableMovableMapModule,
+    DeliveryMapModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent],
 })
