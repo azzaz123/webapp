@@ -21,6 +21,7 @@ describe('DeliveryPreferenceScheduleComponent', () => {
   let fixture: ComponentFixture<DeliveryPreferenceScheduleComponent>;
   let selectUserScheduleApiService: SelectUserScheduleApiService;
   let errorsService: ErrorsService;
+  let submitButtonElement: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -75,6 +76,7 @@ describe('DeliveryPreferenceScheduleComponent', () => {
         homePickUpDeliverySchedulesSubjectMock.next(MOCK_DELIVERY_SCHEDULE);
 
         fixture.detectChanges();
+        submitButtonElement = fixture.debugElement.query(By.css('button'));
       });
 
       it('should show the pick up day text', () => {
@@ -133,9 +135,8 @@ describe('DeliveryPreferenceScheduleComponent', () => {
       });
 
       describe('when we have a selected schedule', () => {
-        xit('should NOT show the save button disabled', () => {
-          const saveButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeNode;
-          expect(saveButton.disabled).toBe(false);
+        it('should NOT show the save button disabled', () => {
+          expect(submitButtonElement.nativeNode.disabled).toBe(false);
         });
 
         describe('and we click on the save button', () => {
@@ -143,12 +144,11 @@ describe('DeliveryPreferenceScheduleComponent', () => {
             spyOn(component.scheduleSaveSucceded, 'emit');
           });
 
-          xdescribe('and the petition succeed', () => {
+          describe('and the petition succeed', () => {
             beforeEach(() => {
               spyOn(selectUserScheduleApiService, 'homePickUpDeliverySchedule').and.callThrough();
 
-              const saveButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-              saveButton.click();
+              submitButtonElement.nativeElement.click();
             });
 
             it('should ask the server to select the new schedule', () => {
@@ -168,13 +168,12 @@ describe('DeliveryPreferenceScheduleComponent', () => {
             });
           });
 
-          xdescribe('and the petition fails', () => {
+          describe('and the petition fails', () => {
             beforeEach(() => {
               spyOn(selectUserScheduleApiService, 'homePickUpDeliverySchedule').and.returnValue(throwError('>:D'));
 
               fixture.detectChanges();
-              const saveButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-              saveButton.click();
+              submitButtonElement.nativeElement.click();
             });
 
             it('should ask the server to select the new schedule', () => {
@@ -202,9 +201,8 @@ describe('DeliveryPreferenceScheduleComponent', () => {
           fixture.detectChanges();
         });
 
-        xit('should show the save button disabled', () => {
-          const saveButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeNode;
-          expect(saveButton.disabled).toBe(true);
+        it('should show the save button disabled', () => {
+          expect(submitButtonElement.nativeNode.disabled).toBe(true);
         });
       });
     });
