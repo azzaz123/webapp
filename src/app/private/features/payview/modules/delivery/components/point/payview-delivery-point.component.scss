@@ -1,0 +1,50 @@
+@import '~style/common';
+
+.PayviewDeliveryPoint {
+  border-bottom: 1px solid $blue-grey-4;
+
+  &__pointWrapper {
+    padding: $spacer * 0.75 0px;
+    flex: 1;
+  }
+
+  &__pointIconWrapper {
+    @include square(48px);
+  }
+
+  &__pointIcon {
+    border-radius: 5px;
+    object-fit: cover;
+    overflow: hidden;
+    width: inherit;
+  }
+
+  &__informationWrapper {
+    padding-left: 60px;
+    padding-bottom: $spacing-ml;
+  }
+
+  &__deliveryEtaWrapper {
+    padding: 0 0 $spacing-xxs 0;
+  }
+  &__deliveryAddressWrapper {
+    padding: $spacing-xxs 0 0 0;
+  }
+  &__deliveryEtaTitle,
+  &__deliveryAddressTitle {
+    color: $blue-grey-2;
+  }
+  &__deliveryEta,
+  &__deliveryAddress {
+    font-weight: $font-weight-chunky;
+  }
+
+  ::ng-deep .DeliveryRadioOption {
+    border-bottom: none;
+
+    input {
+      margin-bottom: unset !important;
+      margin-top: unset !important;
+    }
+  }
+}

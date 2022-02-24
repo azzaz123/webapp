@@ -1,0 +1,42 @@
+<div class="PayviewDeliveryPoint">
+  <tsl-delivery-radio-selector class="d-block" [selectedId]="selectedDeliveryMethodIndex" (changed)="selectPoint($event)">
+    <ng-template tslDeliveryRadioOption>
+      <div class="PayviewDeliveryPoint__pointWrapper d-flex mr-2 mr-lg-3 align-items-center">
+        <div class="PayviewDeliveryPoint__pointIconWrapper mr-2">
+          <img class="PayviewDeliveryPoint__pointIcon" alt="deliveryMethod image" [src]="deliveryMethod.icon" />
+        </div>
+        <div class="align-self-center ml-1">
+          <div class="PayviewDeliveryPoint__pointDescription">
+            <span *ngIf="isOffice" class="mb-2" i18n="@@pay_view_buyer_delivery_method_po_selector_title">Pick-up point</span>
+            <span *ngIf="isHome" class="mb-2" i18n="@@pay_view_buyer_delivery_method_ba_selector_title">My address</span>
+            <span class="PayviewDeliveryPoint__pointCost ml-1">
+              <b>{{ deliveryCost }}</b>
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </tsl-delivery-radio-selector>
+  <div *ngIf="showInformation" class="PayviewDeliveryPoint__informationWrapper d-flex w-100 flex-column">
+    <div class="PayviewDeliveryPoint__deliveryEtaWrapper d-inline">
+      <span class="PayviewDeliveryPoint__deliveryEtaTitle" i18n="@@pay_view_buyer_all_all_summary_eta_time_description"
+        >Delivery expected in {{ '' }}</span
+      >
+      <span class="PayviewDeliveryPoint__deliveryEta pl-1" i18n="@@pay_view_buyer_all_all_summary_eta_time_days"
+        >{{ deliveryTime }} days</span
+      >
+    </div>
+
+    <div *ngIf="showAddress" class="PayviewDeliveryPoint__deliveryAddressWrapper d-inline">
+      <span *ngIf="isOffice" class="PayviewDeliveryPoint__deliveryAddressTitle" i18n="@@pay_view_buyer_po_po_summary_eta_office_description"
+        >Pick-up point: {{ '' }}</span
+      >
+      <span *ngIf="isHome" class="PayviewDeliveryPoint__deliveryAddressTitle" i18n="@@pay_view_buyer_all_ba_summary_eta_address_description"
+        >Address: {{ '' }}</span
+      >
+      <span class="PayviewDeliveryPoint__deliveryAddress pl-1">{{ address }}</span>
+    </div>
+
+    <tsl-button class="PayviewDeliveryPoint__actionButton mt-3 mb-1" className="btn-secondary">{{ actionTitle }}</tsl-button>
+  </div>
+</div>
