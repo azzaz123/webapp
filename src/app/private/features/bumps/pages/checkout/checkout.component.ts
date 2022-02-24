@@ -44,11 +44,7 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
-      if (params.itemId) {
-        this.getProductsFromParamsItem(params.itemId);
-      } else {
-        this.getProductsFromSelectedItems();
-      }
+      this.fetchItems(params.itemId);
     });
     this.getCreditInfo();
     this.user = this.userService.user;
@@ -112,11 +108,31 @@ export class CheckoutComponent implements OnInit {
       windowClass: 'pro-modal',
     });
 
+    modalRef.result.then(
+      () => {
+        this.reloadData();
+      },
+      () => {
+        this.reloadData();
+      }
+    );
+
     if (errors.length === 1) {
       this.configSingleErrorModal(errors[0], modalRef);
       return;
     }
     this.configMultiErrorModal(errors, modalRef);
+  }
+
+  private reloadData(): void {
+    this.getCreditInfo();
+    this.itemsSelected = [];
+    const id = this.route.snapshot.paramMap.get('itemId');
+    this.fetchItems(id);
+  }
+
+  private fetchItems(itemId?: string): void {
+    itemId ? this.getProductsFromParamsItem(itemId) : this.getProductsFromSelectedItems();
   }
 
   private configSingleErrorModal(error: BumpRequestSubject, modalRef: NgbModalRef): void {
@@ -137,9 +153,10 @@ export class CheckoutComponent implements OnInit {
   }
 
   private configMultiErrorModal(errors: BumpRequestSubject[], modalRef: NgbModalRef): void {
-    let errorModalConfig: ProModalConfig = modalRef.componentInstance.modalConfig;
+    let errorModalConfig: ProModalConfig;
     errorModalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
     errorModalConfig.text2 = this.getFreeBumpsModalConfig(errors[0]).text1;
+    modalRef.componentInstance.modalConfig = errorModalConfig;
   }
 
   private getProductsFromSelectedItems(): void {
