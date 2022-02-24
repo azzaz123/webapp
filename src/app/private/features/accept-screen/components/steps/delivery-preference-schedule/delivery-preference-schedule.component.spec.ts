@@ -87,7 +87,7 @@ describe('DeliveryPreferenceScheduleComponent', () => {
       });
 
       it('should define the selected schedule', () => {
-        expect(component.selectedSchedule).toStrictEqual(MOCK_DELIVERY_SCHEDULE.scheduleOptions.allDay.scheduleTimeRange);
+        expect(component.selectedSchedule).toStrictEqual(MOCK_DELIVERY_SCHEDULE.userSchedule.scheduleTimeRange);
       });
 
       it('should show the template', () => {
