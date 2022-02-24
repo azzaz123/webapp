@@ -1,11 +1,14 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
+import { ButtonComponent } from '@shared/button/button.component';
 import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
 import { DeliveryAddressStoreService } from '@private/features/delivery/services/address/delivery-address-store/delivery-address-store.service';
+import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { ItemService } from '@core/item/item.service';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-wallets-http.service';
@@ -24,7 +27,6 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
-import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 
 @Component({
   selector: 'tsl-fake-component',
@@ -53,6 +55,7 @@ describe('PayviewModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
+        ButtonComponent,
         FakeComponent,
         PayviewDeliveryHeaderComponent,
         PayviewDeliveryOverviewComponent,
@@ -64,7 +67,7 @@ describe('PayviewModalComponent', () => {
         PayviewSummaryPaymentMethodComponent,
         SvgIconComponent,
       ],
-      imports: [BuyerRequestsApiModule, DeliveryRadioSelectorModule, HttpClientTestingModule],
+      imports: [BrowserAnimationsModule, BuyerRequestsApiModule, DeliveryRadioSelectorModule, HttpClientTestingModule],
       providers: [
         DeliveryAddressService,
         DeliveryAddressStoreService,
