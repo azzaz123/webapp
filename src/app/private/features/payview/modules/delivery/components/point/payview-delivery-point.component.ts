@@ -1,33 +1,47 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { Money } from '@api/core/model/money.interface';
+import { I18nService } from '@core/i18n/i18n.service';
+import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
   selector: 'tsl-payview-delivery-point',
   templateUrl: './payview-delivery-point.component.html',
   styleUrls: ['./payview-delivery-point.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('enterAnimation', [
+      state('*', style({ 'overflow-y': 'hidden' })),
+      state('void', style({ 'overflow-y': 'hidden' })),
+      transition('* => void', [style({ height: '*' }), animate('100ms 50ms', style({ height: 0 }))]),
+      transition('void => *', [style({ height: '0' }), animate(100, style({ height: '*' }))]),
+    ]),
+  ],
 })
 export class PayviewDeliveryPointComponent {
   @Input() public deliveryCosts: DeliveryCosts;
   @Input() public deliveryMethod: DeliveryBuyerDeliveryMethod;
+  @Input() public id: number;
+  @Input() public isChecked: boolean;
+  @Output() public checked: EventEmitter<number> = new EventEmitter<number>();
 
-  public selectedDeliveryMethodIndex: number;
+  constructor(private i18nService: I18nService) {}
 
   public get actionTitle(): string {
     if (this.isOffice && !this.showAddress) {
-      return $localize`:@@pay_view_buyer_delivery_method_po_selector_select_button:View pick-up points`;
+      return this.i18nService.translate(TRANSLATION_KEY.PAYVIEW_DELIVERY_VIEW_PICK_UP_POINT);
     }
     if (this.isOffice && this.showAddress) {
-      return $localize`:@@pay_view_buyer_delivery_method_po_selector_edit_button:Edit pick-up point`;
+      return this.i18nService.translate(TRANSLATION_KEY.PAYVIEW_DELIVERY_EDIT_PICK_UP_POINT);
     }
     if (this.isHome && !this.showAddress) {
-      return $localize`:@@pay_view_buyer_delivery_method_ba_selector_select_button:Add address`;
+      return this.i18nService.translate(TRANSLATION_KEY.PAYVIEW_DELIVERY_ADD_ADDRESS);
     }
-    return $localize`:@@pay_view_buyer_delivery_method_ba_selector_edit_button:Edit address`;
+    return this.i18nService.translate(TRANSLATION_KEY.PAYVIEW_DELIVERY_EDIT_ADDRESS);
   }
 
   public get address(): string {
@@ -36,9 +50,9 @@ export class PayviewDeliveryPointComponent {
 
   public get deliveryCost(): string {
     if (this.isOffice) {
-      return this.toString(this.deliveryCosts.carrierOfficeCost);
+      return this.formatMoney(this.deliveryCosts.carrierOfficeCost);
     }
-    return this.toString(this.deliveryCosts.buyerAddressCost);
+    return this.formatMoney(this.deliveryCosts.buyerAddressCost);
   }
 
   public get deliveryTime(): string {
@@ -53,24 +67,15 @@ export class PayviewDeliveryPointComponent {
     return this.deliveryMethod.method === DELIVERY_MODE.CARRIER_OFFICE;
   }
 
-  public get isSelected(): boolean {
-    return this.selectedDeliveryMethodIndex === 0;
-  }
-
   public selectPoint(index: number): void {
-    // TODO -> Change current selection and deselect previous selection
-    this.selectedDeliveryMethodIndex = index;
+    this.checked.emit(this.id);
   }
 
   public get showAddress(): boolean {
     return !!this.deliveryMethod.lastAddressUsed;
   }
 
-  public get showInformation(): boolean {
-    return this.isSelected;
-  }
-
-  private toString(money: Money): string {
+  private formatMoney(money: Money): string {
     return !!money ? `${money.amount.toString()}${money.currency.symbol}` : '';
   }
 }

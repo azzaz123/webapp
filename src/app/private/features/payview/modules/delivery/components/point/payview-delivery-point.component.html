@@ -1,5 +1,5 @@
 <div class="PayviewDeliveryPoint">
-  <tsl-delivery-radio-selector class="d-block" [selectedId]="selectedDeliveryMethodIndex" (changed)="selectPoint($event)">
+  <tsl-delivery-radio-selector class="d-block" [isChecked]="isChecked" (changed)="selectPoint($event)">
     <ng-template tslDeliveryRadioOption>
       <div class="PayviewDeliveryPoint__pointWrapper d-flex mr-2 mr-lg-3 align-items-center">
         <div class="PayviewDeliveryPoint__pointIconWrapper mr-2">
@@ -17,7 +17,7 @@
       </div>
     </ng-template>
   </tsl-delivery-radio-selector>
-  <div *ngIf="showInformation" class="PayviewDeliveryPoint__informationWrapper d-flex w-100 flex-column">
+  <div *ngIf="isChecked" [@enterAnimation] class="PayviewDeliveryPoint__informationWrapper d-flex w-100 flex-column">
     <div class="PayviewDeliveryPoint__deliveryEtaWrapper d-inline">
       <span class="PayviewDeliveryPoint__deliveryEtaTitle" i18n="@@pay_view_buyer_all_all_summary_eta_time_description"
         >Delivery expected in {{ '' }}</span
