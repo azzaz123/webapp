@@ -46,8 +46,8 @@ describe('AcceptScreenModalComponent', () => {
   const sellerAddressHeaderStylesSelector: string = '.AcceptScreenModal__sellerWithAddressHeader';
   const carrierButtonSelector: string = '.AcceptScreenModal__carrierButton';
   const deliveryAddressSelector: string = 'tsl-delivery-address';
-  const mapSelector: string = 'tsl-movable-map';
   const scheduleSelector: string = 'tsl-delivery-preference-schedule';
+  const searchableMapSelector: string = 'tsl-searchable-movable-map';
   const fullAddressSelector: string = '#fullAddress';
   const rejectButtonSelector: string = '#rejectButton';
   const acceptButtonSelector: string = '#acceptButton';
@@ -376,8 +376,8 @@ describe('AcceptScreenModalComponent', () => {
                 expect(component.isAcceptScreenStep).toBe(false);
               });
 
-              it('should show the map', () => {
-                expect(fixture.debugElement.query(By.css(mapSelector))).toBeTruthy();
+              it('should show the searchable map', () => {
+                expect(fixture.debugElement.query(By.css(searchableMapSelector))).toBeTruthy();
               });
             });
 

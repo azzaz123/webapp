@@ -1,3 +1,4 @@
+import { SearchableMovableMapModule } from '@private/shared/searchable-movable-map/searchable-movable-map.module';
 import { NgModule } from '@angular/core';
 import { acceptScreenRoutedComponents, AcceptScreenRoutingModule } from './accept-screen.routing.module';
 import { CommonModule } from '@angular/common';
@@ -29,6 +30,7 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
     MovableMapModule,
     FormsModule,
     NgbButtonsModule,
+    SearchableMovableMapModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent, DeliveryPreferenceScheduleComponent],
 })
