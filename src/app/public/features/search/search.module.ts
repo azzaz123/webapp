@@ -34,6 +34,7 @@ import { InfoBubbleModule } from './components/info-bubble/info-bubble.module';
 import { CatalogApiModule } from '@api/catalog/catalog-api.module';
 import { SearchLocationResolver } from './resolvers/search-location.resolver';
 import { SearchCategoriesResolver } from './resolvers/search-categories.resolver';
+import { CategoryCardsModule } from 'app/web-components/category-cards/category-cards.module';
 
 @NgModule({
   imports: [
@@ -49,6 +50,7 @@ import { SearchCategoriesResolver } from './resolvers/search-categories.resolver
     SortFilterModule,
     InfoBubbleModule,
     CatalogApiModule,
+    CategoryCardsModule,
   ],
   providers: [
     ViewportService,
