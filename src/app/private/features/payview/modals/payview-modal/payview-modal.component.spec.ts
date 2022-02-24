@@ -1,6 +1,6 @@
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
@@ -10,6 +10,10 @@ import { ItemService } from '@core/item/item.service';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-wallets-http.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
+import { PayviewDeliveryHeaderComponent } from '@private/features/payview/modules/delivery/components/header/payview-delivery-header.component';
+import { PayviewDeliveryOverviewComponent } from '@private/features/payview/modules/delivery/components/overview/payview-delivery-overview.component';
+import { PayviewDeliveryPointComponent } from '@private/features/payview/modules/delivery/components/point/payview-delivery-point.component';
+import { PayviewDeliveryPointsComponent } from '@private/features/payview/modules/delivery/components/points/payview-delivery-points.component';
 import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
 import { PayviewSummaryCostDetailComponent } from '@private/features/payview/modules/summary/components/cost-detail/payview-summary-cost-detail.component';
@@ -20,6 +24,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
+import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 
 @Component({
   selector: 'tsl-fake-component',
@@ -49,13 +54,17 @@ describe('PayviewModalComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         FakeComponent,
+        PayviewDeliveryHeaderComponent,
+        PayviewDeliveryOverviewComponent,
+        PayviewDeliveryPointComponent,
+        PayviewDeliveryPointsComponent,
         PayviewSummaryCostDetailComponent,
         PayviewSummaryHeaderComponent,
         PayviewSummaryOverviewComponent,
         PayviewSummaryPaymentMethodComponent,
         SvgIconComponent,
       ],
-      imports: [HttpClientTestingModule, BuyerRequestsApiModule],
+      imports: [BuyerRequestsApiModule, DeliveryRadioSelectorModule, HttpClientTestingModule],
       providers: [
         DeliveryAddressService,
         DeliveryAddressStoreService,

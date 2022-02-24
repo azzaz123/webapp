@@ -7,6 +7,7 @@ import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-sele
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PayviewDeliveryHeaderComponent } from '@private/features/payview/modules/delivery/components/header/payview-delivery-header.component';
 import { PayviewDeliveryOverviewComponent } from '@private/features/payview/modules/delivery/components/overview/payview-delivery-overview.component';
+import { PayviewDeliveryPointComponent } from '@private/features/payview/modules/delivery/components/point/payview-delivery-point.component';
 import { PayviewDeliveryPointsComponent } from '@private/features/payview/modules/delivery/components/points/payview-delivery-points.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
@@ -20,7 +21,13 @@ describe('PayviewDeliveryOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PayviewDeliveryHeaderComponent, PayviewDeliveryOverviewComponent, PayviewDeliveryPointsComponent, SvgIconComponent],
+      declarations: [
+        PayviewDeliveryHeaderComponent,
+        PayviewDeliveryOverviewComponent,
+        PayviewDeliveryPointComponent,
+        PayviewDeliveryPointsComponent,
+        SvgIconComponent,
+      ],
       imports: [DeliveryRadioSelectorModule, HttpClientTestingModule],
       providers: [],
     }).compileComponents();
