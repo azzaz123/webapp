@@ -5,7 +5,7 @@ import { SCHEDULE_TYPE } from '@api/core/model/delivery/schedule/schedule-type.t
 import { SelectUserScheduleApiService } from '@api/delivery/user_schedule/select-user-schedule-api.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 @Component({
@@ -20,6 +20,8 @@ export class DeliveryPreferenceScheduleComponent {
   public availableSchedules$: Observable<DeliveryScheduleOptions> = this.getSchedules();
   public selectedSchedule: SCHEDULE_TYPE;
   public readonly SCHEDULE_TYPE = SCHEDULE_TYPE;
+  public readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public readonly loadingIconSrc: string = '/assets/icons/spinner.svg';
 
   private scheduleId: string;
 
@@ -46,9 +48,11 @@ export class DeliveryPreferenceScheduleComponent {
         (schedule: DeliverySchedule) => {
           this.scheduleId = schedule.userSchedule.id;
           this.selectedSchedule = schedule.userSchedule.scheduleTimeRange;
+          this.loading$.next(false);
         },
         () => {
           this.showToastError(TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR);
+          this.loading$.next(false);
         }
       ),
       map((schedule: DeliverySchedule) => schedule.scheduleOptions)

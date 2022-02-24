@@ -53,3 +53,8 @@
     </div>
   </div>
 </form>
+<tsl-svg-icon
+  *ngIf="loading$ | async"
+  class="d-flex w-100 h-100 align-items-center justify-content-center spinner"
+  [src]="loadingIconSrc"
+></tsl-svg-icon>

@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -10,6 +11,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { MOCK_DELIVERY_SCHEDULE } from '@fixtures/private/delivery/schedule/delivery-schedule.fixtures.spec';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from '@shared/button/button.component';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 
 import { DeliveryPreferenceScheduleComponent } from './delivery-preference-schedule.component';
@@ -25,8 +27,8 @@ describe('DeliveryPreferenceScheduleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NgbButtonsModule],
-      declarations: [DeliveryPreferenceScheduleComponent, ButtonComponent],
+      imports: [FormsModule, NgbButtonsModule, HttpClientTestingModule],
+      declarations: [DeliveryPreferenceScheduleComponent, ButtonComponent, SvgIconComponent],
       providers: [
         {
           provide: SelectUserScheduleApiService,
@@ -105,6 +107,10 @@ describe('DeliveryPreferenceScheduleComponent', () => {
       it('should show the save button', () => {
         const saveButton: DebugElement = fixture.debugElement.query(By.directive(ButtonComponent));
         expect(saveButton).toBeTruthy();
+      });
+
+      it('should NOT show the loading icon', () => {
+        shouldShowLoadingIcon(false);
       });
 
       describe('when we show the all day option', () => {
@@ -222,8 +228,33 @@ describe('DeliveryPreferenceScheduleComponent', () => {
         expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR);
         expect(errorsService.i18nError).toHaveBeenCalledTimes(1);
       });
+
+      it('should NOT show the loading icon', () => {
+        shouldShowLoadingIcon(false);
+      });
+    });
+
+    describe('and the page is loading', () => {
+      beforeEach(() => {
+        fixture.detectChanges();
+        component.loading$.next(true);
+        fixture.detectChanges();
+      });
+
+      it('should show the loading icon', () => {
+        shouldShowLoadingIcon(true);
+      });
     });
   });
+
+  function shouldShowLoadingIcon(shouldBeShowed: boolean): void {
+    const loadingIcon: DebugElement = fixture.debugElement.query(By.css('tsl-svg-icon'));
+    if (shouldBeShowed) {
+      expect(loadingIcon).toBeTruthy();
+    } else {
+      expect(loadingIcon).toBeFalsy();
+    }
+  }
 
   function shouldShowPreferenceSchedule(shouldBeShowed: boolean): void {
     const preferenceSchedule: DebugElement = fixture.debugElement.query(By.css('.DeliveryPreferenceSchedule'));

@@ -78,8 +78,9 @@ const mapDeliveryAddressToSellerAddress: ToDomainMapper<DeliveryAddressApi, stri
 function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {
   const carrier: AcceptScreenCarrier = getCarrier(dropOffMode, carrierDropOffModeSelected);
 
-  if (mapDeliveryPickUpDay(dropOffMode.type, dropOffMode.schedule)) {
-    carrier.deliveryPickUpDay = mapDeliveryPickUpDay(dropOffMode.type, dropOffMode.schedule);
+  const deliveryPickUpDay: string = mapDeliveryPickUpDay(dropOffMode.type, dropOffMode.schedule);
+  if (deliveryPickUpDay) {
+    carrier.deliveryPickUpDay = deliveryPickUpDay;
   }
 
   return carrier;
