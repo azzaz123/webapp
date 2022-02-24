@@ -24,9 +24,9 @@ export class PayviewDeliveryPointsComponent implements OnInit {
 
   public getDeliveryCost(deliveryMethod: DeliveryBuyerDeliveryMethod): string {
     if (this.isPickUpPoint(deliveryMethod)) {
-      return this.toString(this.deliveryCosts.carrierOfficeCost);
+      return this.formatMoney(this.deliveryCosts.carrierOfficeCost);
     }
-    return this.toString(this.deliveryCosts.buyerAddressCost);
+    return this.formatMoney(this.deliveryCosts.buyerAddressCost);
   }
 
   public getDeliveryTime(deliveryMethod: DeliveryBuyerDeliveryMethod): string {
@@ -53,7 +53,7 @@ export class PayviewDeliveryPointsComponent implements OnInit {
     return index;
   }
 
-  private toString(money: Money): string {
+  private formatMoney(money: Money): string {
     return !!money ? `${money.amount.toString()}${money.currency.symbol}` : '';
   }
 }
