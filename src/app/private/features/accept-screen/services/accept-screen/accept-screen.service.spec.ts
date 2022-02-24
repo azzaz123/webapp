@@ -167,6 +167,7 @@ describe('AcceptScreenService', () => {
     });
 
     it('should ask to reject the request', () => {
+      expect(sellerRequestApiService.rejectRequest).toHaveBeenCalledTimes(1);
       expect(sellerRequestApiService.rejectRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });
@@ -178,7 +179,8 @@ describe('AcceptScreenService', () => {
       acceptScreenService.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe();
     });
 
-    it('should ask to accpet the request', () => {
+    it('should ask to accept the request', () => {
+      expect(sellerRequestApiService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
       expect(sellerRequestApiService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });
@@ -190,7 +192,8 @@ describe('AcceptScreenService', () => {
       acceptScreenService.acceptRequestHomePickup(MOCK_REQUEST_ID).subscribe();
     });
 
-    it('should ask to accpet the request', () => {
+    it('should ask to accept the request', () => {
+      expect(sellerRequestApiService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
       expect(sellerRequestApiService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });

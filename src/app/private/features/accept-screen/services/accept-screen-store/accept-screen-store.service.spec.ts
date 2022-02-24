@@ -30,6 +30,15 @@ describe('AcceptScreenStoreService', () => {
             getAcceptScreenProperties(): Observable<AcceptScreenProperties> {
               return of(acceptScreenServiceSubjectMock.value);
             },
+            acceptRequestPostOfficeDropOff() {
+              return of({});
+            },
+            acceptRequestHomePickup() {
+              return of({});
+            },
+            rejectRequest() {
+              return of({});
+            },
           },
         },
       ],
@@ -102,6 +111,49 @@ describe('AcceptScreenStoreService', () => {
 
       it('should update the accept screen store properties ', () => {
         expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS);
+      });
+    });
+
+    describe('and the user accepts a request', () => {
+      describe('and the selected drop off mode is POST OFFICE', () => {
+        beforeEach(() => {
+          spyOn(acceptScreenService, 'acceptRequestPostOfficeDropOff').and.callThrough();
+
+          service.selectNewDropOffMode(CARRIER_DROP_OFF_MODE.POST_OFFICE);
+          service.acceptRequest(MOCK_REQUEST_ID);
+        });
+
+        it('should call to accept the request with post office drop off mode', () => {
+          expect(acceptScreenService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
+          expect(acceptScreenService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+        });
+      });
+
+      describe('and the selected drop off mode is HOME PICK UP', () => {
+        beforeEach(() => {
+          spyOn(acceptScreenService, 'acceptRequestHomePickup').and.callThrough();
+
+          service.selectNewDropOffMode(CARRIER_DROP_OFF_MODE.HOME_PICK_UP);
+          service.acceptRequest(MOCK_REQUEST_ID);
+        });
+
+        it('should call to accept the request with home pick up', () => {
+          expect(acceptScreenService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
+          expect(acceptScreenService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+        });
+      });
+    });
+
+    describe('and the user rejects a request', () => {
+      beforeEach(() => {
+        spyOn(acceptScreenService, 'rejectRequest').and.callThrough();
+
+        service.rejectRequest(MOCK_REQUEST_ID);
+      });
+
+      it('should call to accept the request with post office drop off mode', () => {
+        expect(acceptScreenService.rejectRequest).toHaveBeenCalledTimes(1);
+        expect(acceptScreenService.rejectRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
       });
     });
   });

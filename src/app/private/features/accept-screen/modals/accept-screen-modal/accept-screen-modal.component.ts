@@ -99,38 +99,28 @@ export class AcceptScreenModalComponent implements OnInit {
     );
   }
 
-  public onAcceptRequest(): void {
-    this.carrierSelectedIndex$.pipe(take(1)).subscribe((selectedDropOffMode: number) => {
-      this.handleAcceptRequestDropOffMode(selectedDropOffMode);
-    });
-  }
-
-  private handleAcceptRequestDropOffMode(selectedDropOffMode: number): void {
-    if (selectedDropOffMode === CARRIER_DROP_OFF_MODE.POST_OFFICE) {
-      this.acceptScreenStoreService
-        .acceptRequestPostOfficeDropOff(this.requestId)
-        .subscribe(this.redirectToTTSAndCloseModal, this.showDefaultError);
-    }
-
-    if (selectedDropOffMode === CARRIER_DROP_OFF_MODE.HOME_PICK_UP) {
-      this.acceptScreenStoreService
-        .acceptRequestHomePickup(this.requestId)
-        .subscribe(this.redirectToTTSAndCloseModal, this.showDefaultError);
-    }
+  public acceptRequest(): void {
+    this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
+      () => this.redirectToTTSAndCloseModal(),
+      () => this.showDefaultError()
+    );
   }
 
   private rejectRequest(): void {
-    this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(this.redirectToTTSAndCloseModal, this.showDefaultError);
+    this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
+      () => this.redirectToTTSAndCloseModal(),
+      () => this.showDefaultError()
+    );
   }
 
-  private redirectToTTSAndCloseModal = (): void => {
+  private redirectToTTSAndCloseModal(): void {
     this.redirectToTTS(this.requestId);
     this.closeModal();
-  };
+  }
 
-  private showDefaultError = (): void => {
+  private showDefaultError(): void {
     this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
-  };
+  }
 
   private refreshStepProperties(slideId: number): void {
     this.headerText = this.ACCEPT_SCREEN_HEADER_TRANSLATIONS[slideId];

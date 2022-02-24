@@ -35,26 +35,30 @@ export class SellerRequestsHttpService {
   public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {
     return this.http.post<void>(
       SELLER_REQUESTS_ACCEPT_POST_OFFICE_DROP_OFF_ENDPOINT_WITH_REQUEST_ID(requestId),
-      {
-        transaction_id: requestId,
-      },
-      { headers: this.getAppVersionHeader() }
+      this.getBodyWithTransactionId(requestId),
+      this.getHeaders()
     );
   }
 
   public acceptRequestHomePickup(requestId: string): Observable<void> {
     return this.http.post<void>(
       SELLER_REQUESTS_ACCEPT_HOME_PICKUP_ENDPOINT_WITH_REQUEST_ID(requestId),
-      {
-        transaction_id: requestId,
-      },
-      { headers: this.getAppVersionHeader() }
+      this.getBodyWithTransactionId(requestId),
+      this.getHeaders()
     );
   }
 
-  private getAppVersionHeader(): HttpHeaders {
-    return new HttpHeaders({
-      'X-AppVersion': APP_VERSION.replace(/\./g, ''),
-    });
+  private getHeaders(): { headers: HttpHeaders } {
+    return {
+      headers: new HttpHeaders({
+        'X-AppVersion': APP_VERSION.replace(/\./g, ''),
+      }),
+    };
+  }
+
+  private getBodyWithTransactionId(requestId: string): { transaction_id: string } {
+    return {
+      transaction_id: requestId,
+    };
   }
 }

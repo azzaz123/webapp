@@ -93,8 +93,7 @@ describe('AcceptScreenModalComponent', () => {
               return carrierSelectedIndexSubjectMock.asObservable();
             },
             rejectRequest() {},
-            acceptRequestPostOfficeDropOff() {},
-            acceptRequestHomePickup() {},
+            acceptRequest() {},
           },
         },
         {
@@ -609,7 +608,7 @@ describe('AcceptScreenModalComponent', () => {
             });
             describe('and the petition fails...', () => {
               beforeEach(() => {
-                spyOn(acceptScreenStoreService, 'acceptRequestPostOfficeDropOff').and.returnValue(throwError('error'));
+                spyOn(acceptScreenStoreService, 'acceptRequest').and.returnValue(throwError('error'));
                 spyOn(errorService, 'i18nError');
                 const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
 
@@ -617,8 +616,8 @@ describe('AcceptScreenModalComponent', () => {
               });
 
               it('should call to server to accept request', () => {
-                expect(acceptScreenStoreService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
-                expect(acceptScreenStoreService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
               });
 
               it('should show generic error message', () => {
@@ -630,15 +629,15 @@ describe('AcceptScreenModalComponent', () => {
             describe('and the petition succeeds', () => {
               beforeEach(() => {
                 spyOn(router, 'navigate');
-                spyOn(acceptScreenStoreService, 'acceptRequestPostOfficeDropOff').and.returnValue(of(null));
+                spyOn(acceptScreenStoreService, 'acceptRequest').and.returnValue(of(null));
                 const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
 
                 acceptButton.click();
               });
 
               it('should accept request', () => {
-                expect(acceptScreenStoreService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
-                expect(acceptScreenStoreService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
               });
 
               it('should redirect the user to the TTS', () => {
@@ -658,7 +657,7 @@ describe('AcceptScreenModalComponent', () => {
             });
             describe('and the petition fails...', () => {
               beforeEach(() => {
-                spyOn(acceptScreenStoreService, 'acceptRequestHomePickup').and.returnValue(throwError('error'));
+                spyOn(acceptScreenStoreService, 'acceptRequest').and.returnValue(throwError('error'));
                 spyOn(errorService, 'i18nError');
                 const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
 
@@ -666,8 +665,8 @@ describe('AcceptScreenModalComponent', () => {
               });
 
               it('should call to server to accept request', () => {
-                expect(acceptScreenStoreService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
-                expect(acceptScreenStoreService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
               });
 
               it('should show generic error message', () => {
@@ -679,15 +678,15 @@ describe('AcceptScreenModalComponent', () => {
             describe('and the petition succeeds', () => {
               beforeEach(() => {
                 spyOn(router, 'navigate');
-                spyOn(acceptScreenStoreService, 'acceptRequestHomePickup').and.returnValue(of(null));
+                spyOn(acceptScreenStoreService, 'acceptRequest').and.returnValue(of(null));
                 const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
 
                 acceptButton.click();
               });
 
               it('should accept request', () => {
-                expect(acceptScreenStoreService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
-                expect(acceptScreenStoreService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
               });
 
               it('should redirect the user to the TTS', () => {
