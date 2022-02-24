@@ -15,7 +15,7 @@ import {
 } from '@api/core/model/delivery/transaction/tracking';
 
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 export type TransactionTrackingActionType = TransactionTrackingActionTypeDto;
 export type TransactionTrackingUserAction = TransactionTrackingActionDetailPayloadUserActionNameDto;
@@ -39,13 +39,19 @@ export class TransactionTrackingService {
   }
 
   public sendUserAction(requestId: string, userAction: TransactionTrackingUserAction): Observable<void> {
-    const action: Record<TransactionTrackingUserAction, Observable<void>> = {
-      ['CANCEL_TRANSACTION']: this.sendCancelTransaction(requestId),
-      ['EXPIRE_CLAIM_PERIOD']: this.sendExpireClaimPeriod(requestId),
-      ['PACKAGE_ARRIVED']: this.sendPackageArrived(requestId),
-    };
+    if (userAction === 'CANCEL_TRANSACTION') {
+      return this.sendCancelTransaction(requestId);
+    }
 
-    return action[userAction];
+    if (userAction === 'EXPIRE_CLAIM_PERIOD') {
+      return this.sendExpireClaimPeriod(requestId);
+    }
+
+    if (userAction === 'PACKAGE_ARRIVED') {
+      return this.sendPackageArrived(requestId);
+    }
+
+    return of(null);
   }
 
   private sendCancelTransaction(requestId: string): Observable<void> {
