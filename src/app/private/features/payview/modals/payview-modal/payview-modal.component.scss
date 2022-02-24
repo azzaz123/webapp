@@ -1,5 +1,14 @@
-@import '~web-styleguide/scss/spacing';
+@import '~style/common';
 
 .PayviewModal {
   min-height: $spacing-xxxl;
+  width: 100%;
+
+  @include media-breakpoint-up(xl) {
+    width: $modal-lg;
+  }
+
+  @include media-breakpoint-up(md) {
+    width: $modal-md;
+  }
 }
