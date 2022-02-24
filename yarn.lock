@@ -2121,10 +2121,10 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.6.22.tgz#219dfd89ae5b97a8801f015323ffa4b62f45718b"
   integrity sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==
 
-"@mparticle/web-appboy-kit@^2.0.6":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@mparticle/web-appboy-kit/-/web-appboy-kit-2.0.6.tgz#a9735a89ad32e7a8da27f55cb8673981085aa9c7"
-  integrity sha512-1/lWrDXzdiUf0vBra3iYe56njfC6f/Cuq4/DnbRYpCEwu55Zi2Vr/9aXzX6ymNtJOcrLRpT/MiV6sTMjL+D6Ag==
+"@mparticle/web-appboy-kit@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@mparticle/web-appboy-kit/-/web-appboy-kit-2.0.7.tgz#88ff3ac61f78474fa8534d9f135dd1432d2b8918"
+  integrity sha512-bFWEjMzSK+mnCT455PS59cQu2SjRVBu89SdgzJq/TY/fen7lvPyo6Wfd7WvsHjjnjAaj/Qfhx1c2VXu6GrxtYA==
   dependencies:
     "@mparticle/web-sdk" "^2.11.3"
     appboy-web-sdk "2.5.2"
@@ -2144,7 +2144,7 @@
     "@mparticle/web-sdk" "^2.11.1"
     isobject "^4.0.0"
 
-"@mparticle/web-sdk@^2.11.0", "@mparticle/web-sdk@^2.11.3", "@mparticle/web-sdk@^2.12.3":
+"@mparticle/web-sdk@^2.11.0", "@mparticle/web-sdk@^2.11.3":
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.14.1.tgz#8d0c64254118a5a4c1d930719cf58a02ebceb452"
   integrity sha512-oXbtIwauOp8fs1FrZrXxErA2Ph+oP/cdN2FXLZhR8YP1XbDCvuEuHBRr+hVIo/VXIZbt3LBQLB2H+1uSACTvHw==
@@ -2152,7 +2152,7 @@
     "@babel/runtime" "^7.6.0"
     slugify "^1.3.6"
 
-"@mparticle/web-sdk@^2.11.1":
+"@mparticle/web-sdk@^2.11.1", "@mparticle/web-sdk@^2.14.2":
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.14.2.tgz#7aafcf638915ca78548d6ab5bdb7bff31e19efea"
   integrity sha512-gcqs3yc5vmiCPLhQJcwUv9JShhri5TuMUsOUVnGCAD0pIk01vPPt1ysdX9jVDClDUY0E4RSYOHbYm1ZXWxP1Lg==
@@ -3464,6 +3464,11 @@
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.5.tgz#1001cc5e6a3704b83c236027e77f2f58ea010f40"
   integrity sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==
+
+"@types/mparticle__web-sdk@^2.14.0":
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/@types/mparticle__web-sdk/-/mparticle__web-sdk-2.14.0.tgz#adbcf2b0014b8114c3056e539755c7a7992e3439"
+  integrity sha512-BZRWgMGDbVOa8iYRM4tUMoAnjske8+SMJfB0eD8VtBp2mQCbkNUpeOCxogu57UczgScH6UatZONF4UPXhd62PA==
 
 "@types/node-fetch@^2.5.7":
   version "2.5.12"

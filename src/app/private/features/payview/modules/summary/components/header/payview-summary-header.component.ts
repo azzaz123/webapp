@@ -18,7 +18,7 @@ export class PayviewSummaryHeaderComponent {
   constructor() {}
 
   public get address(): string {
-    return this.deliveryMethod.lastAddressUsed.label;
+    return this.deliveryMethod.lastAddressUsed?.label;
   }
 
   public get deliveryTime(): string {
@@ -35,5 +35,13 @@ export class PayviewSummaryHeaderComponent {
 
   public get isOffice(): boolean {
     return this.deliveryMethod.method === DELIVERY_MODE.CARRIER_OFFICE;
+  }
+
+  public get showAddress(): boolean {
+    return !!this.deliveryMethod.lastAddressUsed;
+  }
+
+  public get showDeliveryTime(): boolean {
+    return !!this.deliveryMethod.deliveryTimes;
   }
 }
