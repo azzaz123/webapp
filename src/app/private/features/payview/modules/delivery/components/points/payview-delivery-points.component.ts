@@ -24,16 +24,25 @@ export class PayviewDeliveryPointsComponent {
     return this.toString(this.deliveryCosts.buyerAddressCost);
   }
 
+  public getDeliveryTime(deliveryMethod: DeliveryBuyerDeliveryMethod): string {
+    return `${deliveryMethod.deliveryTimes.from}-${deliveryMethod.deliveryTimes.to}`;
+  }
+
   public isPickUpPoint(deliveryMethod: DeliveryBuyerDeliveryMethod): boolean {
     return deliveryMethod.method === DELIVERY_MODE.CARRIER_OFFICE;
   }
 
   public selectPoint(index: number): void {
     // TODO -> Change current selection and deselect previous selection
+    this.selectedDeliveryMethodIndex = index;
   }
 
   public get showDeliveryMethods(): boolean {
     return !!this.deliveryMethods && !!this.deliveryCosts;
+  }
+
+  public trackByIndex(index: number, name: DeliveryBuyerDeliveryMethod): number {
+    return index;
   }
 
   private toString(money: Money): string {
