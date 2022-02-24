@@ -5,9 +5,11 @@ import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
 
+//TEST PLACEMENTS
 @Component({
   selector: 'tsl-public-item-card-list',
-  template: '',
+  // template: '',
+  template: '<ng-content></ng-content>',
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export class ItemCardListComponentStub {

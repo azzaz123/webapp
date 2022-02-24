@@ -58,6 +58,15 @@ import { SortByService } from '../components/sort-filter/services/sort-by.servic
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import {
+  AD_DESKTOP_SCREEN_SIZE,
+  AD_DESKTOP_VERTICAL_MAPPING,
+  AD_MOBILE_MAPPING,
+  AD_MOBILE_SCREEN_SIZE,
+  AD_TABLET_MAPPING,
+  AD_TABLET_SCREEN_SIZE,
+} from '@core/ads/constants';
+import { CommonModule } from '@angular/common';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 
@@ -751,6 +760,26 @@ describe('SearchComponent', () => {
     });
 
     describe('if the device is a mobile', () => {
+      //TEST PLACEMENTS
+      it.only('should load the correct ad slots placeholder', fakeAsync(() => {
+        component.device = DeviceType.MOBILE;
+
+        fixture.detectChanges();
+        tick();
+        const instance = fixture.componentInstance;
+        const adSlotGroupMobile = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+
+        adSlotGroupMobile.forEach((item) => {
+          console.log(item.componentInstance.adSlot);
+        });
+
+        console.log('MOBILE');
+        console.log(adSlotGroupMobile.length);
+        console.log(fixture.debugElement.nativeElement.innerHTML);
+
+        expect(adSlotGroupMobile).toBeTruthy();
+      }));
+
       it('should show an Ad placement just after the view more button', fakeAsync(() => {
         component.device = DeviceType.MOBILE;
 
