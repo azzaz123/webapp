@@ -517,19 +517,6 @@ export const MOCK_INBOX_CONVERSATION_AS_SELLER: InboxConversation = new InboxCon
   MOCK_INBOX_MESSAGES[0]
 );
 
-export const MOCK_INBOX_CONVERSATION_AS_BUYER_WITH_SOLD_ITEM: InboxConversation = new InboxConversation(
-  'abcd',
-  new Date(),
-  MOCK_INBOX_USER,
-  MOCK_INBOX_ITEM_NOT_MINE_AND_SOLD,
-  'bli',
-  MOCK_INBOX_MESSAGES,
-  false,
-  CONVERSATION_PHONE,
-  288,
-  MOCK_INBOX_MESSAGES[0]
-);
-
 export const MOCK_INBOX_CONVERSATION_WITH_UNSUBSCRIBED_USER: InboxConversation = new InboxConversation(
   'abcd',
   new Date(),
