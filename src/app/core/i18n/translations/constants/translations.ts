@@ -201,4 +201,8 @@ export const translations: Translations = {
   [TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_DESCRIPTION]: $localize`:@@accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_description:If you confirm, the sale will be cancelled and your product will be back on sale.`,
   [TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_CONTINUE_BUTTON]: $localize`:@@accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_continue_button:Confirm`,
   [TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_BACK_BUTTON]: $localize`:@@accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_back_button:Back`,
+  [TRANSLATION_KEY.PAYVIEW_DELIVERY_VIEW_PICK_UP_POINT]: $localize`:@@pay_view_buyer_delivery_method_po_selector_select_button:View pick-up points`,
+  [TRANSLATION_KEY.PAYVIEW_DELIVERY_EDIT_PICK_UP_POINT]: $localize`:@@pay_view_buyer_delivery_method_po_selector_edit_button:Edit pick-up point`,
+  [TRANSLATION_KEY.PAYVIEW_DELIVERY_ADD_ADDRESS]: $localize`:@@pay_view_buyer_delivery_method_ba_selector_select_button:Add address`,
+  [TRANSLATION_KEY.PAYVIEW_DELIVERY_EDIT_ADDRESS]: $localize`:@@pay_view_buyer_delivery_method_ba_selector_edit_button:Edit address`,
 };

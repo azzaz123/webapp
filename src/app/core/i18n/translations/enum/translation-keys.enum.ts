@@ -200,4 +200,8 @@ export enum TRANSLATION_KEY {
   ACCEPT_SCREEN_REJECT_REQUEST_MODAL_DESCRIPTION = 'accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_description',
   ACCEPT_SCREEN_REJECT_REQUEST_MODAL_CONTINUE_BUTTON = 'accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_continue_button',
   ACCEPT_SCREEN_REJECT_REQUEST_MODAL_BACK_BUTTON = 'accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_back_button',
+  PAYVIEW_DELIVERY_VIEW_PICK_UP_POINT = 'pay_view_buyer_delivery_method_po_selector_select_button',
+  PAYVIEW_DELIVERY_EDIT_PICK_UP_POINT = 'pay_view_buyer_delivery_method_po_selector_edit_button',
+  PAYVIEW_DELIVERY_ADD_ADDRESS = 'pay_view_buyer_delivery_method_ba_selector_select_button',
+  PAYVIEW_DELIVERY_EDIT_ADDRESS = 'pay_view_buyer_delivery_method_ba_selector_edit_button',
 }
