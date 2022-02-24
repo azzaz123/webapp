@@ -4,7 +4,6 @@ import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '@shared/pipes';
@@ -62,15 +61,15 @@ describe('CartComponent', () => {
 
   describe('hasCard', () => {
     it('should set true if stripe card exists', () => {
-      component.hasCard(true);
+      component.setHasCards(true);
 
-      expect(component.hasSavedCard).toEqual(true);
+      expect(component.hasSavedCards).toEqual(true);
     });
 
     it('should not call addNewCard if stripe card exists', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasCard(true);
+      component.setHasCards(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
@@ -78,7 +77,7 @@ describe('CartComponent', () => {
     it('should call addNewCard if stripe card does not exist', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasCard(false);
+      component.setHasCards(false);
 
       expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
@@ -88,18 +87,21 @@ describe('CartComponent', () => {
     it('should set showCard to true', () => {
       component.addNewCard();
 
-      expect(component.showCard).toEqual(true);
+      expect(component.isNewCard).toEqual(true);
+    });
+    it('should clear card', () => {
+      component.addNewCard();
+
+      expect(component.card).toEqual(null);
     });
   });
 
   describe('setSavedCard', () => {
-    it('should set showCard to false, savedCard to true and setCardInfo', () => {
+    it('should setCardInfo', () => {
       spyOn(component, 'setCardInfo').and.callThrough();
 
       component.setSavedCard(STRIPE_CARD_OPTION);
 
-      expect(component.showCard).toEqual(false);
-      expect(component.savedCard).toEqual(true);
       expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
@@ -132,16 +134,16 @@ describe('CartComponent', () => {
     describe('error', () => {
       beforeEach(() => {
         spyOn(visibilityService, 'buyBumps').and.returnValue(of([{ hasError: true }]));
+        spyOn(component.errorAction, 'emit').and.callThrough();
 
         component.loading = false;
       });
 
-      it('should call toastr', fakeAsync(() => {
-        spyOn(errorService, 'i18nError').and.callThrough();
-
+      it('should emit error', fakeAsync(() => {
         component.checkout();
 
-        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BUMP_ERROR);
+        expect(component.errorAction.emit).toBeCalledTimes(1);
+        expect(component.errorAction.emit).toHaveBeenCalledWith([{ hasError: true }]);
       }));
     });
   });
