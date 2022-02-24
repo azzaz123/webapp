@@ -3,7 +3,10 @@ import { Duration, Product } from '@core/item/item-response.interface';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
-import { Perks } from '@core/subscriptions/subscriptions.interface';
+import { Bumps } from '@core/subscriptions/subscriptions.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 
 @Component({
   selector: 'tsl-checkout-item',
@@ -13,7 +16,7 @@ import { Perks } from '@core/subscriptions/subscriptions.interface';
 export class CheckoutItemComponent implements OnInit, OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
-  @Input() availableFreeBumps: number;
+  @Input() availableFreeBumps: number = 0;
   @Output() itemChanged: EventEmitter<SelectedProduct> = new EventEmitter();
   @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
   public selectedType: Product;
@@ -25,10 +28,10 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
   public readonly BUMP_TYPES = BUMP_TYPE;
   private _selectedDuration: Duration;
 
-  constructor() {}
+  constructor(private modalService: NgbModal) {}
 
   ngOnInit() {
-    this.isFreeOptionAvailable = !!this.getFreeTypes().length;
+    this.isFreeOptionAvailable = !!this.getFirstAvailableFreeOption();
     this.isFreeOptionDisabled = this.availableFreeBumps === 0;
 
     if (this.isFreeOptionAvailable && !this.isFreeOptionDisabled) {
@@ -68,6 +71,10 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
   }
 
   public toggleItem(): void {
+    if (this.isFreeOptionSelected && !this.availableFreeBumps) {
+      this.showBumpLimitModal();
+      return;
+    }
     this.getAvailableProducts();
   }
 
@@ -115,7 +122,23 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
     return freeTypes;
   }
 
-  private getFirstAvailableFreeOption(): Perks {
-    return this.itemWithProducts.subscription?.selected_tier.bumps.find((bump) => bump.used < bump.quantity);
+  private getFirstAvailableFreeOption(): Bumps {
+    if (!this.itemWithProducts.subscription?.selected_tier) {
+      return null;
+    }
+    return this.itemWithProducts.subscription?.selected_tier?.bumps.find((bump) => bump.used < bump.quantity);
+  }
+
+  private showBumpLimitModal(): void {
+    const modalRef = this.modalService.open(ProModalComponent, { windowClass: 'pro-modal' });
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_limit];
+    modalRef.result.then(
+      () => {
+        this.isFreeOptionSelected = false;
+      },
+      () => {
+        this.isFreeOptionSelected = false;
+      }
+    );
   }
 }
