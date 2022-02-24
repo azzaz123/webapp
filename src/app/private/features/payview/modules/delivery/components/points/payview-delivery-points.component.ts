@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
@@ -11,11 +11,16 @@ import { Money } from '@api/core/model/money.interface';
   styleUrls: ['./payview-delivery-points.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PayviewDeliveryPointsComponent {
+export class PayviewDeliveryPointsComponent implements OnInit {
+  @Input() public defaultDeliveryMethod: number;
   @Input() public deliveryCosts: DeliveryCosts;
   @Input() public deliveryMethods: DeliveryBuyerDeliveryMethod[];
 
-  public selectedDeliveryMethodIndex: number;
+  private selectedPointIndex: number;
+
+  public ngOnInit(): void {
+    this.selectedPointIndex = this.defaultDeliveryMethod;
+  }
 
   public getDeliveryCost(deliveryMethod: DeliveryBuyerDeliveryMethod): string {
     if (this.isPickUpPoint(deliveryMethod)) {
@@ -32,9 +37,12 @@ export class PayviewDeliveryPointsComponent {
     return deliveryMethod.method === DELIVERY_MODE.CARRIER_OFFICE;
   }
 
+  public isSelected(index: number): boolean {
+    return this.selectedPointIndex === index;
+  }
+
   public selectPoint(index: number): void {
-    // TODO -> Change current selection and deselect previous selection
-    this.selectedDeliveryMethodIndex = index;
+    this.selectedPointIndex = index;
   }
 
   public get showDeliveryMethods(): boolean {

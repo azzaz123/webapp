@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
+import { ButtonComponent } from '@shared/button/button.component';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COSTS_ITEM } from '@api/fixtures/bff/delivery/costs/delivery-costs.fixtures.spec';
@@ -20,7 +21,13 @@ describe('PayviewDeliveryPointsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PayviewDeliveryHeaderComponent, PayviewDeliveryPointComponent, PayviewDeliveryPointsComponent, SvgIconComponent],
+      declarations: [
+        ButtonComponent,
+        PayviewDeliveryHeaderComponent,
+        PayviewDeliveryPointComponent,
+        PayviewDeliveryPointsComponent,
+        SvgIconComponent,
+      ],
       imports: [DeliveryRadioSelectorModule, HttpClientTestingModule],
     }).compileComponents();
   });
@@ -70,6 +77,14 @@ describe('PayviewDeliveryPointsComponent', () => {
         it('should assign the corresponding delivery method', () => {
           expect(targetElement.componentInstance.deliveryMethod).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0]);
         });
+
+        it('should assign the corresponding id', () => {
+          expect(targetElement.componentInstance.id).toEqual(0);
+        });
+
+        it('should assign whether is checked or not', () => {
+          expect(targetElement.componentInstance.isChecked).toBeFalsy();
+        });
       });
 
       describe('WHEN the delivery method is home pick-up', () => {
@@ -85,6 +100,14 @@ describe('PayviewDeliveryPointsComponent', () => {
 
         it('should assign the corresponding delivery method', () => {
           expect(targetElement.componentInstance.deliveryMethod).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]);
+        });
+
+        it('should assign the corresponding id', () => {
+          expect(targetElement.componentInstance.id).toEqual(1);
+        });
+
+        it('should assign whether is checked or not', () => {
+          expect(targetElement.componentInstance.isChecked).toBeFalsy();
         });
       });
     });
@@ -124,6 +147,28 @@ describe('PayviewDeliveryPointsComponent', () => {
 
         expect(target).toBeFalsy();
       });
+    });
+  });
+
+  describe('WHEN the item has been selected', () => {
+    const fakeIndex: number = 13;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(PayviewDeliveryPointsComponent);
+      component = fixture.componentInstance;
+      debugElement = fixture.debugElement;
+
+      component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
+      component.deliveryMethods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
+
+      fixture.detectChanges();
+
+      const deliveryOptionSelector: DebugElement = fixture.debugElement.query(By.directive(PayviewDeliveryPointComponent));
+      deliveryOptionSelector.triggerEventHandler('checked', fakeIndex);
+    });
+
+    it('should indicate that the item is selected', () => {
+      expect(component.isSelected(fakeIndex)).toBe(true);
     });
   });
 });
