@@ -1,14 +1,16 @@
 import { Observable, ReplaySubject } from 'rxjs';
-import mParticle from '@mparticle/web-sdk';
+import { mParticle, appboyKit } from './mparticle.constants';
+import { IdentityResult, MPConfiguration, UserIdentities, User as MPUser } from '@mparticle/web-sdk';
 import { UserService } from './../user/user.service';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { environment } from '@environments/environment';
 import { User } from '../user/user';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
 import { DeviceService } from '@core/device/device.service';
-import { Market, MARKET_PROVIDER } from '../../../configs/market.config';
-import { APP_LOCALE } from '../../../configs/subdomains.config';
-import { mParticleUser } from './resources/mParticle-interfaces';
+import { Market, MARKET_PROVIDER } from '@configs/market.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
+
+// FIXME: This kits probably need to be registered
 import '@mparticle/web-google-analytics-kit';
 import '@mparticle/web-optimizely-kit';
 
@@ -24,12 +26,14 @@ export const COMMON_MPARTICLE_CONFIG = {
   },
 };
 
+// FIXME: In this file we have added several any to avoid a full refactor on mParticle type definition
+//        We will need to take a look into that sooner or later
+
 @Injectable({
   providedIn: 'root',
 })
 export class AnalyticsService {
   private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
-  private mParticleuser: mParticleUser;
   constructor(
     private userService: UserService,
     private deviceService: DeviceService,
@@ -41,8 +45,16 @@ export class AnalyticsService {
     return this._mParticleReady$.asObservable();
   }
 
+  public get market(): Market {
+    return this._market;
+  }
+
+  public get appLocale(): APP_LOCALE {
+    return this._localeId;
+  }
+
   public setUserAttribute(key: string, value: string) {
-    this.mParticleuser.setUserAttribute(key, value);
+    this.getMPUser()?.setUserAttribute(key, value);
   }
 
   public initialize(): void {
@@ -61,54 +73,52 @@ export class AnalyticsService {
     }
   }
 
-  public trackEvent<T>(event: AnalyticsEvent<T>) {
-    mParticle.logEvent(event.name, event.eventType, event.attributes);
+  public trackEvent<T>(event: AnalyticsEvent<T>): void {
+    mParticle.logEvent(event.name, event.eventType as any, event.attributes as any);
   }
 
-  public trackPageView<T>(page: AnalyticsPageView<T>) {
-    mParticle.logPageView(page.name, page.attributes, page.flags);
+  public trackPageView<T>(page: AnalyticsPageView<T>): void {
+    mParticle.logPageView(page.name, page.attributes as any, page.flags as any);
   }
 
-  get market(): Market {
-    return this._market;
+  public loginUser(userIdentities: UserIdentities, callback?: () => void): void {
+    mParticle.Identity.login({ userIdentities }, callback);
   }
 
-  get appLocale(): APP_LOCALE {
-    return this._localeId;
+  private getMPUser(): MPUser | undefined {
+    return mParticle.Identity.getCurrentUser();
   }
 
-  private mParticleIdentityCallback(result) {
+  private mParticleIdentityCallback(result: IdentityResult): void {
     const mParticleUser = result.getUser();
 
     if (mParticleUser) {
-      this.mParticleuser = mParticleUser;
       mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
     }
   }
 
-  private getUserIdentities(user: User): { email: string; customerid: string } {
+  private getUserIdentities(user: User): UserIdentities {
     return {
       email: user.email,
       customerid: user.id,
     };
   }
 
-  private initializeMParticleSDK(config: unknown): void {
+  private initializeMParticleSDK(config: MPConfiguration): void {
+    appboyKit.register(config);
     mParticle.init(environment.mParticleKey, config);
     mParticle.ready(() => {
       this._mParticleReady$.next();
     });
   }
 
-  private getMParticleConfig(userIdentities: unknown) {
-    const mParticleConfig = {
+  private getMParticleConfig(userIdentities: UserIdentities): MPConfiguration {
+    return {
       ...COMMON_MPARTICLE_CONFIG,
       identifyRequest: {
         userIdentities,
       },
-      identityCallback: (result) => this.mParticleIdentityCallback(result),
+      identityCallback: this.mParticleIdentityCallback.bind(this),
     };
-
-    return mParticleConfig;
   }
 }
