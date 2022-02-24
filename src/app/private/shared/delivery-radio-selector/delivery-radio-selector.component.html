@@ -6,7 +6,7 @@
     [ngClass]="selectedId === i ? 'mt-3' : 'mt-4'"
     type="radio"
     [value]="i"
-    [checked]="selectedId === i"
+    [checked]="selectedId === i || isChecked"
     (change)="changed.emit(i)"
   />
 </div>

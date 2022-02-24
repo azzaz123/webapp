@@ -8,6 +8,7 @@ import { DeliveryRadioOptionDirective } from '@private/shared/delivery-radio-sel
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeliveryRadioSelectorComponent {
+  @Input() isChecked: boolean;
   @Input() selectedId: number;
   @Output() changed: EventEmitter<number> = new EventEmitter();
 
