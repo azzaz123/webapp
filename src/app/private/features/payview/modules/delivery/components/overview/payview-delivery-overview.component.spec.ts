@@ -1,9 +1,12 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
+import { ButtonComponent } from '@shared/button/button.component';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
+import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PayviewDeliveryHeaderComponent } from '@private/features/payview/modules/delivery/components/header/payview-delivery-header.component';
 import { PayviewDeliveryOverviewComponent } from '@private/features/payview/modules/delivery/components/overview/payview-delivery-overview.component';
@@ -22,13 +25,14 @@ describe('PayviewDeliveryOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
+        ButtonComponent,
         PayviewDeliveryHeaderComponent,
         PayviewDeliveryOverviewComponent,
         PayviewDeliveryPointComponent,
         PayviewDeliveryPointsComponent,
         SvgIconComponent,
       ],
-      imports: [DeliveryRadioSelectorModule, HttpClientTestingModule],
+      imports: [BrowserAnimationsModule, DeliveryRadioSelectorModule, HttpClientTestingModule],
       providers: [],
     }).compileComponents();
   });
@@ -62,6 +66,12 @@ describe('PayviewDeliveryOverviewComponent', () => {
           expect(target).toBeTruthy();
         });
 
+        it('should assign the corresponding default delivery method', () => {
+          const target = debugElement.query(By.directive(PayviewDeliveryPointsComponent));
+
+          expect(target.componentInstance.defaultDeliveryMethod).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.default.index);
+        });
+
         it('should assign the corresponding delivery costs', () => {
           const target = debugElement.query(By.directive(PayviewDeliveryPointsComponent));
 
@@ -71,7 +81,7 @@ describe('PayviewDeliveryOverviewComponent', () => {
         it('should assign the corresponding delivery method', () => {
           const target = debugElement.query(By.directive(PayviewDeliveryPointsComponent));
 
-          expect(target.componentInstance.deliveryMethods).toEqual(MOCK_PAYVIEW_STATE.delivery.methods.deliveryMethods);
+          expect(target.componentInstance.deliveryMethods).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods);
         });
       });
     });
