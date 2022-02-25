@@ -11,6 +11,9 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { DeliveryMapModule } from '@private/shared/delivery-map/delivery-map.module';
+import { DeliveryPreferenceScheduleComponent } from './components/steps/delivery-preference-schedule/delivery-preference-schedule.component';
+import { FormsModule } from '@angular/forms';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -24,7 +27,9 @@ import { DeliveryMapModule } from '@private/shared/delivery-map/delivery-map.mod
     CustomCurrencyModule,
     DeliveryRadioSelectorModule,
     DeliveryMapModule,
+    FormsModule,
+    NgbButtonsModule,
   ],
-  declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent],
+  declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent, DeliveryPreferenceScheduleComponent],
 })
 export class AcceptScreenModule {}

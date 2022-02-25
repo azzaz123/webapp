@@ -12,7 +12,11 @@ import { PLACEHOLDER_AVATAR } from '@core/user/user';
 import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR } from '../delivery-address.fixtures.spec';
 import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
-import { MOCK_ACCEPT_SCREEN_CARRIERS, MOCK_ACCEPT_SCREEN_CARRIERS_2 } from './accept-screen-properties-carriers.fixtures.spec';
+import {
+  MOCK_ACCEPT_SCREEN_CARRIERS,
+  MOCK_ACCEPT_SCREEN_CARRIERS_2,
+  MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED,
+} from './accept-screen-properties-carriers.fixtures.spec';
 
 export const MOCK_ACCEPT_SCREEN_ITEM: AcceptScreenItem = {
   id: MOCK_ITEM.id,
@@ -87,4 +91,17 @@ export const MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS: AcceptScreenP
 export const MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU: AcceptScreenProperties = {
   ...MOCK_ACCEPT_SCREEN_PROPERTIES,
   carriers: MOCK_ACCEPT_SCREEN_CARRIERS,
+};
+
+export const MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_FIRST_SELECTED: AcceptScreenProperties = {
+  ...MOCK_ACCEPT_SCREEN_PROPERTIES,
+  carriers: MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED,
+};
+
+export const MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED: AcceptScreenProperties = {
+  ...MOCK_ACCEPT_SCREEN_PROPERTIES,
+  carriers: [
+    { ...MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED[0], isSelected: false },
+    { ...MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED[1], isSelected: true },
+  ],
 };

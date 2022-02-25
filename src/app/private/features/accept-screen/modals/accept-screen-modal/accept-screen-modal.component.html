@@ -171,7 +171,12 @@
         (addressSaveSucceded)="goToAcceptScreen()"
       ></tsl-delivery-address>
     </ng-template>
-    <ng-template step>This will be the schedule</ng-template>
+    <ng-template step>
+      <tsl-delivery-preference-schedule
+        [deliveryPickUpDay]="deliveryPickUpDay$ | async"
+        (scheduleSaveSucceded)="goToAcceptScreen()"
+      ></tsl-delivery-preference-schedule>
+    </ng-template>
     <ng-template step
       ><tsl-delivery-map [fullAddress]="properties.seller.fullAddress" [selectedCarrier]="carrierSelectedName$ | async"></tsl-delivery-map
     ></ng-template>

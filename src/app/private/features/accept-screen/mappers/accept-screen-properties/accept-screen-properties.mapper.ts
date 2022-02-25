@@ -76,6 +76,17 @@ const mapDeliveryAddressToSellerAddress: ToDomainMapper<DeliveryAddressApi, stri
 };
 
 function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {
+  const carrier: AcceptScreenCarrier = getCarrier(dropOffMode, carrierDropOffModeSelected);
+
+  const deliveryPickUpDay: string = mapDeliveryPickUpDay(dropOffMode.type, dropOffMode.schedule);
+  if (deliveryPickUpDay) {
+    carrier.deliveryPickUpDay = deliveryPickUpDay;
+  }
+
+  return carrier;
+}
+
+function getCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {
   return {
     type: dropOffMode.type,
     name: dropOffMode.postOfficeDetails?.carrier,
@@ -102,6 +113,16 @@ const mapUserToImageUrl: ToDomainMapper<User, string> = (user: User): string => 
 const mapTitle: ToDomainMapper<CARRIER_DROP_OFF_MODE, string> = (type: CARRIER_DROP_OFF_MODE): string => {
   return AcceptScreenDropOffPointTitle[type];
 };
+
+function mapDeliveryPickUpDay(type: CARRIER_DROP_OFF_MODE, schedule: TentativeSchedule) {
+  if (type === CARRIER_DROP_OFF_MODE.POST_OFFICE || !schedule) {
+    return null;
+  }
+
+  const startDate: Date = schedule.pickUpStartDate;
+
+  return `${mapWeekDay(startDate)}, ${mapCompleteDate(startDate)}`;
+}
 
 function mapInformation(type: CARRIER_DROP_OFF_MODE, schedule: TentativeSchedule): string {
   const scheduleMapped: string = schedule ? mapDeliveryDayInformation(schedule) : null;
@@ -157,21 +178,30 @@ const mapDropOffPointInformation: ToDomainMapper<LastAddressUsed, string> = (las
 };
 
 const mapDeliveryDayInformation: ToDomainMapper<TentativeSchedule, string> = (schedule: TentativeSchedule): string => {
-  const weekDay: string = schedule.pickUpStartDate.toLocaleDateString(navigatorLanguage, { weekday: 'long' }).toLowerCase();
-  const completeDate: string = schedule.pickUpStartDate
-    .toLocaleDateString(navigatorLanguage, { day: 'numeric', month: 'long', year: 'numeric' })
-    .replace(',', '')
-    .toLowerCase();
-  const hourStart: string = getHourAndMinutesFromDate(schedule.pickUpStartDate);
+  const startDate: Date = schedule.pickUpStartDate;
+  const hourStart: string = getHourAndMinutesFromDate(startDate);
   const hourEnd: string = getHourAndMinutesFromDate(schedule.pickUpEndDate);
 
-  return `${weekDay}, ${completeDate}, ${hourStart} - ${hourEnd}.`;
+  return `${mapWeekDay(startDate)}, ${mapCompleteDate(startDate)}, ${hourStart} - ${hourEnd}.`;
+};
+
+const mapWeekDay: ToDomainMapper<Date, string> = (date: Date): string => {
+  return capitalizeFirstLetter(date.toLocaleDateString(navigatorLanguage, { weekday: 'long' }).toLowerCase());
+};
+
+const mapCompleteDate: ToDomainMapper<Date, string> = (date: Date): string => {
+  const month: string = date.toLocaleDateString(navigatorLanguage, {
+    month: 'long',
+  });
+
+  return `${date.getUTCDate()} ${month} ${date.getFullYear()}`;
 };
 
 const getHourAndMinutesFromDate: ToDomainMapper<Date, string> = (date: Date): string => {
   return date.toLocaleTimeString(navigatorLanguage, {
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   });
 };
 
