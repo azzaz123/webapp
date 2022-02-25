@@ -14,12 +14,18 @@ import { ThirdVoiceDeliveryComponent } from './third-voice-delivery.component';
 @Component({
   selector: 'tsl-test-wrapper',
   template: `
-    <tsl-third-voice-delivery [message]="message" [shortMessage]="shortMessage" (clickedCTA)="clickedCTA()"></tsl-third-voice-delivery>
+    <tsl-third-voice-delivery
+      [message]="message"
+      [shortMessage]="shortMessage"
+      [loading]="loading"
+      (clickedCTA)="clickedCTA()"
+    ></tsl-third-voice-delivery>
   `,
 })
 class TestWrapperComponent {
   @Input() message: InboxMessage;
   @Input() shortMessage: boolean;
+  @Input() loading: boolean;
   clickedCTA(): void {}
 }
 
@@ -77,6 +83,42 @@ describe('ThirdVoiceDeliveryComponent', () => {
 
         it('should notify click', () => {
           expect(component.clickedCTA).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and when NOT loading', () => {
+        let thirdVoiceCTAElement: DebugElement;
+
+        beforeEach(() => {
+          component.loading = true;
+          fixture.detectChanges();
+          thirdVoiceCTAElement = fixture.debugElement.query(By.directive(ButtonComponent));
+        });
+
+        it('should set the button with loading state', () => {
+          expect(thirdVoiceCTAElement.componentInstance.loading).toEqual(true);
+        });
+
+        it('should disable the button', () => {
+          expect(thirdVoiceCTAElement.componentInstance.disabled).toEqual(true);
+        });
+      });
+
+      describe('and when NOT loading', () => {
+        let thirdVoiceCTAElement: DebugElement;
+
+        beforeEach(() => {
+          component.loading = false;
+          fixture.detectChanges();
+          thirdVoiceCTAElement = fixture.debugElement.query(By.directive(ButtonComponent));
+        });
+
+        it('should set the button with no loading state', () => {
+          expect(thirdVoiceCTAElement.componentInstance.loading).toEqual(false);
+        });
+
+        it('should enable the button', () => {
+          expect(thirdVoiceCTAElement.componentInstance.disabled).toEqual(false);
         });
       });
     });

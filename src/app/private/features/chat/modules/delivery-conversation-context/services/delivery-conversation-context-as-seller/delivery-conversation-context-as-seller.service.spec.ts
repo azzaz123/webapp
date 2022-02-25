@@ -8,8 +8,7 @@ import {
   MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE,
   MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED,
 } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
-import { MOCK_DELIVERY_ITEM_DETAILS_WITH_SHIPPING_DISABLED_DTO } from '@api/fixtures/delivery/item/detail/delivery-item-details-dto.fixtures.spec';
-import { MOCK_INBOX_CONVERSATION_AS_SELLER, MOCK_INBOX_CONVERSATION_AS_SELLER_WITH_SOLD_ITEM } from '@fixtures/chat';
+import { MOCK_INBOX_CONVERSATION_AS_SELLER } from '@fixtures/chat';
 import { MOCK_PENDING_SELLER_REQUEST, MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
@@ -115,7 +114,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
       });
 
       it('should hide banner', fakeAsync(() => {
-        service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER_WITH_SOLD_ITEM).subscribe((result) => {
+        service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe((result) => {
           expect(result).toBeFalsy();
         });
         tick();

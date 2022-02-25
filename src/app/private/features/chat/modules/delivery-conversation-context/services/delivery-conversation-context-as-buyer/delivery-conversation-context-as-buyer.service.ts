@@ -18,6 +18,7 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { InboxConversation } from '@private/features/chat/core/model';
+import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
@@ -33,14 +34,14 @@ export class DeliveryConversationContextAsBuyerService {
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     const { item } = conversation;
-    const { id: itemHash, sold } = item;
+    const { id: itemHash } = item;
 
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       tap((requests) => (this.lastRequest = requests ? requests[0] : null)),
       concatMap((buyerRequests: BuyerRequest[]) => {
         return this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash).pipe(
           map((deliveryItemDetails: DeliveryItemDetails) => {
-            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, sold, deliveryItemDetails);
+            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, deliveryItemDetails);
           })
         );
       })
@@ -49,8 +50,23 @@ export class DeliveryConversationContextAsBuyerService {
 
   public handleThirdVoiceCTAClick(): void {
     this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((enabled) => {
-      enabled ? this.redirectToTTS() : this.modalService.open(TRXAwarenessModalComponent);
+      enabled ? this.redirectToTTS() : this.openAwarenessModal();
     });
+  }
+
+  public handleBannerCTAClick(conversation: InboxConversation, action: DELIVERY_BANNER_ACTION): void {
+    if (action === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
+      return this.redirectToPayview(conversation);
+    }
+
+    return this.openAwarenessModal();
+  }
+
+  private redirectToPayview(conversation: InboxConversation): void {
+    const { item } = conversation;
+    const { id: itemHash } = item;
+    const route: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+    this.router.navigate([route]);
   }
 
   private redirectToTTS(): void {
@@ -63,18 +79,18 @@ export class DeliveryConversationContextAsBuyerService {
 
   private mapDeliveryDetailsAsBuyerToBannerProperties(
     buyerRequests: BuyerRequest[],
-    isItemSold: boolean,
-    deliveryItemDetails?: DeliveryItemDetails
+    deliveryItemDetails: DeliveryItemDetails
   ): DeliveryBanner {
-    const noDeliveryItemDetails: boolean = !deliveryItemDetails;
+    const isShippingNotAllowed: boolean = !deliveryItemDetails.isShippingAllowed;
+    const isNotShippable: boolean = !deliveryItemDetails.isShippable;
     const buyerHasNoRequests: boolean = buyerRequests.length === 0;
     const buyerHasRequests: boolean = !buyerHasNoRequests;
 
-    if (isItemSold) {
+    if (isNotShippable) {
       return null;
     }
 
-    if (noDeliveryItemDetails) {
+    if (isShippingNotAllowed) {
       return ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES;
     }
 
@@ -87,5 +103,9 @@ export class DeliveryConversationContextAsBuyerService {
     }
 
     return null;
+  }
+
+  private openAwarenessModal(): void {
+    this.modalService.open(TRXAwarenessModalComponent);
   }
 }
