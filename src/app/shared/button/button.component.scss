@@ -115,9 +115,16 @@ $vertical-padding: $spacing-ms;
     color: $blue-grey-3;
   }
   &.btn-third-voice {
-    background-color: $softblue-dark;
+    $third-voice-vertical-padding: $spacing-s;
+    $third-voice-text-line-height: 1.5;
+    $third-voice-height: $third-voice-vertical-padding * 2 + $third-voice-text-line-height * 16px;
+
+    min-height: $third-voice-height;
+    max-height: $third-voice-height;
+    padding: $third-voice-vertical-padding $spacing-xl;
     font-size: $font-size-s;
-    padding: $spacing-s $spacing-xl;
+    line-height: $third-voice-text-line-height;
+    background-color: $softblue-dark;
   }
   &.stripe {
     padding: $spacing-s $spacing-ml;

@@ -64,6 +64,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   public readonly PERMISSIONS = PERMISSIONS;
   public momentCalendarSpec: CalendarSpec = this.momentCalendarSpecService.getCalendarSpec();
   public isLoadingMoreMessages = false;
+  public isDeliveryContextLoading: boolean = true;
   public isEndOfConversation = true;
   public scrollHeight = 0;
   public scrollLocalPosition = 0;
@@ -150,6 +151,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () =>
       this.sendMetricMessageSendFailed('pending messages after restored connection')
     );
+
+    this.listenDeliveryContextLoadingChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -220,7 +223,12 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public isDeliveryThirdVoice(messageType: MessageType): boolean {
-    return messageType === MessageType.DELIVERY || messageType === MessageType.DELIVERY_GENERIC;
+    return (
+      messageType === MessageType.DELIVERY ||
+      messageType === MessageType.DELIVERY_GENERIC ||
+      messageType === MessageType.TRANSACTION_CLAIM_PERIOD ||
+      messageType === MessageType.TRANSACTION_CLAIM_PERIOD_RT
+    );
   }
 
   public isShippingKeywordsThirdVoice(messageType: MessageType): boolean {
@@ -293,9 +301,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   private deliveryContextNeedsRefresh(newMessage: InboxMessage): boolean {
-    const isRealTimeDeliveryThirdVoice: boolean = newMessage.type === MessageType.DELIVERY;
+    const isDeliveryThirdVoice: boolean = this.isDeliveryThirdVoice(newMessage.type);
     const isMessageInCurrentConversation: boolean = !!this.currentConversation.messages.find((m) => m.id === newMessage.id);
-    return isRealTimeDeliveryThirdVoice && isMessageInCurrentConversation;
+    return isDeliveryThirdVoice && isMessageInCurrentConversation;
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
@@ -348,6 +356,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     if (this.currentConversation) {
       this.deliveryConversationContextService.update(this.currentConversation);
     }
+  }
+
+  private listenDeliveryContextLoadingChanges(): void {
+    this.deliveryConversationContextService.loading$.subscribe((loading) => (this.isDeliveryContextLoading = loading));
   }
 
   private trackClickMaliciousModalCTAButton(): void {
