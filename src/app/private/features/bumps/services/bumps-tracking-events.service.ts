@@ -10,7 +10,7 @@ export class BumpsTrackingEventsService {
   constructor(private analyticsService: AnalyticsService, private userService: UserService) {}
 
   public trackPayBumpItems(selectedItems: SelectedProduct[], totalToPay: number): void {
-    const pageViewEvent: AnalyticsEvent<PayBumpItems> = {
+    const event: AnalyticsEvent<PayBumpItems> = {
       name: ANALYTICS_EVENT_NAMES.PayBumpItems,
       eventType: ANALYTIC_EVENT_TYPES.Other,
       attributes: {
@@ -25,6 +25,6 @@ export class BumpsTrackingEventsService {
       },
     };
 
-    this.analyticsService.trackEvent(pageViewEvent);
+    this.analyticsService.trackEvent(event);
   }
 }

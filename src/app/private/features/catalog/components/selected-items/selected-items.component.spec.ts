@@ -5,11 +5,13 @@ import { ItemService } from '@core/item/item.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReplaySubject } from 'rxjs';
 import { createItemsArray } from '@fixtures/item.fixtures.spec';
+import { CatalogItemTrackingEventService } from '@private/features/catalog/core/services/catalog-item-tracking-event.service';
 
 describe('SelectedItemsComponent', () => {
   let component: SelectedItemsComponent;
   let fixture: ComponentFixture<SelectedItemsComponent>;
   let itemService: ItemService;
+  let catalogItemTrackingEventService: CatalogItemTrackingEventService;
   const anId = '1';
   const anotherId = '2';
 
@@ -19,6 +21,7 @@ describe('SelectedItemsComponent', () => {
         declarations: [SelectedItemsComponent],
         imports: [NoopAnimationsModule],
         providers: [
+          CatalogItemTrackingEventService,
           {
             provide: ItemService,
             useValue: {
@@ -38,6 +41,7 @@ describe('SelectedItemsComponent', () => {
     fixture = TestBed.createComponent(SelectedItemsComponent);
     component = fixture.componentInstance;
     itemService = TestBed.inject(ItemService);
+    catalogItemTrackingEventService = TestBed.inject(CatalogItemTrackingEventService);
   });
 
   describe('ngOnInit', () => {
