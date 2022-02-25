@@ -2,6 +2,8 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/delivery-item-details-api.service';
+import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
+import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { MOCK_BUYER_REQUESTS } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 import {
@@ -61,17 +63,45 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
   describe('when asking for buyer context', () => {
     describe('when buyer has done previously buy requests to current item', () => {
-      beforeEach(() => {
-        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUESTS));
-        spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+      describe('and when the last request is in a pending or accepted state', () => {
+        beforeEach(() => {
+          const MOCK_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
+            (request) => request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING
+          );
+          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_SUCCESSFUL_REQUESTS));
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+        });
+
+        it('should hide banner', fakeAsync(() => {
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
+            expect(result).toBeFalsy();
+          });
+          tick();
+        }));
       });
 
-      it('should hide banner', fakeAsync(() => {
-        service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
-          expect(result).toBeFalsy();
+      describe('and when the last request is NOT in a pending or accepted state', () => {
+        beforeEach(() => {
+          const MOCK_NON_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
+            (request) => !(request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING)
+          );
+          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_NON_SUCCESSFUL_REQUESTS));
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         });
-        tick();
-      }));
+
+        it('should show the buy banner', fakeAsync(() => {
+          const expectedBanner: PriceableDeliveryBanner & ActionableDeliveryBanner = {
+            type: DELIVERY_BANNER_TYPE.BUY,
+            action: MOCK_BUY_DELIVERY_BANNER_PROPERTIES.action,
+            price: MOCK_DELIVERY_ITEM_DETAILS.minimumPurchaseCost,
+          };
+
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
+            expect(result).toEqual(expectedBanner);
+          });
+          tick();
+        }));
+      });
     });
 
     describe('when buyer has 0 requests to current item', () => {
