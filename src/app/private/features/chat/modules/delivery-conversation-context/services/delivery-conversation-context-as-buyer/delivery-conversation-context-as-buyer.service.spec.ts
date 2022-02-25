@@ -19,6 +19,7 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
+import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
 import { PriceableDeliveryBanner } from '../../../delivery-banner/interfaces/priceable-delivery-banner.interface';
@@ -142,6 +143,22 @@ describe('DeliveryConversationContextAsBuyerService', () => {
           });
           tick();
         }));
+      });
+    });
+  });
+
+  describe('when handling banner CTA click', () => {
+    describe('when the action is open the payview', () => {
+      beforeEach(() => {
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_BUYER, DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
+      });
+
+      it('should navigate to the item payview', () => {
+        const itemHash: string = MOCK_INBOX_CONVERSATION_AS_BUYER.item.id;
+        const expectedRoute: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+
+        expect(router.navigate).toHaveBeenCalledWith([expectedRoute]);
+        expect(router.navigate).toHaveBeenCalledTimes(1);
       });
     });
   });

@@ -26,7 +26,7 @@ describe('DeliveryConversationContextService', () => {
         { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         {
           provide: DeliveryConversationContextAsBuyerService,
-          useValue: { getBannerPropertiesAsBuyer: () => of(null), handleThirdVoiceCTAClick: () => {} },
+          useValue: { getBannerPropertiesAsBuyer: () => of(null), handleBannerCTAClick: () => {}, handleThirdVoiceCTAClick: () => {} },
         },
         {
           provide: DeliveryConversationContextAsSellerService,
@@ -177,13 +177,16 @@ describe('DeliveryConversationContextService', () => {
 
     describe('and when action is open the payview', () => {
       beforeEach(() => {
-        spyOn(modalService, 'open');
+        spyOn(deliveryConversationContextAsBuyerService, 'handleBannerCTAClick');
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
       });
 
-      it('should open awareness modal', () => {
-        expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
-        expect(modalService.open).toHaveBeenCalledTimes(1);
+      it('should delegate action to buyer context', () => {
+        expect(deliveryConversationContextAsBuyerService.handleBannerCTAClick).toHaveBeenCalledWith(
+          MOCK_INBOX_CONVERSATION_BASIC,
+          DELIVERY_BANNER_ACTION.OPEN_PAYVIEW
+        );
+        expect(deliveryConversationContextAsBuyerService.handleBannerCTAClick).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -193,7 +196,7 @@ describe('DeliveryConversationContextService', () => {
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE);
       });
 
-      it('should open awareness modal', () => {
+      it('should delegate action to seller context', () => {
         expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledWith(
           MOCK_INBOX_CONVERSATION_BASIC,
           DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE
@@ -208,7 +211,7 @@ describe('DeliveryConversationContextService', () => {
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_BASIC, DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING);
       });
 
-      it('should open awareness modal', () => {
+      it('should delegate action to seller context', () => {
         expect(deliveryConversationContextAsSellerService.handleBannerCTAClick).toHaveBeenCalledWith(
           MOCK_INBOX_CONVERSATION_BASIC,
           DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING
