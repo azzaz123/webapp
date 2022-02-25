@@ -33,14 +33,14 @@ export class DeliveryConversationContextAsBuyerService {
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     const { item } = conversation;
-    const { id: itemHash, sold } = item;
+    const { id: itemHash } = item;
 
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       tap((requests) => (this.lastRequest = requests ? requests[0] : null)),
       concatMap((buyerRequests: BuyerRequest[]) => {
         return this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash).pipe(
           map((deliveryItemDetails: DeliveryItemDetails) => {
-            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, sold, deliveryItemDetails);
+            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, deliveryItemDetails);
           })
         );
       })
@@ -63,18 +63,18 @@ export class DeliveryConversationContextAsBuyerService {
 
   private mapDeliveryDetailsAsBuyerToBannerProperties(
     buyerRequests: BuyerRequest[],
-    isItemSold: boolean,
-    deliveryItemDetails?: DeliveryItemDetails
+    deliveryItemDetails: DeliveryItemDetails
   ): DeliveryBanner {
-    const noDeliveryItemDetails: boolean = !deliveryItemDetails;
+    const isShippingNotAllowed: boolean = !deliveryItemDetails.isShippingAllowed;
+    const isNotShippable: boolean = !deliveryItemDetails.isShippable;
     const buyerHasNoRequests: boolean = buyerRequests.length === 0;
     const buyerHasRequests: boolean = !buyerHasNoRequests;
 
-    if (isItemSold) {
+    if (isNotShippable) {
       return null;
     }
 
-    if (noDeliveryItemDetails) {
+    if (isShippingNotAllowed) {
       return ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES;
     }
 
