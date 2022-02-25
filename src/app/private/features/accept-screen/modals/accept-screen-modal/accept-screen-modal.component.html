@@ -172,6 +172,6 @@
       ></tsl-delivery-address>
     </ng-template>
     <ng-template step>This will be the schedule</ng-template>
-    <ng-template step><tsl-delivery-map></tsl-delivery-map></ng-template>
+    <ng-template step><tsl-delivery-map [fullAddress]="properties.seller.fullAddress"></tsl-delivery-map></ng-template>
   </tsl-stepper>
 </div>

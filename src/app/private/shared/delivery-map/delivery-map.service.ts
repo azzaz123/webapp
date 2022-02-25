@@ -21,7 +21,8 @@ import {
   providedIn: 'root',
 })
 export class DeliveryMapService {
-  private carrierOffices$: ReplaySubject<CarrierOfficeInfo[]> = new ReplaySubject(1);
+  private carrierOfficesSubject: ReplaySubject<CarrierOfficeInfo[]> = new ReplaySubject(1);
+  private selectedOfficeInformationSubject: ReplaySubject<any> = new ReplaySubject(1);
 
   constructor(
     private carrierOfficeAddressesApiService: CarrierOfficeAddressesApiService,
@@ -30,8 +31,8 @@ export class DeliveryMapService {
     private geoLocationService: GeolocationService
   ) {}
 
-  public getInitialOffices(deliveryAddress: DeliveryAddress, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
-    return this.initialCenterCoordinates$(deliveryAddress).pipe(
+  public initializeOffices(fullAddress: string, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
+    return this.initialCenterCoordinates$(fullAddress).pipe(
       switchMap((location: Location) => {
         const radiusKm: number = Math.round(
           (METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL * Math.cos((location.latitude * Math.PI) / HALF_CIRCUMFERENCE_DEGREES)) /
@@ -62,7 +63,7 @@ export class DeliveryMapService {
   }
 
   public get officeMarkers$(): Observable<Location[]> {
-    return this.carrierOffices$.pipe(
+    return this.carrierOfficesSubject.pipe(
       map((carrierOffices: CarrierOfficeInfo[]) => {
         return carrierOffices.map((carrier: CarrierOfficeInfo) => {
           return {
@@ -74,20 +75,46 @@ export class DeliveryMapService {
     );
   }
 
-  public initialCenterCoordinates$(deliveryAddress: DeliveryAddress): Observable<Location> {
-    if (deliveryAddress) {
-      const completeAddress: string = `${deliveryAddress.country} ${deliveryAddress.city} ${deliveryAddress.flatAndFloor}, ${deliveryAddress.postalCode}`;
-      return this.getDeliveryAddressLocation(completeAddress);
-    }
-    return this.getUserLocation();
+  public initialCenterCoordinates$(fullAddress: string): Observable<Location> {
+    return fullAddress ? this.getAddressLocation(fullAddress) : this.getUserLocation();
+  }
+
+  public getSelectedOfficeInformation(selectedOfficeLocation: Location): Observable<any> {
+    return this.carrierOffices$.pipe(
+      map((offices: CarrierOfficeInfo[]) => {
+        const selectedOffice = offices.find((office) => {
+          return office.latitude === selectedOfficeLocation.latitude && office.longitude === selectedOfficeLocation.longitude;
+        });
+
+        return {
+          openingHours: selectedOffice.openingHours,
+          name: selectedOffice.name,
+        };
+      }),
+      tap((openingHours) => {
+        this.selectedOfficeInformation = openingHours;
+      })
+    );
+  }
+
+  public get carrierOffices$(): Observable<CarrierOfficeInfo[]> {
+    return this.carrierOfficesSubject.asObservable();
+  }
+
+  public get selectedOfficeInformation$(): Observable<string[]> {
+    return this.selectedOfficeInformationSubject.asObservable();
   }
 
   private set carrierOffices(newOffices: CarrierOfficeInfo[]) {
-    this.carrierOffices$.next(newOffices);
+    this.carrierOfficesSubject.next(newOffices);
   }
 
-  private getDeliveryAddressLocation(completeAddress: string): Observable<Location> {
-    return this.geoLocationService.geocode(completeAddress).pipe(
+  private set selectedOfficeInformation(info) {
+    this.selectedOfficeInformationSubject.next(info);
+  }
+
+  private getAddressLocation(address: string): Observable<Location> {
+    return this.geoLocationService.geocode(address).pipe(
       map((coordinate: Coordinate) => {
         return {
           latitude: coordinate.latitude,

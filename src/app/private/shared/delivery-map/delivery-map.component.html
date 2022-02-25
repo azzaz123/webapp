@@ -1,6 +1,14 @@
-<div *ngIf="initialOffices$ | async">
+<div *ngIf="initializeOffices$ | async" class="h-100">
   <tsl-searchable-movable-map
+    (tapMarker)="showSelectedOfficeInfo($event)"
     [mapMarkers]="markers$ | async"
     [mapCenterCoordinates]="initialCenterCoordinates$ | async"
   ></tsl-searchable-movable-map>
+  <div *ngIf="selectedOfficeInfo$ | async as officeInfo" class="DeliveryMap__selectedOfficeInfo position-absolute w-100 p-2">
+    <span class="DeliveryMap__selectedOfficeInfoName">{{ officeInfo.name }}</span>
+    <span class="d-block" *ngFor="let hour of officeInfo.openingHours">{{ hour }}</span>
+    <div class="w-100 d-flex DeliveryMap__selectButton mr-3">
+      <tsl-button className="btn btn-primary">Select</tsl-button>
+    </div>
+  </div>
 </div>

@@ -1,5 +1,5 @@
-<div class="container">
-  <div [formGroup]="searchLocationForm" class="SearchBox p-2 position-relative w-100">
+<div class="h-100">
+  <div [formGroup]="searchLocationForm" class="container SearchBox p-2 position-relative w-100">
     <input
       class="SearchBox__input position-relative overflow-hidden"
       formControlName="searchLocation"
@@ -25,11 +25,13 @@
       </div>
     </ng-template>
   </div>
+  <div class="h-100">
+    <tsl-movable-map
+      [markers]="mapMarkers"
+      [centerCoordinates]="mapCenterCoordinates"
+      (tapMap)="onTapMap()"
+      (tapMarker)="onTapMarker($event)"
+      (mapViewChangeEnd)="onMapViewChangeEnd($event)"
+    ></tsl-movable-map>
+  </div>
 </div>
-<tsl-movable-map
-  [markers]="mapMarkers"
-  [centerCoordinates]="mapCenterCoordinates"
-  (tapMap)="onTapMap()"
-  (tapMarker)="onTapMarker($event)"
-  (mapViewChangeEnd)="onMapViewChangeEnd($event)"
-></tsl-movable-map>
