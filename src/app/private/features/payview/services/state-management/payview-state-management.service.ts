@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
+import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
@@ -25,6 +27,26 @@ export class PayviewStateManagementService {
 
   public get payViewState$(): Observable<PayviewState> {
     return this.stateSubject.asObservable();
+  }
+
+  public setDeliveryMethod(deliveryMethod: DeliveryBuyerDeliveryMethod): void {
+    const payviewState = { ...this.stateSubject.getValue() };
+    const subscription: Subscription = this.payviewService
+      .getCosts(payviewState.itemDetails.itemHash, payviewState.itemDetails.price, payviewState.costs.promotion?.promocode, deliveryMethod)
+      .subscribe({
+        next: (costs: DeliveryBuyerCalculatorCosts) => {
+          payviewState.delivery.methods.current = deliveryMethod;
+          payviewState.costs = costs;
+          this.stateSubject.next(payviewState);
+        },
+        error: () => {
+          this.stateSubject.next(null);
+          subscription.unsubscribe;
+        },
+        complete: () => {
+          subscription.unsubscribe();
+        },
+      });
   }
 
   private getCurrentState(value: string): void {
