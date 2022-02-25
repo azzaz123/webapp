@@ -205,4 +205,6 @@ export const translations: Translations = {
   [TRANSLATION_KEY.PAYVIEW_DELIVERY_EDIT_PICK_UP_POINT]: $localize`:@@pay_view_buyer_delivery_method_po_selector_edit_button:Edit pick-up point`,
   [TRANSLATION_KEY.PAYVIEW_DELIVERY_ADD_ADDRESS]: $localize`:@@pay_view_buyer_delivery_method_ba_selector_select_button:Add address`,
   [TRANSLATION_KEY.PAYVIEW_DELIVERY_EDIT_ADDRESS]: $localize`:@@pay_view_buyer_delivery_method_ba_selector_edit_button:Edit address`,
+  [TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_GET_ERROR]: $localize`:@@accept_view_seller_all_all_snackbar_shcedules_loading_error:We're getting trouble loading the schedules. To change the time slot, try again.`,
+  [TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR]: $localize`:@@accept_view_seller_all_all_snackbar_schedules_save_error:Oops! We couldn't save your selection. Try again.`,
 };

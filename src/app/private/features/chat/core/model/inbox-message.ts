@@ -9,9 +9,11 @@ export enum MessageType {
   /** Projections */
   PRICE_DROP = 'price_drop',
   DELIVERY_GENERIC = 'delivery_generic',
+  TRANSACTION_CLAIM_PERIOD = 'delivery_transaction_claim_period_started',
   /** Real Time Service */
   DROP_PRICE = 'drop_price',
   DELIVERY = 'delivery',
+  TRANSACTION_CLAIM_PERIOD_RT = 'deliveryTransactionClaimPeriodStarted',
 }
 
 export enum MessageStatus {
@@ -31,6 +33,8 @@ export const MESSAGES_WHITE_LIST = [
   FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.DELIVERY : null,
   FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.DELIVERY_GENERIC : null,
   FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.SHIPPING_KEYWORDS : null,
+  FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.TRANSACTION_CLAIM_PERIOD : null,
+  FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.TRANSACTION_CLAIM_PERIOD_RT : null,
 ];
 
 export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { difference, findIndex, isEmpty, map as lodashMap, reverse, sortBy } from 'lodash-es';
 import { forkJoin, Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 import { EventService } from '../event/event.service';
 import { Item } from '../item/item';
 import { ItemService } from '../item/item.service';
@@ -79,7 +79,7 @@ export class CallsService {
                 })
               );
         }),
-        catchError((a) => {
+        catchError(() => {
           return of(null);
         })
       );
@@ -218,7 +218,7 @@ export class CallsService {
 
   protected setItem(conv: LeadResponse, item: Item): LeadResponse {
     conv.item = item;
-    conv.user.itemDistance = this.userService.calculateDistanceFromItem(conv.user, conv.item);
+    conv.user.itemDistance = this.userService.calculateDistanceFromItem(conv.user);
     return conv;
   }
 

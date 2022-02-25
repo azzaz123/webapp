@@ -1,4 +1,4 @@
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { MOCK_TRANSACTION_TRACKING_DETAILS } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking-details.fixtures.spec';
@@ -13,7 +13,10 @@ import {
 } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingActionDetailPayloadUserActionNameDto } from '@api/bff/delivery/transaction-tracking/dtos/responses';
 import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
-import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+import {
+  TransactionTrackingService,
+  TransactionTrackingUserAction,
+} from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
 import { of } from 'rxjs';
 
@@ -179,6 +182,22 @@ describe('TransactionTrackingService', () => {
       service.sendUserAction(requestId, userAction as TransactionTrackingActionDetailPayloadUserActionNameDto).subscribe();
 
       expect(spy).toHaveBeenCalledWith(requestId);
+    });
+  });
+
+  describe('when the action is not recognized', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(transactionTrackingHttpService, 'sendCancelTransaction');
+      spyOn(transactionTrackingHttpService, 'sendExpireClaimPeriod');
+      spyOn(transactionTrackingHttpService, 'sendPackageArrived');
+      service.sendUserAction('1234', 'NOTKNOWN' as TransactionTrackingUserAction).subscribe();
+      tick();
+    }));
+
+    it('should do nothing', () => {
+      expect(transactionTrackingHttpService.sendCancelTransaction).not.toHaveBeenCalled();
+      expect(transactionTrackingHttpService.sendExpireClaimPeriod).not.toHaveBeenCalled();
+      expect(transactionTrackingHttpService.sendPackageArrived).not.toHaveBeenCalled();
     });
   });
 });

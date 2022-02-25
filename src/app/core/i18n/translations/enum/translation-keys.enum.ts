@@ -204,4 +204,6 @@ export enum TRANSLATION_KEY {
   PAYVIEW_DELIVERY_EDIT_PICK_UP_POINT = 'pay_view_buyer_delivery_method_po_selector_edit_button',
   PAYVIEW_DELIVERY_ADD_ADDRESS = 'pay_view_buyer_delivery_method_ba_selector_select_button',
   PAYVIEW_DELIVERY_EDIT_ADDRESS = 'pay_view_buyer_delivery_method_ba_selector_edit_button',
+  ACCEPT_SCREEN_SCHEDULES_GET_ERROR = 'accept_view_seller_all_all_snackbar_shcedules_loading_error',
+  ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR = 'accept_view_seller_all_all_snackbar_schedules_save_error',
 }
