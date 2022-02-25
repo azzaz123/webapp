@@ -3,7 +3,7 @@ import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { InboxConversation } from '@private/features/chat/core/model';
 import { Observable, of, ReplaySubject, Subscription } from 'rxjs';
-import { concatMap, take } from 'rxjs/operators';
+import { concatMap, finalize, take } from 'rxjs/operators';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
@@ -13,7 +13,8 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 
 @Injectable()
 export class DeliveryConversationContextService {
-  private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
+  private readonly _loading$: ReplaySubject<boolean> = new ReplaySubject(1);
+  private readonly _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -27,6 +28,14 @@ export class DeliveryConversationContextService {
     return this._bannerProperties$.asObservable();
   }
 
+  public get loading$(): Observable<boolean> {
+    return this._loading$.asObservable();
+  }
+
+  private set loading(value: boolean) {
+    this._loading$.next(value);
+  }
+
   private set bannerProperties(newBannerProperties: DeliveryBanner) {
     this._bannerProperties$.next(newBannerProperties);
   }
@@ -36,15 +45,24 @@ export class DeliveryConversationContextService {
   }
 
   public update(conversation: InboxConversation): void {
+    this.loading = true;
     const subscription: Subscription = this.isDeliveryFlagEnabled
-      .pipe(concatMap((enabled: boolean) => (enabled ? this.getBannerProperties(conversation) : of(null))))
-      .subscribe((banner: DeliveryBanner | null) => (this.bannerProperties = banner));
+      .pipe(
+        concatMap((enabled: boolean) => (enabled ? this.getBannerProperties(conversation) : of(null))),
+        finalize(() => this.endLoading())
+      )
+      .subscribe(
+        (banner: DeliveryBanner | null) => (this.bannerProperties = banner),
+        () => this.endLoading(),
+        () => this.endLoading()
+      );
     this.subscriptions.push(subscription);
   }
 
   public reset(): void {
     this.bannerProperties = null;
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.endLoading();
   }
 
   public handleBannerCTAClick(conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION): void {
@@ -90,5 +108,9 @@ export class DeliveryConversationContextService {
     const { item } = conversation;
     const { isMine } = item;
     return isMine;
+  }
+
+  private endLoading(): void {
+    this.loading = false;
   }
 }

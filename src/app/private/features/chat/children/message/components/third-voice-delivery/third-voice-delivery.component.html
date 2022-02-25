@@ -5,6 +5,8 @@
       class="mt-1"
       *ngIf="isCTAVisible"
       [className]="'btn-third-voice'"
+      [loading]="loading"
+      [disabled]="loading"
       (click)="handleClickCTA()"
       i18n="@@chat_buyer_all_all_third_voice_button"
       >View</tsl-button

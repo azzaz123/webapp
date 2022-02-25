@@ -1,10 +1,11 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { MOCK_INBOX_CONVERSATION_AS_BUYER, MOCK_INBOX_CONVERSATION_AS_SELLER, MOCK_INBOX_CONVERSATION_BASIC } from '@fixtures/chat';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { of, Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
@@ -46,6 +47,19 @@ describe('DeliveryConversationContextService', () => {
   });
 
   describe('when trying to update', () => {
+    it('should notify loading started', fakeAsync(() => {
+      const MOCK_DELAY_MS: number = 100;
+      spyOn(deliveryConversationContextAsSellerService, 'getBannerPropertiesAsSeller').and.returnValue(of().pipe(delay(MOCK_DELAY_MS)));
+      let result: boolean;
+
+      service.update(MOCK_INBOX_CONVERSATION_AS_SELLER);
+      service.loading$.subscribe((loading) => (result = loading));
+      tick();
+
+      expect(result).toEqual(true);
+      discardPeriodicTasks();
+    }));
+
     describe('and when delivery features are enabled', () => {
       beforeEach(() => {
         spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(true));
@@ -64,6 +78,15 @@ describe('DeliveryConversationContextService', () => {
           );
           expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledTimes(1);
         });
+
+        it('should notify loading ended', fakeAsync(() => {
+          let result: boolean;
+
+          service.loading$.subscribe((loading) => (result = loading));
+          tick();
+
+          expect(result).toEqual(false);
+        }));
       });
 
       describe('and when the current user is NOT the owner of the item in the conversation', () => {
@@ -79,6 +102,15 @@ describe('DeliveryConversationContextService', () => {
           );
           expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledTimes(1);
         });
+
+        it('should notify loading ended', fakeAsync(() => {
+          let result: boolean;
+
+          service.loading$.subscribe((loading) => (result = loading));
+          tick();
+
+          expect(result).toEqual(false);
+        }));
       });
     });
 
@@ -98,10 +130,13 @@ describe('DeliveryConversationContextService', () => {
   });
 
   describe('when reseting state', () => {
-    beforeAll(() => {
-      jest.spyOn(Subscription.prototype, 'unsubscribe');
+    beforeEach(() => {
       service.update(MOCK_INBOX_CONVERSATION_BASIC);
       service.reset();
+    });
+
+    beforeAll(() => {
+      jest.spyOn(Subscription.prototype, 'unsubscribe');
     });
 
     afterAll(() => {
@@ -116,6 +151,15 @@ describe('DeliveryConversationContextService', () => {
     it('should cancel all pending subscriptions', () => {
       expect(Subscription.prototype.unsubscribe).toHaveBeenCalled();
     });
+
+    it('should notify loading ended', fakeAsync(() => {
+      let result: boolean;
+
+      service.loading$.subscribe((loading) => (result = loading));
+      tick();
+
+      expect(result).toEqual(false);
+    }));
   });
 
   describe('when handling banner CTA actions', () => {
