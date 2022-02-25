@@ -10,6 +10,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
 import {
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG,
+  MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_DEEPLINK,
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITHOUT_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2,
 } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
@@ -23,6 +24,7 @@ import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/tra
 
 import { TransactionTrackingActionDialogComponent } from './transaction-tracking-action-dialog.component';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 
 describe('TransactionTrackingActionDialogComponent', () => {
   const MOCK_USER_ACTION = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG.positive.action as TransactionTrackingActionUserAction;
@@ -40,6 +42,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
   let fixture: ComponentFixture<TransactionTrackingActionDialogComponent>;
   let modalService: NgbModal;
   let transactionTrackingService: TransactionTrackingService;
+  let deeplinkService: DeeplinkService;
   let errorsService: ErrorsService;
   let de: DebugElement;
   let storeService: TransactionTrackingScreenStoreService;
@@ -104,6 +107,12 @@ describe('TransactionTrackingActionDialogComponent', () => {
             trackClickActionTTS() {},
           },
         },
+        {
+          provide: DeeplinkService,
+          useValue: {
+            navigate: () => {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -114,6 +123,7 @@ describe('TransactionTrackingActionDialogComponent', () => {
     de = fixture.debugElement;
     modalService = TestBed.inject(NgbModal);
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
+    deeplinkService = TestBed.inject(DeeplinkService);
     errorsService = TestBed.inject(ErrorsService);
     storeService = TestBed.inject(TransactionTrackingScreenStoreService);
     transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
@@ -225,6 +235,21 @@ describe('TransactionTrackingActionDialogComponent', () => {
           it('should redirect to the TTS page', () => {
             expect(router.navigate).toHaveBeenCalledTimes(1);
             expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+          });
+
+          describe('and when the user action is a deeplink', () => {
+            beforeEach(fakeAsync(() => {
+              spyOn(deeplinkService, 'navigate');
+              component.dialogAction = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_DEEPLINK;
+              fixture.detectChanges();
+
+              wrapperDialog.nativeElement.click();
+              tick();
+            }));
+
+            it('should navigate using deeplink handling', () => {
+              expect(deeplinkService.navigate).toHaveBeenCalledTimes(1);
+            });
           });
         });
 

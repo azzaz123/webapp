@@ -359,7 +359,7 @@ describe('CurrentConversationComponent', () => {
       });
     });
 
-    describe('when new third voice is received in realtime for current conversation', () => {
+    describe('when new delivery third voice is received in realtime for current conversation', () => {
       beforeEach(fakeAsync(() => {
         spyOn(deliveryConversationContextService, 'reset');
         spyOn(deliveryConversationContextService, 'update');

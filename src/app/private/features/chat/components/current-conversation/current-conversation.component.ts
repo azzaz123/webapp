@@ -223,7 +223,12 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public isDeliveryThirdVoice(messageType: MessageType): boolean {
-    return messageType === MessageType.DELIVERY || messageType === MessageType.DELIVERY_GENERIC;
+    return (
+      messageType === MessageType.DELIVERY ||
+      messageType === MessageType.DELIVERY_GENERIC ||
+      messageType === MessageType.TRANSACTION_CLAIM_PERIOD ||
+      messageType === MessageType.TRANSACTION_CLAIM_PERIOD_RT
+    );
   }
 
   public isShippingKeywordsThirdVoice(messageType: MessageType): boolean {
@@ -296,9 +301,9 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   private deliveryContextNeedsRefresh(newMessage: InboxMessage): boolean {
-    const isRealTimeDeliveryThirdVoice: boolean = newMessage.type === MessageType.DELIVERY;
+    const isDeliveryThirdVoice: boolean = this.isDeliveryThirdVoice(newMessage.type);
     const isMessageInCurrentConversation: boolean = !!this.currentConversation.messages.find((m) => m.id === newMessage.id);
-    return isRealTimeDeliveryThirdVoice && isMessageInCurrentConversation;
+    return isDeliveryThirdVoice && isMessageInCurrentConversation;
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
