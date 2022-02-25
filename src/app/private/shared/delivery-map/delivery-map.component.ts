@@ -15,7 +15,7 @@ import { DeliveryMapService } from './delivery-map.service';
 })
 export class DeliveryMapComponent implements OnInit {
   @Input() fullAddress: string;
-  @Input() selectedCarrier: POST_OFFICE_CARRIER = 1;
+  @Input() selectedCarrier: POST_OFFICE_CARRIER;
   @ViewChild(SearchableMovableMapComponent, { static: true }) searchableMovableMap: SearchableMovableMapComponent;
   public initializeOffices$: Observable<CarrierOfficeInfo[]>;
   public initialCenterCoordinates$: Observable<Location>;

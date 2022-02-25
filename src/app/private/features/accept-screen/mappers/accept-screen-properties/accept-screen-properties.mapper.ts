@@ -78,6 +78,7 @@ const mapDeliveryAddressToSellerAddress: ToDomainMapper<DeliveryAddressApi, stri
 function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {
   return {
     type: dropOffMode.type,
+    name: dropOffMode.postOfficeDetails?.carrier,
     isSelected: dropOffMode.type === carrierDropOffModeSelected,
     icon: dropOffMode.icon,
     title: mapTitle(dropOffMode.type),

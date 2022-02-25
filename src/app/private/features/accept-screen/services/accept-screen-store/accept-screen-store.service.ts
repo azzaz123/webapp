@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
+import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
@@ -49,6 +50,12 @@ export class AcceptScreenStoreService {
   public get carrierSelectedIndex$(): Observable<number> {
     return this.properties$.pipe(
       map((properties: AcceptScreenProperties) => properties.carriers.findIndex((carrier: AcceptScreenCarrier) => carrier.isSelected))
+    );
+  }
+
+  public get carrierSelectedName$(): Observable<POST_OFFICE_CARRIER> {
+    return this.properties$.pipe(
+      map((properties: AcceptScreenProperties) => properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected).name)
     );
   }
 
