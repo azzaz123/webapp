@@ -345,14 +345,14 @@ describe('CheckoutComponent', () => {
           expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
             windowClass: 'pro-modal',
           });
-          expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_generic]);
+          expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_stripe]);
         });
       });
     });
 
     describe('and has a multiple error', () => {
       beforeEach(() => {
-        component.onError([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED, MOCK_ERROR_STRIPE]);
+        component.onError([MOCK_ERROR_STRIPE, MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
       });
       it('should show error', () => {
         expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
@@ -360,28 +360,8 @@ describe('CheckoutComponent', () => {
         });
         const currentModalConfig: ProModalConfig = component['modalRef'].componentInstance.modalConfig;
         expect(currentModalConfig.title).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_generic].title);
-      });
-    });
-
-    xdescribe('Modal', () => {
-      beforeEach(() => {});
-      it('should open modal', () => {});
-
-      describe('and accept modal', () => {
-        it('should navigate to catalog', () => {
-          expect(router.navigate).toBeCalledTimes(1);
-          expect(router.navigate).toBeCalledWith(['catalog/list']);
-        });
-      });
-
-      describe('and dismiss modal', () => {
-        beforeEach(() => {
-          spyModal.and.returnValue({ result: Promise.reject(), componentInstance });
-        });
-        it('should navigate to catalog', () => {
-          expect(router.navigate).toBeCalledTimes(1);
-          expect(router.navigate).toBeCalledWith(['catalog/list']);
-        });
+        expect(currentModalConfig.text1).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_stripe].text1);
+        expect(currentModalConfig.text2).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_limit_reached].text1);
       });
     });
   });

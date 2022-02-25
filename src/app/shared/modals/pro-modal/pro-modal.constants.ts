@@ -22,6 +22,7 @@ export enum PRO_MODAL_TYPE {
   bump_error_generic,
   bump_error_not_found,
   bump_error_limit_reached,
+  bump_error_stripe,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -242,6 +243,15 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     style: MODAL_STYLE.GREEN,
     buttons: {
       primary: { text: $localize`:@@bump_selector_view_no_bumps_left_error_modal_pro_user_understood_button:Understood` },
+    },
+  },
+  [PRO_MODAL_TYPE.bump_error_stripe]: {
+    img: '/assets/icons/pro/modals/bump-error.svg',
+    title: $localize`:@@bump_selector_view_generic_error_modal_pro_user_title:Your item couldn't be highlighted`,
+    text1: $localize`:@@bump_selector_view_generic_error_modal_pro_user_descripton_1_part:Due to an error, the process has failed. Please try again.`,
+    style: MODAL_STYLE.GREEN,
+    buttons: {
+      primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
     },
   },
 };

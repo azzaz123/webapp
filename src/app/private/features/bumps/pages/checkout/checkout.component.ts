@@ -140,7 +140,7 @@ export class CheckoutComponent implements OnInit {
       modalRef.componentInstance.modalConfig = this.getFreeBumpsModalConfig(error);
     }
     if (error.service === BUMP_SERVICE_TYPE.STRIPE) {
-      modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
+      modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_stripe];
     }
   }
 
@@ -155,6 +155,7 @@ export class CheckoutComponent implements OnInit {
   private configMultiErrorModal(errors: BumpRequestSubject[], modalRef: NgbModalRef): void {
     let errorModalConfig: ProModalConfig;
     errorModalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
+    errorModalConfig.text1 = modalConfig[PRO_MODAL_TYPE.bump_error_stripe].text1;
     errorModalConfig.text2 = this.getFreeBumpsModalConfig(errors[1]).text1;
     modalRef.componentInstance.modalConfig = errorModalConfig;
   }
