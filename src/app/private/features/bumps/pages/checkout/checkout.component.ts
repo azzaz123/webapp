@@ -155,7 +155,7 @@ export class CheckoutComponent implements OnInit {
   private configMultiErrorModal(errors: BumpRequestSubject[], modalRef: NgbModalRef): void {
     let errorModalConfig: ProModalConfig;
     errorModalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
-    errorModalConfig.text2 = this.getFreeBumpsModalConfig(errors[0]).text1;
+    errorModalConfig.text2 = this.getFreeBumpsModalConfig(errors[1]).text1;
     modalRef.componentInstance.modalConfig = errorModalConfig;
   }
 
