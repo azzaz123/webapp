@@ -1184,7 +1184,7 @@ describe('ListComponent', () => {
           screenId: SCREEN_IDS.MyCatalog,
           numberOfItems: mockCounters.publish,
           proSubscriptionBanner: false,
-          isPro: component.user.featured,
+          isPro: false,
         },
       };
 

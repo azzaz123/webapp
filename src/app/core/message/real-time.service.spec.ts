@@ -357,6 +357,7 @@ describe('RealTimeService', () => {
             categoryId: inboxConversation.item.categoryId,
             country: analyticsService.market,
             language: analyticsService.appLocale,
+            shippingAllowed: null,
           },
         };
 
@@ -382,6 +383,7 @@ describe('RealTimeService', () => {
               searchId,
               country: analyticsService.market,
               language: analyticsService.appLocale,
+              shippingAllowed: null,
             },
           };
           spyOn(sessionStorage, 'getItem').and.returnValue(searchId);
@@ -439,6 +441,7 @@ describe('RealTimeService', () => {
             categoryId: inboxConversation.item.categoryId,
             country: analyticsService.market,
             language: analyticsService.appLocale,
+            shippingAllowed: null,
           },
         };
 

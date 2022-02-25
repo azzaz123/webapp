@@ -52,6 +52,15 @@ export class AcceptScreenStoreService {
     );
   }
 
+  public get deliveryPickUpDay$(): Observable<string> {
+    return this.properties$.pipe(
+      map(
+        (properties: AcceptScreenProperties) =>
+          properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected).deliveryPickUpDay
+      )
+    );
+  }
+
   private get properties(): AcceptScreenProperties {
     return this.propertiesSubject.value;
   }
