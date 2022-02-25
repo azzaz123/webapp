@@ -10,6 +10,7 @@ import { MOCK_DELIVERY_COSTS_ITEM } from '@api/fixtures/bff/delivery/costs/deliv
 import { PayviewDeliveryHeaderComponent } from '@private/features/payview/modules/delivery/components/header/payview-delivery-header.component';
 import { PayviewDeliveryPointComponent } from '@private/features/payview/modules/delivery/components/point/payview-delivery-point.component';
 import { PayviewDeliveryPointsComponent } from '@private/features/payview/modules/delivery/components/points/payview-delivery-points.component';
+import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 describe('PayviewDeliveryPointsComponent', () => {
@@ -18,6 +19,7 @@ describe('PayviewDeliveryPointsComponent', () => {
   let component: PayviewDeliveryPointsComponent;
   let debugElement: DebugElement;
   let fixture: ComponentFixture<PayviewDeliveryPointsComponent>;
+  let payviewDeliveryService: PayviewDeliveryService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -29,6 +31,7 @@ describe('PayviewDeliveryPointsComponent', () => {
         SvgIconComponent,
       ],
       imports: [DeliveryRadioSelectorModule, HttpClientTestingModule],
+      providers: [PayviewDeliveryService],
     }).compileComponents();
   });
 
@@ -151,9 +154,12 @@ describe('PayviewDeliveryPointsComponent', () => {
   });
 
   describe('WHEN the item has been selected', () => {
-    const fakeIndex: number = 13;
+    let deliveryServiceSpy;
+    const fakeIndex: number = 1;
 
     beforeEach(() => {
+      payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
+      deliveryServiceSpy = spyOn(payviewDeliveryService, 'setDeliveryMethod').and.callFake(() => {});
       fixture = TestBed.createComponent(PayviewDeliveryPointsComponent);
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
@@ -169,6 +175,11 @@ describe('PayviewDeliveryPointsComponent', () => {
 
     it('should indicate that the item is selected', () => {
       expect(component.isSelected(fakeIndex)).toBe(true);
+    });
+
+    it('should set the delivery method selected', () => {
+      expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
+      expect(deliveryServiceSpy).toHaveBeenCalledWith(component.deliveryMethods[fakeIndex]);
     });
   });
 });

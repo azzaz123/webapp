@@ -17,7 +17,6 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
     PayviewDeliveryPointComponent,
     PayviewDeliveryPointsComponent,
   ],
-  providers: [],
   exports: [PayviewDeliveryOverviewComponent],
 })
 export class PayviewDeliveryModule {}

@@ -4,6 +4,7 @@ import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { Money } from '@api/core/model/money.interface';
+import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 
 @Component({
   selector: 'tsl-payview-delivery-points',
@@ -17,6 +18,8 @@ export class PayviewDeliveryPointsComponent implements OnInit {
   @Input() public deliveryMethods: DeliveryBuyerDeliveryMethod[];
 
   private selectedPointIndex: number;
+
+  constructor(private deliveryService: PayviewDeliveryService) {}
 
   public ngOnInit(): void {
     this.selectedPointIndex = this.defaultDeliveryMethod;
@@ -43,6 +46,7 @@ export class PayviewDeliveryPointsComponent implements OnInit {
 
   public selectPoint(index: number): void {
     this.selectedPointIndex = index;
+    this.deliveryService.setDeliveryMethod(this.deliveryMethods[index]);
   }
 
   public get showDeliveryMethods(): boolean {
