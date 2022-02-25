@@ -203,4 +203,5 @@ export const translations: Translations = {
   [TRANSLATION_KEY.ACCEPT_SCREEN_REJECT_REQUEST_MODAL_BACK_BUTTON]: $localize`:@@accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_back_button:Back`,
   [TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_GET_ERROR]: $localize`:@@accept_view_seller_all_all_snackbar_shcedules_loading_error:We're getting trouble loading the schedules. To change the time slot, try again.`,
   [TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR]: $localize`:@@accept_view_seller_all_all_snackbar_schedules_save_error:Oops! We couldn't save your selection. Try again.`,
+  [TRANSLATION_KEY.DELIVERY_MAP_GENERIC_ERROR]: $localize`:@@map_view_all_users_all_all_snackbar_generic_error:Sorry, something went wrong. Try again.`,
 };

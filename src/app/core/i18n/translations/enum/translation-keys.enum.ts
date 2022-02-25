@@ -202,4 +202,5 @@ export enum TRANSLATION_KEY {
   ACCEPT_SCREEN_REJECT_REQUEST_MODAL_BACK_BUTTON = 'accept_view_seller_reject_sale_system_modal_buy_flow_test_variant_b_back_button',
   ACCEPT_SCREEN_SCHEDULES_GET_ERROR = 'accept_view_seller_all_all_snackbar_shcedules_loading_error',
   ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR = 'accept_view_seller_all_all_snackbar_schedules_save_error',
+  DELIVERY_MAP_GENERIC_ERROR = 'map_view_all_users_all_all_snackbar_generic_error',
 }

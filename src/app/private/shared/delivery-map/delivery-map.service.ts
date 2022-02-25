@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CarrierOfficesApiService } from '@api/bff/delivery/carrier-offices/carrier-offices-api.service';
 import { Location } from '@api/core/model';
-import { DeliveryAddress } from '@api/core/model/delivery/address/delivery-address.interface';
 import { CarrierOfficeInfo } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { CarrierOfficeAddressesApiService } from '@api/delivery/me/carrier-office-addresses/carrier-office-addresses-api.service';
@@ -9,7 +8,7 @@ import { Coordinate } from '@core/geolocation/address-response.interface';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { UserService } from '@core/user/user.service';
 import { Observable, ReplaySubject } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '@core/user/user';
 import {
   DEFAULT_VALUE_ZOOM,
@@ -22,7 +21,7 @@ import {
 })
 export class DeliveryMapService {
   private carrierOfficesSubject: ReplaySubject<CarrierOfficeInfo[]> = new ReplaySubject(1);
-  private selectedOfficeInformationSubject: ReplaySubject<any> = new ReplaySubject(1);
+  private selectedOfficeSubject: ReplaySubject<CarrierOfficeInfo> = new ReplaySubject(1);
 
   constructor(
     private carrierOfficeAddressesApiService: CarrierOfficeAddressesApiService,
@@ -33,6 +32,7 @@ export class DeliveryMapService {
 
   public initializeOffices(fullAddress: string, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
     return this.initialCenterCoordinates$(fullAddress).pipe(
+      take(1),
       switchMap((location: Location) => {
         const radiusKm: number = Math.round(
           (METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL * Math.cos((location.latitude * Math.PI) / HALF_CIRCUMFERENCE_DEGREES)) /
@@ -55,11 +55,16 @@ export class DeliveryMapService {
       .pipe(tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices)));
   }
 
-  public selectOffice(carrierOfficeInfo: CarrierOfficeInfo, officeId: string = null): Observable<void> {
-    if (officeId) {
-      return this.carrierOfficeAddressesApiService.createSelectedCarrierOffice(carrierOfficeInfo);
-    }
-    return this.carrierOfficeAddressesApiService.updateSelectedCarrierOffice(officeId, carrierOfficeInfo);
+  public selectOfficePreference(): Observable<void> {
+    return this.selectedOffice$.pipe(
+      take(1),
+      switchMap((carrierOfficeInfo: CarrierOfficeInfo) => {
+        if (carrierOfficeInfo.id) {
+          return this.carrierOfficeAddressesApiService.createSelectedCarrierOffice(carrierOfficeInfo);
+        }
+        return this.carrierOfficeAddressesApiService.updateSelectedCarrierOffice(carrierOfficeInfo.id, carrierOfficeInfo);
+      })
+    );
   }
 
   public get officeMarkers$(): Observable<Location[]> {
@@ -79,38 +84,51 @@ export class DeliveryMapService {
     return fullAddress ? this.getAddressLocation(fullAddress) : this.getUserLocation();
   }
 
-  public getSelectedOfficeInformation(selectedOfficeLocation: Location): Observable<any> {
+  public selectOffice(selectedOfficeLocation: Location): Observable<any> {
     return this.carrierOffices$.pipe(
       map((offices: CarrierOfficeInfo[]) => {
         const selectedOffice = offices.find((office) => {
           return office.latitude === selectedOfficeLocation.latitude && office.longitude === selectedOfficeLocation.longitude;
         });
 
-        return {
-          openingHours: selectedOffice.openingHours,
-          name: selectedOffice.name,
-        };
-      }),
-      tap((openingHours) => {
-        this.selectedOfficeInformation = openingHours;
+        this.selectedOffice = selectedOffice;
       })
     );
+  }
+
+  public resetSelectedOfficeInformation(): void {
+    this.selectedOffice = null;
   }
 
   public get carrierOffices$(): Observable<CarrierOfficeInfo[]> {
     return this.carrierOfficesSubject.asObservable();
   }
 
-  public get selectedOfficeInformation$(): Observable<string[]> {
-    return this.selectedOfficeInformationSubject.asObservable();
+  // TODO: create interface		Date: 2022/02/25
+  public get selectedOfficeInformation$(): Observable<any> {
+    return this.selectedOffice$.pipe(
+      map((selectedOffice: CarrierOfficeInfo) => {
+        if (!selectedOffice) {
+          return null;
+        }
+        return {
+          openingHours: selectedOffice.openingHours,
+          name: selectedOffice.name,
+        };
+      })
+    );
+  }
+
+  private get selectedOffice$(): Observable<CarrierOfficeInfo> {
+    return this.selectedOfficeSubject.asObservable();
   }
 
   private set carrierOffices(newOffices: CarrierOfficeInfo[]) {
     this.carrierOfficesSubject.next(newOffices);
   }
 
-  private set selectedOfficeInformation(info) {
-    this.selectedOfficeInformationSubject.next(info);
+  private set selectedOffice(office: CarrierOfficeInfo) {
+    this.selectedOfficeSubject.next(office);
   }
 
   private getAddressLocation(address: string): Observable<Location> {
