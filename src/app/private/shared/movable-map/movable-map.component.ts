@@ -59,8 +59,6 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
 
   ngOnChanges() {
     if (this.map) {
-      this.map.setCenter({ lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude });
-      this.map.setZoom(DEFAULT_VALUE_ZOOM);
       this.addGroupMarker(this.map);
     }
   }
