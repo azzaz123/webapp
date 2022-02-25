@@ -49,4 +49,8 @@ export interface FavoriteItem {
    * When the event is triggered in SavedSearchesNewVsOld screen (217), specify if it is in the 'new' results or 'old'
    */
   savedSearchResults?: string;
+  /**
+   * Whether the shipping toggle is activated for the item (buyer can send shipping request)
+   */
+  shippingAllowed?: boolean;
 }
