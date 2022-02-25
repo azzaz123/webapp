@@ -1,0 +1,60 @@
+<form *ngIf="availableSchedules$ | async as availableSchedules" class="DeliveryPreferenceSchedule h-100" (submit)="savePreference()">
+  <div class="container h-100">
+    <div class="row">
+      <div class="col">
+        <h1
+          class="DeliveryPreferenceSchedule__title DeliveryPreferenceSchedule__text mt-4 mb-3"
+          i18n="@@time_slot_view_seller_hpu_ba_title"
+        >
+          Which time slot is best for you?
+        </h1>
+        <span
+          id="pickUpDay"
+          class="DeliveryPreferenceSchedule__text d-block mb-3"
+          i18n="@@time_slot_view_seller_hpu_ba_description_with_details"
+          >The pick up will be on {{ deliveryPickUpDay }}. The courier company will try to adhere to the slot you indicated.</span
+        >
+        <div ngbRadioGroup name="radioBasic" [(ngModel)]="selectedSchedule">
+          <label ngbButtonLabel class="DeliveryPreferenceSchedule__scheduleOption custom-radio d-block text-center mb-3">
+            <input ngbButton type="radio" [value]="SCHEDULE_TYPE.ALL_DAY" [id]="SCHEDULE_TYPE.ALL_DAY" />
+            <span i18n="@@time_slot_view_seller_hpu_ba_all_day_button" id="allDayOptionDescription"
+              >All day (from {{ availableSchedules.allDay.startTimeRange }} to {{ availableSchedules.allDay.endTimeRange }})</span
+            >
+          </label>
+          <label ngbButtonLabel class="DeliveryPreferenceSchedule__scheduleOption custom-radio d-block text-center mb-3">
+            <input ngbButton type="radio" [value]="SCHEDULE_TYPE.MORNING" [id]="SCHEDULE_TYPE.MORNING" />
+            <span i18n="@@time_slot_view_seller_hpu_ba_morning_button" id="morningOptionDescription"
+              >Morning (from {{ availableSchedules.morning.startTimeRange }} to {{ availableSchedules.morning.endTimeRange }})</span
+            >
+          </label>
+          <label ngbButtonLabel class="DeliveryPreferenceSchedule__scheduleOption custom-radio d-block text-center">
+            <input ngbButton type="radio" [value]="SCHEDULE_TYPE.AFTERNOON" [id]="SCHEDULE_TYPE.AFTERNOON" class="custom-radio" />
+            <span i18n="@@time_slot_view_seller_hpu_ba_afternoon_button" id="afternoonOptionDescription"
+              >Afternoon (from {{ availableSchedules.afternoon.startTimeRange }} to {{ availableSchedules.afternoon.endTimeRange }})</span
+            >
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="DeliveryPreferenceSchedule__confirmButton p-2 position-sticky align-self-end">
+    <div class="container">
+      <div class="row justify-content-center align-self-center">
+        <div class="col-12 col-md-7">
+          <tsl-button
+            [type]="'submit'"
+            [disabled]="selectedSchedule === null"
+            i18n="@@time_slot_view_seller_hpu_ba_save_button"
+            className="btn btn-block btn-primary"
+            >Save</tsl-button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<tsl-svg-icon
+  *ngIf="loading$ | async"
+  class="d-flex w-100 h-100 align-items-center justify-content-center spinner"
+  [src]="loadingIconSrc"
+></tsl-svg-icon>

@@ -1,14 +1,20 @@
 import { SCHEDULE_TYPE } from './schedule-type.type';
 
 export interface DeliverySchedule {
-  scheduleOptions: DeliveryScheduleOption[];
+  scheduleOptions: DeliveryScheduleOptions;
   userSchedule: DeliveryUserSchedule;
+}
+
+export interface DeliveryScheduleOptions {
+  allDay: DeliveryScheduleOption;
+  morning: DeliveryScheduleOption;
+  afternoon: DeliveryScheduleOption;
 }
 
 export interface DeliveryScheduleOption {
   scheduleTimeRange: SCHEDULE_TYPE;
-  startTimeRange: Date;
-  endTimeRange: Date;
+  startTimeRange: string;
+  endTimeRange: string;
 }
 
 export interface DeliveryUserSchedule {
