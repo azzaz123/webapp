@@ -94,7 +94,7 @@ export class DeliveryConversationContextAsSellerService {
 
   private mapSellerRequestsToBannerProperties(
     sellerRequests: SellerRequest[],
-    deliveryItemDetails: DeliveryItemDetails | null
+    deliveryItemDetails: DeliveryItemDetails
   ): DeliveryBanner | null {
     const sellerHasNoRequests: boolean = sellerRequests.length === 0;
     const sellerHasRequests: boolean = !sellerHasNoRequests;

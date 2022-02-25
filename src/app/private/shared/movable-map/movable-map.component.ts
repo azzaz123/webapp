@@ -35,9 +35,8 @@ import { MARKER_STATUS } from './constants/marker-status.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges {
-  @Input() centerCoordinates: Location = this.fallbackCenterCoordinates;
+  @Input() centerCoordinates: Location;
   @Input() markers: Location[] = [];
-  @Input() zoom: number = DEFAULT_VALUE_ZOOM;
 
   @Output() mapViewChangeEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
   @Output() tapMarker: EventEmitter<Location> = new EventEmitter();
@@ -54,13 +53,14 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
 
   ngAfterViewInit(): void {
+    this.centerCoordinates = this.centerCoordinates || this.fallbackCenterCoordinates;
     this.initHereMaps();
   }
 
   ngOnChanges() {
     if (this.map) {
       this.map.setCenter({ lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude });
-      this.map.setZoom(this.zoom);
+      this.map.setZoom(DEFAULT_VALUE_ZOOM);
       this.addGroupMarker(this.map);
     }
   }
@@ -72,7 +72,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   private initializeMap(): H.Map {
     const defaultLayers: H.service.DefaultLayers = this.hereMapsService.platform.createDefaultLayers();
     const map: H.Map = new H.Map(this.mapEl.nativeElement, defaultLayers.vector.normal.map, {
-      zoom: this.zoom,
+      zoom: DEFAULT_VALUE_ZOOM,
       center: { lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude },
     });
     const implementInteractions: H.mapevents.Behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));

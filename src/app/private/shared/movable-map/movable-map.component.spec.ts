@@ -146,6 +146,10 @@ describe('MovableMapComponent', () => {
     });
 
     describe(`and we DON'T provide center coordinates`, () => {
+      beforeEach(() => {
+        component.centerCoordinates = null;
+        fixture.detectChanges();
+      });
       it('should set the fallback center coordinates', () => {
         expect(component.centerCoordinates).toStrictEqual(FALLBACK_CENTER_COORDINATES);
       });

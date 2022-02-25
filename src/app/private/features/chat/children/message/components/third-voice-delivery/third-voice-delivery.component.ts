@@ -9,7 +9,8 @@ import { InboxMessage } from '@private/features/chat/core/model';
 })
 export class ThirdVoiceDeliveryComponent implements OnChanges {
   @Input() message: InboxMessage;
-  @Input() shortMessage = false;
+  @Input() shortMessage: boolean = false;
+  @Input() loading: boolean = true;
   @Output() clickedCTA: EventEmitter<void> = new EventEmitter<void>();
 
   public isCTAVisible: boolean = true;

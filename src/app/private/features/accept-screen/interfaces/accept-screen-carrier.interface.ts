@@ -12,6 +12,7 @@ export interface AcceptScreenCarrier {
   restrictions: string;
   buttonProperties: AcceptScreenCarrierButtonProperties;
   acceptEndpoint: string;
+  deliveryPickUpDay?: string;
 }
 
 export interface AcceptScreenCarrierButtonProperties {

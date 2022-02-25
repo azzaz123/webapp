@@ -116,3 +116,16 @@ export const MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK_WITH_ANALYTICS: Transacti
     userId: '456',
   },
 };
+
+export const MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_DEEPLINK: TransactionTrackingActionDialog = {
+  isDialog: true,
+  description: 'Quieres abrir una disputa?',
+  negative: {
+    title: 'Nah',
+  },
+  positive: {
+    action: MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK,
+    title: 'Confirmar',
+  },
+  title: 'Vas a abrir una disputa',
+};
