@@ -90,6 +90,7 @@ export class DeliveryMapComponent implements OnInit {
       confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_ADD_BUTTON),
       cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_CANCEL_BUTTON),
       confirmColor: COLORS.WALLA_MAIN,
+      cancelColor: COLORS.WALLA_MAIN,
     };
 
     modalRef.result.then(
