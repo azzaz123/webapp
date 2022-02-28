@@ -13,4 +13,12 @@
   @include media-breakpoint-up(md) {
     width: $modal-md;
   }
+
+  &__close {
+    cursor: pointer;
+  }
+
+  &__windowHeader {
+    padding-left: $spacing-ml;
+  }
 }

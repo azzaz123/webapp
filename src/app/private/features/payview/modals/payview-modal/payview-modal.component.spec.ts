@@ -29,6 +29,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 
 @Component({
   selector: 'tsl-fake-component',
@@ -36,19 +37,30 @@ import { of } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class FakeComponent extends PayviewModalComponent {
-  constructor(payviewStateManagementService: PayviewStateManagementService, payviewDeliveryService: PayviewDeliveryService) {
-    super(payviewStateManagementService, payviewDeliveryService);
+  constructor(
+    payviewStateManagementService: PayviewStateManagementService,
+    payviewDeliveryService: PayviewDeliveryService,
+    activeModal: NgbActiveModal,
+    customerHelpService: CustomerHelpService
+  ) {
+    super(payviewStateManagementService, payviewDeliveryService, activeModal, customerHelpService);
   }
 }
 
 describe('PayviewModalComponent', () => {
+  const fakeHelpUrl: string = 'http://this_is_a_fake_help_url/';
   const fakeItemHash: string = 'This_is_a_fake_item_hash';
-  const payviewModalSummary: string = '.PayviewModal';
-  const payviewModalSummarySelector: string = `${payviewModalSummary}__summary`;
-  const payviewModalSummarySpinner: string = `${payviewModalSummary}__spinner`;
+
+  const payviewModal: string = '.PayviewModal';
+  const payviewModalCloseSelector: string = `${payviewModal}__close`;
+  const payviewModalHelpSelector: string = '#helpLink';
+  const payviewModalSpinnerSelector: string = `${payviewModal}__spinner`;
+  const payviewModalSummarySelector: string = `${payviewModal}__summary`;
   const payviewSummaryOverviewSelector: string = 'tsl-payview-summary-overview';
 
+  let activeModalService: NgbActiveModal;
   let component: PayviewModalComponent;
+  let customerHelpService: CustomerHelpService;
   let debugElement: DebugElement;
   let fixture: ComponentFixture<PayviewModalComponent>;
   let itemHashSpy: jest.SpyInstance;
@@ -73,6 +85,14 @@ describe('PayviewModalComponent', () => {
       ],
       imports: [BrowserAnimationsModule, BuyerRequestsApiModule, DeliveryRadioSelectorModule, HttpClientTestingModule],
       providers: [
+        {
+          provide: CustomerHelpService,
+          useValue: {
+            getPageUrl() {
+              return fakeHelpUrl;
+            },
+          },
+        },
         DeliveryAddressService,
         DeliveryAddressStoreService,
         ItemService,
@@ -86,6 +106,54 @@ describe('PayviewModalComponent', () => {
   });
 
   describe('WHEN the component initializes', () => {
+    beforeEach(() => {
+      activeModalService = TestBed.inject(NgbActiveModal);
+      customerHelpService = TestBed.inject(CustomerHelpService);
+      payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
+      payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
+
+      fixture = TestBed.createComponent(FakeComponent);
+      component = fixture.componentInstance;
+      debugElement = fixture.debugElement;
+
+      spyOn(customerHelpService, 'getPageUrl').and.callThrough();
+      spyOn(activeModalService, 'close').and.callThrough();
+
+      fixture.detectChanges();
+    });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('should show the close button', () => {
+      const target = debugElement.query(By.css(payviewModalCloseSelector));
+
+      expect(target).toBeTruthy();
+    });
+
+    it('should show the help link', () => {
+      const target = debugElement.query(By.css(payviewModalHelpSelector));
+
+      expect(target).toBeTruthy();
+    });
+
+    it('should assign the corresponding help link', () => {
+      const target = debugElement.query(By.css(payviewModalHelpSelector));
+
+      expect((target.nativeElement as HTMLAnchorElement).href).toBe(fakeHelpUrl);
+    });
+
+    describe('WHEN user clicks the close button', () => {
+      it('should close the modal window', () => {
+        const target = fixture.debugElement.query(By.css(payviewModalCloseSelector)).nativeElement;
+
+        target.click();
+
+        expect(activeModalService.close).toHaveBeenCalledTimes(1);
+      });
+    });
+
     describe('AND WHEN the item has been reported', () => {
       beforeEach(() => {
         payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
@@ -133,7 +201,7 @@ describe('PayviewModalComponent', () => {
         });
 
         it('should not show the loading animation', fakeAsync(() => {
-          const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSummarySpinner));
+          const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSpinnerSelector));
           expect(loadingContainerRef).toBeFalsy();
         }));
       });
@@ -184,7 +252,7 @@ describe('PayviewModalComponent', () => {
       }));
 
       it('should show the loading animation', fakeAsync(() => {
-        const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSummarySpinner));
+        const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSpinnerSelector));
         expect(loadingContainerRef).toBeTruthy();
       }));
 
