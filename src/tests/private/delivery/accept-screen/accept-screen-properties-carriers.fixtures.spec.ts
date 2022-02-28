@@ -17,15 +17,17 @@ const MOCK_PICK_UP_START_DATE: string = MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.s
   {
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   }
 );
 const MOCK_PICK_UP_END_DATE: string = MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.schedule.pickUpEndDate.toLocaleTimeString(navigator.language, {
   hour: '2-digit',
   minute: '2-digit',
+  hour12: false,
 });
 const MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED_INFORMATION: string = $localize`:@@accept_view_seller_hpu_ba_delivery_method_selector_pickup_date_description:The package will be picked up at your address on ${
-  'tuesday, january 25 2022, ' + MOCK_PICK_UP_START_DATE + ' - ' + MOCK_PICK_UP_END_DATE + '.'
-}:INTERPOLATION:`;
+  'Tuesday, 25 January 2022, ' + MOCK_PICK_UP_START_DATE + ' - ' + MOCK_PICK_UP_END_DATE + '.'
+}`;
 
 export const MOCK_ACCEPT_SCREEN_CARRIERS: AcceptScreenCarrier[] = [
   {
@@ -98,6 +100,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED: AcceptScr
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.type],
       redirectStep: ACCEPT_SCREEN_STEPS.SCHEDULE,
     },
+    deliveryPickUpDay: 'Tuesday, 25 January 2022',
     acceptEndpoint: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.acceptEndpoint,
   },
 ];
@@ -117,6 +120,7 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_LAST_ADDRESS: AcceptScreenCa
       text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.type],
       redirectStep: ACCEPT_SCREEN_STEPS.SCHEDULE,
     },
+    deliveryPickUpDay: 'Tuesday, 25 January 2022',
     acceptEndpoint: MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.acceptEndpoint,
   },
   {

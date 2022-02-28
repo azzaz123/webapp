@@ -1,0 +1,9 @@
+@import '~style/common';
+
+.PayviewDelivery {
+  margin-top: $spacing-xxl;
+
+  &__header {
+    border-bottom: 1px solid $blue-grey-4;
+  }
+}

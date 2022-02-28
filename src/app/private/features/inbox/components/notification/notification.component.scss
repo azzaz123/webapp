@@ -9,13 +9,18 @@
   cursor: pointer;
   padding: $spacing-m;
   position: relative;
+
   &--highlighted {
     background-color: $positive-soft;
   }
+
   &--pinned {
     border-radius: $border-radius;
     border: 1px solid $blue-grey-4;
-    margin: 16px 0 16px 0;
+  }
+
+  &--separator {
+    border-bottom: 1px solid $blue-grey-4;
   }
 
   &__info {
@@ -25,6 +30,7 @@
     flex-direction: column;
     justify-content: space-around;
     position: relative;
+
     .Notification__title {
       display: flex;
       justify-content: space-between;
