@@ -180,12 +180,6 @@ export class CartComponent implements OnInit, OnDestroy {
     const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
 
     ga('send', 'event', 'Item', 'bump-cart');
-    fbq('track', 'Purchase', {
-      value: this.cart.total,
-      currency: 'EUR',
-      content_ids: itemsIds,
-      content_type: 'product',
-    });
   }
 
   get totalToPay(): number {

@@ -154,21 +154,4 @@ describe('Component: Item', () => {
       expect(component.item.reserved).toBe(true);
     });
   });
-
-  describe('trackSoldEvent', () => {
-    beforeEach(() => {
-      component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
-    });
-
-    it('should emit ITEM_SOLD event', () => {
-      spyOn(window as any, 'fbq');
-
-      component.trackSoldEvent(MOCKED_INBOX_CONVERSATIONS[0].item);
-
-      expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', {
-        value: MOCKED_INBOX_CONVERSATIONS[0].item.price.amount,
-        currency: MOCKED_INBOX_CONVERSATIONS[0].item.price.currency,
-      });
-    });
-  });
 });

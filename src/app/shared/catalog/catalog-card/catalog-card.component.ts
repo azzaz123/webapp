@@ -53,10 +53,6 @@ export class CatalogCardComponent implements OnInit {
   }
 
   public setSold(item: Item) {
-    fbq('track', 'CompleteRegistration', {
-      value: item.salePrice,
-      currency: item.currencyCode,
-    });
     this.eventService.emit('itemChanged');
     this.itemChange.emit({
       item: item,
