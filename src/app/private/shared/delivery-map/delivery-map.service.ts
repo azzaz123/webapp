@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CarrierOfficesApiService } from '@api/bff/delivery/carrier-offices/carrier-offices-api.service';
 import { Location } from '@api/core/model';
-import { CarrierOfficeInfo } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
+import { CarrierOfficeInfo, CarrierOfficeSchedule } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { CarrierOfficeAddressesApiService } from '@api/delivery/me/carrier-office-addresses/carrier-office-addresses-api.service';
 import { Coordinate } from '@core/geolocation/address-response.interface';
@@ -95,8 +95,7 @@ export class DeliveryMapService {
     return this.carrierOfficesSubject.asObservable();
   }
 
-  // TODO: create interface		Date: 2022/02/25
-  public get selectedOfficeInformation$(): Observable<any> {
+  public get selectedOfficeInformation$(): Observable<CarrierOfficeSchedule> {
     return this.selectedOffice$.pipe(
       map((selectedOffice: CarrierOfficeInfo) => {
         if (!selectedOffice) {

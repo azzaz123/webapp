@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Location, LocationWithRadius } from '@api/core/model';
-import { CarrierOfficeInfo } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
+import { CarrierOfficeInfo, CarrierOfficeSchedule } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -27,7 +27,7 @@ export class DeliveryMapComponent implements OnInit {
   public initialCenterCoordinates$: Observable<Location>;
   public markers$: Observable<Location[]> = this.deliveryMapService.officeMarkers$;
   public offices$: Observable<CarrierOfficeInfo[]> = this.deliveryMapService.carrierOffices$;
-  public selectedOfficeInfo$: Observable<string[]> = this.deliveryMapService.selectedOfficeInformation$;
+  public selectedOfficeInfo$: Observable<CarrierOfficeSchedule> = this.deliveryMapService.selectedOfficeInformation$;
 
   constructor(
     private deliveryMapService: DeliveryMapService,

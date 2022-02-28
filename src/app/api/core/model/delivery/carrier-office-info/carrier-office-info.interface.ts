@@ -10,3 +10,8 @@ export interface CarrierOfficeInfo extends Location {
   postalCode: string;
   street: string;
 }
+
+export interface CarrierOfficeSchedule {
+  openingHours: string[];
+  name: string;
+}
