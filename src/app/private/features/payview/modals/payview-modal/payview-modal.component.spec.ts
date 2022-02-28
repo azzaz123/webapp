@@ -6,6 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
 import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
 import { DeliveryAddressStoreService } from '@private/features/delivery/services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
@@ -29,7 +30,6 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
-import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 
 @Component({
   selector: 'tsl-fake-component',

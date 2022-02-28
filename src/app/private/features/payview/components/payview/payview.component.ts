@@ -26,7 +26,7 @@ export class PayviewComponent implements OnInit {
   }
 
   private openModal(itemHash: string): void {
-    const modalRef = this.modalService.open(PayviewModalComponent);
+    const modalRef = this.modalService.open(PayviewModalComponent, { backdrop: 'static' });
     modalRef.componentInstance.itemHash = itemHash;
 
     modalRef.result.then(
