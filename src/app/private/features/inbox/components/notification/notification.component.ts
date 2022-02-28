@@ -9,7 +9,7 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import * as moment from 'moment';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
-import { Notification } from '../../core/interfaces/notification.interface';
+import { Notification } from '@api/core/model/notification/notification.interface';
 
 @Component({
   selector: 'tsl-notification',
@@ -24,6 +24,7 @@ export class NotificationComponent {
 
   public handleNotificationClick(): void {
     this.trackClickNotification();
+    if (this.notification.url) window.location.href = this.notification.url;
   }
 
   public trackClickNotification(): void {
