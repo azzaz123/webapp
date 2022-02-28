@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Location, LocationWithRatio } from '@api/core/model';
+import { Location, LocationWithRadius } from '@api/core/model';
 import { CarrierOfficeInfo } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -42,9 +42,9 @@ export class DeliveryMapComponent implements OnInit {
     this.deliveryMapService.selectOffice(officeLocation).pipe(take(1)).subscribe();
   }
 
-  public requestOffices(newLocationWithRatio: LocationWithRatio): void {
+  public requestOffices(newLocationWithRadius: LocationWithRadius): void {
     this.deliveryMapService
-      .getOffices(newLocationWithRatio.latitude, newLocationWithRatio.longitude, newLocationWithRatio.ratioInKm, this.selectedCarrier)
+      .getOffices(newLocationWithRadius, this.selectedCarrier)
       .pipe(take(1))
       .subscribe(
         () => {},

@@ -12,20 +12,14 @@ import {
   OnDestroy,
   OnChanges,
 } from '@angular/core';
-import { Location, LocationWithRatio } from '@api/core/model';
+import { Location, LocationWithRadius } from '@api/core/model';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import {
-  STANDARD_ICON,
-  SELECTED_ICON,
-  METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL,
-  HALF_CIRCUMFERENCE_DEGREES,
-  DEFAULT_VALUE_ZOOM,
-} from './constants/map.constants';
+import { STANDARD_ICON, SELECTED_ICON, DEFAULT_VALUE_ZOOM, getRadiusInKm } from './constants/map.constants';
 import { MARKER_STATUS } from './constants/marker-status.enum';
 
 @Component({
@@ -38,7 +32,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   @Input() centerCoordinates: Location;
   @Input() markers: Location[] = [];
 
-  @Output() mapViewChangeEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
+  @Output() mapViewChangeEnd: EventEmitter<LocationWithRadius> = new EventEmitter();
   @Output() tapMarker: EventEmitter<Location> = new EventEmitter();
   @Output() tapMap: EventEmitter<void> = new EventEmitter();
   @ViewChild('map', { static: true })
@@ -89,7 +83,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
       this.mapViewChangeEnd.emit({
         latitude: updatedLocation.lat,
         longitude: updatedLocation.lng,
-        ratioInKm: this.getRadiusInKm(updatedZoom, updatedLocation.lat),
+        radiusInKm: getRadiusInKm(updatedZoom, updatedLocation.lat),
       });
     });
   }
@@ -114,12 +108,6 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
         });
       }
     });
-  }
-
-  private getRadiusInKm(zoom: number, latitude: number): number {
-    return Math.round(
-      (METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL * Math.cos((latitude * Math.PI) / HALF_CIRCUMFERENCE_DEGREES)) / Math.pow(2, zoom)
-    );
   }
 
   private addMarkers(): void {

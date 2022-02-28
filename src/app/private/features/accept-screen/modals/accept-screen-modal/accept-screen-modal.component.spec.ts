@@ -47,7 +47,7 @@ describe('AcceptScreenModalComponent', () => {
   const carrierButtonSelector: string = '.AcceptScreenModal__carrierButton';
   const deliveryAddressSelector: string = 'tsl-delivery-address';
   const scheduleSelector: string = 'tsl-delivery-preference-schedule';
-  const searchableMapSelector: string = 'tsl-searchable-movable-map';
+  const deliveryMapSelector: string = 'tsl-delivery-map';
   const fullAddressSelector: string = '#fullAddress';
   const rejectButtonSelector: string = '#rejectButton';
   const acceptButtonSelector: string = '#acceptButton';
@@ -377,7 +377,7 @@ describe('AcceptScreenModalComponent', () => {
               });
 
               it('should show the searchable map', () => {
-                expect(fixture.debugElement.query(By.css(searchableMapSelector))).toBeTruthy();
+                expect(fixture.debugElement.query(By.css(deliveryMapSelector))).toBeTruthy();
               });
             });
 

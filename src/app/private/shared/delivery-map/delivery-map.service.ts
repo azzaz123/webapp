@@ -10,11 +10,8 @@ import { UserService } from '@core/user/user.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '@core/user/user';
-import {
-  DEFAULT_VALUE_ZOOM,
-  HALF_CIRCUMFERENCE_DEGREES,
-  METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL,
-} from '../movable-map/constants/map.constants';
+import { LocationWithRadius } from '@api/core/model/location/location';
+import { getRadiusInKm, DEFAULT_VALUE_ZOOM } from '../movable-map/constants/map.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -34,24 +31,18 @@ export class DeliveryMapService {
     return this.initialCenterCoordinates$(fullAddress).pipe(
       take(1),
       switchMap((location: Location) => {
-        const radiusKm: number = Math.round(
-          (METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL * Math.cos((location.latitude * Math.PI) / HALF_CIRCUMFERENCE_DEGREES)) /
-            Math.pow(2, DEFAULT_VALUE_ZOOM)
-        );
-        return this.getOffices(location.latitude, location.longitude, radiusKm, selectedCarrier);
+        const radiusInKm: number = getRadiusInKm(DEFAULT_VALUE_ZOOM, location.latitude);
+        const locationWithRadius: LocationWithRadius = { ...location, radiusInKm };
+
+        return this.getOffices(locationWithRadius, selectedCarrier);
       }),
       tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices))
     );
   }
 
-  public getOffices(
-    latitude: number,
-    longitude: number,
-    radiusKm: number,
-    selectedCarrier: POST_OFFICE_CARRIER
-  ): Observable<CarrierOfficeInfo[]> {
+  public getOffices(location: LocationWithRadius, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
     return this.carrierOfficesApiService
-      .getCarrierOfficeAddresses(latitude, longitude, radiusKm, selectedCarrier)
+      .getCarrierOfficeAddresses(location, selectedCarrier)
       .pipe(tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices)));
   }
 
