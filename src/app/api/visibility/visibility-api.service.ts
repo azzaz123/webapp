@@ -21,7 +21,7 @@ import { FinancialCardOption } from '@core/payments/payment.interface';
 
 @Injectable()
 export class VisibilityApiService {
-  private stripeResponseSubject: ReplaySubject<BumpRequestSubject> = new ReplaySubject(1);
+  private stripeResponseSubject: ReplaySubject<BumpRequestSubject>;
 
   constructor(
     private bumpsHttpService: BumpsHttpService,
@@ -90,6 +90,7 @@ export class VisibilityApiService {
     });
 
     if (stripeBumps.length) {
+      this.stripeResponseSubject = new ReplaySubject(1);
       this.cartService.createInstance(new Cart());
       let cart: CartBase;
       this.cartService.cart$.subscribe((cartChanges) => {
