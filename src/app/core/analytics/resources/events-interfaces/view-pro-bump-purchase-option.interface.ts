@@ -6,23 +6,15 @@
  */
 
 /**
- * User clicks on the bump confirmation button after selecting bump type and days
+ * User PRO views purchase option between subscription bump or a new bump
  */
-export interface ClickBumpConfirmation {
+export interface ViewProBumpPurchaseOption {
   /**
    * The unique identifier for an item
    */
   itemId: string;
   /**
-   * If the item clicked is from a professional user
-   */
-  isPro?: boolean;
-  /**
-   * If is a bump from a subscription package
-   */
-  isSubscriptionBump?: boolean;
-  /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId?: 213 | 318 | 319;
+  screenId: 319;
 }
