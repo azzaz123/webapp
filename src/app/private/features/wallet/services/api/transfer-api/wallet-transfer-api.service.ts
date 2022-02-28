@@ -12,8 +12,8 @@ import { WalletTransferRequest } from '@private/features/wallet/interfaces/trans
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-export const PayBankAccountFromUserWalletEndPoint = `${environment.baseUrl}/api/v3/payments/pay_user_bank_account_from_user_wallet`;
-export const PayUserBankAccountsEndPoint = `${environment.baseUrl}/api/v3/payments/pay_user_bank_accounts`;
+export const PayBankAccountFromUserWalletEndPoint = `${environment.baseUrl}api/v3/payments/pay_user_bank_account_from_user_wallet`;
+export const PayUserBankAccountsEndPoint = `${environment.baseUrl}api/v3/payments/pay_user_bank_accounts`;
 
 const StatusParam: string = 'status';
 
