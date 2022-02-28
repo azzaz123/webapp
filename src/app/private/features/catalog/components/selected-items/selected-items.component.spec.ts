@@ -21,7 +21,7 @@ describe('SelectedItemsComponent', () => {
         declarations: [SelectedItemsComponent],
         imports: [NoopAnimationsModule],
         providers: [
-          CatalogItemTrackingEventService,
+          { provide: CatalogItemTrackingEventService, useValue: { trackClickBumpItems: () => {} } },
           {
             provide: ItemService,
             useValue: {
@@ -123,6 +123,26 @@ describe('SelectedItemsComponent', () => {
 
       expect(component.selectedAction.emit).toHaveBeenCalledTimes(1);
       expect(component.selectedAction.emit).toHaveBeenCalledWith(action);
+    });
+  });
+
+  describe('feature items', () => {
+    it('should track event', () => {
+      spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
+      itemService.selectedAction = 'feature';
+      const ITEMS = createItemsArray(5);
+      component.items = ITEMS;
+      itemService.selectedItems = [anId, anotherId];
+      fixture.detectChanges();
+      itemService.selectedItems$.next({
+        id: anId,
+        action: 'selected',
+      });
+
+      component.trackClickBumpItems();
+
+      expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledTimes(1);
+      expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledWith(component.selectedItems.length);
     });
   });
 });

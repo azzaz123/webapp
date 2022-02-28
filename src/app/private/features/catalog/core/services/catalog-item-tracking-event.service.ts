@@ -37,7 +37,7 @@ export class CatalogItemTrackingEventService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickBumpItems(selectedItems: number): void {
+  public trackClickBumpItems(selectedItems: number, isPopUp = false): void {
     const event: AnalyticsEvent<ClickBumpItems> = {
       name: ANALYTICS_EVENT_NAMES.ClickBumpItems,
       eventType: ANALYTIC_EVENT_TYPES.Other,
@@ -45,6 +45,7 @@ export class CatalogItemTrackingEventService {
         screenId: SCREEN_IDS.MyCatalog,
         isPro: this.userService.isPro,
         itemsSelected: selectedItems,
+        uploadPopUp: isPopUp,
       },
     };
     this.analyticsService.trackEvent(event);

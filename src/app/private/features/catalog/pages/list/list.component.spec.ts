@@ -72,6 +72,7 @@ import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fi
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { MeApiService } from '@api/me/me-api.service';
 import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
+import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -98,6 +99,7 @@ describe('ListComponent', () => {
   let featureFlagService: FeatureFlagService;
   let listingLimitService: ListingLimitService;
   let meApiService: MeApiService;
+  let catalogItemTrackingEventService: CatalogItemTrackingEventService;
 
   const prosButtonSelector = '.List__button--pros';
   const deliveryButtonSelector = '.List__button--delivery';
@@ -147,6 +149,7 @@ describe('ListComponent', () => {
           EventService,
           ToastService,
           NgxPermissionsService,
+          CatalogItemTrackingEventService,
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
           { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
           {
@@ -306,6 +309,7 @@ describe('ListComponent', () => {
     meApiService = TestBed.inject(MeApiService);
     meApiServiceSpy = spyOn(meApiService, 'getItems').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
+    catalogItemTrackingEventService = TestBed.inject(CatalogItemTrackingEventService);
 
     spyOn(router, 'navigate').and.callThrough();
     spyOn(errorService, 'i18nError');
@@ -453,17 +457,30 @@ describe('ListComponent', () => {
           });
         }));
 
-        it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
-          modalSpy.and.returnValue({
-            result: Promise.resolve({ redirect: true }),
-            componentInstance: { item: null },
+        describe('and  CTA button modal is clicked ', () => {
+          beforeEach(() => {
+            modalSpy.and.returnValue({
+              result: Promise.resolve({ redirect: true }),
+              componentInstance: { item: null },
+            });
           });
-          component.ngOnInit();
-          tick();
+          it('should redirect', fakeAsync(() => {
+            component.ngOnInit();
+            tick();
 
-          expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: '1' }]);
-        }));
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: '1' }]);
+          }));
+
+          it('should track event', fakeAsync(() => {
+            spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
+            component.ngOnInit();
+            tick();
+
+            expect(catalogItemTrackingEventService.trackClickBumpItems).toHaveBeenCalledTimes(1);
+            expect(catalogItemTrackingEventService.trackClickBumpItems).toHaveBeenCalledWith(1, true);
+          }));
+        });
 
         it('should not redirect when modal is closed', fakeAsync(() => {
           modalSpy.and.returnValue({
