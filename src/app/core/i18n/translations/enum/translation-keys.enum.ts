@@ -203,4 +203,7 @@ export enum TRANSLATION_KEY {
   ACCEPT_SCREEN_SCHEDULES_GET_ERROR = 'accept_view_seller_all_all_snackbar_shcedules_loading_error',
   ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR = 'accept_view_seller_all_all_snackbar_schedules_save_error',
   DELIVERY_MAP_GENERIC_ERROR = 'map_view_all_users_all_all_snackbar_generic_error',
+  DELIVERY_MAP_LOCATION_POP_UP_DESCRIPTION = 'map_view_all_users_all_all_no_user_location_pop_up_description',
+  DELIVERY_MAP_LOCATION_POP_UP_ADD_BUTTON = 'map_view_all_users_all_all_no_user_location_pop_up_add_button',
+  DELIVERY_MAP_LOCATION_POP_UP_CANCEL_BUTTON = 'map_view_all_users_all_all_no_user_location_pop_up_cancel_button',
 }

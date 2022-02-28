@@ -204,4 +204,7 @@ export const translations: Translations = {
   [TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_GET_ERROR]: $localize`:@@accept_view_seller_all_all_snackbar_shcedules_loading_error:We're getting trouble loading the schedules. To change the time slot, try again.`,
   [TRANSLATION_KEY.ACCEPT_SCREEN_SCHEDULES_SAVE_ERROR]: $localize`:@@accept_view_seller_all_all_snackbar_schedules_save_error:Oops! We couldn't save your selection. Try again.`,
   [TRANSLATION_KEY.DELIVERY_MAP_GENERIC_ERROR]: $localize`:@@map_view_all_users_all_all_snackbar_generic_error:Sorry, something went wrong. Try again.`,
+  [TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_DESCRIPTION]: $localize`:@@map_view_all_users_all_all_no_user_location_pop_up_description:To select a point on the map, you must first add your address.`,
+  [TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_ADD_BUTTON]: $localize`:@@map_view_all_users_all_all_no_user_location_pop_up_description:Add`,
+  [TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_CANCEL_BUTTON]: $localize`:@@map_view_all_users_all_all_no_user_location_pop_up_description:Cancel`,
 };

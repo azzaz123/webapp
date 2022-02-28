@@ -178,7 +178,11 @@
       ></tsl-delivery-preference-schedule>
     </ng-template>
     <ng-template step
-      ><tsl-delivery-map [fullAddress]="properties.seller.fullAddress" [selectedCarrier]="carrierSelectedName$ | async"></tsl-delivery-map
+      ><tsl-delivery-map
+        [fullAddress]="properties.seller.fullAddress"
+        [selectedCarrier]="carrierSelectedName$ | async"
+        (goToDeliveryAddress)="goToDeliveryAddress()"
+      ></tsl-delivery-map
     ></ng-template>
   </tsl-stepper>
 </div>
