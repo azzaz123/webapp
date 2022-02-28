@@ -17,6 +17,4 @@ export class BuyBannerComponent extends ActionableDeliveryBannerComponent {
     'https://prod-delivery-resources.wallapop.com/chat-banner/protect.json',
     'https://prod-delivery-resources.wallapop.com/chat-banner/lock.json',
   ];
-
-  public readonly lottie: string = this.lotties[0];
 }

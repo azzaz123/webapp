@@ -10,6 +10,11 @@ import { ActionableDeliveryBanner } from '../../../interfaces/actionable-deliver
 import { PriceableDeliveryBanner } from '../../../interfaces/priceable-delivery-banner.interface';
 
 import { BuyBannerComponent } from './buy-banner.component';
+interface BuyBannerTestCase {
+  domPosition: number;
+  expectedText: string;
+}
+
 @Component({
   selector: 'tsl-test-wrapper-buy-banner',
   template: '<tsl-buy-banner [bannerProperties]="bannerProperties" (clickedCTA)="clickedCTA($event)"></tsl-buy-banner>',
@@ -24,8 +29,24 @@ describe('BuyBannerComponent', () => {
   let component: BuyBannerComponent;
   let fixture: ComponentFixture<TestWrapperBuyBannerComponent>;
 
-  const descriptionSelector = '.BuyBanner__description';
-  const priceSelector = '.BuyBanner__price';
+  const descriptionWrapperSelector = (index: number) => `.BuyBanner__infoElement:nth-of-type(${index})`;
+  const descriptionElementsSelector = 'span';
+  const descriptionTestCases: BuyBannerTestCase[] = [
+    {
+      domPosition: 1,
+      expectedText: `${$localize`:@@chat_buyer_shipping_enabled_banner_starting_price_description_part_1:Shipping from`} ${
+        MOCK_BUY_DELIVERY_BANNER_PROPERTIES.price
+      }`,
+    },
+    {
+      domPosition: 2,
+      expectedText: `${$localize`:@@chat_buyer_shipping_enabled_banner_refund_guarantee_description_part_1:Shipment`} ${$localize`:@@chat_buyer_shipping_enabled_banner_refund_guarantee_description_part_2:guarantee`}`,
+    },
+    {
+      domPosition: 3,
+      expectedText: `${$localize`:@@chat_buyer_shipping_enabled_banner_secure_payment_description_part_1:Payment method`} ${$localize`:@@chat_buyer_shipping_enabled_banner_secure_payment_description_part_2:encrypted and secure`}`,
+    },
+  ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -51,23 +72,26 @@ describe('BuyBannerComponent', () => {
     expect(bannerElement.componentInstance.specifications.type).toEqual('info');
   });
 
-  it('should display a lottie with valid URL', () => {
-    const lottieElement: DebugElement = fixture.debugElement.query(By.directive(LottieComponent));
+  describe.each(descriptionTestCases)('when displaying descriptions', (descriptionTestCase) => {
+    let descriptionWrapper: DebugElement;
+    let descriptionElements: DebugElement[];
 
-    expect(lottieElement.componentInstance.src).toEqual(component.lottie);
-  });
+    beforeEach(() => {
+      descriptionWrapper = fixture.debugElement.query(By.css(descriptionWrapperSelector(descriptionTestCase.domPosition)));
+      descriptionElements = descriptionWrapper.queryAll(By.css(descriptionElementsSelector));
+    });
 
-  it('should display the text from the description', () => {
-    const descriptionTextElement: DebugElement = fixture.debugElement.query(By.css(descriptionSelector));
-    const expectedText: string = $localize`:@@chat_buyer_shipping_enabled_banner_starting_price_description_part_1:Shipping from`;
+    it('should display valid lottie', () => {
+      const lottieElement: DebugElement = descriptionWrapper.query(By.directive(LottieComponent));
 
-    expect(descriptionTextElement.nativeElement.innerHTML).toEqual(expectedText);
-  });
+      expect(lottieElement.componentInstance.src).toEqual(component.lotties[descriptionTestCase.domPosition - 1]);
+    });
 
-  it('should display the price', () => {
-    const priceElement: DebugElement = fixture.debugElement.query(By.css(priceSelector));
+    it('should display valid description', () => {
+      const result: string = descriptionElements.map((element) => element.nativeElement.innerHTML).join('');
 
-    expect(priceElement.nativeElement.innerHTML).toEqual(MOCK_BUY_DELIVERY_BANNER_PROPERTIES.price.toString());
+      expect(result).toEqual(descriptionTestCase.expectedText);
+    });
   });
 
   it('should display the CTA button', () => {
