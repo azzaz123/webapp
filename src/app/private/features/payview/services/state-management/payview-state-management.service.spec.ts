@@ -41,11 +41,12 @@ describe('PayviewStateManagementService', () => {
 
   describe('WHEN the item is reported', () => {
     const fakeItemHash: string = 'this_is_a_fake_item_hash';
+    let getCurrentStateSpy;
     let itemHash: string;
     let payviewState: PayviewState;
 
     beforeEach(fakeAsync(() => {
-      spyOn(payviewService, 'getCurrentState').and.returnValue(of(MOCK_PAYVIEW_STATE).pipe(delay(0)));
+      getCurrentStateSpy = spyOn(payviewService, 'getCurrentState').and.returnValue(of(MOCK_PAYVIEW_STATE).pipe(delay(0)));
       service.payViewState$.subscribe((result: PayviewState) => {
         payviewState = result;
       });
@@ -58,8 +59,8 @@ describe('PayviewStateManagementService', () => {
     }));
 
     it('should request the payview state', fakeAsync(() => {
-      expect(payviewService.getCurrentState).toHaveBeenCalledTimes(1);
-      expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash);
+      expect(getCurrentStateSpy).toHaveBeenCalledTimes(1);
+      expect(getCurrentStateSpy).toHaveBeenCalledWith(fakeItemHash);
     }));
 
     it('should update the payview state ', fakeAsync(() => {
@@ -106,7 +107,6 @@ describe('PayviewStateManagementService', () => {
 
     describe('WHEN there is an error when retrieving costs', () => {
       const fakeItemHash: string = 'this_is_a_fake_item_hash';
-      let itemHash: string;
       let payviewState: PayviewState;
 
       beforeEach(fakeAsync(() => {
@@ -135,6 +135,31 @@ describe('PayviewStateManagementService', () => {
 
       it('should not update the payview state ', fakeAsync(() => {
         expect(payviewState).toBeFalsy();
+      }));
+    });
+
+    describe('WHEN refreshing the payview state', () => {
+      let fakePayviewState: PayviewState;
+
+      beforeEach(fakeAsync(() => {
+        fakePayviewState = { ...MOCK_PAYVIEW_STATE };
+        payviewState = null;
+        getCurrentStateSpy.calls.reset();
+
+        service.refreshPayviewState();
+
+        tick(0);
+      }));
+
+      it('should call to payview service', fakeAsync(() => {
+        expect(payviewService.getCurrentState).toHaveBeenCalledTimes(1);
+        expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash);
+      }));
+
+      it('should update the payview state ', fakeAsync(() => {
+        const expectedPayviewState = { ...MOCK_PAYVIEW_STATE };
+
+        expect(payviewState).toStrictEqual(expectedPayviewState);
       }));
     });
   });

@@ -29,6 +29,10 @@ export class PayviewStateManagementService {
     return this.stateSubject.asObservable();
   }
 
+  public refreshPayviewState(): void {
+    this.getCurrentState(this.itemHashSubject.getValue());
+  }
+
   public setDeliveryMethod(deliveryMethod: DeliveryBuyerDeliveryMethod): void {
     const payviewState = { ...this.stateSubject.getValue() };
     const subscription: Subscription = this.payviewService
