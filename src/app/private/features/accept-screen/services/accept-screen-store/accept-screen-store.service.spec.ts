@@ -120,7 +120,7 @@ describe('AcceptScreenStoreService', () => {
           spyOn(acceptScreenService, 'acceptRequestPostOfficeDropOff').and.callThrough();
 
           service.selectNewDropOffMode(CARRIER_DROP_OFF_MODE.POST_OFFICE);
-          service.acceptRequest(MOCK_REQUEST_ID);
+          service.acceptRequest(MOCK_REQUEST_ID).subscribe();
         });
 
         it('should call to accept the request with post office drop off mode', () => {

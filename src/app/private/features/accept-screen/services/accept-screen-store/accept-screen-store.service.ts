@@ -39,7 +39,7 @@ export class AcceptScreenStoreService {
   }
 
   public acceptRequest(requestId: string): Observable<void> {
-    const isPostOfficeDropOff: boolean = CARRIER_DROP_OFF_MODE.POST_OFFICE === this.selectedCarrier();
+    const isPostOfficeDropOff: boolean = CARRIER_DROP_OFF_MODE.POST_OFFICE === this.selectedCarrierType();
 
     if (isPostOfficeDropOff) {
       return this.acceptScreenService.acceptRequestPostOfficeDropOff(requestId);
@@ -69,9 +69,19 @@ export class AcceptScreenStoreService {
     this.propertiesSubject.next(value);
   }
 
-  private selectedCarrier(): CARRIER_DROP_OFF_MODE {
+  private get carrierSelectedType$(): Observable<CARRIER_DROP_OFF_MODE> {
+    return this.selectedCarrier$.pipe(map((carrier: AcceptScreenCarrier) => carrier.type));
+  }
+
+  private get selectedCarrier$(): Observable<AcceptScreenCarrier> {
+    return this.properties$.pipe(
+      map((properties: AcceptScreenProperties) => properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected))
+    );
+  }
+
+  private selectedCarrierType(): CARRIER_DROP_OFF_MODE {
     let carrierDropOffMode: CARRIER_DROP_OFF_MODE;
-    this.carrierSelectedIndex$.pipe(take(1)).subscribe((selectedDropOffMode: number) => {
+    this.carrierSelectedType$.pipe(take(1)).subscribe((selectedDropOffMode: number) => {
       carrierDropOffMode = selectedDropOffMode;
     });
 
