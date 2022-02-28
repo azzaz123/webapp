@@ -15,7 +15,7 @@ import { DeliveryCountriesService } from '@private/features/delivery/services/co
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { StepperComponent } from '@shared/stepper/stepper.component';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { AcceptScreenProperties } from '../../interfaces';
@@ -40,10 +40,11 @@ export class AcceptScreenModalComponent implements OnInit {
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
-
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
+  private readonly deliveryMapSlideId: number = ACCEPT_SCREEN_STEPS.MAP;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
+  private mapPreviousPageSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private acceptScreenStoreService: AcceptScreenStoreService,
@@ -69,8 +70,17 @@ export class AcceptScreenModalComponent implements OnInit {
     this.goToStep(this.deliveryAddressSlideId);
   }
 
-  public goToAcceptScreen(): void {
-    this.goToStep(this.acceptScreenSlideId);
+  public goToDeliveryAddressFromMap(): void {
+    this.mapPreviousPageSubject.next(true);
+    this.goToStep(this.deliveryAddressSlideId);
+  }
+
+  public goToAcceptScreenOrDeliveryMap(): void {
+    if (this.mapPreviousPageSubject.value) {
+      this.goToDeliveryMap();
+    } else {
+      this.goToStep(this.acceptScreenSlideId);
+    }
     this.acceptScreenStoreService.update(this.requestId);
   }
 
@@ -99,6 +109,11 @@ export class AcceptScreenModalComponent implements OnInit {
       },
       () => {}
     );
+  }
+
+  private goToDeliveryMap(): void {
+    this.goToStep(this.deliveryMapSlideId);
+    this.mapPreviousPageSubject.next(false);
   }
 
   private rejectRequest(): void {

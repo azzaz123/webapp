@@ -4,7 +4,11 @@
       <div class="row px-2 py-3">
         <div class="col">
           <div class="d-flex justify-content-between">
-            <a class="d-flex" (click)="goToAcceptScreen()" [ngClass]="{ AcceptScreenModal__cursorPointer: !isAcceptScreenStep }">
+            <a
+              class="d-flex"
+              (click)="goToAcceptScreenOrDeliveryMap()"
+              [ngClass]="{ AcceptScreenModal__cursorPointer: !isAcceptScreenStep }"
+            >
               <tsl-svg-icon
                 id="back"
                 *ngIf="!isAcceptScreenStep"
@@ -168,20 +172,20 @@
         *ngIf="acceptScreenCountries$ | async"
         [showTitle]="false"
         [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
-        (addressSaveSucceded)="goToAcceptScreen()"
+        (addressSaveSucceded)="goToAcceptScreenOrDeliveryMap()"
       ></tsl-delivery-address>
     </ng-template>
     <ng-template step>
       <tsl-delivery-preference-schedule
         [deliveryPickUpDay]="deliveryPickUpDay$ | async"
-        (scheduleSaveSucceded)="goToAcceptScreen()"
+        (scheduleSaveSucceded)="goToAcceptScreenOrDeliveryMap()"
       ></tsl-delivery-preference-schedule>
     </ng-template>
     <ng-template step
       ><tsl-delivery-map
         [fullAddress]="properties.seller.fullAddress"
         [selectedCarrier]="carrierSelectedName$ | async"
-        (goToDeliveryAddress)="goToDeliveryAddress()"
+        (goToDeliveryAddress)="goToDeliveryAddressFromMap($event)"
       ></tsl-delivery-map
     ></ng-template>
   </tsl-stepper>
