@@ -17,8 +17,8 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
     trigger('enterAnimation', [
       state('*', style({ 'overflow-y': 'hidden' })),
       state('void', style({ 'overflow-y': 'hidden' })),
-      transition('* => void', [style({ height: '*' }), animate('100ms 50ms', style({ height: 0 }))]),
-      transition('void => *', [style({ height: '0' }), animate(100, style({ height: '*' }))]),
+      transition('* => void', [style({ height: '*' }), animate('100ms 50ms ease', style({ height: 0 }))]),
+      transition('void => *', [style({ height: '0' }), animate('100ms ease', style({ height: '*' }))]),
     ]),
   ],
 })
