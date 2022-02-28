@@ -11,11 +11,11 @@ export const MOCK_APPBOY = {
   changeUser: (_userId) => {},
   openSession: () => {},
   toggleAppboyLogging: () => {},
+  logContentCardsDisplayed: () => {},
+  getCachedContentCards: () => {},
 };
 
 export const MOCK_GA = () => {};
-export const MOCK_FBQ = () => {};
-export const MOCK_PINTRK = () => {};
 
 export const MOCK_GOOGLE_DEFINE_SLOT = {
   setTargeting(arg1, arg2) {

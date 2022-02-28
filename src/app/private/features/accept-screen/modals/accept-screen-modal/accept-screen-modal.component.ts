@@ -31,6 +31,7 @@ export class AcceptScreenModalComponent implements OnInit {
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties> = this.acceptScreenStoreService.properties$;
   public acceptScreenCountries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
+  public deliveryPickUpDay$: Observable<string> = this.acceptScreenStoreService.deliveryPickUpDay$;
   public carrierSelectedIndex$: Observable<number> = this.acceptScreenStoreService.carrierSelectedIndex$;
   public ACCEPT_SCREEN_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
 
@@ -74,6 +75,7 @@ export class AcceptScreenModalComponent implements OnInit {
   public closeModal(): void {
     this.activeModal.close();
   }
+
   public goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
     this.stepper.goToStep(slideId);
     this.refreshStepProperties(slideId);

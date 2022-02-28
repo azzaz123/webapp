@@ -6,8 +6,9 @@ import { AnalyticsPageView, ViewNotificationCenter, ANALYTICS_EVENT_NAMES, SCREE
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
-import { Notification } from '../../core/interfaces/notification.interface';
+import { Notification } from '@api/core/model/notification/notification.interface';
 import { NotificationsInboxComponent } from './notifications-inbox.component';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 describe('NotificationsInboxComponent', () => {
   let component: NotificationsInboxComponent;
@@ -24,6 +25,7 @@ describe('NotificationsInboxComponent', () => {
       title: 'My general notification',
       description: 'Cupidatat ad nostrud cillum',
       image: 'https://picsum.photos/200/300',
+      url: 'https://es.wallapop.com',
     },
   ];
 
@@ -37,6 +39,12 @@ describe('NotificationsInboxComponent', () => {
             useValue: {
               trackPageView: () => {},
               trackEvent: () => {},
+            },
+          },
+          {
+            provide: NotificationApiService,
+            useValue: {
+              getNotifications: () => notifications,
             },
           },
         ],
@@ -71,8 +79,8 @@ describe('NotificationsInboxComponent', () => {
       name: ANALYTICS_EVENT_NAMES.ViewNotificationCenter,
       attributes: {
         screenId: SCREEN_IDS.NotificationCenter,
-        numberOfTotalNotifications: 0,
-        numberOfUnreadNotifications: 0,
+        numberOfTotalNotifications: notifications.length,
+        numberOfUnreadNotifications: notifications.filter((notification) => !notification.isRead).length,
       },
     };
 

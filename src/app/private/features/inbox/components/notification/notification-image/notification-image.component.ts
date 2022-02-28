@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NOTIFICATION_PRODUCT_STATUS } from '@private/features/inbox/core/enums/notification-product-status.enum';
 import { NOTIFICATION_VARIANT } from '@private/features/inbox/core/enums/notification-variant.enum';
-import { Notification } from '@private/features/inbox/core/interfaces/notification.interface';
+import { Notification } from '@api/core/model/notification/notification.interface';
 
 @Component({
   selector: 'tsl-notification-image',

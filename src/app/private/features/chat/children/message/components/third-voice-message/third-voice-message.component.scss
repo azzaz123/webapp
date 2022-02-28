@@ -21,3 +21,16 @@
     }
   }
 }
+
+@mixin third-voice-forced-width($width) {
+  min-width: $width !important;
+  max-width: $width !important;
+}
+
+.message-cloud {
+  @include third-voice-forced-width(70%);
+
+  @media (min-width: 1600px) {
+    @include third-voice-forced-width(500px);
+  }
+}
