@@ -7,6 +7,7 @@ import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 export const INPUT_TYPE = {
   TEXT: 'text',
@@ -34,6 +35,7 @@ export class TabbarComponent implements OnInit, OnDestroy {
   public user: User;
   public hidden = false;
   public hasUnreadMessages = false;
+  public hasUnreadNotifications = false;
   public isLogged: boolean;
 
   private componentSubscriptions: Subscription[] = [];
@@ -42,7 +44,8 @@ export class TabbarComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private tabBarService: TabbarService,
     private unreadChatMessagesService: UnreadChatMessagesService,
-    private eventService: EventService
+    private eventService: EventService,
+    public notificationApiService: NotificationApiService
   ) {}
 
   @HostListener('window:focusin', ['$event'])
@@ -66,7 +69,11 @@ export class TabbarComponent implements OnInit, OnDestroy {
     this.componentSubscriptions.push(
       this.unreadChatMessagesService.totalUnreadMessages$.subscribe((unreadMessages) => (this.hasUnreadMessages = !!unreadMessages))
     );
-
+    this.componentSubscriptions.push(
+      this.notificationApiService.totalUnreadNotifications$.subscribe(
+        (unreadNotifications) => (this.hasUnreadNotifications = !!unreadNotifications)
+      )
+    );
     this.componentSubscriptions.push(
       this.eventService.subscribe(EventService.USER_LOGIN, () => {
         this.isLogged = this.userService.isLogged;
@@ -78,6 +85,7 @@ export class TabbarComponent implements OnInit, OnDestroy {
         this.isLogged = this.userService.isLogged;
       })
     );
+    this.notificationApiService.refreshUnreadNotifications();
   }
 
   ngOnDestroy(): void {
