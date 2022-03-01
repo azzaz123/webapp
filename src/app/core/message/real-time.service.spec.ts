@@ -270,61 +270,6 @@ describe('RealTimeService', () => {
   });
 
   describe('subscribeEventChatMessageSent', () => {
-    it('should call track with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
-      spyOn(window as any, 'fbq');
-      const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
-      const inboxMessage = new InboxMessage(
-        'someId',
-        newConversation.id,
-        'some text',
-        USER_ID,
-        true,
-        new Date(),
-        MessageStatus.SENT,
-        MessageType.TEXT
-      );
-      newConversation.messages.push(inboxMessage);
-
-      const event = {
-        value: newConversation.item.price.amount,
-        currency: newConversation.item.price.currency,
-      };
-
-      eventService.emit(EventService.MESSAGE_SENT, newConversation, newConversation.id);
-
-      expect(window['fbq']).toHaveBeenCalledWith('track', 'InitiateCheckout', event);
-    });
-
-    it('should call pinterest checkout tracking with data', () => {
-      spyOn(window as any, 'pintrk');
-      const newConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION_WITH_EMPTY_MESSAGE('newId');
-      const inboxMessage = new InboxMessage(
-        'someId',
-        newConversation.id,
-        'some text',
-        USER_ID,
-        true,
-        new Date(),
-        MessageStatus.SENT,
-        MessageType.TEXT
-      );
-      newConversation.messages.push(inboxMessage);
-      const event = {
-        value: newConversation.item.price.amount,
-        currency: newConversation.item.price.currency,
-        line_items: [
-          {
-            product_category: newConversation.item.categoryId,
-            product_id: newConversation.item.id,
-          },
-        ],
-      };
-
-      eventService.emit(EventService.MESSAGE_SENT, newConversation, newConversation.id);
-
-      expect(window['pintrk']).toHaveBeenCalledWith('track', 'checkout', event);
-    });
-
     describe('if it`s the first message', () => {
       let inboxMessage;
       let inboxConversation;
@@ -357,6 +302,7 @@ describe('RealTimeService', () => {
             categoryId: inboxConversation.item.categoryId,
             country: analyticsService.market,
             language: analyticsService.appLocale,
+            shippingAllowed: null,
           },
         };
 
@@ -382,6 +328,7 @@ describe('RealTimeService', () => {
               searchId,
               country: analyticsService.market,
               language: analyticsService.appLocale,
+              shippingAllowed: null,
             },
           };
           spyOn(sessionStorage, 'getItem').and.returnValue(searchId);
@@ -439,6 +386,7 @@ describe('RealTimeService', () => {
             categoryId: inboxConversation.item.categoryId,
             country: analyticsService.market,
             language: analyticsService.appLocale,
+            shippingAllowed: null,
           },
         };
 

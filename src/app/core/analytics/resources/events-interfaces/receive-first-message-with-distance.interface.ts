@@ -6,35 +6,31 @@
  */
 
 /**
- * Users share an item
+ * BE event when seller receives first conversation message
  */
-export interface ShareItem {
+export interface ReceiveFirstMessageWithDistance {
   /**
-   * The unique identifier for an item
+   * Distance between buyer and item/seller
    */
-  itemId: string;
+  buyerSellerDistance?: number;
   /**
    * Identifier of the category that the item belongs to
    */
   categoryId: number;
   /**
-   * Channel through which the item has been shared
+   * Hashed identifier of the user that the item belongs to
    */
-  channel: 'facebook' | 'messenger' | 'email' | 'whatsapp' | 'twitter' | 'others';
+  sellerUserId: string;
   /**
-   * Identifier of the screen that the item was shared from
+   * Hashed identifier of the item
    */
-  screenId: 114 | 115 | 189;
+  itemId: string;
   /**
-   * If the item shared is from a professional user
+   * Identifier of the conversation
    */
-  isPro?: boolean;
-  /**
-   * Item price
-   */
-  salePrice: number;
+  conversationId: string;
   /**
    * Whether the shipping toggle is activated for the item (buyer can send shipping request)
    */
-  shippingAllowed?: boolean;
+  shippingAllowed: boolean;
 }

@@ -61,6 +61,14 @@ export class AcceptScreenService {
     );
   }
 
+  public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {
+    return this.sellerRequestApiService.acceptRequestPostOfficeDropOff(requestId);
+  }
+
+  public acceptRequestHomePickup(requestId: string): Observable<void> {
+    return this.sellerRequestApiService.acceptRequestHomePickup(requestId);
+  }
+
   public rejectRequest(requestId: string): Observable<void> {
     return this.sellerRequestApiService.rejectRequest(requestId);
   }
