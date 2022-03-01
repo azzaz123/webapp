@@ -37,6 +37,8 @@
       <span class="PayviewDeliveryPoint__deliveryAddress pl-1">{{ address }}</span>
     </div>
 
-    <tsl-button class="PayviewDeliveryPoint__actionButton mt-3 mb-1" className="btn-secondary">{{ actionTitle }}</tsl-button>
+    <tsl-button class="PayviewDeliveryPoint__actionButton mt-3 mb-1" className="btn-secondary" (click)="editPoint()">{{
+      actionTitle
+    }}</tsl-button>
   </div>
 </div>
