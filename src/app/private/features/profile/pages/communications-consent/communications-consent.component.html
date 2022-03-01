@@ -1,0 +1,27 @@
+<ng-container *ngIf="consentSettings$ | async as notificationsSettingsGroupList">
+  <div class="NotificationsContainer box profile-box">
+    <div *ngFor="let notificationsSettings of notificationsSettingsGroupList" class="NotificationsSettings">
+      <div class="NotificationsSettings__title">
+        <span>{{ notificationsSettings.title }}</span>
+      </div>
+      <div>
+        <span class="NotificationsSettings__subtitle">
+          {{ notificationsSettings.subtitle }}
+        </span>
+      </div>
+      <div *ngFor="let notification of notificationsSettings.notifications" class="NotificationsSettings__details">
+        <div class="NotificationsSettings__details_title">
+          <span>
+            {{ notification.title }}
+          </span>
+        </div>
+        <div class="NotificationsSettings__details_toggle">
+          <label [attr.for]="notification.id" class="Toggle">
+            <input [attr.id]="notification.id" type="checkbox" [(ngModel)]="notification.enabled" (change)="handleChange(notification)" />
+            <span class="Toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

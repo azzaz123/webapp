@@ -3,7 +3,8 @@
   *ngIf="notification"
   [ngClass]="{
     'Notification--highlighted': notification.variant === NOTIFICATION_VARIANT.HIGHLIGHTED,
-    'Notification--pinned': notification.variant === NOTIFICATION_VARIANT.PINNED
+    'Notification--pinned': notification.variant === NOTIFICATION_VARIANT.PINNED,
+    'Notification--separator': notification.variant !== (NOTIFICATION_VARIANT.PINNED && NOTIFICATION_VARIANT.HIGHLIGHTED)
   }"
   (click)="handleNotificationClick()"
 >

@@ -40,10 +40,6 @@ Object.defineProperty(window, 'apstag', { value: GLOBAL_MOCKS.MOCK_APSTAG });
 Object.defineProperty(window, 'Criteo', { value: GLOBAL_MOCKS.MOCK_CRITEO });
 Object.defineProperty(window, 'Didomi', { value: GLOBAL_MOCKS.MOCK_DIDOMI });
 Object.defineProperty(window, 'IntersectionObserver', { value: GLOBAL_MOCKS.MockIntersectionObserver, writable: true });
-Object.defineProperty(window, 'fbq', {
-  value: GLOBAL_MOCKS.MOCK_FBQ,
-  writable: true,
-});
 Object.defineProperty(window, 'ga', { value: GLOBAL_MOCKS.MOCK_GA });
 Object.defineProperty(window, 'googletag', {
   value: GLOBAL_MOCKS.MOCK_GOOGLE_TAG,
@@ -61,10 +57,6 @@ Object.defineProperty(window, 'Notification', {
 Object.defineProperty(window, 'screen', { value: GLOBAL_MOCKS.MOCK_SCREEN });
 Object.defineProperty(window, 'sessionStorage', {
   value: GLOBAL_MOCKS.MOCK_SESSIONSTORAGE,
-});
-Object.defineProperty(window, 'pintrk', {
-  value: GLOBAL_MOCKS.MOCK_PINTRK,
-  writable: true,
 });
 Object.defineProperty(window, 'XMPP', { value: GLOBAL_MOCKS.MOCK_XMPP });
 Object.defineProperty(window, 'wadgtlft', {

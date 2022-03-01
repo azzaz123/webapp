@@ -3,7 +3,9 @@
   tslsanitizedBackground="{{ notification.image }}"
   class="NotificationImage"
   [ngClass]="
-    notification.productStatus || notification.variant === NOTIFICATION_VARIANT.PINNED
+    notification.variant === NOTIFICATION_VARIANT.PRODUCT ||
+    notification.variant === NOTIFICATION_VARIANT.PINNED ||
+    notification.variant === NOTIFICATION_VARIANT.HIGHLIGHTED
       ? 'NotificationImage--rounded'
       : 'NotificationImage--circle'
   "
