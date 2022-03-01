@@ -182,4 +182,52 @@ describe('PayviewDeliveryPointsComponent', () => {
       expect(deliveryServiceSpy).toHaveBeenCalledWith(component.deliveryMethods[fakeIndex]);
     });
   });
+
+  describe('WHEN the edit point has been called', () => {
+    describe('AND WHEN the edit point is the pick-up point', () => {
+      let deliveryServiceSpy;
+
+      beforeEach(() => {
+        deliveryServiceSpy = spyOn(payviewDeliveryService, 'editPickUpPoint').and.callFake(() => {});
+
+        fixture.detectChanges();
+      });
+
+      it('should raise the event corresponding to the pick-up point edition', () => {
+        component.editPoint(0);
+        expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('AND WHEN the edit point is the address', () => {
+      let deliveryServiceSpy;
+
+      beforeEach(() => {
+        deliveryServiceSpy = spyOn(payviewDeliveryService, 'editAddress').and.callFake(() => {});
+
+        fixture.detectChanges();
+      });
+
+      it('should raise the event corresponding to the address edition', () => {
+        component.editPoint(1);
+        expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('WHEN any point has been selected', () => {
+    let deliveryServiceSpy;
+
+    beforeEach(() => {
+      deliveryServiceSpy = spyOn(payviewDeliveryService, 'setDeliveryMethod').and.callFake(() => {});
+
+      fixture.detectChanges();
+    });
+
+    it('should raise the event corresponding to the delivery method selection', () => {
+      component.selectPoint(1);
+      expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
+      expect(deliveryServiceSpy).toHaveBeenCalledWith(component.deliveryMethods[1]);
+    });
+  });
 });
