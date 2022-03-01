@@ -29,6 +29,7 @@ import { SidebarService } from '../core/services/sidebar.service';
 import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 @Component({
   template: '',
@@ -99,6 +100,14 @@ describe('SidebarComponent', () => {
             provide: UnreadChatMessagesService,
             useValue: {
               totalUnreadMessages$: of(1),
+            },
+          },
+          {
+            provide: NotificationApiService,
+            useValue: {
+              totalUnreadNotifications$: of(0),
+              getNotifications: () => {},
+              refreshUnreadNotifications: () => {},
             },
           },
           { provide: AnalyticsService, useClass: MockAnalyticsService },

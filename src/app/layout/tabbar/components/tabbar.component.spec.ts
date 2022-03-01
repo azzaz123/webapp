@@ -7,14 +7,30 @@ import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-cha
 import { MockUnreadChatMessagesService } from '@fixtures/chat';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { Observable, of, BehaviorSubject, Subject } from 'rxjs';
 import { ELEMENT_TYPE, INPUT_TYPE, TabbarComponent } from './tabbar.component';
 import { TabbarService } from '../core/services/tabbar.service';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 describe('TabbarComponent', () => {
+  // class MockNotificationApiService {
+  //   public totalUnreadMessages$: Subject<number> = new Subject<number>();
+  //   private _totalUnreadMessages = 0;
+  //
+  //   set totalUnreadMessages(value: number) {
+  //     value = Math.max(value, 0);
+  //     this._totalUnreadMessages = value;
+  //     this.totalUnreadMessages$.next(value);
+  //   }
+  //
+  //   get totalUnreadMessages(): number {
+  //     return this._totalUnreadMessages;
+  //   }
+  // }
+
   let component: TabbarComponent;
   let de: DebugElement;
   let el: HTMLElement;
@@ -45,6 +61,14 @@ describe('TabbarComponent', () => {
           {
             provide: UnreadChatMessagesService,
             useClass: MockUnreadChatMessagesService,
+          },
+          {
+            provide: NotificationApiService,
+            useValue: {
+              totalUnreadNotifications$: of(0),
+              getNotifications: () => {},
+              refreshUnreadNotifications: () => {},
+            },
           },
           {
             provide: Router,
