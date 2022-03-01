@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenService } from '../accept-screen/accept-screen.service';
 
@@ -39,7 +39,10 @@ export class AcceptScreenStoreService {
   }
 
   public acceptRequest(requestId: string): Observable<void> {
-    const isPostOfficeDropOff: boolean = CARRIER_DROP_OFF_MODE.POST_OFFICE === this.selectedCarrierType();
+    const selectedCarrierType: CARRIER_DROP_OFF_MODE = this.properties.carriers.find(
+      (carrier: AcceptScreenCarrier) => carrier.isSelected
+    ).type;
+    const isPostOfficeDropOff: boolean = CARRIER_DROP_OFF_MODE.POST_OFFICE === selectedCarrierType;
 
     if (isPostOfficeDropOff) {
       return this.acceptScreenService.acceptRequestPostOfficeDropOff(requestId);
@@ -67,24 +70,5 @@ export class AcceptScreenStoreService {
 
   private set properties(value: AcceptScreenProperties) {
     this.propertiesSubject.next(value);
-  }
-
-  private get carrierSelectedType$(): Observable<CARRIER_DROP_OFF_MODE> {
-    return this.selectedCarrier$.pipe(map((carrier: AcceptScreenCarrier) => carrier.type));
-  }
-
-  private get selectedCarrier$(): Observable<AcceptScreenCarrier> {
-    return this.properties$.pipe(
-      map((properties: AcceptScreenProperties) => properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected))
-    );
-  }
-
-  private selectedCarrierType(): CARRIER_DROP_OFF_MODE {
-    let carrierDropOffMode: CARRIER_DROP_OFF_MODE;
-    this.carrierSelectedType$.pipe(take(1)).subscribe((selectedDropOffMode: number) => {
-      carrierDropOffMode = selectedDropOffMode;
-    });
-
-    return carrierDropOffMode;
   }
 }
