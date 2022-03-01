@@ -103,6 +103,7 @@ function getCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected:
       !!dropOffMode.postOfficeDetails?.selectionRequired
     ),
     acceptEndpoint: dropOffMode.acceptEndpoint,
+    lastAddressUsedId: dropOffMode.postOfficeDetails?.lastAddressUsed.id || null,
   };
 }
 
