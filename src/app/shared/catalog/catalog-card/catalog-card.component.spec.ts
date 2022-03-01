@@ -126,7 +126,6 @@ describe('CatalogCardComponent', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
         spyOn(eventService, 'emit');
-        spyOn(window as any, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
@@ -145,10 +144,6 @@ describe('CatalogCardComponent', () => {
 
       it('should emit ITEM_SOLD event', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
-      });
-
-      it('should send facebook CompleteRegistrations tracking', () => {
-        expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode });
       });
     });
   });

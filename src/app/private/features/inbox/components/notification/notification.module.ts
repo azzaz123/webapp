@@ -6,5 +6,6 @@ import { NotificationImageModule } from '@private/features/inbox/components/noti
 @NgModule({
   declarations: [NotificationComponent],
   imports: [CommonModule, NotificationImageModule],
+  exports: [NotificationComponent],
 })
 export class NotificationModule {}

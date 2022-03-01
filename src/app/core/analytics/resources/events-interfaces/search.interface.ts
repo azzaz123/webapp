@@ -35,7 +35,8 @@ export interface Search {
     | 'seo_location_list'
     | 'seo_sitemap'
     | 'item_detail'
-    | 'subcategory_slider';
+    | 'subcategory_slider'
+    | 'suggester';
   /**
    * Identifier of the screen where the searching has been done
    */
@@ -58,9 +59,13 @@ export interface Search {
    */
   categoryId?: number;
   /**
-   * Keywords applied in the search
+   * Keywords applied by the user. If source is the suggester then it refers to suggestion that the user clicked
    */
   keywords?: string;
+  /**
+   * Keywords applied by the user in the search. It will only be filled when the source is the suggester and keywords refers to the chosen suggestion.
+   */
+  originalKeywords?: string;
   /**
    * Minimum price set as a filter in the search
    */

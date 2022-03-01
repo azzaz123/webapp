@@ -37,4 +37,8 @@ export interface ViewOwnItemDetail {
    * Indicates whether the listing is active (items can be inactive in categories with listing limits)
    */
   isActive: boolean;
+  /**
+   * Whether the shipping toggle is activated for the item (buyer can send shipping request)
+   */
+  shippingAllowed?: boolean;
 }

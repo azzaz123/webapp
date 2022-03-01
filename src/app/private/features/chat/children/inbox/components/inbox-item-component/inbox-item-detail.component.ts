@@ -45,11 +45,4 @@ export class InboxItemDetailComponent implements OnInit {
       this.item.reserved = !this.item.reserved;
     });
   }
-
-  public trackSoldEvent(item: InboxItem) {
-    fbq('track', 'CompleteRegistration', {
-      value: item.price.amount,
-      currency: item.price.currency,
-    });
-  }
 }
