@@ -46,14 +46,14 @@ export class DeliveryMapService {
       .pipe(tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices)));
   }
 
-  public selectOfficePreference(): Observable<void> {
+  public selectOfficePreference(userOfficeId: string): Observable<void> {
     return this.selectedOffice$.pipe(
       take(1),
       switchMap((carrierOfficeInfo: CarrierOfficeInfo) => {
-        if (carrierOfficeInfo.id) {
+        if (userOfficeId) {
           return this.carrierOfficeAddressesApiService.createSelectedCarrierOffice(carrierOfficeInfo);
         }
-        return this.carrierOfficeAddressesApiService.updateSelectedCarrierOffice(carrierOfficeInfo.id, carrierOfficeInfo);
+        return this.carrierOfficeAddressesApiService.updateSelectedCarrierOffice(userOfficeId, carrierOfficeInfo);
       })
     );
   }

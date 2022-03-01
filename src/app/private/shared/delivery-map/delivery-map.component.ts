@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Location, LocationWithRadius } from '@api/core/model';
 import { CarrierOfficeInfo, CarrierOfficeSchedule } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
@@ -18,7 +18,8 @@ import { I18nService } from '@core/i18n/i18n.service';
   templateUrl: './delivery-map.component.html',
   styleUrls: ['./delivery-map.component.scss'],
 })
-export class DeliveryMapComponent implements OnInit {
+export class DeliveryMapComponent implements OnInit, OnDestroy {
+  @Input() userOfficeId: string;
   @Input() fullAddress: string;
   @Input() selectedCarrier: POST_OFFICE_CARRIER;
   @Output() goToDeliveryAddress: EventEmitter<void> = new EventEmitter();
@@ -48,6 +49,10 @@ export class DeliveryMapComponent implements OnInit {
     this.initialCenterCoordinates$ = this.deliveryMapService.initialCenterCoordinates$(this.fullAddress);
   }
 
+  ngOnDestroy() {
+    this.resetSelectedOfficeInformation();
+  }
+
   public selectOffice(officeLocation: Location): void {
     this.deliveryMapService.selectOffice(officeLocation).pipe(take(1)).subscribe();
   }
@@ -70,12 +75,10 @@ export class DeliveryMapComponent implements OnInit {
 
   public selectOfficePreference(): void {
     if (!this.fullAddress) {
-      // TODO: show modal 		Date: 2022/02/25
-      this.openDeliveryAddressWarning();
-      return;
+      return this.openDeliveryAddressWarning();
     }
 
-    this.deliveryMapService.selectOfficePreference().subscribe(
+    this.deliveryMapService.selectOfficePreference(this.userOfficeId).subscribe(
       () => {},
       () => {
         this.showError();
