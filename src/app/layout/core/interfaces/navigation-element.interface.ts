@@ -1,7 +1,7 @@
 export interface NavigationElement {
   text: string;
   external: boolean;
-  alternateText: string;
+  alternativeText: string;
   href: string;
   icon?: string;
   children?: NavigationElement[];
