@@ -39,6 +39,18 @@ export class AcceptScreenStoreService {
     this.properties = { ...currentProperties, carriers: newCarriers };
   }
 
+  public acceptRequest(requestId: string): Observable<void> {
+    const selectedCarrierType: CARRIER_DROP_OFF_MODE = this.properties.carriers.find(
+      (carrier: AcceptScreenCarrier) => carrier.isSelected
+    ).type;
+    const isPostOfficeDropOff: boolean = CARRIER_DROP_OFF_MODE.POST_OFFICE === selectedCarrierType;
+
+    if (isPostOfficeDropOff) {
+      return this.acceptScreenService.acceptRequestPostOfficeDropOff(requestId);
+    }
+    return this.acceptScreenService.acceptRequestHomePickup(requestId);
+  }
+
   public rejectRequest(requestId: string): Observable<void> {
     return this.acceptScreenService.rejectRequest(requestId);
   }
