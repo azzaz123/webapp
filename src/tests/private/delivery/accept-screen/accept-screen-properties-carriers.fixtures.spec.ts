@@ -10,6 +10,7 @@ import {
   AcceptScreenDropOffPointTitle,
 } from '@private/features/accept-screen/constants/accept-screen-translations';
 import { ACCEPT_SCREEN_STEPS } from '@private/features/accept-screen/constants/accept-screen-steps';
+import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 
 const freeCostTranslation: string = $localize`:@@accept_view_seller_delivery_method_selector_free_text:FREE`;
 const MOCK_PICK_UP_START_DATE: string = MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED.schedule.pickUpStartDate.toLocaleTimeString(
@@ -140,3 +141,23 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_FIRST_WITH_LAST_ADDRESS: AcceptScreenCa
     acceptEndpoint: MOCK_CARRIER_PO_WITH_LAST_ADDRESS.acceptEndpoint,
   },
 ];
+
+export const MOCK_ACCEPT_SCREEN_CARRIER_WITH_DELIVERY_PICK_UP_DAY: AcceptScreenCarrier = {
+  type: MOCK_CARRIER_FREE_COST.type,
+  name: POST_OFFICE_CARRIER.SEUR,
+  isSelected: false,
+  icon: MOCK_CARRIER_FREE_COST.icon,
+  title: AcceptScreenDropOffPointTitle[MOCK_CARRIER_FREE_COST.type],
+  price: freeCostTranslation,
+  information: $localize`:@@accept_view_seller_po_all_delivery_method_selector_time_limit_description:You have 5 days to drop off the package.`,
+  secondaryInformation: null,
+  restrictions: MOCK_CARRIER_FREE_COST.restrictions,
+  buttonProperties: {
+    isShowed: true,
+    text: AcceptScreenDropOffPointButtonTranslations[MOCK_CARRIER_FREE_COST.type],
+    redirectStep: ACCEPT_SCREEN_STEPS.MAP,
+  },
+  acceptEndpoint: MOCK_CARRIER_FREE_COST.acceptEndpoint,
+  lastAddressUsedId: '6d79d56f-3688-4c50-b4e4-d8b597492f71',
+  deliveryPickUpDay: 'Tuesday, 25 January 2022',
+};

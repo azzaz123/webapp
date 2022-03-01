@@ -36,13 +36,13 @@ import { Router } from '@angular/router';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off-mode.type';
+import { MOCK_ACCEPT_SCREEN_CARRIER_WITH_DELIVERY_PICK_UP_DAY } from '@fixtures/private/delivery/accept-screen/accept-screen-properties-carriers.fixtures.spec';
 
 describe('AcceptScreenModalComponent', () => {
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
   const carrierSelectedIndexSubjectMock: BehaviorSubject<number> = new BehaviorSubject(1);
   const countriesAsOptionsAndDefaultSubject: ReplaySubject<CountryOptionsAndDefault> = new ReplaySubject(1);
 
-  const MOCK_DELIVERY_DAY: string = 'Lalalalala';
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const sellerAddressHeaderStylesSelector: string = '.AcceptScreenModal__sellerWithAddressHeader';
   const carrierButtonSelector: string = '.AcceptScreenModal__carrierButton';
@@ -95,8 +95,8 @@ describe('AcceptScreenModalComponent', () => {
             get carrierSelectedIndex$() {
               return carrierSelectedIndexSubjectMock.asObservable();
             },
-            get deliveryPickUpDay$() {
-              return of(MOCK_DELIVERY_DAY);
+            get carrierSelected$() {
+              return of(MOCK_ACCEPT_SCREEN_CARRIER_WITH_DELIVERY_PICK_UP_DAY);
             },
             rejectRequest() {},
             acceptRequest() {},
@@ -391,7 +391,9 @@ describe('AcceptScreenModalComponent', () => {
               beforeEach(() => {
                 acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED);
 
-                acceptScreenStoreService.deliveryPickUpDay$.subscribe((day: string) => (expectedDeliveryDay = day));
+                acceptScreenStoreService.carrierSelected$.subscribe(
+                  (carrier: AcceptScreenCarrier) => (expectedDeliveryDay = carrier.deliveryPickUpDay)
+                );
                 fixture.detectChanges();
                 const carrierButton = fixture.debugElement.query(By.css(carrierButtonSelector)).nativeElement;
 
@@ -405,7 +407,7 @@ describe('AcceptScreenModalComponent', () => {
               });
               describe('and we get the delivery pick up day', () => {
                 it('should return the store provided value', () => {
-                  expect(expectedDeliveryDay).toStrictEqual(MOCK_DELIVERY_DAY);
+                  expect(expectedDeliveryDay).toStrictEqual(MOCK_ACCEPT_SCREEN_CARRIER_WITH_DELIVERY_PICK_UP_DAY.deliveryPickUpDay);
                 });
               });
 
