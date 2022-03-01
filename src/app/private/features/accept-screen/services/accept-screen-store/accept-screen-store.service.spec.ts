@@ -1,9 +1,9 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import {
-  MOCK_ACCEPT_SCREEN_PROPERTIES,
-  MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU,
   MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS,
+  MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED,
+  MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_FIRST_SELECTED,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
@@ -13,11 +13,14 @@ import { AcceptScreenStoreService } from './accept-screen-store.service';
 
 describe('AcceptScreenStoreService', () => {
   const MOCK_REQUEST_ID: string = '2387283dsbd';
-  const acceptScreenServiceSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(MOCK_ACCEPT_SCREEN_PROPERTIES);
+  const acceptScreenServiceSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(
+    MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED
+  );
 
   let service: AcceptScreenStoreService;
   let acceptScreenService: AcceptScreenService;
   let expectedAcceptScreenProperties: AcceptScreenProperties;
+  let expectedDeliveryPickUpDay: string;
   let expectedDropOffMode: CARRIER_DROP_OFF_MODE;
 
   beforeEach(() => {
@@ -57,6 +60,9 @@ describe('AcceptScreenStoreService', () => {
       service.properties$.subscribe((newProperties: AcceptScreenProperties) => {
         expectedAcceptScreenProperties = newProperties;
       });
+      service.deliveryPickUpDay$.subscribe((day: string) => {
+        expectedDeliveryPickUpDay = day;
+      });
 
       service.initialize(MOCK_REQUEST_ID);
       tick();
@@ -68,11 +74,20 @@ describe('AcceptScreenStoreService', () => {
     });
 
     it('should update the accept screen store properties ', () => {
-      expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES);
+      expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED);
+    });
+
+    describe('and we get the delivery pick up day selected', () => {
+      it('should return the selected one', () => {
+        const MOCK_DELIVERY_PICK_UP_DAY: string = MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED.carriers.find(
+          (carrier: AcceptScreenCarrier) => carrier.isSelected
+        ).deliveryPickUpDay;
+        expect(expectedDeliveryPickUpDay).toStrictEqual(MOCK_DELIVERY_PICK_UP_DAY);
+      });
     });
 
     describe('and when we notify selected drop off mode by user changed', () => {
-      const carrierPositionUpdatedByUser: number = 1;
+      const carrierPositionUpdatedByUser: number = 0;
 
       beforeEach(fakeAsync(() => {
         service.carrierSelectedIndex$.subscribe((newCarrierSelected: CARRIER_DROP_OFF_MODE) => {
@@ -97,7 +112,7 @@ describe('AcceptScreenStoreService', () => {
       });
 
       it('should update the accept screen properties', () => {
-        expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU);
+        expect(expectedAcceptScreenProperties).toStrictEqual(MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_FIRST_SELECTED);
       });
     });
 

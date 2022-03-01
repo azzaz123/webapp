@@ -77,6 +77,7 @@ describe('CurrentConversationComponent', () => {
   let modalMockResult: Promise<{}>;
 
   const mockDeliveryBannerSubject$: BehaviorSubject<DeliveryBanner> = new BehaviorSubject(null);
+  const mockDeliveryLoadingSubject$: BehaviorSubject<boolean> = new BehaviorSubject(null);
 
   beforeEach(
     waitForAsync(() => {
@@ -136,6 +137,7 @@ describe('CurrentConversationComponent', () => {
           {
             provide: DeliveryConversationContextService,
             useValue: {
+              loading$: mockDeliveryLoadingSubject$,
               bannerProperties$: mockDeliveryBannerSubject$,
               update: () => {},
               reset: () => {},
@@ -316,6 +318,28 @@ describe('CurrentConversationComponent', () => {
           );
         });
       });
+
+      describe('and when the delivery context has not been loaded', () => {
+        beforeEach(() => {
+          mockDeliveryLoadingSubject$.next(true);
+          fixture.detectChanges();
+        });
+
+        it('should set third voice state as loading', () => {
+          expect(deliveryThirdVoiceElement.componentInstance.loading).toEqual(true);
+        });
+      });
+
+      describe('and when the delivery context has been loaded', () => {
+        beforeEach(() => {
+          mockDeliveryLoadingSubject$.next(false);
+          fixture.detectChanges();
+        });
+
+        it('should NOT set third voice state as loading', () => {
+          expect(deliveryThirdVoiceElement.componentInstance.loading).toEqual(false);
+        });
+      });
     });
 
     describe('when conversation has shipping keywords third voice', () => {
@@ -335,7 +359,7 @@ describe('CurrentConversationComponent', () => {
       });
     });
 
-    describe('when new third voice is received in realtime for current conversation', () => {
+    describe('when new delivery third voice is received in realtime for current conversation', () => {
       beforeEach(fakeAsync(() => {
         spyOn(deliveryConversationContextService, 'reset');
         spyOn(deliveryConversationContextService, 'update');

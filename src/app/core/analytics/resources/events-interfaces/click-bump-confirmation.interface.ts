@@ -10,35 +10,19 @@
  */
 export interface ClickBumpConfirmation {
   /**
-   * If the item clicked is from a professional user
-   */
-  isPro: boolean;
-  /**
    * The unique identifier for an item
    */
   itemId: string;
   /**
-   * Identifier of the category that the item belongs to
+   * If the item clicked is from a professional user
    */
-  categoryId: number;
+  isPro?: boolean;
   /**
-   * Item price without fees
+   * If is a bump from a subscription package
    */
-  itemPrice: number;
-  /**
-   * Item title
-   */
-  title: string;
-  /**
-   * Type of bump selected (urgent, local, city, national)
-   */
-  bumpType: 'urgent' | 'local' | 'city' | 'national';
-  /**
-   * Number of days ofbump duration selected (2, 7, 15 days)
-   */
-  bumpDays: 2 | 7 | 15 | 30;
+  isSubscriptionBump?: boolean;
   /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: 213;
+  screenId?: 213 | 318 | 319;
 }

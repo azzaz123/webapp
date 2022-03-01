@@ -2,11 +2,17 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/delivery-item-details-api.service';
+import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
+import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { MOCK_BUYER_REQUESTS } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
-import { MOCK_DELIVERY_ITEM_DETAILS } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
+import {
+  MOCK_DELIVERY_ITEM_DETAILS,
+  MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE,
+  MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED,
+} from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { MOCK_INBOX_CONVERSATION_AS_BUYER, MOCK_INBOX_CONVERSATION_AS_BUYER_WITH_SOLD_ITEM } from '@fixtures/chat';
+import { MOCK_INBOX_CONVERSATION_AS_BUYER } from '@fixtures/chat';
 import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,6 +21,7 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
+import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
 import { PriceableDeliveryBanner } from '../../../delivery-banner/interfaces/priceable-delivery-banner.interface';
@@ -56,17 +63,45 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
   describe('when asking for buyer context', () => {
     describe('when buyer has done previously buy requests to current item', () => {
-      beforeEach(() => {
-        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUESTS));
-        spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+      describe('and when the last request is in a pending or accepted state', () => {
+        beforeEach(() => {
+          const MOCK_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
+            (request) => request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING
+          );
+          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_SUCCESSFUL_REQUESTS));
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+        });
+
+        it('should hide banner', fakeAsync(() => {
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
+            expect(result).toBeFalsy();
+          });
+          tick();
+        }));
       });
 
-      it('should hide banner', fakeAsync(() => {
-        service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
-          expect(result).toBeFalsy();
+      describe('and when the last request is NOT in a pending or accepted state', () => {
+        beforeEach(() => {
+          const MOCK_NON_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
+            (request) => !(request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING)
+          );
+          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_NON_SUCCESSFUL_REQUESTS));
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         });
-        tick();
-      }));
+
+        it('should show the buy banner', fakeAsync(() => {
+          const expectedBanner: PriceableDeliveryBanner & ActionableDeliveryBanner = {
+            type: DELIVERY_BANNER_TYPE.BUY,
+            action: MOCK_BUY_DELIVERY_BANNER_PROPERTIES.action,
+            price: MOCK_DELIVERY_ITEM_DETAILS.minimumPurchaseCost,
+          };
+
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
+            expect(result).toEqual(expectedBanner);
+          });
+          tick();
+        }));
+      });
     });
 
     describe('when buyer has 0 requests to current item', () => {
@@ -75,20 +110,26 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       });
 
       describe('and server responses with buy cost price', () => {
-        beforeEach(() => {
-          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
-        });
+        describe('when the item is not shippable', () => {
+          beforeEach(() => {
+            spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(
+              of(MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE)
+            );
+          });
 
-        describe('and when the item was sold', () => {
           it('should hide banner', fakeAsync(() => {
-            service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER_WITH_SOLD_ITEM).subscribe((result) => {
+            service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
               expect(result).toBeFalsy();
             });
             tick();
           }));
         });
 
-        describe('and when the item was not sold', () => {
+        describe('and when the item is shippable', () => {
+          beforeEach(() => {
+            spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+          });
+
           it('should show buy banner with price', fakeAsync(() => {
             const expectedBanner: PriceableDeliveryBanner & ActionableDeliveryBanner = {
               type: DELIVERY_BANNER_TYPE.BUY,
@@ -104,28 +145,50 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         });
       });
 
-      describe('and server responses without buy cost price', () => {
+      describe('and when the item is not shippable', () => {
         beforeEach(() => {
-          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(null));
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(
+            of(MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE)
+          );
         });
 
-        describe('and when the item was sold', () => {
-          it('should hide banner', fakeAsync(() => {
-            service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER_WITH_SOLD_ITEM).subscribe((result) => {
-              expect(result).toBeFalsy();
-            });
-            tick();
-          }));
+        it('should hide banner', fakeAsync(() => {
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
+            expect(result).toBeFalsy();
+          });
+          tick();
+        }));
+      });
+
+      describe('and when the seller did not activate shipping', () => {
+        beforeEach(() => {
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(
+            of(MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED)
+          );
         });
 
-        describe('and when the item was not sold', () => {
-          it('should show ask seller for shipping', fakeAsync(() => {
-            service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
-              expect(result).toEqual(ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES);
-            });
-            tick();
-          }));
-        });
+        it('should show ask seller for shipping', fakeAsync(() => {
+          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe((result) => {
+            expect(result).toEqual(ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES);
+          });
+          tick();
+        }));
+      });
+    });
+  });
+
+  describe('when handling banner CTA click', () => {
+    describe('when the action is open the payview', () => {
+      beforeEach(() => {
+        service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_BUYER, DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
+      });
+
+      it('should navigate to the item payview', () => {
+        const itemHash: string = MOCK_INBOX_CONVERSATION_AS_BUYER.item.id;
+        const expectedRoute: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+
+        expect(router.navigate).toHaveBeenCalledWith([expectedRoute]);
+        expect(router.navigate).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -139,7 +202,10 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       describe('and when there is last buyer request', () => {
         beforeEach(fakeAsync(() => {
           spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUESTS));
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+
           service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
+          tick();
           tick();
         }));
 
@@ -156,7 +222,10 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       describe('and when there is no last buyer request', () => {
         beforeEach(fakeAsync(() => {
           spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([]));
+          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+
           service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
+          tick();
           tick();
         }));
 

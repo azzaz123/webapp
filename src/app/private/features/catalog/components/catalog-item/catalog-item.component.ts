@@ -88,10 +88,6 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public setSold(item: Item) {
-    fbq('track', 'CompleteRegistration', {
-      value: item.salePrice,
-      currency: item.currencyCode,
-    });
     this.itemChange.emit({
       item: item,
       action: ITEM_CHANGE_ACTION.SOLD,
