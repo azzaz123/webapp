@@ -45,7 +45,7 @@ export class PayviewStateManagementService {
         },
         error: () => {
           this.stateSubject.next(null);
-          subscription.unsubscribe;
+          subscription.unsubscribe();
         },
         complete: () => {
           subscription.unsubscribe();
