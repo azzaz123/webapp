@@ -135,6 +135,7 @@ export class RealTimeService {
         categoryId: conversation.item.categoryId,
         country: this.analyticsService.market,
         language: this.analyticsService.appLocale,
+        shippingAllowed: null,
       },
     };
 
