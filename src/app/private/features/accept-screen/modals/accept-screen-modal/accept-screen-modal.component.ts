@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { COLORS } from '@core/colors/colors-constants';
 import { ErrorsService } from '@core/errors/errors.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
@@ -18,10 +17,8 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
-import { AcceptScreenProperties } from '../../interfaces';
+import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
-import { take } from 'rxjs/operators';
-import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off-mode.type';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -34,9 +31,8 @@ export class AcceptScreenModalComponent implements OnInit {
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties> = this.acceptScreenStoreService.properties$;
   public acceptScreenCountries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
-  public deliveryPickUpDay$: Observable<string> = this.acceptScreenStoreService.deliveryPickUpDay$;
+  public carrierSelected$: Observable<AcceptScreenCarrier> = this.acceptScreenStoreService.carrierSelected$;
   public carrierSelectedIndex$: Observable<number> = this.acceptScreenStoreService.carrierSelectedIndex$;
-  public carrierSelectedName$: Observable<POST_OFFICE_CARRIER> = this.acceptScreenStoreService.carrierSelectedName$;
   public ACCEPT_SCREEN_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
 
   public headerText: string;

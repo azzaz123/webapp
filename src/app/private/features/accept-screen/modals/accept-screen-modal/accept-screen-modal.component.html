@@ -181,14 +181,17 @@
     </ng-template>
     <ng-template step>
       <tsl-delivery-preference-schedule
-        [deliveryPickUpDay]="deliveryPickUpDay$ | async"
+        *ngIf="carrierSelected$ | async as selectedCarrier"
+        [deliveryPickUpDay]="selectedCarrier.deliveryPickUpDay"
         (scheduleSaveSucceded)="goToAcceptScreenOrDeliveryMap()"
       ></tsl-delivery-preference-schedule>
     </ng-template>
     <ng-template step
       ><tsl-delivery-map
+        *ngIf="carrierSelected$ | async as selectedCarrier"
         [fullAddress]="properties.seller.fullAddress"
-        [selectedCarrier]="carrierSelectedName$ | async"
+        [selectedCarrier]="selectedCarrier.name"
+        [userOfficeId]="selectedCarrier.lastAddressUsedId"
         (goToDeliveryAddress)="goToDeliveryAddressFromMap($event)"
       ></tsl-delivery-map
     ></ng-template>

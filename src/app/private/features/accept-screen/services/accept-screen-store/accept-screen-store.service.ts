@@ -65,15 +65,7 @@ export class AcceptScreenStoreService {
     );
   }
 
-  public get carrierSelectedName$(): Observable<POST_OFFICE_CARRIER> {
-    return this.selectedCarrier$.pipe(map((carrier: AcceptScreenCarrier) => carrier.name));
-  }
-
-  public get deliveryPickUpDay$(): Observable<string> {
-    return this.selectedCarrier$.pipe(map((carrier: AcceptScreenCarrier) => carrier.deliveryPickUpDay));
-  }
-
-  private get selectedCarrier$(): Observable<AcceptScreenCarrier> {
+  public get carrierSelected$(): Observable<AcceptScreenCarrier> {
     return this.properties$.pipe(
       map((properties: AcceptScreenProperties) => properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected))
     );
