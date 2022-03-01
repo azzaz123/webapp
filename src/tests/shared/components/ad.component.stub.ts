@@ -3,8 +3,7 @@ import { AdSlotConfiguration } from '@core/ads/models';
 
 @Component({
   selector: 'tsl-sky',
-  // template: '<span>{{adSlot}}</span>',
-  template: '<span>HOLA</span>',
+  template: '{{adSlot}}',
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
 export class AdComponentStub {

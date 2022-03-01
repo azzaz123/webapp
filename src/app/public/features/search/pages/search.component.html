@@ -18,10 +18,9 @@
       </div>
       <div top *ngIf="device === DevicesType.MOBILE" class="d-block h-100 position-relative">
         <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.mobileTopBanner"></tsl-sky>
-        top banner ADVERTISEMENT
       </div>
-    <div right class="d-flex flex-column h-100">
-      <ng-container *ngIf="device === DevicesType.DESKTOP">
+
+      <div right class="d-flex flex-column h-100" *ngIf="device === DevicesType.DESKTOP">
         <div class="Search__sky w-100 mb-3">
           <div class="Search__sky-wrapper position-sticky">
             <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.pos1Right"></tsl-sky>
@@ -32,8 +31,8 @@
             <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.pos2Right"></tsl-sky>
           </div>
         </div>
-      </ng-container>
-    </div>
+      </div>
+
     <ng-container main>
       <div class="Search__filters__bubble d-flex position-sticky justify-content-center" *ngIf="showInfoBubble">
         <tsl-info-bubble class="position-relative mt-2">{{ infoBubbleText }}</tsl-info-bubble>
@@ -49,9 +48,8 @@
         (clickedItemAndIndex)="trackClickItemCardEvent($event); setResetSearchId(true);"
         (toggleFavouriteEvent)="trackFavouriteToggleEvent($event)"
       >
-        <ng-container inlineAdSlot *ngxPermissionsOnly="PERMISSIONS.showAds">
-          <tsl-sky *ngIf="device === DevicesType.MOBILE" [adSlot]="adSlots.mobilePos1"></tsl-sky>
-          inline ADVERTISEMENT
+        <ng-container inlineAdSlot *ngIf="device === DevicesType.MOBILE">
+          <tsl-sky  [adSlot]="adSlots.mobilePos1" *ngxPermissionsOnly="PERMISSIONS.showAds"></tsl-sky>
         </ng-container>
       </tsl-public-item-card-list>
 
@@ -72,7 +70,6 @@
         </div>
         <div *ngIf="device === DevicesType.MOBILE" class="ItemCardList__sky-bottom row justify-content-center mt-4">
           <tsl-sky *ngxPermissionsOnly="PERMISSIONS.showAds" [adSlot]="adSlots.mobilePos2"></tsl-sky>
-          bottom ADVERTISEMENT
         </div>
       </ng-container>
     </ng-container>
