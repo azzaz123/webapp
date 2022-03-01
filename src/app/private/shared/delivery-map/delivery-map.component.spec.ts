@@ -10,21 +10,41 @@ import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { I18nService } from '@core/i18n/i18n.service';
 import { ErrorsService } from '@core/errors/errors.service';
+import { By } from '@angular/platform-browser';
+import { SearchableMovableMapComponent } from '../searchable-movable-map/searchable-movable-map.component';
+import { MOCK_ACCEPT_SCREEN_PROPERTIES } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
+import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
+import { of } from 'rxjs';
+import { CoordinateMother } from '@fixtures/core/geolocation/coordinate.mother';
+import { DeliveryMapModule } from './delivery-map.module';
+import { MOCK_CARRIERS_OFFICE_INFO } from '@fixtures/private/delivery/carrier-office-info/carrier-office-info.fixtures.spec';
 
 describe('DeliveryMapComponent', () => {
+  const MOCK_COORDINATE = CoordinateMother.random();
+
   let component: DeliveryMapComponent;
   let deliveryMapService: DeliveryMapService;
   let fixture: ComponentFixture<DeliveryMapComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, DeliveryMapModule],
       declarations: [DeliveryMapComponent],
       providers: [
         ErrorsService,
         I18nService,
         UserService,
-        DeliveryMapService,
+        {
+          provide: DeliveryMapService,
+          useValue: {
+            initializeOffices() {
+              return of(MOCK_CARRIERS_OFFICE_INFO);
+            },
+            initialCenterCoordinates$() {
+              return of(MOCK_COORDINATE);
+            },
+          },
+        },
         {
           provide: CookieService,
           useValue: {
@@ -65,5 +85,34 @@ describe('DeliveryMapComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('when the delivery map initializes... ', () => {
+    describe('and there is an address with a selected carrier', () => {
+      beforeEach(() => {
+        component.fullAddress = MOCK_ACCEPT_SCREEN_PROPERTIES.seller.fullAddress;
+        component.selectedCarrier = POST_OFFICE_CARRIER.SEUR;
+        spyOn(deliveryMapService, 'initializeOffices').and.callThrough();
+        spyOn(deliveryMapService, 'initialCenterCoordinates$').and.callThrough();
+        component.ngOnInit();
+      });
+
+      it('should call the delivery map service to initialize offices', () => {
+        expect(deliveryMapService.initializeOffices).toHaveBeenCalledTimes(1);
+        expect(deliveryMapService.initializeOffices).toBeCalledWith(
+          MOCK_ACCEPT_SCREEN_PROPERTIES.seller.fullAddress,
+          POST_OFFICE_CARRIER.SEUR
+        );
+      });
+
+      it('should call the delivery map service to initialize center coordinates', () => {
+        expect(deliveryMapService.initialCenterCoordinates$).toHaveBeenCalledTimes(1);
+        expect(deliveryMapService.initialCenterCoordinates$).toBeCalledWith(MOCK_ACCEPT_SCREEN_PROPERTIES.seller.fullAddress);
+      });
+
+      it('should render the searchable movable map', () => {
+        expect(fixture.debugElement.query(By.directive(SearchableMovableMapComponent))).toBeTruthy();
+      });
+    });
   });
 });
