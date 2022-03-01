@@ -51,9 +51,9 @@ export class DeliveryMapService {
       take(1),
       switchMap((carrierOfficeInfo: CarrierOfficeInfo) => {
         if (userOfficeId) {
-          return this.carrierOfficeAddressesApiService.createSelectedCarrierOffice(carrierOfficeInfo);
+          return this.carrierOfficeAddressesApiService.updateSelectedCarrierOffice(userOfficeId, carrierOfficeInfo);
         }
-        return this.carrierOfficeAddressesApiService.updateSelectedCarrierOffice(userOfficeId, carrierOfficeInfo);
+        return this.carrierOfficeAddressesApiService.createSelectedCarrierOffice(carrierOfficeInfo);
       })
     );
   }
