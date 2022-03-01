@@ -20,9 +20,13 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ManageSubscriptionService } from '@private/features/pro/services/manage-subscription.service';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { ProModalConfig, REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
 import { finalize } from 'rxjs/operators';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
+export const CHANGE_TIER_ERROR_CODE = 405;
 
 @Component({
   selector: 'tsl-subscription-edit',
@@ -95,10 +99,15 @@ export class SubscriptionEditComponent implements OnInit {
       )
       .subscribe(
         (response) => {
-          if (response.status === PAYMENT_SUCCESSFUL_CODE) {
-            this.showEditSuccessful = true;
-          } else {
-            this.showToastError();
+          switch (response.status) {
+            case PAYMENT_SUCCESSFUL_CODE:
+              this.showEditSuccessful = true;
+              break;
+            case CHANGE_TIER_ERROR_CODE:
+              this.showErrorModal();
+              break;
+            default:
+              this.showToastError();
           }
         },
         () => {
@@ -123,6 +132,8 @@ export class SubscriptionEditComponent implements OnInit {
   }
 
   private showToastError(): void {
+    this.showErrorModal();
+    return;
     this.toastService.show({
       title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE)}`,
       text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)}`,
@@ -142,5 +153,18 @@ export class SubscriptionEditComponent implements OnInit {
       },
     };
     this.analyticsService.trackEvent(event);
+  }
+
+  private showErrorModal(): void {
+    const modal = this.modalService.open(ProModalComponent, {
+      windowClass: 'pro-modal',
+    });
+    const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.error_downgrade];
+    config.buttons.secondary.redirect = {
+      type: REDIRECT_TYPE.href,
+      url: this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPTION),
+    };
+
+    modal.componentInstance.modalConfig = config;
   }
 }
