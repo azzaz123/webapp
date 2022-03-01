@@ -18,6 +18,8 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { InboxConversation } from '@private/features/chat/core/model';
+import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
+import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
@@ -33,14 +35,14 @@ export class DeliveryConversationContextAsBuyerService {
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
     const { item } = conversation;
-    const { id: itemHash, sold } = item;
+    const { id: itemHash } = item;
 
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       tap((requests) => (this.lastRequest = requests ? requests[0] : null)),
       concatMap((buyerRequests: BuyerRequest[]) => {
         return this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash).pipe(
           map((deliveryItemDetails: DeliveryItemDetails) => {
-            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, sold, deliveryItemDetails);
+            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, deliveryItemDetails);
           })
         );
       })
@@ -49,8 +51,23 @@ export class DeliveryConversationContextAsBuyerService {
 
   public handleThirdVoiceCTAClick(): void {
     this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((enabled) => {
-      enabled ? this.redirectToTTS() : this.modalService.open(TRXAwarenessModalComponent);
+      enabled ? this.redirectToTTS() : this.openAwarenessModal();
     });
+  }
+
+  public handleBannerCTAClick(conversation: InboxConversation, action: DELIVERY_BANNER_ACTION): void {
+    if (action === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
+      return this.redirectToPayview(conversation);
+    }
+
+    return this.openAwarenessModal();
+  }
+
+  private redirectToPayview(conversation: InboxConversation): void {
+    const { item } = conversation;
+    const { id: itemHash } = item;
+    const route: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+    this.router.navigate([route]);
   }
 
   private redirectToTTS(): void {
@@ -63,29 +80,37 @@ export class DeliveryConversationContextAsBuyerService {
 
   private mapDeliveryDetailsAsBuyerToBannerProperties(
     buyerRequests: BuyerRequest[],
-    isItemSold: boolean,
-    deliveryItemDetails?: DeliveryItemDetails
+    deliveryItemDetails: DeliveryItemDetails
   ): DeliveryBanner {
-    const noDeliveryItemDetails: boolean = !deliveryItemDetails;
+    const isShippingNotAllowed: boolean = !deliveryItemDetails.isShippingAllowed;
+    const isNotShippable: boolean = !deliveryItemDetails.isShippable;
     const buyerHasNoRequests: boolean = buyerRequests.length === 0;
-    const buyerHasRequests: boolean = !buyerHasNoRequests;
 
-    if (isItemSold) {
+    // TODO: Review/remove this condition when TRX MVP is done
+    // Apps hide the buy banner for this case and user has to go to item detail to open payview
+    // In web, while we don't have the payview entry point in the item detail,
+    // we will show the buy banner when last request is not accepted or it is not pending
+    const lastRequestFailed: boolean = !(
+      this.lastRequest?.status === BUYER_REQUEST_STATUS.ACCEPTED || this.lastRequest?.status === BUYER_REQUEST_STATUS.PENDING
+    );
+    const showBuyBanner: boolean = buyerHasNoRequests || lastRequestFailed;
+
+    if (isNotShippable) {
       return null;
     }
 
-    if (noDeliveryItemDetails) {
+    if (isShippingNotAllowed) {
       return ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES;
     }
 
-    if (buyerHasRequests) {
-      return null;
-    }
-
-    if (buyerHasNoRequests) {
+    if (showBuyBanner) {
       return BUY_DELIVERY_BANNER_PROPERTIES(deliveryItemDetails.minimumPurchaseCost);
     }
 
     return null;
+  }
+
+  private openAwarenessModal(): void {
+    this.modalService.open(TRXAwarenessModalComponent);
   }
 }

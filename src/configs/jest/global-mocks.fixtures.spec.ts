@@ -1,5 +1,5 @@
-import { DidomiLibrary } from '../../app/core/ads/vendors/didomi/didomi.interface';
-import { ThreatMetrixLibrary } from 'app/core/trust-and-safety/threat-metrix.interface';
+import { DidomiLibrary } from '@core/ads/vendors/didomi/didomi.interface';
+import { ThreatMetrixLibrary } from '@core/trust-and-safety/threat-metrix.interface';
 
 export const MOCK_APPBOY = {
   initialize: () => {},
@@ -10,11 +10,12 @@ export const MOCK_APPBOY = {
   registerAppboyPushMessages: () => {},
   changeUser: (_userId) => {},
   openSession: () => {},
+  toggleAppboyLogging: () => {},
+  logContentCardsDisplayed: () => {},
+  getCachedContentCards: () => {},
 };
 
 export const MOCK_GA = () => {};
-export const MOCK_FBQ = () => {};
-export const MOCK_PINTRK = () => {};
 
 export const MOCK_GOOGLE_DEFINE_SLOT = {
   setTargeting(arg1, arg2) {

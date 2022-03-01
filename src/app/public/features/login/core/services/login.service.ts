@@ -10,6 +10,7 @@ import { AccessMetadata } from '../interfaces/access-metadata';
 import { LoginRequest } from '../interfaces/login.request';
 import { LoginResponse } from '../interfaces/login.response';
 import { WINDOW_TOKEN } from '@core/window/window.token';
+import { AnalyticsService } from '@core/analytics/analytics.service';
 
 export const LOGIN_ENDPOINT = 'api/v3/users/access/login';
 
@@ -20,16 +21,17 @@ export class LoginService {
     private eventService: EventService,
     private accessTokenService: AccessTokenService,
     private deviceService: DeviceService,
+    private analyticsService: AnalyticsService,
     @Inject(WINDOW_TOKEN) private window: Window
   ) {}
 
-  public login(body: LoginRequest): Observable<LoginResponse> {
+  public login(body: LoginRequest, callback?: () => void): Observable<LoginResponse> {
     body.metadata = this.getMetadata();
     return this.httpClient.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body).pipe(
       tap((r) => {
         this.storeData(r);
-        // This reload's purpose is to simulate web SEO's login behaviour in production
-        this.window.location.reload();
+
+        this.analyticsService.loginUser({ customerid: r.registerInfo.userUUID, email: body.emailAddress }, callback);
       })
     );
   }

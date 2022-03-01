@@ -4,8 +4,8 @@ import { APP_LOCALE } from 'configs/subdomains.config';
 
 export const DEFAULT_LOCATIONS: Record<APP_LOCALE, LabeledSearchLocation> = {
   es: {
-    [FILTER_QUERY_PARAM_KEY.latitude]: '40.4893538',
-    [FILTER_QUERY_PARAM_KEY.longitude]: '-3.6827461',
+    [FILTER_QUERY_PARAM_KEY.latitude]: '40.41956',
+    [FILTER_QUERY_PARAM_KEY.longitude]: '-3.69196',
     label: $localize`:@@web_default_location_madrid:Spain, Madrid`,
   },
   en: {

@@ -27,7 +27,7 @@ export class InboxUserDetailComponent implements OnChanges {
       this.userService.getInfo(this.user.id).subscribe((info: UserInfoResponse) => {
         this.user.score = info.scoring_stars;
         this.user.responseRate = info.response_rate;
-        this.user.distanceInKm = this.userService.calculateDistanceFromItem(this.user, null);
+        this.user.distanceInKm = this.userService.calculateDistanceFromItem(this.user);
       });
     }
   }

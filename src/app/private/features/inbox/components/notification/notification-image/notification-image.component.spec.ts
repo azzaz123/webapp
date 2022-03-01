@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NOTIFICATION_PRODUCT_STATUS } from '@private/features/inbox/core/enums/notification-product-status.enum';
 import { NOTIFICATION_VARIANT } from '@private/features/inbox/core/enums/notification-variant.enum';
-import { Notification } from '@private/features/inbox/core/interfaces/notification.interface';
+import { Notification } from '@api/core/model/notification/notification.interface';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { NotificationImageComponent } from './notification-image.component';
 
@@ -26,6 +26,7 @@ describe('NotificationImageComponent', () => {
     description:
       'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
     image: 'https://picsum.photos/200/300',
+    url: 'es.wallapop.com',
   };
 
   const notificationProductStatusSold: Notification = {
@@ -37,6 +38,7 @@ describe('NotificationImageComponent', () => {
     description:
       'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
     image: 'https://picsum.photos/200/300',
+    url: 'es.wallapop.com',
   };
 
   const notificationProductStatusLowered: Notification = {
@@ -48,9 +50,10 @@ describe('NotificationImageComponent', () => {
     description:
       'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
     image: 'https://picsum.photos/200/300',
+    url: 'es.wallapop.com',
   };
 
-  const generalNotification = {
+  const generalNotification: Notification = {
     variant: NOTIFICATION_VARIANT.GENERAL,
     productStatus: undefined,
     isRead: true,
@@ -58,6 +61,7 @@ describe('NotificationImageComponent', () => {
     title: 'My general notification',
     description: 'Cupidatat ad nostrud cillum',
     image: 'https://picsum.photos/200/300',
+    url: 'es.wallapop.com',
   };
 
   beforeEach(

@@ -45,4 +45,8 @@ export interface ViewOthersItemCGDetail {
    * Name of the experiment or A/B testing applied to the user who has viewed the item detail. The default value would be 'baseline'
    */
   experiment?: string;
+  /**
+   * Whether the shipping toggle is activated for the item (buyer can send shipping request)
+   */
+  shippingAllowed?: boolean;
 }

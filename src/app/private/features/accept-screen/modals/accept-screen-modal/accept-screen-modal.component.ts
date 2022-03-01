@@ -19,6 +19,8 @@ import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
+import { take } from 'rxjs/operators';
+import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off-mode.type';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -31,6 +33,7 @@ export class AcceptScreenModalComponent implements OnInit {
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties> = this.acceptScreenStoreService.properties$;
   public acceptScreenCountries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
+  public deliveryPickUpDay$: Observable<string> = this.acceptScreenStoreService.deliveryPickUpDay$;
   public carrierSelectedIndex$: Observable<number> = this.acceptScreenStoreService.carrierSelectedIndex$;
   public ACCEPT_SCREEN_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
 
@@ -74,6 +77,7 @@ export class AcceptScreenModalComponent implements OnInit {
   public closeModal(): void {
     this.activeModal.close();
   }
+
   public goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
     this.stepper.goToStep(slideId);
     this.refreshStepProperties(slideId);
@@ -97,16 +101,27 @@ export class AcceptScreenModalComponent implements OnInit {
     );
   }
 
+  public acceptRequest(): void {
+    this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
+      () => this.redirectToTTSAndCloseModal(),
+      () => this.showDefaultError()
+    );
+  }
+
   private rejectRequest(): void {
     this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
-      () => {
-        this.redirectToTTS(this.requestId);
-        this.closeModal();
-      },
-      () => {
-        this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
-      }
+      () => this.redirectToTTSAndCloseModal(),
+      () => this.showDefaultError()
     );
+  }
+
+  private redirectToTTSAndCloseModal(): void {
+    this.redirectToTTS(this.requestId);
+    this.closeModal();
+  }
+
+  private showDefaultError(): void {
+    this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
   }
 
   private refreshStepProperties(slideId: number): void {

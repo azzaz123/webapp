@@ -107,7 +107,6 @@ export class RealTimeService {
   private subscribeEventMessageSent() {
     this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation, messageId: string) => {
       if (this.isFirstMessage(conversation)) {
-        this.trackConversationCreated(conversation);
         this.trackSendFirstMessage(conversation);
       }
     });
@@ -123,24 +122,6 @@ export class RealTimeService {
     return conversation.messages.length === 1;
   }
 
-  private trackConversationCreated(conversation: InboxConversation) {
-    fbq('track', 'InitiateCheckout', {
-      value: conversation.item.price.amount,
-      currency: conversation.item.price.currency,
-    });
-
-    pintrk('track', 'checkout', {
-      value: conversation.item.price.amount,
-      currency: conversation.item.price.currency,
-      line_items: [
-        {
-          product_category: conversation.item.categoryId,
-          product_id: conversation.item.id,
-        },
-      ],
-    });
-  }
-
   private trackSendFirstMessage(conversation: InboxConversation) {
     const searchId = sessionStorage.getItem(SEARCHID_STORAGE_NAME);
     const event: AnalyticsEvent<SendFirstMessage> = {
@@ -154,6 +135,7 @@ export class RealTimeService {
         categoryId: conversation.item.categoryId,
         country: this.analyticsService.market,
         language: this.analyticsService.appLocale,
+        shippingAllowed: null,
       },
     };
 

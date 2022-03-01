@@ -5,6 +5,7 @@ import {
   MOCK_ACCEPT_SCREEN_PROPERTIES,
   MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU,
   MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS,
+  MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { of, ReplaySubject, BehaviorSubject, throwError } from 'rxjs';
 import { AcceptScreenProperties } from '../../interfaces';
@@ -13,7 +14,7 @@ import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
 import { StepDirective } from '@shared/stepper/step.directive';
@@ -34,17 +35,20 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { Router } from '@angular/router';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off-mode.type';
 
 describe('AcceptScreenModalComponent', () => {
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
   const carrierSelectedIndexSubjectMock: BehaviorSubject<number> = new BehaviorSubject(1);
   const countriesAsOptionsAndDefaultSubject: ReplaySubject<CountryOptionsAndDefault> = new ReplaySubject(1);
 
+  const MOCK_DELIVERY_DAY: string = 'Lalalalala';
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const sellerAddressHeaderStylesSelector: string = '.AcceptScreenModal__sellerWithAddressHeader';
   const carrierButtonSelector: string = '.AcceptScreenModal__carrierButton';
   const deliveryAddressSelector: string = 'tsl-delivery-address';
-  const mapSelector: string = 'tsl-movable-map';
+  const scheduleSelector: string = 'tsl-delivery-preference-schedule';
+  const searchableMapSelector: string = 'tsl-searchable-movable-map';
   const fullAddressSelector: string = '#fullAddress';
   const rejectButtonSelector: string = '#rejectButton';
   const acceptButtonSelector: string = '#acceptButton';
@@ -91,7 +95,11 @@ describe('AcceptScreenModalComponent', () => {
             get carrierSelectedIndex$() {
               return carrierSelectedIndexSubjectMock.asObservable();
             },
+            get deliveryPickUpDay$() {
+              return of(MOCK_DELIVERY_DAY);
+            },
             rejectRequest() {},
+            acceptRequest() {},
           },
         },
         {
@@ -318,12 +326,15 @@ describe('AcceptScreenModalComponent', () => {
           });
 
           describe('and we click on the carrier button', () => {
+            beforeEach(() => {
+              spyOn(component.stepper, 'goToStep').and.callThrough();
+            });
+
             describe('and we need to redirect to the map', () => {
               const MOCK_SELECTED_CARRIER_REDIRECT_STEP: ACCEPT_SCREEN_STEPS = MOCK_ACCEPT_SCREEN_PROPERTIES.carriers.find(
                 (carrier) => carrier.isSelected
               ).buttonProperties.redirectStep;
               beforeEach(() => {
-                spyOn(component.stepper, 'goToStep').and.callThrough();
                 const carrierButton = fixture.debugElement.query(By.css(carrierButtonSelector)).nativeElement;
 
                 carrierButton.click();
@@ -367,8 +378,71 @@ describe('AcceptScreenModalComponent', () => {
                 expect(component.isAcceptScreenStep).toBe(false);
               });
 
-              it('should show the map', () => {
-                expect(fixture.debugElement.query(By.css(mapSelector))).toBeTruthy();
+              it('should show the searchable map', () => {
+                expect(fixture.debugElement.query(By.css(searchableMapSelector))).toBeTruthy();
+              });
+            });
+
+            describe('and we need to redirect to the selection schedule preference', () => {
+              let expectedDeliveryDay: string;
+              const MOCK_SELECTED_CARRIER_REDIRECT_STEP: ACCEPT_SCREEN_STEPS =
+                MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED.carriers.find((carrier) => carrier.isSelected)
+                  .buttonProperties.redirectStep;
+              beforeEach(() => {
+                acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED);
+
+                acceptScreenStoreService.deliveryPickUpDay$.subscribe((day: string) => (expectedDeliveryDay = day));
+                fixture.detectChanges();
+                const carrierButton = fixture.debugElement.query(By.css(carrierButtonSelector)).nativeElement;
+
+                carrierButton.click();
+                fixture.detectChanges();
+              });
+
+              it('should go to the provided step', () => {
+                expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+                expect(component.stepper.goToStep).toHaveBeenCalledWith(MOCK_SELECTED_CARRIER_REDIRECT_STEP);
+              });
+              describe('and we get the delivery pick up day', () => {
+                it('should return the store provided value', () => {
+                  expect(expectedDeliveryDay).toStrictEqual(MOCK_DELIVERY_DAY);
+                });
+              });
+
+              describe('the header...', () => {
+                it('should show the back arrow icon', () => {
+                  shouldShowArrowBackIcon(true);
+                });
+
+                it('should show the accept screen translated title', () => {
+                  shouldShowSpecificHeaderText(ACCEPT_SCREEN_HEADER_TRANSLATIONS[MOCK_SELECTED_CARRIER_REDIRECT_STEP]);
+                });
+
+                it('should NOT show help button', () => {
+                  shouldShowHelpButton(false);
+                });
+
+                it('should show the cross icon', () => {
+                  shouldShowCrossIcon();
+                });
+
+                describe('and we click on the close button', () => {
+                  it('should close the modal', () => {
+                    shouldCloseModalWhenCrossClick();
+                  });
+                });
+              });
+
+              it('should redirect to schedule step', () => {
+                expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.SCHEDULE);
+              });
+
+              it('should not detect the accept screen step as active', () => {
+                expect(component.isAcceptScreenStep).toBe(false);
+              });
+
+              it('should show the schedule', () => {
+                expect(fixture.debugElement.query(By.css(scheduleSelector))).toBeTruthy();
               });
             });
           });
@@ -595,6 +669,106 @@ describe('AcceptScreenModalComponent', () => {
 
             it('should NOT show the delivery address form', () => {
               shouldRenderDeliveryAddressForm(false);
+            });
+          });
+        });
+
+        describe('and we click on the accept button', () => {
+          describe('and the selected drop off mode is post office', () => {
+            beforeEach(() => {
+              carrierSelectedIndexSubjectMock.next(CARRIER_DROP_OFF_MODE.POST_OFFICE);
+            });
+            describe('and the petition fails...', () => {
+              beforeEach(() => {
+                spyOn(acceptScreenStoreService, 'acceptRequest').and.returnValue(throwError('error'));
+                spyOn(errorService, 'i18nError');
+                const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+                acceptButton.click();
+              });
+
+              it('should call to server to accept request', () => {
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should show generic error message', () => {
+                expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+              });
+            });
+
+            describe('and the petition succeeds', () => {
+              beforeEach(() => {
+                spyOn(router, 'navigate');
+                spyOn(acceptScreenStoreService, 'acceptRequest').and.returnValue(of(null));
+                const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+                acceptButton.click();
+              });
+
+              it('should accept request', () => {
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should redirect the user to the TTS', () => {
+                expect(router.navigate).toHaveBeenCalledTimes(1);
+                expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+              });
+
+              it('should close the modal', () => {
+                expect(activeModal.close).toHaveBeenCalledTimes(1);
+              });
+            });
+          });
+
+          describe('and the selected drop off mode is HOME PICK UP', () => {
+            beforeEach(() => {
+              carrierSelectedIndexSubjectMock.next(CARRIER_DROP_OFF_MODE.HOME_PICK_UP);
+            });
+            describe('and the petition fails...', () => {
+              beforeEach(() => {
+                spyOn(acceptScreenStoreService, 'acceptRequest').and.returnValue(throwError('error'));
+                spyOn(errorService, 'i18nError');
+                const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+                acceptButton.click();
+              });
+
+              it('should call to server to accept request', () => {
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should show generic error message', () => {
+                expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+              });
+            });
+
+            describe('and the petition succeeds', () => {
+              beforeEach(() => {
+                spyOn(router, 'navigate');
+                spyOn(acceptScreenStoreService, 'acceptRequest').and.returnValue(of(null));
+                const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+                acceptButton.click();
+              });
+
+              it('should accept request', () => {
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledTimes(1);
+                expect(acceptScreenStoreService.acceptRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+              });
+
+              it('should redirect the user to the TTS', () => {
+                expect(router.navigate).toHaveBeenCalledTimes(1);
+                expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+              });
+
+              it('should close the modal', () => {
+                expect(activeModal.close).toHaveBeenCalledTimes(1);
+              });
             });
           });
         });
