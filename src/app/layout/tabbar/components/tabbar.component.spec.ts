@@ -10,6 +10,9 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { Observable, of } from 'rxjs';
 import { ELEMENT_TYPE, INPUT_TYPE, TabbarComponent } from './tabbar.component';
 import { TabbarService } from '../core/services/tabbar.service';
+import { Router } from '@angular/router';
+import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
@@ -38,6 +41,26 @@ describe('TabbarComponent', () => {
           {
             provide: UnreadChatMessagesService,
             useClass: MockUnreadChatMessagesService,
+          },
+          {
+            provide: NotificationApiService,
+            useValue: {
+              totalUnreadNotifications$: of(0),
+              getNotifications: () => {},
+              refreshUnreadNotifications: () => {},
+            },
+          },
+          {
+            provide: Router,
+            useValue: {
+              navigate() {},
+            },
+          },
+          {
+            provide: SearchNavigatorService,
+            useValue: {
+              navigateWithLocationParams: () => {},
+            },
           },
           EventService,
           TabbarService,
