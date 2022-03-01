@@ -28,10 +28,24 @@
     </div>
   </div>
 
-  <div class="PayviewModal__summary" *ngIf="payviewState$ | async as payviewState">
-    <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
-  </div>
-  <div class="PayviewModal__delivery" *ngIf="payviewState$ | async as payviewState">
-    <tsl-payview-delivery-overview [payviewState]="payviewState"></tsl-payview-delivery-overview>
-  </div>
+  <tsl-stepper *ngIf="payviewState$ | async">
+    <ng-template step>
+      <div class="PayviewModal__summary" *ngIf="payviewState$ | async as payviewState">
+        <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
+      </div>
+      <div class="PayviewModal__delivery" *ngIf="payviewState$ | async as payviewState">
+        <tsl-payview-delivery-overview [payviewState]="payviewState"></tsl-payview-delivery-overview>
+      </div>
+    </ng-template>
+    <ng-template step>
+      <div class="PayviewModal__deliveryAddress">
+        <tsl-delivery-address
+          *ngIf="countries$ | async"
+          [showTitle]="false"
+          [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
+          (addressSaveSucceded)="goToPayview()"
+        ></tsl-delivery-address>
+      </div>
+    </ng-template>
+  </tsl-stepper>
 </div>
