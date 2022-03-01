@@ -11,6 +11,7 @@ import {
   LOCALE_ID,
   OnDestroy,
   OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { Location, LocationWithRadius } from '@api/core/model';
 import { APP_LOCALE } from '@configs/subdomains.config';
@@ -51,8 +52,11 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     this.initHereMaps();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.map) {
+      if (changes.centerCoordinates && !changes.centerCoordinates.firstChange) {
+        this.map.setCenter({ lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude });
+      }
       this.addGroupMarker(this.map);
     }
   }
