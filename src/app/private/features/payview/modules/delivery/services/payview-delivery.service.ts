@@ -8,8 +8,6 @@ import { Observable, Subject } from 'rxjs';
 export class PayviewDeliveryService {
   private deliveryMethodSubject: Subject<DeliveryBuyerDeliveryMethod> = new Subject<DeliveryBuyerDeliveryMethod>();
 
-  constructor() {}
-
   public get deliveryMethodSelected(): Observable<DeliveryBuyerDeliveryMethod> {
     return this.deliveryMethodSubject.asObservable();
   }

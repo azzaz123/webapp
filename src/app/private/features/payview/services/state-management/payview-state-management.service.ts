@@ -6,6 +6,7 @@ import { PayviewService } from '@private/features/payview/services/payview/payvi
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,7 @@ export class PayviewStateManagementService {
     const payviewState = { ...this.stateSubject.getValue() };
     const subscription: Subscription = this.payviewService
       .getCosts(payviewState.itemDetails.itemHash, payviewState.itemDetails.price, payviewState.costs.promotion?.promocode, deliveryMethod)
+      .pipe(take(1))
       .subscribe({
         next: (costs: DeliveryBuyerCalculatorCosts) => {
           payviewState.delivery.methods.current = deliveryMethod;
@@ -50,17 +52,20 @@ export class PayviewStateManagementService {
   }
 
   private getCurrentState(value: string): void {
-    const subscription: Subscription = this.payviewService.getCurrentState(value).subscribe({
-      next: (payviewState: PayviewState) => {
-        this.stateSubject.next(payviewState);
-      },
-      error: () => {
-        this.stateSubject.next(null);
-        subscription.unsubscribe();
-      },
-      complete: () => {
-        subscription.unsubscribe();
-      },
-    });
+    const subscription: Subscription = this.payviewService
+      .getCurrentState(value)
+      .pipe(take(1))
+      .subscribe({
+        next: (payviewState: PayviewState) => {
+          this.stateSubject.next(payviewState);
+        },
+        error: () => {
+          this.stateSubject.next(null);
+          subscription.unsubscribe();
+        },
+        complete: () => {
+          subscription.unsubscribe();
+        },
+      });
   }
 }
