@@ -21,4 +21,8 @@ export interface ClickBumpItems {
    * Number of items selected in the catalog management
    */
   itemsSelected?: number;
+  /**
+   * If the item clicked is from the upload popup
+   */
+  uploadPopUp?: boolean;
 }

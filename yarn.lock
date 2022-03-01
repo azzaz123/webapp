@@ -11080,9 +11080,9 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
-"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#feature/pros_visibility_multiple_item":
+"mparticle_json_validation@git+ssh://git@github.com:Wallapop/mparticle_json_validation#1.142.0":
   version "0.0.0"
-  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#891323f22180953b6b487041f57e32de4d5616e0"
+  resolved "git+ssh://git@github.com:Wallapop/mparticle_json_validation#a84d226c0b86d0b1c2734d476ed8b1f7bdcca6cb"
 
 mri@^1.1.5:
   version "1.2.0"
