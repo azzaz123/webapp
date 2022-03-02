@@ -59,7 +59,6 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   public onSelectLocationSuggestion(): Observable<LabeledSearchLocation> {
     return this.selectedSuggestion$.pipe(
       filter((locationName) => !!locationName),
-      distinctUntilChanged(),
       switchMap((locationName: string) => this.getLatitudeAndLongitudeFromLocationName(locationName))
     );
   }
