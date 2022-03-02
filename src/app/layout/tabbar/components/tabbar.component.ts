@@ -85,7 +85,6 @@ export class TabbarComponent implements OnInit, OnDestroy {
         this.isLogged = this.userService.isLogged;
       })
     );
-    this.notificationApiService.refreshUnreadNotifications();
   }
 
   ngOnDestroy(): void {

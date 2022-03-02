@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -16,9 +16,13 @@ import { Notification } from '@api/core/model/notification/notification.interfac
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss'],
 })
-export class NotificationComponent {
+export class NotificationComponent implements OnInit {
   @Input() notification: Notification;
   public NOTIFICATION_VARIANT = NOTIFICATION_VARIANT;
+
+  ngOnInit() {
+    //TODO implements viewed card on display / click
+  }
 
   constructor(private analyticsService: AnalyticsService) {}
 
