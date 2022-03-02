@@ -140,23 +140,41 @@ describe('SelectedItemsComponent', () => {
         permissionService.addPermission(PERMISSIONS.bumps);
         fixture.detectChanges();
       });
-      it('should track event', () => {
-        spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
-        itemService.selectedAction = 'feature';
-        const ITEMS = createItemsArray(5);
-        component.items = ITEMS;
-        itemService.selectedItems = [anId, anotherId];
-        fixture.detectChanges();
-        itemService.selectedItems$.next({
-          id: anId,
-          action: 'selected',
+      describe('and button is enabled', () => {
+        describe('and click button', () => {
+          it('should track event', () => {
+            spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
+            itemService.selectedAction = 'feature';
+            const ITEMS = createItemsArray(5);
+            component.items = ITEMS;
+            itemService.selectedItems$.next({
+              id: anId,
+              action: 'selected',
+            });
+            fixture.detectChanges();
+
+            const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+            button.click();
+
+            expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledTimes(1);
+            expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledWith(component.selectedItems.length);
+          });
         });
+        describe('and button is disabled', () => {
+          it('should not track event', () => {
+            spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
+            itemService.selectedAction = 'feature';
+            const ITEMS = createItemsArray(5);
+            component.items = ITEMS;
+            itemService.selectedItems = [];
 
-        const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
-        button.click();
+            fixture.detectChanges();
+            const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+            button.click();
 
-        expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledTimes(1);
-        expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledWith(component.selectedItems.length);
+            expect(catalogItemTrackingEventService.trackClickBumpItems).not.toHaveBeenCalled();
+          });
+        });
       });
     });
     describe('and has not visibility permissions', () => {
