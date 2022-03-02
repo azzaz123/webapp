@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { CarrierOfficesApiService } from './carrier-offices-api.service';
 import { CarrierOfficesHttpService } from './http/carrier-offices-http.service';
 import { mapCarrierDomainToDto } from './mappers/requests/carrier-offices.mapper';
-import { MOCK_LOCATION_WITH_RADIUS } from '@fixtures/core/geolocation/locationWithRadius.fixtures.spect';
+import { MOCK_LOCATION_WITH_RADIUS } from '@fixtures/core/geolocation/location-with-radius.fixtures.spect';
 
 describe('CarrierOfficesApiService', () => {
   let service: CarrierOfficesApiService;
