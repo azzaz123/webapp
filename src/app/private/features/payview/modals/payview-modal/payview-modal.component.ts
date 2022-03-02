@@ -50,13 +50,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscribe();
   }
 
-  public closeModal(): void {
-    this.activeModal.close();
+  public closeDeliveryEditor(): void {
+    this.stepper.goToStep(PayviewSteps.Payview);
+    this.payviewStateManagementService.refreshByDelivery();
   }
 
-  public goToPayview(): void {
-    this.stepper.goToStep(PayviewSteps.Payview);
-    this.payviewStateManagementService.refreshPayviewState();
+  public closeModal(): void {
+    this.activeModal.close();
   }
 
   public get helpUrl(): string {

@@ -42,7 +42,7 @@
           *ngIf="countries$ | async"
           [showTitle]="false"
           [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
-          (addressSaveSucceded)="goToPayview()"
+          (addressSaveSucceded)="closeDeliveryEditor()"
         ></tsl-delivery-address>
       </div>
     </ng-template>
