@@ -15,6 +15,15 @@ import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component'
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 import { UserService } from '@core/user/user.service';
 import { MockUserService } from '@fixtures/user.fixtures.spec';
+import {
+  MOCK_ERROR_FREE_BUMP_GENERIC,
+  MOCK_ERROR_FREE_BUMP_LIMITED_REACHED,
+  MOCK_ERROR_FREE_BUMP_NOT_FOUND,
+  MOCK_ERROR_FREE_NOT_MAPPED,
+  MOCK_ERROR_STRIPE,
+  MOCK_ITEMS_TO_BUY_FREE,
+} from '@fixtures/visibility.fixtures.spec';
+import { ProModalConfig } from '@shared/modals/pro-modal/pro-modal.interface';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
@@ -60,6 +69,11 @@ describe('CheckoutComponent', () => {
             provide: ActivatedRoute,
             useValue: {
               params: of({}),
+              snapshot: {
+                paramMap: {
+                  get: () => 'item_id',
+                },
+              },
             },
           },
           {
@@ -187,10 +201,12 @@ describe('CheckoutComponent', () => {
         componentInstance: componentInstance,
       };
       itemService.selectedAction = 'feature';
-      component.onConfirm();
     });
 
     describe('Modal', () => {
+      beforeEach(() => {
+        component.onConfirm();
+      });
       it('should open modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
           windowClass: 'pro-modal',
@@ -216,10 +232,137 @@ describe('CheckoutComponent', () => {
       });
     });
 
+    describe('Plural modal', () => {
+      beforeEach(() => {
+        component.itemsSelected = MOCK_ITEMS_TO_BUY_FREE;
+        component.onConfirm();
+      });
+      it('should open modal', () => {
+        expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
+        });
+        expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_success_plural]);
+      });
+    });
+
     it('should call deselectItems', fakeAsync(() => {
+      component.onConfirm();
       tick();
+
       expect(itemService.deselectItems).toHaveBeenCalled();
       expect(itemService.selectedAction).toBeNull();
     }));
+  });
+
+  describe('Error action', () => {
+    let spyModal: jasmine.Spy;
+    beforeEach(() => {
+      spyModal = spyOn(modalService, 'open').and.callThrough();
+      spyOn(router, 'navigate').and.callThrough();
+      spyOn(itemService, 'deselectItems').and.callThrough();
+      component['modalRef'] = <any>{
+        componentInstance: componentInstance,
+      };
+      itemService.selectedAction = 'feature';
+    });
+
+    it('should not redirect', () => {
+      component.onError([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
+      expect(router.navigate).not.toHaveBeenCalled();
+    });
+
+    describe('reload data', () => {
+      beforeEach(() => {
+        spyOn(paymentService, 'getCreditInfo').and.callThrough();
+        component.itemsSelected = MOCK_ITEMS_TO_BUY_FREE;
+        component.onError([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
+      });
+      it('should clear data', () => {
+        component.itemsSelected = [];
+      });
+      it('should reload items', () => {
+        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith(['item_id']);
+      });
+      it('should reload credit info', fakeAsync(() => {
+        expect(paymentService.getCreditInfo).toHaveBeenCalledTimes(1);
+        expect(paymentService.getCreditInfo).toHaveBeenCalledWith(false);
+      }));
+    });
+
+    describe('and has a single error', () => {
+      describe('and is free bump error', () => {
+        describe('and is limit reached error', () => {
+          beforeEach(() => {
+            component.onError([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
+          });
+          it('should show error', () => {
+            expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+              windowClass: 'pro-modal',
+            });
+            expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_limit_reached]);
+          });
+        });
+        describe('and is not found id error', () => {
+          beforeEach(() => {
+            component.onError([MOCK_ERROR_FREE_BUMP_NOT_FOUND]);
+          });
+          it('should show error', () => {
+            expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+              windowClass: 'pro-modal',
+            });
+            expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_not_found]);
+          });
+        });
+        describe('and is generic error', () => {
+          beforeEach(() => {
+            component.onError([MOCK_ERROR_FREE_BUMP_GENERIC]);
+          });
+          it('should show error', () => {
+            expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+              windowClass: 'pro-modal',
+            });
+            expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_generic]);
+          });
+        });
+        describe('and is not mapped error', () => {
+          beforeEach(() => {
+            component.onError([MOCK_ERROR_FREE_NOT_MAPPED]);
+          });
+          it('should show error', () => {
+            expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+              windowClass: 'pro-modal',
+            });
+            expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_generic]);
+          });
+        });
+      });
+
+      describe('and is stripe bump error', () => {
+        beforeEach(() => {
+          component.onError([MOCK_ERROR_STRIPE]);
+        });
+        it('should show error', () => {
+          expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+            windowClass: 'pro-modal',
+          });
+          expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_stripe]);
+        });
+      });
+    });
+
+    describe('and has a multiple error', () => {
+      beforeEach(() => {
+        component.onError([MOCK_ERROR_STRIPE, MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
+      });
+      it('should show error', () => {
+        expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
+        });
+        const currentModalConfig: ProModalConfig = component['modalRef'].componentInstance.modalConfig;
+        expect(currentModalConfig.title).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_generic].title);
+        expect(currentModalConfig.text1).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_stripe].text1);
+        expect(currentModalConfig.text2).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_limit_reached].text1);
+      });
+    });
   });
 });

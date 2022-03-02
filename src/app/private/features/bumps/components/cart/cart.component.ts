@@ -1,36 +1,40 @@
 import { finalize } from 'rxjs/operators';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { ErrorsService } from '@core/errors/errors.service';
 import { CreditInfo, FinancialCardOption } from '@core/payments/payment.interface';
-import { PACKS_TYPES } from '@core/payments/pack';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
-import { SelectedProduct } from '@api/core/model/bumps/item-products.interface';
-import { HttpErrorResponse } from '@angular/common/http';
+import { BumpRequestSubject, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 
 @Component({
   selector: 'tsl-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CartComponent {
+export class CartComponent implements OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() selectedItems: SelectedProduct[];
   @Output() confirmAction: EventEmitter<void> = new EventEmitter<void>();
+  @Output() errorAction: EventEmitter<BumpRequestSubject[]> = new EventEmitter<BumpRequestSubject[]>();
 
-  public hasSavedCard = true;
+  public hasSavedCards = true;
+  public isNewCard = false;
   public loading: boolean;
-  public card: FinancialCardOption | unknown;
-  public showCard = false;
-  public savedCard = true;
-  public selectedCard = false;
+  public card: FinancialCardOption | stripe.elements.Element;
   public readonly BUMP_TYPES = BUMP_TYPE;
-  public readonly PACK_TYPES = PACKS_TYPES;
   public readonly ICON_TYPE = ICON_TYPE;
+  public totalToPay: number = 0;
+  public total: number = 0;
+  public creditsToPay: number = 0;
 
   constructor(private errorService: ErrorsService, private visibilityService: VisibilityApiService) {}
+
+  ngOnChanges(): void {
+    this.setTotals();
+  }
 
   public checkout(): void {
     if (this.loading) {
@@ -44,51 +48,41 @@ export class CartComponent {
     this.loading = true;
 
     this.visibilityService
-      .buyBumps(this.selectedItems, this.hasSavedCard, this.savedCard, this.card)
+      .buyBumps(this.selectedItems, this.hasSavedCards, this.isNewCard, this.card)
       .pipe(
         finalize(() => {
           this.loading = false;
         })
       )
       .subscribe(([...next]) => {
-        const errors = next.filter((value) => value.hasError);
-        if (errors.length) {
-          if (errors[0].error instanceof HttpErrorResponse) {
-            this.errorService.show(errors[0].error);
-          } else {
-            this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
-          }
-        } else {
-          this.success();
-        }
+        const errors = next.filter((value) => value?.hasError);
+        errors.length ? this.error(errors) : this.success();
       });
   }
 
   public addNewCard(): void {
-    this.showCard = true;
-    this.savedCard = false;
+    this.isNewCard = true;
+    this.card = null;
   }
 
   public removeNewCard(): void {
-    this.showCard = false;
-    this.savedCard = true;
+    this.isNewCard = false;
+    this.card = null;
   }
 
   public setSavedCard(selectedCard: FinancialCardOption): void {
-    this.showCard = false;
-    this.savedCard = true;
-    this.selectedCard = true;
     this.setCardInfo(selectedCard);
   }
 
-  public hasCard(hasCard: boolean): void {
-    this.hasSavedCard = hasCard;
-    if (!hasCard) {
+  public setHasCards(hasCards: boolean): void {
+    this.hasSavedCards = hasCards;
+    this.isNewCard = !hasCards;
+    if (this.isNewCard) {
       this.addNewCard();
     }
   }
 
-  public setCardInfo(card: unknown): void {
+  public setCardInfo(card: FinancialCardOption | stripe.elements.Element): void {
     this.card = card;
   }
 
@@ -96,16 +90,18 @@ export class CartComponent {
     this.confirmAction.emit();
   }
 
-  get totalToPay(): number {
+  private error(errors: BumpRequestSubject[]): void {
+    this.errorAction.emit(errors);
+  }
+
+  private setTotals(): void {
     if (!this.selectedItems?.length || !this.creditInfo) {
-      return 0;
+      return;
     }
-    const total = this.selectedItems.reduce((a, b) => (b.isFree ? a : +b.duration.market_code + a), 0);
-    const totalCreditsToPay: number = total * this.creditInfo.factor;
-    if (totalCreditsToPay < this.creditInfo.credit) {
-      return 0;
-    } else {
-      return total - this.creditInfo.credit / this.creditInfo.factor;
+    this.total = this.selectedItems.reduce((a, b) => (b.isFree ? a : +b.duration.market_code + a), 0);
+    if (this.creditInfo.credit) {
+      this.creditsToPay = this.creditInfo.credit > this.total ? this.total : this.creditInfo.credit;
     }
+    this.totalToPay = this.total - this.creditsToPay;
   }
 }

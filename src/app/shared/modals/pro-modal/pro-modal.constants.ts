@@ -17,7 +17,12 @@ export enum PRO_MODAL_TYPE {
   cancel_subscription,
   continue_subscription,
   bump_success,
+  bump_success_plural,
   bump_limit,
+  bump_error_generic,
+  bump_error_not_found,
+  bump_error_limit_reached,
+  bump_error_stripe,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -196,11 +201,54 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
       primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
     },
   },
+  [PRO_MODAL_TYPE.bump_success_plural]: {
+    img: '/assets/icons/pro/modals/bump-success.svg',
+    title: $localize`:@@bump_selector_view_confirmation_modal_pro_user_more_than_one_bump_title:Your items have been highlighted!`,
+    text1: $localize`:@@bump_selector_view_confirmation_modal_pro_user_more_than_one_bump_1_part:Now their visibility has increased, so they will get more views than ever before.`,
+    buttons: {
+      primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_more_than_one_bump_understood_button:Understood` },
+    },
+  },
   [PRO_MODAL_TYPE.bump_limit]: {
     img: '/assets/icons/pro/modals/bump-error.svg',
-    title: $localize`:@@bump_selector_view_confirmation_modal_pro_user_title:You have not bumps left`,
-    text1: $localize`:@@bump_selector_view_confirmation_modal_pro_user_descripton_1_part:Unselect other products to bump this one`,
-    text2: $localize`:@@bump_selector_view_confirmation_modal_pro_user_descripton_1_part:Description part 1`,
+    title: $localize`:@@bump_selector_view_generic_error_modal_pro_user_title:Your item couldn't be highlighted`,
+    text1: $localize`:@@bump_selector_view_generic_error_modal_pro_user_descripton_1_part:Due to an error, the process has failed. Please try again.`,
+    style: MODAL_STYLE.GREEN,
+    buttons: {
+      primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
+    },
+  },
+  [PRO_MODAL_TYPE.bump_error_generic]: {
+    img: '/assets/icons/pro/modals/bump-error.svg',
+    title: $localize`:@@bump_selector_view_generic_error_modal_pro_user_title:Your item couldn't be highlighted`,
+    text1: $localize`:@@bump_selector_view_generic_error_modal_pro_user_descripton_1_part:Due to an error, the process has failed. Please try again.`,
+    style: MODAL_STYLE.GREEN,
+    buttons: {
+      primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
+    },
+  },
+  [PRO_MODAL_TYPE.bump_error_not_found]: {
+    img: '/assets/icons/pro/modals/bump-error.svg',
+    title: $localize`:@@bump_selector_view_item_not_published_error_modal_pro_user_title:Your item couldn't be highlighted`,
+    text1: $localize`:@@bump_selector_view_item_not_published_error_modal_pro_user_descripton_1_part:our product is currently not published, so it cannot be highlighted. It may be due to moderation matters. Please try again in a while.`,
+    style: MODAL_STYLE.GREEN,
+    buttons: {
+      primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
+    },
+  },
+  [PRO_MODAL_TYPE.bump_error_limit_reached]: {
+    img: '/assets/icons/pro/modals/bump-error.svg',
+    title: $localize`:@@bump_selector_view_no_bumps_left_error_modal_pro_user_title:Your item couldn't be highlighted`,
+    text1: $localize`:@@bump_selector_view_no_bumps_left_error_modal_pro_user_descripton_1_part:You've spent your subscription's monthly highlights. But you can still highlight items! Options not included in your subscription are available.`,
+    style: MODAL_STYLE.GREEN,
+    buttons: {
+      primary: { text: $localize`:@@bump_selector_view_no_bumps_left_error_modal_pro_user_understood_button:Understood` },
+    },
+  },
+  [PRO_MODAL_TYPE.bump_error_stripe]: {
+    img: '/assets/icons/pro/modals/bump-error.svg',
+    title: $localize`:@@bump_selector_view_generic_error_modal_pro_user_title:Your item couldn't be highlighted`,
+    text1: $localize`:@@bump_selector_view_generic_error_modal_pro_user_descripton_1_part:Due to an error, the process has failed. Please try again.`,
     style: MODAL_STYLE.GREEN,
     buttons: {
       primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
