@@ -16,21 +16,6 @@ import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { NotificationApiService } from '@api/notification/notification-api.service';
 
 describe('TabbarComponent', () => {
-  // class MockNotificationApiService {
-  //   public totalUnreadMessages$: Subject<number> = new Subject<number>();
-  //   private _totalUnreadMessages = 0;
-  //
-  //   set totalUnreadMessages(value: number) {
-  //     value = Math.max(value, 0);
-  //     this._totalUnreadMessages = value;
-  //     this.totalUnreadMessages$.next(value);
-  //   }
-  //
-  //   get totalUnreadMessages(): number {
-  //     return this._totalUnreadMessages;
-  //   }
-  // }
-
   let component: TabbarComponent;
   let de: DebugElement;
   let el: HTMLElement;
