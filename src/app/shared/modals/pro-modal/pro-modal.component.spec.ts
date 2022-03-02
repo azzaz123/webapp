@@ -247,6 +247,44 @@ describe('ProModalComponent', () => {
           expect(activeModal.close).toHaveBeenCalledWith(MODAL_ACTION.SECONDARY_BUTTON);
         });
       });
+
+      describe('and has internal link', () => {
+        beforeEach(() => {
+          spyOn(activeModal, 'close').and.callThrough();
+          component.modalConfig = {
+            ...mockData,
+            buttons: {
+              primary: {
+                text: 'primaryText',
+              },
+              secondary: {
+                text: 'secondaryText',
+                redirect: {
+                  type: REDIRECT_TYPE.routerLink,
+                  url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
+                },
+              },
+            },
+          };
+
+          fixture.detectChanges();
+        });
+        it('should have link', () => {
+          const link = fixture.debugElement.query(By.css('a'));
+
+          expect(link.attributes['href']).toEqual(component.modalConfig.buttons.secondary.redirect.url);
+        });
+
+        it('should close modal', () => {
+          const button: HTMLElement = fixture.debugElement.query(By.css('.btn-secondary')).nativeElement;
+
+          button.click();
+
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+          expect(activeModal.close).toHaveBeenCalledWith(MODAL_ACTION.SECONDARY_BUTTON);
+        });
+      });
+
       describe('and click on secondary button', () => {
         beforeEach(() => {
           spyOn(activeModal, 'close').and.callThrough();

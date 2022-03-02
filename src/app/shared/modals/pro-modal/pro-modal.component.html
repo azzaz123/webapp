@@ -18,7 +18,8 @@
         <div class="ProModal__buttons w-100 d-flex flex-column position-sticky">
             <ng-container *ngIf="modalConfig.buttons.secondary">
                 <div [ngSwitch]="modalConfig.buttons.secondary.redirect?.type" class="mb-3">
-                    <ng-container *ngSwitchCase="REDIRECT_TYPE.href" [ngTemplateOutlet]="hrefButtonSecondary"></ng-container>
+                    <ng-container *ngSwitchCase="REDIRECT_TYPE.href" [ngTemplateOutlet]="hrefSecondaryButton"></ng-container>
+                    <ng-container *ngSwitchCase="REDIRECT_TYPE.routerLink" [ngTemplateOutlet]="routerSecondaryButton"></ng-container>
                     <ng-container *ngSwitchDefault [ngTemplateOutlet]="defaultSecondaryButton"></ng-container>
                 </div>
             </ng-container>
@@ -43,6 +44,15 @@
     </a>
 </ng-template>
 
+<ng-template #routerSecondaryButton>
+    <a [routerLink]="[modalConfig.buttons.secondary.redirect.url]">
+        <tsl-button class="w-100" (click)="onClose(MODAL_ACTION.SECONDARY_BUTTON)"
+            className="btn-secondary w-100" >
+            {{modalConfig.buttons.secondary.text}}
+        </tsl-button>
+    </a>
+</ng-template>
+
 <ng-template #hrefButton>
     <a [href]="modalConfig.buttons.primary.redirect.url" target="_blank">
         <tsl-button class="w-100" (click)="onClose(MODAL_ACTION.PRIMARY_BUTTON)"
@@ -51,7 +61,7 @@
     </a>
 </ng-template>
 
-<ng-template #hrefButtonSecondary>
+<ng-template #hrefSecondaryButton>
     <a [href]="modalConfig.buttons.secondary.redirect.url" target="_blank">
         <tsl-button class="w-100" (click)="onClose(MODAL_ACTION.SECONDARY_BUTTON)"
             className="btn-secondary w-100">
