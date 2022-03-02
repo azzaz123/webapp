@@ -26,7 +26,7 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
   @Output() selectedOfficeSucceed: EventEmitter<void> = new EventEmitter();
   @ViewChild(SearchableMovableMapComponent, { static: true }) searchableMovableMap: SearchableMovableMapComponent;
   public initializeOffices$: Observable<CarrierOfficeInfo[]>;
-  public initialCenterCoordinates$: Observable<Location>;
+  public initialCenterLocation$: Observable<Location>;
   public markers$: Observable<Location[]> = this.deliveryMapService.officeMarkers$;
   public offices$: Observable<CarrierOfficeInfo[]> = this.deliveryMapService.carrierOffices$;
   public selectedOfficeInfo$: Observable<CarrierOfficeSchedule> = this.deliveryMapService.selectedOfficeInformation$;
@@ -48,7 +48,7 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
           }
         )
       );
-      this.initialCenterCoordinates$ = this.deliveryMapService.initialCenterCoordinates$(this.fullAddress);
+      this.initialCenterLocation$ = this.deliveryMapService.initialCenterLocation$(this.fullAddress);
     }
   }
 
@@ -62,7 +62,7 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
 
   public requestOffices(newLocationWithRadius: LocationWithRadius): void {
     this.deliveryMapService
-      .offices$(newLocationWithRadius, this.selectedCarrier)
+      .requestOffices$(newLocationWithRadius, this.selectedCarrier)
       .pipe(take(1))
       .subscribe(
         () => {},

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { CarrierOfficesApiService } from '@api/bff/delivery/carrier-offices/carrier-offices-api.service';
 import { Location } from '@api/core/model';
 import { CarrierOfficeInfo, CarrierOfficeSchedule } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
@@ -7,11 +7,15 @@ import { CarrierOfficeAddressesApiService } from '@api/delivery/me/carrier-offic
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { UserService } from '@core/user/user.service';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '@core/user/user';
 import { LocationWithRadius } from '@api/core/model/location/location';
 import { getRadiusInKm, DEFAULT_VALUE_ZOOM } from '../movable-map/constants/map.constants';
+import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
+import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { UserLocation } from '@core/user/user-response.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +25,7 @@ export class DeliveryMapService {
   private selectedOfficeSubject: ReplaySubject<CarrierOfficeInfo> = new ReplaySubject(1);
 
   constructor(
+    @Inject(LOCALE_ID) private locale: APP_LOCALE,
     private carrierOfficeAddressesApiService: CarrierOfficeAddressesApiService,
     private carrierOfficesApiService: CarrierOfficesApiService,
     private userService: UserService,
@@ -28,19 +33,19 @@ export class DeliveryMapService {
   ) {}
 
   public initializeOffices$(fullAddress: string, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
-    return this.initialCenterCoordinates$(fullAddress).pipe(
+    return this.initialCenterLocation$(fullAddress).pipe(
       take(1),
       switchMap((location: Location) => {
         const radiusInKm: number = getRadiusInKm(DEFAULT_VALUE_ZOOM, location.latitude);
         const locationWithRadius: LocationWithRadius = { ...location, radiusInKm };
 
-        return this.offices$(locationWithRadius, selectedCarrier);
+        return this.requestOffices$(locationWithRadius, selectedCarrier);
       }),
       tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices))
     );
   }
 
-  public offices$(location: LocationWithRadius, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
+  public requestOffices$(location: LocationWithRadius, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
     return this.carrierOfficesApiService
       .getCarrierOfficeAddresses(location, selectedCarrier)
       .pipe(tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices)));
@@ -58,8 +63,8 @@ export class DeliveryMapService {
     );
   }
 
-  public initialCenterCoordinates$(fullAddress: string): Observable<Location> {
-    return fullAddress ? this.addressLocation$(fullAddress) : this.userLocation$;
+  public initialCenterLocation$(fullAddress: string): Observable<Location> {
+    return fullAddress ? this.addressLocation$(fullAddress) : this.secondaryLocation$;
   }
 
   public markOffice(selectedOfficeLocation: Location): void {
@@ -83,7 +88,7 @@ export class DeliveryMapService {
   }
 
   public get officeMarkers$(): Observable<Location[]> {
-    return this.carrierOfficesSubject.pipe(
+    return this.carrierOffices$.pipe(
       map((carrierOffices: CarrierOfficeInfo[]) => {
         return carrierOffices.map((carrier: CarrierOfficeInfo) => {
           return {
@@ -136,14 +141,36 @@ export class DeliveryMapService {
     return this.selectedOfficeSubject.asObservable();
   }
 
-  private get userLocation$(): Observable<Location> {
+  private get secondaryLocation$(): Observable<Location> {
     return this.userService.getLoggedUserInformation().pipe(
       map((user: User) => {
-        return {
-          latitude: user.location.latitude || user.location.approximated_latitude,
-          longitude: user.location.longitude || user.location.approximated_longitude,
-        };
+        const userHasLocation: boolean = this.userHasLocation(user.location);
+
+        if (userHasLocation) {
+          return this.getUserLocation(user.location);
+        }
+        return this.fallbackLocation;
       })
     );
+  }
+
+  private get fallbackLocation(): Location {
+    const fallbackLocation: LabeledSearchLocation = DEFAULT_LOCATIONS[this.locale] || DEFAULT_LOCATIONS.en;
+
+    return {
+      latitude: +fallbackLocation.latitude,
+      longitude: +fallbackLocation.longitude,
+    };
+  }
+
+  private userHasLocation(location: UserLocation): boolean {
+    return !!(location.latitude || location.approximated_latitude) && !!(location.longitude || location.approximated_longitude);
+  }
+
+  private getUserLocation(location: UserLocation): Location {
+    return {
+      latitude: location.latitude || location.approximated_latitude,
+      longitude: location.longitude || location.approximated_longitude,
+    };
   }
 }

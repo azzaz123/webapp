@@ -40,7 +40,7 @@ describe('DeliveryMapComponent', () => {
             initializeOffices() {
               return of(MOCK_CARRIERS_OFFICE_INFO);
             },
-            initialCenterCoordinates$() {
+            initialCenterLocation$() {
               return of(MOCK_COORDINATE);
             },
           },
@@ -90,24 +90,25 @@ describe('DeliveryMapComponent', () => {
   describe('when the delivery map initializes... ', () => {
     describe('and there is an address with a selected carrier', () => {
       beforeEach(() => {
+        const MOCK_FULL_ADDRESS_CHANGED = { fullAddress: MOCK_ACCEPT_SCREEN_PROPERTIES.seller.fullAddress } as any;
         component.fullAddress = MOCK_ACCEPT_SCREEN_PROPERTIES.seller.fullAddress;
         component.selectedCarrier = POST_OFFICE_CARRIER.SEUR;
-        spyOn(deliveryMapService, 'initializeOffices').and.callThrough();
-        spyOn(deliveryMapService, 'initialCenterCoordinates$').and.callThrough();
-        component.ngOnInit();
+        spyOn(deliveryMapService, 'initializeOffices$').and.callThrough();
+        spyOn(deliveryMapService, 'initialCenterLocation$').and.callThrough();
+        component.ngOnChanges(MOCK_FULL_ADDRESS_CHANGED);
       });
 
       it('should call the delivery map service to initialize offices', () => {
-        expect(deliveryMapService.initializeOffices).toHaveBeenCalledTimes(1);
-        expect(deliveryMapService.initializeOffices).toBeCalledWith(
+        expect(deliveryMapService.initializeOffices$).toHaveBeenCalledTimes(1);
+        expect(deliveryMapService.initializeOffices$).toBeCalledWith(
           MOCK_ACCEPT_SCREEN_PROPERTIES.seller.fullAddress,
           POST_OFFICE_CARRIER.SEUR
         );
       });
 
       it('should call the delivery map service to initialize center coordinates', () => {
-        expect(deliveryMapService.initialCenterCoordinates$).toHaveBeenCalledTimes(1);
-        expect(deliveryMapService.initialCenterCoordinates$).toBeCalledWith(MOCK_ACCEPT_SCREEN_PROPERTIES.seller.fullAddress);
+        expect(deliveryMapService.initialCenterLocation$).toHaveBeenCalledTimes(1);
+        expect(deliveryMapService.initialCenterLocation$).toBeCalledWith(MOCK_ACCEPT_SCREEN_PROPERTIES.seller.fullAddress);
       });
 
       it('should render the searchable movable map', () => {
