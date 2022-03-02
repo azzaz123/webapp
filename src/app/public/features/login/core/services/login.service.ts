@@ -1,18 +1,19 @@
-import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { DeviceService } from '@core/device/device.service';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { concatMap, tap } from 'rxjs/operators';
 import { AccessMetadata } from '../interfaces/access-metadata';
 import { LoginRequest } from '../interfaces/login.request';
 import { LoginResponse } from '../interfaces/login.response';
-import { WINDOW_TOKEN } from '@core/window/window.token';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { UserService } from '@core/user/user.service';
+import { User } from '@core/user/user';
 
-export const LOGIN_ENDPOINT = 'api/v3/users/access/login';
+export const LOGIN_ENDPOINT = 'api/v3/access/login';
 
 @Injectable()
 export class LoginService {
@@ -22,26 +23,33 @@ export class LoginService {
     private accessTokenService: AccessTokenService,
     private deviceService: DeviceService,
     private analyticsService: AnalyticsService,
-    @Inject(WINDOW_TOKEN) private window: Window
+    private userService: UserService
   ) {}
 
-  public login(body: LoginRequest, callback?: () => void): Observable<LoginResponse> {
+  public login(body: LoginRequest, callback?: () => void): Observable<User> {
     body.metadata = this.getMetadata();
-    return this.httpClient.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body).pipe(
-      tap((r) => {
-        this.storeData(r);
+    const headers = this.getHeaders();
 
-        this.analyticsService.loginUser({ customerid: r.registerInfo.userUUID, email: body.emailAddress }, callback);
-      })
+    return this.httpClient.post<LoginResponse>(`${environment.baseUrl}${LOGIN_ENDPOINT}`, body, { headers }).pipe(
+      tap((r) => this.storeData(r)),
+      concatMap(() => this.userService.getLoggedUserInformation()),
+      tap((r) => this.analyticsService.loginUser({ customerid: r.id, email: r.email }, callback))
     );
   }
 
   private getMetadata(): AccessMetadata {
     return {
-      installationId: this.deviceService.getDeviceId(),
-      installationType: 'WEB',
-      pushToken: '',
+      recaptchaToken: '',
+      sessionId: this.deviceService.getDeviceId(),
     };
+  }
+
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'X-DeviceToken': this.deviceService.getDeviceId(),
+      'X-DeviceID': this.deviceService.getDeviceId(),
+      'X-AppVersion': '0',
+    });
   }
 
   private storeData(data: LoginResponse): void {

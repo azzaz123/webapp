@@ -210,6 +210,23 @@ $modal-border-radius: 0.3rem;
   }
 }
 
+.modal.payview {
+  & .modal-dialog {
+    max-height: 80vh;
+    min-height: $spacing-xxxl;
+    overflow-y: scroll;
+    width: 100%;
+
+    @include media-breakpoint-up(xl) {
+      width: $modal-lg;
+    }
+
+    @include media-breakpoint-up(md) {
+      width: $modal-md;
+    }
+  }
+}
+
 .modal.credit-card {
   $modal-width: 370px;
   .modal-dialog {
