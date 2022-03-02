@@ -29,4 +29,8 @@ export interface ViewOwnSaleItems {
    * Whether a promotional banner for subscriptions is displayed
    */
   proSubscriptionBanner?: boolean;
+  /**
+   * Whether the user is a PRO
+   */
+  isPro: boolean;
 }

@@ -6,9 +6,9 @@
  */
 
 /**
- * User views own item detail screen
+ * BE event when user favorites product
  */
-export interface ViewOwnItemDetail {
+export interface FavoriteItemWithDistance {
   /**
    * The unique identifier for an item
    */
@@ -18,27 +18,23 @@ export interface ViewOwnItemDetail {
    */
   categoryId: number;
   /**
-   * Item price
+   * Distance between buyer and item/seller in km
    */
-  salePrice?: number;
+  buyerSellerDistance?: number;
   /**
    * Item title
    */
   title: string;
   /**
-   * If the seller of the item viewed is a professional user
+   * Identifier of the user that the item belongs to
    */
-  isPro: boolean;
+  sellerUserId: string;
   /**
-   * Identifier of the screen that the item was viewed from
+   * Identifier of the user that the item belongs to
    */
-  screenId: number;
-  /**
-   * Indicates whether the listing is active (items can be inactive in categories with listing limits)
-   */
-  isActive: boolean;
+  salePrice: number;
   /**
    * Whether the shipping toggle is activated for the item (buyer can send shipping request)
    */
-  shippingAllowed?: boolean;
+  shippingAllowed: boolean;
 }

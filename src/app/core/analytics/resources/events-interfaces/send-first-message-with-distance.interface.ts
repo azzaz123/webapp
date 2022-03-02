@@ -6,37 +6,29 @@
  */
 
 /**
- * User views own item detail screen
+ * BE event when buyer sends first conversation message
  */
-export interface ViewOwnItemDetail {
+export interface SendFirstMessageWithDistance {
   /**
-   * The unique identifier for an item
+   * Distance between buyer and item/seller
    */
-  itemId: string;
+  buyerSellerDistance?: number;
   /**
    * Identifier of the category that the item belongs to
    */
   categoryId: number;
   /**
-   * Item price
+   * Hashed identifier of the user that the item belongs to
    */
-  salePrice?: number;
+  sellerUserId: string;
   /**
-   * Item title
+   * Hashed identifier of the item
    */
-  title: string;
+  itemId: string;
   /**
-   * If the seller of the item viewed is a professional user
+   * Identifier of the conversation
    */
-  isPro: boolean;
-  /**
-   * Identifier of the screen that the item was viewed from
-   */
-  screenId: number;
-  /**
-   * Indicates whether the listing is active (items can be inactive in categories with listing limits)
-   */
-  isActive: boolean;
+  conversationId: string;
   /**
    * Whether the shipping toggle is activated for the item (buyer can send shipping request)
    */
