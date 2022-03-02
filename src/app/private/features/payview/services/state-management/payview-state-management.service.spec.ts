@@ -50,7 +50,7 @@ describe('PayviewStateManagementService', () => {
     let payviewState: PayviewState;
 
     beforeEach(fakeAsync(() => {
-      getCurrentStateSpy = spyOn(payviewService, 'getCurrentState').and.returnValue(of(MOCK_PAYVIEW_STATE).pipe(delay(0)));
+      getCurrentStateSpy = spyOn(payviewService, 'getCurrentState').and.returnValue(of(MOCK_PAYVIEW_STATE).pipe(delay(1)));
       service.payViewState$.subscribe((result: PayviewState) => {
         payviewState = result;
       });
@@ -59,7 +59,7 @@ describe('PayviewStateManagementService', () => {
       });
 
       service.itemHash = fakeItemHash;
-      tick(0);
+      tick(1);
     }));
 
     it('should request the payview state', fakeAsync(() => {
@@ -84,9 +84,9 @@ describe('PayviewStateManagementService', () => {
         const fakePromocode: Partial<DeliveryBuyerCalculatorPromotionCost> = { promocode: 'this_is_a_fake_promocode' };
         fakeCosts.promotion = fakePromocode as DeliveryBuyerCalculatorPromotionCost;
 
-        costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(0)));
+        costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
         service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
-        tick(0);
+        tick(1);
       }));
 
       it('should call to payview service', fakeAsync(() => {
@@ -115,7 +115,7 @@ describe('PayviewStateManagementService', () => {
       beforeEach(fakeAsync(() => {
         spyOn(payviewService, 'getCosts').and.returnValue(
           of(MOCK_DELIVERY_BUYER_CALCULATOR_COSTS).pipe(
-            delay(0),
+            delay(1),
             mergeMap((e) => throwError('The server is broken'))
           )
         );
@@ -123,7 +123,7 @@ describe('PayviewStateManagementService', () => {
           payviewState = result;
         });
         service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[0]);
-        tick(0);
+        tick(1);
       }));
 
       it('should request the payview state', fakeAsync(() => {
@@ -180,13 +180,13 @@ describe('PayviewStateManagementService', () => {
         fakePayviewState.delivery.methods.current = fakeDeliveryMethods.deliveryMethods[1];
         payviewState = null;
 
-        spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(0)));
-        spyOn(payviewService, 'getDeliveryCosts').and.returnValue(of(fakeDeliveryCosts).pipe(delay(0)));
-        spyOn(payviewService, 'getDeliveryMethods').and.returnValue(of(fakeDeliveryMethods).pipe(delay(0)));
+        spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
+        spyOn(payviewService, 'getDeliveryCosts').and.returnValue(of(fakeDeliveryCosts).pipe(delay(1)));
+        spyOn(payviewService, 'getDeliveryMethods').and.returnValue(of(fakeDeliveryMethods).pipe(delay(1)));
 
         service.refreshByDelivery();
 
-        tick(0);
+        tick(1);
       }));
 
       it('should call to payview service in order to refresh costs', fakeAsync(() => {
@@ -254,7 +254,7 @@ describe('PayviewStateManagementService', () => {
     beforeEach(fakeAsync(() => {
       spyOn(payviewService, 'getCurrentState').and.returnValue(
         of(MOCK_PAYVIEW_STATE).pipe(
-          delay(0),
+          delay(1),
           mergeMap((e) => throwError('The server is broken'))
         )
       );
@@ -266,7 +266,7 @@ describe('PayviewStateManagementService', () => {
       });
 
       service.itemHash = fakeItemHash;
-      tick(0);
+      tick(1);
     }));
 
     it('should request the payview state', fakeAsync(() => {

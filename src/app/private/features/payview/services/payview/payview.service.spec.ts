@@ -328,13 +328,13 @@ describe('PayviewService', () => {
 
       const subscription = service
         .getCosts(fakeItemHash, fakeAmount, fakePromocode, fakeDeliveryMethod)
-        .pipe(delay(0))
+        .pipe(delay(1))
         .subscribe((response: DeliveryBuyerCalculatorCosts) => {
           subscription.unsubscribe();
           result = response;
         });
 
-      tick();
+      tick(1);
 
       expect(result).toBe(MOCK_DELIVERY_BUYER_CALCULATOR_COSTS);
       expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledTimes(1);
@@ -350,11 +350,11 @@ describe('PayviewService', () => {
     it('should call to the delivery address server to get the corresponding information', fakeAsync(() => {
       let result: DeliveryAddress;
 
-      const subscription = service.address.pipe(delay(0)).subscribe((response: DeliveryAddress) => {
+      const subscription = service.address.pipe(delay(1)).subscribe((response: DeliveryAddress) => {
         subscription.unsubscribe();
         result = response;
       });
-      tick();
+      tick(1);
 
       expect(result).toEqual(MOCK_DELIVERY_ADDRESS);
       expect(deliveryAddressService.get).toHaveBeenCalledTimes(1);
@@ -372,12 +372,12 @@ describe('PayviewService', () => {
 
       const subscription = service
         .getDeliveryCosts(fakeItemHash)
-        .pipe(delay(0))
+        .pipe(delay(1))
         .subscribe((response: DeliveryCosts) => {
           subscription.unsubscribe();
           result = response;
         });
-      tick();
+      tick(1);
 
       expect(result).toEqual(MOCK_DELIVERY_COSTS_ITEM);
       expect(deliveryCostsService.getCosts).toHaveBeenCalledTimes(1);
@@ -395,12 +395,12 @@ describe('PayviewService', () => {
 
       const subscription = service
         .getDeliveryMethods(fakeItemHash)
-        .pipe(delay(0))
+        .pipe(delay(1))
         .subscribe((response: DeliveryBuyerDeliveryMethods) => {
           subscription.unsubscribe();
           result = response;
         });
-      tick();
+      tick(1);
 
       expect(result).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS);
       expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledTimes(1);
