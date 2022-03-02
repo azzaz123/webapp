@@ -81,6 +81,25 @@ describe('DeliveryRadioSelectorComponent', () => {
       });
     });
 
+    describe('AND WHEN an element is forced to be checked', () => {
+      beforeEach(() => {
+        component.isChecked = true;
+
+        fixture.detectChanges();
+      });
+
+      it('should mark as checked the corresponding element', () => {
+        const options: DebugElement[] = fixture.debugElement.queryAll(By.css(inputRadioSelector));
+
+        options.forEach((option: DebugElement, index: number) => {
+          const isOptionChecked: boolean = option.nativeElement.checked;
+          const isChecked: boolean = option.componentInstance.isChecked;
+
+          isChecked ? expect(isOptionChecked).toBeTruthy() : expect(isOptionChecked).toBeFalsy();
+        });
+      });
+    });
+
     describe(`and we DON'T have a selected position defined`, () => {
       beforeEach(() => {
         component.selectedId = null;
@@ -105,6 +124,25 @@ describe('DeliveryRadioSelectorComponent', () => {
         it('should emit the new selected id', () => {
           expect(component.changed.emit).toHaveBeenCalledWith(newSelectedOptionPosition2);
           expect(component.changed.emit).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('AND WHEN there is not an element forced to be checked', () => {
+        beforeEach(() => {
+          component.isChecked = false;
+
+          fixture.detectChanges();
+        });
+
+        it('should not mark as checked the corresponding element', () => {
+          const options: DebugElement[] = fixture.debugElement.queryAll(By.css(inputRadioSelector));
+
+          options.forEach((option: DebugElement, index: number) => {
+            const isOptionChecked: boolean = option.nativeElement.checked;
+            const isChecked: boolean = option.componentInstance.isChecked;
+
+            isChecked ? expect(isOptionChecked).toBeTruthy() : expect(isOptionChecked).toBeFalsy();
+          });
         });
       });
     });
