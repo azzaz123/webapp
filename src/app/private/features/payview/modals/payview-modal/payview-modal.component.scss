@@ -2,7 +2,10 @@
 
 .PayviewModal {
   max-height: 80vh;
-  overflow-y: scroll;
+
+  &__scrollable {
+    overflow-y: scroll;
+  }
 
   &__spinner {
     padding: $spacing-l;
