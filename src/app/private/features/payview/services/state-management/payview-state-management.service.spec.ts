@@ -151,7 +151,7 @@ describe('PayviewStateManagementService', () => {
 
         service.refreshPayviewState();
 
-        tick(0);
+        tick(1);
       }));
 
       it('should call to payview service', fakeAsync(() => {
