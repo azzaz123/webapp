@@ -2,6 +2,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable, ReplaySubject } from 'rxjs';
 import { UserService } from '@core/user/user.service';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { UserService } from '@core/user/user.service';
 export class ExternalCommsService {
   private readonly _brazeReady$: ReplaySubject<void> = new ReplaySubject<void>();
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, public notificationApiService: NotificationApiService) {}
 
   public get brazeReady$(): Observable<void> {
     return this._brazeReady$.asObservable();
@@ -26,6 +27,10 @@ export class ExternalCommsService {
       appboy.changeUser(this.userService.user.id);
     }
     appboy.openSession();
+
+    this.notificationApiService.refreshUnreadNotifications();
+
+    //TODO listen for changes in notifications and refresh
   }
 
   private configureBraze(): void {

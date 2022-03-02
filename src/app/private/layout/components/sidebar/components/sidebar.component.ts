@@ -61,7 +61,6 @@ export class SidebarComponent implements OnInit {
       this.isProfessional = value;
     });
     this.isClickedProSection = this.userService.isClickedProSection;
-    this.notificationApiService.refreshUnreadNotifications();
   }
 
   public toggleCollapse(): void {
