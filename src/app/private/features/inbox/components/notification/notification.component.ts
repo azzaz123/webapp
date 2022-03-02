@@ -16,15 +16,14 @@ import { Notification } from '@api/core/model/notification/notification.interfac
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss'],
 })
-export class NotificationComponent implements OnInit {
+export class NotificationComponent {
   @Input() notification: Notification;
+
   public NOTIFICATION_VARIANT = NOTIFICATION_VARIANT;
 
-  ngOnInit() {
-    //TODO implements viewed card on display / click
-  }
-
   constructor(private analyticsService: AnalyticsService) {}
+
+  //TODO OnInit => implements viewed card on display / click
 
   public handleNotificationClick(): void {
     this.trackClickNotification();
