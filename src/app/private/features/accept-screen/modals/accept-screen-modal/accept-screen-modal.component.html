@@ -193,6 +193,7 @@
         [selectedCarrier]="selectedCarrier.name"
         [userOfficeId]="selectedCarrier.lastAddressUsedId"
         (goToDeliveryAddress)="goToDeliveryAddressFromMap($event)"
+        (selectedOfficeSucceed)="goToAcceptScreenOrDeliveryMap()"
       ></tsl-delivery-map
     ></ng-template>
   </tsl-stepper>
