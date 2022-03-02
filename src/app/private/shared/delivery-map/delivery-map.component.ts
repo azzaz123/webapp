@@ -23,6 +23,7 @@ export class DeliveryMapComponent implements OnInit, OnDestroy {
   @Input() fullAddress: string;
   @Input() selectedCarrier: POST_OFFICE_CARRIER;
   @Output() goToDeliveryAddress: EventEmitter<void> = new EventEmitter();
+  @Output() selectedOfficeSucceed: EventEmitter<void> = new EventEmitter();
   @ViewChild(SearchableMovableMapComponent, { static: true }) searchableMovableMap: SearchableMovableMapComponent;
   public initializeOffices$: Observable<CarrierOfficeInfo[]>;
   public initialCenterCoordinates$: Observable<Location>;
@@ -79,7 +80,9 @@ export class DeliveryMapComponent implements OnInit, OnDestroy {
     }
 
     this.deliveryMapService.selectOfficePreference(this.userOfficeId).subscribe(
-      () => {},
+      () => {
+        this.selectedOfficeSucceed.emit();
+      },
       () => {
         this.showError();
       }
@@ -98,14 +101,10 @@ export class DeliveryMapComponent implements OnInit, OnDestroy {
 
     modalRef.result.then(
       () => {
-        this.addDeliveryAddress();
+        this.goToDeliveryAddress.emit();
       },
       () => {}
     );
-  }
-
-  private addDeliveryAddress(): void {
-    this.goToDeliveryAddress.emit();
   }
 
   private showError(): void {

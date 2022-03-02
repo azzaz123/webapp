@@ -2,14 +2,19 @@
 
 .DeliveryMap {
   &__selectedOfficeInfo {
+    max-width: 90%;
     background-color: $white;
     z-index: 2;
-    bottom: 0;
+    bottom: 40px;
     border-radius: $border-radius;
   }
 
-  &__selectedOfficeInfoName {
+  &__title {
     font-weight: $font-weight-chunky;
+  }
+
+  &__description {
+    color: $blue-grey-2;
   }
 
   &__selectButton {
