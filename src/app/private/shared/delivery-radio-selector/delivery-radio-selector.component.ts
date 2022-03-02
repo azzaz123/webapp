@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
 })
 export class DeliveryRadioSelectorComponent implements OnDestroy, AfterContentInit {
   @Input() isChecked: boolean;
+  @Input() marginLess: boolean;
   @Input() selectedId: number;
   @Output() changed: EventEmitter<number> = new EventEmitter();
 

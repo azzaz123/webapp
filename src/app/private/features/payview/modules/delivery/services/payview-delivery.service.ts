@@ -13,7 +13,8 @@ export class PayviewDeliveryService {
 
   constructor() {}
 
-  public on(eventType: PayviewDeliveryEventType, callback: (payload: DeliveryBuyerDeliveryMethod) => void): Subscription {
+  // public on(eventType: PayviewDeliveryEventType, callback: (payload: DeliveryBuyerDeliveryMethod) => void): Subscription {
+  public on(eventType: PayviewDeliveryEventType, handler: (payload: DeliveryBuyerDeliveryMethod) => void): Subscription {
     return this.deliveryMethodSubject
       .pipe(
         filter((e: PayviewDeliveryEvent) => e.type === eventType),
@@ -21,7 +22,7 @@ export class PayviewDeliveryService {
           return e.payload;
         })
       )
-      .subscribe(callback);
+      .subscribe(handler);
   }
 
   public editAddress(): void {

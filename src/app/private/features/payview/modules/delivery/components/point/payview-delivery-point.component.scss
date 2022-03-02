@@ -4,8 +4,8 @@
   border-bottom: 1px solid $blue-grey-4;
 
   &__pointWrapper {
-    padding: $spacer * 0.75 0px;
     flex: 1;
+    padding: $spacer * 0.75 0px;
   }
 
   &__pointIconWrapper {
@@ -37,14 +37,5 @@
   &__deliveryEta,
   &__deliveryAddress {
     font-weight: $font-weight-chunky;
-  }
-
-  ::ng-deep .DeliveryRadioOption {
-    border-bottom: none;
-
-    input {
-      margin-bottom: unset !important;
-      margin-top: unset !important;
-    }
   }
 }

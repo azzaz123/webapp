@@ -1,5 +1,5 @@
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { PayviewDeliveryEventType } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.interface';
@@ -27,6 +27,7 @@ describe('PayviewDeliveryService', () => {
       });
 
       service.setDeliveryMethod(expected);
+      tick();
 
       expect(result).toStrictEqual(expected);
     }));
@@ -42,6 +43,7 @@ describe('PayviewDeliveryService', () => {
       });
 
       service.editAddress();
+      tick();
 
       expect(result).toBe(expected);
     }));
@@ -57,6 +59,7 @@ describe('PayviewDeliveryService', () => {
       });
 
       service.editPickUpPoint();
+      tick();
 
       expect(result).toBe(expected);
     }));
