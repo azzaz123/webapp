@@ -6,5 +6,5 @@ export interface ConfirmationModalProperties {
   confirmMessage: string;
   cancelMessage?: string;
   confirmColor: COLORS.WALLA_MAIN | COLORS.NEGATIVE_MAIN;
-  cancelColor?: string;
+  cancelColor?: COLORS.BLUE_GREY_1 | COLORS.WALLA_MAIN;
 }
