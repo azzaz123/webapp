@@ -2,11 +2,13 @@
 
 .DeliveryMap {
   &__selectedOfficeInfo {
-    max-width: 90%;
+    max-width: 80%;
     background-color: $white;
     z-index: 2;
-    bottom: 40px;
+    bottom: 10%;
     border-radius: $border-radius;
+    left: 0;
+    right: 0;
   }
 
   &__title {
