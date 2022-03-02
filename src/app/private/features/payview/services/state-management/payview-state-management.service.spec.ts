@@ -2,6 +2,8 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
 import { DeliveryBuyerCalculatorPromotionCost } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-promotion-cost.interface';
+import { DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
@@ -9,10 +11,11 @@ import { PayviewService } from '@private/features/payview/services/payview/payvi
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
 
-import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
 
 describe('PayviewStateManagementService', () => {
+  const fakeItemHash: string = 'this_is_a_fake_item_hash';
   let service: PayviewStateManagementService;
   let payviewService: PayviewService;
 
@@ -24,6 +27,8 @@ describe('PayviewStateManagementService', () => {
           provide: PayviewService,
           useValue: {
             getCosts() {},
+            getDeliveryCosts() {},
+            getDeliveryMethods() {},
             getCurrentState(value: string): Observable<PayviewState> {
               return of(MOCK_PAYVIEW_STATE);
             },
@@ -40,7 +45,6 @@ describe('PayviewStateManagementService', () => {
   });
 
   describe('WHEN the item is reported', () => {
-    const fakeItemHash: string = 'this_is_a_fake_item_hash';
     let getCurrentStateSpy;
     let itemHash: string;
     let payviewState: PayviewState;
@@ -106,7 +110,6 @@ describe('PayviewStateManagementService', () => {
     });
 
     describe('WHEN there is an error when retrieving costs', () => {
-      const fakeItemHash: string = 'this_is_a_fake_item_hash';
       let payviewState: PayviewState;
 
       beforeEach(fakeAsync(() => {
@@ -162,6 +165,56 @@ describe('PayviewStateManagementService', () => {
         expect(payviewState).toStrictEqual(expectedPayviewState);
       }));
     });
+
+    describe('WHEN refreshing by delivery', () => {
+      let fakeCosts: DeliveryBuyerCalculatorCosts;
+      let fakeDeliveryCosts: DeliveryCosts;
+      let fakeDeliveryMethods: DeliveryBuyerDeliveryMethods;
+      let fakePayviewState: PayviewState;
+
+      beforeEach(fakeAsync(() => {
+        fakeCosts = { ...MOCK_PAYVIEW_STATE.costs };
+        fakeDeliveryCosts = { ...MOCK_PAYVIEW_STATE.delivery.costs };
+        fakeDeliveryMethods = { ...MOCK_DELIVERY_BUYER_DELIVERY_METHODS };
+        fakePayviewState = { ...MOCK_PAYVIEW_STATE };
+        fakePayviewState.delivery.methods.current = fakeDeliveryMethods.deliveryMethods[1];
+        payviewState = null;
+
+        spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(0)));
+        spyOn(payviewService, 'getDeliveryCosts').and.returnValue(of(fakeDeliveryCosts).pipe(delay(0)));
+        spyOn(payviewService, 'getDeliveryMethods').and.returnValue(of(fakeDeliveryMethods).pipe(delay(0)));
+
+        service.refreshByDelivery();
+
+        tick(0);
+      }));
+
+      it('should call to payview service in order to refresh costs', fakeAsync(() => {
+        expect(payviewService.getCosts).toHaveBeenCalledTimes(1);
+        expect(payviewService.getCosts).toHaveBeenCalledWith(
+          fakePayviewState.itemDetails.itemHash,
+          fakePayviewState.itemDetails.price,
+          fakePayviewState.costs.promotion?.promocode,
+          fakePayviewState.delivery.methods.deliveryMethods[1]
+        );
+      }));
+
+      it('should call to payview service in order to refresh the delivery costs', fakeAsync(() => {
+        expect(payviewService.getDeliveryCosts).toHaveBeenCalledTimes(1);
+        expect(payviewService.getDeliveryCosts).toHaveBeenCalledWith(fakePayviewState.itemDetails.itemHash);
+      }));
+
+      it('should call to payview service in order to refresh the delivery methods', fakeAsync(() => {
+        expect(payviewService.getDeliveryMethods).toHaveBeenCalledTimes(1);
+        expect(payviewService.getDeliveryMethods).toHaveBeenCalledWith(fakePayviewState.itemDetails.itemHash);
+      }));
+
+      it('should update the payview state ', fakeAsync(() => {
+        const expectedPayviewState = { ...MOCK_PAYVIEW_STATE };
+
+        expect(payviewState).toStrictEqual(expectedPayviewState);
+      }));
+    });
   });
 
   describe('WHEN the item is not reported', () => {
@@ -195,7 +248,6 @@ describe('PayviewStateManagementService', () => {
   });
 
   describe('WHEN there is an error in any service', () => {
-    const fakeItemHash: string = 'this_is_a_fake_item_hash';
     let itemHash: string;
     let payviewState: PayviewState;
 
