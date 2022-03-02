@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnDestroy, SimpleChanges, OnChanges } from '@angular/core';
 import { Location, LocationWithRadius } from '@api/core/model';
 import { CarrierOfficeInfo, CarrierOfficeSchedule } from '@api/core/model/delivery/carrier-office-info/carrier-office-info.interface';
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
@@ -18,7 +18,7 @@ import { I18nService } from '@core/i18n/i18n.service';
   templateUrl: './delivery-map.component.html',
   styleUrls: ['./delivery-map.component.scss'],
 })
-export class DeliveryMapComponent implements OnInit, OnDestroy {
+export class DeliveryMapComponent implements OnChanges, OnDestroy {
   @Input() userOfficeId: string;
   @Input() fullAddress: string;
   @Input() selectedCarrier: POST_OFFICE_CARRIER;
@@ -38,16 +38,18 @@ export class DeliveryMapComponent implements OnInit, OnDestroy {
     private i18nService: I18nService
   ) {}
 
-  ngOnInit(): void {
-    this.initializeOffices$ = this.deliveryMapService.initializeOffices(this.fullAddress, this.selectedCarrier).pipe(
-      tap(
-        () => {},
-        () => {
-          this.showError();
-        }
-      )
-    );
-    this.initialCenterCoordinates$ = this.deliveryMapService.initialCenterCoordinates$(this.fullAddress);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.fullAddress) {
+      this.initializeOffices$ = this.deliveryMapService.initializeOffices(this.fullAddress, this.selectedCarrier).pipe(
+        tap(
+          () => {},
+          () => {
+            this.showError();
+          }
+        )
+      );
+      this.initialCenterCoordinates$ = this.deliveryMapService.initialCenterCoordinates$(this.fullAddress);
+    }
   }
 
   ngOnDestroy() {
