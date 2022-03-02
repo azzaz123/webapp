@@ -27,26 +27,26 @@ export class DeliveryMapService {
     private geoLocationService: GeolocationService
   ) {}
 
-  public initializeOffices(fullAddress: string, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
+  public initializeOffices$(fullAddress: string, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
     return this.initialCenterCoordinates$(fullAddress).pipe(
       take(1),
       switchMap((location: Location) => {
         const radiusInKm: number = getRadiusInKm(DEFAULT_VALUE_ZOOM, location.latitude);
         const locationWithRadius: LocationWithRadius = { ...location, radiusInKm };
 
-        return this.getOffices(locationWithRadius, selectedCarrier);
+        return this.offices$(locationWithRadius, selectedCarrier);
       }),
       tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices))
     );
   }
 
-  public getOffices(location: LocationWithRadius, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
+  public offices$(location: LocationWithRadius, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
     return this.carrierOfficesApiService
       .getCarrierOfficeAddresses(location, selectedCarrier)
       .pipe(tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices)));
   }
 
-  public selectOfficePreference(userOfficeId: string): Observable<void> {
+  public selectOfficePreference$(userOfficeId: string): Observable<void> {
     return this.selectedOffice$.pipe(
       take(1),
       switchMap((carrierOfficeInfo: CarrierOfficeInfo) => {
@@ -56,6 +56,30 @@ export class DeliveryMapService {
         return this.carrierOfficeAddressesApiService.createSelectedCarrierOffice(carrierOfficeInfo);
       })
     );
+  }
+
+  public initialCenterCoordinates$(fullAddress: string): Observable<Location> {
+    return fullAddress ? this.addressLocation$(fullAddress) : this.userLocation$;
+  }
+
+  public markOffice(selectedOfficeLocation: Location): void {
+    this.carrierOffices$
+      .pipe(
+        take(1),
+        tap((offices: CarrierOfficeInfo[]) => {
+          const selectedOffice: CarrierOfficeInfo = offices.find(
+            (office: CarrierOfficeInfo) =>
+              office.latitude === selectedOfficeLocation.latitude && office.longitude === selectedOfficeLocation.longitude
+          );
+
+          this.selectedOffice = selectedOffice;
+        })
+      )
+      .subscribe();
+  }
+
+  public resetSelectedOffice(): void {
+    this.selectedOffice = null;
   }
 
   public get officeMarkers$(): Observable<Location[]> {
@@ -69,26 +93,6 @@ export class DeliveryMapService {
         });
       })
     );
-  }
-
-  public initialCenterCoordinates$(fullAddress: string): Observable<Location> {
-    return fullAddress ? this.getAddressLocation(fullAddress) : this.getUserLocation();
-  }
-
-  public selectOffice(selectedOfficeLocation: Location): Observable<any> {
-    return this.carrierOffices$.pipe(
-      map((offices: CarrierOfficeInfo[]) => {
-        const selectedOffice = offices.find((office) => {
-          return office.latitude === selectedOfficeLocation.latitude && office.longitude === selectedOfficeLocation.longitude;
-        });
-
-        this.selectedOffice = selectedOffice;
-      })
-    );
-  }
-
-  public resetSelectedOfficeInformation(): void {
-    this.selectedOffice = null;
   }
 
   public get carrierOffices$(): Observable<CarrierOfficeInfo[]> {
@@ -109,10 +113,6 @@ export class DeliveryMapService {
     );
   }
 
-  private get selectedOffice$(): Observable<CarrierOfficeInfo> {
-    return this.selectedOfficeSubject.asObservable();
-  }
-
   private set carrierOffices(newOffices: CarrierOfficeInfo[]) {
     this.carrierOfficesSubject.next(newOffices);
   }
@@ -121,7 +121,7 @@ export class DeliveryMapService {
     this.selectedOfficeSubject.next(office);
   }
 
-  private getAddressLocation(address: string): Observable<Location> {
+  private addressLocation$(address: string): Observable<Location> {
     return this.geoLocationService.geocode(address).pipe(
       map((coordinate: Coordinate) => {
         return {
@@ -132,7 +132,11 @@ export class DeliveryMapService {
     );
   }
 
-  private getUserLocation(): Observable<Location> {
+  private get selectedOffice$(): Observable<CarrierOfficeInfo> {
+    return this.selectedOfficeSubject.asObservable();
+  }
+
+  private get userLocation$(): Observable<Location> {
     return this.userService.getLoggedUserInformation().pipe(
       map((user: User) => {
         return {

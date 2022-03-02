@@ -38,9 +38,9 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
     private i18nService: I18nService
   ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.fullAddress) {
-      this.initializeOffices$ = this.deliveryMapService.initializeOffices(this.fullAddress, this.selectedCarrier).pipe(
+      this.initializeOffices$ = this.deliveryMapService.initializeOffices$(this.fullAddress, this.selectedCarrier).pipe(
         tap(
           () => {},
           () => {
@@ -52,17 +52,17 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.resetSelectedOfficeInformation();
+  ngOnDestroy(): void {
+    this.resetSelectedOffice();
   }
 
-  public selectOffice(officeLocation: Location): void {
-    this.deliveryMapService.selectOffice(officeLocation).pipe(take(1)).subscribe();
+  public markOffice(officeLocation: Location): void {
+    this.deliveryMapService.markOffice(officeLocation);
   }
 
   public requestOffices(newLocationWithRadius: LocationWithRadius): void {
     this.deliveryMapService
-      .getOffices(newLocationWithRadius, this.selectedCarrier)
+      .offices$(newLocationWithRadius, this.selectedCarrier)
       .pipe(take(1))
       .subscribe(
         () => {},
@@ -72,8 +72,8 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
       );
   }
 
-  public resetSelectedOfficeInformation(): void {
-    this.deliveryMapService.resetSelectedOfficeInformation();
+  public resetSelectedOffice(): void {
+    this.deliveryMapService.resetSelectedOffice();
   }
 
   public selectOfficePreference(): void {
@@ -81,7 +81,7 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
       return this.openDeliveryAddressWarning();
     }
 
-    this.deliveryMapService.selectOfficePreference(this.userOfficeId).subscribe(
+    this.deliveryMapService.selectOfficePreference$(this.userOfficeId).subscribe(
       () => {
         this.selectedOfficeSucceed.emit();
       },
