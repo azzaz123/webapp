@@ -324,13 +324,13 @@ describe('PayviewService', () => {
 
       const subscription = service
         .getCosts(fakeItemHash, fakeAmount, fakePromocode, fakeDeliveryMethod)
-        .pipe(delay(0))
+        .pipe(delay(1))
         .subscribe(() => {
           subscription.unsubscribe();
           expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledTimes(1);
           expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledWith(fakeAmount, fakeItemHash, fakePromocode, fakeDeliveryMode);
         });
-      tick();
+      tick(1);
     }));
   });
 });
