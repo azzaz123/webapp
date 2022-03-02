@@ -34,7 +34,7 @@ describe('CarrierOfficeAddressesHttpService', () => {
       expect(req.request.method).toBe('POST');
       expect(req.request.url).toEqual(CREATE_SELECTED_CARRIER_OFFICE_ENDPOINT);
       expect(req.request.body).toStrictEqual({
-        selectedOffice: MOCK_SELECTED_CARRIER_OFFICE_DTO,
+        MOCK_SELECTED_CARRIER_OFFICE_DTO,
       });
     });
   });
@@ -49,7 +49,7 @@ describe('CarrierOfficeAddressesHttpService', () => {
       expect(req.request.method).toBe('PUT');
       expect(req.request.url).toEqual(expectedUrl);
       expect(req.request.body).toStrictEqual({
-        selectedOffice: MOCK_SELECTED_CARRIER_OFFICE_DTO,
+        MOCK_SELECTED_CARRIER_OFFICE_DTO,
       });
     });
   });
