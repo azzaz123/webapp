@@ -5,6 +5,7 @@ import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requ
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
 import { DeliveryBuyerCalculatorService } from '@api/delivery/buyer/calculator/delivery-buyer-calculator.service';
+import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryBuyerService } from '@api/bff/delivery/buyer/delivery-buyer.service';
 import { DeliveryCostsService } from '@api/bff/delivery/costs/delivery-costs.service';
 import { ItemService } from '@core/item/item.service';
@@ -27,9 +28,12 @@ import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.s
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
+import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 
 describe('PayviewService', () => {
+  const fakeItemHash: string = 'this_is_a_fake_item_hash';
+
   let service: PayviewService;
   let buyerRequestsApiService: BuyerRequestsApiService;
   let deliveryAddressService: DeliveryAddressService;
@@ -147,7 +151,6 @@ describe('PayviewService', () => {
   });
 
   describe('WHEN asking for the item details', () => {
-    const fakeItemHash: string = 'this_is_a_fake_item_hash';
     let payviewState: PayviewState;
     let paymentMethodsSpy;
     let paymentPreferencesSpy;
@@ -227,7 +230,6 @@ describe('PayviewService', () => {
   });
 
   describe('WHEN the address service returns an error', () => {
-    const fakeItemHash: string = 'this_is_a_fake_item_hash';
     let payviewState: PayviewState;
     let paymentMethodsSpy;
     let paymentPreferencesSpy;
@@ -307,5 +309,28 @@ describe('PayviewService', () => {
 
       expect(payviewState).toMatchObject(expected);
     });
+  });
+
+  describe('WHEN retrieving the costs', () => {
+    beforeEach(() => {
+      spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
+    });
+
+    it('should call to the calculator server to get the corresponding information', fakeAsync(() => {
+      const fakeAmount: Money = { amount: { decimals: 0, integer: 63, total: 63 }, currency: { code: 'EUR', symbol: '€' } };
+      const fakeDeliveryMethod: DeliveryBuyerDeliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.current;
+      const fakeDeliveryMode: DELIVERY_MODE = fakeDeliveryMethod.method;
+      const fakePromocode: string = 'this_is_a_fake_procode';
+
+      const subscription = service
+        .getCosts(fakeItemHash, fakeAmount, fakePromocode, fakeDeliveryMethod)
+        .pipe(delay(1))
+        .subscribe(() => {
+          subscription.unsubscribe();
+          expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledTimes(1);
+          expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledWith(fakeAmount, fakeItemHash, fakePromocode, fakeDeliveryMode);
+        });
+      tick(1);
+    }));
   });
 });
