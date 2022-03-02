@@ -18,7 +18,7 @@ import { APP_LOCALE } from '@configs/subdomains.config';
 import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { STANDARD_ICON, SELECTED_ICON, DEFAULT_VALUE_ZOOM, getRadiusInKm } from './constants/map.constants';
 import { MARKER_STATUS } from './constants/marker-status.enum';
@@ -44,6 +44,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   private group: H.map.Group;
   private standardIcon: H.map.Icon;
   private mapSubscription: Subscription = new Subscription();
+  private selectedOfficeLocationSubject: BehaviorSubject<Location> = new BehaviorSubject(null);
 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
 
@@ -106,6 +107,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
       const isNotAMarker: boolean = !(event.target instanceof H.map.Marker);
 
       if (isNotAMarker) {
+        this.selectedOfficeLocationSubject.next(null);
         this.tapMap.emit();
         this.group.getObjects().forEach((marker: H.map.Marker) => {
           marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
@@ -118,8 +120,19 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     this.markers.forEach((marker: Location) => {
       const coordinate: H.geo.IPoint = { lng: marker.longitude, lat: marker.latitude };
       const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: this.standardIcon });
-      this.setMarkerSelection(standardMarker);
-      this.group.addObject(standardMarker);
+      const selectedMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: new H.map.Icon(SELECTED_ICON) });
+      const isMarkerSelected: boolean =
+        this.selectedOfficeLocationSubject.value &&
+        this.selectedOfficeLocationSubject.value.latitude === coordinate.lat &&
+        this.selectedOfficeLocationSubject.value.longitude === coordinate.lng;
+
+      if (isMarkerSelected) {
+        selectedMarker.setData({ status: MARKER_STATUS.SELECTED });
+        this.addMarkerToGroup(selectedMarker);
+      } else {
+        standardMarker.setData({ status: MARKER_STATUS.NON_SELECTED });
+        this.addMarkerToGroup(standardMarker);
+      }
     });
   }
 
@@ -137,9 +150,13 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     );
   }
 
+  private addMarkerToGroup(marker: H.map.Marker): void {
+    this.setMarkerSelection(marker);
+    this.group.addObject(marker);
+  }
+
   private setMarkerSelection(marker: H.map.Marker): void {
     const selectedIcon: H.map.Icon = new H.map.Icon(SELECTED_ICON);
-    marker.setData({ status: MARKER_STATUS.NON_SELECTED });
 
     marker.addEventListener('tap', (event: H.util.Event) => {
       this.emitLocationOnTapMarker(event);
@@ -156,7 +173,9 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
 
   private emitLocationOnTapMarker(event: H.util.Event): void {
     const currentLocation: H.geo.IPoint = event.target.b;
-    this.tapMarker.emit({ latitude: currentLocation.lat, longitude: currentLocation.lng });
+    const locationCoordinates: Location = { latitude: currentLocation.lat, longitude: currentLocation.lng };
+    this.selectedOfficeLocationSubject.next(locationCoordinates);
+    this.tapMarker.emit(locationCoordinates);
   }
 
   private setAllOtherMarkersToNonSelected(currentMarker: H.map.Marker): void {
