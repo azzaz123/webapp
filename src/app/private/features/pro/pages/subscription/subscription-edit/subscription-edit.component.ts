@@ -133,7 +133,6 @@ export class SubscriptionEditComponent implements OnInit {
 
   private showToastError(): void {
     this.showErrorModal();
-    return;
     this.toastService.show({
       title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE)}`,
       text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)}`,
@@ -162,7 +161,7 @@ export class SubscriptionEditComponent implements OnInit {
     const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.error_downgrade];
     config.buttons.secondary.redirect = {
       type: REDIRECT_TYPE.href,
-      url: this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CHANGE_PRO_SUBSCRIPTION),
+      url: this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CANNOT_CHANGE_PRO_SUBSCRIPTION),
     };
 
     modal.componentInstance.modalConfig = config;
