@@ -7,7 +7,7 @@ import { DeliveryAddress } from '@api/core/model/delivery/address/delivery-addre
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
 import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
 import { DeliveryBuyerCalculatorService } from '@api/delivery/buyer/calculator/delivery-buyer-calculator.service';
-import { DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DeliveryBuyerDeliveryMethod, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryBuyerService } from '@api/bff/delivery/buyer/delivery-buyer.service';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { DeliveryCostsService } from '@api/bff/delivery/costs/delivery-costs.service';
@@ -45,6 +45,15 @@ export class PayviewService {
     private walletsService: PaymentsWalletsService
   ) {}
 
+  public getCosts(
+    itemHash: string,
+    price: Money,
+    promocode: string,
+    method: DeliveryBuyerDeliveryMethod
+  ): Observable<DeliveryBuyerCalculatorCosts> {
+    return this.calculatorService.getCosts(price, itemHash, promocode, method.method);
+  }
+
   public getCurrentState(itemHash: string): Observable<PayviewState> {
     this.itemHash = itemHash;
 
@@ -79,7 +88,7 @@ export class PayviewService {
       )
       .pipe(
         concatMap((state: PayviewState) => {
-          return this.getCosts(state).pipe(
+          return this.getDefaultCosts(state).pipe(
             take(1),
             map((costs: DeliveryBuyerCalculatorCosts) => {
               return {
@@ -103,7 +112,7 @@ export class PayviewService {
     return this.creditCardService.get().pipe(catchError(() => of(null)));
   }
 
-  private getCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
+  private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
     const method = state.delivery.methods.deliveryMethods[state.delivery.methods.default.index];
 
     return this.calculatorService.getCosts(state.itemDetails.price, this.itemHash, null, method.method);

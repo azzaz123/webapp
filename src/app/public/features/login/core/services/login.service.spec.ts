@@ -70,9 +70,8 @@ describe('LoginService', () => {
         const expectedBody: LoginRequest = {
           ...MOCK_LOGIN_REQUEST,
           metadata: {
-            installationId: MOCK_DEVICE_ID,
-            installationType: 'WEB',
-            pushToken: '',
+            recaptchaToken: '',
+            sessionId: MOCK_DEVICE_ID,
           },
         };
 
