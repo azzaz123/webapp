@@ -4,7 +4,6 @@ import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ErrorsService } from '@core/errors/errors.service';
-import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { STRIPE_CARD_OPTION } from '@fixtures/stripe.fixtures.spec';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '@shared/pipes';
@@ -71,15 +70,15 @@ describe('CartComponent', () => {
 
   describe('hasCard', () => {
     it('should set true if stripe card exists', () => {
-      component.hasCard(true);
+      component.setHasCards(true);
 
-      expect(component.hasSavedCard).toEqual(true);
+      expect(component.hasSavedCards).toEqual(true);
     });
 
     it('should not call addNewCard if stripe card exists', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasCard(true);
+      component.setHasCards(true);
 
       expect(component.addNewCard).not.toHaveBeenCalled();
     });
@@ -87,7 +86,7 @@ describe('CartComponent', () => {
     it('should call addNewCard if stripe card does not exist', () => {
       spyOn(component, 'addNewCard').and.callThrough();
 
-      component.hasCard(false);
+      component.setHasCards(false);
 
       expect(component.addNewCard).toHaveBeenCalledTimes(1);
     });
@@ -97,18 +96,21 @@ describe('CartComponent', () => {
     it('should set showCard to true', () => {
       component.addNewCard();
 
-      expect(component.showCard).toEqual(true);
+      expect(component.isNewCard).toEqual(true);
+    });
+    it('should clear card', () => {
+      component.addNewCard();
+
+      expect(component.card).toEqual(null);
     });
   });
 
   describe('setSavedCard', () => {
-    it('should set showCard to false, savedCard to true and setCardInfo', () => {
+    it('should setCardInfo', () => {
       spyOn(component, 'setCardInfo').and.callThrough();
 
       component.setSavedCard(STRIPE_CARD_OPTION);
 
-      expect(component.showCard).toEqual(false);
-      expect(component.savedCard).toEqual(true);
       expect(component.setCardInfo).toHaveBeenCalledWith(STRIPE_CARD_OPTION);
     });
   });
@@ -150,16 +152,16 @@ describe('CartComponent', () => {
     describe('error', () => {
       beforeEach(() => {
         spyOn(visibilityService, 'buyBumps').and.returnValue(of([{ hasError: true }]));
+        spyOn(component.errorAction, 'emit').and.callThrough();
 
         component.loading = false;
       });
 
-      it('should call toastr', fakeAsync(() => {
-        spyOn(errorService, 'i18nError').and.callThrough();
-
+      it('should emit error', fakeAsync(() => {
         component.checkout();
 
-        expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.BUMP_ERROR);
+        expect(component.errorAction.emit).toBeCalledTimes(1);
+        expect(component.errorAction.emit).toHaveBeenCalledWith([{ hasError: true }]);
       }));
     });
   });
@@ -174,32 +176,40 @@ describe('CartComponent', () => {
         component.selectedItems = [];
         fixture.detectChanges();
       });
-      it('should return 0', () => {
+
+      it('should not set total to pay', () => {
         expect(component.totalToPay).toBe(0);
+      });
+
+      it('should not set total', () => {
+        expect(component.total).toBe(0);
+      });
+
+      it('should not set credits to pay', () => {
+        expect(component.creditsToPay).toBe(0);
       });
     });
 
-    describe('and has not items', () => {
+    describe('and has not credit info', () => {
       beforeEach(() => {
         component.creditInfo = null;
         fixture.detectChanges();
       });
-      it('should return 0', () => {
+
+      it('should not set total to pay', () => {
         expect(component.totalToPay).toBe(0);
+      });
+
+      it('should not set total', () => {
+        expect(component.total).toBe(0);
+      });
+
+      it('should not set credits to pay', () => {
+        expect(component.creditsToPay).toBe(0);
       });
     });
 
-    describe('and items all items free', () => {
-      beforeEach(() => {
-        component.creditInfo = null;
-        fixture.detectChanges();
-      });
-      it('should return 0', () => {
-        expect(component.totalToPay).toBe(0);
-      });
-    });
-
-    describe('and items all items free', () => {
+    describe('and  all items are items free', () => {
       beforeEach(() => {
         component.selectedItems = MOCK_ITEMS_TO_BUY_FREE;
         fixture.detectChanges();
@@ -210,23 +220,36 @@ describe('CartComponent', () => {
     });
 
     describe('and no free items', () => {
-      beforeEach(() => {
-        fixture.detectChanges();
-      });
       describe('and has credits', () => {
         describe('and credits is less than total to pay', () => {
-          it('should return total to pay less credits', () => {
-            expect(component.totalToPay).toBe(
-              component.selectedItems.reduce((a, b) => +b.duration.market_code + a, 0) - component.creditInfo.credit
-            );
+          beforeEach(() => {
+            component.ngOnChanges();
+          });
+          it('should return total', () => {
+            expect(component.total).toBe(component.selectedItems.reduce((a, b) => +b.duration.market_code + a, 0));
+          });
+          it('should return total to pay', () => {
+            expect(component.totalToPay).toBe(component.total - component.creditInfo.credit);
+          });
+          it('should return credits to pay', () => {
+            expect(component.creditsToPay).toBe(component.creditInfo.credit);
           });
         });
         describe('and credits is more than total to pay', () => {
           beforeEach(() => {
             component.creditInfo.credit = 200;
+            component.ngOnChanges();
           });
-          it('should return total to pay less credits', () => {
+          it('should return total to pay', () => {
             expect(component.totalToPay).toBe(0);
+          });
+
+          it('should return credits to pay', () => {
+            expect(component.creditsToPay).toBe(component.total);
+          });
+
+          it('should return total', () => {
+            expect(component.total).toBe(component.selectedItems.reduce((a, b) => +b.duration.market_code + a, 0));
           });
         });
       });
@@ -235,6 +258,8 @@ describe('CartComponent', () => {
           component.creditInfo.credit = 0;
         });
         it('should return total to pay', () => {
+          component.ngOnChanges();
+
           expect(component.totalToPay).toBe(component.selectedItems.reduce((a, b) => +b.duration.market_code + a, 0));
         });
       });

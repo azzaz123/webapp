@@ -1,10 +1,5 @@
-import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
-import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
-import { BumpsPackageBalanceDTO } from '@api/visibility/dtos/bumps/bumps-package-balance.interface';
+import { BUMP_SERVICE_TYPE, BumpRequestSubject, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { Item } from '@core/item/item';
-import { ItemContent, ItemsWithAvailableProductsResponse, Product } from '@core/item/item-response.interface';
-import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 
 export const MOCK_ITEMS_TO_BUY_WITHOUT_FREE: SelectedProduct[] = [
   {
@@ -59,3 +54,33 @@ export const MOCK_ITEMS_TO_BUY_FREE: SelectedProduct[] = [
     isProvincialBump: false,
   },
 ];
+
+export const MOCK_ERROR_FREE_BUMP_LIMITED_REACHED: BumpRequestSubject = {
+  service: BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS,
+  hasError: true,
+  errorCode: 409,
+};
+
+export const MOCK_ERROR_FREE_BUMP_NOT_FOUND: BumpRequestSubject = {
+  service: BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS,
+  hasError: true,
+  errorCode: 404,
+};
+
+export const MOCK_ERROR_FREE_BUMP_GENERIC: BumpRequestSubject = {
+  service: BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS,
+  hasError: true,
+  errorCode: 500,
+};
+
+export const MOCK_ERROR_FREE_NOT_MAPPED: BumpRequestSubject = {
+  service: BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS,
+  hasError: true,
+  errorCode: 400,
+};
+
+export const MOCK_ERROR_STRIPE: BumpRequestSubject = {
+  service: BUMP_SERVICE_TYPE.STRIPE,
+  hasError: true,
+  error: 'error',
+};
