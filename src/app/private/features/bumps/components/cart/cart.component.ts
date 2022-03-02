@@ -7,8 +7,6 @@ import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { BumpRequestSubject, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
-import { SelectedProduct } from '@api/core/model/bumps/item-products.interface';
-import { HttpErrorResponse } from '@angular/common/http';
 import { BumpsTrackingEventsService } from '../../services/bumps-tracking-events.service';
 
 @Component({
