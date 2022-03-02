@@ -39,7 +39,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'tsl-fake-component',
   templateUrl: './payview-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class FakeComponent extends PayviewModalComponent {
   constructor(
