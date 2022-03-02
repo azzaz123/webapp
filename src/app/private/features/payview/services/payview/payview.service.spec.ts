@@ -3,15 +3,18 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
+import { DeliveryAddress } from '@api/core/model/delivery/address/delivery-address.interface';
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
+import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
 import { DeliveryBuyerCalculatorService } from '@api/delivery/buyer/calculator/delivery-buyer-calculator.service';
-import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DeliveryBuyerDeliveryMethod, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryBuyerService } from '@api/bff/delivery/buyer/delivery-buyer.service';
+import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { DeliveryCostsService } from '@api/bff/delivery/costs/delivery-costs.service';
 import { ItemService } from '@core/item/item.service';
 import { MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2 } from '@api/fixtures/delivery/buyer/requests/buyer-requests-items-details-dto.fixtures.spec';
 import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
-import { MOCK_DELIVERY_ADDRESS_API } from '@api/fixtures/delivery/address/delivery-address.fixtures.spec';
+import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_API } from '@api/fixtures/delivery/address/delivery-address.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COSTS_ITEM } from '@api/fixtures/bff/delivery/costs/delivery-costs.fixtures.spec';
@@ -321,16 +324,87 @@ describe('PayviewService', () => {
       const fakeDeliveryMethod: DeliveryBuyerDeliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.current;
       const fakeDeliveryMode: DELIVERY_MODE = fakeDeliveryMethod.method;
       const fakePromocode: string = 'this_is_a_fake_procode';
+      let result: DeliveryBuyerCalculatorCosts;
 
       const subscription = service
         .getCosts(fakeItemHash, fakeAmount, fakePromocode, fakeDeliveryMethod)
         .pipe(delay(0))
-        .subscribe(() => {
+        .subscribe((response: DeliveryBuyerCalculatorCosts) => {
           subscription.unsubscribe();
-          expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledTimes(1);
-          expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledWith(fakeAmount, fakeItemHash, fakePromocode, fakeDeliveryMode);
+          result = response;
+        });
+
+      tick();
+
+      expect(result).toBe(MOCK_DELIVERY_BUYER_CALCULATOR_COSTS);
+      expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledTimes(1);
+      expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledWith(fakeAmount, fakeItemHash, fakePromocode, fakeDeliveryMode);
+    }));
+  });
+
+  describe('WHEN retrieving the address', () => {
+    beforeEach(() => {
+      spyOn(deliveryAddressService, 'get').and.callThrough();
+    });
+
+    it('should call to the delivery address server to get the corresponding information', fakeAsync(() => {
+      let result: DeliveryAddress;
+
+      const subscription = service.address.pipe(delay(0)).subscribe((response: DeliveryAddress) => {
+        subscription.unsubscribe();
+        result = response;
+      });
+      tick();
+
+      expect(result).toEqual(MOCK_DELIVERY_ADDRESS);
+      expect(deliveryAddressService.get).toHaveBeenCalledTimes(1);
+      expect(deliveryAddressService.get).toHaveBeenCalledWith(false);
+    }));
+  });
+
+  describe('WHEN retrieving the delivery costs', () => {
+    beforeEach(() => {
+      spyOn(deliveryCostsService, 'getCosts').and.callThrough();
+    });
+
+    it('should call to the delivery costs server to get the corresponding information', fakeAsync(() => {
+      let result: DeliveryCosts;
+
+      const subscription = service
+        .getDeliveryCosts(fakeItemHash)
+        .pipe(delay(0))
+        .subscribe((response: DeliveryCosts) => {
+          subscription.unsubscribe();
+          result = response;
         });
       tick();
+
+      expect(result).toEqual(MOCK_DELIVERY_COSTS_ITEM);
+      expect(deliveryCostsService.getCosts).toHaveBeenCalledTimes(1);
+      expect(deliveryCostsService.getCosts).toHaveBeenCalledWith(fakeItemHash);
+    }));
+  });
+
+  describe('WHEN retrieving the delivery methods', () => {
+    beforeEach(() => {
+      spyOn(deliveryBuyerService, 'getDeliveryMethods').and.callThrough();
+    });
+
+    it('should call to the delivery methods server to get the corresponding information', fakeAsync(() => {
+      let result: DeliveryBuyerDeliveryMethods;
+
+      const subscription = service
+        .getDeliveryMethods(fakeItemHash)
+        .pipe(delay(0))
+        .subscribe((response: DeliveryBuyerDeliveryMethods) => {
+          subscription.unsubscribe();
+          result = response;
+        });
+      tick();
+
+      expect(result).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS);
+      expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledTimes(1);
+      expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledWith(fakeItemHash);
     }));
   });
 });
