@@ -4,7 +4,7 @@
   &__glass {
     top: 50%;
     transform: translateY(-50%);
-    left: 10px;
+    left: 25px;
     z-index: 1;
     @include square(28px);
     ::ng-deep svg path {
