@@ -44,7 +44,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   private group: H.map.Group;
   private standardIcon: H.map.Icon;
   private mapSubscription: Subscription = new Subscription();
-  private selectedOfficeLocationSubject: BehaviorSubject<Location> = new BehaviorSubject(null);
+  private selectedMarker$: BehaviorSubject<Location> = new BehaviorSubject(null);
 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
 
@@ -108,7 +108,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
       const isNotAMarker: boolean = !(event.target instanceof H.map.Marker);
 
       if (isNotAMarker) {
-        this.selectedOfficeLocationSubject.next(null);
+        this.selectedMarker$.next(null);
         this.tapMap.emit();
         this.group.getObjects().forEach((marker: H.map.Marker) => {
           marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
@@ -123,9 +123,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
       const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: this.standardIcon });
       const selectedMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: new H.map.Icon(SELECTED_ICON) });
       const isMarkerSelected: boolean =
-        this.selectedOfficeLocationSubject.value &&
-        this.selectedOfficeLocationSubject.value.latitude === coordinate.lat &&
-        this.selectedOfficeLocationSubject.value.longitude === coordinate.lng;
+        this.selectedMarker$.value?.latitude === coordinate.lat && this.selectedMarker$.value?.longitude === coordinate.lng;
 
       if (isMarkerSelected) {
         selectedMarker.setData({ status: MARKER_STATUS.SELECTED });
@@ -175,7 +173,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   private emitLocationOnTapMarker(event: H.util.Event): void {
     const currentLocation: H.geo.IPoint = event.target.b;
     const locationCoordinates: Location = { latitude: currentLocation.lat, longitude: currentLocation.lng };
-    this.selectedOfficeLocationSubject.next(locationCoordinates);
+    this.selectedMarker$.next(locationCoordinates);
     this.tapMarker.emit(locationCoordinates);
   }
 
