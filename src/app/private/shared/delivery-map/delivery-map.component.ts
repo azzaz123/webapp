@@ -23,10 +23,10 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
   @Input() fullAddress: string;
   @Input() selectedCarrier: POST_OFFICE_CARRIER;
   @Output() goToDeliveryAddress: EventEmitter<void> = new EventEmitter();
-  @Output() selectedOfficeSucceed: EventEmitter<void> = new EventEmitter();
+  @Output() selectedOfficeSucceeded: EventEmitter<void> = new EventEmitter();
   @ViewChild(SearchableMovableMapComponent, { static: true }) searchableMovableMap: SearchableMovableMapComponent;
   public initializeOffices$: Observable<CarrierOfficeInfo[]>;
-  public initialCenterLocation$: Observable<Location>;
+  public centerLocation$: Observable<Location>;
   public markers$: Observable<Location[]> = this.deliveryMapService.officeMarkers$;
   public offices$: Observable<CarrierOfficeInfo[]> = this.deliveryMapService.carrierOffices$;
   public selectedOfficeInfo$: Observable<CarrierOfficeSchedule> = this.deliveryMapService.selectedOfficeInformation$;
@@ -48,7 +48,7 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
           }
         )
       );
-      this.initialCenterLocation$ = this.deliveryMapService.initialCenterLocation$(this.fullAddress);
+      this.centerLocation$ = this.deliveryMapService.initialCenterLocation$(this.fullAddress);
     }
   }
 
@@ -83,7 +83,7 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
 
     this.deliveryMapService.selectOfficePreference$(this.userOfficeId).subscribe(
       () => {
-        this.selectedOfficeSucceed.emit();
+        this.selectedOfficeSucceeded.emit();
       },
       () => {
         this.showError();

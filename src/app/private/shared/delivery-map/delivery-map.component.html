@@ -1,7 +1,7 @@
 <div *ngIf="initializeOffices$ | async" class="h-100">
   <tsl-searchable-movable-map
     [mapMarkers]="markers$ | async"
-    [mapCenterCoordinates]="initialCenterLocation$ | async"
+    [mapCenterCoordinates]="centerLocation$ | async"
     (tapMarker)="markOffice($event)"
     (tapMap)="resetSelectedOffice()"
     (mapViewChangeEnd)="requestOffices($event)"
