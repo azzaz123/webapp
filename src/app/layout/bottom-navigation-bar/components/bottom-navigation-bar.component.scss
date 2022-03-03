@@ -34,6 +34,7 @@ $navigation-bar-margin: $spacer * 0.375;
   }
 
   &__element {
+    position: relative;
     text-decoration: none;
     transition: transform 100ms ease-in-out;
 
@@ -52,5 +53,16 @@ $navigation-bar-margin: $spacer * 0.375;
     &:active {
       transform: scale(0.9);
     }
+  }
+
+  &__pending {
+    position: absolute;
+    top: 0;
+    left: 35px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid $white;
+    background-color: $negative-main;
+    border-radius: 100%;
   }
 }

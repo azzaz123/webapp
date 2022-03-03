@@ -35,6 +35,7 @@ export const BOTTOM_NAVIGATION_BAR_ELMENTS: BottomNavigationBarElement[] = [
     activeIcon: `${ICONS_FOLDER}/inbox-active.svg`,
     href: `/chat`,
     external: false,
+    pendingNotification: true,
   },
   {
     text: 'You',

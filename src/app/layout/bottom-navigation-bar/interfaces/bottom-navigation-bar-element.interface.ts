@@ -2,4 +2,5 @@ import { NavigationElement } from '@layout/core/interfaces/navigation-element.in
 
 export interface BottomNavigationBarElement extends NavigationElement {
   activeIcon: string;
+  pendingNotification?: boolean;
 }
