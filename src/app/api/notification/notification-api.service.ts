@@ -12,6 +12,11 @@ export class NotificationApiService {
     return this._totalUnreadNotifications$.asObservable();
   }
 
+  set totalUnreadNotifications(value: number) {
+    value = Math.max(value, 0);
+    this._totalUnreadNotifications$.next(value);
+  }
+
   public getNotifications(): Notification[] {
     const brazeNotifications = appboy.getCachedContentCards();
     return mapNotificationsFromBraze(brazeNotifications.cards);
