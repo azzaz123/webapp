@@ -73,9 +73,9 @@ export function initializeGuestUserFactory(userService: UserService, initializeG
 }
 
 export function initializeMonitoringFactory(monitoringService: MonitoringService): () => void {
-  return () => monitoringService.initialize;
+  return () => monitoringService.initialize();
 }
 
 export function initializeSessionServiceFactory(sessionService: SessionService): () => void {
-  return () => sessionService.initSession;
+  return () => sessionService.initSession();
 }
