@@ -76,7 +76,7 @@ describe('AnalyticsService', () => {
         spyOn(user, 'setUserAttribute');
         spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
 
-        service.initialize();
+        service.initializeAnalyticsWithGuestUser();
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(user.setUserAttribute).toHaveBeenCalledWith('deviceId', 'newUUID');
@@ -90,7 +90,7 @@ describe('AnalyticsService', () => {
         spyOn(mParticle.Identity.getCurrentUser(), 'setUserAttribute');
         spyOn(deviceService, 'getDeviceId').and.returnValue('newDeviceId');
 
-        service.initialize();
+        service.initializeAnalyticsWithGuestUser();
 
         expect(mParticle.init).toHaveBeenCalled();
         expect(mParticle.Identity.getCurrentUser().setUserAttribute).toHaveBeenCalledWith('deviceId', 'newDeviceId');
@@ -100,13 +100,12 @@ describe('AnalyticsService', () => {
     describe('when there is a user logged with email and id', () => {
       it('should initialize the analytics library with email and id', () => {
         spyOn(mParticle, 'init').and.callThrough();
-        jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_FULL_USER);
         const expectedIdentities = {
           customerid: MOCK_FULL_USER.id,
           email: MOCK_FULL_USER.email,
         };
 
-        service.initialize();
+        service.initializeAnalyticsWithLoggedUser(MOCK_FULL_USER);
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(mParticle.init).toHaveBeenCalledWith(expect.anything(), {
@@ -121,10 +120,9 @@ describe('AnalyticsService', () => {
     describe('when there is not a user logged with email and id', () => {
       it('should initialize the analytics library without user Identities', () => {
         spyOn(mParticle, 'init').and.callThrough();
-        jest.spyOn(userService, 'isLogged', 'get').mockReturnValue(false);
         const expectedIdentities = {};
 
-        service.initialize();
+        service.initializeAnalyticsWithGuestUser();
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(mParticle.init).toHaveBeenCalledWith(expect.anything(), {

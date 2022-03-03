@@ -105,11 +105,11 @@ describe('EditComponent', () => {
     it('should set item', () => {
       expect(component.item).toEqual(MOCK_ITEM);
     });
-    it('should track view event when alytics service is ready', () => {
+    it('should track view event when analytics service is ready', () => {
       spyOn(editTrackingEventService, 'trackViewEditItemEvent');
 
       component.ngOnInit();
-      analyticsService.initialize();
+      analyticsService.initializeAnalyticsWithGuestUser();
 
       expect(editTrackingEventService.trackViewEditItemEvent).toHaveBeenCalledWith(component.item.categoryId, component.isReactivation);
     });
