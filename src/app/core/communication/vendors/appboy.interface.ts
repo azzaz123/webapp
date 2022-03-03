@@ -7,8 +7,8 @@ export interface Appboy {
   };
 
   logContentCardsDisplayed(): void;
-  logCardImpressions(cards: NotificationDto[]): void;
-  logCardClick(): void;
+  logCardImpressions(cards: NotificationDto[], forContentCards: true): void;
+  logCardClick(card: NotificationDto, forContentCards: true): void;
 
   getCachedContentCards(): AppboyContentCards;
   requestContentCardsRefresh(successCallback?: () => void, errorCallback?: () => void): void;
@@ -23,6 +23,7 @@ export interface Appboy {
   registerAppboyPushMessages(): void;
 
   toggleAppboyLogging(): void;
+  requestImmediateDataFlush(): void;
 }
 
 export interface AppboyContentCards {

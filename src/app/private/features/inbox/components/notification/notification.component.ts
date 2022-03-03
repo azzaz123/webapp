@@ -10,6 +10,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import * as moment from 'moment';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
 import { Notification } from '@api/core/model/notification/notification.interface';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 @Component({
   selector: 'tsl-notification',
@@ -21,13 +22,14 @@ export class NotificationComponent {
 
   public NOTIFICATION_VARIANT = NOTIFICATION_VARIANT;
 
-  constructor(private analyticsService: AnalyticsService) {}
-
-  //TODO OnInit => implements viewed card on display / click
+  constructor(private analyticsService: AnalyticsService, private notificationApiService: NotificationApiService) {}
 
   public handleNotificationClick(): void {
     this.trackClickNotification();
-    if (this.notification.url) window.location.href = this.notification.url;
+    this.notificationApiService.logCardClick(this.notification.id);
+    if (this.notification.url) {
+      window.location.href = this.notification.url;
+    }
   }
 
   public trackClickNotification(): void {
