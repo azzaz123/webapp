@@ -23,6 +23,7 @@ export enum PRO_MODAL_TYPE {
   bump_error_not_found,
   bump_error_limit_reached,
   bump_error_stripe,
+  bump_error_partial,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -211,8 +212,8 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
   },
   [PRO_MODAL_TYPE.bump_limit]: {
     img: '/assets/icons/pro/modals/bump-error.svg',
-    title: $localize`:@@bump_selector_view_generic_error_modal_pro_user_title:Your item couldn't be highlighted`,
-    text1: $localize`:@@bump_selector_view_generic_error_modal_pro_user_descripton_1_part:Due to an error, the process has failed. Please try again.`,
+    title: $localize`:@@bump_selector_view_more_than_the_available_modal_pro_user_title:You can't highlight all the items`,
+    text1: $localize`:@@bump_selector_view_more_than_the_available_modal_pro_user_descripton_1_part:Your subscription has a limit when it comes to highlighting products. Please remove items from the selection as necessary.`,
     style: MODAL_STYLE.GREEN,
     buttons: {
       primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
@@ -249,6 +250,15 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     img: '/assets/icons/pro/modals/bump-error.svg',
     title: $localize`:@@bump_selector_view_generic_error_modal_pro_user_title:Your item couldn't be highlighted`,
     text1: $localize`:@@web_payment_failed_unknown_error:For some reason, the payment couldn't be processed. Please try again.`,
+    style: MODAL_STYLE.GREEN,
+    buttons: {
+      primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
+    },
+  },
+  [PRO_MODAL_TYPE.bump_error_partial]: {
+    img: '/assets/icons/pro/modals/bump-error.svg',
+    title: $localize`:@@bump_selector_view_partially_applied_modal_pro_user_title:Some items haven't been highlighted`,
+    text1: $localize`:@@bump_selector_view_partially_applied_modal_pro_user_descripton_1_part:Due to an error, some items haven’t been highlighted. Please try again. And don't worry, you’ve only paid for the products that have been highlighted.`,
     style: MODAL_STYLE.GREEN,
     buttons: {
       primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },

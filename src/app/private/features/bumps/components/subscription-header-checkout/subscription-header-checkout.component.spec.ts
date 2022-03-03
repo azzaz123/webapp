@@ -34,7 +34,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
       const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
       expect(title.textContent).toEqual(
-        $localize`:@@highlight_item_view_pro_user_item_card_no_subscription_name_web_specific:Not included in your subscription(s)`
+        $localize`:@@highlight_item_view_pro_user_item_card_no_subscription_plural_name_web_specific:Not included in your subscriptions`
       );
     });
   });
