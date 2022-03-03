@@ -38,8 +38,8 @@ export const MOCK_FALLBACK_LOCATION_WITH_RADIUS: LocationWithRadius = {
 };
 
 export const MOCK_USER_LOCATION: Location = {
-  latitude: MOCK_USER.location.latitude || MOCK_USER.location.approximated_latitude,
-  longitude: MOCK_USER.location.longitude || MOCK_USER.location.approximated_longitude,
+  latitude: MOCK_USER.location.approximated_latitude,
+  longitude: MOCK_USER.location.approximated_longitude,
 };
 
 export const MOCK_USER_LOCATION_WITH_RADIUS: LocationWithRadius = {
