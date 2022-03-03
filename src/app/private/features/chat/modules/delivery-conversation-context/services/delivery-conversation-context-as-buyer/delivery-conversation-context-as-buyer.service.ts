@@ -15,8 +15,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { InboxConversation } from '@private/features/chat/core/model';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
@@ -29,8 +27,7 @@ export class DeliveryConversationContextAsBuyerService {
     private buyerRequestsApiService: BuyerRequestsApiService,
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
     private router: Router,
-    private modalService: NgbModal,
-    private featureFlagService: FeatureFlagService
+    private modalService: NgbModal
   ) {}
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -50,9 +47,11 @@ export class DeliveryConversationContextAsBuyerService {
   }
 
   public handleThirdVoiceCTAClick(): void {
-    this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((enabled) => {
-      enabled ? this.redirectToTTS() : this.openAwarenessModal();
-    });
+    const isLastRequestPresent: boolean = !!this.lastRequest;
+    if (isLastRequestPresent) {
+      const { id } = this.lastRequest;
+      this.redirectToTTS(id);
+    }
   }
 
   public handleBannerCTAClick(conversation: InboxConversation, action: DELIVERY_BANNER_ACTION): void {
@@ -70,12 +69,9 @@ export class DeliveryConversationContextAsBuyerService {
     this.router.navigate([route]);
   }
 
-  private redirectToTTS(): void {
-    const isLastRequestPresent: boolean = !!this.lastRequest;
-    if (isLastRequestPresent) {
-      const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${this.lastRequest.id}`;
-      this.router.navigate([route]);
-    }
+  private redirectToTTS(id: string): void {
+    const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${id}`;
+    this.router.navigate([route]);
   }
 
   private mapDeliveryDetailsAsBuyerToBannerProperties(
