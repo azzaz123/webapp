@@ -1,1 +1,11 @@
-<p>bottom-navigation-bar works!</p>
+<nav class="BottomNavigationBar w-100 d-flex align-items-center justify-content-around">
+    <a *ngFor="let element of navigationElements"
+        class="BottomNavigationBar__element d-flex flex-column align-items-center justify-content-center"
+        [routerLink]="element.href" routerLinkActive="BottomNavigationBar__element--active"
+        [alt]="element.alternativeText">
+        <tsl-svg-icon class="BottomNavigationBar__icon" [src]="element.icon" [width]="28" [height]="28"></tsl-svg-icon>
+        <tsl-svg-icon class="BottomNavigationBar__icon BottomNavigationBar__icon--active" [src]="element.activeIcon" [width]="28" [height]="28">
+        </tsl-svg-icon>
+        <span class="BottomNavigationBar__text mt-1">{{element.text}}</span>
+    </a>
+</nav>
