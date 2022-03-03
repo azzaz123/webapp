@@ -43,6 +43,12 @@ describe('AcceptScreenService', () => {
             rejectRequest() {
               return of({});
             },
+            acceptRequestPostOfficeDropOff() {
+              return of({});
+            },
+            acceptRequestHomePickup() {
+              return of({});
+            },
           },
         },
         {
@@ -161,7 +167,34 @@ describe('AcceptScreenService', () => {
     });
 
     it('should ask to reject the request', () => {
+      expect(sellerRequestApiService.rejectRequest).toHaveBeenCalledTimes(1);
       expect(sellerRequestApiService.rejectRequest).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+    });
+  });
+
+  describe('when asking to accept request with post office drop off mode', () => {
+    beforeEach(() => {
+      spyOn(sellerRequestApiService, 'acceptRequestPostOfficeDropOff').and.callThrough();
+
+      acceptScreenService.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe();
+    });
+
+    it('should ask to accept the request', () => {
+      expect(sellerRequestApiService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
+      expect(sellerRequestApiService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+    });
+  });
+
+  describe('when asking to accept request with home pick up mode', () => {
+    beforeEach(() => {
+      spyOn(sellerRequestApiService, 'acceptRequestHomePickup').and.callThrough();
+
+      acceptScreenService.acceptRequestHomePickup(MOCK_REQUEST_ID).subscribe();
+    });
+
+    it('should ask to accept the request', () => {
+      expect(sellerRequestApiService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
+      expect(sellerRequestApiService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
     });
   });
 

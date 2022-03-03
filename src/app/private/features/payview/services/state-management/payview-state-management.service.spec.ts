@@ -1,5 +1,9 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
+import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
+import { DeliveryBuyerCalculatorPromotionCost } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-promotion-cost.interface';
+import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
+import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
@@ -19,6 +23,7 @@ describe('PayviewStateManagementService', () => {
         {
           provide: PayviewService,
           useValue: {
+            getCosts() {},
             getCurrentState(value: string): Observable<PayviewState> {
               return of(MOCK_PAYVIEW_STATE);
             },
@@ -40,7 +45,7 @@ describe('PayviewStateManagementService', () => {
     let payviewState: PayviewState;
 
     beforeEach(fakeAsync(() => {
-      spyOn(payviewService, 'getCurrentState').and.returnValue(of(MOCK_PAYVIEW_STATE).pipe(delay(0)));
+      spyOn(payviewService, 'getCurrentState').and.returnValue(of(MOCK_PAYVIEW_STATE).pipe(delay(1)));
       service.payViewState$.subscribe((result: PayviewState) => {
         payviewState = result;
       });
@@ -49,7 +54,7 @@ describe('PayviewStateManagementService', () => {
       });
 
       service.itemHash = fakeItemHash;
-      tick(0);
+      tick(1);
     }));
 
     it('should request the payview state', fakeAsync(() => {
@@ -64,6 +69,74 @@ describe('PayviewStateManagementService', () => {
     it('should update the item hash ', fakeAsync(() => {
       expect(itemHash).toBe(fakeItemHash);
     }));
+
+    describe('WHEN retrieving the delivery costs', () => {
+      let costsSpy;
+      let fakeCosts: DeliveryBuyerCalculatorCosts;
+
+      beforeEach(fakeAsync(() => {
+        fakeCosts = { ...MOCK_PAYVIEW_STATE.costs };
+        const fakePromocode: Partial<DeliveryBuyerCalculatorPromotionCost> = { promocode: 'this_is_a_fake_promocode' };
+        fakeCosts.promotion = fakePromocode as DeliveryBuyerCalculatorPromotionCost;
+
+        costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
+        tick(1);
+      }));
+
+      it('should call to payview service', fakeAsync(() => {
+        payviewState.costs = null;
+
+        expect(costsSpy).toHaveBeenCalledTimes(1);
+        expect(costsSpy).toHaveBeenCalledWith(
+          payviewState.itemDetails.itemHash,
+          payviewState.itemDetails.price,
+          payviewState.costs?.promotion?.promocode,
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]
+        );
+      }));
+
+      it('should update the payview state ', fakeAsync(() => {
+        const expectedPayviewState = { ...MOCK_PAYVIEW_STATE };
+        expectedPayviewState.costs = fakeCosts;
+
+        expect(payviewState).toStrictEqual(expectedPayviewState);
+      }));
+    });
+
+    describe('WHEN there is an error when retrieving costs', () => {
+      const fakeItemHash: string = 'this_is_a_fake_item_hash';
+      let itemHash: string;
+      let payviewState: PayviewState;
+
+      beforeEach(fakeAsync(() => {
+        spyOn(payviewService, 'getCosts').and.returnValue(
+          of(MOCK_DELIVERY_BUYER_CALCULATOR_COSTS).pipe(
+            delay(1),
+            mergeMap((e) => throwError('The server is broken'))
+          )
+        );
+        service.payViewState$.subscribe((result: PayviewState) => {
+          payviewState = result;
+        });
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[0]);
+        tick(1);
+      }));
+
+      it('should request the payview state', fakeAsync(() => {
+        expect(payviewService.getCosts).toHaveBeenCalledTimes(1);
+        expect(payviewService.getCosts).toHaveBeenCalledWith(
+          MOCK_PAYVIEW_STATE.itemDetails.itemHash,
+          MOCK_PAYVIEW_STATE.itemDetails.price,
+          MOCK_PAYVIEW_STATE.costs.promotion?.promocode,
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[0]
+        );
+      }));
+
+      it('should not update the payview state ', fakeAsync(() => {
+        expect(payviewState).toBeFalsy();
+      }));
+    });
   });
 
   describe('WHEN the item is not reported', () => {
@@ -104,7 +177,7 @@ describe('PayviewStateManagementService', () => {
     beforeEach(fakeAsync(() => {
       spyOn(payviewService, 'getCurrentState').and.returnValue(
         of(MOCK_PAYVIEW_STATE).pipe(
-          delay(0),
+          delay(1),
           mergeMap((e) => throwError('The server is broken'))
         )
       );
@@ -116,7 +189,7 @@ describe('PayviewStateManagementService', () => {
       });
 
       service.itemHash = fakeItemHash;
-      tick(0);
+      tick(1);
     }));
 
     it('should request the payview state', fakeAsync(() => {

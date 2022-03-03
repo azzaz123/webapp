@@ -13,6 +13,10 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 export class PayviewDeliveryOverviewComponent {
   @Input() public payviewState: PayviewState;
 
+  public get defaultDeliveryMethod(): number {
+    return this.payviewState.delivery.methods.default.index;
+  }
+
   public get deliveryCosts(): DeliveryCosts {
     return this.payviewState.delivery.costs;
   }
