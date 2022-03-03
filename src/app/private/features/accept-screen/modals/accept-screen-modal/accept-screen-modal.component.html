@@ -192,7 +192,7 @@
         [fullAddress]="properties.seller.fullAddress"
         [selectedCarrier]="selectedCarrier.name"
         [userOfficeId]="selectedCarrier.lastAddressUsedId"
-        (goToDeliveryAddress)="goToDeliveryAddressFromMap($event)"
+        (goToDeliveryAddress)="goToDeliveryAddressFromMap()"
         (selectedOfficeSucceeded)="goToAcceptScreenOrDeliveryMap()"
       ></tsl-delivery-map
     ></ng-template>
