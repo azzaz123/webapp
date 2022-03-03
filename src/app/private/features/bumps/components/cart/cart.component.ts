@@ -7,6 +7,7 @@ import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { BumpRequestSubject, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import { BumpsTrackingEventsService } from '../../services/bumps-tracking-events.service';
 
 @Component({
   selector: 'tsl-cart',
@@ -30,7 +31,11 @@ export class CartComponent implements OnChanges {
   public total: number = 0;
   public creditsToPay: number = 0;
 
-  constructor(private errorService: ErrorsService, private visibilityService: VisibilityApiService) {}
+  constructor(
+    private errorService: ErrorsService,
+    private visibilityService: VisibilityApiService,
+    private bumpsTrackingEventsService: BumpsTrackingEventsService
+  ) {}
 
   ngOnChanges(): void {
     this.setTotals();
@@ -46,6 +51,8 @@ export class CartComponent implements OnChanges {
     }
 
     this.loading = true;
+
+    this.bumpsTrackingEventsService.trackPayBumpItems(this.selectedItems, this.totalToPay);
 
     this.visibilityService
       .buyBumps(this.selectedItems, this.hasSavedCards, this.isNewCard, this.card)

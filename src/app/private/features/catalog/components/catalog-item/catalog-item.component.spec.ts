@@ -157,11 +157,17 @@ describe('CatalogItemComponent', () => {
     beforeEach(fakeAsync(() => {
       item = MOCK_ITEM;
       spyOn(router, 'navigate').and.callThrough();
+      spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
       component.featureItem(item);
     }));
 
     it('should navigate to checkout', () => {
       expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: item.id }]);
+    });
+
+    it('should track event', () => {
+      expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledTimes(1);
+      expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledWith(1);
     });
   });
 

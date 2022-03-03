@@ -56,6 +56,7 @@ import { Subscription } from 'rxjs';
 import { take, takeWhile } from 'rxjs/operators';
 import { STATUS } from '../../components/selected-items/selected-product.interface';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
+import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 
 export const SORTS: ISort[] = [
   {
@@ -138,7 +139,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private i18nService: I18nService,
     private permissionService: NgxPermissionsService,
     private listingLimitService: ListingLimitService,
-    private meApiService: MeApiService
+    private meApiService: MeApiService,
+    private catalogItemTrackingEventService: CatalogItemTrackingEventService
   ) {}
 
   public get itemsAmount() {
@@ -513,6 +515,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
           this.bumpSuggestionModalRef = null;
           if (result?.redirect) {
+            this.catalogItemTrackingEventService.trackClickBumpItems(1, true);
             this.router.navigate([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId }]);
           }
         });

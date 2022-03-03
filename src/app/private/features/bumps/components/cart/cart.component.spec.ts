@@ -11,12 +11,14 @@ import { CartComponent } from './cart.component';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { MOCK_ITEMS_TO_BUY_FREE, MOCK_ITEMS_TO_BUY_WITHOUT_FREE } from '@fixtures/visibility.fixtures.spec';
 import { PACKS_TYPES } from '@core/payments/pack';
+import { BumpsTrackingEventsService } from '@private/features/bumps/services/bumps-tracking-events.service';
 
 describe('CartComponent', () => {
   let component: CartComponent;
   let fixture: ComponentFixture<CartComponent>;
   let errorService: ErrorsService;
   let visibilityService: VisibilityApiService;
+  let bumpTrackingService: BumpsTrackingEventsService;
 
   beforeEach(
     waitForAsync(() => {
@@ -24,6 +26,12 @@ describe('CartComponent', () => {
         imports: [FormsModule, NgbButtonsModule],
         declarations: [CartComponent, CustomCurrencyPipe],
         providers: [
+          {
+            provide: BumpsTrackingEventsService,
+            useValue: {
+              trackPayBumpItems() {},
+            },
+          },
           DecimalPipe,
           {
             provide: ErrorsService,
@@ -51,6 +59,7 @@ describe('CartComponent', () => {
     component = fixture.componentInstance;
     errorService = TestBed.inject(ErrorsService);
     visibilityService = TestBed.inject(VisibilityApiService);
+    bumpTrackingService = TestBed.inject(BumpsTrackingEventsService);
     component.creditInfo = {
       currencyName: PACKS_TYPES.WALLACREDITS,
       credit: 20,
@@ -115,6 +124,15 @@ describe('CartComponent', () => {
 
       expect(visibilityService.buyBumps).not.toHaveBeenCalled();
     });
+
+    it('should track event', fakeAsync(() => {
+      spyOn(bumpTrackingService, 'trackPayBumpItems').and.callThrough();
+
+      component.checkout();
+
+      expect(bumpTrackingService.trackPayBumpItems).toHaveBeenCalledTimes(1);
+      expect(bumpTrackingService.trackPayBumpItems).toHaveBeenCalledWith(component.selectedItems, component.totalToPay);
+    }));
 
     describe('success', () => {
       beforeEach(() => {
