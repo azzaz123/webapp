@@ -10,9 +10,9 @@ export interface CarrierDropOffModeRequest {
 export interface DropOffModeRequest {
   type: CARRIER_DROP_OFF_MODE;
   icon: string;
-  postOfficeDetails: PostOfficeDetails;
+  postOfficeDetails: PostOfficeDetails | null;
   sellerCosts: Money;
   acceptEndpoint: string;
   restrictions: string;
-  schedule: TentativeSchedule;
+  schedule: TentativeSchedule | null;
 }
