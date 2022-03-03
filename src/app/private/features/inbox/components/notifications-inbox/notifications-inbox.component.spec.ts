@@ -91,7 +91,7 @@ describe('NotificationsInboxComponent', () => {
 
     describe(`If receive notifications`, () => {
       beforeEach(() => {
-        component.notifications = notifications;
+        component.notifications$ = notifications;
         fixture.detectChanges();
       });
 
