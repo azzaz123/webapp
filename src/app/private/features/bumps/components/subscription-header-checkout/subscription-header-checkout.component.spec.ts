@@ -47,7 +47,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
       it('Should show subscription into title', () => {
         const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
-        expect(title.textContent).toEqual(component.subscription.type);
+        expect(title.textContent).toContain(component.subscription.category_name);
       });
       it('Should not show counters', () => {
         const counters = debugElement.query(By.css('.SubscriptionHeaderCheckout__counter'));
@@ -63,7 +63,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
       it('Should show subscription into title', () => {
         const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
-        expect(title.textContent).toEqual(component.subscription.type);
+        expect(title.textContent).toContain(component.subscription.category_name);
       });
       it('Should show counters', () => {
         const counters = debugElement.queryAll(By.css('.SubscriptionHeaderCheckout__counter'));
@@ -86,7 +86,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
       it('Should show subscription into title', () => {
         const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
-        expect(title.textContent).toEqual(component.subscription.type);
+        expect(title.textContent).toContain(component.subscription.category_name);
       });
       it('Should show counters', () => {
         const counters = debugElement.queryAll(By.css('.SubscriptionHeaderCheckout__counter'));

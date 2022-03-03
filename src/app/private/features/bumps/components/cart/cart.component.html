@@ -25,7 +25,7 @@
                           <ng-container *ngSwitchCase="BUMP_TYPES.CITY_BUMP" i18n="@@web_cart_663">City</ng-container>
                           <ng-container *ngSwitchCase="BUMP_TYPES.COUNTRY_BUMP" i18n="@@web_cart_664">Country</ng-container>
                         </span>
-                        x {{ cartItem.duration.duration / 24 }}<span i18n="@@web_cart_665">days</span>
+                        x {{ cartItem.duration.duration / 24 }}<span ngPreserveWhitespaces> </span><span i18n="@@web_cart_665">days</span>
                       </div>
                       <div>
                         {{
@@ -35,7 +35,7 @@
                       </div>
                     </div>
                     <div *ngIf="cartItem.isFree" class="align-items-center d-flex Cart__listDescription">
-                      {{ cartItem.duration.subscriptionPackageType }}
+                      {{ cartItem.duration.subscriptionName }}
                       <tsl-pro-badge class="ml-2" [iconType]="ICON_TYPE.MEDIUM"></tsl-pro-badge>
                     </div>
                   </div>

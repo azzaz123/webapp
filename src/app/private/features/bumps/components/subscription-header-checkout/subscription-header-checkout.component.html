@@ -1,6 +1,8 @@
 <div class="SubscriptionHeaderCheckout d-flex flex-wrap">
   <ng-container *ngIf="subscription?.selected_tier; else noSubscription">
-    <span class="SubscriptionHeaderCheckout__title">{{ subscription.type }}</span>
+    <span class="SubscriptionHeaderCheckout__title" i18n="@@pro_subscription_management_regular_title"
+      >{{ subscription.category_name }} subscription</span
+    >
     <ng-container *ngFor="let bump of subscription.selected_tier.bumps">
       <span
         class="SubscriptionHeaderCheckout__counter"
