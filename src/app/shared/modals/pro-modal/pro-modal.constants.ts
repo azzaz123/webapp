@@ -248,7 +248,7 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
   [PRO_MODAL_TYPE.bump_error_stripe]: {
     img: '/assets/icons/pro/modals/bump-error.svg',
     title: $localize`:@@bump_selector_view_generic_error_modal_pro_user_title:Your item couldn't be highlighted`,
-    text1: $localize`:@@bump_selector_view_generic_error_modal_pro_user_descripton_1_part:Due to an error, the process has failed. Please try again.`,
+    text1: $localize`:@@web_payment_failed_unknown_error:For some reason, the payment couldn't be processed. Please try again.`,
     style: MODAL_STYLE.GREEN,
     buttons: {
       primary: { text: $localize`:@@bump_selector_view_confirmation_modal_pro_user_understood_button:Understood` },
