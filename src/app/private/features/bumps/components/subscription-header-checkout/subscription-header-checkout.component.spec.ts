@@ -23,7 +23,6 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
     fixture = TestBed.createComponent(SubscriptionHeaderCheckoutComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
-    fixture.detectChanges();
   });
 
   describe('And has not an subscription', () => {
@@ -34,7 +33,9 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
     it('should show no active subscription text', () => {
       const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
-      expect(title.textContent).toEqual('Productos sin una subscription');
+      expect(title.textContent).toEqual(
+        $localize`:@@highlight_item_view_pro_user_item_card_no_subscription_name_web_specific:Not included in your subscription(s)`
+      );
     });
   });
 
@@ -72,7 +73,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
         component.subscription.selected_tier.bumps.forEach((bump, index) => {
           const counter: HTMLElement = counters[index].nativeElement;
           expect(counter.textContent).toContain(bump.quantity);
-          expect(counter.textContent).toContain(bump.name);
+          expect(counter.textContent).toContain(component.getBumpName(bump.name));
           expect(counter.textContent).toContain(bump.used);
         });
       });
@@ -95,7 +96,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
         component.subscription.selected_tier.bumps.forEach((bump, index) => {
           const counter: HTMLElement = counters[index].nativeElement;
           expect(counter.textContent).toContain(bump.quantity);
-          expect(counter.textContent).toContain(bump.name);
+          expect(counter.textContent).toContain(component.getBumpName(bump.name));
           expect(counter.textContent).toContain(bump.used);
         });
       });

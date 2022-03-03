@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
-import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
+import { BUMP_NAMES, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 @Component({
   selector: 'tsl-subscription-header-checkout',
   templateUrl: './subscription-header-checkout.component.html',
@@ -10,13 +9,13 @@ import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 export class SubscriptionHeaderCheckoutComponent {
   @Input() subscription: SubscriptionsResponse;
 
-  public getBumpName(bumpType: BUMP_TYPE): string {
+  public getBumpName(bumpType: BUMP_NAMES): string {
     switch (bumpType) {
-      case BUMP_TYPE.ZONE_BUMP:
+      case BUMP_NAMES.ZONEBUMP:
         return $localize`:@@web_cart_454:Local`;
-      case BUMP_TYPE.CITY_BUMP:
+      case BUMP_NAMES.CITYBUMP:
         return $localize`:@@web_cart_663:City`;
-      case BUMP_TYPE.COUNTRY_BUMP:
+      case BUMP_NAMES.COUNTRYBUMP:
         return $localize`:@@web_cart_664:Country`;
       default:
         return '';
