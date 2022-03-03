@@ -53,13 +53,23 @@ describe('ExperimentService', () => {
   });
 
   describe('when initializing', () => {
-    describe('and the user is not ready', () => {
+    describe('and is a guest user', () => {
       it('should not initialize optimizely service', fakeAsync(() => {
         spyOn(OptimizelyServiceMock, 'initialize');
-        service.initialize();
+        service.initializeExperimentationWithGuestUser();
         tick();
 
         expect(OptimizelyServiceMock.initialize).not.toHaveBeenCalled();
+      }));
+    });
+
+    describe('and is a logged user', () => {
+      it('should initialize optimizely service', fakeAsync(() => {
+        spyOn(OptimizelyServiceMock, 'initialize');
+        service.initializeExperimentationWithLoggedUser();
+        tick();
+
+        expect(OptimizelyServiceMock.initialize).toHaveBeenCalled();
       }));
     });
   });
