@@ -78,8 +78,7 @@
       </div>
       <tsl-stripe-card-element
         *ngIf="isNewCard"
-        [type]="'cart'"
-        [cart]="cart"
+        [type]="'bump'"
         (stripeCardToken)="checkout($event)"
         (stripeCard)="setCardInfo($event)"
         [loading]="loading"
@@ -90,7 +89,7 @@
       [disabled]="loading"
       [loading]="loading"
       (click)="checkout()"
-      className="btn-primary w-100 btn-primary--bold mt-3"
+      className="btn-primary w-100 btn--big btn-primary--bold mt-3"
       i18n="@@web_cart_683"
       >Continue to checkout
     </tsl-button>

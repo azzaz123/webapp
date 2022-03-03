@@ -20,7 +20,7 @@
         <div [hidden]="type !== 'subscription'" class="StripeCardElement__legal-info" i18n="@@web_stripe_card_element_513">By subscribing, you accept the <a href="{{termsAndConditionsURL}}" target="_blank">Terms of use</a>
             and <a href="{{policyPrivacyURL}}" target="_blank">Privacy policy</a> of Wallapop S.L. and Stripe Ltd</div>
 
-        <tsl-button [hidden]="type === 'new' || type === 'subscription' || type === 'setDefault'"
+        <tsl-button [hidden]="type === 'new' || type === 'subscription' || type === 'setDefault' || type === 'bump'" 
                     id="checkout-card-button"
                     className="btn-primary btn-medium stripe btn-primary--bold mt-3"
                     [disabled]="type === 'cart' && !cart?.total || loading"
@@ -63,6 +63,17 @@
         >
             <div class="secure-payment">
                 <span i18n="@@web_save">Save</span>
+            </div>
+        </tsl-button>
+        <tsl-button *ngIf="type === 'bump'"
+                    id="checkout-card-button"
+                    className="btn btn--big btn-primary btn-primary--bold mt-3"
+                    [disabled]="loading"
+                    [loading]="loading"
+                    (click)="onSubmit()"
+        >
+            <div>
+                <span i18n="@@web_stripe_card_element_514">Continue to Checkout</span>
             </div>
         </tsl-button>
     </form>
