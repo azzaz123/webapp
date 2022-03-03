@@ -12,6 +12,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { COLORS } from '@core/colors/colors-constants';
 import { I18nService } from '@core/i18n/i18n.service';
+import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 
 @Component({
   selector: 'tsl-delivery-map',
@@ -78,7 +79,7 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
 
   public selectOfficePreference(): void {
     if (!this.fullAddress) {
-      return this.openDeliveryAddressWarning();
+      return this.askRedirectToDeliveryAddress();
     }
 
     this.deliveryMapService.selectOfficePreference$(this.userOfficeId).subscribe(
@@ -91,15 +92,9 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
     );
   }
 
-  private openDeliveryAddressWarning(): void {
+  private askRedirectToDeliveryAddress(): void {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
-    modalRef.componentInstance.properties = {
-      description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_DESCRIPTION),
-      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_ADD_BUTTON),
-      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_CANCEL_BUTTON),
-      confirmColor: COLORS.WALLA_MAIN,
-      cancelColor: COLORS.WALLA_MAIN,
-    };
+    modalRef.componentInstance.properties = this.deliveryAddressModalProperties;
 
     modalRef.result.then(
       () => {
@@ -111,5 +106,15 @@ export class DeliveryMapComponent implements OnChanges, OnDestroy {
 
   private showError(): void {
     this.errorsService.i18nError(TRANSLATION_KEY.DELIVERY_MAP_GENERIC_ERROR);
+  }
+
+  private get deliveryAddressModalProperties(): ConfirmationModalProperties {
+    return {
+      description: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_DESCRIPTION),
+      confirmMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_ADD_BUTTON),
+      cancelMessage: this.i18nService.translate(TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_CANCEL_BUTTON),
+      confirmColor: COLORS.WALLA_MAIN,
+      cancelColor: COLORS.WALLA_MAIN,
+    };
   }
 }
