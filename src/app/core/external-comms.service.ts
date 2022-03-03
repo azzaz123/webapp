@@ -26,11 +26,15 @@ export class ExternalCommsService {
     if (this.userService.isLogged) {
       appboy.changeUser(this.userService.user.id);
     }
+
     appboy.openSession();
 
-    this.notificationApiService.refreshUnreadNotifications();
-
-    //TODO listen for changes in notifications and refresh
+    if (this.userService.isLogged) {
+      //TODO listen for changes in notifications and refresh
+      this.notificationApiService.refreshUnreadNotifications();
+    } else {
+      this.notificationApiService.totalUnreadNotifications = 0;
+    }
   }
 
   private configureBraze(): void {
