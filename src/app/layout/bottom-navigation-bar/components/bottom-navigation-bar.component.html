@@ -1,4 +1,4 @@
-<nav class="BottomNavigationBar w-100 d-flex align-items-center justify-content-around">
+<nav class="BottomNavigationBar w-100 align-items-center justify-content-around" [hidden]="hidden$ | async">
     <a *ngFor="let element of navigationElements"
         class="BottomNavigationBar__element d-flex flex-column align-items-center justify-content-center"
         [routerLink]="element.href" routerLinkActive="BottomNavigationBar__element--active"

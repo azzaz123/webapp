@@ -10,6 +10,7 @@ $navigation-bar-margin: $spacer * 0.375;
 }
 
 .BottomNavigationBar {
+  display: flex;
   background-color: $white;
   border-top: 1px solid $blue-grey-5;
   min-height: $tabbar-height;
