@@ -45,6 +45,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   private standardIcon: H.map.Icon;
   private mapSubscription: Subscription = new Subscription();
   private selectedOfficeLocationSubject: BehaviorSubject<Location> = new BehaviorSubject(null);
+  private selectedLastMarkerSubject: BehaviorSubject<H.map.Marker> = new BehaviorSubject(null);
 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
 
@@ -160,15 +161,21 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     const selectedIcon: H.map.Icon = new H.map.Icon(SELECTED_ICON);
 
     marker.addEventListener('tap', (event: H.util.Event) => {
-      this.emitLocationOnTapMarker(event);
       const markerNotSelected: boolean = marker.getData().status === MARKER_STATUS.NON_SELECTED;
 
       if (markerNotSelected) {
         marker.setIcon(selectedIcon), marker.setData({ status: MARKER_STATUS.SELECTED });
-        this.setAllOtherMarkersToNonSelected(marker);
+        if (this.selectedLastMarkerSubject.value) {
+          this.selectedLastMarkerSubject.value.setIcon(this.standardIcon);
+          this.selectedLastMarkerSubject.value.setData({ status: MARKER_STATUS.NON_SELECTED });
+        }
+        this.selectedLastMarkerSubject.next(marker);
       } else {
-        marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
+        marker.setIcon(this.standardIcon);
+        marker.setData({ status: MARKER_STATUS.NON_SELECTED });
+        this.selectedLastMarkerSubject.next(null);
       }
+      this.emitLocationOnTapMarker(event);
     });
   }
 
@@ -177,14 +184,6 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     const locationCoordinates: Location = { latitude: currentLocation.lat, longitude: currentLocation.lng };
     this.selectedOfficeLocationSubject.next(locationCoordinates);
     this.tapMarker.emit(locationCoordinates);
-  }
-
-  private setAllOtherMarkersToNonSelected(currentMarker: H.map.Marker): void {
-    this.group.getObjects().forEach((marker: H.map.Marker) => {
-      if (marker !== currentMarker) {
-        marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
-      }
-    });
   }
 
   private get fallbackCenterCoordinates(): Location {
