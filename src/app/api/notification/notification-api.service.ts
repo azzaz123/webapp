@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { AppboyContentCards } from '@core/communication/vendors/appboy.interface';
 import { ExternalCommsService } from '@core/external-comms.service';
 import { UserService } from '@core/user/user.service';
+import { NotificationDto } from '@api/notification/dtos/response/notifcation-dto';
 
 @Injectable()
 export class NotificationApiService {
@@ -51,18 +52,25 @@ export class NotificationApiService {
 
   public logContentCardsDisplayed(): void {
     appboy.logContentCardsDisplayed();
-    // FIXME: Should only send the ones that are actually inside the viewport
-    appboy.logCardImpressions(appboy.getCachedContentCards().cards);
+    // FIXME: Should be logged only when they enter into the viewport, maybe add also a timer
+    appboy.logCardImpressions(this.filterNotificationCenterContentCards(appboy.getCachedContentCards().cards), true);
+    appboy.requestImmediateDataFlush();
   }
 
-  public logCardClick(): void {
-    appboy.logCardClick();
+  public logCardClick(id: string): void {
+    const card = appboy.getCachedContentCards().cards.find((card) => id === card.id);
+    appboy.logCardClick(card, true);
+    appboy.requestImmediateDataFlush();
   }
 
   private handleContentCardUpdates(appboyContentCards: AppboyContentCards): void {
-    console.log(appboyContentCards);
-    this._notifications$.next(mapNotificationsFromBraze(appboyContentCards.cards));
-    this._notificationsCount$.next(appboyContentCards.cards.length);
-    this._unreadNotificationsCount$.next(appboyContentCards.getUnviewedCardCount());
+    const notifications = mapNotificationsFromBraze(this.filterNotificationCenterContentCards(appboyContentCards.cards));
+    this._notifications$.next(notifications);
+    this._notificationsCount$.next(notifications.length);
+    this._unreadNotificationsCount$.next(notifications.filter((notification) => !notification.isRead).length);
+  }
+
+  private filterNotificationCenterContentCards(cards: NotificationDto[]): NotificationDto[] {
+    return cards.filter((card) => card.extras.notification_type === 'notification_center');
   }
 }
