@@ -132,7 +132,6 @@ export class SubscriptionEditComponent implements OnInit {
   }
 
   private showToastError(): void {
-    this.showErrorModal();
     this.toastService.show({
       title: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_TITLE)}`,
       text: `${this.i18n.translate(TRANSLATION_KEY.PRO_SUBSCRIPTION_EDIT_ERROR_BODY)}`,

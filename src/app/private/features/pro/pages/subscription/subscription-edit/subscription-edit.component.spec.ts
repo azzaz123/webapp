@@ -24,9 +24,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ManageSubscriptionService } from '@private/features/pro/services/manage-subscription.service';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
 import { of, throwError } from 'rxjs';
 import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
-import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
+import { CHANGE_TIER_ERROR_CODE, PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
 
 describe('SubscriptionEditComponent', () => {
   let component: SubscriptionEditComponent;
@@ -39,6 +42,7 @@ describe('SubscriptionEditComponent', () => {
   let manageSubscriptionServiceSpy: jasmine.Spy;
   let customerHelpService: CustomerHelpService;
   let manageSubscriptionService: ManageSubscriptionService;
+  const componentInstance: any = {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -59,7 +63,7 @@ describe('SubscriptionEditComponent', () => {
             open() {
               return {
                 result: Promise.resolve(),
-                componentInstance: {},
+                componentInstance: componentInstance,
               };
             },
           },
@@ -207,7 +211,7 @@ describe('SubscriptionEditComponent', () => {
         beforeEach(() => {
           spyOn(toastService, 'show').and.callThrough();
         });
-        describe('and response returns code different of 202', () => {
+        describe('and response returns code different of 405', () => {
           beforeEach(() => {
             spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: 204 }));
           });
@@ -224,6 +228,39 @@ describe('SubscriptionEditComponent', () => {
             fixture.detectChanges();
 
             expect(toastService.show).toHaveBeenCalledTimes(1);
+          });
+        });
+        describe('and response returns code 405', () => {
+          beforeEach(() => {
+            spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: CHANGE_TIER_ERROR_CODE }));
+            spyOn(modalService, 'open').and.callThrough();
+            spyOn(customerHelpService, 'getPageUrl').and.returnValue('link');
+          });
+          it('should not show success page', () => {
+            component.onPurchaseButtonClick();
+            fixture.detectChanges();
+
+            const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
+            expect(successPage).toBeFalsy();
+          });
+
+          it('should error modal', () => {
+            component['modalRef'] = <any>{
+              componentInstance: componentInstance,
+            };
+
+            component.onPurchaseButtonClick();
+            fixture.detectChanges();
+
+            expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+              windowClass: 'pro-modal',
+            });
+            expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.error_downgrade]);
+            expect(component['modalRef'].componentInstance.modalConfig.buttons.secondary.redirect).toEqual({
+              type: REDIRECT_TYPE.href,
+              url: 'link',
+            });
+            expect(customerHelpService.getPageUrl).toBeCalledWith(CUSTOMER_HELP_PAGE.CANNOT_CHANGE_PRO_SUBSCRIPTION);
           });
         });
         describe('and response fails', () => {
