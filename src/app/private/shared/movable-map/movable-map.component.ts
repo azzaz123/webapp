@@ -80,6 +80,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     this.emitLocationAndRadius(map);
     this.addGroupMarker(map);
     this.onTapMapOutsideMarker(map);
+    this.setMarkerSelection(map);
     return map;
   }
 
@@ -153,29 +154,32 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   private addMarkerToGroup(marker: H.map.Marker): void {
-    this.setMarkerSelection(marker);
     this.group.addObject(marker);
   }
 
-  private setMarkerSelection(marker: H.map.Marker): void {
+  private setMarkerSelection(map: H.Map): void {
     const selectedIcon: H.map.Icon = new H.map.Icon(SELECTED_ICON);
 
-    marker.addEventListener('tap', (event: H.util.Event) => {
-      const markerNotSelected: boolean = marker.getData().status === MARKER_STATUS.NON_SELECTED;
+    map.addEventListener('tap', (event: H.util.Event) => {
+      if (event.target instanceof H.map.Marker) {
+        const marker = event.target;
+        const markerNotSelected: boolean = marker.getData().status === MARKER_STATUS.NON_SELECTED;
 
-      if (markerNotSelected) {
-        marker.setIcon(selectedIcon), marker.setData({ status: MARKER_STATUS.SELECTED });
-        if (this.selectedLastMarkerSubject.value) {
-          this.selectedLastMarkerSubject.value.setIcon(this.standardIcon);
-          this.selectedLastMarkerSubject.value.setData({ status: MARKER_STATUS.NON_SELECTED });
+        if (markerNotSelected) {
+          marker.setIcon(selectedIcon), marker.setData({ status: MARKER_STATUS.SELECTED });
+          if (this.selectedLastMarkerSubject.value) {
+            this.selectedLastMarkerSubject.value.setIcon(this.standardIcon);
+            this.selectedLastMarkerSubject.value.setData({ status: MARKER_STATUS.NON_SELECTED });
+          }
+          this.selectedLastMarkerSubject.next(marker);
+          this.emitLocationOnTapMarker(event);
+        } else {
+          marker.setIcon(this.standardIcon);
+          marker.setData({ status: MARKER_STATUS.NON_SELECTED });
+          this.selectedLastMarkerSubject.next(null);
+          this.tapMap.emit();
         }
-        this.selectedLastMarkerSubject.next(marker);
-      } else {
-        marker.setIcon(this.standardIcon);
-        marker.setData({ status: MARKER_STATUS.NON_SELECTED });
-        this.selectedLastMarkerSubject.next(null);
       }
-      this.emitLocationOnTapMarker(event);
     });
   }
 
