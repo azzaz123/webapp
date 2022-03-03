@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, OpenWallapop } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DeviceService } from '@core/device/device.service';
-import { ExternalCommsService } from '@core/external-comms.service';
 import { SessionService } from '@core/session/session.service';
 import { StandaloneService } from '@core/standalone/services/standalone.service';
 import { Observable } from 'rxjs';
@@ -18,29 +17,12 @@ export class AppComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private deviceService: DeviceService,
     private sessionService: SessionService,
-    private externalCommsService: ExternalCommsService,
     private standaloneService: StandaloneService
   ) {}
 
   ngOnInit(): void {
-    //TODO: This should be moved to a higher level entity (providers.ts or equivalent)
-    this.initSubscriptions();
-    this.initServices();
-    this.trackStandaloneModeStatus();
-  }
-
-  private initSubscriptions(): void {
     this.onNewSessionStart().subscribe(() => this.trackOpenWallapop());
-    this.onMParticleInit().subscribe(() => this.externalCommsService.initializeBraze());
-  }
-
-  private initServices(): void {
-    this.sessionService.initSession();
-    this.analyticsService.initialize();
-  }
-
-  private onMParticleInit(): Observable<void> {
-    return this.analyticsService.mParticleReady$.pipe(take(1));
+    this.trackStandaloneModeStatus();
   }
 
   private onNewSessionStart(): Observable<void> {

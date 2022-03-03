@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { forkJoin, Observable, ReplaySubject } from 'rxjs';
+import { EMPTY, forkJoin, Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -10,6 +10,12 @@ export class LoadExternalLibsService {
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   public loadScriptBySource(src: string | string[]): Observable<void> {
+    if (!src?.length) {
+      return new Observable((subscriber) => {
+        subscriber.next();
+        subscriber.complete();
+      });
+    }
     const observable: Observable<any> = Array.isArray(src) ? this.buildArrayLoaderObservable(src) : this.getSubjectBySrc(src);
     return observable;
   }

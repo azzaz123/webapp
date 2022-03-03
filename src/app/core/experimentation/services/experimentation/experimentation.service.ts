@@ -27,12 +27,18 @@ export class ExperimentationService {
     return this._experimentReady$.asObservable();
   }
 
-  public initialize(): void {
-    this.userService.isUserReady$.subscribe(() => {
-      this.optimizelyService.initialize();
-    });
+  public initializeExperimentationWithLoggedUser(): void {
+    this.optimizelyService.initialize();
     forkJoin([this.loadExternalLibService.loadScriptBySource(EXPERIMENTATION_SOURCES), this.optimizelyService.isReady$]).subscribe(() => {
       this._experimentReady$.next(true);
+      this._experimentReady$.complete();
+    });
+  }
+
+  public initializeExperimentationWithGuestUser(): void {
+    this.loadExternalLibService.loadScriptBySource(EXPERIMENTATION_SOURCES).subscribe(() => {
+      this._experimentReady$.next(true);
+      this._experimentReady$.complete();
     });
   }
 
