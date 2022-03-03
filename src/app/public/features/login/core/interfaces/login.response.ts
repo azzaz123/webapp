@@ -1,12 +1,7 @@
-import { RegisterInfo } from './register-info';
-
 export interface LoginResponse {
-  expirationDate: string;
-  registerInfo: RegisterInfo;
-  idUser: number;
-  justRegistered: boolean;
-  userId: number;
-  userUUID: string;
+  extraInfo: {
+    justRegistered: boolean;
+  };
   resetToken: string;
   token: string;
 }
