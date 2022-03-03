@@ -21,6 +21,8 @@ import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/de
 import { DeliveryItemDetails } from '@api/core/model/delivery/item-detail/delivery-item-details.interface';
 import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
 import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 
 @Injectable()
 export class DeliveryConversationContextAsSellerService {
@@ -29,6 +31,7 @@ export class DeliveryConversationContextAsSellerService {
   constructor(
     private router: Router,
     private modalService: NgbModal,
+    private featureFlagService: FeatureFlagService,
     private sellerRequestsApiService: SellerRequestsApiService,
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService
   ) {}
@@ -69,9 +72,8 @@ export class DeliveryConversationContextAsSellerService {
     const isLastRequestPresent: boolean = !!this.lastRequest;
     if (isLastRequestPresent) {
       const navigateToAcceptScreen: boolean = this.lastRequest.status.request === SELLER_REQUEST_STATUS.PENDING;
-      const lastRequestId: string = this.lastRequest.id;
-
-      navigateToAcceptScreen ? this.navigateToAcceptScreen(lastRequestId) : this.navigateToTTS(lastRequestId);
+      const { id } = this.lastRequest;
+      navigateToAcceptScreen ? this.navigateToAcceptScreen(id) : this.navigateToTTS(id);
     }
   }
 
@@ -81,8 +83,14 @@ export class DeliveryConversationContextAsSellerService {
   }
 
   private navigateToAcceptScreen(requestId: string): void {
-    const route: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
-    this.router.navigate([route]);
+    this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((enabled) => {
+      const isDisabled: boolean = !enabled;
+      if (isDisabled) {
+        return this.openAwarenessModal();
+      }
+      const route: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
+      this.router.navigate([route]);
+    });
   }
 
   private navigateToEditItemShippingToggle(conversation: InboxConversation): void {

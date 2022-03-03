@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { InboxConversation } from '@private/features/chat/core/model';
-import { Observable, of, ReplaySubject, Subscription } from 'rxjs';
-import { concatMap, finalize, take } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
@@ -18,7 +15,6 @@ export class DeliveryConversationContextService {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private featureFlagService: FeatureFlagService,
     private deliveryConversationContextAsBuyerService: DeliveryConversationContextAsBuyerService,
     private deliveryConversationContextAsSellerService: DeliveryConversationContextAsSellerService,
     private modalService: NgbModal
@@ -40,22 +36,15 @@ export class DeliveryConversationContextService {
     this._bannerProperties$.next(newBannerProperties);
   }
 
-  private get isDeliveryFlagEnabled(): Observable<boolean> {
-    return this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).pipe(take(1));
-  }
-
   public update(conversation: InboxConversation): void {
     this.loading = true;
-    const subscription: Subscription = this.isDeliveryFlagEnabled
-      .pipe(
-        concatMap((enabled: boolean) => (enabled ? this.getBannerProperties(conversation) : of(null))),
-        finalize(() => this.endLoading())
-      )
-      .subscribe(
-        (banner: DeliveryBanner | null) => (this.bannerProperties = banner),
-        () => this.endLoading(),
-        () => this.endLoading()
-      );
+    const subscription: Subscription = this.getBannerProperties(conversation).subscribe(
+      //TODO: Assign banner properties when openning chat banner
+      // In order for the third voices to work while the banner is not openned in prod, we need the banner properties loaded within the context
+      (bannerProperties: DeliveryBanner | null) => (this.bannerProperties = null), // this.bannerProperties = bannerProperties
+      () => this.endLoading(),
+      () => this.endLoading()
+    );
     this.subscriptions.push(subscription);
   }
 
