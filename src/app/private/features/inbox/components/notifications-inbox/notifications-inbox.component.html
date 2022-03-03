@@ -1,5 +1,5 @@
 <div>
-  <div *ngFor="let notification of notifications">
+  <div *ngFor="let notification of notifications$ | async">
     <tsl-notification [notification]="notification"></tsl-notification>
   </div>
 </div>

@@ -34,7 +34,7 @@
   </a>
 
   <a class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/inbox/notifications']" routerLinkActive="Sidebar__entry--active" *ngIf="featureFlagService.isExperimentalFeaturesEnabled()">
-    <div class="Sidebar__notification" *ngIf="(notificationApiService.totalUnreadNotifications$ | async) > 0"></div>
+    <div class="Sidebar__notification" *ngIf="(notificationApiService.unreadNotificationsCount$ | async) > 0"></div>
     <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_inbox.svg"></tsl-svg-icon>
     <span class="Sidebar__label ml-2" i18n="@@agnostic_view_nav_bar_inbox_label">Inbox</span>
   </a>

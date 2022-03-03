@@ -70,7 +70,7 @@ export class TabbarComponent implements OnInit, OnDestroy {
       this.unreadChatMessagesService.totalUnreadMessages$.subscribe((unreadMessages) => (this.hasUnreadMessages = !!unreadMessages))
     );
     this.componentSubscriptions.push(
-      this.notificationApiService.totalUnreadNotifications$.subscribe(
+      this.notificationApiService.unreadNotificationsCount$.subscribe(
         (unreadNotifications) => (this.hasUnreadNotifications = !!unreadNotifications)
       )
     );

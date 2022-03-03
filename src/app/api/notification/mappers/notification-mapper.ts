@@ -20,6 +20,7 @@ export function mapNotificationsFromBraze(notifications: NotificationDto[]): Not
       description: notification.description,
       image: notification.imageUrl,
       url: notification.url,
+      id: notification.id,
     };
   });
 }
