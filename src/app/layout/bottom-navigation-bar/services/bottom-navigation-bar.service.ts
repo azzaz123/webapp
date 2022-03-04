@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { combineLatest, Observable, BehaviorSubject, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM, BOTTOM_NAVIGATION_BAR_ELMENTS_RECORD } from '../constants/bottom-navigation-bar-elements';
+import { BOTTOM_NAVIGATION_BAR_ELEMENTS, BOTTOM_NAVIGATION_BAR_ELEMENTS_COLLECTION } from '../constants/bottom-navigation-bar-elements';
 import { BottomNavigationBarElement } from '../interfaces/bottom-navigation-bar-element.interface';
 
 @Injectable()
@@ -13,11 +13,11 @@ export class BottomNavigationBarService {
 
   get navigationElements$(): Observable<BottomNavigationBarElement[]> {
     return combineLatest([
-      of(BOTTOM_NAVIGATION_BAR_ELMENTS_RECORD),
+      of(BOTTOM_NAVIGATION_BAR_ELEMENTS_COLLECTION),
       this.unreadChatMessagesService.totalUnreadMessages$.pipe(startWith(0)),
     ]).pipe(
       map(([elements, totalUnreadMessages]) => {
-        elements[BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM.INBOX].pendingNotification = !!totalUnreadMessages;
+        elements[BOTTOM_NAVIGATION_BAR_ELEMENTS.INBOX].pendingNotification = !!totalUnreadMessages;
 
         return Object.values(elements);
       })

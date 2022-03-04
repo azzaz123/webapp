@@ -3,7 +3,7 @@ import { BottomNavigationBarElement } from '../interfaces/bottom-navigation-bar-
 
 const ICONS_FOLDER = '/assets/icons/bottom-navigation-bar';
 
-export enum BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM {
+export enum BOTTOM_NAVIGATION_BAR_ELEMENTS {
   HOME,
   FAVORITES,
   UPLOAD,
@@ -11,8 +11,8 @@ export enum BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM {
   YOU,
 }
 
-export const BOTTOM_NAVIGATION_BAR_ELMENTS_RECORD: Record<BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM, BottomNavigationBarElement> = {
-  [BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM.HOME]: {
+export const BOTTOM_NAVIGATION_BAR_ELEMENTS_COLLECTION: Record<BOTTOM_NAVIGATION_BAR_ELEMENTS, BottomNavigationBarElement> = {
+  [BOTTOM_NAVIGATION_BAR_ELEMENTS.HOME]: {
     text: $localize`:@@web_components_tabbar_3:Home`,
     alternativeText: $localize`:@@web_components_tabbar_3:Home`,
     icon: `${ICONS_FOLDER}/home.svg`,
@@ -20,7 +20,7 @@ export const BOTTOM_NAVIGATION_BAR_ELMENTS_RECORD: Record<BOTTOM_NAVIGATION_BAR_
     href: `/${PUBLIC_PATHS.SEARCH}`,
     external: false,
   },
-  [BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM.FAVORITES]: {
+  [BOTTOM_NAVIGATION_BAR_ELEMENTS.FAVORITES]: {
     text: $localize`:@@web_components_tabbar_4:Favorites`,
     alternativeText: $localize`:@@web_components_tabbar_4:Favorites`,
     icon: `${ICONS_FOLDER}/favorites.svg`,
@@ -28,7 +28,7 @@ export const BOTTOM_NAVIGATION_BAR_ELMENTS_RECORD: Record<BOTTOM_NAVIGATION_BAR_
     href: `/favorites`,
     external: false,
   },
-  [BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM.UPLOAD]: {
+  [BOTTOM_NAVIGATION_BAR_ELEMENTS.UPLOAD]: {
     text: $localize`:@@web_components_tabbar_5:Upload`,
     alternativeText: $localize`:@@web_components_tabbar_5:Upload`,
     icon: `${ICONS_FOLDER}/upload.svg`,
@@ -36,7 +36,7 @@ export const BOTTOM_NAVIGATION_BAR_ELMENTS_RECORD: Record<BOTTOM_NAVIGATION_BAR_
     href: `/catalog/upload`,
     external: false,
   },
-  [BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM.INBOX]: {
+  [BOTTOM_NAVIGATION_BAR_ELEMENTS.INBOX]: {
     text: $localize`:@@web_components_tabbar_6:Messages`,
     alternativeText: $localize`:@@web_components_tabbar_6:Messages`,
     icon: `${ICONS_FOLDER}/inbox.svg`,
@@ -44,7 +44,7 @@ export const BOTTOM_NAVIGATION_BAR_ELMENTS_RECORD: Record<BOTTOM_NAVIGATION_BAR_
     href: `/chat`,
     external: false,
   },
-  [BOTTOM_NAVIGATION_BAR_ELEMENTS_ENUM.YOU]: {
+  [BOTTOM_NAVIGATION_BAR_ELEMENTS.YOU]: {
     text: 'You',
     alternativeText: 'You',
     icon: `${ICONS_FOLDER}/you.svg`,

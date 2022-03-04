@@ -4,6 +4,5 @@ export interface NavigationElement {
   alternativeText: string;
   href: string;
   icon?: string;
-  children?: NavigationElement[];
   onClick?: Function;
 }
