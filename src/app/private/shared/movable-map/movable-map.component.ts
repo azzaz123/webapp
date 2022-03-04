@@ -18,10 +18,11 @@ import { APP_LOCALE } from '@configs/subdomains.config';
 import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { STANDARD_ICON, SELECTED_ICON, DEFAULT_VALUE_ZOOM, getRadiusInKm } from './constants/map.constants';
 import { MARKER_STATUS } from './constants/marker-status.enum';
+import { isEqual } from 'lodash-es';
 
 @Component({
   selector: 'tsl-movable-map',
@@ -43,9 +44,9 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   private map: H.Map;
   private group: H.map.Group;
   private standardIcon: H.map.Icon;
+  private selectedIcon: H.map.Icon;
   private mapSubscription: Subscription = new Subscription();
-  private selectedOfficeLocationSubject: BehaviorSubject<Location> = new BehaviorSubject(null);
-  private selectedLastMarkerSubject: BehaviorSubject<H.map.Marker> = new BehaviorSubject(null);
+  private lastSelectedMarker: H.map.Marker;
 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
 
@@ -54,89 +55,35 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     this.initHereMaps();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.map) {
-      if (changes.centerCoordinates && !changes.centerCoordinates.firstChange) {
-        this.map.setCenter({ lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude });
-        this.map.setZoom(DEFAULT_VALUE_ZOOM);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.markers?.currentValue && !changes.centerCoordinates?.currentValue) {
+      return;
+    }
+    if (changes.markers?.isFirstChange() || changes.centerCoordinates?.isFirstChange()) {
+      return;
+    }
+    if (changes.markers) {
+      const previousMarkers = changes.markers.previousValue;
+      const currentMarkers = changes.markers.currentValue;
+      if (!isEqual(previousMarkers, currentMarkers)) {
+        const markers: H.map.Marker[] = this.getMarkersByLocation(currentMarkers);
+        this.group.removeObjects(this.group.getObjects());
+        this.addMarkers(markers);
+        this.addSelectedMarker();
       }
-      this.addGroupMarker(this.map);
+    }
+
+    if (changes.centerCoordinates) {
+      const previousCoordinates = changes.centerCoordinates.previousValue;
+      const currentCoordinates = changes.centerCoordinates.currentValue;
+      if (!isEqual(previousCoordinates, currentCoordinates)) {
+        this.setMapCenter(currentCoordinates);
+      }
     }
   }
 
   ngOnDestroy(): void {
     this.mapSubscription.unsubscribe();
-  }
-
-  private initializeMap(): H.Map {
-    const defaultLayers: H.service.DefaultLayers = this.hereMapsService.platform.createDefaultLayers();
-    const map: H.Map = new H.Map(this.mapEl.nativeElement, defaultLayers.vector.normal.map, {
-      zoom: DEFAULT_VALUE_ZOOM,
-      center: { lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude },
-    });
-    const implementInteractions: H.mapevents.Behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-    const defaultUI: H.ui.UI = H.ui.UI.createDefault(map, defaultLayers);
-
-    this.emitLocationAndRadius(map);
-    this.addGroupMarker(map);
-    this.onTapMapOutsideMarker(map);
-    this.setMarkerSelection(map);
-    return map;
-  }
-
-  private emitLocationAndRadius(map: H.Map): void {
-    map.addEventListener('mapviewchangeend', () => {
-      const updatedLocation: H.geo.IPoint = map.getCenter();
-      const updatedZoom: number = map.getZoom();
-      this.mapViewChangeEnd.emit({
-        latitude: updatedLocation.lat,
-        longitude: updatedLocation.lng,
-        radiusInKm: getRadiusInKm(updatedZoom, updatedLocation.lat),
-      });
-    });
-  }
-
-  private addGroupMarker(map: H.Map): void {
-    map.removeObjects(map.getObjects());
-    this.group = new H.map.Group();
-    this.standardIcon = new H.map.Icon(STANDARD_ICON);
-    map.addObject(this.group);
-
-    this.addMarkers();
-  }
-
-  private onTapMapOutsideMarker(map: H.Map): void {
-    map.addEventListener('tap', (event: H.util.Event) => {
-      const isNotAMarker: boolean = !(event.target instanceof H.map.Marker);
-
-      if (isNotAMarker) {
-        this.selectedOfficeLocationSubject.next(null);
-        this.tapMap.emit();
-        this.group.getObjects().forEach((marker: H.map.Marker) => {
-          marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
-        });
-      }
-    });
-  }
-
-  private addMarkers(): void {
-    this.markers.forEach((marker: Location) => {
-      const coordinate: H.geo.IPoint = { lng: marker.longitude, lat: marker.latitude };
-      const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: this.standardIcon });
-      const selectedMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: new H.map.Icon(SELECTED_ICON) });
-      const isMarkerSelected: boolean =
-        this.selectedOfficeLocationSubject.value &&
-        this.selectedOfficeLocationSubject.value.latitude === coordinate.lat &&
-        this.selectedOfficeLocationSubject.value.longitude === coordinate.lng;
-
-      if (isMarkerSelected) {
-        selectedMarker.setData({ status: MARKER_STATUS.SELECTED });
-        this.addMarkerToGroup(selectedMarker);
-      } else {
-        standardMarker.setData({ status: MARKER_STATUS.NON_SELECTED });
-        this.addMarkerToGroup(standardMarker);
-      }
-    });
   }
 
   private initHereMaps(): void {
@@ -146,47 +93,123 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
         .pipe(distinctUntilChanged())
         .subscribe((isReady: boolean) => {
           if (isReady) {
-            this.map = this.initializeMap();
+            this.map = this.mapReference;
+            this.setGroupAndIconsOnTheMap();
+            this.setMarkersOnTheMap();
+            this.listenToMapViewChangeEnd();
+            this.listenToMarkerSelection();
             window.addEventListener('resize', () => this.map.getViewPort().resize());
           }
         })
     );
   }
 
-  private addMarkerToGroup(marker: H.map.Marker): void {
-    this.group.addObject(marker);
+  private get mapReference(): H.Map {
+    const defaultLayers: H.service.DefaultLayers = this.hereMapsService.platform.createDefaultLayers();
+    const map: H.Map = new H.Map(this.mapEl.nativeElement, defaultLayers.vector.normal.map, {
+      zoom: DEFAULT_VALUE_ZOOM,
+      center: { lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude },
+    });
+    const implementInteractions: H.mapevents.Behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+    const defaultUI: H.ui.UI = H.ui.UI.createDefault(map, defaultLayers);
+
+    return map;
   }
 
-  private setMarkerSelection(map: H.Map): void {
-    const selectedIcon: H.map.Icon = new H.map.Icon(SELECTED_ICON);
+  private setGroupAndIconsOnTheMap(): void {
+    this.group = new H.map.Group();
+    this.standardIcon = new H.map.Icon(STANDARD_ICON);
+    this.selectedIcon = new H.map.Icon(SELECTED_ICON);
+    this.map.addObject(this.group);
+  }
 
-    map.addEventListener('tap', (event: H.util.Event) => {
+  private setMarkersOnTheMap(): void {
+    const markers = this.getMarkersByLocation(this.markers);
+    this.addMarkers(markers);
+  }
+
+  private listenToMapViewChangeEnd(): void {
+    this.map.addEventListener('mapviewchangeend', () => {
+      const updatedLocation: H.geo.IPoint = this.map.getCenter();
+      const updatedZoom: number = this.map.getZoom();
+      this.mapViewChangeEnd.emit({
+        latitude: updatedLocation.lat,
+        longitude: updatedLocation.lng,
+        radiusInKm: getRadiusInKm(updatedZoom, updatedLocation.lat),
+      });
+    });
+  }
+
+  private listenToMarkerSelection(): void {
+    this.map.addEventListener('tap', (event: H.util.Event) => {
       if (event.target instanceof H.map.Marker) {
         const marker = event.target;
-        const markerNotSelected: boolean = marker.getData().status === MARKER_STATUS.NON_SELECTED;
+        const markerIsNotSelected: boolean = marker.getData().status === MARKER_STATUS.NON_SELECTED;
 
-        if (markerNotSelected) {
-          marker.setIcon(selectedIcon), marker.setData({ status: MARKER_STATUS.SELECTED });
-          if (this.selectedLastMarkerSubject.value) {
-            this.selectedLastMarkerSubject.value.setIcon(this.standardIcon);
-            this.selectedLastMarkerSubject.value.setData({ status: MARKER_STATUS.NON_SELECTED });
-          }
-          this.selectedLastMarkerSubject.next(marker);
+        if (markerIsNotSelected) {
+          this.setMarkerToSelected(marker);
+          this.setLastSelectedMarker(marker);
           this.emitLocationOnTapMarker(event);
         } else {
-          marker.setIcon(this.standardIcon);
-          marker.setData({ status: MARKER_STATUS.NON_SELECTED });
-          this.selectedLastMarkerSubject.next(null);
-          this.tapMap.emit();
+          this.unselectMarker(marker);
+          this.lastSelectedMarker = null;
         }
+      } else {
+        this.unselectMarker(this.lastSelectedMarker);
       }
     });
+  }
+
+  private setMapCenter(coordinates: Location): void {
+    if (this.map) {
+      this.map.setCenter({ lng: coordinates.longitude, lat: coordinates.latitude });
+      this.map.setZoom(DEFAULT_VALUE_ZOOM);
+    }
+  }
+
+  private getMarkersByLocation(locations: Location[]): H.map.Marker[] {
+    return locations.map((location: Location) => {
+      const coordinate: H.geo.IPoint = { lng: location.longitude, lat: location.latitude };
+      const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: this.standardIcon });
+
+      standardMarker.setData({ status: MARKER_STATUS.NON_SELECTED });
+      return standardMarker;
+    });
+  }
+
+  private addMarkers(markers: H.map.Marker[]): void {
+    this.group.addObjects(markers);
+  }
+
+  private addSelectedMarker(): void {
+    if (this.lastSelectedMarker) {
+      this.group.addObject(this.lastSelectedMarker.setData({ status: MARKER_STATUS.SELECTED }));
+    }
+  }
+
+  private unselectMarker(marker: H.map.Marker): void {
+    this.setMarkerToNonSelected(marker);
+    this.tapMap.emit();
+  }
+
+  private setMarkerToNonSelected(marker: H.map.Marker): void {
+    marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
+  }
+
+  private setMarkerToSelected(marker: H.map.Marker): void {
+    marker.setIcon(this.selectedIcon), marker.setData({ status: MARKER_STATUS.SELECTED });
+  }
+
+  private setLastSelectedMarker(marker: H.map.Marker): void {
+    if (this.lastSelectedMarker) {
+      this.setMarkerToNonSelected(this.lastSelectedMarker);
+    }
+    this.lastSelectedMarker = marker;
   }
 
   private emitLocationOnTapMarker(event: H.util.Event): void {
     const currentLocation: H.geo.IPoint = event.target.b;
     const locationCoordinates: Location = { latitude: currentLocation.lat, longitude: currentLocation.lng };
-    this.selectedOfficeLocationSubject.next(locationCoordinates);
     this.tapMarker.emit(locationCoordinates);
   }
 
