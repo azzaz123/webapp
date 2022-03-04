@@ -3,6 +3,9 @@
 .PayviewModal {
   max-height: 80vh;
 
+  &__back {
+    cursor: pointer;
+  }
   &__scrollable {
     overflow-y: scroll;
   }

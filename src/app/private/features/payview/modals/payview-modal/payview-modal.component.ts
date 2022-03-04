@@ -8,6 +8,8 @@ import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/deli
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { PayviewDeliveryEventType } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.interface';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
+import { PayviewPromotionEventType } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.interface';
+import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
@@ -38,7 +40,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private deliveryService: PayviewDeliveryService,
     private activeModal: NgbActiveModal,
     private customerHelpService: CustomerHelpService,
-    private deliveryCountries: DeliveryCountriesService
+    private deliveryCountries: DeliveryCountriesService,
+    private promotionService: PayviewPromotionService
   ) {}
 
   public ngOnDestroy(): void {
@@ -59,21 +62,24 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.activeModal.close();
   }
 
+  public goBack(): void {
+    this.goToStep(PayviewSteps.Payview);
+  }
+
+  private goToStep(step: PayviewSteps): void {
+    this.stepper.goToStep(step);
+  }
+
   public get helpUrl(): string {
     return this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.PAYVIEW);
   }
 
+  public get isSecondaryStep(): boolean {
+    return !!this.stepper && this.stepper.activeId !== PayviewSteps.Payview;
+  }
+
   public get payviewState$(): Observable<PayviewState> {
     return this.payviewStateManagementService.payViewState$;
-  }
-
-  private goToDeliveryAddress(): void {
-    this.stepper.goToStep(PayviewSteps.DeliveryAddress);
-  }
-
-  private goToPickUpPoint(): void {
-    // TODO - Uncomment the following line when the pick-up point map is ended
-    // this.stepper.goToStep(PayviewSteps.PickUpPointMap);
   }
 
   private setDeliveryMethod(deliveryMethod: DeliveryBuyerDeliveryMethod): void {
@@ -81,10 +87,11 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   private subscribe(): void {
-    this.subscribeToDeliveryMethod();
+    this.subscribeToDeliveryEventBus();
+    this.subscribeToPromotionEventBus();
   }
 
-  private subscribeToDeliveryMethod(): void {
+  private subscribeToDeliveryEventBus(): void {
     this.subscriptions.push(
       this.deliveryService.on(PayviewDeliveryEventType.DeliveryMethodSelected, (payload: DeliveryBuyerDeliveryMethod) => {
         this.setDeliveryMethod(payload);
@@ -92,12 +99,20 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.deliveryService.on(PayviewDeliveryEventType.OpenAddressScreen, () => {
-        this.goToDeliveryAddress();
+        this.goToStep(PayviewSteps.DeliveryAddress);
       })
     );
     this.subscriptions.push(
       this.deliveryService.on(PayviewDeliveryEventType.OpenPickUpPointMap, () => {
-        this.goToPickUpPoint();
+        this.goToStep(PayviewSteps.PickUpPointMap);
+      })
+    );
+  }
+
+  private subscribeToPromotionEventBus(): void {
+    this.subscriptions.push(
+      this.promotionService.on(PayviewPromotionEventType.OpenPromocodeEditor, () => {
+        this.goToStep(PayviewSteps.PromotionEditor);
       })
     );
   }
