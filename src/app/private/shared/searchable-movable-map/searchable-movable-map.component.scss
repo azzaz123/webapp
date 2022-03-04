@@ -1,16 +1,21 @@
 @import '~style/common';
 
+$glass-size: 28px;
+$icon-top-spacing: 50%;
+$icon-lateral-spacing: 25px;
+
 .SearchBox {
   &__glass {
-    top: 50%;
+    top: $icon-top-spacing;
     transform: translateY(-50%);
-    left: 10px;
+    left: $icon-lateral-spacing;
     z-index: 1;
-    @include square(28px);
+    @include square($glass-size);
     ::ng-deep svg path {
       fill: $blue-grey-3;
     }
   }
+
   &__input {
     width: 100%;
     height: 42px;
@@ -34,11 +39,11 @@
       border: solid 1px $walla-main;
       background-color: $white;
       + tsl-svg-icon {
-        top: 50%;
+        top: $icon-top-spacing;
         transform: translateY(-50%);
-        left: 10px;
+        left: $icon-lateral-spacing;
         z-index: 1;
-        @include square(28px);
+        @include square($glass-size);
 
         ::ng-deep svg path {
           fill: $walla-main;
@@ -48,8 +53,8 @@
   }
 
   &__reset {
-    right: 15px;
-    top: 50%;
+    right: $icon-lateral-spacing;
+    top: $icon-top-spacing;
     transform: translateY(-50%);
     cursor: pointer;
     @include square(21px);
