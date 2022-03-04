@@ -12,6 +12,7 @@ import {
   OnDestroy,
   OnChanges,
   SimpleChanges,
+  SimpleChange,
 } from '@angular/core';
 import { Location, LocationWithRadius } from '@api/core/model';
 import { APP_LOCALE } from '@configs/subdomains.config';
@@ -63,27 +64,34 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
       return;
     }
     if (changes.markers) {
-      const previousMarkers = changes.markers.previousValue;
-      const currentMarkers = changes.markers.currentValue;
-      if (!isEqual(previousMarkers, currentMarkers)) {
-        const markers: H.map.Marker[] = this.getMarkersByLocation(currentMarkers);
-        this.group.removeObjects(this.group.getObjects());
-        this.addMarkers(markers);
-        this.addSelectedMarker();
-      }
+      this.setMarkersOnChanges(changes.markers);
     }
-
     if (changes.centerCoordinates) {
-      const previousCoordinates = changes.centerCoordinates.previousValue;
-      const currentCoordinates = changes.centerCoordinates.currentValue;
-      if (!isEqual(previousCoordinates, currentCoordinates)) {
-        this.setMapCenter(currentCoordinates);
-      }
+      this.setCenterCoordinatesOnChanges(changes.centerCoordinates);
     }
   }
 
   ngOnDestroy(): void {
     this.mapSubscription.unsubscribe();
+  }
+
+  private setCenterCoordinatesOnChanges(centerCoordinates: SimpleChange): void {
+    const previousCoordinates = centerCoordinates.previousValue;
+    const currentCoordinates = centerCoordinates.currentValue;
+    if (!isEqual(previousCoordinates, currentCoordinates)) {
+      this.setMapCenter(currentCoordinates);
+    }
+  }
+
+  private setMarkersOnChanges(markers: SimpleChange): void {
+    const previousMarkers = markers.previousValue;
+    const currentMarkers = markers.currentValue;
+    if (!isEqual(previousMarkers, currentMarkers)) {
+      const markers: H.map.Marker[] = this.getMarkersByLocation(currentMarkers);
+      this.group.removeObjects(this.group.getObjects());
+      this.addMarkers(markers);
+      this.addLastSelectedMarker();
+    }
   }
 
   private initHereMaps(): void {
@@ -181,7 +189,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     this.group.addObjects(markers);
   }
 
-  private addSelectedMarker(): void {
+  private addLastSelectedMarker(): void {
     if (this.lastSelectedMarker) {
       this.group.addObject(this.lastSelectedMarker.setData({ status: MARKER_STATUS.SELECTED }));
     }
