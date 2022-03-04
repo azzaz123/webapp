@@ -1,0 +1,63 @@
+@import '~style/common';
+
+$label-opacity: 0.99;
+$label-transform: scale(0.88) translateY(-2.2rem) translateX(0);
+$transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+
+.PayviewPromotionEditor {
+  padding: $spacing-ml;
+
+  &__messageWrapper {
+    padding: $spacing-ml;
+  }
+
+  &__message {
+    font-weight: $font-weight-chunky;
+  }
+
+  &__inputWrapper {
+    margin-top: $spacing-ms;
+    position: relative;
+  }
+
+  &__input {
+    border-bottom: 1px solid $blue-grey-4 !important;
+    height: 2 * $spacer;
+
+    &::placeholder {
+      color: transparent !important;
+    }
+
+    &:focus,
+    &:not(:placeholder-shown) {
+      ~ .PayviewPromotionEditor__inputPlaceholder {
+        opacity: $label-opacity;
+        transform: $label-transform;
+      }
+    }
+    &:-webkit-autofill {
+      ~ .PayviewPromotionEditor__inputPlaceholder {
+        opacity: $label-opacity;
+        transform: $label-transform;
+      }
+    }
+  }
+
+  &__inputPlaceholder {
+    left: 0;
+    padding: $spacing-m $spacing-ms $spacing-s 0;
+    pointer-events: none;
+    top: 0;
+    transform-origin: 0 0;
+    transition: $transition;
+  }
+
+  &__error {
+    color: $negative-main;
+    font-size: $font-size-s;
+  }
+
+  &__apply {
+    margin-top: $spacing-xl;
+  }
+}
