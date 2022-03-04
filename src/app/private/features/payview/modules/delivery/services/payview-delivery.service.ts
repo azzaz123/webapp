@@ -13,7 +13,6 @@ export class PayviewDeliveryService {
 
   constructor() {}
 
-  // public on(eventType: PayviewDeliveryEventType, callback: (payload: DeliveryBuyerDeliveryMethod) => void): Subscription {
   public on(eventType: PayviewDeliveryEventType, handler: (payload: DeliveryBuyerDeliveryMethod) => void): Subscription {
     return this.deliveryMethodSubject
       .pipe(
