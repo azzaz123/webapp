@@ -10,6 +10,7 @@ const SEARCH_ROUTE: ReusedRoute = {
   path: '',
   component: SearchComponent,
   canActivate: [SearchLocationGuard],
+  runGuardsAndResolvers: 'always',
   resolve: {
     searchCategories: SearchCategoriesResolver,
   },
