@@ -1,0 +1,20 @@
+<div class="PayviewPromotion d-flex w-100" *ngIf="showPromotion">
+  <div class="container">
+    <div class="PayviewPromotion__codeWrapper d-flex mr-2 mr-lg-3 align-items-center w-100">
+      <div class="PayviewPromotion__codeIconWrapper ml-1 mr-2">
+        <tsl-svg-icon width="48" height="48" src="./assets/icons/payview/promo.svg"></tsl-svg-icon>
+      </div>
+      <div class="align-self-center ml-1 d-flex flex-nowrap align-items-center w-100">
+        <div class="PayviewPromotion__codeDescription">
+          <span class="mb-2" i18n="@@pay_view_buyer_promo_code_title">Código promocional</span>
+        </div>
+        <span *ngIf="isValidPromocode" class="PayviewPromotion__codeCheck ml-2">
+          <tsl-svg-icon width="20" height="20" src="./assets/icons/payview/round-check-fill.svg"></tsl-svg-icon>
+        </span>
+      </div>
+      <div class="PayviewPromotion__actionButtonWrapper d-flex w-100 justify-content-end">
+        <tsl-button class="PayviewPromotion__actionButton" className="basic p-0" (click)="addPromocode()">Añadir</tsl-button>
+      </div>
+    </div>
+  </div>
+</div>
