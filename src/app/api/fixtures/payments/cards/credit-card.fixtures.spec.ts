@@ -1,3 +1,4 @@
+import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
 import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { PaymentsSyncCreditCardApi } from '@api/payments/cards/dtos/requests';
@@ -32,6 +33,7 @@ export const mockCreditCard: CreditCard = {
   lastFourDigits: '6588',
   ownerFullName: 'Lolaso Fino Bruh - 17:38',
   provider: 'mangopay',
+  status: CREDIT_CARD_STATUS.VALID,
 };
 
 export const mockFormCreditCardSyncRequest: CreditCardSyncRequest = {
@@ -92,4 +94,5 @@ export const MOCK_CREDIT_CARD: CreditCard = {
   ownerFullName: 'test',
   expirationDate: new Date('2025-08-01T00:00:00.000Z'),
   provider: 'mangopay',
+  status: CREDIT_CARD_STATUS.VALID,
 };
