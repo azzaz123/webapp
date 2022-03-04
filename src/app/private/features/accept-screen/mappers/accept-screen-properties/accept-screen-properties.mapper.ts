@@ -89,6 +89,7 @@ function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected:
 function getCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {
   return {
     type: dropOffMode.type,
+    name: dropOffMode.postOfficeDetails?.carrier,
     isSelected: dropOffMode.type === carrierDropOffModeSelected,
     icon: dropOffMode.icon,
     title: mapTitle(dropOffMode.type),
@@ -102,6 +103,7 @@ function getCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected:
       !!dropOffMode.postOfficeDetails?.selectionRequired
     ),
     acceptEndpoint: dropOffMode.acceptEndpoint,
+    lastAddressUsedId: dropOffMode.postOfficeDetails?.lastAddressUsed?.id || null,
   };
 }
 

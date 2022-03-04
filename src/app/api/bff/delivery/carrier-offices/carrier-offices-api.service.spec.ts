@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { CarrierOfficesApiService } from './carrier-offices-api.service';
 import { CarrierOfficesHttpService } from './http/carrier-offices-http.service';
 import { mapCarrierDomainToDto } from './mappers/requests/carrier-offices.mapper';
+import { MOCK_LOCATION_WITH_RADIUS } from '@fixtures/core/geolocation/location-with-radius.fixtures.spec';
 
 describe('CarrierOfficesApiService', () => {
   let service: CarrierOfficesApiService;
@@ -36,23 +37,20 @@ describe('CarrierOfficesApiService', () => {
 
   describe('when asking for carrier office addresses', () => {
     let result: CarrierOfficeInfo[];
-    const MOCK_LATITUDE: number = 3435.1;
-    const MOCK_LONGITUDE: number = 938293.3;
-    const MOCK_RADIUS_KM: number = 2;
     const MOCK_CARRIER: POST_OFFICE_CARRIER = POST_OFFICE_CARRIER.CORREOS;
 
     beforeEach(() => {
       spyOn(carrierOfficesHttpService, 'getCarrierOfficeAddresses').and.callThrough();
 
-      service.getCarrierOfficeAddresses(MOCK_LATITUDE, MOCK_LONGITUDE, MOCK_RADIUS_KM, MOCK_CARRIER).subscribe((res) => (result = res));
+      service.getCarrierOfficeAddresses(MOCK_LOCATION_WITH_RADIUS, MOCK_CARRIER).subscribe((res) => (result = res));
     });
 
     it('should ask server for offices', () => {
       expect(carrierOfficesHttpService.getCarrierOfficeAddresses).toHaveBeenCalledTimes(1);
       expect(carrierOfficesHttpService.getCarrierOfficeAddresses).toHaveBeenCalledWith(
-        MOCK_LATITUDE,
-        MOCK_LONGITUDE,
-        MOCK_RADIUS_KM,
+        MOCK_LOCATION_WITH_RADIUS.latitude,
+        MOCK_LOCATION_WITH_RADIUS.longitude,
+        MOCK_LOCATION_WITH_RADIUS.radiusInKm,
         mapCarrierDomainToDto[MOCK_CARRIER]
       );
     });

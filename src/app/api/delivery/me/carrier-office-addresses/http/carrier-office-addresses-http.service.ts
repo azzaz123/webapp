@@ -11,10 +11,10 @@ export class CarrierOfficeAddressesHttpService {
   constructor(private http: HttpClient) {}
 
   public createSelectedCarrierOffice(selectedOffice: SelectedCarrierOfficeDto): Observable<void> {
-    return this.http.post<void>(CREATE_SELECTED_CARRIER_OFFICE_ENDPOINT, { selectedOffice });
+    return this.http.post<void>(CREATE_SELECTED_CARRIER_OFFICE_ENDPOINT, { ...selectedOffice });
   }
 
   public updateSelectedCarrierOffice(officeId: string, selectedOffice: SelectedCarrierOfficeDto): Observable<void> {
-    return this.http.put<void>(UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT(officeId), { selectedOffice });
+    return this.http.put<void>(UPDATE_SELECTED_CARRIER_OFFICE_ENDPOINT(officeId), { ...selectedOffice });
   }
 }
