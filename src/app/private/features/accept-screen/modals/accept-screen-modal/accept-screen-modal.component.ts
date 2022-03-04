@@ -42,7 +42,7 @@ export class AcceptScreenModalComponent implements OnInit {
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
   private readonly deliveryMapSlideId: number = ACCEPT_SCREEN_STEPS.MAP;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
-  private mapPreviousPageSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private acceptScreenStoreService: AcceptScreenStoreService,
@@ -69,12 +69,12 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   public goToDeliveryAddressFromMap(): void {
-    this.mapPreviousPageSubject.next(true);
+    this.isMapPreviousPage$.next(true);
     this.goToStep(this.deliveryAddressSlideId);
   }
 
   public goToAcceptScreenOrDeliveryMap(): void {
-    if (this.mapPreviousPageSubject.value) {
+    if (this.isMapPreviousPage$.value) {
       this.goToDeliveryMap();
     } else {
       this.goToStep(this.acceptScreenSlideId);
@@ -118,7 +118,7 @@ export class AcceptScreenModalComponent implements OnInit {
 
   private goToDeliveryMap(): void {
     this.goToStep(this.deliveryMapSlideId);
-    this.mapPreviousPageSubject.next(false);
+    this.isMapPreviousPage$.next(false);
   }
 
   private rejectRequest(): void {

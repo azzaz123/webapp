@@ -192,8 +192,8 @@
         [fullAddress]="properties.seller.fullAddress"
         [selectedCarrier]="selectedCarrier.name"
         [userOfficeId]="selectedCarrier.lastAddressUsedId"
-        (goToDeliveryAddress)="goToDeliveryAddressFromMap($event)"
-        (selectedOfficeSucceed)="goToAcceptScreenOrDeliveryMap()"
+        (goToDeliveryAddress)="goToDeliveryAddressFromMap()"
+        (selectedOfficeSucceeded)="goToAcceptScreenOrDeliveryMap()"
       ></tsl-delivery-map
     ></ng-template>
   </tsl-stepper>

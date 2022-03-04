@@ -14,6 +14,7 @@ export class ItemCardComponent {
   @Input() item: ItemCard;
   @Input() showDescription = true;
   @Input() showFavourite = true;
+  @Input() index: number;
   @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
   public readonly PERMISSIONS = PERMISSIONS;

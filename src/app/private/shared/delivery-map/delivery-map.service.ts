@@ -7,7 +7,7 @@ import { CarrierOfficeAddressesApiService } from '@api/delivery/me/carrier-offic
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { UserService } from '@core/user/user.service';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '@core/user/user';
 import { LocationWithRadius } from '@api/core/model/location/location';
@@ -40,8 +40,7 @@ export class DeliveryMapService {
         const locationWithRadius: LocationWithRadius = { ...location, radiusInKm };
 
         return this.requestOffices$(locationWithRadius, selectedCarrier);
-      }),
-      tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices))
+      })
     );
   }
 
@@ -64,7 +63,7 @@ export class DeliveryMapService {
   }
 
   public initialCenterLocation$(fullAddress: string): Observable<Location> {
-    return fullAddress ? this.addressLocation$(fullAddress) : this.secondaryLocation$;
+    return fullAddress ? this.geocode$(fullAddress) : this.secondaryLocation$;
   }
 
   public markOffice(selectedOfficeLocation: Location): void {
@@ -126,7 +125,7 @@ export class DeliveryMapService {
     this.selectedOfficeSubject.next(office);
   }
 
-  private addressLocation$(address: string): Observable<Location> {
+  private geocode$(address: string): Observable<Location> {
     return this.geoLocationService.geocode(address).pipe(
       map((coordinate: Coordinate) => {
         return {
@@ -164,7 +163,7 @@ export class DeliveryMapService {
   }
 
   private userHasLocation(location: UserLocation): boolean {
-    return !!(location.latitude || location.approximated_latitude) && !!(location.longitude || location.approximated_longitude);
+    return !!(location?.latitude || location?.approximated_latitude) && !!(location?.longitude || location?.approximated_longitude);
   }
 
   private getUserLocation(location: UserLocation): Location {

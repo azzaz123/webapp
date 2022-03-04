@@ -1,12 +1,10 @@
 import { Location } from '@api/core/model/location/location';
 
-export interface CarrierOfficeInfo extends Location {
+export interface CarrierOfficeInfo extends Location, CarrierOfficeSchedule {
   id: string;
   carrier: string;
   city: string;
   country: string;
-  name: string;
-  openingHours: string[];
   postalCode: string;
   street: string;
 }

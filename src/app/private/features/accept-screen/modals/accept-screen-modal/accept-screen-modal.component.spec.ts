@@ -378,8 +378,32 @@ describe('AcceptScreenModalComponent', () => {
                 expect(component.isAcceptScreenStep).toBe(false);
               });
 
-              it('should show the searchable map', () => {
+              it('should show the map', () => {
                 expect(fixture.debugElement.query(By.css(deliveryMapSelector))).toBeTruthy();
+              });
+
+              describe('and the user wants to change the delivery address', () => {
+                beforeEach(() => {
+                  fixture.debugElement.query(By.css(deliveryMapSelector)).triggerEventHandler('goToDeliveryAddress', {});
+
+                  fixture.detectChanges();
+                });
+
+                it('should redirect to the delivery address step', () => {
+                  expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS);
+                });
+              });
+
+              describe('and the user selects an office', () => {
+                beforeEach(() => {
+                  fixture.debugElement.query(By.css(deliveryMapSelector)).triggerEventHandler('selectedOfficeSucceeded', {});
+
+                  fixture.detectChanges();
+                });
+
+                it('should redirect to the accept screen step', () => {
+                  expect(component.stepper.activeId).toStrictEqual(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
+                });
               });
             });
 
@@ -405,6 +429,7 @@ describe('AcceptScreenModalComponent', () => {
                 expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
                 expect(component.stepper.goToStep).toHaveBeenCalledWith(MOCK_SELECTED_CARRIER_REDIRECT_STEP);
               });
+
               describe('and we get the delivery pick up day', () => {
                 it('should return the store provided value', () => {
                   expect(expectedDeliveryDay).toStrictEqual(MOCK_ACCEPT_SCREEN_CARRIER_WITH_DELIVERY_PICK_UP_DAY.deliveryPickUpDay);

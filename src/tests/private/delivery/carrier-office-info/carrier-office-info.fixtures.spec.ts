@@ -26,6 +26,11 @@ export const MOCK_CARRIER_OFFICE_INFO_2: CarrierOfficeInfo = {
   street: 'Andsuhid',
 };
 
+export const MOCK_CARRIER_OFFICE_INFO_SCHEDULE: CarrierOfficeSchedule = {
+  openingHours: MOCK_CARRIER_OFFICE_INFO.openingHours,
+  name: MOCK_CARRIER_OFFICE_INFO.name,
+};
+
 export const MOCK_CARRIER_OFFICE_SCHEDULE: CarrierOfficeSchedule = {
   openingHours: ['Week days : 9am to 4pm', 'Week-end : 1am to 2pm'],
   name: 'office name',
