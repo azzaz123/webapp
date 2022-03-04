@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BOTTOM_NAVIGATION_BAR_ELMENTS } from '../constants/bottom-navigation-bar-elements';
 import { BottomNavigationBarElement } from '../interfaces/bottom-navigation-bar-element.interface';
 import { BottomNavigationBarService } from '../services/bottom-navigation-bar.service';
 
@@ -26,7 +25,7 @@ export const ELEMENT_TYPE = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BottomNavigationBarComponent {
-  public navigationElements: BottomNavigationBarElement[] = BOTTOM_NAVIGATION_BAR_ELMENTS;
+  public navigationElements$: Observable<BottomNavigationBarElement[]> = this.bottomNavigationBarService.navigationElements$;
   public readonly hidden$: Observable<boolean> = this.bottomNavigationBarService.hidden$;
 
   constructor(private bottomNavigationBarService: BottomNavigationBarService) {}
