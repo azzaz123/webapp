@@ -7,7 +7,7 @@ import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-cha
 import { MockUnreadChatMessagesService } from '@fixtures/chat';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { Observable, of, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { ELEMENT_TYPE, INPUT_TYPE, TabbarComponent } from './tabbar.component';
 import { TabbarService } from '../core/services/tabbar.service';
 import { Router } from '@angular/router';
@@ -50,6 +50,7 @@ describe('TabbarComponent', () => {
           {
             provide: NotificationApiService,
             useValue: {
+              unreadNotificationsCount$: of(0),
               totalUnreadNotifications$: of(0),
               getNotifications: () => {},
               refreshUnreadNotifications: () => {},

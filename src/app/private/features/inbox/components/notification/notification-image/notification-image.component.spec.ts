@@ -27,6 +27,7 @@ describe('NotificationImageComponent', () => {
       'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
     image: 'https://picsum.photos/200/300',
     url: 'es.wallapop.com',
+    id: 'notificationProductStatusReserved',
   };
 
   const notificationProductStatusSold: Notification = {
@@ -39,6 +40,7 @@ describe('NotificationImageComponent', () => {
       'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
     image: 'https://picsum.photos/200/300',
     url: 'es.wallapop.com',
+    id: 'notificationProductStatusSold',
   };
 
   const notificationProductStatusLowered: Notification = {
@@ -51,6 +53,7 @@ describe('NotificationImageComponent', () => {
       'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
     image: 'https://picsum.photos/200/300',
     url: 'es.wallapop.com',
+    id: 'notificationProductStatusLowered',
   };
 
   const generalNotification: Notification = {
@@ -62,6 +65,7 @@ describe('NotificationImageComponent', () => {
     description: 'Cupidatat ad nostrud cillum',
     image: 'https://picsum.photos/200/300',
     url: 'es.wallapop.com',
+    id: 'generalNotification',
   };
 
   beforeEach(
