@@ -76,20 +76,19 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   private setCenterCoordinatesOnChanges(centerCoordinates: SimpleChange): void {
-    const previousCoordinates = centerCoordinates.previousValue;
-    const currentCoordinates = centerCoordinates.currentValue;
+    const previousCoordinates: Location = centerCoordinates.previousValue;
+    const currentCoordinates: Location = centerCoordinates.currentValue;
     if (!isEqual(previousCoordinates, currentCoordinates)) {
       this.setMapCenter(currentCoordinates);
     }
   }
 
   private setMarkersOnChanges(markers: SimpleChange): void {
-    const previousMarkers = markers.previousValue;
-    const currentMarkers = markers.currentValue;
+    const previousMarkers: Location[] = markers.previousValue;
+    const currentMarkers: Location[] = markers.currentValue;
     if (!isEqual(previousMarkers, currentMarkers)) {
-      const markers: H.map.Marker[] = this.getMarkersByLocation(currentMarkers);
       this.group.removeObjects(this.group.getObjects());
-      this.addMarkers(markers);
+      this.setMarkersOnTheMap(currentMarkers);
       this.addLastSelectedMarker();
     }
   }
@@ -103,7 +102,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
           if (isReady) {
             this.map = this.mapReference;
             this.setGroupAndIconsOnTheMap();
-            this.setMarkersOnTheMap();
+            this.setMarkersOnTheMap(this.markers);
             this.listenToMapViewChangeEnd();
             this.listenToMarkerSelection();
             window.addEventListener('resize', () => this.map.getViewPort().resize());
@@ -131,8 +130,8 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     this.map.addObject(this.group);
   }
 
-  private setMarkersOnTheMap(): void {
-    const markers = this.getMarkersByLocation(this.markers);
+  private setMarkersOnTheMap(markersLocation: Location[]): void {
+    const markers: H.map.Marker[] = this.getMarkersByLocation(markersLocation);
     this.addMarkers(markers);
   }
 
@@ -151,7 +150,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   private listenToMarkerSelection(): void {
     this.map.addEventListener('tap', (event: H.util.Event) => {
       if (event.target instanceof H.map.Marker) {
-        const marker = event.target;
+        const marker: H.map.Marker = event.target;
         const markerIsNotSelected: boolean = marker.getData().status === MARKER_STATUS.NON_SELECTED;
 
         if (markerIsNotSelected) {
@@ -191,7 +190,14 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
 
   private addLastSelectedMarker(): void {
     if (this.lastSelectedMarker) {
-      this.group.addObject(this.lastSelectedMarker.setData({ status: MARKER_STATUS.SELECTED }));
+      const lastSelectedMarkerLocation: any = this.lastSelectedMarker.getGeometry();
+      this.group.getObjects().find((marker: H.map.Marker) => {
+        const markerLocation: any = marker.getGeometry();
+        if (markerLocation.lat === lastSelectedMarkerLocation.lat && markerLocation.lng === lastSelectedMarkerLocation.lng) {
+          this.group.removeObject(marker);
+          this.group.addObject(this.lastSelectedMarker);
+        }
+      });
     }
   }
 
