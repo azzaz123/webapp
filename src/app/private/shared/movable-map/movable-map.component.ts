@@ -48,6 +48,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   private selectedIcon: H.map.Icon;
   private mapSubscription: Subscription = new Subscription();
   private lastSelectedMarker: H.map.Marker;
+  private loadedMarkers: Location[] = [];
 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
 
@@ -87,8 +88,11 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     const previousMarkers: Location[] = markers.previousValue;
     const currentMarkers: Location[] = markers.currentValue;
     if (!isEqual(previousMarkers, currentMarkers)) {
-      this.group.removeObjects(this.group.getObjects());
-      this.setMarkersOnTheMap(currentMarkers);
+      const newMarkers: Location[] = this.markers.filter(
+        (newMarker) => !this.loadedMarkers.some((loadedMarker: Location) => loadedMarker.latitude === newMarker.latitude)
+      );
+      newMarkers.forEach((marker: Location) => this.loadedMarkers.push(marker));
+      this.setMarkersOnTheMap(newMarkers);
       this.addLastSelectedMarker();
     }
   }
@@ -103,6 +107,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
             this.map = this.mapReference;
             this.setGroupAndIconsOnTheMap();
             this.setMarkersOnTheMap(this.markers);
+            this.loadedMarkers = this.markers;
             this.listenToMapViewChangeEnd();
             this.listenToMarkerSelection();
             window.addEventListener('resize', () => this.map.getViewPort().resize());
