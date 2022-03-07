@@ -96,14 +96,14 @@ describe('NotificationApiService', () => {
         pinned: true,
         title: 'stuff',
         updated: new Date('2022-03-24T16:12:03.000Z'),
-        url: null,
+        url: 'https://es.wallapop.com',
         viewed: false,
       };
 
       const newMappedNotification: Notification = {
         isRead: false,
         id: newNotification.id,
-        url: null,
+        url: 'https://es.wallapop.com',
         description: 'stuff',
         title: 'stuff',
         image: 'no',
