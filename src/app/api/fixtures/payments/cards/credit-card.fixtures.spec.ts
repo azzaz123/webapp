@@ -26,6 +26,15 @@ export const mockPaymentsCreditCard: PaymentsCreditCardApi = {
   status: 'VALID',
 };
 
+export const mockInvalidPaymentsCreditCard: PaymentsCreditCardApi = {
+  card_holder_name: 'Alejandro Magnou',
+  country: 'FRA',
+  expiration_date: '2025-12-01T00:00:00+0000',
+  id: '72c21846-a8e2-4fcf-9eec-118ece123828',
+  number_alias: '497010XXXXXX6588',
+  status: 'INVALID',
+};
+
 export const mockCreditCard: CreditCard = {
   brand: 'visa',
   expirationDate: new Date('Mon Dec 01 2025 01:00:00 GMT+0100'),
