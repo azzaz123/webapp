@@ -10,7 +10,7 @@ import { CategoryWithPresentation } from '@core/category/categories-tree-respons
 @Injectable()
 export class CategoriesApiService {
   private searchCategories: CategoriesFilterOption[];
-  private categoriesTree: CategoryWithPresentation[];
+  private categoryWithPresentation: CategoryWithPresentation[];
 
   constructor(private categoriesHttpService: CategoriesHttpService) {}
 
@@ -36,14 +36,14 @@ export class CategoriesApiService {
   }
 
   public getCategoriesWithPresentation(): Observable<CategoryWithPresentation[]> {
-    if (this.categoriesTree) {
-      return of(this.categoriesTree);
+    if (this.categoryWithPresentation) {
+      return of(this.categoryWithPresentation);
     } else {
       return this.categoriesHttpService.getCategoriesWithPresentation().pipe(
         map((response) => {
           return response.categories;
         }),
-        tap((categories) => (this.categoriesTree = categories))
+        tap((categories) => (this.categoryWithPresentation = categories))
       );
     }
   }
