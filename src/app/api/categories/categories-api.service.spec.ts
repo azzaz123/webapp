@@ -13,6 +13,7 @@ import {
 import { CategoriesFilterOption } from '@public/shared/components/filters/components/categories-filter/interfaces/categories-filter-option.interface';
 import { CategoryResponse } from '@core/category/category-response.interface';
 import { CategoryWithPresentation } from '@core/category/categories-tree-response.interface';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 describe('CategoriesApiService', () => {
   let service: CategoriesApiService;
@@ -68,6 +69,20 @@ describe('CategoriesApiService', () => {
 
       expect(httpService.getCategoriesWithPresentation).toHaveBeenCalledTimes(1);
       expect(response).toEqual(mappedCategoriesWithPresentationFixture);
+    });
+  });
+
+  describe('when asked to retrieve categories with presentation by id', () => {
+    it('should return domain ategories with presentation by id', () => {
+      spyOn(httpService, 'getCategoriesWithPresentation').and.returnValue(of(categoriesWithPresentationResponseFixture));
+      let response: CategoryWithPresentation[];
+
+      service.getCategoriesWithPresentationById(CATEGORY_IDS.FASHION_ACCESSORIES).subscribe((res: CategoryWithPresentation[]) => {
+        response = res;
+      });
+
+      expect(httpService.getCategoriesWithPresentation).toHaveBeenCalledTimes(1);
+      expect(response).toEqual(mappedCategoriesWithPresentationFixture[1].subcategories);
     });
   });
 });

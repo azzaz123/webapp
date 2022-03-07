@@ -47,4 +47,12 @@ export class CategoriesApiService {
       );
     }
   }
+
+  public getCategoriesWithPresentationById(id: number): Observable<CategoryWithPresentation[]> {
+    return this.getCategoriesWithPresentation().pipe(
+      map((categories) => {
+        return categories.find((category) => category.id === id).subcategories || [];
+      })
+    );
+  }
 }
