@@ -1,11 +1,10 @@
-import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
-import { PayviewDeliveryEventType } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.interface';
+import { PayviewPromotionEventType } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.interface';
 import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
 
 describe('PayviewPromotionService', () => {
+  const fakePromocode: string = 'This_is_a_fake_promocode';
   let service: PayviewPromotionService;
 
   beforeEach(() => {
@@ -17,48 +16,48 @@ describe('PayviewPromotionService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('WHEN set a delivery method', () => {
+  describe('WHEN applying a promotion code', () => {
     it('should send a notification to subscribers', fakeAsync(() => {
-      let result: DeliveryBuyerDeliveryMethod;
-      const expected = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.current;
-      const subscription = service.on(PayviewDeliveryEventType.DeliveryMethodSelected, (deliveryMethod: DeliveryBuyerDeliveryMethod) => {
+      let result: string;
+      const expected: string = fakePromocode;
+      const subscription = service.on(PayviewPromotionEventType.ApplyPromocode, (payload: string) => {
         subscription.unsubscribe();
-        result = deliveryMethod;
+        result = payload;
       });
 
-      service.setDeliveryMethod(expected);
-      tick();
-
-      expect(result).toStrictEqual(expected);
-    }));
-  });
-
-  describe('WHEN edit the address', () => {
-    it('should send a notification to subscribers', fakeAsync(() => {
-      let result: number = 0;
-      const expected: number = 1;
-      const subscription = service.on(PayviewDeliveryEventType.OpenAddressScreen, () => {
-        subscription.unsubscribe();
-        result++;
-      });
-
-      service.editAddress();
+      service.applyPromocode(fakePromocode);
       tick();
 
       expect(result).toBe(expected);
     }));
   });
 
-  describe('WHEN edit the pick-up point', () => {
+  describe('WHEN deleting the promocode', () => {
     it('should send a notification to subscribers', fakeAsync(() => {
       let result: number = 0;
       const expected: number = 1;
-      const subscription = service.on(PayviewDeliveryEventType.OpenPickUpPointMap, () => {
+      const subscription = service.on(PayviewPromotionEventType.DeletePromocode, () => {
         subscription.unsubscribe();
         result++;
       });
 
-      service.editPickUpPoint();
+      service.deletePromocode();
+      tick();
+
+      expect(result).toBe(expected);
+    }));
+  });
+
+  describe('WHEN opening the promocode editor', () => {
+    it('should send a notification to subscribers', fakeAsync(() => {
+      let result: number = 0;
+      const expected: number = 1;
+      const subscription = service.on(PayviewPromotionEventType.OpenPromocodeEditor, () => {
+        subscription.unsubscribe();
+        result++;
+      });
+
+      service.openPromocodeEditor();
       tick();
 
       expect(result).toBe(expected);

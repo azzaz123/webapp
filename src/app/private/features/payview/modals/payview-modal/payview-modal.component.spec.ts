@@ -24,6 +24,7 @@ import { PayviewDeliveryPointComponent } from '@private/features/payview/modules
 import { PayviewDeliveryPointsComponent } from '@private/features/payview/modules/delivery/components/points/payview-delivery-points.component';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
+import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
 import { PayviewSteps } from '@private/features/payview/enums/payview-steps.enum';
 import { PayviewSummaryCostDetailComponent } from '@private/features/payview/modules/summary/components/cost-detail/payview-summary-cost-detail.component';
@@ -47,9 +48,10 @@ class FakeComponent extends PayviewModalComponent {
     payviewDeliveryService: PayviewDeliveryService,
     activeModal: NgbActiveModal,
     customerHelpService: CustomerHelpService,
-    deliveryCountries: DeliveryCountriesService
+    deliveryCountries: DeliveryCountriesService,
+    promotionService: PayviewPromotionService
   ) {
-    super(payviewStateManagementService, payviewDeliveryService, activeModal, customerHelpService, deliveryCountries);
+    super(payviewStateManagementService, payviewDeliveryService, activeModal, customerHelpService, deliveryCountries, promotionService);
   }
 }
 

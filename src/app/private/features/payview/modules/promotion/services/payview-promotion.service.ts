@@ -27,7 +27,7 @@ export class PayviewPromotionService {
     this.eventBusSubject.next(this.getPromotionEvent(PayviewPromotionEventType.ApplyPromocode, value));
   }
 
-  public deletePromocode(value: string): void {
+  public deletePromocode(): void {
     this.eventBusSubject.next(this.getPromotionEvent(PayviewPromotionEventType.DeletePromocode, null));
   }
 
