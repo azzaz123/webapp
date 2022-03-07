@@ -1,9 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { CategoryDto } from '../dtos';
+import { CategoriesWithPresentationResponseDto, CategoryDto, CategoryWithPresentationDto } from '../dtos';
 import { CategoriesHttpService } from './categories-http.service';
-import { CATEGORIES_ENDPOINT } from './endpoints';
-import { categoriesFixture } from '@api/fixtures/categories/categories.fixtures';
+import { CATEGORIES_ENDPOINT, CATEGORIES_WITH_PRESENTATION_ENDPOINT } from './endpoints';
+import {
+  categoriesFixture,
+  mappedCategoriesWithPresentationFixture,
+  categoriesWithPresentationResponseFixture,
+} from '@api/fixtures/categories/categories.fixtures';
 
 describe('CategoriesHttpService', () => {
   let service: CategoriesHttpService;
@@ -48,6 +52,18 @@ describe('CategoriesHttpService', () => {
 
       expect(response).toEqual(categoriesFixture);
       expect(req.request.params.get(CONTEXT_PARAM)).toEqual(context);
+    });
+  });
+
+  describe('when asked to retrieve categories with presentation', () => {
+    it('should retrieve categories with presentatio', () => {
+      let response: CategoryWithPresentationDto[];
+
+      service.getCategoriesWithPresentation().subscribe((res: CategoriesWithPresentationResponseDto) => (response = res.categories));
+      const req: TestRequest = httpMock.expectOne(`${CATEGORIES_WITH_PRESENTATION_ENDPOINT}`);
+      req.flush(categoriesWithPresentationResponseFixture);
+
+      expect(response).toEqual(mappedCategoriesWithPresentationFixture);
     });
   });
 });
