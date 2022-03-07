@@ -45,6 +45,7 @@ describe('TabbarComponent', () => {
           {
             provide: NotificationApiService,
             useValue: {
+              unreadNotificationsCount$: of(0),
               totalUnreadNotifications$: of(0),
               getNotifications: () => {},
               refreshUnreadNotifications: () => {},

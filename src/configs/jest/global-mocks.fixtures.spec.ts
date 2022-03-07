@@ -13,6 +13,11 @@ export const MOCK_APPBOY = {
   toggleAppboyLogging: () => {},
   logContentCardsDisplayed: () => {},
   getCachedContentCards: () => {},
+  subscribeToContentCardsUpdates: () => {},
+  requestContentCardsRefresh: () => {},
+  logCardImpressions: () => {},
+  logCardClick: () => {},
+  requestImmediateDataFlush: () => {},
 };
 
 export const MOCK_GA = () => {};
