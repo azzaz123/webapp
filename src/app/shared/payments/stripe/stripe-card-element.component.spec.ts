@@ -39,6 +39,9 @@ describe('StripeCardElementComponent', () => {
               getSetupIntent() {
                 return of('abc');
               },
+              createToken() {
+                return Promise.resolve({ token: { id: '123' } });
+              },
               lib: {
                 elements: () => {
                   return {
@@ -196,14 +199,47 @@ describe('StripeCardElementComponent', () => {
         $localize`:@@highlight_item_view_pro_user_purchase_summary_highlight_button_web_specific:Highlight`
       );
     });
+    it('should show primary button', () => {
+      const button: HTMLElement = fixture.debugElement.query(By.css('button')).nativeElement;
+
+      expect(button.className).toEqual('btn btn--big btn-primary btn-primary--bold mt-3');
+    });
     describe('And click button', () => {
-      it('should emit click', () => {
-        spyOn(component, 'onSubmit').and.callThrough();
-        const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+      describe('and is loading', () => {
+        beforeEach(() => {
+          component.loading = true;
+          component.type = 'bump';
 
-        button.click();
+          fixture.detectChanges();
+        });
+        it('should be disabled', () => {
+          spyOn(component, 'onSubmit').and.callThrough();
+          const buttonDisabled = fixture.debugElement.query(By.css('button[disabled]'));
 
-        expect(component.onSubmit).toHaveBeenCalled();
+          expect(buttonDisabled).toBeTruthy();
+        });
+      });
+      describe('and is not loading', () => {
+        beforeEach(() => {
+          component.loading = false;
+          component.type = 'bump';
+          fixture.detectChanges();
+        });
+        it('should emit click', () => {
+          spyOn(component.stripeCardToken, 'emit').and.callThrough();
+          const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+          button.click();
+
+          expect(component.stripeCardToken.emit).toHaveBeenCalledTimes(1);
+          expect(component.stripeCardToken.emit).toHaveBeenCalledWith('123');
+        });
+        it('should not be disabled', () => {
+          spyOn(component, 'onSubmit').and.callThrough();
+          const buttonDisabled = fixture.debugElement.query(By.css('button[disabled]'));
+
+          expect(buttonDisabled).toBeFalsy();
+        });
       });
     });
   });
