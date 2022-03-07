@@ -40,7 +40,7 @@
           <tsl-payview-delivery-overview [payviewState]="payviewState"></tsl-payview-delivery-overview>
         </div>
         <div class="PayviewModal__promotion" *ngIf="payviewState$ | async as payviewState">
-          <tsl-payview-promotion-overview [payviewState]="payviewState"></tsl-payview-promotion-overview>
+          <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
         </div>
       </ng-template>
       <ng-template step>

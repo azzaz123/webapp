@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
 import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
-import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
 @Component({
   selector: 'tsl-payview-promotion-overview',
@@ -10,7 +10,7 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayviewPromotionOverviewComponent {
-  @Input() public payviewState: PayviewState;
+  @Input() public costs: DeliveryBuyerCalculatorCosts;
 
   constructor(private promotionService: PayviewPromotionService) {}
 
@@ -19,10 +19,10 @@ export class PayviewPromotionOverviewComponent {
   }
 
   public get isValidPromocode(): boolean {
-    return !!this.payviewState.costs.promotion;
+    return !!this.costs.promotion;
   }
 
   public get showPromotion(): boolean {
-    return !!this.payviewState;
+    return !!this.costs;
   }
 }
