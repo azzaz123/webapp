@@ -6,14 +6,14 @@ import { CustomerHelpService } from '@core/external-links/customer-help/customer
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
-import { PayviewDeliveryEventType } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.interface';
+import { PAYVIEW_STEPS } from '@private/features/payview/enums/payview-steps.enum';
+import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { PayviewPromotionEventType } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.interface';
 import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
-import { PayviewSteps } from '@private/features/payview/enums/payview-steps.enum';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -32,7 +32,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   @Input() public itemHash: string;
 
   public countries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
-  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE: DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
+  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE: DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.MODAL_DIALOG;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -54,7 +54,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public closeDeliveryEditor(): void {
-    this.stepper.goToStep(PayviewSteps.Payview);
+    this.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
     this.payviewStateManagementService.refreshByDelivery();
   }
 
@@ -63,10 +63,10 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public goBack(): void {
-    this.goToStep(PayviewSteps.Payview);
+    this.goToStep(PAYVIEW_STEPS.PAYVIEW);
   }
 
-  private goToStep(step: PayviewSteps): void {
+  private goToStep(step: PAYVIEW_STEPS): void {
     this.stepper.goToStep(step);
   }
 
@@ -75,7 +75,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public get isSecondaryStep(): boolean {
-    return !!this.stepper && this.stepper.activeId !== PayviewSteps.Payview;
+    return !!this.stepper && this.stepper.activeId !== PAYVIEW_STEPS.PAYVIEW;
   }
 
   public get payviewState$(): Observable<PayviewState> {
@@ -93,18 +93,18 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private subscribeToDeliveryEventBus(): void {
     this.subscriptions.push(
-      this.deliveryService.on(PayviewDeliveryEventType.DeliveryMethodSelected, (payload: DeliveryBuyerDeliveryMethod) => {
+      this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.DELIVERY_METHOD_SELECTED, (payload: DeliveryBuyerDeliveryMethod) => {
         this.setDeliveryMethod(payload);
       })
     );
     this.subscriptions.push(
-      this.deliveryService.on(PayviewDeliveryEventType.OpenAddressScreen, () => {
-        this.goToStep(PayviewSteps.DeliveryAddress);
+      this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, () => {
+        this.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
       })
     );
     this.subscriptions.push(
-      this.deliveryService.on(PayviewDeliveryEventType.OpenPickUpPointMap, () => {
-        this.goToStep(PayviewSteps.PickUpPointMap);
+      this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {
+        this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
       })
     );
   }
@@ -112,7 +112,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscribeToPromotionEventBus(): void {
     this.subscriptions.push(
       this.promotionService.on(PayviewPromotionEventType.OpenPromocodeEditor, () => {
-        this.goToStep(PayviewSteps.PromotionEditor);
+        this.goToStep(PAYVIEW_STEPS.PROMOTION_EDITOR);
       })
     );
   }
