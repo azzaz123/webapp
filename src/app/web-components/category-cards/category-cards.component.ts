@@ -8,7 +8,7 @@ import {
   FILTER_PARAMETER_STORE_TOKEN,
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
-import 'wallapop-web-components/dist/category-cards/category-cards.dev.js';
+import '@wallapop-web-components/category-cards/category-cards.dev.js';
 
 @Component({
   selector: 'tsl-category-cards',
@@ -18,6 +18,7 @@ import 'wallapop-web-components/dist/category-cards/category-cards.dev.js';
 export class CategoryCardsComponent {
   @Input() categoryId: string;
   @Input() objectTypeId: string;
+  @Input() title: string = 'HOLA';
 
   public token: string;
 
