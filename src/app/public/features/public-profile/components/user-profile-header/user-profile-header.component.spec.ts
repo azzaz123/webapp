@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { PERMISSIONS } from '@core/user/user-constants';
@@ -11,7 +10,7 @@ import { UserProfileHeaderComponent } from './user-profile-header.component';
   selector: 'tsl-user-cover',
   template: '',
 })
-class MockCoverUpload {}
+class MockCoverUploadComponent {}
 
 describe('UserProfileHeaderComponent', () => {
   const profileContainerClass = '.ProfileUser__container';
@@ -24,7 +23,7 @@ describe('UserProfileHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserProfileHeaderComponent, MockCoverUpload],
+      declarations: [UserProfileHeaderComponent, MockCoverUploadComponent],
       imports: [NgxPermissionsModule.forRoot()],
       providers: [NgxPermissionsService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -89,7 +88,7 @@ describe('UserProfileHeaderComponent', () => {
 
         it('should show cover', () => {
           fixture.detectChanges();
-          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeTruthy();
+          expect(fixture.debugElement.query(By.directive(MockCoverUploadComponent))).toBeTruthy();
         });
       });
       describe('and has not subscriptions permission', () => {
@@ -110,7 +109,7 @@ describe('UserProfileHeaderComponent', () => {
         it('should not show not cover', () => {
           fixture.detectChanges();
 
-          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeFalsy();
+          expect(fixture.debugElement.query(By.directive(MockCoverUploadComponent))).toBeFalsy();
         });
       });
     });

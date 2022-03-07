@@ -7,7 +7,9 @@ import { mapDeliveryBuyerDeliveryMethodsDtoToDeliveryBuyerDeliveryMethods } from
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryBuyerService {
   constructor(private deliveryBuyyerHttpService: DeliveryBuyerHttpService) {}
 

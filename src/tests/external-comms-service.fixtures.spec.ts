@@ -5,7 +5,7 @@ export class MockExternalCommsService {
   public get brazeReady$(): Observable<void> {
     return this._brazeReady$.asObservable();
   }
-  initializeBrazeCommunications() {
+  initializeBraze() {
     this._brazeReady$.next();
   }
 }

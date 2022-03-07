@@ -14,14 +14,16 @@ export const BUY_DELIVERY_BANNER_PROPERTIES = (price: Money): PriceableDeliveryB
   return bannerProperties;
 };
 
-export const BUYER_ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES: DeliveryBanner = {
+export const ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES: DeliveryBanner = {
   type: DELIVERY_BANNER_TYPE.ASK_SELLER_FOR_SHIPPING,
 };
 
-export const SELLER_ACTIVATE_SHIPPING_BANNER_PROPERTIES: DeliveryBanner = {
+export const ACTIVATE_SHIPPING_BANNER_PROPERTIES: ActionableDeliveryBanner = {
   type: DELIVERY_BANNER_TYPE.ACTIVATE_SHIPPING,
+  action: DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING,
 };
 
-export const SELLER_EDIT_PRICE_BANNER_PROPERTIES: DeliveryBanner = {
+export const EDIT_PRICE_BANNER_PROPERTIES: ActionableDeliveryBanner = {
   type: DELIVERY_BANNER_TYPE.EDIT_PRICE,
+  action: DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE,
 };

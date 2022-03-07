@@ -4,14 +4,14 @@ import { NgbAccordionModule, NgbButtonsModule, NgbCarouselModule, NgbModalModule
 import { GeolocationModule } from '@shared/geolocation/geolocation.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { SharedModule } from '@shared/shared.module';
-import { ChangeStoreLocationModal } from './modal/change-store-location-modal/change-store-location-modal.component';
+import { ChangeStoreLocationModalComponent } from './modal/change-store-location-modal/change-store-location-modal.component';
 import { UnsubscribeModalComponent } from './modal/unsubscribe-modal/unsubscribe-modal.component';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
 import { EmailThanksModalComponent } from './modal/email-thanks-modal/email-thanks-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from './services/verifications-n-security-tracking-events.service';
 import { EmailVerificationModule } from './modal/email-verification/email-verification.module';
 import { PhoneVerificationModule } from './modal/phone-verification/phone-verification.module';
-import { NotificationsApiModule } from '@api/notifications/notifications-api.module';
+import { CommunicationsConsentModule } from '@api/communications-consent/communications-consent.module';
 
 @NgModule({
   imports: [
@@ -27,9 +27,9 @@ import { NotificationsApiModule } from '@api/notifications/notifications-api.mod
     CustomCurrencyModule,
     EmailVerificationModule,
     PhoneVerificationModule,
-    NotificationsApiModule,
+    CommunicationsConsentModule,
   ],
-  declarations: [profileRoutedComponents, UnsubscribeModalComponent, ChangeStoreLocationModal, EmailThanksModalComponent],
+  declarations: [profileRoutedComponents, UnsubscribeModalComponent, ChangeStoreLocationModalComponent, EmailThanksModalComponent],
   providers: [VerificationsNSecurityTrackingEventsService],
 })
 export class ProfileModule {}

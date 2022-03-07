@@ -11,7 +11,9 @@ import { catchError } from 'rxjs/operators';
 
 export const DELIVERY_LOCATIONS_API_URL = `${environment.baseUrl}api/v3/delivery/postal_codes`;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class DeliveryLocationsApiService {
   private errorMapper: DeliveryPostalCodesErrorMapper = new DeliveryPostalCodesErrorMapper();
 

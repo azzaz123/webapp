@@ -18,6 +18,14 @@ export class InboxImage {
 }
 
 export class InboxItem {
+  public sold = false;
+  public reserved = false;
+  public published = false;
+  public unpublished = false;
+  public notAvailable = false;
+  public views: number;
+  public favorites: number;
+
   constructor(
     private _id: string,
     private _price: InboxItemPrice,
@@ -31,13 +39,13 @@ export class InboxItem {
     this.mapStatusToFlags(this.status);
   }
 
-  public sold = false;
-  public reserved = false;
-  public published = false;
-  public unpublished = false;
-  public notAvailable = false;
-  public views: number;
-  public favorites: number;
+  public setFakeImage(image: string) {
+    this._mainImage = {
+      urls_by_size: {
+        small: '',
+      },
+    };
+  }
 
   private mapStatusToFlags(status: string) {
     switch (status) {
@@ -70,6 +78,10 @@ export class InboxItem {
     return this._price;
   }
 
+  set price(newPrice: InboxItemPrice) {
+    this._price = newPrice;
+  }
+
   get title(): string {
     return this._title;
   }
@@ -100,14 +112,6 @@ export class InboxItem {
 
   set itemSlug(value: string) {
     this._itemSlug = value;
-  }
-
-  public setFakeImage(image: string) {
-    this._mainImage = {
-      urls_by_size: {
-        small: '',
-      },
-    };
   }
 }
 

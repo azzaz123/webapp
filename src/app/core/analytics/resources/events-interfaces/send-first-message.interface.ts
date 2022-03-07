@@ -32,7 +32,7 @@ export interface SendFirstMessage {
   /**
    * Identifier of the screen from which the message was sent from
    */
-  screenId: 27;
+  screenId: 27 | 322;
   /**
    * If the item is a bumped item
    */
@@ -53,4 +53,8 @@ export interface SendFirstMessage {
    * Language of the user (buyer) that sends the first message (e.g.: ES, IT, etc.)
    */
   language?: string;
+  /**
+   * Whether the shipping toggle is activated for the item (buyer can send shipping request)
+   */
+  shippingAllowed: boolean;
 }

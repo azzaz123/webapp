@@ -1,7 +1,8 @@
 import { AnalyticsEvent, AnalyticsPageView } from '@core/analytics/analytics-constants';
 import { Observable, ReplaySubject } from 'rxjs';
-import { Market } from '../configs/market.config';
-import { APP_LOCALE } from '../configs/subdomains.config';
+import { Market } from '@configs/market.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
+import { UserIdentities } from '@mparticle/web-sdk';
 
 export const MARKET_MOCK = 'ES';
 export const APP_LOCALE_MOCK = 'es';
@@ -26,4 +27,7 @@ export class MockAnalyticsService {
   trackEvent<T>(_event: AnalyticsEvent<T>) {}
   trackPageView<T>(_page: AnalyticsPageView<T>) {}
   getDeviceId() {}
+  loginUser(userIdentities: UserIdentities, callback: () => void) {
+    callback();
+  }
 }

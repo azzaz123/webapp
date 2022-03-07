@@ -78,6 +78,9 @@ describe('SidebarComponent', () => {
             provide: UserService,
             useValue: {
               user: MOCK_USER,
+              get isPro() {
+                return true;
+              },
               getStats() {
                 return of({
                   counters: mockCounters,
@@ -130,6 +133,14 @@ describe('SidebarComponent', () => {
             provide: CustomerHelpService,
             useValue: {
               getPageUrl() {},
+            },
+          },
+          {
+            provide: FeatureFlagService,
+            useValue: {
+              isExperimentalFeaturesEnabled() {
+                return true;
+              },
             },
           },
         ],
@@ -231,6 +242,7 @@ describe('SidebarComponent', () => {
                 screenId: SCREEN_IDS.MyCatalog,
                 numberOfItems: mockCounters.publish,
                 proSubscriptionBanner: false,
+                isPro: true,
               },
             };
 
@@ -251,6 +263,7 @@ describe('SidebarComponent', () => {
                 screenId: SCREEN_IDS.MyCatalog,
                 numberOfItems: mockCounters.publish,
                 proSubscriptionBanner: true,
+                isPro: true,
               },
             };
 

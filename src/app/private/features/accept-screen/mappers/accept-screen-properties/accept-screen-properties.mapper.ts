@@ -10,20 +10,17 @@ import {
   AcceptScreenCarrier,
   AcceptScreenCarrierButtonProperties,
 } from '@private/features/accept-screen/interfaces';
-import {
-  CarrierDropOffModeRequest,
-  DropOffModeRequest,
-  LastAddressUsed,
-  TentativeSchedule,
-} from '@api/core/model/delivery/carrier-drop-off-mode';
+import { CarrierDropOffModeRequest, DropOffModeRequest, TentativeSchedule } from '@api/core/model/delivery/carrier-drop-off-mode';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
-import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delivery-address/delivery-address-api.interface';
-import { AcceptScreenDeliveryAddress } from '../../interfaces/accept-screen-delivery-address.interface';
+import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
 import { Money } from '@api/core/model/money.interface';
-import { AcceptScreenDropOffPointButtonTranslations, AcceptScreenDropOffPointTitle } from '../../constants/accept-screen-translations';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
-import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
+import { LastAddressUsed } from '@api/core/model/delivery/buyer/delivery-methods';
+import {
+  AcceptScreenDropOffPointButtonTranslations,
+  AcceptScreenDropOffPointTitle,
+} from '@private/features/accept-screen/constants/accept-screen-translations';
 
 const navigatorLanguage: string = navigator.language;
 
@@ -40,14 +37,13 @@ export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> =
   };
 };
 
-export const mapUserToAcceptScreenSeller: ToDomainMapper<User, AcceptScreenSeller> = (seller: User): AcceptScreenSeller => {
-  // TODO: Map address when request created		Date: 2022/01/20
+export function mapUserToAcceptScreenSeller(seller: User, address: DeliveryAddressApi): AcceptScreenSeller {
   return {
     id: seller.id,
     imageUrl: mapUserToImageUrl(seller),
-    address: null,
+    fullAddress: address ? mapDeliveryAddressToSellerAddress(address) : null,
   };
-};
+}
 
 export const mapUserToAcceptScreenBuyer: ToDomainMapper<User, AcceptScreenBuyer> = (buyer: User): AcceptScreenBuyer => {
   return {
@@ -74,18 +70,26 @@ export function mapCarrierDropOffModeToAcceptScreenCarriers(
   });
 }
 
-export const mapDeliveryAddresstoAcceptScreenDeliveryAddress: ToDomainMapper<DeliveryAddressApi, AcceptScreenDeliveryAddress> = (
-  input: DeliveryAddressApi
-): AcceptScreenDeliveryAddress => {
+const mapDeliveryAddressToSellerAddress: ToDomainMapper<DeliveryAddressApi, string> = (input: DeliveryAddressApi): string => {
   const flatAndFloor: string = input.flat_and_floor ? ` ${input.flat_and_floor},` : '';
-  return {
-    fullAddress: `${input.street},${flatAndFloor} ${input.postal_code}, ${input.city}`,
-  };
+  return `${input.street},${flatAndFloor} ${input.postal_code}, ${input.city}`;
 };
 
 function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {
+  const carrier: AcceptScreenCarrier = getCarrier(dropOffMode, carrierDropOffModeSelected);
+
+  const deliveryPickUpDay: string = mapDeliveryPickUpDay(dropOffMode.type, dropOffMode.schedule);
+  if (deliveryPickUpDay) {
+    carrier.deliveryPickUpDay = deliveryPickUpDay;
+  }
+
+  return carrier;
+}
+
+function getCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected: CARRIER_DROP_OFF_MODE): AcceptScreenCarrier {
   return {
     type: dropOffMode.type,
+    name: dropOffMode.postOfficeDetails?.carrier,
     isSelected: dropOffMode.type === carrierDropOffModeSelected,
     icon: dropOffMode.icon,
     title: mapTitle(dropOffMode.type),
@@ -99,6 +103,7 @@ function mapCarrier(dropOffMode: DropOffModeRequest, carrierDropOffModeSelected:
       !!dropOffMode.postOfficeDetails?.selectionRequired
     ),
     acceptEndpoint: dropOffMode.acceptEndpoint,
+    lastAddressUsedId: dropOffMode.postOfficeDetails?.lastAddressUsed?.id || null,
   };
 }
 
@@ -109,6 +114,16 @@ const mapUserToImageUrl: ToDomainMapper<User, string> = (user: User): string => 
 const mapTitle: ToDomainMapper<CARRIER_DROP_OFF_MODE, string> = (type: CARRIER_DROP_OFF_MODE): string => {
   return AcceptScreenDropOffPointTitle[type];
 };
+
+function mapDeliveryPickUpDay(type: CARRIER_DROP_OFF_MODE, schedule: TentativeSchedule) {
+  if (type === CARRIER_DROP_OFF_MODE.POST_OFFICE || !schedule) {
+    return null;
+  }
+
+  const startDate: Date = schedule.pickUpStartDate;
+
+  return `${mapWeekDay(startDate)}, ${mapCompleteDate(startDate)}`;
+}
 
 function mapInformation(type: CARRIER_DROP_OFF_MODE, schedule: TentativeSchedule): string {
   const scheduleMapped: string = schedule ? mapDeliveryDayInformation(schedule) : null;
@@ -160,38 +175,34 @@ const mapPrice: ToDomainMapper<Money, string> = (sellerCosts: Money): string => 
 };
 
 const mapDropOffPointInformation: ToDomainMapper<LastAddressUsed, string> = (lastAddressUsed: LastAddressUsed): string => {
-  if (lastAddressUsed.deliveryMode === DELIVERY_MODE.BUYER_ADDRESS && lastAddressUsed.buyerAddress) {
-    const flatAndFloor: string = lastAddressUsed.buyerAddress.flatAndFloor;
-    const checkedFloor: string = flatAndFloor ? ` ${flatAndFloor}` : '';
-
-    return `${capitalizeFirstLetter(lastAddressUsed.buyerAddress.street)}${checkedFloor}, ${
-      lastAddressUsed.buyerAddress.postalCode
-    } ${capitalizeFirstLetter(lastAddressUsed.buyerAddress.city)}`;
-  }
-
-  if (lastAddressUsed.deliveryMode === DELIVERY_MODE.CARRIER_OFFICE && lastAddressUsed.officeAddress) {
-    return `${capitalizeFirstLetter(lastAddressUsed.officeAddress.street)}, ${
-      lastAddressUsed.officeAddress.postalCode
-    } ${capitalizeFirstLetter(lastAddressUsed.officeAddress.city)}`;
-  }
+  return lastAddressUsed.label;
 };
 
 const mapDeliveryDayInformation: ToDomainMapper<TentativeSchedule, string> = (schedule: TentativeSchedule): string => {
-  const weekDay: string = schedule.pickUpStartDate.toLocaleDateString(navigatorLanguage, { weekday: 'long' }).toLowerCase();
-  const completeDate: string = schedule.pickUpStartDate
-    .toLocaleDateString(navigatorLanguage, { day: 'numeric', month: 'long', year: 'numeric' })
-    .replace(',', '')
-    .toLowerCase();
-  const hourStart: string = getHourAndMinutesFromDate(schedule.pickUpStartDate);
+  const startDate: Date = schedule.pickUpStartDate;
+  const hourStart: string = getHourAndMinutesFromDate(startDate);
   const hourEnd: string = getHourAndMinutesFromDate(schedule.pickUpEndDate);
 
-  return `${weekDay}, ${completeDate}, ${hourStart} - ${hourEnd}.`;
+  return `${mapWeekDay(startDate)}, ${mapCompleteDate(startDate)}, ${hourStart} - ${hourEnd}.`;
+};
+
+const mapWeekDay: ToDomainMapper<Date, string> = (date: Date): string => {
+  return capitalizeFirstLetter(date.toLocaleDateString(navigatorLanguage, { weekday: 'long' }).toLowerCase());
+};
+
+const mapCompleteDate: ToDomainMapper<Date, string> = (date: Date): string => {
+  const month: string = date.toLocaleDateString(navigatorLanguage, {
+    month: 'long',
+  });
+
+  return `${date.getUTCDate()} ${month} ${date.getFullYear()}`;
 };
 
 const getHourAndMinutesFromDate: ToDomainMapper<Date, string> = (date: Date): string => {
   return date.toLocaleTimeString(navigatorLanguage, {
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   });
 };
 

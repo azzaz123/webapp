@@ -368,6 +368,17 @@ export const MOCK_INBOX_ITEM_MINE: InboxItem = new InboxItem(
   CATEGORY_IDS.GAMES_CONSOLES
 );
 
+export const MOCK_INBOX_ITEM_MINE_AND_SOLD: InboxItem = new InboxItem(
+  'itemHash',
+  { amount: 288, currency: 'EUR' },
+  'Item title',
+  InboxItemPlaceholder.mainImage,
+  'web-slug',
+  InboxItemStatus.SOLD,
+  true,
+  CATEGORY_IDS.GAMES_CONSOLES
+);
+
 export const MOCK_INBOX_ITEM_NOT_MINE: InboxItem = new InboxItem(
   'itemHash',
   { amount: 288, currency: 'EUR' },
@@ -375,6 +386,17 @@ export const MOCK_INBOX_ITEM_NOT_MINE: InboxItem = new InboxItem(
   InboxItemPlaceholder.mainImage,
   'web-slug',
   InboxItemStatus.PUBLISHED,
+  false,
+  CATEGORY_IDS.GAMES_CONSOLES
+);
+
+export const MOCK_INBOX_ITEM_NOT_MINE_AND_SOLD: InboxItem = new InboxItem(
+  'itemHash',
+  { amount: 288, currency: 'EUR' },
+  'Item title',
+  InboxItemPlaceholder.mainImage,
+  'web-slug',
+  InboxItemStatus.SOLD,
   false,
   CATEGORY_IDS.GAMES_CONSOLES
 );
@@ -422,6 +444,18 @@ export const MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE: InboxMessage = new InboxMe
   { text: 'Payment complete! Time for the seller to make the shipment.', type: 'delivery' }
 );
 
+export const MOCK_INBOX_THIRD_VOICE_TRANSACTIONAL_CLAIM_PERIOD: InboxMessage = new InboxMessage(
+  '7f3f2d79-da9c-4d34-9e32-d1d761465851',
+  '0j2y2ro33nzy',
+  'Hurray! Your order has been delivered, enjoy it.',
+  undefined,
+  undefined,
+  new Date(),
+  MessageStatus.RECEIVED,
+  MessageType.TRANSACTION_CLAIM_PERIOD_RT,
+  { text: 'Hurray! Your order has been delivered, enjoy it.', type: 'deliveryTransactionClaimPeriodStarted' }
+);
+
 export const MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE: InboxMessage = new InboxMessage(
   '5d0614b7-d9af-4bc4-ae8c-d984f60f1695',
   '0j2y2ro33nzy',
@@ -443,6 +477,17 @@ export const MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE_WITHOUT_PAYLOAD: In
   MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.date,
   MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.status,
   MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE.type
+);
+
+export const MOCK_INBOX_THIRD_VOICE_SHIPPING_KEYWORDS: InboxMessage = new InboxMessage(
+  '5d0614b7-d9af-4bc4-ae8c-d984f60f1695',
+  '0j2y2ro33nzy',
+  'Haz envíos 100% seguros a través de Wallapop Envíos y ¡ahórrate los sustos!',
+  undefined,
+  undefined,
+  new Date(),
+  MessageStatus.RECEIVED,
+  MessageType.SHIPPING_KEYWORDS
 );
 
 export const MOCK_INBOX_CONVERSATION_BASIC: InboxConversation = new InboxConversation(
@@ -559,7 +604,22 @@ export const MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES: InboxConversati
   MOCK_INBOX_USER,
   MOCK_INBOX_ITEM,
   '1',
-  [MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE, ...MOCK_INBOX_CONVERSATION_BASIC.messages],
+  [
+    MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE,
+    MOCK_INBOX_THIRD_VOICE_TRANSACTIONAL_CLAIM_PERIOD,
+    ...MOCK_INBOX_CONVERSATION_BASIC.messages,
+  ],
+  false,
+  ''
+);
+
+export const MOCK_INBOX_CONVERSATION_WITH_SHIPPING_KEYWORDS_THIRD_VOICES: InboxConversation = new InboxConversation(
+  'abcd',
+  new Date(),
+  MOCK_INBOX_USER,
+  MOCK_INBOX_ITEM,
+  '1',
+  [MOCK_INBOX_THIRD_VOICE_SHIPPING_KEYWORDS, ...MOCK_INBOX_CONVERSATION_BASIC.messages],
   false,
   ''
 );

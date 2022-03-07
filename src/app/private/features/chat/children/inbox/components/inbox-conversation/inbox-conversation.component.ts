@@ -51,6 +51,15 @@ export class InboxConversationComponent {
   }
 
   public isDeliveryThirdVoice(messageType: MessageType): boolean {
-    return messageType === MessageType.DELIVERY || messageType === MessageType.DELIVERY_GENERIC;
+    return (
+      messageType === MessageType.DELIVERY ||
+      messageType === MessageType.DELIVERY_GENERIC ||
+      messageType === MessageType.TRANSACTION_CLAIM_PERIOD ||
+      messageType === MessageType.TRANSACTION_CLAIM_PERIOD_RT
+    );
+  }
+
+  public isShippingKeywordsThirdVoice(messageType: MessageType): boolean {
+    return messageType === MessageType.SHIPPING_KEYWORDS;
   }
 }

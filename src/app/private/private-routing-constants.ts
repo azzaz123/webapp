@@ -1,5 +1,5 @@
-import { STREAMLINE_PATHS } from './features/delivery/pages/streamline/streamline.routing.constants';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
 
 export enum PRIVATE_PATHS {
   DELIVERY = 'delivery',
@@ -10,6 +10,8 @@ export enum PRIVATE_PATHS {
   CHAT = 'chat',
   BUMPS = 'bumps',
   ACCEPT_SCREEN = 'accept',
+  INBOX = 'inbox',
+  PAYVIEW = 'payview',
 }
 
 export enum PRIVATE_PATH_PARAMS {

@@ -1,0 +1,36 @@
+<div class="PayviewSummaryCostDetail" *ngIf="showCostDetail">
+  <div class="PayviewSummaryCostDetail__square box w-100 mb-0">
+    <div class="row">
+      <div class="col">
+        <div class="PayviewSummaryCostDetail__details d-flex flex-column px-2">
+          <div class="PayviewSummaryCostDetail__product d-flex flex-wrap justify-content-between">
+            <span class="PayviewSummaryCostDetail__productName w-75 text-truncate">{{ productName }}</span>
+            <span class="PayviewSummaryCostDetail__productCost">{{ productCost }}</span>
+          </div>
+          <div class="PayviewSummaryCostDetail__insurance d-flex flex-wrap justify-content-between">
+            <div class="d-flex flex-nowrap align-items-center text-truncate">
+              <tsl-svg-icon class="mr-1" [src]="'./assets/icons/payview/safe-shipping.svg'"></tsl-svg-icon>
+              <span class="PayviewSummaryCostDetail__insuranceTitle pl-1 text-truncate" i18n="@@web_pay_view_buyer_summary_insurance_label"
+                >Insurance</span
+              >
+            </div>
+            <span class="PayviewSummaryCostDetail__insuranceCost">{{ insuranceCost }}</span>
+          </div>
+          <div class="PayviewSummaryCostDetail__shipping d-flex flex-wrap justify-content-between">
+            <div class="d-flex flex-nowrap align-items-center text-truncate">
+              <tsl-svg-icon class="mr-1" [src]="'./assets/icons/payview/car-bodytype-van.svg'"></tsl-svg-icon>
+              <span class="PayviewSummaryCostDetail__shippingTitle pl-1 text-truncate" i18n="@@pay_view_buyer_summary_shipping_label"
+                >Delivery</span
+              >
+            </div>
+            <span class="PayviewSummaryCostDetail__shippingCost">{{ shippingCost }}</span>
+          </div>
+        </div>
+        <div class="PayviewSummaryCostDetail__total d-flex flex-wrap align-items-center justify-content-between px-2 text-truncate">
+          <span class="PayviewSummaryCostDetail__totalTitle text-truncate" i18n="@@pay_view_buyer_summary_total_label">Total</span>
+          <span class="PayviewSummaryCostDetail__totalCost">{{ totalCost }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

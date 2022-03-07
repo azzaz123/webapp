@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //TODO: This should be moved to a higer level entity (providers.ts or equivalent)
+    //TODO: This should be moved to a higher level entity (providers.ts or equivalent)
     this.initSubscriptions();
     this.initServices();
     this.trackStandaloneModeStatus();
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
 
   private initSubscriptions(): void {
     this.onNewSessionStart().subscribe(() => this.trackOpenWallapop());
-    this.onMParticleInit().subscribe(() => this.externalCommsService.initializeBrazeCommunications());
+    this.onMParticleInit().subscribe(() => this.externalCommsService.initializeBraze());
   }
 
   private initServices(): void {

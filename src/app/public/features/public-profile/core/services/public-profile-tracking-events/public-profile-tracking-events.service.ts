@@ -30,6 +30,62 @@ export type FavouriteItemAnalyticsEvent = AnalyticsEvent<FavoriteItem | Unfavori
 export class PublicProfileTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
+  private static getViewReviewsEvent(
+    { featured, id }: User,
+    { ratings, counters }: UserStats,
+    isOwnUser: boolean
+  ): ViewReviewsAnalyticsPageView {
+    if (isOwnUser) {
+      return {
+        name: ANALYTICS_EVENT_NAMES.ViewOwnReviews,
+        attributes: {
+          screenId: SCREEN_IDS.OwnReviewsSection,
+          isPro: featured,
+          numberOfReviews: counters.reviews,
+          reviewsScore: ratings.reviews,
+        },
+      };
+    }
+    return {
+      name: ANALYTICS_EVENT_NAMES.ViewOtherReviews,
+      attributes: {
+        screenId: SCREEN_IDS.OtherReviewsSection,
+        isPro: featured,
+        sellerUserId: id,
+        numberOfReviews: counters.reviews,
+        reviewsScore: ratings.reviews,
+      },
+    };
+  }
+
+  private static getFavouriteUserAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticsEvent {
+    return {
+      name: isFavourite ? ANALYTICS_EVENT_NAMES.FavoriteUser : ANALYTICS_EVENT_NAMES.UnfavoriteUser,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        screenId: SCREEN_IDS.Profile,
+        isPro: featured,
+        sellerUserId: id,
+      },
+    };
+  }
+
+  private static getFavouriteItemAnalyticsEvent(itemCard: ItemCard, user: User): FavouriteItemAnalyticsEvent {
+    return {
+      name: itemCard.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
+      attributes: {
+        itemId: itemCard.id,
+        categoryId: itemCard.categoryId,
+        screenId: SCREEN_IDS.Profile,
+        salePrice: itemCard.salePrice,
+        isPro: user?.featured,
+        title: itemCard.title,
+        isBumped: !!itemCard.bumpFlags?.bumped,
+      },
+    };
+  }
+
   public trackClickItemCardEvent(itemCard: ItemCard, index: number, user?: User): void {
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
@@ -88,61 +144,5 @@ export class PublicProfileTrackingEventsService {
   public trackFavouriteOrUnfavouriteUserEvent(user: User, isFavourite: boolean): void {
     const event: FavouriteUserAnalyticsEvent = PublicProfileTrackingEventsService.getFavouriteUserAnalyticsEvent(user, isFavourite);
     this.analyticsService.trackEvent(event);
-  }
-
-  private static getViewReviewsEvent(
-    { featured, id }: User,
-    { ratings, counters }: UserStats,
-    isOwnUser: boolean
-  ): ViewReviewsAnalyticsPageView {
-    if (isOwnUser) {
-      return {
-        name: ANALYTICS_EVENT_NAMES.ViewOwnReviews,
-        attributes: {
-          screenId: SCREEN_IDS.OwnReviewsSection,
-          isPro: featured,
-          numberOfReviews: counters.reviews,
-          reviewsScore: ratings.reviews,
-        },
-      };
-    }
-    return {
-      name: ANALYTICS_EVENT_NAMES.ViewOtherReviews,
-      attributes: {
-        screenId: SCREEN_IDS.OtherReviewsSection,
-        isPro: featured,
-        sellerUserId: id,
-        numberOfReviews: counters.reviews,
-        reviewsScore: ratings.reviews,
-      },
-    };
-  }
-
-  private static getFavouriteUserAnalyticsEvent({ featured, id }: User, isFavourite: boolean): FavouriteUserAnalyticsEvent {
-    return {
-      name: isFavourite ? ANALYTICS_EVENT_NAMES.FavoriteUser : ANALYTICS_EVENT_NAMES.UnfavoriteUser,
-      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-      attributes: {
-        screenId: SCREEN_IDS.Profile,
-        isPro: featured,
-        sellerUserId: id,
-      },
-    };
-  }
-
-  private static getFavouriteItemAnalyticsEvent(itemCard: ItemCard, user: User): FavouriteItemAnalyticsEvent {
-    return {
-      name: itemCard.flags.favorite ? ANALYTICS_EVENT_NAMES.FavoriteItem : ANALYTICS_EVENT_NAMES.UnfavoriteItem,
-      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-      attributes: {
-        itemId: itemCard.id,
-        categoryId: itemCard.categoryId,
-        screenId: SCREEN_IDS.Profile,
-        salePrice: itemCard.salePrice,
-        isPro: user?.featured,
-        title: itemCard.title,
-        isBumped: !!itemCard.bumpFlags?.bumped,
-      },
-    };
   }
 }

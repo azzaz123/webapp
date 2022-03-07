@@ -4,4 +4,18 @@
     [bannerProperties]="bannerProperties"
     (clickedCTA)="handleClickCTA($event)"
   ></tsl-buy-banner>
+  <tsl-edit-price-banner
+    *ngIf="bannerProperties.type === DELIVERY_BANNER_TYPES.EDIT_PRICE"
+    [bannerProperties]="bannerProperties"
+    (clickedCTA)="handleClickCTA($event)"
+  ></tsl-edit-price-banner>
+  <tsl-ask-seller-for-shipping-banner
+    *ngIf="bannerProperties.type === DELIVERY_BANNER_TYPES.ASK_SELLER_FOR_SHIPPING"
+    [bannerProperties]="bannerProperties"
+  ></tsl-ask-seller-for-shipping-banner>
+  <tsl-activate-shipping-banner
+    *ngIf="bannerProperties.type === DELIVERY_BANNER_TYPES.ACTIVATE_SHIPPING"
+    [bannerProperties]="bannerProperties"
+    (clickedCTA)="handleClickCTA($event)"
+  ></tsl-activate-shipping-banner>
 </div>

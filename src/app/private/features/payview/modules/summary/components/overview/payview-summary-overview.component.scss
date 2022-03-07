@@ -1,0 +1,33 @@
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/spacing';
+@import '~web-styleguide/scss/text';
+
+.PayviewSummary {
+  &__close {
+    cursor: pointer;
+  }
+
+  &__windowHeader {
+    padding-left: $spacing-ml;
+  }
+
+  &__thankyou {
+    font-size: $spacing-m;
+    font-weight: $font-weight-chunky;
+    &--walla {
+      color: $walla-main;
+    }
+  }
+
+  &__header {
+    padding-top: $spacing-ml;
+  }
+
+  &__body {
+    z-index: 1;
+  }
+
+  &__footer {
+    z-index: 0;
+  }
+}

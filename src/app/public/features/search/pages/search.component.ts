@@ -326,7 +326,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
     return this.router.events.pipe(
       filter((e: any): e is Scroll => e instanceof Scroll),
-      delay(0),
+      delay(1),
       tap((e: Scroll) => {
         if (e.position) {
           this.viewportScroller.scrollToPosition(e.position);

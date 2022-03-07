@@ -1,0 +1,32 @@
+@import '~style/common';
+
+$spacing-14: 14px;
+
+.PayviewSummaryHeader {
+  background: $payview-summary-grey;
+  border-radius: 10px;
+  font-size: $spacing-14;
+  padding-right: $spacing-ml;
+
+  &__imageWrapper {
+    margin-right: $spacing-ms;
+  }
+  &__image {
+    @include square(70px);
+    border-radius: 5px;
+  }
+  &__deliveryEtaWrapper {
+    padding: 0 0 $spacing-xxs 0;
+  }
+  &__deliveryAddressWrapper {
+    padding: $spacing-xxs 0 0 0;
+  }
+  &__deliveryEtaTitle,
+  &__deliveryAddressTitle {
+    color: $blue-grey-2;
+  }
+  &__deliveryEta,
+  &__deliveryAddress {
+    font-weight: $font-weight-chunky;
+  }
+}

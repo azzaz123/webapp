@@ -7,6 +7,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from './features/pro/pro-routing-constants';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { PROFILE_PATHS } from './features/profile/profile-routing-constants';
+import { CATALOG_PATHS } from './features/catalog/catalog-routing-constants';
 
 const routes: Routes = [
   {
@@ -41,7 +42,7 @@ const routes: Routes = [
                 loadChildren: () => import('@private/features/catalog-pro/catalog-pro.module').then((m) => m.CatalogProModule),
               },
               {
-                path: 'upload',
+                path: CATALOG_PATHS.UPLOAD,
                 loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
                 canLoad: [NgxPermissionsGuard],
                 data: {
@@ -54,7 +55,7 @@ const routes: Routes = [
                 },
               },
               {
-                path: 'edit',
+                path: CATALOG_PATHS.EDIT,
                 loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
               },
             ],
@@ -79,6 +80,10 @@ const routes: Routes = [
       {
         path: PRIVATE_PATHS.CHAT,
         loadChildren: () => import('@private/features/chat/chat.module').then((m) => m.ChatModule),
+      },
+      {
+        path: PRIVATE_PATHS.INBOX,
+        loadChildren: () => import('@private/features/inbox/inbox-page.module').then((m) => m.InboxPageModule),
       },
       {
         path: 'favorites',
@@ -111,7 +116,7 @@ const routes: Routes = [
             loadChildren: () => import('@private/features/catalog/catalog.module').then((m) => m.CatalogModule),
           },
           {
-            path: 'upload',
+            path: CATALOG_PATHS.UPLOAD,
             loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
             canLoad: [NgxPermissionsGuard],
             data: {
@@ -124,7 +129,7 @@ const routes: Routes = [
             },
           },
           {
-            path: 'edit',
+            path: CATALOG_PATHS.EDIT,
             loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
           },
         ],

@@ -22,9 +22,9 @@ import {
   MOCK_CONVERSATION,
   InboxConversationServiceMock,
   MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES,
-  MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE_WITHOUT_PAYLOAD,
   MOCK_INBOX_THIRD_VOICE_DELIVERY_GENERIC_MESSAGE,
   MOCK_INBOX_THIRD_VOICE_DELIVERY_MESSAGE,
+  MOCK_INBOX_CONVERSATION_WITH_SHIPPING_KEYWORDS_THIRD_VOICES,
 } from '@fixtures/chat';
 import { RealTimeServiceMock } from '@fixtures/real-time.fixtures.spec';
 import { DeviceDetectorServiceMock, MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
@@ -59,6 +59,7 @@ import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-ban
 import { DELIVERY_BANNER_ACTION } from '../../modules/delivery-banner/enums/delivery-banner-action.enum';
 import { DeliveryBanner } from '../../modules/delivery-banner/interfaces/delivery-banner.interface';
 import { ThirdVoiceDeliveryComponent } from '../../children/message/components/third-voice-delivery/third-voice-delivery.component';
+import { ThirdVoiceShippingKeywordsComponent } from '../../children/message';
 
 describe('CurrentConversationComponent', () => {
   let component: CurrentConversationComponent;
@@ -76,6 +77,7 @@ describe('CurrentConversationComponent', () => {
   let modalMockResult: Promise<{}>;
 
   const mockDeliveryBannerSubject$: BehaviorSubject<DeliveryBanner> = new BehaviorSubject(null);
+  const mockDeliveryLoadingSubject$: BehaviorSubject<boolean> = new BehaviorSubject(null);
 
   beforeEach(
     waitForAsync(() => {
@@ -88,6 +90,7 @@ describe('CurrentConversationComponent', () => {
           InputComponent,
           DeliveryBannerComponent,
           ThirdVoiceDeliveryComponent,
+          ThirdVoiceShippingKeywordsComponent,
         ],
         providers: [
           EventService,
@@ -134,6 +137,7 @@ describe('CurrentConversationComponent', () => {
           {
             provide: DeliveryConversationContextService,
             useValue: {
+              loading$: mockDeliveryLoadingSubject$,
               bannerProperties$: mockDeliveryBannerSubject$,
               update: () => {},
               reset: () => {},
@@ -314,9 +318,48 @@ describe('CurrentConversationComponent', () => {
           );
         });
       });
+
+      describe('and when the delivery context has not been loaded', () => {
+        beforeEach(() => {
+          mockDeliveryLoadingSubject$.next(true);
+          fixture.detectChanges();
+        });
+
+        it('should set third voice state as loading', () => {
+          expect(deliveryThirdVoiceElement.componentInstance.loading).toEqual(true);
+        });
+      });
+
+      describe('and when the delivery context has been loaded', () => {
+        beforeEach(() => {
+          mockDeliveryLoadingSubject$.next(false);
+          fixture.detectChanges();
+        });
+
+        it('should NOT set third voice state as loading', () => {
+          expect(deliveryThirdVoiceElement.componentInstance.loading).toEqual(false);
+        });
+      });
     });
 
-    describe('when new third voice is received in realtime for current conversation', () => {
+    describe('when conversation has shipping keywords third voice', () => {
+      let shippingKeywordsThirdVoiceElement: DebugElement;
+
+      beforeEach(() => {
+        component.currentConversation = MOCK_INBOX_CONVERSATION_WITH_SHIPPING_KEYWORDS_THIRD_VOICES;
+        component.ngOnChanges({
+          currentConversation: new SimpleChange(null, MOCK_INBOX_CONVERSATION_WITH_SHIPPING_KEYWORDS_THIRD_VOICES, false),
+        });
+        fixture.detectChanges();
+        shippingKeywordsThirdVoiceElement = debugElement.query(By.directive(ThirdVoiceShippingKeywordsComponent));
+      });
+
+      it('should show shipping keyword third voices', () => {
+        expect(shippingKeywordsThirdVoiceElement).toBeTruthy();
+      });
+    });
+
+    describe('when new delivery third voice is received in realtime for current conversation', () => {
       beforeEach(fakeAsync(() => {
         spyOn(deliveryConversationContextService, 'reset');
         spyOn(deliveryConversationContextService, 'update');
@@ -335,7 +378,7 @@ describe('CurrentConversationComponent', () => {
         expect(deliveryConversationContextService.reset).toHaveBeenCalledTimes(1);
       });
 
-      it('should ask for delivery convesration context for current conversation', () => {
+      it('should ask for delivery conversation context for current conversation', () => {
         expect(deliveryConversationContextService.update).toHaveBeenCalledTimes(1);
         expect(deliveryConversationContextService.update).toHaveBeenCalledWith(MOCK_INBOX_CONVERSATION_WITH_DELIVERY_THIRD_VOICES);
       });

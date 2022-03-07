@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WALLET_PATHS } from '../../wallet.routing.constants';
 import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
@@ -12,7 +13,7 @@ import { KYCModalComponent } from './modals/kyc-modal/kyc-modal.component';
 export class KYCComponent implements OnInit {
   public readonly WALLET_BALANCE_LINK = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}`;
   public readonly KYCModalOptions: NgbModalOptions = {
-    windowClass: 'kyc',
+    windowClass: DELIVERY_MODAL_CLASSNAME,
     beforeDismiss: () => {
       return window.confirm(this.KYCModalCloseWarningCopy);
     },

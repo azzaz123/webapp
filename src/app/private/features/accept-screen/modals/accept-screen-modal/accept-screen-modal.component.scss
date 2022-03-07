@@ -1,11 +1,48 @@
 @import '~style/common';
 
+:host {
+  height: inherit;
+}
+
 .AcceptScreenModal {
+  height: inherit;
+
+  &__header {
+    top: 0;
+    z-index: 1;
+    background-color: $white;
+  }
+
+  &__confirmButton {
+    bottom: 0;
+    background-color: $white;
+  }
+
+  &__cursorPointer {
+    cursor: pointer;
+  }
+
+  &__bottomLine {
+    border-bottom: 1px solid $blue-grey-4;
+  }
+
+  &__sellerAddressInfoWrapper {
+    flex: 1;
+  }
+
+  &__sellerAddressInfo {
+    flex: 1;
+  }
+
+  &__sellerWithAddressHeader {
+    font-size: $font-size-s;
+    color: $blue-grey-2;
+  }
+
   &__title {
     color: $blue-grey-1;
     font-size: $font-size-s;
     font-weight: $font-weight-chunky;
-    border-bottom: 1px solid $blue-grey-4;
   }
 
   &__carrierWrapper {

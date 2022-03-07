@@ -33,4 +33,8 @@ export interface ShareItem {
    * Item price
    */
   salePrice: number;
+  /**
+   * Whether the shipping toggle is activated for the item (buyer can send shipping request)
+   */
+  shippingAllowed?: boolean;
 }

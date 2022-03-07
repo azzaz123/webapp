@@ -13,9 +13,9 @@ import { FavouritesListTrackingEventsService } from '../../services/favourites-l
   templateUrl: './item-card-favourite.component.html',
   styleUrls: ['./item-card-favourite.component.scss'],
 })
-export class ItemCardFavouriteComponent implements OnInit {
+export class ItemCardFavouriteComponent {
   @Input() item: Item;
-  @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
+  @Output() favoriteChange: EventEmitter<Item> = new EventEmitter();
 
   constructor(
     private itemService: ItemService,
@@ -23,8 +23,6 @@ export class ItemCardFavouriteComponent implements OnInit {
     private i18nService: I18nService,
     private favouritesListTrackingEventsService: FavouritesListTrackingEventsService
   ) {}
-
-  ngOnInit() {}
 
   removeFavoriteModal(e: Event) {
     e.preventDefault();
@@ -50,7 +48,7 @@ export class ItemCardFavouriteComponent implements OnInit {
     this.itemService.favoriteItem(this.item.id, false).subscribe(() => {
       this.item.favorited = false;
       this.favouritesListTrackingEventsService.trackUnfavouriteItemEvent(this.item);
-      this.onFavoriteChange.emit(this.item);
+      this.favoriteChange.emit(this.item);
     });
   }
 }

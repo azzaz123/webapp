@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { InboxConversation } from '@private/features/chat/core/model';
-import { Observable, of, ReplaySubject, Subscription } from 'rxjs';
-import { concatMap, take } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
@@ -13,38 +10,48 @@ import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/tr
 
 @Injectable()
 export class DeliveryConversationContextService {
+  private readonly _loading$: ReplaySubject<boolean> = new ReplaySubject(1);
+  private readonly _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
+  private subscriptions: Subscription[] = [];
+
   constructor(
-    private featureFlagService: FeatureFlagService,
     private deliveryConversationContextAsBuyerService: DeliveryConversationContextAsBuyerService,
     private deliveryConversationContextAsSellerService: DeliveryConversationContextAsSellerService,
     private modalService: NgbModal
   ) {}
 
-  private _bannerProperties$: ReplaySubject<DeliveryBanner> = new ReplaySubject(1);
-  private subscriptions: Subscription[] = [];
-
   public get bannerProperties$(): Observable<DeliveryBanner | null> {
     return this._bannerProperties$.asObservable();
+  }
+
+  public get loading$(): Observable<boolean> {
+    return this._loading$.asObservable();
+  }
+
+  private set loading(value: boolean) {
+    this._loading$.next(value);
   }
 
   private set bannerProperties(newBannerProperties: DeliveryBanner) {
     this._bannerProperties$.next(newBannerProperties);
   }
 
-  private get isDeliveryFlagEnabled(): Observable<boolean> {
-    return this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).pipe(take(1));
-  }
-
   public update(conversation: InboxConversation): void {
-    const subscription: Subscription = this.isDeliveryFlagEnabled
-      .pipe(concatMap((enabled: boolean) => (enabled ? this.getBannerProperties(conversation) : of(null))))
-      .subscribe((banner: DeliveryBanner | null) => (this.bannerProperties = banner));
+    this.loading = true;
+    const subscription: Subscription = this.getBannerProperties(conversation).subscribe(
+      //TODO: Assign banner properties when openning chat banner
+      // In order for the third voices to work while the banner is not openned in prod, we need the banner properties loaded within the context
+      (bannerProperties: DeliveryBanner | null) => (this.bannerProperties = null), // this.bannerProperties = bannerProperties
+      () => this.endLoading(),
+      () => this.endLoading()
+    );
     this.subscriptions.push(subscription);
   }
 
   public reset(): void {
     this.bannerProperties = null;
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.endLoading();
   }
 
   public handleBannerCTAClick(conversation: InboxConversation, bannerActionType: DELIVERY_BANNER_ACTION): void {
@@ -53,15 +60,15 @@ export class DeliveryConversationContextService {
     }
 
     if (bannerActionType === DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING) {
-      return this.openAwarenessModal();
+      return this.deliveryConversationContextAsSellerService.handleBannerCTAClick(conversation, bannerActionType);
     }
 
-    if (bannerActionType === DELIVERY_BANNER_ACTION.CHANGE_ITEM_PRICE) {
-      return this.openAwarenessModal();
+    if (bannerActionType === DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE) {
+      return this.deliveryConversationContextAsSellerService.handleBannerCTAClick(conversation, bannerActionType);
     }
 
     if (bannerActionType === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
-      return this.openAwarenessModal();
+      return this.deliveryConversationContextAsBuyerService.handleBannerCTAClick(conversation, bannerActionType);
     }
 
     return this.openAwarenessModal();
@@ -76,12 +83,10 @@ export class DeliveryConversationContextService {
   }
 
   private getBannerProperties(conversation: InboxConversation): Observable<DeliveryBanner | null> {
-    const { item } = conversation;
-    const { id: itemHash } = item;
     const isCurrentUserTheSeller: boolean = this.isCurrentUserTheSeller(conversation);
     return isCurrentUserTheSeller
-      ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(itemHash)
-      : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(itemHash);
+      ? this.deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller(conversation)
+      : this.deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer(conversation);
   }
 
   private openAwarenessModal(): void {
@@ -92,5 +97,9 @@ export class DeliveryConversationContextService {
     const { item } = conversation;
     const { isMine } = item;
     return isMine;
+  }
+
+  private endLoading(): void {
+    this.loading = false;
   }
 }

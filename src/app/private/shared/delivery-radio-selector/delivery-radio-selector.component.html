@@ -1,12 +1,11 @@
-<div *ngFor="let option of options; let i = index" class="DeliveryRadioOption input-radio">
+<div *ngFor="let option of options; let i = index" class="DeliveryRadioOption input-radio" [class.border-bottom-0]="marginLess">
   <ng-template [ngTemplateOutlet]="option.templateRef"></ng-template>
   <input
     [id]="i"
-    class="ml-3 mb-auto"
-    [ngClass]="selectedId === i ? 'mt-3' : 'mt-4'"
+    [ngClass]="{ 'mb-auto': !marginLess, 'mt-3': selectedId === i && !marginLess, 'mt-4': selectedId !== i && !marginLess }"
     type="radio"
     [value]="i"
-    [checked]="selectedId === i"
+    [checked]="selectedId === i || isChecked"
     (change)="changed.emit(i)"
   />
 </div>

@@ -4,11 +4,14 @@ import { AccessTokenService } from '@core/http/access-token.service';
 import { EventService } from '@core/event/event.service';
 import { environment } from '@environments/environment';
 import { LoginService, LOGIN_ENDPOINT } from './login.service';
-import { MOCK_USER_RESPONSE_BODY } from '@fixtures/user.fixtures.spec';
+import { MOCK_USER_RESPONSE_BODY, MockUserService } from '@fixtures/user.fixtures.spec';
 import { CookieModule } from 'ngx-cookie';
 import { DeviceService } from '@core/device/device.service';
 import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 import { LoginRequest } from '../interfaces/login.request';
+import { AnalyticsService } from '@core/analytics/analytics.service';
+import { UserService } from '@core/user/user.service';
+import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 
 describe('LoginService', () => {
   let injector: TestBed;
@@ -34,6 +37,8 @@ describe('LoginService', () => {
         },
         EventService,
         { provide: DeviceService, useValue: MockDeviceService },
+        { provide: AnalyticsService, useValue: MockAnalyticsService },
+        { provide: UserService, useValue: MockUserService },
       ],
     });
 
@@ -65,9 +70,8 @@ describe('LoginService', () => {
         const expectedBody: LoginRequest = {
           ...MOCK_LOGIN_REQUEST,
           metadata: {
-            installationId: MOCK_DEVICE_ID,
-            installationType: 'WEB',
-            pushToken: '',
+            recaptchaToken: '',
+            sessionId: MOCK_DEVICE_ID,
           },
         };
 

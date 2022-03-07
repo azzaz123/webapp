@@ -6,7 +6,9 @@ import { USER_PAYMENT_PREFERENCES_ENDPOINT } from '@api/bff/payments/user-paymen
 
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentsUserPaymentPreferencesHttpService {
   constructor(private http: HttpClient) {}
 

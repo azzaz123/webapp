@@ -52,23 +52,19 @@ import { DELIVERY_BANNER_ACTION } from '../../modules/delivery-banner/enums/deli
   styleUrls: ['./current-conversation.component.scss'],
 })
 export class CurrentConversationComponent implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
-  public readonly BOTTOM_BUFFER_ZONE = 100;
-  private MESSAGE_HEIGHT = 14;
-  public readonly MESSAGE_METRIC_DELAY = 5 * 1000;
-
   @Input() currentConversation: InboxConversation;
   @Input() conversationsTotal: number;
   @Input() connectionError: boolean;
   @Input() loadingError: boolean;
   @ViewChild('scrollElement') private scrollElement: ElementRef;
-  @ViewChild('userWarringNotification')
-  private userWarringNotification: ElementRef;
+  @ViewChild('userWarringNotification') private userWarringNotification: ElementRef;
 
-  private chatContext: ViewBannedUserChatPopUp;
+  public readonly BOTTOM_BUFFER_ZONE = 100;
+  public readonly MESSAGE_METRIC_DELAY = 5 * 1000;
+  public readonly PERMISSIONS = PERMISSIONS;
   public momentCalendarSpec: CalendarSpec = this.momentCalendarSpecService.getCalendarSpec();
-  private newMessageSubscription: Subscription;
   public isLoadingMoreMessages = false;
-  private lastInboxMessage: InboxMessage;
+  public isDeliveryContextLoading: boolean = true;
   public isEndOfConversation = true;
   public scrollHeight = 0;
   public scrollLocalPosition = 0;
@@ -80,7 +76,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     showTranslation: $localize`:@@chat_all_users_translate_button:Translate conversation`,
   };
 
-  public readonly PERMISSIONS = PERMISSIONS;
+  private MESSAGE_HEIGHT = 14;
+  private chatContext: ViewBannedUserChatPopUp;
+  private newMessageSubscription: Subscription;
+  private lastInboxMessage: InboxMessage;
 
   constructor(
     private eventService: EventService,
@@ -101,6 +100,19 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   public get deliveryBannerProperties$(): Observable<DeliveryBanner> {
     return this.deliveryConversationContextService.bannerProperties$;
+  }
+
+  @HostListener('scroll', ['$event'])
+  onScrollMessages(event: any) {
+    this.noMessages = 0;
+    this.isConversationChanged = false;
+    this.scrollLocalPosition = event.target.scrollHeight - event.target.scrollTop;
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE) {
+      this.sendReadForLastInboxMessage();
+      this.isEndOfConversation = true;
+    } else {
+      this.isEndOfConversation = false;
+    }
   }
 
   ngOnInit() {
@@ -139,6 +151,8 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () =>
       this.sendMetricMessageSendFailed('pending messages after restored connection')
     );
+
+    this.listenDeliveryContextLoadingChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -167,19 +181,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     }
   }
 
-  @HostListener('scroll', ['$event'])
-  onScrollMessages(event: any) {
-    this.noMessages = 0;
-    this.isConversationChanged = false;
-    this.scrollLocalPosition = event.target.scrollHeight - event.target.scrollTop;
-    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - this.BOTTOM_BUFFER_ZONE) {
-      this.sendReadForLastInboxMessage();
-      this.isEndOfConversation = true;
-    } else {
-      this.isEndOfConversation = false;
-    }
-  }
-
   public showDate(currentMessage: InboxMessage, nextMessage: InboxMessage): boolean {
     return nextMessage ? new Date(currentMessage.date).toDateString() !== new Date(nextMessage.date).toDateString() : true;
   }
@@ -192,16 +193,6 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     if (this.lastInboxMessage) {
       this.sendRead(this.lastInboxMessage);
       this.lastInboxMessage = null;
-    }
-  }
-
-  private sendRead(message: InboxMessage) {
-    if (this.currentConversation !== null && eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
-      onVisible(() => {
-        setTimeout(() => {
-          this.realTime.sendRead(message.from, message.thread);
-        }, 1000);
-      });
     }
   }
 
@@ -232,7 +223,16 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public isDeliveryThirdVoice(messageType: MessageType): boolean {
-    return messageType === MessageType.DELIVERY || messageType === MessageType.DELIVERY_GENERIC;
+    return (
+      messageType === MessageType.DELIVERY ||
+      messageType === MessageType.DELIVERY_GENERIC ||
+      messageType === MessageType.TRANSACTION_CLAIM_PERIOD ||
+      messageType === MessageType.TRANSACTION_CLAIM_PERIOD_RT
+    );
+  }
+
+  public isShippingKeywordsThirdVoice(messageType: MessageType): boolean {
+    return messageType === MessageType.SHIPPING_KEYWORDS;
   }
 
   public scrollToLastMessage(): void {
@@ -290,10 +290,20 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     this.deliveryConversationContextService.handleThirdVoiceCTAClick(this.currentConversation);
   }
 
+  private sendRead(message: InboxMessage) {
+    if (this.currentConversation !== null && eq(this.currentConversation.id, message.thread) && !message.fromSelf) {
+      onVisible(() => {
+        setTimeout(() => {
+          this.realTime.sendRead(message.from, message.thread);
+        }, 1000);
+      });
+    }
+  }
+
   private deliveryContextNeedsRefresh(newMessage: InboxMessage): boolean {
-    const isRealTimeDeliveryThirdVoice: boolean = newMessage.type === MessageType.DELIVERY;
+    const isDeliveryThirdVoice: boolean = this.isDeliveryThirdVoice(newMessage.type);
     const isMessageInCurrentConversation: boolean = !!this.currentConversation.messages.find((m) => m.id === newMessage.id);
-    return isRealTimeDeliveryThirdVoice && isMessageInCurrentConversation;
+    return isDeliveryThirdVoice && isMessageInCurrentConversation;
   }
 
   private sendMetricMessageSendFailedByMessageId(messageId: string, description: string): void {
@@ -346,6 +356,10 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
     if (this.currentConversation) {
       this.deliveryConversationContextService.update(this.currentConversation);
     }
+  }
+
+  private listenDeliveryContextLoadingChanges(): void {
+    this.deliveryConversationContextService.loading$.subscribe((loading) => (this.isDeliveryContextLoading = loading));
   }
 
   private trackClickMaliciousModalCTAButton(): void {

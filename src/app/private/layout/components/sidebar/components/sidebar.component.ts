@@ -21,6 +21,7 @@ import { Observable } from 'rxjs';
 import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -48,7 +49,8 @@ export class SidebarComponent implements OnInit {
     public unreadChatMessagesService: UnreadChatMessagesService,
     private analyticsService: AnalyticsService,
     private deviceService: DeviceService,
-    private customerHelpService: CustomerHelpService
+    private customerHelpService: CustomerHelpService,
+    public featureFlagService: FeatureFlagService
   ) {}
 
   ngOnInit() {
@@ -79,6 +81,7 @@ export class SidebarComponent implements OnInit {
           screenId: SCREEN_IDS.MyCatalog,
           numberOfItems: userStats.counters.publish,
           proSubscriptionBanner: this.userService.suggestPro(),
+          isPro: this.userService.isPro,
         },
       };
       this.analyticsService.trackPageView(event);

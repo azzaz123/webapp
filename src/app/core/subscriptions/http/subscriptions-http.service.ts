@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { SubscriptionsV3Response } from '../subscriptions.interface';
 import { SUBSCRIPTIONS_V3_ENDPOINT } from './endpoints';
+import { SubscriptionsV3Response } from '../dtos/subscriptions/subscription-response.interface';
 
 @Injectable()
 export class SubscriptionsHttpService {

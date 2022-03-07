@@ -27,6 +27,7 @@
       *ngIf="item.itemType === itemTypes.CONSUMER_GOODS"
       [item]="item"
       [isReactivation]="isReactivation"
+      [isActivateShipping]="isActivateShipping"
       (validationError)="validationError()"
       (formChanged)="formChanged($event)"
     >

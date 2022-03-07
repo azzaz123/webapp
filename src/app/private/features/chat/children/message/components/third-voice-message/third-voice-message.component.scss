@@ -10,7 +10,6 @@
   }
 
   .message-content {
-    padding-top: $spacing-xs;
     padding-left: 35px;
 
     .message-date {
@@ -20,5 +19,18 @@
     tsl-third-voice-button {
       text-align: center;
     }
+  }
+}
+
+@mixin third-voice-forced-width($width) {
+  min-width: $width !important;
+  max-width: $width !important;
+}
+
+.message-cloud {
+  @include third-voice-forced-width(70%);
+
+  @media (min-width: 1600px) {
+    @include third-voice-forced-width(500px);
   }
 }

@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RECOMMENDATIONS_ENGINE, RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
-import { MockItemdDetailTrackEventService } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
+import { MockItemdDetailTrackEventService, MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { MapRecommendedItemCardService } from '../../core/services/map-recommended-item-card/map-recommended-item-card.service';
 import { ItemDetailTrackEventsService } from '../../core/services/item-detail-track-events/item-detail-track-events.service';
 import { UserService } from '@core/user/user.service';
@@ -10,7 +10,6 @@ import { MockedUserService, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
 import { RecommendedItemsComponent } from './recommended-items.component';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
-import { MOCK_ITEM_INDEX } from '../../core/services/item-detail-track-events/track-events.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 
 describe('RecommendedItemsComponent', () => {

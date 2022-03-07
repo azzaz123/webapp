@@ -2,23 +2,22 @@ import { Injectable } from '@angular/core';
 import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/delivery-item-details-api.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { DeliveryItemDetails } from '@api/core/model/delivery/item-detail/delivery-item-details.interface';
-import { Money } from '@api/core/model/money.interface';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
 import { Observable } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
 import {
+  ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
   BUY_DELIVERY_BANNER_PROPERTIES,
-  BUYER_ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
 } from '@private/features/chat/modules/delivery-banner/constants/delivery-banner-configs';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
+import { InboxConversation } from '@private/features/chat/core/model';
+import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
+import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
@@ -28,17 +27,19 @@ export class DeliveryConversationContextAsBuyerService {
     private buyerRequestsApiService: BuyerRequestsApiService,
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
     private router: Router,
-    private modalService: NgbModal,
-    private featureFlagService: FeatureFlagService
+    private modalService: NgbModal
   ) {}
 
-  public getBannerPropertiesAsBuyer(itemHash: string): Observable<DeliveryBanner | null> {
+  public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
+    const { item } = conversation;
+    const { id: itemHash } = item;
+
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       tap((requests) => (this.lastRequest = requests ? requests[0] : null)),
       concatMap((buyerRequests: BuyerRequest[]) => {
         return this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash).pipe(
           map((deliveryItemDetails: DeliveryItemDetails) => {
-            return this.mapDeliveryItemDetailsAsBuyerToProperties(buyerRequests, deliveryItemDetails);
+            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, deliveryItemDetails);
           })
         );
       })
@@ -46,60 +47,66 @@ export class DeliveryConversationContextAsBuyerService {
   }
 
   public handleThirdVoiceCTAClick(): void {
-    this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((enabled) => {
-      enabled ? this.redirectToTTS() : this.modalService.open(TRXAwarenessModalComponent);
-    });
-  }
-
-  private redirectToTTS(): void {
     const isLastRequestPresent: boolean = !!this.lastRequest;
     if (isLastRequestPresent) {
-      const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${this.lastRequest.id}`;
-      this.router.navigate([route]);
+      const { id } = this.lastRequest;
+      this.redirectToTTS(id);
     }
   }
 
-  private mapDeliveryItemDetailsAsBuyerToProperties(
+  public handleBannerCTAClick(conversation: InboxConversation, action: DELIVERY_BANNER_ACTION): void {
+    if (action === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
+      return this.redirectToPayview(conversation);
+    }
+
+    return this.openAwarenessModal();
+  }
+
+  private redirectToPayview(conversation: InboxConversation): void {
+    const { item } = conversation;
+    const { id: itemHash } = item;
+    const route: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+    this.router.navigate([route]);
+  }
+
+  private redirectToTTS(id: string): void {
+    const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${id}`;
+    this.router.navigate([route]);
+  }
+
+  private mapDeliveryDetailsAsBuyerToBannerProperties(
     buyerRequests: BuyerRequest[],
     deliveryItemDetails: DeliveryItemDetails
-  ): DeliveryBanner | null {
-    const bannerType: DELIVERY_BANNER_TYPE | null = this.mapDeliveryDetailsAsBuyerToBannerType(buyerRequests, deliveryItemDetails);
-    const minimumPurchaseCost: Money | null = deliveryItemDetails ? deliveryItemDetails.minimumPurchaseCost : null;
-    return this.mapBannerTypeToBuyerBannerProperties(bannerType, minimumPurchaseCost);
-  }
-
-  private mapDeliveryDetailsAsBuyerToBannerType(
-    buyerRequests: BuyerRequest[],
-    deliveryItemDetails?: DeliveryItemDetails
-  ): DELIVERY_BANNER_TYPE {
-    const noDeliveryItemDetails: boolean = !deliveryItemDetails;
+  ): DeliveryBanner {
+    const isShippingNotAllowed: boolean = !deliveryItemDetails.isShippingAllowed;
+    const isNotShippable: boolean = !deliveryItemDetails.isShippable;
     const buyerHasNoRequests: boolean = buyerRequests.length === 0;
-    const buyerHasRequests: boolean = !buyerHasNoRequests;
 
-    if (noDeliveryItemDetails) {
-      return DELIVERY_BANNER_TYPE.HIDDEN;
+    // TODO: Review/remove this condition when TRX MVP is done
+    // Apps hide the buy banner for this case and user has to go to item detail to open payview
+    // In web, while we don't have the payview entry point in the item detail,
+    // we will show the buy banner when last request is not accepted or it is not pending
+    const lastRequestFailed: boolean = !(
+      this.lastRequest?.status === BUYER_REQUEST_STATUS.ACCEPTED || this.lastRequest?.status === BUYER_REQUEST_STATUS.PENDING
+    );
+    const showBuyBanner: boolean = buyerHasNoRequests || lastRequestFailed;
+
+    if (isNotShippable) {
+      return null;
     }
 
-    if (buyerHasRequests) {
-      return DELIVERY_BANNER_TYPE.HIDDEN;
+    if (isShippingNotAllowed) {
+      return ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES;
     }
 
-    if (buyerHasNoRequests) {
-      return DELIVERY_BANNER_TYPE.BUY;
-    }
-
-    return DELIVERY_BANNER_TYPE.HIDDEN;
-  }
-
-  private mapBannerTypeToBuyerBannerProperties(type: DELIVERY_BANNER_TYPE, price?: Money): DeliveryBanner | null {
-    if (type === DELIVERY_BANNER_TYPE.BUY) {
-      return BUY_DELIVERY_BANNER_PROPERTIES(price);
-    }
-
-    if (type === DELIVERY_BANNER_TYPE.ASK_SELLER_FOR_SHIPPING) {
-      return BUYER_ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES;
+    if (showBuyBanner) {
+      return BUY_DELIVERY_BANNER_PROPERTIES(deliveryItemDetails.minimumPurchaseCost);
     }
 
     return null;
+  }
+
+  private openAwarenessModal(): void {
+    this.modalService.open(TRXAwarenessModalComponent);
   }
 }

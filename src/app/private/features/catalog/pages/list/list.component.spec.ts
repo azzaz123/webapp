@@ -1235,6 +1235,7 @@ describe('ListComponent', () => {
           screenId: SCREEN_IDS.MyCatalog,
           numberOfItems: mockCounters.publish,
           proSubscriptionBanner: false,
+          isPro: false,
         },
       };
 

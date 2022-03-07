@@ -19,9 +19,8 @@ export interface PostOfficeDetailsDto {
 }
 
 export interface LastAddressUsedDto {
-  buyer_address: BuyerAddressDto;
-  last_delivery_mode: LastDeliveryModeDto;
-  pick_up_point: PickUpPointDto;
+  id: string;
+  label: string;
 }
 
 export interface BuyerAddressDto {

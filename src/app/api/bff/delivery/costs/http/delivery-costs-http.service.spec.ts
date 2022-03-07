@@ -2,8 +2,8 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { TestBed } from '@angular/core/testing';
 
 import { DELIVERY_COSTS_ENDPOINT } from '@api/bff/delivery/costs/http/endpoints';
+import { DeliveryCostsDto } from '@api/bff/delivery/costs/dtos';
 import { DeliveryCostsHttpService } from '@api/bff/delivery/costs/http/delivery-costs-http.service';
-import { DeliveryCostsItemDto } from '@api/bff/delivery/costs/dtos';
 import { MOCK_DELIVERY_COSTS_RESPONSE } from '@api/fixtures/bff/delivery/costs/delivery-costs.fixtures.spec';
 
 describe('DeliveryCostsHttpService', () => {
@@ -29,7 +29,7 @@ describe('DeliveryCostsHttpService', () => {
 
   describe('when asking to get the costs information', () => {
     it('should get the corresponding information', () => {
-      let response: DeliveryCostsItemDto;
+      let response: DeliveryCostsDto;
       const itemId: string = 'the_item_id';
 
       service.getCosts(itemId).subscribe((data) => (response = data));
