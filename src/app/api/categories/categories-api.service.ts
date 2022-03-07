@@ -5,10 +5,12 @@ import { CategoriesFilterOption } from '@public/shared/components/filters/compon
 import { CategoryResponse } from '@core/category/category-response.interface';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { CategoryWithPresentation } from '@core/category/categories-tree-response.interface';
 
 @Injectable()
 export class CategoriesApiService {
   private searchCategories: CategoriesFilterOption[];
+  private categoriesTree: CategoryWithPresentation[];
 
   constructor(private categoriesHttpService: CategoriesHttpService) {}
 
@@ -31,5 +33,18 @@ export class CategoriesApiService {
         return mapCategoriesToUploadCategories(categories);
       })
     );
+  }
+
+  public getCategoriesWithPresentation(): Observable<CategoryWithPresentation[]> {
+    if (this.categoriesTree) {
+      return of(this.categoriesTree);
+    } else {
+      return this.categoriesHttpService.getCategoriesWithPresentation().pipe(
+        map((response) => {
+          return response.categories;
+        }),
+        tap((categories) => (this.categoriesTree = categories))
+      );
+    }
   }
 }

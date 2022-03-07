@@ -5,11 +5,14 @@ import { CategoriesHttpService } from './http/categories-http.service';
 import { CategoriesApiService } from './categories-api.service';
 import {
   categoriesFixture,
+  categoriesWithPresentationResponseFixture,
+  mappedCategoriesWithPresentationFixture,
   mappedSearchCategoriesFixture,
   mappedUploadCategoriesFixture,
 } from '@api/fixtures/categories/categories.fixtures';
 import { CategoriesFilterOption } from '@public/shared/components/filters/components/categories-filter/interfaces/categories-filter-option.interface';
 import { CategoryResponse } from '@core/category/category-response.interface';
+import { CategoryWithPresentation } from '@core/category/categories-tree-response.interface';
 
 describe('CategoriesApiService', () => {
   let service: CategoriesApiService;
@@ -51,6 +54,20 @@ describe('CategoriesApiService', () => {
       expect(httpService.getCategories).toHaveBeenCalledTimes(1);
       expect(httpService.getCategories).toHaveBeenCalledWith('upload');
       expect(response).toEqual(mappedUploadCategoriesFixture);
+    });
+  });
+
+  describe('when asked to retrieve categories with presentation', () => {
+    it('should return domain ategories with presentation', () => {
+      spyOn(httpService, 'getCategoriesWithPresentation').and.returnValue(of(categoriesWithPresentationResponseFixture));
+      let response: CategoryWithPresentation[];
+
+      service.getCategoriesWithPresentation().subscribe((res: CategoryWithPresentation[]) => {
+        response = res;
+      });
+
+      expect(httpService.getCategoriesWithPresentation).toHaveBeenCalledTimes(1);
+      expect(response).toEqual(mappedCategoriesWithPresentationFixture);
     });
   });
 });
