@@ -1,7 +1,7 @@
 import { Notification } from '@api/core/model/notification/notification.interface';
 import { NOTIFICATION_VARIANT } from '@private/features/inbox/core/enums/notification-variant.enum';
 
-export const mappedNotification: Notification[] = [
+export const mappedNotifications: Notification[] = [
   {
     date: new Date('2022-03-24T16:12:03.000Z'),
     description: 'Pinned pinned pinned',
