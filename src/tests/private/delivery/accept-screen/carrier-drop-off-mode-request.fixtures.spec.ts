@@ -37,7 +37,11 @@ export const MOCK_CARRIER_ONE_EURO_COST: DropOffModeRequest = {
 export const MOCK_CARRIER_HPU_WITH_SCHEDULE_DEFINED: DropOffModeRequest = {
   type: CARRIER_DROP_OFF_MODE.HOME_PICK_UP,
   icon: 'http://prod-delivery-resources.wallapop.com/Seur.png',
-  postOfficeDetails: null,
+  postOfficeDetails: {
+    carrier: POST_OFFICE_CARRIER.SEUR,
+    lastAddressUsed: null,
+    selectionRequired: false,
+  },
   sellerCosts: mapAmountAndCurrenyToMoney({ amount: 2.25, currency: 'EUR' }),
   acceptEndpoint: '/api/v3/delivery/seller/requests/ad39c2dd-7632-4354-ae95-fd324065038d/accept/home-pickup',
   restrictions:

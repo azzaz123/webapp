@@ -7,7 +7,7 @@ import { ItemPlace } from '@core/geolocation/geolocation-response.interface';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { Location } from '@api/core/model';
-import { LocationWithRatio } from '@api/core/model/location/location';
+import { LocationWithRadius } from '@api/core/model/location/location';
 
 export const HALF_SECOND_IN_MS: number = 500;
 
@@ -21,7 +21,7 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   @Input() mapCenterCoordinates: Location;
   @Input() mapMarkers: Location[] = [];
 
-  @Output() mapViewChangeEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
+  @Output() mapViewChangeEnd: EventEmitter<LocationWithRadius> = new EventEmitter();
   @Output() tapMarker: EventEmitter<Location> = new EventEmitter();
   @Output() tapMap: EventEmitter<void> = new EventEmitter();
 
@@ -45,10 +45,6 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  get selectedSuggestion$(): Observable<string> {
-    return this.selectedSuggestionSubject.asObservable();
-  }
-
   public resetSearchQuery(): void {
     this.searchLocationForm.controls.searchLocation.reset();
   }
@@ -63,7 +59,6 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
   public onSelectLocationSuggestion(): Observable<LabeledSearchLocation> {
     return this.selectedSuggestion$.pipe(
       filter((locationName) => !!locationName),
-      distinctUntilChanged(),
       switchMap((locationName: string) => this.getLatitudeAndLongitudeFromLocationName(locationName))
     );
   }
@@ -80,7 +75,7 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
     this.tapMarker.emit(tappedMarker);
   }
 
-  public onMapViewChangeEnd(centerCoordinatesWithRadius: LocationWithRatio): void {
+  public onMapViewChangeEnd(centerCoordinatesWithRadius: LocationWithRadius): void {
     this.mapViewChangeEnd.emit(centerCoordinatesWithRadius);
   }
 
@@ -126,5 +121,9 @@ export class SearchableMovableMapComponent implements OnInit, OnDestroy {
       longitude: `${coordinate.longitude}`,
       label: `${coordinate.name}`,
     };
+  }
+
+  private get selectedSuggestion$(): Observable<string> {
+    return this.selectedSuggestionSubject.asObservable();
   }
 }

@@ -134,9 +134,9 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  public initForm(cache: boolean = true): void {
+  public initForm(): void {
     this.deliveryAddressService
-      .get(cache)
+      .get(false)
       .subscribe(
         (deliveryAddress: DeliveryAddressApi) => {
           if (deliveryAddress) {

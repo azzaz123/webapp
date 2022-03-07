@@ -11,21 +11,16 @@ import {
   LOCALE_ID,
   OnDestroy,
   OnChanges,
+  SimpleChanges,
 } from '@angular/core';
-import { Location, LocationWithRatio } from '@api/core/model';
+import { Location, LocationWithRadius } from '@api/core/model';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { DEFAULT_LOCATIONS } from '@public/features/search/core/services/constants/default-locations';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
 import { HereMapsService } from '@shared/geolocation/here-maps/here-maps.service';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import {
-  STANDARD_ICON,
-  SELECTED_ICON,
-  METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL,
-  HALF_CIRCUMFERENCE_DEGREES,
-  DEFAULT_VALUE_ZOOM,
-} from './constants/map.constants';
+import { STANDARD_ICON, SELECTED_ICON, DEFAULT_VALUE_ZOOM, getRadiusInKm } from './constants/map.constants';
 import { MARKER_STATUS } from './constants/marker-status.enum';
 
 @Component({
@@ -38,7 +33,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   @Input() centerCoordinates: Location;
   @Input() markers: Location[] = [];
 
-  @Output() mapViewChangeEnd: EventEmitter<LocationWithRatio> = new EventEmitter();
+  @Output() mapViewChangeEnd: EventEmitter<LocationWithRadius> = new EventEmitter();
   @Output() tapMarker: EventEmitter<Location> = new EventEmitter();
   @Output() tapMap: EventEmitter<void> = new EventEmitter();
   @ViewChild('map', { static: true })
@@ -49,6 +44,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
   private group: H.map.Group;
   private standardIcon: H.map.Icon;
   private mapSubscription: Subscription = new Subscription();
+  private selectedMarker$: BehaviorSubject<Location> = new BehaviorSubject(null);
 
   constructor(@Inject(LOCALE_ID) private locale: APP_LOCALE, private hereMapsService: HereMapsService) {}
 
@@ -57,10 +53,12 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     this.initHereMaps();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.map) {
-      this.map.setCenter({ lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude });
-      this.map.setZoom(DEFAULT_VALUE_ZOOM);
+      if (changes.centerCoordinates && !changes.centerCoordinates.firstChange) {
+        this.map.setCenter({ lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude });
+        this.map.setZoom(DEFAULT_VALUE_ZOOM);
+      }
       this.addGroupMarker(this.map);
     }
   }
@@ -91,7 +89,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
       this.mapViewChangeEnd.emit({
         latitude: updatedLocation.lat,
         longitude: updatedLocation.lng,
-        ratioInKm: this.getRadiusInKm(updatedZoom, updatedLocation.lat),
+        radiusInKm: getRadiusInKm(updatedZoom, updatedLocation.lat),
       });
     });
   }
@@ -110,6 +108,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
       const isNotAMarker: boolean = !(event.target instanceof H.map.Marker);
 
       if (isNotAMarker) {
+        this.selectedMarker$.next(null);
         this.tapMap.emit();
         this.group.getObjects().forEach((marker: H.map.Marker) => {
           marker.setIcon(this.standardIcon), marker.setData({ status: MARKER_STATUS.NON_SELECTED });
@@ -118,18 +117,21 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     });
   }
 
-  private getRadiusInKm(zoom: number, latitude: number): number {
-    return Math.round(
-      (METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL * Math.cos((latitude * Math.PI) / HALF_CIRCUMFERENCE_DEGREES)) / Math.pow(2, zoom)
-    );
-  }
-
   private addMarkers(): void {
     this.markers.forEach((marker: Location) => {
       const coordinate: H.geo.IPoint = { lng: marker.longitude, lat: marker.latitude };
       const standardMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: this.standardIcon });
-      this.setMarkerSelection(standardMarker);
-      this.group.addObject(standardMarker);
+      const selectedMarker: H.map.Marker = new H.map.Marker(coordinate, { icon: new H.map.Icon(SELECTED_ICON) });
+      const isMarkerSelected: boolean =
+        this.selectedMarker$.value?.latitude === coordinate.lat && this.selectedMarker$.value?.longitude === coordinate.lng;
+
+      if (isMarkerSelected) {
+        selectedMarker.setData({ status: MARKER_STATUS.SELECTED });
+        this.addMarkerToGroup(selectedMarker);
+      } else {
+        standardMarker.setData({ status: MARKER_STATUS.NON_SELECTED });
+        this.addMarkerToGroup(standardMarker);
+      }
     });
   }
 
@@ -147,9 +149,13 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
     );
   }
 
+  private addMarkerToGroup(marker: H.map.Marker): void {
+    this.setMarkerSelection(marker);
+    this.group.addObject(marker);
+  }
+
   private setMarkerSelection(marker: H.map.Marker): void {
     const selectedIcon: H.map.Icon = new H.map.Icon(SELECTED_ICON);
-    marker.setData({ status: MARKER_STATUS.NON_SELECTED });
 
     marker.addEventListener('tap', (event: H.util.Event) => {
       this.emitLocationOnTapMarker(event);
@@ -166,7 +172,9 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
 
   private emitLocationOnTapMarker(event: H.util.Event): void {
     const currentLocation: H.geo.IPoint = event.target.b;
-    this.tapMarker.emit({ latitude: currentLocation.lat, longitude: currentLocation.lng });
+    const locationCoordinates: Location = { latitude: currentLocation.lat, longitude: currentLocation.lng };
+    this.selectedMarker$.next(locationCoordinates);
+    this.tapMarker.emit(locationCoordinates);
   }
 
   private setAllOtherMarkersToNonSelected(currentMarker: H.map.Marker): void {

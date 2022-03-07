@@ -214,6 +214,11 @@ describe('DeliveryAddressComponent', () => {
           component.initForm();
         });
 
+        it('should request the address without cache activated', () => {
+          expect(deliveryAddressService.get).toHaveBeenCalledTimes(1);
+          expect(deliveryAddressService.get).toHaveBeenCalledWith(false);
+        });
+
         it('should prepare the form', () => {
           expect(component.isNewForm).toBe(false);
           expect(component.formComponent.initFormControl).toHaveBeenCalled();
@@ -260,6 +265,11 @@ describe('DeliveryAddressComponent', () => {
           component.initForm();
         });
 
+        it('should request the address without cache activated', () => {
+          expect(deliveryAddressService.get).toHaveBeenCalledTimes(1);
+          expect(deliveryAddressService.get).toHaveBeenCalledWith(false);
+        });
+
         it('should prepare the form...', () => {
           expect(component.isNewForm).toBe(true);
           expect(component.formComponent.initFormControl).toHaveBeenCalled();
@@ -301,6 +311,11 @@ describe('DeliveryAddressComponent', () => {
 
         component.ngOnInit();
         component.initForm();
+      });
+
+      it('should request the address without cache activated', () => {
+        expect(deliveryAddressService.get).toHaveBeenCalledTimes(1);
+        expect(deliveryAddressService.get).toHaveBeenCalledWith(false);
       });
 
       it('should prepare the form...', () => {

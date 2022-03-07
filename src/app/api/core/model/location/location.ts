@@ -3,6 +3,6 @@ export interface Location {
   longitude: number;
 }
 
-export interface LocationWithRatio extends Location {
-  ratioInKm: number;
+export interface LocationWithRadius extends Location {
+  radiusInKm: number;
 }
