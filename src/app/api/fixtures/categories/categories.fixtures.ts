@@ -1,4 +1,5 @@
-import { CategoryDto } from '@api/categories/dtos';
+import { CategoriesWithPresentationResponseDto, CategoryDto, CategoryWithPresentationDto } from '@api/categories/dtos';
+import { CategoryWithPresentation } from '@core/category/categories-tree-response.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryResponse } from '@core/category/category-response.interface';
 import { CATEGORY_ICONS } from '@public/shared/components/filters/components/categories-filter/data/category_options';
@@ -122,5 +123,97 @@ export const mappedSearchCategoriesFixture: CategoriesFilterOption[] = [
     value: CATEGORY_IDS.FASHION_ACCESSORIES.toString(),
     label: 'Moda y Accesorios',
     icon: CATEGORY_ICONS.find((categoryIcon) => categoryIcon.id === 't-shirt'),
+  },
+];
+
+export const categoriesWithPresentationFixture: CategoryWithPresentationDto[] = [
+  {
+    id: CATEGORY_IDS.CAR,
+    name: 'Coches',
+    presentation: {
+      image_url: '',
+      background_color: '',
+      title_color: '',
+    },
+    subcategories: [],
+  },
+  {
+    id: CATEGORY_IDS.FASHION_ACCESSORIES,
+    name: 'Fashion',
+    presentation: {
+      image_url: '',
+      background_color: '',
+      title_color: '',
+    },
+    subcategories: [
+      {
+        id: CATEGORY_IDS.FASHION_ACCESSORIES + 1,
+        name: 'Fashion-1',
+        presentation: {
+          image_url: '',
+          background_color: '',
+          title_color: '',
+        },
+        subcategories: [],
+      },
+      {
+        id: CATEGORY_IDS.FASHION_ACCESSORIES + 2,
+        name: 'Fashion-2',
+        presentation: {
+          image_url: '',
+          background_color: '',
+          title_color: '',
+        },
+        subcategories: [],
+      },
+    ],
+  },
+];
+
+export const categoriesWithPresentationResponseFixture: CategoriesWithPresentationResponseDto = {
+  categories: categoriesWithPresentationFixture,
+};
+
+export const mappedCategoriesWithPresentationFixture: CategoryWithPresentation[] = [
+  {
+    id: CATEGORY_IDS.CAR,
+    name: 'Coches',
+    presentation: {
+      image_url: '',
+      background_color: '',
+      title_color: '',
+    },
+    subcategories: [],
+  },
+  {
+    id: CATEGORY_IDS.FASHION_ACCESSORIES,
+    name: 'Fashion',
+    presentation: {
+      image_url: '',
+      background_color: '',
+      title_color: '',
+    },
+    subcategories: [
+      {
+        id: CATEGORY_IDS.FASHION_ACCESSORIES + 1,
+        name: 'Fashion-1',
+        presentation: {
+          image_url: '',
+          background_color: '',
+          title_color: '',
+        },
+        subcategories: [],
+      },
+      {
+        id: CATEGORY_IDS.FASHION_ACCESSORIES + 2,
+        name: 'Fashion-2',
+        presentation: {
+          image_url: '',
+          background_color: '',
+          title_color: '',
+        },
+        subcategories: [],
+      },
+    ],
   },
 ];
