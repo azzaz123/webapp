@@ -60,8 +60,8 @@ describe('AcceptScreenStoreService', () => {
       service.properties$.subscribe((newProperties: AcceptScreenProperties) => {
         expectedAcceptScreenProperties = newProperties;
       });
-      service.deliveryPickUpDay$.subscribe((day: string) => {
-        expectedDeliveryPickUpDay = day;
+      service.carrierSelected$.subscribe((carrier: AcceptScreenCarrier) => {
+        expectedDeliveryPickUpDay = carrier.deliveryPickUpDay;
       });
 
       service.initialize(MOCK_REQUEST_ID);

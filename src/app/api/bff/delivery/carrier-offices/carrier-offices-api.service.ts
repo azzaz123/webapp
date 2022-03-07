@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { CarrierOfficesHttpService } from './http/carrier-offices-http.service';
 import { mapCarrierDomainToDto } from './mappers/requests/carrier-offices.mapper';
 import { mapCarrierOfficeAddressesDtoToCarrierOfficeInfo } from './mappers/responses/carrier-office-info.mapper';
+import { LocationWithRadius } from '@api/core/model/location/location';
 
 @Injectable({
   providedIn: 'root',
@@ -13,14 +14,14 @@ import { mapCarrierOfficeAddressesDtoToCarrierOfficeInfo } from './mappers/respo
 export class CarrierOfficesApiService {
   constructor(private carrierOfficesHttpService: CarrierOfficesHttpService) {}
 
-  public getCarrierOfficeAddresses(
-    latitude: number,
-    longitude: number,
-    radiusKm: number,
-    carrier: POST_OFFICE_CARRIER
-  ): Observable<CarrierOfficeInfo[]> {
+  public getCarrierOfficeAddresses(locationWithRadius: LocationWithRadius, carrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
     return this.carrierOfficesHttpService
-      .getCarrierOfficeAddresses(latitude, longitude, radiusKm, mapCarrierDomainToDto[carrier])
+      .getCarrierOfficeAddresses(
+        locationWithRadius.latitude,
+        locationWithRadius.longitude,
+        locationWithRadius.radiusInKm,
+        mapCarrierDomainToDto[carrier]
+      )
       .pipe(map(mapCarrierOfficeAddressesDtoToCarrierOfficeInfo));
   }
 }
