@@ -8,6 +8,9 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { of } from 'rxjs';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
+import { ButtonModule } from '@shared/button/button.module';
+import { By } from '@angular/platform-browser';
+import { ButtonComponent } from '@shared/button/button.component';
 
 describe('StripeCardElementComponent', () => {
   let component: StripeCardElementComponent;
@@ -19,7 +22,7 @@ describe('StripeCardElementComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [StripeCardElementComponent],
+        declarations: [StripeCardElementComponent, ButtonComponent],
         imports: [ReactiveFormsModule, FormsModule],
         providers: [
           I18nService,
@@ -178,6 +181,30 @@ describe('StripeCardElementComponent', () => {
       const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardInputErrorSelector);
       expect(stripeCardError).toBeFalsy();
       expect(stripeCardInputError).toBeFalsy();
+    });
+  });
+  describe('Bump button', () => {
+    beforeEach(() => {
+      component.type = 'bump';
+      component.paymentError = null;
+      fixture.detectChanges();
+    });
+    it('should show button', () => {
+      const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+      expect(button.textContent).toEqual(
+        $localize`:@@highlight_item_view_pro_user_purchase_summary_highlight_button_web_specific:Highlight`
+      );
+    });
+    describe('And click button', () => {
+      it('should emit click', () => {
+        spyOn(component, 'onSubmit').and.callThrough();
+        const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+        button.click();
+
+        expect(component.onSubmit).toHaveBeenCalled();
+      });
     });
   });
 });

@@ -79,13 +79,14 @@
       <tsl-stripe-card-element
         *ngIf="isNewCard"
         [type]="'bump'"
-        (stripeCardToken)="checkout($event)"
+        (stripeCardToken)="checkout()"
         (stripeCard)="setCardInfo($event)"
+        (handleClickUseSavedCard)="removeNewCard()"
         [loading]="loading"
       ></tsl-stripe-card-element>
     </div>
     <tsl-button
-      *ngIf="!isNewCard"
+      *ngIf="!isNewCard || totalToPay === 0"
       [disabled]="loading"
       [loading]="loading"
       (click)="checkout()"
