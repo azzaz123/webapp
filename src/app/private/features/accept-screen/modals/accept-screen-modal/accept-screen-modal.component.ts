@@ -14,13 +14,11 @@ import { DeliveryCountriesService } from '@private/features/delivery/services/co
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { StepperComponent } from '@shared/stepper/stepper.component';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
-import { AcceptScreenProperties } from '../../interfaces';
+import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
-import { take } from 'rxjs/operators';
-import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery/carrier-drop-off-mode.type';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -33,17 +31,19 @@ export class AcceptScreenModalComponent implements OnInit {
   public requestId: string;
   public acceptScreenProperties$: Observable<AcceptScreenProperties> = this.acceptScreenStoreService.properties$;
   public acceptScreenCountries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
-  public deliveryPickUpDay$: Observable<string> = this.acceptScreenStoreService.deliveryPickUpDay$;
+  public carrierSelected$: Observable<AcceptScreenCarrier> = this.acceptScreenStoreService.carrierSelected$;
   public carrierSelectedIndex$: Observable<number> = this.acceptScreenStoreService.carrierSelectedIndex$;
   public ACCEPT_SCREEN_HELP_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.ACCEPT_SCREEN);
 
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
-  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.MODAL_DIALOG;
+  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
 
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
+  private readonly deliveryMapSlideId: number = ACCEPT_SCREEN_STEPS.MAP;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
+  private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private acceptScreenStoreService: AcceptScreenStoreService,
@@ -69,8 +69,17 @@ export class AcceptScreenModalComponent implements OnInit {
     this.goToStep(this.deliveryAddressSlideId);
   }
 
-  public goToAcceptScreen(): void {
-    this.goToStep(this.acceptScreenSlideId);
+  public goToDeliveryAddressFromMap(): void {
+    this.isMapPreviousPage$.next(true);
+    this.goToStep(this.deliveryAddressSlideId);
+  }
+
+  public goToAcceptScreenOrDeliveryMap(): void {
+    if (this.isMapPreviousPage$.value) {
+      this.goToDeliveryMap();
+    } else {
+      this.goToStep(this.acceptScreenSlideId);
+    }
     this.acceptScreenStoreService.update(this.requestId);
   }
 
@@ -106,6 +115,11 @@ export class AcceptScreenModalComponent implements OnInit {
       () => this.redirectToTTSAndCloseModal(),
       () => this.showDefaultError()
     );
+  }
+
+  private goToDeliveryMap(): void {
+    this.goToStep(this.deliveryMapSlideId);
+    this.isMapPreviousPage$.next(false);
   }
 
   private rejectRequest(): void {

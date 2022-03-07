@@ -1,4 +1,3 @@
-import { SearchableMovableMapModule } from '@private/shared/searchable-movable-map/searchable-movable-map.module';
 import { NgModule } from '@angular/core';
 import { acceptScreenRoutedComponents, AcceptScreenRoutingModule } from './accept-screen.routing.module';
 import { CommonModule } from '@angular/common';
@@ -11,8 +10,8 @@ import { ButtonModule } from '@shared/button/button.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { DeliveryMapModule } from '@private/shared/delivery-map/delivery-map.module';
 import { DeliveryPreferenceScheduleComponent } from './components/steps/delivery-preference-schedule/delivery-preference-schedule.component';
-import { MovableMapModule } from '@private/shared/movable-map/movable-map.module';
 import { FormsModule } from '@angular/forms';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -27,10 +26,9 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
     SvgIconModule,
     CustomCurrencyModule,
     DeliveryRadioSelectorModule,
-    MovableMapModule,
+    DeliveryMapModule,
     FormsModule,
     NgbButtonsModule,
-    SearchableMovableMapModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent, DeliveryPreferenceScheduleComponent],
 })

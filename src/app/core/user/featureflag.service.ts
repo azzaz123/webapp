@@ -19,11 +19,6 @@ export class FeatureFlagService {
 
   constructor(private http: HttpClient, private permissionService: NgxPermissionsService) {}
 
-  // FIXME: Remove when enabling delivery third voices in chat
-  public static getStaticDeliveryFeatureFlag(): boolean {
-    return !!localStorage.getItem('experimentalFeatures');
-  }
-
   public getFlag(name: FEATURE_FLAGS_ENUM, cache = true): Observable<boolean> {
     const storedFeatureFlag = this.storedFeatureFlags.find((sff) => sff.name === name);
 
@@ -114,7 +109,7 @@ export class FeatureFlagService {
   }
 
   private getDeliveryFeatureFlag(): boolean {
-    return isDevMode() || this.isExperimentalFeaturesEnabled();
+    return this.isExperimentalFeaturesEnabled();
   }
 
   private checkPermission(featureFlagName: FEATURE_FLAGS_ENUM, isFlagActive: boolean): void {
