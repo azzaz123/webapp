@@ -105,6 +105,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.beta.ts"
+                },
+                {
+                  "replace": "node_modules/web-components/dist/category-cards/category-cards.js",
+                  "with": "node_modules/web-components/dist/category-cards/category-cards.beta.js"
                 }
               ],
               "optimization": true,
@@ -135,6 +139,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "node_modules/web-components/dist/category-cards/category-cards.js",
+                  "with": "node_modules/web-components/dist/category-cards/category-cards.prod.js"
                 }
               ],
               "optimization": true,
