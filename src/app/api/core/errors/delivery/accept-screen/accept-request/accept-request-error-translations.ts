@@ -1,0 +1,18 @@
+export const AcceptRequestErrorTranslations = {
+  NON_PURCHASABLE_ITEM: $localize`:@@accept_view_seller_all_all_snackbar_item_cannot_be_purchased_error:Sorry, this product is no longer available for sale.`,
+  SELLER_ADDRESS_NOT_FOUND: $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`,
+  ALREADY_IN_PROGRESS_TRANSACTION: $localize`:@@accept_view_seller_all_all_snackbar_transaction_already_in_progress_error:You can't accept this offer because you already accepted another one for this product.`,
+  SELLER_BLOCK_FOR_FRAUD: $localize`:@@accept_view_seller_all_all_snackbar_seller_blocked_by_fraud_error:You cannot sell it, we have blocked you for breaking our rules of coexistence.`,
+  BUYER_BLOCK_FOR_FRAUD: $localize`:@@accept_view_seller_all_all_snackbar_buyer_blocked_by_fraud_error:The buyer is blocked for breaking our rules of coexistence. Sorry for the inconvenience.`,
+  INVALID_CARD: $localize`:@@accept_view_seller_all_all_snackbar_buyer_credit_card_invalid_error:The buyer's bank card is inactive. Please ask them to add a valid card.`,
+  SELLER_BLOCKED_BY_BUYER: $localize`:@@accept_view_seller_all_all_snackbar_buyer_banner_by_seller_error:Sorry, you can't accept the offer as you've blocked the buyer.`,
+  BUYER_BLOCKED_BY_SELLER: $localize`:@@accept_view_seller_all_all_snackbar_buyer_banner_by_seller_error:Sorry, you can't accept the offer as you've blocked the buyer.`,
+  SELLER_ADDRESS_NOT_ALLOWED: $localize`:@@accept_view_seller_all_all_snackbar_seller_post_code_not_allowed_error:Shipments can't be made from this address. We're very sorry!`,
+  REQUEST_NOT_FOUND: $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`,
+  POSTAL_CODE_NOT_FOUND: $localize`:@@accept_view_seller_all_all_snackbar_pending_sender_details_error:Please enter the sender address.`,
+  POSTAL_CODE_NOT_ALLOWED: $localize`:@@accept_view_seller_all_all_snackbar_seller_post_code_not_allowed_error:Shipments can't be made from this address. We're very sorry!`,
+  POSTAL_CODE_TEMPORARILY_RESTRICTED: $localize`:@@accept_view_seller_all_all_snackbar_seller_post_code_temporarily_not_allowed_error:Sorry, shipments can't be made from this address until further notice.`,
+  IS_NOT_PENDING_REQUEST: $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`,
+  CARRIER_ADDRESSES_DONT_MATCH: $localize`:@@accept_view_seller_po_all_snackbar_drop_off_point_missmatch_seller_address_country_error:Your address and the drop-off point must be in the same country.`,
+  NOT_SHIPPABLE_ITEM: $localize`:@@accept_view_seller_all_all_snackbar_non_shippable_item_error:Sorry, this item cannot be shipped because it exceeds the maximum weight allowed.`,
+};
