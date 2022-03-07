@@ -20,7 +20,7 @@ export const notificationsDtos: NotificationDto[] = [
     pinned: true,
     title: 'This is pinned!!!!!',
     updated: new Date('2022-03-24T16:12:03.000Z'),
-    url: null,
+    url: 'https://es.wallapop.com',
     viewed: false,
   },
   {
@@ -42,7 +42,7 @@ export const notificationsDtos: NotificationDto[] = [
     pinned: true,
     title: 'This is pinned!!!!!',
     updated: new Date('2022-03-24T16:12:03.000Z'),
-    url: null,
+    url: 'https://es.wallapop.com',
     viewed: false,
   },
 ];

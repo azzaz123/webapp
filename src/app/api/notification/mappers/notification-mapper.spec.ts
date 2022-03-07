@@ -18,7 +18,7 @@ describe('NotificationsMapper', () => {
 
   describe('mapNotificationFromBraze', () => {
     it('should map', () => {
-      const items = mapNotificationsFromBraze(notificationsDtos);
+      const items = mapNotificationsFromBraze([notificationsDtos[0]]);
       expect(items).toEqual(mappedNotifications);
     });
   });

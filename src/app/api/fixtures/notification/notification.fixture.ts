@@ -10,7 +10,7 @@ export const mappedNotifications: Notification[] = [
     isRead: false,
     productStatus: undefined,
     title: 'This is pinned!!!!!',
-    url: null,
+    url: 'https://es.wallapop.com',
     variant: NOTIFICATION_VARIANT.PINNED,
     id: 'NjIxNTBhZjg2OTlkYTYyMjhjYWZlMDViXyRfY2M9ODk0OTFiMzYtNjA2Yy01NjJkLThmYmItMTBhNmI5Yjc4N2IxJm12PTYyMTUwYWY4Njk5ZGE2MjI4Y2FmZTA1NiZwaT1jbXA=',
   },
