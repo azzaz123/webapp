@@ -21,7 +21,7 @@ import { Observable, Subscription } from 'rxjs';
   selector: 'tsl-payview-modal',
   templateUrl: './payview-modal.component.html',
   styleUrls: ['./payview-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PayviewService, PayviewStateManagementService],
 })
 export class PayviewModalComponent implements OnDestroy, OnInit {

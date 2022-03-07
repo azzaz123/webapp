@@ -39,7 +39,6 @@
       </ng-template>
       <ng-template step>
         <tsl-delivery-address
-          *ngIf="countries$ | async"
           [showTitle]="false"
           [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
           (addressSaveSucceded)="closeDeliveryEditor()"
