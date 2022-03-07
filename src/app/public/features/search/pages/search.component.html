@@ -3,11 +3,13 @@
   tslAdSlotGroup
   tslInfiniteScroll
   [infiniteScrollDisabled]="(infiniteScrollDisabled$ | async) || (isLoadingPaginationResults$ | async)"
-  (scrolled)="scrolled()"
->
+  (scrolled)="scrolled()">
   <div class="Search__filters w-100" [class.Search__filters--opened]="filterOpened">
     <tsl-filters-wrapper (filterOpened)="handleFilterOpened($event)"></tsl-filters-wrapper>
-    <tsl-category-cards></tsl-category-cards>
+    <tsl-category-cards
+    *ngIf="categoryId$ | async"
+    [categoryId]="categoryId$ | async" 
+    [objectTypeId]="objectTypeId$ | async"></tsl-category-cards>
 
     <tsl-sort-filter [value]="sortBy$ | async"></tsl-sort-filter>
   </div>

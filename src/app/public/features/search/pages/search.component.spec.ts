@@ -60,6 +60,7 @@ import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
+import { CategoryCardsStubComponent } from '@fixtures/web-components/category-cards.stub';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -139,6 +140,7 @@ describe('SearchComponent', () => {
         AdSlotShoppingComponentStub,
         ItemCardListComponentStub,
         InfiniteScrollStubDirective,
+        CategoryCardsStubComponent,
       ],
       imports: [
         FiltersWrapperModule,
@@ -827,6 +829,88 @@ describe('SearchComponent', () => {
       const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
 
       expect(infoBubbleElement).toBeFalsy();
+    });
+  });
+
+  describe('when filter parameters change', () => {
+    const categoryCardsSelector = 'tsl-category-cards';
+
+    beforeEach(() => {
+      component.ngOnInit();
+    });
+
+    describe('and have category', () => {
+      const categoryFilter: FilterParameter = {
+        key: FILTER_QUERY_PARAM_KEY.categoryId,
+        value: '1234',
+      };
+
+      beforeEach(() => {
+        parametersSubject.next([categoryFilter]);
+      });
+
+      it('categoryId should be updated', (done) => {
+        component.categoryId$.subscribe((categoryId) => {
+          expect(categoryId).toEqual(categoryFilter.value);
+          done();
+        });
+      });
+
+      it('categories slider should be visible', () => {
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeTruthy();
+      });
+    });
+
+    describe('and not have category', () => {
+      beforeEach(() => {
+        parametersSubject.next([]);
+      });
+
+      it('categoryId should be updated', (done) => {
+        component.categoryId$.subscribe((categoryId) => {
+          expect(categoryId).toBeUndefined();
+          done();
+        });
+      });
+
+      it('categories slider should NOT be visible', () => {
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
+      });
+    });
+
+    describe('and have object type', () => {
+      const objectTypeFilter: FilterParameter = {
+        key: FILTER_QUERY_PARAM_KEY.objectType,
+        value: '1234',
+      };
+
+      beforeEach(() => {
+        parametersSubject.next([objectTypeFilter]);
+      });
+
+      it('objectTypeId should be updated', (done) => {
+        component.objectTypeId$.subscribe((objectTypeId) => {
+          expect(objectTypeId).toEqual(objectTypeFilter.value);
+          done();
+        });
+      });
+    });
+
+    describe('and not have object type', () => {
+      beforeEach(() => {
+        parametersSubject.next([]);
+      });
+
+      it('objectTypeId should be updated', (done) => {
+        component.objectTypeId$.subscribe((objectTypeId) => {
+          expect(objectTypeId).toBeUndefined();
+          done();
+        });
+      });
     });
   });
 });

@@ -13,7 +13,7 @@ import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
-import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription, of } from 'rxjs';
 import { delay, distinctUntilChanged, filter, skip, map, tap, pairwise } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import { AD_SHOPPING_PUBLIC_SEARCH, AdShoppingPageOptionPublicSearchFactory } from '../core/ads/shopping/search-ads-shopping.config';
@@ -106,6 +106,9 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
   public infoBubbleText: string;
   public showInfoBubble = false;
 
+  public categoryId$: Observable<string>;
+  public objectTypeId$: Observable<string>;
+
   @HostListener('window:scroll', ['$event'])
   @debounce(500)
   onWindowScroll() {
@@ -181,6 +184,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     );
 
     this.manageKeywordChange();
+    this.filterParameterStoreListener();
   }
 
   public onAttach(): void {
@@ -226,6 +230,21 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public setResetSearchId(value: boolean): void {
     this.resetSearchId = value;
+  }
+
+  private filterParameterStoreListener(): void {
+    this.subscription.add(
+      this.filterParameterStore.parameters$
+        .pipe(
+          map((params) =>
+            params.filter((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId || param.key === FILTER_QUERY_PARAM_KEY.objectType)
+          )
+        )
+        .subscribe((filterParameters: FilterParameter[]) => {
+          this.categoryId$ = of(filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value);
+          this.objectTypeId$ = of(filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.objectType)?.value);
+        })
+    );
   }
 
   private manageKeywordChange(): void {
