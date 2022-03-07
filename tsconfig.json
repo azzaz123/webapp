@@ -47,7 +47,10 @@
       ],
       "@configs/*": [
         "configs/*"
-      ]
+      ],
+      "@wallapop-web-components/*": [
+        "scripts/wallapop-web-components/*"
+      ],
     },
     "outDir": "./dist/out-tsc",
     "module": "es2020",
