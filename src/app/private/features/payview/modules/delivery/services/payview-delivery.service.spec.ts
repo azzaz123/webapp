@@ -2,7 +2,7 @@ import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/deli
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
-import { PayviewDeliveryEventType } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.interface';
+import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 
 describe('PayviewDeliveryService', () => {
@@ -21,10 +21,13 @@ describe('PayviewDeliveryService', () => {
     it('should send a notification to subscribers', fakeAsync(() => {
       let result: DeliveryBuyerDeliveryMethod;
       const expected = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.current;
-      const subscription = service.on(PayviewDeliveryEventType.DeliveryMethodSelected, (deliveryMethod: DeliveryBuyerDeliveryMethod) => {
-        subscription.unsubscribe();
-        result = deliveryMethod;
-      });
+      const subscription = service.on(
+        PAYVIEW_DELIVERY_EVENT_TYPE.DELIVERY_METHOD_SELECTED,
+        (deliveryMethod: DeliveryBuyerDeliveryMethod) => {
+          subscription.unsubscribe();
+          result = deliveryMethod;
+        }
+      );
 
       service.setDeliveryMethod(expected);
       tick();
@@ -37,7 +40,7 @@ describe('PayviewDeliveryService', () => {
     it('should send a notification to subscribers', fakeAsync(() => {
       let result: number = 0;
       const expected: number = 1;
-      const subscription = service.on(PayviewDeliveryEventType.OpenAddressScreen, () => {
+      const subscription = service.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, () => {
         subscription.unsubscribe();
         result++;
       });
@@ -53,7 +56,7 @@ describe('PayviewDeliveryService', () => {
     it('should send a notification to subscribers', fakeAsync(() => {
       let result: number = 0;
       const expected: number = 1;
-      const subscription = service.on(PayviewDeliveryEventType.OpenPickUpPointMap, () => {
+      const subscription = service.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {
         subscription.unsubscribe();
         result++;
       });

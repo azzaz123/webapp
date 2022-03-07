@@ -1,6 +1,6 @@
-export enum PayviewSteps {
-  Payview,
-  DeliveryAddress,
-  PickUpPointMap,
-  CreditCard,
+export enum PAYVIEW_STEPS {
+  PAYVIEW,
+  DELIVERY_ADDRESS,
+  PICK_UP_POINT_MAP,
+  CREDIT_CARD,
 }

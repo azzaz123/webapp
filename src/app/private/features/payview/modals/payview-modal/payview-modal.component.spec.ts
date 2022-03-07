@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -14,10 +14,12 @@ import { DeliveryCountriesService } from '@private/features/delivery/services/co
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { ItemService } from '@core/item/item.service';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
+import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-wallets-http.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
-import { PayviewDeliveryEventType } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.interface';
+import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
+import { PAYVIEW_STEPS } from '@private/features/payview/enums/payview-steps.enum';
 import { PayviewDeliveryHeaderComponent } from '@private/features/payview/modules/delivery/components/header/payview-delivery-header.component';
 import { PayviewDeliveryOverviewComponent } from '@private/features/payview/modules/delivery/components/overview/payview-delivery-overview.component';
 import { PayviewDeliveryPointComponent } from '@private/features/payview/modules/delivery/components/point/payview-delivery-point.component';
@@ -25,7 +27,6 @@ import { PayviewDeliveryPointsComponent } from '@private/features/payview/module
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
-import { PayviewSteps } from '@private/features/payview/enums/payview-steps.enum';
 import { PayviewSummaryCostDetailComponent } from '@private/features/payview/modules/summary/components/cost-detail/payview-summary-cost-detail.component';
 import { PayviewSummaryHeaderComponent } from '@private/features/payview/modules/summary/components/header/payview-summary-header.component';
 import { PayviewSummaryOverviewComponent } from '@private/features/payview/modules/summary/components/overview/payview-summary-overview.component';
@@ -53,13 +54,21 @@ class FakeComponent extends PayviewModalComponent {
   }
 }
 
+@Component({
+  selector: 'tsl-delivery-address',
+  template: '',
+})
+class FakeDeliveryAddressComponent {
+  @Input() showTitle;
+  @Input() whereUserComes;
+}
+
 describe('PayviewModalComponent', () => {
   const fakeHelpUrl: string = 'http://this_is_a_fake_help_url/';
   const fakeItemHash: string = 'This_is_a_fake_item_hash';
 
   const payviewModal: string = '.PayviewModal';
   const payviewModalCloseSelector: string = `${payviewModal}__close`;
-  const payviewModalDeliveryAddressSelector: string = `${payviewModal}__deliveryAddress`;
   const payviewModalHelpSelector: string = '#helpLink';
   const payviewModalSpinnerSelector: string = `${payviewModal}__spinner`;
   const payviewModalSummarySelector: string = `${payviewModal}__summary`;
@@ -80,6 +89,7 @@ describe('PayviewModalComponent', () => {
       declarations: [
         ButtonComponent,
         FakeComponent,
+        FakeDeliveryAddressComponent,
         PayviewDeliveryHeaderComponent,
         PayviewDeliveryOverviewComponent,
         PayviewDeliveryPointComponent,
@@ -102,6 +112,14 @@ describe('PayviewModalComponent', () => {
         },
         DeliveryAddressService,
         DeliveryAddressStoreService,
+        {
+          provide: DeliveryCountriesService,
+          useValue: {
+            getCountriesAsOptionsAndDefault() {
+              return of(MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT);
+            },
+          },
+        },
         ItemService,
         NgbActiveModal,
         PaymentsWalletsService,
@@ -190,7 +208,7 @@ describe('PayviewModalComponent', () => {
       });
 
       describe('WHEN the payview gets the state', () => {
-        beforeEach(() => {
+        beforeEach(fakeAsync(() => {
           jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
 
           fixture = TestBed.createComponent(FakeComponent);
@@ -198,8 +216,9 @@ describe('PayviewModalComponent', () => {
           debugElement = fixture.debugElement;
           component.itemHash = fakeItemHash;
 
+          tick();
           fixture.detectChanges();
-        });
+        }));
 
         it('should show the summary block', () => {
           const summaryBlock = debugElement.query(By.css(payviewModalSummarySelector));
@@ -213,26 +232,33 @@ describe('PayviewModalComponent', () => {
         }));
 
         it('should not show the delivery address', () => {
-          const deliveryAddressBlock = debugElement.query(By.css(payviewModalDeliveryAddressSelector));
+          const deliveryAddressComponent = debugElement.query(By.directive(FakeDeliveryAddressComponent));
 
-          expect(deliveryAddressBlock).toBeFalsy();
+          expect(deliveryAddressComponent).toBeFalsy();
         });
 
         describe('WHEN stepper is on the second step', () => {
           it('should show the address', () => {
-            component.stepper.goToStep(PayviewSteps.DeliveryAddress);
+            component.stepper.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
 
-            const deliveryAddressBlock = fixture.debugElement.query(By.css(payviewModalDeliveryAddressSelector));
-            expect(deliveryAddressBlock).toBeTruthy();
+            const deliveryAddressComponent = fixture.debugElement.query(By.directive(FakeDeliveryAddressComponent));
+            expect(deliveryAddressComponent).toBeTruthy();
+          });
+
+          it('should not show the payview', () => {
+            component.stepper.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
+
+            const deliveryAddressComponent = fixture.debugElement.query(By.css(payviewSummaryOverviewSelector));
+            expect(deliveryAddressComponent).toBeFalsy();
           });
         });
 
         describe('WHEN stepper is not on the second step', () => {
           it('should not show the address', () => {
-            component.stepper.goToStep(PayviewSteps.Payview);
+            component.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
 
-            const deliveryAddressBlock = fixture.debugElement.query(By.css(payviewModalDeliveryAddressSelector));
-            expect(deliveryAddressBlock).toBeFalsy();
+            const deliveryAddressComponent = fixture.debugElement.query(By.directive(FakeDeliveryAddressComponent));
+            expect(deliveryAddressComponent).toBeFalsy();
           });
         });
       });
@@ -247,7 +273,7 @@ describe('PayviewModalComponent', () => {
       it('should set the delivery method received', () => {
         let result: DeliveryBuyerDeliveryMethod;
         const subscription = payviewDeliveryService.on(
-          PayviewDeliveryEventType.DeliveryMethodSelected,
+          PAYVIEW_DELIVERY_EVENT_TYPE.DELIVERY_METHOD_SELECTED,
           (data: DeliveryBuyerDeliveryMethod) => {
             result = data;
           }
@@ -306,7 +332,7 @@ describe('PayviewModalComponent', () => {
         });
 
         it('should not show the delivery address component', () => {
-          const deliveryAddressComponent = debugElement.query(By.css(payviewModalDeliveryAddressSelector));
+          const deliveryAddressComponent = debugElement.query(By.directive(FakeDeliveryAddressComponent));
 
           expect(deliveryAddressComponent).toBeFalsy();
         });

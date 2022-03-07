@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { PayviewDeliveryEvent } from '@private/features/payview/modules/delivery/interfaces/payview-delivery-event.interface';
-import { PayviewDeliveryEventType } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.interface';
+import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
 
 import { filter, map } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
@@ -11,10 +11,7 @@ import { Subject, Subscription } from 'rxjs';
 export class PayviewDeliveryService {
   private deliveryMethodSubject: Subject<PayviewDeliveryEvent> = new Subject<PayviewDeliveryEvent>();
 
-  constructor() {}
-
-  // public on(eventType: PayviewDeliveryEventType, callback: (payload: DeliveryBuyerDeliveryMethod) => void): Subscription {
-  public on(eventType: PayviewDeliveryEventType, handler: (payload: DeliveryBuyerDeliveryMethod) => void): Subscription {
+  public on(eventType: PAYVIEW_DELIVERY_EVENT_TYPE, handler: (payload: DeliveryBuyerDeliveryMethod) => void): Subscription {
     return this.deliveryMethodSubject
       .pipe(
         filter((e: PayviewDeliveryEvent) => e.type === eventType),
@@ -26,18 +23,18 @@ export class PayviewDeliveryService {
   }
 
   public editAddress(): void {
-    this.deliveryMethodSubject.next(this.getDeliveryEvent(PayviewDeliveryEventType.OpenAddressScreen, null));
+    this.deliveryMethodSubject.next(this.getDeliveryEvent(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, null));
   }
 
   public editPickUpPoint(): void {
-    this.deliveryMethodSubject.next(this.getDeliveryEvent(PayviewDeliveryEventType.OpenPickUpPointMap, null));
+    this.deliveryMethodSubject.next(this.getDeliveryEvent(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, null));
   }
 
   public setDeliveryMethod(value: DeliveryBuyerDeliveryMethod): void {
-    this.deliveryMethodSubject.next(this.getDeliveryEvent(PayviewDeliveryEventType.DeliveryMethodSelected, value));
+    this.deliveryMethodSubject.next(this.getDeliveryEvent(PAYVIEW_DELIVERY_EVENT_TYPE.DELIVERY_METHOD_SELECTED, value));
   }
 
-  private getDeliveryEvent(type: PayviewDeliveryEventType, payload: DeliveryBuyerDeliveryMethod | null): PayviewDeliveryEvent {
+  private getDeliveryEvent(type: PAYVIEW_DELIVERY_EVENT_TYPE, payload: DeliveryBuyerDeliveryMethod | null): PayviewDeliveryEvent {
     return { type, payload };
   }
 }

@@ -28,24 +28,22 @@
     <tsl-svg-icon width="64" height="64" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
   </div>
   <div class="PayviewModal__scrollable">
-    <tsl-stepper *ngIf="payviewState$ | async">
+    <tsl-stepper *ngIf="payviewState$ | async as payviewState">
       <ng-template step>
-        <div class="PayviewModal__summary" *ngIf="payviewState$ | async as payviewState">
+        <div class="PayviewModal__summary">
           <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
         </div>
-        <div class="PayviewModal__delivery" *ngIf="payviewState$ | async as payviewState">
+        <div class="PayviewModal__delivery">
           <tsl-payview-delivery-overview [payviewState]="payviewState"></tsl-payview-delivery-overview>
         </div>
       </ng-template>
       <ng-template step>
-        <div class="PayviewModal__deliveryAddress">
-          <tsl-delivery-address
-            *ngIf="countries$ | async"
-            [showTitle]="false"
-            [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
-            (addressSaveSucceded)="closeDeliveryEditor()"
-          ></tsl-delivery-address>
-        </div>
+        <tsl-delivery-address
+          *ngIf="countries$ | async"
+          [showTitle]="false"
+          [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
+          (addressSaveSucceded)="closeDeliveryEditor()"
+        ></tsl-delivery-address>
       </ng-template>
     </tsl-stepper>
   </div>

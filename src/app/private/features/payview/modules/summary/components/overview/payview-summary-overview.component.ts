@@ -16,8 +16,6 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 export class PayviewSummaryOverviewComponent {
   @Input() public payviewState: PayviewState;
 
-  constructor() {}
-
   public get creditCard(): CreditCard {
     return this.payviewState.payment.card;
   }
