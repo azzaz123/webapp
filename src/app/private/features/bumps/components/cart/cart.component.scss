@@ -1,8 +1,5 @@
 @import '~style/common';
 
-$credit-total-height: 21px;
-$discounted-total-height: 30px;
-
 .Cart {
   background: $white;
   border-radius: $border-radius;
@@ -16,7 +13,7 @@ $discounted-total-height: 30px;
 
   &__title {
     font-size: $font-size-l;
-    line-height: 23px;
+    line-height: $line-height-ml;
     font-weight: $font-weight-chunky;
   }
 
@@ -44,37 +41,12 @@ $discounted-total-height: 30px;
     .price {
       font-size: $font-size-l;
     }
-    .with-credits & {
-      .price {
-        font-size: $font-size-m;
-      }
-    }
-  }
-
-  .credit,
-  .missing {
-    .label {
-      tsl-wallacoin {
-        vertical-align: sub;
-        margin-right: $spacing-xs;
-      }
-    }
   }
 
   .credit {
     color: $walla-main;
-    height: $credit-total-height;
     .price {
       font-size: $font-size-s;
-    }
-    .with-credits & {
-      font-size: $font-size-m;
-      .price {
-        font-size: $font-size-m;
-      }
-      .label span span {
-        font-size: $font-size-xs;
-      }
     }
   }
 
@@ -95,7 +67,7 @@ $discounted-total-height: 30px;
   &__list {
     &Description {
       color: $blue-grey-2;
-      font-size: 14px;
+      font-size: $font-size-s;
     }
   }
 

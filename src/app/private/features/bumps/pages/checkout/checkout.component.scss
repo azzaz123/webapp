@@ -5,10 +5,7 @@
     color: $blue-grey-1;
     position: absolute;
     tsl-svg-icon {
-      vertical-align: middle;
       margin-right: $spacing-ms;
-      width: 17px;
-      height: 17px;
     }
     &:hover {
       text-decoration: none;
@@ -45,7 +42,6 @@
   }
 
   &__cart {
-    width: 100%;
     @include media-breakpoint-up(lg) {
       max-width: 320px;
     }
