@@ -225,15 +225,17 @@ describe('StripeCardElementComponent', () => {
           component.type = 'bump';
           fixture.detectChanges();
         });
-        it('should emit click', () => {
+        it('should emit click', fakeAsync(() => {
           spyOn(component.stripeCardToken, 'emit').and.callThrough();
           const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
           button.click();
+          tick();
+          fixture.detectChanges();
 
           expect(component.stripeCardToken.emit).toHaveBeenCalledTimes(1);
           expect(component.stripeCardToken.emit).toHaveBeenCalledWith('123');
-        });
+        }));
         it('should not be disabled', () => {
           spyOn(component, 'onSubmit').and.callThrough();
           const buttonDisabled = fixture.debugElement.query(By.css('button[disabled]'));
