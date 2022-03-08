@@ -81,7 +81,7 @@ export class UserService {
     return this._user;
   }
 
-  get userSubject$(): Observable<User> {
+  get user$(): Observable<User> {
     return this._userSubject.asObservable();
   }
 
@@ -268,19 +268,21 @@ export class UserService {
     return this.http.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
   }
 
-  public initializeUser(): Observable<boolean> {
-    return this.getLoggedUserInformation().pipe(
-      tap((user) => {
-        this._user = user;
-        this._userSubject.next(user);
-        this.isProUserSubject.next(this.isPro);
-      }),
-      tap(() => this.getStoredIsClickedProSection()),
-      catchError((error) => {
-        this.logout(null);
-        return of(error);
-      })
-    );
+  public initializeUser(): Promise<User> {
+    return this.getLoggedUserInformation()
+      .pipe(
+        tap((user) => {
+          this._user = user;
+          this._userSubject.next(user);
+          this.isProUserSubject.next(this.isPro);
+        }),
+        tap(() => this.getStoredIsClickedProSection()),
+        catchError((error) => {
+          this.logout(null);
+          return of(error);
+        })
+      )
+      .toPromise();
   }
 
   //TODO: This is needed for the current subscriptions flow but this should handled in some other way when

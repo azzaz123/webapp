@@ -57,8 +57,7 @@ export function initializeAuthenticatedUserFactory(
 ): () => void {
   return () => {
     if (userService.isLogged) {
-      initializeAuthenticatedUserService.initialize();
-      return initializeAuthenticatedUserService.isInitializationComplete;
+      return initializeAuthenticatedUserService.initialize();
     }
   };
 }
@@ -69,8 +68,7 @@ export function initializeUnauthenticatedUserFactory(
 ): () => void {
   return () => {
     if (!userService.isLogged) {
-      initializeUnauthenticatedUserService.initialize();
-      return initializeUnauthenticatedUserService.isInitializationComplete;
+      return initializeUnauthenticatedUserService.initialize();
     }
   };
 }

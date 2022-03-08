@@ -56,17 +56,17 @@ export class AnalyticsService {
     this.getMPUser()?.setUserAttribute(key, value);
   }
 
-  public initializeAnalyticsWithAuthenticatedUser(user: User): void {
+  public initializeAnalyticsWithAuthenticatedUser(user: User): Promise<void> {
     const userIdentities = this.getUserIdentities(user);
     const mParticleLoggedConfig = this.getMParticleConfig(userIdentities);
 
-    this.initializeMParticleSDK(mParticleLoggedConfig);
+    return this.initializeMParticleSDK(mParticleLoggedConfig);
   }
 
-  public initializeAnalyticsWithUnauthenticatedUser(): void {
+  public initializeAnalyticsWithUnauthenticatedUser(): Promise<void> {
     const mParticleNotLoggedConfig = this.getMParticleConfig({});
 
-    this.initializeMParticleSDK(mParticleNotLoggedConfig);
+    return this.initializeMParticleSDK(mParticleNotLoggedConfig);
   }
 
   public trackEvent<T>(event: AnalyticsEvent<T>): void {
@@ -100,11 +100,15 @@ export class AnalyticsService {
     };
   }
 
-  private initializeMParticleSDK(config: MPConfiguration): void {
+  private initializeMParticleSDK(config: MPConfiguration): Promise<void> {
     appboyKit.register(config);
-    mParticle.init(environment.mParticleKey, config);
-    mParticle.ready(() => {
-      this._mParticleReady$.next();
+
+    return new Promise((resolve) => {
+      mParticle.init(environment.mParticleKey, config);
+      mParticle.ready(() => {
+        this._mParticleReady$.next();
+        resolve();
+      });
     });
   }
 

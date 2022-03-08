@@ -6,8 +6,7 @@ import { PermissionsInitializerService } from '@core/permissions/permissions.ser
 import { INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
-import { forkJoin, ReplaySubject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class InitializeAuthenticatedUserService {
@@ -26,22 +25,18 @@ export class InitializeAuthenticatedUserService {
     return this._isInitializationComplete$.toPromise();
   }
 
-  public initialize(): void {
-    this.userService.userSubject$.subscribe((user) => {
-      this.permissionsService.setUserPermissions(user);
-      this.analyticsService.initializeAnalyticsWithAuthenticatedUser(user);
-      this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
-    });
-    this.analyticsService.mParticleReady$.pipe(take(1)).subscribe(() => {
-      this.experimentationService.initializeExperimentationWithAuthenticatedUser();
-      this.externalCommsService.initializeBraze();
-    });
-    forkJoin([this.experimentationService.experimentReady$, this.externalCommsService.brazeReady$]).subscribe(() => {
-      this._isInitializationComplete$.next();
-      this._isInitializationComplete$.complete();
-    });
-
+  public async initialize(): Promise<void> {
     this.permissionsService.setDefaultPermissions();
-    this.userService.initializeUser().subscribe();
+
+    const _user = await this.userService.initializeUser();
+    this.permissionsService.setUserPermissions(_user);
+    this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
+
+    await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(_user);
+
+    this.experimentationService.initializeExperimentationWithAuthenticatedUser();
+    this.externalCommsService.initializeBraze();
+
+    this._isInitializationComplete$.complete();
   }
 }

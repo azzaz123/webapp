@@ -5,8 +5,7 @@ import { ExternalCommsService } from '@core/external-comms.service';
 import { PermissionsInitializerService } from '@core/permissions/permissions.service';
 import { INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { forkJoin, ReplaySubject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class InitializeUnauthenticatedUserService {
@@ -24,18 +23,15 @@ export class InitializeUnauthenticatedUserService {
     return this._isInitializationComplete$.toPromise();
   }
 
-  public initialize(): void {
-    this.analyticsService.mParticleReady$.pipe(take(1)).subscribe(() => {
-      this.experimentationService.initializeExperimentationWithUnauthenticatedUser();
-      this.externalCommsService.initializeBraze();
-    });
-    forkJoin([this.experimentationService.experimentReady$, this.externalCommsService.brazeReady$]).subscribe(() => {
-      this._isInitializationComplete$.next();
-      this._isInitializationComplete$.complete();
-    });
-
+  public async initialize(): Promise<void> {
     this.permissionsService.setDefaultPermissions();
-    this.analyticsService.initializeAnalyticsWithUnauthenticatedUser();
     this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
+
+    await this.analyticsService.initializeAnalyticsWithUnauthenticatedUser();
+
+    this.experimentationService.initializeExperimentationWithUnauthenticatedUser();
+    this.externalCommsService.initializeBraze();
+
+    this._isInitializationComplete$.complete();
   }
 }
