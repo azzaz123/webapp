@@ -594,7 +594,7 @@ describe('DeliveryAddressComponent', () => {
     beforeEach(() => {
       spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
       spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
-      component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
+      component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
 
       component.ngOnInit();
       component.initForm();

@@ -23,6 +23,7 @@ import { UserLocation } from '@core/user/user-response.interface';
 export class DeliveryMapService {
   private carrierOfficesSubject: ReplaySubject<CarrierOfficeInfo[]> = new ReplaySubject(1);
   private selectedOfficeSubject: ReplaySubject<CarrierOfficeInfo> = new ReplaySubject(1);
+  private allCarrierOfficesRequested: CarrierOfficeInfo[] = [];
 
   constructor(
     @Inject(LOCALE_ID) private locale: APP_LOCALE,
@@ -38,16 +39,19 @@ export class DeliveryMapService {
       switchMap((location: Location) => {
         const radiusInKm: number = getRadiusInKm(DEFAULT_VALUE_ZOOM, location.latitude);
         const locationWithRadius: LocationWithRadius = { ...location, radiusInKm };
-
+        this.resetAllCarrierOffices();
         return this.requestOffices$(locationWithRadius, selectedCarrier);
       })
     );
   }
 
   public requestOffices$(location: LocationWithRadius, selectedCarrier: POST_OFFICE_CARRIER): Observable<CarrierOfficeInfo[]> {
-    return this.carrierOfficesApiService
-      .getCarrierOfficeAddresses(location, selectedCarrier)
-      .pipe(tap((offices: CarrierOfficeInfo[]) => (this.carrierOffices = offices)));
+    return this.carrierOfficesApiService.getCarrierOfficeAddresses(location, selectedCarrier).pipe(
+      tap((offices: CarrierOfficeInfo[]) => {
+        offices.forEach((office: CarrierOfficeInfo) => this.allCarrierOfficesRequested.push(office));
+        this.carrierOffices = this.allCarrierOfficesRequested;
+      })
+    );
   }
 
   public selectOfficePreference$(userOfficeId: string): Observable<void> {
@@ -75,7 +79,6 @@ export class DeliveryMapService {
             (office: CarrierOfficeInfo) =>
               office.latitude === selectedOfficeLocation.latitude && office.longitude === selectedOfficeLocation.longitude
           );
-
           this.selectedOffice = selectedOffice;
         })
       )
@@ -171,5 +174,9 @@ export class DeliveryMapService {
       latitude: location.latitude || location.approximated_latitude,
       longitude: location.longitude || location.approximated_longitude,
     };
+  }
+
+  private resetAllCarrierOffices(): void {
+    this.allCarrierOfficesRequested = [];
   }
 }

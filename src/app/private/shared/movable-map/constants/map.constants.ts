@@ -7,6 +7,6 @@ export const DEFAULT_VALUE_ZOOM: number = 15;
 
 export const getRadiusInKm = (zoom: number, latitude: number): number => {
   return Math.round(
-    (METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL * Math.cos((latitude * Math.PI) / HALF_CIRCUMFERENCE_DEGREES)) / Math.pow(2, zoom)
+    (METERS_PER_MAP_TILE_AT_THE_SMALLEST_ZOOM_LEVEL * Math.cos((latitude * Math.PI) / HALF_CIRCUMFERENCE_DEGREES)) / Math.pow(2, zoom) / 2
   );
 };
