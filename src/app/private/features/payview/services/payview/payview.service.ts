@@ -45,6 +45,13 @@ export class PayviewService {
     private walletsService: PaymentsWalletsService
   ) {}
 
+  public get address(): Observable<DeliveryAddress> {
+    return this.addressService.get(false).pipe(
+      map(mapToDeliveryAddress),
+      catchError(() => of(null))
+    );
+  }
+
   public getCosts(
     itemHash: string,
     price: Money,
@@ -52,6 +59,14 @@ export class PayviewService {
     method: DeliveryBuyerDeliveryMethod
   ): Observable<DeliveryBuyerCalculatorCosts> {
     return this.calculatorService.getCosts(price, itemHash, promocode, method.method);
+  }
+
+  public getDeliveryCosts(itemHash: string): Observable<DeliveryCosts> {
+    return this.deliveryCostsService.getCosts(itemHash);
+  }
+
+  public getDeliveryMethods(itemHash): Observable<DeliveryBuyerDeliveryMethods> {
+    return this.deliveryBuyerService.getDeliveryMethods(itemHash);
   }
 
   public getCurrentState(itemHash: string): Observable<PayviewState> {
@@ -101,13 +116,6 @@ export class PayviewService {
       );
   }
 
-  private get address(): Observable<DeliveryAddress> {
-    return this.addressService.get(false).pipe(
-      map(mapToDeliveryAddress),
-      catchError(() => of(null))
-    );
-  }
-
   private get card(): Observable<CreditCard> {
     return this.creditCardService.get().pipe(catchError(() => of(null)));
   }
@@ -118,11 +126,11 @@ export class PayviewService {
     return this.calculatorService.getCosts(state.itemDetails.price, this.itemHash, null, method.method);
   }
 
-  private get deliveryCosts(): Observable<DeliveryCosts> {
+  private get defaultDeliveryCosts(): Observable<DeliveryCosts> {
     return this.deliveryCostsService.getCosts(this.itemHash);
   }
 
-  private get deliveryMethods(): Observable<DeliveryBuyerDeliveryMethods> {
+  private get defaultDeliveryMethods(): Observable<DeliveryBuyerDeliveryMethods> {
     return this.deliveryBuyerService.getDeliveryMethods(this.itemHash);
   }
 
@@ -186,8 +194,8 @@ export class PayviewService {
     return [
       this.address,
       this.card,
-      this.deliveryCosts,
-      this.deliveryMethods,
+      this.defaultDeliveryCosts,
+      this.defaultDeliveryMethods,
       this.item,
       this.itemDetails,
       this.paymentMethods,

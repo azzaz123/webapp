@@ -134,9 +134,9 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  public initForm(cache: boolean = true): void {
+  public initForm(): void {
     this.deliveryAddressService
-      .get(cache)
+      .get(false)
       .subscribe(
         (deliveryAddress: DeliveryAddressApi) => {
           if (deliveryAddress) {
@@ -568,6 +568,6 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     this.showDeleteButton =
       this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS &&
       this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY &&
-      this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
+      this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
   }
 }

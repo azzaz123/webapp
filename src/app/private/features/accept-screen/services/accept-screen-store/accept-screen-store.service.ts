@@ -64,12 +64,9 @@ export class AcceptScreenStoreService {
     );
   }
 
-  public get deliveryPickUpDay$(): Observable<string> {
+  public get carrierSelected$(): Observable<AcceptScreenCarrier> {
     return this.properties$.pipe(
-      map(
-        (properties: AcceptScreenProperties) =>
-          properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected).deliveryPickUpDay
-      )
+      map((properties: AcceptScreenProperties) => properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected))
     );
   }
 

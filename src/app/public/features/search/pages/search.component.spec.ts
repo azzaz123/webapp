@@ -26,7 +26,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
 import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
-import { SearchLayoutComponent } from '../components/search-layout/search-layout.component';
 import { SortFilterModule } from '../components/sort-filter/sort-filter.module';
 import { SearchAdsService } from '../core/ads/search-ads.service';
 import { SearchService } from '../core/services/search.service';
@@ -52,14 +51,14 @@ import { FilterParameter } from '@public/shared/components/filters/interfaces/fi
 import { AdSlotShoppingComponentStub } from '@fixtures/shared/components/ad-shopping.component.stub';
 import { SearchResponseExtraData } from '../core/services/interfaces/search-response-extra-data.interface';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
-import { PERMISSIONS } from '@core/user/user-constants';
+import { NgxPermissionsAllowStubDirective, NgxPermissionsRestrictStubDirective } from 'ngx-permissions';
 import { SortByService } from '../components/sort-filter/services/sort-by.service';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
+import { SearchLayoutStubComponent } from '@fixtures/shared/components/search-layout.component.stub';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -83,7 +82,6 @@ describe('SearchComponent', () => {
   let searchListTrackingEventsService: SearchListTrackingEventsService;
   let searchTrackingEventsService: SearchTrackingEventsService;
   let filterParameterStoreService: FilterParameterStoreService;
-  let permissionService: NgxPermissionsService;
   const itemsSubject: BehaviorSubject<ItemCard[]> = new BehaviorSubject<ItemCard[]>([]);
   const isLoadingResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   const isLoadingPaginationResultsSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -132,13 +130,14 @@ describe('SearchComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         SearchComponent,
-        SearchLayoutComponent,
+        SearchLayoutStubComponent,
         SearchErrorLayoutStubComponent,
         AdComponentStub,
         AdSlotGroupShoppingComponentStub,
         AdSlotShoppingComponentStub,
         ItemCardListComponentStub,
         InfiniteScrollStubDirective,
+        NgxPermissionsAllowStubDirective,
       ],
       imports: [
         FiltersWrapperModule,
@@ -151,7 +150,6 @@ describe('SearchComponent', () => {
             redirectTo: '',
           },
         ]),
-        NgxPermissionsModule.forRoot(),
       ],
       providers: [
         {
@@ -210,310 +208,241 @@ describe('SearchComponent', () => {
             },
           },
         },
-        NgxPermissionsService,
       ],
     }).compileComponents();
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SearchComponent);
-    searchListTrackingEventsService = TestBed.inject(SearchListTrackingEventsService);
-    searchTrackingEventsService = TestBed.inject(SearchTrackingEventsService);
-    filterParameterStoreService = TestBed.inject(FilterParameterStoreService);
-    permissionService = TestBed.inject(NgxPermissionsService);
-    component = fixture.componentInstance;
-  });
-
-  it('should create', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
-  describe('when the component init', () => {
-    describe('on init', () => {
-      it('should initialise items observable', () => {
-        fixture.detectChanges();
-        expect(component.items$).toBeTruthy();
-      });
-
-      it('should initialise sortBy observable', () => {
-        fixture.detectChanges();
-        expect(component.sortBy$).toBeTruthy();
-      });
-    });
-  });
-
-  describe('when items change', () => {
-    const oldItems = [{ ...MOCK_ITEM_CARD, id: 'old_item' }];
-
+  describe('when the user has permissions to view ads', () => {
     beforeEach(() => {
+      fixture = TestBed.createComponent(SearchComponent);
+      searchListTrackingEventsService = TestBed.inject(SearchListTrackingEventsService);
+      searchTrackingEventsService = TestBed.inject(SearchTrackingEventsService);
+      filterParameterStoreService = TestBed.inject(FilterParameterStoreService);
+
+      component = fixture.componentInstance;
+    });
+
+    it('should create', () => {
       fixture.detectChanges();
+      expect(component).toBeTruthy();
     });
 
-    it('should update items', (done) => {
-      const newItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD];
-      itemsSubject.next([...oldItems, ...newItems]);
-
-      component.items$.subscribe((items) => {
-        expect(items.length).toBe(3);
-        items.forEach((nextItem, index) => {
-          expect(nextItem.id).toBe(index !== 0 ? MOCK_ITEM_CARD.id : 'old_item');
-        });
-        done();
-      });
-    });
-
-    it('should show the loading state', (done) => {
-      const newItems = [MOCK_ITEM_CARD];
-      itemsSubject.next(newItems);
-      isLoadingResultsSubject.next(true);
-
-      component.items$.subscribe(() => {
-        fixture.detectChanges();
-        const itemCardList = fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
-
-        expect(itemCardList.isLoading).toBe(true);
-        done();
-      });
-    });
-
-    describe('when no items are recieved', () => {
-      describe('and not loading new results', () => {
-        it('should show the no results layout', (done) => {
-          const items = [];
-          itemsSubject.next(items);
-          isLoadingResultsSubject.next(false);
-
-          component.items$.subscribe(() => {
-            fixture.detectChanges();
-            const noResultsLayout = fixture.debugElement.query(By.css('tsl-search-error-layout'));
-
-            expect(noResultsLayout).toBeTruthy();
-            done();
-          });
-        });
-      });
-
-      describe('and loading new results', () => {
-        it('should show the loading placeholder', (done) => {
-          const items = [];
-          itemsSubject.next(items);
-          isLoadingResultsSubject.next(true);
-
-          component.items$.subscribe(() => {
-            fixture.detectChanges();
-            const itemCardList = fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
-
-            expect(itemCardList.showPlaceholder).toBe(true);
-            done();
-          });
-        });
-      });
-    });
-  });
-
-  describe('when a filter is opened', () => {
-    it('should show the filter content above the top bar', () => {
-      const filtersWrapper = fixture.debugElement.query(By.css('tsl-filters-wrapper'));
-      const searchFilters = fixture.debugElement.query(By.css('.Search__filters'));
-      const expectedClass = 'Search__filters--opened';
-
-      filtersWrapper.triggerEventHandler('filterOpened', true);
-      fixture.detectChanges();
-
-      expect(component.filterOpened).toBe(true);
-      expect(searchFilters.nativeElement.classList).toContain(expectedClass);
-    });
-  });
-
-  describe('when search category changes', () => {
-    function getItemCardListInstance() {
-      return fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
-    }
-
-    beforeEach(() => {
-      itemsSubject.next([MOCK_ITEM_CARD]);
-    });
-
-    describe('and new search category is cars', () => {
-      it('should show wide cards', (done) => {
-        currentCategoryIdSubject.next(`${CATEGORY_IDS.CAR}`);
-
-        component.listCardType$.subscribe(() => {
+    describe('when the component init', () => {
+      describe('on init', () => {
+        it('should initialise items observable', () => {
           fixture.detectChanges();
-
-          expect(getItemCardListInstance().cardType).toEqual(CARD_TYPES.WIDE);
-          done();
+          expect(component.items$).toBeTruthy();
         });
-      });
 
-      it('should change the list columns configuration for using wide cards', (done) => {
-        currentCategoryIdSubject.next(`${CATEGORY_IDS.CAR}`);
-
-        component.listColumnsConfig$.subscribe(() => {
+        it('should initialise sortBy observable', () => {
           fixture.detectChanges();
-
-          expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARDS_COLUMNS_CONFIG);
-          done();
+          expect(component.sortBy$).toBeTruthy();
         });
       });
     });
 
-    describe('and new search category is real estate', () => {
-      it('should show wide cards', (done) => {
-        currentCategoryIdSubject.next(`${CATEGORY_IDS.REAL_ESTATE}`);
+    describe('when items change', () => {
+      const oldItems = [{ ...MOCK_ITEM_CARD, id: 'old_item' }];
 
-        component.listCardType$.subscribe(() => {
-          fixture.detectChanges();
-
-          expect(getItemCardListInstance().cardType).toEqual(CARD_TYPES.WIDE);
-          done();
-        });
-      });
-
-      it('should change the list columns configuration for using wide cards', (done) => {
-        currentCategoryIdSubject.next(`${CATEGORY_IDS.REAL_ESTATE}`);
-
-        component.listColumnsConfig$.subscribe(() => {
-          fixture.detectChanges();
-
-          expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARDS_COLUMNS_CONFIG);
-          done();
-        });
-      });
-    });
-
-    describe('and new search category is from consumer goods', () => {
-      it('should show regular cards', (done) => {
-        currentCategoryIdSubject.next(`${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`);
-
-        component.listCardType$.subscribe(() => {
-          fixture.detectChanges();
-
-          expect(getItemCardListInstance().cardType).toEqual(CARD_TYPES.REGULAR);
-          done();
-        });
-      });
-
-      it('should change the list columns configuration for using regular cards', (done) => {
-        currentCategoryIdSubject.next(`${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`);
-
-        component.listColumnsConfig$.subscribe(() => {
-          fixture.detectChanges();
-
-          expect(getItemCardListInstance().columnsConfig).toEqual(REGULAR_CARDS_COLUMNS_CONFIG);
-          done();
-        });
-      });
-    });
-  });
-
-  describe('infinite scroll', () => {
-    describe('with items and has more items', () => {
       beforeEach(() => {
-        itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
-        hasMoreSubject.next(true);
+        fixture.detectChanges();
       });
 
-      it('should appear the button to load more items', () => {
+      it('should update items', (done) => {
+        const newItems = [MOCK_ITEM_CARD, MOCK_ITEM_CARD];
+        itemsSubject.next([...oldItems, ...newItems]);
+
+        component.items$.subscribe((items) => {
+          expect(items.length).toBe(3);
+          items.forEach((nextItem, index) => {
+            expect(nextItem.id).toBe(index !== 0 ? MOCK_ITEM_CARD.id : 'old_item');
+          });
+          done();
+        });
+      });
+
+      it('should show the loading state', (done) => {
+        const newItems = [MOCK_ITEM_CARD];
+        itemsSubject.next(newItems);
+        isLoadingResultsSubject.next(true);
+
+        component.items$.subscribe(() => {
+          fixture.detectChanges();
+          const itemCardList = fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
+
+          expect(itemCardList.isLoading).toBe(true);
+          done();
+        });
+      });
+
+      describe('when no items are recieved', () => {
+        describe('and not loading new results', () => {
+          it('should show the no results layout', (done) => {
+            const items = [];
+            itemsSubject.next(items);
+            isLoadingResultsSubject.next(false);
+
+            component.items$.subscribe(() => {
+              fixture.detectChanges();
+              const noResultsLayout = fixture.debugElement.query(By.css('tsl-search-error-layout'));
+
+              expect(noResultsLayout).toBeTruthy();
+              done();
+            });
+          });
+        });
+
+        describe('and loading new results', () => {
+          it('should show the loading placeholder', (done) => {
+            const items = [];
+            itemsSubject.next(items);
+            isLoadingResultsSubject.next(true);
+
+            component.items$.subscribe(() => {
+              fixture.detectChanges();
+              const itemCardList = fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
+
+              expect(itemCardList.showPlaceholder).toBe(true);
+              done();
+            });
+          });
+        });
+      });
+    });
+
+    describe('when a filter is opened', () => {
+      it('should show the filter content above the top bar', () => {
+        const filtersWrapper = fixture.debugElement.query(By.css('tsl-filters-wrapper'));
+        const searchFilters = fixture.debugElement.query(By.css('.Search__filters'));
+        const expectedClass = 'Search__filters--opened';
+
+        filtersWrapper.triggerEventHandler('filterOpened', true);
         fixture.detectChanges();
 
-        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+        expect(component.filterOpened).toBe(true);
+        expect(searchFilters.nativeElement.classList).toContain(expectedClass);
+      });
+    });
 
-        expect(buttonLoadMore).toBeTruthy();
+    describe('when search category changes', () => {
+      function getItemCardListInstance() {
+        return fixture.debugElement.query(By.css(itemCardListTag)).componentInstance;
+      }
+
+      beforeEach(() => {
+        itemsSubject.next([MOCK_ITEM_CARD]);
       });
 
-      describe('with items but has not more items', () => {
+      describe('and new search category is cars', () => {
+        it('should show wide cards', (done) => {
+          currentCategoryIdSubject.next(`${CATEGORY_IDS.CAR}`);
+
+          component.listCardType$.subscribe(() => {
+            fixture.detectChanges();
+
+            expect(getItemCardListInstance().cardType).toEqual(CARD_TYPES.WIDE);
+            done();
+          });
+        });
+
+        it('should change the list columns configuration for using wide cards', (done) => {
+          currentCategoryIdSubject.next(`${CATEGORY_IDS.CAR}`);
+
+          component.listColumnsConfig$.subscribe(() => {
+            fixture.detectChanges();
+
+            expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARDS_COLUMNS_CONFIG);
+            done();
+          });
+        });
+      });
+
+      describe('and new search category is real estate', () => {
+        it('should show wide cards', (done) => {
+          currentCategoryIdSubject.next(`${CATEGORY_IDS.REAL_ESTATE}`);
+
+          component.listCardType$.subscribe(() => {
+            fixture.detectChanges();
+
+            expect(getItemCardListInstance().cardType).toEqual(CARD_TYPES.WIDE);
+            done();
+          });
+        });
+
+        it('should change the list columns configuration for using wide cards', (done) => {
+          currentCategoryIdSubject.next(`${CATEGORY_IDS.REAL_ESTATE}`);
+
+          component.listColumnsConfig$.subscribe(() => {
+            fixture.detectChanges();
+
+            expect(getItemCardListInstance().columnsConfig).toEqual(WIDE_CARDS_COLUMNS_CONFIG);
+            done();
+          });
+        });
+      });
+
+      describe('and new search category is from consumer goods', () => {
+        it('should show regular cards', (done) => {
+          currentCategoryIdSubject.next(`${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`);
+
+          component.listCardType$.subscribe(() => {
+            fixture.detectChanges();
+
+            expect(getItemCardListInstance().cardType).toEqual(CARD_TYPES.REGULAR);
+            done();
+          });
+        });
+
+        it('should change the list columns configuration for using regular cards', (done) => {
+          currentCategoryIdSubject.next(`${CATEGORY_IDS.CELL_PHONES_ACCESSORIES}`);
+
+          component.listColumnsConfig$.subscribe(() => {
+            fixture.detectChanges();
+
+            expect(getItemCardListInstance().columnsConfig).toEqual(REGULAR_CARDS_COLUMNS_CONFIG);
+            done();
+          });
+        });
+      });
+    });
+
+    describe('infinite scroll', () => {
+      describe('with items and has more items', () => {
         beforeEach(() => {
           itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
-          hasMoreSubject.next(false);
+          hasMoreSubject.next(true);
         });
 
-        it('should not appear the button to load more items', () => {
+        it('should appear the button to load more items', () => {
           fixture.detectChanges();
 
-          const buttonLoadMore = fixture.debugElement.query(By.css('#btn-load-more'));
+          const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
 
-          expect(buttonLoadMore).toBeNull();
+          expect(buttonLoadMore).toBeTruthy();
         });
-      });
-    });
 
-    describe('when we click on load more products', () => {
-      beforeEach(() => {
-        itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
-        hasMoreSubject.next(true);
-      });
-      it('should enable infinite scroll', (done) => {
-        fixture.detectChanges();
+        describe('with items but has not more items', () => {
+          beforeEach(() => {
+            itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+            hasMoreSubject.next(false);
+          });
 
-        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
-        buttonLoadMore.click();
+          it('should not appear the button to load more items', () => {
+            fixture.detectChanges();
 
-        component.infiniteScrollDisabled$.subscribe((infiniteScrollDisabled) => {
-          expect(infiniteScrollDisabled).toBe(false);
-          done();
+            const buttonLoadMore = fixture.debugElement.query(By.css('#btn-load-more'));
+
+            expect(buttonLoadMore).toBeNull();
+          });
         });
       });
 
-      it('should disapear the button to load more items', () => {
-        fixture.detectChanges();
-
-        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
-        buttonLoadMore.click();
-
-        fixture.detectChanges();
-        const buttonLoadMoreExpected = fixture.debugElement.query(By.css('#btn-load-more'));
-
-        expect(buttonLoadMoreExpected).toBeNull();
-      });
-
-      it('should disapear bottom ads on DESKTOP', () => {
-        spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
-        fixture.detectChanges();
-
-        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
-        buttonLoadMore.click();
-
-        fixture.detectChanges();
-        const slotGroupShopping = fixture.debugElement.query(By.css('tsl-sky-slot-group-shopping'));
-
-        expect(slotGroupShopping).toBeNull();
-      });
-
-      it('should hide footer and has items', () => {
-        hasMoreSubject.next(true);
-        spyOn(publicFooterServiceMock, 'setShow').and.callThrough();
-
-        fixture.detectChanges();
-
-        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
-        buttonLoadMore.click();
-
-        expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(false);
-      });
-
-      it('should set footer when has not items', () => {
-        hasMoreSubject.next(false);
-        spyOn(publicFooterServiceMock, 'setShow').and.callThrough();
-
-        fixture.detectChanges();
-
-        expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(true);
-      });
-
-      it('should ask more items to search service', () => {
-        spyOn(searchServiceMock, 'loadMore').and.callThrough();
-        fixture.detectChanges();
-
-        const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
-        buttonLoadMore.click();
-
-        expect(searchServiceMock.loadMore).toHaveBeenCalledTimes(1);
-      });
-
-      describe('when categoryId changes', () => {
-        it('should disable infinite scroll', (done) => {
+      describe('when we click on load more products', () => {
+        beforeEach(() => {
+          itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
+          hasMoreSubject.next(true);
+        });
+        it('should enable infinite scroll', (done) => {
           fixture.detectChanges();
 
           const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
@@ -523,247 +452,399 @@ describe('SearchComponent', () => {
             expect(infiniteScrollDisabled).toBe(false);
             done();
           });
-
-          currentCategoryIdSubject.next(CATEGORY_IDS.MOTORBIKE.toString());
         });
-      });
 
-      describe('when loading pagination results', () => {
-        it('should show the pagination loading spinner', (done) => {
-          const newItems = [MOCK_ITEM_CARD];
-          itemsSubject.next(newItems);
-          isLoadingPaginationResultsSubject.next(true);
+        it('should disapear the button to load more items', () => {
+          fixture.detectChanges();
 
-          component.isLoadingPaginationResults$.subscribe(() => {
+          const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+          buttonLoadMore.click();
+
+          fixture.detectChanges();
+          const buttonLoadMoreExpected = fixture.debugElement.query(By.css('#btn-load-more'));
+
+          expect(buttonLoadMoreExpected).toBeNull();
+        });
+
+        it('should disapear bottom ads on DESKTOP', () => {
+          spyOn(deviceServiceMock, 'getDeviceType').and.returnValue(DeviceType.DESKTOP);
+          fixture.detectChanges();
+
+          const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+          buttonLoadMore.click();
+
+          fixture.detectChanges();
+          const slotGroupShopping = fixture.debugElement.query(By.css('tsl-sky-slot-group-shopping'));
+
+          expect(slotGroupShopping).toBeNull();
+        });
+
+        it('should hide footer and has items', () => {
+          hasMoreSubject.next(true);
+          spyOn(publicFooterServiceMock, 'setShow').and.callThrough();
+
+          fixture.detectChanges();
+
+          const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+          buttonLoadMore.click();
+
+          expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(false);
+        });
+
+        it('should set footer when has not items', () => {
+          hasMoreSubject.next(false);
+          spyOn(publicFooterServiceMock, 'setShow').and.callThrough();
+
+          fixture.detectChanges();
+
+          expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(true);
+        });
+
+        it('should ask more items to search service', () => {
+          spyOn(searchServiceMock, 'loadMore').and.callThrough();
+          fixture.detectChanges();
+
+          const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+          buttonLoadMore.click();
+
+          expect(searchServiceMock.loadMore).toHaveBeenCalledTimes(1);
+        });
+
+        describe('when categoryId changes', () => {
+          it('should disable infinite scroll', (done) => {
             fixture.detectChanges();
-            const loadingSpinner = fixture.debugElement.query(By.css('.Search__spinner'));
 
-            expect(loadingSpinner).toBeTruthy();
-            done();
+            const buttonLoadMore: HTMLElement = fixture.debugElement.query(By.css('#btn-load-more')).nativeElement;
+            buttonLoadMore.click();
+
+            component.infiniteScrollDisabled$.subscribe((infiniteScrollDisabled) => {
+              expect(infiniteScrollDisabled).toBe(false);
+              done();
+            });
+
+            currentCategoryIdSubject.next(CATEGORY_IDS.MOTORBIKE.toString());
+          });
+        });
+
+        describe('when loading pagination results', () => {
+          it('should show the pagination loading spinner', (done) => {
+            const newItems = [MOCK_ITEM_CARD];
+            itemsSubject.next(newItems);
+            isLoadingPaginationResultsSubject.next(true);
+
+            component.isLoadingPaginationResults$.subscribe(() => {
+              fixture.detectChanges();
+              const loadingSpinner = fixture.debugElement.query(By.css('.Search__spinner'));
+
+              expect(loadingSpinner).toBeTruthy();
+              done();
+            });
           });
         });
       });
     });
-  });
 
-  describe('when click on item card', () => {
-    it('should send track click item card event', () => {
-      spyOn(searchListTrackingEventsService, 'trackClickItemCardEvent');
-      searchResponseExtraDataSubject.next({ searchId: MOCK_SEARCH_ID, sortBy: SORT_BY.DISTANCE });
-      itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
-      fixture.detectChanges();
-      const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
-
-      publicItemCard.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
-
-      expect(searchListTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
-    });
-  });
-
-  describe('when click on favourite item card', () => {
-    describe('and item is not favourite', () => {
-      beforeEach(() => {
-        spyOn(searchListTrackingEventsService, 'trackFavouriteItemEvent');
+    describe('when click on item card', () => {
+      it('should send track click item card event', () => {
+        spyOn(searchListTrackingEventsService, 'trackClickItemCardEvent');
         searchResponseExtraDataSubject.next({ searchId: MOCK_SEARCH_ID, sortBy: SORT_BY.DISTANCE });
-        itemsSubject.next([MOCK_ITEM_CARD]);
+        itemsSubject.next([MOCK_ITEM_CARD, MOCK_ITEM_CARD]);
         fixture.detectChanges();
-      });
-
-      it('should track favourite item event', () => {
         const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
-        const MOCK_ITEM_CARD_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: true } };
 
-        publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_FAVOURITED);
+        publicItemCard.triggerEventHandler('clickedItemAndIndex', { itemCard: MOCK_ITEM_CARD, index: MOCK_ITEM_INDEX });
 
-        expect(searchListTrackingEventsService.trackFavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_FAVOURITED, MOCK_SEARCH_ID);
+        expect(searchListTrackingEventsService.trackClickItemCardEvent).toHaveBeenCalledWith(
+          MOCK_ITEM_CARD,
+          MOCK_ITEM_INDEX,
+          MOCK_SEARCH_ID
+        );
       });
     });
 
-    describe('and item is already favourite', () => {
-      beforeEach(() => {
-        spyOn(searchListTrackingEventsService, 'trackUnfavouriteItemEvent');
-        searchResponseExtraDataSubject.next({ searchId: MOCK_SEARCH_ID, sortBy: SORT_BY.DISTANCE });
-        itemsSubject.next([MOCK_ITEM_CARD]);
-        fixture.detectChanges();
+    describe('when click on favourite item card', () => {
+      describe('and item is not favourite', () => {
+        beforeEach(() => {
+          spyOn(searchListTrackingEventsService, 'trackFavouriteItemEvent');
+          searchResponseExtraDataSubject.next({ searchId: MOCK_SEARCH_ID, sortBy: SORT_BY.DISTANCE });
+          itemsSubject.next([MOCK_ITEM_CARD]);
+          fixture.detectChanges();
+        });
+
+        it('should track favourite item event', () => {
+          const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+          const MOCK_ITEM_CARD_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: true } };
+
+          publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_FAVOURITED);
+
+          expect(searchListTrackingEventsService.trackFavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_FAVOURITED, MOCK_SEARCH_ID);
+        });
       });
 
-      it('should track unfavourite item event', () => {
-        const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
-        const MOCK_ITEM_CARD_NOT_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: false } };
+      describe('and item is already favourite', () => {
+        beforeEach(() => {
+          spyOn(searchListTrackingEventsService, 'trackUnfavouriteItemEvent');
+          searchResponseExtraDataSubject.next({ searchId: MOCK_SEARCH_ID, sortBy: SORT_BY.DISTANCE });
+          itemsSubject.next([MOCK_ITEM_CARD]);
+          fixture.detectChanges();
+        });
 
-        publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_NOT_FAVOURITED);
+        it('should track unfavourite item event', () => {
+          const publicItemCard = fixture.debugElement.query(By.css(itemCardListTag));
+          const MOCK_ITEM_CARD_NOT_FAVOURITED = { ...MOCK_ITEM_CARD, flags: { favorite: false } };
 
-        expect(searchListTrackingEventsService.trackUnfavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_NOT_FAVOURITED);
-      });
-    });
-  });
+          publicItemCard.triggerEventHandler('toggleFavouriteEvent', MOCK_ITEM_CARD_NOT_FAVOURITED);
 
-  describe('when we want to show ads natives', () => {
-    describe('on desktop or tablet', () => {
-      beforeEach(() => {
-        spyOn(deviceServiceMock, 'isMobile').and.returnValue(false);
-      });
-
-      it('should set slots config of desktop config', () => {
-        fixture.detectChanges();
-
-        expect(component.slotsConfig).toEqual(SLOTS_CONFIG_DESKTOP);
-      });
-    });
-
-    describe('on mobile', () => {
-      beforeEach(() => {
-        spyOn(deviceServiceMock, 'isMobile').and.returnValue(true);
-      });
-
-      it('should set slots config of mobile config', () => {
-        fixture.detectChanges();
-
-        expect(component.slotsConfig).toEqual(SLOTS_CONFIG_MOBILE);
-      });
-    });
-  });
-
-  describe('when new search is performed', () => {
-    describe('and searchId should be reset', () => {
-      const oldSearchId = 'oldSearchId';
-      const newSearchId = 'newSearchId';
-
-      beforeEach(() => {
-        spyOn(searchTrackingEventsService, 'trackSearchEvent');
-      });
-
-      it('should send search event', () => {
-        searchResponseExtraDataSubject.next({ searchId: oldSearchId, sortBy: SORT_BY.DISTANCE });
-        component['resetSearchId'] = true;
-        searchResponseExtraDataSubject.next({ searchId: newSearchId, sortBy: SORT_BY.DISTANCE });
-
-        expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(newSearchId, filterParameterStoreService.getParameters());
+          expect(searchListTrackingEventsService.trackUnfavouriteItemEvent).toHaveBeenCalledWith(MOCK_ITEM_CARD_NOT_FAVOURITED);
+        });
       });
     });
 
-    describe('and searchId should not be reset', () => {
-      const oldSearchId = 'oldSearchId';
-      const newSearchId = 'newSearchId';
+    describe('when we want to show ads natives', () => {
+      describe('on desktop or tablet', () => {
+        beforeEach(() => {
+          spyOn(deviceServiceMock, 'isMobile').and.returnValue(false);
+        });
 
-      beforeEach(() => {
-        spyOn(searchTrackingEventsService, 'trackSearchEvent');
+        it('should set slots config of desktop config', () => {
+          fixture.detectChanges();
+
+          expect(component.slotsConfig).toEqual(SLOTS_CONFIG_DESKTOP);
+        });
       });
 
-      it('should send search event', () => {
-        searchResponseExtraDataSubject.next({ searchId: oldSearchId, sortBy: SORT_BY.DISTANCE });
-        component['resetSearchId'] = false;
-        searchResponseExtraDataSubject.next({ searchId: newSearchId, sortBy: SORT_BY.DISTANCE });
+      describe('on mobile', () => {
+        beforeEach(() => {
+          spyOn(deviceServiceMock, 'isMobile').and.returnValue(true);
+        });
 
-        expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(oldSearchId, filterParameterStoreService.getParameters());
-      });
-    });
+        it('should set slots config of mobile config', () => {
+          fixture.detectChanges();
 
-    describe('and searchResponseExtraData sortBy has value', () => {
-      beforeEach(() => {
-        spyOn(component['sortBySubject'], 'next');
-        searchResponseExtraDataSubject.next({ searchId: '', sortBy: SORT_BY.DISTANCE });
-      });
-
-      it('should update the value', () => {
-        expect(component['sortBySubject'].next).toHaveBeenCalledWith(SORT_BY.DISTANCE);
+          expect(component.slotsConfig).toEqual(SLOTS_CONFIG_MOBILE);
+        });
       });
     });
 
-    describe('and the search is a wall (without searchId)', () => {
-      beforeEach(() => {
-        spyOn(searchTrackingEventsService, 'trackSearchEvent');
-        searchResponseExtraDataSubject.next({ searchId: null, sortBy: SORT_BY.DISTANCE });
+    describe('when new search is performed', () => {
+      describe('and searchId should be reset', () => {
+        const oldSearchId = 'oldSearchId';
+        const newSearchId = 'newSearchId';
+
+        beforeEach(() => {
+          spyOn(searchTrackingEventsService, 'trackSearchEvent');
+        });
+
+        it('should send search event', () => {
+          searchResponseExtraDataSubject.next({ searchId: oldSearchId, sortBy: SORT_BY.DISTANCE });
+          component['resetSearchId'] = true;
+          searchResponseExtraDataSubject.next({ searchId: newSearchId, sortBy: SORT_BY.DISTANCE });
+
+          expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(
+            newSearchId,
+            filterParameterStoreService.getParameters()
+          );
+        });
       });
 
-      it('should NOT send search event', () => {
-        expect(searchTrackingEventsService.trackSearchEvent).not.toHaveBeenCalled();
+      describe('and searchId should not be reset', () => {
+        const oldSearchId = 'oldSearchId';
+        const newSearchId = 'newSearchId';
+
+        beforeEach(() => {
+          spyOn(searchTrackingEventsService, 'trackSearchEvent');
+        });
+
+        it('should send search event', () => {
+          searchResponseExtraDataSubject.next({ searchId: oldSearchId, sortBy: SORT_BY.DISTANCE });
+          component['resetSearchId'] = false;
+          searchResponseExtraDataSubject.next({ searchId: newSearchId, sortBy: SORT_BY.DISTANCE });
+
+          expect(searchTrackingEventsService.trackSearchEvent).toHaveBeenCalledWith(
+            oldSearchId,
+            filterParameterStoreService.getParameters()
+          );
+        });
       });
 
-      it('should set searchId reset status', () => {
-        expect(component['resetSearchId']).toBeTruthy();
+      describe('and searchResponseExtraData sortBy has value', () => {
+        beforeEach(() => {
+          spyOn(component['sortBySubject'], 'next');
+          searchResponseExtraDataSubject.next({ searchId: '', sortBy: SORT_BY.DISTANCE });
+        });
+
+        it('should update the value', () => {
+          expect(component['sortBySubject'].next).toHaveBeenCalledWith(SORT_BY.DISTANCE);
+        });
+      });
+
+      describe('and the search is a wall (without searchId)', () => {
+        beforeEach(() => {
+          spyOn(searchTrackingEventsService, 'trackSearchEvent');
+          searchResponseExtraDataSubject.next({ searchId: null, sortBy: SORT_BY.DISTANCE });
+        });
+
+        it('should NOT send search event', () => {
+          expect(searchTrackingEventsService.trackSearchEvent).not.toHaveBeenCalled();
+        });
+
+        it('should set searchId reset status', () => {
+          expect(component['resetSearchId']).toBeTruthy();
+        });
       });
     });
-  });
 
-  describe('when a search with keyword is performed', () => {
-    const keyword = 'keyword';
+    describe('when a search with keyword is performed', () => {
+      const keyword = 'keyword';
 
-    beforeAll(() => {
-      component.setResetSearchId(false);
-      parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keyword }]);
-    });
-
-    describe('and the keyword is different', () => {
-      it('searchId should be reset', () => {
-        expect(component['resetSearchId']).toBeTruthy();
-      });
-    });
-
-    describe('and the keyword is the same', () => {
-      it('searchId should NOT be reset', () => {
+      beforeAll(() => {
         component.setResetSearchId(false);
         parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keyword }]);
+      });
 
-        expect(component['resetSearchId']).toBeFalsy();
+      describe('and the keyword is different', () => {
+        it('searchId should be reset', () => {
+          expect(component['resetSearchId']).toBeTruthy();
+        });
+      });
+
+      describe('and the keyword is the same', () => {
+        it('searchId should NOT be reset', () => {
+          component.setResetSearchId(false);
+          parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: keyword }]);
+
+          expect(component['resetSearchId']).toBeFalsy();
+        });
       });
     });
-  });
 
-  describe('when the user has permissions to view ads', () => {
-    beforeEach(() => {
-      permissionService.addPermission(PERMISSIONS.showAds);
-      itemsSubject.next([MOCK_ITEM_CARD]);
-    });
+    describe('when the user has permissions to view ads', () => {
+      beforeEach(() => {
+        itemsSubject.next([MOCK_ITEM_CARD]);
+      });
 
-    describe('when the search has a keyword applied', () => {
-      it('should show the Google shopping Ads at the bottom of the page', fakeAsync(() => {
+      it('should load the correct ad slots placeholder', fakeAsync(() => {
         component.device = DeviceType.DESKTOP;
 
-        parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: 'iPhone' }]);
         fixture.detectChanges();
         tick();
+        const adSlotGroupMobile = fixture.debugElement.queryAll(By.directive(AdComponentStub));
 
-        const shoppingSlotGroup = fixture.debugElement.query(By.directive(AdSlotGroupShoppingComponentStub));
+        const topBanner = adSlotGroupMobile[0].componentInstance;
+        const pos1Right = adSlotGroupMobile[1].componentInstance;
+        const pos2Right = adSlotGroupMobile[2].componentInstance;
 
-        expect(shoppingSlotGroup).toBeTruthy();
+        expect(topBanner.adSlot.name).toBe('130868815/Desktop_Search/Topbanner');
+        expect(pos1Right.adSlot.name).toBe('130868815/Desktop_Search/Pos1_Right');
+        expect(pos2Right.adSlot.name).toBe('130868815/Desktop_Search/Pos2_Right');
       }));
-    });
 
-    describe('when the page goes from foreground to background', () => {
-      it('should clear ad slots', () => {
-        spyOn(searchAdsServiceMock, 'clearSlots');
+      describe('when the search has a keyword applied', () => {
+        it('should show the Google shopping Ads at the bottom of the page', fakeAsync(() => {
+          component.device = DeviceType.DESKTOP;
 
-        component.onDetach();
+          parametersSubject.next([{ key: FILTER_QUERY_PARAM_KEY.keywords, value: 'iPhone' }]);
+          fixture.detectChanges();
+          tick();
 
-        expect(searchAdsServiceMock.clearSlots).toHaveBeenCalledTimes(1);
+          const shoppingSlotGroup = fixture.debugElement.query(By.directive(AdSlotGroupShoppingComponentStub));
+
+          expect(shoppingSlotGroup).toBeTruthy();
+        }));
+      });
+
+      describe('when the page goes from foreground to background', () => {
+        it('should clear ad slots', () => {
+          spyOn(searchAdsServiceMock, 'clearSlots');
+
+          component.onDetach();
+
+          expect(searchAdsServiceMock.clearSlots).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('if the device is a mobile', () => {
+        it('should load 3 ads placeholders', fakeAsync(() => {
+          component.device = DeviceType.MOBILE;
+
+          fixture.detectChanges();
+          tick();
+          const adSlotGroupMobile = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+
+          expect(adSlotGroupMobile.length).toBe(3);
+        }));
+        it('should load the correct ad slots placeholder', fakeAsync(() => {
+          component.device = DeviceType.MOBILE;
+
+          fixture.detectChanges();
+          tick();
+          const adSlotGroupMobile = fixture.debugElement.queryAll(By.directive(AdComponentStub));
+          const topBanner = adSlotGroupMobile[0].componentInstance;
+          const inlineAd = adSlotGroupMobile[1].componentInstance;
+          const bottomAd = adSlotGroupMobile[2].componentInstance;
+
+          expect(topBanner.adSlot.name).toBe('130868815/Web_Mobile_Search/Topbanner');
+          expect(inlineAd.adSlot.name).toBe('130868815/Web_Mobile_Search/Pos1');
+          expect(bottomAd.adSlot.name).toBe('130868815/Web_Mobile_Search/Pos2');
+        }));
+
+        it('should show an Ad placement just after the view more button', fakeAsync(() => {
+          component.device = DeviceType.MOBILE;
+
+          fixture.detectChanges();
+          tick();
+          const bottomAdSlot = fixture.debugElement.query(By.css('.ItemCardList__sky-bottom')).query(By.directive(AdComponentStub));
+
+          expect(bottomAdSlot).toBeTruthy();
+        }));
       });
     });
 
-    describe('when the page goes from background to foreground', () => {
-      it('should refresh ad slots', () => {
-        spyOn(searchAdsServiceMock, 'refreshSlots');
+    describe('when sort by relevance is applied', () => {
+      beforeEach(() => {
+        component['sortBySubject'].next(SORT_BY.RELEVANCE);
+      });
 
-        component.onAttach();
+      it('should show info bubble', () => {
+        const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
 
-        expect(searchAdsServiceMock.refreshSlots).toHaveBeenCalledTimes(1);
+        component.sortBy$.subscribe(() => {
+          expect(infoBubbleElement).toBeTruthy();
+        });
+      });
+
+      it('info bubble should have the correct text ', () => {
+        const infoBubbleText = 'infoBubbleText';
+
+        searchResponseExtraDataSubject.next({ searchId: '', bubble: infoBubbleText, sortBy: SORT_BY.RELEVANCE });
+
+        expect(component.infoBubbleText).toEqual(infoBubbleText);
       });
     });
 
-    describe('if the device is a mobile', () => {
-      it('should show an Ad placement just after the view more button', fakeAsync(() => {
-        component.device = DeviceType.MOBILE;
+    describe('when sort by relevance is NOT applied', () => {
+      it('should hide info bubble', () => {
+        const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
 
-        fixture.detectChanges();
-        tick();
-        const bottomAdSlot = fixture.debugElement.query(By.css('.ItemCardList__sky-bottom')).query(By.directive(AdComponentStub));
-
-        expect(bottomAdSlot).toBeTruthy();
-      }));
+        expect(infoBubbleElement).toBeFalsy();
+      });
     });
   });
 
   describe('when the user has no permissions to view ads', () => {
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        declarations: [NgxPermissionsRestrictStubDirective],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(SearchComponent);
+      searchListTrackingEventsService = TestBed.inject(SearchListTrackingEventsService);
+      searchTrackingEventsService = TestBed.inject(SearchTrackingEventsService);
+      filterParameterStoreService = TestBed.inject(FilterParameterStoreService);
+
+      component = fixture.componentInstance;
+    });
+
     it('no ad should render', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -797,36 +878,6 @@ describe('SearchComponent', () => {
 
         expect(bottomAdSlot).toBeFalsy();
       }));
-    });
-  });
-
-  describe('when sort by relevance is applied', () => {
-    beforeEach(() => {
-      component['sortBySubject'].next(SORT_BY.RELEVANCE);
-    });
-
-    it('should show info bubble', () => {
-      const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
-
-      component.sortBy$.subscribe(() => {
-        expect(infoBubbleElement).toBeTruthy();
-      });
-    });
-
-    it('info bubble should have the correct text ', () => {
-      const infoBubbleText = 'infoBubbleText';
-
-      searchResponseExtraDataSubject.next({ searchId: '', bubble: infoBubbleText, sortBy: SORT_BY.RELEVANCE });
-
-      expect(component.infoBubbleText).toEqual(infoBubbleText);
-    });
-  });
-
-  describe('when sort by relevance is NOT applied', () => {
-    it('should hide info bubble', () => {
-      const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
-
-      expect(infoBubbleElement).toBeFalsy();
     });
   });
 });
