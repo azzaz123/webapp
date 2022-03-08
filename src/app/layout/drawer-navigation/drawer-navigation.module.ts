@@ -4,6 +4,7 @@ import { DrawerNavigationComponent } from './components/drawer-navigation.compon
 
 @NgModule({
   declarations: [DrawerNavigationComponent],
+  exports: [DrawerNavigationComponent],
   imports: [CommonModule],
 })
 export class DrawerNavigationModule {}
