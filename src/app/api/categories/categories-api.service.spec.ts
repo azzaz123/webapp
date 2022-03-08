@@ -28,7 +28,7 @@ describe('CategoriesApiService', () => {
     httpService = TestBed.inject(CategoriesHttpService);
   });
 
-  describe('when asked to retrieve search categories', () => {
+  describe('when asking to retrieve search categories', () => {
     it('should return domain search categories', () => {
       spyOn(httpService, 'getCategories').and.returnValue(of(categoriesFixture));
       let response: CategoriesFilterOption[];
@@ -43,7 +43,7 @@ describe('CategoriesApiService', () => {
     });
   });
 
-  describe('when asked to retrieve upload categories', () => {
+  describe('when asking to retrieve upload categories', () => {
     it('should return domain upload categories', () => {
       spyOn(httpService, 'getCategories').and.returnValue(of(categoriesFixture));
       let response: CategoryResponse[];
@@ -58,7 +58,7 @@ describe('CategoriesApiService', () => {
     });
   });
 
-  describe('when asked to retrieve categories with presentation', () => {
+  describe('when asking to retrieve categories with presentation', () => {
     it('should return domain ategories with presentation', () => {
       spyOn(httpService, 'getCategoriesWithPresentation').and.returnValue(of(categoriesWithPresentationResponseFixture));
       let response: CategoryWithPresentation[];
@@ -72,7 +72,7 @@ describe('CategoriesApiService', () => {
     });
   });
 
-  describe('when asked to retrieve categories with presentation by id', () => {
+  describe('when asking to retrieve categories with presentation by id', () => {
     it('should return domain ategories with presentation by id', () => {
       spyOn(httpService, 'getCategoriesWithPresentation').and.returnValue(of(categoriesWithPresentationResponseFixture));
       let response: CategoryWithPresentation[];
@@ -83,6 +83,21 @@ describe('CategoriesApiService', () => {
 
       expect(httpService.getCategoriesWithPresentation).toHaveBeenCalledTimes(1);
       expect(response).toEqual(mappedCategoriesWithPresentationFixture[1].subcategories);
+    });
+  });
+
+  describe('when asking to retrieve category with presentation by id', () => {
+    it('should return domain ategories with presentation by id', () => {
+      spyOn(httpService, 'getCategoriesWithPresentation').and.returnValue(of(categoriesWithPresentationResponseFixture));
+      let response: CategoryWithPresentation;
+      const thirdLevelCategory = mappedCategoriesWithPresentationFixture[1].subcategories[0].subcategories[0];
+
+      service.getCategoryWithPresentationById(thirdLevelCategory.id).subscribe((res: CategoryWithPresentation) => {
+        response = res;
+      });
+
+      expect(httpService.getCategoriesWithPresentation).toHaveBeenCalledTimes(1);
+      expect(response).toEqual(thirdLevelCategory);
     });
   });
 });

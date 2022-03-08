@@ -10,7 +10,8 @@ import { CategoryWithPresentation } from '@core/category/category-with-presentat
 @Injectable()
 export class CategoriesApiService {
   private searchCategories: CategoriesFilterOption[];
-  private categoryWithPresentation: CategoryWithPresentation[];
+  private categoriesWithPresentation: CategoryWithPresentation[];
+  private flatCategoriesWithPresentation: CategoryWithPresentation[];
 
   constructor(private categoriesHttpService: CategoriesHttpService) {}
 
@@ -36,16 +37,35 @@ export class CategoriesApiService {
   }
 
   public getCategoriesWithPresentation(): Observable<CategoryWithPresentation[]> {
-    if (this.categoryWithPresentation) {
-      return of(this.categoryWithPresentation);
+    if (this.categoriesWithPresentation) {
+      return of(this.categoriesWithPresentation);
     } else {
       return this.categoriesHttpService.getCategoriesWithPresentation().pipe(
         map((response) => {
           return response.categories;
         }),
-        tap((categories) => (this.categoryWithPresentation = categories))
+        tap((categories) => {
+          this.categoriesWithPresentation = categories;
+
+          const flattenDeep = (arr1: CategoryWithPresentation[]) => {
+            return arr1.reduce(
+              (acc, val) => (val.subcategories.length ? acc.concat(flattenDeep(val.subcategories), val) : acc.concat(val)),
+              []
+            );
+          };
+
+          this.flatCategoriesWithPresentation = flattenDeep(categories);
+        })
       );
     }
+  }
+
+  public getCategoryWithPresentationById(id: number): Observable<CategoryWithPresentation> {
+    return this.getCategoriesWithPresentation().pipe(
+      map(() => {
+        return this.flatCategoriesWithPresentation.find((category) => category.id === id);
+      })
+    );
   }
 
   public getCategoriesWithPresentationByParentId(id: number): Observable<CategoryWithPresentation[]> {
