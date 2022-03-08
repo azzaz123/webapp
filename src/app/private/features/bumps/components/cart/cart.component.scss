@@ -8,6 +8,7 @@ $discounted-total-height: 30px;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
   min-width: 280px;
+  max-height: 80vh;
 
   &__title {
     font-size: $font-size-l;
@@ -17,19 +18,7 @@ $discounted-total-height: 30px;
 
   &__wrapper {
     border-bottom: solid 1px $blue-grey-5;
-
-    .with-credits & {
-      &.no-discount {
-        margin-bottom: $spacing-s;
-      }
-    }
-    &.has-financial-card {
-      .with-credits & {
-        &.no-discount {
-          margin-bottom: $spacing-s;
-        }
-      }
-    }
+    overflow: auto;
   }
 
   .walla-total,
