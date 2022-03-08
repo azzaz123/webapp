@@ -12,7 +12,7 @@ import {
 } from '@api/fixtures/categories/categories.fixtures';
 import { CategoriesFilterOption } from '@public/shared/components/filters/components/categories-filter/interfaces/categories-filter-option.interface';
 import { CategoryResponse } from '@core/category/category-response.interface';
-import { CategoryWithPresentation } from '@core/category/categories-tree-response.interface';
+import { CategoryWithPresentation } from '@core/category/categories-with-presentation-response.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 
 describe('CategoriesApiService', () => {
