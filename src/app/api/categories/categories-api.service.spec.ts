@@ -77,7 +77,7 @@ describe('CategoriesApiService', () => {
       spyOn(httpService, 'getCategoriesWithPresentation').and.returnValue(of(categoriesWithPresentationResponseFixture));
       let response: CategoryWithPresentation[];
 
-      service.getCategoriesWithPresentationById(CATEGORY_IDS.FASHION_ACCESSORIES).subscribe((res: CategoryWithPresentation[]) => {
+      service.getCategoriesWithPresentationByParentId(CATEGORY_IDS.FASHION_ACCESSORIES).subscribe((res: CategoryWithPresentation[]) => {
         response = res;
       });
 
