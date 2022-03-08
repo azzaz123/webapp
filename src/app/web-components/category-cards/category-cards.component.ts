@@ -1,4 +1,4 @@
-import { Component, Inject, Input, LOCALE_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, LOCALE_ID, OnChanges } from '@angular/core';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { AccessTokenService } from '@core/http/access-token.service';
@@ -9,34 +9,52 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import '@wallapop-web-components/category-cards/category-cards.dev.js';
+import { CategoriesApiService } from '@api/categories/categories-api.service';
+import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { CategoryWithPresentation } from '@core/category/category-with-presentation.interface';
+import { Observable, Subject } from 'rxjs';
+/* eslint-disable  @typescript-eslint/member-ordering */
 
 @Component({
   selector: 'tsl-category-cards',
   templateUrl: './category-cards.component.html',
   styleUrls: ['./category-cards.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CategoryCardsComponent {
+export class CategoryCardsComponent implements OnChanges {
   @Input() categoryId: string;
   @Input() objectTypeId: string;
-  @Input() title: string = 'HOLA';
 
+  private titleSubject: Subject<string> = new Subject<string>();
+
+  public title$: Observable<string> = this.titleSubject.asObservable();
   public token: string;
 
   constructor(
     @Inject(LOCALE_ID) public locale: APP_LOCALE,
     private accessTokenService: AccessTokenService,
     private searchNavigatorService: SearchNavigatorService,
+    private categoriesApiService: CategoriesApiService,
     @Inject(FILTER_PARAMETER_STORE_TOKEN) private filterParameterStoreService: FilterParameterStoreService
   ) {
     this.token = this.accessTokenService.accessToken;
   }
 
+  ngOnChanges(): void {
+    if (!this.categoryId && !this.objectTypeId) {
+      this.titleSubject.next('');
+    } else {
+      this.categoriesApiService
+        .getCategoryWithPresentationById(this.objectTypeId ? +this.objectTypeId : +this.categoryId)
+        .subscribe((category: CategoryWithPresentation) => {
+          this.titleSubject.next(category?.name);
+        });
+    }
+  }
+
   public cardClick($event: CustomEvent): void {
     const id = $event.detail.id;
     const parameters = this.filterParameterStoreService.getParameters();
-
-    // ** Prep of the parameters to work with the searchNavigatorService that will be removed soon, so I will let this in standby
-    // until the new navigation flow is merged
 
     if (!this.categoryId && !this.objectTypeId) {
       parameters.push({ key: FILTER_QUERY_PARAM_KEY.categoryId, value: id });
@@ -53,8 +71,7 @@ export class CategoryCardsComponent {
       this.objectTypeId = id;
     }
 
-    // ** TODO waiting for PR
-    // this.searchNavigatorService.navigate(parameters, FILTERS_SOURCE.DEFAULT_FILTERS); // incorrect source
+    this.searchNavigatorService.navigate(parameters, FILTERS_SOURCE.SUBCATEGORY_SLIDER);
 
     this.sentBrowseTrackingEvent();
   }
