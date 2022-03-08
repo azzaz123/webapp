@@ -1,6 +1,4 @@
-import { Coordinate } from '@core/geolocation/address-response.interface';
 import { ItemPlace } from '@core/geolocation/geolocation-response.interface';
-import { CoordinateMother } from './coordinate.mother';
 
 export class MockGeolocationService {
   constructor() {}

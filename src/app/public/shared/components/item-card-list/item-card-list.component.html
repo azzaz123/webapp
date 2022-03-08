@@ -23,7 +23,8 @@
         class="ItemCardList__item">
             <tsl-public-item-card *ngIf="cardType === cardTypes.REGULAR" [item]="item"
                 [showDescription]="showDescription" [showFavourite]="!(item.ownerId | isCurrentUser)"
-                (toggleFavourite)="toggleFavourite(item)" (click)="trackItemCardClick({itemCard: item, index: i})">
+                (toggleFavourite)="toggleFavourite(item)" (click)="trackItemCardClick({itemCard: item, index: i})"
+                [index]="i">
             </tsl-public-item-card>
             <tsl-item-card-wide *ngIf="cardType === cardTypes.WIDE" [item]="item"
                 [showFavourite]="!(item.ownerId | isCurrentUser)" (toggleFavourite)="toggleFavourite(item)"

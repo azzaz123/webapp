@@ -32,7 +32,6 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   let service: DeliveryConversationContextAsBuyerService;
   let buyerRequestsApiService: BuyerRequestsApiService;
   let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
-  let featureFlagService: FeatureFlagService;
   let modalService: NgbModal;
   let router: Router;
 
@@ -50,7 +49,6 @@ describe('DeliveryConversationContextAsBuyerService', () => {
     service = TestBed.inject(DeliveryConversationContextAsBuyerService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
     deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
-    featureFlagService = TestBed.inject(FeatureFlagService);
     modalService = TestBed.inject(NgbModal);
     router = TestBed.inject(Router);
 
@@ -194,63 +192,43 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   });
 
   describe('when handling third voices CTA click', () => {
-    describe('and when delivery feature flag is enabled', () => {
-      beforeEach(() => {
-        spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(true));
-      });
+    describe('and when there is last buyer request', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUESTS));
+        spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
 
-      describe('and when there is last buyer request', () => {
-        beforeEach(fakeAsync(() => {
-          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUESTS));
-          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+        service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
+        tick();
+        tick();
+      }));
 
-          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
-          tick();
-          tick();
-        }));
+      it('should redirect to TTS', () => {
+        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUESTS[0].id}`;
 
-        it('should redirect to TTS', () => {
-          const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUESTS[0].id}`;
+        service.handleThirdVoiceCTAClick();
 
-          service.handleThirdVoiceCTAClick();
-
-          expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
-        });
-      });
-
-      describe('and when there is no last buyer request', () => {
-        beforeEach(fakeAsync(() => {
-          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([]));
-          spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
-
-          service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
-          tick();
-          tick();
-        }));
-
-        it('should do nothing', () => {
-          spyOn(modalService, 'open');
-
-          service.handleThirdVoiceCTAClick();
-
-          expect(modalService.open).not.toHaveBeenCalled();
-          expect(router.navigate).not.toHaveBeenCalled();
-        });
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
       });
     });
 
-    describe('and when delivery feature flag is NOT enabled', () => {
-      beforeEach(() => {
-        spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(false));
-        spyOn(modalService, 'open');
-      });
+    describe('and when there is no last buyer request', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([]));
+        spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
 
-      it('should open TRX awareness modal', () => {
+        service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
+        tick();
+        tick();
+      }));
+
+      it('should do nothing', () => {
+        spyOn(modalService, 'open');
+
         service.handleThirdVoiceCTAClick();
 
-        expect(modalService.open).toHaveBeenCalledTimes(1);
-        expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+        expect(modalService.open).not.toHaveBeenCalled();
+        expect(router.navigate).not.toHaveBeenCalled();
       });
     });
   });

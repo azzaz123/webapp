@@ -246,4 +246,24 @@ describe('ItemCardComponent', () => {
       expect(component.toggleFavourite.emit).toHaveBeenCalled();
     });
   });
+
+  describe('when it loads the image', () => {
+    it('and it is the second item and, considered Largest Contentful Paint (LCP), the image should be eager loaded', () => {
+      component.index = 1;
+
+      fixture.detectChanges();
+      const image = fixture.debugElement.query(By.css('.ItemCard__image > img'));
+
+      expect(image.attributes.loading).toBe('eager');
+    });
+
+    it('and it is NOT the second item, the image should be lazy loaded', () => {
+      component.index = 0;
+
+      fixture.detectChanges();
+      const image = fixture.debugElement.query(By.css('.ItemCard__image > img'));
+
+      expect(image.attributes.loading).toBe('lazy');
+    });
+  });
 });

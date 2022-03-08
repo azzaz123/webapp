@@ -23,7 +23,7 @@ import { Observable, Subscription } from 'rxjs';
   selector: 'tsl-payview-modal',
   templateUrl: './payview-modal.component.html',
   styleUrls: ['./payview-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PayviewService, PayviewStateManagementService],
 })
 export class PayviewModalComponent implements OnDestroy, OnInit {
@@ -32,7 +32,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   @Input() public itemHash: string;
 
   public countries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
-  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE: DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.MODAL_DIALOG;
+  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE: DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
   private subscriptions: Subscription[] = [];
 
   constructor(

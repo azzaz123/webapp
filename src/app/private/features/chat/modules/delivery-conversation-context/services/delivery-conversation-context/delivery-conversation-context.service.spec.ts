@@ -1,7 +1,5 @@
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { MOCK_INBOX_CONVERSATION_AS_BUYER, MOCK_INBOX_CONVERSATION_AS_SELLER, MOCK_INBOX_CONVERSATION_BASIC } from '@fixtures/chat';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { of, Subscription } from 'rxjs';
@@ -16,14 +14,12 @@ describe('DeliveryConversationContextService', () => {
   let service: DeliveryConversationContextService;
   let deliveryConversationContextAsBuyerService: DeliveryConversationContextAsBuyerService;
   let deliveryConversationContextAsSellerService: DeliveryConversationContextAsSellerService;
-  let featureFlagService: FeatureFlagService;
   let modalService: NgbModal;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         DeliveryConversationContextService,
-        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         {
           provide: DeliveryConversationContextAsBuyerService,
           useValue: { getBannerPropertiesAsBuyer: () => of(null), handleBannerCTAClick: () => {}, handleThirdVoiceCTAClick: () => {} },
@@ -36,7 +32,6 @@ describe('DeliveryConversationContextService', () => {
       ],
     });
     service = TestBed.inject(DeliveryConversationContextService);
-    featureFlagService = TestBed.inject(FeatureFlagService);
     deliveryConversationContextAsBuyerService = TestBed.inject(DeliveryConversationContextAsBuyerService);
     deliveryConversationContextAsSellerService = TestBed.inject(DeliveryConversationContextAsSellerService);
     modalService = TestBed.inject(NgbModal);
@@ -60,71 +55,49 @@ describe('DeliveryConversationContextService', () => {
       discardPeriodicTasks();
     }));
 
-    describe('and when delivery features are enabled', () => {
-      beforeEach(() => {
-        spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(true));
+    describe('and when the current user is the owner of the item in the conversation', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(deliveryConversationContextAsSellerService, 'getBannerPropertiesAsSeller').and.callThrough();
+        service.update(MOCK_INBOX_CONVERSATION_AS_SELLER);
+        tick();
+      }));
+
+      it('should ask for context from the sellers perspective', () => {
+        expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledWith(
+          MOCK_INBOX_CONVERSATION_AS_SELLER
+        );
+        expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledTimes(1);
       });
 
-      describe('and when the current user is the owner of the item in the conversation', () => {
-        beforeEach(fakeAsync(() => {
-          spyOn(deliveryConversationContextAsSellerService, 'getBannerPropertiesAsSeller').and.callThrough();
-          service.update(MOCK_INBOX_CONVERSATION_AS_SELLER);
-          tick();
-        }));
+      it('should notify loading ended', fakeAsync(() => {
+        let result: boolean;
 
-        it('should ask for context from the sellers perspective', () => {
-          expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledWith(
-            MOCK_INBOX_CONVERSATION_AS_SELLER
-          );
-          expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledTimes(1);
-        });
+        service.loading$.subscribe((loading) => (result = loading));
+        tick();
 
-        it('should notify loading ended', fakeAsync(() => {
-          let result: boolean;
-
-          service.loading$.subscribe((loading) => (result = loading));
-          tick();
-
-          expect(result).toEqual(false);
-        }));
-      });
-
-      describe('and when the current user is NOT the owner of the item in the conversation', () => {
-        beforeEach(fakeAsync(() => {
-          spyOn(deliveryConversationContextAsBuyerService, 'getBannerPropertiesAsBuyer').and.callThrough();
-          service.update(MOCK_INBOX_CONVERSATION_AS_BUYER);
-          tick();
-        }));
-
-        it('should ask for context from the buyers perspective', () => {
-          expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledWith(
-            MOCK_INBOX_CONVERSATION_AS_BUYER
-          );
-          expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledTimes(1);
-        });
-
-        it('should notify loading ended', fakeAsync(() => {
-          let result: boolean;
-
-          service.loading$.subscribe((loading) => (result = loading));
-          tick();
-
-          expect(result).toEqual(false);
-        }));
-      });
+        expect(result).toEqual(false);
+      }));
     });
 
-    describe('and when delivery features are NOT enabled', () => {
-      beforeEach(() => {
-        spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(true));
+    describe('and when the current user is NOT the owner of the item in the conversation', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(deliveryConversationContextAsBuyerService, 'getBannerPropertiesAsBuyer').and.callThrough();
+        service.update(MOCK_INBOX_CONVERSATION_AS_BUYER);
+        tick();
+      }));
+
+      it('should ask for context from the buyers perspective', () => {
+        expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledWith(MOCK_INBOX_CONVERSATION_AS_BUYER);
+        expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledTimes(1);
       });
 
-      it('should give a not defined banner', fakeAsync(() => {
-        service.update(MOCK_INBOX_CONVERSATION_BASIC);
+      it('should notify loading ended', fakeAsync(() => {
+        let result: boolean;
+
+        service.loading$.subscribe((loading) => (result = loading));
         tick();
 
-        service.bannerProperties$.subscribe((response) => expect(response).toBeFalsy());
-        tick();
+        expect(result).toEqual(false);
       }));
     });
   });
