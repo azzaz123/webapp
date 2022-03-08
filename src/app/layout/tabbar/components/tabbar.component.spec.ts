@@ -13,6 +13,7 @@ import { TabbarService } from '../core/services/tabbar.service';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
@@ -45,6 +46,15 @@ describe('TabbarComponent', () => {
           {
             provide: UnreadChatMessagesService,
             useClass: MockUnreadChatMessagesService,
+          },
+          {
+            provide: NotificationApiService,
+            useValue: {
+              unreadNotificationsCount$: of(0),
+              totalUnreadNotifications$: of(0),
+              getNotifications: () => {},
+              refreshUnreadNotifications: () => {},
+            },
           },
           {
             provide: Router,

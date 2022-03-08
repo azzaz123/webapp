@@ -9,6 +9,7 @@ import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum
 import { Notification } from '@api/core/model/notification/notification.interface';
 import { NotificationsInboxComponent } from './notifications-inbox.component';
 import { NotificationApiService } from '@api/notification/notification-api.service';
+import { BehaviorSubject } from 'rxjs';
 
 describe('NotificationsInboxComponent', () => {
   let component: NotificationsInboxComponent;
@@ -26,6 +27,7 @@ describe('NotificationsInboxComponent', () => {
       description: 'Cupidatat ad nostrud cillum',
       image: 'https://picsum.photos/200/300',
       url: 'https://es.wallapop.com',
+      id: 'id',
     },
   ];
 
@@ -44,7 +46,11 @@ describe('NotificationsInboxComponent', () => {
           {
             provide: NotificationApiService,
             useValue: {
-              getNotifications: () => notifications,
+              notifications$: new BehaviorSubject(notifications).asObservable(),
+              notificationsCount: 1,
+              unreadNotificationsCount: 0,
+              refreshNotifications: () => {},
+              logContentCardsDisplayed: () => {},
             },
           },
         ],
@@ -73,6 +79,7 @@ describe('NotificationsInboxComponent', () => {
       component.ngOnInit();
       tick();
       fixture.detectChanges();
+      tick(2000);
     }));
 
     const event: AnalyticsPageView<ViewNotificationCenter> = {
@@ -90,11 +97,6 @@ describe('NotificationsInboxComponent', () => {
     }));
 
     describe(`If receive notifications`, () => {
-      beforeEach(() => {
-        component.notifications = notifications;
-        fixture.detectChanges();
-      });
-
       it('should render at least one notification component', () => {
         const notification: DebugElement = fixture.debugElement.query(By.css('tsl-notification'));
         expect(notification).toBeTruthy();
