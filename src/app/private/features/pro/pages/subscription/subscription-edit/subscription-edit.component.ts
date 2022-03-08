@@ -23,10 +23,10 @@ import { ManageSubscriptionService } from '@private/features/pro/services/manage
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 import { ProModalConfig, REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
-import { finalize, switchMap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
+import * as moment from 'moment';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
-export const CHANGE_TIER_ERROR_CODE = 403;
 
 @Component({
   selector: 'tsl-subscription-edit',
@@ -96,7 +96,7 @@ export class SubscriptionEditComponent implements OnInit {
           this.editSubscription();
           return;
         }
-        this.showErrorModal();
+        this.showErrorModal(response.renewal_date);
         this.isLoading = false;
       },
       () => {
@@ -165,15 +165,18 @@ export class SubscriptionEditComponent implements OnInit {
     this.analyticsService.trackEvent(event);
   }
 
-  private showErrorModal(): void {
+  private showErrorModal(date: number): void {
     const modal = this.modalService.open(ProModalComponent, {
       windowClass: 'pro-modal',
     });
     const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.error_downgrade];
-    config.buttons.secondary.redirect = {
-      type: REDIRECT_TYPE.href,
-      url: this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CANNOT_CHANGE_PRO_SUBSCRIPTION),
-    };
+    (config.text2 = $localize`:@@downgrade_not_possible_due_to_bump_misalignment_modal_pro_users_description_2_part:To do this change, please wait until the next billing cycle starts: ${moment(
+      date
+    ).format('DD/MM/yy')}:INTERPOLATION:.`),
+      (config.buttons.secondary.redirect = {
+        type: REDIRECT_TYPE.href,
+        url: this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CANNOT_CHANGE_PRO_SUBSCRIPTION),
+      });
 
     modal.componentInstance.modalConfig = config;
   }

@@ -10,6 +10,7 @@ import { UuidService } from '../uuid/uuid.service';
 import { CATEGORIES_EXCLUDED_FROM_CONSUMER_GOODS, CATEGORY_SUBSCRIPTIONS_IDS } from './category-subscription-ids';
 import { SubscriptionsHttpService } from './http/subscriptions-http.service';
 import { mapSubscriptions } from './mappers/subscriptions-mapper';
+import { CanEditSubscriptionResponse } from '@core/subscriptions/dtos/subscriptions/can-edit.subscription.interface';
 
 export const API_URL = 'api/v3/payments';
 export const STRIPE_SUBSCRIPTION_URL = 'c2b/stripe/subscription';
@@ -216,7 +217,7 @@ export class SubscriptionsService {
     return selectedLimit === maxLimit;
   }
 
-  public canUpdateTier(subscriptionId: string, tierId: string): Observable<any> {
+  public canUpdateTier(subscriptionId: string, tierId: string): Observable<CanEditSubscriptionResponse> {
     return this.subscriptionsHttpService.canUpdateSubscription(subscriptionId, tierId);
   }
 }
