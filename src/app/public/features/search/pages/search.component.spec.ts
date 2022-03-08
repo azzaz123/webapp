@@ -883,113 +883,164 @@ describe('SearchComponent', () => {
     });
   });
 
-  describe('when sort by relevance is applied', () => {
-    beforeEach(() => {
-      component['sortBySubject'].next(SORT_BY.RELEVANCE);
-    });
+  describe('when no permission testing is involved ', () => {
+    beforeEach(async () => {
+      fixture = TestBed.createComponent(SearchComponent);
+      searchListTrackingEventsService = TestBed.inject(SearchListTrackingEventsService);
+      searchTrackingEventsService = TestBed.inject(SearchTrackingEventsService);
+      filterParameterStoreService = TestBed.inject(FilterParameterStoreService);
 
-    it('should show info bubble', () => {
-      const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
-
-      component.sortBy$.subscribe(() => {
-        expect(infoBubbleElement).toBeTruthy();
-      });
-    });
-
-    it('info bubble should have the correct text ', () => {
-      const infoBubbleText = 'infoBubbleText';
-
-      searchResponseExtraDataSubject.next({ searchId: '', bubble: infoBubbleText, sortBy: SORT_BY.RELEVANCE });
-
-      expect(component.infoBubbleText).toEqual(infoBubbleText);
-    });
-  });
-
-  describe('when sort by relevance is NOT applied', () => {
-    it('should hide info bubble', () => {
-      const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
-
-      expect(infoBubbleElement).toBeFalsy();
-    });
-  });
-
-  describe('when filter parameters change', () => {
-    const categoryCardsSelector = 'tsl-category-cards';
-
-    beforeEach(() => {
+      component = fixture.componentInstance;
       component.ngOnInit();
     });
 
-    describe('and have category', () => {
-      const categoryFilter: FilterParameter = {
-        key: FILTER_QUERY_PARAM_KEY.categoryId,
-        value: '1234',
-      };
-
+    describe('when sort by relevance is applied', () => {
       beforeEach(() => {
-        parametersSubject.next([categoryFilter]);
+        component['sortBySubject'].next(SORT_BY.RELEVANCE);
       });
 
-      it('categoryId should be updated', (done) => {
-        component.categoryId$.subscribe((categoryId) => {
-          expect(categoryId).toEqual(categoryFilter.value);
-          done();
+      it('should show info bubble', () => {
+        const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
+
+        component.sortBy$.subscribe(() => {
+          expect(infoBubbleElement).toBeTruthy();
         });
       });
 
-      it('categories slider should be visible', () => {
-        fixture.detectChanges();
+      it('info bubble should have the correct text ', () => {
+        const infoBubbleText = 'infoBubbleText';
 
-        expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeTruthy();
+        searchResponseExtraDataSubject.next({ searchId: '', bubble: infoBubbleText, sortBy: SORT_BY.RELEVANCE });
+
+        expect(component.infoBubbleText).toEqual(infoBubbleText);
       });
     });
 
-    describe('and not have category', () => {
+    describe('when sort by relevance is NOT applied', () => {
+      it('should hide info bubble', () => {
+        const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
+
+        expect(infoBubbleElement).toBeFalsy();
+      });
+    });
+
+    describe('when filter parameters change', () => {
       beforeEach(() => {
-        parametersSubject.next([]);
+        component.ngOnInit();
       });
 
-      it('categoryId should be updated', (done) => {
-        component.categoryId$.subscribe((categoryId) => {
-          expect(categoryId).toBeUndefined();
-          done();
+      describe('and have category', () => {
+        const categoryFilter: FilterParameter = {
+          key: FILTER_QUERY_PARAM_KEY.categoryId,
+          value: '1234',
+        };
+
+        beforeEach(() => {
+          parametersSubject.next([categoryFilter]);
+        });
+
+        it('categoryId should be updated', (done) => {
+          component.categoryId$.subscribe((categoryId) => {
+            expect(categoryId).toEqual(categoryFilter.value);
+            done();
+          });
         });
       });
 
-      it('categories slider should NOT be visible', () => {
-        fixture.detectChanges();
+      describe('and not have category', () => {
+        beforeEach(() => {
+          parametersSubject.next([]);
+        });
 
-        expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
-      });
-    });
-
-    describe('and have object type', () => {
-      const objectTypeFilter: FilterParameter = {
-        key: FILTER_QUERY_PARAM_KEY.objectType,
-        value: '1234',
-      };
-
-      beforeEach(() => {
-        parametersSubject.next([objectTypeFilter]);
+        it('categoryId should be updated', (done) => {
+          component.categoryId$.subscribe((categoryId) => {
+            expect(categoryId).toBeUndefined();
+            done();
+          });
+        });
       });
 
-      it('objectTypeId should be updated', (done) => {
-        component.objectTypeId$.subscribe((objectTypeId) => {
-          expect(objectTypeId).toEqual(objectTypeFilter.value);
-          done();
+      describe('and have object type', () => {
+        const objectTypeFilter: FilterParameter = {
+          key: FILTER_QUERY_PARAM_KEY.objectType,
+          value: '1234',
+        };
+
+        beforeEach(() => {
+          parametersSubject.next([objectTypeFilter]);
+        });
+
+        it('objectTypeId should be updated', (done) => {
+          component.objectTypeId$.subscribe((objectTypeId) => {
+            expect(objectTypeId).toEqual(objectTypeFilter.value);
+            done();
+          });
+        });
+      });
+
+      describe('and not have object type', () => {
+        beforeEach(() => {
+          parametersSubject.next([]);
+        });
+
+        it('objectTypeId should be updated', (done) => {
+          component.objectTypeId$.subscribe((objectTypeId) => {
+            expect(objectTypeId).toBeUndefined();
+            done();
+          });
         });
       });
     });
 
-    describe('and not have object type', () => {
-      beforeEach(() => {
-        parametersSubject.next([]);
+    describe('when checking for categories slider visibility', () => {
+      const categoryCardsSelector = 'tsl-category-cards';
+
+      describe('and filters contain not allowed params', () => {
+        const notAllowedParam: FilterParameter = {
+          key: FILTER_QUERY_PARAM_KEY.bodyType,
+          value: '1234',
+        };
+
+        beforeEach(() => {
+          parametersSubject.next([notAllowedParam]);
+          fixture.detectChanges();
+        });
+
+        it('categories slider should NOT visible', () => {
+          expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
+        });
       });
 
-      it('objectTypeId should be updated', (done) => {
-        component.objectTypeId$.subscribe((objectTypeId) => {
-          expect(objectTypeId).toBeUndefined();
-          done();
+      describe('and filters contain allowed params', () => {
+        const allowedParam: FilterParameter = {
+          key: FILTER_QUERY_PARAM_KEY.orderBy,
+          value: '1234',
+        };
+
+        describe('and required params are set', () => {
+          const requiredParam: FilterParameter = {
+            key: FILTER_QUERY_PARAM_KEY.categoryId,
+            value: '1234',
+          };
+
+          beforeEach(() => {
+            parametersSubject.next([allowedParam, requiredParam]);
+            fixture.detectChanges();
+          });
+
+          it('categories slider should be visible', () => {
+            expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeTruthy();
+          });
+        });
+
+        describe('and required params are NOT set', () => {
+          beforeEach(() => {
+            parametersSubject.next([allowedParam]);
+            fixture.detectChanges();
+          });
+          it('categories slider should NOT be visible', () => {
+            expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
+          });
         });
       });
     });

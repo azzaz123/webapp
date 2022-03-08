@@ -40,6 +40,8 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { OPTIMIZELY_FLAG_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-flag-keys';
+import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
+import { CATEGORY_CARDS_VISIBILITY_RULES } from '../core/services/constants/category-cards-visibility-rules';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -108,6 +110,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public categoryId$: Observable<string>;
   public objectTypeId$: Observable<string>;
+  public showCategoryCards$: Observable<boolean> = this.buildShowCategoryCardsObservable();
 
   @HostListener('window:scroll', ['$event'])
   @debounce(500)
@@ -284,6 +287,27 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       filter(() => this.router.url?.split('?')[0] === `/${PUBLIC_PATHS.SEARCH}`),
       distinctUntilChanged((prevParams, nextParams) => isEqual(prevParams, nextParams)),
       map((params: Params) => this.queryStringService.mapQueryToFilterParams(params))
+    );
+  }
+
+  private buildShowCategoryCardsObservable(): Observable<boolean> {
+    return this.filterParameterStore.parameters$.pipe(
+      map((params) => {
+        const requiredParamsToShowCategoryCards = params.filter((param) =>
+          CATEGORY_CARDS_VISIBILITY_RULES.REQUIRED_PARAMETER_KEYS.includes(param.key)
+        );
+
+        if (requiredParamsToShowCategoryCards.length === CATEGORY_CARDS_VISIBILITY_RULES.REQUIRED_PARAMETER_KEYS.length) {
+          const notAllowedParamsToShowCategoryCards = params.reduce((acc, curr) => {
+            if (!CATEGORY_CARDS_VISIBILITY_RULES.ALLOWED_PARAMETER_KEYS.includes(curr.key)) acc.push(curr);
+            return acc;
+          }, []);
+
+          return !notAllowedParamsToShowCategoryCards.length;
+        } else {
+          return false;
+        }
+      })
     );
   }
 
