@@ -1,7 +1,7 @@
 import { CategoriesWithPresentationResponseDto, CategoryDto, CategoryWithPresentationDto } from '@api/categories/dtos';
-import { CategoryWithPresentation } from '@core/category/categories-with-presentation-response.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryResponse } from '@core/category/category-response.interface';
+import { CategoryWithPresentation } from '@core/category/category-with-presentation.interface';
 import { CATEGORY_ICONS } from '@public/shared/components/filters/components/categories-filter/data/category_options';
 import { CategoriesFilterOption } from '@public/shared/components/filters/components/categories-filter/interfaces/categories-filter-option.interface';
 

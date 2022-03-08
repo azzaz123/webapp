@@ -5,7 +5,7 @@ import { CategoriesFilterOption } from '@public/shared/components/filters/compon
 import { CategoryResponse } from '@core/category/category-response.interface';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { CategoryWithPresentation } from '@core/category/categories-with-presentation-response.interface';
+import { CategoryWithPresentation } from '@core/category/category-with-presentation.interface';
 
 @Injectable()
 export class CategoriesApiService {
