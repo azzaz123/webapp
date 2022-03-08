@@ -175,7 +175,7 @@ describe('Service: User', () => {
 
   describe('initializeUser', () => {
     it('should save the logged user information', () => {
-      service.initializeUser().subscribe();
+      service.initializeUser();
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
       req.flush(USER_DATA);
 
@@ -187,7 +187,7 @@ describe('Service: User', () => {
         accessTokenService.storeAccessToken('abc');
         spyOn(service, 'logout');
 
-        service.initializeUser().subscribe();
+        service.initializeUser();
         const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
         req.error(null, { status: 0, statusText: 'Unauthorized' });
 
@@ -678,7 +678,7 @@ describe('Service: User', () => {
     it('should return true if user is featured', (done) => {
       spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_FULL_USER));
 
-      service.initializeUser().subscribe();
+      service.initializeUser();
       let resp = service.isProUser();
 
       expect(resp).toBe(true);
@@ -688,7 +688,7 @@ describe('Service: User', () => {
     it('should return false if user is not featured', (done) => {
       spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
 
-      service.initializeUser().subscribe();
+      service.initializeUser();
       let resp = service.isProUser();
 
       expect(resp).toBe(false);
@@ -765,7 +765,7 @@ describe('Service: User', () => {
         spyOn(localStorage, 'getItem').and.returnValue(true);
         spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
 
-        service.initializeUser().subscribe();
+        service.initializeUser();
 
         expect(localStorage.getItem).toHaveBeenCalledTimes(1);
         expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
@@ -778,7 +778,7 @@ describe('Service: User', () => {
         spyOn(localStorage, 'getItem').and.returnValue(null);
         spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
 
-        service.initializeUser().subscribe();
+        service.initializeUser();
 
         expect(localStorage.getItem).toHaveBeenCalledTimes(1);
         expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);

@@ -109,7 +109,7 @@ describe('EditComponent', () => {
       spyOn(editTrackingEventService, 'trackViewEditItemEvent');
 
       component.ngOnInit();
-      analyticsService.initializeAnalyticsWithGuestUser();
+      analyticsService.initializeAnalyticsWithUnauthenticatedUser();
 
       expect(editTrackingEventService.trackViewEditItemEvent).toHaveBeenCalledWith(component.item.categoryId, component.isReactivation);
     });

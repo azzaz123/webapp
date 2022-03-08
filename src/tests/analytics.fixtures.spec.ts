@@ -21,7 +21,7 @@ export class MockAnalyticsService {
   public get mParticleReady$(): Observable<void> {
     return this._mParticleReady$.asObservable();
   }
-  initializeAnalyticsWithGuestUser() {
+  initializeAnalyticsWithUnauthenticatedUser() {
     this._mParticleReady$.next();
   }
   trackEvent<T>(_event: AnalyticsEvent<T>) {}

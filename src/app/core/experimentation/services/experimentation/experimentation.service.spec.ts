@@ -56,7 +56,7 @@ describe('ExperimentService', () => {
     describe('and is a guest user', () => {
       it('should not initialize optimizely service', fakeAsync(() => {
         spyOn(OptimizelyServiceMock, 'initialize');
-        service.initializeExperimentationWithGuestUser();
+        service.initializeExperimentationWithUnauthenticatedUser();
         tick();
 
         expect(OptimizelyServiceMock.initialize).not.toHaveBeenCalled();
@@ -66,7 +66,7 @@ describe('ExperimentService', () => {
     describe('and is a logged user', () => {
       it('should initialize optimizely service', fakeAsync(() => {
         spyOn(OptimizelyServiceMock, 'initialize');
-        service.initializeExperimentationWithLoggedUser();
+        service.initializeExperimentationWithAuthenticatedUser();
         tick();
 
         expect(OptimizelyServiceMock.initialize).toHaveBeenCalled();

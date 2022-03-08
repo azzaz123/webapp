@@ -76,7 +76,7 @@ describe('AnalyticsService', () => {
         spyOn(user, 'setUserAttribute');
         spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
 
-        service.initializeAnalyticsWithGuestUser();
+        service.initializeAnalyticsWithUnauthenticatedUser();
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(user.setUserAttribute).toHaveBeenCalledWith('deviceId', 'newUUID');
@@ -90,7 +90,7 @@ describe('AnalyticsService', () => {
         spyOn(mParticle.Identity.getCurrentUser(), 'setUserAttribute');
         spyOn(deviceService, 'getDeviceId').and.returnValue('newDeviceId');
 
-        service.initializeAnalyticsWithGuestUser();
+        service.initializeAnalyticsWithUnauthenticatedUser();
 
         expect(mParticle.init).toHaveBeenCalled();
         expect(mParticle.Identity.getCurrentUser().setUserAttribute).toHaveBeenCalledWith('deviceId', 'newDeviceId');
@@ -105,7 +105,7 @@ describe('AnalyticsService', () => {
           email: MOCK_FULL_USER.email,
         };
 
-        service.initializeAnalyticsWithLoggedUser(MOCK_FULL_USER);
+        service.initializeAnalyticsWithAuthenticatedUser(MOCK_FULL_USER);
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(mParticle.init).toHaveBeenCalledWith(expect.anything(), {
@@ -122,7 +122,7 @@ describe('AnalyticsService', () => {
         spyOn(mParticle, 'init').and.callThrough();
         const expectedIdentities = {};
 
-        service.initializeAnalyticsWithGuestUser();
+        service.initializeAnalyticsWithUnauthenticatedUser();
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(mParticle.init).toHaveBeenCalledWith(expect.anything(), {

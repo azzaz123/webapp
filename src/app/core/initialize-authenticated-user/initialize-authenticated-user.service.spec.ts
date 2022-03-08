@@ -12,6 +12,11 @@ import { InitializeAuthenticatedUserService } from './initialize-authenticated-u
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 import { PermissionsInitializerServiceMock } from '@fixtures/permissions-initializer.fixtures.spec';
+import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
+import { RealTimeService } from '@core/message/real-time.service';
+import { CallsService } from '@core/conversation/calls.service';
+import { of } from 'rxjs';
+import { CookieService } from 'ngx-cookie';
 
 describe('InitializeAuthenticatedUserService', () => {
   let service: InitializeAuthenticatedUserService;
@@ -21,6 +26,10 @@ describe('InitializeAuthenticatedUserService', () => {
   let featureFlagsService: FeatureFlagService;
   let externalCommsService: ExternalCommsService;
   let experimentationService: ExperimentationService;
+  let inboxService: InboxService;
+  let realTime: RealTimeService;
+  let callsService: CallsService;
+  let cookieService: CookieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -31,6 +40,40 @@ describe('InitializeAuthenticatedUserService', () => {
         { provide: FeatureFlagService, useValue: FeatureFlagServiceMock },
         { provide: ExperimentationService, useValue: ExperimentationServiceMock },
         { provide: PermissionsInitializerService, useValue: PermissionsInitializerServiceMock },
+        {
+          provide: InboxService,
+          useValue: {
+            init() {},
+            saveInbox() {},
+          },
+        },
+        {
+          provide: RealTimeService,
+          useValue: {
+            connect() {},
+            disconnect() {},
+            reconnect() {},
+          },
+        },
+        {
+          provide: CallsService,
+          useValue: {
+            init() {
+              return of();
+            },
+            syncItem() {},
+          },
+        },
+        {
+          provide: CookieService,
+          useValue: {
+            value: null,
+            put() {},
+            get() {
+              return this.value;
+            },
+          },
+        },
       ],
     });
     service = TestBed.inject(InitializeAuthenticatedUserService);
@@ -40,6 +83,10 @@ describe('InitializeAuthenticatedUserService', () => {
     featureFlagsService = TestBed.inject(FeatureFlagService);
     experimentationService = TestBed.inject(ExperimentationService);
     permissionsService = TestBed.inject(PermissionsInitializerService);
+    inboxService = TestBed.inject(InboxService);
+    realTime = TestBed.inject(RealTimeService);
+    callsService = TestBed.inject(CallsService);
+    cookieService = TestBed.inject(CookieService);
   });
 
   it('should be created', () => {

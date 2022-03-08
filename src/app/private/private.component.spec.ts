@@ -229,15 +229,6 @@ describe('PrivateComponent', () => {
         expect(eventServiceCalls).toContain(EventService.USER_LOGIN);
       });
 
-      it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
-        spyOn(realTime, 'connect');
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(realTime.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
-      });
-
       it('should call userService.sendUserPresenceInterval', () => {
         spyOn(userService, 'sendUserPresenceInterval');
 
@@ -253,22 +244,6 @@ describe('PrivateComponent', () => {
         component.ngOnInit();
 
         expect(connectionService.checkConnection).toHaveBeenCalled();
-      });
-
-      it('should call callsService.init twice if user is professional', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(of(true));
-
-        component.ngOnInit();
-        emitSuccessChatEvents();
-
-        expect(callsService.init).toHaveBeenCalledTimes(2);
-      });
-
-      it('should call inboxService.init', () => {
-        component.ngOnInit();
-        emitSuccessChatEvents();
-
-        expect(inboxService.init).toHaveBeenCalledTimes(1);
       });
 
       it('should send open_app event if cookie does not exist', () => {
