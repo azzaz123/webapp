@@ -1,13 +1,19 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { CardOwnerNameIsInvalidError, PaymentsCardsError } from '@api/core/errors/payments/cards';
+import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { CardInvalidError, CardOwnerNameIsInvalidError, PaymentsCardsError } from '@api/core/errors/payments/cards';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
-import { mockCreditCard, mockCreditCardSyncRequest, mockPaymentsCreditCard } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
+import {
+  mockCreditCard,
+  mockCreditCardSyncRequest,
+  mockInvalidPaymentsCreditCard,
+  mockPaymentsCreditCard,
+} from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import {
   MOCK_PAYMENTS_CARDS_ERROR_CARD_OWNER_NAME_IS_INVALID_RESPONSE,
   MOCK_PAYMENTS_CARDS_UNKNWON_ERROR_RESPONSE,
 } from '@api/fixtures/payments/cards/payments-cards-errors.fixtures.spec';
 import { of, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { PaymentsCreditCardHttpService } from './http/payments-credit-card-http.service';
 
 import { PaymentsCreditCardService } from './payments-credit-card.service';
@@ -30,33 +36,76 @@ describe('PaymentsCreditCardService', () => {
   });
 
   describe('when asking to get user cards', () => {
-    beforeEach(() => {
-      spyOn(paymentsHttpService, 'get').and.returnValue(of(mockPaymentsCreditCard));
-    });
+    it('should ask to get user cards', fakeAsync(() => {
+      spyOn(paymentsHttpService, 'get').and.callThrough();
 
-    it('should ask to get user cards', () => {
       service.get().subscribe();
+      tick();
 
       expect(paymentsHttpService.get).toHaveBeenCalled();
+    }));
+
+    describe('and card is valid', () => {
+      beforeEach(() => {
+        spyOn(paymentsHttpService, 'get').and.returnValue(of(mockPaymentsCreditCard));
+      });
+
+      it('should map server response to web context', fakeAsync(() => {
+        let response: CreditCard;
+
+        service.get().subscribe((data) => (response = data));
+        tick();
+
+        expect(response).toEqual(mockCreditCard);
+      }));
+
+      it('should update the reactive credit card', fakeAsync(() => {
+        let response: CreditCard;
+
+        service.get().subscribe();
+        service.creditCard$.subscribe((data) => (response = data));
+        tick();
+
+        expect(response).toEqual(mockCreditCard);
+      }));
     });
 
-    it('should map server response to web context', () => {
-      let response: CreditCard;
+    describe('and when card is invalid', () => {
+      beforeEach(() => {
+        spyOn(paymentsHttpService, 'get').and.returnValue(of(mockInvalidPaymentsCreditCard));
+        spyOn(paymentsHttpService, 'delete').and.returnValue(of(null));
+      });
 
-      service.get().subscribe((data) => (response = data));
+      it('should set credit card as it does not exist', fakeAsync(() => {
+        let methodResponse: CreditCard;
+        let observableResponse: CreditCard;
 
-      expect(response).toEqual(mockCreditCard);
-    });
+        service.get().subscribe({ next: (data) => (methodResponse = data), error: () => {} });
+        service.creditCard$.subscribe({ next: (data) => (observableResponse = data), error: () => {} });
+        tick();
 
-    it('should update the credit card subject', () => {
-      let creditCardResult: CreditCard;
-      let creditCardSubject: CreditCard;
+        expect(methodResponse).toBeFalsy();
+        expect(observableResponse).toBeFalsy();
+      }));
 
-      service.get().subscribe((creditCard: CreditCard) => (creditCardResult = creditCard));
-      service.creditCard$.subscribe((creditCard: CreditCard) => (creditCardSubject = creditCard));
+      it('should ask for card deletion', fakeAsync(() => {
+        service.get().subscribe({ error: () => {} });
+        tick();
 
-      expect(creditCardResult).toStrictEqual(mockCreditCard);
-      expect(creditCardSubject).toStrictEqual(creditCardResult);
+        expect(paymentsHttpService.delete).toHaveBeenCalledTimes(1);
+      }));
+
+      it('should notify there was an error with the card', fakeAsync(() => {
+        let methodResultError: CardInvalidError;
+        let observableResultError: CardInvalidError;
+
+        service.get().subscribe({ error: (e) => (methodResultError = e) });
+        service.creditCard$.subscribe({ error: (e) => (observableResultError = e) });
+        tick();
+
+        expect(methodResultError instanceof CardInvalidError).toBe(true);
+        expect(observableResultError instanceof CardInvalidError).toBe(true);
+      }));
     });
   });
 

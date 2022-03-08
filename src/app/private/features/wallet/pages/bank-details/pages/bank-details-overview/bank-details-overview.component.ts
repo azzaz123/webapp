@@ -17,9 +17,10 @@ import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants'
 import { SharedErrorActionService } from '@shared/error-action/';
 
 import { catchError } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
+import { CardInvalidError } from '@api/core/errors/payments/cards';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -154,6 +155,10 @@ export class BankDetailsOverviewComponent implements OnInit {
   }
 
   private handleError(error: unknown): Observable<never> {
+    if (error instanceof CardInvalidError) {
+      this.showToast(error.message, TOAST_TYPES.ERROR);
+      return of();
+    }
     this.errorActionService.show(error);
     return throwError(error);
   }
