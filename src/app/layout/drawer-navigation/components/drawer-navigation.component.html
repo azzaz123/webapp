@@ -1,1 +1,6 @@
-<p>navigation-drawer works!</p>
+<nav *ngFor="let section of navigationSections$ | async">
+    <h4>{{ section.title }}</h4>
+    <div *ngFor="let element of section.elements">
+        <span>{{element.text}}</span>
+    </div>
+</nav>

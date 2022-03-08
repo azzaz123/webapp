@@ -3,9 +3,9 @@ import { NavigationElement } from '@layout/core/interfaces/navigation-element.in
 export enum DRAWER_NAVIGATION_SECTIONS {
   // PROFILE,
   CATALOG,
-  // TRANSACTIONS,
-  // ACCOUNT,
-  // HELP
+  TRANSACTIONS,
+  ACCOUNT,
+  HELP,
 }
 
 export interface DrawerNavigationElement extends NavigationElement {
