@@ -1,10 +1,11 @@
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement, Input } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
+import { I18nService } from '@core/i18n/i18n.service';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COSTS_ITEM } from '@api/fixtures/bff/delivery/costs/delivery-costs.fixtures.spec';
 import { PayviewDeliveryHeaderComponent } from '@private/features/payview/modules/delivery/components/header/payview-delivery-header.component';
@@ -12,6 +13,25 @@ import { PayviewDeliveryPointComponent } from '@private/features/payview/modules
 import { PayviewDeliveryPointsComponent } from '@private/features/payview/modules/delivery/components/points/payview-delivery-points.component';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
+
+@Component({
+  selector: 'tsl-payview-delivery-point',
+  templateUrl: './../point/payview-delivery-point.component.html',
+})
+class FakePayviewDeliveryPointComponent extends PayviewDeliveryPointComponent {
+  constructor(i18nService: I18nService) {
+    super(i18nService);
+  }
+}
+
+@Component({
+  selector: 'tsl-delivery-address',
+  template: '',
+})
+class FakeDeliveryAddressComponent {
+  @Input() showTitle;
+  @Input() whereUserComes;
+}
 
 describe('PayviewDeliveryPointsComponent', () => {
   const payviewDeliveryPoints: string = '.PayviewDeliveryPoints';
@@ -25,8 +45,9 @@ describe('PayviewDeliveryPointsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         ButtonComponent,
+        FakeDeliveryAddressComponent,
+        FakePayviewDeliveryPointComponent,
         PayviewDeliveryHeaderComponent,
-        PayviewDeliveryPointComponent,
         PayviewDeliveryPointsComponent,
         SvgIconComponent,
       ],
@@ -61,7 +82,7 @@ describe('PayviewDeliveryPointsComponent', () => {
       });
 
       it('should show all the delivery methods', () => {
-        const target = debugElement.queryAll(By.directive(PayviewDeliveryPointComponent)).length;
+        const target = debugElement.queryAll(By.directive(FakePayviewDeliveryPointComponent)).length;
 
         expect(target).toBe(component.deliveryMethods.length);
       });
@@ -70,7 +91,7 @@ describe('PayviewDeliveryPointsComponent', () => {
         let targetElement: DebugElement;
 
         beforeEach(() => {
-          targetElement = debugElement.queryAll(By.directive(PayviewDeliveryPointComponent))[0];
+          targetElement = debugElement.queryAll(By.directive(FakePayviewDeliveryPointComponent))[0];
         });
 
         it('should assign the corresponding delivery costs', () => {
@@ -94,7 +115,7 @@ describe('PayviewDeliveryPointsComponent', () => {
         let targetElement: DebugElement;
 
         beforeEach(() => {
-          targetElement = debugElement.queryAll(By.directive(PayviewDeliveryPointComponent))[1];
+          targetElement = debugElement.queryAll(By.directive(FakePayviewDeliveryPointComponent))[1];
         });
 
         it('should assign the corresponding delivery costs', () => {
@@ -169,7 +190,7 @@ describe('PayviewDeliveryPointsComponent', () => {
 
       fixture.detectChanges();
 
-      const deliveryOptionSelector: DebugElement = fixture.debugElement.query(By.directive(PayviewDeliveryPointComponent));
+      const deliveryOptionSelector: DebugElement = fixture.debugElement.query(By.directive(FakePayviewDeliveryPointComponent));
       deliveryOptionSelector.triggerEventHandler('checked', fakeIndex);
     });
 
@@ -180,6 +201,89 @@ describe('PayviewDeliveryPointsComponent', () => {
     it('should set the delivery method selected', () => {
       expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
       expect(deliveryServiceSpy).toHaveBeenCalledWith(component.deliveryMethods[fakeIndex]);
+    });
+  });
+
+  describe('WHEN the edit point has been called', () => {
+    describe('AND WHEN the edit point is the pick-up point', () => {
+      let deliveryServiceSpy;
+      const fakeIndex: number = 0;
+
+      beforeEach(() => {
+        payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
+        deliveryServiceSpy = spyOn(payviewDeliveryService, 'editPickUpPoint').and.callFake(() => {});
+        fixture = TestBed.createComponent(PayviewDeliveryPointsComponent);
+        component = fixture.componentInstance;
+        debugElement = fixture.debugElement;
+
+        component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
+        component.deliveryMethods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
+
+        fixture.detectChanges();
+
+        const deliveryOptionSelector: DebugElement = fixture.debugElement.query(By.directive(FakePayviewDeliveryPointComponent));
+        deliveryOptionSelector.triggerEventHandler('edited', fakeIndex);
+      });
+
+      it('should raise the event corresponding to the pick-up point edition', fakeAsync(() => {
+        expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
+      }));
+    });
+
+    describe('AND WHEN the edit point is the address point', () => {
+      let deliveryServiceSpy;
+      const fakeIndex: number = 1;
+
+      beforeEach(() => {
+        payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
+        deliveryServiceSpy = spyOn(payviewDeliveryService, 'editAddress').and.callFake(() => {});
+        fixture = TestBed.createComponent(PayviewDeliveryPointsComponent);
+        component = fixture.componentInstance;
+        debugElement = fixture.debugElement;
+
+        component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
+        component.deliveryMethods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
+
+        fixture.detectChanges();
+
+        const deliveryOptionSelector: DebugElement = fixture.debugElement.query(By.directive(FakePayviewDeliveryPointComponent));
+        deliveryOptionSelector.triggerEventHandler('edited', fakeIndex);
+      });
+
+      it('should raise the event corresponding to the pick-up point edition', fakeAsync(() => {
+        expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
+      }));
+    });
+
+    describe('AND WHEN the edit point is the address', () => {
+      let deliveryServiceSpy;
+
+      beforeEach(() => {
+        deliveryServiceSpy = spyOn(payviewDeliveryService, 'editAddress').and.callFake(() => {});
+
+        fixture.detectChanges();
+      });
+
+      it('should raise the event corresponding to the address edition', () => {
+        component.editPoint(1);
+        expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('WHEN any point has been selected', () => {
+    let deliveryServiceSpy;
+
+    beforeEach(() => {
+      deliveryServiceSpy = spyOn(payviewDeliveryService, 'setDeliveryMethod').and.callFake(() => {});
+
+      fixture.detectChanges();
+    });
+
+    it('should raise the event corresponding to the delivery method selection', () => {
+      component.selectPoint(1);
+      expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
+      expect(deliveryServiceSpy).toHaveBeenCalledWith(component.deliveryMethods[1]);
     });
   });
 });

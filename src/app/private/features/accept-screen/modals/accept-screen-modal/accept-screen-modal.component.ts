@@ -37,7 +37,8 @@ export class AcceptScreenModalComponent implements OnInit {
 
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
-  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
+  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
   private readonly deliveryMapSlideId: number = ACCEPT_SCREEN_STEPS.MAP;

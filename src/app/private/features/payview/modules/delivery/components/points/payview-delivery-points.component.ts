@@ -25,6 +25,15 @@ export class PayviewDeliveryPointsComponent implements OnInit {
     this.selectedPointIndex = this.defaultDeliveryMethod;
   }
 
+  public editPoint(index: number): void {
+    this.selectedPointIndex = index;
+    if (this.isPickUpPoint(this.deliveryMethods[index])) {
+      this.deliveryService.editPickUpPoint();
+      return;
+    }
+    this.deliveryService.editAddress();
+  }
+
   public getDeliveryCost(deliveryMethod: DeliveryBuyerDeliveryMethod): string {
     if (this.isPickUpPoint(deliveryMethod)) {
       return this.formatMoney(this.deliveryCosts.carrierOfficeCost);
