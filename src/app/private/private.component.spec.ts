@@ -211,10 +211,6 @@ describe('PrivateComponent', () => {
     }
 
     describe('success case', () => {
-      function emitSuccessChatEvents() {
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.CHAT_RT_CONNECTED);
-      }
       beforeEach(fakeAsync(() => {
         spyOn(callsService, 'init').and.returnValue(of({}));
         spyOn(inboxService, 'init');

@@ -411,8 +411,9 @@ export class MockedUserService {
     return this._userSubject.asObservable();
   }
 
-  public initializeUser(): void {
+  public initializeUser(): Promise<User> {
     this._userSubject.next(new User(USER_ID));
+    return new Promise((resolve) => resolve(MOCK_FULL_USER));
   }
 
   get user(): User {
