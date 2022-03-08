@@ -17,7 +17,7 @@ export const MOCK_FULL_ADDRESS: string = 'This is a full address';
 
 export const MOCK_LOCATION_WITH_RADIUS: LocationWithRadius = {
   ...MOCK_LOCATION,
-  radiusInKm: 5,
+  radiusInKm: 2,
 };
 
 export const MOCK_OFFICE_MARKERS: Location[] = [
@@ -34,7 +34,7 @@ export const MOCK_FALLBACK_LOCATION: Location = {
 
 export const MOCK_FALLBACK_LOCATION_WITH_RADIUS: LocationWithRadius = {
   ...MOCK_FALLBACK_LOCATION,
-  radiusInKm: 3,
+  radiusInKm: 1,
 };
 
 export const MOCK_USER_LOCATION: Location = {
@@ -44,7 +44,7 @@ export const MOCK_USER_LOCATION: Location = {
 
 export const MOCK_USER_LOCATION_WITH_RADIUS: LocationWithRadius = {
   ...MOCK_USER_LOCATION,
-  radiusInKm: 4,
+  radiusInKm: 2,
 };
 
 export const MOCK_CARRIER_OFFICE_INFO_LOCATION: Location = {
