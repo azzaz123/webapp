@@ -18,8 +18,7 @@ import { BumpsTrackingEventsService } from '../../services/bumps-tracking-events
 export class CartComponent implements OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() selectedItems: SelectedProduct[];
-  @Output() confirmAction: EventEmitter<void> = new EventEmitter<void>();
-  @Output() errorAction: EventEmitter<BumpRequestSubject[]> = new EventEmitter<BumpRequestSubject[]>();
+  @Output() confirmAction: EventEmitter<BumpRequestSubject[]> = new EventEmitter<BumpRequestSubject[]>();
 
   public hasSavedCards = true;
   public isNewCard = false;
@@ -62,8 +61,7 @@ export class CartComponent implements OnChanges {
         })
       )
       .subscribe(([...next]) => {
-        const errors = next.filter((value) => value?.hasError);
-        errors.length ? this.error(errors) : this.success();
+        this.confirmAction.emit(next);
       });
   }
 
@@ -91,14 +89,6 @@ export class CartComponent implements OnChanges {
 
   public setCardInfo(card: FinancialCardOption | stripe.elements.Element): void {
     this.card = card;
-  }
-
-  private success(): void {
-    this.confirmAction.emit();
-  }
-
-  private error(errors: BumpRequestSubject[]): void {
-    this.errorAction.emit(errors);
   }
 
   private setTotals(): void {

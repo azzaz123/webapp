@@ -1,9 +1,11 @@
 <div class="CheckoutItem d-flex flex-column p-4">
   <div *ngIf="isFreeOptionAvailable" class="CheckoutItem__subscription pb-3 mb-3 pb-md-0 d-flex align-items-center">
     <tsl-toggle-form [(ngModel)]="isFreeOptionSelected" (ngModelChange)="toggleItem()"></tsl-toggle-form>
-    <span class="ml-2">Use bumps from my subscription </span>
+    <span class="ml-2" i18n="@@highlight_item_view_pro_user_item_card_use_subscription_toggle_label_web_specific"
+      >Highlight via Wallapop PRO subscription</span
+    >
     <div class="ml-auto d-flex align-items-center CheckoutItem__delete" (click)="onRemoveItem(itemWithProducts.item.id)">
-      <span class="d-none d-sm-flex mr-2">Delete</span>
+      <span class="d-none d-sm-flex mr-2" i18n="@@highlight_item_view_pro_user_item_card_remove_label_web_specific">Remove</span>
       <tsl-svg-icon [src]="'/assets/icons/delete.svg'"></tsl-svg-icon>
     </div>
   </div>
@@ -28,13 +30,18 @@
           class="ml-auto d-flex align-items-center CheckoutItem__delete"
           (click)="onRemoveItem(itemWithProducts.item.id)"
         >
-          <span class="d-none d-sm-flex mr-2">Delete</span>
+          <span class="d-none d-sm-flex mr-2" i18n="@@highlight_item_view_pro_user_item_card_remove_label_web_specific">Remove</span>
           <tsl-svg-icon [src]="'/assets/icons/delete.svg'"></tsl-svg-icon>
         </div>
       </div>
       <div class="d-block d-sm-flex flex-wrap flex-xl-nowrap">
         <div>
-          <div class="CheckoutItem__subtitle mb-1 mt-3 mt-md-0">Visibility Area</div>
+          <div
+            class="CheckoutItem__subtitle mb-1 mt-3 mt-md-0"
+            i18n="@@highlight_item_view_pro_user_item_card_visibility_area_label_web_specific"
+          >
+            Visibility area
+          </div>
           <div class="d-flex flex-xl-wrap mr-4 pr-4 CheckoutItem__border">
             <ng-container *ngFor="let type of availableTypes">
               <button
@@ -42,13 +49,22 @@
                 (click)="selectType(type)"
                 [ngClass]="{ 'CheckoutItem__button--selected': type === selectedType }"
               >
-                {{ type.name === BUMP_TYPES.ZONE_BUMP && itemWithProducts.isProvincialBump ? 'Provincial' : type.name }}
+                <span [ngSwitch]="type.name">
+                  <ng-container *ngSwitchCase="BUMP_TYPES.ZONE_BUMP">
+                    <ng-container *ngIf="!itemWithProducts.isProvincialBump" i18n="@@web_cart_454">Local</ng-container>
+                    <ng-container *ngIf="itemWithProducts.isProvincialBump" i18n="@@web_cart_455">Provincial</ng-container>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="BUMP_TYPES.CITY_BUMP" i18n="@@web_cart_663">City</ng-container>
+                  <ng-container *ngSwitchCase="BUMP_TYPES.COUNTRY_BUMP" i18n="@@web_cart_664">Country</ng-container>
+                </span>
               </button>
             </ng-container>
           </div>
         </div>
         <div>
-          <div class="CheckoutItem__subtitle mb-1 mt-3 mt-xl-0">Duration</div>
+          <div class="CheckoutItem__subtitle mb-1 mt-3 mt-xl-0" i18n="@@highlight_item_view_pro_user_item_card_duration_label_web_specific">
+            Duration
+          </div>
           <div class="d-flex flex-xl-wrap">
             <ng-container *ngFor="let duration of availableDurations">
               <button
@@ -56,7 +72,7 @@
                 (click)="selectDuration(duration)"
                 [ngClass]="{ 'CheckoutItem__button--selected': selectedDuration === duration }"
               >
-                {{ duration.duration / 24 }} days
+                {{ duration.duration / 24 }}<span ngPreserveWhitespaces> </span><span i18n="@@web_cart_665">days</span>
               </button>
             </ng-container>
           </div>

@@ -205,7 +205,7 @@ describe('CheckoutComponent', () => {
 
     describe('Modal', () => {
       beforeEach(() => {
-        component.onConfirm();
+        component.manageResponse([]);
       });
       it('should open modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
@@ -235,7 +235,7 @@ describe('CheckoutComponent', () => {
     describe('Plural modal', () => {
       beforeEach(() => {
         component.itemsSelected = MOCK_ITEMS_TO_BUY_FREE;
-        component.onConfirm();
+        component.manageResponse([]);
       });
       it('should open modal', () => {
         expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
@@ -246,7 +246,7 @@ describe('CheckoutComponent', () => {
     });
 
     it('should call deselectItems', fakeAsync(() => {
-      component.onConfirm();
+      component.manageResponse([]);
       tick();
 
       expect(itemService.deselectItems).toHaveBeenCalled();
@@ -267,7 +267,7 @@ describe('CheckoutComponent', () => {
     });
 
     it('should not redirect', () => {
-      component.onError([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
+      component.manageResponse([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
       expect(router.navigate).not.toHaveBeenCalled();
     });
 
@@ -275,7 +275,7 @@ describe('CheckoutComponent', () => {
       beforeEach(() => {
         spyOn(paymentService, 'getCreditInfo').and.callThrough();
         component.itemsSelected = MOCK_ITEMS_TO_BUY_FREE;
-        component.onError([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
+        component.manageResponse([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
       });
       it('should clear data', () => {
         component.itemsSelected = [];
@@ -293,7 +293,7 @@ describe('CheckoutComponent', () => {
       describe('and is free bump error', () => {
         describe('and is limit reached error', () => {
           beforeEach(() => {
-            component.onError([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
+            component.manageResponse([MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
           });
           it('should show error', () => {
             expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
@@ -304,7 +304,7 @@ describe('CheckoutComponent', () => {
         });
         describe('and is not found id error', () => {
           beforeEach(() => {
-            component.onError([MOCK_ERROR_FREE_BUMP_NOT_FOUND]);
+            component.manageResponse([MOCK_ERROR_FREE_BUMP_NOT_FOUND]);
           });
           it('should show error', () => {
             expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
@@ -315,7 +315,7 @@ describe('CheckoutComponent', () => {
         });
         describe('and is generic error', () => {
           beforeEach(() => {
-            component.onError([MOCK_ERROR_FREE_BUMP_GENERIC]);
+            component.manageResponse([MOCK_ERROR_FREE_BUMP_GENERIC]);
           });
           it('should show error', () => {
             expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
@@ -326,7 +326,7 @@ describe('CheckoutComponent', () => {
         });
         describe('and is not mapped error', () => {
           beforeEach(() => {
-            component.onError([MOCK_ERROR_FREE_NOT_MAPPED]);
+            component.manageResponse([MOCK_ERROR_FREE_NOT_MAPPED]);
           });
           it('should show error', () => {
             expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
@@ -339,7 +339,7 @@ describe('CheckoutComponent', () => {
 
       describe('and is stripe bump error', () => {
         beforeEach(() => {
-          component.onError([MOCK_ERROR_STRIPE]);
+          component.manageResponse([MOCK_ERROR_STRIPE]);
         });
         it('should show error', () => {
           expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
@@ -350,9 +350,21 @@ describe('CheckoutComponent', () => {
       });
     });
 
+    describe('and has a partial error', () => {
+      beforeEach(() => {
+        component.manageResponse([{}, MOCK_ERROR_STRIPE, MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
+      });
+      it('should show error', () => {
+        expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+          windowClass: 'pro-modal',
+        });
+        expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.bump_error_partial]);
+      });
+    });
+
     describe('and has a multiple error', () => {
       beforeEach(() => {
-        component.onError([MOCK_ERROR_STRIPE, MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
+        component.manageResponse([MOCK_ERROR_STRIPE, MOCK_ERROR_FREE_BUMP_LIMITED_REACHED]);
       });
       it('should show error', () => {
         expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {

@@ -145,14 +145,14 @@ describe('CartComponent', () => {
         tick();
 
         expect(component.confirmAction.emit).toBeCalledTimes(1);
-        expect(component.confirmAction.emit).toHaveBeenCalledWith();
+        expect(component.confirmAction.emit).toHaveBeenCalledWith([true]);
       }));
     });
 
     describe('error', () => {
       beforeEach(() => {
         spyOn(visibilityService, 'buyBumps').and.returnValue(of([{ hasError: true }]));
-        spyOn(component.errorAction, 'emit').and.callThrough();
+        spyOn(component.confirmAction, 'emit').and.callThrough();
 
         component.loading = false;
       });
@@ -160,8 +160,8 @@ describe('CartComponent', () => {
       it('should emit error', fakeAsync(() => {
         component.checkout();
 
-        expect(component.errorAction.emit).toBeCalledTimes(1);
-        expect(component.errorAction.emit).toHaveBeenCalledWith([{ hasError: true }]);
+        expect(component.confirmAction.emit).toBeCalledTimes(1);
+        expect(component.confirmAction.emit).toHaveBeenCalledWith([{ hasError: true }]);
       }));
     });
   });

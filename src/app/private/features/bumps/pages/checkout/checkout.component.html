@@ -30,12 +30,7 @@
         </ng-container>
       </div>
       <div class="Checkout__cart">
-        <tsl-cart
-          [creditInfo]="creditInfo"
-          [selectedItems]="itemsSelected"
-          (confirmAction)="onConfirm()"
-          (errorAction)="onError($event)"
-        ></tsl-cart>
+        <tsl-cart [creditInfo]="creditInfo" [selectedItems]="itemsSelected" (confirmAction)="manageResponse($event)"></tsl-cart>
       </div>
     </div>
   </div>
