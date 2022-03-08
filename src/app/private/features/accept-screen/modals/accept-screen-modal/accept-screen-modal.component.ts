@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { COLORS } from '@core/colors/colors-constants';
-import { ErrorsService } from '@core/errors/errors.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
@@ -19,6 +19,8 @@ import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { AcceptRequestError } from '@api/core/errors/delivery/accept-screen/accept-request';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -42,6 +44,7 @@ export class AcceptScreenModalComponent implements OnInit {
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
   private readonly deliveryMapSlideId: number = ACCEPT_SCREEN_STEPS.MAP;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
+  private readonly GENERIC_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -51,7 +54,7 @@ export class AcceptScreenModalComponent implements OnInit {
     private customerHelpService: CustomerHelpService,
     private modalService: NgbModal,
     private router: Router,
-    private errorService: ErrorsService,
+    private toastService: ToastService,
     private i18nService: I18nService
   ) {}
 
@@ -109,10 +112,29 @@ export class AcceptScreenModalComponent implements OnInit {
     );
   }
 
-  public acceptRequest(): void {
+  public checkIfCanAcceptRequest(): void {
+    this.acceptScreenProperties$.subscribe((properties: AcceptScreenProperties) => {
+      const haveSelectedCarrier: boolean = !!properties.carriers.find((carrier) => carrier.isSelected);
+      if (!haveSelectedCarrier) {
+        const SELECT_CARRIER_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_pending_shipping_method_error:Please select how you'll send the package.`;
+        return this.showError(SELECT_CARRIER_ERROR_TRANSLATION);
+      }
+
+      if (!properties.seller.fullAddress) {
+        const MISSING_SELLER_ADDRESS_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_pending_sender_details_error:Please enter the sender address.`;
+        return this.showError(MISSING_SELLER_ADDRESS_ERROR_TRANSLATION);
+      }
+
+      this.acceptRequest();
+    });
+  }
+
+  private acceptRequest(): void {
     this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
       () => this.redirectToTTSAndCloseModal(),
-      () => this.showError(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR)
+      (errors: AcceptRequestError[]) => {
+        this.handleError(errors[0]);
+      }
     );
   }
 
@@ -124,7 +146,7 @@ export class AcceptScreenModalComponent implements OnInit {
   private rejectRequest(): void {
     this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
       () => this.redirectToTTSAndCloseModal(),
-      () => this.showError(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR)
+      () => this.showError(this.GENERIC_ERROR_TRANSLATION)
     );
   }
 
@@ -133,8 +155,11 @@ export class AcceptScreenModalComponent implements OnInit {
     this.closeModal();
   }
 
-  private showError(key: TRANSLATION_KEY): void {
-    this.errorService.i18nError(key);
+  private showError(text: string): void {
+    this.toastService.show({
+      text,
+      type: TOAST_TYPES.ERROR,
+    });
   }
 
   private refreshStepProperties(slideId: number): void {
@@ -145,5 +170,15 @@ export class AcceptScreenModalComponent implements OnInit {
   private redirectToTTS(requestId: string): void {
     const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
     this.router.navigate([pathToTransactionTracking]);
+  }
+
+  private handleError(e: Error | AcceptRequestError): void {
+    let errorMessage = e?.message ? e.message : this.GENERIC_ERROR_TRANSLATION;
+
+    if (e instanceof AcceptRequestError) {
+      errorMessage = e.message;
+    }
+
+    this.showError(errorMessage);
   }
 }

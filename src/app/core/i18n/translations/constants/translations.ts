@@ -211,5 +211,4 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_DESCRIPTION]: $localize`:@@map_view_all_users_all_all_no_user_location_pop_up_description:To select a point on the map, you must first add your address.`,
   [TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_ADD_BUTTON]: $localize`:@@map_view_all_users_all_all_no_user_location_pop_up_add_button:Add`,
   [TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_CANCEL_BUTTON]: $localize`:@@map_view_all_users_all_all_no_user_location_pop_up_cancel_button:Cancel`,
-  [TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR]: $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`,
 };
