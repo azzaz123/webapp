@@ -16,9 +16,10 @@
       <div class="mr-lg-3 w-100">
         <ng-container *ngFor="let itemsBySubscription of itemsWithProducts; let productIndex = index">
           <div class="Checkout__items">
-            <div *ngIf="user.featured">
-              <tsl-subscription-header-checkout [subscription]="itemsBySubscription.subscription"></tsl-subscription-header-checkout>
-            </div>
+            <tsl-subscription-header-checkout
+              *ngIf="user.featured"
+              [subscription]="itemsBySubscription.subscription"
+            ></tsl-subscription-header-checkout>
             <tsl-checkout-item
               *ngFor="let item of itemsBySubscription.items"
               (itemRemoved)="onRemoveItem($event, productIndex)"

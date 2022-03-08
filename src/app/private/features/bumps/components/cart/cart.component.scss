@@ -7,8 +7,12 @@ $discounted-total-height: 30px;
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
-  min-width: 280px;
   max-height: 80vh;
+
+  @include media-breakpoint-up(lg) {
+    position: fixed;
+    width: 320px;
+  }
 
   &__title {
     font-size: $font-size-l;

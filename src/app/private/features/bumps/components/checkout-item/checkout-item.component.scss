@@ -27,6 +27,7 @@
 
   &__title {
     font-weight: $font-weight-chunky;
+    line-height: 1;
   }
 
   &__subtitle {
@@ -70,6 +71,8 @@
   }
 
   &__border {
+    margin-right: 36px;
+    padding-right: 36px;
     @include media-breakpoint-up(xl) {
       border-right: solid 1px $blue-grey-5;
     }
