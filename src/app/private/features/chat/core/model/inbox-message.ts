@@ -1,4 +1,3 @@
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { InboxMessageApi } from './api';
 
 export enum MessageType {
@@ -28,13 +27,11 @@ export const MESSAGES_WHITE_LIST = [
   MessageType.REVIEW,
   MessageType.DROP_PRICE,
   MessageType.PRICE_DROP,
-  // FIXME: We can't enable the message list and then hide the UI. Chat already has several bugs regarding these third voices
-  // and hiding the components gets worse. Until then, this allows us to test delivery features with the flag
-  FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.DELIVERY : null,
-  FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.DELIVERY_GENERIC : null,
-  FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.SHIPPING_KEYWORDS : null,
-  FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.TRANSACTION_CLAIM_PERIOD : null,
-  FeatureFlagService.getStaticDeliveryFeatureFlag() ? MessageType.TRANSACTION_CLAIM_PERIOD_RT : null,
+  MessageType.DELIVERY,
+  MessageType.DELIVERY_GENERIC,
+  MessageType.SHIPPING_KEYWORDS,
+  MessageType.TRANSACTION_CLAIM_PERIOD,
+  MessageType.TRANSACTION_CLAIM_PERIOD_RT,
 ];
 
 export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];
