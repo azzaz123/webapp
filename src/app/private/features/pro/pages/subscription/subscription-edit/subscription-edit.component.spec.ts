@@ -217,7 +217,7 @@ describe('SubscriptionEditComponent', () => {
           beforeEach(() => {
             spyOn(toastService, 'show').and.callThrough();
           });
-          describe('and response returns code different of 405', () => {
+          describe('and response returns code different of 202', () => {
             beforeEach(() => {
               spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: 204 }));
             });

@@ -24,7 +24,6 @@ import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component'
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 import { ProModalConfig, REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
 import { finalize } from 'rxjs/operators';
-import * as moment from 'moment';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
 
@@ -90,6 +89,10 @@ export class SubscriptionEditComponent implements OnInit {
   public onPurchaseButtonClick(): void {
     this.trackClickConfirmEdit();
     this.isLoading = true;
+    this.checkAndEditSubscription();
+  }
+
+  private checkAndEditSubscription(): void {
     this.subscriptionsService.canUpdateTier(this.subscription.id, this.selectedTier.id).subscribe(
       (response) => {
         if (response.allowed) {
@@ -118,9 +121,9 @@ export class SubscriptionEditComponent implements OnInit {
         (response) => {
           if (response.status === PAYMENT_SUCCESSFUL_CODE) {
             this.showEditSuccessful = true;
-            return;
+          } else {
+            this.showToastError();
           }
-          this.showToastError();
         },
         () => {
           this.showToastError();
