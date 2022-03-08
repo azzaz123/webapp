@@ -154,7 +154,28 @@ export const categoriesWithPresentationFixture: CategoryWithPresentationDto[] = 
           background_color: '',
           title_color: '',
         },
-        subcategories: [],
+        subcategories: [
+          {
+            id: CATEGORY_IDS.FASHION_ACCESSORIES + 11,
+            name: 'Fashion-12',
+            presentation: {
+              image_url: '',
+              background_color: '',
+              title_color: '',
+            },
+            subcategories: [],
+          },
+          {
+            id: CATEGORY_IDS.FASHION_ACCESSORIES + 22,
+            name: 'Fashion-22',
+            presentation: {
+              image_url: '',
+              background_color: '',
+              title_color: '',
+            },
+            subcategories: [],
+          },
+        ],
       },
       {
         id: CATEGORY_IDS.FASHION_ACCESSORIES + 2,
@@ -202,7 +223,28 @@ export const mappedCategoriesWithPresentationFixture: CategoryWithPresentation[]
           background_color: '',
           title_color: '',
         },
-        subcategories: [],
+        subcategories: [
+          {
+            id: CATEGORY_IDS.FASHION_ACCESSORIES + 11,
+            name: 'Fashion-12',
+            presentation: {
+              image_url: '',
+              background_color: '',
+              title_color: '',
+            },
+            subcategories: [],
+          },
+          {
+            id: CATEGORY_IDS.FASHION_ACCESSORIES + 22,
+            name: 'Fashion-22',
+            presentation: {
+              image_url: '',
+              background_color: '',
+              title_color: '',
+            },
+            subcategories: [],
+          },
+        ],
       },
       {
         id: CATEGORY_IDS.FASHION_ACCESSORIES + 2,
