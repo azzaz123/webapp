@@ -32,8 +32,8 @@ import { SearchTrackingEventsService } from '@public/core/services/search-tracki
 import { SortByService } from './components/sort-filter/services/sort-by.service';
 import { InfoBubbleModule } from './components/info-bubble/info-bubble.module';
 import { CatalogApiModule } from '@api/catalog/catalog-api.module';
-import { SearchLocationResolver } from './resolvers/search-location.resolver';
 import { SearchCategoriesResolver } from './resolvers/search-categories.resolver';
+import { SearchLocationGuard } from './guards/search-location.guard';
 
 @NgModule({
   imports: [
@@ -72,7 +72,7 @@ import { SearchCategoriesResolver } from './resolvers/search-categories.resolver
     SearchListTrackingEventsService,
     QueryStringLocationService,
     HostVisibilityService,
-    SearchLocationResolver,
+    SearchLocationGuard,
     SearchCategoriesResolver,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
