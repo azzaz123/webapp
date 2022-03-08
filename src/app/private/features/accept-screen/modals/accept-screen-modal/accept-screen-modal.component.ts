@@ -112,7 +112,7 @@ export class AcceptScreenModalComponent implements OnInit {
   public acceptRequest(): void {
     this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
       () => this.redirectToTTSAndCloseModal(),
-      () => this.showDefaultError()
+      () => this.showError(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR)
     );
   }
 
@@ -124,7 +124,7 @@ export class AcceptScreenModalComponent implements OnInit {
   private rejectRequest(): void {
     this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
       () => this.redirectToTTSAndCloseModal(),
-      () => this.showDefaultError()
+      () => this.showError(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR)
     );
   }
 
@@ -133,8 +133,8 @@ export class AcceptScreenModalComponent implements OnInit {
     this.closeModal();
   }
 
-  private showDefaultError(): void {
-    this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+  private showError(key: TRANSLATION_KEY): void {
+    this.errorService.i18nError(key);
   }
 
   private refreshStepProperties(slideId: number): void {
