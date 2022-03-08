@@ -8,13 +8,13 @@ import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { PermissionsInitializerService } from '@core/permissions/permissions.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
-import { InitializeLoggedUserService } from './initialize-logged-user.service';
+import { InitializeAuthenticatedUserService } from './initialize-authenticated-user.service';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 import { PermissionsInitializerServiceMock } from '@fixtures/permissions-initializer.fixtures.spec';
 
-describe('InitializeLoggedUserService', () => {
-  let service: InitializeLoggedUserService;
+describe('InitializeAuthenticatedUserService', () => {
+  let service: InitializeAuthenticatedUserService;
   let userService: UserService;
   let permissionsService: PermissionsInitializerService;
   let analyticsService: AnalyticsService;
@@ -33,7 +33,7 @@ describe('InitializeLoggedUserService', () => {
         { provide: PermissionsInitializerService, useValue: PermissionsInitializerServiceMock },
       ],
     });
-    service = TestBed.inject(InitializeLoggedUserService);
+    service = TestBed.inject(InitializeAuthenticatedUserService);
     userService = TestBed.inject(UserService);
     analyticsService = TestBed.inject(AnalyticsService);
     externalCommsService = TestBed.inject(ExternalCommsService);

@@ -10,7 +10,7 @@ import { forkJoin, ReplaySubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class InitializeLoggedUserService {
+export class InitializeAuthenticatedUserService {
   private readonly _isInitializationComplete$: ReplaySubject<void> = new ReplaySubject<void>();
 
   constructor(
@@ -29,11 +29,11 @@ export class InitializeLoggedUserService {
   public initialize(): void {
     this.userService.userSubject$.subscribe((user) => {
       this.permissionsService.setUserPermissions(user);
-      this.analyticsService.initializeAnalyticsWithLoggedUser(user);
+      this.analyticsService.initializeAnalyticsWithAuthenticatedUser(user);
       this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
     });
     this.analyticsService.mParticleReady$.pipe(take(1)).subscribe(() => {
-      this.experimentationService.initializeExperimentationWithLoggedUser();
+      this.experimentationService.initializeExperimentationWithAuthenticatedUser();
       this.externalCommsService.initializeBraze();
     });
     forkJoin([this.experimentationService.experimentReady$, this.externalCommsService.brazeReady$]).subscribe(() => {

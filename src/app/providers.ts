@@ -6,8 +6,8 @@ import { MonitoringService } from '@core/monitoring/services/monitoring.service'
 import { MARKET_PROVIDER, MarketSiteByLocale } from '../configs/market.config';
 import { siteUrlFactory, SITE_URL } from '@configs/site-url.config';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import { InitializeLoggedUserService } from '@core/initialize-logged-user/initialize-logged-user.service';
-import { InitializeGuestUserService } from '@core/initialize-guest-user/initialize-guest-user.service';
+import { InitializeAuthenticatedUserService } from '@core/initialize-authenticated-user/initialize-authenticated-user.service';
+import { InitializeUnauthenticatedUserService } from '@core/initialize-unauthenticated-user/initialize-unauthenticated-user.service';
 import { SessionService } from '@core/session/session.service';
 
 export const PROVIDERS: Provider[] = [
@@ -23,14 +23,14 @@ export const PROVIDERS: Provider[] = [
   },
   {
     provide: APP_INITIALIZER,
-    useFactory: initializeLoggedUserFactory,
-    deps: [UserService, InitializeLoggedUserService],
+    useFactory: initializeAuthenticatedUserFactory,
+    deps: [UserService, InitializeAuthenticatedUserService],
     multi: true,
   },
   {
     provide: APP_INITIALIZER,
-    useFactory: initializeGuestUserFactory,
-    deps: [UserService, InitializeGuestUserService],
+    useFactory: initializeUnauthenticatedUserFactory,
+    deps: [UserService, InitializeUnauthenticatedUserService],
     multi: true,
   },
   {
@@ -51,23 +51,26 @@ export const PROVIDERS: Provider[] = [
   },
 ];
 
-export function initializeLoggedUserFactory(
+export function initializeAuthenticatedUserFactory(
   userService: UserService,
-  initializeLoggedUserService: InitializeLoggedUserService
+  initializeAuthenticatedUserService: InitializeAuthenticatedUserService
 ): () => void {
   return () => {
     if (userService.isLogged) {
-      initializeLoggedUserService.initialize();
-      return initializeLoggedUserService.isInitializationComplete;
+      initializeAuthenticatedUserService.initialize();
+      return initializeAuthenticatedUserService.isInitializationComplete;
     }
   };
 }
 
-export function initializeGuestUserFactory(userService: UserService, initializeGuestUserService: InitializeGuestUserService): () => void {
+export function initializeUnauthenticatedUserFactory(
+  userService: UserService,
+  initializeUnauthenticatedUserService: InitializeUnauthenticatedUserService
+): () => void {
   return () => {
     if (!userService.isLogged) {
-      initializeGuestUserService.initialize();
-      return initializeGuestUserService.isInitializationComplete;
+      initializeUnauthenticatedUserService.initialize();
+      return initializeUnauthenticatedUserService.isInitializationComplete;
     }
   };
 }

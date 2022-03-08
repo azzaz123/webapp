@@ -56,14 +56,14 @@ export class AnalyticsService {
     this.getMPUser()?.setUserAttribute(key, value);
   }
 
-  public initializeAnalyticsWithLoggedUser(user: User): void {
+  public initializeAnalyticsWithAuthenticatedUser(user: User): void {
     const userIdentities = this.getUserIdentities(user);
     const mParticleLoggedConfig = this.getMParticleConfig(userIdentities);
 
     this.initializeMParticleSDK(mParticleLoggedConfig);
   }
 
-  public initializeAnalyticsWithGuestUser(): void {
+  public initializeAnalyticsWithUnauthenticatedUser(): void {
     const mParticleNotLoggedConfig = this.getMParticleConfig({});
 
     this.initializeMParticleSDK(mParticleNotLoggedConfig);

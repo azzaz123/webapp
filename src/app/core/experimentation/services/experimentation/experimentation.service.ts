@@ -27,7 +27,7 @@ export class ExperimentationService {
     return this._experimentReady$.asObservable();
   }
 
-  public initializeExperimentationWithLoggedUser(): void {
+  public initializeExperimentationWithAuthenticatedUser(): void {
     this.optimizelyService.initialize();
     forkJoin([this.loadExternalLibService.loadScriptBySource(EXPERIMENTATION_SOURCES), this.optimizelyService.isReady$]).subscribe(() => {
       this._experimentReady$.next(true);
@@ -35,7 +35,7 @@ export class ExperimentationService {
     });
   }
 
-  public initializeExperimentationWithGuestUser(): void {
+  public initializeExperimentationWithUnauthenticatedUser(): void {
     this.loadExternalLibService.loadScriptBySource(EXPERIMENTATION_SOURCES).subscribe(() => {
       this._experimentReady$.next(true);
       this._experimentReady$.complete();
