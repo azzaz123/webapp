@@ -15,7 +15,8 @@ import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/i
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { SubscriptionsV3Response, TierDto } from '@core/subscriptions/dtos/subscriptions/subscription-response.interface';
-import { CanEditSubscriptionResponse } from '@core/subscriptions/dtos/subscriptions/can-edit.subscription.interface';
+import { CanEditSubscriptionResponseDto } from '@core/subscriptions/dtos/subscriptions/can-edit.subscription.interface';
+import { CanEditSubscriptionResponse } from '@api/core/model/subscriptions/can-edit-subscription/can-edit-subscription.interface';
 
 export class MockSubscriptionService {
   getSubscriptions() {
@@ -657,11 +658,17 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED: SubscriptionsResponse
   },
 ];
 
-export const CAN_SUBSCRIPTION_BE_EDITED_OK: CanEditSubscriptionResponse = {
+export const CAN_SUBSCRIPTION_BE_EDITED_OK_DTO: CanEditSubscriptionResponseDto = {
   allowed: true,
   renewal_date: 1649376000000,
 };
+
+export const CAN_SUBSCRIPTION_BE_EDITED_OK: CanEditSubscriptionResponse = {
+  allowed: true,
+  renewalDate: '08/04/2022',
+};
+
 export const CAN_SUBSCRIPTION_BE_EDITED_FAIL: CanEditSubscriptionResponse = {
   allowed: false,
-  renewal_date: 1649376000000,
+  renewalDate: '08/04/2022',
 };

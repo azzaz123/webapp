@@ -96,7 +96,7 @@ export class SubscriptionEditComponent implements OnInit {
           this.editSubscription();
           return;
         }
-        this.showErrorModal(response.renewal_date);
+        this.showErrorModal(response.renewalDate);
         this.isLoading = false;
       },
       () => {
@@ -165,14 +165,12 @@ export class SubscriptionEditComponent implements OnInit {
     this.analyticsService.trackEvent(event);
   }
 
-  private showErrorModal(date: number): void {
+  private showErrorModal(date: string): void {
     const modal = this.modalService.open(ProModalComponent, {
       windowClass: 'pro-modal',
     });
     const config: ProModalConfig = modalConfig[PRO_MODAL_TYPE.error_downgrade];
-    (config.text2 = $localize`:@@downgrade_not_possible_due_to_bump_misalignment_modal_pro_users_description_2_part:To do this change, please wait until the next billing cycle starts: ${moment(
-      date
-    ).format('DD/MM/yy')}:INTERPOLATION:.`),
+    (config.text2 = $localize`:@@downgrade_not_possible_due_to_bump_misalignment_modal_pro_users_description_2_part:To do this change, please wait until the next billing cycle starts: ${date}:INTERPOLATION:.`),
       (config.buttons.secondary.redirect = {
         type: REDIRECT_TYPE.href,
         url: this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.CANNOT_CHANGE_PRO_SUBSCRIPTION),

@@ -21,6 +21,7 @@ import {
   MockSubscriptionService,
   MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
   CAN_SUBSCRIPTION_BE_EDITED_FAIL,
+  CAN_SUBSCRIPTION_BE_EDITED_OK,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -34,7 +35,6 @@ import { REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
 import { of, throwError } from 'rxjs';
 import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
 import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
-import * as moment from 'moment';
 
 describe('SubscriptionEditComponent', () => {
   let component: SubscriptionEditComponent;
@@ -287,9 +287,7 @@ describe('SubscriptionEditComponent', () => {
             type: REDIRECT_TYPE.href,
             url: 'link',
           });
-          expect(component['modalRef'].componentInstance.modalConfig.text2).toContain(
-            moment(CAN_SUBSCRIPTION_BE_EDITED_FAIL.renewal_date).format('DD/MM/yy')
-          );
+          expect(component['modalRef'].componentInstance.modalConfig.text2).toContain(CAN_SUBSCRIPTION_BE_EDITED_OK.renewalDate);
           expect(customerHelpService.getPageUrl).toBeCalledWith(CUSTOMER_HELP_PAGE.CANNOT_CHANGE_PRO_SUBSCRIPTION);
         });
       });

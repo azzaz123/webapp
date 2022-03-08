@@ -1,4 +1,4 @@
-export interface CanEditSubscriptionResponse {
+export interface CanEditSubscriptionResponseDto {
   allowed: boolean;
   renewal_date: number;
 }

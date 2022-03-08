@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CAN_UPDATE_SUBSCRIPTION, SUBSCRIPTIONS_V3_ENDPOINT } from './endpoints';
 import { SubscriptionsV3Response } from '../dtos/subscriptions/subscription-response.interface';
-import { CanEditSubscriptionResponse } from '@core/subscriptions/dtos/subscriptions/can-edit.subscription.interface';
+import { CanEditSubscriptionResponseDto } from '@core/subscriptions/dtos/subscriptions/can-edit.subscription.interface';
 
 @Injectable()
 export class SubscriptionsHttpService {
@@ -14,9 +14,9 @@ export class SubscriptionsHttpService {
     return this.httpClient.get<SubscriptionsV3Response[]>(SUBSCRIPTIONS_V3_ENDPOINT);
   }
 
-  public canUpdateSubscription(subscriptionId: string, tierId: string): Observable<CanEditSubscriptionResponse> {
+  public canUpdateSubscription(subscriptionId: string, tierId: string): Observable<CanEditSubscriptionResponseDto> {
     let params = new HttpParams();
     params = params.append('tier_id', tierId);
-    return this.httpClient.get<CanEditSubscriptionResponse>(CAN_UPDATE_SUBSCRIPTION(subscriptionId), { params });
+    return this.httpClient.get<CanEditSubscriptionResponseDto>(CAN_UPDATE_SUBSCRIPTION(subscriptionId), { params });
   }
 }
