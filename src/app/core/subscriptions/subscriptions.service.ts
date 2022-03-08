@@ -215,4 +215,8 @@ export class SubscriptionsService {
     const maxLimit = subscription.tiers.reduce((a, b) => (!b.limit || a.limit > b.limit ? a : b)).limit;
     return selectedLimit === maxLimit;
   }
+
+  public canUpdateTier(subscriptionId: string, tierId: string): Observable<any> {
+    return this.subscriptionsHttpService.canUpdateSubscription(subscriptionId, tierId);
+  }
 }

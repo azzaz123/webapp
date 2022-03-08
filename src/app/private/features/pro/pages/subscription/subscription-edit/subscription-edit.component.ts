@@ -23,10 +23,10 @@ import { ManageSubscriptionService } from '@private/features/pro/services/manage
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
 import { ProModalConfig, REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 
 export const PAYMENT_SUCCESSFUL_CODE = 202;
-export const CHANGE_TIER_ERROR_CODE = 405;
+export const CHANGE_TIER_ERROR_CODE = 403;
 
 @Component({
   selector: 'tsl-subscription-edit',
@@ -90,6 +90,23 @@ export class SubscriptionEditComponent implements OnInit {
   public onPurchaseButtonClick(): void {
     this.trackClickConfirmEdit();
     this.isLoading = true;
+    this.subscriptionsService.canUpdateTier(this.subscription.id, this.selectedTier.id).subscribe(
+      (response) => {
+        if (response.allowed) {
+          this.editSubscription();
+          return;
+        }
+        this.showErrorModal();
+        this.isLoading = false;
+      },
+      () => {
+        this.showToastError();
+        this.isLoading = false;
+      }
+    );
+  }
+
+  private editSubscription(): void {
     this.subscriptionsService
       .editSubscription(this.subscription, this.selectedTier.id)
       .pipe(
@@ -99,16 +116,11 @@ export class SubscriptionEditComponent implements OnInit {
       )
       .subscribe(
         (response) => {
-          switch (response.status) {
-            case PAYMENT_SUCCESSFUL_CODE:
-              this.showEditSuccessful = true;
-              break;
-            case CHANGE_TIER_ERROR_CODE:
-              this.showErrorModal();
-              break;
-            default:
-              this.showToastError();
+          if (response.status === PAYMENT_SUCCESSFUL_CODE) {
+            this.showEditSuccessful = true;
+            return;
           }
+          this.showToastError();
         },
         () => {
           this.showToastError();
