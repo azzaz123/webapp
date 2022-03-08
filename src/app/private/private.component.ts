@@ -1,7 +1,6 @@
 import { Component, Inject, LOCALE_ID, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
-import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import * as moment from 'moment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { distinctUntilChanged, filter, map, mergeMap } from 'rxjs/operators';
@@ -13,7 +12,6 @@ import { Item } from '@core/item/item';
 import { RealTimeService } from '@core/message/real-time.service';
 import { PaymentService } from '@core/payments/payment.service';
 import { StripeService } from '@core/stripe/stripe.service';
-import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { APP_LOCALE } from 'configs/subdomains.config';
@@ -35,7 +33,6 @@ export class PrivateComponent implements OnInit {
   constructor(
     private event: EventService,
     private realTime: RealTimeService,
-    private inboxService: InboxService,
     public userService: UserService,
     private desktopNotificationsService: DesktopNotificationsService,
     private titleService: Title,
@@ -91,9 +88,8 @@ export class PrivateComponent implements OnInit {
     this.setBodyClass();
   }
 
-  private handleUserLoggedIn(user: User, accessToken: string): void {
+  private handleUserLoggedIn(): void {
     this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
-    this.initRealTimeChat(user, accessToken);
     if (!this.cookieService.get('app_session_id')) {
       this.updateSessionCookie();
     }
@@ -145,26 +141,8 @@ export class PrivateComponent implements OnInit {
   }
 
   private subscribeEventUserLogin(): void {
-    this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
-      const user = this.userService.user;
-
-      this.handleUserLoggedIn(user, accessToken);
-    });
-  }
-
-  private initRealTimeChat(user: User, accessToken: string): void {
-    this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
-      this.initCalls();
-      this.inboxService.init();
-    });
-    this.realTime.connect(user.id, accessToken);
-  }
-
-  private initCalls(): void {
-    this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-      if (isProfessional) {
-        this.callService.init().subscribe(() => this.callService.init(true).subscribe());
-      }
+    this.event.subscribe(EventService.USER_LOGIN, () => {
+      this.handleUserLoggedIn();
     });
   }
 

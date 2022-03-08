@@ -17,7 +17,6 @@ import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.s
 import { CartService } from '@shared/catalog/cart/cart.service';
 import { ExitConfirmGuard } from '@core/guards/exit-confirm.guard';
 import { InvoiceService } from '@core/invoice/invoice.service';
-import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
 import { RemoteConsoleModule } from '@core/remote-console';
 import { UploaderService } from '@shared/uploader/uploader.service';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
@@ -45,7 +44,6 @@ import { SubscriptionsHttpService } from '@core/subscriptions/http/subscriptions
     InvoiceService,
     CartService,
     ExitConfirmGuard,
-    InboxConversationService,
     UploaderService,
     DeliveryDevelopmentGuard,
   ],
