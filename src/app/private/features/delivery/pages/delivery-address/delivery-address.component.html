@@ -1,5 +1,5 @@
 <!-- TODO: Remove `profile-box` class by improving `tsl-profile-form` component-->
-<div class="DeliveryAddress mt-3 p-3 container profile-box" [ngClass]="{ box: whereUserComes !== PREVIOUS_PAGE.ACCEPT_SCREEN }">
+<div class="DeliveryAddress mt-3 p-3 container profile-box" [ngClass]="{ box: whereUserComes !== PREVIOUS_PAGE.DELIVERY }">
   <tsl-profile-form class="row" [profileForm]="deliveryAddressForm" (handleOnInit)="initForm()">
     <form class="col" *ngIf="!loading && countries; else loadingState" [formGroup]="deliveryAddressForm" (submit)="onSubmit()">
       <div *ngIf="showTitle" class="row" id="titleSection">

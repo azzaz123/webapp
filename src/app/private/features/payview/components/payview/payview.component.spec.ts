@@ -66,7 +66,7 @@ describe('PayviewComponent', () => {
 
     it('should open the payview modal component', () => {
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(PayviewModalComponent, { windowClass: 'payview' });
+      expect(modalService.open).toHaveBeenCalledWith(PayviewModalComponent, { backdrop: 'static', windowClass: 'payview' });
     });
 
     it('should assign the corresponding payload to the payview modal component', () => {

@@ -5,6 +5,7 @@ import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
+import { DeliveryRadioSelectorComponent } from '@private/shared/delivery-radio-selector/delivery-radio-selector.component';
 import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-selector/delivery-radio-selector.module';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COSTS_ITEM } from '@api/fixtures/bff/delivery/costs/delivery-costs.fixtures.spec';
@@ -12,7 +13,6 @@ import { Money } from '@api/core/model/money.interface';
 import { PayviewDeliveryHeaderComponent } from '@private/features/payview/modules/delivery/components/header/payview-delivery-header.component';
 import { PayviewDeliveryPointComponent } from '@private/features/payview/modules/delivery/components/point/payview-delivery-point.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
-import { DeliveryRadioSelectorComponent } from '@private/shared/delivery-radio-selector/delivery-radio-selector.component';
 
 describe('PayviewDeliveryPointComponent', () => {
   const payviewDeliveryPoint: string = '.PayviewDeliveryPoint';
@@ -276,6 +276,32 @@ describe('PayviewDeliveryPointComponent', () => {
     it('should emit the selected index', () => {
       expect(component.checked.emit).toHaveBeenCalledTimes(1);
       expect(component.checked.emit).toHaveBeenCalledWith(fakeIndex);
+    });
+  });
+
+  describe('WHEN the user clicks over the button', () => {
+    const fakeIndex: number = 13;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(PayviewDeliveryPointComponent);
+      component = fixture.componentInstance;
+      debugElement = fixture.debugElement;
+      spyOn(component.edited, 'emit');
+
+      component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
+      component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
+      component.id = fakeIndex;
+      component.isChecked = true;
+
+      fixture.detectChanges();
+
+      const deliveryButtonSelector: DebugElement = fixture.debugElement.query(By.directive(ButtonComponent));
+      deliveryButtonSelector.triggerEventHandler('click', null);
+    });
+
+    it('should emit the selected index', () => {
+      expect(component.edited.emit).toHaveBeenCalledTimes(1);
+      expect(component.edited.emit).toHaveBeenCalledWith(fakeIndex);
     });
   });
 });
