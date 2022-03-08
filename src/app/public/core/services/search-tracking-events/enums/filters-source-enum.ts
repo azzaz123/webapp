@@ -9,4 +9,5 @@ export enum FILTERS_SOURCE {
   SEO_LOCATION_LIST = 'seo_location_list',
   SEO_SITEMAP = 'seo_sitemap',
   ITEM_DETAIL = 'item_detail',
+  SUBCATEGORY_SLIDER = 'subcategory_slider',
 }
