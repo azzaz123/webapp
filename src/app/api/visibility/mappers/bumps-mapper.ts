@@ -73,6 +73,8 @@ export function mapItemWithProductsAndSubscriptionBumps(
       itemWithProducts.products[productTypeIndex].durations[durationIndex].isFreeOption = durationIndex > -1;
       itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionPackageType =
         durationIndex > -1 ? subscription.type : null;
+      itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionName =
+        durationIndex > -1 ? subscription.category_name : null;
     });
     itemWithProducts.subscription = subscription;
   }

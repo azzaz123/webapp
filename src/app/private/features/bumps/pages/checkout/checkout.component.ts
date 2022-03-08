@@ -82,7 +82,12 @@ export class CheckoutComponent implements OnInit {
     this.refreshCounters(productIndex);
   }
 
-  public onConfirm(): void {
+  public manageResponse(response: BumpRequestSubject[]): void {
+    const errors = response.filter((value) => value?.hasError);
+    errors.length ? this.showError(errors, response.length) : this.showSuccess();
+  }
+
+  public showSuccess(): void {
     this.itemService.deselectItems();
     this.itemService.selectedAction = null;
 
@@ -103,7 +108,7 @@ export class CheckoutComponent implements OnInit {
     );
   }
 
-  public onError(errors: BumpRequestSubject[]): void {
+  public showError(errors: BumpRequestSubject[], requestLength: number): void {
     const modalRef: NgbModalRef = this.modalService.open(ProModalComponent, {
       windowClass: 'pro-modal',
     });
@@ -117,11 +122,15 @@ export class CheckoutComponent implements OnInit {
       }
     );
 
-    if (errors.length === 1) {
+    if (errors.length === 1 && requestLength === 1) {
       this.configSingleErrorModal(errors[0], modalRef);
       return;
     }
-    this.configMultiErrorModal(errors, modalRef);
+    if (errors.length === requestLength) {
+      this.configMultiErrorModal(errors, modalRef);
+      return;
+    }
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_partial];
   }
 
   private reloadData(): void {
@@ -154,9 +163,11 @@ export class CheckoutComponent implements OnInit {
 
   private configMultiErrorModal(errors: BumpRequestSubject[], modalRef: NgbModalRef): void {
     let errorModalConfig: ProModalConfig;
-    errorModalConfig = modalConfig[PRO_MODAL_TYPE.bump_error_generic];
-    errorModalConfig.text1 = modalConfig[PRO_MODAL_TYPE.bump_error_stripe].text1;
-    errorModalConfig.text2 = this.getFreeBumpsModalConfig(errors[1]).text1;
+    errorModalConfig = {
+      ...modalConfig[PRO_MODAL_TYPE.bump_error_generic],
+      text1: modalConfig[PRO_MODAL_TYPE.bump_error_stripe].text1,
+      text2: this.getFreeBumpsModalConfig(errors.find((error) => error.service === BUMP_SERVICE_TYPE.SUBSCRIPTION_BUMPS)).text1,
+    };
     modalRef.componentInstance.modalConfig = errorModalConfig;
   }
 

@@ -23,6 +23,7 @@ export interface ProductMapped extends Product {
 export interface DurationMapped extends Duration {
   isFreeOption?: boolean;
   subscriptionPackageType?: SUBSCRIPTION_CATEGORY_TYPES;
+  subscriptionName?: string;
 }
 
 export interface SelectedProduct {

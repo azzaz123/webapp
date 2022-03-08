@@ -23,7 +23,6 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
     fixture = TestBed.createComponent(SubscriptionHeaderCheckoutComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
-    fixture.detectChanges();
   });
 
   describe('And has not an subscription', () => {
@@ -34,7 +33,9 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
     it('should show no active subscription text', () => {
       const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
-      expect(title.textContent).toEqual('Productos sin una subscription');
+      expect(title.textContent).toEqual(
+        $localize`:@@highlight_item_view_pro_user_item_card_no_subscription_plural_name_web_specific:Not included in your subscriptions`
+      );
     });
   });
 
@@ -47,7 +48,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
       it('Should show subscription into title', () => {
         const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
-        expect(title.textContent).toEqual(component.subscription.type);
+        expect(title.textContent).toContain(component.subscription.category_name);
       });
       it('Should not show counters', () => {
         const counters = debugElement.query(By.css('.SubscriptionHeaderCheckout__counter'));
@@ -63,7 +64,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
       it('Should show subscription into title', () => {
         const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
-        expect(title.textContent).toEqual(component.subscription.type);
+        expect(title.textContent).toContain(component.subscription.category_name);
       });
       it('Should show counters', () => {
         const counters = debugElement.queryAll(By.css('.SubscriptionHeaderCheckout__counter'));
@@ -72,7 +73,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
         component.subscription.selected_tier.bumps.forEach((bump, index) => {
           const counter: HTMLElement = counters[index].nativeElement;
           expect(counter.textContent).toContain(bump.quantity);
-          expect(counter.textContent).toContain(bump.name);
+          expect(counter.textContent).toContain(component.getBumpName(bump.name));
           expect(counter.textContent).toContain(bump.used);
         });
       });
@@ -86,7 +87,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
       it('Should show subscription into title', () => {
         const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
-        expect(title.textContent).toEqual(component.subscription.type);
+        expect(title.textContent).toContain(component.subscription.category_name);
       });
       it('Should show counters', () => {
         const counters = debugElement.queryAll(By.css('.SubscriptionHeaderCheckout__counter'));
@@ -95,7 +96,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
         component.subscription.selected_tier.bumps.forEach((bump, index) => {
           const counter: HTMLElement = counters[index].nativeElement;
           expect(counter.textContent).toContain(bump.quantity);
-          expect(counter.textContent).toContain(bump.name);
+          expect(counter.textContent).toContain(component.getBumpName(bump.name));
           expect(counter.textContent).toContain(bump.used);
         });
       });
