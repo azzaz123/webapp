@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { AcceptRequestErrorResponse } from './dtos/errors';
 import { SellerRequestDto } from './dtos/seller-request-dto.interface';
 import { SellerRequestsHttpService } from './http/seller-requests-http.service';
-import { AcceptRequestErrorMapper } from './mappers/errors/accept-request/accept-request-mapper';
+import { AcceptRequestErrorMapper } from './mappers/errors/accept-request/accept-request-error-mapper';
 import { mapSellerRequestDtoToSellerRequest } from './mappers/responses/seller-request.mapper';
 
 @Injectable({
