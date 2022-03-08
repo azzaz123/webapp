@@ -40,7 +40,6 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { OPTIMIZELY_FLAG_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-flag-keys';
-import { FILTER_PARAMETERS_SEARCH } from '../core/services/constants/filter-parameters';
 import { CATEGORY_CARDS_VISIBILITY_RULES } from '../core/services/constants/category-cards-visibility-rules';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
@@ -244,8 +243,11 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           )
         )
         .subscribe((filterParameters: FilterParameter[]) => {
-          this.categoryId$ = of(filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value);
-          this.objectTypeId$ = of(filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.objectType)?.value);
+          const categoryId = filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
+          const objectTypeId = filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.objectType)?.value;
+
+          this.categoryId$ = of(categoryId);
+          this.objectTypeId$ = of(objectTypeId);
         })
     );
   }
