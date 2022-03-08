@@ -3,14 +3,6 @@
 @import '~web-styleguide/scss/text';
 
 .PayviewSummary {
-  &__close {
-    cursor: pointer;
-  }
-
-  &__windowHeader {
-    padding-left: $spacing-ml;
-  }
-
   &__thankyou {
     font-size: $spacing-m;
     font-weight: $font-weight-chunky;
