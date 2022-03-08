@@ -25,7 +25,7 @@ export const ELEMENT_TYPE = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BottomNavigationBarComponent {
-  public navigationElements$: Observable<BottomNavigationBarElement[]> = this.bottomNavigationBarService.navigationElements$;
+  public readonly navigationElements$: Observable<BottomNavigationBarElement[]> = this.bottomNavigationBarService.navigationElements$;
   public readonly hidden$: Observable<boolean> = this.bottomNavigationBarService.hidden$;
 
   constructor(private bottomNavigationBarService: BottomNavigationBarService) {}
