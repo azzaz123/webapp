@@ -1,5 +1,9 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { NonPurchasableItemError, PostalCodeNotFoundError } from '@api/core/errors/delivery/accept-screen/accept-request';
+import {
+  AcceptRequestError,
+  NonPurchasableItemError,
+  PostalCodeNotFoundError,
+} from '@api/core/errors/delivery/accept-screen/accept-request';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { MOCK_SELLER_REQUEST_DTO } from '@api/fixtures/delivery/seller/requests/seller-request-dto.fixtures.spec';
 import {
@@ -8,7 +12,6 @@ import {
 } from '@fixtures/private/delivery/accept-screen/accept-screen-errors.fixtures.spec';
 import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { of, throwError } from 'rxjs';
-import { AcceptRequestErrorDto } from './dtos/errors';
 import { SellerRequestsHttpService } from './http/seller-requests-http.service';
 
 import { SellerRequestsApiService } from './seller-requests-api.service';
@@ -120,7 +123,7 @@ describe('SellerRequestsApiService', () => {
     });
 
     describe('and the request fails and returns a backend error', () => {
-      let errors: AcceptRequestErrorDto[];
+      let errors: AcceptRequestError[];
 
       beforeEach(fakeAsync(() => {
         spyOn(sellerRequestsHttpService, 'acceptRequestPostOfficeDropOff').and.returnValue(
@@ -128,7 +131,7 @@ describe('SellerRequestsApiService', () => {
         );
 
         service.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe({
-          error: (errorResponse: AcceptRequestErrorDto[]) => (errors = errorResponse),
+          error: (errorResponse: AcceptRequestError[]) => (errors = errorResponse),
         });
       }));
 
@@ -158,7 +161,7 @@ describe('SellerRequestsApiService', () => {
     });
 
     describe('and the request fails and returns a backend error', () => {
-      let errors: AcceptRequestErrorDto[];
+      let errors: AcceptRequestError[];
 
       beforeEach(fakeAsync(() => {
         spyOn(sellerRequestsHttpService, 'acceptRequestHomePickup').and.returnValue(
@@ -166,7 +169,7 @@ describe('SellerRequestsApiService', () => {
         );
 
         service.acceptRequestHomePickup(MOCK_REQUEST_ID).subscribe({
-          error: (errorResponse: AcceptRequestErrorDto[]) => (errors = errorResponse),
+          error: (errorResponse: AcceptRequestError[]) => (errors = errorResponse),
         });
       }));
 
