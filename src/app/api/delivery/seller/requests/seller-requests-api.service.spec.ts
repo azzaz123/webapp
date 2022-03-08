@@ -1,8 +1,14 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { NonPurchasableItemError, PostalCodeNotFoundError } from '@api/core/errors/delivery/accept-screen/accept-request';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { MOCK_SELLER_REQUEST_DTO } from '@api/fixtures/delivery/seller/requests/seller-request-dto.fixtures.spec';
+import {
+  MOCK_ACCEPT_SCREEN_NON_PURCHASABLE_ITEM_ERROR_RESPONSE,
+  MOCK_ACCEPT_SCREEN_POSTAL_CODE_NOT_FOUND_ERROR_RESPONSE,
+} from '@fixtures/private/delivery/accept-screen/accept-screen-errors.fixtures.spec';
 import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { AcceptRequestErrorDto } from './dtos/errors';
 import { SellerRequestsHttpService } from './http/seller-requests-http.service';
 
 import { SellerRequestsApiService } from './seller-requests-api.service';
@@ -55,7 +61,6 @@ describe('SellerRequestsApiService', () => {
       spyOn(sellerRequestsHttpService, 'getRequestsByBuyerAndItem').and.callThrough();
 
       service.getRequestsByBuyerAndItem(MOCK_BUYER_HASH, MOCK_ITEM_HASH).subscribe((data: SellerRequest[]) => (response = data));
-      tick();
     }));
 
     it('should ask server for request information', () => {
@@ -75,7 +80,6 @@ describe('SellerRequestsApiService', () => {
       spyOn(sellerRequestsHttpService, 'getRequestInfo').and.callThrough();
 
       service.getRequestInfo(MOCK_REQUEST_ID).subscribe((data: SellerRequest) => (response = data));
-      tick();
     }));
 
     it('should ask server for request information', () => {
@@ -93,7 +97,6 @@ describe('SellerRequestsApiService', () => {
       spyOn(sellerRequestsHttpService, 'rejectRequest').and.callThrough();
 
       service.rejectRequest(MOCK_REQUEST_ID).subscribe();
-      tick();
     }));
 
     it('should ask server to cancel the request', () => {
@@ -103,30 +106,78 @@ describe('SellerRequestsApiService', () => {
   });
 
   describe('when asking to accept a request with post office drop off mode', () => {
-    beforeEach(fakeAsync(() => {
-      spyOn(sellerRequestsHttpService, 'acceptRequestPostOfficeDropOff').and.callThrough();
+    describe('and the request succeed', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(sellerRequestsHttpService, 'acceptRequestPostOfficeDropOff').and.callThrough();
 
-      service.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe();
-      tick();
-    }));
+        service.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe();
+      }));
 
-    it('should ask server to accept the request with post office drop off mode', () => {
-      expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
-      expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      it('should ask server to accept the request with post office drop off mode', () => {
+        expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
+        expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      });
+    });
+
+    describe('and the request fails and returns a backend error', () => {
+      let errors: AcceptRequestErrorDto[];
+
+      beforeEach(fakeAsync(() => {
+        spyOn(sellerRequestsHttpService, 'acceptRequestPostOfficeDropOff').and.returnValue(
+          throwError(MOCK_ACCEPT_SCREEN_NON_PURCHASABLE_ITEM_ERROR_RESPONSE)
+        );
+
+        service.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe({
+          error: (errorResponse: AcceptRequestErrorDto[]) => (errors = errorResponse),
+        });
+      }));
+
+      it('should ask server to accept the request with post office drop off mode', () => {
+        expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledTimes(1);
+        expect(sellerRequestsHttpService.acceptRequestPostOfficeDropOff).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      });
+
+      it('should return the error mapped', () => {
+        expect(errors[0] instanceof NonPurchasableItemError).toBe(true);
+      });
     });
   });
 
   describe('when asking to accept a request with home pickup mode', () => {
-    beforeEach(fakeAsync(() => {
-      spyOn(sellerRequestsHttpService, 'acceptRequestHomePickup').and.callThrough();
+    describe('and the request succeed', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(sellerRequestsHttpService, 'acceptRequestHomePickup').and.callThrough();
 
-      service.acceptRequestHomePickup(MOCK_REQUEST_ID).subscribe();
-      tick();
-    }));
+        service.acceptRequestHomePickup(MOCK_REQUEST_ID).subscribe();
+      }));
 
-    it('should ask server to accept the request with post office drop off mode', () => {
-      expect(sellerRequestsHttpService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
-      expect(sellerRequestsHttpService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      it('should ask server to accept the request with post office drop off mode', () => {
+        expect(sellerRequestsHttpService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
+        expect(sellerRequestsHttpService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      });
+    });
+
+    describe('and the request fails and returns a backend error', () => {
+      let errors: AcceptRequestErrorDto[];
+
+      beforeEach(fakeAsync(() => {
+        spyOn(sellerRequestsHttpService, 'acceptRequestHomePickup').and.returnValue(
+          throwError(MOCK_ACCEPT_SCREEN_POSTAL_CODE_NOT_FOUND_ERROR_RESPONSE)
+        );
+
+        service.acceptRequestHomePickup(MOCK_REQUEST_ID).subscribe({
+          error: (errorResponse: AcceptRequestErrorDto[]) => (errors = errorResponse),
+        });
+      }));
+
+      it('should ask server to accept the request with post office drop off mode', () => {
+        expect(sellerRequestsHttpService.acceptRequestHomePickup).toHaveBeenCalledTimes(1);
+        expect(sellerRequestsHttpService.acceptRequestHomePickup).toHaveBeenCalledWith(MOCK_REQUEST_ID);
+      });
+
+      it('should return the error mapped', () => {
+        expect(errors[0] instanceof PostalCodeNotFoundError).toBe(true);
+      });
     });
   });
 });
