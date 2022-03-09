@@ -19,7 +19,6 @@ export class ExternalCommsService {
     this.configureBraze();
     this.openBrazeSession();
     this._brazeReady$.next();
-    this._brazeReady$.complete();
   }
 
   public openBrazeSession(): void {

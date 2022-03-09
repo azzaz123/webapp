@@ -31,14 +31,12 @@ export class ExperimentationService {
     this.optimizelyService.initialize();
     forkJoin([this.loadExternalLibService.loadScriptBySource(EXPERIMENTATION_SOURCES), this.optimizelyService.isReady$]).subscribe(() => {
       this._experimentReady$.next(true);
-      this._experimentReady$.complete();
     });
   }
 
   public initializeExperimentationWithUnauthenticatedUser(): void {
     this.loadExternalLibService.loadScriptBySource(EXPERIMENTATION_SOURCES).subscribe(() => {
       this._experimentReady$.next(true);
-      this._experimentReady$.complete();
     });
   }
 
