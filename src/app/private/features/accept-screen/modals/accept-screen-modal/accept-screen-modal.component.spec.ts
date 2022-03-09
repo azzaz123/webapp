@@ -528,19 +528,19 @@ describe('AcceptScreenModalComponent', () => {
               });
 
               it('should show the reject button as disabled', () => {
-                const rejectButtonDisabled = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
+                const rejectButtonDisabled: boolean = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
 
                 expect(rejectButtonDisabled).toBe(true);
               });
 
               it('should show the loading spinner', () => {
-                const spinner = fixture.debugElement.query(By.css('tsl-svg-icon'));
+                const spinner: DebugElement = fixture.debugElement.query(By.css('tsl-svg-icon'));
 
                 expect(spinner).toBeTruthy();
               });
 
               it('should show the confirm button as disabled', () => {
-                const acceptButtonDisabled = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
+                const acceptButtonDisabled: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
 
                 expect(acceptButtonDisabled).toBe(true);
               });
@@ -735,19 +735,19 @@ describe('AcceptScreenModalComponent', () => {
             });
 
             it('should show the confirm button as disabled', () => {
-              const acceptButtonDisabled = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
+              const acceptButtonDisabled: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
 
               expect(acceptButtonDisabled).toBe(true);
             });
 
             it('should show the confirm button with a loading spinner', () => {
-              const acceptButtonLoading = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.loading;
+              const acceptButtonLoading: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.loading;
 
               expect(acceptButtonLoading).toBe(true);
             });
 
             it('should show the reject button as disabled', () => {
-              const acceptButtonLoading = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
+              const acceptButtonLoading: boolean = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
 
               expect(acceptButtonLoading).toBe(true);
             });
@@ -761,19 +761,19 @@ describe('AcceptScreenModalComponent', () => {
             });
 
             it('should NOT show the confirm button disabled', () => {
-              const acceptButtonDisabled = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
+              const acceptButtonDisabled: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
 
               expect(acceptButtonDisabled).toBe(false);
             });
 
             it('should NOT show the confirm button with a loading spinner', () => {
-              const acceptButtonLoading = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.loading;
+              const acceptButtonLoading: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.loading;
 
               expect(acceptButtonLoading).toBe(false);
             });
 
             it('should NOT show the reject button disabled', () => {
-              const acceptButtonLoading = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
+              const acceptButtonLoading: boolean = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
 
               expect(acceptButtonLoading).toBe(false);
             });
