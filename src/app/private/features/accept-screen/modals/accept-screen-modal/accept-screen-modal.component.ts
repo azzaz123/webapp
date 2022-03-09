@@ -21,6 +21,7 @@ import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { AcceptRequestError } from '@api/core/errors/delivery/accept-screen/accept-request';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -113,7 +114,7 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   public checkIfCanAcceptRequest(): void {
-    this.acceptScreenProperties$.subscribe((properties: AcceptScreenProperties) => {
+    this.acceptScreenProperties$.pipe(take(1)).subscribe((properties: AcceptScreenProperties) => {
       const isCarrierSelected: boolean = !!properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected);
       if (!isCarrierSelected) {
         this.showNonSelectedCarrierError();
@@ -183,11 +184,7 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   private handleError(e: Error | AcceptRequestError): void {
-    let errorMessage = e?.message ? e.message : this.GENERIC_ERROR_TRANSLATION;
-
-    if (e instanceof AcceptRequestError) {
-      errorMessage = e.message;
-    }
+    const errorMessage: string = e?.message ? e.message : this.GENERIC_ERROR_TRANSLATION;
 
     this.showError(errorMessage);
   }
