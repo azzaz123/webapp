@@ -8,7 +8,7 @@ export const INPUT_TYPE = {
   DATE: 'date',
   PASSWORD: 'password',
   NUMBER: 'number',
-  radio: 'radio',
+  RADIO: 'radio',
 };
 
 export const KEYBOARD_INPUT_TYPES = [INPUT_TYPE.TEXT, INPUT_TYPE.DATE, INPUT_TYPE.PASSWORD, INPUT_TYPE.NUMBER];
