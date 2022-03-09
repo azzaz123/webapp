@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATH_PARAMS } from '@private/private-routing-constants';
@@ -9,7 +9,7 @@ import { DELIVERY_MODAL_CLASSNAME } from '../delivery/constants/delivery-constan
   selector: 'tsl-accept-screen',
   template: '',
 })
-export class AcceptScreenComponent implements OnInit {
+export class AcceptScreenComponent implements OnInit, OnDestroy {
   constructor(private modalService: NgbModal, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -21,5 +21,9 @@ export class AcceptScreenComponent implements OnInit {
       () => {},
       () => {}
     );
+  }
+
+  ngOnDestroy(): void {
+    this.modalService.dismissAll();
   }
 }
