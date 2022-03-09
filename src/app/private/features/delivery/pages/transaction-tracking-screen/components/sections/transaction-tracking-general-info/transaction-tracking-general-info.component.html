@@ -5,7 +5,7 @@
   <span class="TrackingGeneralInfo__title TrackingGeneralInfo__text mb-3">{{ info.title }}</span>
   <div id="shippingStatusDescription" class="TrackingGeneralInfo__text mb-3" [innerHTML]="info.description | bypassHTML"></div>
   <ng-container *ngFor="let actionCTA of info.actions">
-    <tsl-transaction-tracking-action-selector [actionDetail]="actionCTA.action">
+    <tsl-transaction-tracking-action-selector *ngIf="actionCTA.action" [actionDetail]="actionCTA.action">
       <tsl-button
         class="TrackingGeneralInfo__actionButton"
         className="btn-block {{ actionCTA.style.className }}"
@@ -13,5 +13,12 @@
         >{{ actionCTA.title }}</tsl-button
       >
     </tsl-transaction-tracking-action-selector>
+    <tsl-button
+      *ngIf="!actionCTA.action"
+      class="TrackingGeneralInfo__actionButton"
+      className="btn-block {{ actionCTA.style.className }}"
+      [disabled]="actionCTA.state.isDisabled"
+      >{{ actionCTA.title }}</tsl-button
+    >
   </ng-container>
 </div>
