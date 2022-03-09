@@ -19,6 +19,7 @@ import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 
 describe('InitializeAuthenticatedUserService', () => {
   let service: InitializeAuthenticatedUserService;
@@ -28,13 +29,7 @@ describe('InitializeAuthenticatedUserService', () => {
   let featureFlagsService: FeatureFlagService;
   let externalCommsService: ExternalCommsService;
   let experimentationService: ExperimentationService;
-  let inboxService: InboxService;
-  let realTime: RealTimeService;
-  let callsService: CallsService;
-  let cookieService: CookieService;
-  let eventService: EventService;
-
-  let emitSuccessChatEvents;
+  let unreadChatMessagesService: UnreadChatMessagesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,45 +40,7 @@ describe('InitializeAuthenticatedUserService', () => {
         { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         { provide: ExperimentationService, useValue: ExperimentationServiceMock },
         { provide: PermissionsInitializerService, useValue: PermissionsInitializerServiceMock },
-        {
-          provide: InboxService,
-          useValue: {
-            init() {},
-            saveInbox() {},
-          },
-        },
-        {
-          provide: AccessTokenService,
-          useValue: { accessToken: ACCESS_TOKEN },
-        },
-        {
-          provide: RealTimeService,
-          useValue: {
-            connect() {},
-            disconnect() {},
-            reconnect() {},
-          },
-        },
-        {
-          provide: CallsService,
-          useValue: {
-            init() {
-              return of();
-            },
-            syncItem() {},
-          },
-        },
-        {
-          provide: CookieService,
-          useValue: {
-            value: null,
-            put() {},
-            get() {
-              return this.value;
-            },
-          },
-        },
-        EventService,
+        { provide: UnreadChatMessagesService, useValue: { initializeUnreadChatMessages: () => {} } },
       ],
     });
     service = TestBed.inject(InitializeAuthenticatedUserService);
@@ -93,16 +50,7 @@ describe('InitializeAuthenticatedUserService', () => {
     featureFlagsService = TestBed.inject(FeatureFlagService);
     experimentationService = TestBed.inject(ExperimentationService);
     permissionsService = TestBed.inject(PermissionsInitializerService);
-    inboxService = TestBed.inject(InboxService);
-    realTime = TestBed.inject(RealTimeService);
-    callsService = TestBed.inject(CallsService);
-    cookieService = TestBed.inject(CookieService);
-    eventService = TestBed.inject(EventService);
-
-    emitSuccessChatEvents = () => {
-      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-      eventService.emit(EventService.CHAT_RT_CONNECTED);
-    };
+    unreadChatMessagesService = TestBed.inject(UnreadChatMessagesService);
   });
 
   it('should be created', () => {
@@ -115,6 +63,14 @@ describe('InitializeAuthenticatedUserService', () => {
     service.initialize();
 
     expect(permissionsService.setDefaultPermissions).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call initialization of unread messages', () => {
+    spyOn(unreadChatMessagesService, 'initializeUnreadChatMessages');
+
+    service.initialize();
+
+    expect(unreadChatMessagesService.initializeUnreadChatMessages).toHaveBeenCalledTimes(1);
   });
 
   it('should set the permissions for logged user', fakeAsync(() => {

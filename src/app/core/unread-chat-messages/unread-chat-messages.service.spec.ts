@@ -1,23 +1,37 @@
-import { getTestBed, inject, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
-import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
+import { UnreadChatMessagesService, UNREAD_MESSAGES_COUNT_ENDPOINT } from './unread-chat-messages.service';
+import { environment } from '@environments/environment.beta';
 
 describe('Service: UnreadChatMessages', () => {
   let injector: TestBed;
   let service: UnreadChatMessagesService;
   let titleService: Title;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     injector = getTestBed();
     injector.configureTestingModule({
+      imports: [HttpClientTestingModule],
       providers: [UnreadChatMessagesService],
     });
     service = injector.inject(UnreadChatMessagesService);
     titleService = injector.inject(Title);
+    httpMock = injector.inject(HttpTestingController);
   });
 
   it('should instanciate', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should retrieve the counter of unread messages', () => {
+    service.initializeUnreadChatMessages();
+    const req = httpMock.expectOne(`${environment.baseUrl}${UNREAD_MESSAGES_COUNT_ENDPOINT}`);
+    req.flush({ unread_counter: 2 });
+
+    expect(req.request.method).toBe('GET');
+    expect(service.totalUnreadMessages).toBe(2);
   });
 
   describe('when starting the service', () => {
