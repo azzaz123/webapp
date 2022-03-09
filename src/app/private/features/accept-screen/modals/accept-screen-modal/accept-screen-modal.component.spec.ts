@@ -806,6 +806,9 @@ describe('AcceptScreenModalComponent', () => {
 
         beforeEach(() => {
           acceptScreenPropertiesSubjectMock.next(null);
+          spyOn(acceptScreenStoreService, 'initialize').and.returnValue(Promise.reject());
+          spyOn(acceptScreenStoreService, 'update').and.callThrough();
+          spyOn(errorService, 'i18nError');
 
           fixture.detectChanges();
           component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
@@ -828,6 +831,15 @@ describe('AcceptScreenModalComponent', () => {
 
         it('should update the component properties', () => {
           expect(acceptScreenEmptyProperties).toStrictEqual(null);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+        });
+
+        it('should show generic error message', () => {
+          expect(errorService.i18nError).toHaveBeenCalledTimes(1);
+          expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
         });
       });
     });
