@@ -18,23 +18,36 @@
     <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_447">Dashboard</span>
   </a>
 
-  <a id="sidebar-catalog" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/catalog/list']" (click)="trackClickToCatalog()"
-    [ngClass]="{'Sidebar__entry--active': isProducts}">
+  <a id="sidebar-catalog" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/catalog/list']"
+     (click)="trackClickToCatalog()"
+     [ngClass]="{'Sidebar__entry--active': isProducts}">
     <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_label.svg"></tsl-svg-icon>
     <span class="Sidebar__label ml-2" *ngxPermissionsExcept="PERMISSIONS.professional"
-      i18n="@@web_components_sidebar_612">Products</span>
+          i18n="@@web_components_sidebar_612">Products</span>
     <span class="Sidebar__label ml-2" *ngxPermissionsOnly="PERMISSIONS.professional"
-      i18n="@@web_components_sidebar_448">Catalog</span>
+          i18n="@@web_components_sidebar_448">Catalog</span>
   </a>
 
-  <a class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/chat']" routerLinkActive="Sidebar__entry--active">
-    <div class="Sidebar__notification" *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0 || (notificationApiService.unreadNotificationsCount$ | async) > 0"></div>
+  <!--  TODO REMOVE BOTH FF-->
+  <a *ngIf="!featureFlagService.isExperimentalFeaturesEnabled()"
+     class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/chat']"
+     routerLinkActive="Sidebar__entry--active">
+    <div class="Sidebar__notification" *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0"></div>
+    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_message.svg"></tsl-svg-icon>
+    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_679">Messages</span>
+  </a>
+
+  <a *ngIf="featureFlagService.isExperimentalFeaturesEnabled()"
+     class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/chat']"
+     routerLinkActive="Sidebar__entry--active">
+    <div class="Sidebar__notification"
+         *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0 || (notificationApiService.unreadNotificationsCount$ | async) > 0"></div>
     <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_inbox.svg"></tsl-svg-icon>
     <span class="Sidebar__label ml-2" i18n="@@agnostic_view_nav_bar_inbox_label">Inbox</span>
   </a>
 
   <a *ngxPermissionsExcept="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
-    [routerLink]="['/favorites']" routerLinkActive="Sidebar__entry--active">
+     [routerLink]="['/favorites']" routerLinkActive="Sidebar__entry--active">
     <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_heart.svg"></tsl-svg-icon>
     <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_680">Favorites</span>
   </a>

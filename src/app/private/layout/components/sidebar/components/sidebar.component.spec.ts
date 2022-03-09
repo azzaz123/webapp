@@ -30,6 +30,7 @@ import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NotificationApiService } from '@api/notification/notification-api.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 @Component({
   template: '',
@@ -116,14 +117,6 @@ describe('SidebarComponent', () => {
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           NgxPermissionsService,
           {
-            provide: FeatureFlagService,
-            useValue: {
-              getLocalFlag() {
-                return of(true);
-              },
-            },
-          },
-          {
             provide: SidebarService,
             useValue: {
               sidebarCollapsed$: collapsedSubject.asObservable(),
@@ -152,6 +145,7 @@ describe('SidebarComponent', () => {
               },
             },
           },
+          { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
