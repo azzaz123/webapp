@@ -17,9 +17,9 @@
       <tsl-svg-icon class="header-icon" src="/assets/icons/arrow-waterfall.svg"></tsl-svg-icon>
     </div>
     <!-- TODO REMOVE FF-->
-    <div *ngIf="featureFlagService.isExperimentalFeaturesEnabled()">
+    <div class="Inbox__badge" *ngIf="featureFlagService.isExperimentalFeaturesEnabled()">
       <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-        <tsl-pro-badge class="ml-2" *ngIf="userService.isPro"></tsl-pro-badge>
+        <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
       </ng-container>
     </div>
 
