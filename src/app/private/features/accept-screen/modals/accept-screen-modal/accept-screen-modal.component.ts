@@ -19,6 +19,7 @@ import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -38,6 +39,9 @@ export class AcceptScreenModalComponent implements OnInit {
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+  public readonly confirmLoadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly rejectLoadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly disableButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
@@ -117,10 +121,20 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   public acceptRequest(): void {
-    this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
-      () => this.showDefaultError()
-    );
+    this.confirmLoadingButton$.next(true);
+    this.startDisableButton();
+    this.acceptScreenStoreService
+      .acceptRequest(this.requestId)
+      .pipe(
+        finalize(() => {
+          this.confirmLoadingButton$.next(false);
+          this.endDisableButton();
+        })
+      )
+      .subscribe(
+        () => this.redirectToTTSAndCloseModal(),
+        () => this.showDefaultError()
+      );
   }
 
   private goToDeliveryMap(): void {
@@ -129,10 +143,28 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   private rejectRequest(): void {
-    this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
-      () => this.showDefaultError()
-    );
+    this.rejectLoadingButton$.next(true);
+    this.startDisableButton();
+    this.acceptScreenStoreService
+      .rejectRequest(this.requestId)
+      .pipe(
+        finalize(() => {
+          this.rejectLoadingButton$.next(false);
+          this.endDisableButton();
+        })
+      )
+      .subscribe(
+        () => this.redirectToTTSAndCloseModal(),
+        () => this.showDefaultError()
+      );
+  }
+
+  private startDisableButton(): void {
+    this.disableButton$.next(true);
+  }
+
+  private endDisableButton(): void {
+    this.disableButton$.next(false);
   }
 
   private redirectToTTSAndCloseModal(): void {
