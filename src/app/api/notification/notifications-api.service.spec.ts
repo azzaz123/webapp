@@ -87,7 +87,7 @@ describe('NotificationApiService', () => {
         expiresAt: new Date('2022-03-24T16:12:03.000Z'),
         extras: {
           feed_type: 'notification_center',
-          notification_type: 'notification_center',
+          notification_type: 'trackingId',
           notification_layout: NOTIFICATION_LAYOUT.PINNED,
         },
         id: 'newNotification=',
@@ -109,6 +109,7 @@ describe('NotificationApiService', () => {
         image: 'no',
         date: new Date('2022-03-24T16:12:03.000Z'),
         variant: NOTIFICATION_VARIANT.PINNED,
+        trackingId: 'trackingId',
       };
 
       let notifications: Notification[];

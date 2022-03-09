@@ -33,6 +33,7 @@ describe('NotificationComponent', () => {
     image: 'https://picsum.photos/200/300',
     url: 'https://es.wallapop.com',
     id: 'highlightedId',
+    trackingId: 'trackingId',
   };
 
   const pinnedNotification: Notification = {
@@ -46,6 +47,7 @@ describe('NotificationComponent', () => {
     image: 'https://picsum.photos/200/300',
     url: 'https://es.wallapop.com',
     id: 'pinnedId',
+    trackingId: 'trackingId',
   };
 
   beforeEach(
@@ -97,7 +99,7 @@ describe('NotificationComponent', () => {
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.NotificationCenter,
-        notificationType: NOTIFICATION_VARIANT.HIGHLIGHTED,
+        notificationType: 'trackingId',
         isPinned: false,
         isUnread: false,
       },

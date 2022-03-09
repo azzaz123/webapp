@@ -7,11 +7,10 @@ import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-cha
 import { MockUnreadChatMessagesService } from '@fixtures/chat';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ELEMENT_TYPE, INPUT_TYPE, TabbarComponent } from './tabbar.component';
 import { TabbarService } from '../core/services/tabbar.service';
 import { Router } from '@angular/router';
-import { By } from '@angular/platform-browser';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { NotificationApiService } from '@api/notification/notification-api.service';
 
