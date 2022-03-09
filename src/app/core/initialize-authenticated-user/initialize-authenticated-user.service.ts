@@ -12,12 +12,9 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
-import { ReplaySubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class InitializeAuthenticatedUserService {
-  private readonly _isInitializationComplete$: ReplaySubject<void> = new ReplaySubject<void>();
-
   constructor(
     private userService: UserService,
     private permissionsService: PermissionsInitializerService,
@@ -32,23 +29,17 @@ export class InitializeAuthenticatedUserService {
     private accessTokenService: AccessTokenService
   ) {}
 
-  public get isInitializationComplete(): Promise<void> {
-    return this._isInitializationComplete$.toPromise();
-  }
-
   public async initialize(): Promise<void> {
     this.permissionsService.setDefaultPermissions();
 
     const _user = await this.userService.initializeUser();
     this.permissionsService.setUserPermissions(_user);
     this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
+    this.initRealTimeChat(_user, this.accessTokenService.accessToken);
 
     await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(_user);
-    this.initRealTimeChat(_user, this.accessTokenService.accessToken);
     this.experimentationService.initializeExperimentationWithAuthenticatedUser();
     this.externalCommsService.initializeBraze();
-
-    this._isInitializationComplete$.complete();
   }
 
   private initRealTimeChat(user: User, accessToken: string): void {

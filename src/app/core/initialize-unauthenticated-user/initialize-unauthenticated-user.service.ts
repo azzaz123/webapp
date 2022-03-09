@@ -5,12 +5,9 @@ import { ExternalCommsService } from '@core/external-comms.service';
 import { PermissionsInitializerService } from '@core/permissions-initializer/permissions-initializer.service';
 import { INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { ReplaySubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class InitializeUnauthenticatedUserService {
-  private readonly _isInitializationComplete$: ReplaySubject<void> = new ReplaySubject<void>();
-
   constructor(
     private permissionsService: PermissionsInitializerService,
     private analyticsService: AnalyticsService,
@@ -18,10 +15,6 @@ export class InitializeUnauthenticatedUserService {
     private externalCommsService: ExternalCommsService,
     private experimentationService: ExperimentationService
   ) {}
-
-  public get isInitializationComplete(): Promise<void> {
-    return this._isInitializationComplete$.toPromise();
-  }
 
   public async initialize(): Promise<void> {
     this.permissionsService.setDefaultPermissions();
@@ -31,7 +24,5 @@ export class InitializeUnauthenticatedUserService {
 
     this.experimentationService.initializeExperimentationWithUnauthenticatedUser();
     this.externalCommsService.initializeBraze();
-
-    this._isInitializationComplete$.complete();
   }
 }
