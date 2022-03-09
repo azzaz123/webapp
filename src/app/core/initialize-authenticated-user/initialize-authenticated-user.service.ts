@@ -22,11 +22,11 @@ export class InitializeAuthenticatedUserService {
 
   public async initialize(): Promise<void> {
     this.permissionsService.setDefaultPermissions();
+    this.unreadChatMessagesService.initializeUnreadChatMessages();
 
     const user = await this.userService.initializeUser();
     this.permissionsService.setUserPermissions(user);
     this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
-    this.unreadChatMessagesService.initializeUnreadChatMessages();
 
     await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(user);
     this.experimentationService.initializeExperimentationWithAuthenticatedUser();
