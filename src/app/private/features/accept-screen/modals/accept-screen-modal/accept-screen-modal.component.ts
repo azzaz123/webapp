@@ -57,7 +57,13 @@ export class AcceptScreenModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.acceptScreenStoreService.initialize(this.requestId);
+    this.acceptScreenStoreService.initialize(this.requestId).then(
+      () => {},
+      () => {
+        this.closeModal();
+        this.showDefaultError();
+      }
+    );
     this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
   }
 

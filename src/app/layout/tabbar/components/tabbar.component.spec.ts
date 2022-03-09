@@ -21,10 +21,6 @@ describe('TabbarComponent', () => {
   let el: HTMLElement;
   let fixture: ComponentFixture<TabbarComponent>;
   let eventService: EventService;
-  let searchNavigatorService: SearchNavigatorService;
-
-  const standaloneSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  const homeTabClass: string = '.TabBar__home';
 
   beforeEach(
     waitForAsync(() => {
@@ -83,7 +79,6 @@ describe('TabbarComponent', () => {
     el = de.nativeElement;
     fixture.detectChanges();
     eventService = TestBed.inject(EventService);
-    searchNavigatorService = TestBed.inject(SearchNavigatorService);
   });
 
   describe('ngOnInit', () => {
@@ -355,28 +350,6 @@ describe('TabbarComponent', () => {
       component.onFocusOut(event);
 
       expect(component.hidden).toBe(false);
-    });
-  });
-
-  describe('when the user clicks on the home tab', () => {
-    it('should prevent the default router navigation', () => {
-      const event = new MouseEvent('click');
-      spyOn(event, 'stopPropagation');
-      spyOn(event, 'preventDefault');
-
-      component.navigateToSearchPage(event);
-
-      expect(event.stopPropagation).toHaveBeenCalledTimes(1);
-      expect(event.preventDefault).toHaveBeenCalledTimes(1);
-    });
-
-    it('should open the Search page', () => {
-      spyOn(searchNavigatorService, 'navigateWithLocationParams');
-      const homeTabEl = fixture.debugElement.query(By.css(homeTabClass)).nativeElement;
-
-      homeTabEl.click();
-
-      expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith({});
     });
   });
 });

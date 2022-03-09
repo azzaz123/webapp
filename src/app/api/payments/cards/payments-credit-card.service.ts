@@ -6,8 +6,10 @@ import { PaymentsCardsErrorMapper } from '@api/payments/cards/mappers/errors/pay
 import { PaymentsCardsErrorResponseApi } from '@api/payments/cards/dtos/errors/payments-cards-error-response-api.interface';
 import { PaymentsCreditCardHttpService } from '@api/payments/cards/http/payments-credit-card-http.service';
 
-import { map, tap, catchError } from 'rxjs/operators';
-import { Observable, ReplaySubject } from 'rxjs';
+import { map, tap, catchError, concatMap, take } from 'rxjs/operators';
+import { Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
+import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
+import { CardInvalidError } from '@api/core/errors/payments/cards';
 
 @Injectable({
   providedIn: 'root',
@@ -27,10 +29,32 @@ export class PaymentsCreditCardService {
   }
 
   public get(): Observable<CreditCard> {
-    return this.paymentsCreditCardHttpService.get().pipe(
-      map(mapPaymentsCreditCardToCreditCard),
-      tap((creditCard) => (this.creditCard = creditCard))
-    );
+    const creditCardGetSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>(1);
+
+    this.paymentsCreditCardHttpService
+      .get()
+      .pipe(
+        map(mapPaymentsCreditCardToCreditCard),
+        concatMap((card) => {
+          const validCard: boolean = !this.isInvalidCard(card);
+          if (validCard) {
+            return of(card);
+          }
+          return this.delete().pipe(
+            tap(() => {
+              const error: CardInvalidError = new CardInvalidError();
+              this.creditCardSubject.error(error);
+              creditCardGetSubject.error(error);
+            })
+          );
+        })
+      )
+      .subscribe((creditCard) => {
+        this.creditCard = creditCard;
+        creditCardGetSubject.next(creditCard);
+      });
+
+    return creditCardGetSubject.asObservable().pipe(take(1));
   }
 
   public create(cardSyncRequest: CreditCardSyncRequest): Observable<null> {
@@ -52,5 +76,9 @@ export class PaymentsCreditCardService {
       tap(() => (this.creditCard = null)),
       catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error))
     );
+  }
+
+  private isInvalidCard(card: CreditCard): boolean {
+    return card.status === CREDIT_CARD_STATUS.INVALID;
   }
 }

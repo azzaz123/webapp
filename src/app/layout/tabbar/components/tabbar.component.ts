@@ -95,13 +95,6 @@ export class TabbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  public navigateToSearchPage(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.searchNavigatorService.navigateWithLocationParams({});
-  }
-
   private isTextInputOrTextarea(element: any): boolean {
     const elementTarget = element.target;
     if (elementTarget.nodeName === ELEMENT_TYPE.TEXT_AREA) {

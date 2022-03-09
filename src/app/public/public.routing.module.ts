@@ -28,6 +28,10 @@ const routes: Route[] = [
         loadChildren: () => import('./features/item-detail/item-detail.module').then((m) => m.ItemDetailModule),
       },
       {
+        path: `${PUBLIC_PATHS.PROCESS_COMPLETE}/:${PUBLIC_PATH_PARAMS.ID}`,
+        loadChildren: () => import('./features/process-complete/process-complete.module').then((m) => m.ProcessCompleteModule),
+      },
+      {
         path: PUBLIC_PATHS.NOT_FOUND,
         loadChildren: () => import('./features/error/error.module').then((m) => m.ErrorModule),
       },
