@@ -11,4 +11,5 @@ export interface Notification {
   image: string;
   url: string;
   id: string;
+  trackingId: string;
 }

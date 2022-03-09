@@ -71,6 +71,6 @@ export class NotificationApiService {
   }
 
   private filterNotificationCenterContentCards(cards: NotificationDto[]): NotificationDto[] {
-    return cards.filter((card) => card.extras.notification_type === 'notification_center' && card.url);
+    return cards.filter((card) => card.extras.feed_type === 'notification_center' && card.url);
   }
 }
