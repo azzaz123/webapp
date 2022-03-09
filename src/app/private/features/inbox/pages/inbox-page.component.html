@@ -1,9 +1,12 @@
 <div class="page-content">
-  <tsl-tabs-bar
-    [tabsBarElements]="tabsBarElements"
-    [initialSelectedTabBarElement]="selectedTabsBarElement"
-    (handleOnClick)="onTabsBarChange($event)"
-  >
-  </tsl-tabs-bar>
+  <!-- TODO REMOVE FF -->
+  <div class="page-content__tabs" *ngIf="featureFlagService.isExperimentalFeaturesEnabled()">
+    <tsl-tabs-bar
+      [tabsBarElements]="tabsBarElements"
+      [initialSelectedTabBarElement]="selectedTabsBarElement"
+      (handleOnClick)="onTabsBarChange($event)"
+    >
+    </tsl-tabs-bar>
+  </div>
   <router-outlet></router-outlet>
 </div>
