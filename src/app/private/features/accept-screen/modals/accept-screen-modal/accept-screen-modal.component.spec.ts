@@ -520,6 +520,32 @@ describe('AcceptScreenModalComponent', () => {
               spyOn(modalService, 'open').and.callThrough();
             });
 
+            describe('and the request is loading', () => {
+              beforeEach(() => {
+                component.rejectLoadingButton$.next(true);
+                component.disableButton$.next(true);
+                fixture.detectChanges();
+              });
+
+              it('should show the reject button as disabled', () => {
+                const rejectButtonDisabled = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
+
+                expect(rejectButtonDisabled).toBe(true);
+              });
+
+              it('should show the loading spinner', () => {
+                const spinner = fixture.debugElement.query(By.css('tsl-svg-icon'));
+
+                expect(spinner).toBeTruthy();
+              });
+
+              it('should show the confirm button as disabled', () => {
+                const acceptButtonDisabled = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
+
+                expect(acceptButtonDisabled).toBe(true);
+              });
+            });
+
             describe('and the petition fails...', () => {
               beforeEach(() => {
                 spyOn(acceptScreenStoreService, 'rejectRequest').and.returnValue(throwError('network error :P'));
@@ -700,7 +726,59 @@ describe('AcceptScreenModalComponent', () => {
           });
         });
 
-        describe('and we click on the accept button', () => {
+        describe('and we click on the confirm button', () => {
+          describe('and the request is loading', () => {
+            beforeEach(() => {
+              component.confirmLoadingButton$.next(true);
+              component.disableButton$.next(true);
+              fixture.detectChanges();
+            });
+
+            it('should show the confirm button as disabled', () => {
+              const acceptButtonDisabled = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
+
+              expect(acceptButtonDisabled).toBe(true);
+            });
+
+            it('should show the confirm button with a loading spinner', () => {
+              const acceptButtonLoading = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.loading;
+
+              expect(acceptButtonLoading).toBe(true);
+            });
+
+            it('should show the reject button as disabled', () => {
+              const acceptButtonLoading = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
+
+              expect(acceptButtonLoading).toBe(true);
+            });
+          });
+
+          describe('and the request finished', () => {
+            beforeEach(() => {
+              component.confirmLoadingButton$.next(false);
+              component.disableButton$.next(false);
+              fixture.detectChanges();
+            });
+
+            it('should NOT show the confirm button disabled', () => {
+              const acceptButtonDisabled = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
+
+              expect(acceptButtonDisabled).toBe(false);
+            });
+
+            it('should NOT show the confirm button with a loading spinner', () => {
+              const acceptButtonLoading = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.loading;
+
+              expect(acceptButtonLoading).toBe(false);
+            });
+
+            it('should NOT show the reject button disabled', () => {
+              const acceptButtonLoading = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
+
+              expect(acceptButtonLoading).toBe(false);
+            });
+          });
+
           describe('and the selected drop off mode is post office', () => {
             beforeEach(() => {
               carrierSelectedIndexSubjectMock.next(CARRIER_DROP_OFF_MODE.POST_OFFICE);
