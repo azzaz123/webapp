@@ -5,7 +5,7 @@ import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockExternalCommsService } from '@fixtures/external-comms-service.fixtures.spec';
 import { UserService } from '@core/user/user.service';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
-import { PermissionsInitializerService } from '@core/permissions/permissions.service';
+import { PermissionsInitializerService } from '@core/permissions-initializer/permissions-initializer.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { InitializeUnauthenticatedUserService } from './initialize-unauthenticated-user.service';

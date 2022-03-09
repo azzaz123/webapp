@@ -6,7 +6,7 @@ import { ExperimentationService } from '@core/experimentation/services/experimen
 import { ExternalCommsService } from '@core/external-comms.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { RealTimeService } from '@core/message/real-time.service';
-import { PermissionsInitializerService } from '@core/permissions/permissions.service';
+import { PermissionsInitializerService } from '@core/permissions-initializer/permissions-initializer.service';
 import { INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { User } from '@core/user/user';
