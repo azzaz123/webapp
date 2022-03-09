@@ -22,22 +22,7 @@ export class SearchNavigatorService {
     FILTER_QUERY_PARAM_KEY.orderBy,
   ];
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private queryStringService: SearchQueryStringService,
-    private locationService: QueryStringLocationService
-  ) {}
-
-  public navigateWithLocationParams(currentParams: Params) {
-    const locationParams = this.locationService.getLocationParameters();
-    const queryParams = { ...currentParams, ...locationParams };
-
-    this.router.navigate([`/${PUBLIC_PATHS.SEARCH}`], {
-      relativeTo: this.route,
-      queryParams,
-    });
-  }
+  constructor(private router: Router, private route: ActivatedRoute, private queryStringService: SearchQueryStringService) {}
 
   public navigate(filterParams: FilterParameter[], filtersSource: FILTERS_SOURCE): void {
     const newQueryParams = this.getQueryParamsAfterFiltersChange(filtersSource, filterParams);
