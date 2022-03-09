@@ -69,6 +69,19 @@ export const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1: TransactionTrackingShi
   description: 'Llegará en un plazo estimado de <strong>3 días hábiles.</strong> ¡Que pasen rápido! ',
   title: 'Paquete en reparto',
 };
+
+export const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_WITHOUT_ACTION: TransactionTrackingShippingStatus = {
+  ...MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1,
+  actions: [
+    {
+      action: null,
+      state: { isDisabled: false },
+      style: { className: 'btn btn-primary' },
+      title: 'Ya lo he recibido',
+    },
+  ],
+};
+
 const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_1: TransactionTrackingStatusInfo = {
   action: {
     isDeeplink: true,
