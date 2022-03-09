@@ -109,6 +109,14 @@ describe('InitializeAuthenticatedUserService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('should set the default permissions', () => {
+    spyOn(permissionsService, 'setDefaultPermissions');
+
+    service.initialize();
+
+    expect(permissionsService.setDefaultPermissions).toHaveBeenCalledTimes(1);
+  });
+
   it('should set the permissions for logged user', fakeAsync(() => {
     spyOn(permissionsService, 'setUserPermissions');
 
@@ -118,6 +126,15 @@ describe('InitializeAuthenticatedUserService', () => {
     expect(permissionsService.setUserPermissions).toHaveBeenCalledWith(MOCK_FULL_USER);
   }));
 
+  it('should get the flags after user has logged in', fakeAsync(() => {
+    spyOn(featureFlagsService, 'getFlags');
+
+    service.initialize();
+    tick();
+
+    expect(featureFlagsService.getFlags).toHaveBeenCalledTimes(1);
+  }));
+
   it('should initialize the analytics library', fakeAsync(() => {
     spyOn(analyticsService, 'initializeAnalyticsWithAuthenticatedUser');
 
@@ -125,15 +142,6 @@ describe('InitializeAuthenticatedUserService', () => {
     tick();
 
     expect(analyticsService.initializeAnalyticsWithAuthenticatedUser).toHaveBeenCalledTimes(1);
-  }));
-
-  it('should initialize external Braze communications', fakeAsync(() => {
-    spyOn(externalCommsService, 'initializeBraze');
-
-    service.initialize();
-    tick();
-
-    expect(externalCommsService.initializeBraze).toHaveBeenCalledTimes(1);
   }));
 
   describe('when initializing real time chat', () => {
@@ -170,4 +178,22 @@ describe('InitializeAuthenticatedUserService', () => {
       expect(inboxService.init).toHaveBeenCalledTimes(1);
     }));
   });
+
+  it('should initialize experimentation service', fakeAsync(() => {
+    spyOn(experimentationService, 'initializeExperimentationWithAuthenticatedUser');
+
+    service.initialize();
+    tick();
+
+    expect(experimentationService.initializeExperimentationWithAuthenticatedUser).toHaveBeenCalledTimes(1);
+  }));
+
+  it('should initialize braze service', fakeAsync(() => {
+    spyOn(externalCommsService, 'initializeBraze');
+
+    service.initialize();
+    tick();
+
+    expect(externalCommsService.initializeBraze).toHaveBeenCalledTimes(1);
+  }));
 });

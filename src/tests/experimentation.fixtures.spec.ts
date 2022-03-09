@@ -14,7 +14,7 @@ export const OptimizeServiceMock = {
 
 export const ExperimentationServiceMock = {
   initializeExperimentationWithAuthenticatedUser: () => {},
-  initializeExperimentationWithUnAuthenticatedUser: () => {},
+  initializeExperimentationWithUnauthenticatedUser: () => {},
   initExperimentContext: () => {},
   getVariations: () => {},
 };
