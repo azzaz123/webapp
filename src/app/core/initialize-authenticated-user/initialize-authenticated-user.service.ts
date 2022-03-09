@@ -32,12 +32,12 @@ export class InitializeAuthenticatedUserService {
   public async initialize(): Promise<void> {
     this.permissionsService.setDefaultPermissions();
 
-    const _user = await this.userService.initializeUser();
-    this.permissionsService.setUserPermissions(_user);
+    const user = await this.userService.initializeUser();
+    this.permissionsService.setUserPermissions(user);
     this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
-    this.initRealTimeChat(_user, this.accessTokenService.accessToken);
+    this.initRealTimeChat(user, this.accessTokenService.accessToken);
 
-    await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(_user);
+    await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(user);
     this.experimentationService.initializeExperimentationWithAuthenticatedUser();
     this.externalCommsService.initializeBraze();
   }
