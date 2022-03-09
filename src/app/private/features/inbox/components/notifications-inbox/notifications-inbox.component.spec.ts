@@ -28,6 +28,7 @@ describe('NotificationsInboxComponent', () => {
       image: 'https://picsum.photos/200/300',
       url: 'https://es.wallapop.com',
       id: 'id',
+      trackingId: 'trackingId',
     },
   ];
 
