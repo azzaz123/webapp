@@ -1,6 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { environment } from '@environments/environment.beta';
 import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+export const INSTANT_MESSAGES_API = 'api/v3/instant-messaging';
+export const UNREAD_MESSAGES_COUNT_ENDPOINT = `${INSTANT_MESSAGES_API}/messages/unread`;
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +15,7 @@ export class UnreadChatMessagesService {
   public totalUnreadMessages$: Subject<number> = new Subject<number>();
   private _totalUnreadMessages = 0;
 
-  constructor(private titleService: Title) {
+  constructor(private titleService: Title, private http: HttpClient) {
     this.totalUnreadMessages$.subscribe((unreadMessages: number) => {
       let title: string = this.titleService.getTitle().split(') ')[1];
       title = title ? title : this.titleService.getTitle();
@@ -18,6 +24,17 @@ export class UnreadChatMessagesService {
       }
       this.titleService.setTitle(title);
     });
+  }
+
+  public initializeUnreadChatMessages(): Promise<void> {
+    return this.http
+      .get<any>(`${environment.baseUrl}${UNREAD_MESSAGES_COUNT_ENDPOINT}`)
+      .pipe(
+        tap((count) => {
+          this.totalUnreadMessages = count.unread_counter;
+        })
+      )
+      .toPromise();
   }
 
   set totalUnreadMessages(value: number) {

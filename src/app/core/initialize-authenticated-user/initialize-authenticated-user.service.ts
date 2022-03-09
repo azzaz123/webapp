@@ -3,6 +3,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { ExternalCommsService } from '@core/external-comms.service';
 import { PermissionsInitializerService } from '@core/permissions-initializer/permissions-initializer.service';
+import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
@@ -15,7 +16,8 @@ export class InitializeAuthenticatedUserService {
     private analyticsService: AnalyticsService,
     private featureFlagsService: FeatureFlagService,
     private externalCommsService: ExternalCommsService,
-    private experimentationService: ExperimentationService
+    private experimentationService: ExperimentationService,
+    private unreadChatMessagesService: UnreadChatMessagesService
   ) {}
 
   public async initialize(): Promise<void> {
@@ -24,14 +26,10 @@ export class InitializeAuthenticatedUserService {
     const user = await this.userService.initializeUser();
     this.permissionsService.setUserPermissions(user);
     this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
-    this.initUnreadMessages();
+    this.unreadChatMessagesService.initializeUnreadChatMessages();
 
     await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(user);
     this.experimentationService.initializeExperimentationWithAuthenticatedUser();
     this.externalCommsService.initializeBraze();
-  }
-
-  private initUnreadMessages(): void {
-    // TODO
   }
 }
