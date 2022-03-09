@@ -114,15 +114,15 @@ export class AcceptScreenModalComponent implements OnInit {
 
   public checkIfCanAcceptRequest(): void {
     this.acceptScreenProperties$.subscribe((properties: AcceptScreenProperties) => {
-      const haveSelectedCarrier: boolean = !!properties.carriers.find((carrier) => carrier.isSelected);
-      if (!haveSelectedCarrier) {
-        const SELECT_CARRIER_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_pending_shipping_method_error:Please select how you'll send the package.`;
-        return this.showError(SELECT_CARRIER_ERROR_TRANSLATION);
+      const isCarrierSelected: boolean = !!properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected);
+      if (!isCarrierSelected) {
+        this.showNonSelectedCarrierError();
+        return;
       }
 
       if (!properties.seller.fullAddress) {
-        const MISSING_SELLER_ADDRESS_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_pending_sender_details_error:Please enter the sender address.`;
-        return this.showError(MISSING_SELLER_ADDRESS_ERROR_TRANSLATION);
+        this.showMissingFullAddressError();
+        return;
       }
 
       this.acceptRequest();
@@ -136,6 +136,16 @@ export class AcceptScreenModalComponent implements OnInit {
         this.handleError(errors[0]);
       }
     );
+  }
+
+  private showMissingFullAddressError(): void {
+    const MISSING_SELLER_ADDRESS_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_pending_sender_details_error:Please enter the sender address.`;
+    this.showError(MISSING_SELLER_ADDRESS_ERROR_TRANSLATION);
+  }
+
+  private showNonSelectedCarrierError(): void {
+    const SELECT_CARRIER_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_pending_shipping_method_error:Please select how you'll send the package.`;
+    this.showError(SELECT_CARRIER_ERROR_TRANSLATION);
   }
 
   private goToDeliveryMap(): void {
