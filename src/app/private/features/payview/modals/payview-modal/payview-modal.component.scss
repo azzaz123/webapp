@@ -1,0 +1,21 @@
+@import '~style/common';
+
+.PayviewModal {
+  max-height: 80vh;
+
+  &__scrollable {
+    overflow-y: scroll;
+  }
+
+  &__spinner {
+    padding: $spacing-l;
+  }
+
+  &__close {
+    cursor: pointer;
+  }
+
+  &__windowHeader {
+    padding-left: $spacing-ml;
+  }
+}
