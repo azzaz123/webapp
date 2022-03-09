@@ -13,12 +13,13 @@ import { DELIVERY_PATHS } from '../delivery/delivery-routing-constants';
 })
 export class AcceptScreenComponent implements OnInit, OnDestroy {
   private readonly ONGOING_SELLS_LINK: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}/${STREAMLINE_PATHS.ONGOING}`;
+  private readonly TTS_LINK: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}`;
 
   constructor(private modalService: NgbModal, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     const requestId: string = this.route.snapshot.paramMap.get(PRIVATE_PATH_PARAMS.ID);
-    const modalRef = this.modalService.open(AcceptScreenModalComponent, { windowClass: DELIVERY_MODAL_CLASSNAME });
+    const modalRef = this.modalService.open(AcceptScreenModalComponent, { windowClass: DELIVERY_MODAL_CLASSNAME, backdrop: 'static' });
     modalRef.componentInstance.requestId = requestId;
 
     modalRef.result.then(
@@ -36,6 +37,9 @@ export class AcceptScreenComponent implements OnInit, OnDestroy {
   }
 
   private navigateToOngoingSells(): void {
-    this.router.navigate([this.ONGOING_SELLS_LINK]);
+    const isRedirectingToTTS: boolean = this.router.url.includes(this.TTS_LINK);
+    if (!isRedirectingToTTS) {
+      this.router.navigate([this.ONGOING_SELLS_LINK]);
+    }
   }
 }
