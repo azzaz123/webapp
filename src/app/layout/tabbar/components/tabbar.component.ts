@@ -1,13 +1,12 @@
-import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
-import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { NotificationApiService } from '@api/notification/notification-api.service';
 
 export const INPUT_TYPE = {
@@ -46,7 +45,6 @@ export class TabbarComponent implements OnInit, OnDestroy {
     private tabBarService: TabbarService,
     private unreadChatMessagesService: UnreadChatMessagesService,
     private eventService: EventService,
-    private searchNavigatorService: SearchNavigatorService,
     public notificationApiService: NotificationApiService
   ) {}
 
