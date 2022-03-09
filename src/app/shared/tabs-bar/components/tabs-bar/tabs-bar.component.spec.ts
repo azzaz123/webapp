@@ -76,7 +76,7 @@ describe('TabsBarComponent', () => {
       });
 
       it('should mark the tab as selected', () => {
-        const expectedSelectedTabBar = MOCK_TABS_BAR_ELEMENTS[0];
+        const expectedSelectedTabBar = MOCK_TABS_BAR_ELEMENTS[1];
         const selectedTabComponent: TabComponent<number> = getSelectedTabComponent();
 
         expect(selectedTabComponent).toBeTruthy();

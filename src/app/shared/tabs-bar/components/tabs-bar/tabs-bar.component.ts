@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TabsBarElement } from '../../interfaces/tabs-bar-element.interface';
 
 @Component({
@@ -7,15 +7,18 @@ import { TabsBarElement } from '../../interfaces/tabs-bar-element.interface';
   styleUrls: ['./tabs-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TabsBarComponent<T> implements OnInit {
+export class TabsBarComponent<T> implements OnChanges {
   @Input() tabsBarElements: TabsBarElement<T>[];
   @Input() initialSelectedTabBarElement: TabsBarElement<T>;
   @Output() handleOnClick: EventEmitter<TabsBarElement<T>> = new EventEmitter<TabsBarElement<T>>();
 
   private selectedTabBarElement: TabsBarElement<T>;
 
-  ngOnInit() {
-    this.setSelectedTabBarElement();
+  ngOnChanges(changes: SimpleChanges) {
+    const { initialSelectedTabBarElement } = changes;
+    if (initialSelectedTabBarElement) {
+      this.setSelectedTabBarElement();
+    }
   }
 
   public handleClick(tabBarElement: TabsBarElement<T>): void {
