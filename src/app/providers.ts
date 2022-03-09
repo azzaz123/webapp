@@ -9,13 +9,6 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { InitializeAuthenticatedUserService } from '@core/initialize-authenticated-user/initialize-authenticated-user.service';
 import { InitializeUnauthenticatedUserService } from '@core/initialize-unauthenticated-user/initialize-unauthenticated-user.service';
 import { SessionService } from '@core/session/session.service';
-import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
-import { InboxConversationService } from '@private/features/chat/core/inbox/inbox-conversation.service';
-import { RealTimeService } from '@core/message/real-time.service';
-import { XmppService } from '@core/xmpp/xmpp.service';
-import { ConnectionService } from '@core/connection/connection.service';
-import { DesktopNotificationsService } from '@core/desktop-notifications/desktop-notifications.service';
-import { CallsService } from '@core/conversation/calls.service';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -56,13 +49,6 @@ export const PROVIDERS: Provider[] = [
     provide: RouteReuseStrategy,
     useClass: CustomRouteReuseStrategy,
   },
-  InboxService,
-  InboxConversationService,
-  RealTimeService,
-  XmppService,
-  ConnectionService,
-  DesktopNotificationsService,
-  CallsService,
 ];
 
 export function initializeAuthenticatedUserFactory(

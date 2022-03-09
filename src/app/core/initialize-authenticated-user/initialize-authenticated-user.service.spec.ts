@@ -144,41 +144,6 @@ describe('InitializeAuthenticatedUserService', () => {
     expect(analyticsService.initializeAnalyticsWithAuthenticatedUser).toHaveBeenCalledTimes(1);
   }));
 
-  describe('when initializing real time chat', () => {
-    beforeEach(fakeAsync(() => {
-      spyOn(callsService, 'init').and.returnValue(of({}));
-      spyOn(inboxService, 'init');
-    }));
-
-    it('should perform a xmpp connect when the login event is triggered with the correct user data', fakeAsync(() => {
-      spyOn(realTime, 'connect');
-
-      service.initialize();
-      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-      tick();
-
-      expect(realTime.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
-    }));
-
-    it('should call callsService.init twice if user is professional', fakeAsync(() => {
-      spyOn(userService, 'isProfessional').and.returnValue(of(true));
-
-      service.initialize();
-      tick();
-      emitSuccessChatEvents();
-
-      expect(callsService.init).toHaveBeenCalledTimes(2);
-    }));
-
-    it('should call inboxService.init', fakeAsync(() => {
-      service.initialize();
-      tick();
-      emitSuccessChatEvents();
-
-      expect(inboxService.init).toHaveBeenCalledTimes(1);
-    }));
-  });
-
   it('should initialize experimentation service', fakeAsync(() => {
     spyOn(experimentationService, 'initializeExperimentationWithAuthenticatedUser');
 
