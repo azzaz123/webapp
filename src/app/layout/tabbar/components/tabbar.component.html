@@ -29,7 +29,8 @@
 
   <div class="TabBar__option TabBar__chat" [routerLink]="['/chat']" routerLinkActive="active"
        [ngClass]="{'TabBar__option--pending': hasUnreadMessages || hasUnreadNotifications}">
-    <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 48 48">
+<!--  TODO: Remove feature flag when NotificationCenter opens  -->
+    <svg *ngIf='!featureFlagService.isExperimentalFeaturesEnabled()' xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 48 48">
       <g fill="none" fill-rule="evenodd">
         <path class="fill-path" fill="#90A4AE"
               d="M18.5 26a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5.88 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5.87 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
@@ -39,7 +40,13 @@
               d="M11.085 24.498c0-7.672 6.397-13.846 14.135-13.483 6.872.317 12.533 5.978 12.85 12.85C38.433 31.603 32.25 38 24.587 38H12.919a1.92 1.92 0 0 1-1.797-2.589l1.825-4.86"/>
       </g>
     </svg>
-    <span i18n="@@web_components_tabbar_6">Messages</span>
+    <svg *ngIf='featureFlagService.isExperimentalFeaturesEnabled()' width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" fill-rule="evenodd">
+        <path class="fill-stroke" d="m8.571 12.808 9.143 8.811a3.159 3.159 0 0 0 4.458 0l9.257-8.811m-16 8.477-4.572 4.907m13.715-4.907 4.57 4.907M36 24.296C36 30.208 31.429 34 25.943 34H14.057C8.571 34 4 30.208 4 24.296v-9.592C4 8.68 8.571 5 14.057 5h11.886C31.429 5 36 8.68 36 14.704v9.592Z" stroke="#90A4AE" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </svg>
+    <span *ngIf='featureFlagService.isExperimentalFeaturesEnabled()' i18n="@@agnostic_view_nav_bar_inbox_label">Inbox</span>
+    <span *ngIf='!featureFlagService.isExperimentalFeaturesEnabled()' i18n="@@web_components_tabbar_6">Messages</span>
     <div class="TabBar__badge"></div>
   </div>
 
