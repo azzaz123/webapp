@@ -545,7 +545,7 @@ describe('AcceptScreenModalComponent', () => {
 
               it('should show generic error message', () => {
                 expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR);
               });
             });
 
@@ -717,7 +717,7 @@ describe('AcceptScreenModalComponent', () => {
 
               it('should show generic error message', () => {
                 expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR);
               });
             });
 
@@ -762,7 +762,7 @@ describe('AcceptScreenModalComponent', () => {
 
               it('should show generic error message', () => {
                 expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+                expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR);
               });
             });
 
@@ -827,7 +827,7 @@ describe('AcceptScreenModalComponent', () => {
 
         it('should show generic error message', () => {
           expect(errorService.i18nError).toHaveBeenCalledTimes(1);
-          expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+          expect(errorService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR);
         });
       });
     });
