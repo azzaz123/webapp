@@ -5,4 +5,5 @@ export const PAYMENTS_CARDS_ERROR_TRANSLATIONS = {
   CARD_REFUSED: $localize`:@@credit_card_form_snackbar_refused_card_error:For some reason, the card is refused. `,
   CARD_CVX_IS_INVALID: $localize`:@@credit_card_form_cvv_not_valid_error:The CVV number isn't valid.`,
   CARD_ERROR: $localize`:@@credit_card_form_snackbar_payment_generic_error:There is an error with the bank card.`,
+  CARD_INVALID: $localize`:@@delivery_credit_card_three3ds_deleted:Add another credit card so that it can be verified.`,
 };

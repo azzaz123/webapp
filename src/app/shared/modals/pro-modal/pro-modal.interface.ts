@@ -22,7 +22,7 @@ export enum MODAL_STYLE {
 
 export enum MODAL_ACTION {
   PRIMARY_BUTTON,
-  SECONDARY_BUTON,
+  SECONDARY_BUTTON,
 }
 
 interface RedirectData {

@@ -1,0 +1,6 @@
+export enum CREDIT_CARD_STATUS {
+  VALID,
+  INVALID,
+  PENDING_3DS,
+  UNKNOWN,
+}

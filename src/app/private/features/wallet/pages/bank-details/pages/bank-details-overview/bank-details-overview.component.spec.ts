@@ -30,6 +30,7 @@ import { SharedErrorActionService } from '@shared/error-action';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
+import { CardInvalidError } from '@api/core/errors/payments/cards';
 
 describe('BankDetailsOverviewComponent', () => {
   const creditCardInfoSelector = '#creditCard';
@@ -49,7 +50,6 @@ describe('BankDetailsOverviewComponent', () => {
   let router: Router;
   let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
   let de: DebugElement;
-  let errorActionService: SharedErrorActionService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -107,7 +107,6 @@ describe('BankDetailsOverviewComponent', () => {
     toastService = TestBed.inject(ToastService);
     router = TestBed.inject(Router);
     modalService = TestBed.inject(NgbModal);
-    errorActionService = TestBed.inject(SharedErrorActionService);
     bankAccountTrackingEventsService = TestBed.inject(BankAccountTrackingEventsService);
     de = fixture.debugElement;
 
@@ -432,6 +431,8 @@ describe('BankDetailsOverviewComponent', () => {
     });
   });
 });
+
+//FIXME: We shouldn't have several test suites for one component
 describe('BankDetailsOverviewComponent', () => {
   describe('WHEN there is an error retrieving data', () => {
     let component: BankDetailsOverviewComponent;
@@ -439,7 +440,7 @@ describe('BankDetailsOverviewComponent', () => {
     let bankAccountService: BankAccountService;
     let paymentsCreditCardService: PaymentsCreditCardService;
     let errorActionService: SharedErrorActionService;
-    let bankAccountTrackingEventsService: BankAccountTrackingEventsService;
+    let toastService: ToastService;
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
@@ -478,6 +479,7 @@ describe('BankDetailsOverviewComponent', () => {
           KYCPropertiesService,
           KYCPropertiesHttpService,
           { provide: AnalyticsService, useClass: MockAnalyticsService },
+          { provide: ToastService, useValue: { show: () => {} } },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
@@ -488,8 +490,8 @@ describe('BankDetailsOverviewComponent', () => {
       component = fixture.componentInstance;
       bankAccountService = TestBed.inject(BankAccountService);
       paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
+      toastService = TestBed.inject(ToastService);
       errorActionService = TestBed.inject(SharedErrorActionService);
-      bankAccountTrackingEventsService = TestBed.inject(BankAccountTrackingEventsService);
 
       fixture.detectChanges();
     });
@@ -529,12 +531,34 @@ describe('BankDetailsOverviewComponent', () => {
       });
     });
     describe('WHEN there is an error retrieving the credit card data', () => {
-      let errorActionSpy;
+      describe('and when the error is due to an invalid card', () => {
+        beforeEach(fakeAsync(() => {
+          jest.spyOn(paymentsCreditCardService, 'creditCard$', 'get').mockReturnValue(throwError(new CardInvalidError()));
+          spyOn(toastService, 'show');
 
-      beforeEach(() => {
-        errorActionSpy = spyOn(errorActionService, 'show');
+          component.ngOnInit();
+
+          tick();
+        }));
+
+        it('should show toast', fakeAsync(() => {
+          component.creditCard$.subscribe(
+            () => {},
+            () => {
+              expect(toastService.show).toHaveBeenCalledTimes(1);
+              expect(toastService.show).toHaveBeenCalledWith({});
+            }
+          );
+          tick();
+        }));
       });
-      describe('AND WHEN retrieving the raw data', () => {
+
+      describe('AND WHEN the error is generic', () => {
+        let errorActionSpy: jasmine.Spy;
+
+        beforeEach(() => {
+          errorActionSpy = spyOn(errorActionService, 'show');
+        });
         it('should show the generic error catcher', fakeAsync(() => {
           jest.spyOn(paymentsCreditCardService, 'creditCard$', 'get').mockReturnValue(throwError('The server is broken'));
 
@@ -547,18 +571,19 @@ describe('BankDetailsOverviewComponent', () => {
           );
         }));
       });
-      describe('AND WHEN retrieving the formatted data', () => {
-        it('should NOT show the generic error catcher', fakeAsync(() => {
-          spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError('The server is broken'));
 
+      describe('AND WHEN retrieving the formatted data', () => {
+        beforeEach(() => {
+          spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError('The server is broken'));
+        });
+
+        it('should NOT show the generic error catcher', fakeAsync(() => {
           expect(() => {
             component.ngOnInit();
             fixture.detectChanges();
             tick();
           }).toThrowError();
-          flush();
-
-          expect(errorActionSpy).not.toHaveBeenCalled();
+          tick();
         }));
       });
     });
