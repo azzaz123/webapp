@@ -1,6 +1,6 @@
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { BumpPackageBalance, BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import { DurationMapped, ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { Item } from '@core/item/item';
 import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
@@ -67,14 +67,21 @@ export function mapItemWithProductsAndSubscriptionBumps(
   if (subscription?.selected_tier) {
     subscription.selected_tier.bumps.forEach((bump) => {
       const productTypeIndex = itemWithProducts.products.findIndex((product) => product.name === bump.name);
-      const durationIndex = itemWithProducts.products[productTypeIndex]?.durations.findIndex(
+      let durationIndex = itemWithProducts.products[productTypeIndex]?.durations.findIndex(
         (duration) => duration.duration === bump.duration_days * 24
       );
-      itemWithProducts.products[productTypeIndex].durations[durationIndex].isFreeOption = durationIndex > -1;
-      itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionPackageType =
-        durationIndex > -1 ? subscription.type : null;
-      itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionName =
-        durationIndex > -1 ? subscription.category_name : null;
+      if (durationIndex === -1) {
+        itemWithProducts.products[productTypeIndex].durations.push({
+          id: null,
+          duration: bump.duration_days * 24,
+          market_code: null,
+        });
+        durationIndex = itemWithProducts.products[productTypeIndex].durations.length - 1;
+      }
+
+      itemWithProducts.products[productTypeIndex].durations[durationIndex].isFreeOption = true;
+      itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionPackageType = subscription.type;
+      itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionName = subscription.category_name;
     });
     itemWithProducts.subscription = subscription;
   }

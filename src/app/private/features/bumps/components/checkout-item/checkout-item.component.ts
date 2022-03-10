@@ -65,7 +65,7 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
     } else {
       this.availableTypes = this.itemWithProducts.products;
       this.selectedType = this.itemWithProducts.products[0];
-      this.availableDurations = this.selectedType.durations;
+      this.availableDurations = this.selectedType.durations.filter((duration) => duration.id);
       this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_index];
     }
   }
