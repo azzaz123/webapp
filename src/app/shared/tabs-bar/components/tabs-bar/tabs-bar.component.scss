@@ -8,9 +8,21 @@
   }
 
   &__element {
+    position: relative;
     margin-left: $spacing-ms;
+
     &:first-child {
       margin-left: 0;
+    }
+
+    &__NewNotification {
+      position: absolute;
+      right: 0;
+      width: 10px;
+      height: 10px;
+      border: 2px solid $white;
+      background-color: $negative-main;
+      border-radius: 100%;
     }
   }
 }
