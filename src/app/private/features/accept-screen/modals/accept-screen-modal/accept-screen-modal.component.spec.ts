@@ -572,10 +572,6 @@ describe('AcceptScreenModalComponent', () => {
                 expect(router.navigate).toHaveBeenCalledTimes(1);
                 expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
               });
-
-              it('should close the modal', () => {
-                expect(activeModal.close).toHaveBeenCalledTimes(1);
-              });
             });
           });
 
@@ -743,10 +739,6 @@ describe('AcceptScreenModalComponent', () => {
                 expect(router.navigate).toHaveBeenCalledTimes(1);
                 expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
               });
-
-              it('should close the modal', () => {
-                expect(activeModal.close).toHaveBeenCalledTimes(1);
-              });
             });
           });
 
@@ -791,10 +783,6 @@ describe('AcceptScreenModalComponent', () => {
               it('should redirect the user to the TTS', () => {
                 expect(router.navigate).toHaveBeenCalledTimes(1);
                 expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
-              });
-
-              it('should close the modal', () => {
-                expect(activeModal.close).toHaveBeenCalledTimes(1);
               });
             });
           });

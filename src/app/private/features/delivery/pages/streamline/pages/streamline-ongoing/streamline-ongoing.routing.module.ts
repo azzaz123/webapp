@@ -8,11 +8,13 @@ const routes: Route[] = [
   {
     path: '',
     component: StreamlineOngoingComponent,
-  },
-  {
-    path: `${PRIVATE_PATHS.ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
-    canLoad: [DeliveryDevelopmentGuard],
-    loadChildren: () => import('@private/features/accept-screen/accept-screen.module').then((m) => m.AcceptScreenModule),
+    children: [
+      {
+        path: `${PRIVATE_PATHS.ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
+        canLoad: [DeliveryDevelopmentGuard],
+        loadChildren: () => import('@private/features/accept-screen/accept-screen.module').then((m) => m.AcceptScreenModule),
+      },
+    ],
   },
   {
     path: '**',
