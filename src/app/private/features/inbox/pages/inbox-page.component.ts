@@ -6,6 +6,7 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { NotificationApiService } from '@api/notification/notification-api.service';
 import { Subscription } from 'rxjs';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 
 @Component({
   selector: 'tsl-inbox-page',
@@ -34,7 +35,7 @@ export class InboxPageComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit() {
-    this.selectedTabsBarElement = this.tabsBarElements[0];
+    this.selectedTabsBarElement = this.getCurrentTabBar();
     this.componentSubscriptions.push(
       this.unreadChatMessagesService.totalUnreadMessages$.subscribe((unreadMessages) => {
         const hasBullet: boolean = !!unreadMessages;
@@ -63,5 +64,10 @@ export class InboxPageComponent implements OnInit, OnDestroy {
     this.componentSubscriptions.forEach((subscription: Subscription) => {
       subscription.unsubscribe();
     });
+  }
+
+  private getCurrentTabBar(): TabsBarElement<PRIVATE_PATHS> {
+    const isNotifications = this.router.url.includes(this.tabsBarElements[1].value);
+    return isNotifications ? this.tabsBarElements[1] : this.tabsBarElements[0];
   }
 }
