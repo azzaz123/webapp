@@ -11,6 +11,9 @@ import {
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '../category-subscription-ids';
 import { CURRENCY_SYMBOLS } from '@core/constants';
 import { SubscriptionsV3Response, TierDto } from '../dtos/subscriptions/subscription-response.interface';
+import { CanEditSubscriptionResponseDto } from '@core/subscriptions/dtos/subscriptions/can-edit.subscription.interface';
+import * as moment from 'moment';
+import { CanEditSubscriptionResponse } from '@api/core/model/subscriptions/can-edit-subscription/can-edit-subscription.interface';
 
 export const subscriptionMapper: Record<SUBSCRIPTION_CATEGORY_TYPES, { category_id: number; icon_id: string; label: string }> = {
   [SUBSCRIPTION_CATEGORY_TYPES.CARS]: {
@@ -104,4 +107,11 @@ function mapBumps(perks: Perks[]): Bumps[] {
       });
     });
   return bumps;
+}
+
+export function mapCanEditSubscription(response: CanEditSubscriptionResponseDto): CanEditSubscriptionResponse {
+  return {
+    allowed: response.allowed,
+    renewalDate: moment(response.renewal_date).format('DD/MM/yyyy'),
+  };
 }

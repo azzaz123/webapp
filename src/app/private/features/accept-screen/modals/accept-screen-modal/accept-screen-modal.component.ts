@@ -57,7 +57,14 @@ export class AcceptScreenModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.acceptScreenStoreService.initialize(this.requestId);
+    this.acceptScreenStoreService.initialize(this.requestId).then(
+      () => {},
+      () => {
+        this.showError(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR);
+        this.closeModal();
+      }
+    );
+
     this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
   }
 
@@ -112,8 +119,8 @@ export class AcceptScreenModalComponent implements OnInit {
 
   public acceptRequest(): void {
     this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
-      () => this.showDefaultError()
+      () => this.redirectToTTS(),
+      () => this.showError(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR)
     );
   }
 
@@ -124,18 +131,13 @@ export class AcceptScreenModalComponent implements OnInit {
 
   private rejectRequest(): void {
     this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
-      () => this.showDefaultError()
+      () => this.redirectToTTS(),
+      () => this.showError(TRANSLATION_KEY.ACCEPT_SCREEN_GENERIC_ERROR)
     );
   }
 
-  private redirectToTTSAndCloseModal(): void {
-    this.redirectToTTS(this.requestId);
-    this.closeModal();
-  }
-
-  private showDefaultError(): void {
-    this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+  private showError(key: TRANSLATION_KEY): void {
+    this.errorService.i18nError(key);
   }
 
   private refreshStepProperties(slideId: number): void {
@@ -143,8 +145,8 @@ export class AcceptScreenModalComponent implements OnInit {
     this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
   }
 
-  private redirectToTTS(requestId: string): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
+  private redirectToTTS(): void {
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${this.requestId}`;
     this.router.navigate([pathToTransactionTracking]);
   }
 }

@@ -1,6 +1,7 @@
 export * from './card-country-is-invalid.error';
 export * from './card-cvv-is-invalid.error';
 export * from './card-expiration-date-is-invalid.error';
+export * from './card-invalid.error';
 export * from './card-is-not-authorized.error';
 export * from './card-not-found.error';
 export * from './card-number-is-invalid.error';

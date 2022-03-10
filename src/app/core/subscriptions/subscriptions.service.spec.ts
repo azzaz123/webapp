@@ -21,6 +21,8 @@ import {
   SUBSCRIPTIONS_WITH_ONE_FREE_TRIAL,
   MOCK_SUBSCRIPTION_CARS_WITH_LIMITS,
   MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_MAPPED,
+  CAN_SUBSCRIPTION_BE_EDITED_OK_DTO,
+  CAN_SUBSCRIPTION_BE_EDITED_OK,
 } from '../../../tests/subscriptions.fixtures.spec';
 import { CategoryService } from '../category/category.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -535,6 +537,22 @@ describe('SubscriptionsService', () => {
 
         expect(result).toBeFalsy();
       });
+    });
+  });
+
+  describe('get canUpdateTier', () => {
+    it('should return canUpdateTier', () => {
+      const expectedTierId = '123';
+      const expectedSubscriptionId = '456';
+      let response;
+      spyOn(subscriptionsHttpService, 'canUpdateSubscription').and.returnValue(of(CAN_SUBSCRIPTION_BE_EDITED_OK_DTO));
+
+      service.canUpdateTier(expectedSubscriptionId, expectedTierId).subscribe((res) => {
+        response = res;
+      });
+      expect(subscriptionsHttpService.canUpdateSubscription).toHaveBeenCalledTimes(1);
+      expect(subscriptionsHttpService.canUpdateSubscription).toHaveBeenCalledWith(expectedSubscriptionId, expectedTierId);
+      expect(response).toEqual(CAN_SUBSCRIPTION_BE_EDITED_OK);
     });
   });
 

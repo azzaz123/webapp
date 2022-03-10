@@ -210,4 +210,5 @@ export enum TRANSLATION_KEY {
   DELIVERY_MAP_LOCATION_POP_UP_DESCRIPTION = 'map_view_all_users_all_all_no_user_location_pop_up_description',
   DELIVERY_MAP_LOCATION_POP_UP_ADD_BUTTON = 'map_view_all_users_all_all_no_user_location_pop_up_add_button',
   DELIVERY_MAP_LOCATION_POP_UP_CANCEL_BUTTON = 'map_view_all_users_all_all_no_user_location_pop_up_cancel_button',
+  ACCEPT_SCREEN_GENERIC_ERROR = 'accept_view_seller_all_all_snackbar_generic_error',
 }
