@@ -522,8 +522,9 @@ describe('AcceptScreenModalComponent', () => {
 
             describe('and the request is loading', () => {
               beforeEach(() => {
-                component.rejectLoadingButton$.next(true);
-                component.disableButton$.next(true);
+                const rejectButton: HTMLElement = fixture.debugElement.query(By.css(rejectButtonSelector)).nativeElement;
+
+                rejectButton.click();
                 fixture.detectChanges();
               });
 
@@ -729,8 +730,9 @@ describe('AcceptScreenModalComponent', () => {
         describe('and we click on the confirm button', () => {
           describe('and the request is loading', () => {
             beforeEach(() => {
-              component.confirmLoadingButton$.next(true);
-              component.disableButton$.next(true);
+              const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+              acceptButton.click();
               fixture.detectChanges();
             });
 
