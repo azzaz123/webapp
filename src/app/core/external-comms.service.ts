@@ -25,6 +25,7 @@ export class ExternalCommsService {
     if (this.userService.isLogged) {
       appboy.changeUser(this.userService.user.id);
     }
+
     appboy.openSession();
   }
 

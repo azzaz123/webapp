@@ -23,6 +23,8 @@ import { DateCalendarPipe } from '@shared/pipes';
 
 import { InboxConversationComponent } from './components/inbox-conversation';
 import { InboxComponent, InboxState } from './inbox.component';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 describe('Component: InboxComponent', () => {
   let component: InboxComponent;
@@ -71,6 +73,7 @@ describe('Component: InboxComponent', () => {
             openConversation() {},
           },
         },
+        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
