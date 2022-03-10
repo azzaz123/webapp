@@ -2,10 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import {
-  MOCK_TRANSACTION_TRACKING,
-  MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_WITHOUT_ACTION,
-} from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
+import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import { ButtonComponent } from '@shared/button/button.component';
 import { ButtonModule } from '@shared/button/button.module';
 import { LottieComponent } from '@shared/lottie/lottie.component';
@@ -59,41 +56,19 @@ describe('TransactionTrackingGeneralInfoComponent', () => {
       expect(animation).toBeTruthy();
     });
 
-    describe('and we have CTAS', () => {
-      describe('and the CTA have actions', () => {
-        it('should have the same action rows as actions', () => {
-          const buttons = fixture.debugElement.queryAll(
-            By.css('tsl-transaction-tracking-action-selector > .TrackingGeneralInfo__actionButton')
-          );
-          expect(buttons.length).toEqual(component.shippingStatus.actions.length);
-        });
-
-        MOCK_SHIPPING_STATUS.actions.forEach((action, index) => {
-          it('should have the received state', () => {
-            const CTAButtonElement: DebugElement = fixture.debugElement.queryAll(By.directive(ButtonComponent))[index];
-
-            expect(CTAButtonElement.componentInstance.disabled).toBe(action.state.isDisabled);
-          });
-        });
+    describe('and we have actions', () => {
+      it('should have the same action rows as actions', () => {
+        const buttons = fixture.debugElement.queryAll(
+          By.css('tsl-transaction-tracking-action-selector > .TrackingGeneralInfo__actionButton')
+        );
+        expect(buttons.length).toEqual(component.shippingStatus.actions.length);
       });
 
-      describe(`and the CTA don't have actions`, () => {
-        beforeEach(() => {
-          component.shippingStatus = MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_WITHOUT_ACTION;
-          fixture.detectChanges();
-        });
+      MOCK_SHIPPING_STATUS.actions.forEach((action, index) => {
+        it('should have the received state', () => {
+          const CTAButtonElement: DebugElement = fixture.debugElement.queryAll(By.directive(ButtonComponent))[index];
 
-        it('should have the same action rows as actions', () => {
-          const buttons = fixture.debugElement.queryAll(By.css('tsl-transaction-tracking-action-selector'));
-          expect(buttons.length).toEqual(0);
-        });
-
-        MOCK_SHIPPING_STATUS.actions.forEach((action, index) => {
-          it('should have the received state', () => {
-            const CTAButtonElement: DebugElement = fixture.debugElement.queryAll(By.directive(ButtonComponent))[index];
-
-            expect(CTAButtonElement.componentInstance.disabled).toBe(action.state.isDisabled);
-          });
+          expect(CTAButtonElement.componentInstance.disabled).toBe(action.state.isDisabled);
         });
       });
     });

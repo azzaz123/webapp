@@ -16,7 +16,7 @@ export class TransactionTrackingCtaModel implements TransactionTrackingCta {
   title: string;
 
   constructor(actionDto: TransactionTrackingActionDto) {
-    this.action = actionDto.action ? new TransactionTrackingActionFactory(actionDto.action).getAction() : null;
+    this.action = new TransactionTrackingActionFactory(actionDto.action).getAction();
     this.state = new TransactionTrackingStateModel(actionDto.state);
     this.style = new TransactionTrackingActionStyleModel(actionDto.style);
     this.title = actionDto.title;
