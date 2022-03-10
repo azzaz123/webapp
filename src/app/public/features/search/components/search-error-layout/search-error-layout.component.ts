@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { Router } from '@angular/router';
 import { ERROR_BOX_EXIT_TYPE } from '@shared/error-box/interfaces/error-box-exit-type';
 import { ErrorBoxExit } from '@shared/error-box/interfaces/error-box-exit.interface';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { APP_PATHS } from 'app/app-routing-constants';
 
 @Component({
   selector: 'tsl-search-error-layout',
@@ -17,9 +19,9 @@ export class SearchErrorLayoutComponent {
     label: $localize`:@@web_search_no_results_button_text:New search`,
   };
 
-  constructor(private searchNavigatorService: SearchNavigatorService) {}
+  constructor(private router: Router) {}
 
   public redirectToEmptySearch(): void {
-    this.searchNavigatorService.navigateWithLocationParams({});
+    this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`]);
   }
 }

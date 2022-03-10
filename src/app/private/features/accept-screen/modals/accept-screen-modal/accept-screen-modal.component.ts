@@ -57,7 +57,13 @@ export class AcceptScreenModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.acceptScreenStoreService.initialize(this.requestId);
+    this.acceptScreenStoreService.initialize(this.requestId).then(
+      () => {},
+      () => {
+        this.closeModal();
+        this.showDefaultError();
+      }
+    );
     this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
   }
 
@@ -112,7 +118,7 @@ export class AcceptScreenModalComponent implements OnInit {
 
   public acceptRequest(): void {
     this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
+      () => this.redirectToTTS(),
       () => this.showDefaultError()
     );
   }
@@ -124,14 +130,9 @@ export class AcceptScreenModalComponent implements OnInit {
 
   private rejectRequest(): void {
     this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
+      () => this.redirectToTTS(),
       () => this.showDefaultError()
     );
-  }
-
-  private redirectToTTSAndCloseModal(): void {
-    this.redirectToTTS(this.requestId);
-    this.closeModal();
   }
 
   private showDefaultError(): void {
@@ -143,8 +144,8 @@ export class AcceptScreenModalComponent implements OnInit {
     this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
   }
 
-  private redirectToTTS(requestId: string): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
+  private redirectToTTS(): void {
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${this.requestId}`;
     this.router.navigate([pathToTransactionTracking]);
   }
 }

@@ -5,6 +5,7 @@ export enum PUBLIC_PATHS {
   ITEM_DETAIL = 'item',
   SEARCH = 'search',
   USER_DETAIL = 'user',
+  PROCESS_COMPLETE = 'process-complete',
   NOT_FOUND = '404',
 }
 
