@@ -576,10 +576,6 @@ describe('AcceptScreenModalComponent', () => {
                 expect(router.navigate).toHaveBeenCalledTimes(1);
                 expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
               });
-
-              it('should close the modal', () => {
-                expect(activeModal.close).toHaveBeenCalledTimes(1);
-              });
             });
           });
 
@@ -794,10 +790,6 @@ describe('AcceptScreenModalComponent', () => {
                 expect(router.navigate).toHaveBeenCalledTimes(1);
                 expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
               });
-
-              it('should close the modal', () => {
-                expect(activeModal.close).toHaveBeenCalledTimes(1);
-              });
             });
           });
 
@@ -844,10 +836,6 @@ describe('AcceptScreenModalComponent', () => {
                 expect(router.navigate).toHaveBeenCalledTimes(1);
                 expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
               });
-
-              it('should close the modal', () => {
-                expect(activeModal.close).toHaveBeenCalledTimes(1);
-              });
             });
           });
         });
@@ -858,6 +846,9 @@ describe('AcceptScreenModalComponent', () => {
 
         beforeEach(() => {
           acceptScreenPropertiesSubjectMock.next(null);
+          spyOn(toastService, 'show');
+          spyOn(acceptScreenStoreService, 'initialize').and.returnValue(Promise.reject());
+          spyOn(acceptScreenStoreService, 'update').and.callThrough();
 
           fixture.detectChanges();
           component.acceptScreenProperties$.subscribe((newProperties: AcceptScreenProperties) => {
@@ -880,6 +871,14 @@ describe('AcceptScreenModalComponent', () => {
 
         it('should update the component properties', () => {
           expect(acceptScreenEmptyProperties).toStrictEqual(null);
+        });
+
+        it('should close the modal', () => {
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+        });
+
+        it('should show generic error message', () => {
+          toastErrorShowed(genericErrorTranslation);
         });
       });
     });

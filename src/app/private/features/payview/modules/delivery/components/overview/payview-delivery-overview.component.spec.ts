@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
@@ -15,6 +15,15 @@ import { PayviewDeliveryPointsComponent } from '@private/features/payview/module
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
+@Component({
+  selector: 'tsl-delivery-address',
+  template: '',
+})
+class FakeDeliveryAddressComponent {
+  @Input() showTitle;
+  @Input() whereUserComes;
+}
+
 describe('PayviewDeliveryOverviewComponent', () => {
   const payviewDeliverySelector: string = '.PayviewDelivery';
 
@@ -26,6 +35,7 @@ describe('PayviewDeliveryOverviewComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         ButtonComponent,
+        FakeDeliveryAddressComponent,
         PayviewDeliveryHeaderComponent,
         PayviewDeliveryOverviewComponent,
         PayviewDeliveryPointComponent,

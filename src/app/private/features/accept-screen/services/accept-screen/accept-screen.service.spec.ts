@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AcceptScreenService } from './accept-screen.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SellerRequestsApiService } from '@api/delivery/seller/requests/seller-requests-api.service';
-import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
+import { MOCK_SELLER_REQUEST, MOCK_PENDING_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { of, throwError } from 'rxjs';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
@@ -11,8 +11,8 @@ import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { AcceptScreenProperties } from '../../interfaces';
 import {
-  MOCK_ACCEPT_SCREEN_PROPERTIES,
   MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS,
+  MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_PENDING_STATUS,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import { CarrierDropOffModeRequestApiService } from '@api/delivery/carrier-drop-off-mode/request/carrier-drop-off-mode-request-api.service';
 import { MOCK_CARRIER_DROP_OFF_MODE_REQUEST_ONE_FREE_AND_ONE_EURO_COST } from '@fixtures/private/delivery/accept-screen/carrier-drop-off-mode-request.fixtures.spec';
@@ -38,7 +38,7 @@ describe('AcceptScreenService', () => {
           provide: SellerRequestsApiService,
           useValue: {
             getRequestInfo() {
-              return of(MOCK_SELLER_REQUEST);
+              return of(MOCK_PENDING_SELLER_REQUEST);
             },
             rejectRequest() {
               return of({});
@@ -131,7 +131,7 @@ describe('AcceptScreenService', () => {
       });
 
       it('should return the properties mapped', () => {
-        expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_PROPERTIES));
+        expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_PENDING_STATUS));
       });
     });
 

@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   AcceptRequestError,
   NonPurchasableItemError,
@@ -64,6 +64,7 @@ describe('SellerRequestsApiService', () => {
       spyOn(sellerRequestsHttpService, 'getRequestsByBuyerAndItem').and.callThrough();
 
       service.getRequestsByBuyerAndItem(MOCK_BUYER_HASH, MOCK_ITEM_HASH).subscribe((data: SellerRequest[]) => (response = data));
+      tick();
     }));
 
     it('should ask server for request information', () => {
@@ -83,6 +84,7 @@ describe('SellerRequestsApiService', () => {
       spyOn(sellerRequestsHttpService, 'getRequestInfo').and.callThrough();
 
       service.getRequestInfo(MOCK_REQUEST_ID).subscribe((data: SellerRequest) => (response = data));
+      tick();
     }));
 
     it('should ask server for request information', () => {
@@ -100,6 +102,7 @@ describe('SellerRequestsApiService', () => {
       spyOn(sellerRequestsHttpService, 'rejectRequest').and.callThrough();
 
       service.rejectRequest(MOCK_REQUEST_ID).subscribe();
+      tick();
     }));
 
     it('should ask server to cancel the request', () => {
@@ -114,6 +117,7 @@ describe('SellerRequestsApiService', () => {
         spyOn(sellerRequestsHttpService, 'acceptRequestPostOfficeDropOff').and.callThrough();
 
         service.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe();
+        tick();
       }));
 
       it('should ask server to accept the request with post office drop off mode', () => {
@@ -133,6 +137,7 @@ describe('SellerRequestsApiService', () => {
         service.acceptRequestPostOfficeDropOff(MOCK_REQUEST_ID).subscribe({
           error: (errorResponse: AcceptRequestError[]) => (errors = errorResponse),
         });
+        tick();
       }));
 
       it('should ask server to accept the request with post office drop off mode', () => {
@@ -152,6 +157,7 @@ describe('SellerRequestsApiService', () => {
         spyOn(sellerRequestsHttpService, 'acceptRequestHomePickup').and.callThrough();
 
         service.acceptRequestHomePickup(MOCK_REQUEST_ID).subscribe();
+        tick();
       }));
 
       it('should ask server to accept the request with post office drop off mode', () => {
@@ -171,6 +177,7 @@ describe('SellerRequestsApiService', () => {
         service.acceptRequestHomePickup(MOCK_REQUEST_ID).subscribe({
           error: (errorResponse: AcceptRequestError[]) => (errors = errorResponse),
         });
+        tick();
       }));
 
       it('should ask server to accept the request with post office drop off mode', () => {

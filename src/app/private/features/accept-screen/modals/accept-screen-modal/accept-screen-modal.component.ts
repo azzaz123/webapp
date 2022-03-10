@@ -40,7 +40,8 @@ export class AcceptScreenModalComponent implements OnInit {
 
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
-  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.ACCEPT_SCREEN;
+  public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
   private readonly deliveryMapSlideId: number = ACCEPT_SCREEN_STEPS.MAP;
@@ -60,7 +61,14 @@ export class AcceptScreenModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.acceptScreenStoreService.initialize(this.requestId);
+    this.acceptScreenStoreService.initialize(this.requestId).then(
+      () => {},
+      () => {
+        this.showError(this.GENERIC_ERROR_TRANSLATION);
+        this.closeModal();
+      }
+    );
+
     this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
   }
 
@@ -132,7 +140,7 @@ export class AcceptScreenModalComponent implements OnInit {
 
   private acceptRequest(): void {
     this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
+      () => this.redirectToTTS(),
       (errors: AcceptRequestError[]) => {
         this.handleError(errors[0]);
       }
@@ -156,14 +164,9 @@ export class AcceptScreenModalComponent implements OnInit {
 
   private rejectRequest(): void {
     this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
+      () => this.redirectToTTS(),
       () => this.showError(this.GENERIC_ERROR_TRANSLATION)
     );
-  }
-
-  private redirectToTTSAndCloseModal(): void {
-    this.redirectToTTS(this.requestId);
-    this.closeModal();
   }
 
   private showError(text: string): void {
@@ -178,8 +181,8 @@ export class AcceptScreenModalComponent implements OnInit {
     this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
   }
 
-  private redirectToTTS(requestId: string): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
+  private redirectToTTS(): void {
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${this.requestId}`;
     this.router.navigate([pathToTransactionTracking]);
   }
 
