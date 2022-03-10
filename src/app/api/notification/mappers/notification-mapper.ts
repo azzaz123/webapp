@@ -9,8 +9,8 @@ const variantMapper: Record<NOTIFICATION_LAYOUT, NOTIFICATION_VARIANT> = {
   [NOTIFICATION_LAYOUT.HIGHLIGHTED]: NOTIFICATION_VARIANT.HIGHLIGHTED,
 };
 
-export function mapNotificationsFromBraze(notifications: NotificationDto[]): Notification[] {
-  return notifications.map((notification: NotificationDto) => {
+export function mapNotificationsFromBraze(contentCards: NotificationDto[]): Notification[] {
+  return contentCards.map((notification: NotificationDto) => {
     return {
       variant: variantMapper[notification.extras.notification_layout],
       productStatus: notification.extras.badge_state,
@@ -20,6 +20,7 @@ export function mapNotificationsFromBraze(notifications: NotificationDto[]): Not
       description: notification.description,
       image: notification.imageUrl,
       url: notification.url,
+      id: notification.id,
     };
   });
 }

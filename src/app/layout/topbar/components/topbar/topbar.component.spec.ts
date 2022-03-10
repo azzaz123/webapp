@@ -34,6 +34,7 @@ import { SuggesterService } from '@layout/topbar/core/services/suggester.service
 import { SuggesterStubComponent } from '@fixtures/shared/components/suggester-stub.component';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { HomeRouteDirectiveMock } from '@fixtures/home-route.fixtures.spec';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -107,6 +108,14 @@ describe('TopbarComponent', () => {
             provide: UnreadChatMessagesService,
             useValue: {
               totalUnreadMessages$: of(1),
+            },
+          },
+          {
+            provide: NotificationApiService,
+            useValue: {
+              totalUnreadNotifications$: of(0),
+              getNotifications: () => {},
+              refreshUnreadNotifications: () => {},
             },
           },
           {

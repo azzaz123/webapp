@@ -18,6 +18,7 @@ import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 @Component({
   selector: 'tsl-topbar',
@@ -44,7 +45,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private modalService: NgbModal,
     private searchNavigator: SearchNavigatorService,
-    private topbarTrackingEventsService: TopbarTrackingEventsService
+    private topbarTrackingEventsService: TopbarTrackingEventsService,
+    public notificationApiService: NotificationApiService
   ) {}
 
   ngOnInit() {
