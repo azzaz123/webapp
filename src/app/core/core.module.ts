@@ -39,6 +39,8 @@ import { MonitoringModule } from './monitoring/monitoring.module';
 import { LottieService } from './lottie/lottie.service';
 import { ExperimentationService } from './experimentation/services/experimentation/experimentation.service';
 import { StandaloneService } from './standalone/services/standalone.service';
+import { NotificationApiService } from '@api/notification/notification-api.service';
+import { WindowMessageService } from './window-message/services/window-message.service';
 
 @NgModule({
   imports: [
@@ -84,6 +86,8 @@ import { StandaloneService } from './standalone/services/standalone.service';
     ToastService,
     ExperimentationService,
     StandaloneService,
+    NotificationApiService,
+    WindowMessageService,
   ],
 })
 export class CoreModule {

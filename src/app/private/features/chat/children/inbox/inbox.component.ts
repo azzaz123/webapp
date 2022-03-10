@@ -11,6 +11,7 @@ import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import { InboxConversation, InboxMessage } from '@private/features/chat/core/model';
 import { countBy, find, map } from 'lodash-es';
 import { Subscription } from 'rxjs';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 
 export enum InboxState {
   Inbox,
@@ -90,7 +91,8 @@ export class InboxComponent implements OnInit, OnDestroy {
     private inboxConversationService: InboxConversationService,
     public userService: UserService,
     private remoteConsoleService: RemoteConsoleService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public featureFlagService: FeatureFlagService
   ) {}
 
   set loading(value: boolean) {

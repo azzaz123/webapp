@@ -29,6 +29,8 @@ import { SidebarService } from '../core/services/sidebar.service';
 import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { NotificationApiService } from '@api/notification/notification-api.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 @Component({
   template: '',
@@ -104,16 +106,16 @@ describe('SidebarComponent', () => {
               totalUnreadMessages$: of(1),
             },
           },
-          { provide: AnalyticsService, useClass: MockAnalyticsService },
-          NgxPermissionsService,
           {
-            provide: FeatureFlagService,
+            provide: NotificationApiService,
             useValue: {
-              getLocalFlag() {
-                return of(true);
-              },
+              totalUnreadNotifications$: of(0),
+              getNotifications: () => {},
+              refreshUnreadNotifications: () => {},
             },
           },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          NgxPermissionsService,
           {
             provide: SidebarService,
             useValue: {
@@ -143,6 +145,7 @@ describe('SidebarComponent', () => {
               },
             },
           },
+          { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
