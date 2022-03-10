@@ -45,6 +45,7 @@
     "credit_card_form_snackbar_refused_card_error": "Per qualche motivo, la carta viene rifiutata.",
     "credit_card_form_cvv_not_valid_error": "Il CVC della carta di credito non è valido",
     "credit_card_form_snackbar_payment_generic_error": "C'è un errore con la carta di credito.",
+    "delivery_credit_card_three3ds_deleted": "Aggiungi un'altra carta di credito in modo che possa essere verificata.",
     "kyc_take_or_upload_photo_selector_view_snackbar_file_input_not_valid_error_web_specific": "Il file non è stato caricato perché questo tipo di file non è consentito.",
     "kyc_take_or_upload_photo_selector_view_snackbar_file_not_valid_error_web_specific": "Il file non è stato caricato perché il suo formato non è valido.",
     "kyc_take_or_upload_photo_selector_view_snackbar_file_size_exceeded_error_web_specific": "Il file non è stato caricato perché supera la dimensione massima consentita.",
