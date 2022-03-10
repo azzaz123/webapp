@@ -174,7 +174,7 @@
                 [loading]="confirmLoadingButton$ | async"
                 [disabled]="disableButton$ | async"
                 i18n="@@accept_view_seller_bottom_bar_accept_button"
-                (click)="acceptRequest()"
+                (click)="checkIfCanAcceptRequest()"
                 >Confirm</tsl-button
               >
             </div>

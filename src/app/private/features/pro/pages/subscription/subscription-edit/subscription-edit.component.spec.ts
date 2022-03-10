@@ -17,13 +17,21 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockManageSubscriptionService } from '@fixtures/manage-subscription.fixtures.spec';
 import { MockSubscriptionBenefitsService } from '@fixtures/subscription-benefits.fixture';
-import { MockSubscriptionService, MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
+import {
+  MockSubscriptionService,
+  MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+  CAN_SUBSCRIPTION_BE_EDITED_FAIL,
+  CAN_SUBSCRIPTION_BE_EDITED_OK,
+} from '@fixtures/subscriptions.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubscriptionPurchaseSuccessComponent } from '@private/features/pro/components/subscription-purchase-success/subscription-purchase-success.component';
 import { CategoryListingModalComponent } from '@private/features/pro/modal/category-listing-modal/category-listing-modal.component';
 import { ManageSubscriptionService } from '@private/features/pro/services/manage-subscription.service';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { REDIRECT_TYPE } from '@shared/modals/pro-modal/pro-modal.interface';
 import { of, throwError } from 'rxjs';
 import { SubscriptionPurchaseHeaderComponent } from '../subscription-purchase-header/subscription-purchase-header.component';
 import { PAYMENT_SUCCESSFUL_CODE, SubscriptionEditComponent } from './subscription-edit.component';
@@ -39,6 +47,7 @@ describe('SubscriptionEditComponent', () => {
   let manageSubscriptionServiceSpy: jasmine.Spy;
   let customerHelpService: CustomerHelpService;
   let manageSubscriptionService: ManageSubscriptionService;
+  const componentInstance: any = {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -59,7 +68,7 @@ describe('SubscriptionEditComponent', () => {
             open() {
               return {
                 result: Promise.resolve(),
-                componentInstance: {},
+                componentInstance: componentInstance,
               };
             },
           },
@@ -181,69 +190,105 @@ describe('SubscriptionEditComponent', () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(expectedEvent);
       });
-      describe('and subscription was edited succesfully', () => {
-        it('should show success page', () => {
-          spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: PAYMENT_SUCCESSFUL_CODE }));
+      describe('and tier can be selected', () => {
+        describe('and subscription was edited succesfully', () => {
+          it('should show success page', () => {
+            spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: PAYMENT_SUCCESSFUL_CODE }));
 
+            component.onPurchaseButtonClick();
+            fixture.detectChanges();
+
+            const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
+            expect(successPage).toBeTruthy();
+          });
+          describe('and has to redirect', () => {
+            it('should redirect', () => {
+              spyOn(component.editSuccesful, 'emit').and.callThrough();
+
+              component.onRedirectTo('test');
+
+              expect(component.editSuccesful.emit).toHaveBeenCalledTimes(1);
+              expect(component.editSuccesful.emit).toHaveBeenLastCalledWith('test');
+            });
+          });
+        });
+
+        describe('and subscription was not edited succesfully', () => {
+          beforeEach(() => {
+            spyOn(toastService, 'show').and.callThrough();
+          });
+          describe('and response returns code different of 202', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: 204 }));
+            });
+            it('should not show success page', () => {
+              component.onPurchaseButtonClick();
+              fixture.detectChanges();
+
+              const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
+              expect(successPage).toBeFalsy();
+            });
+
+            it('should error toast', () => {
+              component.onPurchaseButtonClick();
+              fixture.detectChanges();
+
+              expect(toastService.show).toHaveBeenCalledTimes(1);
+            });
+          });
+          describe('and response fails', () => {
+            beforeEach(() => {
+              spyOn(subscriptionsService, 'editSubscription').and.returnValues(throwError('error'));
+            });
+            it('should not show success page', () => {
+              component.onPurchaseButtonClick();
+              fixture.detectChanges();
+
+              const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
+              expect(successPage).toBeFalsy();
+            });
+
+            it('should error toast', () => {
+              component.onPurchaseButtonClick();
+              fixture.detectChanges();
+
+              expect(toastService.show).toHaveBeenCalledTimes(1);
+            });
+          });
+        });
+      });
+      describe('and tier can not be selected', () => {
+        beforeEach(() => {
+          spyOn(subscriptionsService, 'canUpdateTier').and.returnValue(of(CAN_SUBSCRIPTION_BE_EDITED_FAIL));
+          spyOn(modalService, 'open').and.callThrough();
+          spyOn(customerHelpService, 'getPageUrl').and.returnValue('link');
+        });
+        it('should not show success page', () => {
           component.onPurchaseButtonClick();
           fixture.detectChanges();
 
           const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
-          expect(successPage).toBeTruthy();
+          expect(successPage).toBeFalsy();
         });
-        describe('and has to redirect', () => {
-          it('should redirect', () => {
-            spyOn(component.editSuccesful, 'emit').and.callThrough();
 
-            component.onRedirectTo('test');
+        it('should error modal', () => {
+          component['modalRef'] = <any>{
+            componentInstance: componentInstance,
+          };
 
-            expect(component.editSuccesful.emit).toHaveBeenCalledTimes(1);
-            expect(component.editSuccesful.emit).toHaveBeenLastCalledWith('test');
+          component.onPurchaseButtonClick();
+          fixture.detectChanges();
+
+          expect(modalService.open).toHaveBeenCalledWith(ProModalComponent, {
+            windowClass: 'pro-modal',
           });
-        });
-      });
-
-      describe('and subscription was not edited succesfully', () => {
-        beforeEach(() => {
-          spyOn(toastService, 'show').and.callThrough();
-        });
-        describe('and response returns code different of 202', () => {
-          beforeEach(() => {
-            spyOn(subscriptionsService, 'editSubscription').and.returnValue(of({ status: 204 }));
+          expect(component['modalRef'].componentInstance.modalConfig).toBe(modalConfig[PRO_MODAL_TYPE.error_downgrade]);
+          expect(component['modalRef'].componentInstance.modalConfig.buttons.secondary.redirect).toEqual({
+            type: REDIRECT_TYPE.href,
+            url: 'link',
           });
-          it('should not show success page', () => {
-            component.onPurchaseButtonClick();
-            fixture.detectChanges();
-
-            const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
-            expect(successPage).toBeFalsy();
-          });
-
-          it('should error toast', () => {
-            component.onPurchaseButtonClick();
-            fixture.detectChanges();
-
-            expect(toastService.show).toHaveBeenCalledTimes(1);
-          });
-        });
-        describe('and response fails', () => {
-          beforeEach(() => {
-            spyOn(subscriptionsService, 'editSubscription').and.returnValues(throwError('error'));
-          });
-          it('should not show success page', () => {
-            component.onPurchaseButtonClick();
-            fixture.detectChanges();
-
-            const successPage = fixture.debugElement.query(By.directive(SubscriptionPurchaseSuccessComponent));
-            expect(successPage).toBeFalsy();
-          });
-
-          it('should error toast', () => {
-            component.onPurchaseButtonClick();
-            fixture.detectChanges();
-
-            expect(toastService.show).toHaveBeenCalledTimes(1);
-          });
+          expect(component['modalRef'].componentInstance.modalConfig.text2).toContain(CAN_SUBSCRIPTION_BE_EDITED_OK.renewalDate);
+          expect(customerHelpService.getPageUrl).toBeCalledWith(CUSTOMER_HELP_PAGE.CANNOT_CHANGE_PRO_SUBSCRIPTION);
         });
       });
     });
