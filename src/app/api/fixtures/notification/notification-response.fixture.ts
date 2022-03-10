@@ -10,7 +10,7 @@ export const notificationsDtos: NotificationDto[] = [
     expiresAt: new Date('2022-03-24T16:12:03.000Z'),
     extras: {
       feed_type: 'notification_center',
-      notification_type: 'notification_center',
+      notification_type: 'whatever',
       notification_layout: NOTIFICATION_LAYOUT.PINNED,
     },
     id: 'NjIxNTBhZjg2OTlkYTYyMjhjYWZlMDViXyRfY2M9ODk0OTFiMzYtNjA2Yy01NjJkLThmYmItMTBhNmI5Yjc4N2IxJm12PTYyMTUwYWY4Njk5ZGE2MjI4Y2FmZTA1NiZwaT1jbXA=',
@@ -31,8 +31,8 @@ export const notificationsDtos: NotificationDto[] = [
     dismissible: false,
     expiresAt: new Date('2022-03-24T16:12:03.000Z'),
     extras: {
-      feed_type: 'other_noti',
-      notification_type: 'other_noti' as any,
+      feed_type: 'other_noti' as any,
+      notification_type: 'whatever',
       notification_layout: NOTIFICATION_LAYOUT.PINNED,
     },
     id: 'otherId',

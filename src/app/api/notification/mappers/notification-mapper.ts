@@ -21,6 +21,7 @@ export function mapNotificationsFromBraze(contentCards: NotificationDto[]): Noti
       image: notification.imageUrl,
       url: notification.url,
       id: notification.id,
+      trackingId: notification.extras.notification_type,
     };
   });
 }

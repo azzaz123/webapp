@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
@@ -33,13 +33,13 @@ export class NotificationComponent {
   }
 
   public trackClickNotification(): void {
-    const { variant, isRead } = this.notification;
+    const { isRead, trackingId } = this.notification;
     const event: AnalyticsEvent<ClickNotificationCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickNotificationCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.NotificationCenter,
-        notificationType: variant,
+        notificationType: trackingId,
         isPinned: this._isPinned(),
         isUnread: !isRead,
       },

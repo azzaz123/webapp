@@ -28,6 +28,7 @@ describe('NotificationImageComponent', () => {
     image: 'https://picsum.photos/200/300',
     url: 'es.wallapop.com',
     id: 'notificationProductStatusReserved',
+    trackingId: 'trackingId',
   };
 
   const notificationProductStatusSold: Notification = {
@@ -41,6 +42,7 @@ describe('NotificationImageComponent', () => {
     image: 'https://picsum.photos/200/300',
     url: 'es.wallapop.com',
     id: 'notificationProductStatusSold',
+    trackingId: 'trackingId',
   };
 
   const notificationProductStatusLowered: Notification = {
@@ -54,6 +56,7 @@ describe('NotificationImageComponent', () => {
     image: 'https://picsum.photos/200/300',
     url: 'es.wallapop.com',
     id: 'notificationProductStatusLowered',
+    trackingId: 'trackingId',
   };
 
   const generalNotification: Notification = {
@@ -66,6 +69,7 @@ describe('NotificationImageComponent', () => {
     image: 'https://picsum.photos/200/300',
     url: 'es.wallapop.com',
     id: 'generalNotification',
+    trackingId: 'trackingId',
   };
 
   beforeEach(
