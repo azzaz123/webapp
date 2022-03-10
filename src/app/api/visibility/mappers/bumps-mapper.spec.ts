@@ -10,7 +10,6 @@ import {
 import {
   MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED,
   MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED,
-  MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
 } from '@fixtures/subscriptions.fixtures.spec';
 import { mapBalance, mapItemsWithProducts, mapItemWithProductsAndSubscriptionBumps } from './bumps-mapper';
 
@@ -49,14 +48,27 @@ describe('Item with products and subscription bumps mapper', () => {
       });
     });
     describe('and has a subscription active', () => {
-      it('should map item with products domain', () => {
-        const mappedItem = mapItemWithProductsAndSubscriptionBumps(
-          cloneDeep(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0]),
-          cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0])
-        );
+      describe('and has products matching with free bumps', () => {
+        it('should map free bumps into products', () => {
+          const mappedItem = mapItemWithProductsAndSubscriptionBumps(
+            cloneDeep(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0]),
+            cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0])
+          );
 
-        expect(mappedItem.products[0].durations[0].isFreeOption).toEqual(true);
-        expect(mappedItem.products[0].durations[0].subscriptionPackageType).toEqual(SUBSCRIPTION_CATEGORY_TYPES.CARS);
+          expect(mappedItem.products[0].durations[0].isFreeOption).toEqual(true);
+          expect(mappedItem.products[0].durations[0].subscriptionPackageType).toEqual(SUBSCRIPTION_CATEGORY_TYPES.CARS);
+        });
+      });
+      describe('and has not products matching with free bumps', () => {
+        it('should create free bumps products', () => {
+          const mappedItem = mapItemWithProductsAndSubscriptionBumps(
+            cloneDeep(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[1]),
+            cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0])
+          );
+
+          expect(mappedItem.products[0].durations[3].isFreeOption).toEqual(true);
+          expect(mappedItem.products[0].durations[3].subscriptionPackageType).toEqual(SUBSCRIPTION_CATEGORY_TYPES.CARS);
+        });
       });
     });
     describe('and has not any subscription active', () => {
