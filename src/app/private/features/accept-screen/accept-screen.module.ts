@@ -29,6 +29,7 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
     DeliveryMapModule,
     FormsModule,
     NgbButtonsModule,
+    SvgIconModule,
   ],
   declarations: [acceptScreenRoutedComponents, AcceptScreenModalComponent, ProductCardComponent, DeliveryPreferenceScheduleComponent],
 })

@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { PaymentService } from '@core/payments/payment.service';
@@ -18,6 +18,8 @@ import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { TopbarTrackingEventsService } from '@layout/topbar/core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { NotificationApiService } from '@api/notification/notification-api.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Component({
   selector: 'tsl-topbar',
@@ -44,7 +46,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private modalService: NgbModal,
     private searchNavigator: SearchNavigatorService,
-    private topbarTrackingEventsService: TopbarTrackingEventsService
+    private topbarTrackingEventsService: TopbarTrackingEventsService,
+    public notificationApiService: NotificationApiService,
+    public featureFlagService: FeatureFlagService
   ) {}
 
   ngOnInit() {
