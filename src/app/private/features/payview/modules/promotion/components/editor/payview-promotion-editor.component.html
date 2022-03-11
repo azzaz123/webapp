@@ -1,22 +1,23 @@
 <div class="PayviewPromotionEditor d-flex flex-column">
   <div class="PayviewPromotionEditor__messageWrapper d-flex w-100 flex-column flex-wrap align-items-center align-justify-center px-4">
     <span class="PayviewPromotionEditor__message text-center">{{ firstSentence }}</span>
-    <span class="PayviewPromotionEditor__message text-center">{{ secondSentence }}</span>
+    <span *ngIf="!!secondSentence" class="PayviewPromotionEditor__message text-center">{{ secondSentence }}</span>
   </div>
   <div class="PayviewPromotionEditor__inputWrapper d-flex w-100 align-items-center align-justify-center justify-content-center px-4">
     <div class="form-group row w-100 align-items-center">
       <div class="PayviewPromotionEditor__inputWrapper w-100">
         <input
           type="text"
+          [(ngModel)]="promocode"
           class="PayviewPromotionEditor__input form-control border-0 rounded-0 pb-0 pl-0"
           id="promocode"
-          [placeholder]="inputLabel"
+          [placeholder]="placeholder"
         />
         <label
           class="PayviewPromotionEditor__inputPlaceholder border-0 h-100 position-absolute"
+          [class.PayviewPromotionEditor__error]="!!errorMessage"
           for="promocode"
-          i18n="@@pay_view_buyer_promo_code_pop_up_placeholder"
-          >Código promocional</label
+          >{{ placeholder }}</label
         >
       </div>
       <div *ngIf="!!errorMessage" class="PayviewPromotionEditor__error">
@@ -25,6 +26,8 @@
     </div>
   </div>
   <div class="PayviewPromotionEditor__apply d-flex justify-content-center px-4">
-    <tsl-button className="btn-primary btn-block" i18n="@@pay_view_buyer_promo_code_pop_up_apply_button">Aplicar</tsl-button>
+    <tsl-button className="btn-primary btn-block" i18n="@@pay_view_buyer_promo_code_pop_up_apply_button" (click)="apply()"
+      >Apply</tsl-button
+    >
   </div>
 </div>
