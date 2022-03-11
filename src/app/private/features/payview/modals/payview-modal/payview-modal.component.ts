@@ -8,8 +8,10 @@ import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/deli
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { PAYVIEW_STEPS } from '@private/features/payview/enums/payview-steps.enum';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
+import { PAYVIEW_EVENT_TYPE } from '@private/features/payview/enums/payview-event-type.enum';
+import { PAYVIEW_PROMOTION_EVENT_TYPE } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.enum';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
-import { PayviewPromotionEventType } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.interface';
+import { PayviewError } from '@private/features/payview/interfaces/payview-error.interface';
 import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
@@ -23,7 +25,7 @@ import { Observable, Subscription } from 'rxjs';
   selector: 'tsl-payview-modal',
   templateUrl: './payview-modal.component.html',
   styleUrls: ['./payview-modal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
   providers: [PayviewService, PayviewStateManagementService],
 })
 export class PayviewModalComponent implements OnDestroy, OnInit {
@@ -66,10 +68,6 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.goToStep(PAYVIEW_STEPS.PAYVIEW);
   }
 
-  private goToStep(step: PAYVIEW_STEPS): void {
-    this.stepper.goToStep(step);
-  }
-
   public get helpUrl(): string {
     return this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.PAYVIEW);
   }
@@ -82,11 +80,16 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     return this.payviewStateManagementService.payViewState$;
   }
 
+  private goToStep(step: PAYVIEW_STEPS): void {
+    this.stepper.goToStep(step);
+  }
+
   private setDeliveryMethod(deliveryMethod: DeliveryBuyerDeliveryMethod): void {
     this.payviewStateManagementService.setDeliveryMethod(deliveryMethod);
   }
 
   private subscribe(): void {
+    this.subscribeToStateManagementEventBus();
     this.subscribeToDeliveryEventBus();
     this.subscribeToPromotionEventBus();
   }
@@ -111,8 +114,31 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private subscribeToPromotionEventBus(): void {
     this.subscriptions.push(
-      this.promotionService.on(PayviewPromotionEventType.OpenPromocodeEditor, () => {
+      this.promotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.OPEN_PROMOCODE_EDITOR, () => {
         this.goToStep(PAYVIEW_STEPS.PROMOTION_EDITOR);
+      })
+    );
+    this.subscriptions.push(
+      this.promotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.APPLY_PROMOCODE, (value: string) => {
+        this.payviewStateManagementService.applyPromocode(value);
+      })
+    );
+    this.subscriptions.push(
+      this.promotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.REMOVE_PROMOCODE, () => {
+        this.payviewStateManagementService.removePromocode();
+      })
+    );
+  }
+
+  private subscribeToStateManagementEventBus(): void {
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_REFRESH_COSTS, (error: PayviewError) => {
+        this.promotionService.error(error);
+      })
+    );
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_REFRESH_COSTS, () => {
+        this.goToStep(PAYVIEW_STEPS.PAYVIEW);
       })
     );
   }

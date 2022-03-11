@@ -21,4 +21,8 @@
   &__windowHeader {
     padding-left: $spacing-ml;
   }
+
+  ::ng-deep #loader-wrapper {
+    height: 100% !important;
+  }
 }
