@@ -5,6 +5,7 @@
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
   margin-bottom: $spacing-s;
+  max-width: 768px;
 
   &__subscription {
     @include media-breakpoint-down(sm) {
@@ -20,31 +21,32 @@
 
   &__delete {
     cursor: pointer;
-    font-size: 14px;
-    color: #607d8b;
+    font-size: $font-size-s;
+    color: $blue-grey-2;
   }
 
   &__title {
     font-weight: $font-weight-chunky;
+    line-height: $line-height-s;
   }
 
   &__subtitle {
     font-size: $font-size-xs;
-    line-height: 14px;
+    line-height: $line-height-ms;
     color: $blue-grey-2;
   }
 
   &__price {
     font-size: $font-size-l;
-    line-height: 23px;
+    line-height: $line-height-ml;
     color: $blue-grey-1;
     font-weight: $font-weight-chunky;
 
     &--discount {
       text-decoration: line-through;
       font-size: $font-size-l;
-      line-height: 23px;
-      color: #90a4ae;
+      line-height: $line-height-ml;
+      color: $blue-grey-3;
     }
   }
 
@@ -69,6 +71,8 @@
   }
 
   &__border {
+    margin-right: $spacing-xl;
+    padding-right: $spacing-xl;
     @include media-breakpoint-up(xl) {
       border-right: solid 1px $blue-grey-5;
     }
