@@ -37,6 +37,23 @@ $spacing-28: 28px;
     margin-top: $spacing-ms;
   }
 
+  &__insuranceBadge,
+  &__shippingBadge {
+    background-color: $magenta-main;
+    border-radius: 21px;
+    color: $white;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+    line-height: $font-size-base;
+    margin-left: $spacing-xs;
+    padding: 1px 10px;
+  }
+
+  &__insuranceDiscount,
+  &__shippingDiscount {
+    color: $magenta-main;
+    text-decoration-line: line-through;
+  }
   &__total {
     margin-top: $spacing-ml;
   }
