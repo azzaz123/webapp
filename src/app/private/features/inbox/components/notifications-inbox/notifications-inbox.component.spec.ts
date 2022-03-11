@@ -50,7 +50,9 @@ describe('NotificationsInboxComponent', () => {
               notifications$: new BehaviorSubject(notifications).asObservable(),
               notificationsCount: 1,
               unreadNotificationsCount: 0,
-              refreshNotifications: () => {},
+              refreshNotifications: (callback) => {
+                callback();
+              },
               logContentCardsDisplayed: () => {},
             },
           },
