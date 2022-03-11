@@ -19,9 +19,9 @@ import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
+import { finalize, take } from 'rxjs/operators';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { AcceptRequestError } from '@api/core/errors/delivery/accept-screen/accept-request';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -41,6 +41,9 @@ export class AcceptScreenModalComponent implements OnInit {
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+  public readonly confirmLoadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly rejectLoadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly disableButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
@@ -139,12 +142,22 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   private acceptRequest(): void {
-    this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
-      () => this.redirectToTTS(),
-      (errors: AcceptRequestError[]) => {
-        this.handleError(errors[0]);
-      }
-    );
+    this.confirmLoadingButton$.next(true);
+    this.startDisableButton();
+    this.acceptScreenStoreService
+      .acceptRequest(this.requestId)
+      .pipe(
+        finalize(() => {
+          this.confirmLoadingButton$.next(false);
+          this.endDisableButton();
+        })
+      )
+      .subscribe(
+        () => this.redirectToTTS(),
+        (errors: AcceptRequestError[]) => {
+          this.handleError(errors[0]);
+        }
+      );
   }
 
   private showMissingFullAddressError(): void {
@@ -163,10 +176,28 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   private rejectRequest(): void {
-    this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
-      () => this.redirectToTTS(),
-      () => this.showError(this.GENERIC_ERROR_TRANSLATION)
-    );
+    this.rejectLoadingButton$.next(true);
+    this.startDisableButton();
+    this.acceptScreenStoreService
+      .rejectRequest(this.requestId)
+      .pipe(
+        finalize(() => {
+          this.rejectLoadingButton$.next(false);
+          this.endDisableButton();
+        })
+      )
+      .subscribe(
+        () => this.redirectToTTS(),
+        () => this.showError(this.GENERIC_ERROR_TRANSLATION)
+      );
+  }
+
+  private startDisableButton(): void {
+    this.disableButton$.next(true);
+  }
+
+  private endDisableButton(): void {
+    this.disableButton$.next(false);
   }
 
   private showError(text: string): void {

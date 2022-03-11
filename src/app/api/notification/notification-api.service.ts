@@ -13,6 +13,7 @@ export class NotificationApiService {
   private _unreadNotificationsCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private _notificationsCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private _notifications$: BehaviorSubject<Notification[]> = new BehaviorSubject<Notification[]>([]);
+  private handlers: Function[] = [];
 
   get notificationsCount$(): Observable<number> {
     return this._notificationsCount$.asObservable();
@@ -49,7 +50,10 @@ export class NotificationApiService {
     });
   }
 
-  public refreshNotifications(): void {
+  public refreshNotifications(handler?: Function): void {
+    if (handler) {
+      this.handlers.push(handler);
+    }
     appboy.requestContentCardsRefresh();
   }
 
@@ -73,6 +77,10 @@ export class NotificationApiService {
       this._notifications$.next(notifications);
       this._notificationsCount$.next(notifications.length);
       this._unreadNotificationsCount$.next(notifications.filter((notification) => !notification.isRead).length);
+      for (let handler of this.handlers) {
+        handler();
+      }
+      this.handlers = [];
     }
   }
 

@@ -525,6 +525,33 @@ describe('AcceptScreenModalComponent', () => {
               spyOn(modalService, 'open').and.callThrough();
             });
 
+            describe('and the request is loading', () => {
+              beforeEach(() => {
+                const rejectButton: HTMLElement = fixture.debugElement.query(By.css(rejectButtonSelector)).nativeElement;
+
+                rejectButton.click();
+                fixture.detectChanges();
+              });
+
+              it('should show the reject button as disabled', () => {
+                const rejectButtonDisabled: boolean = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
+
+                expect(rejectButtonDisabled).toBe(true);
+              });
+
+              it('should show the loading spinner', () => {
+                const spinner: DebugElement = fixture.debugElement.query(By.css('tsl-svg-icon'));
+
+                expect(spinner).toBeTruthy();
+              });
+
+              it('should show the confirm button as disabled', () => {
+                const acceptButtonDisabled: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
+
+                expect(acceptButtonDisabled).toBe(true);
+              });
+            });
+
             describe('and the petition fails...', () => {
               beforeEach(() => {
                 spyOn(acceptScreenStoreService, 'rejectRequest').and.returnValue(throwError('network error :P'));
@@ -700,9 +727,62 @@ describe('AcceptScreenModalComponent', () => {
           });
         });
 
-        describe('and we click on the accept button', () => {
+        describe('and we click on the confirm button', () => {
           beforeEach(() => {
             spyOn(toastService, 'show');
+          });
+
+          describe('and the request is loading', () => {
+            beforeEach(() => {
+              const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+              acceptButton.click();
+              fixture.detectChanges();
+            });
+
+            it('should show the confirm button as disabled', () => {
+              const acceptButtonDisabled: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
+
+              expect(acceptButtonDisabled).toBe(true);
+            });
+
+            it('should show the confirm button with a loading spinner', () => {
+              const acceptButtonLoading: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.loading;
+
+              expect(acceptButtonLoading).toBe(true);
+            });
+
+            it('should show the reject button as disabled', () => {
+              const acceptButtonLoading: boolean = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
+
+              expect(acceptButtonLoading).toBe(true);
+            });
+          });
+
+          describe('and the request finished', () => {
+            beforeEach(() => {
+              component.confirmLoadingButton$.next(false);
+              component.disableButton$.next(false);
+              fixture.detectChanges();
+            });
+
+            it('should NOT show the confirm button disabled', () => {
+              const acceptButtonDisabled: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.disabled;
+
+              expect(acceptButtonDisabled).toBe(false);
+            });
+
+            it('should NOT show the confirm button with a loading spinner', () => {
+              const acceptButtonLoading: boolean = fixture.debugElement.query(By.css(acceptButtonSelector)).componentInstance.loading;
+
+              expect(acceptButtonLoading).toBe(false);
+            });
+
+            it('should NOT show the reject button disabled', () => {
+              const acceptButtonLoading: boolean = fixture.debugElement.query(By.css(rejectButtonSelector)).componentInstance.disabled;
+
+              expect(acceptButtonLoading).toBe(false);
+            });
           });
 
           describe(`and we don't have a carrier selected`, () => {
