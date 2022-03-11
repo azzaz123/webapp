@@ -79,10 +79,6 @@ const routes: Routes = [
       },
       {
         path: PRIVATE_PATHS.CHAT,
-        loadChildren: () => import('@private/features/chat/chat.module').then((m) => m.ChatModule),
-      },
-      {
-        path: PRIVATE_PATHS.INBOX,
         loadChildren: () => import('@private/features/inbox/inbox-page.module').then((m) => m.InboxPageModule),
       },
       {

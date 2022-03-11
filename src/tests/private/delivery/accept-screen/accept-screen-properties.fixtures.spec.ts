@@ -12,9 +12,11 @@ import { PLACEHOLDER_AVATAR } from '@core/user/user';
 import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_WITHOUT_FLAT_AND_FLOOR } from '../delivery-address.fixtures.spec';
 import { FALLBACK_NOT_FOUND_SRC } from '@private/core/constants/fallback-images-src-constants';
+import { MOCK_PENDING_SELLER_REQUEST } from '../seller-requests/seller-request.fixtures.spec';
 import {
   MOCK_ACCEPT_SCREEN_CARRIERS,
   MOCK_ACCEPT_SCREEN_CARRIERS_2,
+  MOCK_ACCEPT_SCREEN_CARRIERS_NONE_SELECTED,
   MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED,
 } from './accept-screen-properties-carriers.fixtures.spec';
 
@@ -80,12 +82,19 @@ export const MOCK_ACCEPT_SCREEN_PROPERTIES: AcceptScreenProperties = {
   carriers: MOCK_ACCEPT_SCREEN_CARRIERS_2,
 };
 
+export const MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_CARRIER_SELECTED: AcceptScreenProperties = {
+  ...MOCK_ACCEPT_SCREEN_PROPERTIES,
+  carriers: MOCK_ACCEPT_SCREEN_CARRIERS_NONE_SELECTED,
+};
+
+export const MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_PENDING_STATUS: AcceptScreenProperties = {
+  ...MOCK_ACCEPT_SCREEN_PROPERTIES,
+  request: MOCK_PENDING_SELLER_REQUEST,
+};
+
 export const MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS: AcceptScreenProperties = {
-  request: MOCK_SELLER_REQUEST,
-  item: MOCK_ACCEPT_SCREEN_ITEM,
-  buyer: MOCK_ACCEPT_SCREEN_BUYER,
+  ...MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_PENDING_STATUS,
   seller: MOCK_ACCEPT_SCREEN_SELLER_WITHOUT_ADDRESS,
-  carriers: MOCK_ACCEPT_SCREEN_CARRIERS_2,
 };
 
 export const MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU: AcceptScreenProperties = {

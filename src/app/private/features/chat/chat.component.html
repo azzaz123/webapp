@@ -1,5 +1,11 @@
 <div class="Chat d-flex">
-  <div class="Chat__inbox h-100" [ngClass]="{ 'Chat__inbox--active': !!inboxConversationService.currentConversation }">
+  <div
+    class="Chat__inbox h-100"
+    [ngClass]="{
+      'Chat__inbox--active': !!inboxConversationService.currentConversation,
+      Chat__inbox__ff: featureFlagService.isExperimentalFeaturesEnabled()
+    }"
+  >
     <tsl-connection-alert></tsl-connection-alert>
     <tsl-inbox (loadingEvent)="onLoad($event)" (loadingError)="onChangeInboxOrArchivedDropdown($event)"></tsl-inbox>
   </div>
