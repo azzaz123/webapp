@@ -53,6 +53,7 @@ describe('AcceptScreenModalComponent', () => {
   const MOCK_REQUEST_ID: string = '82723gHYSA762';
   const sellerAddressHeaderStylesSelector: string = '.AcceptScreenModal__sellerWithAddressHeader';
   const carrierButtonSelector: string = '.AcceptScreenModal__carrierButton';
+  const spinnerSelector: string = '.AcceptScreenModal__spinner';
   const deliveryAddressSelector: string = 'tsl-delivery-address';
   const scheduleSelector: string = 'tsl-delivery-preference-schedule';
   const deliveryMapSelector: string = 'tsl-delivery-map';
@@ -263,6 +264,10 @@ describe('AcceptScreenModalComponent', () => {
 
         it('should show accept button', () => {
           shouldRenderAcceptButton(true);
+        });
+
+        it('should NOT show the loading spinner', () => {
+          shouldRenderLoadingSpinner(false);
         });
 
         describe('and we receive the seller address', () => {
@@ -856,6 +861,10 @@ describe('AcceptScreenModalComponent', () => {
           });
         });
 
+        it('should show the loading spinner', () => {
+          shouldRenderLoadingSpinner(true);
+        });
+
         it('should NOT show product card specifications', () => {
           shouldRenderProductCard(false);
         });
@@ -1085,6 +1094,14 @@ describe('AcceptScreenModalComponent', () => {
       expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeTruthy();
     } else {
       expect(de.nativeElement.querySelector(acceptButtonSelector)).toBeFalsy();
+    }
+  }
+
+  function shouldRenderLoadingSpinner(isShowed: boolean): void {
+    if (isShowed) {
+      expect(de.nativeElement.querySelector(spinnerSelector)).toBeTruthy();
+    } else {
+      expect(de.nativeElement.querySelector(spinnerSelector)).toBeFalsy();
     }
   }
 });

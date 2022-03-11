@@ -13,6 +13,10 @@
     background-color: $white;
   }
 
+  &__spinner {
+    padding: $spacing-l;
+  }
+
   &__confirmButton {
     bottom: 0;
     background-color: $white;

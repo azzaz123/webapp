@@ -39,7 +39,12 @@
       </div>
     </div>
   </div>
-  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties">
+  <ng-template #loading>
+    <div class="AcceptScreenModal__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center">
+      <tsl-svg-icon width="45" height="45" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+    </div>
+  </ng-template>
+  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties; else loading">
     <ng-template step>
       <div class="container">
         <div class="row">
