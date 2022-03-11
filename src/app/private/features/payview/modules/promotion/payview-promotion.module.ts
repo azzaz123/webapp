@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { ButtonModule } from '@shared/button/button.module';
@@ -7,7 +8,7 @@ import { PayviewPromotionOverviewComponent } from '@private/features/payview/mod
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
 @NgModule({
-  imports: [CommonModule, ButtonModule, SvgIconModule],
+  imports: [ButtonModule, CommonModule, FormsModule, SvgIconModule],
   declarations: [PayviewPromotionEditorComponent, PayviewPromotionOverviewComponent],
   providers: [],
   exports: [PayviewPromotionEditorComponent, PayviewPromotionOverviewComponent],

@@ -22,6 +22,14 @@ export class PayviewPromotionOverviewComponent {
     return !!this.costs.promotion;
   }
 
+  public get promocode(): string {
+    return this.costs.promotion.promocode;
+  }
+
+  public removePromocode(): void {
+    this.promotionService.removePromocode();
+  }
+
   public get showPromotion(): boolean {
     return !!this.costs;
   }
