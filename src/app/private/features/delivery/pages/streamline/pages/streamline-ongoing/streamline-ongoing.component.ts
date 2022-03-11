@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Router, RouteConfigLoadStart } from '@angular/router';
 
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
@@ -33,7 +33,8 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
     private router: Router,
     private errorActionService: SharedErrorActionService,
     private modalService: NgbModal,
-    private featureflagService: FeatureFlagService
+    private featureflagService: FeatureFlagService,
+    private renderer2: Renderer2
   ) {}
 
   public get historicList$(): Observable<HistoricList> {
@@ -83,6 +84,11 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   private redirectToAcceptScreen(requestId: string): void {
     const pathToAcceptScreenWithRequestId: string = `${PATH_TO_ACCEPT_SCREEN}/${requestId}`;
     this.redirectToPage(pathToAcceptScreenWithRequestId);
+    this.router.events.subscribe((event) => {
+      if (event instanceof RouteConfigLoadStart) {
+        this.renderer2.removeClass(document.body, 'route-loading');
+      }
+    });
   }
 
   private redirectToPage(page: string): void {
