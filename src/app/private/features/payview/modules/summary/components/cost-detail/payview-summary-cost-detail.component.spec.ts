@@ -110,7 +110,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
           MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.toString()
         );
         expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain(
-          MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.currency.symbol.toString()
+          MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.currency
         );
       });
 
@@ -128,9 +128,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
         expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain(
           MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.fees.amount.toString()
         );
-        expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain(
-          MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.fees.currency.symbol.toString()
-        );
+        expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain(MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.fees.currency);
       });
 
       it('should not show the insurance badge', () => {
@@ -158,7 +156,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
           MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.deliveryCost.amount.toString()
         );
         expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain(
-          MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.deliveryCost.currency.symbol.toString()
+          MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.deliveryCost.currency
         );
       });
 
@@ -175,7 +173,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
           MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.total.amount.toString()
         );
         expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain(
-          MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.total.currency.symbol.toString()
+          MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.total.currency
         );
       });
 
@@ -192,7 +190,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
           const target: HTMLSpanElement = debugElement.query(By.css(payviewSummaryCostDetailInsuranceBadgeSelector)).nativeElement;
 
           expect(target).toBeTruthy();
-          expect(target.innerHTML).toContain(`${expected.toString()}${expected.currency.symbol}`);
+          expect(target.innerHTML).toContain(`${expected.toString()}`);
         });
 
         it('should show the insurance discount', () => {
@@ -200,7 +198,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
           const target: HTMLSpanElement = debugElement.query(By.css(payviewSummaryCostDetailInsuranceDiscountSelector)).nativeElement;
 
           expect(target).toBeTruthy();
-          expect(target.innerHTML).toContain(`${expected.toString()}${expected.currency.symbol}`);
+          expect(target.innerHTML).toContain(`${expected.toString()}`);
         });
       });
 
@@ -217,7 +215,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
           const target: HTMLSpanElement = debugElement.query(By.css(payviewSummaryCostDetailShippingDiscountSelector)).nativeElement;
 
           expect(target).toBeTruthy();
-          expect(target.innerHTML).toContain(`${expected.toString()}${expected.currency.symbol}`);
+          expect(target.innerHTML).toContain(`${expected.toString()}`);
         });
 
         describe('WHEN the discount is a percentage', () => {
@@ -242,7 +240,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
             const target: HTMLSpanElement = debugElement.query(By.css(payviewSummaryCostDetailShippingBadgeSelector)).nativeElement;
 
             expect(target).toBeTruthy();
-            expect(target.innerHTML).toContain(`${expected.toString()}${expected.currency.symbol}`);
+            expect(target.innerHTML).toContain(`${expected.toString()}`);
           });
         });
       });
