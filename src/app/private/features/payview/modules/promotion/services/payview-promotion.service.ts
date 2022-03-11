@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
+import { PAYVIEW_PROMOTION_EVENT_TYPE } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.enum';
+import { PayviewError } from '@private/features/payview/interfaces/payview-error.interface';
 import { PayviewPromotionEvent } from '@private/features/payview/modules/promotion/interfaces/payview-promotion-event.interface';
-import { PayviewPromotionEventType } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.interface';
 
 import { filter, map } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
@@ -12,7 +13,7 @@ export class PayviewPromotionService {
 
   constructor() {}
 
-  public on(eventType: PayviewPromotionEventType, handler: (payload: string) => void): Subscription {
+  public on(eventType: PAYVIEW_PROMOTION_EVENT_TYPE, handler: (payload: string | PayviewError | null) => void): Subscription {
     return this.eventBusSubject
       .pipe(
         filter((e: PayviewPromotionEvent) => e.type === eventType),
@@ -24,18 +25,22 @@ export class PayviewPromotionService {
   }
 
   public applyPromocode(value: string): void {
-    this.eventBusSubject.next(this.getPromotionEvent(PayviewPromotionEventType.ApplyPromocode, value));
+    this.eventBusSubject.next(this.getPromotionEvent(PAYVIEW_PROMOTION_EVENT_TYPE.APPLY_PROMOCODE, value));
   }
 
-  public deletePromocode(): void {
-    this.eventBusSubject.next(this.getPromotionEvent(PayviewPromotionEventType.DeletePromocode, null));
+  public error(error: PayviewError): void {
+    this.eventBusSubject.next(this.getPromotionEvent(PAYVIEW_PROMOTION_EVENT_TYPE.ERROR, error));
   }
 
   public openPromocodeEditor(): void {
-    this.eventBusSubject.next(this.getPromotionEvent(PayviewPromotionEventType.OpenPromocodeEditor, null));
+    this.eventBusSubject.next(this.getPromotionEvent(PAYVIEW_PROMOTION_EVENT_TYPE.OPEN_PROMOCODE_EDITOR, null));
   }
 
-  private getPromotionEvent(type: PayviewPromotionEventType, payload: string | null): PayviewPromotionEvent {
+  public removePromocode(): void {
+    this.eventBusSubject.next(this.getPromotionEvent(PAYVIEW_PROMOTION_EVENT_TYPE.REMOVE_PROMOCODE, null));
+  }
+
+  private getPromotionEvent(type: PAYVIEW_PROMOTION_EVENT_TYPE, payload: string | null | PayviewError): PayviewPromotionEvent {
     return { type, payload };
   }
 }
