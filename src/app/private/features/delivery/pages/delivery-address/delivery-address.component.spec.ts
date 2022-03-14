@@ -49,6 +49,7 @@ describe('DeliveryAddressComponent', () => {
   const countriesDropdownSelector = '#country_iso_code';
   const deleteButtonSelector = '#deleteButton';
   const titleSectionSelector = '#titleSection';
+  const stickyButtonSelector = '.DeliveryAddress__stickyButton';
 
   let component: DeliveryAddressComponent;
   let fixture: ComponentFixture<DeliveryAddressComponent>;
@@ -605,6 +606,10 @@ describe('DeliveryAddressComponent', () => {
       expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
     });
 
+    it('should apply the sticky button style', () => {
+      expect(fixture.debugElement.query(By.css(stickyButtonSelector))).toBeTruthy();
+    });
+
     it('should NOT apply the box style', () => {
       expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeFalsy();
     });
@@ -627,6 +632,10 @@ describe('DeliveryAddressComponent', () => {
 
     it('should not appear the delete button', () => {
       expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
+    });
+
+    it('should apply the sticky button style', () => {
+      expect(fixture.debugElement.query(By.css(stickyButtonSelector))).toBeTruthy();
     });
 
     it('should apply the box style', () => {
@@ -653,6 +662,10 @@ describe('DeliveryAddressComponent', () => {
       expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
     });
 
+    it('should apply the sticky button style', () => {
+      expect(fixture.debugElement.query(By.css(stickyButtonSelector))).toBeTruthy();
+    });
+
     it('should apply the box style', () => {
       expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeTruthy();
     });
@@ -673,6 +686,10 @@ describe('DeliveryAddressComponent', () => {
 
     it('should apply the box style', () => {
       expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeTruthy();
+    });
+
+    it('should NOT apply the sticky button style', () => {
+      expect(fixture.debugElement.query(By.css(stickyButtonSelector))).toBeFalsy();
     });
   });
 
