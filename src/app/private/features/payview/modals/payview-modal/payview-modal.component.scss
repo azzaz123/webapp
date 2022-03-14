@@ -24,5 +24,13 @@
 
   ::ng-deep #loader-wrapper {
     height: 100% !important;
+    padding-bottom: $spacing-xl;
+    & svg {
+      height: 64px;
+      width: 64px;
+    }
+    & h2 {
+      display: none;
+    }
   }
 }

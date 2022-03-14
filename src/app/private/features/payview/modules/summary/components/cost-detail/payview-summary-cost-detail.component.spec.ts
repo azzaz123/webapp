@@ -282,19 +282,39 @@ describe('PayviewSummaryCostDetailComponent', () => {
   });
 
   describe('WHEN the promotion is free delivery', () => {
-    beforeEach(() => {
-      component.productName = fakeProductName;
-      component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
-      component.costs.promotion.deliveryCostFixedPrice.amount.total = 0;
+    describe('WHEN the fixed price is zero', () => {
+      beforeEach(() => {
+        component.productName = fakeProductName;
+        component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
+        component.costs.promotion.deliveryCostFixedPrice.amount.total = 0;
 
-      changeDetectorRef.detectChanges();
+        changeDetectorRef.detectChanges();
+      });
+
+      it('should show the message "free"', () => {
+        const expected = $localize`:@@pay_view_buyer_summary_payment_free_badge:Free`;
+        const target = debugElement.query(By.css(payviewSummaryCostDetailShippingBadgeSelector)).nativeElement;
+
+        expect(target.innerHTML).toBe(expected);
+      });
     });
 
-    it('should show the message "free"', () => {
-      const expected = $localize`:@@pay_view_buyer_summary_payment_free_badge:Free`;
-      const target = debugElement.query(By.css(payviewSummaryCostDetailShippingBadgeSelector)).nativeElement;
+    describe('WHEN the discount percentage is 100', () => {
+      beforeEach(() => {
+        component.productName = fakeProductName;
+        component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
+        component.costs.promotion.deliveryCostFixedPrice = null;
+        component.costs.promotion.deliveryCostDiscountPercentage = 100;
 
-      expect(target.innerHTML).toBe(expected);
+        changeDetectorRef.detectChanges();
+      });
+
+      it('should show the message "free"', () => {
+        const expected = $localize`:@@pay_view_buyer_summary_payment_free_badge:Free`;
+        const target = debugElement.query(By.css(payviewSummaryCostDetailShippingBadgeSelector)).nativeElement;
+
+        expect(target.innerHTML).toBe(expected);
+      });
     });
   });
 
@@ -303,6 +323,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
       component.productName = fakeProductName;
       component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
       component.costs.promotion.deliveryCostFixedPrice = null;
+      component.costs.promotion.deliveryCostDiscountPercentage = 0;
 
       changeDetectorRef.detectChanges();
     });

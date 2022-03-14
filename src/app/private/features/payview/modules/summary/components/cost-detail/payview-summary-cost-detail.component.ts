@@ -80,6 +80,10 @@ export class PayviewSummaryCostDetailComponent {
   }
 
   private get isFreeShipping(): boolean {
-    return this.costs.promotion.deliveryCostFixedPrice.amount.total === 0;
+    return this.costs.promotion.deliveryCostFixedPrice?.amount.total === 0 || this.isFullPercentage;
+  }
+
+  private get isFullPercentage(): boolean {
+    return this.costs.promotion.deliveryCostDiscountPercentage === 100;
   }
 }
