@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@angular/core';
 import { WindowMessageService } from '@core/window-message/services/window-message.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import { Observable, ReplaySubject, timer } from 'rxjs';
+import { Observable, Subject, timer } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable()
 export class WebViewModalService {
-  private readonly windowRefWasClosed: ReplaySubject<void> = new ReplaySubject<void>();
+  private readonly windowRefWasClosed: Subject<void> = new Subject<void>();
   private childWindowRef: Window;
 
   constructor(@Inject(WINDOW_TOKEN) private window: Window, private windowMessageService: WindowMessageService) {}
@@ -78,9 +78,9 @@ export class WebViewModalService {
             }
           } catch {
             this.windowRefWasClosed.next();
-            this.windowRefWasClosed.complete();
           }
-        })
+        }),
+        takeUntil(this.windowRefWasClosed)
       )
       .subscribe();
   }

@@ -5,7 +5,7 @@ import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { environment } from '@environments/environment.beta';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
-import { Observable, of, ReplaySubject, timer } from 'rxjs';
+import { Observable, of, Subject, timer } from 'rxjs';
 import { filter, concatMap, take, takeUntil, tap } from 'rxjs/operators';
 
 const THREE_DOMAIN_SECURE_START_URL = (id: string): string => `${environment.baseUrl}api/v3/payments/cards/start_3ds/${id}`;
@@ -15,7 +15,7 @@ type GetCreditCardRequest = (ignoreInvalidCard: boolean) => Observable<CreditCar
   providedIn: 'root',
 })
 export class ThreeDomainSecureService {
-  private readonly processCompleted: ReplaySubject<void> = new ReplaySubject<void>();
+  private readonly processCompleted: Subject<void> = new Subject<void>();
 
   constructor(private featureFlagService: FeatureFlagService, private webViewModalService: WebViewModalService) {}
 
@@ -27,9 +27,10 @@ export class ThreeDomainSecureService {
           this.checkCardUntilKnownStatus(getCreditCardRequest).pipe(
             concatMap((card) => (this.isPending3DSCard(card) ? this.start3DSValidation(card) : of(card)))
           )
-        )
+        ),
+        take(1)
       )
-      .subscribe({ complete: () => this.triggerSuccessfull3DS() });
+      .subscribe({ next: this.trigger3DSDone, error: this.trigger3DSDone, complete: this.trigger3DSDone });
 
     return this.processCompleted;
   }
@@ -41,7 +42,7 @@ export class ThreeDomainSecureService {
   private checkCardUntilKnownStatus(getCreditCard: GetCreditCardRequest): Observable<CreditCard> {
     const checkIntervalMs = 1000;
     const maxChecks = 30;
-    const checkCardSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>();
+    const checkCardSubject: Subject<CreditCard> = new Subject<CreditCard>();
 
     timer(0, checkIntervalMs)
       .pipe(
@@ -50,7 +51,6 @@ export class ThreeDomainSecureService {
             .pipe(filter((card) => card.status !== CREDIT_CARD_STATUS.UNKNOWN))
             .subscribe((card) => {
               checkCardSubject.next(card);
-              checkCardSubject.complete();
             });
         }),
         takeUntil(checkCardSubject),
@@ -66,16 +66,17 @@ export class ThreeDomainSecureService {
   }
 
   private start3DSValidation(card: CreditCard): Observable<void> {
-    const modalDoneSubject: ReplaySubject<void> = new ReplaySubject<void>();
+    const modalDoneSubject: Subject<void> = new Subject<void>();
 
     const modalDoneTrigger = () => {
       modalDoneSubject.next();
-      modalDoneSubject.complete();
     };
 
     const { id } = card;
     const threeDSecureStartUrl: string = THREE_DOMAIN_SECURE_START_URL(id);
-    this.webViewModalService.open(threeDSecureStartUrl).subscribe({ next: modalDoneTrigger, complete: modalDoneTrigger });
+    this.webViewModalService
+      .open(threeDSecureStartUrl)
+      .subscribe({ next: modalDoneTrigger, error: modalDoneTrigger, complete: modalDoneTrigger });
 
     return modalDoneSubject;
   }
@@ -88,8 +89,7 @@ export class ThreeDomainSecureService {
     return card.status === CREDIT_CARD_STATUS.PENDING_3DS;
   }
 
-  private triggerSuccessfull3DS = () => {
+  private trigger3DSDone = () => {
     this.processCompleted.next();
-    this.processCompleted.complete();
   };
 }

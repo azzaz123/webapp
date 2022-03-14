@@ -7,7 +7,7 @@ import { PaymentsCardsErrorResponseApi } from '@api/payments/cards/dtos/errors/p
 import { PaymentsCreditCardHttpService } from '@api/payments/cards/http/payments-credit-card-http.service';
 import { CardInvalidError } from '@api/core/errors/payments/cards/card-invalid.error';
 import { ReplaySubject, Observable, of } from 'rxjs';
-import { map, concatMap, tap, catchError } from 'rxjs/operators';
+import { map, concatMap, tap, catchError, take } from 'rxjs/operators';
 import { ThreeDomainSecureService } from './three-domain-secure/three-domain-secure.service';
 
 @Injectable({
@@ -64,7 +64,8 @@ export class PaymentsCreditCardService {
     return this.paymentsCreditCardHttpService.create(cardSyncRequest).pipe(
       concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
       tap(() => this.get()),
-      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error))
+      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
+      take(1)
     );
   }
 
@@ -72,7 +73,8 @@ export class PaymentsCreditCardService {
     return this.paymentsCreditCardHttpService.update(cardSyncRequest).pipe(
       concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
       tap(() => this.get()),
-      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error))
+      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
+      take(1)
     );
   }
 
