@@ -8,7 +8,7 @@ import {
 } from '@core/ads/constants';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
-import { TcfApi } from '@core/ads/vendors/tcf/tcf.interface';
+import { TcfApi, tcfApiCallback, TCF_API_COMMAND, TCF_API_VERSION } from '@core/ads/vendors/tcf/tcf.interface';
 import { TcfService } from '@core/ads/vendors/tcf/tcf.service';
 import { YieldBirdService } from '@core/ads/vendors/yieldbird/yieldbird.service';
 import { DeviceType } from '@core/device/deviceType.enum';
@@ -29,7 +29,7 @@ export const MockAdsService = {
 };
 
 export const MockTcfService = {
-  tcfApi: () => {},
+  tcfApi: (command: TCF_API_COMMAND, version: TCF_API_VERSION, callback: tcfApiCallback) => {},
 };
 
 export const MockAmazonPublisherService = {

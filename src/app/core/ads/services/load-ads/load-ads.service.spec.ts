@@ -1,13 +1,16 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { ADS_SOURCES, GOOGLE_ADS_SENSE_SHOPPING, GOOGLE_ADS_SENSE_SHOPPING_URL } from '@core/ads/constants';
+import { ADS_SOURCES } from '@core/ads/constants';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '@core/ads/vendors';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
+import { TCF_API_COMMAND, TCF_API_VERSION } from '@core/ads/vendors/tcf/tcf.interface';
+import { TcfService } from '@core/ads/vendors/tcf/tcf.service';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import {
   MockAmazonPublisherService,
   MockCriteoService,
   MockDidomiService,
   MockGooglePublisherTagService,
+  MockTcfService,
 } from '@fixtures/ads.fixtures.spec';
 import { LoadExternalLibsServiceMock } from '@fixtures/load-external-libs.fixtures.spec';
 import { random } from 'faker';
@@ -39,6 +42,10 @@ describe('LoadAdsService', () => {
         {
           provide: DidomiService,
           useValue: MockDidomiService,
+        },
+        {
+          provide: TcfService,
+          useValue: MockTcfService,
         },
       ],
     });
@@ -86,13 +93,13 @@ describe('LoadAdsService', () => {
       expect(MockDidomiService.isLibraryRefDefined).toHaveLastReturnedWith(true);
     }));
 
-    it('should init amazon publisher service when is defined', fakeAsync(() => {
-      spyOn(MockAmazonPublisherService, 'init').and.callThrough();
+    it('should attach tcf add event listener to init amazon publisher service when tc string is ready', fakeAsync(() => {
+      spyOn(MockTcfService, 'tcfApi').and.callThrough();
 
       service.loadAds().subscribe();
       tick(10000);
 
-      expect(MockAmazonPublisherService.init).toHaveBeenCalled();
+      expect(MockTcfService.tcfApi).toHaveBeenCalledWith(TCF_API_COMMAND.ADD_EVENT_LISTENER, TCF_API_VERSION.V2, expect.any(Function));
     }));
   });
 });
