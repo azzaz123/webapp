@@ -22,6 +22,7 @@ import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -47,6 +48,7 @@ export class SidebarComponent implements OnInit {
     private sidebarService: SidebarService,
     private userService: UserService,
     public unreadChatMessagesService: UnreadChatMessagesService,
+    public notificationApiService: NotificationApiService,
     private analyticsService: AnalyticsService,
     private deviceService: DeviceService,
     private customerHelpService: CustomerHelpService,

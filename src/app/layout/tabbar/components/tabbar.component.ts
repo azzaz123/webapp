@@ -1,13 +1,14 @@
-import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '@core/event/event.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { APP_PATHS } from 'app/app-routing-constants';
 import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
-import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { NotificationApiService } from '@api/notification/notification-api.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 
 export const INPUT_TYPE = {
   TEXT: 'text',
@@ -35,6 +36,7 @@ export class TabbarComponent implements OnInit, OnDestroy {
   public user: User;
   public hidden = false;
   public hasUnreadMessages = false;
+  public hasUnreadNotifications = false;
   public isLogged: boolean;
 
   private componentSubscriptions: Subscription[] = [];
@@ -44,7 +46,8 @@ export class TabbarComponent implements OnInit, OnDestroy {
     private tabBarService: TabbarService,
     private unreadChatMessagesService: UnreadChatMessagesService,
     private eventService: EventService,
-    private searchNavigatorService: SearchNavigatorService
+    public notificationApiService: NotificationApiService,
+    public featureFlagService: FeatureFlagService
   ) {}
 
   @HostListener('window:focusin', ['$event'])
@@ -68,7 +71,11 @@ export class TabbarComponent implements OnInit, OnDestroy {
     this.componentSubscriptions.push(
       this.unreadChatMessagesService.totalUnreadMessages$.subscribe((unreadMessages) => (this.hasUnreadMessages = !!unreadMessages))
     );
-
+    this.componentSubscriptions.push(
+      this.notificationApiService.unreadNotificationsCount$.subscribe(
+        (unreadNotifications) => (this.hasUnreadNotifications = !!unreadNotifications)
+      )
+    );
     this.componentSubscriptions.push(
       this.eventService.subscribe(EventService.USER_LOGIN, () => {
         this.isLogged = this.userService.isLogged;
@@ -86,13 +93,6 @@ export class TabbarComponent implements OnInit, OnDestroy {
     this.componentSubscriptions.forEach((subscription: Subscription) => {
       subscription.unsubscribe();
     });
-  }
-
-  public navigateToSearchPage(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.searchNavigatorService.navigateWithLocationParams({});
   }
 
   private isTextInputOrTextarea(element: any): boolean {

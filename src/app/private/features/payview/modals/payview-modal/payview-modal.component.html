@@ -1,14 +1,49 @@
 <div class="PayviewModal d-flex h-100 flex-column">
+  <div class="container">
+    <div class="row">
+      <div class="col p-0">
+        <div class="d-flex justify-content-between mb-3">
+          <div class="d-flex w-100 p-3">
+            <tsl-svg-icon
+              id="cross"
+              src="/assets/icons/cross.svg"
+              class="PayviewModal__close align-self-center"
+              height="16"
+              width="16"
+              (click)="closeModal()"
+            ></tsl-svg-icon>
+            <div class="PayviewModal__windowHeader d-flex w-100 justify-content-between">
+              <span i18n="@@pay_view_buyer_top_bar_title">Make a purchase</span>
+              <a class="mr-4" [href]="helpUrl" target="_blank" i18n="@@pay_view_buyer_top_bar_link" id="helpLink">Help</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div
     *ngIf="(payviewState$ | async) === null"
     class="PayviewModal__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
   >
     <tsl-svg-icon width="64" height="64" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
   </div>
-  <div class="PayviewModal__summary" *ngIf="payviewState$ | async as payviewState">
-    <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
-  </div>
-  <div class="PayviewModal__delivery" *ngIf="payviewState$ | async as payviewState">
-    <tsl-payview-delivery-overview [payviewState]="payviewState"></tsl-payview-delivery-overview>
+  <div class="PayviewModal__scrollable">
+    <tsl-stepper *ngIf="payviewState$ | async as payviewState">
+      <ng-template step>
+        <div class="PayviewModal__summary">
+          <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
+        </div>
+        <div class="PayviewModal__delivery">
+          <tsl-payview-delivery-overview [payviewState]="payviewState"></tsl-payview-delivery-overview>
+        </div>
+      </ng-template>
+      <ng-template step>
+        <tsl-delivery-address
+          [showTitle]="false"
+          [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
+          (addressSaveSucceded)="closeDeliveryEditor()"
+        ></tsl-delivery-address>
+      </ng-template>
+    </tsl-stepper>
   </div>
 </div>

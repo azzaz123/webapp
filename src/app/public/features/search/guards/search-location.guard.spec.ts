@@ -1,33 +1,47 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { CATEGORY_IDS } from '@core/category/category-ids';
-import { SearchNavigatorService } from '@core/search/search-navigator.service';
+import { QueryStringLocationService } from '@core/search/query-string-location.service';
 import { CoordinateMother } from '@fixtures/core';
+import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { SearchLocation } from '../core/services/interfaces/search-location.interface';
 
-import { SearchLocationResolver } from './search-location.resolver';
+import { SearchLocationGuard } from './search-location.guard';
 
-describe('SearchLocationResolver', () => {
+describe('SearchLocationGuard', () => {
   const MOCK_COORDINATE = CoordinateMother.random();
-  let resolver: SearchLocationResolver;
+  const MOCK_LATITUDE_LONGITUDE: SearchLocation = {
+    [FILTER_QUERY_PARAM_KEY.latitude]: `${MOCK_COORDINATE.latitude}`,
+    [FILTER_QUERY_PARAM_KEY.longitude]: `${MOCK_COORDINATE.longitude}`,
+  };
+  let guard: SearchLocationGuard;
   let route: ActivatedRouteSnapshot;
-  let searchNavigatorService: SearchNavigatorService;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       providers: [
-        SearchLocationResolver,
+        SearchLocationGuard,
         {
-          provide: SearchNavigatorService,
+          provide: Router,
           useValue: {
-            navigateWithLocationParams: () => {},
+            navigate: () => {},
+          },
+        },
+        {
+          provide: QueryStringLocationService,
+          useValue: {
+            getLocationParameters: () => MOCK_LATITUDE_LONGITUDE,
           },
         },
       ],
     });
-    resolver = TestBed.inject(SearchLocationResolver);
     route = new ActivatedRouteSnapshot();
-    searchNavigatorService = TestBed.inject(SearchNavigatorService);
+    router = TestBed.inject(Router);
+    guard = TestBed.inject(SearchLocationGuard);
   });
 
   describe('when the route contains location parameters (latitude & longitude)', () => {
@@ -37,11 +51,11 @@ describe('SearchLocationResolver', () => {
         [FILTER_QUERY_PARAM_KEY.latitude]: MOCK_COORDINATE.latitude,
         [FILTER_QUERY_PARAM_KEY.longitude]: MOCK_COORDINATE.longitude,
       };
-      spyOn(searchNavigatorService, 'navigateWithLocationParams');
+      spyOn(router, 'navigate');
 
-      resolver.resolve(route);
+      guard.canActivate(route);
 
-      expect(searchNavigatorService.navigateWithLocationParams).not.toHaveBeenCalled();
+      expect(router.navigate).not.toHaveBeenCalled();
     });
   });
 
@@ -51,11 +65,14 @@ describe('SearchLocationResolver', () => {
         [FILTER_QUERY_PARAM_KEY.categoryId]: CATEGORY_IDS.CELL_PHONES_ACCESSORIES,
       };
       route.queryParams = MOCK_QUERY_PARAMS;
-      spyOn(searchNavigatorService, 'navigateWithLocationParams');
+      spyOn(router, 'navigate');
 
-      resolver.resolve(route);
+      guard.canActivate(route);
 
-      expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith(MOCK_QUERY_PARAMS);
+      expect(router.navigate).toHaveBeenCalledWith([`/${PUBLIC_PATHS.SEARCH}`], {
+        queryParams: { ...MOCK_QUERY_PARAMS, ...MOCK_LATITUDE_LONGITUDE },
+        replaceUrl: true,
+      });
     });
   });
 
@@ -66,11 +83,14 @@ describe('SearchLocationResolver', () => {
         [FILTER_QUERY_PARAM_KEY.latitude]: MOCK_COORDINATE.latitude,
       };
       route.queryParams = MOCK_QUERY_PARAMS;
-      spyOn(searchNavigatorService, 'navigateWithLocationParams');
+      spyOn(router, 'navigate');
 
-      resolver.resolve(route);
+      guard.canActivate(route);
 
-      expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith(MOCK_QUERY_PARAMS);
+      expect(router.navigate).toHaveBeenCalledWith([`/${PUBLIC_PATHS.SEARCH}`], {
+        queryParams: { ...MOCK_QUERY_PARAMS, ...MOCK_LATITUDE_LONGITUDE },
+        replaceUrl: true,
+      });
     });
   });
 
@@ -81,11 +101,14 @@ describe('SearchLocationResolver', () => {
         [FILTER_QUERY_PARAM_KEY.longitude]: MOCK_COORDINATE.longitude,
       };
       route.queryParams = MOCK_QUERY_PARAMS;
-      spyOn(searchNavigatorService, 'navigateWithLocationParams');
+      spyOn(router, 'navigate');
 
-      resolver.resolve(route);
+      guard.canActivate(route);
 
-      expect(searchNavigatorService.navigateWithLocationParams).toHaveBeenCalledWith(MOCK_QUERY_PARAMS);
+      expect(router.navigate).toHaveBeenCalledWith([`/${PUBLIC_PATHS.SEARCH}`], {
+        queryParams: { ...MOCK_QUERY_PARAMS, ...MOCK_LATITUDE_LONGITUDE },
+        replaceUrl: true,
+      });
     });
   });
 });

@@ -19,9 +19,9 @@ export interface NotificationDto {
 }
 
 interface NotificationExtraDto {
-  feed_type: string;
+  feed_type: 'notification_center';
   notification_layout: NOTIFICATION_LAYOUT;
-  notification_type: 'notification_center';
+  notification_type: string;
   badge_state?: NOTIFICATION_PRODUCT_STATUS;
 }
 

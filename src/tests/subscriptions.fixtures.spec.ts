@@ -15,6 +15,8 @@ import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/i
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 import { SubscriptionsV3Response, TierDto } from '@core/subscriptions/dtos/subscriptions/subscription-response.interface';
+import { CanEditSubscriptionResponseDto } from '@core/subscriptions/dtos/subscriptions/can-edit.subscription.interface';
+import { CanEditSubscriptionResponse } from '@api/core/model/subscriptions/can-edit-subscription/can-edit-subscription.interface';
 
 export class MockSubscriptionService {
   getSubscriptions() {
@@ -88,11 +90,17 @@ export class MockSubscriptionService {
   public editSubscription(): Observable<unknown> {
     return of({ status: 202 });
   }
+
   public cancelSubscription(): Observable<unknown> {
     return of({ status: 202 });
   }
+
   public continueSubscription(): Observable<unknown> {
     return of({ status: 202 });
+  }
+
+  public canUpdateTier(): Observable<CanEditSubscriptionResponse> {
+    return of(CAN_SUBSCRIPTION_BE_EDITED_OK);
   }
 }
 
@@ -325,12 +333,13 @@ function generateSubscription(
   let subscribedInfo: Partial<SubscriptionsResponse>;
   let trialInfo: Partial<SubscriptionsResponse>;
 
-  if (subscribedData.subscribed_from)
+  if (subscribedData.subscribed_from) {
     subscribedInfo = {
       selected_tier_id: tiers[0].id,
       selected_tier: tiers[0],
       market: market ? market : SUBSCRIPTION_MARKETS.STRIPE,
     };
+  }
 
   if (freeTrial) {
     trialInfo = {
@@ -649,6 +658,20 @@ export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED: SubscriptionsResponse
   },
 ];
 
+export const CAN_SUBSCRIPTION_BE_EDITED_OK_DTO: CanEditSubscriptionResponseDto = {
+  allowed: true,
+  renewal_date: 1649376000000,
+};
+
+export const CAN_SUBSCRIPTION_BE_EDITED_OK: CanEditSubscriptionResponse = {
+  allowed: true,
+  renewalDate: '08/04/2022',
+};
+
+export const CAN_SUBSCRIPTION_BE_EDITED_FAIL: CanEditSubscriptionResponse = {
+  allowed: false,
+  renewalDate: '08/04/2022',
+};
 export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED: SubscriptionsResponse[] = [
   {
     ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
