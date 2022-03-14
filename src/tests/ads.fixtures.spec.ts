@@ -8,6 +8,8 @@ import {
 } from '@core/ads/constants';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
+import { TcfApi } from '@core/ads/vendors/tcf/tcf.interface';
+import { TcfService } from '@core/ads/vendors/tcf/tcf.service';
 import { YieldBirdService } from '@core/ads/vendors/yieldbird/yieldbird.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { of } from 'rxjs';
@@ -24,6 +26,10 @@ export const MockAdsService = {
   refreshSlots: () => {},
   refreshAllSlots: () => {},
   destroySlots: () => {},
+};
+
+export const MockTcfService = {
+  tcfApi: () => {},
 };
 
 export const MockAmazonPublisherService = {
