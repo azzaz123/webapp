@@ -1,13 +1,17 @@
 @import '~style/common';
 
+$modal-header-height: 56px;
+
 :host {
   height: inherit;
 }
 
 .AcceptScreenModal {
   height: inherit;
+  overflow: auto;
 
   &__header {
+    height: $modal-header-height;
     top: 0;
     z-index: 1;
     background-color: $white;
@@ -17,9 +21,13 @@
     padding: $spacing-l;
   }
 
+  &__stepper {
+    height: calc(100% - #{$modal-header-height});
+  }
+
   &__confirmButton {
     bottom: 0;
-    background-color: $white;
+    background-color: rgba(255, 255, 255, 0.8);
   }
 
   &__cursorPointer {

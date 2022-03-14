@@ -3,11 +3,13 @@ import {
   MOCK_TRANSACTION_TRACKING,
   MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_WITH_SUCCESS,
+  MOCK_TRANSACTION_TRACKING_WITH_UNKOWN_ACTION,
 } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
 import {
   MOCK_TRANSACTION_TRACKING_DTO_RESPONSE,
   MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS_DTO_RESPONSE,
   MOCK_TRANSACTION_TRACKING_WITH_SUCCESS_DTO_RESPONSE,
+  MOCK_TRANSACTION_TRACKING_DTO_WITH_UNKOWN_ACTION_RESPONSE,
 } from '@api/fixtures/bff/delivery/transaction-tracking/transaction-tracking-dto.fixtures.spec';
 
 describe('GIVEN mapTransactionTrackingDtoTransactionTracking', () => {
@@ -16,6 +18,16 @@ describe('GIVEN mapTransactionTrackingDtoTransactionTracking', () => {
       const expected = MOCK_TRANSACTION_TRACKING;
 
       const response = mapTransactionTrackingDtoTransactionTracking(MOCK_TRANSACTION_TRACKING_DTO_RESPONSE);
+
+      expect(response).toEqual(expected);
+    });
+  });
+
+  describe('WHEN there is a TransactionTrackingDto with unkown action', () => {
+    it('should map to TransactionTracking with unkown action', () => {
+      const expected = MOCK_TRANSACTION_TRACKING_WITH_UNKOWN_ACTION;
+
+      const response = mapTransactionTrackingDtoTransactionTracking(MOCK_TRANSACTION_TRACKING_DTO_WITH_UNKOWN_ACTION_RESPONSE);
 
       expect(response).toEqual(expected);
     });

@@ -16,6 +16,7 @@ import {
   MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK_WITH_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG,
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS,
+  MOCK_TRANSACTION_TRACKING_ACTION_UNKNOWN,
   MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION,
   MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION_WITH_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_ACTION_WEBVIEW,
@@ -319,6 +320,29 @@ describe('TransactionTrackingActionSelectorComponent', () => {
             expect(transactionTrackingScreenTrackingEventsService.trackClickActionTTS).not.toHaveBeenCalled();
           });
         });
+      });
+    });
+
+    describe('and is an unknown analytic', () => {
+      beforeEach(() => {
+        component.actionDetail = MOCK_TRANSACTION_TRACKING_ACTION_UNKNOWN;
+        fixture.detectChanges();
+      });
+
+      it('should NOT show the transaction action type dialog', () => {
+        isTransactionTrackingActionDialog(false);
+      });
+
+      it('should NOT show the transaction action type deeplink', () => {
+        isTransactionTrackingActionDeeplink(false);
+      });
+
+      it('should NOT show the transaction action type tracking webview', () => {
+        isTransactionTrackingActionTrackingWebview(false);
+      });
+
+      it('should NOT show the transaction action type user action', () => {
+        isTransactionTrackingActionUserAction(false);
       });
     });
   });

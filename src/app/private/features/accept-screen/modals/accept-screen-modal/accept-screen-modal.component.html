@@ -1,4 +1,4 @@
-<div class="AcceptScreenModal modal-body p-0">
+<div class="AcceptScreenModal modal-body p-0 d-flex flex-column">
   <div class="AcceptScreenModal__header position-sticky">
     <div class="container">
       <div class="row px-2 py-3">
@@ -44,7 +44,7 @@
       <tsl-svg-icon width="45" height="45" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
     </div>
   </ng-template>
-  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties; else loading">
+  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties; else loading" class="AcceptScreenModal__stepper pt-1">
     <ng-template step>
       <div class="container">
         <div class="row">
@@ -151,10 +151,19 @@
                 <tsl-button
                   id="rejectButton"
                   className="btn btn-block btn-link"
+                  [hidden]="rejectLoadingButton$ | async"
+                  [disabled]="disableButton$ | async"
                   i18n="@@accept_view_seller_bottom_bar_reject_button"
                   (click)="openRejectRequestModal()"
                   >Reject</tsl-button
                 >
+                <tsl-svg-icon
+                  *ngIf="rejectLoadingButton$ | async"
+                  width="30"
+                  height="30"
+                  src="/assets/icons/spinner.svg"
+                  class="spinner d-flex justify-content-center p-2"
+                ></tsl-svg-icon>
               </div>
             </div>
           </div>
@@ -167,6 +176,8 @@
               <tsl-button
                 id="acceptButton"
                 className="btn btn-block btn-primary"
+                [loading]="confirmLoadingButton$ | async"
+                [disabled]="disableButton$ | async"
                 i18n="@@accept_view_seller_bottom_bar_accept_button"
                 (click)="checkIfCanAcceptRequest()"
                 >Confirm</tsl-button
