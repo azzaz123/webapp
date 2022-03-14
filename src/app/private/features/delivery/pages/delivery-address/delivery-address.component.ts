@@ -91,6 +91,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     flat_and_floor: '',
   };
   public showDeleteButton: boolean;
+  public showStickyButton: boolean;
   private subscriptions: Subscription = new Subscription();
   private defaultCountry: DeliveryCountryDefault;
 
@@ -565,9 +566,12 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
   }
 
   private initializeShowDeleteButton(): void {
-    this.showDeleteButton =
-      this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS &&
-      this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY &&
-      this.whereUserComes !== DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+    const isUserComingFromPayviewOrDelivery: boolean =
+      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
+      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY ||
+      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+
+    this.showStickyButton = isUserComingFromPayviewOrDelivery;
+    this.showDeleteButton = !isUserComingFromPayviewOrDelivery;
   }
 }

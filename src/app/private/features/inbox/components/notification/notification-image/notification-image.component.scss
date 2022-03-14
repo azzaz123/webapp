@@ -5,6 +5,9 @@
   height: 75px;
   margin-right: $spacing-m;
   position: relative;
+  background-position: center;
+  background-size: cover;
+
   &--rounded {
     border-radius: $border-radius;
   }
