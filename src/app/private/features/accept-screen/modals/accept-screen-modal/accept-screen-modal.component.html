@@ -1,4 +1,4 @@
-<div class="AcceptScreenModal modal-body p-0">
+<div class="AcceptScreenModal modal-body p-0 d-flex flex-column">
   <div class="AcceptScreenModal__header position-sticky">
     <div class="container">
       <div class="row px-2 py-3">
@@ -39,7 +39,7 @@
       </div>
     </div>
   </div>
-  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties">
+  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties" class="AcceptScreenModal__stepper pt-1">
     <ng-template step>
       <div class="container">
         <div class="row">

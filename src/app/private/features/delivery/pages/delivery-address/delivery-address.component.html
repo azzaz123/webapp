@@ -197,7 +197,7 @@
             >
             <span i18n="@@address_view_all_users_form_plain_text_phone_number_need_explanation_word_final_text_web">of Wallapop.</span>
           </div>
-          <div class="d-flex justify-content-center">
+          <div class="d-flex justify-content-center" [ngClass]="{ 'DeliveryAddress__stickyButton p-2': showStickyButton }">
             <tsl-button
               [type]="'submit'"
               class="col-md-3 col-7"
