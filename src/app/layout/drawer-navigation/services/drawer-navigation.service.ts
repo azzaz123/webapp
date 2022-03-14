@@ -3,9 +3,7 @@ import { Observable, of } from 'rxjs';
 import { DRAWER_NAVIGATION_SECTIONS_COLLECTION } from '../constants/drawer-navigation-sections';
 import { DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class DrawerNavigationService {
   constructor() {}
 
