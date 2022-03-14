@@ -7,7 +7,7 @@ import { concatMap, filter, map, take, tap } from 'rxjs/operators';
 import { DidomiService } from './../../vendors/didomi/didomi.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { TcfService } from '@core/ads/vendors/tcf/tcf.service';
-import { TcdData, TCF_API_COMMAND, TCF_API_VERSION, TCF_EVENT_STATUS } from '@core/ads/vendors/tcf/tcf.interface';
+import { TcData, TCF_API_COMMAND, TCF_API_VERSION, TCF_EVENT_STATUS } from '@core/ads/vendors/tcf/tcf.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -60,7 +60,7 @@ export class LoadAdsService {
     );
   }
 
-  private initApstag(tcData: TcdData, success: boolean): void {
+  private initApstag(tcData: TcData, success: boolean): void {
     if (success) {
       if (tcData.eventStatus === TCF_EVENT_STATUS.USER_ACTION_COMPLETE && tcData.tcString) {
         this.amazonPublisherService.init();

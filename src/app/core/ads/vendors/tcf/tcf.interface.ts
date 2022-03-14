@@ -8,10 +8,10 @@ export enum TCF_API_COMMAND {
 }
 
 export interface tcfApiCallback {
-  (tcdata: TcdData, success: boolean): void;
+  (tcdata: TcData, success: boolean): void;
 }
 
-export interface TcdData {
+export interface TcData {
   eventStatus: TCF_EVENT_STATUS;
   tcString: string;
 }
