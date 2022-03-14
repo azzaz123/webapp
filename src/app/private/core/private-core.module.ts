@@ -6,6 +6,7 @@ import { TutorialService } from '@core/tutorial/tutorial.service';
 import { DesktopNotificationsService } from '@core/desktop-notifications/desktop-notifications.service';
 import { XmppService } from '@core/xmpp/xmpp.service';
 import { RealTimeService } from '@core/message/real-time.service';
+import { InboxService } from '@private/features/chat/core/inbox/inbox.service';
 import { BlockUserService } from '@private/features/chat/core/block-user/block-user.service';
 import { BlockUserXmppService } from '@private/features/chat/core/block-user/block-user-xmpp.service';
 import { ReviewService } from '@core/review/review.service';
@@ -31,6 +32,7 @@ import { SubscriptionsHttpService } from '@core/subscriptions/http/subscriptions
     DesktopNotificationsService,
     XmppService,
     RealTimeService,
+    InboxService,
     BlockUserService,
     BlockUserXmppService,
     ReviewService,

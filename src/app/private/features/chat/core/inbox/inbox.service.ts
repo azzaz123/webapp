@@ -13,9 +13,7 @@ import { InboxConversation } from '../model';
 import { InboxApi, InboxConversationApi } from '../model/api';
 import { InboxConversationService } from './inbox-conversation.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class InboxService {
   public static readonly PAGE_SIZE = 30;
   public errorRetrievingInbox = false;
