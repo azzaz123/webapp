@@ -25,4 +25,10 @@ describe('TcfService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('getter should return window __tcfapi', () => {
+    const tcfApi = service.tcfApi;
+
+    expect(tcfApi).toEqual(windowMock.__tcfapi);
+  });
 });

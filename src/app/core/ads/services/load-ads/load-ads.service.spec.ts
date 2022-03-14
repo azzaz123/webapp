@@ -2,7 +2,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ADS_SOURCES } from '@core/ads/constants';
 import { AmazonPublisherService, CriteoService, GooglePublisherTagService } from '@core/ads/vendors';
 import { DidomiService } from '@core/ads/vendors/didomi/didomi.service';
-import { TCF_API_COMMAND, TCF_API_VERSION } from '@core/ads/vendors/tcf/tcf.interface';
+import { TcData, TCF_API_COMMAND, TCF_API_VERSION, TCF_EVENT_STATUS } from '@core/ads/vendors/tcf/tcf.interface';
 import { TcfService } from '@core/ads/vendors/tcf/tcf.service';
 import { LoadExternalLibsService } from '@core/load-external-libs/load-external-libs.service';
 import {
@@ -10,6 +10,7 @@ import {
   MockCriteoService,
   MockDidomiService,
   MockGooglePublisherTagService,
+  MockTcData,
   MockTcfService,
 } from '@fixtures/ads.fixtures.spec';
 import { LoadExternalLibsServiceMock } from '@fixtures/load-external-libs.fixtures.spec';
@@ -93,13 +94,43 @@ describe('LoadAdsService', () => {
       expect(MockDidomiService.isLibraryRefDefined).toHaveLastReturnedWith(true);
     }));
 
-    it('should attach tcf add event listener to init amazon publisher service when tc string is ready', fakeAsync(() => {
-      spyOn(MockTcfService, 'tcfApi').and.callThrough();
+    describe('when attaching tcf actions listener', () => {
+      it('should init Amazon Publisher services when the user action is complete and successful', fakeAsync(() => {
+        spyOn(MockAmazonPublisherService, 'init');
+        spyOn(MockTcfService, 'tcfApi').and.callFake((command, version, cb) => {
+          if (command === TCF_API_COMMAND.ADD_EVENT_LISTENER) cb(MockTcData, true);
+        });
 
-      service.loadAds().subscribe();
-      tick(10000);
+        service.loadAds().subscribe();
+        tick(10000);
 
-      expect(MockTcfService.tcfApi).toHaveBeenCalledWith(TCF_API_COMMAND.ADD_EVENT_LISTENER, TCF_API_VERSION.V2, expect.any(Function));
-    }));
+        expect(MockAmazonPublisherService.init).toHaveBeenCalled();
+      }));
+
+      it('should not init Amazon Publisher services when the user action is not successful', fakeAsync(() => {
+        spyOn(MockAmazonPublisherService, 'init');
+        spyOn(MockTcfService, 'tcfApi').and.callFake((command, version, cb) => {
+          if (command === TCF_API_COMMAND.ADD_EVENT_LISTENER) cb(MockTcData, false);
+        });
+
+        service.loadAds().subscribe();
+        tick(10000);
+
+        expect(MockAmazonPublisherService.init).not.toHaveBeenCalled();
+      }));
+
+      it('should not init Amazon Publisher services when the user action is successful but there is no tc string', fakeAsync(() => {
+        MockTcData.tcString = undefined;
+        spyOn(MockAmazonPublisherService, 'init');
+        spyOn(MockTcfService, 'tcfApi').and.callFake((command, version, cb) => {
+          if (command === TCF_API_COMMAND.ADD_EVENT_LISTENER) cb(MockTcData, true);
+        });
+
+        service.loadAds().subscribe();
+        tick(10000);
+
+        expect(MockAmazonPublisherService.init).not.toHaveBeenCalled();
+      }));
+    });
   });
 });
