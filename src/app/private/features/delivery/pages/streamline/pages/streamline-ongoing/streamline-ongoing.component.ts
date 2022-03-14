@@ -17,7 +17,6 @@ import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction
 import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-status.enum';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'tsl-streamline-ongoing',
@@ -28,15 +27,13 @@ import { Subscription } from 'rxjs/internal/Subscription';
 export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   public readonly loadingIconSrc: string = '/assets/icons/spinner.svg';
   public readonly loadingIconSizePixels: number = 32;
-  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private streamlineOngoingUIService: StreamlineOngoingUIService,
     private router: Router,
     private errorActionService: SharedErrorActionService,
     private modalService: NgbModal,
-    private featureflagService: FeatureFlagService,
-    private renderer2: Renderer2
+    private featureflagService: FeatureFlagService
   ) {}
 
   public get historicList$(): Observable<HistoricList> {
@@ -58,7 +55,6 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.streamlineOngoingUIService.reset();
-    this.subscriptions.unsubscribe();
   }
 
   public onItemClick(historicElement: HistoricElement<DeliveryPendingTransaction | Request>): void {
@@ -87,16 +83,6 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   private redirectToAcceptScreen(requestId: string): void {
     const pathToAcceptScreenWithRequestId: string = `${PATH_TO_ACCEPT_SCREEN}/${requestId}`;
     this.redirectToPage(pathToAcceptScreenWithRequestId);
-    this.removeRouteLoadingSpinner();
-  }
-
-  private removeRouteLoadingSpinner(): void {
-    const subscription: Subscription = this.router.events.subscribe((event) => {
-      if (event instanceof RouteConfigLoadStart) {
-        this.renderer2.removeClass(document.body, 'route-loading');
-      }
-    });
-    this.subscriptions.add(subscription);
   }
 
   private redirectToPage(page: string): void {
