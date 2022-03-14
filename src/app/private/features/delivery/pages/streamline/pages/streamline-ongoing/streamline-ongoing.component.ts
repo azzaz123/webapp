@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { Router, RouteConfigLoadStart } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
