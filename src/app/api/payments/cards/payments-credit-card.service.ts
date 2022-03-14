@@ -63,7 +63,7 @@ export class PaymentsCreditCardService {
   public create(cardSyncRequest: CreditCardSyncRequest): Observable<void> {
     return this.paymentsCreditCardHttpService.create(cardSyncRequest).pipe(
       concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
-      tap(() => this.get()),
+      tap(() => this.get(true)),
       catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
       take(1)
     );
@@ -72,7 +72,7 @@ export class PaymentsCreditCardService {
   public update(cardSyncRequest: CreditCardSyncRequest): Observable<void> {
     return this.paymentsCreditCardHttpService.update(cardSyncRequest).pipe(
       concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
-      tap(() => this.get()),
+      tap(() => this.get(true)),
       catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
       take(1)
     );
