@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { WebViewModalModule } from '@shared/web-view-modal/web-view-modal.module';
+import { ThreeDomainSecureService } from './three-domain-secure.service';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule],
+  imports: [WebViewModalModule],
+  providers: [ThreeDomainSecureService],
 })
 export class ThreeDomainSecureModule {}
