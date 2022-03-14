@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CardRegistrationFailedError } from '@api/core/errors/payments/cards';
 import { CreditCard } from '@api/core/model';
 import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
@@ -16,6 +17,7 @@ type GetCreditCardRequest = (ignoreInvalidCard: boolean) => Observable<CreditCar
 })
 export class ThreeDomainSecureService {
   private readonly processCompleted: Subject<void> = new Subject<void>();
+  private cardValidationError: Error[] = [new CardRegistrationFailedError()];
 
   constructor(private featureFlagService: FeatureFlagService, private webViewModalService: WebViewModalService) {}
 
@@ -30,7 +32,7 @@ export class ThreeDomainSecureService {
         ),
         take(1)
       )
-      .subscribe({ next: this.trigger3DSDone, error: this.trigger3DSDone, complete: this.trigger3DSDone });
+      .subscribe({ next: this.trigger3DSDone, error: this.trigger3DSError, complete: this.trigger3DSDone });
 
     return this.processCompleted;
   }
@@ -72,11 +74,15 @@ export class ThreeDomainSecureService {
       modalDoneSubject.next();
     };
 
+    const modalErrorTrigger = () => {
+      modalDoneSubject.error(this.cardValidationError);
+    };
+
     const { id } = card;
     const threeDSecureStartUrl: string = THREE_DOMAIN_SECURE_START_URL(id);
     this.webViewModalService
       .open(threeDSecureStartUrl)
-      .subscribe({ next: modalDoneTrigger, error: modalDoneTrigger, complete: modalDoneTrigger });
+      .subscribe({ next: modalDoneTrigger, error: modalErrorTrigger, complete: modalDoneTrigger });
 
     return modalDoneSubject;
   }
@@ -91,5 +97,9 @@ export class ThreeDomainSecureService {
 
   private trigger3DSDone = () => {
     this.processCompleted.next();
+  };
+
+  private trigger3DSError = () => {
+    this.processCompleted.error(this.cardValidationError);
   };
 }
