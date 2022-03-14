@@ -6,10 +6,15 @@ export type TransactionTrackingActionDetail =
   | TransactionTrackingActionDialog
   | TransactionTrackingActionUserAction
   | TransactionTrackingActionDismiss
-  | TransactionTrackingActionReload;
+  | TransactionTrackingActionReload
+  | TransactionTrackingActionUnknown;
 
 export interface TransactionTrackingActionBase {
   analytics?: TransactionTrackingActionDetailAnalytics;
+}
+
+export interface TransactionTrackingActionUnknown extends TransactionTrackingActionBase {
+  isUnknown: true;
 }
 
 export interface TransactionTrackingActionCarrierTrackingWebview extends TransactionTrackingActionBase {

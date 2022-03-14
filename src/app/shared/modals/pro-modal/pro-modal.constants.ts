@@ -24,6 +24,7 @@ export enum PRO_MODAL_TYPE {
   bump_error_limit_reached,
   bump_error_stripe,
   bump_error_partial,
+  error_downgrade,
 }
 
 export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
@@ -192,6 +193,17 @@ export const modalConfig: Record<PRO_MODAL_TYPE, ProModalConfig> = {
     buttons: {
       secondary: { text: $localize`:@@cancel_subscription_modal_pro_user_confirm_cancelation_button:Cancel subscription` },
       primary: { text: $localize`:@@cancel_subscription_modal_pro_user_keep_button:Keep subscription` },
+    },
+  },
+  [PRO_MODAL_TYPE.error_downgrade]: {
+    img: '/assets/icons/pro/modals/error.svg',
+    title: $localize`:@@downgrade_not_possible_due_to_bump_misalignment_modal_pro_users_title:You cannot currently make this change`,
+    text1: $localize`:@@downgrade_not_possible_due_to_bump_misalignment_modal_pro_users_description_1_part:You have applied more bumps than are included in the plan you want to switch to.`,
+    text2: $localize`:@@downgrade_not_possible_due_to_bump_misalignment_modal_pro_users_description_2_part:To do this change, please wait until the next billing cycle starts: ${''}:INTERPOLATION:.`,
+    style: MODAL_STYLE.GREEN,
+    buttons: {
+      secondary: { text: $localize`:@@downgrade_not_possible_due_to_bump_misalignment_modal_pro_users_more_info_button:More info` },
+      primary: { text: $localize`:@@downgrade_not_possible_due_to_bump_misalignment_modal_pro_users_understood_button:Understood` },
     },
   },
   [PRO_MODAL_TYPE.bump_success]: {

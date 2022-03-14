@@ -209,8 +209,82 @@ describe('ProModalComponent', () => {
       it('should show secondary button text ', () => {
         const button: HTMLElement = fixture.debugElement.query(By.css('.btn-secondary')).nativeElement;
 
-        expect(button.textContent).toEqual('secondaryButton');
+        expect(button.textContent.trim()).toEqual('secondaryButton');
       });
+
+      describe('and has external link', () => {
+        beforeEach(() => {
+          spyOn(activeModal, 'close').and.callThrough();
+          component.modalConfig = {
+            ...mockData,
+            buttons: {
+              primary: {
+                text: 'primaryText',
+              },
+              secondary: {
+                text: 'secondaryText',
+                redirect: {
+                  type: REDIRECT_TYPE.href,
+                  url: 'wallapop.com',
+                },
+              },
+            },
+          };
+          fixture.detectChanges();
+        });
+        it('should have link', () => {
+          const link = fixture.debugElement.query(By.css('a'));
+
+          expect(link.attributes['href']).toEqual(component.modalConfig.buttons.secondary.redirect.url);
+        });
+
+        it('should close modal', () => {
+          const button: HTMLElement = fixture.debugElement.query(By.css('.btn-secondary')).nativeElement;
+
+          button.click();
+
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+          expect(activeModal.close).toHaveBeenCalledWith(MODAL_ACTION.SECONDARY_BUTTON);
+        });
+      });
+
+      describe('and has internal link', () => {
+        beforeEach(() => {
+          spyOn(activeModal, 'close').and.callThrough();
+          component.modalConfig = {
+            ...mockData,
+            buttons: {
+              primary: {
+                text: 'primaryText',
+              },
+              secondary: {
+                text: 'secondaryText',
+                redirect: {
+                  type: REDIRECT_TYPE.routerLink,
+                  url: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
+                },
+              },
+            },
+          };
+
+          fixture.detectChanges();
+        });
+        it('should have link', () => {
+          const link = fixture.debugElement.query(By.css('a'));
+
+          expect(link.attributes['href']).toEqual(component.modalConfig.buttons.secondary.redirect.url);
+        });
+
+        it('should close modal', () => {
+          const button: HTMLElement = fixture.debugElement.query(By.css('.btn-secondary')).nativeElement;
+
+          button.click();
+
+          expect(activeModal.close).toHaveBeenCalledTimes(1);
+          expect(activeModal.close).toHaveBeenCalledWith(MODAL_ACTION.SECONDARY_BUTTON);
+        });
+      });
+
       describe('and click on secondary button', () => {
         beforeEach(() => {
           spyOn(activeModal, 'close').and.callThrough();
@@ -220,7 +294,7 @@ describe('ProModalComponent', () => {
         });
         it('should close modal', () => {
           expect(activeModal.close).toHaveBeenCalledTimes(1);
-          expect(activeModal.close).toHaveBeenCalledWith(MODAL_ACTION.SECONDARY_BUTON);
+          expect(activeModal.close).toHaveBeenCalledWith(MODAL_ACTION.SECONDARY_BUTTON);
         });
       });
     });

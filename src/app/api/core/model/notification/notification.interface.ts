@@ -10,4 +10,6 @@ export interface Notification {
   description: string;
   image: string;
   url: string;
+  id: string;
+  trackingId: string;
 }

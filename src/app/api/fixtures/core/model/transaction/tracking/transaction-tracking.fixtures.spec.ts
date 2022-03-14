@@ -69,6 +69,7 @@ export const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1: TransactionTrackingShi
   description: 'Llegará en un plazo estimado de <strong>3 días hábiles.</strong> ¡Que pasen rápido! ',
   title: 'Paquete en reparto',
 };
+
 const MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_1: TransactionTrackingStatusInfo = {
   action: {
     isDeeplink: true,
@@ -263,6 +264,51 @@ export const MOCK_TRANSACTION_TRACKING: TransactionTracking = {
   shippingStatus: MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_1,
   statusInfo: [MOCK_TRANSACTION_TRACKING_STATUS_INFO_CARRIER_TRACKING_WEBVIEW_1, MOCK_TRANSACTION_TRACKING_STATUS_INFO_DEEPLINK_1],
 };
+
+const MOCK_TRANSACTION_TRACKING_HEADER_3: TransactionTrackingHeader = {
+  detail: {
+    action: {
+      analytics: { requestId: 'c5df95b6-8cd5-4bdc-b430-42b125fa5a3d', source: 'Help General Doubts', userId: '81535033' },
+      isDeeplink: true,
+      linkUrl: 'wallapop://customerSupport/faq/article?z=360013342437',
+    },
+    state: { isDisabled: false },
+    style: { className: 'btn btn-link' },
+    title: 'Help',
+  },
+  title: 'Sale status',
+};
+const MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_WITH_UNKOWN_ACTION: TransactionTrackingShippingStatus = {
+  actions: [
+    { action: { isUnknown: true }, state: { isDisabled: true }, style: { className: 'btn btn-primary' }, title: 'View instructions' },
+  ],
+  animation: {
+    isLoop: true,
+    isLoopReverse: false,
+    isNormal: false,
+    url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/shipping_status_request_accepted_seller_animation_v2.json',
+  },
+  description: 'The information necessary to make the shipment is being generated; it could take a while.',
+  title: 'Generating shipping data...',
+};
+const MOCK_TRANSACTION_TRACKING_STATUS_INFO_WITH_UNKOWN_ACTION: TransactionTrackingStatusInfo = {
+  action: null,
+  description: 'Generating shipping data...',
+  icon: {
+    style: { className: null },
+    thumbnailUrl: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/Pending_registration%402x.png',
+    url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/Pending_registration%402x.png',
+  },
+  showCaret: false,
+};
+
+export const MOCK_TRANSACTION_TRACKING_WITH_UNKOWN_ACTION: TransactionTracking = {
+  analytics: MOCK_TRANSACTION_TRACKING_ANALYTICS,
+  header: MOCK_TRANSACTION_TRACKING_HEADER_3,
+  shippingStatus: MOCK_TRANSACTION_TRACKING_SHIPPING_STATUS_WITH_UNKOWN_ACTION,
+  statusInfo: [MOCK_TRANSACTION_TRACKING_STATUS_INFO_WITH_UNKOWN_ACTION],
+};
+
 export const MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS: TransactionTracking = {
   analytics: MOCK_TRANSACTION_TRACKING_ANALYTICS_2,
   header: MOCK_TRANSACTION_TRACKING_HEADER_2,

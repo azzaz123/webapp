@@ -30,5 +30,8 @@
 >
   <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
 </tsl-transaction-tracking-action-user-action>
+<ng-container *ngIf="isUnknownAction">
+  <ng-container *ngTemplateOutlet="contentTmp"></ng-container>
+</ng-container>
 
 <ng-template #contentTmp><ng-content></ng-content></ng-template>

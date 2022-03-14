@@ -16,8 +16,13 @@
         </div>
         <div *ngIf="modalConfig.text2" class="ProModal__description">{{modalConfig.text2}}</div>
         <div class="ProModal__buttons w-100 d-flex flex-column position-sticky">
-            <tsl-button *ngIf="modalConfig.buttons.secondary" (click)="onClose(MODAL_ACTION.SECONDARY_BUTON)" class="mb-3"
-                className="btn-secondary w-100">{{modalConfig.buttons.secondary.text}}</tsl-button>
+            <ng-container *ngIf="modalConfig.buttons.secondary">
+                <div [ngSwitch]="modalConfig.buttons.secondary.redirect?.type" class="mb-3">
+                    <ng-container *ngSwitchCase="REDIRECT_TYPE.href" [ngTemplateOutlet]="hrefSecondaryButton"></ng-container>
+                    <ng-container *ngSwitchCase="REDIRECT_TYPE.routerLink" [ngTemplateOutlet]="routerSecondaryButton"></ng-container>
+                    <ng-container *ngSwitchDefault [ngTemplateOutlet]="defaultSecondaryButton"></ng-container>
+                </div>
+            </ng-container>
             <div [ngSwitch]="modalConfig.buttons.primary.redirect?.type">
                 <ng-container *ngSwitchCase="REDIRECT_TYPE.href" [ngTemplateOutlet]="hrefButton"></ng-container>
                 <ng-container *ngSwitchCase="REDIRECT_TYPE.routerLink" [ngTemplateOutlet]="routerButton"></ng-container>
@@ -39,6 +44,15 @@
     </a>
 </ng-template>
 
+<ng-template #routerSecondaryButton>
+    <a [routerLink]="[modalConfig.buttons.secondary.redirect.url]">
+        <tsl-button class="w-100" (click)="onClose(MODAL_ACTION.SECONDARY_BUTTON)"
+            className="btn-secondary w-100" >
+            {{modalConfig.buttons.secondary.text}}
+        </tsl-button>
+    </a>
+</ng-template>
+
 <ng-template #hrefButton>
     <a [href]="modalConfig.buttons.primary.redirect.url" target="_blank">
         <tsl-button class="w-100" (click)="onClose(MODAL_ACTION.PRIMARY_BUTTON)"
@@ -47,9 +61,24 @@
     </a>
 </ng-template>
 
+<ng-template #hrefSecondaryButton>
+    <a [href]="modalConfig.buttons.secondary.redirect.url" target="_blank">
+        <tsl-button class="w-100" (click)="onClose(MODAL_ACTION.SECONDARY_BUTTON)"
+            className="btn-secondary w-100">
+            {{modalConfig.buttons.secondary.text}}</tsl-button>
+    </a>
+</ng-template>
+
 <ng-template #defaultButton>
     <tsl-button class="w-100" (click)="onClose(MODAL_ACTION.PRIMARY_BUTTON)"
         className="btn-primary btn-primary--bold w-100">
         {{modalConfig.buttons.primary.text}}
+    </tsl-button>
+</ng-template>
+
+<ng-template #defaultSecondaryButton>
+    <tsl-button class="w-100" (click)="onClose(MODAL_ACTION.SECONDARY_BUTTON)"
+        className="btn-secondary w-100">
+        {{modalConfig.buttons.secondary.text}}
     </tsl-button>
 </ng-template>
