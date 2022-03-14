@@ -1,5 +1,7 @@
 import { DrawerNavigationSection, DRAWER_NAVIGATION_SECTIONS } from '../interfaces/drawer-navigation-element.interface';
 
+const ICONS_FOLDER = '/assets/icons/drawer-navigation';
+
 export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SECTIONS, DrawerNavigationSection> = {
   [DRAWER_NAVIGATION_SECTIONS.CATALOG]: {
     title: $localize`:@@you_menu_catalog_label:Catalog`,
@@ -7,7 +9,7 @@ export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SEC
       {
         text: $localize`:@@you_menu_items_label:Items`,
         alternativeText: $localize`:@@you_menu_items_label:Items`,
-        icon: '',
+        icon: `${ICONS_FOLDER}/items.svg`,
         external: false,
         href: '/catalog/list',
       },
@@ -19,14 +21,14 @@ export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SEC
       {
         text: $localize`:@@you_menu_shipping_label:Shipping`,
         alternativeText: $localize`:@@you_menu_shipping_label:Shipping`,
-        icon: '',
+        icon: `${ICONS_FOLDER}/shipping.svg`,
         external: false,
         href: '/delivery',
       },
       {
         text: $localize`:@@you_menu_wallet_label:Wallet`,
         alternativeText: $localize`:@@you_menu_wallet_label:Wallet`,
-        icon: '',
+        icon: `${ICONS_FOLDER}/wallet.svg`,
         external: false,
         href: '/wallet',
       },
@@ -38,14 +40,14 @@ export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SEC
       {
         text: $localize`:@@you_menu_become_pro_label:Became a PRO`,
         alternativeText: $localize`:@@you_menu_become_pro_label:Became a PRO`,
-        icon: '',
+        icon: `${ICONS_FOLDER}/pros.svg`,
         external: false,
         href: '/pro-manager/subscriptions',
       },
       {
         text: $localize`:@@you_menu_settings_label:Settings`,
         alternativeText: $localize`:@@you_menu_settings_label:Settings`,
-        icon: '',
+        icon: `${ICONS_FOLDER}/settings.svg`,
         external: false,
         href: '/settings',
       },
@@ -57,7 +59,7 @@ export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SEC
       {
         text: $localize`:@@you_menu_help_label:Help`,
         alternativeText: $localize`:@@you_menu_help_label:Help`,
-        icon: '',
+        icon: `${ICONS_FOLDER}/help.svg`,
         external: true,
         href: 'https://ayuda.wallapop.com/hc/es-es',
       },
