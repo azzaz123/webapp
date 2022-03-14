@@ -62,11 +62,15 @@ describe('AppComponent', () => {
   });
 
   describe('when the app initializes', () => {
+    const mockAppProviders = () => {
+      analyticsService.initializeAnalyticsWithUnauthenticatedUser();
+      sessionService.initSession();
+    };
+
     it('should send Open Wallapop if user has a new session', () => {
       spyOn(analyticsService, 'trackEvent');
 
-      analyticsService.initializeAnalyticsWithUnauthenticatedUser();
-      sessionService.initSession();
+      mockAppProviders();
       component.ngOnInit();
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
@@ -85,8 +89,7 @@ describe('AppComponent', () => {
       jest.spyOn(sessionService, 'newSession$', 'get').mockReturnValue(undefined);
       spyOn(analyticsService, 'trackEvent');
 
-      analyticsService.initializeAnalyticsWithUnauthenticatedUser();
-      sessionService.initSession();
+      mockAppProviders();
       component.ngOnInit();
 
       expect(analyticsService.trackEvent).not.toHaveBeenCalledWith({

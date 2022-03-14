@@ -23,14 +23,8 @@ export const PROVIDERS: Provider[] = [
   },
   {
     provide: APP_INITIALIZER,
-    useFactory: initializeAuthenticatedUserFactory,
-    deps: [UserService, InitializeAuthenticatedUserService],
-    multi: true,
-  },
-  {
-    provide: APP_INITIALIZER,
-    useFactory: initializeUnauthenticatedUserFactory,
-    deps: [UserService, InitializeUnauthenticatedUserService],
+    useFactory: initializerFactory,
+    deps: [UserService, InitializeAuthenticatedUserService, InitializeUnauthenticatedUserService],
     multi: true,
   },
   {
@@ -51,26 +45,12 @@ export const PROVIDERS: Provider[] = [
   },
 ];
 
-export function initializeAuthenticatedUserFactory(
+export function initializerFactory(
   userService: UserService,
-  initializeAuthenticatedUserService: InitializeAuthenticatedUserService
-): () => void {
-  return () => {
-    if (userService.isLogged) {
-      return initializeAuthenticatedUserService.initialize();
-    }
-  };
-}
-
-export function initializeUnauthenticatedUserFactory(
-  userService: UserService,
+  initializeAuthenticatedUserService: InitializeAuthenticatedUserService,
   initializeUnauthenticatedUserService: InitializeUnauthenticatedUserService
 ): () => void {
-  return () => {
-    if (!userService.isLogged) {
-      return initializeUnauthenticatedUserService.initialize();
-    }
-  };
+  return () => (userService.isLogged ? initializeAuthenticatedUserService.initialize() : initializeUnauthenticatedUserService.initialize());
 }
 
 export function initializeMonitoringFactory(monitoringService: MonitoringService): () => void {

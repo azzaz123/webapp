@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { UnreadMessagesCounterDto } from '@api/bff/instant-messaging/dtos/messages-unread-dto.interface';
 import { environment } from '@environments/environment.beta';
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 export const INSTANT_MESSAGES_API = 'api/v3/instant-messaging';
@@ -25,9 +26,9 @@ export class UnreadChatMessagesService {
     });
   }
 
-  public initializeUnreadChatMessages(): Promise<void> {
+  public initializeUnreadChatMessages(): Promise<UnreadMessagesCounterDto> {
     return this.http
-      .get<any>(`${environment.baseUrl}${UNREAD_MESSAGES_COUNT_ENDPOINT}`)
+      .get<UnreadMessagesCounterDto>(`${environment.baseUrl}${UNREAD_MESSAGES_COUNT_ENDPOINT}`)
       .pipe(
         tap((count) => {
           this.totalUnreadMessages = count.unread_counter;
