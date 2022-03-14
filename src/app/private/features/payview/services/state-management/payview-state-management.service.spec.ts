@@ -4,7 +4,10 @@ import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/cal
 import { DeliveryBuyerCalculatorPromotionCost } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-promotion-cost.interface';
 import { DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
-import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
+import {
+  MOCK_DELIVERY_BUYER_CALCULATOR_COSTS,
+  MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION,
+} from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PAYVIEW_EVENT_TYPE } from '@private/features/payview/enums/payview-event-type.enum';
@@ -95,9 +98,10 @@ describe('PayviewStateManagementService', () => {
         fakeCosts = { ...MOCK_PAYVIEW_STATE.costs };
         const fakePromocode: Partial<DeliveryBuyerCalculatorPromotionCost> = { promocode: 'this_is_a_fake_promocode' };
         fakeCosts.promotion = fakePromocode as DeliveryBuyerCalculatorPromotionCost;
-
         costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
+
         service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
+
         tick(1);
       }));
 
@@ -109,6 +113,111 @@ describe('PayviewStateManagementService', () => {
           payviewState.itemDetails.itemHash,
           payviewState.itemDetails.price,
           payviewState.costs?.promotion?.promocode,
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]
+        );
+      }));
+
+      it('should update the payview state ', fakeAsync(() => {
+        const expectedPayviewState = { ...MOCK_PAYVIEW_STATE };
+        expectedPayviewState.costs = fakeCosts;
+
+        expect(payviewState).toStrictEqual(expectedPayviewState);
+      }));
+    });
+
+    describe('WHEN retrieving the costs without promotion', () => {
+      let costsSpy;
+      let fakeCosts: DeliveryBuyerCalculatorCosts;
+
+      beforeEach(fakeAsync(() => {
+        fakeCosts = { ...MOCK_PAYVIEW_STATE.costs };
+        costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
+
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
+
+        tick(1);
+      }));
+
+      it('should call to payview service', fakeAsync(() => {
+        payviewState.costs = null;
+
+        expect(costsSpy).toHaveBeenCalledTimes(1);
+        expect(costsSpy).toHaveBeenCalledWith(
+          payviewState.itemDetails.itemHash,
+          payviewState.itemDetails.price,
+          undefined,
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]
+        );
+      }));
+
+      it('should update the payview state ', fakeAsync(() => {
+        const expectedPayviewState = { ...MOCK_PAYVIEW_STATE };
+        expectedPayviewState.costs = fakeCosts;
+
+        expect(payviewState).toStrictEqual(expectedPayviewState);
+      }));
+    });
+
+    describe('WHEN retrieving the costs with promotion', () => {
+      let costsSpy;
+      let fakeCosts: DeliveryBuyerCalculatorCosts;
+      const fakePromocode = 'This_is_a_fake_promocode';
+
+      beforeEach(fakeAsync(() => {
+        fakeCosts = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
+        fakeCosts.promotion.promocode = fakePromocode;
+        payviewState.costs = fakeCosts;
+        costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
+
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
+
+        tick(1);
+      }));
+
+      it('should call to payview service', fakeAsync(() => {
+        payviewState.costs = null;
+
+        expect(costsSpy).toHaveBeenCalledTimes(1);
+        expect(costsSpy).toHaveBeenCalledWith(
+          payviewState.itemDetails.itemHash,
+          payviewState.itemDetails.price,
+          fakePromocode,
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]
+        );
+      }));
+
+      it('should update the payview state ', fakeAsync(() => {
+        const expectedPayviewState = { ...MOCK_PAYVIEW_STATE };
+        expectedPayviewState.costs = fakeCosts;
+
+        expect(payviewState).toStrictEqual(expectedPayviewState);
+      }));
+    });
+
+    describe('WHEN the promotion promocode does not exist', () => {
+      let costsSpy;
+      let fakeCosts: DeliveryBuyerCalculatorCosts;
+      const fakePromocode = undefined;
+
+      beforeEach(fakeAsync(() => {
+        fakeCosts = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
+        fakeCosts.promotion.promocode = fakePromocode;
+        payviewState.costs = fakeCosts;
+        costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
+
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
+
+        tick(1);
+      }));
+
+      it('should call to payview service', fakeAsync(() => {
+        payviewState.costs = null;
+
+        expect(costsSpy).toHaveBeenCalledTimes(1);
+        expect(costsSpy).toHaveBeenCalledWith(
+          payviewState.itemDetails.itemHash,
+          payviewState.itemDetails.price,
+          undefined,
           MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]
         );
       }));

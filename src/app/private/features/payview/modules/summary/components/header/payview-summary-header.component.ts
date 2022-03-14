@@ -18,7 +18,7 @@ export class PayviewSummaryHeaderComponent {
   constructor() {}
 
   public get address(): string {
-    return this.deliveryMethod.lastAddressUsed?.label;
+    return this.deliveryMethod.lastAddressUsed.label;
   }
 
   public get deliveryTime(): string {

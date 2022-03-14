@@ -76,10 +76,10 @@ export class PayviewSummaryCostDetailComponent {
   }
 
   private get isFreeInsurance(): boolean {
-    return this.costs.promotion?.feesFixedPrice?.amount.total === 0;
+    return this.costs.promotion.feesFixedPrice.amount.total === 0;
   }
 
   private get isFreeShipping(): boolean {
-    return this.costs.promotion?.deliveryCostFixedPrice?.amount.total === 0;
+    return this.costs.promotion.deliveryCostFixedPrice.amount.total === 0;
   }
 }

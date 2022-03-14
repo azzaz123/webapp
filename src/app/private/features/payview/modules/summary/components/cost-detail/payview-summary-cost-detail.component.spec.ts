@@ -11,6 +11,7 @@ import { PayviewSummaryCostDetailComponent } from '@private/features/payview/mod
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 describe('PayviewSummaryCostDetailComponent', () => {
+  const fakeProductName: string = 'This is a product name';
   const payviewSummaryCostDetailSelector: string = '.PayviewSummaryCostDetail';
   const payviewSummaryCostDetailInsuranceBadgeSelector: string = `${payviewSummaryCostDetailSelector}__insuranceBadge`;
   const payviewSummaryCostDetailInsuranceCostSelector: string = `${payviewSummaryCostDetailSelector}__insuranceCost`;
@@ -53,7 +54,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
       describe('WHEN there are no costs', () => {
         beforeEach(() => {
           component.costs = null;
-          component.productName = 'This is a product name';
+          component.productName = fakeProductName;
 
           fixture.detectChanges();
         });
@@ -67,7 +68,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
 
       describe('WHEN there are no product name', () => {
         beforeEach(() => {
-          component.costs = MOCK_DELIVERY_BUYER_CALCULATOR_COSTS;
+          component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS };
           component.productName = null;
 
           fixture.detectChanges();
@@ -85,7 +86,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
       const fakeProductName: string = 'This_is_a_fake_product_name';
 
       beforeEach(() => {
-        component.costs = MOCK_DELIVERY_BUYER_CALCULATOR_COSTS;
+        component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS };
         component.productName = fakeProductName;
 
         fixture.detectChanges();
@@ -179,7 +180,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
 
       describe('WHEN there is insurance discount', () => {
         beforeEach(() => {
-          component.costs = MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION;
+          component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
           component.productName = fakeProductName;
 
           changeDetectorRef.detectChanges();
@@ -204,7 +205,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
 
       describe('WHEN there is shipping discount', () => {
         beforeEach(() => {
-          component.costs = MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION;
+          component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
           component.productName = fakeProductName;
 
           changeDetectorRef.detectChanges();
@@ -244,6 +245,93 @@ describe('PayviewSummaryCostDetailComponent', () => {
           });
         });
       });
+    });
+  });
+
+  describe('WHEN the promotion is free insurance', () => {
+    beforeEach(() => {
+      component.productName = fakeProductName;
+      component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
+      component.costs.promotion.feesFixedPrice.amount.total = 0;
+
+      changeDetectorRef.detectChanges();
+    });
+
+    it('should show the message "free"', () => {
+      const expected = $localize`:@@pay_view_buyer_summary_payment_free_badge:Free`;
+      const target = debugElement.query(By.css(payviewSummaryCostDetailInsuranceBadgeSelector)).nativeElement;
+
+      expect(target.innerHTML).toBe(expected);
+    });
+  });
+
+  describe('WHEN there is no fees insurance ', () => {
+    beforeEach(() => {
+      component.productName = fakeProductName;
+      component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
+      component.costs.promotion.feesFixedPrice = null;
+
+      changeDetectorRef.detectChanges();
+    });
+
+    it('should not show the insurance badge', () => {
+      const target = debugElement.query(By.css(payviewSummaryCostDetailInsuranceBadgeSelector));
+
+      expect(target).toBeFalsy();
+    });
+  });
+
+  describe('WHEN the promotion is free delivery', () => {
+    beforeEach(() => {
+      component.productName = fakeProductName;
+      component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
+      component.costs.promotion.deliveryCostFixedPrice.amount.total = 0;
+
+      changeDetectorRef.detectChanges();
+    });
+
+    it('should show the message "free"', () => {
+      const expected = $localize`:@@pay_view_buyer_summary_payment_free_badge:Free`;
+      const target = debugElement.query(By.css(payviewSummaryCostDetailShippingBadgeSelector)).nativeElement;
+
+      expect(target.innerHTML).toBe(expected);
+    });
+  });
+
+  describe('WHEN there is no shipping costs ', () => {
+    beforeEach(() => {
+      component.productName = fakeProductName;
+      component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION };
+      component.costs.promotion.deliveryCostFixedPrice = null;
+
+      changeDetectorRef.detectChanges();
+    });
+
+    it('should not show the shipping badge', () => {
+      const target = debugElement.query(By.css(payviewSummaryCostDetailShippingBadgeSelector));
+
+      expect(target).toBeFalsy();
+    });
+  });
+
+  describe('WHEN there is no promotion ', () => {
+    beforeEach(() => {
+      component.productName = fakeProductName;
+      component.costs = { ...MOCK_DELIVERY_BUYER_CALCULATOR_COSTS };
+
+      changeDetectorRef.detectChanges();
+    });
+
+    it('should not show the insurance badge', () => {
+      const target = debugElement.query(By.css(payviewSummaryCostDetailInsuranceBadgeSelector));
+
+      expect(target).toBeFalsy();
+    });
+
+    it('should not show the shipping badge', () => {
+      const target = debugElement.query(By.css(payviewSummaryCostDetailShippingBadgeSelector));
+
+      expect(target).toBeFalsy();
     });
   });
 });
