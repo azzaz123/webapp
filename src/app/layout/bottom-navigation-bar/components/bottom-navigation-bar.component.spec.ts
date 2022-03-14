@@ -1,16 +1,23 @@
+import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SvgIconStubComponent } from '@fixtures/shared/components/svg-icon.component.stub';
-import { of } from 'rxjs';
-import { BOTTOM_NAVIGATION_BAR_ELEMENTS } from '../constants/bottom-navigation-bar-elements';
+import { BehaviorSubject, of } from 'rxjs';
+import { BOTTOM_NAVIGATION_BAR_ELEMENTS, BOTTOM_NAVIGATION_BAR_ELEMENTS_COLLECTION } from '../constants/bottom-navigation-bar-elements';
+import { BottomNavigationBarElement } from '../interfaces/bottom-navigation-bar-element.interface';
 import { BottomNavigationBarService } from '../services/bottom-navigation-bar.service';
 
 import { BottomNavigationBarComponent, ELEMENT_TYPE, INPUT_TYPE } from './bottom-navigation-bar.component';
 
 describe('BottomNavigationBarComponent', () => {
+  const MOCK_NAVIGATION_ELEMENTS = Object.values(BOTTOM_NAVIGATION_BAR_ELEMENTS_COLLECTION);
+
   let component: BottomNavigationBarComponent;
   let fixture: ComponentFixture<BottomNavigationBarComponent>;
   let bottomNavigationBarService: BottomNavigationBarService;
+  let hiddenSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  let navigationElementsSubject: BehaviorSubject<BottomNavigationBarElement[]> = new BehaviorSubject(MOCK_NAVIGATION_ELEMENTS);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,13 +27,19 @@ describe('BottomNavigationBarComponent', () => {
         {
           provide: BottomNavigationBarService,
           useValue: {
-            navigationElements$: of(Object.values(BOTTOM_NAVIGATION_BAR_ELEMENTS)),
+            navigationElements$: navigationElementsSubject.asObservable(),
+            hidden$: hiddenSubject.asObservable(),
             showNavigationBar() {},
             hideNavigationBar() {},
           },
         },
       ],
-    }).compileComponents();
+    })
+      //https://github.com/angular/angular/issues/12313#issuecomment-298697327
+      .overrideComponent(BottomNavigationBarComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -34,6 +47,61 @@ describe('BottomNavigationBarComponent', () => {
     bottomNavigationBarService = TestBed.inject(BottomNavigationBarService);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  describe('when the navigation bar is hidden', () => {
+    it('should not be visible in the screen', () => {
+      hiddenSubject.next(true);
+
+      fixture.detectChanges();
+      const navigationBarElement = fixture.debugElement.query(By.css('.BottomNavigationBar')).nativeElement;
+
+      expect(navigationBarElement.hasAttribute('hidden')).toBe(true);
+    });
+  });
+
+  describe('when the navigation bar is visible', () => {
+    it('should be visible in the screen', () => {
+      hiddenSubject.next(false);
+
+      fixture.detectChanges();
+      const navigationBarElement = fixture.debugElement.query(By.css('.BottomNavigationBar')).nativeElement;
+
+      expect(navigationBarElement.hasAttribute('hidden')).toBe(false);
+    });
+  });
+
+  describe('when the component has been initialized', () => {
+    it('should show all navigation elements', () => {
+      const navigationElements = fixture.debugElement.queryAll(By.css('.BottomNavigationBar__element'));
+      const expectedNumberOfElements = MOCK_NAVIGATION_ELEMENTS.length;
+
+      expect(navigationElements.length).toEqual(expectedNumberOfElements);
+    });
+
+    it('should show navigation elements with their content (icon and text)', () => {
+      const MOCK_NAVIGATION_ELEMENT = MOCK_NAVIGATION_ELEMENTS[0];
+      const iconElement = fixture.debugElement.query(By.css('.BottomNavigationBar__icon'));
+      const activeIconElement = fixture.debugElement.query(By.css('.BottomNavigationBar__icon--active'));
+      const textElement = fixture.debugElement.query(By.css('.BottomNavigationBar__text'));
+
+      expect(iconElement.componentInstance.src).toEqual(MOCK_NAVIGATION_ELEMENT.icon);
+      expect(activeIconElement.componentInstance.src).toEqual(MOCK_NAVIGATION_ELEMENT.activeIcon);
+      expect(textElement.nativeElement.innerHTML).toEqual(MOCK_NAVIGATION_ELEMENT.text);
+    });
+  });
+
+  describe('when one element has pending notifications', () => {
+    it('should show the pending notification badge', () => {
+      const MOCK_ELEMENTS_WITH_NOTIFICATION = { ...BOTTOM_NAVIGATION_BAR_ELEMENTS_COLLECTION };
+      MOCK_ELEMENTS_WITH_NOTIFICATION[BOTTOM_NAVIGATION_BAR_ELEMENTS.INBOX].pendingNotification = true;
+
+      navigationElementsSubject.next(Object.values(MOCK_ELEMENTS_WITH_NOTIFICATION));
+      fixture.detectChanges();
+      const pendingNotificationElement = fixture.debugElement.query(By.css('.BottomNavigationBar__pending'));
+
+      expect(pendingNotificationElement).toBeTruthy();
+    });
   });
 
   describe('when using a text input: on focus in', () => {
