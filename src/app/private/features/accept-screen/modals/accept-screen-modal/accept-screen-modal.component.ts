@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { COLORS } from '@core/colors/colors-constants';
-import { ErrorsService } from '@core/errors/errors.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { I18nService } from '@core/i18n/i18n.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
@@ -19,6 +19,9 @@ import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
+import { finalize, take } from 'rxjs/operators';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { AcceptRequestError } from '@api/core/errors/delivery/accept-screen/accept-request';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -38,11 +41,15 @@ export class AcceptScreenModalComponent implements OnInit {
   public headerText: string;
   public isAcceptScreenStep: boolean = true;
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+  public readonly confirmLoadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly rejectLoadingButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public readonly disableButton$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private readonly acceptScreenSlideId: number = ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN;
   private readonly deliveryAddressSlideId: number = ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS;
   private readonly deliveryMapSlideId: number = ACCEPT_SCREEN_STEPS.MAP;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
+  private readonly GENERIC_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -52,7 +59,7 @@ export class AcceptScreenModalComponent implements OnInit {
     private customerHelpService: CustomerHelpService,
     private modalService: NgbModal,
     private router: Router,
-    private errorService: ErrorsService,
+    private toastService: ToastService,
     private i18nService: I18nService
   ) {}
 
@@ -60,10 +67,11 @@ export class AcceptScreenModalComponent implements OnInit {
     this.acceptScreenStoreService.initialize(this.requestId).then(
       () => {},
       () => {
+        this.showError(this.GENERIC_ERROR_TRANSLATION);
         this.closeModal();
-        this.showDefaultError();
       }
     );
+
     this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
   }
 
@@ -116,11 +124,50 @@ export class AcceptScreenModalComponent implements OnInit {
     );
   }
 
-  public acceptRequest(): void {
-    this.acceptScreenStoreService.acceptRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
-      () => this.showDefaultError()
-    );
+  public checkIfCanAcceptRequest(): void {
+    this.acceptScreenProperties$.pipe(take(1)).subscribe((properties: AcceptScreenProperties) => {
+      const isCarrierSelected: boolean = !!properties.carriers.find((carrier: AcceptScreenCarrier) => carrier.isSelected);
+      if (!isCarrierSelected) {
+        this.showNonSelectedCarrierError();
+        return;
+      }
+
+      if (!properties.seller.fullAddress) {
+        this.showMissingFullAddressError();
+        return;
+      }
+
+      this.acceptRequest();
+    });
+  }
+
+  private acceptRequest(): void {
+    this.confirmLoadingButton$.next(true);
+    this.startDisableButton();
+    this.acceptScreenStoreService
+      .acceptRequest(this.requestId)
+      .pipe(
+        finalize(() => {
+          this.confirmLoadingButton$.next(false);
+          this.endDisableButton();
+        })
+      )
+      .subscribe(
+        () => this.redirectToTTS(),
+        (errors: AcceptRequestError[]) => {
+          this.handleError(errors[0]);
+        }
+      );
+  }
+
+  private showMissingFullAddressError(): void {
+    const MISSING_SELLER_ADDRESS_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_pending_sender_details_error:Please enter the sender address.`;
+    this.showError(MISSING_SELLER_ADDRESS_ERROR_TRANSLATION);
+  }
+
+  private showNonSelectedCarrierError(): void {
+    const SELECT_CARRIER_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_pending_shipping_method_error:Please select how you'll send the package.`;
+    this.showError(SELECT_CARRIER_ERROR_TRANSLATION);
   }
 
   private goToDeliveryMap(): void {
@@ -129,19 +176,35 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   private rejectRequest(): void {
-    this.acceptScreenStoreService.rejectRequest(this.requestId).subscribe(
-      () => this.redirectToTTSAndCloseModal(),
-      () => this.showDefaultError()
-    );
+    this.rejectLoadingButton$.next(true);
+    this.startDisableButton();
+    this.acceptScreenStoreService
+      .rejectRequest(this.requestId)
+      .pipe(
+        finalize(() => {
+          this.rejectLoadingButton$.next(false);
+          this.endDisableButton();
+        })
+      )
+      .subscribe(
+        () => this.redirectToTTS(),
+        () => this.showError(this.GENERIC_ERROR_TRANSLATION)
+      );
   }
 
-  private redirectToTTSAndCloseModal(): void {
-    this.redirectToTTS(this.requestId);
-    this.closeModal();
+  private startDisableButton(): void {
+    this.disableButton$.next(true);
   }
 
-  private showDefaultError(): void {
-    this.errorService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+  private endDisableButton(): void {
+    this.disableButton$.next(false);
+  }
+
+  private showError(text: string): void {
+    this.toastService.show({
+      text,
+      type: TOAST_TYPES.ERROR,
+    });
   }
 
   private refreshStepProperties(slideId: number): void {
@@ -149,8 +212,14 @@ export class AcceptScreenModalComponent implements OnInit {
     this.isAcceptScreenStep = slideId === this.acceptScreenSlideId;
   }
 
-  private redirectToTTS(requestId: string): void {
-    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
+  private redirectToTTS(): void {
+    const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${this.requestId}`;
     this.router.navigate([pathToTransactionTracking]);
+  }
+
+  private handleError(e: Error | AcceptRequestError): void {
+    const errorMessage: string = e?.message ? e.message : this.GENERIC_ERROR_TRANSLATION;
+
+    this.showError(errorMessage);
   }
 }

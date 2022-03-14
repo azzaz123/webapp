@@ -3,6 +3,7 @@
 $glass-size: 28px;
 $icon-top-spacing: 50%;
 $icon-lateral-spacing: 25px;
+$searchbox-height: 58px;
 
 .SearchBox {
   &__glass {
@@ -73,7 +74,7 @@ $icon-lateral-spacing: 25px;
   }
 }
 :host ::ng-deep .dropdown-menu {
-  width: 100%;
+  width: 95%;
 }
 :host ::ng-deep .dropdown-item {
   background-color: transparent;
@@ -89,4 +90,8 @@ $icon-lateral-spacing: 25px;
   &.active {
     background-color: $blue-grey-5;
   }
+}
+
+.MovableMap {
+  height: calc(100% - #{$searchbox-height});
 }

@@ -189,7 +189,7 @@ describe('ManageSubscriptionService', () => {
     });
     describe('and click secondary button', () => {
       beforeEach(() => {
-        modalSpy.and.returnValue({ result: Promise.resolve(MODAL_ACTION.SECONDARY_BUTON), componentInstance: {} });
+        modalSpy.and.returnValue({ result: Promise.resolve(MODAL_ACTION.SECONDARY_BUTTON), componentInstance: {} });
         spyOn(analyticsService, 'trackEvent').and.callThrough();
       });
       it('should not track event', fakeAsync(() => {
@@ -312,7 +312,7 @@ describe('ManageSubscriptionService', () => {
     });
     describe('and click secondary button', () => {
       beforeEach(() => {
-        modalSpy.and.returnValue({ result: Promise.resolve(MODAL_ACTION.SECONDARY_BUTON), componentInstance: {} });
+        modalSpy.and.returnValue({ result: Promise.resolve(MODAL_ACTION.SECONDARY_BUTTON), componentInstance: {} });
       });
       it('should emit error', fakeAsync(() => {
         let error = false;

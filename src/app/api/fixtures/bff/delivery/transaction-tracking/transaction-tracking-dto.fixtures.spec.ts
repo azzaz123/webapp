@@ -101,6 +101,43 @@ export const MOCK_TRANSACTION_TRACKING_DTO_RESPONSE: TransactionTrackingDto = {
     buyer_country: 'IT',
   },
 };
+
+export const MOCK_TRANSACTION_TRACKING_DTO_WITH_UNKOWN_ACTION_RESPONSE: TransactionTrackingDto = {
+  title: 'Sale status',
+  top_action: {
+    title: 'Help',
+    style: 'text',
+    state: 'enabled',
+    action: {
+      action_type: 'deeplink',
+      payload: { link_url: 'wallapop://customerSupport/faq/article?z=360013342437' },
+      analytics: { user_id: '81535033', request_id: 'c5df95b6-8cd5-4bdc-b430-42b125fa5a3d', source: 'Help General Doubts' },
+    },
+  },
+  shipping_status: {
+    title: 'Generating shipping data...',
+    description: 'The information necessary to make the shipment is being generated; it could take a while.',
+    animation: {
+      url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/shipping_status_request_accepted_seller_animation_v2.json',
+      mode: 'loop',
+    },
+    actions: [{ title: 'View instructions', style: 'contained', state: 'disabled', action: null }],
+  },
+  transaction_status_info: [
+    {
+      icon: {
+        url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/Pending_registration%402x.png',
+        thumbnail_url: 'https://prod-delivery-resources.wallapop.com/transaction-tracking-screen/Pending_registration%402x.png',
+        style: 'none',
+      },
+      description: 'Generating shipping data...',
+      action_icon: 'none',
+      action: null,
+    },
+  ],
+  analytics: { seller_country: 'ES', buyer_country: 'IT' },
+};
+
 export const MOCK_TRANSACTION_TRACKING_WITH_ANALYTICS_DTO_RESPONSE: TransactionTrackingDto = {
   title: 'Estado de tu compra',
   top_action: {
