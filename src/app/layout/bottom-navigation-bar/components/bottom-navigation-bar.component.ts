@@ -44,6 +44,7 @@ export class BottomNavigationBarComponent {
     }
   }
 
+  //TODO: This should be typed correctly
   private isTextInputOrTextarea(element: any): boolean {
     const elementTarget = element.target;
     if (elementTarget.nodeName === ELEMENT_TYPE.TEXT_AREA) {
