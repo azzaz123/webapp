@@ -8,8 +8,6 @@ import { WindowMessageWrapper } from '../interfaces/window-message-wrapper.inter
   providedIn: 'root',
 })
 export class WindowMessageService {
-  constructor() {}
-
   public send(message: WindowMessage, windowReference: Window): void {
     const wrappedMessage = this.generateMessageFromPayload(message);
     this.sendMessageToWindow(wrappedMessage, windowReference);
