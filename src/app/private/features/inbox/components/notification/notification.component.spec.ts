@@ -14,6 +14,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { NOTIFICATION_VARIANT } from '../../core/enums/notification-variant.enum';
 import { Notification } from '@api/core/model/notification/notification.interface';
 import { NotificationComponent } from './notification.component';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 describe('NotificationComponent', () => {
   let component: NotificationComponent;
@@ -31,6 +32,8 @@ describe('NotificationComponent', () => {
       'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
     image: 'https://picsum.photos/200/300',
     url: 'https://es.wallapop.com',
+    id: 'highlightedId',
+    trackingId: 'trackingId',
   };
 
   const pinnedNotification: Notification = {
@@ -43,6 +46,8 @@ describe('NotificationComponent', () => {
       'Cillum ipsum ullamco adipisicing laborum excepteur id tempor laborum. Aliqua nisi incididunt culpa voluptate culpa minim ad eiusmod. Ad voluptate mollit officia sunt reprehenderit.',
     image: 'https://picsum.photos/200/300',
     url: 'https://es.wallapop.com',
+    id: 'pinnedId',
+    trackingId: 'trackingId',
   };
 
   beforeEach(
@@ -56,17 +61,13 @@ describe('NotificationComponent', () => {
               trackEvent: () => {},
             },
           },
+          {
+            provide: NotificationApiService,
+            useValue: {
+              logCardClick: () => {},
+            },
+          },
         ],
-        declarations: [NotificationComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
-    })
-  );
-
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NgxPermissionsModule.forRoot()],
         declarations: [NotificationComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -98,7 +99,7 @@ describe('NotificationComponent', () => {
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.NotificationCenter,
-        notificationType: NOTIFICATION_VARIANT.HIGHLIGHTED,
+        notificationType: 'trackingId',
         isPinned: false,
         isUnread: false,
       },

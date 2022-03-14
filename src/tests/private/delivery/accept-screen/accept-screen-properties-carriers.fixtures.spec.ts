@@ -74,6 +74,11 @@ export const MOCK_ACCEPT_SCREEN_CARRIERS_2: AcceptScreenCarrier[] = [
   { ...MOCK_ACCEPT_SCREEN_CARRIERS[1], isSelected: false },
 ];
 
+export const MOCK_ACCEPT_SCREEN_CARRIERS_NONE_SELECTED: AcceptScreenCarrier[] = [
+  { ...MOCK_ACCEPT_SCREEN_CARRIERS[0], isSelected: false },
+  { ...MOCK_ACCEPT_SCREEN_CARRIERS[1], isSelected: false },
+];
+
 export const MOCK_ACCEPT_SCREEN_CARRIERS_SECOND_WITH_SCHEDULE_DEFINED: AcceptScreenCarrier[] = [
   {
     type: MOCK_CARRIER_FREE_COST.type,
