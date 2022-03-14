@@ -8,7 +8,7 @@ export const INPUT_TYPE = {
   DATE: 'date',
   PASSWORD: 'password',
   NUMBER: 'number',
-  radio: 'radio',
+  RADIO: 'radio',
 };
 
 export const KEYBOARD_INPUT_TYPES = [INPUT_TYPE.TEXT, INPUT_TYPE.DATE, INPUT_TYPE.PASSWORD, INPUT_TYPE.NUMBER];
@@ -25,7 +25,7 @@ export const ELEMENT_TYPE = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BottomNavigationBarComponent {
-  public navigationElements$: Observable<BottomNavigationBarElement[]> = this.bottomNavigationBarService.navigationElements$;
+  public readonly navigationElements$: Observable<BottomNavigationBarElement[]> = this.bottomNavigationBarService.navigationElements$;
   public readonly hidden$: Observable<boolean> = this.bottomNavigationBarService.hidden$;
 
   constructor(private bottomNavigationBarService: BottomNavigationBarService) {}

@@ -39,6 +39,8 @@ import { MonitoringModule } from './monitoring/monitoring.module';
 import { LottieService } from './lottie/lottie.service';
 import { ExperimentationService } from './experimentation/services/experimentation/experimentation.service';
 import { StandaloneService } from './standalone/services/standalone.service';
+import { WindowMessageService } from './window-message/services/window-message.service';
+import { NotificationApiModule } from '@api/notification/notification-api.module';
 
 @NgModule({
   imports: [
@@ -48,6 +50,7 @@ import { StandaloneService } from './standalone/services/standalone.service';
     AdsModule,
     MonitoringModule,
     HammerModule,
+    NotificationApiModule,
   ],
   providers: [
     LoggedGuard,
@@ -84,6 +87,7 @@ import { StandaloneService } from './standalone/services/standalone.service';
     ToastService,
     ExperimentationService,
     StandaloneService,
+    WindowMessageService,
   ],
 })
 export class CoreModule {

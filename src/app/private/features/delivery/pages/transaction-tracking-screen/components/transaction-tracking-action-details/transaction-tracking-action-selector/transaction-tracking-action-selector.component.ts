@@ -4,6 +4,7 @@ import {
   TransactionTrackingActionDeeplink,
   TransactionTrackingActionDetail,
   TransactionTrackingActionDialog,
+  TransactionTrackingActionUnknown,
   TransactionTrackingActionUserAction,
 } from '@api/core/model/delivery/transaction/tracking';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
@@ -44,5 +45,9 @@ export class TransactionTrackingActionSelectorComponent {
 
   public get isUserAction(): boolean {
     return (this.actionDetail as TransactionTrackingActionUserAction).isUserAction;
+  }
+
+  public get isUnknownAction(): boolean {
+    return (this.actionDetail as TransactionTrackingActionUnknown).isUnknown;
   }
 }

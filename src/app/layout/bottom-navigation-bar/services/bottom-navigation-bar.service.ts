@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { combineLatest, Observable, BehaviorSubject, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -9,15 +10,16 @@ import { BottomNavigationBarElement } from '../interfaces/bottom-navigation-bar-
 export class BottomNavigationBarService {
   private readonly hiddenSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  constructor(private unreadChatMessagesService: UnreadChatMessagesService) {}
+  constructor(private unreadChatMessagesService: UnreadChatMessagesService, public notificationApiService: NotificationApiService) {}
 
   get navigationElements$(): Observable<BottomNavigationBarElement[]> {
     return combineLatest([
       of(BOTTOM_NAVIGATION_BAR_ELEMENTS_COLLECTION),
       this.unreadChatMessagesService.totalUnreadMessages$.pipe(startWith(0)),
+      this.notificationApiService.unreadNotificationsCount$,
     ]).pipe(
-      map(([elements, totalUnreadMessages]) => {
-        elements[BOTTOM_NAVIGATION_BAR_ELEMENTS.INBOX].pendingNotification = !!totalUnreadMessages;
+      map(([elements, unreadMessages, unreadNotifications]) => {
+        elements[BOTTOM_NAVIGATION_BAR_ELEMENTS.INBOX].pendingNotification = !!unreadMessages || !!unreadNotifications;
 
         return Object.values(elements);
       })

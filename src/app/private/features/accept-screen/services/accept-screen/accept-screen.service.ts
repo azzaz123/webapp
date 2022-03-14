@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SellerRequestsApiService } from '@api/delivery/seller/requests/seller-requests-api.service';
-import { Observable, forkJoin, of } from 'rxjs';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { UserService } from '@core/user/user.service';
 import { ItemService } from '@core/item/item.service';
@@ -21,6 +21,7 @@ import { ACCEPT_SCREEN_DELIVERY_ADDRESS, ACCEPT_SCREEN_HEADER_TRANSLATIONS } fro
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { CarrierDropOffModeRequest } from '@api/core/model/delivery/carrier-drop-off-mode';
+import { SELLER_REQUEST_STATUS } from '@api/core/model/delivery/seller-requests/status/seller-request-status.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -74,7 +75,9 @@ export class AcceptScreenService {
   }
 
   private getSellerRequest(requestId: string): Observable<SellerRequest> {
-    return this.sellerRequestApiService.getRequestInfo(requestId);
+    return this.sellerRequestApiService
+      .getRequestInfo(requestId)
+      .pipe(map((sellerRequest: SellerRequest) => this.isSellerRequestStatusPending(sellerRequest)));
   }
 
   private getBuyer(userId: string): Observable<AcceptScreenBuyer> {
@@ -107,5 +110,12 @@ export class AcceptScreenService {
         ACCEPT_SCREEN_HEADER_TRANSLATIONS[ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS] = addressTitleTranslation;
       })
     );
+  }
+
+  private isSellerRequestStatusPending(sellerRequest: SellerRequest): SellerRequest {
+    if (sellerRequest.status.request === SELLER_REQUEST_STATUS.PENDING) {
+      return sellerRequest;
+    }
+    throwError('Seller request status NOT pending');
   }
 }
