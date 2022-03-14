@@ -4,7 +4,9 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { Observable, Subject, timer } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class WebViewModalService {
   private readonly windowRefWasClosed: Subject<void> = new Subject<void>();
   private childWindowRef: Window;
