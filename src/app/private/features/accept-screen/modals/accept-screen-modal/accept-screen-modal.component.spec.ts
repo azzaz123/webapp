@@ -43,6 +43,7 @@ import {
   MOCK_ACCEPT_SCREEN_NON_PURCHASABLE_ITEM_ERROR,
   MOCK_ACCEPT_SCREEN_POSTAL_CODE_NOT_FOUND_ERROR,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-errors.fixtures.spec';
+import { AcceptScreenTrackingEventsService } from '../../services/accept-screen-tracking-events/accept-screen-tracking-events.service';
 
 describe('AcceptScreenModalComponent', () => {
   const genericErrorTranslation: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
@@ -100,6 +101,9 @@ describe('AcceptScreenModalComponent', () => {
             get properties$() {
               return acceptScreenPropertiesSubjectMock.asObservable();
             },
+            get properties() {
+              return acceptScreenPropertiesSubjectMock.value;
+            },
             get carrierSelectedIndex$() {
               return carrierSelectedIndexSubjectMock.asObservable();
             },
@@ -140,6 +144,19 @@ describe('AcceptScreenModalComponent', () => {
                 componentInstance: {},
               };
             },
+          },
+        },
+        {
+          provide: AcceptScreenTrackingEventsService,
+          useValue: {
+            trackClickItemCard() {},
+            trackClickOtherProfile() {},
+            trackClickHelpTransactional() {},
+            trackViewAcceptOffer() {},
+            trackClickAddEditAddress() {},
+            trackClickScheduleHPU() {},
+            trackClickAcceptOffer() {},
+            trackClickRejectOffer() {},
           },
         },
       ],
