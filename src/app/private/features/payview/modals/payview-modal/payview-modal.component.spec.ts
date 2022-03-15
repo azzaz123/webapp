@@ -36,6 +36,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @Component({
   selector: 'tsl-fake-component',
@@ -100,7 +101,14 @@ describe('PayviewModalComponent', () => {
         PayviewSummaryPaymentMethodComponent,
         SvgIconComponent,
       ],
-      imports: [BrowserAnimationsModule, BuyerRequestsApiModule, DeliveryRadioSelectorModule, HttpClientTestingModule, StepperModule],
+      imports: [
+        BrowserAnimationsModule,
+        BuyerRequestsApiModule,
+        DeliveryRadioSelectorModule,
+        HttpClientTestingModule,
+        StepperModule,
+        NgxPermissionsModule.forRoot(),
+      ],
       providers: [
         {
           provide: CustomerHelpService,
