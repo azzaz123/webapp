@@ -13,4 +13,5 @@ export class ProductCardComponent {
   @Input() item: AcceptScreenItem;
   @Input() offeredPrice: Money;
   @Output() userProfileClick: EventEmitter<void> = new EventEmitter();
+  @Output() itemClick: EventEmitter<void> = new EventEmitter();
 }
