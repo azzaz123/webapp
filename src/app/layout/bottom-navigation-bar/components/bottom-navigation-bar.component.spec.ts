@@ -34,12 +34,7 @@ describe('BottomNavigationBarComponent', () => {
           },
         },
       ],
-    })
-      //https://github.com/angular/angular/issues/12313#issuecomment-298697327
-      .overrideComponent(BottomNavigationBarComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
-      })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
