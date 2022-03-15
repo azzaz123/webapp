@@ -17,6 +17,10 @@ $modal-header-height: 56px;
     background-color: $white;
   }
 
+  &__spinner {
+    padding: $spacing-l;
+  }
+
   &__stepper {
     height: calc(100% - #{$modal-header-height});
   }

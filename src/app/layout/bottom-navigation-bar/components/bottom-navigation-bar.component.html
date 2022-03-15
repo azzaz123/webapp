@@ -6,6 +6,6 @@
         <tsl-svg-icon class="BottomNavigationBar__icon BottomNavigationBar__icon--active" [src]="element.activeIcon" [width]="28" [height]="28">
         </tsl-svg-icon>
         <span class="BottomNavigationBar__text mt-1">{{element.text}}</span>
-        <div class="BottomNavigationBar__pending" *ngIf="element.pendingNotification"></div>
+        <div class="BottomNavigationBar__pending position-absolute" *ngIf="element.pendingNotification"></div>
     </a>
 </nav>

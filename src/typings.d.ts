@@ -6,7 +6,6 @@ interface NodeModule {
 declare let System: any;
 declare let analytics: any;
 declare let appboy: import('./app/core/communication/vendors/appboy.interface').Appboy;
-declare let ga: Function;
 declare let fetchHeaderBids: Function;
 declare let Optimize: import('./app/core/experimentation/vendors/optimize/optimize.interface').GoogleOptimize;
 declare let Criteo: import('./app/core/ads/vendors/criteo/criteo.interface').CriteoLibrary;

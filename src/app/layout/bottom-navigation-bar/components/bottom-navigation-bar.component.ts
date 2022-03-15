@@ -32,19 +32,20 @@ export class BottomNavigationBarComponent {
 
   @HostListener('window:focusin', ['$event'])
   onFocusIn(elementType: unknown) {
-    if (this.isTextInputOrTextarea(elementType)) {
+    if (this.isValidInputElement(elementType)) {
       this.bottomNavigationBarService.hideNavigationBar();
     }
   }
 
   @HostListener('window:focusout', ['$event'])
   onFocusOut(elementType: unknown) {
-    if (this.isTextInputOrTextarea(elementType)) {
+    if (this.isValidInputElement(elementType)) {
       this.bottomNavigationBarService.showNavigationBar();
     }
   }
 
-  private isTextInputOrTextarea(element: any): boolean {
+  //TODO: This should be typed correctly
+  private isValidInputElement(element: any): boolean {
     const elementTarget = element.target;
     if (elementTarget.nodeName === ELEMENT_TYPE.TEXT_AREA) {
       return true;
