@@ -2,8 +2,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { InboxPageComponent } from './inbox-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { MockUnreadChatMessagesService } from '@fixtures/chat';
 import { NotificationApiService } from '@api/notification/notification-api.service';
@@ -19,7 +17,6 @@ describe('InboxComponent', () => {
       declarations: [InboxPageComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         { provide: UnreadChatMessagesService, useClass: MockUnreadChatMessagesService },
         {
           provide: NotificationApiService,
