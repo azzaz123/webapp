@@ -24,13 +24,11 @@ import {
 } from '@core/analytics/analytics-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { SidebarService } from '../core/services/sidebar.service';
 import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NotificationApiService } from '@api/notification/notification-api.service';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 @Component({
   template: '',
@@ -137,15 +135,6 @@ describe('SidebarComponent', () => {
               getPageUrl() {},
             },
           },
-          {
-            provide: FeatureFlagService,
-            useValue: {
-              isExperimentalFeaturesEnabled() {
-                return true;
-              },
-            },
-          },
-          { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
