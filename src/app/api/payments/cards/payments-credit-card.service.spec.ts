@@ -13,22 +13,31 @@ import {
   MOCK_PAYMENTS_CARDS_UNKNWON_ERROR_RESPONSE,
 } from '@api/fixtures/payments/cards/payments-cards-errors.fixtures.spec';
 import { of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { PaymentsCreditCardHttpService } from './http/payments-credit-card-http.service';
 
 import { PaymentsCreditCardService } from './payments-credit-card.service';
+import { ThreeDomainSecureService } from './three-domain-secure/three-domain-secure.service';
 
 describe('PaymentsCreditCardService', () => {
   let service: PaymentsCreditCardService;
   let paymentsHttpService: PaymentsCreditCardHttpService;
+  let threeDomainSecureService: ThreeDomainSecureService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [PaymentsCreditCardService, PaymentsCreditCardHttpService],
+      providers: [
+        PaymentsCreditCardService,
+        PaymentsCreditCardHttpService,
+        {
+          provide: ThreeDomainSecureService,
+          useValue: { checkThreeDomainSecure: () => of(true), cardNeedsToBeRemoved: () => true },
+        },
+      ],
     });
     service = TestBed.inject(PaymentsCreditCardService);
     paymentsHttpService = TestBed.inject(PaymentsCreditCardHttpService);
+    threeDomainSecureService = TestBed.inject(ThreeDomainSecureService);
   });
 
   it('should be created', () => {
@@ -48,6 +57,7 @@ describe('PaymentsCreditCardService', () => {
     describe('and card is valid', () => {
       beforeEach(() => {
         spyOn(paymentsHttpService, 'get').and.returnValue(of(mockPaymentsCreditCard));
+        spyOn(threeDomainSecureService, 'cardNeedsToBeRemoved').and.returnValue(false);
       });
 
       it('should map server response to web context', fakeAsync(() => {
@@ -74,6 +84,7 @@ describe('PaymentsCreditCardService', () => {
       beforeEach(() => {
         spyOn(paymentsHttpService, 'get').and.returnValue(of(mockInvalidPaymentsCreditCard));
         spyOn(paymentsHttpService, 'delete').and.returnValue(of(null));
+        spyOn(threeDomainSecureService, 'cardNeedsToBeRemoved').and.returnValue(true);
       });
 
       it('should set credit card as it does not exist', fakeAsync(() => {
@@ -97,14 +108,11 @@ describe('PaymentsCreditCardService', () => {
 
       it('should notify there was an error with the card', fakeAsync(() => {
         let methodResultError: CardInvalidError;
-        let observableResultError: CardInvalidError;
 
         service.get().subscribe({ error: (e) => (methodResultError = e) });
-        service.creditCard$.subscribe({ error: (e) => (observableResultError = e) });
         tick();
 
         expect(methodResultError instanceof CardInvalidError).toBe(true);
-        expect(observableResultError instanceof CardInvalidError).toBe(true);
       }));
     });
   });

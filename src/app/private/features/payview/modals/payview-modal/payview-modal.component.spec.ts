@@ -43,6 +43,7 @@ import { StepperModule } from '@shared/stepper/stepper.module';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
 
 @Component({
@@ -96,9 +97,7 @@ describe('PayviewModalComponent', () => {
   let fixture: ComponentFixture<FakeComponent>;
   let itemHashSpy: jest.SpyInstance;
   let payviewDeliveryService: PayviewDeliveryService;
-  let payviewDeliverySpy: jasmine.Spy;
   let payviewPromotionService: PayviewPromotionService;
-  let payviewPromotionSpy: jasmine.Spy;
   let payviewService: PayviewService;
   let payviewStateManagementService: PayviewStateManagementService;
   let stepper: StepperComponent;
@@ -128,6 +127,7 @@ describe('PayviewModalComponent', () => {
         DeliveryRadioSelectorModule,
         FormsModule,
         HttpClientTestingModule,
+        NgxPermissionsModule.forRoot(),
         StepperModule,
       ],
       providers: [
