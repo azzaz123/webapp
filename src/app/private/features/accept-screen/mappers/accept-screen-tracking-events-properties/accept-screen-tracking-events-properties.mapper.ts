@@ -60,8 +60,9 @@ export function getViewAcceptOfferEventPropertiesFromProperties(properties: Acce
 }
 
 export function getClickAddEditAddressEventPropertiesFromProperties(properties: AcceptScreenProperties): Partial<ClickAddEditAddress> {
+  const sellerHasFullAddress: boolean = properties.seller.fullAddress && properties.seller.fullAddress !== '';
   return {
-    addOrEdit: properties.seller.fullAddress ? 'add' : 'edit',
+    addOrEdit: !!sellerHasFullAddress ? 'edit' : 'add',
     addressType: getAddressType(properties.carriers),
     requestId: properties.request.id,
     itemId: properties.request.itemId,
@@ -93,7 +94,7 @@ export function getClickAcceptOfferEventPropertiesFromProperties(properties: Acc
     offeredPrice: properties.request.offeredPrice.amount.total,
     itemPrice: properties.request.sellerRevenue.itemPrice.amount.total,
     title: properties.item.title,
-    method: this.getSelectedMethod(properties.carriers),
+    method: getSelectedMethod(properties.carriers),
   };
 }
 
@@ -108,7 +109,7 @@ export function getClickRejectOfferEventPropertiesFromProperties(properties: Acc
     offeredPrice: properties.request.offeredPrice.amount.total,
     itemPrice: properties.request.sellerRevenue.itemPrice.amount.total,
     title: properties.item.title,
-    method: this.getSelectedMethod(properties.carriers),
+    method: getSelectedMethod(properties.carriers),
   };
 }
 
