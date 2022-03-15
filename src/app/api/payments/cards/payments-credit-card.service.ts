@@ -5,20 +5,22 @@ import { mapPaymentsCreditCardToCreditCard } from '@api/payments/cards/mappers/r
 import { PaymentsCardsErrorMapper } from '@api/payments/cards/mappers/errors/payments-cards-error-mapper';
 import { PaymentsCardsErrorResponseApi } from '@api/payments/cards/dtos/errors/payments-cards-error-response-api.interface';
 import { PaymentsCreditCardHttpService } from '@api/payments/cards/http/payments-credit-card-http.service';
-
-import { map, tap, catchError, concatMap, take } from 'rxjs/operators';
-import { Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
-import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
-import { CardInvalidError } from '@api/core/errors/payments/cards';
+import { CardInvalidError } from '@api/core/errors/payments/cards/card-invalid.error';
+import { ReplaySubject, Observable, of } from 'rxjs';
+import { map, concatMap, tap, catchError, take } from 'rxjs/operators';
+import { ThreeDomainSecureService } from './three-domain-secure/three-domain-secure.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaymentsCreditCardService {
-  private readonly creditCardSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>(1);
+  private creditCardSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>(1);
   private errorMapper: PaymentsCardsErrorMapper = new PaymentsCardsErrorMapper();
 
-  constructor(private paymentsCreditCardHttpService: PaymentsCreditCardHttpService) {}
+  constructor(
+    private paymentsCreditCardHttpService: PaymentsCreditCardHttpService,
+    private threeDomainSecureService: ThreeDomainSecureService
+  ) {}
 
   public get creditCard$(): Observable<CreditCard> {
     return this.creditCardSubject.asObservable();
@@ -28,7 +30,7 @@ export class PaymentsCreditCardService {
     this.creditCardSubject.next(creditCard);
   }
 
-  public get(): Observable<CreditCard> {
+  public get(ignoreInvalidCard: boolean = false): Observable<CreditCard> {
     const creditCardGetSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>(1);
 
     this.paymentsCreditCardHttpService
@@ -36,14 +38,14 @@ export class PaymentsCreditCardService {
       .pipe(
         map(mapPaymentsCreditCardToCreditCard),
         concatMap((card) => {
-          const validCard: boolean = !this.isInvalidCard(card);
+          const cardNeedsToBeRemoved: boolean = this.threeDomainSecureService.cardNeedsToBeRemoved(card);
+          const validCard: boolean = ignoreInvalidCard || !cardNeedsToBeRemoved;
           if (validCard) {
             return of(card);
           }
           return this.delete().pipe(
             tap(() => {
               const error: CardInvalidError = new CardInvalidError();
-              this.creditCardSubject.error(error);
               creditCardGetSubject.error(error);
             })
           );
@@ -54,20 +56,24 @@ export class PaymentsCreditCardService {
         creditCardGetSubject.next(creditCard);
       });
 
-    return creditCardGetSubject.asObservable().pipe(take(1));
+    return creditCardGetSubject.asObservable();
   }
 
-  public create(cardSyncRequest: CreditCardSyncRequest): Observable<null> {
+  public create(cardSyncRequest: CreditCardSyncRequest): Observable<void> {
     return this.paymentsCreditCardHttpService.create(cardSyncRequest).pipe(
-      tap(() => this.get()),
-      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error))
+      concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
+      tap(() => this.get(true)),
+      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
+      take(1)
     );
   }
 
-  public update(cardSyncRequest: CreditCardSyncRequest): Observable<null> {
+  public update(cardSyncRequest: CreditCardSyncRequest): Observable<void> {
     return this.paymentsCreditCardHttpService.update(cardSyncRequest).pipe(
-      tap(() => this.get()),
-      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error))
+      concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
+      tap(() => this.get(true)),
+      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
+      take(1)
     );
   }
 
@@ -76,9 +82,5 @@ export class PaymentsCreditCardService {
       tap(() => (this.creditCard = null)),
       catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error))
     );
-  }
-
-  private isInvalidCard(card: CreditCard): boolean {
-    return card.status === CREDIT_CARD_STATUS.INVALID;
   }
 }

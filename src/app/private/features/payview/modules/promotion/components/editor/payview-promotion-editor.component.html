@@ -6,19 +6,14 @@
   <div class="PayviewPromotionEditor__inputWrapper d-flex w-100 align-items-center align-justify-center justify-content-center px-4">
     <div class="form-group row w-100 align-items-center">
       <div class="PayviewPromotionEditor__inputWrapper w-100">
-        <input
-          type="text"
-          [(ngModel)]="promocode"
-          class="PayviewPromotionEditor__input form-control border-0 rounded-0 pb-0 pl-0"
-          id="promocode"
-          [placeholder]="placeholder"
-        />
         <label
-          class="PayviewPromotionEditor__inputPlaceholder border-0 h-100 position-absolute"
-          [class.PayviewPromotionEditor__error]="!!errorMessage"
+          class="PayviewPromotionEditor__inputLabel h-100"
+          [class.PayviewPromotionEditor__inputLabel--error]="!!errorMessage"
           for="promocode"
-          >{{ placeholder }}</label
+          i18n="@@pay_view_buyer_promo_code_pop_up_placeholder"
+          >Promotional code</label
         >
+        <input type="text" [(ngModel)]="promocode" class="PayviewPromotionEditor__input form-control" id="promocode" />
       </div>
       <div *ngIf="!!errorMessage" class="PayviewPromotionEditor__error">
         <span>{{ errorMessage }}</span>

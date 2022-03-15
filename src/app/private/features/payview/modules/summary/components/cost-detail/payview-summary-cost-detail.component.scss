@@ -1,8 +1,11 @@
+@use 'sass:math';
 @import '~style/common';
 
-$border-radius-10: 10px;
-$spacing-14: 14px;
-$spacing-28: 28px;
+$border-radius-10: math.div(10px, 16px) * $spacer;
+$spacing-1: math.div(1px, 16px) * $spacer;
+$spacing-10: math.div(10px, 16px) * $spacer;
+$spacing-14: math.div(14px, 16px) * $spacer;
+$spacing-28: math.div(28px, 16px) * $spacer;
 
 .PayviewSummaryCostDetail {
   padding-top: $spacing-ml;
@@ -46,7 +49,7 @@ $spacing-28: 28px;
     font-weight: $font-weight-chunky;
     line-height: $font-size-base;
     margin-left: $spacing-xs;
-    padding: 1px 10px;
+    padding: $spacing-1 $spacing-10;
   }
 
   &__insuranceDiscount,

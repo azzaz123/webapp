@@ -44,6 +44,7 @@ import { StepperModule } from '@shared/stepper/stepper.module';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
 
 @Component({
@@ -138,6 +139,7 @@ describe('PayviewModalComponent', () => {
         DeliveryRadioSelectorModule,
         FormsModule,
         HttpClientTestingModule,
+        NgxPermissionsModule.forRoot(),
         StepperModule,
       ],
       providers: [

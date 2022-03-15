@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy
 
 import {
   PAYVIEW_PROMOTION_DEFAULT_ERROR,
-  PAYVIEW_PROMOTION_EDITOR_PROMOCODE_PLACEHOLDER,
   PAYVIEW_PROMOTION_EDITOR_TITLE,
   PAYVIEW_PROMOTION_EDITOR_TITLE_SEPARATOR,
   PAYVIEW_PROMOTION_ERRORS,
@@ -45,10 +44,6 @@ export class PayviewPromotionEditorComponent implements OnDestroy, OnInit {
 
   private getErrorMessage(error: PayviewError): string {
     return PAYVIEW_PROMOTION_ERRORS[error.code] ?? PAYVIEW_PROMOTION_DEFAULT_ERROR;
-  }
-
-  public get placeholder(): string {
-    return PAYVIEW_PROMOTION_EDITOR_PROMOCODE_PLACEHOLDER;
   }
 
   private loadTitle(): void {
