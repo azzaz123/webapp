@@ -10,7 +10,8 @@
           class="PayviewPromotionEditor__inputLabel h-100"
           [class.PayviewPromotionEditor__inputLabel--error]="!!errorMessage"
           for="promocode"
-          >{{ placeholder }}</label
+          i18n="@@pay_view_buyer_promo_code_pop_up_placeholder"
+          >Promotional code</label
         >
         <input type="text" [(ngModel)]="promocode" class="PayviewPromotionEditor__input form-control" id="promocode" />
       </div>

@@ -1,7 +1,6 @@
 import { PAYVIEW_PROMOTION_ERROR_CODES } from '@private/features/payview/modules/promotion/types/payview-promotion-error-code.type';
 
 export const PAYVIEW_PROMOTION_DEFAULT_ERROR: string = $localize`:@@pay_view_buyer_promo_code_pop_up_generic_inline_error:Something happened… The promotion hasn't been applied.`;
-export const PAYVIEW_PROMOTION_EDITOR_PROMOCODE_PLACEHOLDER: string = $localize`:@@pay_view_buyer_promo_code_pop_up_placeholder:Promotional code`;
 export const PAYVIEW_PROMOTION_EDITOR_TITLE: string = $localize`:@@pay_view_buyer_promo_code_pop_up_title:Apply the promo. It will make you feel good.`;
 export const PAYVIEW_PROMOTION_EDITOR_TITLE_SEPARATOR: string = '.';
 
