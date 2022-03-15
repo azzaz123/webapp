@@ -136,10 +136,6 @@ describe('TopbarComponent', () => {
             },
           },
           {
-            provide: FeatureFlagService,
-            useClass: FeatureFlagServiceMock,
-          },
-          {
             provide: WINDOW_TOKEN,
             useValue: windowMock,
           },
