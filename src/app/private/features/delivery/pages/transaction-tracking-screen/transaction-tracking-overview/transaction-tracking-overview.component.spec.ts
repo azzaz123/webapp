@@ -1,4 +1,7 @@
-import { ActivatedRoute } from '@angular/router';
+import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { PRIVATE_PATHS, PATH_TO_ACCEPT_SCREEN } from '@private/private-routing-constants';
+import { ActivatedRoute, Router, NavigationStart, RouterEvent } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
@@ -13,15 +16,18 @@ import { TransactionTrackingScreenStoreService } from '@private/features/deliver
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TransactionTrackingOverviewComponent', () => {
   const MOCK_TRANSACTION_TRACKING_ID = 'Laia';
+  const MOCK_ACCEPT_SCREEN_REQUEST_ID: string = '1234';
 
   const transactionTrackingHeaderSelector = 'tsl-transaction-tracking-header';
   const generalInfoSelector = 'tsl-transaction-tracking-general-info';
   const transactionTrackingStatusInfoWrapperSelector = '#transactionTrackingStatusInfoWrapper';
   const transactionTrackingDetailsStatusInfoWrapperSelector = '#transactionTrackingDetailsStatusInfoWrapper';
+  const routerEvents: Subject<RouterEvent> = new Subject();
 
   let component: TransactionTrackingOverviewComponent;
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
@@ -30,10 +36,12 @@ describe('TransactionTrackingOverviewComponent', () => {
   let transactionTrackingScreenStoreService: TransactionTrackingScreenStoreService;
   let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
   let errorActionService: SharedErrorActionService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionTrackingOverviewComponent],
+      imports: [RouterTestingModule],
       providers: [
         {
           provide: TransactionTrackingScreenTrackingEventsService,
@@ -49,6 +57,13 @@ describe('TransactionTrackingOverviewComponent', () => {
                 get: () => MOCK_TRANSACTION_TRACKING_ID,
               },
             },
+          },
+        },
+        {
+          provide: Router,
+          useValue: {
+            navigate(): void {},
+            events: routerEvents,
           },
         },
         {
@@ -73,6 +88,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   });
 
   beforeEach(() => {
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
@@ -90,6 +106,7 @@ describe('TransactionTrackingOverviewComponent', () => {
       spyOn(transactionTrackingService, 'get').and.returnValue(of(MOCK_TRANSACTION_TRACKING));
       spyOn(transactionTrackingService, 'getDetails').and.returnValue(of(MOCK_TRANSACTION_TRACKING_DETAILS));
       spyOn(transactionTrackingScreenTrackingEventsService, 'trackViewTTSScreen');
+      spyOn(router, 'navigate');
 
       fixture.detectChanges();
     });
@@ -145,6 +162,22 @@ describe('TransactionTrackingOverviewComponent', () => {
       component.ngOnInit();
 
       expect(transactionTrackingDetailsExpected).toStrictEqual(MOCK_TRANSACTION_TRACKING_DETAILS);
+    });
+
+    describe('and the user navigates back to the Accept Screen', () => {
+      beforeEach(fakeAsync(() => {
+        const pathToAcceptScreen: string = `${PATH_TO_ACCEPT_SCREEN}/${MOCK_ACCEPT_SCREEN_REQUEST_ID}`;
+        routerEvents.next(new NavigationStart(1, pathToAcceptScreen, 'popstate'));
+
+        tick();
+        fixture.detectChanges();
+      }));
+
+      it('should redirect to the streamline', () => {
+        const pathToStreamlineOngoing: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}/${STREAMLINE_PATHS.ONGOING}`;
+
+        expect(router.navigate).toHaveBeenCalledWith([pathToStreamlineOngoing]);
+      });
     });
   });
 
