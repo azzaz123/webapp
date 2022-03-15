@@ -1,15 +1,28 @@
-import { NgControl } from '@angular/forms';
-import { Directive, Input } from '@angular/core';
+import { FormControl, NgControl } from '@angular/forms';
+import { AfterViewInit, Directive, Input } from '@angular/core';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[disableControl]',
 })
-export class DisableControlDirective {
+export class DisableControlDirective implements AfterViewInit {
+  private action: 'disable' | 'enable';
+
   @Input() set disableControl(condition: boolean) {
-    const action = condition ? 'disable' : 'enable';
-    this.ngControl.control[action]({ emitEvent: false });
+    this.action = condition ? 'disable' : 'enable';
+
+    if (this.ngControl.control) {
+      this.launchAction();
+    }
   }
 
   constructor(private ngControl: NgControl) {}
+
+  ngAfterViewInit() {
+    this.launchAction();
+  }
+
+  private launchAction(): void {
+    this.ngControl.control[this.action]({ emitEvent: false });
+  }
 }
