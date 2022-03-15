@@ -100,10 +100,7 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
   }
 
   private isAcceptScreenRedirection(url: string): boolean {
-    if (url.includes(PATH_TO_ACCEPT_SCREEN)) {
-      return true;
-    }
-    return false;
+    return url.includes(PATH_TO_ACCEPT_SCREEN);
   }
 
   private redirectToStreamlineOngoing(): void {
