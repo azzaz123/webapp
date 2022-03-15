@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { UnreadMessagesCounterDto } from '@api/bff/instant-messaging/dtos/messages-unread-dto.interface';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
