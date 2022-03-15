@@ -21,10 +21,13 @@ export class ThreeDomainSecureService {
   public checkThreeDomainSecure(getCreditCardRequest: GetCreditCardRequest): Observable<void> {
     return this.isThreeDSecureEnabled().pipe(
       concatMap((enabled) => {
+        if (!enabled) {
+          return of(null);
+        }
         const threeDSFlow = this.checkCardUntilKnownStatus(getCreditCardRequest).pipe(
           concatMap((card) => (this.isPending3DSCard(card) ? this.start3DSValidation(card) : of(card)))
         );
-        return enabled ? threeDSFlow : of(null);
+        return threeDSFlow;
       }),
       take(1)
     );
