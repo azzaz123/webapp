@@ -1,10 +1,11 @@
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { ItemsBySubscription, ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { DurationMapped, ItemsBySubscription, ItemWithProducts, ProductMapped } from '@api/core/model/bumps/item-products.interface';
 import { BumpsPackageBalanceDTO } from '@api/visibility/dtos/bumps/bumps-package-balance.interface';
 import { Item } from '@core/item/item';
 import { ItemContent, ItemsWithAvailableProductsResponse, Product } from '@core/item/item-response.interface';
 import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
+import { MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED } from '@fixtures/subscriptions.fixtures.spec';
 
 export const MOCK_BUMPS_PACKAGE_BALANCE: BumpsPackageBalanceDTO[] = [
   {
@@ -270,6 +271,38 @@ const ITEM_WITH_PRODUCTS_2: ItemsWithAvailableProductsResponse = {
   productList: PRODUCT_LIST,
 };
 
+export const DURATION_LIST_FREE_BUMPS_MAPPED: DurationMapped[] = [
+  {
+    ...PRODUCT_LIST[0].durations[0],
+    isFreeOption: true,
+  },
+  {
+    ...PRODUCT_LIST[0].durations[1],
+    isFreeOption: false,
+  },
+  {
+    ...PRODUCT_LIST[0].durations[2],
+    isFreeOption: false,
+  },
+];
+
+export const DURATION_LIST_FREE_BUMPS_WITHOUT_PRODUCT_MAPPED: DurationMapped[] = [
+  {
+    ...PRODUCT_LIST[0].durations[1],
+    isFreeOption: false,
+  },
+  {
+    ...PRODUCT_LIST[0].durations[2],
+    isFreeOption: false,
+  },
+  {
+    id: null,
+    duration: 48,
+    market_code: null,
+    isFreeOption: true,
+  },
+];
+
 export const ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE: ItemsWithAvailableProductsResponse[] = [ITEM_WITH_PRODUCTS_1, ITEM_WITH_PRODUCTS_2];
 
 export const ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED: ItemWithProducts[] = [
@@ -286,6 +319,31 @@ export const ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED: ItemWithProducts[] = [
     subscription: null,
   },
 ];
+
+export const ITEMS_WITH_AVAILABLE_PRODUCTS_FREE_BUMPS_MAPPED: ItemWithProducts = {
+  item: ITEM_1_MAPPED,
+  products: [
+    ...PRODUCT_LIST,
+    {
+      ...PRODUCT_LIST[0],
+      durations: DURATION_LIST_FREE_BUMPS_MAPPED,
+    },
+  ],
+  isProvincialBump: true,
+  subscription: MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0],
+};
+
+export const ITEMS_WITH_AVAILABLE_PRODUCTS_FREE_BUMPS_NO_PRODUCTS_MAPPED: ItemWithProducts = {
+  item: ITEM_1_MAPPED,
+  products: [
+    {
+      ...PRODUCT_LIST[0],
+      durations: DURATION_LIST_FREE_BUMPS_WITHOUT_PRODUCT_MAPPED,
+    },
+  ],
+  isProvincialBump: true,
+  subscription: MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0],
+};
 
 export const ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED_BY_SUBSCRIPTION_NO_SUB: ItemsBySubscription[] = [
   {

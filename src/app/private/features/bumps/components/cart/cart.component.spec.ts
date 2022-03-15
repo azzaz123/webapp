@@ -12,6 +12,7 @@ import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { MOCK_ITEMS_TO_BUY_FREE, MOCK_ITEMS_TO_BUY_WITHOUT_FREE } from '@fixtures/visibility.fixtures.spec';
 import { PACKS_TYPES } from '@core/payments/pack';
 import { BumpsTrackingEventsService } from '@private/features/bumps/services/bumps-tracking-events.service';
+import { MOCK_CREDIT_INFO } from '@fixtures/payments.fixtures.spec';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -60,11 +61,7 @@ describe('CartComponent', () => {
     errorService = TestBed.inject(ErrorsService);
     visibilityService = TestBed.inject(VisibilityApiService);
     bumpTrackingService = TestBed.inject(BumpsTrackingEventsService);
-    component.creditInfo = {
-      currencyName: PACKS_TYPES.WALLACREDITS,
-      credit: 20,
-      factor: 1,
-    };
+    component.creditInfo = MOCK_CREDIT_INFO;
     fixture.detectChanges();
   });
 

@@ -58,7 +58,7 @@
             </ng-container>
           </div>
         </div>
-        <div>
+        <div class="CheckoutItem__durations">
           <div class="CheckoutItem__subtitle mb-1 mt-3" i18n="@@highlight_item_view_pro_user_item_card_duration_label_web_specific">
             Duration
           </div>
@@ -79,7 +79,7 @@
   </div>
   <div *ngIf="selectedDuration && selectedType" class="text-right w-100 mt-4">
     <ng-container *ngIf="isFreeOptionSelected; else noFreePrice">
-      <span class="CheckoutItem__price--discount mr-2">
+      <span class="CheckoutItem__price--discount mr-2" *ngIf="selectedDuration?.market_code">
         {{ selectedDuration?.market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
       </span>
       <span class="CheckoutItem__price">{{ 0 | customCurrency: creditInfo?.currencyName }}</span>
