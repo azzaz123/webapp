@@ -15,28 +15,31 @@ import {
   ViewAcceptOffer,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AcceptScreenTrackingEventsService {
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private analyticsService: AnalyticsService, private featureFlagService: FeatureFlagService) {}
 
   public trackViewAcceptOffer(payload: Partial<ViewAcceptOffer>): void {
+    const { itemId, buyerUserId, requestId, categoryId, isPro, totalPrice, offeredPrice, itemPrice, title, method, buyerCountry } = payload;
     const pageViewEvent: AnalyticsPageView<ViewAcceptOffer> = {
       name: ANALYTICS_EVENT_NAMES.ViewAcceptOffer,
       attributes: {
-        itemId: payload.itemId,
-        buyerUserId: payload.buyerUserId,
-        requestId: payload.requestId,
-        categoryId: payload.categoryId,
-        isPro: payload.isPro,
-        totalPrice: payload.totalPrice,
-        offeredPrice: payload.offeredPrice,
-        itemPrice: payload.itemPrice,
-        title: payload.title,
-        method: payload.method,
-        buyerCountry: payload.buyerCountry,
+        itemId,
+        buyerUserId,
+        requestId,
+        categoryId,
+        isPro,
+        totalPrice,
+        offeredPrice,
+        itemPrice,
+        title,
+        method,
+        buyerCountry,
         screenId: SCREEN_IDS.AcceptOffer,
       },
     };
@@ -44,36 +47,38 @@ export class AcceptScreenTrackingEventsService {
     this.analyticsService.trackPageView(pageViewEvent);
   }
 
-  public trackClickItemCard(itemCardDetails: Partial<ClickItemCard>): void {
+  public async trackClickItemCard(payload: Partial<ClickItemCard>): Promise<void> {
+    const { itemId, categoryId, salePrice, isCarDealer, isPro, sellerUserId, sellerRating, title } = payload;
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.AcceptOffer,
-        itemId: itemCardDetails.itemId,
-        categoryId: itemCardDetails.categoryId,
-        title: itemCardDetails.title,
-        salePrice: itemCardDetails.salePrice,
-        isPro: itemCardDetails.isPro,
-        isCarDealer: itemCardDetails.isCarDealer,
+        itemId,
+        categoryId,
+        title,
+        salePrice,
+        isPro,
+        isCarDealer,
         position: 0,
-        sellerUserId: itemCardDetails.sellerUserId,
-        shippingAllowed: true,
-        sellerRating: itemCardDetails.sellerRating,
+        sellerUserId,
+        shippingAllowed: await this.isDeliveryFlagEnabled,
+        sellerRating,
       },
     };
 
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickOtherProfile(profileDetails: Partial<ClickOtherProfile>): void {
+  public trackClickOtherProfile(payload: Partial<ClickOtherProfile>): void {
+    const { isPro, sellerUserId } = payload;
     const event: AnalyticsEvent<ClickOtherProfile> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.AcceptOffer,
-        isPro: profileDetails.isPro,
-        sellerUserId: profileDetails.sellerUserId,
+        isPro,
+        sellerUserId,
       },
     };
 
@@ -81,21 +86,22 @@ export class AcceptScreenTrackingEventsService {
   }
 
   public trackClickAcceptOffer(payload: Partial<ClickAcceptOffer>): void {
+    const { itemId, buyerUserId, requestId, categoryId, isPro, totalPrice, offeredPrice, itemPrice, title, method } = payload;
     const event: AnalyticsEvent<ClickAcceptOffer> = {
       name: ANALYTICS_EVENT_NAMES.ClickAcceptOffer,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.AcceptOffer,
-        itemId: payload.itemId,
-        buyerUserId: payload.buyerUserId,
-        requestId: payload.requestId,
-        categoryId: payload.categoryId,
-        isPro: payload.isPro,
-        totalPrice: payload.totalPrice,
-        offeredPrice: payload.offeredPrice,
-        itemPrice: payload.itemPrice,
-        title: payload.title,
-        method: payload.method,
+        itemId,
+        buyerUserId,
+        requestId,
+        categoryId,
+        isPro,
+        totalPrice,
+        offeredPrice,
+        itemPrice,
+        title,
+        method,
       },
     };
 
@@ -103,21 +109,22 @@ export class AcceptScreenTrackingEventsService {
   }
 
   public trackClickRejectOffer(payload: Partial<ClickRejectOffer>): void {
+    const { itemId, buyerUserId, requestId, categoryId, isPro, totalPrice, offeredPrice, itemPrice, title, method } = payload;
     const event: AnalyticsEvent<ClickRejectOffer> = {
       name: ANALYTICS_EVENT_NAMES.ClickRejectOffer,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
-        itemId: payload.itemId,
-        buyerUserId: payload.buyerUserId,
-        requestId: payload.requestId,
-        categoryId: payload.categoryId,
-        isPro: payload.isPro,
-        totalPrice: payload.totalPrice,
-        offeredPrice: payload.offeredPrice,
-        itemPrice: payload.itemPrice,
-        title: payload.title,
         screenId: SCREEN_IDS.AcceptOffer,
-        method: payload.method,
+        itemId,
+        buyerUserId,
+        requestId,
+        categoryId,
+        isPro,
+        totalPrice,
+        offeredPrice,
+        itemPrice,
+        title,
+        method,
       },
     };
 
@@ -125,16 +132,17 @@ export class AcceptScreenTrackingEventsService {
   }
 
   public trackClickAddEditAddress(payload: Partial<ClickAddEditAddress>): void {
+    const { addOrEdit, addressType, requestId, itemId, itemPrice } = payload;
     const event: AnalyticsEvent<ClickAddEditAddress> = {
       name: ANALYTICS_EVENT_NAMES.ClickAddEditAddress,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.AcceptOffer,
-        addOrEdit: payload.addOrEdit,
-        addressType: payload.addressType,
-        requestId: payload.requestId,
-        itemId: payload.itemId,
-        itemPrice: payload.itemPrice,
+        addOrEdit,
+        addressType,
+        requestId,
+        itemId,
+        itemPrice,
       },
     };
 
@@ -142,16 +150,17 @@ export class AcceptScreenTrackingEventsService {
   }
 
   public trackClickHelpTransactional(payload: Partial<ClickHelpTransactional>): void {
+    const { itemId, categoryId, itemPrice, sellerUserId, helpName } = payload;
     const event: AnalyticsEvent<ClickHelpTransactional> = {
       name: ANALYTICS_EVENT_NAMES.ClickHelpTransactional,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.AcceptOffer,
-        itemId: payload.itemId,
-        categoryId: payload.categoryId,
-        itemPrice: payload.itemPrice,
-        sellerUserId: payload.sellerUserId,
-        helpName: payload.helpName,
+        itemId,
+        categoryId,
+        itemPrice,
+        sellerUserId,
+        helpName,
       },
     };
 
@@ -159,22 +168,27 @@ export class AcceptScreenTrackingEventsService {
   }
 
   public trackClickScheduleHPU(payload: Partial<ClickScheduleHPU>): void {
+    const { itemId, buyerUserId, requestId, categoryId, totalPrice, offeredPrice, itemPrice, title } = payload;
     const event: AnalyticsEvent<ClickScheduleHPU> = {
       name: ANALYTICS_EVENT_NAMES.ClickScheduleHPU,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes: {
         screenId: SCREEN_IDS.AcceptOffer,
-        itemId: payload.itemId,
-        buyerUserId: payload.buyerUserId,
-        requestId: payload.requestId,
-        categoryId: payload.categoryId,
-        totalPrice: payload.totalPrice,
-        offeredPrice: payload.offeredPrice,
-        itemPrice: payload.itemPrice,
-        title: payload.title,
+        itemId,
+        buyerUserId,
+        requestId,
+        categoryId,
+        totalPrice,
+        offeredPrice,
+        itemPrice,
+        title,
       },
     };
 
     this.analyticsService.trackEvent(event);
+  }
+
+  private get isDeliveryFlagEnabled(): Promise<boolean> {
+    return this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).toPromise();
   }
 }
