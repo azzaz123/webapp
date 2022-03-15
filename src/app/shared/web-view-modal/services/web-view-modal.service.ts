@@ -1,25 +1,20 @@
 import { Inject, Injectable } from '@angular/core';
 import { WindowMessageService } from '@core/window-message/services/window-message.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import { Observable, Subject, timer } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebViewModalService {
-  private readonly windowRefWasClosed: Subject<void> = new Subject<void>();
   private childWindowRef: Window;
 
   constructor(@Inject(WINDOW_TOKEN) private window: Window, private windowMessageService: WindowMessageService) {}
 
   public open(url: string): Observable<void> {
     this.childWindowRef = this.openNewWindowAsModal(url);
-    this.checkWindowRefClosed();
-    return this.windowMessageService.listen(this.childWindowRef).pipe(
-      map(() => {}),
-      takeUntil(this.windowRefWasClosed)
-    );
+    return this.windowMessageService.listen(this.childWindowRef).pipe(map(() => {}));
   }
 
   // TODO: This will be replaced in the future by opening a component as a modal with an iframe inside ("WebViewModalComponent", coming soon tm)
@@ -67,23 +62,5 @@ export class WebViewModalService {
       newWindow.focus();
     }
     return newWindow;
-  }
-
-  //TODO: Will be also removed when including web view modal component
-  private checkWindowRefClosed(): void {
-    timer(0, 1000)
-      .pipe(
-        tap(() => {
-          try {
-            if (this.childWindowRef.closed) {
-              this.windowRefWasClosed.next();
-            }
-          } catch {
-            this.windowRefWasClosed.next();
-          }
-        }),
-        takeUntil(this.windowRefWasClosed)
-      )
-      .subscribe();
   }
 }
