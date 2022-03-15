@@ -86,7 +86,6 @@ export class PrivateComponent implements OnInit {
   }
 
   private initializeRouterEventListeners(): void {
-    this.updateUrlAndSendAnalytics();
     this.setTitle();
     this.setBodyClass();
   }
@@ -111,24 +110,6 @@ export class PrivateComponent implements OnInit {
     }
 
     return window.location.reload();
-  }
-
-  private updateUrlAndSendAnalytics(): void {
-    this.router.events
-      .pipe(
-        distinctUntilChanged((previous: any, current: any) => {
-          if (current instanceof NavigationEnd) {
-            this.previousUrl = previous.url;
-            this.currentUrl = current.url;
-            return previous.url === current.url;
-          }
-          return true;
-        })
-      )
-      .subscribe((x: any) => {
-        ga('set', 'page', x.url);
-        ga('send', 'pageview');
-      });
   }
 
   private updateSessionCookie(): void {
