@@ -13,8 +13,6 @@ import { TabbarService } from '../core/services/tabbar.service';
 import { Router } from '@angular/router';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { NotificationApiService } from '@api/notification/notification-api.service';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 describe('TabbarComponent', () => {
   let component: TabbarComponent;
@@ -67,10 +65,6 @@ describe('TabbarComponent', () => {
           },
           EventService,
           TabbarService,
-          {
-            provide: FeatureFlagService,
-            useClass: FeatureFlagServiceMock,
-          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
