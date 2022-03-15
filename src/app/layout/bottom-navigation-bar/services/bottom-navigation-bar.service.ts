@@ -26,7 +26,7 @@ export class BottomNavigationBarService {
     );
   }
 
-  get hidden$() {
+  get hidden$(): Observable<boolean> {
     return this.hiddenSubject.asObservable();
   }
 
@@ -34,11 +34,11 @@ export class BottomNavigationBarService {
     this.hiddenSubject.next(value);
   }
 
-  public hideNavigationBar() {
+  public hideNavigationBar(): void {
     this.hidden = true;
   }
 
-  public showNavigationBar() {
+  public showNavigationBar(): void {
     this.hidden = false;
   }
 }
