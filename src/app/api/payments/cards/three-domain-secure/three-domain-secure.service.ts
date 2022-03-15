@@ -35,8 +35,8 @@ export class ThreeDomainSecureService {
   }
 
   private checkCardUntilKnownStatus(getCreditCard: GetCreditCardRequest): Observable<CreditCard> {
-    const checkIntervalMs = 1000;
-    const maxChecks = 30;
+    const checkIntervalMs: number = 1000;
+    const maxChecks: number = 30;
     const checkCardSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>();
 
     timer(0, checkIntervalMs)
