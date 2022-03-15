@@ -417,7 +417,7 @@
     "accept_view_seller_sender_details_label": "Mittente",
     "accept_view_seller_sender_details_add_button": "Aggiungi",
     "accept_view_seller_sender_details_edit_button": "Modifica",
-    "accept_view_seller_bottom_bar_reject_button": "Rifiuta",
+    "accept_view_seller_buy_flow_test_variant_b_reject_button": "Non posso venderlo ora",
     "accept_view_seller_bottom_bar_accept_button": "Accetta",
     "accept_view_seller_all_all_snackbar_pending_shipping_method_error": "Per favore, seleziona un metodo per inviare il pacco.",
     "web_cart_451": "I miei articoli in evidenza",
