@@ -1,8 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
-import { DeliveryBuyerDeliveryMethod, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
+import {
+  DeliveryBuyerDefaultDeliveryMethod,
+  DeliveryBuyerDeliveryMethod,
+  DeliveryBuyerDeliveryMethods,
+} from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { mapToPayviewError } from '@private/features/payview/services/state-management/payview-state-management.mappers';
 import { PAYVIEW_EVENT_PAYLOAD } from '@private/features/payview/types/payview-event-payload.type';
@@ -59,8 +64,10 @@ export class PayviewStateManagementService {
 
   public refreshByDelivery(): void {
     const payviewState = { ...this.stateSubject.getValue() };
+    const currentDeliveryMethod: DELIVERY_MODE = payviewState.delivery.methods.current.method;
+
     this.refreshDeliveryCosts(payviewState);
-    this.refreshDeliveryMethods(payviewState);
+    this.refreshDeliveryMethods(payviewState, currentDeliveryMethod);
     this.refreshCosts(payviewState, null);
   }
 
@@ -72,7 +79,7 @@ export class PayviewStateManagementService {
 
   public setDeliveryMethod(deliveryMethod: DeliveryBuyerDeliveryMethod): void {
     const payviewState: PayviewState = { ...this.stateSubject.getValue() };
-    payviewState.delivery.methods.current = deliveryMethod;
+    this.setCurrent(payviewState, deliveryMethod.method);
     this.refreshCosts(payviewState, null);
   }
 
@@ -98,6 +105,15 @@ export class PayviewStateManagementService {
           subscription.unsubscribe();
         },
       });
+  }
+
+  private getDefaultDeliveryMethod(
+    deliveryMethods: DeliveryBuyerDeliveryMethod[],
+    mode: DELIVERY_MODE
+  ): DeliveryBuyerDefaultDeliveryMethod {
+    return {
+      index: deliveryMethods.findIndex((method: DeliveryBuyerDeliveryMethod) => method.method === mode),
+    };
   }
 
   private refreshCosts(payviewState: PayviewState, promocode: string): void {
@@ -145,13 +161,15 @@ export class PayviewStateManagementService {
       });
   }
 
-  private refreshDeliveryMethods(payviewState: PayviewState): void {
+  private refreshDeliveryMethods(payviewState: PayviewState, currentMethod: DELIVERY_MODE): void {
     const subscription: Subscription = this.payviewService
       .getDeliveryMethods(payviewState.itemDetails.itemHash)
       .pipe(take(1))
       .subscribe({
         next: (deliveryMethods: DeliveryBuyerDeliveryMethods) => {
           payviewState.delivery.methods = deliveryMethods;
+          this.setCurrent(payviewState, currentMethod);
+
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_REFRESH_DELIVERY_METHODS));
           this.stateSubject.next(payviewState);
         },
@@ -163,5 +181,14 @@ export class PayviewStateManagementService {
           subscription.unsubscribe();
         },
       });
+  }
+
+  private setCurrent(payviewState: PayviewState, mode: DELIVERY_MODE): void {
+    const defaultIndex: DeliveryBuyerDefaultDeliveryMethod = this.getDefaultDeliveryMethod(
+      payviewState.delivery.methods.deliveryMethods,
+      mode
+    );
+    payviewState.delivery.methods.default = defaultIndex;
+    payviewState.delivery.methods.current = payviewState.delivery.methods.deliveryMethods[defaultIndex.index];
   }
 }
