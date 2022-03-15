@@ -46,18 +46,8 @@ export class BankDetailsOverviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.listenForReactiveChanges();
     this.getBankAccountAndCreditCard();
-
-    this.bankAccount$ = this.bankAccountService.bankAccount$.pipe(
-      catchError((error: unknown) => {
-        return this.handleError(error);
-      })
-    );
-    this.creditCard$ = this.paymentsCreditCardService.creditCard$.pipe(
-      catchError((error: unknown) => {
-        return this.handleError(error);
-      })
-    );
   }
 
   public redirect(URL: string): void {
@@ -112,9 +102,17 @@ export class BankDetailsOverviewComponent implements OnInit {
     );
   }
 
+  private listenForReactiveChanges(): void {
+    this.bankAccount$ = this.bankAccountService.bankAccount$.pipe(catchError((error: unknown) => this.handleError(error)));
+    this.creditCard$ = this.paymentsCreditCardService.creditCard$;
+  }
+
   private getBankAccountAndCreditCard(): void {
     this.bankAccountService.get().subscribe();
-    this.paymentsCreditCardService.get().subscribe();
+    this.paymentsCreditCardService
+      .get()
+      .pipe(catchError((error: unknown) => this.handleError(error)))
+      .subscribe();
   }
 
   private deleteCard(): void {
@@ -160,6 +158,6 @@ export class BankDetailsOverviewComponent implements OnInit {
       return of();
     }
     this.errorActionService.show(error);
-    return throwError(error);
+    return of();
   }
 }
