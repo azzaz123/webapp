@@ -14,7 +14,7 @@ import { ThreeDomainSecureService } from './three-domain-secure/three-domain-sec
   providedIn: 'root',
 })
 export class PaymentsCreditCardService {
-  private readonly creditCardSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>(1);
+  private creditCardSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>(1);
   private errorMapper: PaymentsCardsErrorMapper = new PaymentsCardsErrorMapper();
 
   constructor(
@@ -32,6 +32,7 @@ export class PaymentsCreditCardService {
 
   public get(ignoreInvalidCard: boolean = false): Observable<CreditCard> {
     const creditCardGetSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>(1);
+    this.creditCardSubject = new ReplaySubject<CreditCard>(1);
 
     this.paymentsCreditCardHttpService
       .get()
