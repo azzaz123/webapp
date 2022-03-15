@@ -3,13 +3,25 @@ import { environment } from '@environments/environment';
 import { ExternalCommsService } from './external-comms.service';
 import { UserService } from '@core/user/user.service';
 import { MockUserService } from '@fixtures/user.fixtures.spec';
+import { NotificationApiService } from '@api/notification/notification-api.service';
+import { of } from 'rxjs';
 
 describe('ExternalCommsService', () => {
   let service: ExternalCommsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: UserService, useValue: MockUserService }],
+      providers: [
+        { provide: UserService, useValue: MockUserService },
+        {
+          provide: NotificationApiService,
+          useValue: {
+            totalUnreadNotifications$: of(0),
+            getNotifications: () => {},
+            refreshUnreadNotifications: () => {},
+          },
+        },
+      ],
     });
     service = TestBed.inject(ExternalCommsService);
   });

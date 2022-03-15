@@ -170,6 +170,7 @@ import { DeliveryDevelopmentDirective } from './directives/delivery-development/
     PaymentsCardInfoModule,
     ConfirmationModalModule,
     ItemRouteDirective,
+    RouterLinkDirectiveStub,
   ],
   declarations: [
     RestrictInputDirective,

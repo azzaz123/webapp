@@ -7,7 +7,7 @@ const MOCK_BASE_ERROR_RESPONSE: AcceptRequestErrorResponse = {
   error: [],
 };
 
-const MOCK_ACCEPT_SCREEN_NON_PURCHASABLE_ITEM_ERROR: AcceptRequestErrorDto = {
+export const MOCK_ACCEPT_SCREEN_NON_PURCHASABLE_ITEM_ERROR: AcceptRequestErrorDto = {
   error_code: ACCEPT_REQUEST_ERROR_CODES.NON_PURCHASABLE_ITEM,
   message: 'SDHSIDUSD ♥',
 };
@@ -107,7 +107,7 @@ export const MOCK_ACCEPT_SCREEN_REQUEST_NOT_FOUND_ERROR_RESPONSE: AcceptRequestE
   error: [MOCK_ACCEPT_SCREEN_REQUEST_NOT_FOUND_ERROR],
 };
 
-const MOCK_ACCEPT_SCREEN_POSTAL_CODE_NOT_FOUND_ERROR: AcceptRequestErrorDto = {
+export const MOCK_ACCEPT_SCREEN_POSTAL_CODE_NOT_FOUND_ERROR: AcceptRequestErrorDto = {
   error_code: ACCEPT_REQUEST_ERROR_CODES.POSTAL_CODE_NOT_FOUND,
   message: 'dfgdrtres ♥',
 };

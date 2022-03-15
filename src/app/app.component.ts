@@ -3,7 +3,6 @@ import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, OpenWallapop } from '@core
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DeviceService } from '@core/device/device.service';
 import { SessionService } from '@core/session/session.service';
-import { StandaloneService } from '@core/standalone/services/standalone.service';
 import { Observable } from 'rxjs';
 import { concatMap, take } from 'rxjs/operators';
 
@@ -13,16 +12,10 @@ import { concatMap, take } from 'rxjs/operators';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private analyticsService: AnalyticsService,
-    private deviceService: DeviceService,
-    private sessionService: SessionService,
-    private standaloneService: StandaloneService
-  ) {}
+  constructor(private analyticsService: AnalyticsService, private deviceService: DeviceService, private sessionService: SessionService) {}
 
   ngOnInit(): void {
     this.onNewSessionStart().subscribe(() => this.trackOpenWallapop());
-    this.trackStandaloneModeStatus();
   }
 
   private onNewSessionStart(): Observable<void> {
@@ -43,11 +36,5 @@ export class AppComponent implements OnInit {
         webDeviceId: this.deviceService.getDeviceId(),
       },
     });
-  }
-
-  private trackStandaloneModeStatus(): void {
-    if (this.standaloneService.standalone) {
-      ga('send', 'event', 'Standalone', 'enabled');
-    }
   }
 }

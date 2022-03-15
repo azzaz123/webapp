@@ -1,1 +1,12 @@
 @import '~style/common';
+
+.page-content {
+  position: relative;
+
+  &__tabs {
+    position: absolute;
+    z-index: 1;
+    left: $spacing-m;
+    top: $spacing-m;
+  }
+}
