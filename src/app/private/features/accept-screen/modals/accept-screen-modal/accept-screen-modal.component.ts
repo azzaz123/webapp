@@ -24,6 +24,16 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { AcceptRequestError } from '@api/core/errors/delivery/accept-screen/accept-request';
 import { AcceptScreenTrackingEventsService } from '../../services/accept-screen-tracking-events/accept-screen-tracking-events.service';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
+import {
+  getClickAcceptOfferEventPropertiesFromProperties,
+  getClickAddEditAddressEventPropertiesFromProperties,
+  getClickHelpTransactionalEventPropertiesFromProperties,
+  getClickItemCardEventPropertiesFromProperties,
+  getClickOtherProfileEventPropertiesFromSeller,
+  getClickRejectOfferEventPropertiesFromProperties,
+  getClickScheduleHPUEventPropertiesFromProperties,
+  getViewAcceptOfferEventPropertiesFromProperties,
+} from '../../mappers/accept-screen-tracking-events-properties/accept-screen-tracking-events-properties.mapper';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -156,39 +166,17 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
   }
 
   public trackClickItemCardEvent(): void {
-    const properties = this.acceptScreenStoreService.requestProperties;
-
-    this.acceptScreenTrackingEventsService.trackClickItemCard({
-      itemId: properties.itemId,
-      categoryId: null,
-      title: null,
-      salePrice: properties.sellerRevenue.itemPrice.amount.total,
-      isPro: null,
-      isCarDealer: null,
-      sellerUserId: null,
-      sellerRating: null,
-    });
+    this.acceptScreenTrackingEventsService.trackClickItemCard(getClickItemCardEventPropertiesFromProperties(this.properties));
   }
 
   public trackClickOtherProfileEvent(): void {
-    const properties = this.acceptScreenStoreService.requestProperties;
-
-    this.acceptScreenTrackingEventsService.trackClickOtherProfile({
-      isPro: null,
-      sellerUserId: null,
-    });
+    this.acceptScreenTrackingEventsService.trackClickOtherProfile(getClickOtherProfileEventPropertiesFromSeller(this.properties.seller));
   }
 
   public trackClickHelpTransactionalEvent(): void {
-    const properties = this.acceptScreenStoreService.requestProperties;
-
-    this.acceptScreenTrackingEventsService.trackClickHelpTransactional({
-      itemId: properties.itemId,
-      categoryId: null,
-      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
-      sellerUserId: null,
-      helpName: 'Help Top Accept Screen',
-    });
+    this.acceptScreenTrackingEventsService.trackClickHelpTransactional(
+      getClickHelpTransactionalEventPropertiesFromProperties(this.properties)
+    );
   }
 
   private acceptRequest(): void {
@@ -278,31 +266,11 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
   }
 
   private trackViewAcceptOfferEvent(): void {
-    const properties = this.acceptScreenStoreService.requestProperties;
-    this.acceptScreenTrackingEventsService.trackViewAcceptOffer({
-      itemId: properties.itemId,
-      buyerUserId: properties.buyer.id,
-      requestId: properties.id,
-      categoryId: null,
-      isPro: null,
-      totalPrice: properties.sellerRevenue.totalPrice.amount.total,
-      offeredPrice: properties.offeredPrice.amount.total,
-      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
-      title: null,
-      method: null,
-      buyerCountry: null,
-    });
+    this.acceptScreenTrackingEventsService.trackViewAcceptOffer(getViewAcceptOfferEventPropertiesFromProperties(this.properties));
   }
 
   private trackClickAddEditAddressEvent(): void {
-    const properties = this.acceptScreenStoreService.requestProperties;
-    this.acceptScreenTrackingEventsService.trackClickAddEditAddress({
-      addOrEdit: null,
-      addressType: null,
-      requestId: properties.id,
-      itemId: properties.itemId,
-      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
-    });
+    this.acceptScreenTrackingEventsService.trackClickAddEditAddress(getClickAddEditAddressEventPropertiesFromProperties(this.properties));
   }
 
   private trackHPUEventWhenCarrierChanges(): void {
@@ -320,48 +288,18 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
   }
 
   private trackClickScheduleHPUEvent(): void {
-    const properties = this.acceptScreenStoreService.requestProperties;
-    this.acceptScreenTrackingEventsService.trackClickScheduleHPU({
-      itemId: properties.itemId,
-      buyerUserId: properties.buyer.id,
-      requestId: properties.id,
-      categoryId: null,
-      totalPrice: properties.sellerRevenue.totalPrice.amount.total,
-      offeredPrice: properties.offeredPrice.amount.total,
-      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
-      title: null,
-    });
+    this.acceptScreenTrackingEventsService.trackClickScheduleHPU(getClickScheduleHPUEventPropertiesFromProperties(this.properties));
   }
 
   private trackClickAcceptOfferEvent(): void {
-    const properties = this.acceptScreenStoreService.requestProperties;
-    this.acceptScreenTrackingEventsService.trackClickAcceptOffer({
-      itemId: properties.itemId,
-      buyerUserId: null,
-      requestId: properties.id,
-      categoryId: null,
-      isPro: null,
-      totalPrice: properties.sellerRevenue.totalPrice.amount.total,
-      offeredPrice: properties.offeredPrice.amount.total,
-      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
-      title: null,
-      method: null,
-    });
+    this.acceptScreenTrackingEventsService.trackClickAcceptOffer(getClickAcceptOfferEventPropertiesFromProperties(this.properties));
   }
 
   private trackClickRejectOfferEvent(): void {
-    const properties = this.acceptScreenStoreService.requestProperties;
-    this.acceptScreenTrackingEventsService.trackClickRejectOffer({
-      itemId: properties.itemId,
-      buyerUserId: null,
-      requestId: properties.id,
-      categoryId: null,
-      isPro: null,
-      totalPrice: properties.sellerRevenue.totalPrice.amount.total,
-      offeredPrice: properties.offeredPrice.amount.total,
-      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
-      title: null,
-      method: null,
-    });
+    this.acceptScreenTrackingEventsService.trackClickRejectOffer(getClickRejectOfferEventPropertiesFromProperties(this.properties));
+  }
+
+  private get properties(): AcceptScreenProperties {
+    return this.acceptScreenStoreService.properties;
   }
 }
