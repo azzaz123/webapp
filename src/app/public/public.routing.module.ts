@@ -28,7 +28,7 @@ const routes: Route[] = [
         loadChildren: () => import('./features/item-detail/item-detail.module').then((m) => m.ItemDetailModule),
       },
       {
-        path: `${PUBLIC_PATHS.PROCESS_COMPLETE}/:${PUBLIC_PATH_PARAMS.ID}`,
+        path: `${PUBLIC_PATHS.PROCESS_COMPLETE}`,
         loadChildren: () => import('./features/process-complete/process-complete.module').then((m) => m.ProcessCompleteModule),
       },
       {
