@@ -251,9 +251,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public onUploaded(response: ItemContent, action: UPLOAD_ACTION) {
     this.formChanged.emit(false);
-    if (!this.item) {
-      ga('send', 'event', 'Upload', 'done', 'Web mobile analysis');
-    }
 
     if (response.flags.onhold) {
       this.subscriptionService.getUserSubscriptionType().subscribe((type: SUBSCRIPTION_TYPES) => {

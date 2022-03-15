@@ -417,7 +417,7 @@
     "accept_view_seller_sender_details_label": "Sender address",
     "accept_view_seller_sender_details_add_button": "Add",
     "accept_view_seller_sender_details_edit_button": "Edit",
-    "accept_view_seller_bottom_bar_reject_button": "Reject",
+    "accept_view_seller_buy_flow_test_variant_b_reject_button": "I cannot sell it now",
     "accept_view_seller_bottom_bar_accept_button": "Accept",
     "accept_view_seller_all_all_snackbar_pending_shipping_method_error": "Please select how you’ll send the package.",
     "highlight_item_view_pro_user_purchase_summary_title_web_specific": "Summary",
