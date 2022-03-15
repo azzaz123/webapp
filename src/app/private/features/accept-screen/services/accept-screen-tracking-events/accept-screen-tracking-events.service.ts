@@ -22,7 +22,7 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 export class AcceptScreenTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
-  public trackViewAcceptOffer(payload: ViewAcceptOffer): void {
+  public trackViewAcceptOffer(payload: Partial<ViewAcceptOffer>): void {
     const pageViewEvent: AnalyticsPageView<ViewAcceptOffer> = {
       name: ANALYTICS_EVENT_NAMES.ViewAcceptOffer,
       attributes: {
@@ -44,7 +44,7 @@ export class AcceptScreenTrackingEventsService {
     this.analyticsService.trackPageView(pageViewEvent);
   }
 
-  public trackClickItemCard(itemCardDetails: ClickItemCard): void {
+  public trackClickItemCard(itemCardDetails: Partial<ClickItemCard>): void {
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -66,7 +66,7 @@ export class AcceptScreenTrackingEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickOtherProfile(profileDetails: ClickOtherProfile): void {
+  public trackClickOtherProfile(profileDetails: Partial<ClickOtherProfile>): void {
     const event: AnalyticsEvent<ClickOtherProfile> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -80,7 +80,7 @@ export class AcceptScreenTrackingEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickAcceptOffer(payload: ClickAcceptOffer): void {
+  public trackClickAcceptOffer(payload: Partial<ClickAcceptOffer>): void {
     const event: AnalyticsEvent<ClickAcceptOffer> = {
       name: ANALYTICS_EVENT_NAMES.ClickAcceptOffer,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -102,7 +102,7 @@ export class AcceptScreenTrackingEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickRejectOffer(payload: ClickRejectOffer): void {
+  public trackClickRejectOffer(payload: Partial<ClickRejectOffer>): void {
     const event: AnalyticsEvent<ClickRejectOffer> = {
       name: ANALYTICS_EVENT_NAMES.ClickRejectOffer,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -124,7 +124,7 @@ export class AcceptScreenTrackingEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickAddEditAddress(payload: ClickAddEditAddress): void {
+  public trackClickAddEditAddress(payload: Partial<ClickAddEditAddress>): void {
     const event: AnalyticsEvent<ClickAddEditAddress> = {
       name: ANALYTICS_EVENT_NAMES.ClickAddEditAddress,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -141,7 +141,7 @@ export class AcceptScreenTrackingEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickHelpTransactional(payload: ClickHelpTransactional): void {
+  public trackClickHelpTransactional(payload: Partial<ClickHelpTransactional>): void {
     const event: AnalyticsEvent<ClickHelpTransactional> = {
       name: ANALYTICS_EVENT_NAMES.ClickHelpTransactional,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -158,7 +158,7 @@ export class AcceptScreenTrackingEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickScheduleHPU(payload: ClickScheduleHPU): void {
+  public trackClickScheduleHPU(payload: Partial<ClickScheduleHPU>): void {
     const event: AnalyticsEvent<ClickScheduleHPU> = {
       name: ANALYTICS_EVENT_NAMES.ClickScheduleHPU,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { COLORS } from '@core/colors/colors-constants';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
@@ -14,21 +14,23 @@ import { DeliveryCountriesService } from '@private/features/delivery/services/co
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { StepperComponent } from '@shared/stepper/stepper.component';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
-import { finalize, take } from 'rxjs/operators';
+import { finalize, take, tap } from 'rxjs/operators';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { AcceptRequestError } from '@api/core/errors/delivery/accept-screen/accept-request';
+import { AcceptScreenTrackingEventsService } from '../../services/accept-screen-tracking-events/accept-screen-tracking-events.service';
+import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
   templateUrl: './accept-screen-modal.component.html',
   styleUrls: ['./accept-screen-modal.component.scss'],
 })
-export class AcceptScreenModalComponent implements OnInit {
+export class AcceptScreenModalComponent implements OnInit, OnDestroy {
   @ViewChild(StepperComponent) stepper: StepperComponent;
 
   public requestId: string;
@@ -51,6 +53,7 @@ export class AcceptScreenModalComponent implements OnInit {
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
   private readonly GENERIC_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private acceptScreenStoreService: AcceptScreenStoreService,
@@ -60,19 +63,27 @@ export class AcceptScreenModalComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router,
     private toastService: ToastService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private acceptScreenTrackingEventsService: AcceptScreenTrackingEventsService
   ) {}
 
   ngOnInit() {
     this.acceptScreenStoreService.initialize(this.requestId).then(
-      () => {},
+      () => {
+        this.trackViewAcceptOfferEvent();
+      },
       () => {
         this.showError(this.GENERIC_ERROR_TRANSLATION);
         this.closeModal();
       }
     );
 
+    this.trackHPUEventWhenCarrierChanges();
     this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   public selectNewDropOffMode(carrierIndex: number): void {
@@ -102,6 +113,9 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   public goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
+    if (slideId === ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS) {
+      this.trackClickAddEditAddressEvent();
+    }
     this.stepper.goToStep(slideId);
     this.refreshStepProperties(slideId);
   }
@@ -141,7 +155,44 @@ export class AcceptScreenModalComponent implements OnInit {
     });
   }
 
+  public trackClickItemCardEvent(): void {
+    const properties = this.acceptScreenStoreService.requestProperties;
+
+    this.acceptScreenTrackingEventsService.trackClickItemCard({
+      itemId: properties.itemId,
+      categoryId: null,
+      title: null,
+      salePrice: properties.sellerRevenue.itemPrice.amount.total,
+      isPro: null,
+      isCarDealer: null,
+      sellerUserId: null,
+      sellerRating: null,
+    });
+  }
+
+  public trackClickOtherProfileEvent(): void {
+    const properties = this.acceptScreenStoreService.requestProperties;
+
+    this.acceptScreenTrackingEventsService.trackClickOtherProfile({
+      isPro: null,
+      sellerUserId: null,
+    });
+  }
+
+  public trackClickHelpTransactionalEvent(): void {
+    const properties = this.acceptScreenStoreService.requestProperties;
+
+    this.acceptScreenTrackingEventsService.trackClickHelpTransactional({
+      itemId: properties.itemId,
+      categoryId: null,
+      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
+      sellerUserId: null,
+      helpName: 'Help Top Accept Screen',
+    });
+  }
+
   private acceptRequest(): void {
+    this.trackClickAcceptOfferEvent();
     this.confirmLoadingButton$.next(true);
     this.startDisableButton();
     this.acceptScreenStoreService
@@ -187,7 +238,10 @@ export class AcceptScreenModalComponent implements OnInit {
         })
       )
       .subscribe(
-        () => this.redirectToTTS(),
+        () => {
+          this.trackClickRejectOfferEvent();
+          this.redirectToTTS();
+        },
         () => this.showError(this.GENERIC_ERROR_TRANSLATION)
       );
   }
@@ -221,5 +275,93 @@ export class AcceptScreenModalComponent implements OnInit {
     const errorMessage: string = e?.message ? e.message : this.GENERIC_ERROR_TRANSLATION;
 
     this.showError(errorMessage);
+  }
+
+  private trackViewAcceptOfferEvent(): void {
+    const properties = this.acceptScreenStoreService.requestProperties;
+    this.acceptScreenTrackingEventsService.trackViewAcceptOffer({
+      itemId: properties.itemId,
+      buyerUserId: properties.buyer.id,
+      requestId: properties.id,
+      categoryId: null,
+      isPro: null,
+      totalPrice: properties.sellerRevenue.totalPrice.amount.total,
+      offeredPrice: properties.offeredPrice.amount.total,
+      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
+      title: null,
+      method: null,
+      buyerCountry: null,
+    });
+  }
+
+  private trackClickAddEditAddressEvent(): void {
+    const properties = this.acceptScreenStoreService.requestProperties;
+    this.acceptScreenTrackingEventsService.trackClickAddEditAddress({
+      addOrEdit: null,
+      addressType: null,
+      requestId: properties.id,
+      itemId: properties.itemId,
+      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
+    });
+  }
+
+  private trackHPUEventWhenCarrierChanges(): void {
+    this.subscription.add(
+      this.acceptScreenStoreService.carrierSelected$
+        .pipe(
+          tap((carrier: AcceptScreenCarrier) => {
+            if (carrier.type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP) {
+              this.trackClickScheduleHPUEvent();
+            }
+          })
+        )
+        .subscribe()
+    );
+  }
+
+  private trackClickScheduleHPUEvent(): void {
+    const properties = this.acceptScreenStoreService.requestProperties;
+    this.acceptScreenTrackingEventsService.trackClickScheduleHPU({
+      itemId: properties.itemId,
+      buyerUserId: properties.buyer.id,
+      requestId: properties.id,
+      categoryId: null,
+      totalPrice: properties.sellerRevenue.totalPrice.amount.total,
+      offeredPrice: properties.offeredPrice.amount.total,
+      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
+      title: null,
+    });
+  }
+
+  private trackClickAcceptOfferEvent(): void {
+    const properties = this.acceptScreenStoreService.requestProperties;
+    this.acceptScreenTrackingEventsService.trackClickAcceptOffer({
+      itemId: properties.itemId,
+      buyerUserId: null,
+      requestId: properties.id,
+      categoryId: null,
+      isPro: null,
+      totalPrice: properties.sellerRevenue.totalPrice.amount.total,
+      offeredPrice: properties.offeredPrice.amount.total,
+      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
+      title: null,
+      method: null,
+    });
+  }
+
+  private trackClickRejectOfferEvent(): void {
+    const properties = this.acceptScreenStoreService.requestProperties;
+    this.acceptScreenTrackingEventsService.trackClickRejectOffer({
+      itemId: properties.itemId,
+      buyerUserId: null,
+      requestId: properties.id,
+      categoryId: null,
+      isPro: null,
+      totalPrice: properties.sellerRevenue.totalPrice.amount.total,
+      offeredPrice: properties.offeredPrice.amount.total,
+      itemPrice: properties.sellerRevenue.itemPrice.amount.total,
+      title: null,
+      method: null,
+    });
   }
 }

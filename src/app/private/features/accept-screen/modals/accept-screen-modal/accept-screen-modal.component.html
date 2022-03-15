@@ -20,6 +20,7 @@
             <div class="d-flex">
               <a
                 *ngIf="isAcceptScreenStep"
+                (click)="trackClickHelpTransactionalEvent()"
                 class="mr-4"
                 [href]="ACCEPT_SCREEN_HELP_URL"
                 target="_blank"
@@ -47,6 +48,8 @@
             <div class="row">
               <div class="col">
                 <tsl-product-card
+                  (userProfileClick)="trackClickOtherProfileEvent()"
+                  (click)="trackClickItemCardEvent()"
                   class="d-block"
                   [buyer]="properties.buyer"
                   [item]="properties.item"
