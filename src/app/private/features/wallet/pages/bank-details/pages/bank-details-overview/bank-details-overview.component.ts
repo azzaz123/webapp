@@ -104,11 +104,14 @@ export class BankDetailsOverviewComponent implements OnInit {
 
   private listenForReactiveChanges(): void {
     this.bankAccount$ = this.bankAccountService.bankAccount$.pipe(catchError((error: unknown) => this.handleError(error)));
-    this.creditCard$ = this.paymentsCreditCardService.creditCard$;
+    this.creditCard$ = this.paymentsCreditCardService.creditCard$.pipe(catchError((error: unknown) => this.handleError(error)));
   }
 
   private getBankAccountAndCreditCard(): void {
-    this.bankAccountService.get().subscribe();
+    this.bankAccountService
+      .get()
+      .pipe(catchError((error: unknown) => this.handleError(error)))
+      .subscribe();
     this.paymentsCreditCardService
       .get()
       .pipe(catchError((error: unknown) => this.handleError(error)))
