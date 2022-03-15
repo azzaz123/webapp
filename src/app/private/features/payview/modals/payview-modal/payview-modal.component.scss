@@ -33,4 +33,8 @@
       display: none;
     }
   }
+
+  ::ng-deep .MovableMap {
+    height: 80vh;
+  }
 }

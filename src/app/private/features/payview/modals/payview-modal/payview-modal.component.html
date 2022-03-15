@@ -52,7 +52,15 @@
         ></tsl-delivery-address>
       </ng-template>
       <ng-template step>
-        <div class="PayviewModal__pickUpPointMap h-100"></div>
+        <div class="PayviewModal__pickUpPointMap h-100">
+          <tsl-delivery-map
+            [fullAddress]="payviewState.delivery.methods.addressLabel"
+            [selectedCarrier]="payviewState.delivery.methods.current.carrier"
+            [userOfficeId]="payviewState.delivery.methods.current.lastAddressUsed.id"
+            (goToDeliveryAddress)="goToDeliveryAddress()"
+            (selectedOfficeSucceeded)="closeDeliveryEditor()"
+          ></tsl-delivery-map>
+        </div>
       </ng-template>
       <ng-template step>
         <div class="PayviewModal__promotionEditor h-100">

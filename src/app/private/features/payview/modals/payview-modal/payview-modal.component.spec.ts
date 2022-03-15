@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ButtonComponent } from '@shared/button/button.component';
 import { BuyerRequestsApiModule } from '@api/delivery/buyer/requests/buyer-requests-api.module';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
 import { DeliveryAddressStoreService } from '@private/features/delivery/services/address/delivery-address-store/delivery-address-store.service';
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
@@ -55,6 +56,16 @@ class FakeDeliveryAddressComponent {
 }
 
 @Component({
+  selector: 'tsl-delivery-map',
+  template: '',
+})
+class FakeDeliveryMapComponent {
+  @Input() userOfficeId: number;
+  @Input() selectedCarrier: unknown;
+  @Input() fullAddress: string;
+}
+
+@Component({
   selector: 'tsl-fake-component',
   templateUrl: './payview-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -96,9 +107,7 @@ describe('PayviewModalComponent', () => {
   let fixture: ComponentFixture<FakeComponent>;
   let itemHashSpy: jest.SpyInstance;
   let payviewDeliveryService: PayviewDeliveryService;
-  let payviewDeliverySpy: jasmine.Spy;
   let payviewPromotionService: PayviewPromotionService;
-  let payviewPromotionSpy: jasmine.Spy;
   let payviewService: PayviewService;
   let payviewStateManagementService: PayviewStateManagementService;
   let stepper: StepperComponent;
@@ -110,6 +119,7 @@ describe('PayviewModalComponent', () => {
         ButtonComponent,
         FakeComponent,
         FakeDeliveryAddressComponent,
+        FakeDeliveryMapComponent,
         PayviewDeliveryHeaderComponent,
         PayviewDeliveryOverviewComponent,
         PayviewDeliveryPointComponent,
@@ -307,6 +317,22 @@ describe('PayviewModalComponent', () => {
             expect(deliveryAddressComponent).toBeTruthy();
           });
 
+          it('should assign the show title propery', () => {
+            const deliveryAddressComponent: FakeDeliveryAddressComponent = fixture.debugElement.query(
+              By.directive(FakeDeliveryAddressComponent)
+            ).componentInstance;
+
+            expect(deliveryAddressComponent.showTitle).toBeFalsy();
+          });
+
+          it('should assign the whereUserComes propery', () => {
+            const deliveryAddressComponent: FakeDeliveryAddressComponent = fixture.debugElement.query(
+              By.directive(FakeDeliveryAddressComponent)
+            ).componentInstance;
+
+            expect(deliveryAddressComponent.whereUserComes).toBe(DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY);
+          });
+
           it('should not show the summary block', () => {
             const target = fixture.debugElement.query(By.css(payviewModalSummarySelector));
 
@@ -373,6 +399,38 @@ describe('PayviewModalComponent', () => {
             expect(pickUpPointMapBlock).toBeTruthy();
           });
 
+          it('should show the pick-up map component', () => {
+            const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
+              By.directive(FakeDeliveryMapComponent)
+            ).componentInstance;
+
+            expect(pickUpPointMapComponent).toBeTruthy();
+          });
+
+          it('should assign the address label', () => {
+            const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
+              By.directive(FakeDeliveryMapComponent)
+            ).componentInstance;
+
+            expect(pickUpPointMapComponent.fullAddress).toBe(MOCK_PAYVIEW_STATE.delivery.methods.addressLabel);
+          });
+
+          it('should assign the selected carrier', () => {
+            const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
+              By.directive(FakeDeliveryMapComponent)
+            ).componentInstance;
+
+            expect(pickUpPointMapComponent.selectedCarrier).toBe(MOCK_PAYVIEW_STATE.delivery.methods.current.carrier);
+          });
+
+          it('should assign the selected carrier', () => {
+            const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
+              By.directive(FakeDeliveryMapComponent)
+            ).componentInstance;
+
+            expect(pickUpPointMapComponent.userOfficeId).toBe(MOCK_PAYVIEW_STATE.delivery.methods.current.lastAddressUsed.id);
+          });
+
           it('should not show the promotion editor', () => {
             const promotionEditorComponent = debugElement.query(By.directive(PayviewPromotionEditorComponent));
 
@@ -436,6 +494,51 @@ describe('PayviewModalComponent', () => {
             buttonBack.triggerEventHandler('click', null);
 
             expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+          });
+        });
+
+        describe('WHEN the user wants to edit the delivery address', () => {
+          beforeEach(() => {
+            component.stepper.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+            spyOn(component.stepper, 'goToStep');
+
+            fixture.detectChanges();
+          });
+
+          it('should redirect to the payview step', () => {
+            const target: DebugElement = debugElement.query(By.directive(FakeDeliveryMapComponent));
+
+            target.triggerEventHandler('goToDeliveryAddress', null);
+
+            expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+            expect(component.stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.DELIVERY_ADDRESS);
+          });
+        });
+
+        describe('WHEN the user has select a pick-up point', () => {
+          beforeEach(() => {
+            component.stepper.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+            spyOn(component.stepper, 'goToStep');
+            spyOn(payviewStateManagementService, 'refreshByDelivery');
+
+            fixture.detectChanges();
+          });
+
+          it('should redirect to the payview step', () => {
+            const target: DebugElement = debugElement.query(By.directive(FakeDeliveryMapComponent));
+
+            target.triggerEventHandler('selectedOfficeSucceeded', null);
+
+            expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+            expect(component.stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PAYVIEW);
+          });
+
+          it('should call to refresh the delivery information', () => {
+            const target: DebugElement = debugElement.query(By.directive(FakeDeliveryMapComponent));
+
+            target.triggerEventHandler('selectedOfficeSucceeded', null);
+
+            expect(payviewStateManagementService.refreshByDelivery).toHaveBeenCalledTimes(1);
           });
         });
       });
