@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { UnreadChatMessagesService, UNREAD_MESSAGES_COUNT_ENDPOINT } from './unread-chat-messages.service';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 
 describe('Service: UnreadChatMessages', () => {
   let injector: TestBed;
