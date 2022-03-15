@@ -32,7 +32,6 @@ export class PaymentsCreditCardService {
 
   public get(ignoreInvalidCard: boolean = false): Observable<CreditCard> {
     const creditCardGetSubject: ReplaySubject<CreditCard> = new ReplaySubject<CreditCard>(1);
-    this.creditCardSubject = new ReplaySubject<CreditCard>(1);
 
     this.paymentsCreditCardHttpService
       .get()
@@ -47,7 +46,6 @@ export class PaymentsCreditCardService {
           return this.delete().pipe(
             tap(() => {
               const error: CardInvalidError = new CardInvalidError();
-              this.creditCardSubject.error(error);
               creditCardGetSubject.error(error);
             })
           );

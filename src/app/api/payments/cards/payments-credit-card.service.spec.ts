@@ -108,14 +108,11 @@ describe('PaymentsCreditCardService', () => {
 
       it('should notify there was an error with the card', fakeAsync(() => {
         let methodResultError: CardInvalidError;
-        let observableResultError: CardInvalidError;
 
         service.get().subscribe({ error: (e) => (methodResultError = e) });
-        service.creditCard$.subscribe({ error: (e) => (observableResultError = e) });
         tick();
 
         expect(methodResultError instanceof CardInvalidError).toBe(true);
-        expect(observableResultError instanceof CardInvalidError).toBe(true);
       }));
     });
   });
