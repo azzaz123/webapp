@@ -19,11 +19,6 @@ export class BumpConfirmationModalComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal, private paymentService: PaymentService, private eventService: EventService) {}
 
   ngOnInit() {
-    if (this.code === '200') {
-      ga('send', 'event', 'Item', 'bump-ok');
-    } else {
-      ga('send', 'event', 'Item', 'bump-ko');
-    }
     setTimeout(() => {
       this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
         if (creditInfo.credit === 0 && !this.creditUsed) {

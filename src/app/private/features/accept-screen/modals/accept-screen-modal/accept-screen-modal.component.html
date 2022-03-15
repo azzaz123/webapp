@@ -40,7 +40,12 @@
       </div>
     </div>
   </div>
-  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties" class="AcceptScreenModal__stepper pt-1">
+  <ng-template #loading>
+    <div class="AcceptScreenModal__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center">
+      <tsl-svg-icon width="45" height="45" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+    </div>
+  </ng-template>
+  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties; else loading" class="AcceptScreenModal__stepper pt-1">
     <ng-template step>
       <div class="container">
         <div class="row">
@@ -151,9 +156,9 @@
                   className="btn btn-block btn-link"
                   [hidden]="rejectLoadingButton$ | async"
                   [disabled]="disableButton$ | async"
-                  i18n="@@accept_view_seller_bottom_bar_reject_button"
+                  i18n="@@accept_view_seller_buy_flow_test_variant_b_reject_button"
                   (click)="openRejectRequestModal()"
-                  >Reject</tsl-button
+                  >I cannot sell it now</tsl-button
                 >
                 <tsl-svg-icon
                   *ngIf="rejectLoadingButton$ | async"
