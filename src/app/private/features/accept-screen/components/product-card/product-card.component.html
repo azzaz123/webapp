@@ -1,5 +1,5 @@
 <div class="ProductCard p-2">
-  <div *ngIf="buyer" class="ProductCard__buyerWrapper d-flex px-2 py-3">
+  <div *ngIf="buyer" class="ProductCard__buyerWrapper d-flex px-2 py-3" (click)="userProfileClick.emit()">
     <tsl-user-avatar [imageUrl]="buyer.imageUrl" [size]="48"></tsl-user-avatar>
     <span
       i18n="@@accept_view_seller_product_card_buyer_detail_buy_flow_test_variant_b_label"
