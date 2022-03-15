@@ -72,6 +72,29 @@ describe('ProductCardComponent', () => {
 
         expect(offeredPrice).toStrictEqual(expectedItemPrice);
       });
+
+      describe('and we click on the user profile', () => {
+        beforeEach(() => {
+          spyOn(component.userProfileClick, 'emit');
+          fixture.debugElement.query(By.css('.ProductCard__buyerWrapper')).nativeElement.click();
+        });
+
+        it('should emit that user profile has been clicked', () => {
+          expect(component.userProfileClick.emit).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      describe('and we click on the item', () => {
+        beforeEach(() => {
+          spyOn(component.itemClick, 'emit');
+
+          fixture.debugElement.query(By.css('.ProductCard__item')).nativeElement.click();
+        });
+
+        it('should emit that item has been clicked', () => {
+          expect(component.itemClick.emit).toHaveBeenCalledTimes(1);
+        });
+      });
     });
 
     describe('and we DONT have buyer and item', () => {
