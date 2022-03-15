@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { COLORS } from '@core/colors/colors-constants';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
@@ -14,16 +14,15 @@ import { DeliveryCountriesService } from '@private/features/delivery/services/co
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { StepperComponent } from '@shared/stepper/stepper.component';
-import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { ACCEPT_SCREEN_HEADER_TRANSLATIONS } from '../../constants/header-translations';
 import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
 import { AcceptScreenStoreService } from '../../services/accept-screen-store/accept-screen-store.service';
-import { finalize, take, tap } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { AcceptRequestError } from '@api/core/errors/delivery/accept-screen/accept-request';
 import { AcceptScreenTrackingEventsService } from '../../services/accept-screen-tracking-events/accept-screen-tracking-events.service';
-import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import {
   getClickAcceptOfferEventPropertiesFromProperties,
   getClickAddEditAddressEventPropertiesFromProperties,
@@ -40,7 +39,7 @@ import {
   templateUrl: './accept-screen-modal.component.html',
   styleUrls: ['./accept-screen-modal.component.scss'],
 })
-export class AcceptScreenModalComponent implements OnInit, OnDestroy {
+export class AcceptScreenModalComponent implements OnInit {
   @ViewChild(StepperComponent) stepper: StepperComponent;
 
   public requestId: string;
@@ -63,7 +62,6 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
   private readonly GENERIC_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private subscription: Subscription = new Subscription();
 
   constructor(
     private acceptScreenStoreService: AcceptScreenStoreService,
@@ -88,12 +86,7 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.trackHPUEventWhenCarrierChanges();
     this.refreshStepProperties(ACCEPT_SCREEN_STEPS.ACCEPT_SCREEN);
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 
   public selectNewDropOffMode(carrierIndex: number): void {
@@ -125,6 +118,9 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
   public goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
     if (slideId === ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS) {
       this.trackClickAddEditAddressEvent();
+    }
+    if (slideId === ACCEPT_SCREEN_STEPS.SCHEDULE) {
+      this.trackClickScheduleHPUEvent();
     }
     this.stepper.goToStep(slideId);
     this.refreshStepProperties(slideId);
@@ -215,6 +211,7 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
   }
 
   private rejectRequest(): void {
+    this.trackClickRejectOfferEvent();
     this.rejectLoadingButton$.next(true);
     this.startDisableButton();
     this.acceptScreenStoreService
@@ -227,7 +224,6 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         () => {
-          this.trackClickRejectOfferEvent();
           this.redirectToTTS();
         },
         () => this.showError(this.GENERIC_ERROR_TRANSLATION)
@@ -271,20 +267,6 @@ export class AcceptScreenModalComponent implements OnInit, OnDestroy {
 
   private trackClickAddEditAddressEvent(): void {
     this.acceptScreenTrackingEventsService.trackClickAddEditAddress(getClickAddEditAddressEventPropertiesFromProperties(this.properties));
-  }
-
-  private trackHPUEventWhenCarrierChanges(): void {
-    this.subscription.add(
-      this.acceptScreenStoreService.carrierSelected$
-        .pipe(
-          tap((carrier: AcceptScreenCarrier) => {
-            if (carrier.type === CARRIER_DROP_OFF_MODE.HOME_PICK_UP) {
-              this.trackClickScheduleHPUEvent();
-            }
-          })
-        )
-        .subscribe()
-    );
   }
 
   private trackClickScheduleHPUEvent(): void {
