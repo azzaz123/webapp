@@ -1,8 +1,7 @@
+@use 'sass:math';
 @import '~style/common';
 
-$label-opacity: 0.99;
-$label-transform: scale(0.88) translateY(-2.2rem) translateX(0);
-$transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+$spacing-14: math.div(14px, 16px) * $spacer;
 
 .PayviewPromotionEditor {
   padding: $spacing-ml;
@@ -20,40 +19,15 @@ $transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
     position: relative;
   }
 
-  &__input {
-    border-bottom: 1px solid $blue-grey-4 !important;
-    height: 2 * $spacer;
+  &__inputLabel {
+    font-size: $spacing-14;
 
-    &::placeholder {
-      color: transparent !important;
-    }
-
-    &:focus,
-    &:not(:placeholder-shown) {
-      ~ .PayviewPromotionEditor__inputPlaceholder {
-        opacity: $label-opacity;
-        transform: $label-transform;
-      }
-    }
-    &:-webkit-autofill {
-      ~ .PayviewPromotionEditor__inputPlaceholder {
-        opacity: $label-opacity;
-        transform: $label-transform;
-      }
+    &--error {
+      color: $negative-main;
     }
   }
 
-  &__inputPlaceholder {
-    font-size: $font-size-s;
-    left: 0;
-    padding: $spacing-m $spacing-ms $spacing-s 0;
-    pointer-events: none;
-    top: 0;
-    transform-origin: 0 0;
-    transition: $transition;
-  }
-
-  &__error {
+  & &__error {
     color: $negative-main;
     font-size: $font-size-xs;
   }
