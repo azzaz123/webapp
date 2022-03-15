@@ -10,8 +10,6 @@ import { Notification } from '@api/core/model/notification/notification.interfac
 import { mappedNotifications } from '@api/fixtures/notification/notification.fixture';
 import { NOTIFICATION_VARIANT } from '@private/features/inbox/core/enums/notification-variant.enum';
 import { AppboyContentCards } from '@core/communication/vendors/appboy.interface';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 describe('NotificationApiService', () => {
   let service: NotificationApiService;
@@ -30,12 +28,6 @@ describe('NotificationApiService', () => {
           provide: UserService,
           useValue: {
             isLogged: true,
-          },
-        },
-        {
-          provide: FeatureFlagService,
-          useValue: {
-            isExperimentalFeaturesEnabled: () => true,
           },
         },
       ],
