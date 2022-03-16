@@ -103,7 +103,7 @@ describe('AcceptScreenTrackingEventsService', () => {
 
     it('should track the event with specified properties', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-        name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+        name: ANALYTICS_EVENT_NAMES.ClickOtherProfile,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: {
           ...MOCK_CLICK_OTHER_PROFILE_EVENT_PROPERTIES,

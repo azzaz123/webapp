@@ -71,7 +71,7 @@ export class AcceptScreenTrackingEventsService {
   public trackClickOtherProfile(payload: Partial<ClickOtherProfile>): void {
     const { isPro, sellerUserId } = payload;
     const event: AnalyticsEvent<ClickOtherProfile> = {
-      name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+      name: ANALYTICS_EVENT_NAMES.ClickOtherProfile,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
       attributes: {
         screenId: SCREEN_IDS.AcceptOffer,
