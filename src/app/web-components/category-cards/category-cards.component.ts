@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   Inject,
   Input,
   LOCALE_ID,
@@ -35,6 +36,8 @@ export class CategoryCardsComponent implements OnChanges {
   @Input() categoryId: string;
   @Input() objectTypeId: string;
 
+  @ViewChild('scrollWrapper') scrollWrapper: ElementRef;
+
   private titleSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private categoryCardsEmptySubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
@@ -60,12 +63,13 @@ export class CategoryCardsComponent implements OnChanges {
         .getCategoryWithPresentationById(this.objectTypeId ? +this.objectTypeId : +this.categoryId)
         .subscribe((category: CategoryWithPresentation) => {
           this.titleSubject.next(category?.name);
+          this.resetScroll();
         });
     }
   }
 
   public setCategoryCardsEmpty($event: CustomEvent): void {
-    this.categoryCardsEmptySubject.next($event.detail.isEmpty);
+    this.categoryCardsEmptySubject.next($event.detail.empty);
   }
 
   public cardClick($event: CustomEvent): void {
@@ -94,5 +98,9 @@ export class CategoryCardsComponent implements OnChanges {
 
   private sentBrowseTrackingEvent(): void {
     // TODO waiting for product
+  }
+
+  private resetScroll(): void {
+    this.scrollWrapper.nativeElement.scroll(0, 0);
   }
 }
