@@ -20,10 +20,13 @@
     color: $blue-grey-1;
   }
 
+  &__action {
+    &:not(:last-child) {
+      margin-bottom: $spacer * 0.75;
+    }
+  }
+
   &__actionButton {
     min-width: 200px;
-    &:not(:first-child) {
-      margin-top: $spacer * 0.75;
-    }
   }
 }
