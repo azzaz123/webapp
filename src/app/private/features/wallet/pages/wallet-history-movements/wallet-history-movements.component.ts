@@ -9,6 +9,7 @@ import { WalletHistoryMovementsUIService } from '@private/features/wallet/pages/
 
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 @Component({
   selector: 'tsl-wallet-history-movements',
@@ -24,9 +25,9 @@ export class WalletHistoryMovementsComponent implements OnInit, OnDestroy {
   ];
   public loadingIconSrc: string = '/assets/icons/spinner.svg';
   public loadingIconSizePixels: number = 32;
+  public selectedTabsBarElement: TabsBarElement<WALLET_HISTORY_FILTERS>;
 
   private currentFilter: WALLET_HISTORY_FILTERS = WALLET_HISTORY_FILTERS.ALL;
-
   constructor(
     private walletHistoryMovementsUIService: WalletHistoryMovementsUIService,
     private walletHistoryTrackingEventService: WalletHistoryMovementsTrackingEventService
@@ -49,6 +50,7 @@ export class WalletHistoryMovementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.selectedTabsBarElement = this.tabBarElements[0];
     this.getItems();
     this.trackViewWalletHistoryMovement();
   }
