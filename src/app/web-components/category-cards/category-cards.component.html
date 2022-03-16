@@ -1,8 +1,11 @@
 <p class="CategoryCards__title">{{ title$ | async }}</p>
 <w-category-cards
+  class="CategoryCards"
+  [ngClass]="{ 'CategoryCards--empty': categoryCardsEmpty$ | async }"
   [attr.category-id]="categoryId"
   [attr.object-type-id]="objectTypeId"
   [attr.token]="token"
   [attr.language]="locale"
   (cardClick)="cardClick($event)"
+  (empty)="setCategoryCardsEmpty($event)"
 ></w-category-cards>

@@ -7,14 +7,16 @@
   position: relative;
   z-index: 1;
 
-  w-category-cards {
+  .CategoryCards {
     display: flex;
-    margin: $spacer * 3 0 $spacer;
     padding: 0 $spacer;
     width: fit-content;
-  }
+    margin: $spacer * 3 0 $spacer;
 
-  .CategoryCards {
+    &--empty {
+      margin-top: $spacer * 2;
+    }
+
     &__title {
       font-size: $font-size-l;
       font-weight: bold;

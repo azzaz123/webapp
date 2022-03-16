@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, LOCALE_ID, OnChanges } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Input,
+  LOCALE_ID,
+  OnChanges,
+  ViewChild,
+} from '@angular/core';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { AccessTokenService } from '@core/http/access-token.service';
@@ -12,7 +22,7 @@ import '@wallapop-web-components/category-cards/category-cards.dev.js';
 import { CategoriesApiService } from '@api/categories/categories-api.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { CategoryWithPresentation } from '@core/category/category-with-presentation.interface';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 /* eslint-disable  @typescript-eslint/member-ordering */
 
 @Component({
@@ -25,9 +35,11 @@ export class CategoryCardsComponent implements OnChanges {
   @Input() categoryId: string;
   @Input() objectTypeId: string;
 
-  private titleSubject: Subject<string> = new Subject<string>();
+  private titleSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private categoryCardsEmptySubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   public title$: Observable<string> = this.titleSubject.asObservable();
+  public categoryCardsEmpty$: Observable<boolean> = this.categoryCardsEmptySubject.asObservable();
   public token: string;
 
   constructor(
@@ -50,6 +62,10 @@ export class CategoryCardsComponent implements OnChanges {
           this.titleSubject.next(category?.name);
         });
     }
+  }
+
+  public setCategoryCardsEmpty($event: CustomEvent): void {
+    this.categoryCardsEmptySubject.next($event.detail.isEmpty);
   }
 
   public cardClick($event: CustomEvent): void {
