@@ -263,7 +263,7 @@ describe('AcceptScreenModalComponent', () => {
           spyOn(acceptScreenTrackingEventsService, 'trackClickItemCard');
           spyOn(acceptScreenTrackingEventsService, 'trackClickOtherProfile');
           spyOn(acceptScreenTrackingEventsService, 'trackViewAcceptOffer');
-          spyOn(acceptScreenStoreService, 'initialize').and.callThrough();
+          spyOn(acceptScreenStoreService, 'initialize').and.returnValue(Promise.resolve(MOCK_ACCEPT_SCREEN_PROPERTIES));
           spyOn(acceptScreenStoreService, 'update').and.callThrough();
           acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES);
 
@@ -317,7 +317,7 @@ describe('AcceptScreenModalComponent', () => {
           shouldRenderLoadingSpinner(false);
         });
 
-        xit('should ask for tracking event', () => {
+        it('should ask for tracking event', () => {
           expect(acceptScreenTrackingEventsService.trackViewAcceptOffer).toHaveBeenCalledTimes(1);
           expect(acceptScreenTrackingEventsService.trackViewAcceptOffer).toHaveBeenCalledWith(
             MOCK_VIEW_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_PO
