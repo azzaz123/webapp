@@ -30,7 +30,7 @@ export class AcceptScreenTrackingEventsService {
     this.analyticsService.trackPageView(pageViewEvent);
   }
 
-  public async trackClickItemCard(attributes: ClickItemCard): Promise<void> {
+  public trackClickItemCard(attributes: ClickItemCard): void {
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
