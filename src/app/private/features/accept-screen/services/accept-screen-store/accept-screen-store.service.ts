@@ -70,7 +70,7 @@ export class AcceptScreenStoreService {
     );
   }
 
-  private get properties(): AcceptScreenProperties {
+  public get properties(): AcceptScreenProperties {
     return this.propertiesSubject.value;
   }
 

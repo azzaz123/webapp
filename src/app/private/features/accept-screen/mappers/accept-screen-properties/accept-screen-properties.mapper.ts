@@ -21,6 +21,7 @@ import {
   AcceptScreenDropOffPointButtonTranslations,
   AcceptScreenDropOffPointTitle,
 } from '@private/features/accept-screen/constants/accept-screen-translations';
+import { USER_TYPE } from '@core/user/user.service';
 
 const navigatorLanguage: string = navigator.language;
 
@@ -34,6 +35,8 @@ export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> =
     title: item.title,
     price: mapNumberAndCurrencyCodeToMoney(itemCurrencyPrice),
     imageUrl: item.images ? item.images[0].urls_by_size.original : FALLBACK_NOT_FOUND_SRC,
+    categoryId: item.categoryId,
+    shippingAllowed: item.saleConditions?.shipping_allowed,
   };
 };
 
@@ -42,6 +45,9 @@ export function mapUserToAcceptScreenSeller(seller: User, address: DeliveryAddre
     id: seller.id,
     imageUrl: mapUserToImageUrl(seller),
     fullAddress: address ? mapDeliveryAddressToSellerAddress(address) : null,
+    isPro: seller.featured,
+    isCarDealer: seller.type === USER_TYPE.PROFESSIONAL,
+    rating: seller.scoringStars,
   };
 }
 
@@ -50,6 +56,7 @@ export const mapUserToAcceptScreenBuyer: ToDomainMapper<User, AcceptScreenBuyer>
     id: buyer.id,
     imageUrl: mapUserToImageUrl(buyer),
     name: buyer.microName,
+    countryISOCode: buyer.location.country_code,
   };
 };
 

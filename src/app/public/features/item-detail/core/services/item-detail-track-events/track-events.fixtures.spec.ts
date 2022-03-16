@@ -40,7 +40,7 @@ export const MOCK_CLICK_CHAT_BUTTON_EVENT: AnalyticsEvent<ClickChatButton> = {
     screenId: SCREEN_IDS.ItemDetail,
     isPro: MOCK_USER.featured,
     isBumped: !!MOCK_ITEM.bumpFlags?.bumped,
-    shippingAllowed: null,
+    shippingAllowed: MOCK_ITEM.saleConditions.shipping_allowed,
   },
 };
 
