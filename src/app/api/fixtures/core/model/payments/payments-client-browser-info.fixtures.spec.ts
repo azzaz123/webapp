@@ -1,6 +1,6 @@
 import { PaymentsClientBrowserInfo } from '@api/core/model/payments';
 
-export const MOCK_PAYMENT_CLIENT_BROWSER_INFO: PaymentsClientBrowserInfo = {
+export const MOCK_PAYMENTS_CLIENT_BROWSER_INFO: PaymentsClientBrowserInfo = {
   acceptHeader:
     'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3, Upgrade-Insecure-Requests=1',
   isJavaEnabled: false,
