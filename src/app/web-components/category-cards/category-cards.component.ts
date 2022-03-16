@@ -96,6 +96,8 @@ export class CategoryCardsComponent implements OnChanges {
   }
 
   private resetScroll(): void {
+    if (this.scrollWrapper) {
     this.scrollWrapper.nativeElement.scroll(0, 0);
+    }
   }
 }
