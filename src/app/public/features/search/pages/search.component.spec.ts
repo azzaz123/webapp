@@ -1032,6 +1032,22 @@ describe('SearchComponent', () => {
           it('categories slider should be visible', () => {
             expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeTruthy();
           });
+
+          describe('and they have mltiple values', () => {
+            const notAllowedParam: FilterParameter = {
+              key: FILTER_QUERY_PARAM_KEY.objectType,
+              value: '1234, 1234',
+            };
+
+            beforeEach(() => {
+              parametersSubject.next([allowedParam, requiredParam, notAllowedParam]);
+              fixture.detectChanges();
+            });
+
+            it('categories slider should NOT be visible', () => {
+              expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
+            });
+          });
         });
 
         describe('and required params are NOT set', () => {

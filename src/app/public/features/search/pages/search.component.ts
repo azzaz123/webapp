@@ -304,9 +304,15 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           return notAllowedFilterParameter && notAllowedFilterParameter.toString().includes(filterParameter.value);
         });
 
+        const hasNotAllowedMultiParamValuesToShowCategoryCards = !!params.reduce((acc, curr) => {
+          if (CATEGORY_CARDS_VISIBILITY_RULES.ALLOWED_PARAMETER_KEYS.includes(curr.key) && curr.value.split(',').length > 1) acc.push(curr);
+          return acc;
+        }, []).length;
+
         if (
           requiredParamsToShowCategoryCards.length === CATEGORY_CARDS_VISIBILITY_RULES.REQUIRED_PARAMETER_KEYS.length &&
-          !hasNotAllowedParamValuesToShowCategoryCards
+          !hasNotAllowedParamValuesToShowCategoryCards &&
+          !hasNotAllowedMultiParamValuesToShowCategoryCards
         ) {
           const notAllowedParamsToShowCategoryCards = params.reduce((acc, curr) => {
             if (!CATEGORY_CARDS_VISIBILITY_RULES.ALLOWED_PARAMETER_KEYS.includes(curr.key)) acc.push(curr);
