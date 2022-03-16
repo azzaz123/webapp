@@ -28,17 +28,7 @@
           i18n="@@web_components_sidebar_448">Catalog</span>
   </a>
 
-  <!--  TODO REMOVE BOTH FF-->
-  <a *ngIf="!featureFlagService.isExperimentalFeaturesEnabled()"
-     class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/chat']"
-     routerLinkActive="Sidebar__entry--active">
-    <div class="Sidebar__notification" *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0"></div>
-    <tsl-svg-icon [width]="32" [height]="32" src="/assets/icons/sidebar/sidebar_message.svg"></tsl-svg-icon>
-    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_679">Messages</span>
-  </a>
-
-  <a *ngIf="featureFlagService.isExperimentalFeaturesEnabled()"
-     class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/chat']"
+  <a class="Sidebar__entry mx-2 mb-1 d-flex align-items-center" [routerLink]="['/chat']"
      routerLinkActive="Sidebar__entry--active">
     <div class="Sidebar__notification"
          *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0 || (notificationApiService.unreadNotificationsCount$ | async) > 0"></div>
