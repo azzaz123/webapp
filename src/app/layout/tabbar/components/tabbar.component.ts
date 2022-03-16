@@ -8,7 +8,6 @@ import { PUBLIC_PATHS } from 'app/public/public-routing-constants';
 import { Subscription } from 'rxjs';
 import { TabbarService } from '../core/services/tabbar.service';
 import { NotificationApiService } from '@api/notification/notification-api.service';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 
 export const INPUT_TYPE = {
   TEXT: 'text',
@@ -46,8 +45,7 @@ export class TabbarComponent implements OnInit, OnDestroy {
     private tabBarService: TabbarService,
     private unreadChatMessagesService: UnreadChatMessagesService,
     private eventService: EventService,
-    public notificationApiService: NotificationApiService,
-    public featureFlagService: FeatureFlagService
+    public notificationApiService: NotificationApiService
   ) {}
 
   @HostListener('window:focusin', ['$event'])
