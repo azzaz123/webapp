@@ -260,6 +260,15 @@ describe('TransactionTrackingOverviewComponent', () => {
         expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeFalsy();
       });
     });
+
+    describe('and passed 5 seconds', () => {
+      it('should request the TTS properties again', fakeAsync(() => {
+        tick(5000);
+
+        expect(transactionTrackingService.get).toHaveBeenCalledTimes(2);
+        expect(transactionTrackingService.getDetails).toHaveBeenCalledTimes(2);
+      }));
+    });
   });
 
   describe('WHEN there is an error retrieving data', () => {

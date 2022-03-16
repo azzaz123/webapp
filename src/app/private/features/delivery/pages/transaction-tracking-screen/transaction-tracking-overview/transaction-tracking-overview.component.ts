@@ -23,8 +23,8 @@ const THIRTY_FIVE_SECOND_IN_MS: number = 35000;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
-  public transactionTracking$: Observable<TransactionTracking>;
-  public transactionTrackingDetails$: Observable<TransactionTrackingDetails>;
+  public transactionTracking$: Observable<TransactionTracking> = this.storeService.transactionTracking$;
+  public transactionTrackingDetails$: Observable<TransactionTrackingDetails> = this.storeService.transactionTrackingDetails$;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -44,9 +44,6 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
     this.pollingTransactionTrackingAndDetails(requestId, THIRTY_FIVE_SECOND_IN_MS, THIRTY_SECOND_IN_MS);
 
     this.checkIfUserGoesBackToAcceptScreen();
-
-    this.transactionTracking$ = this.storeService.transactionTracking$;
-    this.transactionTrackingDetails$ = this.storeService.transactionTrackingDetails$;
   }
 
   ngOnDestroy(): void {
