@@ -39,6 +39,7 @@ export class OptimizelyService {
             this.onDecision.bind(this)
           );
           this._optimizelyReady$.next(true);
+          this._optimizelyReady$.complete();
         }
       });
     });

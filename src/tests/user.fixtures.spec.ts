@@ -379,7 +379,7 @@ export const MockUserService = {
 };
 
 export class MockedUserService {
-  private _isUserReadySubject: ReplaySubject<void> = new ReplaySubject();
+  private _userSubject: ReplaySubject<User> = new ReplaySubject();
 
   public get(url: string): Observable<User> {
     const data: any = USER_DATA;
@@ -407,12 +407,13 @@ export class MockedUserService {
     return USER_ITEM_DISTANCE;
   }
 
-  get isUserReady$(): Observable<void> {
-    return this._isUserReadySubject.asObservable();
+  get userSubject$(): Observable<User> {
+    return this._userSubject.asObservable();
   }
 
-  public initializeUserWithPermissions(): void {
-    this._isUserReadySubject.next();
+  public initializeUser(): Promise<User> {
+    this._userSubject.next(new User(USER_ID));
+    return new Promise((resolve) => resolve(MOCK_FULL_USER));
   }
 
   get user(): User {
