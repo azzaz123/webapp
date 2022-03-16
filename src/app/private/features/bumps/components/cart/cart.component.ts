@@ -77,7 +77,6 @@ export class CartComponent implements OnInit, OnDestroy {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
     this.loading = true;
-    this.track(order);
     setTimeout(() => {
       this.itemService.purchaseProductsWithCredits(order, orderId).subscribe(
         (response: PurchaseProductsWithCreditsResponse) => {
@@ -167,19 +166,6 @@ export class CartComponent implements OnInit, OnDestroy {
     this.itemService.deselectItems();
     this.itemService.selectedAction = null;
     this.router.navigate(['catalog/list', { code: 200 }]);
-  }
-
-  private track(order: Order[]) {
-    const result = order.map((purchase) => ({
-      item_id: purchase.item_id,
-      bump_type: purchase.product_id,
-    }));
-    const itemsIds = Object.keys(order).map((key) => order[key].item_id);
-
-    const payment_method = PAYMENT_METHOD.STRIPE;
-    const attributes = this.totalToPay === 0 ? { selected_products: result } : { selected_products: result, payment_method };
-
-    ga('send', 'event', 'Item', 'bump-cart');
   }
 
   get totalToPay(): number {

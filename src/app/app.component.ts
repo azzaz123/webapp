@@ -26,7 +26,6 @@ export class AppComponent implements OnInit {
     //TODO: This should be moved to a higher level entity (providers.ts or equivalent)
     this.initSubscriptions();
     this.initServices();
-    this.trackStandaloneModeStatus();
   }
 
   private initSubscriptions(): void {
@@ -61,11 +60,5 @@ export class AppComponent implements OnInit {
         webDeviceId: this.deviceService.getDeviceId(),
       },
     });
-  }
-
-  private trackStandaloneModeStatus(): void {
-    if (this.standaloneService.standalone) {
-      ga('send', 'event', 'Standalone', 'enabled');
-    }
   }
 }
