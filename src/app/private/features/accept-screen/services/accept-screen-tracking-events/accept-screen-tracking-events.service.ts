@@ -11,7 +11,6 @@ import {
   ClickOtherProfile,
   ClickRejectOffer,
   ClickScheduleHPU,
-  SCREEN_IDS,
   ViewAcceptOffer,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -22,165 +21,80 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 export class AcceptScreenTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
-  public trackViewAcceptOffer(payload: Partial<ViewAcceptOffer>): void {
-    const { itemId, buyerUserId, requestId, categoryId, isPro, totalPrice, offeredPrice, itemPrice, title, method, buyerCountry } = payload;
+  public trackViewAcceptOffer(attributes: ViewAcceptOffer): void {
     const pageViewEvent: AnalyticsPageView<ViewAcceptOffer> = {
       name: ANALYTICS_EVENT_NAMES.ViewAcceptOffer,
-      attributes: {
-        itemId,
-        buyerUserId,
-        requestId,
-        categoryId,
-        isPro,
-        totalPrice,
-        offeredPrice,
-        itemPrice,
-        title,
-        method,
-        buyerCountry,
-        screenId: SCREEN_IDS.AcceptOffer,
-      },
+      attributes,
     };
 
     this.analyticsService.trackPageView(pageViewEvent);
   }
 
-  public async trackClickItemCard(payload: Partial<ClickItemCard>): Promise<void> {
-    const { itemId, categoryId, salePrice, isCarDealer, isPro, sellerUserId, sellerRating, title, shippingAllowed } = payload;
+  public async trackClickItemCard(attributes: ClickItemCard): Promise<void> {
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.AcceptOffer,
-        itemId,
-        categoryId,
-        title,
-        salePrice,
-        isPro,
-        isCarDealer,
-        position: 0,
-        sellerUserId,
-        shippingAllowed,
-        sellerRating,
-      },
+      attributes,
     };
 
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickOtherProfile(payload: Partial<ClickOtherProfile>): void {
-    const { isPro, sellerUserId } = payload;
+  public trackClickOtherProfile(attributes: ClickOtherProfile): void {
     const event: AnalyticsEvent<ClickOtherProfile> = {
       name: ANALYTICS_EVENT_NAMES.ClickOtherProfile,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.AcceptOffer,
-        isPro,
-        sellerUserId,
-      },
+      attributes,
     };
 
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickAcceptOffer(payload: Partial<ClickAcceptOffer>): void {
-    const { itemId, buyerUserId, requestId, categoryId, isPro, totalPrice, offeredPrice, itemPrice, title, method } = payload;
+  public trackClickAcceptOffer(attributes: ClickAcceptOffer): void {
     const event: AnalyticsEvent<ClickAcceptOffer> = {
       name: ANALYTICS_EVENT_NAMES.ClickAcceptOffer,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.AcceptOffer,
-        itemId,
-        buyerUserId,
-        requestId,
-        categoryId,
-        isPro,
-        totalPrice,
-        offeredPrice,
-        itemPrice,
-        title,
-        method,
-      },
+      attributes,
     };
 
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickRejectOffer(payload: Partial<ClickRejectOffer>): void {
-    const { itemId, buyerUserId, requestId, categoryId, isPro, totalPrice, offeredPrice, itemPrice, title, method } = payload;
+  public trackClickRejectOffer(attributes: ClickRejectOffer): void {
     const event: AnalyticsEvent<ClickRejectOffer> = {
       name: ANALYTICS_EVENT_NAMES.ClickRejectOffer,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.AcceptOffer,
-        itemId,
-        buyerUserId,
-        requestId,
-        categoryId,
-        isPro,
-        totalPrice,
-        offeredPrice,
-        itemPrice,
-        title,
-        method,
-      },
+      attributes,
     };
 
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickAddEditAddress(payload: Partial<ClickAddEditAddress>): void {
-    const { addOrEdit, addressType, requestId, itemId, itemPrice } = payload;
+  public trackClickAddEditAddress(attributes: ClickAddEditAddress): void {
     const event: AnalyticsEvent<ClickAddEditAddress> = {
       name: ANALYTICS_EVENT_NAMES.ClickAddEditAddress,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.AcceptOffer,
-        addOrEdit,
-        addressType,
-        requestId,
-        itemId,
-        itemPrice,
-      },
+      attributes,
     };
 
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickHelpTransactional(payload: Partial<ClickHelpTransactional>): void {
-    const { itemId, categoryId, itemPrice, sellerUserId, helpName } = payload;
+  public trackClickHelpTransactional(attributes: ClickHelpTransactional): void {
     const event: AnalyticsEvent<ClickHelpTransactional> = {
       name: ANALYTICS_EVENT_NAMES.ClickHelpTransactional,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
-      attributes: {
-        screenId: SCREEN_IDS.AcceptOffer,
-        itemId,
-        categoryId,
-        itemPrice,
-        sellerUserId,
-        helpName,
-      },
+      attributes,
     };
 
     this.analyticsService.trackEvent(event);
   }
 
-  public trackClickScheduleHPU(payload: Partial<ClickScheduleHPU>): void {
-    const { itemId, buyerUserId, requestId, categoryId, totalPrice, offeredPrice, itemPrice, title } = payload;
+  public trackClickScheduleHPU(attributes: ClickScheduleHPU): void {
     const event: AnalyticsEvent<ClickScheduleHPU> = {
       name: ANALYTICS_EVENT_NAMES.ClickScheduleHPU,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-      attributes: {
-        screenId: SCREEN_IDS.AcceptOffer,
-        itemId,
-        buyerUserId,
-        requestId,
-        categoryId,
-        totalPrice,
-        offeredPrice,
-        itemPrice,
-        title,
-      },
+      attributes,
     };
 
     this.analyticsService.trackEvent(event);

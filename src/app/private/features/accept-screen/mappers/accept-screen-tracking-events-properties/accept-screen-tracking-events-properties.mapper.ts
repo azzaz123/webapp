@@ -7,12 +7,15 @@ import {
   ClickOtherProfile,
   ClickRejectOffer,
   ClickScheduleHPU,
+  SCREEN_IDS,
   ViewAcceptOffer,
 } from '@core/analytics/analytics-constants';
 import { AcceptScreenCarrier, AcceptScreenProperties, AcceptScreenSeller } from '../../interfaces';
 
-export function getClickItemCardEventPropertiesFromProperties(properties: AcceptScreenProperties): Partial<ClickItemCard> {
+export function getClickItemCardEventPropertiesFromProperties(properties: AcceptScreenProperties): ClickItemCard {
   return {
+    screenId: SCREEN_IDS.AcceptOffer,
+    position: 0,
     itemId: properties.request.itemId,
     categoryId: properties.item.categoryId,
     title: properties.item.title,
@@ -25,17 +28,17 @@ export function getClickItemCardEventPropertiesFromProperties(properties: Accept
   };
 }
 
-export function getClickOtherProfileEventPropertiesFromSeller(seller: AcceptScreenSeller): Partial<ClickOtherProfile> {
+export function getClickOtherProfileEventPropertiesFromSeller(seller: AcceptScreenSeller): ClickOtherProfile {
   return {
+    screenId: SCREEN_IDS.AcceptOffer,
     isPro: seller.isPro,
     sellerUserId: seller.id,
   };
 }
 
-export function getClickHelpTransactionalEventPropertiesFromProperties(
-  properties: AcceptScreenProperties
-): Partial<ClickHelpTransactional> {
+export function getClickHelpTransactionalEventPropertiesFromProperties(properties: AcceptScreenProperties): ClickHelpTransactional {
   return {
+    screenId: SCREEN_IDS.AcceptOffer,
     itemId: properties.request.itemId,
     categoryId: properties.item.categoryId,
     itemPrice: properties.request.sellerRevenue.itemPrice.amount.total,
@@ -44,8 +47,9 @@ export function getClickHelpTransactionalEventPropertiesFromProperties(
   };
 }
 
-export function getViewAcceptOfferEventPropertiesFromProperties(properties: AcceptScreenProperties): Partial<ViewAcceptOffer> {
+export function getViewAcceptOfferEventPropertiesFromProperties(properties: AcceptScreenProperties): ViewAcceptOffer {
   return {
+    screenId: SCREEN_IDS.AcceptOffer,
     itemId: properties.request.itemId,
     buyerUserId: properties.request.buyer.id,
     requestId: properties.request.id,
@@ -60,9 +64,10 @@ export function getViewAcceptOfferEventPropertiesFromProperties(properties: Acce
   };
 }
 
-export function getClickAddEditAddressEventPropertiesFromProperties(properties: AcceptScreenProperties): Partial<ClickAddEditAddress> {
+export function getClickAddEditAddressEventPropertiesFromProperties(properties: AcceptScreenProperties): ClickAddEditAddress {
   const sellerHasFullAddress: boolean = properties.seller.fullAddress && properties.seller.fullAddress !== '';
   return {
+    screenId: SCREEN_IDS.AcceptOffer,
     addOrEdit: !!sellerHasFullAddress ? 'edit' : 'add',
     addressType: getAddressType(properties.carriers),
     requestId: properties.request.id,
@@ -71,8 +76,9 @@ export function getClickAddEditAddressEventPropertiesFromProperties(properties: 
   };
 }
 
-export function getClickScheduleHPUEventPropertiesFromProperties(properties: AcceptScreenProperties): Partial<ClickScheduleHPU> {
+export function getClickScheduleHPUEventPropertiesFromProperties(properties: AcceptScreenProperties): ClickScheduleHPU {
   return {
+    screenId: SCREEN_IDS.AcceptOffer,
     itemId: properties.request.itemId,
     buyerUserId: properties.buyer.id,
     requestId: properties.request.id,
@@ -84,8 +90,9 @@ export function getClickScheduleHPUEventPropertiesFromProperties(properties: Acc
   };
 }
 
-export function getClickAcceptOfferEventPropertiesFromProperties(properties: AcceptScreenProperties): Partial<ClickAcceptOffer> {
+export function getClickAcceptOfferEventPropertiesFromProperties(properties: AcceptScreenProperties): ClickAcceptOffer {
   return {
+    screenId: SCREEN_IDS.AcceptOffer,
     itemId: properties.request.itemId,
     buyerUserId: properties.buyer.id,
     requestId: properties.request.id,
@@ -99,8 +106,9 @@ export function getClickAcceptOfferEventPropertiesFromProperties(properties: Acc
   };
 }
 
-export function getClickRejectOfferEventPropertiesFromProperties(properties: AcceptScreenProperties): Partial<ClickRejectOffer> {
+export function getClickRejectOfferEventPropertiesFromProperties(properties: AcceptScreenProperties): ClickRejectOffer {
   return {
+    screenId: SCREEN_IDS.AcceptOffer,
     itemId: properties.request.itemId,
     buyerUserId: properties.buyer.id,
     requestId: properties.request.id,

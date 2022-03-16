@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, SCREEN_IDS } from '@core/analytics/analytics-constants';
+import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
@@ -15,7 +15,6 @@ import {
   MOCK_VIEW_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_HPU,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-event-properties.fixtures.spec';
 import { of } from 'rxjs';
-
 import { AcceptScreenTrackingEventsService } from './accept-screen-tracking-events.service';
 
 describe('AcceptScreenTrackingEventsService', () => {
@@ -60,10 +59,7 @@ describe('AcceptScreenTrackingEventsService', () => {
     it('should track the event with specified properties', () => {
       expect(analyticsService.trackPageView).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.ViewAcceptOffer,
-        attributes: {
-          ...MOCK_VIEW_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_HPU,
-          screenId: SCREEN_IDS.AcceptOffer,
-        },
+        attributes: MOCK_VIEW_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_HPU,
       });
     });
   });
@@ -82,11 +78,7 @@ describe('AcceptScreenTrackingEventsService', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.ClickItemCard,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          ...MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES,
-          screenId: SCREEN_IDS.AcceptOffer,
-          position: 0,
-        },
+        attributes: MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES,
       });
     });
   });
@@ -105,10 +97,7 @@ describe('AcceptScreenTrackingEventsService', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.ClickOtherProfile,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          ...MOCK_CLICK_OTHER_PROFILE_EVENT_PROPERTIES,
-          screenId: SCREEN_IDS.AcceptOffer,
-        },
+        attributes: MOCK_CLICK_OTHER_PROFILE_EVENT_PROPERTIES,
       });
     });
   });
@@ -127,10 +116,7 @@ describe('AcceptScreenTrackingEventsService', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.ClickAcceptOffer,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          ...MOCK_CLICK_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_HPU,
-          screenId: SCREEN_IDS.AcceptOffer,
-        },
+        attributes: MOCK_CLICK_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_HPU,
       });
     });
   });
@@ -149,10 +135,7 @@ describe('AcceptScreenTrackingEventsService', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.ClickRejectOffer,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          ...MOCK_CLICK_REJECT_OFFER_EVENT_PROPERTIES_WITH_HPU,
-          screenId: SCREEN_IDS.AcceptOffer,
-        },
+        attributes: MOCK_CLICK_REJECT_OFFER_EVENT_PROPERTIES_WITH_HPU,
       });
     });
   });
@@ -171,10 +154,7 @@ describe('AcceptScreenTrackingEventsService', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.ClickAddEditAddress,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          ...MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_PROPERTIES_WITH_FULL_ADDRESS_AND_PO,
-          screenId: SCREEN_IDS.AcceptOffer,
-        },
+        attributes: MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_PROPERTIES_WITH_FULL_ADDRESS_AND_PO,
       });
     });
   });
@@ -193,10 +173,7 @@ describe('AcceptScreenTrackingEventsService', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.ClickHelpTransactional,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
-        attributes: {
-          ...MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
-          screenId: SCREEN_IDS.AcceptOffer,
-        },
+        attributes: MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
       });
     });
   });
@@ -215,10 +192,7 @@ describe('AcceptScreenTrackingEventsService', () => {
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
         name: ANALYTICS_EVENT_NAMES.ClickScheduleHPU,
         eventType: ANALYTIC_EVENT_TYPES.UserPreference,
-        attributes: {
-          ...MOCK_CLICK_SCHEDULE_HPU_EVENT_PROPERTIES,
-          screenId: SCREEN_IDS.AcceptOffer,
-        },
+        attributes: MOCK_CLICK_SCHEDULE_HPU_EVENT_PROPERTIES,
       });
     });
   });
