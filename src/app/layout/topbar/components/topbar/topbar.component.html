@@ -15,7 +15,7 @@
   <a id="top-bar-inbox" class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">
     <div class="news-badge"
          *ngIf="(unreadChatMessagesService.totalUnreadMessages$ | async) > 0 || (notificationApiService.unreadNotificationsCount$ | async) > 0"></div>
-    <tsl-svg-icon src="/assets/icons/messages.svg" class="topbar-icon"></tsl-svg-icon>
+    <tsl-svg-icon src="/assets/icons/inbox.svg" class="topbar-icon"></tsl-svg-icon>
     <span i18n="@@agnostic_view_nav_bar_inbox_label">Inbox</span>
     <div class="horizontal-line"></div>
   </a>
