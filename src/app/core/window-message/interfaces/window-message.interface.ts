@@ -1,5 +1,5 @@
-import { WindowMessageId } from '../types/window-message-id.type';
+import { WINDOW_MESSAGE_TYPE } from '../enums/window-message-type.enum';
 
 export interface WindowMessage {
-  id: WindowMessageId;
+  type: WINDOW_MESSAGE_TYPE;
 }

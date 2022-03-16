@@ -12,7 +12,7 @@ export const mapDeliveryBuyerCalculatorCostsDtoToDeliveryBuyerCalculatorCosts: T
   DeliveryBuyerCalculatorCostsDto,
   DeliveryBuyerCalculatorCosts
 > = (input: DeliveryBuyerCalculatorCostsDto) => {
-  const { buyer_cost: buyerCost, promotion } = input;
+  const { buyer_cost: buyerCost, promocode: promotion } = input;
 
   return {
     buyerCost: mapToDeliveryBuyerCalculatorCost(buyerCost),
@@ -35,8 +35,10 @@ const mapToDeliveryBuyerCalculatorPromotionCost = (
   return !!input
     ? {
         deliveryCostDiscountPercentage: input.delivery_cost_discount_percentage,
-        deliveryCostFixedPrice: mapAmountAndCurrenyToMoney<PriceDto>(input.delivery_cost_fixed_price),
-        feesFixedPrice: mapAmountAndCurrenyToMoney<PriceDto>(input.fees_fixed_price),
+        deliveryCostFixedPrice: !!input.delivery_cost_fixed_price
+          ? mapAmountAndCurrenyToMoney<PriceDto>(input.delivery_cost_fixed_price)
+          : null,
+        feesFixedPrice: !!input.fees_fixed_price ? mapAmountAndCurrenyToMoney<PriceDto>(input.fees_fixed_price) : null,
         originalBuyerCost: mapToDeliveryBuyerCalculatorCost(input.original_buyer_cost),
         promocode: input.promocode,
       }

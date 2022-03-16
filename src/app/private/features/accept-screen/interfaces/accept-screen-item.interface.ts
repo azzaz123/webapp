@@ -5,4 +5,6 @@ export interface AcceptScreenItem {
   imageUrl: string;
   title: string;
   price: Money;
+  categoryId: number;
+  shippingAllowed: boolean;
 }

@@ -13,8 +13,16 @@
               <span class="PayviewSummaryCostDetail__insuranceTitle pl-1 text-truncate" i18n="@@web_pay_view_buyer_summary_insurance_label"
                 >Insurance</span
               >
+              <span
+                *ngIf="isInsuranceDiscount"
+                class="PayviewSummaryCostDetail__insuranceBadge d-flex align-items-center align-justify-center"
+                >{{ insuranceBadge }}</span
+              >
             </div>
-            <span class="PayviewSummaryCostDetail__insuranceCost">{{ insuranceCost }}</span>
+            <div class="PayviewSummaryCostDetail__costWrapper">
+              <span *ngIf="isInsuranceDiscount" class="PayviewSummaryCostDetail__insuranceDiscount mr-1">{{ insuranceDiscount }}</span>
+              <span class="PayviewSummaryCostDetail__insuranceCost">{{ insuranceCost }}</span>
+            </div>
           </div>
           <div class="PayviewSummaryCostDetail__shipping d-flex flex-wrap justify-content-between">
             <div class="d-flex flex-nowrap align-items-center text-truncate">
@@ -22,8 +30,16 @@
               <span class="PayviewSummaryCostDetail__shippingTitle pl-1 text-truncate" i18n="@@pay_view_buyer_summary_shipping_label"
                 >Delivery</span
               >
+              <span
+                *ngIf="isShippingDiscount"
+                class="PayviewSummaryCostDetail__shippingBadge d-flex align-items-center align-justify-center"
+                >{{ shippingBadge }}</span
+              >
             </div>
-            <span class="PayviewSummaryCostDetail__shippingCost">{{ shippingCost }}</span>
+            <div class="PayviewSummaryCostDetail__costWrapper">
+              <span *ngIf="isShippingDiscount" class="PayviewSummaryCostDetail__shippingDiscount mr-1">{{ shippingDiscount }}</span>
+              <span class="PayviewSummaryCostDetail__shippingCost">{{ shippingCost }}</span>
+            </div>
           </div>
         </div>
         <div class="PayviewSummaryCostDetail__total d-flex flex-wrap align-items-center justify-content-between px-2 text-truncate">

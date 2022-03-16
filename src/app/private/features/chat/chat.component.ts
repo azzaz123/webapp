@@ -16,7 +16,6 @@ import { InboxService } from './core/inbox/inbox.service';
 import { InboxConversation, PhoneMethod } from './core/model';
 import { SendPhoneComponent } from './modals';
 import { PersonalDataInformationModalComponent } from './modals/personal-data-information-modal/personal-data-information-modal.component';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Component({
   selector: 'tsl-chat',
@@ -40,8 +39,7 @@ export class ChatComponent implements OnInit {
     public inboxConversationService: InboxConversationService,
     private modalService: NgbModal,
     private trustAndSafetyService: TrustAndSafetyService,
-    private itemDetailRoutePipe: ItemDetailRoutePipe,
-    public featureFlagService: FeatureFlagService
+    private itemDetailRoutePipe: ItemDetailRoutePipe
   ) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
