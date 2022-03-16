@@ -71,53 +71,22 @@ describe('AcceptScreenTrackingEventsService', () => {
   describe('and we call to track click item card event', () => {
     beforeEach(() => {
       spyOn(analyticsService, 'trackEvent');
+      service.trackClickItemCard(MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES);
     });
 
-    describe('and the delivery feature flag is enabled', () => {
-      beforeEach(() => {
-        spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(true));
-        service.trackClickItemCard(MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES);
-      });
-
-      it('should track the event', () => {
-        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      });
-
-      it('should track the event with specified properties with shipping allowed', () => {
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.ClickItemCard,
-          eventType: ANALYTIC_EVENT_TYPES.Navigation,
-          attributes: {
-            ...MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES,
-            screenId: SCREEN_IDS.AcceptOffer,
-            position: 0,
-            shippingAllowed: true,
-          },
-        });
-      });
+    it('should track the event', () => {
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
     });
 
-    describe('and the delivery feature flag is disabled', () => {
-      beforeEach(() => {
-        spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(false));
-        service.trackClickItemCard(MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES);
-      });
-
-      it('should track the event', () => {
-        expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
-      });
-
-      it('should track the event with specified properties with NOT shipping allowed', () => {
-        expect(analyticsService.trackEvent).toHaveBeenCalledWith({
-          name: ANALYTICS_EVENT_NAMES.ClickItemCard,
-          eventType: ANALYTIC_EVENT_TYPES.Navigation,
-          attributes: {
-            ...MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES,
-            screenId: SCREEN_IDS.AcceptOffer,
-            position: 0,
-            shippingAllowed: false,
-          },
-        });
+    it('should track the event with specified properties with shipping allowed', () => {
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        name: ANALYTICS_EVENT_NAMES.ClickItemCard,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
+        attributes: {
+          ...MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES,
+          screenId: SCREEN_IDS.AcceptOffer,
+          position: 0,
+        },
       });
     });
   });

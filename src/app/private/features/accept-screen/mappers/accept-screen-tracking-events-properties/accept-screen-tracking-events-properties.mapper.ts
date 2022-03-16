@@ -21,6 +21,7 @@ export function getClickItemCardEventPropertiesFromProperties(properties: Accept
     isCarDealer: properties.seller.isCarDealer,
     sellerUserId: properties.seller.id,
     sellerRating: properties.seller.rating,
+    shippingAllowed: properties.item.shippingAllowed,
   };
 }
 

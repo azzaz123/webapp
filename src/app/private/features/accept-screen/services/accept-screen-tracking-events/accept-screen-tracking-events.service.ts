@@ -15,14 +15,12 @@ import {
   ViewAcceptOffer,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AcceptScreenTrackingEventsService {
-  constructor(private analyticsService: AnalyticsService, private featureFlagService: FeatureFlagService) {}
+  constructor(private analyticsService: AnalyticsService) {}
 
   public trackViewAcceptOffer(payload: Partial<ViewAcceptOffer>): void {
     const { itemId, buyerUserId, requestId, categoryId, isPro, totalPrice, offeredPrice, itemPrice, title, method, buyerCountry } = payload;
@@ -48,7 +46,7 @@ export class AcceptScreenTrackingEventsService {
   }
 
   public async trackClickItemCard(payload: Partial<ClickItemCard>): Promise<void> {
-    const { itemId, categoryId, salePrice, isCarDealer, isPro, sellerUserId, sellerRating, title } = payload;
+    const { itemId, categoryId, salePrice, isCarDealer, isPro, sellerUserId, sellerRating, title, shippingAllowed } = payload;
     const event: AnalyticsEvent<ClickItemCard> = {
       name: ANALYTICS_EVENT_NAMES.ClickItemCard,
       eventType: ANALYTIC_EVENT_TYPES.Navigation,
@@ -62,7 +60,7 @@ export class AcceptScreenTrackingEventsService {
         isCarDealer,
         position: 0,
         sellerUserId,
-        shippingAllowed: await this.isDeliveryFlagEnabled,
+        shippingAllowed,
         sellerRating,
       },
     };
@@ -186,9 +184,5 @@ export class AcceptScreenTrackingEventsService {
     };
 
     this.analyticsService.trackEvent(event);
-  }
-
-  private get isDeliveryFlagEnabled(): Promise<boolean> {
-    return this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).toPromise();
   }
 }

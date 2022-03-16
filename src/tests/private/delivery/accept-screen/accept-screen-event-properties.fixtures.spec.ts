@@ -24,6 +24,7 @@ export const MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES: Partial<ClickItemCard> = {
   isCarDealer: MOCK_ACCEPT_SCREEN_PROPERTIES.seller.isCarDealer,
   sellerUserId: MOCK_ACCEPT_SCREEN_PROPERTIES.seller.id,
   sellerRating: MOCK_ACCEPT_SCREEN_PROPERTIES.seller.rating,
+  shippingAllowed: MOCK_ACCEPT_SCREEN_PROPERTIES.item.shippingAllowed,
 };
 
 export const MOCK_CLICK_OTHER_PROFILE_EVENT_PROPERTIES: Partial<ClickOtherProfile> = {
