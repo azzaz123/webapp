@@ -22,5 +22,8 @@
 
   &__actionButton {
     min-width: 200px;
+    &:not(:first-child) {
+      margin-top: $spacer * 0.75;
+    }
   }
 }
