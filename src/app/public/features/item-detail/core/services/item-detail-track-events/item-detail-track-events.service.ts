@@ -59,7 +59,7 @@ export class ItemDetailTrackEventsService {
         screenId: SCREEN_IDS.ItemDetail,
         isPro: user.featured,
         isBumped: !!item.bumpFlags?.bumped,
-        shippingAllowed: null,
+        shippingAllowed: item.saleConditions?.shipping_allowed,
       },
     };
     this.analyticsService.trackEvent(event);
