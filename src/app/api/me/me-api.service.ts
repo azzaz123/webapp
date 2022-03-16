@@ -13,11 +13,15 @@ import { SoldItemResponseDto } from './dtos/sold/response/sold-response-dto';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { ItemService } from '@core/item/item.service';
 import { SoldItemsQueryParams } from './dtos/sold/request/sold-query-params';
+import { mapPublishedItemsToLegacyItem } from './mappers/published-item-mapper';
+import { PublishedResponseDto } from './dtos/published/response/published-response-dto';
+import { PublishedQueryParams } from './dtos/published/request/published-query-params';
 
 @Injectable()
 export class MeApiService {
   public requestConfig: Partial<Record<STATUS, Function>> = {
     [STATUS.SOLD]: (params: string) => this.getSoldItems(params),
+    [STATUS.PUBLISHED]: (params: string) => this.getPublishedItems(params),
   };
 
   public constructor(private httpService: MeHttpService, private itemService: ItemService) {}
@@ -50,6 +54,21 @@ export class MeApiService {
           paginationParameter: response.since,
         };
       })
+    );
+  }
+
+  private getPublishedItems(paginationParameter: string): Observable<PaginatedList<Item>> {
+    let parameters: QueryParams<PublishedQueryParams>;
+    if (paginationParameter) {
+      parameters = {
+        since: paginationParameter,
+      };
+    }
+    return this.httpService.getPublishedItems(parameters).pipe(
+      map(({ data, meta }: PublishedResponseDto) => ({
+        list: mapPublishedItemsToLegacyItem(data),
+        paginationParameter: meta?.next,
+      }))
     );
   }
 
