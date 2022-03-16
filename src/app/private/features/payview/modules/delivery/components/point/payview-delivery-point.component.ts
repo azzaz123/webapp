@@ -46,7 +46,7 @@ export class PayviewDeliveryPointComponent {
   }
 
   public get address(): string {
-    return this.deliveryMethod.lastAddressUsed?.label;
+    return this.deliveryMethod.lastAddressUsed.label;
   }
 
   public get deliveryCost(): string {

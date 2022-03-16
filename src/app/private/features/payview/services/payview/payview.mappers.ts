@@ -3,6 +3,9 @@ import { DeliveryAddressApi } from '@private/features/delivery/interfaces/delive
 import { ToDomainMapper } from '@api/core/utils/types';
 
 export const mapToDeliveryAddress: ToDomainMapper<DeliveryAddressApi, DeliveryAddress> = (input: DeliveryAddressApi) => {
+  if (!input) {
+    return null;
+  }
   const {
     city,
     country_iso_code: country,
