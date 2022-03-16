@@ -16,7 +16,7 @@ import { TransactionTrackingScreenStoreService } from '@private/features/deliver
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
-import { of, throwError, Subject } from 'rxjs';
+import { of, throwError, Subject, BehaviorSubject } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TransactionTrackingOverviewComponent', () => {
@@ -28,6 +28,10 @@ describe('TransactionTrackingOverviewComponent', () => {
   const transactionTrackingStatusInfoWrapperSelector = '#transactionTrackingStatusInfoWrapper';
   const transactionTrackingDetailsStatusInfoWrapperSelector = '#transactionTrackingDetailsStatusInfoWrapper';
   const routerEvents: Subject<RouterEvent> = new Subject();
+  const transactionTrackingSubject: BehaviorSubject<TransactionTracking> = new BehaviorSubject(MOCK_TRANSACTION_TRACKING);
+  const transactionTrackingDetailsSubject: BehaviorSubject<TransactionTrackingDetails> = new BehaviorSubject(
+    MOCK_TRANSACTION_TRACKING_DETAILS
+  );
 
   let component: TransactionTrackingOverviewComponent;
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
@@ -70,10 +74,10 @@ describe('TransactionTrackingOverviewComponent', () => {
           provide: TransactionTrackingService,
           useValue: {
             get() {
-              return of(MOCK_TRANSACTION_TRACKING);
+              return transactionTrackingSubject.asObservable();
             },
             getDetails() {
-              return of(MOCK_TRANSACTION_TRACKING_DETAILS);
+              return transactionTrackingDetailsSubject.asObservable();
             },
           },
         },
@@ -81,7 +85,23 @@ describe('TransactionTrackingOverviewComponent', () => {
           provide: SharedErrorActionService,
           useValue: MockSharedErrorActionService,
         },
-        TransactionTrackingScreenStoreService,
+        {
+          provide: TransactionTrackingScreenStoreService,
+          useValue: {
+            get transactionTracking$() {
+              return transactionTrackingSubject.asObservable();
+            },
+            get transactionTrackingDetails$() {
+              return transactionTrackingDetailsSubject.asObservable();
+            },
+            set transactionTracking(newTracking) {
+              transactionTrackingSubject.next(newTracking);
+            },
+            set transactionTrackingDetails(newTransactionTrackingDetails) {
+              transactionTrackingDetailsSubject.next(newTransactionTrackingDetails);
+            },
+          },
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -95,6 +115,7 @@ describe('TransactionTrackingOverviewComponent', () => {
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     transactionTrackingScreenStoreService = TestBed.inject(TransactionTrackingScreenStoreService);
     transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
+    errorActionService = TestBed.inject(SharedErrorActionService);
   });
 
   it('should create', () => {
@@ -102,7 +123,17 @@ describe('TransactionTrackingOverviewComponent', () => {
   });
 
   describe('when we enter the TTS page', () => {
+    let transactionTrackingExpected: TransactionTracking;
+    let transactionTrackingDetailsExpected: TransactionTrackingDetails;
+
     beforeEach(() => {
+      component.transactionTracking$.subscribe((transactionTrackingReceived: TransactionTracking) => {
+        transactionTrackingExpected = transactionTrackingReceived;
+      });
+      component.transactionTrackingDetails$.subscribe((transactionTrackingDetailsReceived: TransactionTrackingDetails) => {
+        transactionTrackingDetailsExpected = transactionTrackingDetailsReceived;
+      });
+      spyOn(errorActionService, 'show');
       spyOn(transactionTrackingService, 'get').and.returnValue(of(MOCK_TRANSACTION_TRACKING));
       spyOn(transactionTrackingService, 'getDetails').and.returnValue(of(MOCK_TRANSACTION_TRACKING_DETAILS));
       spyOn(transactionTrackingScreenTrackingEventsService, 'trackViewTTSScreen');
@@ -143,24 +174,10 @@ describe('TransactionTrackingOverviewComponent', () => {
     });
 
     it('should save the requested transaction tracking', () => {
-      let transactionTrackingExpected: TransactionTracking;
-      component.transactionTracking$.subscribe((transactionTrackingReceived: TransactionTracking) => {
-        transactionTrackingExpected = transactionTrackingReceived;
-      });
-
-      component.ngOnInit();
-
       expect(transactionTrackingExpected).toStrictEqual(MOCK_TRANSACTION_TRACKING);
     });
 
     it('should save the requested transaction tracking details', () => {
-      let transactionTrackingDetailsExpected: TransactionTrackingDetails;
-      component.transactionTrackingDetails$.subscribe((transactionTrackingDetailsReceived: TransactionTrackingDetails) => {
-        transactionTrackingDetailsExpected = transactionTrackingDetailsReceived;
-      });
-
-      component.ngOnInit();
-
       expect(transactionTrackingDetailsExpected).toStrictEqual(MOCK_TRANSACTION_TRACKING_DETAILS);
     });
 
@@ -179,118 +196,70 @@ describe('TransactionTrackingOverviewComponent', () => {
         expect(router.navigate).toHaveBeenCalledWith([pathToStreamlineOngoing]);
       });
     });
-  });
 
-  describe('when we NOT receive tracking info', () => {
-    beforeEach(() => {
-      spyOn(transactionTrackingService, 'get').and.returnValue(of(null));
-
-      fixture.detectChanges();
-    });
-
-    it('should update the transaction tracking store', () => {
-      transactionTrackingScreenStoreService.transactionTracking$.subscribe((expectedValue: TransactionTracking) => {
-        expect(expectedValue).toStrictEqual(null);
-      });
-    });
-
-    it('should NOT render the transaction tracking header ', () => {
-      expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeFalsy();
-    });
-
-    it('should NOT render the general info ', () => {
-      expect(de.query(By.css(generalInfoSelector))).toBeFalsy();
-    });
-
-    it('should NOT render the transaction tracking status info ', () => {
-      expect(de.query(By.css(transactionTrackingStatusInfoWrapperSelector))).toBeFalsy();
-    });
-  });
-
-  describe('when we NOT receive tracking details info', () => {
-    beforeEach(() => {
-      spyOn(transactionTrackingService, 'getDetails').and.returnValue(of(null));
-
-      fixture.detectChanges();
-    });
-
-    it('should update the transaction tracking store', () => {
-      transactionTrackingScreenStoreService.transactionTrackingDetails$.subscribe((expectedValue: TransactionTrackingDetails) => {
-        expect(expectedValue).toStrictEqual(null);
-      });
-    });
-
-    it('should NOT render the transaction tracking status info ', () => {
-      expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeFalsy();
-    });
-  });
-
-  describe('when we receive tracking info...', () => {
-    beforeEach(() => {
-      spyOn(transactionTrackingService, 'get').and.returnValue(of(MOCK_TRANSACTION_TRACKING));
-
-      fixture.detectChanges();
-    });
-
-    it('should render the transaction tracking header ', fakeAsync(() => {
-      component.transactionTracking$.subscribe(() => {
-        fixture.detectChanges();
-
+    describe('and we receive tracking info...', () => {
+      it('should render the transaction tracking header ', () => {
         expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeTruthy();
-
-        flush();
       });
 
-      component.ngOnInit();
-      tick();
-    }));
-
-    it('should render the general info ', fakeAsync(() => {
-      component.transactionTracking$.subscribe(() => {
-        fixture.detectChanges();
-
+      it('should render the general info ', () => {
         expect(de.query(By.css(generalInfoSelector))).toBeTruthy();
-
-        flush();
       });
 
-      component.ngOnInit();
-      tick();
-    }));
-
-    it('should render the transaction tracking status info ', fakeAsync(() => {
-      component.transactionTracking$.subscribe(() => {
-        fixture.detectChanges();
-
+      it('should render the transaction tracking status info ', () => {
         expect(de.query(By.css(transactionTrackingStatusInfoWrapperSelector))).toBeTruthy();
-
-        flush();
       });
-
-      component.ngOnInit();
-      tick();
-    }));
-  });
-
-  describe('when we receive tracking details info...', () => {
-    beforeEach(() => {
-      spyOn(transactionTrackingService, 'getDetails').and.returnValue(of(MOCK_TRANSACTION_TRACKING_DETAILS));
-
-      fixture.detectChanges();
     });
 
-    it('should render the transaction tracking status info ', fakeAsync(() => {
-      component.transactionTrackingDetails$.subscribe(() => {
+    describe('and we NOT receive tracking info', () => {
+      beforeEach(() => {
+        transactionTrackingSubject.next(null);
+
         fixture.detectChanges();
-
-        expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeTruthy();
-
-        flush();
       });
 
-      component.ngOnInit();
-      tick();
-    }));
+      it('should update the transaction tracking store', () => {
+        transactionTrackingScreenStoreService.transactionTracking$.subscribe((expectedValue: TransactionTracking) => {
+          expect(expectedValue).toStrictEqual(null);
+        });
+      });
+
+      it('should NOT render the transaction tracking header ', () => {
+        expect(de.query(By.css(transactionTrackingHeaderSelector))).toBeFalsy();
+      });
+
+      it('should NOT render the general info ', () => {
+        expect(de.query(By.css(generalInfoSelector))).toBeFalsy();
+      });
+
+      it('should NOT render the transaction tracking status info ', () => {
+        expect(de.query(By.css(transactionTrackingStatusInfoWrapperSelector))).toBeFalsy();
+      });
+    });
+
+    describe('and we receive tracking details info...', () => {
+      it('should render the transaction tracking status info ', () => {
+        expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeTruthy();
+      });
+    });
+
+    describe('when we NOT receive tracking details info', () => {
+      beforeEach(() => {
+        transactionTrackingDetailsSubject.next(null);
+
+        fixture.detectChanges();
+      });
+
+      it('should update the transaction tracking store', () => {
+        transactionTrackingScreenStoreService.transactionTrackingDetails$.subscribe((expectedValue: TransactionTrackingDetails) => {
+          expect(expectedValue).toStrictEqual(null);
+        });
+      });
+
+      it('should NOT render the transaction tracking status info ', () => {
+        expect(de.query(By.css(transactionTrackingDetailsStatusInfoWrapperSelector))).toBeFalsy();
+      });
+    });
   });
 
   describe('WHEN there is an error retrieving data', () => {
@@ -313,9 +282,9 @@ describe('TransactionTrackingOverviewComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should show the generic error catcher', fakeAsync(() => {
+      it('should show the generic error catcher', () => {
         expect(errorActionSpy).toHaveBeenCalledTimes(1);
-      }));
+      });
     });
 
     describe('WHEN there is an error retrieving the transaction tracking details', () => {
@@ -330,9 +299,9 @@ describe('TransactionTrackingOverviewComponent', () => {
         fixture.detectChanges();
       });
 
-      it('should show the generic error catcher', fakeAsync(() => {
+      it('should show the generic error catcher', () => {
         expect(errorActionSpy).toHaveBeenCalledTimes(1);
-      }));
+      });
     });
   });
 });
