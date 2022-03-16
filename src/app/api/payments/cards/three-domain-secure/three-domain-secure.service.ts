@@ -4,7 +4,7 @@ import { CreditCard } from '@api/core/model';
 import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
 import { filter, concatMap, take, takeUntil, tap, catchError } from 'rxjs/operators';
