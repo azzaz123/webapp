@@ -36,6 +36,7 @@ export const mapItemToAcceptScreenItem: ToDomainMapper<Item, AcceptScreenItem> =
     price: mapNumberAndCurrencyCodeToMoney(itemCurrencyPrice),
     imageUrl: item.images ? item.images[0].urls_by_size.original : FALLBACK_NOT_FOUND_SRC,
     categoryId: item.categoryId,
+    shippingAllowed: item.saleConditions?.shipping_allowed,
   };
 };
 

@@ -30,6 +30,7 @@ export const MOCK_ACCEPT_SCREEN_ITEM: AcceptScreenItem = {
   }),
   imageUrl: MOCK_ITEM.images[0].urls_by_size.original,
   categoryId: MOCK_ITEM.categoryId,
+  shippingAllowed: MOCK_ITEM.saleConditions.shipping_allowed,
 };
 
 export const MOCK_ACCEPT_SCREEN_ITEM_WITHOUT_IMAGE: AcceptScreenItem = {
@@ -41,6 +42,7 @@ export const MOCK_ACCEPT_SCREEN_ITEM_WITHOUT_IMAGE: AcceptScreenItem = {
   }),
   imageUrl: FALLBACK_NOT_FOUND_SRC,
   categoryId: MOCK_ITEM_WITHOUT_IMAGE.categoryId,
+  shippingAllowed: MOCK_ITEM_WITHOUT_IMAGE.saleConditions.shipping_allowed,
 };
 
 export const MOCK_ACCEPT_SCREEN_BUYER: AcceptScreenBuyer = {

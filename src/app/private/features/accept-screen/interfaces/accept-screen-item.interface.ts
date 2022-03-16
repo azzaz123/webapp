@@ -6,4 +6,5 @@ export interface AcceptScreenItem {
   title: string;
   price: Money;
   categoryId: number;
+  shippingAllowed: boolean;
 }
