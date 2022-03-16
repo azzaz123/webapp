@@ -62,7 +62,7 @@ export class LoadAdsService {
 
   private initApstag(tcData: TcData, success: boolean): void {
     if (success) {
-      if (tcData.eventStatus === TCF_EVENT_STATUS.USER_ACTION_COMPLETE && tcData.tcString) {
+      if (tcData.tcString) {
         this.amazonPublisherService.init();
 
         this.tcfService.tcfApi(TCF_API_COMMAND.REMOVE_EVENT_LISTENER, TCF_API_VERSION.V2, this.initApstag.bind(this));

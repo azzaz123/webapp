@@ -1,0 +1,17 @@
+@import '~style/common';
+
+.PayviewPromotion {
+  margin-top: $spacing-xxl;
+
+  &__codeWrapper {
+    border-bottom: 1px solid $blue-grey-4;
+    border-top: 1px solid $blue-grey-4;
+    padding: $spacing-ms 0;
+  }
+
+  &__actionButton {
+    ::ng-deep button {
+      color: $walla-main !important;
+    }
+  }
+}
