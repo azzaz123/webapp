@@ -24,6 +24,7 @@ import { CategoriesApiService } from '@api/categories/categories-api.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { CategoryWithPresentation } from '@core/category/category-with-presentation.interface';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
 /* eslint-disable  @typescript-eslint/member-ordering */
 
 @Component({
@@ -92,12 +93,6 @@ export class CategoryCardsComponent implements OnChanges {
     }
 
     this.searchNavigatorService.navigate(parameters, FILTERS_SOURCE.SUBCATEGORY_SLIDER);
-
-    this.sentBrowseTrackingEvent();
-  }
-
-  private sentBrowseTrackingEvent(): void {
-    // TODO waiting for product
   }
 
   private resetScroll(): void {
