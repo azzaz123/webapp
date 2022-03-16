@@ -900,10 +900,16 @@ describe('PayviewModalComponent', () => {
           expect(target).toBeTruthy();
         });
 
-        it('should pass the payview state to the delivery overview component', () => {
+        it('should pass the costs to the delivery overview component', () => {
           const target = debugElement.query(By.css(payviewDeliveryOverviewSelector));
 
-          expect((target.componentInstance as PayviewDeliveryOverviewComponent).payviewState).toEqual(MOCK_PAYVIEW_STATE);
+          expect((target.componentInstance as PayviewDeliveryOverviewComponent).costs).toEqual(MOCK_PAYVIEW_STATE.delivery.costs);
+        });
+
+        it('should pass the methods to the delivery overview component', () => {
+          const target = debugElement.query(By.css(payviewDeliveryOverviewSelector));
+
+          expect((target.componentInstance as PayviewDeliveryOverviewComponent).methods).toEqual(MOCK_PAYVIEW_STATE.delivery.methods);
         });
 
         it('should show the promotion overview component', () => {

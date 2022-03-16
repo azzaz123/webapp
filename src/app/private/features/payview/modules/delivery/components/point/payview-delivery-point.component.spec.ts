@@ -40,8 +40,8 @@ describe('PayviewDeliveryPointComponent', () => {
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
 
-      component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-      component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
+      component.costs = MOCK_DELIVERY_COSTS_ITEM;
+      component.method = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
 
       fixture.detectChanges();
     });
@@ -57,8 +57,8 @@ describe('PayviewDeliveryPointComponent', () => {
           component = fixture.componentInstance;
           debugElement = fixture.debugElement;
 
-          component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-          component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
+          component.costs = MOCK_DELIVERY_COSTS_ITEM;
+          component.method = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
 
           fixture.detectChanges();
         });
@@ -81,7 +81,7 @@ describe('PayviewDeliveryPointComponent', () => {
 
         describe('WHEN we have deliverty costs', () => {
           it('should have the cost corresponding to the pick-up point method', () => {
-            const money: Money = component.deliveryCosts.carrierOfficeCost;
+            const money: Money = component.costs.carrierOfficeCost;
             const expected: string = `${money.amount.toString()}${money.currency.symbol}`;
 
             const result: boolean = debugElement
@@ -100,8 +100,8 @@ describe('PayviewDeliveryPointComponent', () => {
           });
 
           it('should have the cost corresponding to the pick-up point method', () => {
-            component.deliveryCosts.carrierOfficeCost = null;
-            const money: Money = component.deliveryCosts.carrierOfficeCost;
+            component.costs.carrierOfficeCost = null;
+            const money: Money = component.costs.carrierOfficeCost;
             const expected: string = ``;
 
             changeDetectorRef.detectChanges();
@@ -120,8 +120,8 @@ describe('PayviewDeliveryPointComponent', () => {
             component = fixture.componentInstance;
             debugElement = fixture.debugElement;
 
-            component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-            component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
+            component.costs = MOCK_DELIVERY_COSTS_ITEM;
+            component.method = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
             component.isChecked = true;
 
             fixture.detectChanges();
@@ -153,9 +153,9 @@ describe('PayviewDeliveryPointComponent', () => {
               component = fixture.componentInstance;
               debugElement = fixture.debugElement;
 
-              component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-              component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
-              component.deliveryMethod.lastAddressUsed = null;
+              component.costs = MOCK_DELIVERY_COSTS_ITEM;
+              component.method = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
+              component.method.lastAddressUsed = null;
               component.isChecked = true;
 
               fixture.detectChanges();
@@ -182,8 +182,8 @@ describe('PayviewDeliveryPointComponent', () => {
           component = fixture.componentInstance;
           debugElement = fixture.debugElement;
 
-          component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-          component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1];
+          component.costs = MOCK_DELIVERY_COSTS_ITEM;
+          component.method = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1];
 
           fixture.detectChanges();
         });
@@ -205,7 +205,7 @@ describe('PayviewDeliveryPointComponent', () => {
         });
 
         it('should have the cost corresponding to the home delivery method', () => {
-          const money: Money = component.deliveryCosts.buyerAddressCost;
+          const money: Money = component.costs.buyerAddressCost;
           const expected: string = `${money.amount.toString()}${money.currency.symbol}`;
 
           const result: boolean = debugElement
@@ -223,8 +223,8 @@ describe('PayviewDeliveryPointComponent', () => {
           });
 
           it('should have the cost corresponding to the pick-up point method', () => {
-            component.deliveryCosts.buyerAddressCost = null;
-            const money: Money = component.deliveryCosts.buyerAddressCost;
+            component.costs.buyerAddressCost = null;
+            const money: Money = component.costs.buyerAddressCost;
             const expected: string = ``;
 
             changeDetectorRef.detectChanges();
@@ -243,8 +243,8 @@ describe('PayviewDeliveryPointComponent', () => {
             component = fixture.componentInstance;
             debugElement = fixture.debugElement;
 
-            component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-            component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1];
+            component.costs = MOCK_DELIVERY_COSTS_ITEM;
+            component.method = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1];
             component.isChecked = true;
 
             fixture.detectChanges();
@@ -276,9 +276,9 @@ describe('PayviewDeliveryPointComponent', () => {
               component = fixture.componentInstance;
               debugElement = fixture.debugElement;
 
-              component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-              component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1];
-              component.deliveryMethod.lastAddressUsed = null;
+              component.costs = MOCK_DELIVERY_COSTS_ITEM;
+              component.method = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1];
+              component.method.lastAddressUsed = null;
               component.isChecked = true;
 
               fixture.detectChanges();
@@ -310,8 +310,8 @@ describe('PayviewDeliveryPointComponent', () => {
       debugElement = fixture.debugElement;
       spyOn(component.checked, 'emit');
 
-      component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-      component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
+      component.costs = MOCK_DELIVERY_COSTS_ITEM;
+      component.method = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
       component.id = fakeIndex;
 
       fixture.detectChanges();
@@ -335,8 +335,8 @@ describe('PayviewDeliveryPointComponent', () => {
       debugElement = fixture.debugElement;
       spyOn(component.edited, 'emit');
 
-      component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-      component.deliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
+      component.costs = MOCK_DELIVERY_COSTS_ITEM;
+      component.method = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0];
       component.id = fakeIndex;
       component.isChecked = true;
 

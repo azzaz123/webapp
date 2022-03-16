@@ -37,7 +37,10 @@
           <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
         </div>
         <div class="PayviewModal__delivery">
-          <tsl-payview-delivery-overview [payviewState]="payviewState"></tsl-payview-delivery-overview>
+          <tsl-payview-delivery-overview
+            [costs]="payviewState.delivery.costs"
+            [methods]="payviewState.delivery.methods"
+          ></tsl-payview-delivery-overview>
         </div>
         <div class="PayviewModal__promotion">
           <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
