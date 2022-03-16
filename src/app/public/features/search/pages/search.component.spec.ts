@@ -60,6 +60,7 @@ import { ExperimentationService } from '@core/experimentation/services/experimen
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 import { CategoryCardsStubComponent } from '@fixtures/web-components/category-cards.stub';
 import { SearchLayoutStubComponent } from '@fixtures/shared/components/search-layout.component.stub';
+import { CATEGORY_CARDS_VISIBILITY_RULES } from '../core/services/constants/category-cards-visibility-rules';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -1006,7 +1007,7 @@ describe('SearchComponent', () => {
           fixture.detectChanges();
         });
 
-        it('categories slider should NOT visible', () => {
+        it('categories slider should NOT be visible', () => {
           expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
         });
       });
@@ -1041,6 +1042,22 @@ describe('SearchComponent', () => {
           it('categories slider should NOT be visible', () => {
             expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
           });
+        });
+      });
+
+      describe('and filters contain not allowed param values', () => {
+        const notAllowedParam: FilterParameter = {
+          key: FILTER_QUERY_PARAM_KEY.categoryId,
+          value: CATEGORY_CARDS_VISIBILITY_RULES.NOT_ALLOWED_PARAMETER_VALUES.category_ids[0].toString(),
+        };
+
+        beforeEach(() => {
+          parametersSubject.next([notAllowedParam]);
+          fixture.detectChanges();
+        });
+
+        it('categories slider should NOT be visible', () => {
+          expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
         });
       });
     });

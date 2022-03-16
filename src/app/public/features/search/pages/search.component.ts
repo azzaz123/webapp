@@ -299,7 +299,15 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           CATEGORY_CARDS_VISIBILITY_RULES.REQUIRED_PARAMETER_KEYS.includes(param.key)
         );
 
-        if (requiredParamsToShowCategoryCards.length === CATEGORY_CARDS_VISIBILITY_RULES.REQUIRED_PARAMETER_KEYS.length) {
+        const hasNotAllowedParamValuesToShowCategoryCards = params.some((filterParameter) => {
+          const notAllowedFilterParameter = CATEGORY_CARDS_VISIBILITY_RULES.NOT_ALLOWED_PARAMETER_VALUES[filterParameter.key];
+          return notAllowedFilterParameter && notAllowedFilterParameter.toString().includes(filterParameter.value);
+        });
+
+        if (
+          requiredParamsToShowCategoryCards.length === CATEGORY_CARDS_VISIBILITY_RULES.REQUIRED_PARAMETER_KEYS.length &&
+          !hasNotAllowedParamValuesToShowCategoryCards
+        ) {
           const notAllowedParamsToShowCategoryCards = params.reduce((acc, curr) => {
             if (!CATEGORY_CARDS_VISIBILITY_RULES.ALLOWED_PARAMETER_KEYS.includes(curr.key)) acc.push(curr);
             return acc;
