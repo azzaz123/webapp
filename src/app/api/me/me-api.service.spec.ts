@@ -11,6 +11,7 @@ import { ItemService } from '@core/item/item.service';
 import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { mappedSoldItemsResponseFixture, soldItemsResponseFixture } from '@api/fixtures/me/sold/sold-response.fixture';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
+import { mappedPublishedResponseFixture, publishedResponseFixture } from '@api/fixtures/me/published/published-response.fixture';
 
 describe('MeApiService', () => {
   let service: MeApiService;
@@ -104,13 +105,13 @@ describe('MeApiService', () => {
     describe('without pagination', () => {
       it('should retrieve published items', () => {
         let itemList: PaginatedList<Item>;
-        spyOn(itemService, 'mine').and.callThrough();
+        spyOn(httpService, 'getPublishedItems').and.returnValue(of(publishedResponseFixture));
 
         service.getItems(null, STATUS.PUBLISHED).subscribe((list: PaginatedList<Item>) => (itemList = list));
 
-        expect(itemService.mine).toHaveBeenCalledTimes(1);
-        expect(itemService.mine).toHaveBeenCalledWith(null, STATUS.PUBLISHED);
-        expect(itemList).toEqual({ list: [MOCK_ITEM, MOCK_ITEM] });
+        expect(httpService.getPublishedItems).toHaveBeenCalledTimes(1);
+        expect(httpService.getPublishedItems).toHaveBeenCalledWith(undefined);
+        expect(itemList).toEqual(mappedPublishedResponseFixture);
       });
     });
 
@@ -118,13 +119,13 @@ describe('MeApiService', () => {
       it('should retrieve published items', () => {
         const pagination = 'paginationHash';
         let itemList: PaginatedList<Item>;
-        spyOn(itemService, 'mine').and.returnValue(of({ data: [MOCK_ITEM, MOCK_ITEM], since: pagination }));
+        spyOn(httpService, 'getPublishedItems').and.returnValue(of(publishedResponseFixture));
 
         service.getItems(pagination, STATUS.PUBLISHED).subscribe((list: PaginatedList<Item>) => (itemList = list));
 
-        expect(itemService.mine).toHaveBeenCalledTimes(1);
-        expect(itemService.mine).toHaveBeenCalledWith(pagination, STATUS.PUBLISHED);
-        expect(itemList).toEqual({ list: [MOCK_ITEM, MOCK_ITEM], paginationParameter: pagination });
+        expect(httpService.getPublishedItems).toHaveBeenCalledTimes(1);
+        expect(httpService.getPublishedItems).toHaveBeenCalledWith({ since: pagination });
+        expect(itemList).toEqual(mappedPublishedResponseFixture);
       });
     });
   });
