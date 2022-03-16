@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { favouriteResponseFixture, mappedFavouriteResponseFixture } from '@api/fixtures/me/favourites/favourite-response.fixture';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ItemService } from '@core/item/item.service';
-import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { MOCK_ITEM, PURCHASES } from '@fixtures/item.fixtures.spec';
 import { mappedSoldItemsResponseFixture, soldItemsResponseFixture } from '@api/fixtures/me/sold/sold-response.fixture';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 import { mappedPublishedResponseFixture, publishedResponseFixture } from '@api/fixtures/me/published/published-response.fixture';
@@ -29,6 +29,11 @@ describe('MeApiService', () => {
             mine() {
               return of({ data: [MOCK_ITEM, MOCK_ITEM] });
             },
+            getPurchases() {
+              return of(PURCHASES);
+            },
+            mapBumpInfoToItemData() {},
+            mapSelectedInfoToItemData() {},
           },
         },
       ],

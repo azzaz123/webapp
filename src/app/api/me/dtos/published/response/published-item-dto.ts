@@ -17,5 +17,5 @@ export interface PublishedItemDto {
   modified_date: number;
   bump?: { type: BumpTypes };
   reserved?: { flag: boolean };
-  listing_limits?: { exceeded: boolean };
+  listing_limit?: { exceeded: boolean };
 }

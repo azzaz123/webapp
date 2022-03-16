@@ -16,7 +16,7 @@ export const publishedItemFixture: PublishedItemDto = {
   reserved: { flag: false },
   created_date: 1638528402247,
   modified_date: 1638528403023,
-  listing_limits: { exceeded: false },
+  listing_limit: { exceeded: false },
 };
 
 export const mappedPublishedItemFixture: Item = new Item(
@@ -40,7 +40,7 @@ export const mappedPublishedItemFixture: Item = new Item(
     expired: false,
     bumped: !!publishedItemFixture.bump?.type,
     bump_type: publishedItemFixture.bump?.type,
-    onhold: publishedItemFixture.listing_limits.exceeded,
+    onhold: publishedItemFixture.listing_limit.exceeded,
   },
   undefined,
   undefined,
