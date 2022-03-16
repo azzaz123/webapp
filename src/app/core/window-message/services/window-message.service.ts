@@ -1,58 +1,33 @@
-import { Inject, Injectable } from '@angular/core';
-import { WINDOW_TOKEN } from '@core/window/window.token';
+import { Injectable } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { WindowMessage } from '../interfaces/window-message.interface';
 import { WindowMessageWrapper } from '../interfaces/window-message-wrapper.interface';
-import { WindowMessageId } from '../types/window-message-id.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WindowMessageService {
-  constructor(@Inject(WINDOW_TOKEN) private window: Window) {}
-
-  public send(message: WindowMessage): void {
+  public send(message: WindowMessage, windowReference: Window): void {
     const wrappedMessage = this.generateMessageFromPayload(message);
-    this.sendMessageToSelf(wrappedMessage);
-    this.sendMessageToOpener(wrappedMessage);
+    this.sendMessageToWindow(wrappedMessage, windowReference);
   }
 
-  public listen(id: WindowMessageId): Observable<WindowMessage> {
-    return fromEvent(this.window, 'message').pipe(
+  public listen(windowReference: Window): Observable<WindowMessage> {
+    return fromEvent(windowReference, 'message').pipe(
       map((messageEvent: MessageEvent) => messageEvent.data),
       filter(this.isValidMessage),
-      map((message) => message.payload),
-      filter((message: WindowMessage) => this.isTargetMessage(message, id))
+      map((message) => message.payload)
     );
   }
 
-  private get windowOpener(): Window | null {
-    return this.window.opener;
-  }
-
-  private sendMessageToWindow(windowParam: Window, message: WindowMessageWrapper) {
-    const { origin: target } = windowParam;
-    windowParam.postMessage(message, target);
-  }
-
-  private sendMessageToSelf(message: WindowMessageWrapper): void {
-    this.sendMessageToWindow(this.window, message);
-  }
-
-  private sendMessageToOpener(message: WindowMessageWrapper): void {
-    const opener: Window = this.windowOpener;
-    if (opener) {
-      this.sendMessageToWindow(opener, message);
-    }
+  private sendMessageToWindow(message: WindowMessageWrapper, windowReference: Window): void {
+    const allOriginsInWindow: string = '*';
+    windowReference.postMessage(message, allOriginsInWindow);
   }
 
   private isValidMessage(messageBody: unknown): messageBody is WindowMessageWrapper {
     return (messageBody as WindowMessageWrapper)?.fromWallapop;
-  }
-
-  private isTargetMessage(message: WindowMessage, id: WindowMessageId): boolean {
-    return message.id === id;
   }
 
   private generateMessageFromPayload(payload: WindowMessage): WindowMessageWrapper {
