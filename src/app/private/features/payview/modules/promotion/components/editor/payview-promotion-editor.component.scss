@@ -1,0 +1,38 @@
+@use 'sass:math';
+@import '~style/common';
+
+$spacing-14: math.div(14px, 16px) * $spacer;
+
+.PayviewPromotionEditor {
+  padding: $spacing-ml;
+
+  &__messageWrapper {
+    padding: $spacing-ml;
+  }
+
+  &__message {
+    font-weight: $font-weight-chunky;
+  }
+
+  &__inputWrapper {
+    margin-top: $spacing-ms;
+    position: relative;
+  }
+
+  &__inputLabel {
+    font-size: $spacing-14;
+
+    &--error {
+      color: $negative-main;
+    }
+  }
+
+  & &__error {
+    color: $negative-main;
+    font-size: $font-size-xs;
+  }
+
+  &__apply {
+    margin-top: $spacing-xl;
+  }
+}

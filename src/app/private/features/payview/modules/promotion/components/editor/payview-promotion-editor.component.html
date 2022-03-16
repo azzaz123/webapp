@@ -1,0 +1,28 @@
+<div class="PayviewPromotionEditor d-flex flex-column">
+  <div class="PayviewPromotionEditor__messageWrapper d-flex w-100 flex-column flex-wrap align-items-center align-justify-center px-4">
+    <span class="PayviewPromotionEditor__message text-center">{{ firstSentence }}</span>
+    <span *ngIf="!!secondSentence" class="PayviewPromotionEditor__message text-center">{{ secondSentence }}</span>
+  </div>
+  <div class="PayviewPromotionEditor__inputWrapper d-flex w-100 align-items-center align-justify-center justify-content-center px-4">
+    <div class="form-group row w-100 align-items-center">
+      <div class="PayviewPromotionEditor__inputWrapper w-100">
+        <label
+          class="PayviewPromotionEditor__inputLabel h-100"
+          [class.PayviewPromotionEditor__inputLabel--error]="!!errorMessage"
+          for="promocode"
+          i18n="@@pay_view_buyer_promo_code_pop_up_placeholder"
+          >Promotional code</label
+        >
+        <input type="text" [(ngModel)]="promocode" class="PayviewPromotionEditor__input form-control" id="promocode" />
+      </div>
+      <div *ngIf="!!errorMessage" class="PayviewPromotionEditor__error">
+        <span>{{ errorMessage }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="PayviewPromotionEditor__apply d-flex justify-content-center px-4">
+    <tsl-button className="btn-primary btn-block" i18n="@@pay_view_buyer_promo_code_pop_up_apply_button" (click)="apply()"
+      >Apply</tsl-button
+    >
+  </div>
+</div>
