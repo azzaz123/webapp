@@ -1,0 +1,68 @@
+@import '~style/common';
+
+$navigation-bar-margin: $spacer * 0.375;
+
+:host {
+  z-index: $tabbar-z-index;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+.BottomNavigationBar {
+  display: flex;
+  background-color: $white;
+  border-top: 1px solid $blue-grey-5;
+  min-height: $tabbar-height;
+  padding-top: $navigation-bar-margin;
+  @supports (padding: env(safe-area-inset-bottom)) {
+    padding-bottom: unquote('max(#{$navigation-bar-margin}, env(safe-area-inset-bottom))');
+  }
+
+  &__icon {
+    height: 28px;
+
+    &--active {
+      display: none;
+    }
+  }
+
+  &__text {
+    line-height: 18px;
+    font-size: $font-size-xs;
+    color: $blue-grey-2;
+    user-select: none;
+  }
+
+  &__element {
+    position: relative;
+    text-decoration: none;
+    transition: transform 100ms ease-in-out;
+
+    &--active {
+      .BottomNavigationBar__icon {
+        display: none;
+      }
+      .BottomNavigationBar__icon--active {
+        display: block;
+      }
+      .BottomNavigationBar__text {
+        color: $walla-main;
+      }
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+
+  &__pending {
+    top: 0;
+    left: 35px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid $white;
+    background-color: $negative-main;
+    border-radius: 100%;
+  }
+}

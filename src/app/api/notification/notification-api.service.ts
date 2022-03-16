@@ -6,7 +6,6 @@ import { AppboyContentCards } from '@core/communication/vendors/appboy.interface
 import { ExternalCommsService } from '@core/external-comms.service';
 import { UserService } from '@core/user/user.service';
 import { NotificationDto } from '@api/notification/dtos/response/notifcation-dto';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Injectable()
 export class NotificationApiService {
@@ -39,11 +38,7 @@ export class NotificationApiService {
     return this._notifications$.value;
   }
 
-  constructor(
-    private externalCommsService: ExternalCommsService,
-    private userService: UserService,
-    private featureFlagService: FeatureFlagService
-  ) {
+  constructor(private externalCommsService: ExternalCommsService, private userService: UserService) {
     externalCommsService.brazeReady$.subscribe(() => {
       appboy.subscribeToContentCardsUpdates(this.handleContentCardUpdates.bind(this));
       this.refreshNotifications();
@@ -71,8 +66,7 @@ export class NotificationApiService {
   }
 
   private handleContentCardUpdates(appboyContentCards: AppboyContentCards): void {
-    // TODO: Remove feature flag when NotificationCenter available in production
-    if (this.userService.isLogged && this.featureFlagService.isExperimentalFeaturesEnabled()) {
+    if (this.userService.isLogged) {
       const notifications = mapNotificationsFromBraze(this.filterNotificationCenterContentCards(appboyContentCards.cards));
       this._notifications$.next(notifications);
       this._notificationsCount$.next(notifications.length);

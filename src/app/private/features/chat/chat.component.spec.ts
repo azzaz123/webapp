@@ -362,7 +362,6 @@ describe('Component: ChatWithInboxComponent with ConversationId', () => {
         },
         NgbModal,
         { provide: TrustAndSafetyService, useValue: MockTrustAndSafetyService },
-        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         {
           provide: SITE_URL,
           useValue: MOCK_SITE_URL,
