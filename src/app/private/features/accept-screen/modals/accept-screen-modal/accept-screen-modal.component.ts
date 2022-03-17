@@ -61,8 +61,7 @@ export class AcceptScreenModalComponent implements OnInit {
   private readonly deliveryMapSlideId: number = ACCEPT_SCREEN_STEPS.MAP;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
   private readonly GENERIC_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
-  private readonly EXPIRED_OR_CANCELLED_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_expired_or_cancelled_purchase:The purchase has expired or the buyer has cancelled it. Talk to them to try again
-  .`;
+  private readonly EXPIRED_OR_CANCELLED_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_expired_or_cancelled_purchase:The purchase has expired or the buyer has cancelled it. Talk to them to try again.`;
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
