@@ -18,7 +18,7 @@ export class InitializeUnauthenticatedUserService {
 
   public async initialize(): Promise<void> {
     this.permissionsService.setDefaultPermissions();
-    this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
+    this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS).toPromise();
 
     await this.analyticsService.initializeAnalyticsWithUnauthenticatedUser();
 
