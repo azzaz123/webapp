@@ -202,7 +202,7 @@ describe('CategoryCardsComponent', () => {
         component.cardClick(customEvent);
       });
 
-      it('searchNavigatorService should have been called with objectTypeId as param', () => {
+      it('searchNavigatorService should have been called updated current params', () => {
         const expectedParams: FilterParameter[] = [
           {
             key: FILTER_QUERY_PARAM_KEY.objectType,
@@ -232,7 +232,7 @@ describe('CategoryCardsComponent', () => {
         component.cardClick(customEvent);
       });
 
-      it('searchNavigatorService should have been called with current params + object type', () => {
+      it('searchNavigatorService should have been called with updated current params', () => {
         const expectedParams: FilterParameter[] = [
           {
             key: FILTER_QUERY_PARAM_KEY.categoryId,
