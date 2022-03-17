@@ -3,7 +3,7 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { PRIVATE_PATHS, PATH_TO_ACCEPT_SCREEN } from '@private/private-routing-constants';
 import { ActivatedRoute, Router, NavigationStart, RouterEvent } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 
 import { MOCK_TRANSACTION_TRACKING } from '@api/fixtures/core/model/transaction/tracking/transaction-tracking.fixtures.spec';
@@ -18,10 +18,12 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
 
 import { of, throwError, Subject, BehaviorSubject } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
+import { XmppService } from '@core/xmpp/xmpp.service';
 
 describe('TransactionTrackingOverviewComponent', () => {
-  const MOCK_TRANSACTION_TRACKING_ID = 'Laia';
+  const MOCK_TRANSACTION_TRACKING_ID: string = 'Laia';
   const MOCK_ACCEPT_SCREEN_REQUEST_ID: string = '1234';
+  const MOCK_DELIVERY_NOTIFICATION: string = 'delivery';
 
   const transactionTrackingHeaderSelector = 'tsl-transaction-tracking-header';
   const generalInfoSelector = 'tsl-transaction-tracking-general-info';
@@ -32,6 +34,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   const transactionTrackingDetailsSubject: BehaviorSubject<TransactionTrackingDetails> = new BehaviorSubject(
     MOCK_TRANSACTION_TRACKING_DETAILS
   );
+  const deliveryRealtimeMessageSubject: Subject<string> = new Subject<string>();
 
   let component: TransactionTrackingOverviewComponent;
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
@@ -100,6 +103,12 @@ describe('TransactionTrackingOverviewComponent', () => {
             set transactionTrackingDetails(newTransactionTrackingDetails) {
               transactionTrackingDetailsSubject.next(newTransactionTrackingDetails);
             },
+          },
+        },
+        {
+          provide: XmppService,
+          useValue: {
+            deliveryRealtimeMessage$: deliveryRealtimeMessageSubject.asObservable(),
           },
         },
       ],
@@ -261,13 +270,16 @@ describe('TransactionTrackingOverviewComponent', () => {
       });
     });
 
-    describe('and passed 5 seconds', () => {
-      it('should request the TTS properties again', fakeAsync(() => {
-        tick(5000);
+    describe('and when there is a new delivery notification', () => {
+      beforeEach(fakeAsync(() => {
+        deliveryRealtimeMessageSubject.next(MOCK_DELIVERY_NOTIFICATION);
+        tick();
+      }));
 
+      it('should update TTS information', () => {
         expect(transactionTrackingService.get).toHaveBeenCalledTimes(2);
         expect(transactionTrackingService.getDetails).toHaveBeenCalledTimes(2);
-      }));
+      });
     });
   });
 
@@ -281,13 +293,7 @@ describe('TransactionTrackingOverviewComponent', () => {
 
     describe('WHEN there is an error retrieving the transaction tracking', () => {
       beforeEach(() => {
-        transactionTrackingService = TestBed.inject(TransactionTrackingService);
         spyOn(transactionTrackingService, 'get').and.returnValue(throwError('The server is broken'));
-
-        fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
-        component = fixture.componentInstance;
-        de = fixture.debugElement;
-
         fixture.detectChanges();
       });
 
@@ -298,13 +304,7 @@ describe('TransactionTrackingOverviewComponent', () => {
 
     describe('WHEN there is an error retrieving the transaction tracking details', () => {
       beforeEach(() => {
-        transactionTrackingService = TestBed.inject(TransactionTrackingService);
         spyOn(transactionTrackingService, 'getDetails').and.returnValue(throwError('The server is broken'));
-
-        fixture = TestBed.createComponent(TransactionTrackingOverviewComponent);
-        component = fixture.componentInstance;
-        de = fixture.debugElement;
-
         fixture.detectChanges();
       });
 

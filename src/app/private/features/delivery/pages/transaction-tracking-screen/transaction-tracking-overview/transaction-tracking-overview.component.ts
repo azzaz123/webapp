@@ -9,13 +9,11 @@ import { TransactionTracking, TransactionTrackingDetails } from '@api/core/model
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 
-import { catchError, tap, filter, switchMap } from 'rxjs/operators';
-import { Observable, throwError, Subscription, timer } from 'rxjs';
+import { catchError, tap, filter } from 'rxjs/operators';
+import { Observable, throwError, Subscription } from 'rxjs';
 import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
+import { XmppService } from '@core/xmpp/xmpp.service';
 
-const FIVE_SECOND_IN_MS: number = 5000;
-const THIRTY_SECOND_IN_MS: number = 30000;
-const THIRTY_FIVE_SECOND_IN_MS: number = 35000;
 @Component({
   selector: 'tsl-transaction-tracking-overview',
   templateUrl: './transaction-tracking-overview.component.html',
@@ -34,14 +32,14 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
     private storeService: TransactionTrackingScreenStoreService,
     private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService,
     private errorActionService: SharedErrorActionService,
+    private xmppService: XmppService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     const requestId = this.route.snapshot.paramMap.get(DELIVERY_PATH_PARAMS.ID);
-    this.initializeTransactionTrackingAndDetails(requestId);
-    this.pollingTransactionTrackingAndDetails(requestId, FIVE_SECOND_IN_MS);
-    this.pollingTransactionTrackingAndDetails(requestId, THIRTY_FIVE_SECOND_IN_MS, THIRTY_SECOND_IN_MS);
+    this.initializeTransactionTrackingAndDetails(requestId, true);
+    this.listenForDeliveryNotifications(requestId);
 
     this.checkIfUserGoesBackToAcceptScreen();
   }
@@ -50,19 +48,14 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeTransactionTrackingAndDetails(requestId: string): void {
-    this.subscriptions.add(this.getTransactionTracking(requestId, true).subscribe());
+  private initializeTransactionTrackingAndDetails(requestId: string, trackInitEvent = false): void {
+    this.subscriptions.add(this.getTransactionTracking(requestId, trackInitEvent).subscribe());
     this.subscriptions.add(this.getTransactionTrackingDetails(requestId).subscribe());
   }
 
-  private pollingTransactionTrackingAndDetails(requestId: string, firstTimer: number, secondTimer?: number): void {
+  private listenForDeliveryNotifications(requestId: string): void {
     this.subscriptions.add(
-      timer(firstTimer, secondTimer)
-        .pipe(
-          switchMap(() => this.getTransactionTracking(requestId, false)),
-          switchMap(() => this.getTransactionTrackingDetails(requestId))
-        )
-        .subscribe()
+      this.xmppService.deliveryRealtimeMessage$.subscribe(() => this.initializeTransactionTrackingAndDetails(requestId))
     );
   }
 
