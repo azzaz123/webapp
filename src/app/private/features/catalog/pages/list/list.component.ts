@@ -5,6 +5,7 @@ import { PaginatedList } from '@api/core/model';
 import { ISort, SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import { MeApiService } from '@api/me/me-api.service';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
@@ -140,7 +141,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private permissionService: NgxPermissionsService,
     private listingLimitService: ListingLimitService,
     private meApiService: MeApiService,
-    private catalogItemTrackingEventService: CatalogItemTrackingEventService
+    private catalogItemTrackingEventService: CatalogItemTrackingEventService,
+    private visibilityService: VisibilityApiService
   ) {}
 
   public get itemsAmount() {
@@ -512,6 +514,9 @@ export class ListComponent implements OnInit, OnDestroy {
         this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
           windowClass: 'modal-standard',
         });
+        this.visibilityService
+          .isAvailableToUseFreeBump(this.user.id, itemId)
+          .subscribe((isFree) => (this.bumpSuggestionModalRef.componentInstance.isFreeBump = isFree));
         this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
           this.bumpSuggestionModalRef = null;
           if (result?.redirect) {
@@ -538,7 +543,7 @@ export class ListComponent implements OnInit, OnDestroy {
         creditInfo.factor = 1;
       }
       this.creditInfo = creditInfo;
-      if (this.bumpSuggestionModalRef) {
+      if (this.bumpSuggestionModalRef && !this.bumpSuggestionModalRef.componentInstance.isFreeBump) {
         this.getCheapestProductPrice(this.bumpSuggestionModalRef, this.route.snapshot.params['itemId'], creditInfo);
         this.bumpSuggestionModalRef.componentInstance.productCurrency = creditInfo.currencyName;
       }

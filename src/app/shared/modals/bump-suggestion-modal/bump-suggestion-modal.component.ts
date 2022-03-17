@@ -13,6 +13,7 @@ export class BumpSuggestionModalComponent {
   public item: Item;
   public productPrice: number;
   public productCurrency: string;
+  public isFreeBump: boolean;
 
   constructor(
     public activeModal: NgbActiveModal,
