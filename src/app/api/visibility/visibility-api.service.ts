@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { BumpRequestSubject, BUMP_SERVICE_TYPE, ItemsBySubscription, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import {
+  BumpRequestSubject,
+  BUMP_SERVICE_TYPE,
+  ItemsBySubscription,
+  ItemWithProducts,
+  SelectedProduct,
+} from '@api/core/model/bumps/item-products.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CartBase } from '@shared/catalog/cart/cart-base';
@@ -37,6 +43,13 @@ export class VisibilityApiService {
     return this.bumpsHttpService.getBalance(userId).pipe(map(mapBalance));
   }
 
+  public isAvailableToUseFreeBump(userId: string, itemId: string): Observable<boolean> {
+    return this.bumpsHttpService.getItemsBalance(userId, [itemId]).pipe(
+      map((balance) => balance.balance_check[0].has_balance),
+      catchError(() => of(false))
+    );
+  }
+
   public getItemsWithProductsAndSubscriptionBumps(ids: string[]): Observable<ItemsBySubscription[]> {
     return forkJoin([
       this.bumpsHttpService.getItemsWithAvailableProducts(ids).pipe(map(mapItemsWithProducts)),
@@ -49,7 +62,7 @@ export class VisibilityApiService {
             this.subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId)
           )
         );
-        const itemsBySubscriptionType = groupBy(itemsByProducts, 'subscription.type');
+        const itemsBySubscriptionType: Record<string, ItemWithProducts[]> = groupBy(itemsByProducts, 'subscription.type');
         const subscriptionsKeys = Object.keys(itemsBySubscriptionType);
         const itemsBySubscription: ItemsBySubscription[] = [];
         for (const key of subscriptionsKeys) {
