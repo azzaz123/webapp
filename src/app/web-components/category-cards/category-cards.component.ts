@@ -1,15 +1,4 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  Inject,
-  Input,
-  LOCALE_ID,
-  OnChanges,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, LOCALE_ID, OnChanges, ViewChild } from '@angular/core';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { AccessTokenService } from '@core/http/access-token.service';
@@ -24,7 +13,7 @@ import { CategoriesApiService } from '@api/categories/categories-api.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
 import { CategoryWithPresentation } from '@core/category/category-with-presentation.interface';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { SearchTrackingEventsService } from '@public/core/services/search-tracking-events/search-tracking-events.service';
+import { map } from 'rxjs/operators';
 /* eslint-disable  @typescript-eslint/member-ordering */
 
 @Component({
@@ -60,12 +49,10 @@ export class CategoryCardsComponent implements OnChanges {
     if (!this.categoryId && !this.objectTypeId) {
       this.titleSubject.next('');
     } else {
-      this.categoriesApiService
-        .getCategoryWithPresentationById(this.objectTypeId ? +this.objectTypeId : +this.categoryId)
-        .subscribe((category: CategoryWithPresentation) => {
-          this.titleSubject.next(category?.name);
-          this.resetScroll();
-        });
+      this.getCategoryTitle().subscribe((title: string) => {
+        this.titleSubject.next(title);
+        this.resetScroll();
+      });
     }
   }
 
@@ -95,9 +82,17 @@ export class CategoryCardsComponent implements OnChanges {
     this.searchNavigatorService.navigate(parameters, FILTERS_SOURCE.SUBCATEGORY_SLIDER);
   }
 
+  private getCategoryTitle(): Observable<string> {
+    return this.categoriesApiService.getCategoryWithPresentationById(this.objectTypeId ? +this.objectTypeId : +this.categoryId).pipe(
+      map((category: CategoryWithPresentation) => {
+        return category?.name;
+      })
+    );
+  }
+
   private resetScroll(): void {
     if (this.scrollWrapper) {
-    this.scrollWrapper.nativeElement.scroll(0, 0);
+      this.scrollWrapper.nativeElement.scroll(0, 0);
     }
   }
 }
