@@ -192,7 +192,6 @@ export interface ScheduledBumps {
   citybump?: number;
   zonebump?: number;
   countrybump?: number;
-  urgent?: number;
 }
 
 export interface CreditInfo {

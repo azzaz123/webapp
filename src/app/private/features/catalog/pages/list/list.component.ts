@@ -58,7 +58,7 @@ import { STATUS } from '../../components/selected-items/selected-product.interfa
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 
-const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purchaseListingFeeWithCredits'];
+const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'purchaseListingFeeWithCredits'];
 export const SORTS: ISort[] = [
   {
     value: SORT_KEYS.DATE_DESC,
