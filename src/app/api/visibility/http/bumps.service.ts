@@ -4,7 +4,8 @@ import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.int
 import { Observable } from 'rxjs';
 import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
 import { BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
-import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE, ITEMS_WITH_PRODUCTS } from './endpoints';
+import { ItemsBalanceDTO } from '../dtos/bumps/items-balance.interface';
+import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE, ITEMS_WITH_PRODUCTS, ITEM_BUMPS_PACKAGE_BALANCE } from './endpoints';
 
 @Injectable()
 export class BumpsHttpService {
@@ -12,6 +13,12 @@ export class BumpsHttpService {
 
   public getBalance(userId: string): Observable<BumpsPackageBalanceDTO[]> {
     return this.httpClient.get<BumpsPackageBalanceDTO[]>(BUMPS_PACKAGE_BALANCE(userId));
+  }
+
+  public getItemsBalance(userId: string, itemIds: string[]): Observable<ItemsBalanceDTO> {
+    return this.httpClient.post<ItemsBalanceDTO>(ITEM_BUMPS_PACKAGE_BALANCE(userId), {
+      item_ids: itemIds,
+    });
   }
 
   public useBumpPackage(cart: BumpsPackageUseDTO): Observable<void> {
