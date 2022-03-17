@@ -4,8 +4,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
-import { Money } from '@api/core/model/money.interface';
 import { I18nService } from '@core/i18n/i18n.service';
+import { Money } from '@api/core/model/money.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
@@ -28,6 +28,7 @@ export class PayviewDeliveryPointComponent {
   @Input() public id: number;
   @Input() public isChecked: boolean;
   @Output() public checked: EventEmitter<number> = new EventEmitter<number>();
+  @Output() public edited: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private i18nService: I18nService) {}
 
@@ -45,7 +46,7 @@ export class PayviewDeliveryPointComponent {
   }
 
   public get address(): string {
-    return this.deliveryMethod.lastAddressUsed?.label;
+    return this.deliveryMethod.lastAddressUsed.label;
   }
 
   public get deliveryCost(): string {
@@ -57,6 +58,10 @@ export class PayviewDeliveryPointComponent {
 
   public get deliveryTime(): string {
     return `${this.deliveryMethod.deliveryTimes.from}-${this.deliveryMethod.deliveryTimes.to}`;
+  }
+
+  public editPoint(): void {
+    this.edited.emit(this.id);
   }
 
   public get isHome(): boolean {

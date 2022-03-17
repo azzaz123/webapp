@@ -1,12 +1,3 @@
-<div *ngxPermissionsOnly="['isProfessional']" class="header">
-  <h2 class="d-flex align-items-center">
-    <span i18n="@@web_your_messages">Your Messages</span>
-    <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
-      <tsl-pro-badge class="ml-2" *ngIf="userService.isPro"></tsl-pro-badge>
-    </ng-container>
-  </h2>
-</div>
-
 <div *ngxPermissionsOnly="['isProfessional']">
   <div ngbDropdown placement="bottom-left" class="inbox-header-menu"
        *ngIf="shouldDisplayHeader()">
@@ -15,6 +6,12 @@
       <div *ngIf="isArchived" class="header-title" i18n="@@web_inbox_archived_box">Archived Messages</div>
       <tsl-svg-icon class="header-icon" src="/assets/icons/arrow-waterfall.svg"></tsl-svg-icon>
     </div>
+    <div class="Inbox__badge">
+      <ng-container *ngxPermissionsOnly="PERMISSIONS.subscriptions">
+        <tsl-pro-badge *ngIf="userService.isPro"></tsl-pro-badge>
+      </ng-container>
+    </div>
+
     <ul ngbDropdownMenu class="dropdown-menu">
       <li class="dropdown-item" [ngClass]="{'active': isInbox}" (click)="showInbox()">
         <a>

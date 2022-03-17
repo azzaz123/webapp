@@ -1,11 +1,12 @@
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
-import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use.interface';
-import { MOCK_BUMPS_PACKAGE_BALANCE } from '@fixtures/bump-package.fixtures.spec';
+import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
+import { ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE, MOCK_BUMPS_PACKAGE_BALANCE } from '@fixtures/bump-package.fixtures.spec';
 import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
+import { BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
 import { BumpsHttpService } from './bumps.service';
-import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE } from './endpoints';
+import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE, ITEMS_WITH_PRODUCTS } from './endpoints';
 
 describe('BumpsService', () => {
   let service: BumpsHttpService;
@@ -37,13 +38,16 @@ describe('BumpsService', () => {
 
   describe('when asked to bumps items using bumps package', () => {
     it('should retrieve subscription slots', () => {
-      const cart: BumpsPackageUse[] = [
-        {
-          id: '123456',
-          item_id: '123456',
-          type: BUMP_TYPE.COUNTRY_BUMP,
-        },
-      ];
+      const cart: BumpsPackageUseDTO = {
+        bumps: [
+          {
+            id: '123456',
+            item_id: '123456',
+            type: BUMP_TYPE.COUNTRY_BUMP,
+            duration_days: 2,
+          },
+        ],
+      };
 
       service.useBumpPackage(cart).subscribe();
 
@@ -51,6 +55,21 @@ describe('BumpsService', () => {
       req.flush({});
 
       expect(req.request.method).toEqual('POST');
+    });
+  });
+
+  describe('when asked get items with products', () => {
+    it('should retrieve items with products', () => {
+      const ids = ['1', '2', '3'];
+      let response: ItemsWithAvailableProductsResponse[];
+
+      service.getItemsWithAvailableProducts(ids).subscribe((res) => (response = res));
+
+      const req: TestRequest = httpMock.expectOne(`${ITEMS_WITH_PRODUCTS}?itemsIds=1,2,3`);
+      req.flush(ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE);
+
+      expect(response).toEqual(ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE);
+      expect(req.request.method).toEqual('GET');
     });
   });
 });

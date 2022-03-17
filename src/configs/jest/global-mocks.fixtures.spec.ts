@@ -1,5 +1,6 @@
 import { DidomiLibrary } from '@core/ads/vendors/didomi/didomi.interface';
 import { ThreatMetrixLibrary } from '@core/trust-and-safety/threat-metrix.interface';
+import { NotificationDto } from '@api/notification/dtos/response/notifcation-dto';
 
 export const MOCK_APPBOY = {
   initialize: () => {},
@@ -13,6 +14,11 @@ export const MOCK_APPBOY = {
   toggleAppboyLogging: () => {},
   logContentCardsDisplayed: () => {},
   getCachedContentCards: () => {},
+  subscribeToContentCardsUpdates: () => {},
+  requestContentCardsRefresh: () => {},
+  logCardImpressions: () => {},
+  logCardClick: () => {},
+  requestImmediateDataFlush: () => {},
 };
 
 export const MOCK_GA = () => {};

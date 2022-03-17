@@ -1,4 +1,4 @@
-<div class="AcceptScreenModal modal-body p-0">
+<div class="AcceptScreenModal modal-body p-0 d-flex flex-column">
   <div class="AcceptScreenModal__header position-sticky">
     <div class="container">
       <div class="row px-2 py-3">
@@ -20,6 +20,7 @@
             <div class="d-flex">
               <a
                 *ngIf="isAcceptScreenStep"
+                (click)="trackClickHelpTransactionalEvent()"
                 class="mr-4"
                 [href]="ACCEPT_SCREEN_HELP_URL"
                 target="_blank"
@@ -39,7 +40,12 @@
       </div>
     </div>
   </div>
-  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties">
+  <ng-template #loading>
+    <div class="AcceptScreenModal__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center">
+      <tsl-svg-icon width="45" height="45" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+    </div>
+  </ng-template>
+  <tsl-stepper *ngIf="acceptScreenProperties$ | async as properties; else loading" class="AcceptScreenModal__stepper pt-1">
     <ng-template step>
       <div class="container">
         <div class="row">
@@ -47,6 +53,8 @@
             <div class="row">
               <div class="col">
                 <tsl-product-card
+                  (userProfileClick)="trackClickOtherProfileEvent()"
+                  (itemClick)="trackClickItemCardEvent()"
                   class="d-block"
                   [buyer]="properties.buyer"
                   [item]="properties.item"
@@ -146,10 +154,19 @@
                 <tsl-button
                   id="rejectButton"
                   className="btn btn-block btn-link"
-                  i18n="@@accept_view_seller_bottom_bar_reject_button"
+                  [hidden]="rejectLoadingButton$ | async"
+                  [disabled]="disableButton$ | async"
+                  i18n="@@accept_view_seller_buy_flow_test_variant_b_reject_button"
                   (click)="openRejectRequestModal()"
-                  >Reject</tsl-button
+                  >I cannot sell it now</tsl-button
                 >
+                <tsl-svg-icon
+                  *ngIf="rejectLoadingButton$ | async"
+                  width="30"
+                  height="30"
+                  src="/assets/icons/spinner.svg"
+                  class="spinner d-flex justify-content-center p-2"
+                ></tsl-svg-icon>
               </div>
             </div>
           </div>
@@ -162,8 +179,10 @@
               <tsl-button
                 id="acceptButton"
                 className="btn btn-block btn-primary"
+                [loading]="confirmLoadingButton$ | async"
+                [disabled]="disableButton$ | async"
                 i18n="@@accept_view_seller_bottom_bar_accept_button"
-                (click)="acceptRequest()"
+                (click)="checkIfCanAcceptRequest()"
                 >Confirm</tsl-button
               >
             </div>

@@ -1,41 +1,93 @@
-<div class="item" [ngClass]="{ 'provincial-bump': provincialBump }">
-  <tsl-item-avatar
-    [item]="itemWithProducts.item"
-    size="big"
-    fallbackLight="true"
-    title="{{ itemWithProducts.item.title }}"
-  ></tsl-item-avatar>
-  <div class="title">{{ itemWithProducts.item.title }}</div>
-  <form class="durations border-l">
-    <div ngbRadioGroup name="duration" [(ngModel)]="duration">
-      <label ngbButtonLabel class="custom-radio" *ngFor="let duration of durations">
-        <input ngbButton type="radio" [value]="duration" id="qa-bump-{{ duration / 24 }}-days" />
-        <tsl-svg-icon *ngIf="selectedDuration === duration" src="/assets/icons/radio-button.svg"></tsl-svg-icon>
-        <tsl-svg-icon *ngIf="selectedDuration !== duration" src="/assets/icons/radio-button-empty.svg"></tsl-svg-icon>
-        {{ duration / 24 }}
-        <span i18n="@@web_catalog_components_checkout_item_556">days</span>
-      </label>
+<div class="CheckoutItem d-flex flex-column p-4">
+  <div *ngIf="isFreeOptionAvailable" class="CheckoutItem__subscription pb-3 mb-3 pb-md-0 d-flex align-items-center">
+    <tsl-toggle-form [(ngModel)]="isFreeOptionSelected" (ngModelChange)="toggleItem()"></tsl-toggle-form>
+    <span class="ml-2" i18n="@@highlight_item_view_pro_user_item_card_use_subscription_toggle_label_web_specific"
+      >Highlight via Wallapop PRO subscription</span
+    >
+    <div class="ml-auto d-flex align-items-center CheckoutItem__delete" (click)="onRemoveItem(itemWithProducts.item.id)">
+      <span class="d-none d-sm-flex mr-2" i18n="@@highlight_item_view_pro_user_item_card_remove_label_web_specific">Remove</span>
+      <tsl-svg-icon [src]="'/assets/icons/delete.svg'"></tsl-svg-icon>
     </div>
-  </form>
-  <div *ngFor="let type of types" class="price border-l" [ngClass]="type">
-    <ng-container *ngIf="itemWithProducts.products[duration][type]; else notAvailable">
-      <button
-        class="btn btn-price"
-        id="qa-bump-{{ type }}"
-        (click)="select(type)"
-        [ngClass]="{ selected: type === selectedType && duration === selectedDuration }"
-      >
-        <s *ngIf="itemWithProducts.products[duration][type]?.original_market_code"
-          >{{
-            itemWithProducts.products[duration][type]?.original_market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName
-          }}<tsl-wallacoin [currency]="creditInfo?.currencyName" color="strike"></tsl-wallacoin
-        ></s>
-        {{ itemWithProducts.products[duration][type]?.market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName
-        }}<tsl-wallacoin [currency]="creditInfo?.currencyName"></tsl-wallacoin>
-      </button>
+  </div>
+  <div class="d-flex w-100">
+    <tsl-item-avatar
+      class="d-none d-md-inline"
+      [item]="itemWithProducts.item"
+      size="big"
+      title="{{ itemWithProducts.item.title }}"
+    ></tsl-item-avatar>
+    <div class="d-flex flex-column w-100">
+      <div class="CheckoutItem__header d-flex align-items-center pb-3 pb-md-0">
+        <tsl-item-avatar
+          class="d-inline d-md-none"
+          [item]="itemWithProducts.item"
+          size="small"
+          title="{{ itemWithProducts.item.title }}"
+        ></tsl-item-avatar>
+        <div class="CheckoutItem__title">{{ itemWithProducts.item.title }}</div>
+        <div
+          *ngIf="!isFreeOptionAvailable"
+          class="ml-auto d-flex align-items-center CheckoutItem__delete"
+          (click)="onRemoveItem(itemWithProducts.item.id)"
+        >
+          <span class="d-none d-sm-flex mr-2" i18n="@@highlight_item_view_pro_user_item_card_remove_label_web_specific">Remove</span>
+          <tsl-svg-icon [src]="'/assets/icons/delete.svg'"></tsl-svg-icon>
+        </div>
+      </div>
+      <div class="d-block d-sm-flex flex-wrap flex-xl-nowrap">
+        <div>
+          <div class="CheckoutItem__subtitle mb-1 mt-3" i18n="@@highlight_item_view_pro_user_item_card_visibility_area_label_web_specific">
+            Visibility area
+          </div>
+          <div class="d-flex flex-xl-wrap CheckoutItem__border">
+            <ng-container *ngFor="let type of availableTypes">
+              <button
+                class="btn CheckoutItem__button mb-0 mb-xl-2"
+                (click)="selectType(type)"
+                [ngClass]="{ 'CheckoutItem__button--selected': type === selectedType }"
+              >
+                <span [ngSwitch]="type.name">
+                  <ng-container *ngSwitchCase="BUMP_TYPES.ZONE_BUMP">
+                    <ng-container *ngIf="!itemWithProducts.isProvincialBump" i18n="@@web_cart_454">Local</ng-container>
+                    <ng-container *ngIf="itemWithProducts.isProvincialBump" i18n="@@web_cart_455">Provincial</ng-container>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="BUMP_TYPES.CITY_BUMP" i18n="@@web_cart_663">City</ng-container>
+                  <ng-container *ngSwitchCase="BUMP_TYPES.COUNTRY_BUMP" i18n="@@web_cart_664">Country</ng-container>
+                </span>
+              </button>
+            </ng-container>
+          </div>
+        </div>
+        <div class="CheckoutItem__durations">
+          <div class="CheckoutItem__subtitle mb-1 mt-3" i18n="@@highlight_item_view_pro_user_item_card_duration_label_web_specific">
+            Duration
+          </div>
+          <div class="d-flex flex-xl-wrap">
+            <ng-container *ngFor="let duration of availableDurations">
+              <button
+                class="btn CheckoutItem__button mb-0 mb-xl-2"
+                (click)="selectDuration(duration)"
+                [ngClass]="{ 'CheckoutItem__button--selected': selectedDuration === duration }"
+              >
+                {{ duration.duration / 24 }}<span ngPreserveWhitespaces> </span><span i18n="@@web_cart_665">days</span>
+              </button>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="selectedDuration && selectedType" class="text-right w-100 mt-4">
+    <ng-container *ngIf="isFreeOptionSelected; else noFreePrice">
+      <span class="CheckoutItem__price--discount mr-2" *ngIf="selectedDuration?.market_code">
+        {{ selectedDuration?.market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
+      </span>
+      <span class="CheckoutItem__price">{{ 0 | customCurrency: creditInfo?.currencyName }}</span>
     </ng-container>
-    <ng-template #notAvailable>
-      <span class="not-available" i18n="@@web_catalog_components_checkout_item_110">Not Available</span>
+    <ng-template #noFreePrice>
+      <span class="CheckoutItem__price">
+        {{ selectedDuration?.market_code * creditInfo?.factor | customCurrency: creditInfo?.currencyName }}
+      </span>
     </ng-template>
   </div>
 </div>

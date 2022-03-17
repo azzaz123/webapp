@@ -26,6 +26,8 @@ import { ItemDetailRoutePipe } from '@shared/pipes';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 class MockUserService {
   public isProfessional() {
@@ -83,6 +85,7 @@ describe('Component: ChatComponent with ItemId', () => {
           useValue: MOCK_SITE_URL,
         },
         NgbModal,
+        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });

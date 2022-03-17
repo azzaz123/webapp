@@ -15,9 +15,15 @@ import { BumpTutorialModule } from '@shared/bump-tutorial/bump-tutorial.module';
 import { SharedModule } from '@shared/shared.module';
 import { NavLinksModule } from '@shared/nav-links/nav-links.module';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToggleFormModule } from '@shared/form/components/toggle/toggle-form.module';
+import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
+import { VisibilityApiModule } from '@api/visibility/visibility-api.module';
+import { SubscriptionHeaderCheckoutComponent } from './components/subscription-header-checkout/subscription-header-checkout.component';
+import { BumpsTrackingEventsService } from './services/bumps-tracking-events.service';
 
 @NgModule({
-  declarations: [CheckoutItemComponent, CartComponent, WallacoinComponent, bumpsRoutedComponents],
+  declarations: [CheckoutItemComponent, CartComponent, WallacoinComponent, bumpsRoutedComponents, SubscriptionHeaderCheckoutComponent],
+  providers: [BumpsTrackingEventsService],
   imports: [
     CommonModule,
     SvgIconModule,
@@ -33,6 +39,9 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     NavLinksModule,
     NgbButtonsModule,
+    ToggleFormModule,
+    ProBadgeModule,
+    VisibilityApiModule,
   ],
 })
 export class BumpsModule {}

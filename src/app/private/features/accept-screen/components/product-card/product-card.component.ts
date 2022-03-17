@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Money } from '@api/core/model/money.interface';
 import { AcceptScreenBuyer, AcceptScreenItem } from '../../interfaces';
 
@@ -12,4 +12,6 @@ export class ProductCardComponent {
   @Input() buyer: AcceptScreenBuyer;
   @Input() item: AcceptScreenItem;
   @Input() offeredPrice: Money;
+  @Output() userProfileClick: EventEmitter<void> = new EventEmitter();
+  @Output() itemClick: EventEmitter<void> = new EventEmitter();
 }

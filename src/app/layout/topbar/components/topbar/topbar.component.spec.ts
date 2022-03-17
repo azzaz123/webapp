@@ -16,8 +16,6 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { TopbarComponent } from './topbar.component';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -34,6 +32,7 @@ import { SuggesterService } from '@layout/topbar/core/services/suggester.service
 import { SuggesterStubComponent } from '@fixtures/shared/components/suggester-stub.component';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { HomeRouteDirectiveMock } from '@fixtures/home-route.fixtures.spec';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -110,6 +109,14 @@ describe('TopbarComponent', () => {
             },
           },
           {
+            provide: NotificationApiService,
+            useValue: {
+              totalUnreadNotifications$: of(0),
+              getNotifications: () => {},
+              refreshUnreadNotifications: () => {},
+            },
+          },
+          {
             provide: CookieService,
             useValue: {
               put(key, value) {},
@@ -125,10 +132,6 @@ describe('TopbarComponent', () => {
                 };
               },
             },
-          },
-          {
-            provide: FeatureFlagService,
-            useClass: FeatureFlagServiceMock,
           },
           {
             provide: WINDOW_TOKEN,

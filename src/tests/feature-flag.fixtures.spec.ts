@@ -1,4 +1,4 @@
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { FeatureFlag, FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { Observable, of } from 'rxjs';
 
 export const mockFeatureFlagsResponses = [
@@ -16,6 +16,9 @@ export enum mockFeatureFlagsEnum {
 export class FeatureFlagServiceMock {
   getFlag(_flag: FEATURE_FLAGS_ENUM): Observable<boolean> {
     return of(true);
+  }
+  getFlags(names: FEATURE_FLAGS_ENUM[], cache = true): Observable<FeatureFlag[]> {
+    return of([]);
   }
   getLocalFlag(_flag: FEATURE_FLAGS_ENUM): Observable<boolean> {
     return of(true);

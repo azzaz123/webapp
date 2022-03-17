@@ -53,13 +53,25 @@ describe('ExperimentService', () => {
   });
 
   describe('when initializing', () => {
-    describe('and the user is not ready', () => {
+    describe('and is a non logged user', () => {
       it('should not initialize optimizely service', fakeAsync(() => {
         spyOn(OptimizelyServiceMock, 'initialize');
-        service.initialize();
+
+        service.initializeExperimentationWithUnauthenticatedUser();
         tick();
 
         expect(OptimizelyServiceMock.initialize).not.toHaveBeenCalled();
+      }));
+    });
+
+    describe('and is a logged user', () => {
+      it('should initialize optimizely service', fakeAsync(() => {
+        spyOn(OptimizelyServiceMock, 'initialize');
+
+        service.initializeExperimentationWithAuthenticatedUser();
+        tick();
+
+        expect(OptimizelyServiceMock.initialize).toHaveBeenCalled();
       }));
     });
   });
@@ -67,6 +79,7 @@ describe('ExperimentService', () => {
   describe('when the user is ready', () => {
     it('should initialize the experiment context', fakeAsync(() => {
       spyOn(OptimizelyServiceMock, 'initExperimentContext');
+
       service.initExperimentContext({ age: '25' });
       tick();
 
@@ -75,6 +88,7 @@ describe('ExperimentService', () => {
 
     it('should get the variations', fakeAsync(() => {
       spyOn(OptimizelyServiceMock, 'getVariations');
+
       service.getVariations({
         flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest],
         options: [OptimizelyDecideOption.DISABLE_DECISION_EVENT],
@@ -89,6 +103,7 @@ describe('ExperimentService', () => {
 
     it('should call the optimizely tracking event', fakeAsync(() => {
       spyOn(OptimizelyServiceMock, 'track');
+
       service.trackOptimizelyEvent({ eventKey: ANALYTICS_EVENT_NAMES.ClickAcceptOffer });
       tick();
 
