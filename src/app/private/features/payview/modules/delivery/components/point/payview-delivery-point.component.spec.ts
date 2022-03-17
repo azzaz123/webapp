@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { ChangeDetectorRef, DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
@@ -16,6 +16,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 describe('PayviewDeliveryPointComponent', () => {
   const payviewDeliveryPoint: string = '.PayviewDeliveryPoint';
+  const payviewDeliveryPointAddressSelector: string = `${payviewDeliveryPoint}__deliveryAddress`;
   const payviewDeliveryPointAddressWrapperSelector: string = `${payviewDeliveryPoint}__deliveryAddressWrapper`;
   const payviewDeliveryPointCostSelector: string = `${payviewDeliveryPoint}__pointCost > b`;
   const payviewDeliveryPointDescriptionSelector: string = `${payviewDeliveryPoint}__pointDescription`;
@@ -78,15 +79,39 @@ describe('PayviewDeliveryPointComponent', () => {
           expect(result).toBe(true);
         });
 
-        it('should have the cost corresponding to the pick-up point method', () => {
-          const money: Money = component.deliveryCosts.carrierOfficeCost;
-          const expected: string = `${money.amount.toString()}${money.currency.symbol}`;
+        describe('WHEN we have deliverty costs', () => {
+          it('should have the cost corresponding to the pick-up point method', () => {
+            const money: Money = component.deliveryCosts.carrierOfficeCost;
+            const expected: string = `${money.amount.toString()}${money.currency.symbol}`;
 
-          const result: boolean = debugElement
-            .queryAll(By.css(payviewDeliveryPointCostSelector))
-            .some((tag) => tag.nativeElement.innerHTML === expected);
+            const result: boolean = debugElement
+              .queryAll(By.css(payviewDeliveryPointCostSelector))
+              .some((tag) => tag.nativeElement.innerHTML === expected);
 
-          expect(result).toBe(true);
+            expect(result).toBe(true);
+          });
+        });
+
+        describe('WHEN we do not have deliverty costs', () => {
+          let changeDetectorRef: ChangeDetectorRef;
+
+          beforeEach(() => {
+            changeDetectorRef = fixture.debugElement.injector.get<ChangeDetectorRef>(ChangeDetectorRef);
+          });
+
+          it('should have the cost corresponding to the pick-up point method', () => {
+            component.deliveryCosts.carrierOfficeCost = null;
+            const money: Money = component.deliveryCosts.carrierOfficeCost;
+            const expected: string = ``;
+
+            changeDetectorRef.detectChanges();
+
+            const result: boolean = debugElement
+              .queryAll(By.css(payviewDeliveryPointCostSelector))
+              .some((tag) => tag.nativeElement.innerHTML === expected);
+
+            expect(result).toBe(true);
+          });
         });
 
         describe('WHEN the delivery method is selected', () => {
@@ -190,6 +215,28 @@ describe('PayviewDeliveryPointComponent', () => {
           expect(result).toBe(true);
         });
 
+        describe('WHEN we do not have deliverty costs', () => {
+          let changeDetectorRef: ChangeDetectorRef;
+
+          beforeEach(() => {
+            changeDetectorRef = fixture.debugElement.injector.get<ChangeDetectorRef>(ChangeDetectorRef);
+          });
+
+          it('should have the cost corresponding to the pick-up point method', () => {
+            component.deliveryCosts.buyerAddressCost = null;
+            const money: Money = component.deliveryCosts.buyerAddressCost;
+            const expected: string = ``;
+
+            changeDetectorRef.detectChanges();
+
+            const result: boolean = debugElement
+              .queryAll(By.css(payviewDeliveryPointCostSelector))
+              .some((tag) => tag.nativeElement.innerHTML === expected);
+
+            expect(result).toBe(true);
+          });
+        });
+
         describe('WHEN the delivery method is selected', () => {
           beforeEach(() => {
             fixture = TestBed.createComponent(PayviewDeliveryPointComponent);
@@ -209,8 +256,8 @@ describe('PayviewDeliveryPointComponent', () => {
             expect(target).toBeTruthy();
           });
 
-          describe('WHEN there is previous home-up selected', () => {
-            it('should not show the home pick-up address', () => {
+          describe('WHEN there is previous home pick-up selected', () => {
+            it('should show the home pick-up address', () => {
               const target = debugElement.query(By.css(payviewDeliveryPointAddressWrapperSelector));
 
               expect(target).toBeTruthy();

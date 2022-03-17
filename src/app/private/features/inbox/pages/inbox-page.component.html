@@ -1,6 +1,5 @@
 <div class="page-content">
-  <!-- TODO REMOVE FF -->
-  <div class="page-content__tabs" *ngIf="featureFlagService.isExperimentalFeaturesEnabled()">
+  <div class="page-content__tabs">
     <tsl-tabs-bar
       [tabsBarElements]="tabsBarElements"
       [initialSelectedTabBarElement]="selectedTabsBarElement"

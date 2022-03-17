@@ -60,7 +60,7 @@ export const LOCAL_STORAGE_SUGGEST_PRO_SHOWN = 'suggest-pro-shown';
 })
 export class UserService {
   private _user: User;
-  private readonly _isUserReadySubject: ReplaySubject<void> = new ReplaySubject();
+  private readonly _userSubject: ReplaySubject<User> = new ReplaySubject();
   private _users: User[] = [];
   private presenceInterval: any;
   private _isProSectionClicked: boolean;
@@ -81,8 +81,8 @@ export class UserService {
     return this._user;
   }
 
-  get isUserReady$(): Observable<void> {
-    return this._isUserReadySubject.asObservable();
+  get user$(): Observable<User> {
+    return this._userSubject.asObservable();
   }
 
   get isPro(): boolean {
@@ -268,20 +268,21 @@ export class UserService {
     return this.http.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
   }
 
-  public initializeUserWithPermissions(): Observable<boolean> {
-    return this.getLoggedUserInformation().pipe(
-      tap((user) => {
-        this._user = user;
-        this._isUserReadySubject.next();
-        this.isProUserSubject.next(this.isPro);
-      }),
-      tap((user) => this.setPermission(user)),
-      tap(() => this.getStoredIsClickedProSection()),
-      catchError((error) => {
-        this.logout(null);
-        return of(error);
-      })
-    );
+  public initializeUser(): Promise<User> {
+    return this.getLoggedUserInformation()
+      .pipe(
+        tap((user) => {
+          this._user = user;
+          this._userSubject.next(user);
+          this.isProUserSubject.next(this.isPro);
+        }),
+        tap(() => this.getStoredIsClickedProSection()),
+        catchError((error) => {
+          this.logout(null);
+          return of(error);
+        })
+      )
+      .toPromise();
   }
 
   //TODO: This is needed for the current subscriptions flow but this should handled in some other way when
@@ -293,12 +294,6 @@ export class UserService {
         this.isProUserSubject.next(this.isPro);
       })
     );
-  }
-
-  public setPermission(user: User): void {
-    user.featured && user.type !== USER_TYPE.PROFESSIONAL
-      ? this.permissionService.addPermission(PERMISSIONS[USER_TYPE.FEATURED])
-      : this.permissionService.addPermission(PERMISSIONS[user.type]);
   }
 
   public hasPerm(permission: string): Observable<boolean> {

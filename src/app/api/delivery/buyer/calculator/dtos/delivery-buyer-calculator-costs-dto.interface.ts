@@ -3,5 +3,5 @@ import { DeliveryBuyerCalculatorPromotionCostDto } from '@api/delivery/buyer/cal
 
 export interface DeliveryBuyerCalculatorCostsDto {
   buyer_cost: DeliveryBuyerCalculatorCostDto;
-  promotion: DeliveryBuyerCalculatorPromotionCostDto;
+  promocode: DeliveryBuyerCalculatorPromotionCostDto;
 }

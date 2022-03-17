@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
@@ -62,17 +62,15 @@ describe('AppComponent', () => {
   });
 
   describe('when the app initializes', () => {
-    it('should initialize the analytics library', () => {
-      spyOn(analyticsService, 'initialize');
-
-      component.ngOnInit();
-
-      expect(analyticsService.initialize).toHaveBeenCalledTimes(1);
-    });
+    const mockAppProviders = () => {
+      analyticsService.initializeAnalyticsWithUnauthenticatedUser();
+      sessionService.initSession();
+    };
 
     it('should send Open Wallapop if user has a new session', () => {
       spyOn(analyticsService, 'trackEvent');
 
+      mockAppProviders();
       component.ngOnInit();
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
@@ -91,6 +89,7 @@ describe('AppComponent', () => {
       jest.spyOn(sessionService, 'newSession$', 'get').mockReturnValue(undefined);
       spyOn(analyticsService, 'trackEvent');
 
+      mockAppProviders();
       component.ngOnInit();
 
       expect(analyticsService.trackEvent).not.toHaveBeenCalledWith({
@@ -98,14 +97,6 @@ describe('AppComponent', () => {
         eventType: ANALYTIC_EVENT_TYPES.Other,
         name: ANALYTICS_EVENT_NAMES.OpenWallapop,
       });
-    });
-
-    it('should initialize external Braze communications', () => {
-      spyOn(externalCommsService, 'initializeBraze');
-
-      component.ngOnInit();
-
-      expect(externalCommsService.initializeBraze).toHaveBeenCalledTimes(1);
     });
   });
 });

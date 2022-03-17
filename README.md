@@ -166,6 +166,8 @@ If you wanna update the value of the libphonenumber-js metadata you should follo
 
 ## Documentation
 
+Initialization sequence diagrams: https://wallapop.atlassian.net/wiki/spaces/FE/pages/2596700235/Webapp+startup+sequence
+
 Chat sequence diagrams: https://confluence.wallapop.com/display/ROV/Chat+sequence+diagrams
 
 ## Storybook

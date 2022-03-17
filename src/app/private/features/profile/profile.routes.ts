@@ -44,7 +44,6 @@ const routes: Route[] = [
       },
       {
         path: PROFILE_PATHS.NOTIFICATIONS,
-        canLoad: [DevelopmentGuard],
         loadChildren: () => CommunicationsConsentModule,
       },
       {
