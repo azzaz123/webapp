@@ -173,22 +173,13 @@ describe('Service: User', () => {
     });
   });
 
-  describe('initializeUserWithPermissions', () => {
+  describe('initializeUser', () => {
     it('should save the logged user information', () => {
-      service.initializeUserWithPermissions().subscribe();
+      service.initializeUser();
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
       req.flush(USER_DATA);
 
       expect(service.user).toEqual(MOCK_FULL_USER);
-    });
-
-    it('should set the permissions for logged user', () => {
-      spyOn(service, 'setPermission');
-      service.initializeUserWithPermissions().subscribe();
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
-      req.flush(USER_DATA);
-
-      expect(service.setPermission).toHaveBeenCalledWith(MOCK_FULL_USER);
     });
 
     describe('when the user information cannot be retrieved', () => {
@@ -196,7 +187,7 @@ describe('Service: User', () => {
         accessTokenService.storeAccessToken('abc');
         spyOn(service, 'logout');
 
-        service.initializeUserWithPermissions().subscribe();
+        service.initializeUser();
         const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
         req.error(null, { status: 0, statusText: 'Unauthorized' });
 
@@ -663,16 +654,6 @@ describe('Service: User', () => {
     });
   });
 
-  describe('setPermission', () => {
-    it('should call addPermission', () => {
-      spyOn(permissionService, 'addPermission').and.returnValue({});
-
-      service.setPermission(MOCK_USER);
-
-      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
-    });
-  });
-
   describe('isProfessional', () => {
     let val: boolean;
 
@@ -697,7 +678,7 @@ describe('Service: User', () => {
     it('should return true if user is featured', (done) => {
       spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_FULL_USER));
 
-      service.initializeUserWithPermissions().subscribe();
+      service.initializeUser();
       let resp = service.isProUser();
 
       expect(resp).toBe(true);
@@ -707,7 +688,7 @@ describe('Service: User', () => {
     it('should return false if user is not featured', (done) => {
       spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
 
-      service.initializeUserWithPermissions().subscribe();
+      service.initializeUser();
       let resp = service.isProUser();
 
       expect(resp).toBe(false);
@@ -784,7 +765,7 @@ describe('Service: User', () => {
         spyOn(localStorage, 'getItem').and.returnValue(true);
         spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
 
-        service.initializeUserWithPermissions().subscribe();
+        service.initializeUser();
 
         expect(localStorage.getItem).toHaveBeenCalledTimes(1);
         expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
@@ -797,7 +778,7 @@ describe('Service: User', () => {
         spyOn(localStorage, 'getItem').and.returnValue(null);
         spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
 
-        service.initializeUserWithPermissions().subscribe();
+        service.initializeUser();
 
         expect(localStorage.getItem).toHaveBeenCalledTimes(1);
         expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
