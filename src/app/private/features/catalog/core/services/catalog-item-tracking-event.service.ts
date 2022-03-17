@@ -7,6 +7,7 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { ClickBumpItems } from '@core/analytics/resources/events-interfaces/click-bump-items.interface';
 import { Item } from '@core/item/item';
 import { UserService } from '@core/user/user.service';
 
@@ -31,6 +32,20 @@ export class CatalogItemTrackingEventService {
         screenId: SCREEN_IDS.MyCatalog,
         // hashtags: '', to be added on the future
         // shippingAllowed: null,  to be added on the future
+      },
+    };
+    this.analyticsService.trackEvent(event);
+  }
+
+  public trackClickBumpItems(selectedItems: number, isPopUp = false): void {
+    const event: AnalyticsEvent<ClickBumpItems> = {
+      name: ANALYTICS_EVENT_NAMES.ClickBumpItems,
+      eventType: ANALYTIC_EVENT_TYPES.Other,
+      attributes: {
+        screenId: SCREEN_IDS.MyCatalog,
+        isPro: this.userService.isPro,
+        itemsSelected: selectedItems,
+        uploadPopUp: isPopUp,
       },
     };
     this.analyticsService.trackEvent(event);

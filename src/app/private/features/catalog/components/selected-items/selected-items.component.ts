@@ -7,6 +7,7 @@ import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { Subscription } from 'rxjs';
 import { STATUS } from './selected-product.interface';
+import { CatalogItemTrackingEventService } from '@private/features/catalog/core/services/catalog-item-tracking-event.service';
 
 @Component({
   selector: 'tsl-selected-items',
@@ -27,7 +28,7 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
   public readonly BUMP_PATH = `/${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`;
   private selectedItemsSubscription: Subscription;
 
-  constructor(public itemService: ItemService) {}
+  constructor(public itemService: ItemService, private catalogItemTrackingEventService: CatalogItemTrackingEventService) {}
 
   ngOnInit() {
     this.selectedItemsSubscription = this.itemService.selectedItems$.subscribe(() => {
@@ -42,6 +43,10 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
     this.items.map((item) => (item.selected = false));
     this.itemService.selectedAction = null;
     this.selectedItems = [];
+  }
+
+  public trackClickBumpItems(): void {
+    this.catalogItemTrackingEventService.trackClickBumpItems(this.selectedItems.length);
   }
 
   public onClickAction(action: string) {

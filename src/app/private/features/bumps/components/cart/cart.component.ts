@@ -1,194 +1,104 @@
-import { takeWhile } from 'rxjs/operators';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { CartService } from '@shared/catalog/cart/cart.service';
 import { ErrorsService } from '@core/errors/errors.service';
-import { EventService } from '@core/event/event.service';
-import { Order, PurchaseProductsWithCreditsResponse } from '@core/item/item-response.interface';
-import { ItemService } from '@core/item/item.service';
 import { CreditInfo, FinancialCardOption } from '@core/payments/payment.interface';
-import { PAYMENT_RESPONSE_STATUS, PAYMENT_METHOD } from '@core/payments/payment.service';
-import { StripeService } from '@core/stripe/stripe.service';
-import { UuidService } from '@core/uuid/uuid.service';
-import { Cart } from '@shared/catalog/cart/cart';
-import { CartBase, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
-import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
+import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
+import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
+import { BumpRequestSubject, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import { BumpsTrackingEventsService } from '../../services/bumps-tracking-events.service';
 
 @Component({
   selector: 'tsl-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CartComponent implements OnInit, OnDestroy {
-  @Input() provincialBump: boolean;
+export class CartComponent implements OnChanges {
   @Input() creditInfo: CreditInfo;
-  public cart: CartBase;
-  public types: string[] = BUMP_TYPES;
-  public hasSavedCard = true;
-  public cardType = 'old';
-  public loading: boolean;
-  public card: any;
-  public showCard = false;
-  public savedCard = true;
-  public selectedCard = false;
+  @Input() selectedItems: SelectedProduct[];
+  @Output() confirmAction: EventEmitter<BumpRequestSubject[]> = new EventEmitter<BumpRequestSubject[]>();
 
-  private active = true;
+  public hasSavedCards = true;
+  public isNewCard = false;
+  public loading: boolean;
+  public card: FinancialCardOption | stripe.elements.Element;
+  public readonly BUMP_TYPES = BUMP_TYPE;
+  public readonly ICON_TYPE = ICON_TYPE;
+  public totalToPay: number = 0;
+  public total: number = 0;
+  public creditsToPay: number = 0;
 
   constructor(
-    private cartService: CartService,
-    private itemService: ItemService,
     private errorService: ErrorsService,
-    private eventService: EventService,
-    private router: Router,
-    private uuidService: UuidService,
-    private stripeService: StripeService
-  ) {
-    this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
-      this.cart = cartChange.cart;
-    });
+    private visibilityService: VisibilityApiService,
+    private bumpsTrackingEventsService: BumpsTrackingEventsService
+  ) {}
+
+  ngOnChanges(): void {
+    this.setTotals();
   }
 
-  ngOnInit() {
-    this.cartService.createInstance(new Cart());
-    this.eventService.subscribe('paymentResponse', (response) => {
-      this.managePaymentResponse(response);
-    });
-  }
-
-  ngOnDestroy() {
-    this.active = false;
-    this.cartService.clean();
-  }
-
-  remove(cartItem: CartItem, type: string) {
-    this.cartService.remove(cartItem.item.id, type);
-  }
-
-  clean() {
-    this.cartService.clean();
-  }
-
-  checkout() {
-    if (!this.cart.total || this.loading) {
+  public checkout(): void {
+    if (this.loading) {
       return;
     }
-    const order: Order[] = this.cart.prepareOrder();
-    const orderId: string = this.cart.getOrderId();
+    if (this.totalToPay > 0 && !this.card) {
+      this.errorService.i18nError(TRANSLATION_KEY.NO_CARD_SELECTED_ERROR);
+      return;
+    }
+
     this.loading = true;
-    setTimeout(() => {
-      this.itemService.purchaseProductsWithCredits(order, orderId).subscribe(
-        (response: PurchaseProductsWithCreditsResponse) => {
-          if (-this.usedCredits > 0) {
-            localStorage.setItem('transactionType', 'bumpWithCredits');
-            localStorage.setItem('transactionSpent', (-this.usedCredits).toString());
-          } else {
-            localStorage.setItem('transactionType', 'bump');
-          }
-          this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
-          if (response.payment_needed) {
-            this.buyStripe(orderId);
-          } else {
-            this.success();
-          }
-        },
-        (e: HttpErrorResponse) => {
+
+    this.bumpsTrackingEventsService.trackPayBumpItems(this.selectedItems, this.totalToPay);
+
+    this.visibilityService
+      .buyBumps(this.selectedItems, this.hasSavedCards, this.isNewCard, this.card)
+      .pipe(
+        finalize(() => {
           this.loading = false;
-          if (e.error) {
-            this.errorService.show(e);
-          } else {
-            this.errorService.i18nError(TRANSLATION_KEY.BUMP_ERROR);
-          }
-        }
-      );
-    }, 2000);
+        })
+      )
+      .subscribe(([...next]) => {
+        this.confirmAction.emit(next);
+      });
   }
 
-  public addNewCard() {
-    this.showCard = true;
-    this.savedCard = false;
+  public addNewCard(): void {
+    this.isNewCard = true;
+    this.card = null;
   }
 
-  public removeNewCard() {
-    this.showCard = false;
-    this.savedCard = true;
+  public removeNewCard(): void {
+    this.isNewCard = false;
+    this.card = null;
   }
 
-  public setSavedCard(selectedCard: FinancialCardOption) {
-    this.showCard = false;
-    this.savedCard = true;
-    this.selectedCard = true;
+  public setSavedCard(selectedCard: FinancialCardOption): void {
     this.setCardInfo(selectedCard);
   }
 
-  public handleIconPath(type: string): string {
-    const iconBump = type.replace('bump', '');
-    return `/assets/icons/wing-${iconBump}.svg`;
-  }
-
-  public hasCard(hasCard: boolean) {
-    this.hasSavedCard = hasCard;
-    if (!hasCard) {
+  public setHasCards(hasCards: boolean): void {
+    this.hasSavedCards = hasCards;
+    this.isNewCard = !hasCards;
+    if (this.isNewCard) {
       this.addNewCard();
     }
   }
 
-  public setCardInfo(card: any): void {
+  public setCardInfo(card: FinancialCardOption | stripe.elements.Element): void {
     this.card = card;
   }
 
-  private managePaymentResponse(paymentResponse: string): void {
-    switch (paymentResponse && paymentResponse.toUpperCase()) {
-      case PAYMENT_RESPONSE_STATUS.SUCCEEDED: {
-        this.success();
-        break;
-      }
-      default: {
-        this.router.navigate(['catalog/list', { code: -1 }]);
-        break;
-      }
+  private setTotals(): void {
+    if (!this.selectedItems?.length || !this.creditInfo) {
+      return;
     }
-  }
-
-  private buyStripe(orderId: string) {
-    const paymentId: string = this.uuidService.getUUID();
-
-    if (this.selectedCard || !this.savedCard) {
-      this.stripeService.buy(orderId, paymentId, this.hasSavedCard, this.savedCard, this.card);
-    } else {
-      this.loading = false;
-      this.errorService.i18nError(TRANSLATION_KEY.NO_CARD_SELECTED_ERROR);
+    this.total = this.selectedItems.reduce((a, b) => (b.isFree ? a : +b.duration.market_code + a), 0);
+    if (this.creditInfo.credit) {
+      this.creditsToPay = this.creditInfo.credit > this.total ? this.total : this.creditInfo.credit;
     }
-  }
-
-  private success() {
-    this.itemService.deselectItems();
-    this.itemService.selectedAction = null;
-    this.router.navigate(['catalog/list', { code: 200 }]);
-  }
-
-  get totalToPay(): number {
-    if (!this.cart) {
-      return 0;
-    }
-    const totalCreditsToPay: number = this.cart.total * this.creditInfo.factor;
-    if (totalCreditsToPay < this.creditInfo.credit) {
-      return 0;
-    } else {
-      return this.cart.total - this.creditInfo.credit / this.creditInfo.factor;
-    }
-  }
-
-  get usedCredits(): number {
-    if (!this.cart) {
-      return 0;
-    }
-    const totalCreditsToPay: number = this.cart.total * this.creditInfo.factor;
-    if (totalCreditsToPay < this.creditInfo.credit) {
-      return -totalCreditsToPay;
-    } else {
-      return -this.creditInfo.credit;
-    }
+    this.totalToPay = this.total - this.creditsToPay;
   }
 }

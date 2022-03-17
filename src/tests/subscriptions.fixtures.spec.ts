@@ -672,3 +672,96 @@ export const CAN_SUBSCRIPTION_BE_EDITED_FAIL: CanEditSubscriptionResponse = {
   allowed: false,
   renewalDate: '08/04/2022',
 };
+export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED: SubscriptionsResponse[] = [
+  {
+    ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+    selected_tier: {
+      ...TIER_WITH_DISCOUNT,
+      perks: [
+        { name: PERK_NAMES.LIMIT, quantity: 5 },
+        {
+          name: BUMP_NAMES.ZONEBUMP,
+          quantity: 12,
+          used: 2,
+          duration_days: 2,
+        },
+      ],
+      bumps: [
+        {
+          name: BUMP_NAMES.ZONEBUMP,
+          quantity: 12,
+          duration_days: 2,
+          used: 2,
+        },
+      ],
+    },
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            duration_days: 2,
+            used: 2,
+          },
+        ],
+        bumps: [
+          {
+            name: BUMP_NAMES.ZONEBUMP,
+            quantity: 12,
+            duration_days: 2,
+            used: 2,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+    selected_tier: {
+      ...TIER_WITH_DISCOUNT,
+      perks: [
+        { name: PERK_NAMES.LIMIT, quantity: 5 },
+        {
+          name: BUMP_NAMES.COUNTRYBUMP,
+          quantity: 12,
+          duration_days: 2,
+          used: 12,
+        },
+      ],
+      bumps: [
+        {
+          name: BUMP_NAMES.COUNTRYBUMP,
+          quantity: 12,
+          duration_days: 2,
+          used: 12,
+        },
+      ],
+    },
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            used: 12,
+          },
+        ],
+        bumps: [
+          {
+            name: BUMP_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            duration_days: 2,
+            used: 12,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+];
