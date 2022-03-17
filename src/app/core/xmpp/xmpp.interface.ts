@@ -1,4 +1,5 @@
 import { MessagePayload, MessageStatus } from '@private/features/chat/core/model';
+import { XMPP_MESSAGE_TYPE } from './xmpp.enum';
 
 import { StanzaIO } from './xmpp.provider';
 
@@ -31,6 +32,21 @@ export interface XmppMessage {
   sentReceipt?: any;
   readReceipt?: any;
   delay?: any;
+}
+
+export interface NormalXmppMessage {
+  to: JID;
+  from: JID;
+  timestamp: {
+    body: string;
+  };
+  id: string;
+  type: XMPP_MESSAGE_TYPE.NORMAL;
+  lang: string;
+  payload?: {
+    type: string;
+    payload?: Object;
+  };
 }
 
 export interface XmppBodyMessage extends XmppMessage {
