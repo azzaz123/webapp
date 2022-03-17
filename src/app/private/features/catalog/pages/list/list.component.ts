@@ -56,9 +56,8 @@ import { Subscription } from 'rxjs';
 import { take, takeWhile } from 'rxjs/operators';
 import { STATUS } from '../../components/selected-items/selected-product.interface';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
-import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
+import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 
-const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'purchaseListingFeeWithCredits'];
 export const SORTS: ISort[] = [
   {
     value: SORT_KEYS.DATE_DESC,
@@ -140,7 +139,8 @@ export class ListComponent implements OnInit, OnDestroy {
     private i18nService: I18nService,
     private permissionService: NgxPermissionsService,
     private listingLimitService: ListingLimitService,
-    private meApiService: MeApiService
+    private meApiService: MeApiService,
+    private catalogItemTrackingEventService: CatalogItemTrackingEventService
   ) {}
 
   public get itemsAmount() {
@@ -204,44 +204,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
-        if (params && params.code) {
-          const modals = {
-            bump: BumpConfirmationModalComponent,
-          };
-          const transactionType = localStorage.getItem('transactionType');
-          let modalType = transactionType === 'bumpWithCredits' ? 'bump' : transactionType;
-          let modal;
-
-          if (params.code === '-1') {
-            modal = modals.bump;
-          } else {
-            modal = modalType && modals[modalType] ? modals[modalType] : null;
-          }
-          if (!modal) {
-            return;
-          }
-          let modalRef: NgbModalRef = this.modalService.open(modal, {
-            windowClass: 'modal-standard',
-            backdrop: 'static',
-          });
-          modalRef.componentInstance.code = params.code;
-          modalRef.componentInstance.creditUsed = TRANSACTIONS_WITH_CREDITS.includes(transactionType);
-          modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
-          modalRef.result.then(
-            () => {
-              modalRef = null;
-              localStorage.removeItem('transactionType');
-              localStorage.removeItem('transactionSpent');
-              this.router.navigate(['catalog/list']);
-            },
-            () => {
-              modalRef = null;
-              localStorage.removeItem('transactionType');
-              localStorage.removeItem('transactionSpent');
-              this.router.navigate(['wallacoins']);
-            }
-          );
-        }
         if (params && params.created) {
           this.showBumpSuggestionModal(params.itemId);
         } else if (params && params.updated) {
@@ -553,6 +515,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
           this.bumpSuggestionModalRef = null;
           if (result?.redirect) {
+            this.catalogItemTrackingEventService.trackClickBumpItems(1, true);
             this.router.navigate([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId }]);
           }
         });

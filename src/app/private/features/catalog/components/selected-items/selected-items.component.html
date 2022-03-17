@@ -58,14 +58,14 @@
             <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
               <ng-container *ngIf="!hideFeaturedButton">
                 <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
-                [routerLink]="BUMP_PATH" 
+                [routerLink]="BUMP_PATH" (click)="trackClickBumpItems()"
                 i18n="@@web_catalog_components_selected_items_558">Feature</tsl-button>
               </ng-container>
             </ng-container>
             <ng-container  *ngIf="showActiveButton">
             <!-- Activate -->
               <tsl-button className="btn-primary btn-big" [disabled]="!itemService.selectedItems.length"
-              (click)="onClickAction('activate')" 
+              (click)="onClickAction('activate')"
               i18n="@@web_catalog_components_selected_items_641">Activate</tsl-button>
             </ng-container>
           </div>

@@ -12,6 +12,7 @@ import { InitializeUnauthenticatedUserService } from './initialize-unauthenticat
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 import { PermissionsInitializerServiceMock } from '@fixtures/permissions-initializer.fixtures.spec';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 
 describe('InitializeUnauthenticatedUserService', () => {
   let service: InitializeUnauthenticatedUserService;
@@ -54,8 +55,8 @@ describe('InitializeUnauthenticatedUserService', () => {
     expect(permissionsService.setDefaultPermissions).toHaveBeenCalledTimes(1);
   });
 
-  it('should get the flags after user has logged in', fakeAsync(() => {
-    spyOn(featureFlagsService, 'getFlags');
+  it('should get the flags', fakeAsync(() => {
+    spyOn(featureFlagsService, 'getFlags').and.callThrough();
 
     service.initialize();
     tick();

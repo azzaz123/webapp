@@ -12,6 +12,7 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
 import { catchError, tap, filter } from 'rxjs/operators';
 import { Observable, throwError, Subscription } from 'rxjs';
 import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
+import { XmppService } from '@core/xmpp/xmpp.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-overview',
@@ -20,8 +21,8 @@ import { TransactionTrackingScreenStoreService } from '../services/transaction-t
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
-  public transactionTracking$: Observable<TransactionTracking>;
-  public transactionTrackingDetails$: Observable<TransactionTrackingDetails>;
+  public transactionTracking$: Observable<TransactionTracking> = this.storeService.transactionTracking$;
+  public transactionTrackingDetails$: Observable<TransactionTrackingDetails> = this.storeService.transactionTrackingDetails$;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -31,52 +32,58 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
     private storeService: TransactionTrackingScreenStoreService,
     private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService,
     private errorActionService: SharedErrorActionService,
+    private xmppService: XmppService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     const requestId = this.route.snapshot.paramMap.get(DELIVERY_PATH_PARAMS.ID);
-    this.initializeTransactionTracking(requestId);
-    this.initializeTransactionTrackingDetails(requestId);
-    this.checkIfUserGoesBackToAcceptScreen();
+    this.initializeTransactionTrackingAndDetails(requestId, true);
+    this.listenForDeliveryNotifications(requestId);
 
-    this.transactionTracking$ = this.storeService.transactionTracking$;
-    this.transactionTrackingDetails$ = this.storeService.transactionTrackingDetails$;
+    this.checkIfUserGoesBackToAcceptScreen();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeTransactionTracking(requestId: string): void {
-    this.transactionTrackingService
-      .get(requestId)
-      .pipe(
-        tap((transactionTracking: TransactionTracking) => {
-          this.trackViewPageEvent(requestId, transactionTracking);
-          this.storeService.transactionTracking = transactionTracking;
-        }),
-        catchError((error: unknown) => {
-          this.errorActionService.show(error);
-          return throwError(error);
-        })
-      )
-      .subscribe();
+  private initializeTransactionTrackingAndDetails(requestId: string, trackInitEvent = false): void {
+    this.subscriptions.add(this.getTransactionTracking(requestId, trackInitEvent).subscribe());
+    this.subscriptions.add(this.getTransactionTrackingDetails(requestId).subscribe());
   }
 
-  private initializeTransactionTrackingDetails(requestId: string): void {
-    this.transactionTrackingService
-      .getDetails(requestId)
-      .pipe(
-        tap((details: TransactionTrackingDetails) => {
-          this.storeService.transactionTrackingDetails = details;
-        }),
-        catchError((error: unknown) => {
-          this.errorActionService.show(error);
-          return throwError(error);
-        })
-      )
-      .subscribe();
+  private listenForDeliveryNotifications(requestId: string): void {
+    this.subscriptions.add(
+      this.xmppService.deliveryRealtimeMessage$.subscribe(() => this.initializeTransactionTrackingAndDetails(requestId))
+    );
+  }
+
+  private getTransactionTracking(requestId: string, analytics: boolean): Observable<TransactionTracking> {
+    return this.transactionTrackingService.get(requestId).pipe(
+      tap((transactionTracking: TransactionTracking) => {
+        if (analytics) {
+          this.trackViewPageEvent(requestId, transactionTracking);
+        }
+        this.storeService.transactionTracking = transactionTracking;
+      }),
+      catchError((error: unknown) => {
+        this.errorActionService.show(error);
+        return throwError(error);
+      })
+    );
+  }
+
+  private getTransactionTrackingDetails(requestId: string): Observable<TransactionTrackingDetails> {
+    return this.transactionTrackingService.getDetails(requestId).pipe(
+      tap((details: TransactionTrackingDetails) => {
+        this.storeService.transactionTrackingDetails = details;
+      }),
+      catchError((error: unknown) => {
+        this.errorActionService.show(error);
+        return throwError(error);
+      })
+    );
   }
 
   private trackViewPageEvent(requestId: string, transactionTracking: TransactionTracking): void {

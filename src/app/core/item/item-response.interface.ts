@@ -181,13 +181,16 @@ export interface Product {
   name: string;
   default_duration_index: number;
   durations: Duration[];
+  location_name?: string;
+  features?: string[];
 }
 
 export interface Duration {
   id: string;
   duration: number;
   market_code: string;
-  original_market_code: string;
+  original_market_code?: string;
+  is_free?: boolean;
 }
 
 export interface SelectedItemsAction {

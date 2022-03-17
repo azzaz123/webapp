@@ -8,7 +8,6 @@ import { CatalogItemComponent } from './components/catalog-item/catalog-item.com
 import { SelectedItemsComponent } from './components/selected-items/selected-items.component';
 import { SubscriptionsSlotItemComponent } from './components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 import { SubscriptionsSlotsListComponent } from './components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
-import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { TryProSlotComponent } from './components/subscriptions-slots/try-pro-slot/try-pro-slot.component';
@@ -43,9 +42,7 @@ import { BumpTutorialModule } from '@shared/bump-tutorial/bump-tutorial.module';
     SelectedItemsComponent,
     SubscriptionsSlotItemComponent,
     SubscriptionsSlotsListComponent,
-    BumpConfirmationModalComponent,
     TryProSlotComponent,
   ],
-  entryComponents: [BumpConfirmationModalComponent],
 })
 export class CatalogModule {}

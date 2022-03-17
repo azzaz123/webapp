@@ -1,6 +1,7 @@
 export enum ICON_TYPE {
   SMALL,
   DEFAULT,
+  MEDIUM,
   LARGE,
 }
 

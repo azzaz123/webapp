@@ -83,7 +83,7 @@ describe('InitializeAuthenticatedUserService', () => {
   }));
 
   it('should get the flags after user has logged in', fakeAsync(() => {
-    spyOn(featureFlagsService, 'getFlags');
+    spyOn(featureFlagsService, 'getFlags').and.callThrough();
 
     service.initialize();
     tick();
