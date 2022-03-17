@@ -24,9 +24,6 @@ import { StanzaIO } from './xmpp.provider';
 export class XmppService {
   public blockedUsers: string[];
 
-  //TODO: This should be moved to a separated service
-  public deliveryRealtimeMessage$: Subject<string> = new Subject<string>();
-
   private client: XMPPClient;
   private _clientConnected = false;
   private blockedListAvailable = false;
@@ -38,8 +35,15 @@ export class XmppService {
   private canProcessRealtime = false;
   private xmppError = { message: 'XMPP disconnected' };
 
+  //TODO: This should be moved to a separated service
+  private readonly _deliveryRealtimeMessage$: Subject<string> = new Subject<string>();
+
   constructor(private eventService: EventService, private remoteConsoleService: RemoteConsoleService) {
     this.clientConnected$.next(false);
+  }
+
+  public get deliveryRealtimeMessage$(): Observable<string> {
+    return this._deliveryRealtimeMessage$.asObservable();
   }
 
   get clientConnected(): boolean {
@@ -330,7 +334,7 @@ export class XmppService {
     const payloadMessageType: string = message.payload.type;
     const isDeliveryMessage: boolean = payloadMessageType.startsWith('delivery');
     if (isDeliveryMessage) {
-      this.deliveryRealtimeMessage$.next(payloadMessageType);
+      this._deliveryRealtimeMessage$.next(payloadMessageType);
     }
   }
 
