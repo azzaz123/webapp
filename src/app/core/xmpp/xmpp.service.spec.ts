@@ -17,9 +17,10 @@ import {
 import { MOCK_USER, OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 import { EventService } from '../event/event.service';
 import { RemoteConsoleService } from '../remote-console';
-import { XmppBodyMessage } from './xmpp.interface';
+import { NormalXmppMessage, XmppBodyMessage } from './xmpp.interface';
 import { XmppService } from './xmpp.service';
 import { StanzaIO } from './xmpp.provider';
+import { XMPP_MESSAGE_TYPE } from './xmpp.enum';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;
@@ -94,7 +95,28 @@ const MOCKED_SERVER_RECEIVED_RECEIPT: XmppBodyMessage = {
   from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
   timestamp: { body: '2017-03-23T12:24:19.844620Z' },
   id: 'id',
+  type: XMPP_MESSAGE_TYPE.CHAT,
 };
+
+const MOCK_NEW_NORMAL_XMPP_MESSAGE_WITHOUT_PAYLOAD: NormalXmppMessage = {
+  to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
+  from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
+  timestamp: { body: '2017-03-23T12:24:19.844620Z' },
+  id: 'id',
+  type: XMPP_MESSAGE_TYPE.NORMAL,
+  lang: 'en',
+};
+
+const MOCK_NEW_NORMAL_DELIVERY_XMPP_MESSAGE: NormalXmppMessage = {
+  to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
+  from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
+  timestamp: { body: '2017-03-23T12:24:19.844620Z' },
+  id: 'id',
+  type: XMPP_MESSAGE_TYPE.NORMAL,
+  lang: 'en',
+  payload: { type: 'delivery.to_buyer.delivery.on_hold_at_carrier' },
+};
+
 let service: XmppService;
 let eventService: EventService;
 let sendIqSpy: jasmine.Spy;
@@ -755,7 +777,7 @@ describe('Service: Xmpp', () => {
         to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
         from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
         thread: conversation.id,
-        type: 'chat',
+        type: XMPP_MESSAGE_TYPE.CHAT,
         request: {
           xmlns: 'urn:xmpp:receipts',
         },
@@ -803,6 +825,7 @@ describe('Service: Xmpp', () => {
         to: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'someId',
         receipt: 'receipt',
+        type: XMPP_MESSAGE_TYPE.CHAT,
       };
       const expectedSignal = new ChatSignal(ChatSignalType.RECEIVED, message.thread, new Date(message.date).getTime(), message.receipt);
 
@@ -822,6 +845,7 @@ describe('Service: Xmpp', () => {
         to: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'someId',
         sentReceipt: { id: 'someId' },
+        type: XMPP_MESSAGE_TYPE.CHAT,
       };
       const expectedSignal = new ChatSignal(ChatSignalType.SENT, message.thread, new Date(message.date).getTime(), message.sentReceipt.id);
 
@@ -843,6 +867,7 @@ describe('Service: Xmpp', () => {
         to: self,
         id: 'someId',
         readReceipt: { id: 'someId' },
+        type: XMPP_MESSAGE_TYPE.CHAT,
       };
       const expectedSignal = new ChatSignal(ChatSignalType.READ, message.thread, new Date(message.date).getTime(), null, false);
 
@@ -864,6 +889,7 @@ describe('Service: Xmpp', () => {
         to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
         id: 'someId',
         readReceipt: { id: 'someId' },
+        type: XMPP_MESSAGE_TYPE.CHAT,
       };
       const expectedSignal = new ChatSignal(ChatSignalType.READ, message.thread, new Date(message.date).getTime(), null, true);
 
@@ -871,6 +897,32 @@ describe('Service: Xmpp', () => {
 
       expect(remoteConsoleService.sendPresentationMessageTimeout).not.toHaveBeenCalled();
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
+    });
+
+    describe('and when message type is normal', () => {
+      describe('and when message does not have payload', () => {
+        it('should do nothing', fakeAsync(() => {
+          let result: string;
+
+          service.deliveryRealtimeMessage$.subscribe((data) => (result = data));
+          service['onNewMessage'](MOCK_NEW_NORMAL_XMPP_MESSAGE_WITHOUT_PAYLOAD as unknown as XmppBodyMessage);
+          tick();
+
+          expect(result).toBeFalsy();
+        }));
+      });
+
+      describe('and when message is delivery message', () => {
+        it('should notify new normal delivery message', fakeAsync(() => {
+          let result: string;
+
+          service.deliveryRealtimeMessage$.subscribe((data) => (result = data));
+          service['onNewMessage'](MOCK_NEW_NORMAL_DELIVERY_XMPP_MESSAGE as unknown as XmppBodyMessage);
+          tick();
+
+          expect(result).toEqual(MOCK_NEW_NORMAL_DELIVERY_XMPP_MESSAGE.payload.type);
+        }));
+      });
     });
   });
 
