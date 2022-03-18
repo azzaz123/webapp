@@ -1,5 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { PaymentsClientBrowserInfo } from '@api/core/model/payments';
+import {
+  THREE_DOMAIN_SECURE_MODAL_HEIGHT,
+  THREE_DOMAIN_SECURE_MODAL_WIDTH,
+} from '@api/payments/cards/three-domain-secure/three-domain-secure.constants';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { Observable } from 'rxjs';
 import { PaymentsClientBrowserInfoHttpService } from './http/payments-client-browser-info-http.service';
@@ -13,18 +17,18 @@ export class PaymentsClientBrowserInfoApiService {
     private paymentsClientBrowserInfoHttpService: PaymentsClientBrowserInfoHttpService
   ) {}
 
-  public sendBrowserInfo(width: number, height: number): Observable<void> {
-    return this.paymentsClientBrowserInfoHttpService.put(this.getBrowserInfo(width, height));
+  public sendBrowserInfo(): Observable<void> {
+    return this.paymentsClientBrowserInfoHttpService.put(this.browserInfo);
   }
 
-  private getBrowserInfo(screenWidth: number, screenHeight: number): PaymentsClientBrowserInfo {
+  private get browserInfo(): PaymentsClientBrowserInfo {
     return {
       isJavaEnabled: this.isJavaEnabled,
       isJavaScriptEnabled: true,
       language: this.language,
       colorDepth: this.screen.colorDepth,
-      screenHeight,
-      screenWidth,
+      screenHeight: THREE_DOMAIN_SECURE_MODAL_HEIGHT,
+      screenWidth: THREE_DOMAIN_SECURE_MODAL_WIDTH,
       timeZoneOffset: this.timeZoneOffset,
       userAgent: this.userAgent,
     };

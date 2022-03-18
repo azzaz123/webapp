@@ -1,5 +1,9 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PaymentsClientBrowserInfo } from '@api/core/model/payments';
+import {
+  THREE_DOMAIN_SECURE_MODAL_HEIGHT,
+  THREE_DOMAIN_SECURE_MODAL_WIDTH,
+} from '@api/payments/cards/three-domain-secure/three-domain-secure.constants';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { of } from 'rxjs';
 import { PaymentsClientBrowserInfoHttpService } from './http/payments-client-browser-info-http.service';
@@ -9,9 +13,6 @@ import { PaymentsClientBrowserInfoApiService } from './payments-client-browser-i
 describe('PaymentsClientBrowserInfoApiService', () => {
   let service: PaymentsClientBrowserInfoApiService;
   let paymentsClientBrowserInfoHttpService: PaymentsClientBrowserInfoHttpService;
-
-  const MOCK_WIDTH: number = 288;
-  const MOCK_HEIGHT: number = 1337;
 
   const MOCK_WINDOW_NAVIGATOR: Partial<Navigator> = {
     javaEnabled: () => false,
@@ -54,7 +55,7 @@ describe('PaymentsClientBrowserInfoApiService', () => {
     beforeEach(fakeAsync(() => {
       spyOn(paymentsClientBrowserInfoHttpService, 'put');
 
-      service.sendBrowserInfo(MOCK_WIDTH, MOCK_HEIGHT);
+      service.sendBrowserInfo();
       tick();
     }));
 
@@ -68,8 +69,8 @@ describe('PaymentsClientBrowserInfoApiService', () => {
         isJavaEnabled: MOCK_WINDOW_NAVIGATOR.javaEnabled(),
         isJavaScriptEnabled: true,
         language: MOCK_WINDOW_NAVIGATOR.language,
-        screenHeight: MOCK_HEIGHT,
-        screenWidth: MOCK_WIDTH,
+        screenHeight: THREE_DOMAIN_SECURE_MODAL_HEIGHT,
+        screenWidth: THREE_DOMAIN_SECURE_MODAL_WIDTH,
         timeZoneOffset: MOCK_TIMEZONE_OFFSET,
         userAgent: MOCK_WINDOW_NAVIGATOR.userAgent,
       };
