@@ -5,7 +5,7 @@ import { CreditCard } from '@api/core/model';
 import { I18nService } from '@core/i18n/i18n.service';
 import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
-import { PAYVIEW_PAYMENT_ICONS } from '@private/features/payview/modules/payment/constants/payview-payment-icons';
+import { PAYVIEW_PAYMENT_ICONS } from '@private/features/payview/constants/payview-payment-icons';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 
 @Component({
