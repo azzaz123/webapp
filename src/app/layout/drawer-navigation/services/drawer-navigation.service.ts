@@ -34,13 +34,23 @@ export class DrawerNavigationService {
     );
   }
 
-  public getChildNavigationElements(route: string) {
+  public getChildNavigationElements(route: string): Observable<DrawerNavigationElement[]> {
     return this.navigationSections$.pipe(map((sections) => this.findChildNavigationElements(sections, route)));
+  }
+
+  public getChildNavigationTitle(route: string): Observable<string> {
+    return this.navigationSections$.pipe(map((sections) => this.findChildNavigationTitle(sections, route)));
+  }
+
+  private findChildNavigationTitle(sections: DrawerNavigationSection[], route: string): string {
+    return sections.reduce((acc, section) => {
+      return section.elements.find((element) => element.href === route)?.text ?? acc;
+    }, '');
   }
 
   private findChildNavigationElements(sections: DrawerNavigationSection[], route: string): DrawerNavigationElement[] {
     return sections.reduce((acc, section) => {
-      return section.elements.find((y) => y.href === route)?.children ?? acc;
+      return section.elements.find((element) => element.href === route)?.children ?? acc;
     }, []);
   }
 }

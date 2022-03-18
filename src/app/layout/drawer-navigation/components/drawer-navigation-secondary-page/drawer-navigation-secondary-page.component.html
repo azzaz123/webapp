@@ -1,3 +1,10 @@
+<div class="DrawerNavigationSecondaryPage__header d-flex align-items-center justify-content-center">
+    <a class="DrawerNavigationSecondaryPage__back position-absolute" routerLink="..">
+        <tsl-svg-icon src="/assets/icons/drawer-navigation/back-arrow.svg"></tsl-svg-icon>
+    </a>
+    {{ navigationTitle$ | async }}
+</div>
+
 <nav>
     <ng-container *ngFor="let element of navigationElements$ | async">
         <tsl-drawer-navigation-element [element]="element"></tsl-drawer-navigation-element>

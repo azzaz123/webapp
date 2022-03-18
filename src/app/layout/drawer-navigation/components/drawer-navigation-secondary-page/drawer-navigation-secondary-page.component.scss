@@ -1,0 +1,13 @@
+@import '~style/common';
+
+.DrawerNavigationSecondaryPage {
+  &__header {
+    background-color: $white;
+    height: 48px;
+    font-weight: bold;
+  }
+
+  &__back {
+    left: $spacer;
+  }
+}

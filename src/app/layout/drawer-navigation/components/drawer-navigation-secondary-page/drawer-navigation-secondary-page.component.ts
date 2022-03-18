@@ -9,6 +9,7 @@ import { DrawerNavigationService } from '@layout/drawer-navigation/services/draw
 })
 export class DrawerNavigationSecondaryPageComponent {
   public readonly navigationElements$ = this.drawerNavigationService.getChildNavigationElements(this.routeUrl);
+  public readonly navigationTitle$ = this.drawerNavigationService.getChildNavigationTitle(this.routeUrl);
 
   constructor(private route: Router, private drawerNavigationService: DrawerNavigationService) {}
 
