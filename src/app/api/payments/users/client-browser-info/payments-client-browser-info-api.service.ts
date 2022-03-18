@@ -19,7 +19,6 @@ export class PaymentsClientBrowserInfoApiService {
 
   private get browserInfo(): PaymentsClientBrowserInfo {
     return {
-      acceptHeader: this.acceptHeader,
       isJavaEnabled: this.isJavaEnabled,
       isJavaScriptEnabled: true,
       language: this.language,
@@ -29,11 +28,6 @@ export class PaymentsClientBrowserInfoApiService {
       timeZoneOffset: this.timeZoneOffset,
       userAgent: this.userAgent,
     };
-  }
-
-  // TODO: This should be collected in backend. For now, hardcode the most common and compatible "Accept" header from browsers
-  private get acceptHeader(): string {
-    return 'text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8';
   }
 
   private get isJavaEnabled(): boolean {

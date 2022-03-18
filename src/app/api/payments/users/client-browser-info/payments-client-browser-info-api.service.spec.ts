@@ -64,7 +64,6 @@ describe('PaymentsClientBrowserInfoApiService', () => {
 
     it('should send valid browser data', () => {
       const expectedWindowData: PaymentsClientBrowserInfo = {
-        acceptHeader: 'text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8',
         colorDepth: MOCK_WINDOW_SCREEN.colorDepth,
         isJavaEnabled: MOCK_WINDOW_NAVIGATOR.javaEnabled(),
         isJavaScriptEnabled: true,
