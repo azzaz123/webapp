@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CardRegistrationFailedError } from '@api/core/errors/payments/cards';
 import { CreditCard } from '@api/core/model';
 import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
+import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { environment } from '@environments/environment';
@@ -66,7 +67,10 @@ export class ThreeDomainSecureService {
   private start3DSValidation(card: CreditCard): Observable<void> {
     const { id } = card;
     const threeDSecureStartUrl: string = THREE_DOMAIN_SECURE_START_URL(id);
-    return this.webViewModalService.open(threeDSecureStartUrl).pipe(catchError(() => throwError([new CardRegistrationFailedError()])));
+
+    return this.webViewModalService
+      .open(threeDSecureStartUrl, THREE_DOMAIN_SECURE_MODAL_WIDTH, THREE_DOMAIN_SECURE_MODAL_HEIGHT)
+      .pipe(catchError(() => throwError([new CardRegistrationFailedError()])));
   }
 
   private isInvalidCard(card: CreditCard): boolean {
