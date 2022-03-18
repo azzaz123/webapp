@@ -152,7 +152,7 @@ const routes: Routes = [
         ],
       },
       {
-        path: 'you',
+        path: PRIVATE_PATHS.YOU,
         loadChildren: () => import('@private/features/you/you.module').then((m) => m.YouModule),
       },
     ],
