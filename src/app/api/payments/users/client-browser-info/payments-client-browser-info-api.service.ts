@@ -13,18 +13,18 @@ export class PaymentsClientBrowserInfoApiService {
     private paymentsClientBrowserInfoHttpService: PaymentsClientBrowserInfoHttpService
   ) {}
 
-  public sendBrowserInfo(): Observable<void> {
-    return this.paymentsClientBrowserInfoHttpService.put(this.browserInfo);
+  public sendBrowserInfo(width: number, height: number): Observable<void> {
+    return this.paymentsClientBrowserInfoHttpService.put(this.getBrowserInfo(width, height));
   }
 
-  private get browserInfo(): PaymentsClientBrowserInfo {
+  private getBrowserInfo(screenWidth: number, screenHeight: number): PaymentsClientBrowserInfo {
     return {
       isJavaEnabled: this.isJavaEnabled,
       isJavaScriptEnabled: true,
       language: this.language,
       colorDepth: this.screen.colorDepth,
-      screenHeight: this.screen.height,
-      screenWidth: this.screen.width,
+      screenHeight,
+      screenWidth,
       timeZoneOffset: this.timeZoneOffset,
       userAgent: this.userAgent,
     };
