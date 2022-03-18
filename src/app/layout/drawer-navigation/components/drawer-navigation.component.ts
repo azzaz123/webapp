@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
+import { DrawerNavigationProfileElement, DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
 import { DrawerNavigationService } from '../services/drawer-navigation.service';
 
 @Component({
@@ -10,6 +10,8 @@ import { DrawerNavigationService } from '../services/drawer-navigation.service';
 })
 export class DrawerNavigationComponent {
   public readonly navigationSections$: Observable<DrawerNavigationSection[]> = this.drawerNavigationService.navigationSections$;
+  public readonly profileNavigationElement$: Observable<DrawerNavigationProfileElement> =
+    this.drawerNavigationService.profileNavigationElement$;
 
   constructor(private drawerNavigationService: DrawerNavigationService) {}
 }

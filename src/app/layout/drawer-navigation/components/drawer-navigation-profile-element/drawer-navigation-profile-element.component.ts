@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { DrawerNavigationProfileElement } from '@layout/drawer-navigation/interfaces/drawer-navigation-element.interface';
 
 @Component({
   selector: 'tsl-drawer-navigation-profile-element',
   templateUrl: './drawer-navigation-profile-element.component.html',
   styleUrls: ['./drawer-navigation-profile-element.component.scss'],
 })
-export class DrawerNavigationProfileElementComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class DrawerNavigationProfileElementComponent {
+  @Input() element: DrawerNavigationProfileElement;
 }
