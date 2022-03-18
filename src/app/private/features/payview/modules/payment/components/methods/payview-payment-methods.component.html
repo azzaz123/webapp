@@ -1,0 +1,12 @@
+<div class="PayviewPaymentMethods" *ngIf="!!showMethods">
+  <ng-template ngFor let-paymentMethod let-index="index" let-even="even" [ngForOf]="methods" [ngForTrackBy]="trackByIndex">
+    <tsl-payview-payment-method
+      [card]="card"
+      [method]="paymentMethod"
+      [id]="index"
+      [isChecked]="isSelected(index)"
+      (checked)="selectMethod($event)"
+      (edited)="editMethod($event)"
+    ></tsl-payview-payment-method>
+  </ng-template>
+</div>
