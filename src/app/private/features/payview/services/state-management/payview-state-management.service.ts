@@ -18,6 +18,8 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
+import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -79,8 +81,13 @@ export class PayviewStateManagementService {
 
   public setDeliveryMethod(deliveryMethod: DeliveryBuyerDeliveryMethod): void {
     const payviewState: PayviewState = { ...this.stateSubject.getValue() };
-    this.setCurrent(payviewState, deliveryMethod.method);
+    this.setCurrentDeliveryMethod(payviewState, deliveryMethod.method);
     this.refreshCosts(payviewState, null);
+  }
+
+  public setPaymentMethod(paymentMethod: PaymentsPaymentMethod): void {
+    const payviewState: PayviewState = { ...this.stateSubject.getValue() };
+    this.setCurrentPaymentMethod(payviewState, paymentMethod.method);
   }
 
   private getActionEvent(type: PAYVIEW_EVENT_TYPE, payload: HttpErrorResponse | null = null): PayviewEvent {
@@ -168,7 +175,7 @@ export class PayviewStateManagementService {
       .subscribe({
         next: (deliveryMethods: DeliveryBuyerDeliveryMethods) => {
           payviewState.delivery.methods = deliveryMethods;
-          this.setCurrent(payviewState, currentMethod);
+          this.setCurrentDeliveryMethod(payviewState, currentMethod);
 
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_REFRESH_DELIVERY_METHODS));
           this.stateSubject.next(payviewState);
@@ -183,12 +190,19 @@ export class PayviewStateManagementService {
       });
   }
 
-  private setCurrent(payviewState: PayviewState, mode: DELIVERY_MODE): void {
+  private setCurrentDeliveryMethod(payviewState: PayviewState, mode: DELIVERY_MODE): void {
     const defaultIndex: DeliveryBuyerDefaultDeliveryMethod = this.getDefaultDeliveryMethod(
       payviewState.delivery.methods.deliveryMethods,
       mode
     );
     payviewState.delivery.methods.default = defaultIndex;
     payviewState.delivery.methods.current = payviewState.delivery.methods.deliveryMethods[defaultIndex.index];
+  }
+
+  private setCurrentPaymentMethod(payviewState: PayviewState, method: PaymentMethod): void {
+    const preferences = { ...payviewState.payment.preferences.preferences };
+    preferences.paymentMethod = method;
+    payviewState.payment.preferences.preferences = preferences;
+    this.stateSubject.next(payviewState);
   }
 }
