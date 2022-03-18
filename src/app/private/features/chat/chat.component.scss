@@ -11,10 +11,7 @@
     background-color: $white;
     width: $left-panel-width;
     border-right: 1px solid $blue-grey-4;
-
-    &__ff {
-      padding-top: $spacing-xxl;
-    }
+    padding-top: $spacing-xxl;
 
     @include media-breakpoint-down(md) {
       width: 100%;

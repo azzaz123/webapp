@@ -6,9 +6,9 @@
       </div>
       <div class="PayviewDelivery__body" *ngIf="showDeliveryPoints">
         <tsl-payview-delivery-points
-          [defaultDeliveryMethod]="defaultDeliveryMethod"
-          [deliveryCosts]="deliveryCosts"
-          [deliveryMethods]="deliveryMethods"
+          [costs]="costs"
+          [defaultMethod]="defaultDeliveryMethod"
+          [methods]="deliveryMethods"
         ></tsl-payview-delivery-points>
       </div>
     </div>

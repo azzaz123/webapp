@@ -21,8 +21,13 @@ export class MockAnalyticsService {
   public get mParticleReady$(): Observable<void> {
     return this._mParticleReady$.asObservable();
   }
-  initialize() {
+  initializeAnalyticsWithUnauthenticatedUser(): Promise<void> {
     this._mParticleReady$.next();
+    return new Promise((resolve) => resolve());
+  }
+  initializeAnalyticsWithAuthenticatedUser(): Promise<void> {
+    this._mParticleReady$.next();
+    return new Promise((resolve) => resolve());
   }
   trackEvent<T>(_event: AnalyticsEvent<T>) {}
   trackPageView<T>(_page: AnalyticsPageView<T>) {}

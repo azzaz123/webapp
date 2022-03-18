@@ -5,11 +5,19 @@ import { ItemService } from '@core/item/item.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReplaySubject } from 'rxjs';
 import { createItemsArray } from '@fixtures/item.fixtures.spec';
+import { CatalogItemTrackingEventService } from '@private/features/catalog/core/services/catalog-item-tracking-event.service';
+import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { PERMISSIONS } from '@core/user/user-constants';
+import { By } from '@angular/platform-browser';
+import { ButtonModule } from '@shared/button/button.module';
+import { ButtonComponent } from '@shared/button/button.component';
 
 describe('SelectedItemsComponent', () => {
   let component: SelectedItemsComponent;
   let fixture: ComponentFixture<SelectedItemsComponent>;
   let itemService: ItemService;
+  let catalogItemTrackingEventService: CatalogItemTrackingEventService;
+  let permissionService: NgxPermissionsService;
   const anId = '1';
   const anotherId = '2';
 
@@ -17,8 +25,9 @@ describe('SelectedItemsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SelectedItemsComponent],
-        imports: [NoopAnimationsModule],
+        imports: [NoopAnimationsModule, NgxPermissionsModule.forRoot(), ButtonModule],
         providers: [
+          { provide: CatalogItemTrackingEventService, useValue: { trackClickBumpItems: () => {} } },
           {
             provide: ItemService,
             useValue: {
@@ -38,6 +47,8 @@ describe('SelectedItemsComponent', () => {
     fixture = TestBed.createComponent(SelectedItemsComponent);
     component = fixture.componentInstance;
     itemService = TestBed.inject(ItemService);
+    catalogItemTrackingEventService = TestBed.inject(CatalogItemTrackingEventService);
+    permissionService = TestBed.inject(NgxPermissionsService);
   });
 
   describe('ngOnInit', () => {
@@ -119,6 +130,70 @@ describe('SelectedItemsComponent', () => {
 
       expect(component.selectedAction.emit).toHaveBeenCalledTimes(1);
       expect(component.selectedAction.emit).toHaveBeenCalledWith(action);
+    });
+  });
+
+  describe('feature items', () => {
+    describe('and has visibility permissions', () => {
+      beforeEach(() => {
+        component.ngOnInit();
+        permissionService.addPermission(PERMISSIONS.bumps);
+        fixture.detectChanges();
+      });
+      describe('and button is enabled', () => {
+        describe('and click button', () => {
+          it('should track event', () => {
+            spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
+            itemService.selectedAction = 'feature';
+            const ITEMS = createItemsArray(5);
+            component.items = ITEMS;
+            itemService.selectedItems$.next({
+              id: anId,
+              action: 'selected',
+            });
+            fixture.detectChanges();
+
+            const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+            button.click();
+
+            expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledTimes(1);
+            expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledWith(component.selectedItems.length);
+          });
+        });
+        describe('and button is disabled', () => {
+          it('should not track event', () => {
+            spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
+            itemService.selectedAction = 'feature';
+            const ITEMS = createItemsArray(5);
+            component.items = ITEMS;
+            itemService.selectedItems = [];
+
+            fixture.detectChanges();
+            const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+            button.click();
+
+            expect(catalogItemTrackingEventService.trackClickBumpItems).not.toHaveBeenCalled();
+          });
+        });
+      });
+    });
+    describe('and has not visibility permissions', () => {
+      it('should now show button', () => {
+        spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
+        itemService.selectedAction = 'feature';
+        const ITEMS = createItemsArray(5);
+        component.items = ITEMS;
+        itemService.selectedItems = [anId, anotherId];
+        fixture.detectChanges();
+        itemService.selectedItems$.next({
+          id: anId,
+          action: 'selected',
+        });
+
+        const button = fixture.debugElement.query(By.directive(ButtonComponent));
+
+        expect(button).toBeFalsy();
+      });
     });
   });
 });

@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use.interface';
+import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
 import { Observable } from 'rxjs';
 import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
-import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE } from './endpoints';
+import { BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
+import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE, ITEMS_WITH_PRODUCTS } from './endpoints';
 
 @Injectable()
 export class BumpsHttpService {
@@ -13,7 +14,15 @@ export class BumpsHttpService {
     return this.httpClient.get<BumpsPackageBalanceDTO[]>(BUMPS_PACKAGE_BALANCE(userId));
   }
 
-  public useBumpPackage(cart: BumpsPackageUse[]): Observable<void> {
+  public useBumpPackage(cart: BumpsPackageUseDTO): Observable<void> {
     return this.httpClient.post<void>(BUMPS_PACKAGE_USE, cart);
+  }
+
+  public getItemsWithAvailableProducts(ids: string[]): Observable<ItemsWithAvailableProductsResponse[]> {
+    return this.httpClient.get<ItemsWithAvailableProductsResponse[]>(ITEMS_WITH_PRODUCTS, {
+      params: {
+        itemsIds: ids.join(','),
+      },
+    });
   }
 }

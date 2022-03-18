@@ -16,8 +16,6 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { TopbarComponent } from './topbar.component';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 import { CATEGORY_IDS } from '@core/category/category-ids';
@@ -134,10 +132,6 @@ describe('TopbarComponent', () => {
                 };
               },
             },
-          },
-          {
-            provide: FeatureFlagService,
-            useClass: FeatureFlagServiceMock,
           },
           {
             provide: WINDOW_TOKEN,

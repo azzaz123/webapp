@@ -43,9 +43,21 @@ import {
   MOCK_ACCEPT_SCREEN_NON_PURCHASABLE_ITEM_ERROR,
   MOCK_ACCEPT_SCREEN_POSTAL_CODE_NOT_FOUND_ERROR,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-errors.fixtures.spec';
+import { AcceptScreenTrackingEventsService } from '../../services/accept-screen-tracking-events/accept-screen-tracking-events.service';
+import {
+  MOCK_CLICK_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_PO,
+  MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_PROPERTIES_WITH_FULL_ADDRESS_AND_PO,
+  MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
+  MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES,
+  MOCK_CLICK_OTHER_PROFILE_EVENT_PROPERTIES,
+  MOCK_CLICK_REJECT_OFFER_EVENT_PROPERTIES_WITH_PO,
+  MOCK_CLICK_SCHEDULE_HPU_EVENT_PROPERTIES,
+  MOCK_VIEW_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_PO,
+} from '@fixtures/private/delivery/accept-screen/accept-screen-event-properties.fixtures.spec';
 
 describe('AcceptScreenModalComponent', () => {
   const genericErrorTranslation: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
+  const expiredOrCancelledTransalation: string = $localize`:@@accept_view_seller_all_all_snackbar_expired_or_cancelled_purchase:The purchase has expired or the buyer has cancelled it. Talk to them to try again.`;
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
   const carrierSelectedIndexSubjectMock: BehaviorSubject<number> = new BehaviorSubject(1);
   const countriesAsOptionsAndDefaultSubject: ReplaySubject<CountryOptionsAndDefault> = new ReplaySubject(1);
@@ -60,6 +72,7 @@ describe('AcceptScreenModalComponent', () => {
   const fullAddressSelector: string = '#fullAddress';
   const rejectButtonSelector: string = '#rejectButton';
   const acceptButtonSelector: string = '#acceptButton';
+  const helpButtonSelector: string = '#help';
 
   const MOCK_ACCEPT_SCREEN_HELP_URL = 'MOCK_ACCEPT_SCREEN_HELP_URL';
 
@@ -71,6 +84,7 @@ describe('AcceptScreenModalComponent', () => {
   let modalService: NgbModal;
   let router: Router;
   let toastService: ToastService;
+  let acceptScreenTrackingEventsService: AcceptScreenTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -88,6 +102,19 @@ describe('AcceptScreenModalComponent', () => {
       providers: [
         DecimalPipe,
         {
+          provide: AcceptScreenTrackingEventsService,
+          useValue: {
+            trackClickItemCard() {},
+            trackClickOtherProfile() {},
+            trackClickHelpTransactional() {},
+            trackViewAcceptOffer() {},
+            trackClickAddEditAddress() {},
+            trackClickScheduleHPU() {},
+            trackClickAcceptOffer() {},
+            trackClickRejectOffer() {},
+          },
+        },
+        {
           provide: AcceptScreenStoreService,
           useValue: {
             initialize() {
@@ -99,6 +126,9 @@ describe('AcceptScreenModalComponent', () => {
             selectNewDropOffMode() {},
             get properties$() {
               return acceptScreenPropertiesSubjectMock.asObservable();
+            },
+            get properties() {
+              return acceptScreenPropertiesSubjectMock.value;
             },
             get carrierSelectedIndex$() {
               return carrierSelectedIndexSubjectMock.asObservable();
@@ -142,6 +172,19 @@ describe('AcceptScreenModalComponent', () => {
             },
           },
         },
+        {
+          provide: AcceptScreenTrackingEventsService,
+          useValue: {
+            trackClickItemCard() {},
+            trackClickOtherProfile() {},
+            trackClickHelpTransactional() {},
+            trackViewAcceptOffer() {},
+            trackClickAddEditAddress() {},
+            trackClickScheduleHPU() {},
+            trackClickAcceptOffer() {},
+            trackClickRejectOffer() {},
+          },
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -157,6 +200,7 @@ describe('AcceptScreenModalComponent', () => {
     activeModal = TestBed.inject(NgbActiveModal);
     modalService = TestBed.inject(NgbModal);
     toastService = TestBed.inject(ToastService);
+    acceptScreenTrackingEventsService = TestBed.inject(AcceptScreenTrackingEventsService);
     router = TestBed.inject(Router);
   });
 
@@ -201,7 +245,7 @@ describe('AcceptScreenModalComponent', () => {
           let helpButtonRef: DebugElement;
 
           beforeEach(() => {
-            helpButtonRef = fixture.debugElement.query(By.css('#help'));
+            helpButtonRef = fixture.debugElement.query(By.css(helpButtonSelector));
             fixture.detectChanges();
           });
 
@@ -216,7 +260,11 @@ describe('AcceptScreenModalComponent', () => {
         let acceptScreenProperties: AcceptScreenProperties;
 
         beforeEach(() => {
-          spyOn(acceptScreenStoreService, 'initialize').and.callThrough();
+          spyOn(acceptScreenTrackingEventsService, 'trackClickHelpTransactional');
+          spyOn(acceptScreenTrackingEventsService, 'trackClickItemCard');
+          spyOn(acceptScreenTrackingEventsService, 'trackClickOtherProfile');
+          spyOn(acceptScreenTrackingEventsService, 'trackViewAcceptOffer');
+          spyOn(acceptScreenStoreService, 'initialize').and.returnValue(Promise.resolve(MOCK_ACCEPT_SCREEN_PROPERTIES));
           spyOn(acceptScreenStoreService, 'update').and.callThrough();
           acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES);
 
@@ -268,6 +316,56 @@ describe('AcceptScreenModalComponent', () => {
 
         it('should NOT show the loading spinner', () => {
           shouldRenderLoadingSpinner(false);
+        });
+
+        it('should ask for tracking event', () => {
+          expect(acceptScreenTrackingEventsService.trackViewAcceptOffer).toHaveBeenCalledTimes(1);
+          expect(acceptScreenTrackingEventsService.trackViewAcceptOffer).toHaveBeenCalledWith(
+            MOCK_VIEW_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_PO
+          );
+        });
+
+        describe('and we click on the help button', () => {
+          beforeEach(() => {
+            fixture.debugElement.query(By.css(helpButtonSelector)).nativeElement.click();
+
+            fixture.detectChanges();
+          });
+
+          it('should ask for tracking event', () => {
+            expect(acceptScreenTrackingEventsService.trackClickHelpTransactional).toHaveBeenCalledTimes(1);
+            expect(acceptScreenTrackingEventsService.trackClickHelpTransactional).toHaveBeenCalledWith(
+              MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES
+            );
+          });
+        });
+
+        describe('and we click on the item card', () => {
+          beforeEach(() => {
+            fixture.debugElement.query(By.directive(ProductCardComponent)).triggerEventHandler('itemClick', {});
+
+            fixture.detectChanges();
+          });
+
+          it('should ask for tracking event', () => {
+            expect(acceptScreenTrackingEventsService.trackClickItemCard).toHaveBeenCalledTimes(1);
+            expect(acceptScreenTrackingEventsService.trackClickItemCard).toHaveBeenCalledWith(MOCK_CLICK_ITEM_CARD_EVENT_PROPERTIES);
+          });
+        });
+
+        describe('and we click on the buyer profile', () => {
+          beforeEach(() => {
+            fixture.debugElement.query(By.directive(ProductCardComponent)).triggerEventHandler('userProfileClick', {});
+
+            fixture.detectChanges();
+          });
+
+          it('should ask for tracking event', () => {
+            expect(acceptScreenTrackingEventsService.trackClickOtherProfile).toHaveBeenCalledTimes(1);
+            expect(acceptScreenTrackingEventsService.trackClickOtherProfile).toHaveBeenCalledWith(
+              MOCK_CLICK_OTHER_PROFILE_EVENT_PROPERTIES
+            );
+          });
         });
 
         describe('and we receive the seller address', () => {
@@ -423,6 +521,7 @@ describe('AcceptScreenModalComponent', () => {
                 MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED.carriers.find((carrier) => carrier.isSelected)
                   .buttonProperties.redirectStep;
               beforeEach(() => {
+                spyOn(acceptScreenTrackingEventsService, 'trackClickScheduleHPU');
                 acceptScreenPropertiesSubjectMock.next(MOCK_ACCEPT_SCREEN_PROPERTIES_WITH_SCHEDULE_DEFINED_SECOND_SELECTED);
 
                 acceptScreenStoreService.carrierSelected$.subscribe(
@@ -438,6 +537,13 @@ describe('AcceptScreenModalComponent', () => {
               it('should go to the provided step', () => {
                 expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
                 expect(component.stepper.goToStep).toHaveBeenCalledWith(MOCK_SELECTED_CARRIER_REDIRECT_STEP);
+              });
+
+              it('should ask for tracking event', () => {
+                expect(acceptScreenTrackingEventsService.trackClickScheduleHPU).toHaveBeenCalledTimes(1);
+                expect(acceptScreenTrackingEventsService.trackClickScheduleHPU).toHaveBeenCalledWith(
+                  MOCK_CLICK_SCHEDULE_HPU_EVENT_PROPERTIES
+                );
               });
 
               describe('and we get the delivery pick up day', () => {
@@ -487,7 +593,6 @@ describe('AcceptScreenModalComponent', () => {
           describe('and the user selects another carrier', () => {
             beforeEach(() => {
               spyOn(acceptScreenStoreService, 'selectNewDropOffMode');
-
               fixture.debugElement
                 .query(By.directive(DeliveryRadioSelectorComponent))
                 .triggerEventHandler('changed', newCarrierSelectedPosition);
@@ -527,7 +632,20 @@ describe('AcceptScreenModalComponent', () => {
         describe('and we click on the reject button', () => {
           describe('and we click on the confirm button', () => {
             beforeEach(() => {
+              spyOn(acceptScreenTrackingEventsService, 'trackClickRejectOffer');
               spyOn(modalService, 'open').and.callThrough();
+            });
+
+            it('should ask for tracking event', () => {
+              const rejectButton: HTMLElement = fixture.debugElement.query(By.css(rejectButtonSelector)).nativeElement;
+
+              rejectButton.click();
+              fixture.detectChanges();
+
+              expect(acceptScreenTrackingEventsService.trackClickRejectOffer).toHaveBeenCalledTimes(1);
+              expect(acceptScreenTrackingEventsService.trackClickRejectOffer).toHaveBeenCalledWith(
+                MOCK_CLICK_REJECT_OFFER_EVENT_PROPERTIES_WITH_PO
+              );
             });
 
             describe('and the request is loading', () => {
@@ -633,10 +751,18 @@ describe('AcceptScreenModalComponent', () => {
 
         describe('and we go to the address screen step', () => {
           beforeEach(() => {
+            spyOn(acceptScreenTrackingEventsService, 'trackClickAddEditAddress');
             const addressButton = fixture.debugElement.query(By.css('#addressButton')).nativeElement;
 
             addressButton.click();
             fixture.detectChanges();
+          });
+
+          it('should ask for tracking event', () => {
+            expect(acceptScreenTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledTimes(1);
+            expect(acceptScreenTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledWith(
+              MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_PROPERTIES_WITH_FULL_ADDRESS_AND_PO
+            );
           });
 
           it('should redirect to address screen step', () => {
@@ -734,7 +860,20 @@ describe('AcceptScreenModalComponent', () => {
 
         describe('and we click on the confirm button', () => {
           beforeEach(() => {
+            spyOn(acceptScreenTrackingEventsService, 'trackClickAcceptOffer');
             spyOn(toastService, 'show');
+          });
+
+          it('should ask for tracking event', () => {
+            const acceptButton: HTMLElement = fixture.debugElement.query(By.css(acceptButtonSelector)).nativeElement;
+
+            acceptButton.click();
+            fixture.detectChanges();
+
+            expect(acceptScreenTrackingEventsService.trackClickAcceptOffer).toHaveBeenCalledTimes(1);
+            expect(acceptScreenTrackingEventsService.trackClickAcceptOffer).toHaveBeenCalledWith(
+              MOCK_CLICK_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_PO
+            );
           });
 
           describe('and the request is loading', () => {
@@ -967,7 +1106,7 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         it('should show generic error message', () => {
-          toastErrorShowed(genericErrorTranslation);
+          toastErrorShowed(expiredOrCancelledTransalation);
         });
       });
     });
@@ -1012,7 +1151,7 @@ describe('AcceptScreenModalComponent', () => {
   }
 
   function shouldShowHelpButton(isShowed: boolean): void {
-    const help: DebugElement = fixture.debugElement.query(By.css('#help'));
+    const help: DebugElement = fixture.debugElement.query(By.css(helpButtonSelector));
     if (isShowed) {
       expect(help).toBeTruthy();
     } else {

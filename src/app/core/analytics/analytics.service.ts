@@ -35,7 +35,6 @@ export const COMMON_MPARTICLE_CONFIG = {
 export class AnalyticsService {
   private readonly _mParticleReady$: ReplaySubject<void> = new ReplaySubject<void>();
   constructor(
-    private userService: UserService,
     private deviceService: DeviceService,
     @Inject(MARKET_PROVIDER) private _market: Market,
     @Inject(LOCALE_ID) private _localeId: APP_LOCALE
@@ -57,20 +56,17 @@ export class AnalyticsService {
     this.getMPUser()?.setUserAttribute(key, value);
   }
 
-  public initialize(): void {
-    const loggedUser = this.userService.isLogged;
+  public initializeAnalyticsWithAuthenticatedUser(user: User): Promise<void> {
+    const userIdentities = this.getUserIdentities(user);
+    const mParticleLoggedConfig = this.getMParticleConfig(userIdentities);
 
-    if (loggedUser) {
-      const user = this.userService.user;
-      const userIdentities = this.getUserIdentities(user);
-      const mParticleLoggedConfig = this.getMParticleConfig(userIdentities);
+    return this.initializeMParticleSDK(mParticleLoggedConfig);
+  }
 
-      this.initializeMParticleSDK(mParticleLoggedConfig);
-    } else {
-      const mParticleNotLoggedConfig = this.getMParticleConfig({});
+  public initializeAnalyticsWithUnauthenticatedUser(): Promise<void> {
+    const mParticleNotLoggedConfig = this.getMParticleConfig({});
 
-      this.initializeMParticleSDK(mParticleNotLoggedConfig);
-    }
+    return this.initializeMParticleSDK(mParticleNotLoggedConfig);
   }
 
   public trackEvent<T>(event: AnalyticsEvent<T>): void {
@@ -104,11 +100,15 @@ export class AnalyticsService {
     };
   }
 
-  private initializeMParticleSDK(config: MPConfiguration): void {
+  private initializeMParticleSDK(config: MPConfiguration): Promise<void> {
     appboyKit.register(config);
-    mParticle.init(environment.mParticleKey, config);
-    mParticle.ready(() => {
-      this._mParticleReady$.next();
+
+    return new Promise((resolve) => {
+      mParticle.init(environment.mParticleKey, config);
+      mParticle.ready(() => {
+        this._mParticleReady$.next();
+        resolve();
+      });
     });
   }
 

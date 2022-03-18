@@ -2,11 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { NotificationApiService } from '@api/notification/notification-api.service';
 import { Subscription } from 'rxjs';
-import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 
 @Component({
   selector: 'tsl-inbox-page',
@@ -29,7 +27,6 @@ export class InboxPageComponent implements OnInit, OnDestroy {
 
   constructor(
     public router: Router,
-    public featureFlagService: FeatureFlagService,
     private unreadChatMessagesService: UnreadChatMessagesService,
     private notificationApiService: NotificationApiService
   ) {}

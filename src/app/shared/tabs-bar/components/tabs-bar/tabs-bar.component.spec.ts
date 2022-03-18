@@ -1,9 +1,8 @@
-import { Component, DebugElement, EventEmitter, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TabsBarElement } from '@shared/tabs-bar/interfaces/tabs-bar-element.interface';
 import { TabComponent } from '../tab/tab.component';
-
 import { TabsBarComponent } from './tabs-bar.component';
 
 const MOCK_TABS_BAR_ELEMENTS: TabsBarElement<number>[] = [
