@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
 import { DrawerNavigationService } from '../services/drawer-navigation.service';
