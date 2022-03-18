@@ -29,13 +29,12 @@ export class Cart extends CartBase {
   prepareOrder() {
     const ordersArray: Order[] = [];
     BUMP_TYPES.forEach((type: string) => {
-      const orders: Order[] = this[type].cartItems.map((cartItem: CartItem) => {
-        return {
+      this[type].cartItems.map((cartItem: CartItem) => {
+        ordersArray.push({
           item_id: cartItem.item.id,
           product_id: cartItem.duration.id,
-        };
+        });
       });
-      ordersArray.push(...orders);
     });
     return ordersArray;
   }
@@ -48,7 +47,7 @@ export class Cart extends CartBase {
     this.total = 0;
     this.discountedTotal = 0;
     BUMP_TYPES.forEach((type: string) => {
-      this[type].total = sumBy(this[type].cartItems, (c: CartItem) => +c.duration.market_code);
+      this[type].total = sumBy(this[type].cartItems, (c: CartItem) => (c.isFree ? +0 : +c.duration.market_code));
       this.total += this[type].total;
       this[type].discountedTotal = sumBy(this[type].cartItems, (c: CartItem) => +c.duration.original_market_code || 0);
       this.discountedTotal += this[type].discountedTotal;

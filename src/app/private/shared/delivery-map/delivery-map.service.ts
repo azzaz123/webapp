@@ -7,8 +7,8 @@ import { CarrierOfficeAddressesApiService } from '@api/delivery/me/carrier-offic
 import { Coordinate } from '@core/geolocation/address-response.interface';
 import { GeolocationService } from '@core/geolocation/geolocation.service';
 import { UserService } from '@core/user/user.service';
-import { Observable, ReplaySubject } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { iif, Observable, of, ReplaySubject } from 'rxjs';
+import { map, mergeMap, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '@core/user/user';
 import { LocationWithRadius } from '@api/core/model/location/location';
 import { getRadiusInKm, DEFAULT_VALUE_ZOOM } from '../movable-map/constants/map.constants';
@@ -135,6 +135,9 @@ export class DeliveryMapService {
           latitude: coordinate.latitude,
           longitude: coordinate.longitude,
         };
+      }),
+      mergeMap((location: Location) => {
+        return iif(() => isNaN(location.latitude) || isNaN(location.longitude), this.secondaryLocation$, of(location));
       })
     );
   }

@@ -94,7 +94,7 @@ describe('DeliveryMapService', () => {
 
       beforeEach(() => {
         spyOn(geoLocationService, 'geocode').and.returnValue(of(MOCK_LOCATION));
-        spyOn(userService, 'getLoggedUserInformation');
+        spyOn(userService, 'getLoggedUserInformation').and.returnValue(of(MOCK_LOCATION));
         spyOn(carrierOfficesApiService, 'getCarrierOfficeAddresses').and.returnValue(of([MOCK_CARRIER_OFFICE_INFO]));
 
         service.carrierOffices$.subscribe((offices: CarrierOfficeInfo[]) => (expectedCarrierOffices = offices));
@@ -106,7 +106,7 @@ describe('DeliveryMapService', () => {
 
       it('should request the offices with the full address location', () => {
         expect(geoLocationService.geocode).toHaveBeenCalledTimes(1);
-        expect(userService.getLoggedUserInformation).not.toHaveBeenCalled();
+        expect(userService.getLoggedUserInformation).toHaveBeenCalled();
         expect(carrierOfficesApiService.getCarrierOfficeAddresses).toHaveBeenCalledTimes(1);
         expect(geoLocationService.geocode).toHaveBeenCalledWith(MOCK_FULL_ADDRESS);
         expect(carrierOfficesApiService.getCarrierOfficeAddresses).toHaveBeenCalledWith(
@@ -126,6 +126,94 @@ describe('DeliveryMapService', () => {
       describe('and we get the office markers', () => {
         it('should return the office marker locations', () => {
           expect(expectedLocations).toStrictEqual(MOCK_OFFICE_MARKERS);
+        });
+      });
+    });
+
+    describe('WHEN the address is not correct', () => {
+      describe('AND WHEN the user information has location', () => {
+        let expectedCarrierOffices: CarrierOfficeInfo[];
+        let expectedLocations: Location[];
+        let result: CarrierOfficeInfo[];
+
+        beforeEach(() => {
+          spyOn(geoLocationService, 'geocode').and.returnValue(of({}));
+          spyOn(userService, 'getLoggedUserInformation').and.returnValue(of(MOCK_LOCATION));
+          spyOn(carrierOfficesApiService, 'getCarrierOfficeAddresses').and.returnValue(of([MOCK_CARRIER_OFFICE_INFO]));
+
+          service.carrierOffices$.subscribe((offices: CarrierOfficeInfo[]) => (expectedCarrierOffices = offices));
+          service.officeMarkers$.subscribe((locations: Location[]) => (expectedLocations = locations));
+          service
+            .initializeOffices$(MOCK_FULL_ADDRESS, POST_OFFICE_CARRIER.CORREOS)
+            .subscribe((offices: CarrierOfficeInfo[]) => (result = offices));
+        });
+
+        it('should request the offices with the full address location', () => {
+          expect(geoLocationService.geocode).toHaveBeenCalledTimes(1);
+          expect(userService.getLoggedUserInformation).toHaveBeenCalled();
+          expect(carrierOfficesApiService.getCarrierOfficeAddresses).toHaveBeenCalledTimes(1);
+          expect(geoLocationService.geocode).toHaveBeenCalledWith(MOCK_FULL_ADDRESS);
+          expect(carrierOfficesApiService.getCarrierOfficeAddresses).toHaveBeenCalledWith(
+            MOCK_FALLBACK_LOCATION_WITH_RADIUS,
+            POST_OFFICE_CARRIER.CORREOS
+          );
+        });
+
+        it('should return the carriers info', () => {
+          expect(result).toStrictEqual([MOCK_CARRIER_OFFICE_INFO]);
+        });
+
+        it('should initialize the carrier offices', () => {
+          expect(expectedCarrierOffices).toStrictEqual([MOCK_CARRIER_OFFICE_INFO]);
+        });
+
+        describe('and we get the office markers', () => {
+          it('should return the office marker locations', () => {
+            expect(expectedLocations).toStrictEqual(MOCK_OFFICE_MARKERS);
+          });
+        });
+      });
+
+      describe('AND WHEN the user information does not have location', () => {
+        let expectedCarrierOffices: CarrierOfficeInfo[];
+        let expectedLocations: Location[];
+        let result: CarrierOfficeInfo[];
+
+        beforeEach(() => {
+          spyOn(geoLocationService, 'geocode').and.returnValue(of({}));
+          spyOn(userService, 'getLoggedUserInformation').and.returnValue(of({}));
+          spyOn(carrierOfficesApiService, 'getCarrierOfficeAddresses').and.returnValue(of([MOCK_CARRIER_OFFICE_INFO]));
+
+          service.carrierOffices$.subscribe((offices: CarrierOfficeInfo[]) => (expectedCarrierOffices = offices));
+          service.officeMarkers$.subscribe((locations: Location[]) => (expectedLocations = locations));
+          service
+            .initializeOffices$(MOCK_FULL_ADDRESS, POST_OFFICE_CARRIER.CORREOS)
+            .subscribe((offices: CarrierOfficeInfo[]) => (result = offices));
+        });
+
+        it('should request the offices with the full address location', () => {
+          expect(geoLocationService.geocode).toHaveBeenCalledTimes(1);
+          expect(userService.getLoggedUserInformation).toHaveBeenCalled();
+          expect(carrierOfficesApiService.getCarrierOfficeAddresses).toHaveBeenCalledTimes(1);
+          expect(geoLocationService.geocode).toHaveBeenCalledWith(MOCK_FULL_ADDRESS);
+          expect(carrierOfficesApiService.getCarrierOfficeAddresses).toHaveBeenCalledWith(
+            MOCK_FALLBACK_LOCATION_WITH_RADIUS,
+            POST_OFFICE_CARRIER.CORREOS
+          );
+        });
+
+        it('should return the carriers info', () => {
+          expect(result).toStrictEqual([MOCK_CARRIER_OFFICE_INFO]);
+        });
+
+        it('should initialize the carrier offices', () => {
+          expect(expectedCarrierOffices).toStrictEqual([MOCK_CARRIER_OFFICE_INFO]);
+        });
+
+        describe('and we get the office markers', () => {
+          it('should return the office marker locations', () => {
+            expect(expectedLocations).toStrictEqual(MOCK_OFFICE_MARKERS);
+          });
         });
       });
     });
@@ -292,13 +380,13 @@ describe('DeliveryMapService', () => {
 
       beforeEach(() => {
         spyOn(geoLocationService, 'geocode').and.returnValue(of(MOCK_LOCATION));
-        spyOn(userService, 'getLoggedUserInformation');
+        spyOn(userService, 'getLoggedUserInformation').and.returnValue(of(MOCK_LOCATION));
 
         service.initialCenterLocation$(MOCK_FULL_ADDRESS).subscribe((location: Location) => (expectedLocation = location));
       });
 
       it('should request the location with the default address', () => {
-        expect(userService.getLoggedUserInformation).not.toHaveBeenCalled();
+        expect(userService.getLoggedUserInformation).toHaveBeenCalled();
         expect(geoLocationService.geocode).toHaveBeenCalledTimes(1);
         expect(geoLocationService.geocode).toHaveBeenCalledWith(MOCK_FULL_ADDRESS);
       });

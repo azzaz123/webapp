@@ -7,6 +7,7 @@ import {
   AnalyticsEvent,
   ANALYTICS_EVENT_NAMES,
   ANALYTIC_EVENT_TYPES,
+  ClickBumpItems,
   ReactivateItem,
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
@@ -91,6 +92,82 @@ describe('CatalogItemTrackingEventService', () => {
 
       it('should send click item card event', () => {
         service.trackReactivateItemEvent(item);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
+      });
+    });
+  });
+
+  describe('when items are featured', () => {
+    let event: AnalyticsEvent<ClickBumpItems>;
+    let isPro = false;
+
+    beforeEach(() => {
+      spyOn(service, 'trackClickBumpItems').and.callThrough();
+      spyOn(analyticsService, 'trackEvent');
+    });
+
+    describe('and user is not pro', () => {
+      beforeEach(() => {
+        Object.defineProperty(userService, 'isPro', { value: isPro });
+      });
+
+      it('should send event', () => {
+        event = {
+          name: ANALYTICS_EVENT_NAMES.ClickBumpItems,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            isPro: isPro,
+            itemsSelected: 1,
+            uploadPopUp: false,
+          },
+        };
+        service.trackClickBumpItems(1);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
+      });
+    });
+
+    describe('and user is pro', () => {
+      beforeEach(() => {
+        Object.defineProperty(userService, 'isPro', { value: isPro });
+      });
+
+      it('should send event', () => {
+        event = {
+          name: ANALYTICS_EVENT_NAMES.ClickBumpItems,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            isPro: isPro,
+            itemsSelected: 1,
+            uploadPopUp: false,
+          },
+        };
+        service.trackClickBumpItems(1);
+
+        expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
+      });
+    });
+
+    describe('and is from modal', () => {
+      beforeEach(() => {
+        Object.defineProperty(userService, 'isPro', { value: isPro });
+      });
+
+      it('should send event', () => {
+        event = {
+          name: ANALYTICS_EVENT_NAMES.ClickBumpItems,
+          eventType: ANALYTIC_EVENT_TYPES.Other,
+          attributes: {
+            screenId: SCREEN_IDS.MyCatalog,
+            isPro: isPro,
+            itemsSelected: 1,
+            uploadPopUp: true,
+          },
+        };
+        service.trackClickBumpItems(1, true);
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(event);
       });

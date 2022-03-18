@@ -1,14 +1,25 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { LottieService } from '@core/lottie/lottie.service';
-import { AnimationItem } from 'lottie-web';
-import { BehaviorSubject } from 'rxjs';
+import { AnimationItem, LottiePlayer } from 'lottie-web';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'tsl-lottie',
   templateUrl: './lottie.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LottieComponent implements AfterViewInit, OnDestroy {
+export class LottieComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() src: string;
   @Input() loop = true;
   @ViewChild('lottieContainer') private lottieContainer: ElementRef;
@@ -20,28 +31,48 @@ export class LottieComponent implements AfterViewInit, OnDestroy {
   public error$ = new BehaviorSubject(false);
 
   private animationItem: AnimationItem;
+  private subscriptions: Subscription[] = [];
   constructor(private lottieService: LottieService) {}
 
   ngAfterViewInit(): void {
-    this.lottieService.lottiePlayer$.subscribe((lottiePlayer) => {
-      // Delegate protocol selection to browser
-      const path = this.stripProtocolFromSrcIfExists(this.src);
+    this.subscriptions.push(this.initAnimation().subscribe());
+  }
 
-      this.animationItem = lottiePlayer.loadAnimation({
-        container: this.lottieContainer.nativeElement,
-        loop: this.loop,
-        renderer: 'svg',
-        path,
-      });
+  ngOnChanges(changes: SimpleChanges): void {
+    const { src } = changes;
+    if (src.firstChange) {
+      return;
+    }
 
-      this.animationItem.addEventListener('data_ready', () => this.handleDataReady());
-      this.animationItem.addEventListener('data_failed', () => this.handleDataFailed());
-      this.animationItem.addEventListener('error', () => this.handleError());
-    });
+    this.cancelSubscriptions();
+    this.destroyAnimation();
+
+    this.subscriptions.push(this.initAnimation().subscribe());
   }
 
   ngOnDestroy(): void {
-    this.animationItem?.destroy();
+    this.cancelSubscriptions();
+    this.destroyAnimation();
+  }
+
+  private initAnimation(): Observable<LottiePlayer> {
+    return this.lottieService.lottiePlayer$.pipe(
+      tap((lottiePlayer) => {
+        // Delegate protocol selection to browser
+        const path = this.stripProtocolFromSrcIfExists(this.src);
+
+        this.animationItem = lottiePlayer.loadAnimation({
+          container: this.lottieContainer.nativeElement,
+          loop: this.loop,
+          renderer: 'svg',
+          path,
+        });
+
+        this.animationItem.addEventListener('data_ready', () => this.handleDataReady());
+        this.animationItem.addEventListener('data_failed', () => this.handleDataFailed());
+        this.animationItem.addEventListener('error', () => this.handleError());
+      })
+    );
   }
 
   private stripProtocolFromSrcIfExists(src: string): string {
@@ -61,5 +92,13 @@ export class LottieComponent implements AfterViewInit, OnDestroy {
     this.showLottie$.next(false);
     this.error$.next(true);
     this.loading$.next(false);
+  }
+
+  private cancelSubscriptions(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
+  }
+
+  private destroyAnimation(): void {
+    this.animationItem?.destroy();
   }
 }
