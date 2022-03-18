@@ -4,7 +4,20 @@ import { PublishedItemDto } from '../dtos/published/response/published-item-dto'
 
 export function mapPublishedItemsToLegacyItem(publishedItems: PublishedItemDto[]): Item[] {
   return publishedItems.map(
-    ({ id, title, category_id, images, price, slug, bump, reserved, created_date, modified_date, listing_limit }: PublishedItemDto) => {
+    ({
+      id,
+      title,
+      category_id,
+      images,
+      price,
+      slug,
+      bump,
+      reserved,
+      created_date,
+      modified_date,
+      listing_limit,
+      expired,
+    }: PublishedItemDto) => {
       const mappedImages = mapImageDtosToImages(images);
       const item = new Item(
         id,
@@ -24,7 +37,7 @@ export function mapPublishedItemsToLegacyItem(publishedItems: PublishedItemDto[]
           favorite: false,
           reserved: reserved?.flag,
           banned: false,
-          expired: false,
+          expired: expired?.flag,
           bumped: !!bump?.type,
           bump_type: bump?.type,
           onhold: listing_limit?.exceeded,

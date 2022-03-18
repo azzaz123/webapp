@@ -15,6 +15,7 @@ export const publishedItemFixture: PublishedItemDto = {
   slug: 'slug',
   bump: { type: BumpTypes.COUNTRY },
   reserved: { flag: false },
+  expired: { flag: false },
   created_date: 1638528402247,
   modified_date: 1638528403023,
   listing_limit: { exceeded: false },
