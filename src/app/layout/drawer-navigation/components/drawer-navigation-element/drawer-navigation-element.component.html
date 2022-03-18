@@ -1,0 +1,21 @@
+<ng-container
+    *ngTemplateOutlet="element.external ? externalNavigationElement : internalNavigationElement; context: {element}">
+</ng-container>
+
+<ng-template #externalNavigationElement let-element="element">
+    <a class="DrawerNavigationElement d-flex align-items-center" [href]="element.href" target="_blank">
+        <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
+    </a>
+</ng-template>
+
+<ng-template #internalNavigationElement let-element="element">
+    <a class="DrawerNavigationElement d-flex align-items-center" [routerLink]="[element.href]">
+        <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
+    </a>
+</ng-template>
+
+<ng-template #navigationElementContent let-element="element">
+    <tsl-svg-icon [src]="element.icon" class="mx-2"></tsl-svg-icon>
+    <span class="DrawerNavigationElement__text">{{element.text}}</span>
+    <tsl-svg-icon src="/assets/icons/drawer-navigation/arrow-right.svg" class="ml-auto mr-3"></tsl-svg-icon>
+</ng-template>

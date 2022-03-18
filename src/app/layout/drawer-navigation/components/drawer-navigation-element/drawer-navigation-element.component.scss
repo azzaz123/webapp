@@ -1,0 +1,13 @@
+@import '~style/common';
+
+$element-height: 48px;
+
+.DrawerNavigationElement {
+  background-color: $white;
+  height: $element-height;
+
+  &__text {
+    text-decoration: none;
+    color: $blue-grey-1;
+  }
+}

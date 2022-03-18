@@ -1,28 +1,9 @@
 <nav class="DrawerNavigation">
+    <!--PROFILE-->
     <div class="DrawerNavigation__section mt-2" *ngFor="let section of navigationSections$ | async">
         <h4 class="DrawerNavigation__title mb-2 px-2">{{ section.title }}</h4>
         <ng-container *ngFor="let element of section.elements">
-            <ng-container
-                *ngTemplateOutlet="element.external ? externalNavigationElement : internalNavigationElement; context: {element}">
-            </ng-container>
+            <tsl-drawer-navigation-element [element]="element"></tsl-drawer-navigation-element>
         </ng-container>
     </div>
 </nav>
-
-<ng-template #externalNavigationElement let-element="element">
-    <a class="DrawerNavigation__element d-flex align-items-center" [href]="element.href" target="_blank">
-        <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
-    </a>
-</ng-template>
-
-<ng-template #internalNavigationElement let-element="element">
-    <a class="DrawerNavigation__element d-flex align-items-center" [routerLink]="[element.href]">
-        <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
-    </a>
-</ng-template>
-
-<ng-template #navigationElementContent let-element="element">
-    <tsl-svg-icon [src]="element.icon" class="mx-2"></tsl-svg-icon>
-    <span class="DrawerNavigation__text">{{element.text}}</span>
-    <tsl-svg-icon src="/assets/icons/drawer-navigation/arrow-right.svg" class="ml-auto mr-3"></tsl-svg-icon>
-</ng-template>

@@ -5,9 +5,16 @@ import { DrawerNavigationSecondaryPageComponent } from './components/drawer-navi
 import { DrawerNavigationService } from './services/drawer-navigation.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { RouterModule } from '@angular/router';
+import { DrawerNavigationElementComponent } from './components/drawer-navigation-element/drawer-navigation-element.component';
+import { DrawerNavigationProfileElementComponent } from './components/drawer-navigation-profile-element/drawer-navigation-profile-element.component';
 
 @NgModule({
-  declarations: [DrawerNavigationComponent, DrawerNavigationSecondaryPageComponent],
+  declarations: [
+    DrawerNavigationComponent,
+    DrawerNavigationSecondaryPageComponent,
+    DrawerNavigationElementComponent,
+    DrawerNavigationProfileElementComponent,
+  ],
   exports: [DrawerNavigationComponent, DrawerNavigationSecondaryPageComponent],
   imports: [CommonModule, SvgIconModule, RouterModule],
   providers: [DrawerNavigationService],
