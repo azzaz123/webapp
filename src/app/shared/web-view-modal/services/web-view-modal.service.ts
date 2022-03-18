@@ -11,16 +11,13 @@ export class WebViewModalService {
 
   constructor(@Inject(WINDOW_TOKEN) private window: Window) {}
 
-  public open(url: string): Observable<void> {
-    this.childWindowRef = this.openNewWindowAsModal(url);
+  public open(url: string, modalWidth: number, modalHeight: number): Observable<void> {
+    this.childWindowRef = this.openNewWindowAsModal(url, modalWidth, modalHeight);
     return this.checkWindowRefClosed();
   }
 
   // TODO: This will be replaced in the future by opening a component as a modal with an iframe inside ("WebViewModalComponent", coming soon tm)
-  private openNewWindowAsModal(url: string): Window {
-    const modalWidth: number = 375;
-    const modalHeight: number = 640;
-
+  private openNewWindowAsModal(url: string, modalWidth: number, modalHeight: number): Window {
     const dualScreenLeft = this.window.screenLeft !== undefined ? this.window.screenLeft : this.window.screenX;
     const dualScreenTop = this.window.screenTop !== undefined ? this.window.screenTop : this.window.screenY;
 
