@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DrawerNavigationProfileElement, DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
 import { DrawerNavigationService } from '../services/drawer-navigation.service';
@@ -7,6 +7,7 @@ import { DrawerNavigationService } from '../services/drawer-navigation.service';
   selector: 'tsl-drawer-navigation',
   templateUrl: './drawer-navigation.component.html',
   styleUrls: ['./drawer-navigation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DrawerNavigationComponent {
   public readonly navigationSections$: Observable<DrawerNavigationSection[]> = this.drawerNavigationService.navigationSections$;
