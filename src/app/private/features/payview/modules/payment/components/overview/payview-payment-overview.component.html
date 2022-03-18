@@ -1,0 +1,16 @@
+<div class="PayviewPayment d-flex w-100 flex-column" *ngIf="!!methods">
+  <div class="container">
+    <div class="PayviewPayment__content p-1">
+      <div class="PayviewPayment__header pb-3">
+        <tsl-payview-payment-header></tsl-payview-payment-header>
+      </div>
+      <div class="PayviewPayment__body" *ngIf="showPaymentMethods">
+        <tsl-payview-payment-methods
+          [card]="card"
+          [defaultMethod]="defaultPaymentMethod"
+          [methods]="paymentMethods"
+        ></tsl-payview-payment-methods>
+      </div>
+    </div>
+  </div>
+</div>
