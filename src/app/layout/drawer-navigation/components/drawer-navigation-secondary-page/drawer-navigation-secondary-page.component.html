@@ -1,5 +1,5 @@
 <nav>
-    <div *ngFor="let element of navigationElements$ | async">
-        {{element.text}}
-    </div>
+    <ng-container *ngFor="let element of navigationElements$ | async">
+        <tsl-drawer-navigation-element [element]="element"></tsl-drawer-navigation-element>
+    </ng-container>
 </nav>
