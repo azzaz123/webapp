@@ -16,7 +16,7 @@
 </ng-template>
 
 <ng-template #internalNavigationElement let-element="element">
-    <a class="DrawerNavigation__element d-flex align-items-center" [routerLink]="element.href">
+    <a class="DrawerNavigation__element d-flex align-items-center" [routerLink]="[element.href]">
         <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
     </a>
 </ng-template>

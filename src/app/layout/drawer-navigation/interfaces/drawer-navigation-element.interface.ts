@@ -14,7 +14,7 @@ export interface DrawerNavigationElement extends NavigationElement {
 
 export interface DrawerNavigationSection {
   title: string;
-  elements: DrawerNavigationElement[] | DrawerNavigationProfileElement;
+  elements: DrawerNavigationElement[];
 }
 
 export interface DrawerNavigationProfileElement extends DrawerNavigationElement {
