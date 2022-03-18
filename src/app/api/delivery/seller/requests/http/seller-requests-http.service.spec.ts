@@ -11,11 +11,13 @@ import {
 
 import { SellerRequestsHttpService } from './seller-requests-http.service';
 import { APP_VERSION } from '@environments/version';
+import { UuidService } from '@core/uuid/uuid.service';
 
 describe('SellerRequestsHttpService', () => {
   const MOCK_SELLER_REQUEST_ID: string = '23203821337';
   const MOCK_ITEM_HASH: string = 'dqjwm31nkezo';
   const MOCK_BUYER_HASH: string = 'mxzod8nyv4j9';
+  const MOCK_UUID: string = '269e90fa-6a24-4909-af7b-100ce1e4a172';
 
   let service: SellerRequestsHttpService;
   let httpMock: HttpTestingController;
@@ -23,7 +25,7 @@ describe('SellerRequestsHttpService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [SellerRequestsHttpService],
+      providers: [SellerRequestsHttpService, { provide: UuidService, useValue: { getUUID: () => MOCK_UUID } }],
     });
     service = TestBed.inject(SellerRequestsHttpService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -91,7 +93,7 @@ describe('SellerRequestsHttpService', () => {
     });
 
     it('should ask the server with the transaction id', () => {
-      expect(acceptRequest.request.body).toStrictEqual({ transaction_id: MOCK_SELLER_REQUEST_ID });
+      expect(acceptRequest.request.body).toStrictEqual({ transaction_id: MOCK_UUID });
     });
 
     it('should have the App version header', () => {
@@ -113,7 +115,7 @@ describe('SellerRequestsHttpService', () => {
     });
 
     it('should ask the server with the transaction id', () => {
-      expect(acceptRequest.request.body).toStrictEqual({ transaction_id: MOCK_SELLER_REQUEST_ID });
+      expect(acceptRequest.request.body).toStrictEqual({ transaction_id: MOCK_UUID });
     });
 
     it('should have the App version header', () => {

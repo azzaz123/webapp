@@ -57,6 +57,7 @@ import {
 
 describe('AcceptScreenModalComponent', () => {
   const genericErrorTranslation: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
+  const expiredOrCancelledTransalation: string = $localize`:@@accept_view_seller_all_all_snackbar_expired_or_cancelled_purchase:The purchase has expired or the buyer has cancelled it. Talk to them to try again.`;
   const acceptScreenPropertiesSubjectMock: BehaviorSubject<AcceptScreenProperties> = new BehaviorSubject(null);
   const carrierSelectedIndexSubjectMock: BehaviorSubject<number> = new BehaviorSubject(1);
   const countriesAsOptionsAndDefaultSubject: ReplaySubject<CountryOptionsAndDefault> = new ReplaySubject(1);
@@ -1105,7 +1106,7 @@ describe('AcceptScreenModalComponent', () => {
         });
 
         it('should show generic error message', () => {
-          toastErrorShowed(genericErrorTranslation);
+          toastErrorShowed(expiredOrCancelledTransalation);
         });
       });
     });
