@@ -44,7 +44,7 @@ export class ChatTrackingEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public saveItemPrice(attributes: SaveItemPrice): void {
+  public trackSaveItemPrice(attributes: SaveItemPrice): void {
     const event: AnalyticsEvent<SaveItemPrice> = {
       name: ANALYTICS_EVENT_NAMES.SaveItemPrice,
       eventType: ANALYTIC_EVENT_TYPES.UserPreference,

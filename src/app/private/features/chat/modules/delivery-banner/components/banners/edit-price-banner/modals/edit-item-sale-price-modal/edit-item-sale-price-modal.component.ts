@@ -135,13 +135,8 @@ export class EditItemSalePriceModalComponent implements OnInit {
 
       this.generateRequestToApi().subscribe(
         () => {
-          this.chatTrackingEventsService.saveItemPrice({
-            itemId: this.item.id,
-            categoryId: this.item.categoryId,
-            itemPrice: this.item.price.amount,
-            newItemPrice: this.newPriceFormControl.value,
-            screenId: SCREEN_IDS.Chat,
-          });
+          this.trackSaveItemPrice();
+
           this.closeModal();
           this.updateItemPriceAmountByReference();
         },
@@ -171,5 +166,15 @@ export class EditItemSalePriceModalComponent implements OnInit {
     const newPrice: Money = this.newPriceFromForm;
     const { amount } = newPrice;
     this.item.price.amount = amount.total;
+  }
+
+  private trackSaveItemPrice(): void {
+    this.chatTrackingEventsService.trackSaveItemPrice({
+      itemId: this.item.id,
+      categoryId: this.item.categoryId,
+      itemPrice: this.item.price.amount,
+      newItemPrice: this.newPriceFormControl.value,
+      screenId: SCREEN_IDS.Chat,
+    });
   }
 }
