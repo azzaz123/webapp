@@ -1,5 +1,4 @@
 export interface PaymentsClientBrowserInfo {
-  acceptHeader: string;
   isJavaEnabled: boolean;
   isJavaScriptEnabled: boolean;
   language: string;
