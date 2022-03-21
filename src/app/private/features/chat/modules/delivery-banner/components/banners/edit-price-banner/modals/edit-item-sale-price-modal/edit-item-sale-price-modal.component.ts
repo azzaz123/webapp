@@ -4,8 +4,10 @@ import { mapCurrencyCodeToCurrency, mapNumberAndCurrencyCodeToMoney } from '@api
 import { Currency, CurrencyCode, CurrencySymbol } from '@api/core/model/currency.interface';
 import { Money } from '@api/core/model/money.interface';
 import { ItemSalePriceApiService } from '@api/items/sale_price';
+import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxItem } from '@private/features/chat/core/model';
+import { DeliveryBannerTrackingEventsService } from '@private/features/chat/modules/delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -39,7 +41,8 @@ export class EditItemSalePriceModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private activeModal: NgbActiveModal,
-    private itemSalePriceApiService: ItemSalePriceApiService
+    private itemSalePriceApiService: ItemSalePriceApiService,
+    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
   ) {}
 
   ngOnInit(): void {
@@ -129,7 +132,7 @@ export class EditItemSalePriceModalComponent implements OnInit {
     const isValidForm = this.newItemSalePriceForm.valid;
     if (isValidForm) {
       this.loading = true;
-
+      this.trackSaveItemPrice();
       this.generateRequestToApi().subscribe(
         () => {
           this.closeModal();
@@ -161,5 +164,15 @@ export class EditItemSalePriceModalComponent implements OnInit {
     const newPrice: Money = this.newPriceFromForm;
     const { amount } = newPrice;
     this.item.price.amount = amount.total;
+  }
+
+  private trackSaveItemPrice(): void {
+    this.deliveryBannerTrackingEventsService.trackSaveItemPrice({
+      itemId: this.item.id,
+      categoryId: this.item.categoryId,
+      itemPrice: this.item.price.amount,
+      newItemPrice: this.newPriceFormControl.value,
+      screenId: SCREEN_IDS.Chat,
+    });
   }
 }
