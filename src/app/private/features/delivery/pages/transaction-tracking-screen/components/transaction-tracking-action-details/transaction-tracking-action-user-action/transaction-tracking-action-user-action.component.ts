@@ -7,7 +7,6 @@ import { TransactionTrackingScreenTrackingEventsService } from '@private/feature
 import { ActionNameAnalytics } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/action-name-analytics-type';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DELIVERY_PATHS, DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
-import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
@@ -25,8 +24,7 @@ export class TransactionTrackingActionUserActionComponent implements OnInit {
     private errorsService: ErrorsService,
     private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService,
     private route: ActivatedRoute,
-    private router: Router,
-    private storeService: TransactionTrackingScreenStoreService
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -37,7 +35,6 @@ export class TransactionTrackingActionUserActionComponent implements OnInit {
     this.trackEvent();
     this.transactionTrackingService.sendUserAction(this.userAction.transactionId, this.userAction.name).subscribe(
       () => {
-        this.storeService.refresh(this.requestId);
         this.redirectToTTSIfInstructions();
       },
       () => {
