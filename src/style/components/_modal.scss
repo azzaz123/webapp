@@ -193,7 +193,7 @@ $modal-border-radius: 0.3rem;
 
 .modal.delivery {
   .modal-dialog {
-    height: 630px;
+    align-self: center;
     width: 80%;
     max-width: 720px;
 
@@ -206,7 +206,6 @@ $modal-border-radius: 0.3rem;
   .modal-content {
     overflow: auto;
     max-width: inherit;
-    height: inherit;
   }
 }
 
