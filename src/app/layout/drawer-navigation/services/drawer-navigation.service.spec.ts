@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { UserService } from '@core/user/user.service';
-import { IMAGE, MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constants';
 import { YOU_PATHS } from '@private/features/you/constants/you-routing.constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -22,7 +22,6 @@ describe('DrawerNavigationService', () => {
           useValue: {
             user$: of(MOCK_USER),
             getStats: () => of(MOCK_USER_STATS),
-            getUserCover: () => of(IMAGE),
           },
         },
       ],
@@ -50,7 +49,7 @@ describe('DrawerNavigationService', () => {
           alternativeText: MOCK_USER.microName,
           reviews: MOCK_USER_STATS.ratings.reviews,
           reviews_count: MOCK_USER_STATS.counters.reviews,
-          avatar: IMAGE?.urls_by_size.medium,
+          avatar: MOCK_USER.image.urls_by_size.medium,
           href: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.INFO}`,
           external: false,
         });

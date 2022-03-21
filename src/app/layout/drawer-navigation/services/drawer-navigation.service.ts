@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { User } from '@core/user/user';
-import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
 import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constants';
@@ -23,8 +22,8 @@ export class DrawerNavigationService {
   }
 
   get profileNavigationElement$(): Observable<DrawerNavigationProfileElement> {
-    return combineLatest([this.userService.user$, this.userService.getStats(), this.userService.getUserCover()]).pipe(
-      map(([user, stats, cover]) => this.mapProfileNavigationElement(user, stats, cover))
+    return combineLatest([this.userService.user$, this.userService.getStats()]).pipe(
+      map(([user, stats]) => this.mapProfileNavigationElement(user, stats))
     );
   }
 
@@ -48,14 +47,14 @@ export class DrawerNavigationService {
     }, []);
   }
 
-  private mapProfileNavigationElement(user: User, stats: UserStats, cover: Image): DrawerNavigationProfileElement {
+  private mapProfileNavigationElement(user: User, stats: UserStats): DrawerNavigationProfileElement {
     return {
       professional: user.featured,
       text: user.microName,
       alternativeText: user.microName,
       reviews: stats.ratings.reviews,
       reviews_count: stats.counters.reviews,
-      avatar: cover?.urls_by_size.medium,
+      avatar: user.image?.urls_by_size.medium,
       href: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.INFO}`,
       external: false,
     };
