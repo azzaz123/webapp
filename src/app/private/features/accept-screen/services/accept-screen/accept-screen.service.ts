@@ -22,6 +22,7 @@ import { ACCEPT_SCREEN_STEPS } from '../../constants/accept-screen-steps';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
 import { CarrierDropOffModeRequest } from '@api/core/model/delivery/carrier-drop-off-mode';
 import { SELLER_REQUEST_STATUS } from '@api/core/model/delivery/seller-requests/status/seller-request-status.enum';
+import { SellerRequestBuyer } from '@api/core/model/delivery/seller-requests/seller-request-buyer.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +45,7 @@ export class AcceptScreenService {
       concatMap((request: SellerRequest) => {
         return forkJoin([
           this.getItem(request.itemId),
-          this.getBuyer(request.buyer.id),
+          this.getBuyer(request.buyer),
           this.getSeller(),
           this.getCarrierDropOffModeRequest(requestId, dropOffSelectedByUser),
         ]).pipe(
@@ -80,8 +81,8 @@ export class AcceptScreenService {
       .pipe(map((sellerRequest: SellerRequest) => this.isSellerRequestStatusPending(sellerRequest)));
   }
 
-  private getBuyer(userId: string): Observable<AcceptScreenBuyer> {
-    return this.userService.get(userId).pipe(map(mapUserToAcceptScreenBuyer));
+  private getBuyer(buyer: SellerRequestBuyer): Observable<AcceptScreenBuyer> {
+    return this.userService.get(buyer.id).pipe(map((user: User) => mapUserToAcceptScreenBuyer(user, buyer.address.country)));
   }
 
   private getSeller(): Observable<AcceptScreenSeller> {

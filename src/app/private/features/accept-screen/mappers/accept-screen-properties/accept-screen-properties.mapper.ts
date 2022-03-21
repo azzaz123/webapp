@@ -51,14 +51,14 @@ export function mapUserToAcceptScreenSeller(seller: User, address: DeliveryAddre
   };
 }
 
-export const mapUserToAcceptScreenBuyer: ToDomainMapper<User, AcceptScreenBuyer> = (buyer: User): AcceptScreenBuyer => {
+export function mapUserToAcceptScreenBuyer(buyer: User, buyerCountryIsoCode: string): AcceptScreenBuyer {
   return {
     id: buyer.id,
     imageUrl: mapUserToImageUrl(buyer),
     name: buyer.microName,
-    countryISOCode: buyer.location.country_code,
+    countryISOCode: buyerCountryIsoCode,
   };
-};
+}
 
 export function mapCarrierDropOffModeToAcceptScreenCarriers(
   input: CarrierDropOffModeRequest,
