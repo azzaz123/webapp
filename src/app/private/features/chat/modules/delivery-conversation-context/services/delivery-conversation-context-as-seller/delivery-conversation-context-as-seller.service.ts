@@ -23,6 +23,8 @@ import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants'
 import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { ChatTrackingEventsService } from '@private/features/chat/services/chat-tracking-events/chat-tracking-events.service';
+import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 
 @Injectable()
 export class DeliveryConversationContextAsSellerService {
@@ -33,7 +35,8 @@ export class DeliveryConversationContextAsSellerService {
     private modalService: NgbModal,
     private featureFlagService: FeatureFlagService,
     private sellerRequestsApiService: SellerRequestsApiService,
-    private deliveryItemDetailsApiService: DeliveryItemDetailsApiService
+    private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
+    private chatTrackingEventsService: ChatTrackingEventsService
   ) {}
 
   public getBannerPropertiesAsSeller(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -62,6 +65,12 @@ export class DeliveryConversationContextAsSellerService {
     }
 
     if (action === DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING) {
+      this.chatTrackingEventsService.trackClickActivateShipping({
+        itemId: conversation.item.id,
+        categoryId: conversation.item.categoryId,
+        screenId: SCREEN_IDS.Chat,
+        itemPrice: conversation.item.price.amount,
+      });
       return this.navigateToEditItemShippingToggle(conversation);
     }
 
