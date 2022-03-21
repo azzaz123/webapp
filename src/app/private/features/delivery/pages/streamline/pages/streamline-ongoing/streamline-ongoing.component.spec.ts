@@ -24,11 +24,9 @@ import { StreamlineOngoingComponent } from '@private/features/delivery/pages/str
 import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
-import { ReplaySubject, throwError, of, Observable } from 'rxjs';
+import { ReplaySubject, throwError } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 
 const PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID: string = `${PATH_TO_ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
 
@@ -201,14 +199,6 @@ describe('WHEN there is an error retrieving the shipping list', () => {
             },
             getItems: () => {},
             reset: () => {},
-          },
-        },
-        {
-          provide: FeatureFlagService,
-          useValue: {
-            getLocalFlag(_flag: FEATURE_FLAGS_ENUM.DELIVERY): Observable<boolean> {
-              return of(false);
-            },
           },
         },
         { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
