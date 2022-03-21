@@ -7,9 +7,11 @@ import { mapNumberAndCurrencyCodeToMoney } from '@api/core/mappers';
 import { CurrencyCode } from '@api/core/model/currency.interface';
 import { Money } from '@api/core/model/money.interface';
 import { ItemSalePriceApiService } from '@api/items/sale_price';
+import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { MOCK_INBOX_CONVERSATION_AS_SELLER } from '@fixtures/chat';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxItem } from '@private/features/chat/core/model';
+import { ChatTrackingEventsService } from '@private/features/chat/services/chat-tracking-events/chat-tracking-events.service';
 import { ButtonComponent } from '@shared/button/button.component';
 import { of, throwError } from 'rxjs';
 
@@ -20,6 +22,7 @@ describe('EditItemSalePriceModalComponent', () => {
   let fixture: ComponentFixture<EditItemSalePriceModalComponent>;
   let activeModal: NgbActiveModal;
   let itemSalePriceApiService: ItemSalePriceApiService;
+  let chatTrackingEventsService: ChatTrackingEventsService;
   let submitButtonElement: DebugElement;
   let spyOnHandleSubmit: jasmine.Spy;
   let spyOnItemPriceUpdateApi: jest.SpyInstance;
@@ -38,6 +41,12 @@ describe('EditItemSalePriceModalComponent', () => {
         FormBuilder,
         { provide: NgbActiveModal, useValue: { close: () => {} } },
         { provide: ItemSalePriceApiService, useValue: { update: () => of(null) } },
+        {
+          provide: ChatTrackingEventsService,
+          useValue: {
+            trackSaveItemPrice() {},
+          },
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -48,6 +57,7 @@ describe('EditItemSalePriceModalComponent', () => {
     cd = fixture.debugElement.injector.get<ChangeDetectorRef>(ChangeDetectorRef);
     activeModal = TestBed.inject(NgbActiveModal);
     itemSalePriceApiService = TestBed.inject(ItemSalePriceApiService);
+    chatTrackingEventsService = TestBed.inject(ChatTrackingEventsService);
     component = fixture.componentInstance;
     component.item = MOCK_CONVERSATION_ITEM;
     fixture.detectChanges();
@@ -74,7 +84,11 @@ describe('EditItemSalePriceModalComponent', () => {
   });
 
   describe('when user inputs a price below the minimum', () => {
-    beforeEach(() => modifyPriceInput(0.25));
+    beforeEach(() => {
+      spyOn(chatTrackingEventsService, 'trackSaveItemPrice');
+
+      modifyPriceInput(0.25);
+    });
 
     describe('and when user submits the form', () => {
       beforeEach(() => submitForm());
@@ -100,11 +114,18 @@ describe('EditItemSalePriceModalComponent', () => {
       it('should NOT ask edit item price to server', () => {
         expect(itemSalePriceApiService.update).not.toHaveBeenCalled();
       });
+
+      it('should NOT track the event', () => {
+        expect(chatTrackingEventsService.trackSaveItemPrice).not.toHaveBeenCalled();
+      });
     });
   });
 
   describe('when user inputs a price over the maximum', () => {
-    beforeEach(() => modifyPriceInput(288288));
+    beforeEach(() => {
+      spyOn(chatTrackingEventsService, 'trackSaveItemPrice');
+      modifyPriceInput(288288);
+    });
 
     describe('and when user submits the form', () => {
       beforeEach(() => submitForm());
@@ -122,6 +143,10 @@ describe('EditItemSalePriceModalComponent', () => {
       it('should NOT ask edit item price to server', () => {
         expect(itemSalePriceApiService.update).not.toHaveBeenCalled();
       });
+
+      it('should NOT track the event', () => {
+        expect(chatTrackingEventsService.trackSaveItemPrice).not.toHaveBeenCalled();
+      });
     });
   });
 
@@ -133,6 +158,7 @@ describe('EditItemSalePriceModalComponent', () => {
 
     describe('and when user submits the form', () => {
       beforeEach(() => {
+        spyOn(chatTrackingEventsService, 'trackSaveItemPrice');
         spyOnActiveModalClose = spyOn(activeModal, 'close');
         submitForm();
       });
@@ -154,6 +180,17 @@ describe('EditItemSalePriceModalComponent', () => {
         expect(JSON.stringify(lastCallToItemPriceUpdateApi)).toEqual(
           JSON.stringify([MOCK_INBOX_CONVERSATION_AS_SELLER.item.id, expectedMoney])
         );
+      });
+
+      it('should track the event', () => {
+        expect(chatTrackingEventsService.trackSaveItemPrice).toHaveBeenCalledTimes(1);
+        expect(chatTrackingEventsService.trackSaveItemPrice).toHaveBeenCalledWith({
+          itemId: MOCK_CONVERSATION_ITEM.id,
+          categoryId: MOCK_CONVERSATION_ITEM.categoryId,
+          itemPrice: MOCK_CONVERSATION_ITEM.price.amount,
+          newItemPrice: MOCK_VALID_INPUT,
+          screenId: SCREEN_IDS.Chat,
+        });
       });
 
       describe('and when server responses with valid answer', () => {

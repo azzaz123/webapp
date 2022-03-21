@@ -132,10 +132,9 @@ export class EditItemSalePriceModalComponent implements OnInit {
     const isValidForm = this.newItemSalePriceForm.valid;
     if (isValidForm) {
       this.loading = true;
-
+      this.trackSaveItemPrice();
       this.generateRequestToApi().subscribe(
         () => {
-          this.trackSaveItemPrice();
           this.closeModal();
           this.updateItemPriceAmountByReference();
         },
