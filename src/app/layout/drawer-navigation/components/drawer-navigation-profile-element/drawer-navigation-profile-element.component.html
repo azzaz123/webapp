@@ -1,3 +1,11 @@
-<a class="DrawerNavigationProfileElement d-flex" [routerLink]="element.href">
-    <h3>{{ element.text }}</h3>
+<a *ngIf="element" class="DrawerNavigationProfileElement d-flex align-items-center px-3" [routerLink]="element.href">
+    <tsl-user-avatar class="mr-3" [imageUrl]="element.avatar" [size]="80"></tsl-user-avatar>
+    <div class="DrawerNavigationProfileElement__user d-flex flex-column">
+        <h3 class="DrawerNavigationProfileElement__username text-truncate">{{ element.text }}</h3>
+        <div class="d-flex align-items-center">
+            <tsl-stars [stars]="element.reviews"></tsl-stars>
+            <span>({{ element.reviews_count }})</span>
+        </div>
+    </div>
+    <tsl-svg-icon src="/assets/icons/drawer-navigation/arrow-right.svg" class="ml-auto"></tsl-svg-icon>
 </a>

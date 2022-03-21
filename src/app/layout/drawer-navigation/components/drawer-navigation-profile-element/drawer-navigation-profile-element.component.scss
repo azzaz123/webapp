@@ -3,5 +3,13 @@
 .DrawerNavigationProfileElement {
   height: 128px;
   background-color: $white;
-  padding: $spacer * 2;
+  color: $blue-grey-1;
+
+  &__user {
+    min-width: 0;
+  }
+
+  &__username {
+    font-size: $font-size-lll;
+  }
 }

@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { User } from '@core/user/user';
+import { Image } from '@core/user/user-response.interface';
+import { UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,19 +21,8 @@ export class DrawerNavigationService {
   }
 
   get profileNavigationElement$(): Observable<DrawerNavigationProfileElement> {
-    return combineLatest([this.userService.user$]).pipe(
-      map(([user]) => {
-        return {
-          professional: true,
-          text: user.microName,
-          alternativeText: user.microName,
-          reviews: 100,
-          reviews_count: 30,
-          avatar: '',
-          href: '/profile/info',
-          external: false,
-        };
-      })
+    return combineLatest([this.userService.user$, this.userService.getStats(), this.userService.getUserCover()]).pipe(
+      map(([user, stats, cover]) => this.mapProfileNavigationElement(user, stats, cover))
     );
   }
 
@@ -52,5 +44,18 @@ export class DrawerNavigationService {
     return sections.reduce((acc, section) => {
       return section.elements.find((element) => element.href === route)?.children ?? acc;
     }, []);
+  }
+
+  private mapProfileNavigationElement(user: User, stats: UserStats, cover: Image): DrawerNavigationProfileElement {
+    return {
+      professional: user.featured,
+      text: user.microName,
+      alternativeText: user.microName,
+      reviews: stats.ratings.reviews,
+      reviews_count: stats.counters.reviews,
+      avatar: cover?.urls_by_size.medium,
+      href: '/profile/info',
+      external: false,
+    };
   }
 }
