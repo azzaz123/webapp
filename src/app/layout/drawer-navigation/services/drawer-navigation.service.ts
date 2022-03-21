@@ -3,6 +3,8 @@ import { User } from '@core/user/user';
 import { Image } from '@core/user/user-response.interface';
 import { UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
+import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DRAWER_NAVIGATION_SECTIONS_COLLECTION } from '../constants/drawer-navigation-sections';
@@ -54,7 +56,7 @@ export class DrawerNavigationService {
       reviews: stats.ratings.reviews,
       reviews_count: stats.counters.reviews,
       avatar: cover?.urls_by_size.medium,
-      href: '/profile/info',
+      href: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.INFO}`,
       external: false,
     };
   }

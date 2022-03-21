@@ -12,10 +12,10 @@ export class DrawerNavigationChildPageComponent {
   public readonly navigationElements$ = this.drawerNavigationService.getChildNavigationElements(this.routeUrl);
   public readonly navigationTitle$ = this.drawerNavigationService.getChildNavigationTitle(this.routeUrl);
 
-  constructor(private route: Router, private drawerNavigationService: DrawerNavigationService) {}
+  constructor(private router: Router, private drawerNavigationService: DrawerNavigationService) {}
 
   private get routeUrl(): string {
-    const url = this.route.url;
+    const url = this.router.url;
 
     return url.split('/').pop();
   }

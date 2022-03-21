@@ -2,11 +2,11 @@
     <a class="DrawerNavigationChildPage__back position-absolute" routerLink="..">
         <tsl-svg-icon src="/assets/icons/drawer-navigation/back-arrow.svg"></tsl-svg-icon>
     </a>
-    {{ navigationTitle$ | async }}
+    <span class="DrawerNavigationChildPage__title">{{ navigationTitle$ | async }}</span>
 </div>
 
 <nav>
-    <ng-container *ngFor="let element of navigationElements$ | async">
+    <ng-container *ngFor="let element of navigationElements$ | async">
         <tsl-drawer-navigation-element [element]="element"></tsl-drawer-navigation-element>
     </ng-container>
 </nav>
