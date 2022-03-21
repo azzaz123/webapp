@@ -80,12 +80,13 @@ export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SEC
             external: false,
             href: `/${PRIVATE_PATHS.PROFILE}/${PRIVATE_PATHS.NOTIFICATIONS}`,
           },
-          {
-            text: 'Cerrar sesión',
-            alternativeText: 'Cerrar sesión',
-            external: false,
-            href: '',
-          },
+          // TODO: Uncomment when /logout is available
+          // {
+          //   text: 'Cerrar sesión',
+          //   alternativeText: 'Cerrar sesión',
+          //   external: false,
+          //   href: '/logout',
+          // },
         ],
       },
     ],
