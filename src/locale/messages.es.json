@@ -219,7 +219,7 @@
     "web_user_edited": "Tus datos se han editado correctamente",
     "address_view_all_users_snackbar_save_success": "La dirección se ha guardado correctamente. ¡Vamos!",
     "address_view_all_users_snackbar_edit_success": "La dirección se ha editado correctamente. ¡Perfecto!",
-    "address_view_all_users_snackbar_remove_success": "La direcci��n se ha eliminado correctamente.",
+    "address_view_all_users_snackbar_remove_success": "La dirección se ha eliminado correctamente.",
     "address_view_all_users_snackbar_generic_save_error": "Disculpa, algo ha salido mal. Vuelve a intentarlo. ",
     "address_view_all_users_snackbar_missing_info_error": "Los datos que faltan son necesarios para guardar.",
     "address_view_all_users_form_textfield_postalcode_not_exist_inline_error": "Este código postal no pertenece al país en el que estás",
