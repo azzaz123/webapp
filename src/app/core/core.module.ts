@@ -10,6 +10,7 @@ import { I18nService } from './i18n/i18n.service';
 import { PaymentService } from './payments/payment.service';
 import { DevelopmentGuard } from './user/development.guard';
 import { LoggedGuard } from './user/logged.guard';
+import { MobileOnlyGuard } from './guards/mobile-only.guard';
 import { SocialShareService } from './social-share/social-share.service';
 import { AnalyticsService } from './analytics/analytics.service';
 import { DeviceService } from './device/device.service';
@@ -55,6 +56,7 @@ import { NotificationApiModule } from '@api/notification/notification-api.module
   providers: [
     LoggedGuard,
     DevelopmentGuard,
+    MobileOnlyGuard,
     EventService,
     I18nService,
     AccessTokenService,
