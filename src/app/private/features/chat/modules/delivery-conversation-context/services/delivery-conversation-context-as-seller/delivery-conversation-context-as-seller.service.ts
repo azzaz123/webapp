@@ -88,14 +88,8 @@ export class DeliveryConversationContextAsSellerService {
   }
 
   private navigateToAcceptScreen(requestId: string): void {
-    this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((enabled) => {
-      const isDisabled: boolean = !enabled;
-      if (isDisabled) {
-        return this.openAwarenessModal();
-      }
-      const route: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
-      this.router.navigate([route]);
-    });
+    const route: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
+    this.router.navigate([route]);
   }
 
   private navigateToEditItemShippingToggle(conversation: InboxConversation): void {
