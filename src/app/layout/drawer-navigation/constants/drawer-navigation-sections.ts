@@ -1,3 +1,8 @@
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
+import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constants';
+import { YOU_PATHS } from '@private/features/you/constants/you-routing.constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DrawerNavigationSection, DRAWER_NAVIGATION_SECTIONS } from '../interfaces/drawer-navigation-element.interface';
 
 const ICONS_FOLDER = '/assets/icons/drawer-navigation';
@@ -11,7 +16,7 @@ export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SEC
         alternativeText: $localize`:@@you_menu_items_label:Items`,
         icon: `${ICONS_FOLDER}/items.svg`,
         external: false,
-        href: '/catalog/list',
+        href: `/${PRIVATE_PATHS.CATALOG}`,
       },
     ],
   },
@@ -23,14 +28,14 @@ export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SEC
         alternativeText: $localize`:@@you_menu_shipping_label:Shipping`,
         icon: `${ICONS_FOLDER}/shipping.svg`,
         external: false,
-        href: '/delivery',
+        href: `/${PRIVATE_PATHS.DELIVERY}`,
       },
       {
         text: $localize`:@@you_menu_wallet_label:Wallet`,
         alternativeText: $localize`:@@you_menu_wallet_label:Wallet`,
         icon: `${ICONS_FOLDER}/wallet.svg`,
         external: false,
-        href: '/wallet',
+        href: `/${PRIVATE_PATHS.WALLET}`,
       },
     ],
   },
@@ -42,45 +47,44 @@ export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SEC
         alternativeText: $localize`:@@you_menu_become_pro_label:Became a PRO`,
         icon: `${ICONS_FOLDER}/pros.svg`,
         external: false,
-        href: '/pro-manager/subscriptions',
+        href: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
       },
       {
         text: $localize`:@@you_menu_settings_label:Settings`,
         alternativeText: $localize`:@@you_menu_settings_label:Settings`,
         icon: `${ICONS_FOLDER}/settings.svg`,
         external: false,
-        href: 'settings',
+        href: `${YOU_PATHS.SETTINGS}`,
         children: [
           {
             text: 'Editar perfil',
             alternativeText: 'Editar perfil',
             external: false,
-            href: '/profile/info',
+            href: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.INFO}`,
           },
           {
             text: 'Verificaciones y seguridad',
             alternativeText: 'Verificaciones y seguridad',
             external: false,
-            href: '/pro-manager/subscriptions',
+            href: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.VERIFICATIONS}`,
           },
           {
             text: 'Dirección de envío',
             alternativeText: 'Dirección de envío',
             external: false,
-            href: '/delivery/address',
+            href: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
           },
           {
             text: 'Notificaciones',
             alternativeText: 'Notificaciones',
             external: false,
-            href: '/profile/notifications',
+            href: `/${PRIVATE_PATHS.PROFILE}/${PRIVATE_PATHS.NOTIFICATIONS}`,
           },
           {
             text: 'Cerrar sesión',
             alternativeText: 'Cerrar sesión',
             external: false,
             href: '',
-            onClick: () => {},
           },
         ],
       },

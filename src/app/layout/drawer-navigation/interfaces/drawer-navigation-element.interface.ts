@@ -1,7 +1,6 @@
 import { NavigationElement } from '@layout/core/interfaces/navigation-element.interface';
 
 export enum DRAWER_NAVIGATION_SECTIONS {
-  // PROFILE,
   CATALOG,
   TRANSACTIONS,
   ACCOUNT,
