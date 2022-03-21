@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DrawerNavigationComponent } from './components/drawer-navigation.component';
-import { DrawerNavigationSecondaryPageComponent } from './components/drawer-navigation-secondary-page/drawer-navigation-secondary-page.component';
+import { DrawerNavigationChildPageComponent } from './components/drawer-navigation-child-page/drawer-navigation-child-page.component';
 import { DrawerNavigationService } from './services/drawer-navigation.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { RouterModule } from '@angular/router';
@@ -14,11 +14,11 @@ import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
 @NgModule({
   declarations: [
     DrawerNavigationComponent,
-    DrawerNavigationSecondaryPageComponent,
+    DrawerNavigationChildPageComponent,
     DrawerNavigationElementComponent,
     DrawerNavigationProfileElementComponent,
   ],
-  exports: [DrawerNavigationComponent, DrawerNavigationSecondaryPageComponent],
+  exports: [DrawerNavigationComponent, DrawerNavigationChildPageComponent],
   imports: [CommonModule, SvgIconModule, StarsModule, UserAvatarModule, RouterModule, ProBadgeModule],
   providers: [DrawerNavigationService],
 })

@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { DrawerNavigationService } from '@layout/drawer-navigation/services/drawer-navigation.service';
 
 @Component({
-  selector: 'tsl-drawer-navigation-secondary-page',
-  templateUrl: './drawer-navigation-secondary-page.component.html',
-  styleUrls: ['./drawer-navigation-secondary-page.component.scss'],
+  selector: 'tsl-drawer-navigation-child-page',
+  templateUrl: './drawer-navigation-child-page.component.html',
+  styleUrls: ['./drawer-navigation-child-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DrawerNavigationSecondaryPageComponent {
+export class DrawerNavigationChildPageComponent {
   public readonly navigationElements$ = this.drawerNavigationService.getChildNavigationElements(this.routeUrl);
   public readonly navigationTitle$ = this.drawerNavigationService.getChildNavigationTitle(this.routeUrl);
 
