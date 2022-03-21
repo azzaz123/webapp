@@ -50,7 +50,7 @@ export const BOTTOM_NAVIGATION_BAR_ELEMENTS_COLLECTION: Record<BOTTOM_NAVIGATION
     icon: `${ICONS_FOLDER}/you.svg`,
     activeIcon: `${ICONS_FOLDER}/you-active.svg`,
     // TODO: Change with /you tab when available
-    href: `/you`,
+    href: `/catalog/list`,
     external: false,
   },
 };
