@@ -9,23 +9,23 @@ import {
   MOCK_TRACK_SAVE_ITEM_PRICE_ATTRIBUTES,
 } from '@fixtures/private/chat/chat-analytics.fixtures.spec';
 
-import { ChatTrackingEventsService } from './chat-tracking-events.service';
+import { DeliveryBannerTrackingEventsService } from './delivery-banner-tracking-events.service';
 
-describe('ChatTrackingEventsService', () => {
-  let service: ChatTrackingEventsService;
+describe('DeliveryBannerTrackingEventsService', () => {
+  let service: DeliveryBannerTrackingEventsService;
   let analyticsService: AnalyticsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ChatTrackingEventsService,
+        DeliveryBannerTrackingEventsService,
         {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
         },
       ],
     });
-    service = TestBed.inject(ChatTrackingEventsService);
+    service = TestBed.inject(DeliveryBannerTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
   });
 

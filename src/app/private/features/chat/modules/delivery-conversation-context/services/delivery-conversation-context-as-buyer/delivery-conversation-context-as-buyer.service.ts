@@ -18,8 +18,8 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { InboxConversation, InboxItem } from '@private/features/chat/core/model';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
-import { ChatTrackingEventsService } from '@private/features/chat/services/chat-tracking-events/chat-tracking-events.service';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
@@ -30,7 +30,7 @@ export class DeliveryConversationContextAsBuyerService {
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
     private router: Router,
     private modalService: NgbModal,
-    private chatTrackingEventsService: ChatTrackingEventsService
+    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
   ) {}
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -115,7 +115,7 @@ export class DeliveryConversationContextAsBuyerService {
   }
 
   private trackClickBannerBuy(item: InboxItem): void {
-    this.chatTrackingEventsService.trackClickBannerBuy({
+    this.deliveryBannerTrackingEventsService.trackClickBannerBuy({
       itemId: item.id,
       categoryId: item.categoryId,
       screenId: SCREEN_IDS.Chat,

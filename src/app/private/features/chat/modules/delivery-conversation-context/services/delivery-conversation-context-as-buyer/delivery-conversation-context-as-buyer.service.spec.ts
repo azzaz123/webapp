@@ -17,11 +17,11 @@ import { MOCK_INBOX_CONVERSATION_AS_BUYER } from '@fixtures/chat';
 import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ChatTrackingEventsService } from '@private/features/chat/services/chat-tracking-events/chat-tracking-events.service';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
@@ -33,7 +33,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   let service: DeliveryConversationContextAsBuyerService;
   let buyerRequestsApiService: BuyerRequestsApiService;
   let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
-  let chatTrackingEventsService: ChatTrackingEventsService;
+  let deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService;
   let modalService: NgbModal;
   let router: Router;
 
@@ -47,7 +47,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         { provide: NgbModal, useValue: { open: () => {} } },
         {
-          provide: ChatTrackingEventsService,
+          provide: DeliveryBannerTrackingEventsService,
           useValue: {
             trackClickBannerBuy() {},
           },
@@ -57,7 +57,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
     service = TestBed.inject(DeliveryConversationContextAsBuyerService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
     deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
-    chatTrackingEventsService = TestBed.inject(ChatTrackingEventsService);
+    deliveryBannerTrackingEventsService = TestBed.inject(DeliveryBannerTrackingEventsService);
     modalService = TestBed.inject(NgbModal);
     router = TestBed.inject(Router);
 
@@ -187,7 +187,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   describe('when handling banner CTA click', () => {
     describe('when the action is open the payview', () => {
       beforeEach(() => {
-        spyOn(chatTrackingEventsService, 'trackClickBannerBuy');
+        spyOn(deliveryBannerTrackingEventsService, 'trackClickBannerBuy');
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_BUYER, DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
       });
 
@@ -200,8 +200,8 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       });
 
       it('should track the event', () => {
-        expect(chatTrackingEventsService.trackClickBannerBuy).toHaveBeenCalledTimes(1);
-        expect(chatTrackingEventsService.trackClickBannerBuy).toHaveBeenCalledWith({
+        expect(deliveryBannerTrackingEventsService.trackClickBannerBuy).toHaveBeenCalledTimes(1);
+        expect(deliveryBannerTrackingEventsService.trackClickBannerBuy).toHaveBeenCalledWith({
           itemId: MOCK_INBOX_CONVERSATION_AS_BUYER.item.id,
           categoryId: MOCK_INBOX_CONVERSATION_AS_BUYER.item.categoryId,
           screenId: SCREEN_IDS.Chat,

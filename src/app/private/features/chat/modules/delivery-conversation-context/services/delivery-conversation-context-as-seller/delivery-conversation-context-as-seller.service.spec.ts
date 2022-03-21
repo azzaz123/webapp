@@ -14,7 +14,6 @@ import { MOCK_INBOX_CONVERSATION_AS_SELLER } from '@fixtures/chat';
 import { MOCK_PENDING_SELLER_REQUEST, MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
-import { ChatTrackingEventsService } from '@private/features/chat/services/chat-tracking-events/chat-tracking-events.service';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
@@ -25,6 +24,7 @@ import {
   ACTIVATE_SHIPPING_BANNER_PROPERTIES,
   EDIT_PRICE_BANNER_PROPERTIES,
 } from '../../../delivery-banner/constants/delivery-banner-configs';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
@@ -38,7 +38,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
   let modalService: NgbModal;
   let sellerRequestsApiService: SellerRequestsApiService;
   let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
-  let chatTrackingEventsService: ChatTrackingEventsService;
+  let deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -50,7 +50,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
         { provide: DeliveryItemDetailsApiService, useValue: { getDeliveryDetailsByItemHash: () => of({}) } },
         { provide: FeatureFlagService, useValue: { getLocalFlag: of(null) } },
         {
-          provide: ChatTrackingEventsService,
+          provide: DeliveryBannerTrackingEventsService,
           useValue: {
             trackClickEditItemPrice() {},
             trackClickActivateShipping() {},
@@ -64,7 +64,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
     router = TestBed.inject(Router);
     sellerRequestsApiService = TestBed.inject(SellerRequestsApiService);
     deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
-    chatTrackingEventsService = TestBed.inject(ChatTrackingEventsService);
+    deliveryBannerTrackingEventsService = TestBed.inject(DeliveryBannerTrackingEventsService);
   });
 
   it('should be created', () => {
@@ -145,7 +145,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
       let mockEditPriceModalInstance: Partial<EditItemSalePriceModalComponent> = { item: null };
 
       beforeEach(() => {
-        spyOn(chatTrackingEventsService, 'trackClickEditItemPrice');
+        spyOn(deliveryBannerTrackingEventsService, 'trackClickEditItemPrice');
         spyOn(modalService, 'open').and.returnValue({ componentInstance: mockEditPriceModalInstance });
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_SELLER, DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE);
       });
@@ -160,8 +160,8 @@ describe('DeliveryConversationContextAsSellerService', () => {
       });
 
       it('should track the event ', () => {
-        expect(chatTrackingEventsService.trackClickEditItemPrice).toHaveBeenCalledTimes(1);
-        expect(chatTrackingEventsService.trackClickEditItemPrice).toHaveBeenCalledWith({
+        expect(deliveryBannerTrackingEventsService.trackClickEditItemPrice).toHaveBeenCalledTimes(1);
+        expect(deliveryBannerTrackingEventsService.trackClickEditItemPrice).toHaveBeenCalledWith({
           itemId: MOCK_INBOX_CONVERSATION_AS_SELLER.item.id,
           categoryId: MOCK_INBOX_CONVERSATION_AS_SELLER.item.categoryId,
           itemPrice: MOCK_INBOX_CONVERSATION_AS_SELLER.item.price.amount,
@@ -172,7 +172,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
 
     describe('when the action is to activate shipping for item', () => {
       beforeEach(() => {
-        spyOn(chatTrackingEventsService, 'trackClickActivateShipping');
+        spyOn(deliveryBannerTrackingEventsService, 'trackClickActivateShipping');
         spyOn(router, 'navigate');
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_SELLER, DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING);
       });
@@ -186,8 +186,8 @@ describe('DeliveryConversationContextAsSellerService', () => {
       });
 
       it('should track the event ', () => {
-        expect(chatTrackingEventsService.trackClickActivateShipping).toHaveBeenCalledTimes(1);
-        expect(chatTrackingEventsService.trackClickActivateShipping).toHaveBeenCalledWith({
+        expect(deliveryBannerTrackingEventsService.trackClickActivateShipping).toHaveBeenCalledTimes(1);
+        expect(deliveryBannerTrackingEventsService.trackClickActivateShipping).toHaveBeenCalledWith({
           itemId: MOCK_INBOX_CONVERSATION_AS_SELLER.item.id,
           categoryId: MOCK_INBOX_CONVERSATION_AS_SELLER.item.categoryId,
           screenId: SCREEN_IDS.Chat,

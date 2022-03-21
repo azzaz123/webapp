@@ -7,7 +7,7 @@ import { ItemSalePriceApiService } from '@api/items/sale_price';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxItem } from '@private/features/chat/core/model';
-import { ChatTrackingEventsService } from '@private/features/chat/services/chat-tracking-events/chat-tracking-events.service';
+import { DeliveryBannerTrackingEventsService } from '@private/features/chat/modules/delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -42,7 +42,7 @@ export class EditItemSalePriceModalComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private activeModal: NgbActiveModal,
     private itemSalePriceApiService: ItemSalePriceApiService,
-    private chatTrackingEventsService: ChatTrackingEventsService
+    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
   ) {}
 
   ngOnInit(): void {
@@ -167,7 +167,7 @@ export class EditItemSalePriceModalComponent implements OnInit {
   }
 
   private trackSaveItemPrice(): void {
-    this.chatTrackingEventsService.trackSaveItemPrice({
+    this.deliveryBannerTrackingEventsService.trackSaveItemPrice({
       itemId: this.item.id,
       categoryId: this.item.categoryId,
       itemPrice: this.item.price.amount,

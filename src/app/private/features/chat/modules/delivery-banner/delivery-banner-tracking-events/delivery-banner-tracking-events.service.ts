@@ -11,7 +11,7 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 
 @Injectable()
-export class ChatTrackingEventsService {
+export class DeliveryBannerTrackingEventsService {
   constructor(private analyticsService: AnalyticsService) {}
 
   public trackClickBannerBuy(attributes: ClickBuy): void {

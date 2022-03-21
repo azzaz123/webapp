@@ -23,8 +23,8 @@ import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants'
 import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { ChatTrackingEventsService } from '@private/features/chat/services/chat-tracking-events/chat-tracking-events.service';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 
 @Injectable()
 export class DeliveryConversationContextAsSellerService {
@@ -36,7 +36,7 @@ export class DeliveryConversationContextAsSellerService {
     private featureFlagService: FeatureFlagService,
     private sellerRequestsApiService: SellerRequestsApiService,
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
-    private chatTrackingEventsService: ChatTrackingEventsService
+    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
   ) {}
 
   public getBannerPropertiesAsSeller(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -134,7 +134,7 @@ export class DeliveryConversationContextAsSellerService {
   }
 
   private trackClickEditItemPrice(item: InboxItem): void {
-    this.chatTrackingEventsService.trackClickEditItemPrice({
+    this.deliveryBannerTrackingEventsService.trackClickEditItemPrice({
       itemId: item.id,
       categoryId: item.categoryId,
       itemPrice: item.price.amount,
@@ -143,7 +143,7 @@ export class DeliveryConversationContextAsSellerService {
   }
 
   private trackClickActivateShipping(item: InboxItem): void {
-    this.chatTrackingEventsService.trackClickActivateShipping({
+    this.deliveryBannerTrackingEventsService.trackClickActivateShipping({
       itemId: item.id,
       categoryId: item.categoryId,
       screenId: SCREEN_IDS.Chat,

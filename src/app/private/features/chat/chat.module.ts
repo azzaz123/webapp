@@ -41,7 +41,6 @@ import { UserResponseRateModule } from '@private/features/chat/components/user-r
 import { AutosizeModule } from 'ngx-autosize';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { ChatTrackingEventsService } from './services/chat-tracking-events/chat-tracking-events.service';
 
 @NgModule({
   imports: [
@@ -88,7 +87,7 @@ import { ChatTrackingEventsService } from './services/chat-tracking-events/chat-
     MaliciousConversationModalComponent,
     PersonalDataInformationModalComponent,
   ],
-  providers: [ChatTranslationService, ChatTrackingEventsService],
+  providers: [ChatTranslationService],
   exports: [InboxConversationComponent],
   entryComponents: [
     ArchiveInboxConversationComponent,

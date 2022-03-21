@@ -11,7 +11,7 @@ import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { MOCK_INBOX_CONVERSATION_AS_SELLER } from '@fixtures/chat';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxItem } from '@private/features/chat/core/model';
-import { ChatTrackingEventsService } from '@private/features/chat/services/chat-tracking-events/chat-tracking-events.service';
+import { DeliveryBannerTrackingEventsService } from '@private/features/chat/modules/delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { ButtonComponent } from '@shared/button/button.component';
 import { of, throwError } from 'rxjs';
 
@@ -22,7 +22,7 @@ describe('EditItemSalePriceModalComponent', () => {
   let fixture: ComponentFixture<EditItemSalePriceModalComponent>;
   let activeModal: NgbActiveModal;
   let itemSalePriceApiService: ItemSalePriceApiService;
-  let chatTrackingEventsService: ChatTrackingEventsService;
+  let deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService;
   let submitButtonElement: DebugElement;
   let spyOnHandleSubmit: jasmine.Spy;
   let spyOnItemPriceUpdateApi: jest.SpyInstance;
@@ -42,7 +42,7 @@ describe('EditItemSalePriceModalComponent', () => {
         { provide: NgbActiveModal, useValue: { close: () => {} } },
         { provide: ItemSalePriceApiService, useValue: { update: () => of(null) } },
         {
-          provide: ChatTrackingEventsService,
+          provide: DeliveryBannerTrackingEventsService,
           useValue: {
             trackSaveItemPrice() {},
           },
@@ -57,7 +57,7 @@ describe('EditItemSalePriceModalComponent', () => {
     cd = fixture.debugElement.injector.get<ChangeDetectorRef>(ChangeDetectorRef);
     activeModal = TestBed.inject(NgbActiveModal);
     itemSalePriceApiService = TestBed.inject(ItemSalePriceApiService);
-    chatTrackingEventsService = TestBed.inject(ChatTrackingEventsService);
+    deliveryBannerTrackingEventsService = TestBed.inject(DeliveryBannerTrackingEventsService);
     component = fixture.componentInstance;
     component.item = MOCK_CONVERSATION_ITEM;
     fixture.detectChanges();
@@ -85,7 +85,7 @@ describe('EditItemSalePriceModalComponent', () => {
 
   describe('when user inputs a price below the minimum', () => {
     beforeEach(() => {
-      spyOn(chatTrackingEventsService, 'trackSaveItemPrice');
+      spyOn(deliveryBannerTrackingEventsService, 'trackSaveItemPrice');
 
       modifyPriceInput(0.25);
     });
@@ -116,14 +116,14 @@ describe('EditItemSalePriceModalComponent', () => {
       });
 
       it('should NOT track the event', () => {
-        expect(chatTrackingEventsService.trackSaveItemPrice).not.toHaveBeenCalled();
+        expect(deliveryBannerTrackingEventsService.trackSaveItemPrice).not.toHaveBeenCalled();
       });
     });
   });
 
   describe('when user inputs a price over the maximum', () => {
     beforeEach(() => {
-      spyOn(chatTrackingEventsService, 'trackSaveItemPrice');
+      spyOn(deliveryBannerTrackingEventsService, 'trackSaveItemPrice');
       modifyPriceInput(288288);
     });
 
@@ -145,7 +145,7 @@ describe('EditItemSalePriceModalComponent', () => {
       });
 
       it('should NOT track the event', () => {
-        expect(chatTrackingEventsService.trackSaveItemPrice).not.toHaveBeenCalled();
+        expect(deliveryBannerTrackingEventsService.trackSaveItemPrice).not.toHaveBeenCalled();
       });
     });
   });
@@ -158,7 +158,7 @@ describe('EditItemSalePriceModalComponent', () => {
 
     describe('and when user submits the form', () => {
       beforeEach(() => {
-        spyOn(chatTrackingEventsService, 'trackSaveItemPrice');
+        spyOn(deliveryBannerTrackingEventsService, 'trackSaveItemPrice');
         spyOnActiveModalClose = spyOn(activeModal, 'close');
         submitForm();
       });
@@ -183,8 +183,8 @@ describe('EditItemSalePriceModalComponent', () => {
       });
 
       it('should track the event', () => {
-        expect(chatTrackingEventsService.trackSaveItemPrice).toHaveBeenCalledTimes(1);
-        expect(chatTrackingEventsService.trackSaveItemPrice).toHaveBeenCalledWith({
+        expect(deliveryBannerTrackingEventsService.trackSaveItemPrice).toHaveBeenCalledTimes(1);
+        expect(deliveryBannerTrackingEventsService.trackSaveItemPrice).toHaveBeenCalledWith({
           itemId: MOCK_CONVERSATION_ITEM.id,
           categoryId: MOCK_CONVERSATION_ITEM.categoryId,
           itemPrice: MOCK_CONVERSATION_ITEM.price.amount,
