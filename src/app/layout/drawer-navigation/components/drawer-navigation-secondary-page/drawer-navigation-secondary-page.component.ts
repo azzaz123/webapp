@@ -14,7 +14,7 @@ export class DrawerNavigationSecondaryPageComponent {
 
   constructor(private route: Router, private drawerNavigationService: DrawerNavigationService) {}
 
-  get routeUrl(): string {
+  private get routeUrl(): string {
     const url = this.route.url;
 
     return url.split('/').pop();
