@@ -8,11 +8,13 @@ import {
   BuyBannerModule,
   EditPriceBannerModule,
 } from './components/banners';
+import { DeliveryBannerTrackingEventsService } from './services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 
 const chatBannerModules = [BuyBannerModule, EditPriceBannerModule, AskSellerForShippingBannerModule, ActivateShippingBannerModule];
 
 @NgModule({
   imports: [CommonModule, BannerModule, ...chatBannerModules],
+  providers: [DeliveryBannerTrackingEventsService],
   exports: [DeliveryBannerComponent],
   declarations: [DeliveryBannerComponent],
 })
