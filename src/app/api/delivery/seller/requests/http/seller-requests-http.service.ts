@@ -10,12 +10,13 @@ import {
   SELLER_REQUESTS_ENDPOINT,
 } from './endpoints';
 import { mapBuyerAndItemHashToSellerRequestsParams } from '../mappers/requests/seller-requests-params.mapper';
+import { UuidService } from '@core/uuid/uuid.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SellerRequestsHttpService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private uuidService: UuidService) {}
 
   public getRequestsByBuyerAndItem(buyerHash: string, itemHash: string): Observable<SellerRequestDto[]> {
     const params: HttpParams = mapBuyerAndItemHashToSellerRequestsParams({ buyerHash, itemHash });
@@ -35,7 +36,7 @@ export class SellerRequestsHttpService {
   public acceptRequestPostOfficeDropOff(requestId: string): Observable<void> {
     return this.http.post<void>(
       SELLER_REQUESTS_ACCEPT_POST_OFFICE_DROP_OFF_ENDPOINT_WITH_REQUEST_ID(requestId),
-      this.getBodyWithTransactionId(requestId),
+      this.getBodyWithTransactionId(),
       this.getHeaders()
     );
   }
@@ -43,7 +44,7 @@ export class SellerRequestsHttpService {
   public acceptRequestHomePickup(requestId: string): Observable<void> {
     return this.http.post<void>(
       SELLER_REQUESTS_ACCEPT_HOME_PICKUP_ENDPOINT_WITH_REQUEST_ID(requestId),
-      this.getBodyWithTransactionId(requestId),
+      this.getBodyWithTransactionId(),
       this.getHeaders()
     );
   }
@@ -56,9 +57,9 @@ export class SellerRequestsHttpService {
     };
   }
 
-  private getBodyWithTransactionId(requestId: string): { transaction_id: string } {
+  private getBodyWithTransactionId(): { transaction_id: string } {
     return {
-      transaction_id: requestId,
+      transaction_id: this.uuidService.getUUID(),
     };
   }
 }

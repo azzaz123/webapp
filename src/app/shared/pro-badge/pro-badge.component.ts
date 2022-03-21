@@ -21,6 +21,11 @@ export class ProBadgeComponent implements OnInit {
       width: 60,
       height: 20,
     },
+    [ICON_TYPE.MEDIUM]: {
+      src: '/assets/icons/pro/pro-badge.svg',
+      width: 48,
+      height: 16,
+    },
     [ICON_TYPE.LARGE]: {
       src: '/assets/icons/pro/pro-badge.svg',
       width: 102,

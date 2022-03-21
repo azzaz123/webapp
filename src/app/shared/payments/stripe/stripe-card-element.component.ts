@@ -50,7 +50,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   @Input() showUseSavedCard = false;
   @Input() paymentError: STRIPE_ERROR;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
+  @Output() stripeCard: EventEmitter<stripe.elements.Element> = new EventEmitter<stripe.elements.Element>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
   @Output() handleStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
   @Output() handleStripeSetDefaultCard: EventEmitter<SetupIntent> = new EventEmitter();

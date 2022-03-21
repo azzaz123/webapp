@@ -22,6 +22,17 @@ import { AcceptScreenStoreService } from '../../services/accept-screen-store/acc
 import { finalize, take } from 'rxjs/operators';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { AcceptRequestError } from '@api/core/errors/delivery/accept-screen/accept-request';
+import { AcceptScreenTrackingEventsService } from '../../services/accept-screen-tracking-events/accept-screen-tracking-events.service';
+import {
+  getClickAcceptOfferEventPropertiesFromProperties,
+  getClickAddEditAddressEventPropertiesFromProperties,
+  getClickHelpTransactionalEventPropertiesFromProperties,
+  getClickItemCardEventPropertiesFromProperties,
+  getClickOtherProfileEventPropertiesFromSeller,
+  getClickRejectOfferEventPropertiesFromProperties,
+  getClickScheduleHPUEventPropertiesFromProperties,
+  getViewAcceptOfferEventPropertiesFromProperties,
+} from '../../mappers/accept-screen-tracking-events-properties/accept-screen-tracking-events-properties.mapper';
 
 @Component({
   selector: 'tsl-accept-screen-modal',
@@ -50,6 +61,7 @@ export class AcceptScreenModalComponent implements OnInit {
   private readonly deliveryMapSlideId: number = ACCEPT_SCREEN_STEPS.MAP;
   private readonly ACCEPT_SCREEN_HEADER_TRANSLATIONS = ACCEPT_SCREEN_HEADER_TRANSLATIONS;
   private readonly GENERIC_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
+  private readonly EXPIRED_OR_CANCELLED_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_expired_or_cancelled_purchase:The purchase has expired or the buyer has cancelled it. Talk to them to try again.`;
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -60,14 +72,17 @@ export class AcceptScreenModalComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router,
     private toastService: ToastService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private acceptScreenTrackingEventsService: AcceptScreenTrackingEventsService
   ) {}
 
   ngOnInit() {
     this.acceptScreenStoreService.initialize(this.requestId).then(
-      () => {},
       () => {
-        this.showError(this.GENERIC_ERROR_TRANSLATION);
+        this.trackViewAcceptOfferEvent();
+      },
+      () => {
+        this.showError(this.EXPIRED_OR_CANCELLED_ERROR_TRANSLATION);
         this.closeModal();
       }
     );
@@ -102,6 +117,12 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   public goToStep(slideId: ACCEPT_SCREEN_STEPS): void {
+    if (slideId === ACCEPT_SCREEN_STEPS.DELIVERY_ADDRESS) {
+      this.trackClickAddEditAddressEvent();
+    }
+    if (slideId === ACCEPT_SCREEN_STEPS.SCHEDULE) {
+      this.trackClickScheduleHPUEvent();
+    }
     this.stepper.goToStep(slideId);
     this.refreshStepProperties(slideId);
   }
@@ -141,7 +162,22 @@ export class AcceptScreenModalComponent implements OnInit {
     });
   }
 
+  public trackClickItemCardEvent(): void {
+    this.acceptScreenTrackingEventsService.trackClickItemCard(getClickItemCardEventPropertiesFromProperties(this.properties));
+  }
+
+  public trackClickOtherProfileEvent(): void {
+    this.acceptScreenTrackingEventsService.trackClickOtherProfile(getClickOtherProfileEventPropertiesFromSeller(this.properties.seller));
+  }
+
+  public trackClickHelpTransactionalEvent(): void {
+    this.acceptScreenTrackingEventsService.trackClickHelpTransactional(
+      getClickHelpTransactionalEventPropertiesFromProperties(this.properties)
+    );
+  }
+
   private acceptRequest(): void {
+    this.trackClickAcceptOfferEvent();
     this.confirmLoadingButton$.next(true);
     this.startDisableButton();
     this.acceptScreenStoreService
@@ -176,6 +212,7 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   private rejectRequest(): void {
+    this.trackClickRejectOfferEvent();
     this.rejectLoadingButton$.next(true);
     this.startDisableButton();
     this.acceptScreenStoreService
@@ -187,7 +224,9 @@ export class AcceptScreenModalComponent implements OnInit {
         })
       )
       .subscribe(
-        () => this.redirectToTTS(),
+        () => {
+          this.redirectToTTS();
+        },
         () => this.showError(this.GENERIC_ERROR_TRANSLATION)
       );
   }
@@ -221,5 +260,29 @@ export class AcceptScreenModalComponent implements OnInit {
     const errorMessage: string = e?.message ? e.message : this.GENERIC_ERROR_TRANSLATION;
 
     this.showError(errorMessage);
+  }
+
+  private trackViewAcceptOfferEvent(): void {
+    this.acceptScreenTrackingEventsService.trackViewAcceptOffer(getViewAcceptOfferEventPropertiesFromProperties(this.properties));
+  }
+
+  private trackClickAddEditAddressEvent(): void {
+    this.acceptScreenTrackingEventsService.trackClickAddEditAddress(getClickAddEditAddressEventPropertiesFromProperties(this.properties));
+  }
+
+  private trackClickScheduleHPUEvent(): void {
+    this.acceptScreenTrackingEventsService.trackClickScheduleHPU(getClickScheduleHPUEventPropertiesFromProperties(this.properties));
+  }
+
+  private trackClickAcceptOfferEvent(): void {
+    this.acceptScreenTrackingEventsService.trackClickAcceptOffer(getClickAcceptOfferEventPropertiesFromProperties(this.properties));
+  }
+
+  private trackClickRejectOfferEvent(): void {
+    this.acceptScreenTrackingEventsService.trackClickRejectOffer(getClickRejectOfferEventPropertiesFromProperties(this.properties));
+  }
+
+  private get properties(): AcceptScreenProperties {
+    return this.acceptScreenStoreService.properties;
   }
 }
