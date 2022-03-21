@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { SellerRequestsApiService } from '@api/delivery/seller/requests/seller-requests-api.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InboxConversation } from '@private/features/chat/core/model';
+import { InboxConversation, InboxItem } from '@private/features/chat/core/model';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { Observable } from 'rxjs';
 import {
@@ -61,16 +61,12 @@ export class DeliveryConversationContextAsSellerService {
       const { item } = conversation;
       const modalRef = this.modalService.open(EditItemSalePriceModalComponent, { windowClass: 'modal-small' }).componentInstance;
       modalRef.item = item;
+      this.trackClickEditItemPrice(conversation.item);
       return;
     }
 
     if (action === DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING) {
-      this.chatTrackingEventsService.trackClickActivateShipping({
-        itemId: conversation.item.id,
-        categoryId: conversation.item.categoryId,
-        screenId: SCREEN_IDS.Chat,
-        itemPrice: conversation.item.price.amount,
-      });
+      this.trackClickActivateShipping(conversation.item);
       return this.navigateToEditItemShippingToggle(conversation);
     }
 
@@ -135,5 +131,23 @@ export class DeliveryConversationContextAsSellerService {
 
   private openAwarenessModal(): void {
     this.modalService.open(TRXAwarenessModalComponent);
+  }
+
+  private trackClickEditItemPrice(item: InboxItem): void {
+    this.chatTrackingEventsService.trackClickEditItemPrice({
+      itemId: item.id,
+      categoryId: item.categoryId,
+      itemPrice: item.price.amount,
+      screenId: SCREEN_IDS.Chat,
+    });
+  }
+
+  private trackClickActivateShipping(item: InboxItem): void {
+    this.chatTrackingEventsService.trackClickActivateShipping({
+      itemId: item.id,
+      categoryId: item.categoryId,
+      screenId: SCREEN_IDS.Chat,
+      itemPrice: item.price.amount,
+    });
   }
 }
