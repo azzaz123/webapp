@@ -7,7 +7,7 @@ import { ItemSalePriceApiService } from '@api/items/sale_price';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxItem } from '@private/features/chat/core/model';
-import { DeliveryBannerTrackingEventsService } from '@private/features/chat/modules/delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
+import { DeliveryBannerTrackingEventsService } from '@private/features/chat/modules/delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 

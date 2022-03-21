@@ -24,7 +24,7 @@ import {
   ACTIVATE_SHIPPING_BANNER_PROPERTIES,
   EDIT_PRICE_BANNER_PROPERTIES,
 } from '../../../delivery-banner/constants/delivery-banner-configs';
-import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';

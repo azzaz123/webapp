@@ -8,7 +8,7 @@ import {
   BuyBannerModule,
   EditPriceBannerModule,
 } from './components/banners';
-import { DeliveryBannerTrackingEventsService } from './delivery-banner-tracking-events/delivery-banner-tracking-events.service';
+import { DeliveryBannerTrackingEventsService } from './services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 
 const chatBannerModules = [BuyBannerModule, EditPriceBannerModule, AskSellerForShippingBannerModule, ActivateShippingBannerModule];
 

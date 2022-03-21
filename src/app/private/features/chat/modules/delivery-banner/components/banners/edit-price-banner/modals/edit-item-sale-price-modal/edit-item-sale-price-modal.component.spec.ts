@@ -11,7 +11,7 @@ import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { MOCK_INBOX_CONVERSATION_AS_SELLER } from '@fixtures/chat';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxItem } from '@private/features/chat/core/model';
-import { DeliveryBannerTrackingEventsService } from '@private/features/chat/modules/delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
+import { DeliveryBannerTrackingEventsService } from '@private/features/chat/modules/delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { ButtonComponent } from '@shared/button/button.component';
 import { of, throwError } from 'rxjs';
 

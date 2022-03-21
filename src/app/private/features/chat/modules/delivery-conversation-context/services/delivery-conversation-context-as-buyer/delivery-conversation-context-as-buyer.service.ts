@@ -19,7 +19,7 @@ import { InboxConversation, InboxItem } from '@private/features/chat/core/model'
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
-import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
