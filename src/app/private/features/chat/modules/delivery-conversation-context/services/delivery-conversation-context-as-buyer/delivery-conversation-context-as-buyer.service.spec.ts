@@ -11,16 +11,17 @@ import {
   MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE,
   MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED,
 } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
+import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { FeatureFlagService } from '@core/user/featureflag.service';
 import { MOCK_INBOX_CONVERSATION_AS_BUYER } from '@fixtures/chat';
 import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { DELIVERY_BANNER_TYPE } from '../../../delivery-banner/enums/delivery-banner-type.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
@@ -32,6 +33,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   let service: DeliveryConversationContextAsBuyerService;
   let buyerRequestsApiService: BuyerRequestsApiService;
   let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
+  let deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService;
   let modalService: NgbModal;
   let router: Router;
 
@@ -44,11 +46,18 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         { provide: DeliveryItemDetailsApiService, useValue: { getDeliveryDetailsByItemHash: (_itemHash: string) => of(null) } },
         { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         { provide: NgbModal, useValue: { open: () => {} } },
+        {
+          provide: DeliveryBannerTrackingEventsService,
+          useValue: {
+            trackClickBannerBuy() {},
+          },
+        },
       ],
     });
     service = TestBed.inject(DeliveryConversationContextAsBuyerService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
     deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
+    deliveryBannerTrackingEventsService = TestBed.inject(DeliveryBannerTrackingEventsService);
     modalService = TestBed.inject(NgbModal);
     router = TestBed.inject(Router);
 
@@ -178,6 +187,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   describe('when handling banner CTA click', () => {
     describe('when the action is open the payview', () => {
       beforeEach(() => {
+        spyOn(deliveryBannerTrackingEventsService, 'trackClickBannerBuy');
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_BUYER, DELIVERY_BANNER_ACTION.OPEN_PAYVIEW);
       });
 
@@ -187,6 +197,16 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
         expect(router.navigate).toHaveBeenCalledWith([expectedRoute]);
         expect(router.navigate).toHaveBeenCalledTimes(1);
+      });
+
+      it('should track the event', () => {
+        expect(deliveryBannerTrackingEventsService.trackClickBannerBuy).toHaveBeenCalledTimes(1);
+        expect(deliveryBannerTrackingEventsService.trackClickBannerBuy).toHaveBeenCalledWith({
+          itemId: MOCK_INBOX_CONVERSATION_AS_BUYER.item.id,
+          categoryId: MOCK_INBOX_CONVERSATION_AS_BUYER.item.categoryId,
+          screenId: SCREEN_IDS.Chat,
+          itemPrice: MOCK_INBOX_CONVERSATION_AS_BUYER.item.price.amount,
+        });
       });
     });
   });
