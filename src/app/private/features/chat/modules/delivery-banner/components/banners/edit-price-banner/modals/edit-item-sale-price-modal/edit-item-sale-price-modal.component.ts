@@ -136,7 +136,6 @@ export class EditItemSalePriceModalComponent implements OnInit {
       this.generateRequestToApi().subscribe(
         () => {
           this.trackSaveItemPrice();
-
           this.closeModal();
           this.updateItemPriceAmountByReference();
         },
