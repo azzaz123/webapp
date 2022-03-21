@@ -4,8 +4,10 @@ import { mapCurrencyCodeToCurrency, mapNumberAndCurrencyCodeToMoney } from '@api
 import { Currency, CurrencyCode, CurrencySymbol } from '@api/core/model/currency.interface';
 import { Money } from '@api/core/model/money.interface';
 import { ItemSalePriceApiService } from '@api/items/sale_price';
+import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxItem } from '@private/features/chat/core/model';
+import { ChatTrackingEventsService } from '@private/features/chat/services/chat-tracking-events/chat-tracking-events.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -39,7 +41,8 @@ export class EditItemSalePriceModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private activeModal: NgbActiveModal,
-    private itemSalePriceApiService: ItemSalePriceApiService
+    private itemSalePriceApiService: ItemSalePriceApiService,
+    private chatTrackingEventsService: ChatTrackingEventsService
   ) {}
 
   ngOnInit(): void {
@@ -132,6 +135,13 @@ export class EditItemSalePriceModalComponent implements OnInit {
 
       this.generateRequestToApi().subscribe(
         () => {
+          this.chatTrackingEventsService.saveItemPrice({
+            itemId: this.item.id,
+            categoryId: this.item.categoryId,
+            itemPrice: this.item.price.amount,
+            newItemPrice: this.newPriceFormControl.value,
+            screenId: SCREEN_IDS.Chat,
+          });
           this.closeModal();
           this.updateItemPriceAmountByReference();
         },
