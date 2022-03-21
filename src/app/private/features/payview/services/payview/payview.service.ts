@@ -15,7 +15,9 @@ import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
 import { mapToDeliveryAddress } from '@private/features/payview/services/payview/payview.mappers';
 import { Money } from '@api/core/model/money.interface';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsCreditCardService } from '@api/payments/cards';
+import { PaymentService } from '@core/payments/payment.service';
 import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
 import { PaymentsPaymentMethodsService } from '@api/payments/payment-methods/payments-payment-methods.service';
 import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
@@ -42,6 +44,7 @@ export class PayviewService {
     private itemService: ItemService,
     private paymentMethodsService: PaymentsPaymentMethodsService,
     private paymentPreferencesService: PaymentsUserPaymentPreferencesService,
+    private paymentService: PaymentService,
     private walletsService: PaymentsWalletsService
   ) {}
 
@@ -115,6 +118,10 @@ export class PayviewService {
           );
         })
       );
+  }
+
+  public setUserPaymentPreferences(paymentId: string, method: PaymentMethod, useWallet: boolean): Observable<void> {
+    return this.paymentService.updateUserPreferences(paymentId, method, useWallet);
   }
 
   private get card(): Observable<CreditCard> {

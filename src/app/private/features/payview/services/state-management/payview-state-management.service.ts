@@ -10,6 +10,8 @@ import {
 } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { mapToPayviewError } from '@private/features/payview/services/state-management/payview-state-management.mappers';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
 import { PAYVIEW_EVENT_PAYLOAD } from '@private/features/payview/types/payview-event-payload.type';
 import { PAYVIEW_EVENT_TYPE } from '@private/features/payview/enums/payview-event-type.enum';
 import { PayviewEvent } from '@private/features/payview/interfaces/payview-event.interface';
@@ -18,8 +20,6 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
-import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -88,6 +88,7 @@ export class PayviewStateManagementService {
   public setPaymentMethod(paymentMethod: PaymentsPaymentMethod): void {
     const payviewState: PayviewState = { ...this.stateSubject.getValue() };
     this.setCurrentPaymentMethod(payviewState, paymentMethod.method);
+    this.refreshCosts(payviewState, null);
   }
 
   private getActionEvent(type: PAYVIEW_EVENT_TYPE, payload: HttpErrorResponse | null = null): PayviewEvent {
@@ -203,6 +204,25 @@ export class PayviewStateManagementService {
     const preferences = { ...payviewState.payment.preferences.preferences };
     preferences.paymentMethod = method;
     payviewState.payment.preferences.preferences = preferences;
-    this.stateSubject.next(payviewState);
+
+    // TODO - 18/03/2022 - For the MVP we don't use the wallet, so the third parameter in this call is "false".
+    // In the future you'll have to change this value by the corresponding one.
+
+    const subscription: Subscription = this.payviewService
+      .setUserPaymentPreferences(payviewState.payment.preferences.preferences.id, method, false)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_SET_PAYMENT_METHOD));
+          this.stateSubject.next(payviewState);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.ERROR_ON_SET_PAYMENT_METHOD, error));
+          subscription.unsubscribe();
+        },
+        complete: () => {
+          subscription.unsubscribe();
+        },
+      });
   }
 }
