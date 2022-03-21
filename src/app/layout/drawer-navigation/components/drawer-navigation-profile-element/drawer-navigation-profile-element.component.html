@@ -6,7 +6,7 @@
         <h3 class="DrawerNavigationProfileElement__username text-truncate m-0">{{ element.text }}</h3>
         <div class="d-flex align-items-center">
             <tsl-stars [stars]="element.reviews"></tsl-stars>
-            <span>({{ element.reviews_count }})</span>
+            <span class="DrawerNavigationProfileElement__reviewsCount">({{ element.reviews_count }})</span>
         </div>
     </div>
     <tsl-svg-icon src="/assets/icons/drawer-navigation/arrow-right.svg" class="ml-auto"></tsl-svg-icon>
