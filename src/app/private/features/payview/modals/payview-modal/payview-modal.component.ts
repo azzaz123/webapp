@@ -68,6 +68,10 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.goToStep(PAYVIEW_STEPS.PAYVIEW);
   }
 
+  public goToDeliveryAddress(): void {
+    this.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
+  }
+
   public get helpUrl(): string {
     return this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.PAYVIEW);
   }

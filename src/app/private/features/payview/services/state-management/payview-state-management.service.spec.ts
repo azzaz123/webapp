@@ -2,7 +2,11 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
 import { DeliveryBuyerCalculatorPromotionCost } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-promotion-cost.interface';
-import { DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
+import {
+  DeliveryBuyerDefaultDeliveryMethod,
+  DeliveryBuyerDeliveryMethod,
+  DeliveryBuyerDeliveryMethods,
+} from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import {
   MOCK_DELIVERY_BUYER_CALCULATOR_COSTS,
@@ -90,6 +94,44 @@ describe('PayviewStateManagementService', () => {
       expect(result).toBe(1);
     }));
 
+    describe('WHEN selecting the delivery method', () => {
+      let costsSpy;
+      const selectedIndex: number = 1;
+      const selectedDefault: DeliveryBuyerDefaultDeliveryMethod = { index: selectedIndex };
+      const selectedDeliveryMethod: DeliveryBuyerDeliveryMethod = {
+        ...MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[selectedIndex],
+      };
+
+      beforeEach(fakeAsync(() => {
+        const fakeCosts = { ...MOCK_PAYVIEW_STATE.costs };
+        costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
+
+        service.setDeliveryMethod(selectedDeliveryMethod);
+
+        tick(1);
+      }));
+
+      it('should call to payview service', fakeAsync(() => {
+        payviewState.costs = null;
+
+        expect(costsSpy).toHaveBeenCalledTimes(1);
+        expect(costsSpy).toHaveBeenCalledWith(
+          payviewState.itemDetails.itemHash,
+          payviewState.itemDetails.price,
+          undefined,
+          selectedDeliveryMethod
+        );
+      }));
+
+      it('should update the delivery method of the payview state', fakeAsync(() => {
+        expect(payviewState.delivery.methods.current).toStrictEqual(selectedDeliveryMethod);
+      }));
+
+      it('should update the default delivery method of the payview state', fakeAsync(() => {
+        expect(payviewState.delivery.methods.default).toStrictEqual(selectedDefault);
+      }));
+    });
+
     describe('WHEN retrieving the costs', () => {
       let costsSpy;
       let fakeCosts: DeliveryBuyerCalculatorCosts;
@@ -100,7 +142,7 @@ describe('PayviewStateManagementService', () => {
         fakeCosts.promotion = fakePromocode as DeliveryBuyerCalculatorPromotionCost;
         costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
 
-        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]);
 
         tick(1);
       }));
@@ -113,7 +155,7 @@ describe('PayviewStateManagementService', () => {
           payviewState.itemDetails.itemHash,
           payviewState.itemDetails.price,
           payviewState.costs?.promotion?.promocode,
-          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]
         );
       }));
 
@@ -133,20 +175,18 @@ describe('PayviewStateManagementService', () => {
         fakeCosts = { ...MOCK_PAYVIEW_STATE.costs };
         costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
 
-        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]);
 
         tick(1);
       }));
 
       it('should call to payview service', fakeAsync(() => {
-        payviewState.costs = null;
-
         expect(costsSpy).toHaveBeenCalledTimes(1);
         expect(costsSpy).toHaveBeenCalledWith(
           payviewState.itemDetails.itemHash,
           payviewState.itemDetails.price,
           undefined,
-          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]
         );
       }));
 
@@ -169,7 +209,7 @@ describe('PayviewStateManagementService', () => {
         payviewState.costs = fakeCosts;
         costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
 
-        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]);
 
         tick(1);
       }));
@@ -182,7 +222,7 @@ describe('PayviewStateManagementService', () => {
           payviewState.itemDetails.itemHash,
           payviewState.itemDetails.price,
           fakePromocode,
-          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]
         );
       }));
 
@@ -205,7 +245,7 @@ describe('PayviewStateManagementService', () => {
         payviewState.costs = fakeCosts;
         costsSpy = spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
 
-        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]);
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]);
 
         tick(1);
       }));
@@ -218,7 +258,7 @@ describe('PayviewStateManagementService', () => {
           payviewState.itemDetails.itemHash,
           payviewState.itemDetails.price,
           undefined,
-          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[1]
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]
         );
       }));
 
@@ -243,7 +283,7 @@ describe('PayviewStateManagementService', () => {
         service.payViewState$.subscribe((result: PayviewState) => {
           payviewState = result;
         });
-        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS[0]);
+        service.setDeliveryMethod(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0]);
         tick(1);
       }));
 
@@ -253,7 +293,7 @@ describe('PayviewStateManagementService', () => {
           MOCK_PAYVIEW_STATE.itemDetails.itemHash,
           MOCK_PAYVIEW_STATE.itemDetails.price,
           MOCK_PAYVIEW_STATE.costs.promotion?.promocode,
-          MOCK_DELIVERY_BUYER_DELIVERY_METHODS[0]
+          MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0]
         );
       }));
 

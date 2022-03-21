@@ -23,10 +23,10 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
   ],
 })
 export class PayviewDeliveryPointComponent {
-  @Input() public deliveryCosts: DeliveryCosts;
-  @Input() public deliveryMethod: DeliveryBuyerDeliveryMethod;
+  @Input() public costs: DeliveryCosts;
   @Input() public id: number;
   @Input() public isChecked: boolean;
+  @Input() public method: DeliveryBuyerDeliveryMethod;
   @Output() public checked: EventEmitter<number> = new EventEmitter<number>();
   @Output() public edited: EventEmitter<number> = new EventEmitter<number>();
 
@@ -46,18 +46,18 @@ export class PayviewDeliveryPointComponent {
   }
 
   public get address(): string {
-    return this.deliveryMethod.lastAddressUsed.label;
+    return this.method.lastAddressUsed.label;
   }
 
   public get deliveryCost(): string {
     if (this.isOffice) {
-      return this.formatMoney(this.deliveryCosts.carrierOfficeCost);
+      return this.formatMoney(this.costs.carrierOfficeCost);
     }
-    return this.formatMoney(this.deliveryCosts.buyerAddressCost);
+    return this.formatMoney(this.costs.buyerAddressCost);
   }
 
   public get deliveryTime(): string {
-    return `${this.deliveryMethod.deliveryTimes.from}-${this.deliveryMethod.deliveryTimes.to}`;
+    return `${this.method.deliveryTimes.from}-${this.method.deliveryTimes.to}`;
   }
 
   public editPoint(): void {
@@ -65,11 +65,11 @@ export class PayviewDeliveryPointComponent {
   }
 
   public get isHome(): boolean {
-    return this.deliveryMethod.method === DELIVERY_MODE.BUYER_ADDRESS;
+    return this.method.method === DELIVERY_MODE.BUYER_ADDRESS;
   }
 
   public get isOffice(): boolean {
-    return this.deliveryMethod.method === DELIVERY_MODE.CARRIER_OFFICE;
+    return this.method.method === DELIVERY_MODE.CARRIER_OFFICE;
   }
 
   public selectPoint(index: number): void {
@@ -77,7 +77,7 @@ export class PayviewDeliveryPointComponent {
   }
 
   public get showAddress(): boolean {
-    return !!this.deliveryMethod.lastAddressUsed;
+    return !!this.method.lastAddressUsed;
   }
 
   private formatMoney(money: Money): string {
