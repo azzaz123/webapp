@@ -13,6 +13,7 @@ import {
   MOCK_PAYMENTS_CARDS_UNKNWON_ERROR_RESPONSE,
 } from '@api/fixtures/payments/cards/payments-cards-errors.fixtures.spec';
 import { of, throwError } from 'rxjs';
+import { PaymentsClientBrowserInfoApiService } from '../users/client-browser-info/payments-client-browser-info-api.service';
 import { PaymentsCreditCardHttpService } from './http/payments-credit-card-http.service';
 
 import { PaymentsCreditCardService } from './payments-credit-card.service';
@@ -32,6 +33,10 @@ describe('PaymentsCreditCardService', () => {
         {
           provide: ThreeDomainSecureService,
           useValue: { checkThreeDomainSecure: () => of(true), cardNeedsToBeRemoved: () => true },
+        },
+        {
+          provide: PaymentsClientBrowserInfoApiService,
+          useValue: { sendBrowserInfo: () => of({}) },
         },
       ],
     });

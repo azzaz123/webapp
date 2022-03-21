@@ -6,7 +6,6 @@ export const mapPaymentsClientBrowserInfoToDto: ToApiMapper<PaymentsClientBrowse
   input: PaymentsClientBrowserInfo
 ): PaymentsClientBrowserInfoDto => {
   const {
-    acceptHeader: accept_header,
     isJavaEnabled: java_enabled,
     isJavaScriptEnabled: javascript_enabled,
     language,
@@ -17,7 +16,6 @@ export const mapPaymentsClientBrowserInfoToDto: ToApiMapper<PaymentsClientBrowse
     userAgent: user_agent,
   } = input;
   return {
-    accept_header,
     java_enabled,
     javascript_enabled,
     language,
