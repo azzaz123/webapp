@@ -12,4 +12,19 @@
   &__username {
     font-size: $font-size-lll;
   }
+
+  &__avatarPlaceholder {
+    flex-shrink: 0;
+    @include AvatarPlaceholder;
+    @include square(80px);
+  }
+
+  &__usernamePlaceholder {
+    @include TextPlaceholder;
+    height: 20px;
+  }
+
+  &__textPlaceholder {
+    @include TextPlaceholder;
+  }
 }
