@@ -58,16 +58,15 @@ describe('NotificationApiService', () => {
   });
 
   describe('When asked to log that notification center is displayed to the user', () => {
-    it('should inform appboy and ask immediate data flush to avoid redirect issues', () => {
-      service.logContentCardsDisplayed(notificationsDtos[0].id);
-      expect(appboy.logContentCardsDisplayed).toHaveBeenCalledTimes(1);
+    it('should inform appboy', () => {
+      service.logContentCard(notificationsDtos[0].id);
       expect(appboy.logCardImpressions).toHaveBeenCalledTimes(1);
       expect(appboy.logCardImpressions).toHaveBeenCalledWith([notificationsDtos[0]], true);
     });
   });
 
   describe('When asked to log card click', () => {
-    it('should inform appboy and ask immediate data flush to avoid redirect issues', () => {
+    it('should inform appboy', () => {
       service.logCardClick(notificationsDtos[0].id);
       expect(appboy.logCardClick).toHaveBeenCalledTimes(1);
       expect(appboy.logCardClick).toHaveBeenCalledWith(notificationsDtos[0], true);
