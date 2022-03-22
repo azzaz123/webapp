@@ -39,7 +39,7 @@ export function mapPublishedItemsToLegacyItem(publishedItems: PublishedItemDto[]
           banned: false,
           expired: expired?.flag,
           bumped: !!bump?.type,
-          bump_type: bump?.type,
+          bump_type: `${bump?.type}bump`,
           onhold: listing_limit?.exceeded,
         },
         undefined,
