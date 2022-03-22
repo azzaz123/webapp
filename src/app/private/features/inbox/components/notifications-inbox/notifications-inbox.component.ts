@@ -19,7 +19,7 @@ export class NotificationsInboxComponent implements OnInit {
 
   ngOnInit(): void {
     this.notificationApiService.refreshNotifications(() => {
-      this.notificationApiService.logContentCardsDisplayed();
+      // this.notificationApiService.logContentCardsDisplayed();
       this.trackViewNotificationCenter();
     });
   }

@@ -1,5 +1,5 @@
 <div class="NotificationsInbox">
-  <div *ngFor="let notification of notifications$ | async">
+  <div *ngFor="let notification of notifications$ | async" (scroll)="onScroll($event)">
     <tsl-notification [notification]="notification"></tsl-notification>
   </div>
 </div>
