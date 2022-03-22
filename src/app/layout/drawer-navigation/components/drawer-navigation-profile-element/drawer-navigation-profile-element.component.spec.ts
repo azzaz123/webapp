@@ -1,30 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT } from '@fixtures/layout/drawer-navigation/fixtures/drawer-navigation-profile-element.fixtures.spec';
 import { ProBadgeStubComponent } from '@fixtures/shared/components/pro-badge.component.stub';
 import { StarsStubComponent } from '@fixtures/shared/components/stars.component.stub';
 import { SvgIconStubComponent } from '@fixtures/shared/components/svg-icon.component.stub';
 import { UserAvatarStubComponent } from '@fixtures/shared/components/user-avatar.component.stub';
-import { IMAGE, MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
-import { DrawerNavigationProfileElement } from '@layout/drawer-navigation/interfaces/drawer-navigation-element.interface';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 import { DrawerNavigationProfileElementComponent } from './drawer-navigation-profile-element.component';
 
 describe('DrawerNavigationProfileElementComponent', () => {
   let component: DrawerNavigationProfileElementComponent;
   let fixture: ComponentFixture<DrawerNavigationProfileElementComponent>;
-
-  const MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT: DrawerNavigationProfileElement = {
-    professional: MOCK_USER.featured,
-    text: MOCK_USER.microName,
-    alternativeText: MOCK_USER.microName,
-    reviews: MOCK_USER_STATS.ratings.reviews,
-    reviews_count: MOCK_USER_STATS.counters.reviews,
-    avatar: IMAGE.urls_by_size.medium,
-    href: `${PRIVATE_PATHS.PROFILE}`,
-    external: false,
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
