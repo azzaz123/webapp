@@ -57,33 +57,33 @@ export const DRAWER_NAVIGATION_SECTIONS_COLLECTION: Record<DRAWER_NAVIGATION_SEC
         href: `${YOU_PATHS.SETTINGS}`,
         children: [
           {
-            text: 'Editar perfil',
-            alternativeText: 'Editar perfil',
+            text: $localize`:@@settings_menu_all_users_edit_profile_label:Edit profile`,
+            alternativeText: $localize`:@@settings_menu_all_users_edit_profile_label:Edit profile`,
             external: false,
             href: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.INFO}`,
           },
           {
-            text: 'Verificaciones y seguridad',
-            alternativeText: 'Verificaciones y seguridad',
+            text: $localize`:@@settings_menu_all_users_verifications_and_security_label:Verifications and security`,
+            alternativeText: $localize`:@@settings_menu_all_users_verifications_and_security_label:Verifications and security`,
             external: false,
             href: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.VERIFICATIONS}`,
           },
           {
-            text: 'Dirección de envío',
-            alternativeText: 'Dirección de envío',
+            text: $localize`:@@settings_menu_all_users_shipping_adress_label:Shipping address`,
+            alternativeText: $localize`:@@settings_menu_all_users_shipping_adress_label:Shipping address`,
             external: false,
             href: `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.ADDRESS}`,
           },
           {
-            text: 'Notificaciones',
-            alternativeText: 'Notificaciones',
+            text: $localize`:@@settings_menu_all_users_notifications_label:Notifications`,
+            alternativeText: $localize`:@@settings_menu_all_users_notifications_label:Notifications`,
             external: false,
             href: `/${PRIVATE_PATHS.PROFILE}/${PRIVATE_PATHS.NOTIFICATIONS}`,
           },
           // TODO: Uncomment when /logout is available
           // {
-          //   text: 'Cerrar sesión',
-          //   alternativeText: 'Cerrar sesión',
+          //   text: $localize`:@@settings_menu_all_users_log_out_label:Log out`,
+          //   alternativeText: $localize`:@@settings_menu_all_users_log_out_label:Log out`,
           //   external: false,
           //   href: '/logout',
           // },
