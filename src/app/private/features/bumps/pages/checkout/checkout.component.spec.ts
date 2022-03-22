@@ -121,7 +121,7 @@ describe('CheckoutComponent', () => {
   describe('ngOnInit', () => {
     describe('no params', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
-        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith(SELECTED_ITEMS);
+        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith(SELECTED_ITEMS, component.user.id);
         expect(component.itemsWithProducts).toEqual(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED);
       });
 
@@ -145,7 +145,7 @@ describe('CheckoutComponent', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
         component.ngOnInit();
 
-        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith([ITEM_ID]);
+        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith([ITEM_ID], component.user.id);
         expect(component.itemsWithProducts).toEqual(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED);
       });
 
@@ -155,7 +155,7 @@ describe('CheckoutComponent', () => {
 
         component.ngOnInit();
 
-        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith([ITEM_ID]);
+        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith([ITEM_ID], component.user.id);
         expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { alreadyFeatured: true }]);
       });
     });
@@ -281,7 +281,7 @@ describe('CheckoutComponent', () => {
         component.itemsSelected = [];
       });
       it('should reload items', () => {
-        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith(['item_id']);
+        expect(visibilityService.getItemsWithProductsAndSubscriptionBumps).toHaveBeenCalledWith(['item_id'], component.user.id);
       });
       it('should reload credit info', fakeAsync(() => {
         expect(paymentService.getCreditInfo).toHaveBeenCalledTimes(1);

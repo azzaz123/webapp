@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash-es';
 import {
   ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED,
   ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
-  MOCK_BUMPS_PACKAGE_BALANCE,
+  MOCK_BUMP_PACKAGE_RESPONSE,
   MOCK_BUMPS_PACKAGE_BALANCE_MAPPED,
 } from '@fixtures/bump-package.fixtures.spec';
 import {
@@ -16,7 +16,7 @@ import { mapBalance, mapItemsWithProducts, mapItemWithProductsAndSubscriptionBum
 describe('Bump mapper', () => {
   describe('when mapping balance of bumps package', () => {
     it('should map to balance of bumps package domain', () => {
-      const mappedBalance = mapBalance(MOCK_BUMPS_PACKAGE_BALANCE);
+      const mappedBalance = mapBalance(MOCK_BUMP_PACKAGE_RESPONSE);
       expect(mappedBalance).toEqual(MOCK_BUMPS_PACKAGE_BALANCE_MAPPED);
     });
   });
@@ -43,7 +43,7 @@ describe('Item with products and subscription bumps mapper', () => {
   describe('when mapping item with products and subscriptions bumps', () => {
     describe('and has not subscriptions for this item', () => {
       it('should map item with products domain', () => {
-        const mappedItem = mapItemWithProductsAndSubscriptionBumps(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0], null);
+        const mappedItem = mapItemWithProductsAndSubscriptionBumps(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0], null, []);
         expect(mappedItem).toEqual(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0]);
       });
     });
@@ -52,22 +52,34 @@ describe('Item with products and subscription bumps mapper', () => {
         it('should map free bumps into products', () => {
           const mappedItem = mapItemWithProductsAndSubscriptionBumps(
             cloneDeep(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0]),
-            cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0])
+            cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0]),
+            cloneDeep(MOCK_BUMPS_PACKAGE_BALANCE_MAPPED)
           );
 
           expect(mappedItem.products[0].durations[0].isFreeOption).toEqual(true);
-          expect(mappedItem.products[0].durations[0].subscriptionPackageType).toEqual(SUBSCRIPTION_CATEGORY_TYPES.CARS);
+          expect(mappedItem.products[0].durations[0].subscriptionPackageType).toEqual(SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES);
+          expect(mappedItem.balance).toEqual(
+            MOCK_BUMPS_PACKAGE_BALANCE_MAPPED.find(
+              (balance) => balance.subscription_type === MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0].type
+            ).balance
+          );
         });
       });
       describe('and has not products matching with free bumps', () => {
         it('should create free bumps products', () => {
           const mappedItem = mapItemWithProductsAndSubscriptionBumps(
             cloneDeep(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[1]),
-            cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0])
+            cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0]),
+            cloneDeep(MOCK_BUMPS_PACKAGE_BALANCE_MAPPED)
           );
 
           expect(mappedItem.products[0].durations[3].isFreeOption).toEqual(true);
-          expect(mappedItem.products[0].durations[3].subscriptionPackageType).toEqual(SUBSCRIPTION_CATEGORY_TYPES.CARS);
+          expect(mappedItem.products[0].durations[3].subscriptionPackageType).toEqual(SUBSCRIPTION_CATEGORY_TYPES.MOTORBIKES);
+          expect(mappedItem.balance).toEqual(
+            MOCK_BUMPS_PACKAGE_BALANCE_MAPPED.find(
+              (balance) => balance.subscription_type === MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0].type
+            ).balance
+          );
         });
       });
     });
@@ -75,20 +87,24 @@ describe('Item with products and subscription bumps mapper', () => {
       it('should map item with products domain', () => {
         const mappedItem = mapItemWithProductsAndSubscriptionBumps(
           cloneDeep(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0]),
-          cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED[1])
+          cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED[1]),
+          cloneDeep([])
         );
         expect(mappedItem.products[0].durations[0].isFreeOption).toEqual(undefined);
         expect(mappedItem.products[0].durations[0].subscriptionPackageType).toEqual(undefined);
+        expect(mappedItem.balance).toEqual([]);
       });
     });
     describe('and has not subscription bump package', () => {
       it('should map item with products domain', () => {
         const mappedItem = mapItemWithProductsAndSubscriptionBumps(
           cloneDeep(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED[0]),
-          cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED[2])
+          cloneDeep(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[1]),
+          cloneDeep(MOCK_BUMPS_PACKAGE_BALANCE_MAPPED)
         );
         expect(mappedItem.products[0].durations[0].isFreeOption).toEqual(undefined);
         expect(mappedItem.products[0].durations[0].subscriptionPackageType).toEqual(undefined);
+        expect(mappedItem.balance).toEqual([]);
       });
     });
   });

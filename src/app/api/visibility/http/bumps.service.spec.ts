@@ -2,8 +2,12 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { TestBed } from '@angular/core/testing';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
-import { ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE, MOCK_BUMPS_PACKAGE_BALANCE } from '@fixtures/bump-package.fixtures.spec';
-import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
+import {
+  ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
+  MOCK_BUMP_PACKAGE_RESPONSE,
+  MOCK_BUMPS_PACKAGE_BALANCE,
+} from '@fixtures/bump-package.fixtures.spec';
+import { BumpsPackageBalanceDTO, BumpsPackageBalanceResponse } from '../dtos/bumps/bumps-package-balance.interface';
 import { BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
 import { BumpsHttpService } from './bumps.service';
 import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE, ITEMS_WITH_PRODUCTS } from './endpoints';
@@ -23,15 +27,15 @@ describe('BumpsService', () => {
 
   describe('when asked to retrieve balance', () => {
     it('should retrieve bumps balance', () => {
-      let response: BumpsPackageBalanceDTO[];
+      let response: BumpsPackageBalanceResponse;
       let userId = '123';
 
-      service.getBalance(userId).subscribe((res: BumpsPackageBalanceDTO[]) => (response = res));
+      service.getBalance(userId).subscribe((res) => (response = res));
 
       const req: TestRequest = httpMock.expectOne(BUMPS_PACKAGE_BALANCE(userId));
-      req.flush(MOCK_BUMPS_PACKAGE_BALANCE);
+      req.flush(MOCK_BUMP_PACKAGE_RESPONSE);
 
-      expect(response).toEqual(MOCK_BUMPS_PACKAGE_BALANCE);
+      expect(response).toEqual(MOCK_BUMP_PACKAGE_RESPONSE);
       expect(req.request.method).toEqual('GET');
     });
   });
