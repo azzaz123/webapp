@@ -18,24 +18,6 @@
       font-size: $font-size-s;
       line-height: $line-height-ml;
     }
-
-    &.urgent {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      .content {
-        flex-basis: 70%;
-      }
-      .urgent-background {
-        width: 108px;
-        background: url(/assets/images/urgent-background.svg) no-repeat;
-        background-size: 105px;
-        opacity: 0.3;
-        &.active {
-          opacity: 1;
-        }
-      }
-    }
   }
 
   .selector-title {

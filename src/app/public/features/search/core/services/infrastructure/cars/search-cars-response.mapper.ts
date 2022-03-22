@@ -30,7 +30,6 @@ export function SearchItemCarResponseMapper({ search_objects }: SearchResponse<S
     bumpFlags: {
       bumped: content.visibility_flags.bumped,
       highlighted: content.visibility_flags.highlighted,
-      urgent: content.visibility_flags.urgent,
       country_bumped: content.visibility_flags.country_bumped,
       boosted: content.visibility_flags.boosted
     },
