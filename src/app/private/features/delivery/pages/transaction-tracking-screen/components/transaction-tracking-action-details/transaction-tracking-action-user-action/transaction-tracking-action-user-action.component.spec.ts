@@ -13,7 +13,6 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of, throwError } from 'rxjs';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
-import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 import { TransactionTrackingScreenTrackingEventsService } from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { TransactionTrackingActionUserActionComponent } from './transaction-tracking-action-user-action.component';
 
@@ -23,7 +22,6 @@ describe('TransactionTrackingActionUserActionComponent', () => {
   let transactionTrackingService: TransactionTrackingService;
   let errorsService: ErrorsService;
   let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
-  let storeService: TransactionTrackingScreenStoreService;
   let router: Router;
 
   const MOCK_REQUEST_ID = '124565656';
@@ -50,7 +48,6 @@ describe('TransactionTrackingActionUserActionComponent', () => {
             trackClickActionTTS() {},
           },
         },
-        TransactionTrackingScreenStoreService,
         {
           provide: ActivatedRoute,
           useValue: {
@@ -81,7 +78,6 @@ describe('TransactionTrackingActionUserActionComponent', () => {
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
     errorsService = TestBed.inject(ErrorsService);
-    storeService = TestBed.inject(TransactionTrackingScreenStoreService);
     router = TestBed.inject(Router);
 
     fixture.detectChanges();
@@ -93,7 +89,6 @@ describe('TransactionTrackingActionUserActionComponent', () => {
 
   describe('when the user clicks on action', () => {
     beforeEach(() => {
-      spyOn(storeService, 'refresh');
       spyOn(router, 'navigate');
     });
 
@@ -147,10 +142,6 @@ describe('TransactionTrackingActionUserActionComponent', () => {
         expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
       });
 
-      it('should NOT refresh the transaction tracking store', () => {
-        expect(storeService.refresh).not.toHaveBeenCalled();
-      });
-
       it('should stay at the same page', () => {
         expect(router.navigate).not.toHaveBeenCalled();
       });
@@ -183,10 +174,6 @@ describe('TransactionTrackingActionUserActionComponent', () => {
           expect(errorsService.i18nError).not.toHaveBeenCalled();
         });
 
-        it('should update the transaction tracking store', () => {
-          expect(storeService.refresh).toHaveBeenCalledTimes(1);
-        });
-
         it('should redirect to the TTS page', () => {
           expect(router.navigate).toHaveBeenCalledTimes(1);
           expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
@@ -214,10 +201,6 @@ describe('TransactionTrackingActionUserActionComponent', () => {
 
         it('should stay at the same page', () => {
           expect(router.navigate).not.toHaveBeenCalled();
-        });
-
-        it('should update the transaction tracking store', () => {
-          expect(storeService.refresh).toHaveBeenCalledTimes(1);
         });
       });
     });
