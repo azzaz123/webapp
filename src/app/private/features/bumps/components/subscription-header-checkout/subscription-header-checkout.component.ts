@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { BumpPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { BUMP_NAMES, SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
+import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 @Component({
   selector: 'tsl-subscription-header-checkout',

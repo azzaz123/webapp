@@ -207,7 +207,7 @@ export class CheckoutComponent implements OnInit {
 
   private refreshCounters(productIndex: number): void {
     if (this.itemsWithProducts[productIndex].balance) {
-      const items = this.itemsWithProducts[productIndex].balance.reduce((a, b) => a + b.total - b.used, 0);
+      const items = this.itemsWithProducts[productIndex].balance.reduce((a, b) => a + b.total + b.extra - b.used, 0);
       const used = this.itemsSelected.filter(
         (items) => items.isFree && items.duration.subscriptionPackageType === this.itemsWithProducts[productIndex].subscription.type
       ).length;
