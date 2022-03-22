@@ -515,7 +515,7 @@ export class ListComponent implements OnInit, OnDestroy {
           windowClass: 'modal-standard',
         });
         this.visibilityService
-          .isAvailableToUseFreeBump(this.user.id, itemId)
+          .hasItemOrUserBalance(this.user.id, itemId)
           .subscribe((isFree) => (this.bumpSuggestionModalRef.componentInstance.isFreeBump = isFree));
         this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
           this.bumpSuggestionModalRef = null;
