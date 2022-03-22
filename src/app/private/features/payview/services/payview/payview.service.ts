@@ -56,6 +56,13 @@ export class PayviewService {
     );
   }
 
+  public get card(): Observable<CreditCard> {
+    return this.creditCardService.get().pipe(
+      take(1),
+      catchError(() => of(null))
+    );
+  }
+
   public getCosts(
     itemHash: string,
     price: Money,
@@ -122,13 +129,6 @@ export class PayviewService {
 
   public setUserPaymentPreferences(paymentId: string, method: PaymentMethod, useWallet: boolean): Observable<void> {
     return this.paymentService.updateUserPreferences(paymentId, method, useWallet);
-  }
-
-  private get card(): Observable<CreditCard> {
-    return this.creditCardService.get().pipe(
-      take(1),
-      catchError(() => of(null))
-    );
   }
 
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {

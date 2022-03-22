@@ -35,6 +35,7 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 
 import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
+import { CreditCard } from '@api/core/model';
 
 describe('PayviewService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
@@ -524,6 +525,27 @@ describe('PayviewService', () => {
       expect(result).toEqual(1);
       expect(paymentService.updateUserPreferences).toHaveBeenCalledTimes(1);
       expect(paymentService.updateUserPreferences).toHaveBeenCalledWith(fakePaymentId, fakePaymentMethod, false);
+    }));
+  });
+
+  describe('WHEN retrieving the card', () => {
+    beforeEach(() => {
+      spyOn(paymentsCreditCardService, 'get').and.callThrough();
+    });
+
+    it('should call to the server to get the corresponding information', fakeAsync(() => {
+      const fakeCreditCard: CreditCard = MOCK_CREDIT_CARD;
+      let result: CreditCard;
+
+      const subscription = service.card.pipe(delay(1)).subscribe((response: CreditCard) => {
+        subscription.unsubscribe();
+        result = response;
+      });
+
+      tick(1);
+
+      expect(result).toBe(MOCK_CREDIT_CARD);
+      expect(paymentsCreditCardService.get).toHaveBeenCalledTimes(1);
     }));
   });
 });
