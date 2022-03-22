@@ -6,6 +6,7 @@ $element-height: 128px;
   height: $element-height;
   background-color: $white;
   color: $blue-grey-1;
+  -webkit-tap-highlight-color: $blue-grey-5;
 
   &__user {
     min-width: 0;
@@ -28,5 +29,9 @@ $element-height: 128px;
 
   &__textPlaceholder {
     @include TextPlaceholder;
+  }
+
+  &:active {
+    background-color: $blue-grey-5;
   }
 }
