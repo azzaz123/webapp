@@ -51,10 +51,13 @@ export class PaymentsCreditCardService {
           );
         })
       )
-      .subscribe((creditCard) => {
-        this.creditCard = creditCard;
-        creditCardGetSubject.next(creditCard);
-      });
+      .subscribe(
+        (creditCard) => {
+          this.creditCard = creditCard;
+          creditCardGetSubject.next(creditCard);
+        },
+        (error) => creditCardGetSubject.error(error)
+      );
 
     return creditCardGetSubject.asObservable();
   }
