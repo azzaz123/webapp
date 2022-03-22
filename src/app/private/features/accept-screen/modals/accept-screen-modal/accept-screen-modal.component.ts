@@ -167,7 +167,7 @@ export class AcceptScreenModalComponent implements OnInit {
   }
 
   public trackClickOtherProfileEvent(): void {
-    this.acceptScreenTrackingEventsService.trackClickOtherProfile(getClickOtherProfileEventPropertiesFromSeller(this.properties.seller));
+    this.acceptScreenTrackingEventsService.trackClickOtherProfile(getClickOtherProfileEventPropertiesFromSeller(this.properties.buyer));
   }
 
   public trackClickHelpTransactionalEvent(): void {
