@@ -52,12 +52,15 @@ export class NotificationApiService {
     appboy.requestContentCardsRefresh();
   }
 
-  public logContentCardsDisplayed(id): void {
+  public logContentCardsDisplayed(): void {
     appboy.logContentCardsDisplayed();
+  }
+
+  public logContentCard(id): void {
     const cachedContentCard = this.filterNotificationCenterContentCards(appboy.getCachedContentCards().cards).find(
       (card) => card.id === id
     );
-    !cachedContentCard.viewed && appboy.logCardImpressions([cachedContentCard], true);
+    appboy.logCardImpressions([cachedContentCard], true);
   }
 
   public logCardClick(id: string): void {

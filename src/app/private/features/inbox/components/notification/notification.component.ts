@@ -33,7 +33,7 @@ export class NotificationComponent {
 
   public visibilityChangeHandler() {
     const { id } = this.notification;
-    this.notificationApiService.logContentCardsDisplayed(id);
+    this.notificationApiService.logContentCard(id);
   }
 
   public trackClickNotification(): void {
