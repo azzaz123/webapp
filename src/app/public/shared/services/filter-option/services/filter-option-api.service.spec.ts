@@ -210,7 +210,7 @@ describe('FilterOptionsApiService', () => {
           object_type_id: '100',
         };
 
-        service.getPhoneNAccessoriesBrandsAndModels(params).subscribe();
+        service.getPhoneNAccessoriesBrandsAndModelsByObjectTypeId(params).subscribe();
         expectGetHttpQuery(FILTER_OPTIONS_API_ENDPOINTS.PHONE_N_ACCESSORIES.BRAND_MODEL, params);
       });
     });
