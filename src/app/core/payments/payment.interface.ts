@@ -1,5 +1,7 @@
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Pack } from './pack';
+import { PaymentMethodDto } from '@api/shared/types/payment-method-dto.type';
+
 export interface PerkResponse {
   expire_date: number;
   create_date: number;
@@ -203,4 +205,9 @@ export interface CreditInfo {
 export interface PaymentIntents {
   token: string;
   status?: string;
+}
+
+export interface UserPaymentPreferences {
+  payment_method: PaymentMethodDto;
+  use_wallet: boolean;
 }

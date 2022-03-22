@@ -45,6 +45,13 @@
         <div class="PayviewModal__promotion">
           <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
         </div>
+        <div class="PayviewModal__payment">
+          <tsl-payview-payment-overview
+            [card]="payviewState.payment.card"
+            [methods]="payviewState.payment.methods"
+            [preferences]="payviewState.payment.preferences"
+          ></tsl-payview-payment-overview>
+        </div>
       </ng-template>
       <ng-template step>
         <tsl-delivery-address

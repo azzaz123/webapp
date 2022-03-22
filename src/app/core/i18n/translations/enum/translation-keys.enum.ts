@@ -210,4 +210,6 @@ export enum TRANSLATION_KEY {
   DELIVERY_MAP_LOCATION_POP_UP_DESCRIPTION = 'map_view_all_users_all_all_no_user_location_pop_up_description',
   DELIVERY_MAP_LOCATION_POP_UP_ADD_BUTTON = 'map_view_all_users_all_all_no_user_location_pop_up_add_button',
   DELIVERY_MAP_LOCATION_POP_UP_CANCEL_BUTTON = 'map_view_all_users_all_all_no_user_location_pop_up_cancel_button',
+  PAYVIEW_PAYMENT_ADD_CREDIT_CARD = 'pay_view_buyer_payment_method_credit_card_add_button',
+  PAYVIEW_PAYMENT_EDIT_CREDIT_CARD = 'pay_view_buyer_payment_method_credit_card_edit_button',
 }
