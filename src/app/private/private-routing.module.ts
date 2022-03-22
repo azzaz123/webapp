@@ -8,7 +8,6 @@ import { PRO_PATHS } from './features/pro/pro-routing-constants';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { PROFILE_PATHS } from './features/profile/profile-routing-constants';
 import { CATALOG_PATHS } from './features/catalog/catalog-routing-constants';
-import { MobileOnlyGuard } from '@core/guards/mobile-only.guard';
 
 const routes: Routes = [
   {
@@ -154,7 +153,6 @@ const routes: Routes = [
       },
       {
         path: PRIVATE_PATHS.YOU,
-        canLoad: [MobileOnlyGuard],
         loadChildren: () => import('@private/features/you/you.module').then((m) => m.YouModule),
       },
     ],
