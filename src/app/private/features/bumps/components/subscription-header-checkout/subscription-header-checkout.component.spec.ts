@@ -61,22 +61,43 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
       beforeEach(() => {
         component.subscription = MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0];
         component.balance = MOCK_BUMPS_PACKAGE_BALANCE_MAPPED[1].balance;
-        fixture.detectChanges();
       });
       it('Should show subscription into title', () => {
+        fixture.detectChanges();
         const title: HTMLElement = debugElement.query(By.css('.SubscriptionHeaderCheckout__title')).nativeElement;
 
         expect(title.textContent).toContain(component.subscription.category_name);
       });
       it('Should show counters', () => {
+        fixture.detectChanges();
         const counters = debugElement.queryAll(By.css('.SubscriptionHeaderCheckout__counter'));
 
         expect(counters.length).toEqual(component.balance.length);
         component.balance.forEach((bump, index) => {
           const counter: HTMLElement = counters[index].nativeElement;
           expect(counter.textContent).toContain(bump.total);
-          expect(counter.textContent).toContain(component.getBumpName(bump.type));
           expect(counter.textContent).toContain(bump.used);
+        });
+      });
+      describe('And is zone bump', () => {
+        describe('And is not provincial bump', () => {
+          it('should show local label', () => {
+            fixture.detectChanges();
+            const counter = debugElement.query(By.css('.SubscriptionHeaderCheckout__counter')).nativeElement;
+
+            expect(counter.textContent).toContain($localize`:@@web_cart_454:Local`);
+          });
+        });
+        describe('And is provincial bump', () => {
+          beforeEach(() => {
+            component.isProvincialBump = true;
+            fixture.detectChanges();
+          });
+          it('should show local label', () => {
+            const counter = debugElement.query(By.css('.SubscriptionHeaderCheckout__counter')).nativeElement;
+
+            expect(counter.textContent).toContain($localize`:@@web_cart_455:Provincial`);
+          });
         });
       });
     });
