@@ -264,7 +264,6 @@ export const ITEM_COUNTERS_DATA: ItemCounters = {
 export const ITEM_BUMP_FLAGS: ItemVisibilityFlags = {
   bumped: false,
   highlighted: false,
-  urgent: false,
   country_bumped: false,
   boosted: false,
 };
@@ -1131,7 +1130,6 @@ export const ITEMS_DATA_V3 = [
         expired: false,
         bumped: false,
         highlighted: false,
-        urgent: false,
       },
       sale_price: 12900.0,
       currency_code: 'EUR',
@@ -1167,7 +1165,6 @@ export const ITEMS_DATA_V3 = [
         expired: false,
         bumped: false,
         highlighted: false,
-        urgent: false,
       },
       sale_price: 7500.0,
       currency_code: 'EUR',
@@ -1203,7 +1200,6 @@ export const ITEMS_DATA_V3 = [
         expired: false,
         bumped: false,
         highlighted: false,
-        urgent: false,
       },
       sale_price: 7500.0,
       currency_code: 'EUR',
@@ -1239,7 +1235,6 @@ export const ITEMS_DATA_V3 = [
         expired: false,
         bumped: false,
         highlighted: false,
-        urgent: false,
       },
       sale_price: 7500.0,
       currency_code: 'EUR',
@@ -1404,7 +1399,6 @@ export const ITEMS_DATA_v3_FAVORITES = [
       visibility_flags: {
         bumped: false,
         highlighted: false,
-        urgent: false,
         country_bumped: false,
       },
       price: 10000,
@@ -1445,7 +1439,6 @@ export const ITEMS_DATA_v3_FAVORITES = [
       visibility_flags: {
         bumped: false,
         highlighted: false,
-        urgent: false,
         country_bumped: false,
       },
       price: 3399,
@@ -1473,19 +1466,19 @@ export const PURCHASES: Purchase[] = [
     item_id: '1',
     expiration_date: 1510221655715,
     purchase_name: 'countrybump',
-    visibility_flags: { bumped: false, highlighted: true, urgent: false },
+    visibility_flags: { bumped: false, highlighted: true },
   },
   {
     item_id: '2',
     expiration_date: 1510221346789,
     purchase_name: 'countrybump',
-    visibility_flags: { bumped: false, highlighted: true, urgent: false },
+    visibility_flags: { bumped: false, highlighted: true },
   },
   {
     item_id: '3',
     expiration_date: 1509874085135,
     purchase_name: 'countrybump',
-    visibility_flags: { bumped: true, highlighted: false, urgent: false },
+    visibility_flags: { bumped: true, highlighted: false },
   },
 ];
 

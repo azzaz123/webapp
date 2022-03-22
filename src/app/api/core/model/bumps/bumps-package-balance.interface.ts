@@ -12,4 +12,5 @@ export interface BumpPackageBalance {
   duration_days: number;
   total: number;
   used: number;
+  extra: number;
 }

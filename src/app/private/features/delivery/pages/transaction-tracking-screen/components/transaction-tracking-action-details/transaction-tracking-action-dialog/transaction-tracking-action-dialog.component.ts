@@ -16,7 +16,6 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
-import { TransactionTrackingScreenStoreService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 import { ActionNameAnalytics } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/action-name-analytics-type';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
@@ -37,7 +36,6 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
     private errorsService: ErrorsService,
     private router: Router,
     private route: ActivatedRoute,
-    private storeService: TransactionTrackingScreenStoreService,
     private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService,
     private deeplinkService: DeeplinkService
   ) {}
@@ -72,7 +70,6 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
       this.transactionTrackingService.sendUserAction(action.transactionId, action.name).subscribe(
         () => {
           this.trackEvent(action);
-          this.storeService.refresh(this.requestId);
           this.redirectToTTSIfInstructions();
         },
         () => {

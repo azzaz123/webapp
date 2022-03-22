@@ -12,6 +12,7 @@ import { ItemBySubscriptionResponse } from './dtos/items-by-subscription/items-s
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import { SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
 import { SORT_KEYS_MAPPER } from './dtos/items-by-subscription/sort.interface';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 
 export const PAGE_SIZE = 1000;
 @Injectable()
@@ -21,12 +22,18 @@ export class CatalogManagerApiService {
     [STATUS.INACTIVE]: [],
     [STATUS.SOLD]: [],
   };
-  constructor(private catalogManagerService: CatalogManagerHttpService, private subscriptionsService: SubscriptionsService) {}
+  constructor(
+    private catalogManagerService: CatalogManagerHttpService,
+    private subscriptionsService: SubscriptionsService,
+    private visibilityService: VisibilityApiService
+  ) {}
 
-  public getSlots(): Observable<SubscriptionSlot[]> {
-    return forkJoin([this.catalogManagerService.getSlots(), this.subscriptionsService.getSubscriptions(false)]).pipe(
-      map((values) => mapSlotsResponseToSlots(values[0], values[1]))
-    );
+  public getSlots(userId: string): Observable<SubscriptionSlot[]> {
+    return forkJoin([
+      this.catalogManagerService.getSlots(),
+      this.subscriptionsService.getSubscriptions(false),
+      this.visibilityService.getBalance(userId),
+    ]).pipe(map((values) => mapSlotsResponseToSlots(values[0], values[1], values[2])));
   }
 
   public itemsBySubscriptionType(

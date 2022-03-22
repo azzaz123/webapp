@@ -68,7 +68,7 @@
         <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
           <div class="col-3 ml-auto d-none d-md-flex align-items-center justify-content-center"
             *ngIf="!item.flags.pending && !item.flags.expired && !item.flags.onhold">
-            <div class="feature-action" [hidden]="item.sold || item.flags.onhold || item.flags.urgent">
+            <div class="feature-action" [hidden]="item.sold || item.flags.onhold">
               <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate"
                 [hidden]="selectMode">
                 <tsl-svg-icon src="/assets/icons/feature.svg"></tsl-svg-icon>

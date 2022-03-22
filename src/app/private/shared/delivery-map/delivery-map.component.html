@@ -13,7 +13,12 @@
     <span class="DeliveryMap__title">{{ officeInfo.name }}</span>
     <span class="DeliveryMap__description d-block" *ngFor="let hour of officeInfo.openingHours">{{ hour }}</span>
     <div class="w-100 d-flex DeliveryMap__selectButton justify-content-end mr-3">
-      <tsl-button className="btn btn-primary" (click)="selectOfficePreference()">Select</tsl-button>
+      <tsl-button
+        className="btn btn-primary"
+        (click)="selectOfficePreference()"
+        i18n="@@collection_point_map_all_users_all_all_details_pop_up_select_button"
+        >Select</tsl-button
+      >
     </div>
   </div>
 </div>
