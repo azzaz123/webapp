@@ -30,6 +30,7 @@ import { PayviewDeliveryPointComponent } from '@private/features/payview/modules
 import { PayviewDeliveryPointsComponent } from '@private/features/payview/modules/delivery/components/points/payview-delivery-points.component';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
+import { PayviewPaymentService } from '@private/features/payview/modules/payment/services/payview-payment.service';
 import { PayviewPromotionEditorComponent } from '@private/features/payview/modules/promotion/components/editor/payview-promotion-editor.component';
 import { PayviewPromotionOverviewComponent } from '@private/features/payview/modules/promotion/components/overview/payview-promotion-overview.component';
 import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
@@ -78,10 +79,29 @@ class FakeComponent extends PayviewModalComponent {
     activeModal: NgbActiveModal,
     customerHelpService: CustomerHelpService,
     deliveryCountries: DeliveryCountriesService,
-    promotionService: PayviewPromotionService
+    promotionService: PayviewPromotionService,
+    payviewService: PayviewPaymentService
   ) {
-    super(payviewStateManagementService, payviewDeliveryService, activeModal, customerHelpService, deliveryCountries, promotionService);
+    super(
+      payviewStateManagementService,
+      payviewDeliveryService,
+      activeModal,
+      customerHelpService,
+      deliveryCountries,
+      promotionService,
+      payviewService
+    );
   }
+}
+
+@Component({
+  selector: 'tsl-payview-payment-overview',
+  template: '',
+})
+class FakePayviewPaymentOverviewComponent {
+  @Input() public card;
+  @Input() public methods;
+  @Input() public preferences;
 }
 
 describe('PayviewModalComponent', () => {
@@ -95,8 +115,9 @@ describe('PayviewModalComponent', () => {
   const payviewModalSpinnerSelector: string = `${payviewModal}__spinner`;
   const payviewModalSummarySelector: string = `${payviewModal}__summary`;
   const payviewModalDeliverySelector: string = `${payviewModal}__delivery`;
-  const payviewModalPromotionSelector: string = `${payviewModal}__promotion`;
+  const payviewModalPaymentSelector: string = `${payviewModal}__payment`;
   const payviewModalPickUpPointSelector: string = `${payviewModal}__pickUpPointMap`;
+  const payviewModalPromotionSelector: string = `${payviewModal}__promotion`;
   const payviewDeliveryOverviewSelector: string = 'tsl-payview-delivery-overview';
   const payviewPromotionOverviewSelector: string = 'tsl-payview-promotion-overview';
   const payviewSummaryOverviewSelector: string = 'tsl-payview-summary-overview';
@@ -121,6 +142,7 @@ describe('PayviewModalComponent', () => {
         FakeComponent,
         FakeDeliveryAddressComponent,
         FakeDeliveryMapComponent,
+        FakePayviewPaymentOverviewComponent,
         PayviewDeliveryHeaderComponent,
         PayviewDeliveryOverviewComponent,
         PayviewDeliveryPointComponent,
@@ -166,6 +188,7 @@ describe('PayviewModalComponent', () => {
         PaymentsWalletsService,
         PaymentsWalletsHttpService,
         PayviewDeliveryService,
+        PayviewPaymentService,
         PayviewPromotionService,
         PayviewStateManagementService,
         PayviewService,
@@ -285,6 +308,12 @@ describe('PayviewModalComponent', () => {
           expect(promotionBlock).toBeTruthy();
         });
 
+        it('should show the payment block', () => {
+          const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+          expect(paymentBlock).toBeTruthy();
+        });
+
         it('should not show the loading animation', fakeAsync(() => {
           const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSpinnerSelector));
           expect(loadingContainerRef).toBeFalsy();
@@ -353,6 +382,12 @@ describe('PayviewModalComponent', () => {
             expect(target).toBeFalsy();
           });
 
+          it('should not show the payment block', () => {
+            const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+            expect(paymentBlock).toBeFalsy();
+          });
+
           it('should not show the pick-up block', () => {
             const pickUpPointMapBlock = debugElement.query(By.css(payviewModalPickUpPointSelector));
 
@@ -387,6 +422,12 @@ describe('PayviewModalComponent', () => {
             const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
 
             expect(target).toBeFalsy();
+          });
+
+          it('should not show the payment block', () => {
+            const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+            expect(paymentBlock).toBeFalsy();
           });
 
           it('should not show the delivery address', () => {
@@ -461,6 +502,12 @@ describe('PayviewModalComponent', () => {
             const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
 
             expect(target).toBeFalsy();
+          });
+
+          it('should not show the payment block', () => {
+            const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+            expect(paymentBlock).toBeFalsy();
           });
 
           it('should not show the delivery address', () => {
@@ -845,6 +892,12 @@ describe('PayviewModalComponent', () => {
           const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
 
           expect(target).toBeFalsy();
+        });
+
+        it('should not show the payment block', () => {
+          const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+          expect(paymentBlock).toBeFalsy();
         });
 
         it('should not show the delivery address', () => {
