@@ -3,6 +3,7 @@ import { RouterModule, Route } from '@angular/router';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from './public-routing-constants';
 import { PublicComponent } from './public.component';
+import { urlMatcher } from './public-routing.utils';
 
 const routes: Route[] = [
   {
@@ -34,6 +35,10 @@ const routes: Route[] = [
       {
         path: PUBLIC_PATHS.NOT_FOUND,
         loadChildren: () => import('./features/error/error.module').then((m) => m.ErrorModule),
+      },
+      {
+        matcher: urlMatcher,
+        loadChildren: () => import('./features/parity-screen/parity-screen.module').then((m) => m.ParityScreenModule),
       },
     ],
   },
