@@ -34,7 +34,7 @@ describe('PayviewPaymentService', () => {
   });
 
   describe('WHEN edit the credit card', () => {
-    it('should send a notification to subscribers', fakeAsync(() => {
+    it('should send only one notification to subscribers', fakeAsync(() => {
       let result: number = 0;
       const expected: number = 1;
       const subscription = service.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
