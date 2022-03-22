@@ -3,7 +3,6 @@ import { Item } from '../item/item';
 export interface VisibilityFlags {
   bumped: boolean;
   highlighted: boolean;
-  urgent: boolean;
 }
 
 export interface Purchase {
