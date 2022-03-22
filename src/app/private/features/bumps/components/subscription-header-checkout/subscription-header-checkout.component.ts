@@ -11,17 +11,18 @@ import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 export class SubscriptionHeaderCheckoutComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() balance: BumpPackageBalance[];
+  @Input() isProvincialBump: boolean;
 
   public getBumpName(bumpType: BUMP_TYPE): string {
     switch (bumpType) {
       case BUMP_TYPE.ZONE_BUMP:
-        return $localize`:@@web_cart_454:Local`;
+        return this.isProvincialBump ? $localize`:@@web_cart_455:Provincial` : $localize`:@@web_cart_454:Local`;
       case BUMP_TYPE.CITY_BUMP:
         return $localize`:@@web_cart_663:City`;
       case BUMP_TYPE.COUNTRY_BUMP:
         return $localize`:@@web_cart_664:Country`;
       default:
-        return '';
+        return bumpType;
     }
   }
 }
