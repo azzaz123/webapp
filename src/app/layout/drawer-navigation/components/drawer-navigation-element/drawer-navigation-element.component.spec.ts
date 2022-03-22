@@ -30,7 +30,7 @@ describe('DrawerNavigationElementComponent', () => {
     it('should show the proper icon', () => {
       fixture.detectChanges();
 
-      const icon = fixture.debugElement.query(By.css('tsl-svg-icon')).componentInstance;
+      const icon = fixture.debugElement.query(By.directive(SvgIconStubComponent)).componentInstance;
 
       expect(icon.src).toEqual(MOCK_DRAWER_NAVIGATION_ELEMENT.icon);
     });

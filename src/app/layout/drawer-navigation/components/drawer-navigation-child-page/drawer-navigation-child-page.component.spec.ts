@@ -72,7 +72,7 @@ describe('DrawerNavigationChildPageComponent', () => {
     });
 
     it('should render all navigation elements', () => {
-      const navigationElements = fixture.debugElement.queryAll(By.css('tsl-drawer-navigation-element'));
+      const navigationElements = fixture.debugElement.queryAll(By.directive(DrawerNavigationElementStubComponent));
 
       expect(navigationElements.length).toEqual(MOCK_NAVIGATION_ELEMENTS.length);
     });

@@ -6,7 +6,7 @@ $header-height: 48px;
   &__header {
     background-color: $white;
     height: $header-height;
-    font-weight: bold;
+    font-weight: $font-weight-chunky;
   }
 
   &__back {

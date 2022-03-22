@@ -39,7 +39,7 @@ describe('DrawerNavigationComponent', () => {
 
   describe('when the component is rendered', () => {
     it('should show the profile navigation element', () => {
-      const profileElement = fixture.debugElement.query(By.css('tsl-drawer-navigation-profile-element')).componentInstance;
+      const profileElement = fixture.debugElement.query(By.directive(DrawerNavigationProfileElementStubComponent)).componentInstance;
 
       expect(profileElement).toBeTruthy();
       expect(profileElement.element).toEqual(MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT);
@@ -60,7 +60,7 @@ describe('DrawerNavigationComponent', () => {
     it('should show navigation elements per each of the sections', () => {
       const expectedNavigationElement = MOCK_DRAWER_NAVIGATION_SECTIONS[0].elements[0];
 
-      const navigationElement = fixture.debugElement.query(By.css('tsl-drawer-navigation-element')).componentInstance;
+      const navigationElement = fixture.debugElement.query(By.directive(DrawerNavigationElementStubComponent)).componentInstance;
 
       expect(navigationElement.element).toEqual(expectedNavigationElement);
     });

@@ -61,7 +61,7 @@ describe('DrawerNavigationProfileElementComponent', () => {
         component.element = MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT;
 
         fixture.detectChanges();
-        const userAvatar = fixture.debugElement.query(By.css('tsl-user-avatar')).componentInstance;
+        const userAvatar = fixture.debugElement.query(By.directive(UserAvatarStubComponent)).componentInstance;
 
         expect(userAvatar.imageUrl).toEqual(MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT.avatar);
       });
@@ -70,7 +70,7 @@ describe('DrawerNavigationProfileElementComponent', () => {
         component.element = MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT;
 
         fixture.detectChanges();
-        const userStars = fixture.debugElement.query(By.css('tsl-stars')).componentInstance;
+        const userStars = fixture.debugElement.query(By.directive(StarsStubComponent)).componentInstance;
 
         expect(userStars.stars).toEqual(MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT.reviews);
       });
@@ -89,7 +89,7 @@ describe('DrawerNavigationProfileElementComponent', () => {
           component.element = { ...MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT, professional: true };
 
           fixture.detectChanges();
-          const proBadge = fixture.debugElement.query(By.css('tsl-pro-badge')).nativeElement;
+          const proBadge = fixture.debugElement.query(By.directive(ProBadgeStubComponent)).nativeElement;
 
           expect(proBadge).toBeTruthy();
         });

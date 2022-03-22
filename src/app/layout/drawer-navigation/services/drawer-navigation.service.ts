@@ -17,11 +17,11 @@ import {
 export class DrawerNavigationService {
   constructor(private userService: UserService) {}
 
-  get navigationSections$(): Observable<DrawerNavigationSection[]> {
+  public get navigationSections$(): Observable<DrawerNavigationSection[]> {
     return of(Object.values(DRAWER_NAVIGATION_SECTIONS_COLLECTION));
   }
 
-  get profileNavigationElement$(): Observable<DrawerNavigationProfileElement> {
+  public get profileNavigationElement$(): Observable<DrawerNavigationProfileElement> {
     return combineLatest([this.userService.user$, this.userService.getStats()]).pipe(
       map(([user, stats]) => this.mapProfileNavigationElement(user, stats))
     );

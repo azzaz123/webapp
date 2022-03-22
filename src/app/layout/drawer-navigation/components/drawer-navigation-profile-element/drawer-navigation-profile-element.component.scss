@@ -16,9 +16,9 @@ $element-height: 128px;
   }
 
   &__avatarPlaceholder {
-    flex-shrink: 0;
     @include AvatarPlaceholder;
     @include square(80px);
+    flex-shrink: 0;
   }
 
   &__usernamePlaceholder {
