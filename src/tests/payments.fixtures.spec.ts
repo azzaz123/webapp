@@ -52,7 +52,7 @@ export const PURCHASES_RESPONSE: Purchase[] = [
     national: true,
     bump: false,
     autorenew: false,
-    visibility_flags: { bumped: true, highlighted: false, urgent: false },
+    visibility_flags: { bumped: true, highlighted: false },
   },
   {
     item_id: '2',
@@ -62,7 +62,7 @@ export const PURCHASES_RESPONSE: Purchase[] = [
     national: false,
     bump: true,
     autorenew: true,
-    visibility_flags: { bumped: true, highlighted: false, urgent: false },
+    visibility_flags: { bumped: true, highlighted: false },
   },
   {
     item_id: '3',
@@ -72,7 +72,7 @@ export const PURCHASES_RESPONSE: Purchase[] = [
     national: true,
     bump: false,
     autorenew: true,
-    visibility_flags: { bumped: true, highlighted: false, urgent: false },
+    visibility_flags: { bumped: true, highlighted: false },
   },
 ];
 

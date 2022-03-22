@@ -16,7 +16,7 @@ describe('CatalogStatusNavbarComponent', () => {
     autorenew_alert: 0,
     autorenew_scheduled: {},
     items_scheduled_purchases: { citybump: 2, countrybump: 3, zonebump: 1 },
-    purchased: { citybump: 1, countrybump: 2, urgent: 1, zonebump: 1 },
+    purchased: { citybump: 1, countrybump: 2, zonebump: 1 },
   };
 
   const MOCK_STATUS_CITY: ScheduledStatus = {
@@ -59,7 +59,7 @@ describe('CatalogStatusNavbarComponent', () => {
       component.ngOnInit();
 
       expect(paymentService.getStatus).toHaveBeenCalled();
-      expect(component.bumpsCounter).toBe(11);
+      expect(component.bumpsCounter).toBe(10);
     });
 
     it('should set the bumps counter when only 1 bump type is present', () => {

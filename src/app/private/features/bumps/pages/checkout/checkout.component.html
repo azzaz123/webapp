@@ -19,6 +19,7 @@
             <tsl-subscription-header-checkout
               *ngIf="user.featured"
               [subscription]="itemsBySubscription.subscription"
+              [balance]="itemsBySubscription.balance"
             ></tsl-subscription-header-checkout>
             <tsl-checkout-item
               *ngFor="let item of itemsBySubscription.items"

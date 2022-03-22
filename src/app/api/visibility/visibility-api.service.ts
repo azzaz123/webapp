@@ -40,7 +40,10 @@ export class VisibilityApiService {
   ) {}
 
   public getBalance(userId: string): Observable<BumpsPackageBalance[]> {
-    return this.bumpsHttpService.getBalance(userId).pipe(map(mapBalance));
+    return this.bumpsHttpService.getBalance(userId).pipe(
+      map(mapBalance),
+      catchError(() => of([]))
+    );
   }
 
   public isAvailableToUseFreeBump(userId: string, itemId: string): Observable<boolean> {
@@ -50,16 +53,18 @@ export class VisibilityApiService {
     );
   }
 
-  public getItemsWithProductsAndSubscriptionBumps(ids: string[]): Observable<ItemsBySubscription[]> {
+  public getItemsWithProductsAndSubscriptionBumps(ids: string[], userId: string): Observable<ItemsBySubscription[]> {
     return forkJoin([
       this.bumpsHttpService.getItemsWithAvailableProducts(ids).pipe(map(mapItemsWithProducts)),
       this.subscriptionService.getSubscriptions(),
+      this.getBalance(userId),
     ]).pipe(
-      map(([itemWithProducts, subscriptions]) => {
+      map(([itemWithProducts, subscriptions, balance]) => {
         const itemsByProducts = itemWithProducts.map((item) =>
           mapItemWithProductsAndSubscriptionBumps(
             item,
-            this.subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId)
+            this.subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId),
+            balance
           )
         );
         const itemsBySubscriptionType: Record<string, ItemWithProducts[]> = groupBy(itemsByProducts, 'subscription.type');
@@ -71,15 +76,14 @@ export class VisibilityApiService {
               items: itemsBySubscriptionType[key],
               subscription: null,
               availableFreeBumps: null,
+              balance: [],
             });
           } else {
             itemsBySubscription.unshift({
               items: itemsBySubscriptionType[key],
               subscription: itemsBySubscriptionType[key][0].subscription,
-              availableFreeBumps: itemsBySubscriptionType[key][0].subscription.selected_tier.bumps.reduce(
-                (a, b) => a + b.quantity - b.used,
-                0
-              ),
+              balance: itemsBySubscriptionType[key][0].balance,
+              availableFreeBumps: itemsBySubscriptionType[key][0].balance.reduce((a, b) => a + b.total + b.extra - b.used, 0),
             });
           }
         }

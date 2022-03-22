@@ -172,7 +172,6 @@ describe('ListComponent', () => {
               bulkReserve() {},
               purchaseProducts() {},
               selectItem() {},
-              getUrgentProducts() {},
               get() {
                 return of(MOCK_ITEM_V3);
               },

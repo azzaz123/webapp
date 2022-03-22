@@ -19,7 +19,6 @@ export enum OUTPUT_TYPE {
 export enum UPLOAD_ACTION {
   created = 'created',
   updated = 'updated',
-  urgent = 'urgent',
   createdOnHold = 'createdOnHold',
 }
 

@@ -260,19 +260,11 @@ export class Item implements Model {
   }
 
   get featured() {
-    return this.flags ? this.flags.bumped || this.flags.highlighted || this.flags.urgent : false;
+    return this.flags ? this.flags.bumped || this.flags.highlighted : false;
   }
 
   get deliveryInfo(): DeliveryInfo {
     return this._deliveryInfo;
-  }
-
-  get urgent(): boolean {
-    return this._flags ? this._flags.urgent : false;
-  }
-
-  set urgent(value: boolean) {
-    this._flags.urgent = value;
   }
 
   get itemType(): string {

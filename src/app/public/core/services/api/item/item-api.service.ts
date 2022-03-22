@@ -66,7 +66,6 @@ export class ItemApiService {
     return of({
       bumped: false,
       highlighted: false,
-      urgent: false,
       country_bumped: false,
       boosted: false,
     });

@@ -15,9 +15,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { InboxConversation } from '@private/features/chat/core/model';
+import { InboxConversation, InboxItem } from '@private/features/chat/core/model';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
+import { SCREEN_IDS } from '@core/analytics/analytics-constants';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
@@ -27,7 +29,8 @@ export class DeliveryConversationContextAsBuyerService {
     private buyerRequestsApiService: BuyerRequestsApiService,
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
   ) {}
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -56,6 +59,7 @@ export class DeliveryConversationContextAsBuyerService {
 
   public handleBannerCTAClick(conversation: InboxConversation, action: DELIVERY_BANNER_ACTION): void {
     if (action === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
+      this.trackClickBannerBuy(conversation.item);
       return this.redirectToPayview(conversation);
     }
 
@@ -108,5 +112,14 @@ export class DeliveryConversationContextAsBuyerService {
 
   private openAwarenessModal(): void {
     this.modalService.open(TRXAwarenessModalComponent);
+  }
+
+  private trackClickBannerBuy(item: InboxItem): void {
+    this.deliveryBannerTrackingEventsService.trackClickBannerBuy({
+      itemId: item.id,
+      categoryId: item.categoryId,
+      screenId: SCREEN_IDS.Chat,
+      itemPrice: item.price.amount,
+    });
   }
 }
