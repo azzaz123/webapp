@@ -9,6 +9,7 @@ import { UuidService } from '@core/uuid/uuid.service';
 import {
   ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED_BY_SUBSCRIPTION_NO_SUB,
   ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
+  MOCK_BUMP_PACKAGE_RESPONSE,
   MOCK_BUMPS_PACKAGE_BALANCE,
   MOCK_BUMPS_PACKAGE_BALANCE_MAPPED,
 } from '@fixtures/bump-package.fixtures.spec';
@@ -84,7 +85,7 @@ describe('VisibilityApiService', () => {
 
   describe('when asked to retrieve bumps package balance', () => {
     it('should return domain bumps package balance formatted', () => {
-      spyOn(httpService, 'getBalance').and.returnValue(of(MOCK_BUMPS_PACKAGE_BALANCE));
+      spyOn(httpService, 'getBalance').and.returnValue(of(MOCK_BUMP_PACKAGE_RESPONSE));
       let response: BumpsPackageBalance[];
       const userId = '123';
 
@@ -141,15 +142,18 @@ describe('VisibilityApiService', () => {
       let expectedResponse: ItemsBySubscription[];
       spyOn(httpService, 'getItemsWithAvailableProducts').and.returnValue(of(ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE));
       spyOn(subscriptionService, 'getSubscriptions').and.returnValue(of(MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED));
+      spyOn(httpService, 'getBalance').and.returnValue(of([]));
+      const userId = '123';
 
-      service.getItemsWithProductsAndSubscriptionBumps(['1']).subscribe((response) => {
+      service.getItemsWithProductsAndSubscriptionBumps(['1'], userId).subscribe((response) => {
         expectedResponse = response;
       });
 
       expect(httpService.getItemsWithAvailableProducts).toHaveBeenCalledTimes(1);
       expect(httpService.getItemsWithAvailableProducts).toHaveBeenCalledWith(['1']);
       expect(subscriptionService.getSubscriptions).toHaveBeenCalledTimes(1);
-      expect(subscriptionService.getSubscriptions).toHaveBeenCalledWith();
+      expect(httpService.getBalance).toHaveBeenCalledWith(userId);
+      expect(httpService.getBalance).toHaveBeenCalledTimes(1);
       expect(expectedResponse).toEqual(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED_BY_SUBSCRIPTION_NO_SUB);
     });
   });

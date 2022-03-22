@@ -164,7 +164,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems();
     this.getCreditInfo();
 
-    this.catalogManagerService.getSlots().subscribe((subscriptionSlots) => {
+    this.catalogManagerService.getSlots(this.user.id).subscribe((subscriptionSlots) => {
       this.setSubscriptionSlots(subscriptionSlots);
     });
 
