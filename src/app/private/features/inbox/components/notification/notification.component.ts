@@ -31,7 +31,7 @@ export class NotificationComponent {
     }
   }
 
-  public visibilityChangeHandler(event) {
+  public visibilityChangeHandler() {
     const { id } = this.notification;
     this.notificationApiService.logContentCardsDisplayed(id);
   }

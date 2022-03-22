@@ -59,11 +59,10 @@ describe('NotificationApiService', () => {
 
   describe('When asked to log that notification center is displayed to the user', () => {
     it('should inform appboy and ask immediate data flush to avoid redirect issues', () => {
-      service.logContentCardsDisplayed();
+      service.logContentCardsDisplayed(notificationsDtos[0].id);
       expect(appboy.logContentCardsDisplayed).toHaveBeenCalledTimes(1);
       expect(appboy.logCardImpressions).toHaveBeenCalledTimes(1);
       expect(appboy.logCardImpressions).toHaveBeenCalledWith([notificationsDtos[0]], true);
-      expect(appboy.requestImmediateDataFlush).toHaveBeenCalledTimes(1);
     });
   });
 

@@ -76,9 +76,6 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
 import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal.module';
 import { ItemRouteDirective } from './item-route/item-route.directive';
 import { DeliveryDevelopmentDirective } from './directives/delivery-development/delivery-development.directive';
-import { EnterTheViewportNotifierDirective } from '@shared/directives/enter-viewport-notifier/enter-viewport-notifier';
-
-// import { EnterTheViewportNotifierDirective } from "./directives/enter-viewport-notifier/enter-viewport-notifier";
 
 @NgModule({
   imports: [
@@ -174,7 +171,6 @@ import { EnterTheViewportNotifierDirective } from '@shared/directives/enter-view
     ConfirmationModalModule,
     ItemRouteDirective,
     RouterLinkDirectiveStub,
-    EnterTheViewportNotifierDirective,
   ],
   declarations: [
     RestrictInputDirective,
@@ -222,7 +218,6 @@ import { EnterTheViewportNotifierDirective } from '@shared/directives/enter-view
     ItemRouteDirective,
     DeliveryDevelopmentDirective,
     LocationSelectorModalComponent,
-    EnterTheViewportNotifierDirective,
   ],
   providers: [DecimalPipe, LinkTransformPipe, ListingLimitService],
   entryComponents: [
