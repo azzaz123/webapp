@@ -7,4 +7,4 @@ export const BUMPS_PACKAGE_USE = `${environment.baseUrl}api/v3/visibility/bumps`
 
 export const ITEMS_WITH_PRODUCTS = `${environment.baseUrl}${WEB_ITEMS_API_URL}/available-visibility-products`;
 
-export const ITEM_BUMPS_PACKAGE_BALANCE = (userId: string) => `${environment.baseUrl}api/v3/visibility/bumps/${userId}/items/check-balance`;
+export const ITEMS_CHECK_BUMP_BALANCE = (userId: string) => `${environment.baseUrl}api/v3/visibility/bumps/${userId}/items/check-balance`;

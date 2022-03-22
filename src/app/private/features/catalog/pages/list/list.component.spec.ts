@@ -73,6 +73,7 @@ import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component'
 import { MeApiService } from '@api/me/me-api.service';
 import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -277,6 +278,14 @@ describe('ListComponent', () => {
             useValue: {
               getItems() {
                 return of({ list: [MOCK_ITEM, MOCK_ITEM], paginationParameter: '20' });
+              },
+            },
+          },
+          {
+            provide: VisibilityApiService,
+            useValue: {
+              hasItemOrUserBalance() {
+                return of(true);
               },
             },
           },
