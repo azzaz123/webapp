@@ -18,7 +18,6 @@ export interface SearchBaseItemResponse {
     bumped: boolean;
     country_bumped: boolean;
     highlighted: boolean;
-    urgent: boolean;
   };
   user: {
     id: string;

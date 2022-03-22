@@ -38,8 +38,7 @@ export class CatalogStatusNavbarComponent implements OnInit {
         const cityBump = status.purchased.citybump ? status.purchased.citybump : 0;
         const zoneBump = status.purchased.zonebump ? status.purchased.zonebump : 0;
         const countryBump = status.purchased.countrybump ? status.purchased.countrybump : 0;
-        const urgent = status.purchased.urgent ? status.purchased.urgent : 0;
-        this.bumpsCounter = cityBump + zoneBump + countryBump + urgent;
+        this.bumpsCounter = cityBump + zoneBump + countryBump;
       }
       if (status.items_scheduled_purchases) {
         const cityBump = status.items_scheduled_purchases.citybump ? status.items_scheduled_purchases.citybump : 0;

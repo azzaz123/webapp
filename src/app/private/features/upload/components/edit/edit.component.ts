@@ -18,7 +18,6 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
 
   public item: Item;
-  public urgentPrice: string = null;
   public itemTypes: typeof ITEM_TYPES = ITEM_TYPES;
   public isReactivation: boolean = false;
   public isActivateShipping: boolean = false;

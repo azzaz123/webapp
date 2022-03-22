@@ -90,7 +90,6 @@ export interface ItemProResponse {
 export interface ItemVisibilityFlags {
   bumped: boolean;
   highlighted: boolean;
-  urgent: boolean;
   country_bumped: boolean;
   boosted: boolean;
 }
@@ -169,7 +168,6 @@ export interface Purchase {
   visibility_flags: {
     bumped: boolean;
     highlighted: boolean;
-    urgent: boolean;
   };
 }
 
@@ -307,7 +305,6 @@ export interface ItemFlags {
   review_done?: boolean;
   bumped?: boolean;
   highlighted?: boolean;
-  urgent?: boolean;
   bump_type?: string;
   onhold?: boolean;
   notAvailable?: boolean;

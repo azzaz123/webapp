@@ -80,7 +80,7 @@ export class ItemService {
     featured: [],
   };
 
-  private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
+  private bumpTypes = ['countrybump', 'citybump', 'zonebump'];
 
   constructor(private http: HttpClient, private i18n: I18nService, private uuidService: UuidService, private eventService: EventService) {}
 
@@ -210,7 +210,6 @@ export class ItemService {
         if (purchase.visibility_flags) {
           itemsData[index].flags.bumped = purchase.visibility_flags.bumped;
           itemsData[index].flags.highlighted = purchase.visibility_flags.highlighted;
-          itemsData[index].flags.urgent = purchase.visibility_flags.urgent;
         }
       }
     });

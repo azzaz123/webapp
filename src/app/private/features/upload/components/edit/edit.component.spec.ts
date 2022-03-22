@@ -62,12 +62,6 @@ describe('EditComponent', () => {
             },
           },
           {
-            provide: ItemService,
-            useValue: {
-              getUrgentProducts() {},
-            },
-          },
-          {
             provide: Router,
             useClass: class MockRouter {
               get url() {

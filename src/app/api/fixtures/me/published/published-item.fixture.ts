@@ -75,7 +75,6 @@ export const mappedPublishedItemWithBumpsFixture: Item = new Item(
     bump_type: `${publishedItemFixture.bump?.type}bump`,
     onhold: publishedItemFixture.listing_limit.exceeded,
     highlighted: PURCHASES[0].visibility_flags.highlighted,
-    urgent: PURCHASES[0].visibility_flags.urgent,
   },
   undefined,
   undefined,
