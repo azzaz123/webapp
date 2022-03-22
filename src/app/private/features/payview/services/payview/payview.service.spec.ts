@@ -24,7 +24,9 @@ import { MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY } from '@api/fixtures/payment
 import { MOCK_PAYVIEW_ITEM } from '@fixtures/private/delivery/payview/payview-item.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { Money } from '@api/core/model/money.interface';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsCreditCardService } from '@api/payments/cards';
+import { PaymentService } from '@core/payments/payment.service';
 import { PaymentsPaymentMethodsService } from '@api/payments/payment-methods/payments-payment-methods.service';
 import { PaymentsUserPaymentPreferencesService } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
@@ -44,6 +46,7 @@ describe('PayviewService', () => {
   let deliveryBuyerCalculatorService: DeliveryBuyerCalculatorService;
   let deliveryCostsService: DeliveryCostsService;
   let itemService: ItemService;
+  let paymentService: PaymentService;
   let paymentsCreditCardService: PaymentsCreditCardService;
   let paymentsPaymentMethodsService: PaymentsPaymentMethodsService;
   let paymentsUserPaymentPreferencesService: PaymentsUserPaymentPreferencesService;
@@ -101,6 +104,14 @@ describe('PayviewService', () => {
           },
         },
         {
+          provide: PaymentService,
+          useValue: {
+            updateUserPreferences() {
+              return of(null);
+            },
+          },
+        },
+        {
           provide: PaymentsCreditCardService,
           useValue: {
             get() {
@@ -143,6 +154,7 @@ describe('PayviewService', () => {
     deliveryBuyerCalculatorService = TestBed.inject(DeliveryBuyerCalculatorService);
     deliveryCostsService = TestBed.inject(DeliveryCostsService);
     itemService = TestBed.inject(ItemService);
+    paymentService = TestBed.inject(PaymentService);
     paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
     paymentsPaymentMethodsService = TestBed.inject(PaymentsPaymentMethodsService);
     paymentsUserPaymentPreferencesService = TestBed.inject(PaymentsUserPaymentPreferencesService);
@@ -487,6 +499,31 @@ describe('PayviewService', () => {
       expect(result).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS);
       expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledTimes(1);
       expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledWith(fakeItemHash);
+    }));
+  });
+
+  describe('WHEN updating the user payment preferences', () => {
+    beforeEach(() => {
+      spyOn(paymentService, 'updateUserPreferences').and.callThrough();
+    });
+
+    it('should call to the payment server to update the corresponding preferences', fakeAsync(() => {
+      const fakePaymentId: string = '0123-4567-8901';
+      const fakePaymentMethod: PaymentMethod = PaymentMethod.CREDIT_CARD;
+      let result: number = 0;
+
+      const subscription = service
+        .setUserPaymentPreferences(fakePaymentId, fakePaymentMethod, false)
+        .pipe(delay(1))
+        .subscribe(() => {
+          subscription.unsubscribe();
+          result++;
+        });
+      tick(1);
+
+      expect(result).toEqual(1);
+      expect(paymentService.updateUserPreferences).toHaveBeenCalledTimes(1);
+      expect(paymentService.updateUserPreferences).toHaveBeenCalledWith(fakePaymentId, fakePaymentMethod, false);
     }));
   });
 });

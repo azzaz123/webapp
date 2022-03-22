@@ -13,7 +13,9 @@ import {
   MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION,
 } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
+import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
+import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
 import { PAYVIEW_EVENT_TYPE } from '@private/features/payview/enums/payview-event-type.enum';
 import { PayviewError } from '@private/features/payview/interfaces/payview-error.interface';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
@@ -41,6 +43,7 @@ describe('PayviewStateManagementService', () => {
             getCurrentState(value: string): Observable<PayviewState> {
               return of(MOCK_PAYVIEW_STATE);
             },
+            setUserPaymentPreferences() {},
           },
         },
       ],
@@ -632,6 +635,48 @@ describe('PayviewStateManagementService', () => {
         const expected: PayviewError = { code: null, message: fakeError.message };
 
         expect(result).toEqual(expected);
+      }));
+    });
+
+    describe('WHEN selecting the payment method', () => {
+      const fakeCosts: DeliveryBuyerCalculatorCosts = { ...MOCK_PAYVIEW_STATE.costs };
+      const selectedPaymentMethod: PaymentsPaymentMethod = {
+        ...MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0],
+      };
+      let userPreferencesSpy;
+
+      beforeEach(fakeAsync(() => {
+        userPreferencesSpy = spyOn(payviewService, 'setUserPaymentPreferences').and.returnValue(of(null).pipe(delay(1)));
+        spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
+
+        service.setPaymentMethod(selectedPaymentMethod);
+
+        tick(1);
+      }));
+
+      it('should call to payview service in order to save the payment method', fakeAsync(() => {
+        let result: number = 0;
+
+        expect(userPreferencesSpy).toHaveBeenCalledTimes(1);
+        expect(userPreferencesSpy).toHaveBeenCalledWith(
+          payviewState.payment.preferences.preferences.id,
+          selectedPaymentMethod.method,
+          false
+        );
+      }));
+
+      it('should call to payview service in order to refresh costs', fakeAsync(() => {
+        expect(payviewService.getCosts).toHaveBeenCalledTimes(1);
+        expect(payviewService.getCosts).toHaveBeenCalledWith(
+          payviewState.itemDetails.itemHash,
+          payviewState.itemDetails.price,
+          undefined,
+          payviewState.delivery.methods.deliveryMethods[1]
+        );
+      }));
+
+      it('should update the payment method of the payview state', fakeAsync(() => {
+        expect(payviewState.payment.preferences.preferences.paymentMethod).toStrictEqual(selectedPaymentMethod.method);
       }));
     });
   });
