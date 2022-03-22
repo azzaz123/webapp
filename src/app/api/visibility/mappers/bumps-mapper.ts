@@ -1,16 +1,16 @@
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { BumpPackageBalance, BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { DurationMapped, ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { Item } from '@core/item/item';
 import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
 import { SubscriptionsResponse, SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
+import { BumpsPackageBalanceDTO, BumpsPackageBalanceResponse } from '../dtos/bumps/bumps-package-balance.interface';
 import { BumpPackageUseDTO, BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
 
-export function mapBalance(bumps: BumpsPackageBalanceDTO[]): BumpsPackageBalance[] {
-  return bumps.map(mapBump);
+export function mapBalance(bumps: BumpsPackageBalanceResponse): BumpsPackageBalance[] {
+  return bumps.user_balance.map(mapBump);
 }
 
 function mapBump(bump: BumpsPackageBalanceDTO): BumpsPackageBalance {
@@ -47,26 +47,37 @@ function mapItemWithProducts(itemWithProducts: ItemsWithAvailableProductsRespons
     products: itemWithProducts.productList,
     isProvincialBump: !itemWithProducts.productList.find((product) => product.name === BUMP_TYPE.CITY_BUMP),
     subscription: null,
+    balance: [],
   };
 }
 
 export function mapItemsWithProductsAndSubscriptionBumps(
   itemsWithProducts: ItemWithProducts[],
   subscriptions: SubscriptionsResponse[],
-  subscriptionService: SubscriptionsService
+  subscriptionService: SubscriptionsService,
+  balance: BumpsPackageBalance[]
 ): ItemWithProducts[] {
   return itemsWithProducts.map((item) =>
-    mapItemWithProductsAndSubscriptionBumps(item, subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId))
+    mapItemWithProductsAndSubscriptionBumps(
+      item,
+      subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId),
+      balance
+    )
   );
 }
 
 export function mapItemWithProductsAndSubscriptionBumps(
   itemWithProducts: ItemWithProducts,
-  subscription: SubscriptionsResponse
+  subscription: SubscriptionsResponse,
+  balance: BumpsPackageBalance[]
 ): ItemWithProducts {
   if (subscription?.selected_tier) {
-    subscription.selected_tier.bumps.forEach((bump) => {
-      const productTypeIndex = itemWithProducts.products.findIndex((product) => product.name === bump.name);
+    itemWithProducts.subscription = subscription;
+  }
+  const subscriptionBalance = balance.find((item) => item.subscription_type === subscription.type);
+  if (subscriptionBalance) {
+    subscriptionBalance.balance.forEach((bump) => {
+      const productTypeIndex = itemWithProducts.products.findIndex((product) => product.name === bump.type);
       let durationIndex = itemWithProducts.products[productTypeIndex]?.durations.findIndex(
         (duration) => duration.duration === bump.duration_days * 24
       );
@@ -83,7 +94,7 @@ export function mapItemWithProductsAndSubscriptionBumps(
       itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionPackageType = subscription.type;
       itemWithProducts.products[productTypeIndex].durations[durationIndex].subscriptionName = subscription.category_name;
     });
-    itemWithProducts.subscription = subscription;
+    itemWithProducts.balance = subscriptionBalance.balance;
   }
   return itemWithProducts;
 }

@@ -674,7 +674,7 @@ export const CAN_SUBSCRIPTION_BE_EDITED_FAIL: CanEditSubscriptionResponse = {
 };
 export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED: SubscriptionsResponse[] = [
   {
-    ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+    ...MOCK_SUBSCRIPTION_MOTORBIKE_SUBSCRIBED_MAPPED,
     selected_tier: {
       ...TIER_WITH_DISCOUNT,
       perks: [
