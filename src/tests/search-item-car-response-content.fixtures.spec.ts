@@ -29,7 +29,6 @@ export const SEARCH_ITEM_CAR_RESPONSE_CONTENT_MOCK: SearchItemCarResponse = {
   visibility_flags: {
     bumped: false,
     highlighted: false,
-    urgent: false,
     country_bumped: false,
     boosted: false,
   },
