@@ -10,7 +10,6 @@ import { CustomCurrencyPipe } from '@shared/pipes';
 import { CartComponent } from './cart.component';
 import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import { MOCK_ITEMS_TO_BUY_FREE, MOCK_ITEMS_TO_BUY_WITHOUT_FREE } from '@fixtures/visibility.fixtures.spec';
-import { PACKS_TYPES } from '@core/payments/pack';
 import { BumpsTrackingEventsService } from '@private/features/bumps/services/bumps-tracking-events.service';
 import { MOCK_CREDIT_INFO } from '@fixtures/payments.fixtures.spec';
 
