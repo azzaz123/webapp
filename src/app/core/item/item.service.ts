@@ -96,6 +96,10 @@ export class ItemService {
       .pipe(catchError(() => of({ views: 0, favorites: 0, conversations: 0 })));
   }
 
+  public getPurchases(): Observable<Purchase[]> {
+    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
+  }
+
   public bulkDelete(type: string): Observable<ItemBulkResponse> {
     return this.http
       .put<ItemBulkResponse>(`${environment.baseUrl}${ITEMS_API_URL}/delete`, {
@@ -182,36 +186,44 @@ export class ItemService {
         mergeMap((itemsData: ItemsData) => {
           return this.getPurchases().pipe(
             map((purchases: Purchase[]) => {
-              purchases.forEach((purchase: Purchase) => {
-                const index: number = findIndex(itemsData.data, {
-                  id: purchase.item_id,
-                });
-                if (index !== -1) {
-                  if (this.bumpTypes.includes(purchase.purchase_name)) {
-                    itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
-                  }
-                  if (purchase.visibility_flags) {
-                    itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
-                    itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
-                  }
-                }
-              });
+              this.mapBumpInfoToItemData(purchases, itemsData.data);
               return itemsData;
             })
           );
         }),
         map((itemsData: ItemsData) => {
-          this.selectedItems.forEach((selectedItemId: string) => {
-            const index: number = findIndex(itemsData.data, {
-              id: selectedItemId,
-            });
-            if (index !== -1) {
-              itemsData.data[index].selected = true;
-            }
-          });
+          this.mapSelectedInfoToItemData(itemsData.data);
           return itemsData;
         })
       );
+  }
+
+  public mapBumpInfoToItemData(purchases: Purchase[], itemsData: Item[]) {
+    purchases.forEach((purchase: Purchase) => {
+      const index: number = findIndex(itemsData, {
+        id: purchase.item_id,
+      });
+      if (index !== -1) {
+        if (this.bumpTypes.includes(purchase.purchase_name)) {
+          itemsData[index].bumpExpiringDate = purchase.expiration_date;
+        }
+        if (purchase.visibility_flags) {
+          itemsData[index].flags.bumped = purchase.visibility_flags.bumped;
+          itemsData[index].flags.highlighted = purchase.visibility_flags.highlighted;
+        }
+      }
+    });
+  }
+
+  public mapSelectedInfoToItemData(itemsData: Item[]) {
+    this.selectedItems.forEach((selectedItemId: string) => {
+      const index: number = findIndex(itemsData, {
+        id: selectedItemId,
+      });
+      if (index !== -1) {
+        itemsData[index].selected = true;
+      }
+    });
   }
 
   public mine(next: string, status?: string): Observable<ItemsData> {
@@ -579,9 +591,6 @@ export class ItemService {
     const data: ItemProResponse = <ItemProResponse>response;
     const content: ItemProContent = data.content;
     return this.mapItemPro(content);
-  }
-  private getPurchases(): Observable<Purchase[]> {
-    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
   }
 
   private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {

@@ -47,6 +47,7 @@ export class PayviewService {
 
   public get address(): Observable<DeliveryAddress> {
     return this.addressService.get(false).pipe(
+      take(1),
       map(mapToDeliveryAddress),
       catchError(() => of(null))
     );
@@ -58,15 +59,15 @@ export class PayviewService {
     promocode: string,
     method: DeliveryBuyerDeliveryMethod
   ): Observable<DeliveryBuyerCalculatorCosts> {
-    return this.calculatorService.getCosts(price, itemHash, promocode, method.method);
+    return this.calculatorService.getCosts(price, itemHash, promocode, method.method).pipe(take(1));
   }
 
   public getDeliveryCosts(itemHash: string): Observable<DeliveryCosts> {
-    return this.deliveryCostsService.getCosts(itemHash);
+    return this.deliveryCostsService.getCosts(itemHash).pipe(take(1));
   }
 
   public getDeliveryMethods(itemHash): Observable<DeliveryBuyerDeliveryMethods> {
-    return this.deliveryBuyerService.getDeliveryMethods(itemHash);
+    return this.deliveryBuyerService.getDeliveryMethods(itemHash).pipe(take(1));
   }
 
   public getCurrentState(itemHash: string): Observable<PayviewState> {
@@ -117,37 +118,40 @@ export class PayviewService {
   }
 
   private get card(): Observable<CreditCard> {
-    return this.creditCardService.get().pipe(catchError(() => of(null)));
+    return this.creditCardService.get().pipe(
+      take(1),
+      catchError(() => of(null))
+    );
   }
 
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
     const method = state.delivery.methods.deliveryMethods[state.delivery.methods.default.index];
 
-    return this.calculatorService.getCosts(state.itemDetails.price, this.itemHash, null, method.method);
+    return this.calculatorService.getCosts(state.itemDetails.price, this.itemHash, null, method.method).pipe(take(1));
   }
 
   private get defaultDeliveryCosts(): Observable<DeliveryCosts> {
-    return this.deliveryCostsService.getCosts(this.itemHash);
+    return this.deliveryCostsService.getCosts(this.itemHash).pipe(take(1));
   }
 
   private get defaultDeliveryMethods(): Observable<DeliveryBuyerDeliveryMethods> {
-    return this.deliveryBuyerService.getDeliveryMethods(this.itemHash);
+    return this.deliveryBuyerService.getDeliveryMethods(this.itemHash).pipe(take(1));
   }
 
   private get item(): Observable<Item> {
-    return this.itemService.get(this.itemHash);
+    return this.itemService.get(this.itemHash).pipe(take(1));
   }
 
   private get itemDetails(): Observable<BuyerRequestsItemsDetails> {
-    return this.buyerRequestService.getRequestsItemsDetails(this.itemHash);
+    return this.buyerRequestService.getRequestsItemsDetails(this.itemHash).pipe(take(1));
   }
 
   private get paymentMethods(): Observable<PaymentsPaymentMethods> {
-    return this.paymentMethodsService.paymentMethods;
+    return this.paymentMethodsService.paymentMethods.pipe(take(1));
   }
 
   private get paymentPreferences(): Observable<PaymentsUserPaymentPreferences> {
-    return this.paymentPreferencesService.paymentUserPreferences;
+    return this.paymentPreferencesService.paymentUserPreferences.pipe(take(1));
   }
 
   private getState(
@@ -205,6 +209,6 @@ export class PayviewService {
   }
 
   private get walletBalance(): Observable<Money> {
-    return this.walletsService.walletBalance$;
+    return this.walletsService.walletBalance$.pipe(take(1));
   }
 }

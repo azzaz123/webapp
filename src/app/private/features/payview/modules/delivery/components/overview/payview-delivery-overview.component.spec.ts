@@ -53,7 +53,9 @@ describe('PayviewDeliveryOverviewComponent', () => {
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
 
-      component.payviewState = MOCK_PAYVIEW_STATE;
+      const payviewState: PayviewState = { ...MOCK_PAYVIEW_STATE };
+      component.costs = payviewState.delivery.costs;
+      component.methods = payviewState.delivery.methods;
 
       fixture.detectChanges();
     });
@@ -79,53 +81,32 @@ describe('PayviewDeliveryOverviewComponent', () => {
         it('should assign the corresponding default delivery method', () => {
           const target = debugElement.query(By.directive(PayviewDeliveryPointsComponent));
 
-          expect(target.componentInstance.defaultDeliveryMethod).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.default.index);
+          expect(target.componentInstance.defaultMethod).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.default.index);
         });
 
         it('should assign the corresponding delivery costs', () => {
           const target = debugElement.query(By.directive(PayviewDeliveryPointsComponent));
 
-          expect(target.componentInstance.deliveryCosts).toEqual(MOCK_PAYVIEW_STATE.delivery.costs);
+          expect(target.componentInstance.costs).toEqual(MOCK_PAYVIEW_STATE.delivery.costs);
         });
 
         it('should assign the corresponding delivery method', () => {
           const target = debugElement.query(By.directive(PayviewDeliveryPointsComponent));
 
-          expect(target.componentInstance.deliveryMethods).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods);
+          expect(target.componentInstance.methods).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods);
         });
       });
     });
 
-    describe('WHEN payview state has not been reported', () => {
-      beforeEach(() => {
-        fixture = TestBed.createComponent(PayviewDeliveryOverviewComponent);
-        component = fixture.componentInstance;
-        debugElement = fixture.debugElement;
-
-        component.payviewState = null;
-
-        fixture.detectChanges();
-      });
-
-      it('should not show the payview block', () => {
-        const target = debugElement.query(By.css(payviewDeliverySelector));
-
-        component.payviewState = null;
-        fixture.detectChanges();
-
-        expect(target).toBeFalsy();
-      });
-    });
-
-    describe('WHEN delivery has not been reported', () => {
+    describe('WHEN methods have not been reported', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(PayviewDeliveryOverviewComponent);
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
 
         const payviewState: PayviewState = { ...MOCK_PAYVIEW_STATE };
-        payviewState.delivery = null;
-        component.payviewState = payviewState;
+        component.costs = payviewState.delivery.costs;
+        component.methods = null;
 
         fixture.detectChanges();
       });
@@ -133,8 +114,25 @@ describe('PayviewDeliveryOverviewComponent', () => {
       it('should not show the payview block', () => {
         const target = debugElement.query(By.css(payviewDeliverySelector));
 
-        component.payviewState = null;
+        expect(target).toBeFalsy();
+      });
+    });
+
+    describe('WHEN costs have not been reported', () => {
+      beforeEach(() => {
+        fixture = TestBed.createComponent(PayviewDeliveryOverviewComponent);
+        component = fixture.componentInstance;
+        debugElement = fixture.debugElement;
+
+        const payviewState: PayviewState = { ...MOCK_PAYVIEW_STATE };
+        component.costs = null;
+        component.methods = payviewState.delivery.methods;
+
         fixture.detectChanges();
+      });
+
+      it('should not show the payview block', () => {
+        const target = debugElement.query(By.css(payviewDeliverySelector));
 
         expect(target).toBeFalsy();
       });

@@ -12,21 +12,21 @@ import { PayviewDeliveryService } from '@private/features/payview/modules/delive
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayviewDeliveryPointsComponent implements OnInit {
-  @Input() public defaultDeliveryMethod: number;
-  @Input() public deliveryCosts: DeliveryCosts;
-  @Input() public deliveryMethods: DeliveryBuyerDeliveryMethod[];
+  @Input() public costs: DeliveryCosts;
+  @Input() public defaultMethod: number;
+  @Input() public methods: DeliveryBuyerDeliveryMethod[];
 
   private selectedPointIndex: number;
 
   constructor(private deliveryService: PayviewDeliveryService) {}
 
   public ngOnInit(): void {
-    this.selectedPointIndex = this.defaultDeliveryMethod;
+    this.selectedPointIndex = this.defaultMethod;
   }
 
   public editPoint(index: number): void {
     this.selectedPointIndex = index;
-    if (this.isPickUpPoint(this.deliveryMethods[index])) {
+    if (this.isPickUpPoint(this.methods[index])) {
       this.deliveryService.editPickUpPoint();
       return;
     }
@@ -43,11 +43,11 @@ export class PayviewDeliveryPointsComponent implements OnInit {
 
   public selectPoint(index: number): void {
     this.selectedPointIndex = index;
-    this.deliveryService.setDeliveryMethod(this.deliveryMethods[index]);
+    this.deliveryService.setDeliveryMethod(this.methods[index]);
   }
 
-  public get showDeliveryMethods(): boolean {
-    return !!this.deliveryMethods && !!this.deliveryCosts;
+  public get showMethods(): boolean {
+    return !!this.methods && !!this.costs;
   }
 
   public trackByIndex(index: number, name: DeliveryBuyerDeliveryMethod): number {
