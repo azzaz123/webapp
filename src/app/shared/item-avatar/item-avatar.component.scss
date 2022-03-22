@@ -56,7 +56,6 @@ $sold-width: 32px;
 .sold,
 .reserved,
 .featured,
-.urgent,
 .not-available {
   @include square($sold-width);
   border-radius: 50%;
@@ -101,12 +100,5 @@ $sold-width: 32px;
   }
   &.planned {
     background-color: $blue-grey-4;
-  }
-}
-
-.urgent {
-  background-color: $urgent;
-  tsl-svg-icon {
-    @include square(30px);
   }
 }

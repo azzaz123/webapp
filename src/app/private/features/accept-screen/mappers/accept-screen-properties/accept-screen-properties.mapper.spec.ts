@@ -23,6 +23,7 @@ import {
 } from '@fixtures/private/delivery/accept-screen/carrier-drop-off-mode-request.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS } from '@fixtures/private/delivery/delivery-address.fixtures.spec';
 import { CARRIER_DROP_OFF_MODE } from '@api/core/model/delivery';
+import { MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import {
   MOCK_ACCEPT_SCREEN_CARRIERS,
   MOCK_ACCEPT_SCREEN_CARRIERS_2,
@@ -82,7 +83,7 @@ describe('mapUserToAcceptScreenBuyer', () => {
   describe('when asking for buyer map', () => {
     describe('and buyer has image', () => {
       it('should return correctly mapped buyer', () => {
-        const expectedBuyer = mapUserToAcceptScreenBuyer(MOCK_OTHER_USER);
+        const expectedBuyer = mapUserToAcceptScreenBuyer(MOCK_OTHER_USER, MOCK_SELLER_REQUEST.buyer.address.country);
 
         expect(expectedBuyer).toEqual(MOCK_ACCEPT_SCREEN_BUYER);
       });
@@ -90,7 +91,7 @@ describe('mapUserToAcceptScreenBuyer', () => {
 
     describe('and buyer has NO image', () => {
       it('should return correctly mapped buyer with PLACEHOLDER AVATAR', () => {
-        const expectedBuyer = mapUserToAcceptScreenBuyer(MOCK_OTHER_USER_WITHOUT_IMAGE);
+        const expectedBuyer = mapUserToAcceptScreenBuyer(MOCK_OTHER_USER_WITHOUT_IMAGE, MOCK_SELLER_REQUEST.buyer.address.country);
 
         expect(expectedBuyer).toEqual(MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE);
       });

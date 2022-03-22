@@ -45,6 +45,22 @@ In order to instantiate a local sever, run one of the following commands:
 
 Now you can navigate to `http://localhost:4200/login`.You should see the app running. If you change any of the source files, the app will automatically build again and reload the page.
 
+### Sharing local development server
+
+In case you want to access your current project state in any external browser:
+
+- Run `yarn start beta --host 0.0.0.0` (you will see a production warning but you can ignore it)
+
+The development server will serve content to any IP, internal or external.
+
+Example of usage:
+
+1. Run the command in your laptop. E.g.: your laptop has IPv4 192.168.1.39
+2. In your external device, open a web browser and navigate to your local IP with the port. `http` must be used. E.g.: http://192.168.1.39:4200/login
+3. You should be able to test the webapp in the external device
+
+Please note that you might need to modify the `/login` access or fake the user token
+
 ### Tests
 
 Run one of the following commands to test the app:
