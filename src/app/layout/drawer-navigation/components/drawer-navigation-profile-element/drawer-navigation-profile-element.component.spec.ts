@@ -48,7 +48,7 @@ describe('DrawerNavigationProfileElementComponent', () => {
     });
 
     describe('and the information is loaded', () => {
-      it('should render the navigation link', () => {
+      it('should show the navigation link', () => {
         component.element = MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT;
 
         fixture.detectChanges();
@@ -75,7 +75,7 @@ describe('DrawerNavigationProfileElementComponent', () => {
         expect(userStars.stars).toEqual(MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT.reviews);
       });
 
-      it('should show the user number of reviews', () => {
+      it('should show the number of reviews', () => {
         component.element = MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT;
 
         fixture.detectChanges();

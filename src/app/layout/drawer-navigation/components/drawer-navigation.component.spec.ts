@@ -57,7 +57,7 @@ describe('DrawerNavigationComponent', () => {
       expect(title.innerHTML).toEqual(MOCK_DRAWER_NAVIGATION_SECTIONS[0].title);
     });
 
-    it('should render navigation elements per each of the sections', () => {
+    it('should show navigation elements per each of the sections', () => {
       const expectedNavigationElement = MOCK_DRAWER_NAVIGATION_SECTIONS[0].elements[0];
 
       const navigationElement = fixture.debugElement.query(By.css('tsl-drawer-navigation-element')).componentInstance;

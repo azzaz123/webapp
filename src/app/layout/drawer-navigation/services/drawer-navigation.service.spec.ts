@@ -70,7 +70,7 @@ describe('DrawerNavigationService', () => {
   });
 
   describe('getChildNavigationTitle', () => {
-    it('should return the title belongs to a child route', (done) => {
+    it('should return the title that belongs to a child route', (done) => {
       const expectedTitle = DRAWER_NAVIGATION_SECTIONS_COLLECTION[DRAWER_NAVIGATION_SECTIONS.ACCOUNT].elements[1].text;
 
       service.getChildNavigationTitle(YOU_PATHS.SETTINGS).subscribe((title: string) => {

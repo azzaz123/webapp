@@ -1,9 +1,11 @@
 @import '~style/common';
 
+$header-height: 48px;
+
 .DrawerNavigationChildPage {
   &__header {
     background-color: $white;
-    height: 48px;
+    height: $header-height;
     font-weight: bold;
   }
 

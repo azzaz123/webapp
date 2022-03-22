@@ -1,7 +1,9 @@
 @import '~style/common';
 
+$element-height: 128px;
+
 .DrawerNavigationProfileElement {
-  height: 128px;
+  height: $element-height;
   background-color: $white;
   color: $blue-grey-1;
 
