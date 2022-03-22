@@ -95,10 +95,58 @@ describe('PayviewPaymentOverviewComponent', () => {
           expect(target.componentInstance.card).toEqual(MOCK_PAYVIEW_STATE.payment.card);
         });
 
-        it('should assign the corresponding payment methods', () => {
-          const target = debugElement.query(By.directive(FakePayviewPaymentMethodsComponent));
+        describe('WHEN there are user preferences', () => {
+          it('should assign the corresponding payment methods', () => {
+            const target = debugElement.query(By.directive(FakePayviewPaymentMethodsComponent));
 
-          expect(target.componentInstance.methods).toEqual(MOCK_PAYVIEW_STATE.payment.methods.paymentMethods);
+            expect(target.componentInstance.methods).toEqual(MOCK_PAYVIEW_STATE.payment.methods.paymentMethods);
+          });
+        });
+
+        describe('WHEN there are not user preferences', () => {
+          beforeEach(() => {
+            fixture = TestBed.createComponent(PayviewPaymentOverviewComponent);
+            component = fixture.componentInstance;
+            debugElement = fixture.debugElement;
+
+            const payviewState: PayviewState = { ...MOCK_PAYVIEW_STATE };
+            component.card = payviewState.payment.card;
+            component.methods = payviewState.payment.methods;
+            component.preferences = payviewState.payment.preferences;
+            component.preferences.defaults.paymentMethod = { ...MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES.preferences }.paymentMethod;
+            component.preferences.preferences = null;
+
+            fixture.detectChanges();
+          });
+
+          it('should assign the corresponding default payment methods', () => {
+            const target = debugElement.query(By.directive(FakePayviewPaymentMethodsComponent));
+
+            expect(target.componentInstance.defaultMethod).toEqual(MOCK_PAYVIEW_STATE.payment.preferences.defaults.paymentMethod);
+          });
+        });
+
+        describe('WHEN there is not default preferences', () => {
+          beforeEach(() => {
+            fixture = TestBed.createComponent(PayviewPaymentOverviewComponent);
+            component = fixture.componentInstance;
+            debugElement = fixture.debugElement;
+
+            const payviewState: PayviewState = { ...MOCK_PAYVIEW_STATE };
+            component.card = payviewState.payment.card;
+            component.methods = payviewState.payment.methods;
+            component.preferences = payviewState.payment.preferences;
+            component.preferences.defaults = null;
+            component.preferences.preferences = null;
+
+            fixture.detectChanges();
+          });
+
+          it('should not assign any payment method', () => {
+            const target = debugElement.query(By.directive(FakePayviewPaymentMethodsComponent));
+
+            expect(target.componentInstance.defaultMethod).toBeFalsy();
+          });
         });
       });
     });
