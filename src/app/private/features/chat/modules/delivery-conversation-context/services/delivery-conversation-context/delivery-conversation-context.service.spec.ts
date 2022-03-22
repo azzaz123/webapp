@@ -4,7 +4,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import {
+  ACTIVATE_SHIPPING_BANNER_PROPERTIES,
+  ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
+} from '../../../delivery-banner/constants/delivery-banner-configs';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
+import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryConversationContextAsBuyerService } from '../delivery-conversation-context-as-buyer/delivery-conversation-context-as-buyer.service';
 import { DeliveryConversationContextAsSellerService } from '../delivery-conversation-context-as-seller/delivery-conversation-context-as-seller.service';
 
@@ -22,11 +27,19 @@ describe('DeliveryConversationContextService', () => {
         DeliveryConversationContextService,
         {
           provide: DeliveryConversationContextAsBuyerService,
-          useValue: { getBannerPropertiesAsBuyer: () => of(null), handleBannerCTAClick: () => {}, handleThirdVoiceCTAClick: () => {} },
+          useValue: {
+            getBannerPropertiesAsBuyer: () => of(ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES),
+            handleBannerCTAClick: () => {},
+            handleThirdVoiceCTAClick: () => {},
+          },
         },
         {
           provide: DeliveryConversationContextAsSellerService,
-          useValue: { getBannerPropertiesAsSeller: () => of(null), handleBannerCTAClick: () => {}, handleThirdVoiceCTAClick: () => {} },
+          useValue: {
+            getBannerPropertiesAsSeller: () => of(ACTIVATE_SHIPPING_BANNER_PROPERTIES),
+            handleBannerCTAClick: () => {},
+            handleThirdVoiceCTAClick: () => {},
+          },
         },
         { provide: NgbModal, useValue: { open: () => {} } },
       ],
@@ -69,6 +82,15 @@ describe('DeliveryConversationContextService', () => {
         expect(deliveryConversationContextAsSellerService.getBannerPropertiesAsSeller).toHaveBeenCalledTimes(1);
       });
 
+      it('should assign seller banner properties', fakeAsync(() => {
+        let result: DeliveryBanner;
+
+        service.bannerProperties$.subscribe((data) => (result = data));
+        tick();
+
+        expect(result).toBe(ACTIVATE_SHIPPING_BANNER_PROPERTIES);
+      }));
+
       it('should notify loading ended', fakeAsync(() => {
         let result: boolean;
 
@@ -90,6 +112,15 @@ describe('DeliveryConversationContextService', () => {
         expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledWith(MOCK_INBOX_CONVERSATION_AS_BUYER);
         expect(deliveryConversationContextAsBuyerService.getBannerPropertiesAsBuyer).toHaveBeenCalledTimes(1);
       });
+
+      it('should assign buyer banner properties', fakeAsync(() => {
+        let result: DeliveryBanner;
+
+        service.bannerProperties$.subscribe((data) => (result = data));
+        tick();
+
+        expect(result).toBe(ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES);
+      }));
 
       it('should notify loading ended', fakeAsync(() => {
         let result: boolean;
