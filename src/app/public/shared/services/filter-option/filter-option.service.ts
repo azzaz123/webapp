@@ -108,6 +108,12 @@ export class FilterOptionService {
             }
 
             return paginatedResponse;
+          }),
+          catchError(() => {
+            return of({
+              list: [],
+              paginationParameter: null,
+            });
           })
         )
         .subscribe((paginatedResponse: PaginatedList<FilterOption, string>) => {
