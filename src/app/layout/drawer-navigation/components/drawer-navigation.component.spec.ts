@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DrawerNavigationProfileElementStubComponent } from '@fixtures/layout/drawer-navigation/components/drawer-navigatino-profile-element.stub';
+import { DrawerNavigationProfileElementStubComponent } from '@fixtures/layout/drawer-navigation/components/drawer-navigation-profile-element.stub';
 import { DrawerNavigationElementStubComponent } from '@fixtures/layout/drawer-navigation/components/drawer-navigation-element.stub';
 import { MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT } from '@fixtures/layout/drawer-navigation/fixtures/drawer-navigation-profile-element.fixtures.spec';
 import { of } from 'rxjs';
 import { DRAWER_NAVIGATION_SECTIONS_COLLECTION } from '../constants/drawer-navigation-sections';
-import { DrawerNavigationProfileElement, DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
+import { DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
 import { DrawerNavigationService } from '../services/drawer-navigation.service';
 
 import { DrawerNavigationComponent } from './drawer-navigation.component';
