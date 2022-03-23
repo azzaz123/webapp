@@ -9,7 +9,6 @@ import {
   MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED,
 } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { MOCK_INBOX_CONVERSATION_AS_SELLER } from '@fixtures/chat';
 import { MOCK_PENDING_SELLER_REQUEST, MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -33,7 +32,6 @@ import { DeliveryConversationContextAsSellerService } from './delivery-conversat
 
 describe('DeliveryConversationContextAsSellerService', () => {
   let service: DeliveryConversationContextAsSellerService;
-  let featureFlagService: FeatureFlagService;
   let router: Router;
   let modalService: NgbModal;
   let sellerRequestsApiService: SellerRequestsApiService;
@@ -48,7 +46,6 @@ describe('DeliveryConversationContextAsSellerService', () => {
         { provide: NgbModal, useValue: { open: () => {} } },
         { provide: SellerRequestsApiService, useValue: { getRequestsByBuyerAndItem: () => of({}) } },
         { provide: DeliveryItemDetailsApiService, useValue: { getDeliveryDetailsByItemHash: () => of({}) } },
-        { provide: FeatureFlagService, useValue: { getLocalFlag: of(null), isExperimentalFeaturesEnabled: () => true } },
         {
           provide: DeliveryBannerTrackingEventsService,
           useValue: {
@@ -59,7 +56,6 @@ describe('DeliveryConversationContextAsSellerService', () => {
       ],
     });
     service = TestBed.inject(DeliveryConversationContextAsSellerService);
-    featureFlagService = TestBed.inject(FeatureFlagService);
     modalService = TestBed.inject(NgbModal);
     router = TestBed.inject(Router);
     sellerRequestsApiService = TestBed.inject(SellerRequestsApiService);
@@ -72,21 +68,6 @@ describe('DeliveryConversationContextAsSellerService', () => {
   });
 
   describe('when asking for seller context', () => {
-    describe('and when delivery feature flag is disabled', () => {
-      beforeEach(() => {
-        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
-      });
-
-      it('should hide the banner', fakeAsync(() => {
-        let result: DeliveryBanner | null;
-
-        service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe((data) => (result = data));
-        tick();
-
-        expect(result).toBe(null);
-      }));
-    });
-
     describe('when seller has received previously buy requests for current item', () => {
       beforeEach(() => {
         spyOn(sellerRequestsApiService, 'getRequestsByBuyerAndItem').and.returnValue(of([MOCK_SELLER_REQUEST]));
@@ -228,39 +209,16 @@ describe('DeliveryConversationContextAsSellerService', () => {
     describe('and when conversation has a pending request as the last request', () => {
       beforeEach(fakeAsync(() => {
         spyOn(sellerRequestsApiService, 'getRequestsByBuyerAndItem').and.returnValue(of([MOCK_PENDING_SELLER_REQUEST]));
+        spyOn(router, 'navigate');
         service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe();
+        service.handleThirdVoiceCTAClick();
         tick();
       }));
 
-      describe('and when delivery feature flag is enabled', () => {
-        beforeEach(fakeAsync(() => {
-          spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(true));
-          spyOn(router, 'navigate');
+      it('should open the accept screen', () => {
+        const expectedUrl: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${MOCK_SELLER_REQUEST.id}`;
 
-          service.handleThirdVoiceCTAClick();
-          tick();
-        }));
-
-        it('should open the accept screen', () => {
-          const expectedUrl: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${MOCK_SELLER_REQUEST.id}`;
-
-          expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
-        });
-      });
-
-      describe('and when delivery feature flag is NOT enabled', () => {
-        beforeEach(fakeAsync(() => {
-          spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(false));
-          spyOn(modalService, 'open');
-
-          service.handleThirdVoiceCTAClick();
-          tick();
-        }));
-
-        it('should open TRX awareness modal', () => {
-          expect(modalService.open).toHaveBeenCalledTimes(1);
-          expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
-        });
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
       });
     });
 
