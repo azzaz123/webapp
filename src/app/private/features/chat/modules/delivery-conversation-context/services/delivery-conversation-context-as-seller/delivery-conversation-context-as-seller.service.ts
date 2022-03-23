@@ -23,7 +23,6 @@ import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants'
 import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Injectable()
 export class DeliveryConversationContextAsSellerService {
@@ -34,8 +33,7 @@ export class DeliveryConversationContextAsSellerService {
     private modalService: NgbModal,
     private sellerRequestsApiService: SellerRequestsApiService,
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
-    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService,
-    private featureFlagService: FeatureFlagService
+    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
   ) {}
 
   public getBannerPropertiesAsSeller(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -102,17 +100,12 @@ export class DeliveryConversationContextAsSellerService {
     sellerRequests: SellerRequest[],
     deliveryItemDetails: DeliveryItemDetails
   ): DeliveryBanner | null {
-    // TODO: Remove "isDeliveryFeaturesDisabled" when opening seller banners
-    // Doing this logic in the mapping to allow third voices to have delivery context of this service
-    // Jira reference: https://wallapop.atlassian.net/browse/WPA-11986
-    const isDeliveryFeaturesDisabled: boolean = !this.featureFlagService.isExperimentalFeaturesEnabled();
-
     const sellerHasNoRequests: boolean = sellerRequests.length === 0;
     const sellerHasRequests: boolean = !sellerHasNoRequests;
     const isShippingNotAllowed: boolean = !deliveryItemDetails.isShippingAllowed;
     const isNotShippable: boolean = !deliveryItemDetails.isShippable;
 
-    if (isDeliveryFeaturesDisabled || isNotShippable || sellerHasRequests) {
+    if (isNotShippable || sellerHasRequests) {
       return null;
     }
 

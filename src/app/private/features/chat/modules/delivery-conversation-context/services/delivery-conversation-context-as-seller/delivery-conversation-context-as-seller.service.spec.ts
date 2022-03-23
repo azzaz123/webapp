@@ -29,7 +29,6 @@ import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/ac
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
 
 import { DeliveryConversationContextAsSellerService } from './delivery-conversation-context-as-seller.service';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 
 describe('DeliveryConversationContextAsSellerService', () => {
   let service: DeliveryConversationContextAsSellerService;
@@ -38,7 +37,6 @@ describe('DeliveryConversationContextAsSellerService', () => {
   let sellerRequestsApiService: SellerRequestsApiService;
   let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
   let deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService;
-  let featureFlagService: FeatureFlagService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -48,7 +46,6 @@ describe('DeliveryConversationContextAsSellerService', () => {
         { provide: NgbModal, useValue: { open: () => {} } },
         { provide: SellerRequestsApiService, useValue: { getRequestsByBuyerAndItem: () => of({}) } },
         { provide: DeliveryItemDetailsApiService, useValue: { getDeliveryDetailsByItemHash: () => of({}) } },
-        { provide: FeatureFlagService, useValue: { getLocalFlag: of(null), isExperimentalFeaturesEnabled: () => true } },
         {
           provide: DeliveryBannerTrackingEventsService,
           useValue: {
@@ -64,7 +61,6 @@ describe('DeliveryConversationContextAsSellerService', () => {
     sellerRequestsApiService = TestBed.inject(SellerRequestsApiService);
     deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
     deliveryBannerTrackingEventsService = TestBed.inject(DeliveryBannerTrackingEventsService);
-    featureFlagService = TestBed.inject(FeatureFlagService);
   });
 
   it('should be created', () => {
@@ -72,21 +68,6 @@ describe('DeliveryConversationContextAsSellerService', () => {
   });
 
   describe('when asking for seller context', () => {
-    describe('and when delivery feature flag is disabled', () => {
-      beforeEach(() => {
-        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
-      });
-
-      it('should hide the banner', fakeAsync(() => {
-        let result: DeliveryBanner | null;
-
-        service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe((data) => (result = data));
-        tick();
-
-        expect(result).toBe(null);
-      }));
-    });
-
     describe('when seller has received previously buy requests for current item', () => {
       beforeEach(() => {
         spyOn(sellerRequestsApiService, 'getRequestsByBuyerAndItem').and.returnValue(of([MOCK_SELLER_REQUEST]));
