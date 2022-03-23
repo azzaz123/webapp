@@ -4,17 +4,14 @@ import { DrawerNavigationProfileElementStubComponent } from '@fixtures/layout/dr
 import { DrawerNavigationElementStubComponent } from '@fixtures/layout/drawer-navigation/components/drawer-navigation-element.stub';
 import { MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT } from '@fixtures/layout/drawer-navigation/fixtures/drawer-navigation-profile-element.fixtures.spec';
 import { of } from 'rxjs';
-import { DRAWER_NAVIGATION_SECTIONS_COLLECTION } from '../constants/drawer-navigation-sections';
-import { DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
 import { DrawerNavigationService } from '../services/drawer-navigation.service';
 
 import { DrawerNavigationComponent } from './drawer-navigation.component';
+import { MOCK_DRAWER_NAVIGATION_SECTIONS } from '@fixtures/layout/drawer-navigation/fixtures/drawer-navigation-sections.fixtures.spec';
 
 describe('DrawerNavigationComponent', () => {
   let component: DrawerNavigationComponent;
   let fixture: ComponentFixture<DrawerNavigationComponent>;
-
-  const MOCK_DRAWER_NAVIGATION_SECTIONS: DrawerNavigationSection[] = Object.values(DRAWER_NAVIGATION_SECTIONS_COLLECTION);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

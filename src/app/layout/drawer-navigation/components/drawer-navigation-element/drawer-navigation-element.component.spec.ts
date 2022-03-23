@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MOCK_DRAWER_NAVIGATION_SECTIONS } from '@fixtures/layout/drawer-navigation/fixtures/drawer-navigation-sections.fixtures.spec';
 import { SvgIconStubComponent } from '@fixtures/shared/components/svg-icon.component.stub';
-import { DRAWER_NAVIGATION_SECTIONS_COLLECTION } from '@layout/drawer-navigation/constants/drawer-navigation-sections';
 import { DrawerNavigationElement } from '@layout/drawer-navigation/interfaces/drawer-navigation-element.interface';
 
 import { DrawerNavigationElementComponent } from './drawer-navigation-element.component';
 
-const MOCK_DRAWER_NAVIGATION_ELEMENT: DrawerNavigationElement = Object.values(DRAWER_NAVIGATION_SECTIONS_COLLECTION)[0].elements[0];
+const MOCK_DRAWER_NAVIGATION_ELEMENT: DrawerNavigationElement = MOCK_DRAWER_NAVIGATION_SECTIONS[0].elements[0];
 
 describe('DrawerNavigationElementComponent', () => {
   let component: DrawerNavigationElementComponent;

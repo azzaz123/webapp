@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { UserService } from '@core/user/user.service';
+import { MOCK_DRAWER_NAVIGATION_SECTIONS } from '@fixtures/layout/drawer-navigation/fixtures/drawer-navigation-sections.fixtures.spec';
 import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constants';
 import { YOU_PATHS } from '@private/features/you/constants/you-routing.constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
-import { DRAWER_NAVIGATION_SECTIONS_COLLECTION } from '../constants/drawer-navigation-sections';
 import { DrawerNavigationElement, DRAWER_NAVIGATION_SECTIONS } from '../interfaces/drawer-navigation-element.interface';
 
 import { DrawerNavigationService } from './drawer-navigation.service';
@@ -31,7 +31,7 @@ describe('DrawerNavigationService', () => {
 
   describe('navigationSections$', () => {
     it('should return all the navigation sections', (done) => {
-      const expectedSections = Object.values(DRAWER_NAVIGATION_SECTIONS_COLLECTION);
+      const expectedSections = MOCK_DRAWER_NAVIGATION_SECTIONS;
 
       service.navigationSections$.subscribe((sections) => {
         expect(sections).toEqual(expectedSections);
@@ -60,7 +60,7 @@ describe('DrawerNavigationService', () => {
 
   describe('getChildNavigationElements', () => {
     it('should return the child navigation elements that belongs to a route', (done) => {
-      const expectedElements = DRAWER_NAVIGATION_SECTIONS_COLLECTION[DRAWER_NAVIGATION_SECTIONS.ACCOUNT].elements[1].children;
+      const expectedElements = MOCK_DRAWER_NAVIGATION_SECTIONS[DRAWER_NAVIGATION_SECTIONS.ACCOUNT].elements[1].children;
 
       service.getChildNavigationElements(YOU_PATHS.SETTINGS).subscribe((elements: DrawerNavigationElement[]) => {
         expect(elements).toEqual(expectedElements);
@@ -71,7 +71,7 @@ describe('DrawerNavigationService', () => {
 
   describe('getChildNavigationTitle', () => {
     it('should return the title that belongs to a child route', (done) => {
-      const expectedTitle = DRAWER_NAVIGATION_SECTIONS_COLLECTION[DRAWER_NAVIGATION_SECTIONS.ACCOUNT].elements[1].text;
+      const expectedTitle = MOCK_DRAWER_NAVIGATION_SECTIONS[DRAWER_NAVIGATION_SECTIONS.ACCOUNT].elements[1].text;
 
       service.getChildNavigationTitle(YOU_PATHS.SETTINGS).subscribe((title: string) => {
         expect(title).toEqual(expectedTitle);
