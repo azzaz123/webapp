@@ -7,6 +7,7 @@ import { YOU_PATHS } from '@private/features/you/constants/you-routing.constants
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
 import { DrawerNavigationElement, DRAWER_NAVIGATION_SECTIONS } from '../interfaces/drawer-navigation-element.interface';
+import { DrawerNavigationSectionsService } from './drawer-navigation-sections/drawer-navigation-sections.service';
 
 import { DrawerNavigationService } from './drawer-navigation.service';
 
@@ -17,6 +18,12 @@ describe('DrawerNavigationService', () => {
     TestBed.configureTestingModule({
       providers: [
         DrawerNavigationService,
+        {
+          provide: DrawerNavigationSectionsService,
+          useValue: {
+            navigationSections$: of(MOCK_DRAWER_NAVIGATION_SECTIONS),
+          },
+        },
         {
           provide: UserService,
           useValue: {
