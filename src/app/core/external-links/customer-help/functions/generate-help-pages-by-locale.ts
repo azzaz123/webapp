@@ -39,5 +39,6 @@ export function generateBaseHelpPagesByLocale(locale: HELP_LOCALE): CustomerHelp
       EXTERNAL_CUSTOMER_HELP_PAGE_ID.CANNOT_CHANGE_PRO_SUBSCRIPTION,
       locale
     ),
+    [CUSTOMER_HELP_PAGE.PROS_SUBSCRIPTION_BUMPS]: getCustomerHelpUrl(EXTERNAL_CUSTOMER_HELP_PAGE_ID.PROS_SUBSCRIPTION_BUMPS, locale),
   };
 }
