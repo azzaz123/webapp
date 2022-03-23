@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Money } from '@api/core/model/money.interface';
+import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { UserService } from '@core/user/user.service';
@@ -12,30 +14,43 @@ import {
   DrawerNavigationSection,
   DRAWER_NAVIGATION_SECTIONS,
 } from '@layout/drawer-navigation/interfaces/drawer-navigation-element.interface';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class DrawerNavigationSectionsService {
-  constructor(private customerHelpService: CustomerHelpService, private userService: UserService) {}
+  constructor(
+    private customerHelpService: CustomerHelpService,
+    private userService: UserService,
+    private paymentsWalletsService: PaymentsWalletsService
+  ) {}
 
   public get navigationSections$(): Observable<DrawerNavigationSection[]> {
-    return of(Object.values(this.rawNavigationSections));
+    return this.rawNavigationSections$.pipe(map((sections) => Object.values(sections)));
   }
 
-  private get rawNavigationSections(): Record<DRAWER_NAVIGATION_SECTIONS, DrawerNavigationSection> {
-    return {
-      [DRAWER_NAVIGATION_SECTIONS.CATALOG]: DRAWER_NAVIGATION_CATALOG_SECTION,
-      [DRAWER_NAVIGATION_SECTIONS.TRANSACTIONS]: DRAWER_NAVIGATION_TRANSACTIONS_SECTION,
-      [DRAWER_NAVIGATION_SECTIONS.ACCOUNT]: this.accountSection,
-      [DRAWER_NAVIGATION_SECTIONS.HELP]: this.helpCenterSection,
-    };
+  private get rawNavigationSections$(): Observable<Record<DRAWER_NAVIGATION_SECTIONS, DrawerNavigationSection>> {
+    return combineLatest([this.paymentsWalletsService.walletBalance$]).pipe(
+      map(([balance]) => {
+        return {
+          [DRAWER_NAVIGATION_SECTIONS.CATALOG]: DRAWER_NAVIGATION_CATALOG_SECTION,
+          [DRAWER_NAVIGATION_SECTIONS.TRANSACTIONS]: this.getTransactionsSection(balance),
+          [DRAWER_NAVIGATION_SECTIONS.ACCOUNT]: this.getAccountSection(),
+          [DRAWER_NAVIGATION_SECTIONS.HELP]: this.getHelpCenterSection(),
+        };
+      })
+    );
   }
 
-  private get accountSection(): DrawerNavigationSection {
+  private getTransactionsSection(balance: Money): DrawerNavigationSection {
+    return DRAWER_NAVIGATION_TRANSACTIONS_SECTION(`${balance.amount} ${balance.currency.symbol}`);
+  }
+
+  private getAccountSection(): DrawerNavigationSection {
     return DRAWER_NAVIGATION_ACCOUNT_SECTION(() => this.userService.logout().subscribe());
   }
 
-  private get helpCenterSection(): DrawerNavigationSection {
+  private getHelpCenterSection(): DrawerNavigationSection {
     return DRAWER_NAVIGATION_HELP_SECTION(this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.HOME));
   }
 }

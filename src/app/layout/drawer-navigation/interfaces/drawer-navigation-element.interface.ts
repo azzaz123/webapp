@@ -16,7 +16,11 @@ export interface DrawerNavigationSection {
   elements: DrawerNavigationElement[];
 }
 
-export interface DrawerNavigationProfileElement extends NavigationElement {
+export interface DrawerNavigationBalanceElement extends DrawerNavigationElement {
+  balance: string;
+}
+
+export interface DrawerNavigationProfileElement extends DrawerNavigationElement {
   professional: boolean;
   avatar: string;
   reviews: number;

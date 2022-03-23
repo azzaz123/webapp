@@ -3,7 +3,7 @@ import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constants';
 import { YOU_PATHS } from '@private/features/you/constants/you-routing.constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
+import { DrawerNavigationBalanceElement, DrawerNavigationSection } from '../interfaces/drawer-navigation-element.interface';
 
 const ICONS_FOLDER = '/assets/icons/drawer-navigation';
 
@@ -20,24 +20,27 @@ export const DRAWER_NAVIGATION_CATALOG_SECTION: DrawerNavigationSection = {
   ],
 };
 
-export const DRAWER_NAVIGATION_TRANSACTIONS_SECTION: DrawerNavigationSection = {
-  title: $localize`:@@you_menu_transactions_label:Transactions`,
-  elements: [
-    {
-      text: $localize`:@@you_menu_shipping_label:Shipping`,
-      alternativeText: $localize`:@@you_menu_shipping_label:Shipping`,
-      icon: `${ICONS_FOLDER}/shipping.svg`,
-      external: false,
-      href: `/${PRIVATE_PATHS.DELIVERY}`,
-    },
-    {
-      text: $localize`:@@you_menu_wallet_label:Wallet`,
-      alternativeText: $localize`:@@you_menu_wallet_label:Wallet`,
-      icon: `${ICONS_FOLDER}/wallet.svg`,
-      external: false,
-      href: `/${PRIVATE_PATHS.WALLET}`,
-    },
-  ],
+export const DRAWER_NAVIGATION_TRANSACTIONS_SECTION = (balance: string): DrawerNavigationSection => {
+  return {
+    title: $localize`:@@you_menu_transactions_label:Transactions`,
+    elements: [
+      {
+        text: $localize`:@@you_menu_shipping_label:Shipping`,
+        alternativeText: $localize`:@@you_menu_shipping_label:Shipping`,
+        icon: `${ICONS_FOLDER}/shipping.svg`,
+        external: false,
+        href: `/${PRIVATE_PATHS.DELIVERY}`,
+      },
+      {
+        text: $localize`:@@you_menu_wallet_label:Wallet`,
+        alternativeText: $localize`:@@you_menu_wallet_label:Wallet`,
+        icon: `${ICONS_FOLDER}/wallet.svg`,
+        external: false,
+        href: `/${PRIVATE_PATHS.WALLET}`,
+        balance,
+      } as DrawerNavigationBalanceElement,
+    ],
+  };
 };
 
 export const DRAWER_NAVIGATION_ACCOUNT_SECTION = (logoutAction: Function): DrawerNavigationSection => {
