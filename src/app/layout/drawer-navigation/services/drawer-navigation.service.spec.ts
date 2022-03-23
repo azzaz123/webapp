@@ -6,7 +6,11 @@ import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constan
 import { YOU_PATHS } from '@private/features/you/constants/you-routing.constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of } from 'rxjs';
-import { DrawerNavigationElement, DRAWER_NAVIGATION_SECTIONS } from '../interfaces/drawer-navigation-element.interface';
+import {
+  DrawerNavigationElement,
+  DRAWER_NAVIGATION_ELEMENTS,
+  DRAWER_NAVIGATION_SECTIONS,
+} from '../interfaces/drawer-navigation-element.interface';
 import { DrawerNavigationSectionsService } from './drawer-navigation-sections/drawer-navigation-sections.service';
 
 import { DrawerNavigationService } from './drawer-navigation.service';
@@ -51,6 +55,7 @@ describe('DrawerNavigationService', () => {
     it('should return the information needed for displaying the profile element', (done) => {
       service.profileNavigationElement$.subscribe((profileElement) => {
         expect(profileElement).toEqual({
+          id: DRAWER_NAVIGATION_ELEMENTS.PROFILE,
           professional: MOCK_USER.featured,
           text: MOCK_USER.microName,
           alternativeText: MOCK_USER.microName,

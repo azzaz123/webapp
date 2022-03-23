@@ -10,6 +10,7 @@ import {
   DrawerNavigationElement,
   DrawerNavigationProfileElement,
   DrawerNavigationSection,
+  DRAWER_NAVIGATION_ELEMENTS,
 } from '../interfaces/drawer-navigation-element.interface';
 import { DrawerNavigationSectionsService } from './drawer-navigation-sections/drawer-navigation-sections.service';
 
@@ -49,6 +50,7 @@ export class DrawerNavigationService {
 
   private mapProfileNavigationElement(user: User, stats: UserStats): DrawerNavigationProfileElement {
     return {
+      id: DRAWER_NAVIGATION_ELEMENTS.PROFILE,
       professional: user.featured,
       text: user.microName,
       alternativeText: user.microName,
