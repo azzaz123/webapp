@@ -9,9 +9,16 @@
 </ng-template>
 
 <ng-template #internalNavigationElement let-element="element">
-    <a class="DrawerNavigationElement d-flex align-items-center" [routerLink]="[element.href]">
-        <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
-    </a>
+    <ng-container *ngIf="element.onClick">
+        <a class="DrawerNavigationElement d-flex align-items-center" (click)="element.onClick()">
+            <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
+        </a>
+    </ng-container>
+    <ng-container *ngIf="!element.onClick">
+        <a class="DrawerNavigationElement d-flex align-items-center" [routerLink]="[element.href]">
+            <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
+        </a>
+    </ng-container>
 </ng-template>
 
 <ng-template #navigationElementContent let-element="element">
