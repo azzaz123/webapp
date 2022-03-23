@@ -116,7 +116,7 @@ describe('BumpTutorialComponent', () => {
         fixture.detectChanges();
       });
       it('should get link', () => {
-        //expect(customerHelpService.getPageUrl).toHaveBeenCalledTimes(1);
+        expect(customerHelpService.getPageUrl).toHaveBeenCalledTimes(1);
         expect(customerHelpService.getPageUrl).toHaveBeenCalledWith(CUSTOMER_HELP_PAGE.PROS_SUBSCRIPTION_BUMPS);
         expect(component.subscriptionBumpsUrl).toEqual('url-test');
       });
