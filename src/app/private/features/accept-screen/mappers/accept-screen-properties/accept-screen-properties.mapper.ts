@@ -56,6 +56,7 @@ export function mapUserToAcceptScreenBuyer(buyer: User, buyerCountryIsoCode: str
     id: buyer.id,
     imageUrl: mapUserToImageUrl(buyer),
     name: buyer.microName,
+    isPro: buyer.featured,
     countryISOCode: buyerCountryIsoCode,
   };
 }

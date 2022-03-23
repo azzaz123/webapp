@@ -10,7 +10,8 @@ import {
   SCREEN_IDS,
   ViewAcceptOffer,
 } from '@core/analytics/analytics-constants';
-import { AcceptScreenCarrier, AcceptScreenProperties, AcceptScreenSeller } from '../../interfaces';
+import { AcceptScreenCarrier, AcceptScreenProperties } from '../../interfaces';
+import { AcceptScreenBuyer } from '../../interfaces/accept-screen-buyer.interface';
 
 export function getClickItemCardEventPropertiesFromProperties(properties: AcceptScreenProperties): ClickItemCard {
   return {
@@ -28,11 +29,11 @@ export function getClickItemCardEventPropertiesFromProperties(properties: Accept
   };
 }
 
-export function getClickOtherProfileEventPropertiesFromSeller(seller: AcceptScreenSeller): ClickOtherProfile {
+export function getClickOtherProfileEventPropertiesFromSeller(buyer: AcceptScreenBuyer): ClickOtherProfile {
   return {
     screenId: SCREEN_IDS.AcceptOffer,
-    isPro: seller.isPro,
-    sellerUserId: seller.id,
+    isPro: buyer.isPro,
+    sellerUserId: buyer.id,
   };
 }
 

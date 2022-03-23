@@ -118,7 +118,7 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
 
   private get mapReference(): H.Map {
     const defaultLayers: H.service.DefaultLayers = this.hereMapsService.platform.createDefaultLayers();
-    const map: H.Map = new H.Map(this.mapEl.nativeElement, defaultLayers.vector.normal.map, {
+    const map: H.Map = new H.Map(this.mapEl.nativeElement, defaultLayers.raster.normal.map, {
       zoom: DEFAULT_VALUE_ZOOM,
       center: { lat: this.centerCoordinates.latitude, lng: this.centerCoordinates.longitude },
     });
