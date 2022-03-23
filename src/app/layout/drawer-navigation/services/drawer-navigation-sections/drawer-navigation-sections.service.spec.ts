@@ -35,6 +35,7 @@ describe('DrawerNavigationSectionsService', () => {
           provide: UserService,
           useValue: {
             logout: () => of(true),
+            isProUser$: of(true),
           },
         },
         {
