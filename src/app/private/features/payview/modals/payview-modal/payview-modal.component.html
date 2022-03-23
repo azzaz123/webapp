@@ -77,6 +77,11 @@
           <tsl-payview-promotion-editor></tsl-payview-promotion-editor>
         </div>
       </ng-template>
+      <ng-template step>
+        <div class="PayviewModal__creditCardEditor h-100">
+          <tsl-credit-card [returnRoute]="null" [showBackButton]="false" (saved)="closeCreditCardEditor()"></tsl-credit-card>
+        </div>
+      </ng-template>
     </tsl-stepper>
   </div>
 </div>

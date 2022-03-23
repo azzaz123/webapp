@@ -7,6 +7,7 @@ import { SeparateWordByCharacterModule } from '@shared/pipes/separate-word-by-ch
 import { ProfileFormModule } from '@shared/profile/profile-form/profile-form.module';
 import { SpinnerModule } from '@shared/spinner/spinner.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { CreditCardComponent } from '@private/features/wallet/pages/bank-details/pages/credit-card/credit-card.component';
 import { creditCardRoutedComponents, CreditCardRoutingModule } from './credit-card.routing.module';
 
 @NgModule({
@@ -22,5 +23,6 @@ import { creditCardRoutedComponents, CreditCardRoutingModule } from './credit-ca
     SvgIconModule,
   ],
   declarations: [creditCardRoutedComponents],
+  exports: [CreditCardComponent],
 })
 export class CreditCardModule {}
