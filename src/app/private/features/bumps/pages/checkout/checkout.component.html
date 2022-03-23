@@ -20,6 +20,7 @@
               *ngIf="user.featured"
               [subscription]="itemsBySubscription.subscription"
               [balance]="itemsBySubscription.balance"
+              [isProvincialBump]="itemsBySubscription.items[0].isProvincialBump"
             ></tsl-subscription-header-checkout>
             <tsl-checkout-item
               *ngFor="let item of itemsBySubscription.items"

@@ -6,12 +6,15 @@ import { CustomerHelpService } from '@core/external-links/customer-help/customer
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
-import { PAYVIEW_STEPS } from '@private/features/payview/enums/payview-steps.enum';
+import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
 import { PAYVIEW_EVENT_TYPE } from '@private/features/payview/enums/payview-event-type.enum';
+import { PAYVIEW_PAYMENT_EVENT_TYPE } from '@private/features/payview/modules/payment/enums/payview-payment-event-type.enum';
 import { PAYVIEW_PROMOTION_EVENT_TYPE } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.enum';
+import { PAYVIEW_STEPS } from '@private/features/payview/enums/payview-steps.enum';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { PayviewError } from '@private/features/payview/interfaces/payview-error.interface';
+import { PayviewPaymentService } from '@private/features/payview/modules/payment/services/payview-payment.service';
 import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
@@ -43,7 +46,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private activeModal: NgbActiveModal,
     private customerHelpService: CustomerHelpService,
     private deliveryCountries: DeliveryCountriesService,
-    private promotionService: PayviewPromotionService
+    private promotionService: PayviewPromotionService,
+    private paymentService: PayviewPaymentService
   ) {}
 
   public ngOnDestroy(): void {
@@ -96,6 +100,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscribeToStateManagementEventBus();
     this.subscribeToDeliveryEventBus();
     this.subscribeToPromotionEventBus();
+    this.subscribeToPaymentEventBus();
   }
 
   private subscribeToDeliveryEventBus(): void {
@@ -112,6 +117,19 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscriptions.push(
       this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {
         this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+      })
+    );
+  }
+
+  private subscribeToPaymentEventBus(): void {
+    this.subscriptions.push(
+      this.paymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.PAYMENT_METHOD_SELECTED, (payload: PaymentsPaymentMethod) => {
+        this.payviewStateManagementService.setPaymentMethod(payload);
+      })
+    );
+    this.subscriptions.push(
+      this.paymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
+        this.goToStep(PAYVIEW_STEPS.CREDIT_CARD);
       })
     );
   }
