@@ -1,9 +1,36 @@
 import { Injectable } from '@angular/core';
-import { DrawerNavigationSection } from '@layout/drawer-navigation/interfaces/drawer-navigation-element.interface';
+import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
+import {
+  DRAWER_NAVIGATION_ACCOUNT_SECTION,
+  DRAWER_NAVIGATION_CATALOG_SECTION,
+  DRAWER_NAVIGATION_HELP_SECTION,
+  DRAWER_NAVIGATION_TRANSACTIONS_SECTION,
+} from '@layout/drawer-navigation/constants/drawer-navigation-sections';
+import {
+  DrawerNavigationSection,
+  DRAWER_NAVIGATION_SECTIONS,
+} from '@layout/drawer-navigation/interfaces/drawer-navigation-element.interface';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class DrawerNavigationSectionsService {
-  constructor() {}
+  constructor(private customerHelpService: CustomerHelpService) {}
 
-  public get navigationSections$(): Record<DRAWER_NAVIGATION_SECTIONS, DrawerNavigationSection> {}
+  public get navigationSections$(): Observable<DrawerNavigationSection[]> {
+    return of(Object.values(this.rawNavigationSections));
+  }
+
+  private get rawNavigationSections(): Record<DRAWER_NAVIGATION_SECTIONS, DrawerNavigationSection> {
+    return {
+      [DRAWER_NAVIGATION_SECTIONS.CATALOG]: DRAWER_NAVIGATION_CATALOG_SECTION,
+      [DRAWER_NAVIGATION_SECTIONS.TRANSACTIONS]: DRAWER_NAVIGATION_TRANSACTIONS_SECTION,
+      [DRAWER_NAVIGATION_SECTIONS.ACCOUNT]: DRAWER_NAVIGATION_ACCOUNT_SECTION,
+      [DRAWER_NAVIGATION_SECTIONS.HELP]: this.helpCenterSection,
+    };
+  }
+
+  private get helpCenterSection(): DrawerNavigationSection {
+    return DRAWER_NAVIGATION_HELP_SECTION(this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.HOME));
+  }
 }
