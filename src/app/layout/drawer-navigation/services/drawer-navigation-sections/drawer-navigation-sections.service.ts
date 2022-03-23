@@ -30,12 +30,12 @@ export class DrawerNavigationSectionsService {
   }
 
   private get rawNavigationSections$(): Observable<Record<DRAWER_NAVIGATION_SECTIONS, DrawerNavigationSection>> {
-    return combineLatest([this.paymentsWalletsService.walletBalance$]).pipe(
-      map(([balance]) => {
+    return combineLatest([this.paymentsWalletsService.walletBalance$, this.userService.isProUser$]).pipe(
+      map(([balance, isPro]) => {
         return {
           [DRAWER_NAVIGATION_SECTIONS.CATALOG]: DRAWER_NAVIGATION_CATALOG_SECTION,
           [DRAWER_NAVIGATION_SECTIONS.TRANSACTIONS]: this.getTransactionsSection(balance),
-          [DRAWER_NAVIGATION_SECTIONS.ACCOUNT]: this.getAccountSection(),
+          [DRAWER_NAVIGATION_SECTIONS.ACCOUNT]: this.getAccountSection(isPro),
           [DRAWER_NAVIGATION_SECTIONS.HELP]: this.getHelpCenterSection(),
         };
       })
@@ -46,8 +46,8 @@ export class DrawerNavigationSectionsService {
     return DRAWER_NAVIGATION_TRANSACTIONS_SECTION(`${balance.amount} ${balance.currency.symbol}`);
   }
 
-  private getAccountSection(): DrawerNavigationSection {
-    return DRAWER_NAVIGATION_ACCOUNT_SECTION(() => this.userService.logout().subscribe());
+  private getAccountSection(isPro: boolean): DrawerNavigationSection {
+    return DRAWER_NAVIGATION_ACCOUNT_SECTION(() => this.userService.logout().subscribe(), isPro);
   }
 
   private getHelpCenterSection(): DrawerNavigationSection {

@@ -53,15 +53,19 @@ export const DRAWER_NAVIGATION_TRANSACTIONS_SECTION = (balance: string): DrawerN
   };
 };
 
-export const DRAWER_NAVIGATION_ACCOUNT_SECTION = (logoutAction: Function): DrawerNavigationSection => {
+export const DRAWER_NAVIGATION_ACCOUNT_SECTION = (logoutAction: Function, isProfessional: boolean): DrawerNavigationSection => {
   return {
     id: DRAWER_NAVIGATION_SECTIONS.ACCOUNT,
     title: $localize`:@@you_menu_account_label:Account`,
     elements: [
       {
         id: DRAWER_NAVIGATION_ELEMENTS.PROS,
-        text: $localize`:@@you_menu_become_pro_label:Became a PRO`,
-        alternativeText: $localize`:@@you_menu_become_pro_label:Became a PRO`,
+        text: isProfessional
+          ? $localize`:@@you_menu_wallapop_pro_label:Wallapop PRO`
+          : $localize`:@@you_menu_become_pro_label:Became a PRO`,
+        alternativeText: isProfessional
+          ? $localize`:@@you_menu_wallapop_pro_label:Wallapop PRO`
+          : $localize`:@@you_menu_become_pro_label:Became a PRO`,
         icon: `${ICONS_FOLDER}/pros.svg`,
         external: false,
         href: `/${PRO_PATHS.PRO_MANAGER}/${PRO_PATHS.SUBSCRIPTIONS}`,
