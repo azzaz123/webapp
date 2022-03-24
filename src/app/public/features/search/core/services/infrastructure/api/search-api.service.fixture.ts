@@ -45,7 +45,6 @@ function SearchBaseItemResponseFactory(): SearchBaseItemResponse {
       bumped: false,
       country_bumped: false,
       highlighted: false,
-      urgent: false,
     },
     price: 2352,
     currency: '€',

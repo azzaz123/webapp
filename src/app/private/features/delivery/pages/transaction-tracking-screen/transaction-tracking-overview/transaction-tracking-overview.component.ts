@@ -49,8 +49,8 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
   }
 
   private initializeTransactionTrackingAndDetails(requestId: string, trackInitEvent = false): void {
-    this.subscriptions.add(this.getTransactionTracking(requestId, trackInitEvent).subscribe());
-    this.subscriptions.add(this.getTransactionTrackingDetails(requestId).subscribe());
+    this.subscriptions.add(this.getTransactionTracking(requestId, trackInitEvent).subscribe({ error: () => {} }));
+    this.subscriptions.add(this.getTransactionTrackingDetails(requestId).subscribe({ error: () => {} }));
   }
 
   private listenForDeliveryNotifications(requestId: string): void {
@@ -67,10 +67,7 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
         }
         this.storeService.transactionTracking = transactionTracking;
       }),
-      catchError((error: unknown) => {
-        this.errorActionService.show(error);
-        return throwError(error);
-      })
+      catchError((error: unknown) => this.handleError(error))
     );
   }
 
@@ -79,10 +76,7 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
       tap((details: TransactionTrackingDetails) => {
         this.storeService.transactionTrackingDetails = details;
       }),
-      catchError((error: unknown) => {
-        this.errorActionService.show(error);
-        return throwError(error);
-      })
+      catchError((error: unknown) => this.handleError(error))
     );
   }
 
@@ -117,5 +111,10 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
 
   private redirectToPage(page: string): void {
     this.router.navigate([page]);
+  }
+
+  private handleError(error: unknown): Observable<never> {
+    this.errorActionService.show(error);
+    return throwError(error);
   }
 }

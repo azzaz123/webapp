@@ -13,6 +13,7 @@ import {
   MOCK_PAYMENTS_CARDS_UNKNWON_ERROR_RESPONSE,
 } from '@api/fixtures/payments/cards/payments-cards-errors.fixtures.spec';
 import { of, throwError } from 'rxjs';
+import { PaymentsClientBrowserInfoApiService } from '../users/client-browser-info/payments-client-browser-info-api.service';
 import { PaymentsCreditCardHttpService } from './http/payments-credit-card-http.service';
 
 import { PaymentsCreditCardService } from './payments-credit-card.service';
@@ -32,6 +33,10 @@ describe('PaymentsCreditCardService', () => {
         {
           provide: ThreeDomainSecureService,
           useValue: { checkThreeDomainSecure: () => of(true), cardNeedsToBeRemoved: () => true },
+        },
+        {
+          provide: PaymentsClientBrowserInfoApiService,
+          useValue: { sendBrowserInfo: () => of({}) },
         },
       ],
     });
@@ -113,6 +118,31 @@ describe('PaymentsCreditCardService', () => {
         tick();
 
         expect(methodResultError instanceof CardInvalidError).toBe(true);
+      }));
+    });
+
+    describe('AND WHEN card service return an error', () => {
+      const fakeError: Error = new Error('The server is broken');
+
+      beforeEach(() => {
+        spyOn(paymentsHttpService, 'get').and.returnValue(throwError(fakeError));
+      });
+
+      it('should propagete the error', fakeAsync(() => {
+        let methodResponse;
+        let errorResponse;
+
+        service.get(false).subscribe({
+          next: (data) => (methodResponse = data),
+          error: (error) => {
+            errorResponse = error;
+          },
+        });
+
+        tick();
+
+        expect(methodResponse).toBeFalsy();
+        expect(errorResponse).toEqual(fakeError);
       }));
     });
   });

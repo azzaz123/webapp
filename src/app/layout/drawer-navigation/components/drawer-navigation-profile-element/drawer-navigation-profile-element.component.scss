@@ -1,0 +1,37 @@
+@import '~style/common';
+
+$element-height: 128px;
+
+.DrawerNavigationProfileElement {
+  height: $element-height;
+  background-color: $white;
+  color: $blue-grey-1;
+  -webkit-tap-highlight-color: $blue-grey-5;
+
+  &__user {
+    min-width: 0;
+  }
+
+  &__username {
+    font-size: $font-size-lll;
+  }
+
+  &__avatarPlaceholder {
+    @include AvatarPlaceholder;
+    @include square(80px);
+    flex-shrink: 0;
+  }
+
+  &__usernamePlaceholder {
+    @include TextPlaceholder;
+    height: 20px;
+  }
+
+  &__textPlaceholder {
+    @include TextPlaceholder;
+  }
+
+  &:active {
+    background-color: $blue-grey-5;
+  }
+}

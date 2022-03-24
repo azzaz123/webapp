@@ -1,0 +1,27 @@
+<div class="PayviewPaymentMethod">
+  <tsl-delivery-radio-selector class="d-block" [isChecked]="isChecked" [marginLess]="true" (changed)="selectMethod($event)">
+    <ng-template tslDeliveryRadioOption>
+      <div class="PayviewPaymentMethod__methodWrapper d-flex mr-2 mr-lg-3 align-items-center">
+        <div class="PayviewPaymentMethod__methodIconWrapper mr-2">
+          <tsl-svg-icon class="PayviewPaymentMethod__methodIcon" [src]="icon" width="48" height="48"></tsl-svg-icon>
+        </div>
+        <div class="align-self-center ml-1">
+          <div class="PayviewPaymentMethod__methodDescription">
+            <span *ngIf="isPayPal" class="mb-2" i18n="@@pay_view_buyer_payment_method_paypal_label">PayPal</span>
+            <span *ngIf="isCreditCard && !creditCardNumber" class="mb-2" i18n="@@pay_view_buyer_payment_method_credit_card_label"
+              >Credit card</span
+            >
+            <span *ngIf="isCreditCard && !!creditCardNumber" class="mb-2" i18n="@@pay_view_buyer_payment_method_credit_card_masked_number"
+              >Credit card •••• {{ creditCardNumber }}</span
+            >
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </tsl-delivery-radio-selector>
+  <div *ngIf="isEditable" [@enterAnimation] class="PayviewPaymentMethod__informationWrapper d-flex w-100 flex-column">
+    <tsl-button class="PayviewPaymentMethod__actionButton mt-3 mb-1" className="btn-secondary" (click)="editMethod()">{{
+      actionTitle
+    }}</tsl-button>
+  </div>
+</div>

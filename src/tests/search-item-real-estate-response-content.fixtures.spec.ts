@@ -61,7 +61,6 @@ export const SEARCH_ITEM_REAL_ESTATE_RESPONSE_CONTENT_MOCK: SearchItemRealStateR
   visibility_flags: {
     bumped: true,
     highlighted: false,
-    urgent: false,
     country_bumped: false,
     boosted: false,
   },

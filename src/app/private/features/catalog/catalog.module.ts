@@ -18,6 +18,7 @@ import { CatalogManagerApiModule } from '@api/catalog-manager/catalog-manager-ap
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { MeApiModule } from '@api/me/me-api.module';
 import { BumpTutorialModule } from '@shared/bump-tutorial/bump-tutorial.module';
+import { VisibilityApiModule } from '@api/visibility/visibility-api.module';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { BumpTutorialModule } from '@shared/bump-tutorial/bump-tutorial.module';
     CatalogManagerApiModule,
     MeApiModule,
     BumpTutorialModule,
+    VisibilityApiModule,
   ],
   providers: [ItemRequiredDataService, CatalogItemTrackingEventService, ListingLimitService],
   declarations: [

@@ -26,7 +26,7 @@ import {
   MOCK_ACCEPT_SCREEN_PROPERTIES,
   MOCK_ACCEPT_SCREEN_PROPERTIES_SELECTED_HPU,
   MOCK_ACCEPT_SCREEN_PROPERTIES_WITHOUT_SELLER_ADDRESS_AND_HPU,
-  MOCK_ACCEPT_SCREEN_SELLER,
+  MOCK_ACCEPT_SCREEN_BUYER,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-properties.fixtures.spec';
 import {
   getClickAcceptOfferEventPropertiesFromProperties,
@@ -46,9 +46,9 @@ describe('when we map the properties into click item card event properties', () 
   });
 });
 
-describe('when we map the accept screen seller into click other profile event properties', () => {
+describe('when we map the accept screen buyer into click other profile event properties', () => {
   it('should return the properties mapped', () => {
-    const expectProperties: ClickOtherProfile = getClickOtherProfileEventPropertiesFromSeller(MOCK_ACCEPT_SCREEN_SELLER);
+    const expectProperties: ClickOtherProfile = getClickOtherProfileEventPropertiesFromSeller(MOCK_ACCEPT_SCREEN_BUYER);
     expect(expectProperties).toStrictEqual(MOCK_CLICK_OTHER_PROFILE_EVENT_PROPERTIES);
   });
 });
