@@ -37,6 +37,11 @@ export class PayviewStateManagementService {
     this.refreshCosts(payviewState, value);
   }
 
+  public buy(): void {
+    const payviewState = { ...this.stateSubject.getValue() };
+    this.request(payviewState);
+  }
+
   public set itemHash(value: string) {
     this.itemHashSubject.next(value);
     !!value ? this.getCurrentState(value) : this.stateSubject.next(null);
@@ -99,6 +104,10 @@ export class PayviewStateManagementService {
 
   private getActionEvent(type: PAYVIEW_EVENT_TYPE, payload: HttpErrorResponse | null = null): PayviewEvent {
     return { type: type, payload: mapToPayviewError(payload) };
+  }
+
+  private getBuyPayload(payviewState: PayviewState): PayviewBuy {
+    // TODO - 18/03/2022 - Map payviewState to PayviewBuy
   }
 
   private getCurrentState(value: string): void {
@@ -213,6 +222,24 @@ export class PayviewStateManagementService {
         subscription.unsubscribe();
       },
     });
+  }
+
+  private request(payviewState: PayviewState): void {
+    const subscription: Subscription = this.payviewService
+      .request(this.getBuyPayload(payviewState))
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY));
+        },
+        error: (error: HttpErrorResponse) => {
+          this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, error));
+          subscription.unsubscribe();
+        },
+        complete: () => {
+          subscription.unsubscribe();
+        },
+      });
   }
 
   private setCurrentDeliveryMethod(payviewState: PayviewState, mode: DELIVERY_MODE): void {
