@@ -1,13 +1,24 @@
 @import '~style/common';
 
+$modal-header-height: 56px;
+
+:host {
+  height: inherit;
+}
+
 .PayviewModal {
-  max-height: 80vh;
+  height: inherit;
+  overflow: auto;
+
+  &__header {
+    height: $modal-header-height;
+    top: 0;
+    z-index: 1;
+    background-color: $white;
+  }
 
   &__back {
     cursor: pointer;
-  }
-  &__scrollable {
-    overflow-y: scroll;
   }
 
   &__spinner {
