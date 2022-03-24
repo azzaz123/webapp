@@ -19,7 +19,6 @@ import { NotificationApiService } from '@api/notification/notification-api.servi
 })
 export class NotificationComponent {
   @Input() notification: Notification;
-
   public NOTIFICATION_VARIANT = NOTIFICATION_VARIANT;
 
   constructor(private analyticsService: AnalyticsService, private notificationApiService: NotificationApiService) {}
@@ -30,6 +29,11 @@ export class NotificationComponent {
     if (this.notification.url) {
       window.location.href = this.notification.url;
     }
+  }
+
+  public visibilityChangeHandler() {
+    const { id } = this.notification;
+    this.notificationApiService.logContentCard(id);
   }
 
   public trackClickNotification(): void {

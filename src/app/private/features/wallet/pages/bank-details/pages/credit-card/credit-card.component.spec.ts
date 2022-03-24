@@ -169,10 +169,12 @@ describe('CreditCreditCardComponent', () => {
     describe('and the form is not in progress...', () => {
       describe('when the form is valid...', () => {
         describe('and the credit card is new...', () => {
+          let routerSpy: jasmine.Spy;
+
           beforeEach(() => {
             spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError(''));
             spyOn(toastService, 'show');
-            spyOn(router, 'navigate');
+            routerSpy = spyOn(router, 'navigate');
 
             component.initForm();
             component.creditCardForm.setValue(mockFormCreditCardSyncRequest);
@@ -196,8 +198,40 @@ describe('CreditCreditCardComponent', () => {
               });
             });
 
-            it('should redirect to the bank details page', () => {
-              expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
+            describe('WHEN the return route has been reported', () => {
+              it('should redirect to the bank details page', () => {
+                expect(routerSpy).toHaveBeenCalledWith([component.returnRoute]);
+              });
+            });
+
+            describe('WHEN the return route has not been reported', () => {
+              beforeEach(() => {
+                component.returnRoute = null;
+                routerSpy.calls.reset();
+
+                fixture.detectChanges();
+
+                triggerFormSubmit();
+              });
+
+              it('should not redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+            });
+
+            describe('WHEN the return route is empty', () => {
+              beforeEach(() => {
+                component.returnRoute = '';
+                routerSpy.calls.reset();
+
+                fixture.detectChanges();
+
+                triggerFormSubmit();
+              });
+
+              it('should not redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
             });
           });
 
@@ -392,7 +426,7 @@ describe('CreditCreditCardComponent', () => {
           });
 
           it('should redirect to the bank details page', () => {
-            expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
+            expect(router.navigate).toHaveBeenCalledWith([component.returnRoute]);
           });
         });
 
@@ -530,6 +564,20 @@ describe('CreditCreditCardComponent', () => {
       backButton.click();
 
       expect(location.back).toHaveBeenCalled();
+    });
+  });
+
+  describe('when we do not want to show the back button', () => {
+    beforeEach(() => {
+      component.showBackButton = false;
+
+      fixture.detectChanges();
+    });
+
+    it('should not show the link to go back', () => {
+      const backButton = fixture.debugElement.query(By.css(backAnchorSelector));
+
+      expect(backButton).toBeFalsy();
     });
   });
 
