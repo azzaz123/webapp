@@ -1,13 +1,14 @@
-import { AfterViewInit, Component, ElementRef, Inject, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, ViewChild } from '@angular/core';
 import { WindowMessageService } from '@core/window-message/services/window-message.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'tsl-web-view-modal',
   templateUrl: './web-view-modal.component.html',
   styleUrls: ['./web-view-modal.component.scss'],
 })
-export class WebViewModalComponent implements AfterViewInit {
+export class WebViewModalComponent implements AfterViewInit, OnDestroy {
   @Input() startUrl: string;
   @Input() width: number;
   @Input() height: number;
@@ -17,16 +18,21 @@ export class WebViewModalComponent implements AfterViewInit {
 
   public readonly CLOSE_ICON_SRC: string = '/assets/icons/cross.svg';
   public readonly CLOSE_ICON_SIZE: number = 16;
+  private subscription: Subscription = new Subscription();
 
   constructor(@Inject(WINDOW_TOKEN) private window, private windowMessageService: WindowMessageService) {}
 
   ngAfterViewInit() {
     this.iframeRef.setAttribute('src', this.startUrl);
     this.iframeRef.setAttribute('style', `min-width: ${this.width}px; min-height: ${this.height}px; border: 0`);
-    this.windowMessageService.listen(this.window).subscribe(() => this.runOnCloseCallback());
+    this.subscription.add(this.windowMessageService.listen(this.window).subscribe(() => this.runOnCloseCallback()));
     try {
-      this.windowMessageService.listen(this.iframeRef.contentWindow).subscribe(() => this.runOnCloseCallback());
+      this.subscription.add(this.windowMessageService.listen(this.iframeRef.contentWindow).subscribe(() => this.runOnCloseCallback()));
     } catch {}
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   public runOnCloseCallback(): void {
