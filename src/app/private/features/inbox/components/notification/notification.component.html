@@ -7,6 +7,8 @@
     'Notification--separator': notification.variant !== (NOTIFICATION_VARIANT.PINNED && NOTIFICATION_VARIANT.HIGHLIGHTED)
   }"
   (click)="handleNotificationClick()"
+  tslVisible
+  (visible)="visibilityChangeHandler()"
 >
   <div class="Notification__image">
     <tsl-notification-image [notification]="notification"></tsl-notification-image>
