@@ -35,6 +35,9 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 
 import { delay } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
+import { CreditCard } from '@api/core/model';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { CardInvalidError } from '@api/core/errors/payments/cards';
 
 describe('PayviewService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
@@ -51,6 +54,7 @@ describe('PayviewService', () => {
   let paymentsPaymentMethodsService: PaymentsPaymentMethodsService;
   let paymentsUserPaymentPreferencesService: PaymentsUserPaymentPreferencesService;
   let paymentsWalletsService: PaymentsWalletsService;
+  let toastService: ToastService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -144,6 +148,7 @@ describe('PayviewService', () => {
           },
         },
         PayviewService,
+        ToastService,
       ],
       imports: [HttpClientTestingModule],
     });
@@ -159,6 +164,7 @@ describe('PayviewService', () => {
     paymentsPaymentMethodsService = TestBed.inject(PaymentsPaymentMethodsService);
     paymentsUserPaymentPreferencesService = TestBed.inject(PaymentsUserPaymentPreferencesService);
     paymentsWalletsService = TestBed.inject(PaymentsWalletsService);
+    toastService = TestBed.inject(ToastService);
   });
 
   it('should be created', () => {
@@ -525,5 +531,99 @@ describe('PayviewService', () => {
       expect(paymentService.updateUserPreferences).toHaveBeenCalledTimes(1);
       expect(paymentService.updateUserPreferences).toHaveBeenCalledWith(fakePaymentId, fakePaymentMethod, false);
     }));
+  });
+
+  describe('WHEN retrieving the card', () => {
+    beforeEach(() => {
+      spyOn(paymentsCreditCardService, 'get').and.callThrough();
+    });
+
+    it('should call to the server to get the corresponding information', fakeAsync(() => {
+      const fakeCreditCard: CreditCard = MOCK_CREDIT_CARD;
+      let result: CreditCard;
+
+      const subscription = service.card.pipe(delay(1)).subscribe((response: CreditCard) => {
+        subscription.unsubscribe();
+        result = response;
+      });
+
+      tick(1);
+
+      expect(result).toBe(MOCK_CREDIT_CARD);
+      expect(paymentsCreditCardService.get).toHaveBeenCalledTimes(1);
+    }));
+  });
+
+  describe('WHEN the card service returns an error', () => {
+    describe('AND WHEN the error is not an invalid credit card', () => {
+      let creditCard: CreditCard = null;
+      let result: CreditCard;
+      let toastServiceSpy: jasmine.Spy;
+
+      beforeEach(fakeAsync(() => {
+        spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError('The server is broken'));
+        toastServiceSpy = spyOn(toastService, 'show');
+
+        service.card.subscribe(
+          (response) => {
+            creditCard = response;
+          },
+          (error) => {
+            result = error;
+          }
+        );
+
+        tick();
+      }));
+
+      it('should call to the credit card server to get the corresponding information', () => {
+        expect(paymentsCreditCardService.get).toHaveBeenCalledTimes(1);
+      });
+
+      it('should not show a toast message', fakeAsync(() => {
+        expect(toastServiceSpy).not.toHaveBeenCalled();
+      }));
+
+      it('should not update the credit card', fakeAsync(() => {
+        expect(creditCard).toBeFalsy();
+      }));
+    });
+
+    describe('AND WHEN the error is an invalid credit card', () => {
+      const fakeError: CardInvalidError = new CardInvalidError();
+      let creditCard: CreditCard = null;
+      let result: CreditCard;
+      let toastServiceSpy: jasmine.Spy;
+
+      beforeEach(fakeAsync(() => {
+        spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError(fakeError));
+        toastServiceSpy = spyOn(toastService, 'show');
+
+        service.card.subscribe(
+          (response) => {
+            creditCard = response;
+          },
+          (error) => {
+            result = error;
+          }
+        );
+
+        tick();
+      }));
+
+      it('should call to the credit card server to get the corresponding information', () => {
+        expect(paymentsCreditCardService.get).toHaveBeenCalledTimes(1);
+      });
+
+      it('should show a toast message', fakeAsync(() => {
+        const expected = { text: 'Add another credit card so that it can be verified.', type: 'error' };
+        expect(toastServiceSpy).toHaveBeenCalledTimes(1);
+        expect(toastServiceSpy).toHaveBeenCalledWith(expected);
+      }));
+
+      it('should not update the credit card', fakeAsync(() => {
+        expect(creditCard).toBeFalsy();
+      }));
+    });
   });
 });

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { CreditCardModule } from '@private/features/wallet/pages/bank-details/pages/credit-card/credit-card.module';
 import { DeliveryAddressModule } from '@private/features/delivery/pages/delivery-address/delivery-address.module';
 import { DeliveryMapModule } from '@private/shared/delivery-map/delivery-map.module';
 import { PayviewDeliveryModule } from '@private/features/payview/modules/delivery/payview-delivery.module';
@@ -22,6 +23,7 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
     PayviewDeliveryModule,
     PayviewPaymentModule,
     PayviewPromotionModule,
+    CreditCardModule,
     StepperModule,
     SvgIconModule,
   ],

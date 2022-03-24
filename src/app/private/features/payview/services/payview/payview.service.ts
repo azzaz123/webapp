@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { BuyerRequestsItemsDetails } from '@api/core/model/delivery/buyer-request/buyer-requests-items-details.interface';
+import { CardInvalidError } from '@api/core/errors/payments/cards';
 import { CreditCard } from '@api/core/model';
 import { DeliveryAddress } from '@api/core/model/delivery/address/delivery-address.interface';
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
@@ -24,6 +25,8 @@ import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfa
 import { PaymentsUserPaymentPreferencesService } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 import { catchError, concatMap, map, mergeMap, take } from 'rxjs/operators';
 import { forkJoin, Observable, ObservableInput, of } from 'rxjs';
@@ -45,6 +48,7 @@ export class PayviewService {
     private paymentMethodsService: PaymentsPaymentMethodsService,
     private paymentPreferencesService: PaymentsUserPaymentPreferencesService,
     private paymentService: PaymentService,
+    private toastService: ToastService,
     private walletsService: PaymentsWalletsService
   ) {}
 
@@ -53,6 +57,18 @@ export class PayviewService {
       take(1),
       map(mapToDeliveryAddress),
       catchError(() => of(null))
+    );
+  }
+
+  public get card(): Observable<CreditCard> {
+    return this.creditCardService.get().pipe(
+      take(1),
+      catchError((error) => {
+        if (error instanceof CardInvalidError) {
+          this.showToast(error.message, TOAST_TYPES.ERROR);
+        }
+        return of(null);
+      })
     );
   }
 
@@ -124,13 +140,6 @@ export class PayviewService {
     return this.paymentService.updateUserPreferences(paymentId, method, useWallet);
   }
 
-  private get card(): Observable<CreditCard> {
-    return this.creditCardService.get().pipe(
-      take(1),
-      catchError(() => of(null))
-    );
-  }
-
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
     const method = state.delivery.methods.deliveryMethods[state.delivery.methods.default.index];
 
@@ -188,6 +197,13 @@ export class PayviewService {
         preferences: paymentPreferences,
         wallet,
       },
+    });
+  }
+
+  private showToast(text: string, type: TOAST_TYPES): void {
+    this.toastService.show({
+      text,
+      type,
     });
   }
 

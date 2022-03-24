@@ -54,9 +54,13 @@ export class NotificationApiService {
 
   public logContentCardsDisplayed(): void {
     appboy.logContentCardsDisplayed();
-    // FIXME: Should be logged only when they enter into the viewport, maybe add also a timer
-    appboy.logCardImpressions(this.filterNotificationCenterContentCards(appboy.getCachedContentCards().cards), true);
-    appboy.requestImmediateDataFlush();
+  }
+
+  public logContentCard(id: string): void {
+    const cachedContentCard = this.filterNotificationCenterContentCards(appboy.getCachedContentCards().cards).find(
+      (card) => card.id === id
+    );
+    appboy.logCardImpressions([cachedContentCard], true);
   }
 
   public logCardClick(id: string): void {

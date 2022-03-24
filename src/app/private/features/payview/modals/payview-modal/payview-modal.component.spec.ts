@@ -47,6 +47,9 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
+import { PAYVIEW_PAYMENT_EVENT_TYPE } from '../../modules/payment/enums/payview-payment-event-type.enum';
+import { PaymentsPaymentMethod } from '@api/core/model/payments';
+import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -80,7 +83,7 @@ class FakeComponent extends PayviewModalComponent {
     customerHelpService: CustomerHelpService,
     deliveryCountries: DeliveryCountriesService,
     promotionService: PayviewPromotionService,
-    payviewService: PayviewPaymentService
+    paymentService: PayviewPaymentService
   ) {
     super(
       payviewStateManagementService,
@@ -89,7 +92,7 @@ class FakeComponent extends PayviewModalComponent {
       customerHelpService,
       deliveryCountries,
       promotionService,
-      payviewService
+      paymentService
     );
   }
 }
@@ -129,6 +132,7 @@ describe('PayviewModalComponent', () => {
   let fixture: ComponentFixture<FakeComponent>;
   let itemHashSpy: jest.SpyInstance;
   let payviewDeliveryService: PayviewDeliveryService;
+  let payviewPaymentService: PayviewPaymentService;
   let payviewPromotionService: PayviewPromotionService;
   let payviewService: PayviewService;
   let payviewStateManagementService: PayviewStateManagementService;
@@ -201,6 +205,7 @@ describe('PayviewModalComponent', () => {
       activeModalService = TestBed.inject(NgbActiveModal);
       customerHelpService = TestBed.inject(CustomerHelpService);
       payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
+      payviewPaymentService = TestBed.inject(PayviewPaymentService);
       payviewPromotionService = TestBed.inject(PayviewPromotionService);
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
@@ -787,7 +792,7 @@ describe('PayviewModalComponent', () => {
       });
     });
 
-    describe('WHEN there promocode has been apply', () => {
+    describe('WHEN the promocode has been apply', () => {
       beforeEach(() => {
         spyOn(payviewService, 'getCosts').and.returnValue(of(MOCK_DELIVERY_BUYER_CALCULATOR_COSTS));
         spyOn(payviewService, 'getCurrentState').and.returnValue(of(MOCK_PAYVIEW_STATE));
@@ -819,6 +824,78 @@ describe('PayviewModalComponent', () => {
 
       it('should call to refresh the delivery information', () => {
         expect(payviewStateManagementService.refreshByDelivery).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('WHEN the user wants to edit the credit card', () => {
+      beforeEach(() => {
+        fixture.detectChanges();
+
+        spyOn(payviewPaymentService, 'on').and.callThrough();
+      });
+
+      it('should received the corresponding order', () => {
+        let result: number = 0;
+        let expected: number = 1;
+        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
+          result++;
+        });
+
+        payviewPaymentService.editCreditCard();
+
+        expect(payviewPaymentService.on).toHaveBeenCalledTimes(1);
+        expect(result).toBe(expected);
+      });
+
+      it('should move to the corresponding step', () => {
+        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {});
+
+        payviewPaymentService.editCreditCard();
+
+        expect(stepperSpy).toHaveBeenCalledTimes(1);
+        expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.CREDIT_CARD);
+      });
+    });
+
+    describe('WHEN the credit card has been saved', () => {
+      beforeEach(() => {
+        spyOn(payviewStateManagementService, 'refreshByCreditCard');
+        component.closeCreditCardEditor();
+      });
+
+      it('should redirect to the payview step', () => {
+        expect(stepper.goToStep).toHaveBeenCalledTimes(1);
+        expect(stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PAYVIEW);
+      });
+
+      it('should call to refresh the payment information', () => {
+        expect(payviewStateManagementService.refreshByCreditCard).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('WHEN the payment method has been selected', () => {
+      beforeEach(() => {
+        spyOn(payviewStateManagementService, 'setPaymentMethod').and.callFake(() => {});
+        spyOn(payviewPaymentService, 'on').and.callThrough();
+      });
+
+      it('should set the payment method received', () => {
+        let result: PaymentsPaymentMethod;
+        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.PAYMENT_METHOD_SELECTED, (data: PaymentsPaymentMethod) => {
+          result = data;
+        });
+
+        payviewPaymentService.setPaymentMethod(MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0]);
+
+        expect(payviewPaymentService.on).toHaveBeenCalledTimes(1);
+        expect(result).toEqual(MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0]);
+      });
+
+      it('should call to set the payment method received', () => {
+        payviewPaymentService.setPaymentMethod(MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0]);
+
+        expect(payviewStateManagementService.setPaymentMethod).toHaveBeenCalledTimes(1);
+        expect(payviewStateManagementService.setPaymentMethod).toHaveBeenCalledWith(MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0]);
       });
     });
 

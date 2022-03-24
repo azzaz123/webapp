@@ -59,6 +59,11 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscribe();
   }
 
+  public closeCreditCardEditor(): void {
+    this.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
+    this.payviewStateManagementService.refreshByCreditCard();
+  }
+
   public closeDeliveryEditor(): void {
     this.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
     this.payviewStateManagementService.refreshByDelivery();

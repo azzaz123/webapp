@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { CreditCard } from '@api/core/model';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { DeliveryBuyerCalculatorCosts } from '@api/core/model/delivery/buyer/calculator/delivery-buyer-calculator-costs.interface';
 import {
@@ -62,6 +63,11 @@ export class PayviewStateManagementService {
 
   public refreshPayviewState(): void {
     this.getCurrentState(this.itemHashSubject.getValue());
+  }
+
+  public refreshByCreditCard(): void {
+    const payviewState = { ...this.stateSubject.getValue() };
+    this.refreshCreditCard(payviewState);
   }
 
   public refreshByDelivery(): void {
@@ -189,6 +195,24 @@ export class PayviewStateManagementService {
           subscription.unsubscribe();
         },
       });
+  }
+
+  private refreshCreditCard(payviewState: PayviewState): void {
+    const subscription: Subscription = this.payviewService.card.pipe(take(1)).subscribe({
+      next: (creditCard: CreditCard) => {
+        payviewState.payment.card = creditCard;
+
+        this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_REFRESH_CREDIT_CARD));
+        this.stateSubject.next(payviewState);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.ERROR_ON_REFRESH_CREDIT_CARD, error));
+        subscription.unsubscribe();
+      },
+      complete: () => {
+        subscription.unsubscribe();
+      },
+    });
   }
 
   private setCurrentDeliveryMethod(payviewState: PayviewState, mode: DELIVERY_MODE): void {
