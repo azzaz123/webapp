@@ -5,18 +5,21 @@
   </div>
   <div class="PayviewPromotionEditor__promotionWrapper d-flex flex-column justify-content-between">
     <div class="PayviewPromotionEditor__element align-self-center">
-      <input
-        id="promocode"
-        type="text"
-        class="PayviewPromotionEditor__input mb-1 w-100"
-        [(ngModel)]="promocode"
-        [ngClass]="{ 'PayviewPromotionEditor__input--error': !!errorMessage }"
-        i18n-placeholder="@@pay_view_buyer_promo_code_pop_up_placeholder"
-        placeholder="Promotional code"
-      />
-      <div *ngIf="!!errorMessage" class="PayviewPromotionEditor__error">
-        <span>{{ errorMessage }}</span>
+      <div class="PayviewPromotionEditor__inputWrapper">
+        <input
+          id="promocode"
+          type="text"
+          class="PayviewPromotionEditor__input mb-1 w-100"
+          [(ngModel)]="promocode"
+          [ngClass]="{ 'PayviewPromotionEditor__input--error': !!errorMessage }"
+          i18n-placeholder="@@pay_view_buyer_promo_code_pop_up_placeholder"
+          placeholder="Promotional code"
+        />
+        <div *ngIf="!!errorMessage" class="PayviewPromotionEditor__error">
+          <span>{{ errorMessage }}</span>
+        </div>
       </div>
+      <tsl-svg-icon class="mt-2 d-flex justify-content-center" src="/assets/icons/payview/pop-no-comission.svg"></tsl-svg-icon>
     </div>
     <tsl-button
       class="PayviewPromotionEditor__element align-self-center"

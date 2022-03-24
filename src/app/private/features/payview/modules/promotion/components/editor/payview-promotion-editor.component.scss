@@ -3,6 +3,10 @@
 .PayviewPromotionEditor {
   padding: $spacing-ml;
 
+  &__inputWrapper {
+    height: 82px;
+  }
+
   &__messageWrapper {
     padding: $spacing-ml;
   }
