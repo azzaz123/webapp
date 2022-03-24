@@ -56,7 +56,7 @@ export class NotificationApiService {
     appboy.logContentCardsDisplayed();
   }
 
-  public logContentCard(id): void {
+  public logContentCard(id: string): void {
     const cachedContentCard = this.filterNotificationCenterContentCards(appboy.getCachedContentCards().cards).find(
       (card) => card.id === id
     );
