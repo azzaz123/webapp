@@ -31,7 +31,7 @@ export class DrawerNavigationSectionsService {
 
   private get rawNavigationSections$(): Observable<Record<DRAWER_NAVIGATION_SECTIONS, DrawerNavigationSection>> {
     return combineLatest([this.paymentsWalletsService.walletBalance$, this.userService.isProUser$]).pipe(
-      map(([balance, isPro]) => {
+      map(([balance, isPro]: [Money, boolean]) => {
         return {
           [DRAWER_NAVIGATION_SECTIONS.CATALOG]: DRAWER_NAVIGATION_CATALOG_SECTION,
           [DRAWER_NAVIGATION_SECTIONS.TRANSACTIONS]: this.getTransactionsSection(balance),
