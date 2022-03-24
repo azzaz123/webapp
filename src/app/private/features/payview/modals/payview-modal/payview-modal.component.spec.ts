@@ -475,24 +475,24 @@ describe('PayviewModalComponent', () => {
             });
           });
 
-          describe.each([[POST_OFFICE_CARRIER.POSTE_ITALIANE], [POST_OFFICE_CARRIER.CORREOS]])(
-            'WHEN assigning the selected carrier',
-            (expected) => {
-              beforeEach(() => {
-                let payviewState = { ...MOCK_PAYVIEW_STATE };
-                payviewState.delivery.methods.current.carrier = expected;
-                changeDetectorRef.detectChanges();
-              });
+          describe.each([
+            [POST_OFFICE_CARRIER.POSTE_ITALIANE, POST_OFFICE_CARRIER.POSTE_ITALIANE],
+            [null, POST_OFFICE_CARRIER.CORREOS],
+          ])('WHEN assigning the selected carrier', (carrier, expected) => {
+            beforeEach(() => {
+              let payviewState = { ...MOCK_PAYVIEW_STATE };
+              payviewState.delivery.methods.current.carrier = carrier;
+              changeDetectorRef.detectChanges();
+            });
 
-              it('should assign the selected carrier', () => {
-                const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
-                  By.directive(FakeDeliveryMapComponent)
-                ).componentInstance;
+            it('should assign the selected carrier', () => {
+              const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
+                By.directive(FakeDeliveryMapComponent)
+              ).componentInstance;
 
-                expect(pickUpPointMapComponent.selectedCarrier).toBe(expected);
-              });
-            }
-          );
+              expect(pickUpPointMapComponent.selectedCarrier).toBe(expected);
+            });
+          });
 
           describe.each([['This_is_a_user_office_id'], [null]])('WHEN assigning the selected user office id', (expected) => {
             beforeEach(() => {
