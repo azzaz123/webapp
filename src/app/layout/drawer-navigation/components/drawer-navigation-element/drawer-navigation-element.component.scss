@@ -6,6 +6,7 @@ $element-height: 48px;
   background-color: $white;
   height: $element-height;
   -webkit-tap-highlight-color: $blue-grey-5;
+  appearance: none;
 
   &__text {
     text-decoration: none;
