@@ -10,6 +10,7 @@ import { DrawerNavigationProfileElementComponent } from './components/drawer-nav
 import { StarsModule } from '@shared/stars/stars.module';
 import { UserAvatarModule } from '@shared/user-avatar/user-avatar.module';
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
+import { DrawerNavigationSectionsService } from './services/drawer-navigation-sections/drawer-navigation-sections.service';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,6 @@ import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
   ],
   exports: [DrawerNavigationComponent, DrawerNavigationChildPageComponent],
   imports: [CommonModule, SvgIconModule, StarsModule, UserAvatarModule, RouterModule, ProBadgeModule],
-  providers: [DrawerNavigationService],
+  providers: [DrawerNavigationService, DrawerNavigationSectionsService],
 })
 export class DrawerNavigationModule {}

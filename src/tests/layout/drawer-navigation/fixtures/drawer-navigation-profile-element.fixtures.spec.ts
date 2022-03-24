@@ -1,8 +1,12 @@
 import { IMAGE, MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
-import { DrawerNavigationProfileElement } from '@layout/drawer-navigation/interfaces/drawer-navigation-element.interface';
+import {
+  DrawerNavigationProfileElement,
+  DRAWER_NAVIGATION_ELEMENTS,
+} from '@layout/drawer-navigation/interfaces/drawer-navigation-element.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 export const MOCK_DRAWER_NAVIGATION_PROFILE_ELEMENT: DrawerNavigationProfileElement = {
+  id: DRAWER_NAVIGATION_ELEMENTS.PROFILE,
   professional: MOCK_USER.featured,
   text: MOCK_USER.microName,
   alternativeText: MOCK_USER.microName,
