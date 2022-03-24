@@ -26,7 +26,9 @@ export class DrawerNavigationSectionsService {
   ) {}
 
   public get navigationSections$(): Observable<DrawerNavigationSection[]> {
-    return this.rawNavigationSections$.pipe(map((sections: DrawerNavigationSection[]) => Object.values(sections)));
+    return this.rawNavigationSections$.pipe(
+      map((sections: Record<DRAWER_NAVIGATION_SECTIONS, DrawerNavigationSection>) => Object.values(sections))
+    );
   }
 
   private get rawNavigationSections$(): Observable<Record<DRAWER_NAVIGATION_SECTIONS, DrawerNavigationSection>> {
