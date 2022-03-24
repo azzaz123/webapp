@@ -1,8 +1,8 @@
 <div class="PayviewModal modal-body p-0 d-flex flex-column">
   <div class="PayviewModal__header position-sticky">
     <div class="container">
-      <div class="row px-2 py-3">
-        <div class="col">
+      <div class="row">
+        <div class="col p-0">
           <div class="d-flex justify-content-between">
             <a class="d-flex" [ngClass]="{ PayviewModal__back: isSecondaryStep }" (click)="goBack()">
               <tsl-svg-icon *ngIf="isSecondaryStep" class="align-self-center mr-3" src="./assets/icons/back-arrow.svg"></tsl-svg-icon>

@@ -11,6 +11,7 @@ $modal-header-height: 56px;
   overflow: auto;
 
   &__header {
+    padding: $spacer * 1.15;
     height: $modal-header-height;
     top: 0;
     z-index: 1;
