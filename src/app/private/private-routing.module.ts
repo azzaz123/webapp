@@ -151,6 +151,10 @@ const routes: Routes = [
           { path: 'view', redirectTo: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.VERIFICATIONS}` },
         ],
       },
+      {
+        path: PRIVATE_PATHS.YOU,
+        loadChildren: () => import('@private/features/you/you.module').then((m) => m.YouModule),
+      },
     ],
   },
 ];

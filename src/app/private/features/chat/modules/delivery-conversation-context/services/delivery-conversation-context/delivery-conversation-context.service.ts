@@ -39,9 +39,7 @@ export class DeliveryConversationContextService {
   public update(conversation: InboxConversation): void {
     this.loading = true;
     const subscription: Subscription = this.getBannerProperties(conversation).subscribe(
-      //TODO: Assign banner properties when openning chat banner
-      // In order for the third voices to work while the banner is not openned in prod, we need the banner properties loaded within the context
-      (bannerProperties: DeliveryBanner | null) => (this.bannerProperties = null), // this.bannerProperties = bannerProperties
+      (bannerProperties: DeliveryBanner | null) => (this.bannerProperties = bannerProperties),
       () => this.endLoading(),
       () => this.endLoading()
     );

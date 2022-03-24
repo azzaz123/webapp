@@ -21,8 +21,6 @@ import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/de
 import { DeliveryItemDetails } from '@api/core/model/delivery/item-detail/delivery-item-details.interface';
 import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
 import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 
@@ -33,7 +31,6 @@ export class DeliveryConversationContextAsSellerService {
   constructor(
     private router: Router,
     private modalService: NgbModal,
-    private featureFlagService: FeatureFlagService,
     private sellerRequestsApiService: SellerRequestsApiService,
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
     private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
@@ -88,14 +85,8 @@ export class DeliveryConversationContextAsSellerService {
   }
 
   private navigateToAcceptScreen(requestId: string): void {
-    this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((enabled) => {
-      const isDisabled: boolean = !enabled;
-      if (isDisabled) {
-        return this.openAwarenessModal();
-      }
-      const route: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
-      this.router.navigate([route]);
-    });
+    const route: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
+    this.router.navigate([route]);
   }
 
   private navigateToEditItemShippingToggle(conversation: InboxConversation): void {

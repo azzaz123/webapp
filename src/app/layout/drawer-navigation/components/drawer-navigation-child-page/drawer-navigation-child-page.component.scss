@@ -1,0 +1,15 @@
+@import '~style/common';
+
+$header-height: 48px;
+
+.DrawerNavigationChildPage {
+  &__header {
+    background-color: $white;
+    height: $header-height;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__back {
+    left: $spacer;
+  }
+}
