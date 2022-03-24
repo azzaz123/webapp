@@ -9,7 +9,6 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { InitializeAuthenticatedUserService } from '@core/initialize-authenticated-user/initialize-authenticated-user.service';
 import { InitializeUnauthenticatedUserService } from '@core/initialize-unauthenticated-user/initialize-unauthenticated-user.service';
 import { SessionService } from '@core/session/session.service';
-import { ParityService } from '@core/parity/parity.service';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -25,7 +24,7 @@ export const PROVIDERS: Provider[] = [
   {
     provide: APP_INITIALIZER,
     useFactory: initializerFactory,
-    deps: [UserService, InitializeAuthenticatedUserService, InitializeUnauthenticatedUserService, ParityService],
+    deps: [UserService, InitializeAuthenticatedUserService, InitializeUnauthenticatedUserService],
     multi: true,
   },
   {
@@ -49,10 +48,8 @@ export const PROVIDERS: Provider[] = [
 export function initializerFactory(
   userService: UserService,
   initializeAuthenticatedUserService: InitializeAuthenticatedUserService,
-  initializeUnauthenticatedUserService: InitializeUnauthenticatedUserService,
-  parityService: ParityService
+  initializeUnauthenticatedUserService: InitializeUnauthenticatedUserService
 ): () => void {
-  parityService.checkIfFeatureExists();
   return () => (userService.isLogged ? initializeAuthenticatedUserService.initialize() : initializeUnauthenticatedUserService.initialize());
 }
 

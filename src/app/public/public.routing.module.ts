@@ -40,6 +40,10 @@ const routes: Route[] = [
         matcher: urlMatcher,
         loadChildren: () => import('./features/parity-screen/parity-screen.module').then((m) => m.ParityScreenModule),
       },
+      // {
+      //   path: '**',
+      //   loadChildren: () => import('./features/parity-screen/parity-screen.module').then((m) => m.ParityScreenModule),
+      // },
     ],
   },
 ];

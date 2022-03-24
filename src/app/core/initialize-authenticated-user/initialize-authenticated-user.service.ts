@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { ExternalCommsService } from '@core/external-comms.service';
-import { ParityService } from '@core/parity/parity.service';
 import { PermissionsInitializerService } from '@core/permissions-initializer/permissions-initializer.service';
 import { UnreadChatMessagesService } from '@core/unread-chat-messages/unread-chat-messages.service';
 import { INIT_FEATURE_FLAGS } from '@core/user/featureflag-constants';
@@ -18,8 +17,7 @@ export class InitializeAuthenticatedUserService {
     private featureFlagsService: FeatureFlagService,
     private externalCommsService: ExternalCommsService,
     private experimentationService: ExperimentationService,
-    private unreadChatMessagesService: UnreadChatMessagesService,
-    private parityService: ParityService
+    private unreadChatMessagesService: UnreadChatMessagesService
   ) {}
 
   public async initialize(): Promise<void> {
@@ -30,9 +28,7 @@ export class InitializeAuthenticatedUserService {
     this.permissionsService.setUserPermissions(user);
     this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
 
-    this.parityService.parityCheck$.subscribe(async () => {
-      await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(user);
-    });
+    await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(user);
 
     this.experimentationService.initializeExperimentationWithAuthenticatedUser();
     this.externalCommsService.initializeBraze();
