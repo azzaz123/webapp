@@ -67,9 +67,10 @@ export class ThreeDomainSecureService {
   private start3DSValidation(card: CreditCard): Observable<void> {
     const { id } = card;
     const threeDSecureStartUrl: string = THREE_DOMAIN_SECURE_START_URL(id);
+    const threeDSecureTitle: string = $localize`:@@three3ds_verification_title:Credit card verification`;
 
     return this.webViewModalService
-      .open(threeDSecureStartUrl, THREE_DOMAIN_SECURE_MODAL_WIDTH, THREE_DOMAIN_SECURE_MODAL_HEIGHT)
+      .open(threeDSecureStartUrl, THREE_DOMAIN_SECURE_MODAL_WIDTH, THREE_DOMAIN_SECURE_MODAL_HEIGHT, threeDSecureTitle)
       .pipe(catchError(() => throwError([new CardRegistrationFailedError()])));
   }
 
