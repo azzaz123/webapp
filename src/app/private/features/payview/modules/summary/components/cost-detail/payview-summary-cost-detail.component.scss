@@ -73,4 +73,10 @@ $spacing-28: math.div(28px, 16px) * $spacer;
   &__totalCost {
     font-size: $spacing-xl;
   }
+
+  &__text {
+    &--gray {
+      color: $blue-grey-2;
+    }
+  }
 }
