@@ -64,9 +64,9 @@
       <ng-template step>
         <div class="PayviewModal__pickUpPointMap h-100">
           <tsl-delivery-map
-            [fullAddress]="payviewState.delivery.methods.addressLabel"
-            [selectedCarrier]="payviewState.delivery.methods.current.carrier"
-            [userOfficeId]="payviewState.delivery.methods.current.lastAddressUsed.id"
+            [fullAddress]="getFullAddress(payviewState.delivery.methods)"
+            [selectedCarrier]="getSelectedCarrier(payviewState.delivery.methods)"
+            [userOfficeId]="getUserOfficeId(payviewState.delivery.methods)"
             (goToDeliveryAddress)="goToDeliveryAddress()"
             (selectedOfficeSucceeded)="closeDeliveryEditor()"
           ></tsl-delivery-map>

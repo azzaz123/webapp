@@ -4,7 +4,7 @@ import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
-import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DeliveryBuyerDeliveryMethod, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
@@ -23,6 +23,7 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
+import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -71,6 +72,18 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   public closeModal(): void {
     this.activeModal.close();
+  }
+
+  public getFullAddress(methods: DeliveryBuyerDeliveryMethods): string {
+    return methods?.addressLabel;
+  }
+
+  public getSelectedCarrier(methods: DeliveryBuyerDeliveryMethods): POST_OFFICE_CARRIER {
+    return methods?.current?.carrier ?? POST_OFFICE_CARRIER.CORREOS;
+  }
+
+  public getUserOfficeId(methods: DeliveryBuyerDeliveryMethods): string {
+    return methods?.current?.lastAddressUsed?.id;
   }
 
   public goBack(): void {
