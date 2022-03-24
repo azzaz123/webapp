@@ -1,6 +1,7 @@
 @import '~style/common';
 
 .PayviewDeliveryPoint {
+  color: $blue-grey-1;
   border-bottom: 1px solid $blue-grey-4;
 
   &__pointWrapper {
@@ -21,19 +22,19 @@
 
   &__informationWrapper {
     padding-left: $spacing-xxxl;
-    padding-bottom: $spacing-ml;
+    padding-bottom: $spacer * 0.75;
   }
 
   &__deliveryEtaWrapper {
+    font-size: $font-size-s;
     padding: 0 0 $spacing-xxs 0;
   }
   &__deliveryAddressWrapper {
+    font-size: $font-size-s;
+
     padding: $spacing-xxs 0 0 0;
   }
-  &__deliveryEtaTitle,
-  &__deliveryAddressTitle {
-    color: $blue-grey-2;
-  }
+
   &__deliveryEta,
   &__deliveryAddress {
     font-weight: $font-weight-chunky;
