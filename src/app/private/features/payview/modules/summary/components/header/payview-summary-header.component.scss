@@ -10,10 +10,14 @@ $spacing-14: 14px;
 
   &__imageWrapper {
     margin-right: $spacing-ms;
+    @include square(70px);
   }
   &__image {
-    @include square(70px);
     border-radius: 5px;
+    object-fit: cover;
+    overflow: hidden;
+    width: inherit;
+    height: inherit;
   }
   &__deliveryEtaWrapper {
     padding: 0 0 $spacing-xxs 0;
