@@ -47,7 +47,6 @@ export class PayviewService {
     private itemService: ItemService,
     private paymentMethodsService: PaymentsPaymentMethodsService,
     private paymentPreferencesService: PaymentsUserPaymentPreferencesService,
-    private paymentService: PaymentService,
     private toastService: ToastService,
     private walletsService: PaymentsWalletsService
   ) {}
@@ -136,8 +135,8 @@ export class PayviewService {
       );
   }
 
-  public setUserPaymentPreferences(paymentId: string, method: PaymentMethod, useWallet: boolean): Observable<void> {
-    return this.paymentService.updateUserPreferences(paymentId, method, useWallet);
+  public setUserPaymentPreferences(preferences: PaymentsUserPaymentPreferences): Observable<void> {
+    return this.paymentPreferencesService.update(preferences);
   }
 
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {

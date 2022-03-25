@@ -21,6 +21,7 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
+import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
 
 @Injectable({
   providedIn: 'root',
@@ -225,15 +226,13 @@ export class PayviewStateManagementService {
   }
 
   private setCurrentPaymentMethod(payviewState: PayviewState, method: PaymentMethod): void {
-    const preferences = { ...payviewState.payment.preferences.preferences };
+    //TODO: Delegating wallet usage to state but enforcing in here to not use it
+    const preferences: PaymentsUserPaymentPreference = { ...payviewState.payment.preferences.preferences, useWallet: false };
     preferences.paymentMethod = method;
     payviewState.payment.preferences.preferences = preferences;
 
-    // TODO - 18/03/2022 - For the MVP we don't use the wallet, so the third parameter in this call is "false".
-    // In the future you'll have to change this value by the corresponding one.
-
     const subscription: Subscription = this.payviewService
-      .setUserPaymentPreferences(payviewState.payment.preferences.preferences.id, method, false)
+      .setUserPaymentPreferences(payviewState.payment.preferences)
       .pipe(take(1))
       .subscribe({
         next: () => {
