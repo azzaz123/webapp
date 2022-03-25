@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences } from '@api/bff/payments/user-payment-preferences/mappers/responses/payments-user-payment-preferences.mapper';
+import { mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences } from './mappers/responses/payments-user-payment-preferences.mapper';
 import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/user-payment-preferences/http/payments-user-payment-preferences-http.service';
 
