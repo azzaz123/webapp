@@ -14,6 +14,7 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayviewSummaryOverviewComponent {
+  @Input() public isPurchaseSummarySection: boolean;
   @Input() public payviewState: PayviewState;
 
   public get creditCard(): CreditCard {
