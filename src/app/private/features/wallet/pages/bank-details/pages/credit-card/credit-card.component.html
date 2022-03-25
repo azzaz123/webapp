@@ -103,11 +103,13 @@
             </div>
           </div>
         </div>
-        <span class="CreditCard__message CreditCard__message--info col-12 mb-4" i18n="@@credit_card_form_pre_charge_info_description"
-          >0,10 € will be charged in order to validate credit or debit card. The amount will be returned in 7 working days.</span
-        >
+        <div class="row text-center">
+          <span class="CreditCard__message CreditCard__message--info col-12 mb-4" i18n="@@credit_card_form_pre_charge_info_description"
+            >0,10 € will be charged in order to validate credit or debit card. The amount will be returned in 7 working days.</span
+          >
+        </div>
       </div>
-      <div class="CreditCard__saveButton row text-center position-sticky d-flex flex-column align-items-center p-2">
+      <div class="CreditCard__saveButton row position-sticky justify-content-center p-2">
         <tsl-button
           class="col-12 col-md-3"
           [type]="'submit'"
