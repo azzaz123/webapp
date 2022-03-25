@@ -20,7 +20,7 @@ export class PayviewTrackingEventsService {
 
   public trackViewTransactionPayScreen(attributes: ViewTransactionPayScreen): void {
     const pageViewEvent: AnalyticsPageView<ViewTransactionPayScreen> = {
-      name: ANALYTICS_EVENT_NAMES.ViewAcceptOffer,
+      name: ANALYTICS_EVENT_NAMES.ViewTransactionPayScreen,
       attributes,
     };
 
@@ -60,7 +60,7 @@ export class PayviewTrackingEventsService {
   public trackClickAddPromocodeTransactionPay(attributes: ClickAddPromocodeTransactionPay): void {
     const event: AnalyticsEvent<ClickAddPromocodeTransactionPay> = {
       name: ANALYTICS_EVENT_NAMES.ClickAddPromocodeTransactionPay,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes,
     };
 
@@ -70,7 +70,7 @@ export class PayviewTrackingEventsService {
   public trackClickApplyPromocodeTransactionPay(attributes: ClickApplyPromocodeTransactionPay): void {
     const event: AnalyticsEvent<ClickApplyPromocodeTransactionPay> = {
       name: ANALYTICS_EVENT_NAMES.ClickApplyPromocodeTransactionPay,
-      eventType: ANALYTIC_EVENT_TYPES.Navigation,
+      eventType: ANALYTIC_EVENT_TYPES.UserPreference,
       attributes,
     };
 
