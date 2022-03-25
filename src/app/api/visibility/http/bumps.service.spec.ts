@@ -6,11 +6,13 @@ import {
   ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
   MOCK_BUMP_PACKAGE_RESPONSE,
   MOCK_BUMPS_PACKAGE_BALANCE,
+  MOCK_ONE_ITEM_BUMP_BALANCE,
 } from '@fixtures/bump-package.fixtures.spec';
 import { BumpsPackageBalanceDTO, BumpsPackageBalanceResponse } from '../dtos/bumps/bumps-package-balance.interface';
 import { BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
 import { BumpsHttpService } from './bumps.service';
-import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE, ITEMS_WITH_PRODUCTS } from './endpoints';
+import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE, ITEMS_CHECK_BUMP_BALANCE, ITEMS_WITH_PRODUCTS } from './endpoints';
+import { ItemsBalanceDTO } from '@api/visibility/dtos/bumps/items-balance.interface';
 
 describe('BumpsService', () => {
   let service: BumpsHttpService;
@@ -37,6 +39,22 @@ describe('BumpsService', () => {
 
       expect(response).toEqual(MOCK_BUMP_PACKAGE_RESPONSE);
       expect(req.request.method).toEqual('GET');
+    });
+  });
+
+  describe('when asked to retrieve items balance', () => {
+    it('should retrieve item balance', () => {
+      let response: ItemsBalanceDTO;
+      let userId = '123';
+      let items = ['456'];
+
+      service.getItemsBalance(userId, items).subscribe((res) => (response = res));
+
+      const req: TestRequest = httpMock.expectOne(ITEMS_CHECK_BUMP_BALANCE(userId));
+      req.flush(MOCK_ONE_ITEM_BUMP_BALANCE);
+
+      expect(response).toEqual(MOCK_ONE_ITEM_BUMP_BALANCE);
+      expect(req.request.method).toEqual('POST');
     });
   });
 

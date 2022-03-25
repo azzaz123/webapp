@@ -1,11 +1,12 @@
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 import { BumpPackageBalance, BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { DurationMapped, ItemsBySubscription, ItemWithProducts, ProductMapped } from '@api/core/model/bumps/item-products.interface';
+import { DurationMapped, ItemsBySubscription, ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
 import { BumpsPackageBalanceDTO, BumpsPackageBalanceResponse } from '@api/visibility/dtos/bumps/bumps-package-balance.interface';
 import { Item } from '@core/item/item';
 import { ItemContent, ItemsWithAvailableProductsResponse, Product } from '@core/item/item-response.interface';
-import { BUMP_NAMES, SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
+import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED } from '@fixtures/subscriptions.fixtures.spec';
+import { ItemBalanceDTO, ItemsBalanceDTO } from '@api/visibility/dtos/bumps/items-balance.interface';
 
 export const MOCK_BUMPS_PACKAGE_BALANCE: BumpsPackageBalanceDTO[] = [
   {
@@ -45,6 +46,24 @@ export const MOCK_BUMPS_PACKAGE_BALANCE: BumpsPackageBalanceDTO[] = [
 
 export const MOCK_BUMP_PACKAGE_RESPONSE: BumpsPackageBalanceResponse = {
   user_balance: MOCK_BUMPS_PACKAGE_BALANCE,
+};
+
+const MOCK_ITEM_BUMP_BALANCE_TRUE: ItemBalanceDTO = {
+  item_id: '123',
+  has_balance: true,
+};
+
+const MOCK_ITEM_BUMP_BALANCE_FALSE: ItemBalanceDTO = {
+  item_id: '123',
+  has_balance: false,
+};
+
+export const MOCK_ONE_ITEM_BUMP_BALANCE: ItemsBalanceDTO = {
+  balance_check: [MOCK_ITEM_BUMP_BALANCE_TRUE],
+};
+
+export const MOCK_ONE_ITEM_BUMP_NO_BALANCE: ItemsBalanceDTO = {
+  balance_check: [MOCK_ITEM_BUMP_BALANCE_FALSE],
 };
 
 export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED_COMPLETED: BumpPackageBalance[] = [
