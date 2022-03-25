@@ -27,7 +27,7 @@ $modal-header-height: 56px;
 
   &__confirmButton {
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba($white, 0.8);
   }
 
   &__cursorPointer {

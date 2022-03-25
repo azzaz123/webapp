@@ -1,14 +1,8 @@
 @import '~style/common';
 
 .PayviewPromotionEditor {
-  padding: $spacing-ml;
-
   &__inputWrapper {
     height: 82px;
-  }
-
-  &__messageWrapper {
-    padding: $spacing-ml;
   }
 
   &__message {
@@ -35,14 +29,8 @@
     }
   }
 
-  &__promotionWrapper {
-    flex: 1;
-  }
-
-  &__element {
-    width: 75%;
-    @include media-breakpoint-down(md) {
-      width: 100%;
-    }
+  &__confirmButton {
+    bottom: 0;
+    background-color: rgba($white, 0.8);
   }
 }
