@@ -1,6 +1,6 @@
 <form *ngIf="availableSchedules$ | async as availableSchedules" class="DeliveryPreferenceSchedule h-100" (submit)="savePreference()">
-  <div class="container h-100">
-    <div class="row">
+  <div class="container h-100 d-flex flex-column">
+    <div class="DeliveryPreferenceSchedule__formWrapper row">
       <div class="col">
         <h1
           class="DeliveryPreferenceSchedule__title DeliveryPreferenceSchedule__text mt-4 mb-3"
@@ -36,19 +36,15 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="DeliveryPreferenceSchedule__confirmButton p-2 position-sticky align-self-end">
-    <div class="container">
-      <div class="row justify-content-center align-self-center">
-        <div class="col-12 col-md-7">
-          <tsl-button
-            [type]="'submit'"
-            [disabled]="selectedSchedule === null"
-            i18n="@@time_slot_view_seller_hpu_ba_save_button"
-            className="btn btn-block btn-primary"
-            >Save</tsl-button
-          >
-        </div>
+    <div class="DeliveryPreferenceSchedule__confirmButton p-2 position-sticky w-100 row align-self-center justify-content-center">
+      <div class="col-12 col-md-7 p-0">
+        <tsl-button
+          [type]="'submit'"
+          [disabled]="selectedSchedule === null"
+          i18n="@@time_slot_view_seller_hpu_ba_save_button"
+          className="btn btn-block btn-primary"
+          >Save</tsl-button
+        >
       </div>
     </div>
   </div>

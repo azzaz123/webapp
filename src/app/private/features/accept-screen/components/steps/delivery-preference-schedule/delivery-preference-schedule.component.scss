@@ -1,6 +1,10 @@
 @import '~style/common';
 
 .DeliveryPreferenceSchedule {
+  &__formWrapper {
+    flex: 1;
+  }
+
   &__title {
     font-size: $font-size-xl;
     font-weight: 400;

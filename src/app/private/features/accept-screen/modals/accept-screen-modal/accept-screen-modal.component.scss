@@ -8,7 +8,7 @@ $modal-header-height: 56px;
 
 .AcceptScreenModal {
   height: inherit;
-  overflow: auto;
+  overflow: hidden;
 
   &__header {
     height: $modal-header-height;
@@ -22,6 +22,7 @@ $modal-header-height: 56px;
   }
 
   &__stepper {
+    overflow: auto;
     height: calc(100% - #{$modal-header-height});
   }
 
