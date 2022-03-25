@@ -63,6 +63,7 @@ describe('CategoriesHttpService', () => {
       const req: TestRequest = httpMock.expectOne(`${CATEGORIES_WITH_PRESENTATION_ENDPOINT}`);
       req.flush(categoriesWithPresentationResponseFixture);
 
+      expect(req.request.method).toBe('GET');
       expect(response).toEqual(mappedCategoriesWithPresentationFixture);
     });
   });
