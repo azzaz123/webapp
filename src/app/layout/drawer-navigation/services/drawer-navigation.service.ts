@@ -4,21 +4,22 @@ import { UserStats } from '@core/user/user-stats.interface';
 import { UserService } from '@core/user/user.service';
 import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DRAWER_NAVIGATION_SECTIONS_COLLECTION } from '../constants/drawer-navigation-sections';
 import {
   DrawerNavigationElement,
   DrawerNavigationProfileElement,
   DrawerNavigationSection,
+  DRAWER_NAVIGATION_ELEMENTS,
 } from '../interfaces/drawer-navigation-element.interface';
+import { DrawerNavigationSectionsService } from './drawer-navigation-sections/drawer-navigation-sections.service';
 
 @Injectable()
 export class DrawerNavigationService {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private drawerNavigationSectionsService: DrawerNavigationSectionsService) {}
 
   public get navigationSections$(): Observable<DrawerNavigationSection[]> {
-    return of(Object.values(DRAWER_NAVIGATION_SECTIONS_COLLECTION));
+    return this.drawerNavigationSectionsService.navigationSections$;
   }
 
   public get profileNavigationElement$(): Observable<DrawerNavigationProfileElement> {
@@ -49,6 +50,7 @@ export class DrawerNavigationService {
 
   private mapProfileNavigationElement(user: User, stats: UserStats): DrawerNavigationProfileElement {
     return {
+      id: DRAWER_NAVIGATION_ELEMENTS.PROFILE,
       professional: user.featured,
       text: user.microName,
       alternativeText: user.microName,

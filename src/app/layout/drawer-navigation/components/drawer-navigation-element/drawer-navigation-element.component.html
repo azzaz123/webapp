@@ -9,13 +9,21 @@
 </ng-template>
 
 <ng-template #internalNavigationElement let-element="element">
-    <a class="DrawerNavigationElement d-flex align-items-center" [routerLink]="[element.href]">
-        <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
-    </a>
+    <ng-container *ngIf="element.onClick">
+        <a class="DrawerNavigationElement d-flex align-items-center" (click)="element.onClick()">
+            <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
+        </a>
+    </ng-container>
+    <ng-container *ngIf="!element.onClick">
+        <a class="DrawerNavigationElement d-flex align-items-center" [routerLink]="[element.href]">
+            <ng-container *ngTemplateOutlet="navigationElementContent; context: {element}"></ng-container>
+        </a>
+    </ng-container>
 </ng-template>
 
 <ng-template #navigationElementContent let-element="element">
     <tsl-svg-icon [width]="42" [src]="element.icon" class="mx-2"></tsl-svg-icon>
     <span class="DrawerNavigationElement__text">{{element.text}}</span>
+    <span *ngIf="element.balance" class="DrawerNavigationElement__balance ml-2">{{element.balance}}</span>
     <tsl-svg-icon src="/assets/icons/drawer-navigation/arrow-right.svg" class="ml-auto mr-3"></tsl-svg-icon>
 </ng-template>
