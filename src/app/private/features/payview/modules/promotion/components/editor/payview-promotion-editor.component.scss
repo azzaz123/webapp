@@ -5,6 +5,10 @@
     height: 82px;
   }
 
+  &__contentWrapper {
+    flex: 1;
+  }
+
   &__message {
     font-weight: $font-weight-chunky;
   }
