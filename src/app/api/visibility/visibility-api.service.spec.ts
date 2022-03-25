@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { ItemsBySubscription, ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { ItemsBySubscription } from '@api/core/model/bumps/item-products.interface';
 import { ItemService } from '@core/item/item.service';
 import { StripeService } from '@core/stripe/stripe.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -10,8 +10,9 @@ import {
   ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED_BY_SUBSCRIPTION_NO_SUB,
   ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
   MOCK_BUMP_PACKAGE_RESPONSE,
-  MOCK_BUMPS_PACKAGE_BALANCE,
   MOCK_BUMPS_PACKAGE_BALANCE_MAPPED,
+  MOCK_ONE_ITEM_BUMP_BALANCE,
+  MOCK_ONE_ITEM_BUMP_NO_BALANCE,
 } from '@fixtures/bump-package.fixtures.spec';
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
 import { MockSubscriptionService, MOCK_SUBSCRIPTION_CONSUMER_GOODS_SUBSCRIBED_MAPPED } from '@fixtures/subscriptions.fixtures.spec';
@@ -19,7 +20,7 @@ import { MOCK_ITEMS_TO_BUY_FREE, MOCK_ITEMS_TO_BUY_WITHOUT_FREE } from '@fixture
 import { Cart } from '@shared/catalog/cart/cart';
 import { CartChange } from '@shared/catalog/cart/cart-item.interface';
 import { CartService } from '@shared/catalog/cart/cart.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { BumpsHttpService } from './http/bumps.service';
 import { VisibilityApiService } from './visibility-api.service';
 
@@ -155,6 +156,111 @@ describe('VisibilityApiService', () => {
       expect(httpService.getBalance).toHaveBeenCalledWith(userId);
       expect(httpService.getBalance).toHaveBeenCalledTimes(1);
       expect(expectedResponse).toEqual(ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED_BY_SUBSCRIPTION_NO_SUB);
+    });
+  });
+
+  describe('when ask for items with balance', () => {
+    describe('And has balance', () => {
+      beforeEach(() => {
+        spyOn(httpService, 'getItemsBalance').and.returnValue(of(MOCK_ONE_ITEM_BUMP_BALANCE));
+      });
+      it('should return true', () => {
+        const userId = '123';
+        const itemId = '456';
+
+        service.isAvailableToUseFreeBump(userId, itemId).subscribe((response) => {
+          expect(httpService.getItemsBalance).toHaveBeenCalledTimes(1);
+          expect(httpService.getItemsBalance).toHaveBeenCalledWith(userId, [itemId]);
+          expect(response).toEqual(true);
+        });
+      });
+    });
+    describe('And has not balance', () => {
+      beforeEach(() => {
+        spyOn(httpService, 'getItemsBalance').and.returnValue(of(MOCK_ONE_ITEM_BUMP_NO_BALANCE));
+      });
+      it('should return false', () => {
+        const userId = '123';
+        const itemId = '456';
+
+        service.isAvailableToUseFreeBump(userId, itemId).subscribe((response) => {
+          expect(httpService.getItemsBalance).toHaveBeenCalledTimes(1);
+          expect(httpService.getItemsBalance).toHaveBeenCalledWith(userId, [itemId]);
+          expect(response).toEqual(false);
+        });
+      });
+    });
+    describe('And api failed', () => {
+      beforeEach(() => {
+        spyOn(httpService, 'getItemsBalance').and.returnValue(throwError('error'));
+      });
+      it('should return false', () => {
+        const userId = '123';
+        const itemId = '456';
+
+        service.isAvailableToUseFreeBump(userId, itemId).subscribe((response) => {
+          expect(httpService.getItemsBalance).toHaveBeenCalledTimes(1);
+          expect(httpService.getItemsBalance).toHaveBeenCalledWith(userId, [itemId]);
+          expect(response).toEqual(false);
+        });
+      });
+    });
+  });
+
+  describe('when ask for items and user with balance', () => {
+    describe('And has item balance', () => {
+      beforeEach(() => {
+        spyOn(httpService, 'getItemsBalance').and.returnValue(of(MOCK_ONE_ITEM_BUMP_BALANCE));
+        spyOn(httpService, 'getBalance').and.returnValue(of(MOCK_BUMP_PACKAGE_RESPONSE));
+      });
+      it('should return true', () => {
+        const userId = '123';
+        const itemId = '456';
+
+        service.hasItemOrUserBalance(userId, itemId).subscribe((response) => {
+          expect(httpService.getItemsBalance).toHaveBeenCalledTimes(1);
+          expect(httpService.getItemsBalance).toHaveBeenCalledWith(userId, [itemId]);
+          expect(httpService.getBalance).not.toBeCalled();
+          expect(response).toEqual(true);
+        });
+      });
+    });
+    describe('And has not item balance', () => {
+      beforeEach(() => {
+        spyOn(httpService, 'getItemsBalance').and.returnValue(of(MOCK_ONE_ITEM_BUMP_NO_BALANCE));
+      });
+      describe('and has user balance', () => {
+        beforeEach(() => {
+          spyOn(httpService, 'getBalance').and.returnValue(of(MOCK_BUMP_PACKAGE_RESPONSE));
+        });
+        it('should return true', () => {
+          const userId = '123';
+          const itemId = '456';
+
+          service.hasItemOrUserBalance(userId, itemId).subscribe((response) => {
+            expect(httpService.getItemsBalance).toHaveBeenCalledTimes(1);
+            expect(httpService.getItemsBalance).toHaveBeenCalledWith(userId, [itemId]);
+            expect(httpService.getBalance).toHaveBeenCalledTimes(1);
+            expect(httpService.getBalance).toHaveBeenCalledWith(userId);
+            expect(response).toEqual(true);
+          });
+        });
+      });
+      describe('and has not user balance', () => {
+        beforeEach(() => {
+          spyOn(httpService, 'getBalance').and.returnValue(throwError('error'));
+        });
+      });
+      it('should return false', () => {
+        const userId = '123';
+        const itemId = '456';
+
+        service.isAvailableToUseFreeBump(userId, itemId).subscribe((response) => {
+          expect(httpService.getItemsBalance).toHaveBeenCalledTimes(1);
+          expect(httpService.getItemsBalance).toHaveBeenCalledWith(userId, [itemId]);
+          expect(response).toEqual(false);
+        });
+      });
     });
   });
 });

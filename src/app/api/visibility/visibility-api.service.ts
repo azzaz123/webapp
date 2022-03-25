@@ -11,7 +11,7 @@ import { SubscriptionsService } from '@core/subscriptions/subscriptions.service'
 import { UuidService } from '@core/uuid/uuid.service';
 import { CartBase } from '@shared/catalog/cart/cart-base';
 import { forkJoin, Observable, of, ReplaySubject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { BumpsHttpService } from './http/bumps.service';
 import { mapBalance, mapFreeBumpsPurchase, mapItemsWithProducts, mapItemWithProductsAndSubscriptionBumps } from './mappers/bumps-mapper';
 import { groupBy } from 'lodash-es';
@@ -43,6 +43,21 @@ export class VisibilityApiService {
     return this.bumpsHttpService.getBalance(userId).pipe(
       map(mapBalance),
       catchError(() => of([]))
+    );
+  }
+
+  public isAvailableToUseFreeBump(userId: string, itemId: string): Observable<boolean> {
+    return this.bumpsHttpService.getItemsBalance(userId, [itemId]).pipe(
+      map((balance) => balance.balance_check[0].has_balance),
+      catchError(() => of(false))
+    );
+  }
+
+  public hasItemOrUserBalance(userId: string, itemId: string): Observable<boolean> {
+    return this.isAvailableToUseFreeBump(userId, itemId).pipe(
+      switchMap((hasItemBalance) => {
+        return hasItemBalance ? of(true) : this.getBalance(userId).pipe(map((balance) => !!balance.length));
+      })
     );
   }
 
