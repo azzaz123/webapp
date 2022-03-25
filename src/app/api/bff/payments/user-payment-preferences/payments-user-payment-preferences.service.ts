@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences } from './mappers/responses/payments-user-payment-preferences.mapper';
 import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
+import { mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences } from './mappers/responses/payments-user-payment-preferences.mapper';
 import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/user-payment-preferences/http/payments-user-payment-preferences-http.service';
 
 import { map } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { mapUserPaymentsPreferencesToDto } from './mappers/requests/payments-use
 export class PaymentsUserPaymentPreferencesService {
   constructor(private paymentUserPreferencesHttpService: PaymentsUserPaymentPreferencesHttpService) {}
 
-  public get paymentUserPreferences(): Observable<PaymentsUserPaymentPreferences> {
+  public get(): Observable<PaymentsUserPaymentPreferences> {
     return this.paymentUserPreferencesHttpService
       .getUserPaymentPreferences()
       .pipe(map(mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences));

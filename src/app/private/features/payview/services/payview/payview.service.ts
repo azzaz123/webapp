@@ -166,7 +166,7 @@ export class PayviewService {
   }
 
   private get paymentPreferences(): Observable<PaymentsUserPaymentPreferences> {
-    return this.paymentPreferencesService.paymentUserPreferences.pipe(take(1));
+    return this.paymentPreferencesService.get().pipe(take(1));
   }
 
   private getState(

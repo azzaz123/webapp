@@ -123,7 +123,7 @@ describe('PayviewService', () => {
         {
           provide: PaymentsUserPaymentPreferencesService,
           useValue: {
-            get paymentUserPreferences() {
+            get() {
               return of(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
             },
             update: () => of(null),
@@ -175,7 +175,7 @@ describe('PayviewService', () => {
       spyOn(itemService, 'get').and.callThrough();
       spyOn(paymentsCreditCardService, 'get').and.callThrough();
       paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
-      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'paymentUserPreferences', 'get');
+      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
       service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
@@ -254,7 +254,7 @@ describe('PayviewService', () => {
       spyOn(itemService, 'get').and.callThrough();
       spyOn(paymentsCreditCardService, 'get').and.callThrough();
       paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
-      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'paymentUserPreferences', 'get');
+      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
       service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
@@ -336,7 +336,7 @@ describe('PayviewService', () => {
       spyOn(itemService, 'get').and.callThrough();
       spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError('The server is broken'));
       paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
-      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'paymentUserPreferences', 'get');
+      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
       service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
