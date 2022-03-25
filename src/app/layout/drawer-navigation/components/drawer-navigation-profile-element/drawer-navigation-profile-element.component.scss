@@ -6,7 +6,8 @@ $element-height: 128px;
   height: $element-height;
   background-color: $white;
   color: $blue-grey-1;
-  -webkit-tap-highlight-color: $blue-grey-5;
+  -webkit-tap-highlight-color: rgba($blue-grey-5, 0.5);
+  appearance: none;
 
   &__user {
     min-width: 0;
