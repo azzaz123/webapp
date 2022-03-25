@@ -71,7 +71,7 @@ export class CategoriesApiService {
   public getCategoriesWithPresentationByParentId(id: number): Observable<CategoryWithPresentation[]> {
     return this.getCategoriesWithPresentation().pipe(
       map((categories) => {
-        return categories.find((category) => category.id === id).subcategories || [];
+        return categories.find((category) => category.id === id)?.subcategories || [];
       })
     );
   }
