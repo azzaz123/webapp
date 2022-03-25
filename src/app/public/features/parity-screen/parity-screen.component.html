@@ -1,17 +1,12 @@
-<div class="mt-5 mb-5 d-flex flex-column align-items-center GenericLanding__container">
-  <div class="d-flex flex-column align-items-center container__top">
-    <h1 class="GenericLanding__title">There are things you can only do from the app</h1>
-    <p class="GenericLanding__description mt-1">
-      To continue, scan the QR code, download the Wallapop app and you're ready. It'll just take a second!
-    </p>
-    <div class="GenericLanding__qrCode">
-      <qrcode [qrdata]="'https://www.wallapop.com'" [width]="300" [margin]="2" [errorCorrectionLevel]="'M'" #qrCode> </qrcode>
-    </div>
+<div class="d-flex flex-column align-items-center GenericLanding__container">
+  <h1 class="GenericLanding__title">There are things you can only do from the app</h1>
+  <p class="GenericLanding__description mt-1">
+    To continue, scan the QR code, download the Wallapop app and you're ready. It'll just take a second!
+  </p>
+  <div class="GenericLanding__qrCode mt-5">
+    <qrcode [qrdata]="qrData" [width]="qrSize" [margin]="2" [errorCorrectionLevel]="'M'" #qrCode> </qrcode>
   </div>
-
-  <div class="d-flex flex-column justify-content-end container__bottom">
-    <div class="GenericLanding__icon d-flex">
-      <img src="/assets/images/generic-landing/only-app-landing.svg" alt="" />
-    </div>
+  <div class="GenericLanding__icon mt-auto">
+    <img src="/assets/images/generic-landing/only-app-landing.svg" alt="mobile-blob" />
   </div>
 </div>

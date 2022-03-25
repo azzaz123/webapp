@@ -1,31 +1,40 @@
-.GenericLanding {
-  &__container {
-    width: 100%;
-    min-height: 86vh;
-  }
-  &__title {
-    font-size: 24px;
-    text-align: center;
-  }
-  &__description {
-    font-size: 16px;
-    text-align: center;
-  }
-  &__qrCode {
-    border: 5px solid black;
-    border-radius: 5px;
-  }
-  &__icon {
-    height: 100%;
-    img {
-      width: 310px;
-      height: 172px;
-    }
-  }
-}
+@import '~style/common';
 
-.container {
-  &__bottom {
-    flex: 1;
+:host {
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+
+  .GenericLanding {
+    &__container {
+      @include media-breakpoint-down(sm) {
+        width: 100%;
+      }
+      width: 412px;
+      margin-top: 110px;
+    }
+    &__title {
+      font-size: 24px;
+      text-align: center;
+    }
+    &__description {
+      font-size: 16px;
+      text-align: center;
+    }
+    &__qrCode {
+      border: 5px solid black;
+      border-radius: 5px;
+    }
+    &__icon {
+      img {
+        width: 310px;
+        height: 172px;
+      }
+    }
   }
 }
