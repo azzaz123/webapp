@@ -2,9 +2,9 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { TestBed } from '@angular/core/testing';
 
 import { MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
-import { PaymentsUserPaymentPreferencesDto } from '@api/bff/payments/user-payment-preferences/dtos/payments-user-payment-preferences-dto.interface';
 import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/user-payment-preferences/http/payments-user-payment-preferences-http.service';
 import { USER_PAYMENT_PREFERENCES_ENDPOINT } from '@api/bff/payments/user-payment-preferences/http/endpoints';
+import { PaymentsUserPaymentPreferencesDto } from '../dtos/responses/payments-user-payment-preferences-dto.interface';
 
 describe('PaymentsUserPaymentPreferencesHttpService', () => {
   let service: PaymentsUserPaymentPreferencesHttpService;
