@@ -31,15 +31,13 @@ describe('PaymentsUserPaymentPreferencesService', () => {
 
   describe('when asking to get the user payment preferences', () => {
     beforeEach(() => {
-      spyOn(userPaymentPreferencesHttpService, 'getUserPaymentPreferences').and.returnValue(
-        of(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE)
-      );
+      spyOn(userPaymentPreferencesHttpService, 'get').and.returnValue(of(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE));
     });
 
     it('should retrieve the user payment preferences', () => {
       service.get().subscribe();
 
-      expect(userPaymentPreferencesHttpService.getUserPaymentPreferences).toHaveBeenCalledTimes(1);
+      expect(userPaymentPreferencesHttpService.get).toHaveBeenCalledTimes(1);
     });
 
     it('should map server response to web context', () => {

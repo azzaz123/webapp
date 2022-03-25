@@ -38,7 +38,7 @@ describe('PaymentsUserPaymentPreferencesHttpService', () => {
     it('should get the corresponding information', () => {
       let response: PaymentsUserPaymentPreferencesDto;
 
-      service.getUserPaymentPreferences().subscribe((data) => (response = data));
+      service.get().subscribe((data) => (response = data));
       const req: TestRequest = httpMock.expectOne(USER_PAYMENT_PREFERENCES_ENDPOINT);
       req.flush(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE);
 

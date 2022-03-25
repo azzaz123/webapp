@@ -16,7 +16,7 @@ import { PaymentsUserPaymentPreferencesDto } from '../dtos/responses/payments-us
 export class PaymentsUserPaymentPreferencesHttpService {
   constructor(private http: HttpClient) {}
 
-  public getUserPaymentPreferences(): Observable<PaymentsUserPaymentPreferencesDto> {
+  public get(): Observable<PaymentsUserPaymentPreferencesDto> {
     return this.http.get<PaymentsUserPaymentPreferencesDto>(USER_PAYMENT_PREFERENCES_ENDPOINT);
   }
 

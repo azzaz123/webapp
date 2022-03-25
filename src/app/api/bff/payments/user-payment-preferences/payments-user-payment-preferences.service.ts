@@ -16,9 +16,7 @@ export class PaymentsUserPaymentPreferencesService {
   constructor(private paymentUserPreferencesHttpService: PaymentsUserPaymentPreferencesHttpService) {}
 
   public get(): Observable<PaymentsUserPaymentPreferences> {
-    return this.paymentUserPreferencesHttpService
-      .getUserPaymentPreferences()
-      .pipe(map(mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences));
+    return this.paymentUserPreferencesHttpService.get().pipe(map(mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences));
   }
 
   public update(newPreferences: PaymentsUserPaymentPreferences): Observable<void> {
