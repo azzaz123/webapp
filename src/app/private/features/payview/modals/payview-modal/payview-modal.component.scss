@@ -8,7 +8,7 @@ $modal-header-height: 56px;
 
 .PayviewModal {
   height: inherit;
-  overflow: auto;
+  overflow: hidden;
 
   &__header {
     padding: $spacer * 1.15;
@@ -19,6 +19,7 @@ $modal-header-height: 56px;
   }
 
   &__stepper {
+    overflow: auto;
     height: calc(100% - #{$modal-header-height});
   }
 
