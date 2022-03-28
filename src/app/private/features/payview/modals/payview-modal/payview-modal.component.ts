@@ -26,6 +26,7 @@ import { Observable, Subscription } from 'rxjs';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
 import { take } from 'rxjs/operators';
 import {
+  getClickHelpTransactionalEventPropertiesFromPayviewState,
   getClickAddEditCardEventPropertiesFromPayviewState,
   getClickAddEditAddressEventPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
@@ -98,6 +99,16 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   public get payviewState$(): Observable<PayviewState> {
     return this.payviewStateManagementService.payViewState$;
+  }
+
+  public trackCliCkHelpTransactionalEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackClickHelpTransactional(
+          getClickHelpTransactionalEventPropertiesFromPayviewState(payviewState)
+        )
+      );
   }
 
   private goToStep(step: PAYVIEW_STEPS): void {

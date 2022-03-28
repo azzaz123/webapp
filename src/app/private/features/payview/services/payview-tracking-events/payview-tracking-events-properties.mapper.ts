@@ -5,6 +5,7 @@ import { SCREEN_IDS } from '@core/analytics/resources/analytics-screen-ids';
 import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces/click-add-edit-address.interface';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods/delivery-buyer-delivery-method.interface';
+import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 
 export function getClickAddEditCardEventPropertiesFromPayviewState(payviewState: PayviewState): ClickAddEditCard {
   return {
@@ -25,6 +26,18 @@ export function getClickAddEditAddressEventPropertiesFromPayviewState(
     addOrEdit: getAddOrEditAddress(payviewState.delivery.methods.current, eventType),
     addressType: getAddressType(eventType),
     categoryId: payviewState.item.categoryId,
+    itemId: payviewState.item.id,
+    itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
+  };
+}
+
+export function getClickHelpTransactionalEventPropertiesFromPayviewState(payviewState: PayviewState): ClickHelpTransactional {
+  return {
+    screenId: SCREEN_IDS.Checkout,
+    sellerUserId: payviewState.item.owner,
+    helpName: 'Help Top Pay Screen',
+    categoryId: payviewState.item.categoryId,
+    isBuyNow: false,
     itemId: payviewState.item.id,
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
   };

@@ -2,6 +2,7 @@ import { ClickAddEditCard } from '@core/analytics/resources/events-interfaces/cl
 import {
   getClickAddEditCardEventPropertiesFromPayviewState,
   getClickAddEditAddressEventPropertiesFromPayviewState,
+  getClickHelpTransactionalEventPropertiesFromPayviewState,
 } from './payview-tracking-events-properties.mapper';
 import {
   MOCK_PAYVIEW_STATE,
@@ -10,12 +11,14 @@ import {
 } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces/click-add-edit-address.interface';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
+import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 import {
   MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
   MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION,
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_ADD_ACTION,
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT,
+  MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 describe('when mapping the payview state properties into the click add edit card event properties', () => {
@@ -24,6 +27,7 @@ describe('when mapping the payview state properties into the click add edit card
       const expectedProperties: ClickAddEditCard = getClickAddEditCardEventPropertiesFromPayviewState(
         MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD
       );
+
       expect(expectedProperties).toStrictEqual(MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION);
     });
   });
@@ -31,6 +35,7 @@ describe('when mapping the payview state properties into the click add edit card
   describe('and there is a previous card', () => {
     it('should return the properties mapped with the edit attribute', () => {
       const expectedProperties: ClickAddEditCard = getClickAddEditCardEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
+
       expect(expectedProperties).toStrictEqual(MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION);
     });
   });
@@ -43,6 +48,7 @@ describe('when mapping the payview state properties into the click add edit addr
         MOCK_PAYVIEW_STATE,
         PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN
       );
+
       expect(expectedProperties).toStrictEqual(MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT);
     });
   });
@@ -53,6 +59,7 @@ describe('when mapping the payview state properties into the click add edit addr
         MOCK_PAYVIEW_STATE,
         PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP
       );
+
       expect(expectedProperties).toStrictEqual(MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION);
     });
   });
@@ -63,7 +70,16 @@ describe('when mapping the payview state properties into the click add edit addr
         MOCK_PAYVIEW_STATE_WITHOUT_LASTADDRESSUSED,
         PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP
       );
+
       expect(expectedProperties).toStrictEqual(MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_ADD_ACTION);
     });
+  });
+});
+
+describe('when mapping the payview state properties into the click help transactional event properties', () => {
+  it('should return the properties mapped', () => {
+    const expectedProperties: ClickHelpTransactional = getClickHelpTransactionalEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
+
+    expect(expectedProperties).toStrictEqual(MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES);
   });
 });
