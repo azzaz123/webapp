@@ -25,7 +25,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
 import { take } from 'rxjs/operators';
-import { getClickAddEditCardEventPropertiesFromPayviewState } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
+import {
+  getClickAddEditCardEventPropertiesFromPayviewState,
+  getClickAddEditAddressEventPropertiesFromPayviewState,
+} from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -121,12 +124,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscriptions.push(
       this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, () => {
         this.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
-        this.trackClickAddEditAddressEvent();
+        this.trackClickAddEditAddressEvent(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN);
       })
     );
     this.subscriptions.push(
       this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {
         this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+        this.trackClickAddEditAddressEvent(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP);
       })
     );
   }
@@ -192,11 +196,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       );
   }
 
-  private trackClickAddEditAddressEvent(): void {
+  private trackClickAddEditAddressEvent(eventType: PAYVIEW_DELIVERY_EVENT_TYPE): void {
     this.payviewState$
       .pipe(take(1))
       .subscribe((payviewState: PayviewState) =>
-        this.payviewTrackingEventsService.trackClickAddEditAddress(getClickAddEditCardEventPropertiesFromPayviewState(payviewState))
+        this.payviewTrackingEventsService.trackClickAddEditAddress(
+          getClickAddEditAddressEventPropertiesFromPayviewState(payviewState, eventType)
+        )
       );
   }
 }

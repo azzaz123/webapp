@@ -50,6 +50,24 @@ export const MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT: ClickAddEditAddress = {
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
 };
 
+export const MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION: ClickAddEditAddress = {
+  screenId: SCREEN_IDS.Checkout,
+  addOrEdit: 'edit',
+  addressType: 'office',
+  categoryId: MOCK_PAYVIEW_ITEM.categoryId,
+  itemId: MOCK_PAYVIEW_ITEM.id,
+  itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
+};
+
+export const MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_ADD_ACTION: ClickAddEditAddress = {
+  screenId: SCREEN_IDS.Checkout,
+  addOrEdit: 'add',
+  addressType: 'office',
+  categoryId: MOCK_PAYVIEW_ITEM.categoryId,
+  itemId: MOCK_PAYVIEW_ITEM.id,
+  itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
+};
+
 export const MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES: ClickHelpTransactional = {
   screenId: SCREEN_IDS.Checkout,
   itemId: MOCK_PAYVIEW_ITEM.id,

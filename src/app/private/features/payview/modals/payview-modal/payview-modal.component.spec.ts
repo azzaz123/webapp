@@ -54,6 +54,8 @@ import { PayviewTrackingEventsService } from '../../services/payview-tracking-ev
 import {
   MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
   MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
+  MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT,
+  MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 @Component({
@@ -199,6 +201,7 @@ describe('PayviewModalComponent', () => {
           provide: PayviewTrackingEventsService,
           useValue: {
             trackClickAddEditCard() {},
+            trackClickAddEditAddress() {},
           },
         },
         ItemService,
@@ -646,9 +649,11 @@ describe('PayviewModalComponent', () => {
 
     describe('WHEN the user wants to edit the delivery address', () => {
       beforeEach(() => {
-        fixture.detectChanges();
-
         spyOn(payviewDeliveryService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddEditAddress');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+
+        fixture.detectChanges();
       });
 
       it('should received the corresponding order', () => {
@@ -672,11 +677,22 @@ describe('PayviewModalComponent', () => {
         expect(stepperSpy).toHaveBeenCalledTimes(1);
         expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.DELIVERY_ADDRESS);
       });
+
+      it('should ask for tracking event', () => {
+        payviewDeliveryService.editAddress();
+
+        expect(payviewTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledWith(MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT);
+      });
     });
 
     describe('WHEN the user wants to edit the pick-up point', () => {
       beforeEach(() => {
         spyOn(payviewDeliveryService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddEditAddress');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+
+        fixture.detectChanges();
       });
 
       it('should received the corresponding order', () => {
@@ -693,12 +709,19 @@ describe('PayviewModalComponent', () => {
       });
 
       it('should move to the corresponding step', () => {
-        const subscription = payviewDeliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {});
-
         payviewDeliveryService.editPickUpPoint();
 
         expect(stepperSpy).toHaveBeenCalledTimes(1);
         expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+      });
+
+      it('should ask for tracking event', () => {
+        payviewDeliveryService.editPickUpPoint();
+
+        expect(payviewTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledWith(
+          MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION
+        );
       });
     });
 
