@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { DeviceService } from '@core/device/device.service';
+import { WINDOW_TOKEN } from '@core/window/window.token';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { QR_CODE_SIZE } from '@public/features/parity-screen/parity-screen.enum';
 
@@ -14,11 +15,16 @@ export class ParityScreenComponent implements AfterViewInit {
   public qrSize: QR_CODE_SIZE;
   public qrData: string;
   private imgURL: string = 'assets/images/generic-landing/wallapop-logo-black-round.svg';
-  private mutationObserverExists: boolean;
+  private mutationObserverCompatibility: boolean;
+  private mutationObserverInstance: MutationObserver;
 
-  constructor(private publicFooterService: PublicFooterService, private deviceService: DeviceService) {
+  constructor(
+    private publicFooterService: PublicFooterService,
+    private deviceService: DeviceService,
+    @Inject(WINDOW_TOKEN) private window
+  ) {
     this.publicFooterService.setShow(false);
-    this.mutationObserverExists = !!window.MutationObserver;
+    this.mutationObserverCompatibility = !!this.window.MutationObserver;
     this.qrSize = this.setQrSize(this.deviceService.isMobile());
     this.qrData = 'https://www.wallapop.com/';
   }
@@ -28,10 +34,10 @@ export class ParityScreenComponent implements AfterViewInit {
   }
 
   private observeQrCode(): void {
-    if (this.mutationObserverExists) {
-      const mutationObserver = new MutationObserver(this.injectLogo.bind(this));
+    if (this.mutationObserverCompatibility && !this.mutationObserverInstance) {
+      this.mutationObserverInstance = new MutationObserver(this.injectLogo.bind(this));
 
-      mutationObserver.observe(this.qrCode.qrcElement.nativeElement, { childList: true, subtree: true });
+      this.mutationObserverInstance.observe(this.qrCode.qrcElement.nativeElement, { childList: true, subtree: true });
     }
   }
 
