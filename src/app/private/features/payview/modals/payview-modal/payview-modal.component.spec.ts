@@ -56,6 +56,7 @@ import {
   MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT,
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION,
+  MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 @Component({
@@ -202,6 +203,7 @@ describe('PayviewModalComponent', () => {
           useValue: {
             trackClickAddEditCard() {},
             trackClickAddEditAddress() {},
+            trackClickHelpTransactional() {},
           },
         },
         ItemService,
@@ -643,6 +645,23 @@ describe('PayviewModalComponent', () => {
         expect(payviewStateManagementService.setDeliveryMethod).toHaveBeenCalledTimes(1);
         expect(payviewStateManagementService.setDeliveryMethod).toHaveBeenCalledWith(
           MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0]
+        );
+      });
+    });
+
+    describe('when the user clicks on the help button', () => {
+      beforeEach(() => {
+        spyOn(payviewTrackingEventsService, 'trackClickHelpTransactional');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+        fixture.debugElement.query(By.css(payviewModalHelpSelector)).nativeElement.click();
+
+        fixture.detectChanges();
+      });
+
+      it('should ask for tracking event', () => {
+        expect(payviewTrackingEventsService.trackClickHelpTransactional).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickHelpTransactional).toHaveBeenCalledWith(
+          MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES
         );
       });
     });
