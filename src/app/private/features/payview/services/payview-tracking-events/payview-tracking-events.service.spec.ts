@@ -13,6 +13,7 @@ import {
   MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
   MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD,
   MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT,
+  MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { ANALYTICS_EVENT_NAMES } from '@core/analytics/resources/analytics-event-names';
 import { ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
@@ -67,6 +68,25 @@ describe('PayviewTrackingEventsService', () => {
         name: ANALYTICS_EVENT_NAMES.ClickAddEditCard,
         eventType: ANALYTIC_EVENT_TYPES.Navigation,
         attributes: MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
+      });
+    });
+  });
+
+  describe('and we call to track click add edit address event', () => {
+    beforeEach(() => {
+      spyOn(analyticsService, 'trackEvent');
+      service.trackClickAddEditAddress(MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT);
+    });
+
+    it('should track the event', () => {
+      expect(analyticsService.trackEvent).toHaveBeenCalledTimes(1);
+    });
+
+    it('should track the event with specified properties', () => {
+      expect(analyticsService.trackEvent).toHaveBeenCalledWith({
+        name: ANALYTICS_EVENT_NAMES.ClickAddEditAddress,
+        eventType: ANALYTIC_EVENT_TYPES.Navigation,
+        attributes: MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT,
       });
     });
   });

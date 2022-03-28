@@ -121,6 +121,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscriptions.push(
       this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, () => {
         this.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
+        this.trackClickAddEditAddressEvent();
       })
     );
     this.subscriptions.push(
@@ -188,6 +189,14 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       .pipe(take(1))
       .subscribe((payviewState: PayviewState) =>
         this.payviewTrackingEventsService.trackClickAddEditCard(getClickAddEditCardEventPropertiesFromPayviewState(payviewState))
+      );
+  }
+
+  private trackClickAddEditAddressEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackClickAddEditAddress(getClickAddEditCardEventPropertiesFromPayviewState(payviewState))
       );
   }
 }
