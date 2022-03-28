@@ -1,4 +1,4 @@
-import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
@@ -24,9 +24,7 @@ import { MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY } from '@api/fixtures/payment
 import { MOCK_PAYVIEW_ITEM } from '@fixtures/private/delivery/payview/payview-item.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { Money } from '@api/core/model/money.interface';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsCreditCardService } from '@api/payments/cards';
-import { PaymentService } from '@core/payments/payment.service';
 import { PaymentsPaymentMethodsService } from '@api/payments/payment-methods/payments-payment-methods.service';
 import { PaymentsUserPaymentPreferencesService } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
@@ -49,7 +47,6 @@ describe('PayviewService', () => {
   let deliveryBuyerCalculatorService: DeliveryBuyerCalculatorService;
   let deliveryCostsService: DeliveryCostsService;
   let itemService: ItemService;
-  let paymentService: PaymentService;
   let paymentsCreditCardService: PaymentsCreditCardService;
   let paymentsPaymentMethodsService: PaymentsPaymentMethodsService;
   let paymentsUserPaymentPreferencesService: PaymentsUserPaymentPreferencesService;
@@ -108,14 +105,6 @@ describe('PayviewService', () => {
           },
         },
         {
-          provide: PaymentService,
-          useValue: {
-            updateUserPreferences() {
-              return of(null);
-            },
-          },
-        },
-        {
           provide: PaymentsCreditCardService,
           useValue: {
             get() {
@@ -134,9 +123,10 @@ describe('PayviewService', () => {
         {
           provide: PaymentsUserPaymentPreferencesService,
           useValue: {
-            get paymentUserPreferences() {
+            get() {
               return of(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
             },
+            update: () => of(null),
           },
         },
         {
@@ -159,7 +149,6 @@ describe('PayviewService', () => {
     deliveryBuyerCalculatorService = TestBed.inject(DeliveryBuyerCalculatorService);
     deliveryCostsService = TestBed.inject(DeliveryCostsService);
     itemService = TestBed.inject(ItemService);
-    paymentService = TestBed.inject(PaymentService);
     paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
     paymentsPaymentMethodsService = TestBed.inject(PaymentsPaymentMethodsService);
     paymentsUserPaymentPreferencesService = TestBed.inject(PaymentsUserPaymentPreferencesService);
@@ -186,7 +175,7 @@ describe('PayviewService', () => {
       spyOn(itemService, 'get').and.callThrough();
       spyOn(paymentsCreditCardService, 'get').and.callThrough();
       paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
-      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'paymentUserPreferences', 'get');
+      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
       service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
@@ -265,7 +254,7 @@ describe('PayviewService', () => {
       spyOn(itemService, 'get').and.callThrough();
       spyOn(paymentsCreditCardService, 'get').and.callThrough();
       paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
-      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'paymentUserPreferences', 'get');
+      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
       service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
@@ -347,7 +336,7 @@ describe('PayviewService', () => {
       spyOn(itemService, 'get').and.callThrough();
       spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError('The server is broken'));
       paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
-      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'paymentUserPreferences', 'get');
+      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
       service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
@@ -510,16 +499,14 @@ describe('PayviewService', () => {
 
   describe('WHEN updating the user payment preferences', () => {
     beforeEach(() => {
-      spyOn(paymentService, 'updateUserPreferences').and.callThrough();
+      spyOn(paymentsUserPaymentPreferencesService, 'update').and.callThrough();
     });
 
     it('should call to the payment server to update the corresponding preferences', fakeAsync(() => {
-      const fakePaymentId: string = '0123-4567-8901';
-      const fakePaymentMethod: PaymentMethod = PaymentMethod.CREDIT_CARD;
       let result: number = 0;
 
       const subscription = service
-        .setUserPaymentPreferences(fakePaymentId, fakePaymentMethod, false)
+        .setUserPaymentPreferences(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES)
         .pipe(delay(1))
         .subscribe(() => {
           subscription.unsubscribe();
@@ -528,8 +515,8 @@ describe('PayviewService', () => {
       tick(1);
 
       expect(result).toEqual(1);
-      expect(paymentService.updateUserPreferences).toHaveBeenCalledTimes(1);
-      expect(paymentService.updateUserPreferences).toHaveBeenCalledWith(fakePaymentId, fakePaymentMethod, false);
+      expect(paymentsUserPaymentPreferencesService.update).toHaveBeenCalledTimes(1);
+      expect(paymentsUserPaymentPreferencesService.update).toHaveBeenCalledWith(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
     }));
   });
 

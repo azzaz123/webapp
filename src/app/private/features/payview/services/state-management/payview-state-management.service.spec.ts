@@ -721,14 +721,8 @@ describe('PayviewStateManagementService', () => {
       }));
 
       it('should call to payview service in order to save the payment method', fakeAsync(() => {
-        let result: number = 0;
-
         expect(userPreferencesSpy).toHaveBeenCalledTimes(1);
-        expect(userPreferencesSpy).toHaveBeenCalledWith(
-          payviewState.payment.preferences.preferences.id,
-          selectedPaymentMethod.method,
-          false
-        );
+        expect(userPreferencesSpy).toHaveBeenCalledWith(payviewState.payment.preferences);
       }));
 
       it('should call to payview service in order to refresh costs', fakeAsync(() => {
@@ -774,11 +768,7 @@ describe('PayviewStateManagementService', () => {
 
       it('should call to payview service in order to set the payment method', fakeAsync(() => {
         expect(payviewService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
-        expect(payviewService.setUserPaymentPreferences).toHaveBeenCalledWith(
-          payviewState.payment.preferences.preferences.id,
-          fakePaymentMethod.method,
-          false
-        );
+        expect(payviewService.setUserPaymentPreferences).toHaveBeenCalledWith(payviewState.payment.preferences);
       }));
 
       it('should send a error event', fakeAsync(() => {
