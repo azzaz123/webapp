@@ -23,6 +23,9 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
+import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
+import { take } from 'rxjs/operators';
+import { getClickAddEditCardEventPropertiesFromPayviewState } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -47,7 +50,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private customerHelpService: CustomerHelpService,
     private deliveryCountries: DeliveryCountriesService,
     private promotionService: PayviewPromotionService,
-    private paymentService: PayviewPaymentService
+    private paymentService: PayviewPaymentService,
+    private payviewTrackingEventsService: PayviewTrackingEventsService
   ) {}
 
   public ngOnDestroy(): void {
@@ -135,6 +139,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscriptions.push(
       this.paymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
         this.goToStep(PAYVIEW_STEPS.CREDIT_CARD);
+        this.trackClickAddEditCardEvent();
       })
     );
   }
@@ -176,5 +181,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
         subscription.unsubscribe();
       }
     });
+  }
+
+  private trackClickAddEditCardEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackClickAddEditCard(getClickAddEditCardEventPropertiesFromPayviewState(payviewState))
+      );
   }
 }

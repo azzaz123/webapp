@@ -26,3 +26,20 @@ export const MOCK_PAYVIEW_STATE: PayviewState = {
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
 };
+
+export const MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD: PayviewState = {
+  costs: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS,
+  delivery: {
+    address: MOCK_DELIVERY_ADDRESS,
+    costs: MOCK_DELIVERY_COSTS_ITEM,
+    methods: MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
+  },
+  item: MOCK_PAYVIEW_ITEM,
+  itemDetails: MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2,
+  payment: {
+    card: null,
+    methods: MOCK_PAYMENTS_PAYMENT_METHODS,
+    preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
+    wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
+  },
+};

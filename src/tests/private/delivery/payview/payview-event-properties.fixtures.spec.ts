@@ -32,6 +32,14 @@ export const MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION: ClickAddEditCard = {
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
 };
 
+export const MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION: ClickAddEditCard = {
+  screenId: SCREEN_IDS.Checkout,
+  itemId: MOCK_PAYVIEW_ITEM.id,
+  categoryId: MOCK_PAYVIEW_ITEM.categoryId,
+  addOrEdit: 'edit',
+  itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
+};
+
 export const MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES: ClickHelpTransactional = {
   screenId: SCREEN_IDS.Checkout,
   itemId: MOCK_PAYVIEW_ITEM.id,

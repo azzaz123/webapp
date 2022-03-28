@@ -18,7 +18,7 @@ import { ItemService } from '@core/item/item.service';
 import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
-import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
+import { MOCK_PAYVIEW_STATE, MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-wallets-http.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
@@ -50,6 +50,11 @@ import { of, throwError } from 'rxjs';
 import { PAYVIEW_PAYMENT_EVENT_TYPE } from '../../modules/payment/enums/payview-payment-event-type.enum';
 import { PaymentsPaymentMethod } from '@api/core/model/payments';
 import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
+import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
+import {
+  MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
+  MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
+} from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -83,7 +88,8 @@ class FakeComponent extends PayviewModalComponent {
     customerHelpService: CustomerHelpService,
     deliveryCountries: DeliveryCountriesService,
     promotionService: PayviewPromotionService,
-    paymentService: PayviewPaymentService
+    paymentService: PayviewPaymentService,
+    payviewTrackingEventsService: PayviewTrackingEventsService
   ) {
     super(
       payviewStateManagementService,
@@ -92,7 +98,8 @@ class FakeComponent extends PayviewModalComponent {
       customerHelpService,
       deliveryCountries,
       promotionService,
-      paymentService
+      paymentService,
+      payviewTrackingEventsService
     );
   }
 }
@@ -138,6 +145,7 @@ describe('PayviewModalComponent', () => {
   let payviewStateManagementService: PayviewStateManagementService;
   let stepper: StepperComponent;
   let stepperSpy: jasmine.Spy;
+  let payviewTrackingEventsService: PayviewTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -187,6 +195,12 @@ describe('PayviewModalComponent', () => {
             },
           },
         },
+        {
+          provide: PayviewTrackingEventsService,
+          useValue: {
+            trackClickAddEditCard() {},
+          },
+        },
         ItemService,
         NgbActiveModal,
         PaymentsWalletsService,
@@ -209,6 +223,7 @@ describe('PayviewModalComponent', () => {
       payviewPromotionService = TestBed.inject(PayviewPromotionService);
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
+      payviewTrackingEventsService = TestBed.inject(PayviewTrackingEventsService);
 
       fixture = TestBed.createComponent(FakeComponent);
       component = fixture.componentInstance;
@@ -829,9 +844,10 @@ describe('PayviewModalComponent', () => {
 
     describe('WHEN the user wants to edit the credit card', () => {
       beforeEach(() => {
-        fixture.detectChanges();
-
         spyOn(payviewPaymentService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddEditCard');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+        fixture.detectChanges();
       });
 
       it('should received the corresponding order', () => {
@@ -848,12 +864,53 @@ describe('PayviewModalComponent', () => {
       });
 
       it('should move to the corresponding step', () => {
-        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {});
-
         payviewPaymentService.editCreditCard();
 
         expect(stepperSpy).toHaveBeenCalledTimes(1);
         expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.CREDIT_CARD);
+      });
+
+      it('should ask for tracking event', () => {
+        payviewPaymentService.editCreditCard();
+
+        expect(payviewTrackingEventsService.trackClickAddEditCard).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddEditCard).toHaveBeenCalledWith(MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION);
+      });
+    });
+
+    describe('WHEN the user wants to add the credit card', () => {
+      beforeEach(() => {
+        spyOn(payviewPaymentService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddEditCard');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD));
+        fixture.detectChanges();
+      });
+
+      it('should received the corresponding order', () => {
+        let result: number = 0;
+        let expected: number = 1;
+        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
+          result++;
+        });
+
+        payviewPaymentService.editCreditCard();
+
+        expect(payviewPaymentService.on).toHaveBeenCalledTimes(1);
+        expect(result).toBe(expected);
+      });
+
+      it('should move to the corresponding step', () => {
+        payviewPaymentService.editCreditCard();
+
+        expect(stepperSpy).toHaveBeenCalledTimes(1);
+        expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.CREDIT_CARD);
+      });
+
+      it('should ask for tracking event', () => {
+        payviewPaymentService.editCreditCard();
+
+        expect(payviewTrackingEventsService.trackClickAddEditCard).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddEditCard).toHaveBeenCalledWith(MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION);
       });
     });
 
