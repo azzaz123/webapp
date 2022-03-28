@@ -15,16 +15,20 @@ export class ItemCardComponent {
   @Input() showDescription = true;
   @Input() showFavourite = true;
   @Input() index: number;
-  @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();
+  @Output() toggleFavourite: EventEmitter<{ item: ItemCard; loginSource: string }> = new EventEmitter<{
+    item: ItemCard;
+    loginSource: string;
+  }>();
   public readonly IMAGE_FALLBACK = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
   public readonly PERMISSIONS = PERMISSIONS;
 
   constructor() {}
 
-  public toggleItemFavorite(event: Event): void {
+  public toggleItemFavorite(event: any): void {
     event.preventDefault();
     event.stopPropagation();
-    this.toggleFavourite.emit();
+    const loginSource = event.currentTarget.getAttribute('data-loginsource');
+    this.toggleFavourite.emit({ item: this.item, loginSource });
   }
 
   get mainImage(): Image {

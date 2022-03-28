@@ -14,7 +14,10 @@ export class ItemCardWideComponent {
   @Input() item: ItemCard;
   @Input() showFavourite = true;
 
-  @Output() toggleFavourite: EventEmitter<void> = new EventEmitter<void>();
+  @Output() toggleFavourite: EventEmitter<{ item: ItemCard; loginSource: string }> = new EventEmitter<{
+    item: ItemCard;
+    loginSource: string;
+  }>();
 
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly carouselControlSize = CAROUSEL_CONTROL_SIZE.SMALL;
@@ -24,6 +27,6 @@ export class ItemCardWideComponent {
   public toggleItemFavorite(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    this.toggleFavourite.emit();
+    this.toggleFavourite.emit({ item: this.item, loginSource: null });
   }
 }
