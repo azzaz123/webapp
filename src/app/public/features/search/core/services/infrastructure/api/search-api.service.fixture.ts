@@ -32,6 +32,7 @@ function SearchBaseItemResponseFactory(): SearchBaseItemResponse {
     title: 'titleItem',
     distance: 32636,
     images: [SearchItemImageResponseFactory()],
+    favorited: false,
     flags: {
       banned: false,
       expired: false,
