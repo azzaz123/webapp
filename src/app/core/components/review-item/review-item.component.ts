@@ -60,6 +60,14 @@ export class ReviewItemComponent implements OnInit {
     }
   }
 
+  public limitCommentChars(comment) {
+    if (comment) {
+      return comment.length > 0 && comment.length <= 150 ? comment : comment.substr(0, 150) + '...';
+    } else {
+      return '';
+    }
+  }
+
   private translateReviewText(translated: boolean): void {
     this.isTranslated = translated;
     this.reviewComment = translated ? this.translation : this.review.comments;

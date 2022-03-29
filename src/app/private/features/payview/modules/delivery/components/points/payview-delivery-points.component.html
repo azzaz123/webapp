@@ -1,8 +1,8 @@
-<div class="PayviewDeliveryPoints" *ngIf="showDeliveryMethods">
-  <ng-template ngFor let-deliveryMethod let-index="index" let-even="even" [ngForOf]="deliveryMethods" [ngForTrackBy]="trackByIndex">
+<div class="PayviewDeliveryPoints" *ngIf="showMethods">
+  <ng-template ngFor let-deliveryMethod let-index="index" let-even="even" [ngForOf]="methods" [ngForTrackBy]="trackByIndex">
     <tsl-payview-delivery-point
-      [deliveryCosts]="deliveryCosts"
-      [deliveryMethod]="deliveryMethod"
+      [costs]="costs"
+      [method]="deliveryMethod"
       [id]="index"
       [isChecked]="isSelected(index)"
       (checked)="selectPoint($event)"

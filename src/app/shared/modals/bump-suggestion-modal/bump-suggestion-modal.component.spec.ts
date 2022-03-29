@@ -167,5 +167,16 @@ describe('BumpSuggestionModalComponent', () => {
 
       expect(submitButton.textContent).toEqual('Feature it');
     });
+
+    it('should not show price if is free bump', () => {
+      component.productPrice = 10;
+      component.productCurrency = 'EUR';
+      component.isFreeBump = true;
+
+      fixture.detectChanges();
+      const submitButton = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+      expect(submitButton.textContent).not.toContain(component.productPrice);
+    });
   });
 });

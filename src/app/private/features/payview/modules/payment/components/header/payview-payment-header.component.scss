@@ -1,0 +1,14 @@
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/text';
+
+.PayviewPaymentHeader {
+  &__where {
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+  }
+  &__help {
+    color: $blue-grey-2;
+    font-size: $font-size-xs;
+    text-decoration-line: underline;
+  }
+}

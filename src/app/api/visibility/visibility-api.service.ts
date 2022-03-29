@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { BumpRequestSubject, BUMP_SERVICE_TYPE, ItemsBySubscription, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import {
+  BumpRequestSubject,
+  BUMP_SERVICE_TYPE,
+  ItemsBySubscription,
+  ItemWithProducts,
+  SelectedProduct,
+} from '@api/core/model/bumps/item-products.interface';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { CartBase } from '@shared/catalog/cart/cart-base';
 import { forkJoin, Observable, of, ReplaySubject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { BumpsHttpService } from './http/bumps.service';
 import { mapBalance, mapFreeBumpsPurchase, mapItemsWithProducts, mapItemWithProductsAndSubscriptionBumps } from './mappers/bumps-mapper';
 import { groupBy } from 'lodash-es';
@@ -34,22 +40,42 @@ export class VisibilityApiService {
   ) {}
 
   public getBalance(userId: string): Observable<BumpsPackageBalance[]> {
-    return this.bumpsHttpService.getBalance(userId).pipe(map(mapBalance));
+    return this.bumpsHttpService.getBalance(userId).pipe(
+      map(mapBalance),
+      catchError(() => of([]))
+    );
   }
 
-  public getItemsWithProductsAndSubscriptionBumps(ids: string[]): Observable<ItemsBySubscription[]> {
+  public isAvailableToUseFreeBump(userId: string, itemId: string): Observable<boolean> {
+    return this.bumpsHttpService.getItemsBalance(userId, [itemId]).pipe(
+      map((balance) => balance.balance_check[0].has_balance),
+      catchError(() => of(false))
+    );
+  }
+
+  public hasItemOrUserBalance(userId: string, itemId: string): Observable<boolean> {
+    return this.isAvailableToUseFreeBump(userId, itemId).pipe(
+      switchMap((hasItemBalance) => {
+        return hasItemBalance ? of(true) : this.getBalance(userId).pipe(map((balance) => !!balance.length));
+      })
+    );
+  }
+
+  public getItemsWithProductsAndSubscriptionBumps(ids: string[], userId: string): Observable<ItemsBySubscription[]> {
     return forkJoin([
       this.bumpsHttpService.getItemsWithAvailableProducts(ids).pipe(map(mapItemsWithProducts)),
       this.subscriptionService.getSubscriptions(),
+      this.getBalance(userId),
     ]).pipe(
-      map(([itemWithProducts, subscriptions]) => {
+      map(([itemWithProducts, subscriptions, balance]) => {
         const itemsByProducts = itemWithProducts.map((item) =>
           mapItemWithProductsAndSubscriptionBumps(
             item,
-            this.subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId)
+            this.subscriptionService.getSubscriptionByCategory(subscriptions, item.item.categoryId),
+            balance
           )
         );
-        const itemsBySubscriptionType = groupBy(itemsByProducts, 'subscription.type');
+        const itemsBySubscriptionType: Record<string, ItemWithProducts[]> = groupBy(itemsByProducts, 'subscription.type');
         const subscriptionsKeys = Object.keys(itemsBySubscriptionType);
         const itemsBySubscription: ItemsBySubscription[] = [];
         for (const key of subscriptionsKeys) {
@@ -58,15 +84,14 @@ export class VisibilityApiService {
               items: itemsBySubscriptionType[key],
               subscription: null,
               availableFreeBumps: null,
+              balance: [],
             });
           } else {
             itemsBySubscription.unshift({
               items: itemsBySubscriptionType[key],
               subscription: itemsBySubscriptionType[key][0].subscription,
-              availableFreeBumps: itemsBySubscriptionType[key][0].subscription.selected_tier.bumps.reduce(
-                (a, b) => a + b.quantity - b.used,
-                0
-              ),
+              balance: itemsBySubscriptionType[key][0].balance,
+              availableFreeBumps: itemsBySubscriptionType[key][0].balance.reduce((a, b) => a + b.total + b.extra - b.used, 0),
             });
           }
         }

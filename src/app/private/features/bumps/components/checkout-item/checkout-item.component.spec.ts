@@ -7,6 +7,8 @@ import {
   ITEMS_WITH_AVAILABLE_PRODUCTS_FREE_BUMPS_MAPPED,
   ITEMS_WITH_AVAILABLE_PRODUCTS_FREE_BUMPS_NO_PRODUCTS_MAPPED,
   ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED,
+  MOCK_BUMPS_PACKAGE_BALANCE_MAPPED,
+  MOCK_BUMPS_PACKAGE_BALANCE_MAPPED_COMPLETED,
 } from '@fixtures/bump-package.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED } from '@fixtures/subscriptions.fixtures.spec';
@@ -114,6 +116,7 @@ describe('CheckoutItemComponent', () => {
     describe('and subscription has subscriptions with bumps available', () => {
       beforeEach(() => {
         component.itemWithProducts.subscription = MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0];
+        component.itemWithProducts.balance = MOCK_BUMPS_PACKAGE_BALANCE_MAPPED[1].balance;
       });
       it('should show toggle', () => {
         component.ngOnInit();
@@ -128,6 +131,7 @@ describe('CheckoutItemComponent', () => {
     describe('and subscription has subscriptions without bumps available', () => {
       beforeEach(() => {
         component.itemWithProducts.subscription = MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[1];
+        component.itemWithProducts.balance = MOCK_BUMPS_PACKAGE_BALANCE_MAPPED_COMPLETED;
       });
       it('should show toggle', () => {
         component.ngOnInit();

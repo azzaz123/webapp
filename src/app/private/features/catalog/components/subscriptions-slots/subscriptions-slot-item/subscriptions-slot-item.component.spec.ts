@@ -14,6 +14,7 @@ import {
 import { MOCK_SUBSCRIPTION_SLOT_CARS, MOCK_SUBSCRIPTION_SLOT_REAL_ESTATE } from '@fixtures/subscription-slots.fixtures.spec';
 import { MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP, TIER_2_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 import { By } from '@angular/platform-browser';
+import { MOCK_BUMPS_PACKAGE_BALANCE_MAPPED } from '@fixtures/bump-package.fixtures.spec';
 
 describe('SubscriptionsSlotItemComponent', () => {
   let component: SubscriptionsSlotItemComponent;
@@ -144,19 +145,18 @@ describe('SubscriptionsSlotItemComponent', () => {
     describe('available bumps', () => {
       describe('and has bumps', () => {
         it('should show counter', () => {
-          component.subscriptionSlot.subscription.selected_tier = MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP;
+          const expectedCounter = MOCK_BUMPS_PACKAGE_BALANCE_MAPPED[0].balance;
+          component.subscriptionSlot.bumpBalance = expectedCounter;
 
           fixture.detectChanges();
           const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
 
-          expect(descriptions[1].nativeElement.textContent).toContain(
-            `${component.subscriptionSlot.subscription.selected_tier.bumps[0].used}/${component.subscriptionSlot.subscription.selected_tier.bumps[0].quantity}`
-          );
+          expect(descriptions[1].nativeElement.textContent).toContain(`${expectedCounter[0].used}/${expectedCounter[0].total}`);
         });
       });
       describe('and has not bumps', () => {
         it('should not show counter', () => {
-          component.subscriptionSlot.subscription.selected_tier = TIER_2_WITH_DISCOUNT;
+          component.subscriptionSlot.bumpBalance = [];
 
           fixture.detectChanges();
           const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));

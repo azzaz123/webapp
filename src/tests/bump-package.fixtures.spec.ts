@@ -1,11 +1,12 @@
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
-import { BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
-import { DurationMapped, ItemsBySubscription, ItemWithProducts, ProductMapped } from '@api/core/model/bumps/item-products.interface';
-import { BumpsPackageBalanceDTO } from '@api/visibility/dtos/bumps/bumps-package-balance.interface';
+import { BumpPackageBalance, BumpsPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
+import { DurationMapped, ItemsBySubscription, ItemWithProducts } from '@api/core/model/bumps/item-products.interface';
+import { BumpsPackageBalanceDTO, BumpsPackageBalanceResponse } from '@api/visibility/dtos/bumps/bumps-package-balance.interface';
 import { Item } from '@core/item/item';
 import { ItemContent, ItemsWithAvailableProductsResponse, Product } from '@core/item/item-response.interface';
 import { SUBSCRIPTION_CATEGORY_TYPES } from '@core/subscriptions/subscriptions.interface';
 import { MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED } from '@fixtures/subscriptions.fixtures.spec';
+import { ItemBalanceDTO, ItemsBalanceDTO } from '@api/visibility/dtos/bumps/items-balance.interface';
 
 export const MOCK_BUMPS_PACKAGE_BALANCE: BumpsPackageBalanceDTO[] = [
   {
@@ -17,12 +18,14 @@ export const MOCK_BUMPS_PACKAGE_BALANCE: BumpsPackageBalanceDTO[] = [
         duration_days: 2,
         total: 5,
         used: 3,
+        extra: 0,
       },
       {
         type: 'countrybump',
         duration_days: 2,
         total: 100,
         used: 90,
+        extra: 0,
       },
     ],
   },
@@ -35,8 +38,51 @@ export const MOCK_BUMPS_PACKAGE_BALANCE: BumpsPackageBalanceDTO[] = [
         duration_days: 2,
         total: 9,
         used: 2,
+        extra: 0,
       },
     ],
+  },
+];
+
+export const MOCK_BUMP_PACKAGE_RESPONSE: BumpsPackageBalanceResponse = {
+  user_balance: MOCK_BUMPS_PACKAGE_BALANCE,
+};
+
+const MOCK_ITEM_BUMP_BALANCE_TRUE: ItemBalanceDTO = {
+  item_id: '123',
+  has_balance: true,
+};
+
+const MOCK_ITEM_BUMP_BALANCE_FALSE: ItemBalanceDTO = {
+  item_id: '123',
+  has_balance: false,
+};
+
+export const MOCK_ONE_ITEM_BUMP_BALANCE: ItemsBalanceDTO = {
+  balance_check: [MOCK_ITEM_BUMP_BALANCE_TRUE],
+};
+
+export const MOCK_ONE_ITEM_BUMP_NO_BALANCE: ItemsBalanceDTO = {
+  balance_check: [MOCK_ITEM_BUMP_BALANCE_FALSE],
+};
+
+export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED_COMPLETED: BumpPackageBalance[] = [
+  {
+    type: BUMP_TYPE.COUNTRY_BUMP,
+    total: 12,
+    duration_days: 2,
+    used: 12,
+    extra: 0,
+  },
+];
+
+export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED_ONE_BUMP: BumpPackageBalance[] = [
+  {
+    type: BUMP_TYPE.ZONE_BUMP,
+    total: 12,
+    duration_days: 2,
+    used: 2,
+    extra: 0,
   },
 ];
 
@@ -50,12 +96,14 @@ export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED: BumpsPackageBalance[] = [
         duration_days: 2,
         total: 5,
         used: 3,
+        extra: 0,
       },
       {
         type: BUMP_TYPE.COUNTRY_BUMP,
         duration_days: 2,
         total: 100,
         used: 90,
+        extra: 0,
       },
     ],
   },
@@ -68,6 +116,7 @@ export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED: BumpsPackageBalance[] = [
         duration_days: 2,
         total: 9,
         used: 2,
+        extra: 0,
       },
     ],
   },
@@ -97,7 +146,6 @@ const ITEM_1: ItemContent = {
     expired: false,
     bumped: false,
     highlighted: false,
-    urgent: false,
     onhold: false,
   },
   sale_price: 2000,
@@ -194,7 +242,6 @@ const ITEM_2: ItemContent = {
     expired: false,
     bumped: false,
     highlighted: false,
-    urgent: false,
     onhold: false,
   },
   sale_price: 200,
@@ -311,12 +358,14 @@ export const ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED: ItemWithProducts[] = [
     products: PRODUCT_LIST_WITHOUT_CITY,
     isProvincialBump: true,
     subscription: null,
+    balance: [],
   },
   {
     isProvincialBump: false,
     item: ITEM_2_MAPPED,
     products: PRODUCT_LIST,
     subscription: null,
+    balance: [],
   },
 ];
 
@@ -331,6 +380,7 @@ export const ITEMS_WITH_AVAILABLE_PRODUCTS_FREE_BUMPS_MAPPED: ItemWithProducts =
   ],
   isProvincialBump: true,
   subscription: MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0],
+  balance: MOCK_BUMPS_PACKAGE_BALANCE_MAPPED_ONE_BUMP,
 };
 
 export const ITEMS_WITH_AVAILABLE_PRODUCTS_FREE_BUMPS_NO_PRODUCTS_MAPPED: ItemWithProducts = {
@@ -343,6 +393,7 @@ export const ITEMS_WITH_AVAILABLE_PRODUCTS_FREE_BUMPS_NO_PRODUCTS_MAPPED: ItemWi
   ],
   isProvincialBump: true,
   subscription: MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED[0],
+  balance: MOCK_BUMPS_PACKAGE_BALANCE_MAPPED_ONE_BUMP,
 };
 
 export const ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED_BY_SUBSCRIPTION_NO_SUB: ItemsBySubscription[] = [
@@ -350,5 +401,6 @@ export const ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED_BY_SUBSCRIPTION_NO_SUB: ItemsB
     subscription: null,
     items: ITEMS_WITH_AVAILABLE_PRODUCTS_MAPPED,
     availableFreeBumps: null,
+    balance: [],
   },
 ];

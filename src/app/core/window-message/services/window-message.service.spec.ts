@@ -12,7 +12,7 @@ describe('WindowMessageService', () => {
   let service: WindowMessageService;
   let injectedWindow: Window;
 
-  const MOCK_WINDOW_MESSAGE: WindowMessage = { type: WINDOW_MESSAGE_TYPE.SUCCESS };
+  const MOCK_WINDOW_MESSAGE: WindowMessage = { type: WINDOW_MESSAGE_TYPE.PROCESS_COMPLETE };
   const MOCK_WINDOW_MESSAGE_WRAPPER: WindowMessageWrapper = { payload: MOCK_WINDOW_MESSAGE, fromWallapop: true };
   const MOCK_ALL_ORIGINS = '*';
   const MOCK_WINDOW: Partial<Window> = {

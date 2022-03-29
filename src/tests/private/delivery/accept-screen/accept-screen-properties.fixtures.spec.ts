@@ -49,12 +49,14 @@ export const MOCK_ACCEPT_SCREEN_BUYER: AcceptScreenBuyer = {
   id: MOCK_OTHER_USER.id,
   imageUrl: MOCK_OTHER_USER.image.urls_by_size.original,
   name: MOCK_OTHER_USER.microName,
+  isPro: false,
   countryISOCode: MOCK_OTHER_USER.location.country_code,
 };
 
 export const MOCK_ACCEPT_SCREEN_BUYER_WITHOUT_IMAGE: AcceptScreenBuyer = {
   id: MOCK_OTHER_USER_WITHOUT_IMAGE.id,
   imageUrl: PLACEHOLDER_AVATAR,
+  isPro: false,
   name: MOCK_OTHER_USER_WITHOUT_IMAGE.microName,
   countryISOCode: MOCK_OTHER_USER_WITHOUT_IMAGE.location.country_code,
 };

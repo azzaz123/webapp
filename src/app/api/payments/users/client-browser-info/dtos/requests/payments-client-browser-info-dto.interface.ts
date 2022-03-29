@@ -1,5 +1,4 @@
 export interface PaymentsClientBrowserInfoDto {
-  accept_header: string;
   java_enabled: boolean;
   javascript_enabled: boolean;
   language: string;

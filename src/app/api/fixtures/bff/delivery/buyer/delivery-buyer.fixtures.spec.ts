@@ -63,4 +63,5 @@ export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods 
       label: 'calle jtrx 6, 1, 08199 Montserrat, España',
     },
   },
+  addressLabel: 'calle jtrx 6, 1, 08199 Montserrat, España',
 };

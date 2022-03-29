@@ -10,11 +10,16 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
   styleUrls: ['./process-complete.component.scss'],
 })
 export class ProcessCompleteComponent implements OnInit {
-  constructor(private windowMessageService: WindowMessageService, @Inject(WINDOW_TOKEN) private window: Window) {}
+  constructor(@Inject(WINDOW_TOKEN) private window: Window, private windowMessageService: WindowMessageService) {}
 
   ngOnInit(): void {
     this.sendSuccessMessageToSelfWindow();
+    this.sendSuccessMessageToParentWindow();
     this.closeCurrentWindow();
+  }
+
+  private get processCompleteMessage(): WindowMessage {
+    return { type: WINDOW_MESSAGE_TYPE.PROCESS_COMPLETE };
   }
 
   private closeCurrentWindow(): void {
@@ -22,7 +27,12 @@ export class ProcessCompleteComponent implements OnInit {
   }
 
   private sendSuccessMessageToSelfWindow(): void {
-    const successMessage: WindowMessage = { type: WINDOW_MESSAGE_TYPE.SUCCESS };
-    this.windowMessageService.send(successMessage, this.window);
+    this.windowMessageService.send(this.processCompleteMessage, this.window);
+  }
+
+  private sendSuccessMessageToParentWindow(): void {
+    if (this.window.parent) {
+      this.windowMessageService.send(this.processCompleteMessage, this.window.parent);
+    }
   }
 }
