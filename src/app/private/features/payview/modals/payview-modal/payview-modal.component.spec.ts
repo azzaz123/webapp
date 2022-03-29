@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, Component, DebugElement, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -57,6 +57,7 @@ import {
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT,
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION,
   MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
+  MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 @Component({
@@ -204,6 +205,7 @@ describe('PayviewModalComponent', () => {
             trackClickAddEditCard() {},
             trackClickAddEditAddress() {},
             trackClickHelpTransactional() {},
+            trackViewTransactionPayScreen() {},
           },
         },
         ItemService,
@@ -304,6 +306,7 @@ describe('PayviewModalComponent', () => {
 
       describe('WHEN the payview gets the state', () => {
         beforeEach(fakeAsync(() => {
+          spyOn(payviewTrackingEventsService, 'trackViewTransactionPayScreen');
           jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
 
           fixture = TestBed.createComponent(FakeComponent);
@@ -360,6 +363,13 @@ describe('PayviewModalComponent', () => {
           const promotionEditorComponent = debugElement.query(By.directive(PayviewPromotionEditorComponent));
 
           expect(promotionEditorComponent).toBeFalsy();
+        });
+
+        it('should ask for tracking event', () => {
+          expect(payviewTrackingEventsService.trackViewTransactionPayScreen).toHaveBeenCalledTimes(1);
+          expect(payviewTrackingEventsService.trackViewTransactionPayScreen).toHaveBeenCalledWith(
+            MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL
+          );
         });
 
         describe('WHEN stepper is on the second step', () => {
