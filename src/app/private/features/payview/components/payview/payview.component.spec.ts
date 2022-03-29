@@ -9,6 +9,7 @@ import { PayviewModalComponent } from '@private/features/payview/modals/payview-
 
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
 
 @Component({
   selector: 'tsl-blank',
@@ -66,7 +67,7 @@ describe('PayviewComponent', () => {
 
     it('should open the payview modal component', () => {
       expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(PayviewModalComponent, { backdrop: 'static', windowClass: 'payview' });
+      expect(modalService.open).toHaveBeenCalledWith(PayviewModalComponent, { backdrop: 'static', windowClass: DELIVERY_MODAL_CLASSNAME });
     });
 
     it('should assign the corresponding payload to the payview modal component', () => {
