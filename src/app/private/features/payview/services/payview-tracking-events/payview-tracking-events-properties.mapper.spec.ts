@@ -28,6 +28,7 @@ import {
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
   MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY,
+  MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 describe('when mapping the payview state properties into the click add edit card event properties', () => {
@@ -127,6 +128,6 @@ describe('when mapping the payview state properties into the click apply promoco
     const expectedProperties: ClickApplyPromocodeTransactionPay =
       getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
 
-    expect(expectedProperties).toStrictEqual(MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY);
+    expect(expectedProperties).toStrictEqual(MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY);
   });
 });
