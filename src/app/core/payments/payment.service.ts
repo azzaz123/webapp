@@ -11,7 +11,6 @@ import {
   Products,
   ScheduledStatus,
   PaymentIntents,
-  UserPaymentPreferences,
 } from './payment.interface';
 import { mapValues, values, keyBy, groupBy, min } from 'lodash-es';
 import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
@@ -19,9 +18,6 @@ import { PerksModel } from './payment.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { map, catchError, flatMap } from 'rxjs/operators';
-import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
-import { mapPaymentMethodToPaymentMethodDto } from '@api/shared/mappers/payment-method-to-payment-method-dto.mapper';
 
 export enum PAYMENT_METHOD {
   STRIPE = 'STRIPE',
@@ -187,15 +183,6 @@ export class PaymentService {
 
   public deleteCache() {
     this.perksModel = null;
-  }
-
-  public updateUserPreferences(paymentId: string, paymentMethod: PaymentMethod, useWallet: boolean): Observable<void> {
-    const payload: UserPaymentPreferences = {
-      payment_method: mapPaymentMethodToPaymentMethodDto(paymentMethod),
-      use_wallet: useWallet,
-    };
-
-    return this.http.put<void>(`${environment.baseUrl}${PAYMENTS_API_URL}/user_payment_preferences/${paymentId}`, payload);
   }
 
   private preparePacks(sortedPacks, product?: Products) {
