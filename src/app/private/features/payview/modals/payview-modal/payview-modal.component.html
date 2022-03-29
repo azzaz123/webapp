@@ -30,26 +30,18 @@
   </div>
   <tsl-stepper *ngIf="payviewState$ | async as payviewState" class="PayviewModal__stepper pt-1">
     <ng-template step>
-      <div class="PayviewModal__summary">
-        <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
-      </div>
-      <div class="PayviewModal__delivery">
-        <tsl-payview-delivery-overview
-          [costs]="payviewState.delivery.costs"
-          [methods]="payviewState.delivery.methods"
-        ></tsl-payview-delivery-overview>
-      </div>
-      <div class="PayviewModal__promotion">
-        <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
-      </div>
-      <div class="PayviewModal__payment">
-        <tsl-payview-payment-overview
-          [card]="payviewState.payment.card"
-          [methods]="payviewState.payment.methods"
-          [preferences]="payviewState.payment.preferences"
-        ></tsl-payview-payment-overview>
-      </div>
-      <div class="PayviewModal__summary mt-4">
+      <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
+      <tsl-payview-delivery-overview
+        [costs]="payviewState.delivery.costs"
+        [methods]="payviewState.delivery.methods"
+      ></tsl-payview-delivery-overview>
+      <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
+      <tsl-payview-payment-overview
+        [card]="payviewState.payment.card"
+        [methods]="payviewState.payment.methods"
+        [preferences]="payviewState.payment.preferences"
+      ></tsl-payview-payment-overview>
+      <div class="mt-4">
         <tsl-payview-summary-overview [isPurchaseSummarySection]="true" [payviewState]="payviewState"></tsl-payview-summary-overview>
         <div class="container mt-4">
           <span class="PayviewModal__policiesText d-block p-1" i18n="@@pay_view_buyer_policies_description_refined"
@@ -77,14 +69,10 @@
       ></tsl-delivery-map>
     </ng-template>
     <ng-template step>
-      <div class="PayviewModal__promotionEditor h-100">
-        <tsl-payview-promotion-editor></tsl-payview-promotion-editor>
-      </div>
+      <tsl-payview-promotion-editor></tsl-payview-promotion-editor>
     </ng-template>
     <ng-template step>
-      <div class="PayviewModal__creditCardEditor h-100">
-        <tsl-credit-card [returnRoute]="null" [showBackButton]="false" (saved)="closeCreditCardEditor()"></tsl-credit-card>
-      </div>
+      <tsl-credit-card [returnRoute]="null" [showBackButton]="false" (saved)="closeCreditCardEditor()"></tsl-credit-card>
     </ng-template>
   </tsl-stepper>
 </div>
