@@ -11,6 +11,7 @@ import { mapPaymentMethodToPaymentMethodDto } from '@api/shared/mappers/payment-
 import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 import { USER_ACTION, PAYMENT_PREFERENCE, ADDRESS_TYPE } from '../../modules/promotion/enums/tracking-events-action';
 import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-add-promocode-transaction-pay.interface';
+import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
   return {
@@ -66,6 +67,19 @@ export function getClickHelpTransactionalEventPropertiesFromPayviewState(payview
 export function getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState(
   payviewState: PayviewState
 ): ClickAddPromocodeTransactionPay {
+  return {
+    screenId: SCREEN_IDS.Checkout,
+    itemId: payviewState.item.id,
+    categoryId: payviewState.item.categoryId,
+    itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
+    isBuyNow: false,
+    sellerUserId: payviewState.item.owner,
+  };
+}
+
+export function getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState(
+  payviewState: PayviewState
+): ClickApplyPromocodeTransactionPay {
   return {
     screenId: SCREEN_IDS.Checkout,
     itemId: payviewState.item.id,

@@ -17,6 +17,7 @@ import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payvie
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
 import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-add-promocode-transaction-pay.interface';
+import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
 import {
   MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
   MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
@@ -115,6 +116,15 @@ describe('when mapping the payview state properties into the view transaction pa
 describe('when mapping the payview state properties into the click add promocode transaction pay event properties', () => {
   it('should return the properties mapped', () => {
     const expectedProperties: ClickAddPromocodeTransactionPay =
+      getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
+
+    expect(expectedProperties).toStrictEqual(MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY);
+  });
+});
+
+describe('when mapping the payview state properties into the click apply promocode transaction pay event properties', () => {
+  it('should return the properties mapped', () => {
+    const expectedProperties: ClickApplyPromocodeTransactionPay =
       getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
 
     expect(expectedProperties).toStrictEqual(MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY);
