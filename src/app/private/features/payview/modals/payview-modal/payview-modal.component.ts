@@ -137,14 +137,14 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, () => {
-        this.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
         this.trackClickAddEditAddressEvent(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN);
+        this.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
       })
     );
     this.subscriptions.push(
       this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {
-        this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
         this.trackClickAddEditAddressEvent(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP);
+        this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
       })
     );
   }
@@ -157,8 +157,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.paymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
-        this.goToStep(PAYVIEW_STEPS.CREDIT_CARD);
         this.trackClickAddEditCardEvent();
+        this.goToStep(PAYVIEW_STEPS.CREDIT_CARD);
       })
     );
   }
