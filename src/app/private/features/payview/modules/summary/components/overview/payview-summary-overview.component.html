@@ -1,14 +1,15 @@
 <div class="PayviewSummary d-flex w-100 flex-column">
   <div class="container">
     <div class="PayviewSummary__content p-1">
-      <div *ngIf="!isPurchaseSummarySection" class="PayviewSummary__text PayviewSummary__text--bold">
+      <div *ngIf="!showPurchaseSummaryTitle" class="PayviewSummary__text PayviewSummary__text--bold">
         <span class="PayviewSummary__text--gray" i18n="@@pay_view_buyer_plain_text_inspirational_quote"
           >Thanks for being part of {{ '' }}</span
         >
         <span class="PayviewSummary__text--walla pl-1" i18n="@@pay_view_buyer_plain_text_inspirational_quote_wallapop_name">Wallapop</span>
       </div>
       <span
-        *ngIf="isPurchaseSummarySection"
+        *ngIf="showPurchaseSummaryTitle"
+        id="purchaseSummaryTitle"
         class="PayviewSummary__text PayviewSummary__text--bold PayviewSummary__text--large d-block text-center"
         i18n="@@pay_view_buyer_summary_title"
         >Purchase summary</span
