@@ -43,16 +43,4 @@ $modal-header-height: 56px;
     font-size: $font-size-xs;
     color: $blue-grey-3;
   }
-
-  ::ng-deep #loader-wrapper {
-    height: 100% !important;
-    padding-bottom: $spacing-xl;
-    & svg {
-      height: 64px;
-      width: 64px;
-    }
-    & h2 {
-      display: none;
-    }
-  }
 }
