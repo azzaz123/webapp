@@ -1,18 +1,20 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PaymentsClientBrowserInfo } from '@api/core/model/payments';
-import {
-  THREE_DOMAIN_SECURE_MODAL_HEIGHT,
-  THREE_DOMAIN_SECURE_MODAL_WIDTH,
-} from '@api/payments/cards/three-domain-secure/three-domain-secure.constants';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { of } from 'rxjs';
 import { PaymentsClientBrowserInfoHttpService } from './http/payments-client-browser-info-http.service';
 
-import { PaymentsClientBrowserInfoApiService } from './payments-client-browser-info-api.service';
+import {
+  EXTERNAL_PROVIDER_MODAL_HEADER_HEIGHT_PX,
+  EXTERNAL_PROVIDER_MODAL_HEIGHT_PX,
+  EXTERNAL_PROVIDER_MODAL_LARGE_WIDTH_PROPORTION,
+  PaymentsClientBrowserInfoApiService,
+} from './payments-client-browser-info-api.service';
 
 describe('PaymentsClientBrowserInfoApiService', () => {
   let service: PaymentsClientBrowserInfoApiService;
   let paymentsClientBrowserInfoHttpService: PaymentsClientBrowserInfoHttpService;
+  let matchMediaReturnValue: boolean = true;
 
   const MOCK_WINDOW_NAVIGATOR: Partial<Navigator> = {
     javaEnabled: () => false,
@@ -20,13 +22,25 @@ describe('PaymentsClientBrowserInfoApiService', () => {
     userAgent: 'Internet Explorer 7',
   };
 
+  const MOCK_WINDOW_INNER_WIDTH: number = 1337;
+  const MOCK_WINDOW_INNER_HEIGHT: number = 728;
+
   const MOCK_WINDOW_SCREEN: Partial<Screen> = {
     colorDepth: 32,
   };
 
+  const MOCK_WINDOW_MATCH_MEDIA = () => {
+    return {
+      matches: matchMediaReturnValue,
+    } as MediaQueryList;
+  };
+
   const MOCK_WINDOW_PROPERTIES: Partial<Window> = {
+    innerWidth: MOCK_WINDOW_INNER_WIDTH,
+    innerHeight: MOCK_WINDOW_INNER_HEIGHT,
     navigator: MOCK_WINDOW_NAVIGATOR as Navigator,
     screen: MOCK_WINDOW_SCREEN as Screen,
+    matchMedia: MOCK_WINDOW_MATCH_MEDIA,
   };
 
   const MOCK_TIMEZONE_OFFSET: string = '+120';
@@ -55,7 +69,7 @@ describe('PaymentsClientBrowserInfoApiService', () => {
     beforeEach(fakeAsync(() => {
       spyOn(paymentsClientBrowserInfoHttpService, 'put');
 
-      service.sendBrowserInfo(THREE_DOMAIN_SECURE_MODAL_WIDTH, THREE_DOMAIN_SECURE_MODAL_HEIGHT);
+      service.sendBrowserInfo();
       tick();
     }));
 
@@ -63,19 +77,42 @@ describe('PaymentsClientBrowserInfoApiService', () => {
       expect(paymentsClientBrowserInfoHttpService.put).toHaveBeenCalledTimes(1);
     });
 
-    it('should send valid browser data', () => {
-      const expectedWindowData: PaymentsClientBrowserInfo = {
-        colorDepth: MOCK_WINDOW_SCREEN.colorDepth,
-        isJavaEnabled: MOCK_WINDOW_NAVIGATOR.javaEnabled(),
-        isJavaScriptEnabled: true,
-        language: MOCK_WINDOW_NAVIGATOR.language,
-        modalWidth: THREE_DOMAIN_SECURE_MODAL_WIDTH,
-        modalHeight: THREE_DOMAIN_SECURE_MODAL_HEIGHT,
-        timeZoneOffset: MOCK_TIMEZONE_OFFSET,
-        userAgent: MOCK_WINDOW_NAVIGATOR.userAgent,
-      };
+    describe('and when browser window size is NOT considered large', () => {
+      beforeEach(() => (matchMediaReturnValue = false));
 
-      expect(paymentsClientBrowserInfoHttpService.put).toHaveBeenCalledWith(expectedWindowData);
+      it('should send valid browser data', () => {
+        const expectedWindowData: PaymentsClientBrowserInfo = {
+          colorDepth: MOCK_WINDOW_SCREEN.colorDepth,
+          isJavaEnabled: MOCK_WINDOW_NAVIGATOR.javaEnabled(),
+          isJavaScriptEnabled: true,
+          language: MOCK_WINDOW_NAVIGATOR.language,
+          modalWidth: MOCK_WINDOW_INNER_WIDTH,
+          modalHeight: MOCK_WINDOW_INNER_HEIGHT - EXTERNAL_PROVIDER_MODAL_HEADER_HEIGHT_PX,
+          timeZoneOffset: MOCK_TIMEZONE_OFFSET,
+          userAgent: MOCK_WINDOW_NAVIGATOR.userAgent,
+        };
+
+        expect(paymentsClientBrowserInfoHttpService.put).toHaveBeenCalledWith(expectedWindowData);
+      });
+    });
+
+    describe('and when browser window size is considered large', () => {
+      beforeEach(() => (matchMediaReturnValue = true));
+
+      it('should send valid browser data', () => {
+        const expectedWindowData: PaymentsClientBrowserInfo = {
+          colorDepth: MOCK_WINDOW_SCREEN.colorDepth,
+          isJavaEnabled: MOCK_WINDOW_NAVIGATOR.javaEnabled(),
+          isJavaScriptEnabled: true,
+          language: MOCK_WINDOW_NAVIGATOR.language,
+          modalWidth: MOCK_WINDOW_INNER_WIDTH * EXTERNAL_PROVIDER_MODAL_LARGE_WIDTH_PROPORTION,
+          modalHeight: EXTERNAL_PROVIDER_MODAL_HEIGHT_PX - EXTERNAL_PROVIDER_MODAL_HEADER_HEIGHT_PX,
+          timeZoneOffset: MOCK_TIMEZONE_OFFSET,
+          userAgent: MOCK_WINDOW_NAVIGATOR.userAgent,
+        };
+
+        expect(paymentsClientBrowserInfoHttpService.put).toHaveBeenCalledWith(expectedWindowData);
+      });
     });
   });
 });

@@ -1,14 +1,20 @@
 import { Inject, Injectable } from '@angular/core';
 import { PaymentsClientBrowserInfo } from '@api/core/model/payments';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
 import { Observable } from 'rxjs';
 import { PaymentsClientBrowserInfoHttpService } from './http/payments-client-browser-info-http.service';
+
+export const EXTERNAL_PROVIDER_MODAL_MAX_LARGE_WIDTH_PX: number = 720;
+export const EXTERNAL_PROVIDER_MODAL_HEIGHT_PX: number = 630;
+export const EXTERNAL_PROVIDER_MODAL_HEADER_HEIGHT_PX: number = 56;
+export const EXTERNAL_PROVIDER_MODAL_LARGE_WIDTH_PROPORTION: number = 0.8;
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaymentsClientBrowserInfoApiService {
+  public static EXTERNAL_PROVIDER_MODAL_HEADER_HEIGHT_PX = 56;
+
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
 
@@ -37,20 +43,18 @@ export class PaymentsClientBrowserInfoApiService {
   //FIXME: This should not be hardcoded and retrieved by rendering the modal and then getting the sizes. For now, copying and hardcoding same modal SCSS values
   public get externalProviderModalSize(): { modalWidth: number; modalHeight: number } {
     const lgBreakpoint: string = '991px';
-    const maxWidth: number = 720;
 
-    const modalHeaderHeight: number = 56;
-    let modalWidth: number = this.window.innerWidth * 0.8;
-    let modalHeight: number = 630 - modalHeaderHeight;
+    let modalWidth: number = this.window.innerWidth * EXTERNAL_PROVIDER_MODAL_LARGE_WIDTH_PROPORTION;
+    let modalHeight: number = EXTERNAL_PROVIDER_MODAL_HEIGHT_PX - EXTERNAL_PROVIDER_MODAL_HEADER_HEIGHT_PX;
 
-    if (modalHeight > maxWidth) {
-      modalHeight = maxWidth;
+    if (modalHeight > EXTERNAL_PROVIDER_MODAL_MAX_LARGE_WIDTH_PX) {
+      modalHeight = EXTERNAL_PROVIDER_MODAL_MAX_LARGE_WIDTH_PX.valueOf();
     }
 
     const isScreenLgOrLess: boolean = this.window.matchMedia(`(max-width: ${lgBreakpoint})`).matches;
     if (isScreenLgOrLess) {
       modalWidth = this.window.innerWidth;
-      modalHeight = this.window.innerHeight - modalHeaderHeight;
+      modalHeight = this.window.innerHeight - EXTERNAL_PROVIDER_MODAL_HEADER_HEIGHT_PX;
     }
 
     return {
