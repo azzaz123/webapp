@@ -58,6 +58,7 @@ import {
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION,
   MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
+  MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 @Component({
@@ -206,6 +207,7 @@ describe('PayviewModalComponent', () => {
             trackClickAddEditAddress() {},
             trackClickHelpTransactional() {},
             trackViewTransactionPayScreen() {},
+            trackClickAddPromocodeTransactionPay() {},
           },
         },
         ItemService,
@@ -757,6 +759,8 @@ describe('PayviewModalComponent', () => {
     describe('WHEN the user wants to edit the promocode', () => {
       beforeEach(() => {
         spyOn(payviewPromotionService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddPromocodeTransactionPay');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
       });
 
       it('should received the corresponding order', () => {
@@ -773,12 +777,19 @@ describe('PayviewModalComponent', () => {
       });
 
       it('should move to the corresponding step', () => {
-        const subscription = payviewPromotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.OPEN_PROMOCODE_EDITOR, () => {});
-
         payviewPromotionService.openPromocodeEditor();
 
         expect(stepperSpy).toHaveBeenCalledTimes(1);
         expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.PROMOTION_EDITOR);
+      });
+
+      it('should ask for tracking event', () => {
+        payviewPromotionService.openPromocodeEditor();
+
+        expect(payviewTrackingEventsService.trackClickAddPromocodeTransactionPay).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddPromocodeTransactionPay).toHaveBeenCalledWith(
+          MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY
+        );
       });
     });
 
