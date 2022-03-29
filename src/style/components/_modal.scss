@@ -201,6 +201,8 @@ $modal-border-radius: 0.3rem;
     @include media-breakpoint-down(md) {
       width: 100% !important;
       height: 100% !important;
+      max-height: 100% !important;
+      margin: 0;
     }
   }
 
