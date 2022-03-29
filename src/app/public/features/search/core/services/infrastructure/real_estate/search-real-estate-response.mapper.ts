@@ -19,7 +19,7 @@ export function searchItemRealEstateResponseMapper({ search_objects }: SearchRes
     flags: {
       pending: content.flags.pending,
       sold: content.flags.sold,
-      favorite: false,
+      favorite: content.favorited,
       reserved: content.flags.reserved,
       banned: content.flags.banned,
       expired: content.flags.expired,
