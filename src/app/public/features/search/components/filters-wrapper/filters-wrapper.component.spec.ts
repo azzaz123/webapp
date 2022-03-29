@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FiltersWrapperComponent } from './filters-wrapper.component';
 import { BubbleModule } from '@public/shared/components/bubble/bubble.module';
 import { DrawerModule } from '@public/shared/components/drawer/drawer.module';
-import { FilterGroupComponentStub } from '@public/shared/components/filters/components/filter-group/services/filter-group.component.stub';
+import { FilterGroupComponentStub } from '@public/shared/components/filters/components/filter-group/filter-group.component.stub';
 import {
   FILTER_PARAMETER_DRAFT_STORE_TOKEN,
   FILTER_PARAMETER_STORE_TOKEN,
