@@ -1,9 +1,9 @@
 import { Component, ViewChildren, QueryList, Input, Output, EventEmitter } from '@angular/core';
-import { FilterGroupRules } from '../../../core/interfaces/filter-group-rules.interface';
-import { FilterConfig } from '../../../interfaces/filter-config.interface';
-import { FilterParameter } from '../../../interfaces/filter-parameter.interface';
-import { FILTER_VARIANT } from '../../abstract-filter/abstract-filter.enum';
-import { FilterHostDirective } from '../directives/filter-host.directive';
+import { FilterGroupRules } from '../../core/interfaces/filter-group-rules.interface';
+import { FilterConfig } from '../../interfaces/filter-config.interface';
+import { FilterParameter } from '../../interfaces/filter-parameter.interface';
+import { FILTER_VARIANT } from '../abstract-filter/abstract-filter.enum';
+import { FilterHostDirective } from './directives/filter-host.directive';
 
 @Component({
   selector: 'tsl-filter-group',
