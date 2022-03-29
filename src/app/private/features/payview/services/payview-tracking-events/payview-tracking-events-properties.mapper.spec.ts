@@ -4,6 +4,7 @@ import {
   getClickAddEditAddressEventPropertiesFromPayviewState,
   getClickHelpTransactionalEventPropertiesFromPayviewState,
   getViewTransactionPayScreenEventPropertiesFromPayviewState,
+  getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
 } from './payview-tracking-events-properties.mapper';
 import {
   MOCK_PAYVIEW_STATE,
@@ -15,6 +16,7 @@ import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
+import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-add-promocode-transaction-pay.interface';
 import {
   MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
   MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
@@ -24,6 +26,7 @@ import {
   MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
+  MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 describe('when mapping the payview state properties into the click add edit card event properties', () => {
@@ -106,5 +109,14 @@ describe('when mapping the payview state properties into the view transaction pa
 
       expect(expectedProperties).toStrictEqual(MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD);
     });
+  });
+});
+
+describe('when mapping the payview state properties into the click add promocode transaction pay event properties', () => {
+  it('should return the properties mapped', () => {
+    const expectedProperties: ClickAddPromocodeTransactionPay =
+      getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
+
+    expect(expectedProperties).toStrictEqual(MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY);
   });
 });

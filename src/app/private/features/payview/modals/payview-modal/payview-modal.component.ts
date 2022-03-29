@@ -30,6 +30,7 @@ import {
   getClickAddEditCardEventPropertiesFromPayviewState,
   getClickAddEditAddressEventPropertiesFromPayviewState,
   getViewTransactionPayScreenEventPropertiesFromPayviewState,
+  getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 
 @Component({
@@ -166,6 +167,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscribeToPromotionEventBus(): void {
     this.subscriptions.push(
       this.promotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.OPEN_PROMOCODE_EDITOR, () => {
+        this.trackClickAddPromocodeTransactionPayEvent();
         this.goToStep(PAYVIEW_STEPS.PROMOTION_EDITOR);
       })
     );
@@ -235,5 +237,15 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState)
     );
     this.trackViewTransactionPayScreen$.next(true);
+  }
+
+  private trackClickAddPromocodeTransactionPayEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackClickAddPromocodeTransactionPay(
+          getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState(payviewState)
+        )
+      );
   }
 }
