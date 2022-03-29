@@ -1,5 +1,5 @@
 <button class="FavouriteUser__btn btn d-flex align-items-center border-0" (click)="toggleFavourite()" tslCheckSession
-        data-loginsource="favorite_user">
+        [attr.data-loginsource]="clickFavLoginSource">
   <tsl-favourite-icon class="mr-2" [active]="isFavourite"></tsl-favourite-icon>
   <span i18n="@@web_favourite_user_label">Favourite user</span>
 </button>

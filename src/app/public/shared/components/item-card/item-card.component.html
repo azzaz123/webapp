@@ -21,8 +21,7 @@
                 {{item.salePrice | customCurrency: item.currencyCode}}
             </span>
             <tsl-favourite-icon *ngIf="showFavourite" class="ItemCard__favourite" [active]="item.flags?.favorite"
-                                (click)="toggleItemFavorite($event)"
-                                data-loginsource="favorite_item"></tsl-favourite-icon>
+                                (click)="toggleItemFavorite($event)"></tsl-favourite-icon>
         </div>
         <div class="ItemCard__info">
             <p class="ItemCard__title my-2" [class.ItemCard__title--with-description]="showDescription">
