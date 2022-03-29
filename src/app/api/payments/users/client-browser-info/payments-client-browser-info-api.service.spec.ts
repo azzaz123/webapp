@@ -1,6 +1,9 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PaymentsClientBrowserInfo } from '@api/core/model/payments';
+import {
+  THREE_DOMAIN_SECURE_MODAL_HEIGHT,
+  THREE_DOMAIN_SECURE_MODAL_WIDTH,
+} from '@api/payments/cards/three-domain-secure/three-domain-secure.constants';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { of } from 'rxjs';
 import { PaymentsClientBrowserInfoHttpService } from './http/payments-client-browser-info-http.service';
@@ -18,8 +21,6 @@ describe('PaymentsClientBrowserInfoApiService', () => {
   };
 
   const MOCK_WINDOW_SCREEN: Partial<Screen> = {
-    width: 288,
-    height: 1337,
     colorDepth: 32,
   };
 
@@ -64,13 +65,12 @@ describe('PaymentsClientBrowserInfoApiService', () => {
 
     it('should send valid browser data', () => {
       const expectedWindowData: PaymentsClientBrowserInfo = {
-        acceptHeader: 'text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8',
         colorDepth: MOCK_WINDOW_SCREEN.colorDepth,
         isJavaEnabled: MOCK_WINDOW_NAVIGATOR.javaEnabled(),
         isJavaScriptEnabled: true,
         language: MOCK_WINDOW_NAVIGATOR.language,
-        screenHeight: MOCK_WINDOW_SCREEN.height,
-        screenWidth: MOCK_WINDOW_SCREEN.width,
+        screenHeight: THREE_DOMAIN_SECURE_MODAL_HEIGHT,
+        screenWidth: THREE_DOMAIN_SECURE_MODAL_WIDTH,
         timeZoneOffset: MOCK_TIMEZONE_OFFSET,
         userAgent: MOCK_WINDOW_NAVIGATOR.userAgent,
       };

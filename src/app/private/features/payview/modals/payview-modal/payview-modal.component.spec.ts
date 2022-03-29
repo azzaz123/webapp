@@ -30,6 +30,7 @@ import { PayviewDeliveryPointComponent } from '@private/features/payview/modules
 import { PayviewDeliveryPointsComponent } from '@private/features/payview/modules/delivery/components/points/payview-delivery-points.component';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { PayviewModalComponent } from '@private/features/payview/modals/payview-modal/payview-modal.component';
+import { PayviewPaymentService } from '@private/features/payview/modules/payment/services/payview-payment.service';
 import { PayviewPromotionEditorComponent } from '@private/features/payview/modules/promotion/components/editor/payview-promotion-editor.component';
 import { PayviewPromotionOverviewComponent } from '@private/features/payview/modules/promotion/components/overview/payview-promotion-overview.component';
 import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
@@ -46,6 +47,9 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
+import { PAYVIEW_PAYMENT_EVENT_TYPE } from '../../modules/payment/enums/payview-payment-event-type.enum';
+import { PaymentsPaymentMethod } from '@api/core/model/payments';
+import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -78,10 +82,29 @@ class FakeComponent extends PayviewModalComponent {
     activeModal: NgbActiveModal,
     customerHelpService: CustomerHelpService,
     deliveryCountries: DeliveryCountriesService,
-    promotionService: PayviewPromotionService
+    promotionService: PayviewPromotionService,
+    paymentService: PayviewPaymentService
   ) {
-    super(payviewStateManagementService, payviewDeliveryService, activeModal, customerHelpService, deliveryCountries, promotionService);
+    super(
+      payviewStateManagementService,
+      payviewDeliveryService,
+      activeModal,
+      customerHelpService,
+      deliveryCountries,
+      promotionService,
+      paymentService
+    );
   }
+}
+
+@Component({
+  selector: 'tsl-payview-payment-overview',
+  template: '',
+})
+class FakePayviewPaymentOverviewComponent {
+  @Input() public card;
+  @Input() public methods;
+  @Input() public preferences;
 }
 
 describe('PayviewModalComponent', () => {
@@ -95,8 +118,9 @@ describe('PayviewModalComponent', () => {
   const payviewModalSpinnerSelector: string = `${payviewModal}__spinner`;
   const payviewModalSummarySelector: string = `${payviewModal}__summary`;
   const payviewModalDeliverySelector: string = `${payviewModal}__delivery`;
-  const payviewModalPromotionSelector: string = `${payviewModal}__promotion`;
+  const payviewModalPaymentSelector: string = `${payviewModal}__payment`;
   const payviewModalPickUpPointSelector: string = `${payviewModal}__pickUpPointMap`;
+  const payviewModalPromotionSelector: string = `${payviewModal}__promotion`;
   const payviewDeliveryOverviewSelector: string = 'tsl-payview-delivery-overview';
   const payviewPromotionOverviewSelector: string = 'tsl-payview-promotion-overview';
   const payviewSummaryOverviewSelector: string = 'tsl-payview-summary-overview';
@@ -108,6 +132,7 @@ describe('PayviewModalComponent', () => {
   let fixture: ComponentFixture<FakeComponent>;
   let itemHashSpy: jest.SpyInstance;
   let payviewDeliveryService: PayviewDeliveryService;
+  let payviewPaymentService: PayviewPaymentService;
   let payviewPromotionService: PayviewPromotionService;
   let payviewService: PayviewService;
   let payviewStateManagementService: PayviewStateManagementService;
@@ -121,6 +146,7 @@ describe('PayviewModalComponent', () => {
         FakeComponent,
         FakeDeliveryAddressComponent,
         FakeDeliveryMapComponent,
+        FakePayviewPaymentOverviewComponent,
         PayviewDeliveryHeaderComponent,
         PayviewDeliveryOverviewComponent,
         PayviewDeliveryPointComponent,
@@ -166,6 +192,7 @@ describe('PayviewModalComponent', () => {
         PaymentsWalletsService,
         PaymentsWalletsHttpService,
         PayviewDeliveryService,
+        PayviewPaymentService,
         PayviewPromotionService,
         PayviewStateManagementService,
         PayviewService,
@@ -178,6 +205,7 @@ describe('PayviewModalComponent', () => {
       activeModalService = TestBed.inject(NgbActiveModal);
       customerHelpService = TestBed.inject(CustomerHelpService);
       payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
+      payviewPaymentService = TestBed.inject(PayviewPaymentService);
       payviewPromotionService = TestBed.inject(PayviewPromotionService);
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
@@ -285,6 +313,12 @@ describe('PayviewModalComponent', () => {
           expect(promotionBlock).toBeTruthy();
         });
 
+        it('should show the payment block', () => {
+          const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+          expect(paymentBlock).toBeTruthy();
+        });
+
         it('should not show the loading animation', fakeAsync(() => {
           const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSpinnerSelector));
           expect(loadingContainerRef).toBeFalsy();
@@ -353,6 +387,12 @@ describe('PayviewModalComponent', () => {
             expect(target).toBeFalsy();
           });
 
+          it('should not show the payment block', () => {
+            const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+            expect(paymentBlock).toBeFalsy();
+          });
+
           it('should not show the pick-up block', () => {
             const pickUpPointMapBlock = debugElement.query(By.css(payviewModalPickUpPointSelector));
 
@@ -387,6 +427,12 @@ describe('PayviewModalComponent', () => {
             const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
 
             expect(target).toBeFalsy();
+          });
+
+          it('should not show the payment block', () => {
+            const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+            expect(paymentBlock).toBeFalsy();
           });
 
           it('should not show the delivery address', () => {
@@ -461,6 +507,12 @@ describe('PayviewModalComponent', () => {
             const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
 
             expect(target).toBeFalsy();
+          });
+
+          it('should not show the payment block', () => {
+            const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+            expect(paymentBlock).toBeFalsy();
           });
 
           it('should not show the delivery address', () => {
@@ -740,7 +792,7 @@ describe('PayviewModalComponent', () => {
       });
     });
 
-    describe('WHEN there promocode has been apply', () => {
+    describe('WHEN the promocode has been apply', () => {
       beforeEach(() => {
         spyOn(payviewService, 'getCosts').and.returnValue(of(MOCK_DELIVERY_BUYER_CALCULATOR_COSTS));
         spyOn(payviewService, 'getCurrentState').and.returnValue(of(MOCK_PAYVIEW_STATE));
@@ -772,6 +824,78 @@ describe('PayviewModalComponent', () => {
 
       it('should call to refresh the delivery information', () => {
         expect(payviewStateManagementService.refreshByDelivery).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('WHEN the user wants to edit the credit card', () => {
+      beforeEach(() => {
+        fixture.detectChanges();
+
+        spyOn(payviewPaymentService, 'on').and.callThrough();
+      });
+
+      it('should received the corresponding order', () => {
+        let result: number = 0;
+        let expected: number = 1;
+        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
+          result++;
+        });
+
+        payviewPaymentService.editCreditCard();
+
+        expect(payviewPaymentService.on).toHaveBeenCalledTimes(1);
+        expect(result).toBe(expected);
+      });
+
+      it('should move to the corresponding step', () => {
+        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {});
+
+        payviewPaymentService.editCreditCard();
+
+        expect(stepperSpy).toHaveBeenCalledTimes(1);
+        expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.CREDIT_CARD);
+      });
+    });
+
+    describe('WHEN the credit card has been saved', () => {
+      beforeEach(() => {
+        spyOn(payviewStateManagementService, 'refreshByCreditCard');
+        component.closeCreditCardEditor();
+      });
+
+      it('should redirect to the payview step', () => {
+        expect(stepper.goToStep).toHaveBeenCalledTimes(1);
+        expect(stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PAYVIEW);
+      });
+
+      it('should call to refresh the payment information', () => {
+        expect(payviewStateManagementService.refreshByCreditCard).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('WHEN the payment method has been selected', () => {
+      beforeEach(() => {
+        spyOn(payviewStateManagementService, 'setPaymentMethod').and.callFake(() => {});
+        spyOn(payviewPaymentService, 'on').and.callThrough();
+      });
+
+      it('should set the payment method received', () => {
+        let result: PaymentsPaymentMethod;
+        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.PAYMENT_METHOD_SELECTED, (data: PaymentsPaymentMethod) => {
+          result = data;
+        });
+
+        payviewPaymentService.setPaymentMethod(MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0]);
+
+        expect(payviewPaymentService.on).toHaveBeenCalledTimes(1);
+        expect(result).toEqual(MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0]);
+      });
+
+      it('should call to set the payment method received', () => {
+        payviewPaymentService.setPaymentMethod(MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0]);
+
+        expect(payviewStateManagementService.setPaymentMethod).toHaveBeenCalledTimes(1);
+        expect(payviewStateManagementService.setPaymentMethod).toHaveBeenCalledWith(MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0]);
       });
     });
 
@@ -845,6 +969,12 @@ describe('PayviewModalComponent', () => {
           const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
 
           expect(target).toBeFalsy();
+        });
+
+        it('should not show the payment block', () => {
+          const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+
+          expect(paymentBlock).toBeFalsy();
         });
 
         it('should not show the delivery address', () => {

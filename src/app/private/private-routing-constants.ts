@@ -12,6 +12,7 @@ export enum PRIVATE_PATHS {
   ACCEPT_SCREEN = 'accept',
   NOTIFICATIONS = 'notifications',
   PAYVIEW = 'payview',
+  YOU = 'you',
 }
 
 export enum PRIVATE_PATH_PARAMS {

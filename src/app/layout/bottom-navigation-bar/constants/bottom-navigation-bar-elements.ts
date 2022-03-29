@@ -1,3 +1,4 @@
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { BottomNavigationBarElement } from '../interfaces/bottom-navigation-bar-element.interface';
 
@@ -49,8 +50,7 @@ export const BOTTOM_NAVIGATION_BAR_ELEMENTS_COLLECTION: Record<BOTTOM_NAVIGATION
     alternativeText: $localize`:@@agnostic_view_nav_bar_you_label:You`,
     icon: `${ICONS_FOLDER}/you.svg`,
     activeIcon: `${ICONS_FOLDER}/you-active.svg`,
-    // TODO: Change with /you tab when available
-    href: `/catalog/list`,
+    href: `/${PRIVATE_PATHS.YOU}`,
     external: false,
   },
 };

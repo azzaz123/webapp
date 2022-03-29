@@ -108,7 +108,7 @@ describe('UserPublishedComponent', () => {
 
       it('should ask for the items', () => {
         expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledTimes(1);
-        expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledWith(userHashId, true, undefined);
+        expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledWith(userHashId, undefined);
       });
 
       it('should set same amount of items received', () => {
@@ -125,7 +125,7 @@ describe('UserPublishedComponent', () => {
 
       it('should ask for the items', () => {
         expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledTimes(1);
-        expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledWith(userHashId, true, undefined);
+        expect(catalogApiService.getUserPublishedItems).toHaveBeenCalledWith(userHashId, undefined);
       });
 
       it('should set an empty array', () => {

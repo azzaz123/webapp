@@ -18,6 +18,7 @@ import { PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack } from './pack';
 import { environment } from '@environments/environment';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 
 describe('PaymentService', () => {
   let service: PaymentService;

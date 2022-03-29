@@ -8,7 +8,7 @@ import {
   MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE,
   MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED,
 } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
-import { FeatureFlagService } from '@core/user/featureflag.service';
+import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { MOCK_INBOX_CONVERSATION_AS_SELLER } from '@fixtures/chat';
 import { MOCK_PENDING_SELLER_REQUEST, MOCK_SELLER_REQUEST } from '@fixtures/private/delivery/seller-requests/seller-request.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,18 +23,20 @@ import {
   ACTIVATE_SHIPPING_BANNER_PROPERTIES,
   EDIT_PRICE_BANNER_PROPERTIES,
 } from '../../../delivery-banner/constants/delivery-banner-configs';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { ActionableDeliveryBanner } from '../../../delivery-banner/interfaces/actionable-delivery-banner.interface';
+import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
 
 import { DeliveryConversationContextAsSellerService } from './delivery-conversation-context-as-seller.service';
 
 describe('DeliveryConversationContextAsSellerService', () => {
   let service: DeliveryConversationContextAsSellerService;
-  let featureFlagService: FeatureFlagService;
   let router: Router;
   let modalService: NgbModal;
   let sellerRequestsApiService: SellerRequestsApiService;
   let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
+  let deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,17 +44,23 @@ describe('DeliveryConversationContextAsSellerService', () => {
       providers: [
         DeliveryConversationContextAsSellerService,
         { provide: NgbModal, useValue: { open: () => {} } },
-        { provide: SellerRequestsApiService, useValue: { getRequestsByBuyerAndItem: () => {} } },
+        { provide: SellerRequestsApiService, useValue: { getRequestsByBuyerAndItem: () => of({}) } },
         { provide: DeliveryItemDetailsApiService, useValue: { getDeliveryDetailsByItemHash: () => of({}) } },
-        { provide: FeatureFlagService, useValue: { getLocalFlag: of(null) } },
+        {
+          provide: DeliveryBannerTrackingEventsService,
+          useValue: {
+            trackClickEditItemPrice() {},
+            trackClickActivateShipping() {},
+          },
+        },
       ],
     });
     service = TestBed.inject(DeliveryConversationContextAsSellerService);
-    featureFlagService = TestBed.inject(FeatureFlagService);
     modalService = TestBed.inject(NgbModal);
     router = TestBed.inject(Router);
     sellerRequestsApiService = TestBed.inject(SellerRequestsApiService);
     deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
+    deliveryBannerTrackingEventsService = TestBed.inject(DeliveryBannerTrackingEventsService);
   });
 
   it('should be created', () => {
@@ -79,16 +87,18 @@ describe('DeliveryConversationContextAsSellerService', () => {
       });
 
       describe('and when seller activated the shipping toggle for item', () => {
+        const expectedBanner: ActionableDeliveryBanner = EDIT_PRICE_BANNER_PROPERTIES;
+        let result: DeliveryBanner;
+
         beforeEach(() => {
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+          service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe((properties: DeliveryBanner) => {
+            result = properties;
+          });
         });
 
         it('should show edit price banner', fakeAsync(() => {
-          const expectedBanner: ActionableDeliveryBanner = EDIT_PRICE_BANNER_PROPERTIES;
-
-          service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe((result) => {
-            expect(result).toEqual(expectedBanner);
-          });
+          expect(result).toEqual(expectedBanner);
           tick();
         }));
       });
@@ -131,6 +141,7 @@ describe('DeliveryConversationContextAsSellerService', () => {
       let mockEditPriceModalInstance: Partial<EditItemSalePriceModalComponent> = { item: null };
 
       beforeEach(() => {
+        spyOn(deliveryBannerTrackingEventsService, 'trackClickEditItemPrice');
         spyOn(modalService, 'open').and.returnValue({ componentInstance: mockEditPriceModalInstance });
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_SELLER, DELIVERY_BANNER_ACTION.EDIT_ITEM_SALE_PRICE);
       });
@@ -143,10 +154,21 @@ describe('DeliveryConversationContextAsSellerService', () => {
       it('should pass data to modal', () => {
         expect(mockEditPriceModalInstance.item).toEqual(MOCK_INBOX_CONVERSATION_AS_SELLER.item);
       });
+
+      it('should track the event ', () => {
+        expect(deliveryBannerTrackingEventsService.trackClickEditItemPrice).toHaveBeenCalledTimes(1);
+        expect(deliveryBannerTrackingEventsService.trackClickEditItemPrice).toHaveBeenCalledWith({
+          itemId: MOCK_INBOX_CONVERSATION_AS_SELLER.item.id,
+          categoryId: MOCK_INBOX_CONVERSATION_AS_SELLER.item.categoryId,
+          itemPrice: MOCK_INBOX_CONVERSATION_AS_SELLER.item.price.amount,
+          screenId: SCREEN_IDS.Chat,
+        });
+      });
     });
 
     describe('when the action is to activate shipping for item', () => {
       beforeEach(() => {
+        spyOn(deliveryBannerTrackingEventsService, 'trackClickActivateShipping');
         spyOn(router, 'navigate');
         service.handleBannerCTAClick(MOCK_INBOX_CONVERSATION_AS_SELLER, DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING);
       });
@@ -157,6 +179,16 @@ describe('DeliveryConversationContextAsSellerService', () => {
         service.handleThirdVoiceCTAClick();
 
         expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
+      });
+
+      it('should track the event ', () => {
+        expect(deliveryBannerTrackingEventsService.trackClickActivateShipping).toHaveBeenCalledTimes(1);
+        expect(deliveryBannerTrackingEventsService.trackClickActivateShipping).toHaveBeenCalledWith({
+          itemId: MOCK_INBOX_CONVERSATION_AS_SELLER.item.id,
+          categoryId: MOCK_INBOX_CONVERSATION_AS_SELLER.item.categoryId,
+          screenId: SCREEN_IDS.Chat,
+          itemPrice: MOCK_INBOX_CONVERSATION_AS_SELLER.item.price.amount,
+        });
       });
     });
 
@@ -177,39 +209,16 @@ describe('DeliveryConversationContextAsSellerService', () => {
     describe('and when conversation has a pending request as the last request', () => {
       beforeEach(fakeAsync(() => {
         spyOn(sellerRequestsApiService, 'getRequestsByBuyerAndItem').and.returnValue(of([MOCK_PENDING_SELLER_REQUEST]));
+        spyOn(router, 'navigate');
         service.getBannerPropertiesAsSeller(MOCK_INBOX_CONVERSATION_AS_SELLER).subscribe();
+        service.handleThirdVoiceCTAClick();
         tick();
       }));
 
-      describe('and when delivery feature flag is enabled', () => {
-        beforeEach(fakeAsync(() => {
-          spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(true));
-          spyOn(router, 'navigate');
+      it('should open the accept screen', () => {
+        const expectedUrl: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${MOCK_SELLER_REQUEST.id}`;
 
-          service.handleThirdVoiceCTAClick();
-          tick();
-        }));
-
-        it('should open the accept screen', () => {
-          const expectedUrl: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${MOCK_SELLER_REQUEST.id}`;
-
-          expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
-        });
-      });
-
-      describe('and when delivery feature flag is NOT enabled', () => {
-        beforeEach(fakeAsync(() => {
-          spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(false));
-          spyOn(modalService, 'open');
-
-          service.handleThirdVoiceCTAClick();
-          tick();
-        }));
-
-        it('should open TRX awareness modal', () => {
-          expect(modalService.open).toHaveBeenCalledTimes(1);
-          expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
-        });
+        expect(router.navigate).toHaveBeenCalledWith([expectedUrl]);
       });
     });
 

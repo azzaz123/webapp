@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
@@ -34,12 +34,18 @@ import { WALLET_PATHS } from '@private/features/wallet/wallet.routing.constants'
 import { BehaviorSubject } from 'rxjs';
 import { CREDIT_CARD_TRANSLATIONS } from '@private/features/wallet/translations/credit-card.translations';
 
+const BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
+
 @Component({
   selector: 'tsl-credit-card',
   templateUrl: './credit-card.component.html',
   styleUrls: ['./credit-card.component.scss'],
 })
 export class CreditCardComponent implements OnInit, OnDestroy {
+  @Input() returnRoute: string = BANK_DETAILS_URL;
+  @Input() showBackButton: boolean = true;
+  @Output() saved: EventEmitter<void> = new EventEmitter<void>();
+
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
 
   public creditCardForm: FormGroup;
@@ -52,8 +58,6 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     cardExpirationDate: '',
     cardCvx: '',
   };
-
-  public readonly BANK_DETAILS_URL = `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BANK_DETAILS}`;
 
   constructor(
     private fb: FormBuilder,
@@ -147,7 +151,10 @@ export class CreditCardComponent implements OnInit, OnDestroy {
           this.showToast(CREDIT_CARD_TRANSLATIONS.CREATE_SUCCESS, TOAST_TYPES.SUCCESS);
           this.isNewForm = false;
           this.formComponent.initFormControl();
-          this.router.navigate([this.BANK_DETAILS_URL]);
+          this.saved.emit();
+          if (this.returnRoute?.length > 0) {
+            this.router.navigate([this.returnRoute]);
+          }
         },
         (errors: PaymentsCardsError[]) => {
           this.handleCreditCardErrors(errors);

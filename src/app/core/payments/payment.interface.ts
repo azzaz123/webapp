@@ -1,5 +1,6 @@
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Pack } from './pack';
+
 export interface PerkResponse {
   expire_date: number;
   create_date: number;
@@ -192,7 +193,6 @@ export interface ScheduledBumps {
   citybump?: number;
   zonebump?: number;
   countrybump?: number;
-  urgent?: number;
 }
 
 export interface CreditInfo {

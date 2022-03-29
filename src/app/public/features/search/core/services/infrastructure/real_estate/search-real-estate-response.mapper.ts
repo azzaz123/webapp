@@ -19,7 +19,7 @@ export function searchItemRealEstateResponseMapper({ search_objects }: SearchRes
     flags: {
       pending: content.flags.pending,
       sold: content.flags.sold,
-      favorite: false,
+      favorite: content.favorited,
       reserved: content.flags.reserved,
       banned: content.flags.banned,
       expired: content.flags.expired,
@@ -28,7 +28,6 @@ export function searchItemRealEstateResponseMapper({ search_objects }: SearchRes
     bumpFlags: {
       bumped: content.visibility_flags.bumped,
       highlighted: content.visibility_flags.highlighted,
-      urgent: content.visibility_flags.urgent,
       country_bumped: content.visibility_flags.country_bumped,
       boosted: content.visibility_flags.boosted
     },

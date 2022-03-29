@@ -42,7 +42,6 @@ const price: PriceDto = {
 };
 
 export const userIdFixture = 'my-user-id';
-export const favouriteIdsFixture = ['my-item-id'];
 
 export const publishedItemFixture: PublishedItem = {
   id,
@@ -58,6 +57,11 @@ export const publishedItemFixture: PublishedItem = {
 export const storytellingPublishedItemFixture: PublishedItem = {
   ...publishedItemFixture,
   category_id: storytellingCategoryId.toString(),
+};
+
+export const favoritedPublishedItemFixture: PublishedItem = {
+  ...publishedItemFixture,
+  favorited: { flag: true },
 };
 
 export const mappedPublishedItemFixture: ItemCard = {

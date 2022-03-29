@@ -6,6 +6,7 @@ export const SEARCH_ITEM_REAL_ESTATE_RESPONSE_CONTENT_MOCK: SearchItemRealStateR
   title: 'CASA CON PISCINA',
   distance: 63.0,
   price: 210000,
+  favorited: false,
   currency: 'EUR',
   web_slug: 'casa-con-piscina-642579190',
   operation: 'buy',
@@ -61,7 +62,6 @@ export const SEARCH_ITEM_REAL_ESTATE_RESPONSE_CONTENT_MOCK: SearchItemRealStateR
   visibility_flags: {
     bumped: true,
     highlighted: false,
-    urgent: false,
     country_bumped: false,
     boosted: false,
   },

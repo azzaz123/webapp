@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { MeApiService } from './me-api.service';
 import { MeHttpService } from '@api/me/http/me-http.service';
 import { PaginatedList } from '@api/core/model';
@@ -8,9 +7,14 @@ import { of } from 'rxjs';
 import { favouriteResponseFixture, mappedFavouriteResponseFixture } from '@api/fixtures/me/favourites/favourite-response.fixture';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ItemService } from '@core/item/item.service';
-import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { PURCHASES } from '@fixtures/item.fixtures.spec';
 import { mappedSoldItemsResponseFixture, soldItemsResponseFixture } from '@api/fixtures/me/sold/sold-response.fixture';
 import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
+import {
+  mappedPublishedResponseFixture,
+  mappedPublishedResponseWithBumpsFixture,
+  publishedResponseFixture,
+} from '@api/fixtures/me/published/published-response.fixture';
 
 describe('MeApiService', () => {
   let service: MeApiService;
@@ -19,18 +23,7 @@ describe('MeApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        MeApiService,
-        MeHttpService,
-        {
-          provide: ItemService,
-          useValue: {
-            mine() {
-              return of({ data: [MOCK_ITEM, MOCK_ITEM] });
-            },
-          },
-        },
-      ],
+      providers: [MeApiService, MeHttpService, ItemService],
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(MeApiService);
@@ -102,29 +95,56 @@ describe('MeApiService', () => {
 
   describe('when asked for published items', () => {
     describe('without pagination', () => {
-      it('should retrieve published items', () => {
+      it('should retrieve published items and map purchases info', () => {
         let itemList: PaginatedList<Item>;
-        spyOn(itemService, 'mine').and.callThrough();
+        spyOn(httpService, 'getPublishedItems').and.returnValue(of(publishedResponseFixture));
+        spyOn(itemService, 'getPurchases').and.returnValue(of([PURCHASES[0]]));
 
         service.getItems(null, STATUS.PUBLISHED).subscribe((list: PaginatedList<Item>) => (itemList = list));
 
-        expect(itemService.mine).toHaveBeenCalledTimes(1);
-        expect(itemService.mine).toHaveBeenCalledWith(null, STATUS.PUBLISHED);
-        expect(itemList).toEqual({ list: [MOCK_ITEM, MOCK_ITEM] });
+        expect(httpService.getPublishedItems).toHaveBeenCalledTimes(1);
+        expect(httpService.getPublishedItems).toHaveBeenCalledWith(undefined);
+        expect(itemList).toEqual(mappedPublishedResponseWithBumpsFixture);
+      });
+
+      it('should retrieve published items without purchases info', () => {
+        let itemList: PaginatedList<Item>;
+        spyOn(httpService, 'getPublishedItems').and.returnValue(of(publishedResponseFixture));
+        spyOn(itemService, 'getPurchases').and.returnValue(of([]));
+
+        service.getItems(null, STATUS.PUBLISHED).subscribe((list: PaginatedList<Item>) => (itemList = list));
+
+        expect(httpService.getPublishedItems).toHaveBeenCalledTimes(1);
+        expect(httpService.getPublishedItems).toHaveBeenCalledWith(undefined);
+        expect(itemList).toEqual(mappedPublishedResponseFixture);
       });
     });
 
     describe('with pagination', () => {
-      it('should retrieve published items', () => {
+      it('should retrieve published items and map purchases info', () => {
         const pagination = 'paginationHash';
         let itemList: PaginatedList<Item>;
-        spyOn(itemService, 'mine').and.returnValue(of({ data: [MOCK_ITEM, MOCK_ITEM], since: pagination }));
+        spyOn(httpService, 'getPublishedItems').and.returnValue(of(publishedResponseFixture));
+        spyOn(itemService, 'getPurchases').and.returnValue(of([PURCHASES[0]]));
 
         service.getItems(pagination, STATUS.PUBLISHED).subscribe((list: PaginatedList<Item>) => (itemList = list));
 
-        expect(itemService.mine).toHaveBeenCalledTimes(1);
-        expect(itemService.mine).toHaveBeenCalledWith(pagination, STATUS.PUBLISHED);
-        expect(itemList).toEqual({ list: [MOCK_ITEM, MOCK_ITEM], paginationParameter: pagination });
+        expect(httpService.getPublishedItems).toHaveBeenCalledTimes(1);
+        expect(httpService.getPublishedItems).toHaveBeenCalledWith({ since: pagination });
+        expect(itemList).toEqual(mappedPublishedResponseWithBumpsFixture);
+      });
+
+      it('should retrieve published items without purchases info', () => {
+        const pagination = 'paginationHash';
+        let itemList: PaginatedList<Item>;
+        spyOn(httpService, 'getPublishedItems').and.returnValue(of(publishedResponseFixture));
+        spyOn(itemService, 'getPurchases').and.returnValue(of([]));
+
+        service.getItems(pagination, STATUS.PUBLISHED).subscribe((list: PaginatedList<Item>) => (itemList = list));
+
+        expect(httpService.getPublishedItems).toHaveBeenCalledTimes(1);
+        expect(httpService.getPublishedItems).toHaveBeenCalledWith({ since: pagination });
+        expect(itemList).toEqual(mappedPublishedResponseFixture);
       });
     });
   });

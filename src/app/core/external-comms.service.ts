@@ -22,7 +22,8 @@ export class ExternalCommsService {
   }
 
   public openBrazeSession(): void {
-    if (this.userService.isLogged) {
+    // TODO: Refactor user service
+    if (this.userService.isLogged && this.userService.user?.id) {
       appboy.changeUser(this.userService.user.id);
     }
 

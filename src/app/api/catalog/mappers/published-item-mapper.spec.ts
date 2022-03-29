@@ -5,15 +5,15 @@ import {
   mappedStorytellingPublishedItemFixture,
   userIdFixture,
   mappedPublishedItemFixture,
-  favouriteIdsFixture,
   mappedFavouritedPublishedItemFixture,
+  favoritedPublishedItemFixture,
 } from '@api/fixtures/catalog/published/published-item.fixtures';
 
 describe('CatalogImageMapper', () => {
   describe('when mapping from catalog item dto to item card domain', () => {
     describe('with no favourites and no storytelling', () => {
       it('should map to item card domain', () => {
-        const mappedImages = mapPublishedItemsToItemCards([publishedItemFixture], userIdFixture, []);
+        const mappedImages = mapPublishedItemsToItemCards([publishedItemFixture], userIdFixture);
 
         expect(mappedImages).toEqual([mappedPublishedItemFixture]);
       });
@@ -21,7 +21,7 @@ describe('CatalogImageMapper', () => {
 
     describe('with favourites', () => {
       it('should map to item card domain', () => {
-        const mappedImages = mapPublishedItemsToItemCards([publishedItemFixture], userIdFixture, favouriteIdsFixture);
+        const mappedImages = mapPublishedItemsToItemCards([favoritedPublishedItemFixture], userIdFixture);
 
         expect(mappedImages).toEqual([mappedFavouritedPublishedItemFixture]);
       });
@@ -29,7 +29,7 @@ describe('CatalogImageMapper', () => {
 
     describe('with category with storytelling', () => {
       it('should map to item card domain', () => {
-        const storytellingMappedItem = mapPublishedItemsToItemCards([storytellingPublishedItemFixture], userIdFixture, []);
+        const storytellingMappedItem = mapPublishedItemsToItemCards([storytellingPublishedItemFixture], userIdFixture);
 
         expect(storytellingMappedItem).toEqual([mappedStorytellingPublishedItemFixture]);
       });

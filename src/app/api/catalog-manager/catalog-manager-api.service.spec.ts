@@ -17,12 +17,14 @@ import {
 } from '@fixtures/items-subscription-type.fixtures.spec';
 import { Item } from '@core/item/item';
 import { SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 
 describe('CatalogManagerApiService', () => {
   let service: CatalogManagerApiService;
   let subscriptionsService: SubscriptionsService;
   let httpService: CatalogManagerHttpService;
   let catalogManagerService: CatalogManagerHttpService;
+  let visibilityApiService: VisibilityApiService;
   let itemsBySubscriptionTypeSpy: jasmine.Spy;
 
   beforeEach(() => {
@@ -36,6 +38,14 @@ describe('CatalogManagerApiService', () => {
             getSubscriptions() {},
           },
         },
+        {
+          provide: VisibilityApiService,
+          useValue: {
+            getBalance() {
+              return of([]);
+            },
+          },
+        },
       ],
       imports: [HttpClientTestingModule],
     });
@@ -43,18 +53,21 @@ describe('CatalogManagerApiService', () => {
     httpService = TestBed.inject(CatalogManagerHttpService);
     subscriptionsService = TestBed.inject(SubscriptionsService);
     catalogManagerService = TestBed.inject(CatalogManagerHttpService);
+    visibilityApiService = TestBed.inject(VisibilityApiService);
     itemsBySubscriptionTypeSpy = spyOn(catalogManagerService, 'getItemsBySubscriptionType');
   });
 
   describe('when asked to retrieve subscription slots', () => {
     it('should return domain subscriptions slots formatted', () => {
       spyOn(httpService, 'getSlots').and.returnValue(of(MOCK_SUBSCRIPTION_SLOTS_GENERAL_RESPONSE));
+      spyOn(visibilityApiService, 'getBalance').and.callThrough();
       spyOn(subscriptionsService, 'getSubscriptions').and.returnValue(
         of([MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED, MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED])
       );
       let response: SubscriptionSlot[];
+      const userId = '123';
 
-      service.getSlots().subscribe((data: SubscriptionSlot[]) => {
+      service.getSlots(userId).subscribe((data: SubscriptionSlot[]) => {
         response = data;
       });
 
@@ -62,6 +75,8 @@ describe('CatalogManagerApiService', () => {
       expect(httpService.getSlots).toHaveBeenCalledWith();
       expect(subscriptionsService.getSubscriptions).toHaveBeenCalledTimes(1);
       expect(subscriptionsService.getSubscriptions).toHaveBeenCalledWith(false);
+      expect(visibilityApiService.getBalance).toHaveBeenCalledTimes(1);
+      expect(visibilityApiService.getBalance).toHaveBeenCalledWith(userId);
       expect(response).toEqual(MOCK_SUBSCRIPTION_SLOTS);
     });
   });

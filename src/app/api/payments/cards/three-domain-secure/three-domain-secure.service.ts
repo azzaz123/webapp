@@ -8,6 +8,7 @@ import { environment } from '@environments/environment';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
 import { filter, concatMap, take, takeUntil, tap, catchError } from 'rxjs/operators';
+import { THREE_DOMAIN_SECURE_MODAL_HEIGHT, THREE_DOMAIN_SECURE_MODAL_WIDTH } from './three-domain-secure.constants';
 
 const THREE_DOMAIN_SECURE_START_URL = (id: string): string => `${environment.baseUrl}api/v3/payments/cards/start_3ds/${id}`;
 type GetCreditCardRequest = (ignoreInvalidCard: boolean) => Observable<CreditCard>;
@@ -66,7 +67,11 @@ export class ThreeDomainSecureService {
   private start3DSValidation(card: CreditCard): Observable<void> {
     const { id } = card;
     const threeDSecureStartUrl: string = THREE_DOMAIN_SECURE_START_URL(id);
-    return this.webViewModalService.open(threeDSecureStartUrl).pipe(catchError(() => throwError([new CardRegistrationFailedError()])));
+    const threeDSecureTitle: string = $localize`:@@three3ds_verification_title:Credit card verification`;
+
+    return this.webViewModalService
+      .open(threeDSecureStartUrl, THREE_DOMAIN_SECURE_MODAL_WIDTH, THREE_DOMAIN_SECURE_MODAL_HEIGHT, threeDSecureTitle)
+      .pipe(catchError(() => throwError([new CardRegistrationFailedError()])));
   }
 
   private isInvalidCard(card: CreditCard): boolean {

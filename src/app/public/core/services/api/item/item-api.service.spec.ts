@@ -96,7 +96,6 @@ describe('ItemApiService', () => {
 
         expect(response.bumped).toEqual(false);
         expect(response.highlighted).toEqual(false);
-        expect(response.urgent).toEqual(false);
         expect(response.country_bumped).toEqual(false);
         expect(response.boosted).toEqual(false);
       });

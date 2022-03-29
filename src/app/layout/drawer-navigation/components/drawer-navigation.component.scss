@@ -1,0 +1,13 @@
+@import '~style/common';
+
+.DrawerNavigation {
+  min-height: 700px;
+
+  &__title {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-chunky;
+    color: $blue-grey-2;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+}

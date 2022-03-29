@@ -56,6 +56,7 @@ export function mapUserToAcceptScreenBuyer(buyer: User, buyerCountryIsoCode: str
     id: buyer.id,
     imageUrl: mapUserToImageUrl(buyer),
     name: buyer.microName,
+    isPro: buyer.featured,
     countryISOCode: buyerCountryIsoCode,
   };
 }
@@ -155,7 +156,8 @@ function mapSecondaryInformation(type: CARRIER_DROP_OFF_MODE, lastAddressUsed: L
 
   if (type === CARRIER_DROP_OFF_MODE.POST_OFFICE) {
     return lastAddressUsedMapped
-      ? $localize`:@@accept_view_seller_po_all_delivery_method_selector_collection_point_address_description:Drop-off point: ${lastAddressUsedMapped}:INTERPOLATION:`
+      ? $localize`:@@accept_view_seller_po_all_delivery_method_selector_collection_point_address_description:Drop-off point:` +
+          ` ${lastAddressUsedMapped}`
       : null;
   }
 }

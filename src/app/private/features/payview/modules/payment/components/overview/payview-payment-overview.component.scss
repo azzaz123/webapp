@@ -1,0 +1,10 @@
+@import '~web-styleguide/scss/colors';
+@import '~web-styleguide/scss/spacing';
+
+.PayviewPayment {
+  margin-top: $spacing-xxl;
+
+  &__header {
+    border-bottom: 1px solid $blue-grey-4;
+  }
+}

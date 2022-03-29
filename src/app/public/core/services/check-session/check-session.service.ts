@@ -10,9 +10,9 @@ export class CheckSessionService {
     return this.accessTokenService.accessToken !== undefined;
   }
 
-  public checkSessionAction(): void {
+  public checkSessionAction(loginSource?: string): void {
     if (!this.hasSession()) {
-      window.location.assign(this.publicWebUrlService.getLoginUrl());
+      window.location.assign(this.publicWebUrlService.getLoginUrl(loginSource));
     }
   }
 }

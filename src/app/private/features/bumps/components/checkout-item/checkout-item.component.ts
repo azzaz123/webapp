@@ -3,10 +3,10 @@ import { Duration, Product } from '@core/item/item-response.interface';
 import { CreditInfo } from '@core/payments/payment.interface';
 import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
 import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
-import { Bumps } from '@core/subscriptions/subscriptions.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { BumpPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
 
 @Component({
   selector: 'tsl-checkout-item',
@@ -59,7 +59,7 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
     if (this.isFreeOptionSelected) {
       this.availableTypes = this.getFreeTypes();
       const firstAvailableType = this.getFirstAvailableFreeOption();
-      this.selectedType = this.availableTypes.find((type) => type.name === firstAvailableType.name);
+      this.selectedType = this.availableTypes.find((type) => type.name === firstAvailableType.type);
       this.availableDurations = this.selectedType.durations;
       this.selectedDuration = this.selectedType.durations[0];
     } else {
@@ -122,11 +122,11 @@ export class CheckoutItemComponent implements OnInit, OnChanges {
     return freeTypes;
   }
 
-  private getFirstAvailableFreeOption(): Bumps {
-    if (!this.itemWithProducts.subscription?.selected_tier) {
+  private getFirstAvailableFreeOption(): BumpPackageBalance {
+    if (!this.itemWithProducts.balance.length) {
       return null;
     }
-    return this.itemWithProducts.subscription?.selected_tier?.bumps.find((bump) => bump.used < bump.quantity);
+    return this.itemWithProducts.balance.find((bump) => bump.used < bump.total + bump.extra);
   }
 
   private showBumpLimitModal(): void {

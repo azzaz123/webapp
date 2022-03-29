@@ -9,6 +9,7 @@ import { CardInvalidError } from '@api/core/errors/payments/cards/card-invalid.e
 import { ReplaySubject, Observable, of } from 'rxjs';
 import { map, concatMap, tap, catchError, take } from 'rxjs/operators';
 import { ThreeDomainSecureService } from './three-domain-secure/three-domain-secure.service';
+import { PaymentsClientBrowserInfoApiService } from '../users/client-browser-info/payments-client-browser-info-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class PaymentsCreditCardService {
 
   constructor(
     private paymentsCreditCardHttpService: PaymentsCreditCardHttpService,
+    private paymentsClientBrowserInfoApiService: PaymentsClientBrowserInfoApiService,
     private threeDomainSecureService: ThreeDomainSecureService
   ) {}
 
@@ -51,29 +53,40 @@ export class PaymentsCreditCardService {
           );
         })
       )
-      .subscribe((creditCard) => {
-        this.creditCard = creditCard;
-        creditCardGetSubject.next(creditCard);
-      });
+      .subscribe(
+        (creditCard) => {
+          this.creditCard = creditCard;
+          creditCardGetSubject.next(creditCard);
+        },
+        (error) => creditCardGetSubject.error(error)
+      );
 
     return creditCardGetSubject.asObservable();
   }
 
   public create(cardSyncRequest: CreditCardSyncRequest): Observable<void> {
-    return this.paymentsCreditCardHttpService.create(cardSyncRequest).pipe(
-      concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
-      tap(() => this.get(true)),
-      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
-      take(1)
+    return this.paymentsClientBrowserInfoApiService.sendBrowserInfo().pipe(
+      concatMap(() =>
+        this.paymentsCreditCardHttpService.create(cardSyncRequest).pipe(
+          concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
+          tap(() => this.get(true)),
+          catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
+          take(1)
+        )
+      )
     );
   }
 
   public update(cardSyncRequest: CreditCardSyncRequest): Observable<void> {
-    return this.paymentsCreditCardHttpService.update(cardSyncRequest).pipe(
-      concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
-      tap(() => this.get(true)),
-      catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
-      take(1)
+    return this.paymentsClientBrowserInfoApiService.sendBrowserInfo().pipe(
+      concatMap(() =>
+        this.paymentsCreditCardHttpService.update(cardSyncRequest).pipe(
+          concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
+          tap(() => this.get(true)),
+          catchError((error: PaymentsCardsErrorResponseApi) => this.errorMapper.map(error)),
+          take(1)
+        )
+      )
     );
   }
 

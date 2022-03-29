@@ -45,6 +45,13 @@
         <div class="PayviewModal__promotion">
           <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
         </div>
+        <div class="PayviewModal__payment">
+          <tsl-payview-payment-overview
+            [card]="payviewState.payment.card"
+            [methods]="payviewState.payment.methods"
+            [preferences]="payviewState.payment.preferences"
+          ></tsl-payview-payment-overview>
+        </div>
       </ng-template>
       <ng-template step>
         <tsl-delivery-address
@@ -68,6 +75,11 @@
       <ng-template step>
         <div class="PayviewModal__promotionEditor h-100">
           <tsl-payview-promotion-editor></tsl-payview-promotion-editor>
+        </div>
+      </ng-template>
+      <ng-template step>
+        <div class="PayviewModal__creditCardEditor h-100">
+          <tsl-credit-card [returnRoute]="null" [showBackButton]="false" (saved)="closeCreditCardEditor()"></tsl-credit-card>
         </div>
       </ng-template>
     </tsl-stepper>
