@@ -3,15 +3,18 @@ import {
   getClickAddEditCardEventPropertiesFromPayviewState,
   getClickAddEditAddressEventPropertiesFromPayviewState,
   getClickHelpTransactionalEventPropertiesFromPayviewState,
+  getViewTransactionPayScreenEventPropertiesFromPayviewState,
 } from './payview-tracking-events-properties.mapper';
 import {
   MOCK_PAYVIEW_STATE,
   MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD,
   MOCK_PAYVIEW_STATE_WITHOUT_LASTADDRESSUSED,
+  MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE,
 } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces/click-add-edit-address.interface';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
+import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
 import {
   MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
   MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
@@ -19,6 +22,8 @@ import {
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_ADD_ACTION,
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT,
   MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
+  MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
+  MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 describe('when mapping the payview state properties into the click add edit card event properties', () => {
@@ -81,5 +86,25 @@ describe('when mapping the payview state properties into the click help transact
     const expectedProperties: ClickHelpTransactional = getClickHelpTransactionalEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
 
     expect(expectedProperties).toStrictEqual(MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES);
+  });
+});
+
+describe('when mapping the payview state properties into the view transaction pay screen event properties', () => {
+  describe('and the preselected payment method is paypal', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: ViewTransactionPayScreen = getViewTransactionPayScreenEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
+
+      expect(expectedProperties).toStrictEqual(MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL);
+    });
+  });
+
+  describe('and the preselected payment method is credit card', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: ViewTransactionPayScreen = getViewTransactionPayScreenEventPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD);
+    });
   });
 });

@@ -6,6 +6,25 @@ import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods/delivery-buyer-delivery-method.interface';
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
+import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
+import { mapPaymentMethodToPaymentMethodDto } from '@api/shared/mappers/payment-method-to-payment-method-dto.mapper';
+import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { USER_ACTION, PAYMENT_PREFERENCE, ADDRESS_TYPE } from '../../modules/promotion/enums/tracking-events-action';
+
+export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
+  return {
+    screenId: SCREEN_IDS.Checkout,
+    itemId: payviewState.item.id,
+    categoryId: payviewState.item.categoryId,
+    isBuyNow: false,
+    itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
+    totalPrice: payviewState.costs.buyerCost.total.amount.total,
+    sellerUserId: payviewState.itemDetails.sellerUserHash,
+    preselectedPaymentMethod: getPreselectedPaymentMethod(payviewState.payment.preferences.preferences.paymentMethod),
+    useWallet: payviewState.payment.preferences.preferences.useWallet,
+    sellerCountry: payviewState.itemDetails.sellerCountry,
+  };
+}
 
 export function getClickAddEditCardEventPropertiesFromPayviewState(payviewState: PayviewState): ClickAddEditCard {
   return {
@@ -44,11 +63,11 @@ export function getClickHelpTransactionalEventPropertiesFromPayviewState(payview
 }
 
 function getAddOrEditCard(card: CreditCard): ClickAddEditCard['addOrEdit'] {
-  return card ? 'edit' : 'add';
+  return card ? USER_ACTION.EDIT : USER_ACTION.ADD;
 }
 
 function getAddressType(eventType: PAYVIEW_DELIVERY_EVENT_TYPE): ClickAddEditAddress['addressType'] {
-  return eventType === PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN ? 'home' : 'office';
+  return eventType === PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN ? ADDRESS_TYPE.HOME : ADDRESS_TYPE.OFFICE;
 }
 
 function getAddOrEditAddress(
@@ -56,7 +75,11 @@ function getAddOrEditAddress(
   eventType: PAYVIEW_DELIVERY_EVENT_TYPE
 ): ClickAddEditAddress['addOrEdit'] {
   if (eventType === PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN) {
-    return 'edit';
+    return USER_ACTION.EDIT;
   }
-  return currentDeliveryMethod.lastAddressUsed ? 'edit' : 'add';
+  return currentDeliveryMethod.lastAddressUsed ? USER_ACTION.EDIT : USER_ACTION.ADD;
+}
+
+function getPreselectedPaymentMethod(paymentPreference: PaymentMethod): ViewTransactionPayScreen['preselectedPaymentMethod'] {
+  return mapPaymentMethodToPaymentMethodDto(paymentPreference) === 'credit card' ? PAYMENT_PREFERENCE.BANK_CARD : PAYMENT_PREFERENCE.PAYPAL;
 }

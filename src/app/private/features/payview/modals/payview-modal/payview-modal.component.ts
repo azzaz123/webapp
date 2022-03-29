@@ -22,13 +22,14 @@ import { PayviewStateManagementService } from '@private/features/payview/service
 import { StepperComponent } from '@shared/stepper/stepper.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
 import { take } from 'rxjs/operators';
 import {
   getClickHelpTransactionalEventPropertiesFromPayviewState,
   getClickAddEditCardEventPropertiesFromPayviewState,
   getClickAddEditAddressEventPropertiesFromPayviewState,
+  getViewTransactionPayScreenEventPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 
 @Component({
@@ -46,6 +47,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   public countries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE: DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
   private subscriptions: Subscription[] = [];
+  private readonly trackViewTransactionPayScreen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
@@ -124,6 +126,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscribeToDeliveryEventBus();
     this.subscribeToPromotionEventBus();
     this.subscribeToPaymentEventBus();
+    this.subscribeToPayviewState();
   }
 
   private subscribeToDeliveryEventBus(): void {
@@ -191,6 +194,16 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
   }
 
+  private subscribeToPayviewState(): void {
+    this.subscriptions.push(
+      this.payviewState$.subscribe((payviewState: PayviewState) => {
+        if (payviewState && !this.trackViewTransactionPayScreen$.value) {
+          this.trackViewTransactionPayScreenEvent(payviewState);
+        }
+      })
+    );
+  }
+
   private unsubscribe(): void {
     this.subscriptions.forEach((subscription: Subscription) => {
       if (!!subscription) {
@@ -215,5 +228,12 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
           getClickAddEditAddressEventPropertiesFromPayviewState(payviewState, eventType)
         )
       );
+  }
+
+  private trackViewTransactionPayScreenEvent(payviewState: PayviewState): void {
+    this.payviewTrackingEventsService.trackViewTransactionPayScreen(
+      getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState)
+    );
+    this.trackViewTransactionPayScreen$.next(true);
   }
 }
