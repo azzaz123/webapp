@@ -11,5 +11,6 @@ export interface PublishedItem {
   type_attributes: CatalogItemAttributes;
   slug: string;
   reserved?: { flag: boolean };
+  favorited?: { flag: boolean };
   bump?: { type: string };
 }
