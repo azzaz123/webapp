@@ -80,28 +80,6 @@ describe('SearchInfrastructureService', () => {
         expect(searchApiServiceMock.search).toHaveBeenCalledWith(filters);
         expect(searchApiServiceMock.search).toHaveBeenCalledTimes(1);
       });
-
-      it('should ask the favourites items', (done) => {
-        const filters: FilterParameter[] = locationCategoryFilterParametersMock;
-        const searchResponse: SearchPagination = SearchPaginationFactory();
-        const itemsFavourites: ItemCard[] = searchResponse.items.map((item: ItemCard, index: number) => {
-          const itemCard: ItemCard = { ...item };
-          if (index % 2) {
-            itemCard.flags.favorite = true;
-          }
-          return itemCard;
-        });
-        spyOn(searchFavouritesServiceMock, 'getFavouritesByItems').and.returnValue(of(itemsFavourites));
-        spyOn(searchApiServiceMock, 'search').and.returnValue(of(searchResponse));
-
-        service.search(filters).subscribe((response) => {
-          expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: '', sortBy: SORT_BY.DISTANCE});
-          done();
-        });
-
-        expect(searchFavouritesServiceMock.getFavouritesByItems).toHaveBeenCalledTimes(1);
-        expect(searchFavouritesServiceMock.getFavouritesByItems).toHaveBeenCalledWith(searchResponse.items);
-      });
     });
 
     describe('on load more', () => {
@@ -127,27 +105,6 @@ describe('SearchInfrastructureService', () => {
 
         expect(searchApiServiceMock.loadMore).toHaveBeenCalledWith();
         expect(searchApiServiceMock.loadMore).toHaveBeenCalledTimes(1);
-      });
-
-      it('should ask the favourites items', (done) => {
-        const searchResponse: SearchPagination = SearchPaginationFactory();
-        const itemsFavourites: ItemCard[] = searchResponse.items.map((item: ItemCard, index: number) => {
-          const itemCard: ItemCard = { ...item };
-          if (index % 2) {
-            itemCard.flags.favorite = true;
-          }
-          return itemCard;
-        });
-        spyOn(searchFavouritesServiceMock, 'getFavouritesByItems').and.returnValue(of(itemsFavourites));
-        spyOn(searchApiServiceMock, 'loadMore').and.returnValue(of(searchResponse));
-
-        service.loadMore().subscribe((response) => {
-          expect(response).toEqual({hasMore: searchResponse.hasMore, items: itemsFavourites, searchId: '', sortBy: SORT_BY.DISTANCE});
-          done();
-        });
-
-        expect(searchFavouritesServiceMock.getFavouritesByItems).toHaveBeenCalledTimes(1);
-        expect(searchFavouritesServiceMock.getFavouritesByItems).toHaveBeenCalledWith(searchResponse.items);
       });
     });
   });

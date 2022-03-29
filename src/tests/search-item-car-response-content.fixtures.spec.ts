@@ -7,6 +7,7 @@ export const SEARCH_ITEM_CAR_RESPONSE_CONTENT_MOCK: SearchItemCarResponse = {
   distance: 1,
   category_id: CATEGORY_IDS.CAR,
   price: 1800,
+  favorited: false,
   currency: 'EUR',
   web_slug: 'citroen-c2-2007-654093120',
   brand: 'Citroen',

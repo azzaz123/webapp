@@ -21,7 +21,7 @@ export function SearchItemCarResponseMapper({ search_objects }: SearchResponse<S
     flags: {
       pending: content.flags.pending,
       sold: content.flags.sold,
-      favorite: false,
+      favorite: content.favorited,
       reserved: content.flags.reserved,
       banned: content.flags.banned,
       expired: content.flags.expired,
