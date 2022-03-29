@@ -55,7 +55,7 @@ describe('PaymentsClientBrowserInfoApiService', () => {
     beforeEach(fakeAsync(() => {
       spyOn(paymentsClientBrowserInfoHttpService, 'put');
 
-      service.sendBrowserInfo();
+      service.sendBrowserInfo(THREE_DOMAIN_SECURE_MODAL_WIDTH, THREE_DOMAIN_SECURE_MODAL_HEIGHT);
       tick();
     }));
 

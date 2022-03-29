@@ -10,6 +10,7 @@ import { ReplaySubject, Observable, of } from 'rxjs';
 import { map, concatMap, tap, catchError, take } from 'rxjs/operators';
 import { ThreeDomainSecureService } from './three-domain-secure/three-domain-secure.service';
 import { PaymentsClientBrowserInfoApiService } from '../users/client-browser-info/payments-client-browser-info-api.service';
+import { THREE_DOMAIN_SECURE_MODAL_HEIGHT, THREE_DOMAIN_SECURE_MODAL_WIDTH } from './three-domain-secure/three-domain-secure.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +66,7 @@ export class PaymentsCreditCardService {
   }
 
   public create(cardSyncRequest: CreditCardSyncRequest): Observable<void> {
-    return this.paymentsClientBrowserInfoApiService.sendBrowserInfo().pipe(
+    return this.paymentsClientBrowserInfoApiService.sendBrowserInfo(THREE_DOMAIN_SECURE_MODAL_WIDTH, THREE_DOMAIN_SECURE_MODAL_HEIGHT).pipe(
       concatMap(() =>
         this.paymentsCreditCardHttpService.create(cardSyncRequest).pipe(
           concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),
@@ -78,7 +79,7 @@ export class PaymentsCreditCardService {
   }
 
   public update(cardSyncRequest: CreditCardSyncRequest): Observable<void> {
-    return this.paymentsClientBrowserInfoApiService.sendBrowserInfo().pipe(
+    return this.paymentsClientBrowserInfoApiService.sendBrowserInfo(THREE_DOMAIN_SECURE_MODAL_WIDTH, THREE_DOMAIN_SECURE_MODAL_HEIGHT).pipe(
       concatMap(() =>
         this.paymentsCreditCardHttpService.update(cardSyncRequest).pipe(
           concatMap(() => this.threeDomainSecureService.checkThreeDomainSecure(this.get.bind(this))),

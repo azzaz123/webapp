@@ -1,9 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { PaymentsClientBrowserInfo } from '@api/core/model/payments';
-import {
-  THREE_DOMAIN_SECURE_MODAL_HEIGHT,
-  THREE_DOMAIN_SECURE_MODAL_WIDTH,
-} from '@api/payments/cards/three-domain-secure/three-domain-secure.constants';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { Observable } from 'rxjs';
 import { PaymentsClientBrowserInfoHttpService } from './http/payments-client-browser-info-http.service';
@@ -17,18 +13,18 @@ export class PaymentsClientBrowserInfoApiService {
     private paymentsClientBrowserInfoHttpService: PaymentsClientBrowserInfoHttpService
   ) {}
 
-  public sendBrowserInfo(): Observable<void> {
-    return this.paymentsClientBrowserInfoHttpService.put(this.browserInfo);
+  public sendBrowserInfo(modalWidth: number, modalHeight: number): Observable<void> {
+    return this.paymentsClientBrowserInfoHttpService.put(this.getBrowserInfo(modalWidth, modalHeight));
   }
 
-  private get browserInfo(): PaymentsClientBrowserInfo {
+  private getBrowserInfo(modalWidth: number, modalHeight: number): PaymentsClientBrowserInfo {
     return {
       isJavaEnabled: this.isJavaEnabled,
       isJavaScriptEnabled: true,
       language: this.language,
       colorDepth: this.screen.colorDepth,
-      modalWidth: THREE_DOMAIN_SECURE_MODAL_WIDTH,
-      modalHeight: THREE_DOMAIN_SECURE_MODAL_HEIGHT,
+      modalWidth,
+      modalHeight,
       timeZoneOffset: this.timeZoneOffset,
       userAgent: this.userAgent,
     };
