@@ -26,7 +26,7 @@
     </div>
 
     <div class="d-block d-sm-block d-md-none" *ngIf="showSearchInput">
-      <a class="NavLinks__anchor active" (click)="selectMenu()">
+      <a class="NavLinks__anchor active d-flex align-items-center h-100" (click)="selectMenu()">
         <span>{{selectedLink?.display}}</span>
         <span *ngIf="selectedLink.counter && selectedLink.counter.maxVal">
           ({{selectedLink.counter.currentVal}}/{{selectedLink.counter.maxVal}})
@@ -34,10 +34,10 @@
         <tsl-svg-icon src="/assets/icons/caret.svg"></tsl-svg-icon>
       </a>
     </div>
-    
+
     <div class="NavLinks__sort-select" *ngIf="showSortItems && sortItems">
-      <tsl-select [items]="sortItems" (valueChanges)="onClickSortSelector($event)" class="d-none d-sm-none d-md-block d-lg-block"></tsl-select>
-      <a class="NavLinks__anchor active active d-block d-sm-block d-md-none" (click)="selectSort()">
+      <tsl-select [items]="sortItems" (valueChanges)="onClickSortSelector($event)" class="d-none d-sm-none d-md-block d-lg-block  "></tsl-select>
+      <a class="NavLinks__anchor active active d-flex d-md-none align-items-center" (click)="selectSort()">
         <span i18n="@@web_order_by">Order by</span>
         <tsl-svg-icon src="/assets/icons/caret.svg"></tsl-svg-icon>
       </a>
