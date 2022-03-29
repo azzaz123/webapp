@@ -23,7 +23,7 @@ export const environment: Environment = {
   name: 'docker',
   appDomain: `.${docknum}.devel.wallapop.com/`,
   protocol: 'https://',
-  baseUrl: 'https://beta.wallapop.com/',
+  baseUrl: 'https://api.beta.wallapop.com/',
   xmppDomain: 'beta.wallapop.com',
   wsUrl: 'wss://mongooseimprotool-beta.wallapop.com:443/ws-xmpp',
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
