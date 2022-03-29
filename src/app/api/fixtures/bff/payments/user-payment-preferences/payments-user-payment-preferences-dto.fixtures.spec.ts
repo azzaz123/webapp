@@ -35,3 +35,17 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES: PaymentsUserPaymentPreferen
     walletBlocked: false,
   },
 };
+
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_CREDIT_CARD: PaymentsUserPaymentPreferences = {
+  defaults: {
+    paymentMethod: null,
+    useWallet: true,
+    walletBlocked: false,
+  },
+  preferences: {
+    id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    paymentMethod: mapPaymentMethodDtoToPaymentMethod('credit card'),
+    useWallet: false,
+    walletBlocked: false,
+  },
+};

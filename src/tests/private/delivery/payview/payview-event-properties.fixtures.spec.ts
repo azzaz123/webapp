@@ -10,6 +10,7 @@ import { PayTransaction } from '@core/analytics/resources/events-interfaces/pay-
 import { TransactionPaymentSuccess } from '@core/analytics/resources/events-interfaces/transaction-payment-success.interface';
 import { MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
 import { TransactionPaymentError } from '@core/analytics/resources/events-interfaces/transaction-payment-error.interface';
+import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces/click-add-edit-address.interface';
 
 export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD: ViewTransactionPayScreen = {
   screenId: SCREEN_IDS.Checkout,
@@ -23,12 +24,51 @@ export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD:
   useWallet: false,
   sellerCountry: 'ES',
 };
+export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL: ViewTransactionPayScreen = {
+  ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
+  preselectedPaymentMethod: 'paypal',
+};
 
 export const MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION: ClickAddEditCard = {
   screenId: SCREEN_IDS.Checkout,
   itemId: MOCK_PAYVIEW_ITEM.id,
   categoryId: MOCK_PAYVIEW_ITEM.categoryId,
   addOrEdit: 'add',
+  itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
+};
+
+export const MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION: ClickAddEditCard = {
+  screenId: SCREEN_IDS.Checkout,
+  itemId: MOCK_PAYVIEW_ITEM.id,
+  categoryId: MOCK_PAYVIEW_ITEM.categoryId,
+  addOrEdit: 'edit',
+  itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
+};
+
+export const MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT: ClickAddEditAddress = {
+  screenId: SCREEN_IDS.Checkout,
+  addOrEdit: 'edit',
+  addressType: 'home',
+  categoryId: MOCK_PAYVIEW_ITEM.categoryId,
+  itemId: MOCK_PAYVIEW_ITEM.id,
+  itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
+};
+
+export const MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION: ClickAddEditAddress = {
+  screenId: SCREEN_IDS.Checkout,
+  addOrEdit: 'edit',
+  addressType: 'office',
+  categoryId: MOCK_PAYVIEW_ITEM.categoryId,
+  itemId: MOCK_PAYVIEW_ITEM.id,
+  itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
+};
+
+export const MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_ADD_ACTION: ClickAddEditAddress = {
+  screenId: SCREEN_IDS.Checkout,
+  addOrEdit: 'add',
+  addressType: 'office',
+  categoryId: MOCK_PAYVIEW_ITEM.categoryId,
+  itemId: MOCK_PAYVIEW_ITEM.id,
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
 };
 
