@@ -36,7 +36,7 @@
     </div>
 
     <div class="NavLinks__sort-select" *ngIf="showSortItems && sortItems">
-      <tsl-select [items]="sortItems" (valueChanges)="onClickSortSelector($event)" class="d-none d-sm-none d-md-block d-lg-block  "></tsl-select>
+      <tsl-select [items]="sortItems" (valueChanges)="onClickSortSelector($event)" class="d-none d-sm-none d-md-block d-lg-block"></tsl-select>
       <a class="NavLinks__anchor active active d-flex d-md-none align-items-center" (click)="selectSort()">
         <span i18n="@@web_order_by">Order by</span>
         <tsl-svg-icon src="/assets/icons/caret.svg"></tsl-svg-icon>
