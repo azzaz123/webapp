@@ -22,7 +22,7 @@
   &__input {
     height: 50px;
     line-height: 1.5;
-    padding: 6px $spacing-ms;
+    padding: $spacer * 0.5 $spacer * 0.75;
     color: $blue-grey-2;
     border: 2px solid $blue-grey-5;
     border-radius: 6px;
