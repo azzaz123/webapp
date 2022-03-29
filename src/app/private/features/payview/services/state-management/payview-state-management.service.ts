@@ -107,10 +107,6 @@ export class PayviewStateManagementService {
     return { type: type, payload: mapToPayviewError(payload) };
   }
 
-  private getBuyPayload(payviewState: PayviewState): PayviewBuy {
-    // TODO - 18/03/2022 - Map payviewState to PayviewBuy
-  }
-
   private getCurrentState(value: string): void {
     const subscription: Subscription = this.payviewService
       .getCurrentState(value)
@@ -227,7 +223,7 @@ export class PayviewStateManagementService {
 
   private request(payviewState: PayviewState): void {
     const subscription: Subscription = this.payviewService
-      .request(this.getBuyPayload(payviewState))
+      .request()
       .pipe(take(1))
       .subscribe({
         next: () => {
