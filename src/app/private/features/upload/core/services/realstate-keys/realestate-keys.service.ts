@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { environment } from '@environments/environment';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Key } from '../../models/key.interface';
