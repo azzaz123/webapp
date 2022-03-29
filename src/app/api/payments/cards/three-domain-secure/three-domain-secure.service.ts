@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import { CardRegistrationFailedError } from '@api/core/errors/payments/cards';
 import { CreditCard } from '@api/core/model';
 import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { environment } from '@environments/environment';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
-import { filter, concatMap, take, takeUntil, tap, catchError } from 'rxjs/operators';
+import { filter, concatMap, take, takeUntil, tap, catchError, map } from 'rxjs/operators';
 import { THREE_DOMAIN_SECURE_MODAL_HEIGHT, THREE_DOMAIN_SECURE_MODAL_WIDTH } from './three-domain-secure.constants';
 
 const THREE_DOMAIN_SECURE_START_URL = (id: string): string => `${environment.baseUrl}api/v3/payments/cards/start_3ds/${id}`;
@@ -17,20 +15,13 @@ type GetCreditCardRequest = (ignoreInvalidCard: boolean) => Observable<CreditCar
   providedIn: 'root',
 })
 export class ThreeDomainSecureService {
-  constructor(private featureFlagService: FeatureFlagService, private webViewModalService: WebViewModalService) {}
+  constructor(private webViewModalService: WebViewModalService) {}
 
   public checkThreeDomainSecure(getCreditCardRequest: GetCreditCardRequest): Observable<void> {
-    return this.isThreeDSecureEnabled().pipe(
-      concatMap((enabled) => {
-        if (!enabled) {
-          return of(null);
-        }
-        const threeDSFlow = this.checkCardUntilKnownStatus(getCreditCardRequest).pipe(
-          concatMap((card) => (this.isPending3DSCard(card) ? this.start3DSValidation(card) : of(card)))
-        );
-        return threeDSFlow;
-      }),
-      take(1)
+    return this.checkCardUntilKnownStatus(getCreditCardRequest).pipe(
+      concatMap((card) => (this.isPending3DSCard(card) ? this.start3DSValidation(card) : of(card))),
+      take(1),
+      map(() => {})
     );
   }
 
@@ -58,10 +49,6 @@ export class ThreeDomainSecureService {
       .subscribe();
 
     return checkCardSubject;
-  }
-
-  private isThreeDSecureEnabled(): Observable<boolean> {
-    return this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY);
   }
 
   private start3DSValidation(card: CreditCard): Observable<void> {
