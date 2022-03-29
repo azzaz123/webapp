@@ -27,8 +27,8 @@ export class PaymentsClientBrowserInfoApiService {
       isJavaScriptEnabled: true,
       language: this.language,
       colorDepth: this.screen.colorDepth,
-      screenHeight: THREE_DOMAIN_SECURE_MODAL_HEIGHT,
-      screenWidth: THREE_DOMAIN_SECURE_MODAL_WIDTH,
+      modalWidth: THREE_DOMAIN_SECURE_MODAL_WIDTH,
+      modalHeight: THREE_DOMAIN_SECURE_MODAL_HEIGHT,
       timeZoneOffset: this.timeZoneOffset,
       userAgent: this.userAgent,
     };
