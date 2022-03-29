@@ -5,6 +5,7 @@ export interface SearchBaseItemResponse {
   title: string;
   distance: number;
   images: SearchItemImageResponse[];
+  favorited: boolean,
   flags: {
     banned: boolean;
     expired: boolean;

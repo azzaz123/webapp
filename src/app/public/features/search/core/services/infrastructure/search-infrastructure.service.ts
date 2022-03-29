@@ -38,9 +38,7 @@ export class SearchInfrastructureService {
       );
     }
 
-    return this.searchApiService
-      .search(params)
-      .pipe(switchMap((searchPagination: SearchPagination) => this.setFavourites(searchPagination)));
+    return this.searchApiService.search(params);
   }
 
   public loadMore(): Observable<SearchPagination> {
@@ -50,7 +48,7 @@ export class SearchInfrastructureService {
         switchMap((list: PaginatedList<ItemCard>) => this.setFavourites(this.mapPaginatedListToSearchPagination(list)))
       );
     }
-    return this.searchApiService.loadMore().pipe(switchMap((searchPagination: SearchPagination) => this.setFavourites(searchPagination)));
+    return this.searchApiService.loadMore();
   }
 
   private setFavourites({ items, hasMore, searchId, sortBy, bubble }: SearchPagination): Observable<SearchPagination> {
