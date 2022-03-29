@@ -51,6 +51,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
+import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -84,7 +85,8 @@ class FakeComponent extends PayviewModalComponent {
     customerHelpService: CustomerHelpService,
     deliveryCountries: DeliveryCountriesService,
     promotionService: PayviewPromotionService,
-    paymentService: PayviewPaymentService
+    paymentService: PayviewPaymentService,
+    buyService: PayviewBuyService
   ) {
     super(
       payviewStateManagementService,
@@ -93,7 +95,8 @@ class FakeComponent extends PayviewModalComponent {
       customerHelpService,
       deliveryCountries,
       promotionService,
-      paymentService
+      paymentService,
+      buyService
     );
   }
 }
@@ -136,6 +139,7 @@ describe('PayviewModalComponent', () => {
   let payviewPaymentService: PayviewPaymentService;
   let payviewPromotionService: PayviewPromotionService;
   let payviewService: PayviewService;
+  let payviewBuyService: PayviewBuyService;
   let payviewStateManagementService: PayviewStateManagementService;
   let stepper: StepperComponent;
   let stepperSpy: jasmine.Spy;
@@ -197,6 +201,7 @@ describe('PayviewModalComponent', () => {
         PayviewPromotionService,
         PayviewStateManagementService,
         PayviewService,
+        PayviewBuyService,
       ],
     }).compileComponents();
   });
@@ -208,6 +213,7 @@ describe('PayviewModalComponent', () => {
       payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
       payviewPaymentService = TestBed.inject(PayviewPaymentService);
       payviewPromotionService = TestBed.inject(PayviewPromotionService);
+      payviewBuyService = TestBed.inject(PayviewBuyService);
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
 
@@ -928,6 +934,12 @@ describe('PayviewModalComponent', () => {
         expect(payviewStateManagementService.setPaymentMethod).toHaveBeenCalledTimes(1);
         expect(payviewStateManagementService.setPaymentMethod).toHaveBeenCalledWith(MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[0]);
       });
+    });
+
+    describe('WHEN the user clicks on the pay button', () => {
+      beforeEach(() => {});
+
+      it('should ask to buy the item', () => {});
     });
 
     describe('WHEN the components is destroyed', () => {
