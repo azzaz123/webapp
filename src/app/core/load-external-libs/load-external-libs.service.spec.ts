@@ -1,4 +1,3 @@
-import { DOCUMENT } from '@angular/common';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 import { LoadExternalLibsService } from './load-external-libs.service';
@@ -29,42 +28,31 @@ const TextScriptMock = `
 
 const externalSourceUrl = 'http://external-lib.com/js';
 
-class DocumentStub {
-  body = {
-    appendChild() {},
-  };
-  createElement(type: string) {
-    return new ScriptElementStub();
-  }
-}
-
 describe('LoadExternalLibService', () => {
   let service: LoadExternalLibsService;
-  let documentStub: DocumentStub;
+
+  let documentCreateElementSpy: jasmine.Spy;
 
   beforeEach(() => {
-    documentStub = new DocumentStub();
     TestBed.configureTestingModule({
-      providers: [
-        {
-          provide: DOCUMENT,
-          useValue: documentStub,
-        },
-        LoadExternalLibsService,
-      ],
+      providers: [LoadExternalLibsService],
     });
     service = TestBed.inject(LoadExternalLibsService);
+    documentCreateElementSpy = spyOn(document, 'createElement').and.returnValue(new ScriptElementStub());
+
+    spyOn(document.body, 'appendChild');
   });
 
-  it('should create an script with a observable complete', (doneCallback) => {
+  it('should create an script with a observable complete', fakeAsync((doneCallback) => {
     const observable: Observable<void> = service.loadScriptBySource('http://external-lib.com/js');
 
     observable.subscribe(() => {
       doneCallback();
     });
-  });
+    tick();
+  }));
 
-  it('should create a list of scripts with a observable complete', (doneCallback) => {
+  it('should create a list of scripts with a observable complete', fakeAsync((doneCallback) => {
     const observable: Observable<void> = service.loadScriptBySource([
       'http://external-lib.com/js',
       'http://external-lib.com/js2',
@@ -74,37 +62,35 @@ describe('LoadExternalLibService', () => {
     observable.subscribe(() => {
       doneCallback();
     });
-  });
+    tick();
+  }));
 
   it('should cache observable of the libs', () => {
-    spyOn(documentStub, 'createElement').and.returnValue(new ScriptElementStub());
-
     service.loadScriptBySource(externalSourceUrl).subscribe();
     service.loadScriptBySource(externalSourceUrl).subscribe();
 
-    expect(documentStub.createElement).toHaveBeenCalledTimes(1);
+    expect(document.createElement).toHaveBeenCalledTimes(1);
   });
 
   it('should create a script with text script', () => {
-    spyOn(documentStub, 'createElement').and.returnValue(new ScriptElementStub());
-
     service.loadScriptByText('textScript', TextScriptMock).subscribe();
 
-    expect(documentStub.createElement).toHaveBeenCalled();
+    expect(document.createElement).toHaveBeenCalled();
   });
 
   it('should cache script with text script if we called twice', () => {
-    spyOn(documentStub, 'createElement').and.returnValue(new ScriptElementStub());
-
     service.loadScriptByText('textScript', TextScriptMock).subscribe();
     service.loadScriptByText('textScript', TextScriptMock).subscribe();
 
-    expect(documentStub.createElement).toHaveBeenCalledTimes(1);
+    expect(document.createElement).toHaveBeenCalledTimes(1);
   });
 
   describe('when script fails loading', () => {
+    beforeEach(() => {
+      documentCreateElementSpy.and.callFake(() => new ScriptElementStub(true));
+    });
+
     it('should notify error', fakeAsync(() => {
-      spyOn(documentStub, 'createElement').and.returnValue(new ScriptElementStub(true));
       const expectedError = new Error(`Error loading script with source ${externalSourceUrl}`);
 
       expect(() => {
