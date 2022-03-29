@@ -5,8 +5,8 @@
   </a>
   <!-- TODO: Remove `profile-box` class by improving `tsl-profile-form` component-->
   <tsl-profile-form class="h-100 row" [profileForm]="creditCardForm" (handleOnInit)="initForm()">
-    <form class="col d-flex flex-column" *ngIf="!loading; else loadingState" [formGroup]="creditCardForm" (submit)="onSubmit()">
-      <div class="CreditCard__formWrapper profile-box">
+    <form class="col d-flex flex-column profile-box" *ngIf="!loading; else loadingState" [formGroup]="creditCardForm" (submit)="onSubmit()">
+      <div class="CreditCard__formWrapper">
         <div class="row">
           <div class="col-md-11 offset-md-1">
             <h3 *ngIf="isNewForm" i18n="@@credit_card_form_top_bar_add_title">Add credit card</h3>
@@ -109,7 +109,7 @@
           >
         </div>
       </div>
-      <div class="CreditCard__saveButton row position-sticky justify-content-center p-2">
+      <div class="CreditCard__saveButton row position-sticky justify-content-center">
         <tsl-button
           class="col-12 col-md-3"
           [type]="'submit'"
