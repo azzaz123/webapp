@@ -4,11 +4,11 @@ import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { SCREEN_IDS } from '@core/analytics/resources/analytics-screen-ids';
 import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces/click-add-edit-address.interface';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
-import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods/delivery-buyer-delivery-method.interface';
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
 import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 import { USER_ACTION, ADDRESS_TYPE } from './tracking-events-action.enum';
+import { PayviewStateDelivery } from '../../interfaces/payview-state-delivery.interface';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
   return {
@@ -40,7 +40,7 @@ export function getClickAddEditAddressEventPropertiesFromPayviewState(
 ): ClickAddEditAddress {
   return {
     screenId: SCREEN_IDS.Checkout,
-    addOrEdit: getAddOrEditAddress(payviewState.delivery.methods.current, eventType),
+    addOrEdit: getAddOrEditAddress(payviewState.delivery, eventType),
     addressType: getAddressType(eventType),
     categoryId: payviewState.item.categoryId,
     itemId: payviewState.item.id,
@@ -67,14 +67,15 @@ function getAddressType(eventType: PAYVIEW_DELIVERY_EVENT_TYPE): ClickAddEditAdd
   return eventType === PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN ? ADDRESS_TYPE.HOME : ADDRESS_TYPE.OFFICE;
 }
 
-function getAddOrEditAddress(
-  currentDeliveryMethod: DeliveryBuyerDeliveryMethod,
-  eventType: PAYVIEW_DELIVERY_EVENT_TYPE
-): ClickAddEditAddress['addOrEdit'] {
+function getAddOrEditAddress(delivery: PayviewStateDelivery, eventType: PAYVIEW_DELIVERY_EVENT_TYPE): ClickAddEditAddress['addOrEdit'] {
   if (eventType === PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN) {
+    if (!delivery.address) {
+      return USER_ACTION.ADD;
+    }
     return USER_ACTION.EDIT;
   }
-  return currentDeliveryMethod.lastAddressUsed ? USER_ACTION.EDIT : USER_ACTION.ADD;
+
+  return delivery.methods.current.lastAddressUsed ? USER_ACTION.EDIT : USER_ACTION.ADD;
 }
 
 function getPreselectedPaymentMethod(paymentPreference: PaymentMethod): ViewTransactionPayScreen['preselectedPaymentMethod'] {

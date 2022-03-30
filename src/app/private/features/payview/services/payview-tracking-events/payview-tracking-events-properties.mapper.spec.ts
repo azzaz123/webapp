@@ -13,6 +13,7 @@ import {
   MOCK_PAYVIEW_STATE_WITH_WALLET_PREFERENCE,
   MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE,
   MOCK_PAYVIEW_STATE_WITH_WALLET_AND_PAYPAL_PREFERENCE,
+  MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_ADDRESS,
 } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces/click-add-edit-address.interface';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
@@ -30,6 +31,7 @@ import {
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET,
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_CREDIT_CARD,
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_PAYPAL,
+  MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_HOME_AND_ADD_ACTION,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 describe('when mapping the payview state properties into the click add edit card event properties', () => {
@@ -53,7 +55,7 @@ describe('when mapping the payview state properties into the click add edit card
 });
 
 describe('when mapping the payview state properties into the click add edit address event properties', () => {
-  describe('and it is an address screen event type', () => {
+  describe('and it is an address screen event type and user has delivery address', () => {
     it('should return the properties mapped with the home and edit attribute', () => {
       const expectedProperties: ClickAddEditAddress = getClickAddEditAddressEventPropertiesFromPayviewState(
         MOCK_PAYVIEW_STATE,
@@ -61,6 +63,17 @@ describe('when mapping the payview state properties into the click add edit addr
       );
 
       expect(expectedProperties).toStrictEqual(MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT);
+    });
+  });
+
+  describe('and it is an address screen event type and user does NOT have delivery address', () => {
+    it('should return the properties mapped with the home and add attribute', () => {
+      const expectedProperties: ClickAddEditAddress = getClickAddEditAddressEventPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_ADDRESS,
+        PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_HOME_AND_ADD_ACTION);
     });
   });
 
