@@ -1,24 +1,22 @@
-<div class="PayviewModal d-flex h-100 flex-column">
-  <div class="container">
-    <div class="row">
-      <div class="col p-0">
-        <div class="d-flex justify-content-between align-items-centermb-3">
-          <a *ngIf="isSecondaryStep" class="PayviewModal__back d-flex align-items-center pl-3" (click)="goBack()">
-            <tsl-svg-icon width="22" height="14" src="./assets/icons/back-arrow.svg"></tsl-svg-icon>
-          </a>
-          <div class="d-flex w-100 p-3">
-            <div class="PayviewModal__windowHeader d-flex w-100 justify-content-between">
-              <span i18n="@@pay_view_buyer_top_bar_title">Make a purchase</span>
+<div class="PayviewModal modal-body p-0 d-flex flex-column">
+  <div class="PayviewModal__header position-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col p-0">
+          <div class="d-flex justify-content-between">
+            <a class="d-flex" [ngClass]="{ PayviewModal__back: isSecondaryStep }" (click)="goBack()">
+              <tsl-svg-icon *ngIf="isSecondaryStep" class="align-self-center mr-3" src="/assets/icons/back-arrow.svg"></tsl-svg-icon>
+              <span class="p-0" i18n="@@pay_view_buyer_top_bar_title">Make a purchase</span>
+            </a>
+            <div class="d-flex">
               <a class="mr-4" [href]="helpUrl" target="_blank" i18n="@@pay_view_buyer_top_bar_link" id="helpLink">Help</a>
+              <tsl-svg-icon
+                id="cross"
+                src="/assets/icons/cross.svg"
+                class="PayviewModal__close align-self-center"
+                (click)="closeModal()"
+              ></tsl-svg-icon>
             </div>
-            <tsl-svg-icon
-              id="cross"
-              src="/assets/icons/cross.svg"
-              class="PayviewModal__close align-self-center"
-              height="16"
-              width="16"
-              (click)="closeModal()"
-            ></tsl-svg-icon>
           </div>
         </div>
       </div>
@@ -28,60 +26,53 @@
     *ngIf="(payviewState$ | async) === null"
     class="PayviewModal__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
   >
-    <tsl-svg-icon width="64" height="64" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
+    <tsl-svg-icon width="45" height="45" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
   </div>
-  <div class="PayviewModal__scrollable h-100">
-    <tsl-stepper *ngIf="payviewState$ | async as payviewState">
-      <ng-template step>
-        <div class="PayviewModal__summary">
-          <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
+  <tsl-stepper *ngIf="payviewState$ | async as payviewState" class="PayviewModal__stepper pt-1">
+    <ng-template step>
+      <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
+      <tsl-payview-delivery-overview
+        [costs]="payviewState.delivery.costs"
+        [methods]="payviewState.delivery.methods"
+      ></tsl-payview-delivery-overview>
+      <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
+      <tsl-payview-payment-overview
+        [card]="payviewState.payment.card"
+        [methods]="payviewState.payment.methods"
+        [preferences]="payviewState.payment.preferences"
+      ></tsl-payview-payment-overview>
+      <div class="mt-4">
+        <tsl-payview-summary-overview [showPurchaseSummaryTitle]="true" [payviewState]="payviewState"></tsl-payview-summary-overview>
+        <div class="container mt-4">
+          <span class="PayviewModal__policiesText d-block p-1" i18n="@@pay_view_buyer_policies_description_refined"
+            >Buy safely, we protect your transactions. By making this purchase you accept the Terms of use and Privacy policies of
+            Wallapop.</span
+          >
         </div>
-        <div class="PayviewModal__delivery">
-          <tsl-payview-delivery-overview
-            [costs]="payviewState.delivery.costs"
-            [methods]="payviewState.delivery.methods"
-          ></tsl-payview-delivery-overview>
-        </div>
-        <div class="PayviewModal__promotion">
-          <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
-        </div>
-        <div class="PayviewModal__payment">
-          <tsl-payview-payment-overview
-            [card]="payviewState.payment.card"
-            [methods]="payviewState.payment.methods"
-            [preferences]="payviewState.payment.preferences"
-          ></tsl-payview-payment-overview>
-        </div>
-      </ng-template>
-      <ng-template step>
-        <tsl-delivery-address
-          *ngIf="countries$ | async"
-          [showTitle]="false"
-          [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
-          (addressSaveSucceded)="closeDeliveryEditor()"
-        ></tsl-delivery-address>
-      </ng-template>
-      <ng-template step>
-        <div class="PayviewModal__pickUpPointMap h-100">
-          <tsl-delivery-map
-            [fullAddress]="payviewState.delivery.methods.addressLabel"
-            [selectedCarrier]="payviewState.delivery.methods.current.carrier"
-            [userOfficeId]="payviewState.delivery.methods.current.lastAddressUsed.id"
-            (goToDeliveryAddress)="goToDeliveryAddress()"
-            (selectedOfficeSucceeded)="closeDeliveryEditor()"
-          ></tsl-delivery-map>
-        </div>
-      </ng-template>
-      <ng-template step>
-        <div class="PayviewModal__promotionEditor h-100">
-          <tsl-payview-promotion-editor></tsl-payview-promotion-editor>
-        </div>
-      </ng-template>
-      <ng-template step>
-        <div class="PayviewModal__creditCardEditor h-100">
-          <tsl-credit-card [returnRoute]="null" [showBackButton]="false" (saved)="closeCreditCardEditor()"></tsl-credit-card>
-        </div>
-      </ng-template>
-    </tsl-stepper>
-  </div>
+      </div>
+    </ng-template>
+    <ng-template step>
+      <tsl-delivery-address
+        *ngIf="countries$ | async"
+        [showTitle]="false"
+        [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
+        (addressSaveSucceded)="closeDeliveryEditor()"
+      ></tsl-delivery-address>
+    </ng-template>
+    <ng-template step>
+      <tsl-delivery-map
+        [fullAddress]="payviewState.delivery.methods.addressLabel"
+        [selectedCarrier]="payviewState.delivery.methods.current.carrier"
+        [userOfficeId]="payviewState.delivery.methods.current.lastAddressUsed.id"
+        (goToDeliveryAddress)="goToDeliveryAddress()"
+        (selectedOfficeSucceeded)="closeDeliveryEditor()"
+      ></tsl-delivery-map>
+    </ng-template>
+    <ng-template step>
+      <tsl-payview-promotion-editor></tsl-payview-promotion-editor>
+    </ng-template>
+    <ng-template step>
+      <tsl-credit-card [returnRoute]="null" [showBackButton]="false" (saved)="closeCreditCardEditor()"></tsl-credit-card>
+    </ng-template>
+  </tsl-stepper>
 </div>
