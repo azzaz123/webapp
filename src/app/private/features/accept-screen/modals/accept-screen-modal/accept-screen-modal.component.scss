@@ -8,7 +8,7 @@ $modal-header-height: 56px;
 
 .AcceptScreenModal {
   height: inherit;
-  overflow: auto;
+  overflow: hidden;
 
   &__header {
     height: $modal-header-height;
@@ -22,12 +22,13 @@ $modal-header-height: 56px;
   }
 
   &__stepper {
+    overflow: auto;
     height: calc(100% - #{$modal-header-height});
   }
 
   &__confirmButton {
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba($white, 0.8);
   }
 
   &__cursorPointer {
@@ -71,6 +72,7 @@ $modal-header-height: 56px;
     object-fit: cover;
     overflow: hidden;
     width: inherit;
+    height: inherit;
   }
 
   &__carrierInformation {
