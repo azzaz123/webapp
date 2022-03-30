@@ -7,6 +7,8 @@ import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payvie
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
 import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-add-promocode-transaction-pay.interface';
+import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
 import { USER_ACTION, ADDRESS_TYPE } from './tracking-events-action.enum';
 import { PayviewStateDelivery } from '../../interfaces/payview-state-delivery.interface';
 
@@ -56,6 +58,30 @@ export function getClickHelpTransactionalEventPropertiesFromPayviewState(payview
     categoryId: payviewState.item.categoryId,
     itemId: payviewState.item.id,
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
+  };
+}
+
+export function getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState(
+  payviewState: PayviewState
+): ClickAddPromocodeTransactionPay {
+  return {
+    screenId: SCREEN_IDS.Checkout,
+    itemId: payviewState.item.id,
+    categoryId: payviewState.item.categoryId,
+    itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
+    sellerUserId: payviewState.item.owner,
+  };
+}
+
+export function getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState(
+  payviewState: PayviewState
+): ClickApplyPromocodeTransactionPay {
+  return {
+    screenId: SCREEN_IDS.Checkout,
+    itemId: payviewState.item.id,
+    categoryId: payviewState.item.categoryId,
+    itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
+    sellerUserId: payviewState.item.owner,
   };
 }
 

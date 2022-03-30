@@ -59,6 +59,8 @@ import {
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION,
   MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
+  MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY,
+  MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
 
@@ -203,6 +205,8 @@ describe('PayviewModalComponent', () => {
             trackClickAddEditAddress() {},
             trackClickHelpTransactional() {},
             trackViewTransactionPayScreen() {},
+            trackClickAddPromocodeTransactionPay() {},
+            trackClickApplyPromocodeTransactionPay() {},
           },
         },
         ItemService,
@@ -766,59 +770,67 @@ describe('PayviewModalComponent', () => {
     });
 
     describe('WHEN the user wants to edit the promocode', () => {
+      let result: number = 0;
+      let expected: number = 1;
+
       beforeEach(() => {
         spyOn(payviewPromotionService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddPromocodeTransactionPay');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+        payviewPromotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.OPEN_PROMOCODE_EDITOR, () => {
+          result++;
+        });
+        payviewPromotionService.openPromocodeEditor();
       });
 
       it('should received the corresponding order', () => {
-        let result: number = 0;
-        let expected: number = 1;
-        const subscription = payviewPromotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.OPEN_PROMOCODE_EDITOR, () => {
-          result++;
-        });
-
-        payviewPromotionService.openPromocodeEditor();
-
         expect(payviewPromotionService.on).toHaveBeenCalledTimes(1);
         expect(result).toBe(expected);
       });
 
       it('should move to the corresponding step', () => {
-        const subscription = payviewPromotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.OPEN_PROMOCODE_EDITOR, () => {});
-
-        payviewPromotionService.openPromocodeEditor();
-
         expect(stepperSpy).toHaveBeenCalledTimes(1);
         expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.PROMOTION_EDITOR);
+      });
+
+      it('should ask for tracking event', () => {
+        expect(payviewTrackingEventsService.trackClickAddPromocodeTransactionPay).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddPromocodeTransactionPay).toHaveBeenCalledWith(
+          MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY
+        );
       });
     });
 
     describe('WHEN the user wants to apply a promocode', () => {
+      const fakePromocode: string = 'This_is_a_fake_promocode';
+      let result: string;
+
       beforeEach(() => {
         spyOn(payviewStateManagementService, 'applyPromocode').and.callFake(() => {});
         spyOn(payviewPromotionService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickApplyPromocodeTransactionPay');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+        payviewPromotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.APPLY_PROMOCODE, (data: string) => {
+          result = data;
+        });
+        payviewPromotionService.applyPromocode(fakePromocode);
       });
 
       it('should apply the promocode received', () => {
-        let result: string;
-        const fakePromocode: string = 'This_is_a_fake_promocode';
-        const subscription = payviewPromotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.APPLY_PROMOCODE, (data: string) => {
-          result = data;
-        });
-
-        payviewPromotionService.applyPromocode(fakePromocode);
-
         expect(payviewPromotionService.on).toHaveBeenCalledTimes(1);
         expect(result).toEqual(fakePromocode);
       });
 
       it('should call to apply the promocode received', () => {
-        const fakePromocode: string = 'This_is_a_fake_promocode';
-
-        payviewPromotionService.applyPromocode(fakePromocode);
-
         expect(payviewStateManagementService.applyPromocode).toHaveBeenCalledTimes(1);
         expect(payviewStateManagementService.applyPromocode).toHaveBeenCalledWith(fakePromocode);
+      });
+
+      it('should ask for tracking event', () => {
+        expect(payviewTrackingEventsService.trackClickApplyPromocodeTransactionPay).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickApplyPromocodeTransactionPay).toHaveBeenCalledWith(
+          MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY
+        );
       });
     });
 
