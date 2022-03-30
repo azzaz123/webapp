@@ -23,9 +23,28 @@ export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD:
   useWallet: false,
   sellerCountry: 'ES',
 };
+
 export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL: ViewTransactionPayScreen = {
   ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
   preselectedPaymentMethod: 'paypal',
+};
+
+export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET: ViewTransactionPayScreen = {
+  ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
+  useWallet: true,
+  preselectedPaymentMethod: 'wallet',
+};
+
+export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_CREDIT_CARD: ViewTransactionPayScreen = {
+  ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
+  useWallet: true,
+  preselectedPaymentMethod: 'wallet, bank card',
+};
+
+export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_PAYPAL: ViewTransactionPayScreen = {
+  ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
+  useWallet: true,
+  preselectedPaymentMethod: 'wallet, paypal',
 };
 
 export const MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION: ClickAddEditCard = {

@@ -7,9 +7,8 @@ import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payvie
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods/delivery-buyer-delivery-method.interface';
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
-import { mapPaymentMethodToPaymentMethodDto } from '@api/shared/mappers/payment-method-to-payment-method-dto.mapper';
 import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
-import { USER_ACTION, PAYMENT_PREFERENCE, ADDRESS_TYPE } from './tracking-events-action.enum';
+import { USER_ACTION, ADDRESS_TYPE } from './tracking-events-action.enum';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
   return {
@@ -79,5 +78,13 @@ function getAddOrEditAddress(
 }
 
 function getPreselectedPaymentMethod(paymentPreference: PaymentMethod): ViewTransactionPayScreen['preselectedPaymentMethod'] {
-  return mapPaymentMethodToPaymentMethodDto(paymentPreference) === 'credit card' ? PAYMENT_PREFERENCE.BANK_CARD : PAYMENT_PREFERENCE.PAYPAL;
+  return PRESELECTED_PAYMENT_METHOD_CONVERTER[paymentPreference];
 }
+
+const PRESELECTED_PAYMENT_METHOD_CONVERTER: Record<PaymentMethod, ViewTransactionPayScreen['preselectedPaymentMethod']> = {
+  [PaymentMethod.CREDIT_CARD]: 'bank card',
+  [PaymentMethod.PAYPAL]: 'paypal',
+  [PaymentMethod.WALLET]: 'wallet',
+  [PaymentMethod.WALLET_AND_CREDIT_CARD]: 'wallet, bank card',
+  [PaymentMethod.WALLET_AND_PAYPAL]: 'wallet, paypal',
+};
