@@ -5,6 +5,7 @@ import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
 import { UserService } from '@core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SITE_URL } from '@configs/site-url.config';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',
@@ -17,6 +18,7 @@ export class UnsubscribeModalComponent implements OnInit {
   public selectedReason: number;
   public customReason: string;
   public hasSubscription = false;
+  public isProfessional = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -27,9 +29,13 @@ export class UnsubscribeModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userService.getUnsubscribeReasons().subscribe((reasons: UnsubscribeReason[]) => {
-      this.reasons = reasons;
-    });
+    combineLatest([this.userService.getUnsubscribeReasons(), this.userService.isProfessional()]).subscribe(
+      ([reasons, isProfessional]: [UnsubscribeReason[], boolean]) => {
+        this.reasons = reasons;
+        this.isProfessional = isProfessional;
+      }
+    );
+
     this.hasSubscription = this.userService.isProUser();
   }
 

@@ -36,6 +36,9 @@ describe('UnsubscribeModalComponent', () => {
               isProUser() {
                 return of(false);
               },
+              isProfessional() {
+                return of(false);
+              },
             },
           },
           {
@@ -79,6 +82,7 @@ describe('UnsubscribeModalComponent', () => {
   describe('ngOnInit', () => {
     it('should call getUnsubscribeReasons and set reasons', () => {
       spyOn(userService, 'getUnsubscribeReasons').and.callThrough();
+      spyOn(userService, 'isProfessional').and.callThrough();
 
       component.ngOnInit();
 
@@ -93,6 +97,15 @@ describe('UnsubscribeModalComponent', () => {
 
       expect(userService.isProUser).toHaveBeenCalled();
       expect(component.hasSubscription).toBe(true);
+    });
+
+    it('should show an extra warning if user is car dealer', () => {
+      spyOn(userService, 'isProfessional').and.returnValue(of(true));
+
+      component.ngOnInit();
+
+      expect(userService.isProfessional).toHaveBeenCalled();
+      expect(component.isProfessional).toBe(true);
     });
 
     it('should show normal message if user is not pro', () => {

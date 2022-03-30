@@ -1,45 +1,89 @@
-<div class="header" [hidden]="step === 2">
-  <div class="modal-close light" (click)="activeModal.dismiss()">
+<div class="UnsubscribeModal d-flex flex-column w-100 align-items-center p-4 p-md-5">
+  <div class="UnsubscribeModal__close position-absolute" (click)="activeModal.dismiss()">
     <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
   </div>
-</div>
 
-<div class="modal-body step-1" [hidden]="step === 2">
+  <div class="pt-5" [hidden]="step === 2">
+    <img class="mb-4" src="/assets/icons/account/account_deletion.svg" />
 
-  <div *ngIf="!hasSubscription">
-    <h1 i18n="@@web_profile_modal_unsubscribe_263">Are you sure you want to close your account?</h1>
-    <p i18n="@@web_profile_modal_unsubscribe_264">It's never too late to change your mind, you know?<br />The team will be sad to see you go :(</p>
-    <button class="btn btn-primary" (click)="step = 2" i18n="@@web_profile_modal_unsubscribe_265">Yes, I do want to close my account</button><br />
-    <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@web_profile_modal_unsubscribe_266">No, I want to stay</button>
+    <h1 class="UnsubscribeModal__title my-2" i18n="@@delete_account_view_all_users_title">Are you sure you want to delete your account?</h1>
+    <div class="UnsubscribeModal__description my-4">
+      <div *ngIf="!isProfessional">
+        <span i18n="@@delete_account_view_all_users_intro_text">
+          Oh, it's a pity you're leaving... but it's your decision and we respect it. Be sure to:
+        </span>
+        <ul class="text-left my-4 pl-4">
+          <li class="my-2" i18n="@@delete_account_view_all_users_check_transactions_text">No pending transactions</li>
+          <li class="my-2" i18n="@@delete_account_view_all_users_check_balance_text">
+            No balance in your wallet. If you have credit left, you can transfer it to your bank for free
+          </li>
+          <li *ngIf="hasSubscription" class="my-2" i18n="@@delete_account_view_non_pro_user_check_subscriptions_text">
+            No active Wallapop PRO subscriptions (How to unsubscribe)
+          </li>
+        </ul>
+        <span i18n="@@delete_account_view_all_users_delete_account_more_info_text">
+          To find out what is entailed in the deletion of your Wallapop account, check this article.
+        </span>
+      </div>
+      <div *ngIf="isProfessional">
+        <span i18n="@@delete_account_view_car_dealer_intro_text"
+          >Oh, it's a pity you're leaving... You must first contact our sales team to unsubscribe from Wallapop Motor by sending an email to
+          ventas.motor@wallapop.com</span
+        >
+      </div>
+    </div>
+
+    <tsl-button
+      class="UnsubscribeModal__delete-btn w-100"
+      (click)="activeModal.dismiss()"
+      className="btn-primary btn-primary--bold w-100"
+      i18n="@@delete_account_view_all_users_cancel_button"
+    >
+      Keep account</tsl-button
+    >
+    <tsl-button
+      class="UnsubscribeModal__delete-btn w-100 pt-2"
+      className="btn-secondary btn-secondary--bold w-100"
+      i18n="@@delete_account_view_all_users_delete_button"
+      (click)="step = 2"
+    >
+      Delete account</tsl-button
+    >
   </div>
 
-  <div *ngIf="hasSubscription">
-    <h1 i18n="@@web_profile_modal_unsubscribe_267">Are you sure you want to unsubscribe?</h1>
-    <p i18n="@@web_profile_modal_unsubscribe_268">You are unsubscribing but you have an active subscription in Wallapop. To cancel it, visit the Play Store o the App Store.</p>
-    <button class="btn btn-primary" (click)="step = 2" i18n="@@web_profile_modal_unsubscribe_269">Unsuscribe me, I will cancel my subscription</button>
-    <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@web_profile_modal_unsubscribe_270">Ok, I changed my mind</button>
-  </div>
+  <div class="pt-5" [hidden]="step === 1">
+    <h1 class="UnsubscribeModal__title my-2" i18n="@@delete_account_reason_view_all_users_title">
+      Why do you want to delete your account?
+    </h1>
+    <button
+      class="btn btn-secondary btn-block btn-reason"
+      *ngFor="let reason of reasons"
+      [ngClass]="{ selected: selectedReason === reason.reason_id }"
+      (click)="selectedReason = reason.reason_id"
+    >
+      {{ reason.name }}
+    </button>
 
-</div>
-
-<div class="modal-body" [hidden]="step === 1">
-  <div class="modal-close" (click)="activeModal.dismiss()">
-    <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
-  </div>
-  <h1 class="title" i18n="@@web_profile_modal_unsubscribe_271">Can you tell us why you want to close your account? We won't tell anyone.</h1>
-  <button class="btn btn-secondary btn-block btn-reason"
-          *ngFor="let reason of reasons"
-          [ngClass]="{selected: selectedReason === reason.reason_id}"
-          (click)="selectedReason = reason.reason_id">{{reason.name}}</button>
-
-  <p class="custom-reason" [hidden]="selectedReason !== 6">
-    <span class="float-right counter">{{customReason?.length || 0}}/300</span>
-  </p>
-  <textarea [hidden]="selectedReason !== 6" i18n-placeholder="@@web_profile_modal_unsubscribe_272" placeholder="Tell us what happened..."
-            class="form-control"
-            [(ngModel)]="customReason"
-            maxlength="300"></textarea>
-  <div class="text-right">
-    <button class="btn btn-primary" [disabled]="!selectedReason || selectedReason === 6 && !customReason" (click)="send()" i18n="@@web_profile_modal_unsubscribe_273">Send</button>
+    <p class="custom-reason" [hidden]="selectedReason !== 6">
+      <span class="float-right counter">{{ customReason?.length || 0 }}/300</span>
+    </p>
+    <textarea
+      [hidden]="selectedReason !== 6"
+      i18n-placeholder="@@web_profile_modal_unsubscribe_272"
+      placeholder="Tell us what happened..."
+      class="form-control"
+      [(ngModel)]="customReason"
+      maxlength="300"
+    ></textarea>
+    <div class="text-right">
+      <button
+        class="btn btn-primary"
+        [disabled]="!selectedReason || (selectedReason === 6 && !customReason)"
+        (click)="send()"
+        i18n="@@web_profile_modal_unsubscribe_273"
+      >
+        Send
+      </button>
+    </div>
   </div>
 </div>
