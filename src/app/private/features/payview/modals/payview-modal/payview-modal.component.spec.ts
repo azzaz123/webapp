@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, Component, DebugElement, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input, Output, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -18,10 +18,13 @@ import { ItemService } from '@core/item/item.service';
 import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
+import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
+import { PaymentsPaymentMethod } from '@api/core/model/payments';
 import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-wallets-http.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
+import { PAYVIEW_PAYMENT_EVENT_TYPE } from '@private/features/payview/modules/payment/enums/payview-payment-event-type.enum';
 import { PAYVIEW_PROMOTION_EVENT_TYPE } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.enum';
 import { PAYVIEW_STEPS } from '@private/features/payview/enums/payview-steps.enum';
 import { PayviewDeliveryHeaderComponent } from '@private/features/payview/modules/delivery/components/header/payview-delivery-header.component';
@@ -40,6 +43,7 @@ import { PayviewSummaryCostDetailComponent } from '@private/features/payview/mod
 import { PayviewSummaryHeaderComponent } from '@private/features/payview/modules/summary/components/header/payview-summary-header.component';
 import { PayviewSummaryOverviewComponent } from '@private/features/payview/modules/summary/components/overview/payview-summary-overview.component';
 import { PayviewSummaryPaymentMethodComponent } from '@private/features/payview/modules/summary/components/payment-method/payview-summary-payment-method.component';
+import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 import { StepperModule } from '@shared/stepper/stepper.module';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
@@ -47,9 +51,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
-import { PAYVIEW_PAYMENT_EVENT_TYPE } from '../../modules/payment/enums/payview-payment-event-type.enum';
-import { PaymentsPaymentMethod } from '@api/core/model/payments';
-import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
+import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -83,7 +85,8 @@ class FakeComponent extends PayviewModalComponent {
     customerHelpService: CustomerHelpService,
     deliveryCountries: DeliveryCountriesService,
     promotionService: PayviewPromotionService,
-    paymentService: PayviewPaymentService
+    paymentService: PayviewPaymentService,
+    buyService: PayviewBuyService
   ) {
     super(
       payviewStateManagementService,
@@ -92,7 +95,8 @@ class FakeComponent extends PayviewModalComponent {
       customerHelpService,
       deliveryCountries,
       promotionService,
-      paymentService
+      paymentService,
+      buyService
     );
   }
 }
@@ -127,6 +131,7 @@ describe('PayviewModalComponent', () => {
   let payviewPaymentService: PayviewPaymentService;
   let payviewPromotionService: PayviewPromotionService;
   let payviewService: PayviewService;
+  let payviewBuyService: PayviewBuyService;
   let payviewStateManagementService: PayviewStateManagementService;
   let stepper: StepperComponent;
   let stepperSpy: jasmine.Spy;
@@ -188,6 +193,7 @@ describe('PayviewModalComponent', () => {
         PayviewPromotionService,
         PayviewStateManagementService,
         PayviewService,
+        PayviewBuyService,
       ],
     }).compileComponents();
   });
@@ -199,6 +205,7 @@ describe('PayviewModalComponent', () => {
       payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
       payviewPaymentService = TestBed.inject(PayviewPaymentService);
       payviewPromotionService = TestBed.inject(PayviewPromotionService);
+      payviewBuyService = TestBed.inject(PayviewBuyService);
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
 
@@ -399,8 +406,11 @@ describe('PayviewModalComponent', () => {
         });
 
         describe('WHEN stepper is on the third step', () => {
+          let changeDetectorRef: ChangeDetectorRef;
+
           beforeEach(() => {
             component.stepper.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+            changeDetectorRef = debugElement.injector.get<ChangeDetectorRef>(ChangeDetectorRef);
           });
 
           it('should not show the summary block', () => {
@@ -447,28 +457,55 @@ describe('PayviewModalComponent', () => {
             expect(pickUpPointMapComponent).toBeTruthy();
           });
 
-          it('should assign the address label', () => {
-            const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
-              By.directive(FakeDeliveryMapComponent)
-            ).componentInstance;
+          describe.each([['This_is_a_fake_address'], [null]])('WHEN assigning the full address', (expected) => {
+            beforeEach(() => {
+              let payviewState = { ...MOCK_PAYVIEW_STATE };
+              payviewState.delivery.methods.addressLabel = expected;
+              changeDetectorRef.detectChanges();
+            });
 
-            expect(pickUpPointMapComponent.fullAddress).toBe(MOCK_PAYVIEW_STATE.delivery.methods.addressLabel);
+            it('should assign the address label', () => {
+              const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
+                By.directive(FakeDeliveryMapComponent)
+              ).componentInstance;
+
+              expect(pickUpPointMapComponent.fullAddress).toBe(expected);
+            });
           });
 
-          it('should assign the selected carrier', () => {
-            const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
-              By.directive(FakeDeliveryMapComponent)
-            ).componentInstance;
+          describe.each([
+            [POST_OFFICE_CARRIER.POSTE_ITALIANE, POST_OFFICE_CARRIER.POSTE_ITALIANE],
+            [null, POST_OFFICE_CARRIER.CORREOS],
+          ])('WHEN assigning the selected carrier', (carrier, expected) => {
+            beforeEach(() => {
+              let payviewState = { ...MOCK_PAYVIEW_STATE };
+              payviewState.delivery.methods.current.carrier = carrier;
+              changeDetectorRef.detectChanges();
+            });
 
-            expect(pickUpPointMapComponent.selectedCarrier).toBe(MOCK_PAYVIEW_STATE.delivery.methods.current.carrier);
+            it('should assign the selected carrier', () => {
+              const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
+                By.directive(FakeDeliveryMapComponent)
+              ).componentInstance;
+
+              expect(pickUpPointMapComponent.selectedCarrier).toBe(expected);
+            });
           });
 
-          it('should assign the selected carrier', () => {
-            const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
-              By.directive(FakeDeliveryMapComponent)
-            ).componentInstance;
+          describe.each([['This_is_a_user_office_id'], [null]])('WHEN assigning the selected user office id', (expected) => {
+            beforeEach(() => {
+              let payviewState = { ...MOCK_PAYVIEW_STATE };
+              payviewState.delivery.methods.current.lastAddressUsed.id = expected;
+              changeDetectorRef.detectChanges();
+            });
 
-            expect(pickUpPointMapComponent.userOfficeId).toBe(MOCK_PAYVIEW_STATE.delivery.methods.current.lastAddressUsed.id);
+            it('should assign the selected user office id', () => {
+              const pickUpPointMapComponent: FakeDeliveryMapComponent = debugElement.query(
+                By.directive(FakeDeliveryMapComponent)
+              ).componentInstance;
+
+              expect(pickUpPointMapComponent.userOfficeId).toBe(expected);
+            });
           });
 
           it('should not show the promotion editor', () => {
