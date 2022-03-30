@@ -4,14 +4,16 @@ import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
-import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DeliveryBuyerDeliveryMethod, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
+import { PAYVIEW_BUY_EVENT_TYPE } from '@private/features/payview/modules/buy/enums/payview-buy-event-type.enum';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
 import { PAYVIEW_EVENT_TYPE } from '@private/features/payview/enums/payview-event-type.enum';
 import { PAYVIEW_PAYMENT_EVENT_TYPE } from '@private/features/payview/modules/payment/enums/payview-payment-event-type.enum';
 import { PAYVIEW_PROMOTION_EVENT_TYPE } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.enum';
 import { PAYVIEW_STEPS } from '@private/features/payview/enums/payview-steps.enum';
+import { PayviewBuyService } from '@private/features/payview/modules/buy/services/payview-buy.service';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { PayviewError } from '@private/features/payview/interfaces/payview-error.interface';
 import { PayviewPaymentService } from '@private/features/payview/modules/payment/services/payview-payment.service';
@@ -19,6 +21,7 @@ import { PayviewPromotionService } from '@private/features/payview/modules/promo
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
+import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -57,7 +60,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private deliveryCountries: DeliveryCountriesService,
     private promotionService: PayviewPromotionService,
     private paymentService: PayviewPaymentService,
-    private payviewTrackingEventsService: PayviewTrackingEventsService
+    private payviewTrackingEventsService: PayviewTrackingEventsService,
+    private buyService: PayviewBuyService
   ) {}
 
   public ngOnDestroy(): void {
@@ -81,6 +85,18 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   public closeModal(): void {
     this.activeModal.close();
+  }
+
+  public getFullAddress(methods: DeliveryBuyerDeliveryMethods): string {
+    return methods?.addressLabel;
+  }
+
+  public getSelectedCarrier(methods: DeliveryBuyerDeliveryMethods): POST_OFFICE_CARRIER {
+    return methods?.current?.carrier ?? POST_OFFICE_CARRIER.CORREOS;
+  }
+
+  public getUserOfficeId(methods: DeliveryBuyerDeliveryMethods): string {
+    return methods?.current?.lastAddressUsed?.id;
   }
 
   public goBack(): void {
@@ -127,6 +143,15 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscribeToPromotionEventBus();
     this.subscribeToPaymentEventBus();
     this.subscribeToPayviewState();
+    this.subscribeToBuyEventBus();
+  }
+
+  private subscribeToBuyEventBus(): void {
+    this.subscriptions.push(
+      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, (value: string) => {
+        this.payviewStateManagementService.buy();
+      })
+    );
   }
 
   private subscribeToDeliveryEventBus(): void {
@@ -182,6 +207,16 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   private subscribeToStateManagementEventBus(): void {
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, (error: PayviewError) => {
+        this.buyService.error(error);
+      })
+    );
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY, () => {
+        // TODO - 18/03/2022 - Do something like closing the payview, show success toast or so on...
+      })
+    );
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_REFRESH_COSTS, (error: PayviewError) => {
         this.promotionService.error(error);

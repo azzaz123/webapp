@@ -84,11 +84,10 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
 
   private loadItems(): void {
     this.loading = true;
-    const shouldCheckForFavourites = this.userService.isLogged && !this.userService.isCurrentUser(this.userId);
 
     try {
       this.catalogApiService
-        .getUserPublishedItems(this.userId, shouldCheckForFavourites, this.paginationParameter)
+        .getUserPublishedItems(this.userId, this.paginationParameter)
         .pipe(
           finalize(() => (this.loading = false)),
           take(1)
