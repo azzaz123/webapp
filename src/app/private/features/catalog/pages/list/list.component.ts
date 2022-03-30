@@ -135,7 +135,6 @@ export class ListComponent implements OnInit, OnDestroy {
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
     private catalogManagerService: CatalogManagerApiService,
-    private deviceService: DeviceDetectorService,
     private analyticsService: AnalyticsService,
     private i18nService: I18nService,
     private permissionService: NgxPermissionsService,
@@ -247,11 +246,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public filterByStatus(status: string) {
     this.deselect();
-
-    if (status === 'reviews') {
-      this.items = [];
-      this.selectedStatus = status;
-    }
 
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
@@ -492,13 +486,6 @@ export class ListComponent implements OnInit, OnDestroy {
       { id: STATUS.SOLD, display: this.i18n.translate(TRANSLATION_KEY.SOLD) },
       { id: STATUS.INACTIVE, display: this.i18n.translate(TRANSLATION_KEY.INACTIVE), counter: { currentVal: this.counters?.onHold } },
     ];
-
-    if (this.deviceService.isMobile()) {
-      this.normalNavLinks.push({
-        id: 'reviews',
-        display: this.i18n.translate(TRANSLATION_KEY.REVIEWS),
-      });
-    }
   }
 
   private onOpenWallacoinsModal(): void {
