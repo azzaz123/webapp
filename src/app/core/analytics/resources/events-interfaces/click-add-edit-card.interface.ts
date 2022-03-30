@@ -28,5 +28,5 @@ export interface ClickAddEditCard {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 209 | 238;
+  screenId: 238 | 312;
 }

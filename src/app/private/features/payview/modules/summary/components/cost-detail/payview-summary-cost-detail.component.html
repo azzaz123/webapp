@@ -10,7 +10,13 @@
           <div class="PayviewSummaryCostDetail__insurance d-flex flex-wrap justify-content-between">
             <div class="d-flex flex-nowrap align-items-center text-truncate">
               <tsl-svg-icon class="mr-1" [src]="'./assets/icons/payview/safe-shipping.svg'"></tsl-svg-icon>
-              <span class="PayviewSummaryCostDetail__insuranceTitle pl-1 text-truncate" i18n="@@web_pay_view_buyer_summary_insurance_label"
+              <span
+                class="
+                  PayviewSummaryCostDetail__insuranceTitle PayviewSummaryCostDetail__text PayviewSummaryCostDetail__text--gray
+                  pl-1
+                  text-truncate
+                "
+                i18n="@@web_pay_view_buyer_summary_insurance_label"
                 >Insurance</span
               >
               <span
@@ -21,13 +27,21 @@
             </div>
             <div class="PayviewSummaryCostDetail__costWrapper">
               <span *ngIf="isInsuranceDiscount" class="PayviewSummaryCostDetail__insuranceDiscount mr-1">{{ insuranceDiscount }}</span>
-              <span class="PayviewSummaryCostDetail__insuranceCost">{{ insuranceCost }}</span>
+              <span class="PayviewSummaryCostDetail__insuranceCost PayviewSummaryCostDetail__text PayviewSummaryCostDetail__text--gray">{{
+                insuranceCost
+              }}</span>
             </div>
           </div>
           <div class="PayviewSummaryCostDetail__shipping d-flex flex-wrap justify-content-between">
             <div class="d-flex flex-nowrap align-items-center text-truncate">
               <tsl-svg-icon class="mr-1" [src]="'./assets/icons/payview/car-bodytype-van.svg'"></tsl-svg-icon>
-              <span class="PayviewSummaryCostDetail__shippingTitle pl-1 text-truncate" i18n="@@pay_view_buyer_summary_shipping_label"
+              <span
+                class="
+                  PayviewSummaryCostDetail__shippingTitle PayviewSummaryCostDetail__text PayviewSummaryCostDetail__text--gray
+                  pl-1
+                  text-truncate
+                "
+                i18n="@@pay_view_buyer_summary_shipping_label"
                 >Delivery</span
               >
               <span
@@ -38,7 +52,9 @@
             </div>
             <div class="PayviewSummaryCostDetail__costWrapper">
               <span *ngIf="isShippingDiscount" class="PayviewSummaryCostDetail__shippingDiscount mr-1">{{ shippingDiscount }}</span>
-              <span class="PayviewSummaryCostDetail__shippingCost">{{ shippingCost }}</span>
+              <span class="PayviewSummaryCostDetail__shippingCost PayviewSummaryCostDetail__text PayviewSummaryCostDetail__text--gray">{{
+                shippingCost
+              }}</span>
             </div>
           </div>
         </div>
