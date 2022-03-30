@@ -12,8 +12,8 @@ export class FilterGroupRulesService {
 
     return parentParamKeysWithReloadRules
       ?.filter((parentParamKey) => {
-        const previousValue = values.previousValue.find((value) => value.key === parentParamKey)?.value; //esto ha de ser de config!
-        const currentValue = values.currentValue.find((value) => value.key === parentParamKey)?.value; //esto ha de ser de config!
+        const previousValue = values.previousValue.find((value) => value.key === parentParamKey)?.value;
+        const currentValue = values.currentValue.find((value) => value.key === parentParamKey)?.value;
 
         return previousValue !== currentValue;
       })
