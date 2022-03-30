@@ -10,8 +10,6 @@ import { Subscription } from 'rxjs';
 })
 export class WebViewModalComponent implements AfterViewInit, OnDestroy {
   @Input() startUrl: string;
-  @Input() width: number;
-  @Input() height: number;
   @Input() title: string;
   @Input() onCloseCallback: Function;
   @ViewChild('webview', { static: true }) webviewElement: ElementRef<HTMLIFrameElement>;
@@ -24,7 +22,6 @@ export class WebViewModalComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.iframeRef.setAttribute('src', this.startUrl);
-    this.iframeRef.setAttribute('style', `min-width: ${this.width}px; min-height: ${this.height}px; border: 0`);
     this.subscription.add(this.windowMessageService.listen(this.window).subscribe(() => this.runOnCloseCallback()));
     try {
       this.subscription.add(this.windowMessageService.listen(this.iframeRef.contentWindow).subscribe(() => this.runOnCloseCallback()));

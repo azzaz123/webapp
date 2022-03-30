@@ -6,7 +6,7 @@ import { CategoryResponse, SuggestedCategory } from './category-response.interfa
 import { I18nService } from '../i18n/i18n.service';
 import { environment } from '../../../environments/environment';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 export const CATEGORIES_ENDPOINT = 'api/v3/categories/keys/';
 export const SUGGESTED_CATEGORIES_ENDPOINT = 'api/v3/classifier/upload-blackbox';

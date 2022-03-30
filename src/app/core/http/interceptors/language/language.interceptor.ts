@@ -3,7 +3,7 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 import { DeviceService } from '@core/device/device.service';
 import { environment } from '@environments/environment';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 export const LANGUAGE_HEADER_NAME = 'Accept-Language';
 export const MIN_QUALITY_VALUE = 0.1;

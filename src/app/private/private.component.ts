@@ -16,7 +16,7 @@ import { StripeService } from '@core/stripe/stripe.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 @Component({
   selector: 'tsl-private',

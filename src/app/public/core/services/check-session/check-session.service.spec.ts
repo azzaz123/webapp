@@ -40,7 +40,7 @@ describe('CheckSessionService', () => {
   });
 
   describe('checkSessionAction', () => {
-    it('should should redirect user if not logged', () => {
+    it('should redirect user if not logged', () => {
       spyOn(window.location, 'assign');
 
       checkSessionService.checkSessionAction();

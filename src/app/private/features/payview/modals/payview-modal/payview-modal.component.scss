@@ -1,13 +1,30 @@
 @import '~style/common';
 
+$modal-header-height: 56px;
+
+:host {
+  height: inherit;
+}
+
 .PayviewModal {
-  max-height: 80vh;
+  height: inherit;
+  overflow: hidden;
+
+  &__header {
+    padding: $spacer * 1.15;
+    height: $modal-header-height;
+    top: 0;
+    z-index: 1;
+    background-color: $white;
+  }
+
+  &__stepper {
+    overflow: auto;
+    height: calc(100% - #{$modal-header-height});
+  }
 
   &__back {
     cursor: pointer;
-  }
-  &__scrollable {
-    overflow-y: scroll;
   }
 
   &__spinner {
@@ -22,19 +39,8 @@
     padding-left: $spacing-ml;
   }
 
-  ::ng-deep #loader-wrapper {
-    height: 100% !important;
-    padding-bottom: $spacing-xl;
-    & svg {
-      height: 64px;
-      width: 64px;
-    }
-    & h2 {
-      display: none;
-    }
-  }
-
-  ::ng-deep .MovableMap {
-    height: 80vh;
+  &__policiesText {
+    font-size: $font-size-xs;
+    color: $blue-grey-3;
   }
 }

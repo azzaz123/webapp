@@ -7,8 +7,8 @@
         </div>
         <div class="align-self-center ml-1">
           <div class="PayviewDeliveryPoint__pointDescription">
-            <span *ngIf="isOffice" class="mb-2" i18n="@@pay_view_buyer_delivery_method_po_selector_title">Pick-up point</span>
-            <span *ngIf="isHome" class="mb-2" i18n="@@pay_view_buyer_delivery_method_ba_selector_title">My address</span>
+            <span *ngIf="isOffice" i18n="@@pay_view_buyer_delivery_method_po_selector_title">Pick-up point</span>
+            <span *ngIf="isHome" i18n="@@pay_view_buyer_delivery_method_ba_selector_title">My address</span>
             <span class="PayviewDeliveryPoint__pointCost ml-1">
               <b>{{ deliveryCost }}</b>
             </span>
@@ -17,20 +17,16 @@
       </div>
     </ng-template>
   </tsl-delivery-radio-selector>
-  <div *ngIf="isChecked" [@enterAnimation] class="PayviewDeliveryPoint__informationWrapper d-flex w-100 flex-column">
+  <div *ngIf="isChecked" [@enterAnimation] class="PayviewDeliveryPoint__informationWrapper pb-3 d-flex w-100 flex-column">
     <div class="PayviewDeliveryPoint__deliveryEtaWrapper d-inline">
-      <span class="PayviewDeliveryPoint__deliveryEtaTitle" i18n="@@pay_view_buyer_all_all_summary_eta_time_description"
-        >Delivery expected in {{ '' }}</span
-      >
+      <span i18n="@@pay_view_buyer_all_all_summary_eta_time_description">Delivery expected in {{ '' }}</span>
       <span class="PayviewDeliveryPoint__deliveryEta pl-1" i18n="@@pay_view_buyer_all_all_summary_eta_time_days"
         >{{ deliveryTime }} days</span
       >
     </div>
 
     <div *ngIf="showAddress" class="PayviewDeliveryPoint__deliveryAddressWrapper d-inline">
-      <span *ngIf="isOffice" class="PayviewDeliveryPoint__deliveryAddressTitle" i18n="@@pay_view_buyer_po_po_summary_eta_office_description"
-        >Pick-up point: {{ '' }}</span
-      >
+      <span *ngIf="isOffice" i18n="@@pay_view_buyer_po_po_summary_eta_office_description">Pick-up point: {{ '' }}</span>
       <span *ngIf="isHome" class="PayviewDeliveryPoint__deliveryAddressTitle" i18n="@@pay_view_buyer_all_ba_summary_eta_address_description"
         >Address: {{ '' }}</span
       >
