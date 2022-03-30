@@ -6,21 +6,13 @@
  */
 
 /**
- * User views transaction pay screen
+ * User views transaction logistics screen
  */
-export interface ViewTransactionPayScreen {
+export interface ViewTransactionLogisticsScreen {
   /**
    * The unique identifier for an item
    */
   itemId: string;
-  /**
-   * Identifier of the category that the item belongs to
-   */
-  categoryId: number;
-  /**
-   * The unique identifier of the search that the click is under
-   */
-  searchId?: string;
   /**
    * Item price without fees
    */
@@ -36,15 +28,11 @@ export interface ViewTransactionPayScreen {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 238;
+  screenId: 311;
   /**
-   * Preselected payment method
+   * Preselected delivery method
    */
-  preselectedPaymentMethod?: 'bank card' | 'paypal' | 'wallet' | 'wallet, bank card' | 'wallet, paypal';
-  /**
-   * Indicates whether wallet toggle is switched on
-   */
-  useWallet?: boolean;
+  preselectedDeliveryMethod?: 'buyer address' | 'carrier office';
   /**
    * Country of the item/seller (e.g.: ES, IT, etc.) using 2-digit ISO Code
    */

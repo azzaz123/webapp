@@ -16,7 +16,7 @@ export interface ClickItemCategoryUpload {
   /**
    * Identifier of the upload screen
    */
-  screenId: 41;
+  screenId: 41 | 160;
   /**
    * Name of the experiment or A/B testing applied to the user who is uploading the item. The default value would be 'baseline'
    */

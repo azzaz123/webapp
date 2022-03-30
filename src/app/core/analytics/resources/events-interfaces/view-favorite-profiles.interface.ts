@@ -18,7 +18,7 @@ export interface ViewFavoriteProfiles {
    */
   numberOfProfiles?: number;
   /**
-   * Flag true or false is the view shows an empty state
+   * Flag true or false is the view shows an empty state, which is shown only to unlogged users
    */
   emptyState?: boolean;
   /**

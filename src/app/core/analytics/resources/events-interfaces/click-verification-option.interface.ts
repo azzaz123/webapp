@@ -12,9 +12,13 @@ export interface ClickVerificationOption {
   /**
    * Identifier of the screen of the register help center
    */
-  screenId: 248;
+  screenId: 248 | 110;
   /**
    * Identifier of the verification done
    */
   verificationMethod: 'phone' | 'email' | 'facebook';
+  /**
+   * If the user click on change email or not
+   */
+  change?: boolean;
 }
