@@ -9,16 +9,15 @@ import { ClickHelpTransactional } from '@core/analytics/resources/events-interfa
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
 import { mapPaymentMethodToPaymentMethodDto } from '@api/shared/mappers/payment-method-to-payment-method-dto.mapper';
 import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
-import { USER_ACTION, PAYMENT_PREFERENCE, ADDRESS_TYPE } from '../../modules/promotion/enums/tracking-events-action';
+import { USER_ACTION, PAYMENT_PREFERENCE, ADDRESS_TYPE } from './tracking-events-action.enum';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
   return {
     screenId: SCREEN_IDS.Checkout,
     itemId: payviewState.item.id,
     categoryId: payviewState.item.categoryId,
-    isBuyNow: false,
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
-    totalPrice: payviewState.costs.buyerCost.total.amount.total,
+    feesPrice: payviewState.costs.buyerCost.fees.amount.total,
     sellerUserId: payviewState.itemDetails.sellerUserHash,
     preselectedPaymentMethod: getPreselectedPaymentMethod(payviewState.payment.preferences.preferences.paymentMethod),
     useWallet: payviewState.payment.preferences.preferences.useWallet,
@@ -56,7 +55,6 @@ export function getClickHelpTransactionalEventPropertiesFromPayviewState(payview
     sellerUserId: payviewState.item.owner,
     helpName: 'Help Top Pay Screen',
     categoryId: payviewState.item.categoryId,
-    isBuyNow: false,
     itemId: payviewState.item.id,
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
   };

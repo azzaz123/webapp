@@ -76,7 +76,6 @@ export const MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES: ClickHelpTransactio
   itemId: MOCK_PAYVIEW_ITEM.id,
   categoryId: MOCK_PAYVIEW_ITEM.categoryId,
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
-  isBuyNow: false,
   sellerUserId: MOCK_PAYVIEW_ITEM.owner,
   helpName: 'Help Top Pay Screen',
 };
