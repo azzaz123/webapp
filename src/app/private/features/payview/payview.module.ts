@@ -12,6 +12,7 @@ import { payviewRoutedComponents, PayviewRoutingModule } from '@private/features
 import { PayviewSummaryModule } from '@private/features/payview/modules/summary/payview-summary.module';
 import { StepperModule } from '@shared/stepper/stepper.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
+import { PayviewBuyModule } from './modules/buy/payview-buy.module';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
     PayviewRoutingModule,
     DeliveryAddressModule,
     DeliveryMapModule,
+    PayviewBuyModule,
     PayviewSummaryModule,
     PayviewDeliveryModule,
     PayviewPaymentModule,

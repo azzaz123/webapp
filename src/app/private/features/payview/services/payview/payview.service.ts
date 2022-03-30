@@ -139,6 +139,10 @@ export class PayviewService {
     return this.paymentPreferencesService.update(preferences);
   }
 
+  public request(): Observable<null> {
+    return of(null);
+  }
+
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
     const method = state.delivery.methods.deliveryMethods[state.delivery.methods.default.index];
 
