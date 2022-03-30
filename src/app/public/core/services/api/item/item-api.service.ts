@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { ItemCounters, ItemResponse, ItemVisibilityFlags, Purchase } from '@core/item/item-response.interface';
 import { environment } from '@environments/environment';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { DeleteItemBodyResponse, MarkAsFavouriteBodyResponse, ReserveItemBodyResponse } from './interfaces/item-response.interface';

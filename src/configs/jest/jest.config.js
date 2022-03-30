@@ -13,7 +13,10 @@ module.exports = {
   ],
   globals: {
     "ts-jest": {
-      "tsConfig": "<rootDir>/src/tsconfig.spec.json"
+      "tsConfig": "<rootDir>/src/tsconfig.spec.json",
+      // By using isolated modules we lose some TS functionalities in the transpilation process but tests are much faster
+      // Check more here: https://www.typescriptlang.org/tsconfig#isolatedModules
+      "isolatedModules": true
     }
   },
   moduleNameMapper: {

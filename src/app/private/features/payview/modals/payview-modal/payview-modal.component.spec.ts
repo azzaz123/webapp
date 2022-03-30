@@ -19,10 +19,12 @@ import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buy
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
 import { MOCK_PAYVIEW_STATE, MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
+import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 import { PaymentsPaymentMethod } from '@api/core/model/payments';
 import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-wallets-http.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
+import { PAYVIEW_PAYMENT_EVENT_TYPE } from '@private/features/payview/modules/payment/enums/payview-payment-event-type.enum';
 import { PAYVIEW_PROMOTION_EVENT_TYPE } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.enum';
 import { PAYVIEW_STEPS } from '@private/features/payview/enums/payview-steps.enum';
 import { PayviewDeliveryHeaderComponent } from '@private/features/payview/modules/delivery/components/header/payview-delivery-header.component';
@@ -49,8 +51,6 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
-import { PAYVIEW_PAYMENT_EVENT_TYPE } from '../../modules/payment/enums/payview-payment-event-type.enum';
-import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
 import {
   MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
