@@ -44,7 +44,7 @@ export const mapDeliveryBuyerDeliveryMethodsDtoToDeliveryBuyerDeliveryMethods: T
 };
 
 const mapToAddressLabel: ToDomainMapper<DeliveryBuyerDeliveryMethod[], string> = (input: DeliveryBuyerDeliveryMethod[]): string => {
-  return input.find((method: DeliveryBuyerDeliveryMethod) => method.method === DELIVERY_MODE.BUYER_ADDRESS).lastAddressUsed.label;
+  return input.find((method: DeliveryBuyerDeliveryMethod) => method.method === DELIVERY_MODE.BUYER_ADDRESS).lastAddressUsed?.label || null;
 };
 
 const mapToDeliveryMethod: ToDomainMapper<DeliveryBuyerDeliveryMethodDto, DeliveryBuyerDeliveryMethod> = (
