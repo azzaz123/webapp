@@ -418,6 +418,10 @@ describe('CreditCreditCardComponent', () => {
                 });
               });
 
+              it('should show an error toast only once', () => {
+                expect(toastService.show).toHaveBeenCalledTimes(1);
+              });
+
               it('should NOT redirect to the bank details page', () => {
                 expect(router.navigate).not.toHaveBeenCalled();
               });
@@ -539,6 +543,10 @@ describe('CreditCreditCardComponent', () => {
                 text: invalidError.message,
                 type: TOAST_TYPES.ERROR,
               });
+            });
+
+            it('should show an error toast only once', () => {
+              expect(toastService.show).toHaveBeenCalledTimes(1);
             });
 
             it('should NOT redirect to the bank details page', () => {
