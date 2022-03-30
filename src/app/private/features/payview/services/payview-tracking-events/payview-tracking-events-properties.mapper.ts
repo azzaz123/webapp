@@ -81,7 +81,6 @@ export function getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewSt
     itemId: payviewState.item.id,
     categoryId: payviewState.item.categoryId,
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
-    isBuyNow: false,
     sellerUserId: payviewState.item.owner,
   };
 }
