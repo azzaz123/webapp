@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -18,8 +18,8 @@ import { ItemService } from '@core/item/item.service';
 import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
+import { MOCK_PAYVIEW_STATE, MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
-import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PaymentsPaymentMethod } from '@api/core/model/payments';
 import { PaymentsWalletsHttpService } from '@api/payments/wallets/http/payments-wallets-http.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
@@ -51,6 +51,15 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
+import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
+import {
+  MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
+  MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
+  MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT,
+  MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION,
+  MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES,
+  MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
+} from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
 
 @Component({
@@ -86,6 +95,7 @@ class FakeComponent extends PayviewModalComponent {
     deliveryCountries: DeliveryCountriesService,
     promotionService: PayviewPromotionService,
     paymentService: PayviewPaymentService,
+    payviewTrackingEventsService: PayviewTrackingEventsService,
     buyService: PayviewBuyService
   ) {
     super(
@@ -96,6 +106,7 @@ class FakeComponent extends PayviewModalComponent {
       deliveryCountries,
       promotionService,
       paymentService,
+      payviewTrackingEventsService,
       buyService
     );
   }
@@ -135,6 +146,7 @@ describe('PayviewModalComponent', () => {
   let payviewStateManagementService: PayviewStateManagementService;
   let stepper: StepperComponent;
   let stepperSpy: jasmine.Spy;
+  let payviewTrackingEventsService: PayviewTrackingEventsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -184,6 +196,15 @@ describe('PayviewModalComponent', () => {
             },
           },
         },
+        {
+          provide: PayviewTrackingEventsService,
+          useValue: {
+            trackClickAddEditCard() {},
+            trackClickAddEditAddress() {},
+            trackClickHelpTransactional() {},
+            trackViewTransactionPayScreen() {},
+          },
+        },
         ItemService,
         NgbActiveModal,
         PaymentsWalletsService,
@@ -208,6 +229,7 @@ describe('PayviewModalComponent', () => {
       payviewBuyService = TestBed.inject(PayviewBuyService);
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
+      payviewTrackingEventsService = TestBed.inject(PayviewTrackingEventsService);
 
       fixture = TestBed.createComponent(FakeComponent);
       component = fixture.componentInstance;
@@ -283,6 +305,7 @@ describe('PayviewModalComponent', () => {
 
       describe('WHEN the payview gets the state', () => {
         beforeEach(fakeAsync(() => {
+          spyOn(payviewTrackingEventsService, 'trackViewTransactionPayScreen');
           jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
 
           fixture = TestBed.createComponent(FakeComponent);
@@ -339,6 +362,13 @@ describe('PayviewModalComponent', () => {
           const promotionEditorComponent = debugElement.query(By.directive(PayviewPromotionEditorComponent));
 
           expect(promotionEditorComponent).toBeFalsy();
+        });
+
+        it('should ask for tracking event', () => {
+          expect(payviewTrackingEventsService.trackViewTransactionPayScreen).toHaveBeenCalledTimes(1);
+          expect(payviewTrackingEventsService.trackViewTransactionPayScreen).toHaveBeenCalledWith(
+            MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL
+          );
         });
 
         describe('WHEN stepper is on the second step', () => {
@@ -658,61 +688,80 @@ describe('PayviewModalComponent', () => {
       });
     });
 
-    describe('WHEN the user wants to edit the delivery address', () => {
+    describe('when the user clicks on the help button', () => {
       beforeEach(() => {
-        fixture.detectChanges();
+        spyOn(payviewTrackingEventsService, 'trackClickHelpTransactional');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+        fixture.debugElement.query(By.css(payviewModalHelpSelector)).nativeElement.click();
+      });
 
+      it('should ask for tracking event', () => {
+        expect(payviewTrackingEventsService.trackClickHelpTransactional).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickHelpTransactional).toHaveBeenCalledWith(
+          MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES
+        );
+      });
+    });
+
+    describe('WHEN the user wants to edit the delivery address', () => {
+      let result: number = 0;
+      let expected: number = 1;
+
+      beforeEach(() => {
         spyOn(payviewDeliveryService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddEditAddress');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+        payviewDeliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, () => {
+          result++;
+        });
+        payviewDeliveryService.editAddress();
       });
 
       it('should received the corresponding order', () => {
-        let result: number = 0;
-        let expected: number = 1;
-        const subscription = payviewDeliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, () => {
-          result++;
-        });
-
-        payviewDeliveryService.editAddress();
-
         expect(payviewDeliveryService.on).toHaveBeenCalledTimes(1);
         expect(result).toBe(expected);
       });
 
       it('should move to the corresponding step', () => {
-        const subscription = payviewDeliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, () => {});
-
-        payviewDeliveryService.editAddress();
-
         expect(stepperSpy).toHaveBeenCalledTimes(1);
         expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.DELIVERY_ADDRESS);
+      });
+
+      it('should ask for tracking event', () => {
+        expect(payviewTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledWith(MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT);
       });
     });
 
     describe('WHEN the user wants to edit the pick-up point', () => {
+      let result: number = 0;
+      let expected: number = 1;
+
       beforeEach(() => {
         spyOn(payviewDeliveryService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddEditAddress');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+        payviewDeliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {
+          result++;
+        });
+        payviewDeliveryService.editPickUpPoint();
       });
 
       it('should received the corresponding order', () => {
-        let result: number = 0;
-        let expected: number = 1;
-        const subscription = payviewDeliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {
-          result++;
-        });
-
-        payviewDeliveryService.editPickUpPoint();
-
         expect(payviewDeliveryService.on).toHaveBeenCalledTimes(1);
         expect(result).toBe(expected);
       });
 
       it('should move to the corresponding step', () => {
-        const subscription = payviewDeliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {});
-
-        payviewDeliveryService.editPickUpPoint();
-
         expect(stepperSpy).toHaveBeenCalledTimes(1);
         expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+      });
+
+      it('should ask for tracking event', () => {
+        expect(payviewTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddEditAddress).toHaveBeenCalledWith(
+          MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_OFFICE_AND_EDIT_ACTION
+        );
       });
     });
 
@@ -857,32 +906,62 @@ describe('PayviewModalComponent', () => {
     });
 
     describe('WHEN the user wants to edit the credit card', () => {
-      beforeEach(() => {
-        fixture.detectChanges();
+      let result: number = 0;
+      let expected: number = 1;
 
+      beforeEach(() => {
         spyOn(payviewPaymentService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddEditCard');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+        payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
+          result++;
+        });
+        payviewPaymentService.editCreditCard();
       });
 
       it('should received the corresponding order', () => {
-        let result: number = 0;
-        let expected: number = 1;
-        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
-          result++;
-        });
-
-        payviewPaymentService.editCreditCard();
-
         expect(payviewPaymentService.on).toHaveBeenCalledTimes(1);
         expect(result).toBe(expected);
       });
 
       it('should move to the corresponding step', () => {
-        const subscription = payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {});
-
-        payviewPaymentService.editCreditCard();
-
         expect(stepperSpy).toHaveBeenCalledTimes(1);
         expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.CREDIT_CARD);
+      });
+
+      it('should ask for tracking event', () => {
+        expect(payviewTrackingEventsService.trackClickAddEditCard).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddEditCard).toHaveBeenCalledWith(MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION);
+      });
+    });
+
+    describe('WHEN the user wants to add the credit card', () => {
+      let result: number = 0;
+      let expected: number = 1;
+
+      beforeEach(() => {
+        spyOn(payviewPaymentService, 'on').and.callThrough();
+        spyOn(payviewTrackingEventsService, 'trackClickAddEditCard');
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD));
+        payviewPaymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
+          result++;
+        });
+        payviewPaymentService.editCreditCard();
+      });
+
+      it('should received the corresponding order', () => {
+        expect(payviewPaymentService.on).toHaveBeenCalledTimes(1);
+        expect(result).toBe(expected);
+      });
+
+      it('should move to the corresponding step', () => {
+        expect(stepperSpy).toHaveBeenCalledTimes(1);
+        expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.CREDIT_CARD);
+      });
+
+      it('should ask for tracking event', () => {
+        expect(payviewTrackingEventsService.trackClickAddEditCard).toHaveBeenCalledTimes(1);
+        expect(payviewTrackingEventsService.trackClickAddEditCard).toHaveBeenCalledWith(MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION);
       });
     });
 
