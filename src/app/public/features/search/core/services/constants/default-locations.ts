@@ -1,6 +1,6 @@
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { LabeledSearchLocation } from '@public/features/search/core/services/interfaces/search-location.interface';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 export const DEFAULT_LOCATIONS: Record<APP_LOCALE, LabeledSearchLocation> = {
   es: {

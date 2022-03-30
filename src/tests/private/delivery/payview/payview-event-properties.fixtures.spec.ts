@@ -16,17 +16,35 @@ export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD:
   screenId: SCREEN_IDS.Checkout,
   itemId: MOCK_PAYVIEW_ITEM.id,
   categoryId: MOCK_PAYVIEW_ITEM.categoryId,
-  isBuyNow: false,
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
-  totalPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.total.amount.total,
+  feesPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.fees.amount.total,
   sellerUserId: MOCK_PAYVIEW_ITEM.owner,
   preselectedPaymentMethod: 'bank card',
   useWallet: false,
   sellerCountry: 'ES',
 };
+
 export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL: ViewTransactionPayScreen = {
   ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
   preselectedPaymentMethod: 'paypal',
+};
+
+export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET: ViewTransactionPayScreen = {
+  ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
+  useWallet: true,
+  preselectedPaymentMethod: 'wallet',
+};
+
+export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_CREDIT_CARD: ViewTransactionPayScreen = {
+  ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
+  useWallet: true,
+  preselectedPaymentMethod: 'wallet, bank card',
+};
+
+export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_PAYPAL: ViewTransactionPayScreen = {
+  ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
+  useWallet: true,
+  preselectedPaymentMethod: 'wallet, paypal',
 };
 
 export const MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION: ClickAddEditCard = {
@@ -77,7 +95,6 @@ export const MOCK_CLICK_HELP_TRANSACTIONAL_EVENT_PROPERTIES: ClickHelpTransactio
   itemId: MOCK_PAYVIEW_ITEM.id,
   categoryId: MOCK_PAYVIEW_ITEM.categoryId,
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
-  isBuyNow: false,
   sellerUserId: MOCK_PAYVIEW_ITEM.owner,
   helpName: 'Help Top Pay Screen',
 };
@@ -87,7 +104,6 @@ export const MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY: ClickAddPromocodeTransact
   itemId: MOCK_PAYVIEW_ITEM.id,
   categoryId: MOCK_PAYVIEW_ITEM.categoryId,
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
-  isBuyNow: false,
   sellerUserId: MOCK_PAYVIEW_ITEM.owner,
 };
 
@@ -96,7 +112,6 @@ export const MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY: ClickApplyPromocodeTran
   itemId: MOCK_PAYVIEW_ITEM.id,
   categoryId: MOCK_PAYVIEW_ITEM.categoryId,
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
-  isBuyNow: false,
   sellerUserId: MOCK_PAYVIEW_ITEM.owner,
 };
 
@@ -105,8 +120,6 @@ export const MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD: PayTransaction = {
   itemId: MOCK_PAYVIEW_ITEM.id,
   categoryId: MOCK_PAYVIEW_ITEM.categoryId,
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
-  offeredPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
-  isBuyNow: false,
   sellerUserId: MOCK_PAYVIEW_ITEM.owner,
   isBumped: false,
   paymentMethod: 'bank card',

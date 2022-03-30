@@ -6,6 +6,9 @@ import { MOCK_DELIVERY_COSTS_ITEM } from '@api/fixtures/bff/delivery/costs/deliv
 import {
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_CREDIT_CARD,
+  MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET,
+  MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_CREDIT_CARD,
+  MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_PAYPAL,
 } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS } from '@api/fixtures/delivery/address/delivery-address.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
@@ -63,6 +66,57 @@ export const MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE: PayviewState = {
     card: null,
     methods: MOCK_PAYMENTS_PAYMENT_METHODS,
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_CREDIT_CARD,
+    wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
+  },
+};
+
+export const MOCK_PAYVIEW_STATE_WITH_WALLET_PREFERENCE: PayviewState = {
+  costs: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS,
+  delivery: {
+    address: MOCK_DELIVERY_ADDRESS,
+    costs: MOCK_DELIVERY_COSTS_ITEM,
+    methods: MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
+  },
+  item: MOCK_PAYVIEW_ITEM,
+  itemDetails: MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2,
+  payment: {
+    card: null,
+    methods: MOCK_PAYMENTS_PAYMENT_METHODS,
+    preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET,
+    wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
+  },
+};
+
+export const MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE: PayviewState = {
+  costs: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS,
+  delivery: {
+    address: MOCK_DELIVERY_ADDRESS,
+    costs: MOCK_DELIVERY_COSTS_ITEM,
+    methods: MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
+  },
+  item: MOCK_PAYVIEW_ITEM,
+  itemDetails: MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2,
+  payment: {
+    card: null,
+    methods: MOCK_PAYMENTS_PAYMENT_METHODS,
+    preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_CREDIT_CARD,
+    wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
+  },
+};
+
+export const MOCK_PAYVIEW_STATE_WITH_WALLET_AND_PAYPAL_PREFERENCE: PayviewState = {
+  costs: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS,
+  delivery: {
+    address: MOCK_DELIVERY_ADDRESS,
+    costs: MOCK_DELIVERY_COSTS_ITEM,
+    methods: MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
+  },
+  item: MOCK_PAYVIEW_ITEM,
+  itemDetails: MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2,
+  payment: {
+    card: null,
+    methods: MOCK_PAYMENTS_PAYMENT_METHODS,
+    preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_PAYPAL,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
 };

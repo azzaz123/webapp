@@ -7,20 +7,18 @@ import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payvie
 import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods/delivery-buyer-delivery-method.interface';
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
-import { mapPaymentMethodToPaymentMethodDto } from '@api/shared/mappers/payment-method-to-payment-method-dto.mapper';
 import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
-import { USER_ACTION, PAYMENT_PREFERENCE, ADDRESS_TYPE } from '../../modules/promotion/enums/tracking-events-action';
 import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-add-promocode-transaction-pay.interface';
 import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
+import { USER_ACTION, ADDRESS_TYPE } from './tracking-events-action.enum';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
   return {
     screenId: SCREEN_IDS.Checkout,
     itemId: payviewState.item.id,
     categoryId: payviewState.item.categoryId,
-    isBuyNow: false,
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
-    totalPrice: payviewState.costs.buyerCost.total.amount.total,
+    feesPrice: payviewState.costs.buyerCost.fees.amount.total,
     sellerUserId: payviewState.itemDetails.sellerUserHash,
     preselectedPaymentMethod: getPreselectedPaymentMethod(payviewState.payment.preferences.preferences.paymentMethod),
     useWallet: payviewState.payment.preferences.preferences.useWallet,
@@ -58,7 +56,6 @@ export function getClickHelpTransactionalEventPropertiesFromPayviewState(payview
     sellerUserId: payviewState.item.owner,
     helpName: 'Help Top Pay Screen',
     categoryId: payviewState.item.categoryId,
-    isBuyNow: false,
     itemId: payviewState.item.id,
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
   };
@@ -72,7 +69,6 @@ export function getClickAddPromocodeTransactionPayEventPropertiesFromPayviewStat
     itemId: payviewState.item.id,
     categoryId: payviewState.item.categoryId,
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
-    isBuyNow: false,
     sellerUserId: payviewState.item.owner,
   };
 }
@@ -109,5 +105,13 @@ function getAddOrEditAddress(
 }
 
 function getPreselectedPaymentMethod(paymentPreference: PaymentMethod): ViewTransactionPayScreen['preselectedPaymentMethod'] {
-  return mapPaymentMethodToPaymentMethodDto(paymentPreference) === 'credit card' ? PAYMENT_PREFERENCE.BANK_CARD : PAYMENT_PREFERENCE.PAYPAL;
+  return PRESELECTED_PAYMENT_METHOD_CONVERTER[paymentPreference];
 }
+
+const PRESELECTED_PAYMENT_METHOD_CONVERTER: Record<PaymentMethod, ViewTransactionPayScreen['preselectedPaymentMethod']> = {
+  [PaymentMethod.CREDIT_CARD]: 'bank card',
+  [PaymentMethod.PAYPAL]: 'paypal',
+  [PaymentMethod.WALLET]: 'wallet',
+  [PaymentMethod.WALLET_AND_CREDIT_CARD]: 'wallet, bank card',
+  [PaymentMethod.WALLET_AND_PAYPAL]: 'wallet, paypal',
+};

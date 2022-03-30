@@ -1,4 +1,6 @@
 import 'jest-preset-angular/setup-jest';
+import { getTestBed } from '@angular/core/testing';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
 // Mock DOM interactions
 Object.defineProperty(window, 'CSS', { value: null });
@@ -84,4 +86,11 @@ Object.defineProperty(navigator, 'msMaxTouchPoints', {
 Object.defineProperty(navigator, 'languages', {
   value: GLOBAL_MOCKS.MOCK_NAVIGATOR_LANGUAGES,
   writable: true,
+});
+
+//TODO: Usign teardown strategy from Angular v12.2 in order to improve non-cached test performance
+//When upgrading to Angular v13, the default value will be true for all tests, so this won't be needed
+beforeEach(() => {
+  getTestBed().resetTestEnvironment();
+  getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), { teardown: { destroyAfterEach: true } });
 });

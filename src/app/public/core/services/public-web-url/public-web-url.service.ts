@@ -11,8 +11,8 @@ export class PublicWebUrlService {
 
   constructor(@Inject(SITE_URL) private siteUrl: string) {}
 
-  public getLoginUrl(): string {
-    return `${this.siteUrl}login?redirectUrl=${this.getEncryptedAndEncodedRedirect()}`;
+  public getLoginUrl(loginSource?: string): string {
+    return `${this.siteUrl}login?redirectUrl=${this.getEncryptedAndEncodedRedirect()}&loginSource=${loginSource}`;
   }
 
   private getEncryptedAndEncodedRedirect(): string {

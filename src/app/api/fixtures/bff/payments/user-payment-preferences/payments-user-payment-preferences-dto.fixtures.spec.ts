@@ -49,3 +49,45 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_CREDIT_CARD: PaymentsUs
     walletBlocked: false,
   },
 };
+
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET: PaymentsUserPaymentPreferences = {
+  defaults: {
+    paymentMethod: null,
+    useWallet: true,
+    walletBlocked: false,
+  },
+  preferences: {
+    id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    paymentMethod: mapPaymentMethodDtoToPaymentMethod('wallet'),
+    useWallet: true,
+    walletBlocked: false,
+  },
+};
+
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_CREDIT_CARD: PaymentsUserPaymentPreferences = {
+  defaults: {
+    paymentMethod: null,
+    useWallet: true,
+    walletBlocked: false,
+  },
+  preferences: {
+    id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    paymentMethod: mapPaymentMethodDtoToPaymentMethod('wallet, credit card'),
+    useWallet: true,
+    walletBlocked: false,
+  },
+};
+
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_PAYPAL: PaymentsUserPaymentPreferences = {
+  defaults: {
+    paymentMethod: null,
+    useWallet: true,
+    walletBlocked: false,
+  },
+  preferences: {
+    id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    paymentMethod: mapPaymentMethodDtoToPaymentMethod('wallet, paypal'),
+    useWallet: true,
+    walletBlocked: false,
+  },
+};
