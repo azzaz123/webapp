@@ -928,12 +928,6 @@ describe('PayviewModalComponent', () => {
       });
     });
 
-    describe('WHEN the user clicks on the pay button', () => {
-      beforeEach(() => {});
-
-      it('should ask to buy the item', () => {});
-    });
-
     describe('WHEN the components is destroyed', () => {
       beforeEach(() => {
         spyOn(payviewPromotionService, 'on').and.callThrough();
