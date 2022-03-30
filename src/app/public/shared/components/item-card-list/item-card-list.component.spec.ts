@@ -143,7 +143,7 @@ describe('ItemCardListComponent', () => {
         spyOn(checkSessionService, 'hasSession').and.returnValue(true);
       });
       it('should toggle the favourite item', () => {
-        component.toggleFavourite(MOCK_ITEM_CARD);
+        component.toggleFavourite({ item: MOCK_ITEM_CARD, loginSource: 'favorite-item' });
 
         expect(itemCardService.toggleFavourite).toHaveBeenCalledWith(MOCK_ITEM_CARD);
       });
@@ -151,7 +151,7 @@ describe('ItemCardListComponent', () => {
       it('should emit the itemCard data', () => {
         spyOn(component.toggleFavouriteEvent, 'emit');
 
-        component.toggleFavourite(MOCK_ITEM_CARD);
+        component.toggleFavourite({ item: MOCK_ITEM_CARD, loginSource: 'favorite-item' });
 
         expect(component.toggleFavouriteEvent.emit).toHaveBeenCalledWith(MOCK_ITEM_CARD);
       });
@@ -162,7 +162,7 @@ describe('ItemCardListComponent', () => {
         spyOn(checkSessionService, 'hasSession').and.returnValue(false);
       });
       it('should check the session action', () => {
-        component.toggleFavourite(MOCK_ITEM_CARD);
+        component.toggleFavourite({ item: MOCK_ITEM_CARD, loginSource: 'favorite-item' });
 
         expect(checkSessionService.checkSessionAction).toHaveBeenCalled();
       });
@@ -170,7 +170,7 @@ describe('ItemCardListComponent', () => {
       it('should not emit the itemCard data', () => {
         spyOn(component.toggleFavouriteEvent, 'emit');
 
-        component.toggleFavourite(MOCK_ITEM_CARD);
+        component.toggleFavourite({ item: MOCK_ITEM_CARD, loginSource: 'favorite-item' });
 
         expect(component.toggleFavouriteEvent.emit).not.toHaveBeenCalled();
       });

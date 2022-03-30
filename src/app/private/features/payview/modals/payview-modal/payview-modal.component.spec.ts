@@ -120,14 +120,6 @@ describe('PayviewModalComponent', () => {
   const payviewModalBackSelector: string = `${payviewModal}__back`;
   const payviewModalHelpSelector: string = '#helpLink';
   const payviewModalSpinnerSelector: string = `${payviewModal}__spinner`;
-  const payviewModalSummarySelector: string = `${payviewModal}__summary`;
-  const payviewModalDeliverySelector: string = `${payviewModal}__delivery`;
-  const payviewModalPaymentSelector: string = `${payviewModal}__payment`;
-  const payviewModalPickUpPointSelector: string = `${payviewModal}__pickUpPointMap`;
-  const payviewModalPromotionSelector: string = `${payviewModal}__promotion`;
-  const payviewDeliveryOverviewSelector: string = 'tsl-payview-delivery-overview';
-  const payviewPromotionOverviewSelector: string = 'tsl-payview-promotion-overview';
-  const payviewSummaryOverviewSelector: string = 'tsl-payview-summary-overview';
 
   let activeModalService: NgbActiveModal;
   let component: PayviewModalComponent;
@@ -302,28 +294,28 @@ describe('PayviewModalComponent', () => {
           fixture.detectChanges();
         }));
 
-        it('should show the summary block', () => {
-          const summaryBlock = debugElement.query(By.css(payviewModalSummarySelector));
+        it('should show the summary block two times', () => {
+          const summaryBlock = debugElement.queryAll(By.directive(PayviewSummaryOverviewComponent));
 
-          expect(summaryBlock).toBeTruthy();
+          expect(summaryBlock.length).toStrictEqual(2);
         });
 
-        it('should show the delivery block', () => {
-          const deliveryBlock = debugElement.query(By.css(payviewModalDeliverySelector));
+        it('should show the delivery block one time', () => {
+          const deliveryBlock = debugElement.queryAll(By.directive(PayviewDeliveryOverviewComponent));
 
-          expect(deliveryBlock).toBeTruthy();
+          expect(deliveryBlock.length).toStrictEqual(1);
         });
 
-        it('should show the promotion block', () => {
-          const promotionBlock = debugElement.query(By.css(payviewModalPromotionSelector));
+        it('should show the promotion block one time', () => {
+          const promotionBlock = debugElement.queryAll(By.directive(PayviewPromotionOverviewComponent));
 
-          expect(promotionBlock).toBeTruthy();
+          expect(promotionBlock.length).toStrictEqual(1);
         });
 
-        it('should show the payment block', () => {
-          const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+        it('should show the payment block one time', () => {
+          const paymentBlock = debugElement.queryAll(By.directive(FakePayviewPaymentOverviewComponent));
 
-          expect(paymentBlock).toBeTruthy();
+          expect(paymentBlock.length).toStrictEqual(1);
         });
 
         it('should not show the loading animation', fakeAsync(() => {
@@ -338,7 +330,7 @@ describe('PayviewModalComponent', () => {
         });
 
         it('should not show the pick-up block', () => {
-          const pickUpPointMapBlock = debugElement.query(By.css(payviewModalPickUpPointSelector));
+          const pickUpPointMapBlock = debugElement.query(By.directive(FakeDeliveryMapComponent));
 
           expect(pickUpPointMapBlock).toBeFalsy();
         });
@@ -377,31 +369,31 @@ describe('PayviewModalComponent', () => {
           });
 
           it('should not show the summary block', () => {
-            const target = fixture.debugElement.query(By.css(payviewModalSummarySelector));
+            const target = fixture.debugElement.query(By.directive(PayviewSummaryOverviewComponent));
 
             expect(target).toBeFalsy();
           });
 
           it('should not show the delivery block', () => {
-            const target = fixture.debugElement.query(By.css(payviewModalDeliverySelector));
+            const target = fixture.debugElement.query(By.directive(PayviewDeliveryOverviewComponent));
 
             expect(target).toBeFalsy();
           });
 
           it('should not show the promotion block', () => {
-            const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
+            const target = fixture.debugElement.query(By.directive(PayviewPromotionOverviewComponent));
 
             expect(target).toBeFalsy();
           });
 
           it('should not show the payment block', () => {
-            const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+            const paymentBlock = debugElement.query(By.directive(FakePayviewPaymentOverviewComponent));
 
             expect(paymentBlock).toBeFalsy();
           });
 
           it('should not show the pick-up block', () => {
-            const pickUpPointMapBlock = debugElement.query(By.css(payviewModalPickUpPointSelector));
+            const pickUpPointMapBlock = debugElement.query(By.directive(FakeDeliveryMapComponent));
 
             expect(pickUpPointMapBlock).toBeFalsy();
           });
@@ -422,25 +414,25 @@ describe('PayviewModalComponent', () => {
           });
 
           it('should not show the summary block', () => {
-            const target = fixture.debugElement.query(By.css(payviewModalSummarySelector));
+            const target = fixture.debugElement.query(By.directive(PayviewSummaryOverviewComponent));
 
             expect(target).toBeFalsy();
           });
 
           it('should not show the delivery block', () => {
-            const target = fixture.debugElement.query(By.css(payviewModalDeliverySelector));
+            const target = fixture.debugElement.query(By.directive(PayviewDeliveryOverviewComponent));
 
             expect(target).toBeFalsy();
           });
 
           it('should not show the promotion block', () => {
-            const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
+            const target = fixture.debugElement.query(By.directive(PayviewPromotionOverviewComponent));
 
             expect(target).toBeFalsy();
           });
 
           it('should not show the payment block', () => {
-            const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+            const paymentBlock = debugElement.query(By.directive(FakePayviewPaymentOverviewComponent));
 
             expect(paymentBlock).toBeFalsy();
           });
@@ -452,7 +444,7 @@ describe('PayviewModalComponent', () => {
           });
 
           it('should show the pick-up block', () => {
-            const pickUpPointMapBlock = debugElement.query(By.css(payviewModalPickUpPointSelector));
+            const pickUpPointMapBlock = debugElement.query(By.directive(FakeDeliveryMapComponent));
 
             expect(pickUpPointMapBlock).toBeTruthy();
           });
@@ -529,25 +521,25 @@ describe('PayviewModalComponent', () => {
           });
 
           it('should not show the summary block', () => {
-            const target = fixture.debugElement.query(By.css(payviewModalSummarySelector));
+            const target = fixture.debugElement.query(By.directive(PayviewSummaryOverviewComponent));
 
             expect(target).toBeFalsy();
           });
 
           it('should not show the delivery block', () => {
-            const target = fixture.debugElement.query(By.css(payviewModalDeliverySelector));
+            const target = fixture.debugElement.query(By.directive(PayviewDeliveryOverviewComponent));
 
             expect(target).toBeFalsy();
           });
 
           it('should not show the promotion block', () => {
-            const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
+            const target = fixture.debugElement.query(By.directive(PayviewPromotionOverviewComponent));
 
             expect(target).toBeFalsy();
           });
 
           it('should not show the payment block', () => {
-            const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+            const paymentBlock = debugElement.query(By.directive(FakePayviewPaymentOverviewComponent));
 
             expect(paymentBlock).toBeFalsy();
           });
@@ -559,7 +551,7 @@ describe('PayviewModalComponent', () => {
           });
 
           it('should not show the pick-up block', () => {
-            const pickUpPointMapBlock = debugElement.query(By.css(payviewModalPickUpPointSelector));
+            const pickUpPointMapBlock = debugElement.query(By.directive(FakeDeliveryMapComponent));
 
             expect(pickUpPointMapBlock).toBeFalsy();
           });
@@ -991,31 +983,25 @@ describe('PayviewModalComponent', () => {
         });
 
         it('should not show the summary block', () => {
-          const summaryBlock = debugElement.query(By.css(payviewModalSummarySelector));
+          const target = fixture.debugElement.query(By.directive(PayviewSummaryOverviewComponent));
 
-          expect(summaryBlock).toBeFalsy();
-        });
-
-        it('should not show the summary overview component', () => {
-          const summaryOverviewComponent = debugElement.query(By.css(payviewSummaryOverviewSelector));
-
-          expect(summaryOverviewComponent).toBeFalsy();
+          expect(target).toBeFalsy();
         });
 
         it('should not show the delivery block', () => {
-          const target = fixture.debugElement.query(By.css(payviewModalDeliverySelector));
+          const target = fixture.debugElement.query(By.directive(PayviewDeliveryOverviewComponent));
 
           expect(target).toBeFalsy();
         });
 
         it('should not show the promotion block', () => {
-          const target = fixture.debugElement.query(By.css(payviewModalPromotionSelector));
+          const target = fixture.debugElement.query(By.directive(PayviewPromotionOverviewComponent));
 
           expect(target).toBeFalsy();
         });
 
         it('should not show the payment block', () => {
-          const paymentBlock = debugElement.query(By.css(payviewModalPaymentSelector));
+          const paymentBlock = debugElement.query(By.directive(FakePayviewPaymentOverviewComponent));
 
           expect(paymentBlock).toBeFalsy();
         });
@@ -1027,7 +1013,7 @@ describe('PayviewModalComponent', () => {
         });
 
         it('should not show the pick-up block', () => {
-          const pickUpPointMapBlock = debugElement.query(By.css(payviewModalPickUpPointSelector));
+          const pickUpPointMapBlock = debugElement.query(By.directive(FakeDeliveryMapComponent));
 
           expect(pickUpPointMapBlock).toBeFalsy();
         });
@@ -1050,49 +1036,49 @@ describe('PayviewModalComponent', () => {
         });
 
         it('should show the summary block', () => {
-          const summaryBlock = debugElement.query(By.css(payviewModalSummarySelector));
+          const summaryBlock = debugElement.queryAll(By.directive(PayviewSummaryOverviewComponent));
 
           expect(summaryBlock).toBeTruthy();
         });
 
         it('should show the summary overview component', () => {
-          const summaryOverviewComponent = debugElement.query(By.css(payviewSummaryOverviewSelector));
+          const summaryOverviewComponent = debugElement.query(By.directive(PayviewSummaryOverviewComponent));
 
           expect(summaryOverviewComponent).toBeTruthy();
         });
 
         it('should pass the payview state to the summary overview component', () => {
-          const summaryOverviewComponent = debugElement.query(By.css(payviewSummaryOverviewSelector));
+          const summaryOverviewComponent = debugElement.query(By.directive(PayviewSummaryOverviewComponent));
 
           expect((summaryOverviewComponent.componentInstance as PayviewSummaryOverviewComponent).payviewState).toEqual(MOCK_PAYVIEW_STATE);
         });
 
         it('should show the delivery overview component', () => {
-          const target = debugElement.query(By.css(payviewDeliveryOverviewSelector));
+          const target = debugElement.query(By.directive(PayviewDeliveryOverviewComponent));
 
           expect(target).toBeTruthy();
         });
 
         it('should pass the costs to the delivery overview component', () => {
-          const target = debugElement.query(By.css(payviewDeliveryOverviewSelector));
+          const target = debugElement.query(By.directive(PayviewDeliveryOverviewComponent));
 
           expect((target.componentInstance as PayviewDeliveryOverviewComponent).costs).toEqual(MOCK_PAYVIEW_STATE.delivery.costs);
         });
 
         it('should pass the methods to the delivery overview component', () => {
-          const target = debugElement.query(By.css(payviewDeliveryOverviewSelector));
+          const target = debugElement.query(By.directive(PayviewDeliveryOverviewComponent));
 
           expect((target.componentInstance as PayviewDeliveryOverviewComponent).methods).toEqual(MOCK_PAYVIEW_STATE.delivery.methods);
         });
 
         it('should show the promotion overview component', () => {
-          const target = debugElement.query(By.css(payviewPromotionOverviewSelector));
+          const target = debugElement.query(By.directive(PayviewPromotionOverviewComponent));
 
           expect(target).toBeTruthy();
         });
 
         it('should pass the costs to the promotion overview component', () => {
-          const target = debugElement.query(By.css(payviewPromotionOverviewSelector));
+          const target = debugElement.query(By.directive(PayviewPromotionOverviewComponent));
 
           expect((target.componentInstance as PayviewPromotionOverviewComponent).costs).toEqual(MOCK_PAYVIEW_STATE.costs);
         });

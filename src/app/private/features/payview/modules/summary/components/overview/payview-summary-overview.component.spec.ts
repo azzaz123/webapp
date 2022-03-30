@@ -51,32 +51,61 @@ describe('PayviewSummaryOverviewComponent', () => {
         debugElement = fixture.debugElement;
 
         component.payviewState = MOCK_PAYVIEW_STATE;
-
-        fixture.detectChanges();
       });
 
       it('should show the summary header', () => {
+        fixture.detectChanges();
+
         const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target).toBeTruthy();
       });
 
       it('should assign the corresponding delivery method', () => {
+        fixture.detectChanges();
+
         const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target.componentInstance.deliveryMethod).toEqual(MOCK_PAYVIEW_STATE.delivery.methods.current);
       });
 
       it('should assign the corresponding image', () => {
+        fixture.detectChanges();
+
         const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target.componentInstance.image).toEqual(MOCK_PAYVIEW_STATE.item.mainImage);
       });
 
       it('should assign the corresponding title', () => {
+        fixture.detectChanges();
+
         const target = debugElement.query(By.directive(PayviewSummaryHeaderComponent));
 
         expect(target.componentInstance.title).toEqual(MOCK_PAYVIEW_STATE.item.title);
+      });
+
+      describe('and NOT should show the purchase summary title', () => {
+        it('should NOT show the title', () => {
+          fixture.detectChanges();
+
+          const target = debugElement.query(By.css('#purchaseSummaryTitle'));
+
+          expect(target).toBeFalsy();
+        });
+      });
+
+      describe('and should show the purchase summary title', () => {
+        beforeEach(() => {
+          component.showPurchaseSummaryTitle = true;
+          fixture.detectChanges();
+        });
+
+        it('should show the title', () => {
+          const target = debugElement.query(By.css('#purchaseSummaryTitle'));
+
+          expect(target).toBeTruthy();
+        });
       });
     });
 
