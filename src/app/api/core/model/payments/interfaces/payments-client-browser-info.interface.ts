@@ -3,8 +3,8 @@ export interface PaymentsClientBrowserInfo {
   isJavaScriptEnabled: boolean;
   language: string;
   colorDepth: number;
-  screenHeight: number;
-  screenWidth: number;
+  modalHeight: number;
+  modalWidth: number;
   timeZoneOffset: string;
   userAgent: string;
 }
