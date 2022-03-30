@@ -6,21 +6,13 @@
  */
 
 /**
- * User views transaction pay screen
+ * User views transaction payment screen
  */
-export interface ViewTransactionPayScreen {
+export interface ViewTransactionPaymentScreen {
   /**
    * The unique identifier for an item
    */
   itemId: string;
-  /**
-   * Identifier of the category that the item belongs to
-   */
-  categoryId: number;
-  /**
-   * The unique identifier of the search that the click is under
-   */
-  searchId?: string;
   /**
    * Item price without fees
    */
@@ -36,11 +28,15 @@ export interface ViewTransactionPayScreen {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 238;
+  screenId: 312;
   /**
    * Preselected payment method
    */
   preselectedPaymentMethod?: 'bank card' | 'paypal' | 'wallet' | 'wallet, bank card' | 'wallet, paypal';
+  /**
+   * Balance amount in the wallet
+   */
+  walletBalanceAmount?: number;
   /**
    * Indicates whether wallet toggle is switched on
    */

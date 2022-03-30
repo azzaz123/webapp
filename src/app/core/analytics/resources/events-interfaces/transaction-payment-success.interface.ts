@@ -24,7 +24,7 @@ export interface TransactionPaymentSuccess {
   /**
    * Identifier of the checkout screen
    */
-  screenId: 238;
+  screenId: 238 | 313;
   /**
    * Country of the user (buyer) that sends the transaction payment success (e.g.: ES, IT, etc.)
    */

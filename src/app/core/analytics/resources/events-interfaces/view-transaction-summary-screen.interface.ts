@@ -6,25 +6,21 @@
  */
 
 /**
- * User clicks add button before adding a promocode in transaction pay screen
+ * User views transaction summary screen
  */
-export interface ClickAddPromocodeTransactionPay {
+export interface ViewTransactionSummaryScreen {
   /**
    * The unique identifier for an item
    */
   itemId: string;
   /**
-   * Identifier of the category that the item belongs to
-   */
-  categoryId: number;
-  /**
-   * The unique identifier of the search that the click is under
-   */
-  searchId?: string;
-  /**
    * Item price without fees
    */
   itemPrice: number;
+  /**
+   * Delivery and insurance fees
+   */
+  feesPrice?: number;
   /**
    * Identifier of the user that the item belongs to
    */
@@ -32,5 +28,5 @@ export interface ClickAddPromocodeTransactionPay {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 238 | 313;
+  screenId: 313;
 }
