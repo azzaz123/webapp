@@ -7,13 +7,14 @@ import { EventService } from '@core/event/event.service';
 import { UuidService } from '@core/uuid/uuid.service';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
-import { finalize } from 'rxjs/operators';
+import { concatMap, finalize } from 'rxjs/operators';
 import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import {
   CardCountryIsInvalidError,
   CardCvvIsInvalidError,
   CardExpirationDateIsInvalidError,
+  CardInvalidError,
   CardIsNotAuthorizedError,
   CardNotFoundError,
   CardNumberIsInvalidError,
@@ -137,8 +138,8 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     this.loadingButton$.next(true);
 
     const subscription = this.isNewForm
-      ? this.paymentsCreditCardService.create(this.getCreditCardSyncRequest())
-      : this.paymentsCreditCardService.update(this.getCreditCardSyncRequest());
+      ? this.paymentsCreditCardService.create(this.getCreditCardSyncRequest()).pipe(concatMap(() => this.paymentsCreditCardService.get()))
+      : this.paymentsCreditCardService.update(this.getCreditCardSyncRequest()).pipe(concatMap(() => this.paymentsCreditCardService.get()));
 
     subscription
       .pipe(
@@ -176,32 +177,36 @@ export class CreditCardComponent implements OnInit, OnDestroy {
     };
   }
 
-  private handleCreditCardErrors(errors: PaymentsCardsError[]): void {
+  private handleCreditCardErrors(errors: PaymentsCardsError[] | PaymentsCardsError): void {
     let toastText: string = CREDIT_CARD_TRANSLATIONS.MISSING_INFO_ERROR;
 
-    errors.forEach((error: PaymentsCardsError) => {
-      if (error instanceof CardIsNotAuthorizedError || error instanceof CardNumberIsInvalidError) {
-        this.setIncorrectControlAndShowError('cardNumber', error.message);
-      }
+    if (errors instanceof Array) {
+      errors.forEach((error: PaymentsCardsError) => {
+        if (error instanceof CardIsNotAuthorizedError || error instanceof CardNumberIsInvalidError) {
+          this.setIncorrectControlAndShowError('cardNumber', error.message);
+        }
 
-      if (error instanceof CardOwnerNameIsInvalidError) {
-        this.setIncorrectControlAndShowError('fullName', error.message);
-      }
+        if (error instanceof CardOwnerNameIsInvalidError) {
+          this.setIncorrectControlAndShowError('fullName', error.message);
+        }
 
-      if (error instanceof CardExpirationDateIsInvalidError) {
-        this.setIncorrectControlAndShowError('cardExpirationDate', error.message);
-      }
+        if (error instanceof CardExpirationDateIsInvalidError) {
+          this.setIncorrectControlAndShowError('cardExpirationDate', error.message);
+        }
 
-      if (error instanceof CardCvvIsInvalidError) {
-        this.setIncorrectControlAndShowError('cardCvx', error.message);
-      }
+        if (error instanceof CardCvvIsInvalidError) {
+          this.setIncorrectControlAndShowError('cardCvx', error.message);
+        }
 
-      if (this.isGenericCreditCardError(error)) {
-        toastText = CREDIT_CARD_TRANSLATIONS.GENERIC_ERROR;
-      } else {
-        this.creditCardForm.markAsPending();
-      }
-    });
+        if (this.isGenericCreditCardError(error)) {
+          toastText = error.message || CREDIT_CARD_TRANSLATIONS.GENERIC_ERROR;
+        } else {
+          this.creditCardForm.markAsPending();
+        }
+      });
+    } else {
+      toastText = errors.message;
+    }
 
     this.showToast(toastText, TOAST_TYPES.ERROR);
   }

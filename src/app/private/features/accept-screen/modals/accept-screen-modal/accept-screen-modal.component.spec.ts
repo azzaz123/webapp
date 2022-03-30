@@ -172,19 +172,6 @@ describe('AcceptScreenModalComponent', () => {
             },
           },
         },
-        {
-          provide: AcceptScreenTrackingEventsService,
-          useValue: {
-            trackClickItemCard() {},
-            trackClickOtherProfile() {},
-            trackClickHelpTransactional() {},
-            trackViewAcceptOffer() {},
-            trackClickAddEditAddress() {},
-            trackClickScheduleHPU() {},
-            trackClickAcceptOffer() {},
-            trackClickRejectOffer() {},
-          },
-        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

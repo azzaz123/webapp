@@ -1,4 +1,4 @@
-import { HTTP_PROTOCOL } from 'configs/protocol.config';
+import { HTTP_PROTOCOL } from '@configs/protocol.config';
 
 export interface Environment {
   production: boolean;

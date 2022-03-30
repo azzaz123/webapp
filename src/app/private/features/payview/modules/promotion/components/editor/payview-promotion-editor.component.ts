@@ -39,6 +39,10 @@ export class PayviewPromotionEditorComponent implements OnDestroy, OnInit {
   }
 
   public apply(): void {
+    if (!this.promocode) {
+      this.errorMessage = PAYVIEW_PROMOTION_ERRORS['promocode does not exist'];
+      return;
+    }
     this.promotionService.applyPromocode(this.promocode);
   }
 

@@ -3,10 +3,10 @@ import { CardRegistrationFailedError } from '@api/core/errors/payments/cards';
 import { CreditCard } from '@api/core/model';
 import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
 import { environment } from '@environments/environment';
+import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
 import { filter, concatMap, take, takeUntil, tap, catchError, map } from 'rxjs/operators';
-import { THREE_DOMAIN_SECURE_MODAL_HEIGHT, THREE_DOMAIN_SECURE_MODAL_WIDTH } from './three-domain-secure.constants';
 
 const THREE_DOMAIN_SECURE_START_URL = (id: string): string => `${environment.baseUrl}api/v3/payments/cards/start_3ds/${id}`;
 type GetCreditCardRequest = (ignoreInvalidCard: boolean) => Observable<CreditCard>;
@@ -57,7 +57,7 @@ export class ThreeDomainSecureService {
     const threeDSecureTitle: string = $localize`:@@three3ds_verification_title:Credit card verification`;
 
     return this.webViewModalService
-      .open(threeDSecureStartUrl, THREE_DOMAIN_SECURE_MODAL_WIDTH, THREE_DOMAIN_SECURE_MODAL_HEIGHT, threeDSecureTitle)
+      .open(threeDSecureStartUrl, threeDSecureTitle, DELIVERY_MODAL_CLASSNAME)
       .pipe(catchError(() => throwError([new CardRegistrationFailedError()])));
   }
 
