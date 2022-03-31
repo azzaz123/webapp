@@ -20,8 +20,8 @@ export const prePaymentsErrorSelector = (payviewState: PayviewState): PrePayment
   if (!payviewState) {
     error = new PrePaymentUnknownError();
   }
-  const deliveryError = checkDeliveryMethodConditions(payviewState.delivery);
-  const paymentError = checkPaymentConditions(payviewState.payment);
+  const deliveryError: PrePaymentError = checkDeliveryMethodConditions(payviewState.delivery);
+  const paymentError: PrePaymentError = checkPaymentConditions(payviewState.payment);
   if (deliveryError) error = deliveryError;
   if (paymentError) error = paymentError;
 
@@ -47,7 +47,7 @@ function checkDeliveryMethodConditions(deliveryMethods: PayviewStateDelivery): P
 }
 
 function checkPaymentConditions(paymentState: PayviewStatePayment): PrePaymentError | null {
-  if (paymentState.preferences.preferences) {
+  if (!paymentState.preferences.preferences) {
     return new NoPaymentSelectedError();
   }
   if (selectedPaymentMethodIsAnEmptyCard(paymentState)) {
