@@ -11,6 +11,8 @@ import { BuyerRequestsDto } from '@api/delivery/buyer/requests/dtos/buyer-reques
 import { BuyerRequestsHttpService } from '@api/delivery/buyer/requests/http/buyer-requests-http.service';
 import { MOCK_BUYER_REQUESTS_ITEMS_DETAILS_DTO } from '@api/fixtures/delivery/buyer/requests/buyer-requests-items-details-dto.fixtures.spec';
 import { MOCK_BUYER_REQUESTS_DTO } from '@api/fixtures/delivery/buyer/requests/buyer-requests-dto.fixtures.spec';
+import { MOCK_BUYER_REQUEST_BUY_DTO_WITH_BUYER_ADDRESS } from '@api/fixtures/delivery/buyer/requests/buyer-request-buy-dto.fixtures.spec';
+import { APP_VERSION } from '@environments/version';
 
 describe('BuyerRequestsHttpService', () => {
   const MOCK_ITEM_HASH: string = '9jdxdd2rylzk';
@@ -61,6 +63,29 @@ describe('BuyerRequestsHttpService', () => {
 
       expect(req.request.method).toBe('GET');
       expect(response).toEqual(MOCK_BUYER_REQUESTS_ITEMS_DETAILS_DTO);
+    });
+  });
+
+  describe('when asking to buy a request', () => {
+    const expectedUrl: string = BUYER_REQUESTS_ENDPOINT;
+    let buyRequest: TestRequest;
+
+    beforeEach(() => {
+      service.buy(MOCK_BUYER_REQUEST_BUY_DTO_WITH_BUYER_ADDRESS).subscribe();
+      buyRequest = httpMock.expectOne(expectedUrl);
+      buyRequest.flush({});
+    });
+
+    it('should ask the server with valid petition type', () => {
+      expect(buyRequest.request.method).toBe('POST');
+    });
+
+    it('should ask the server with the expected body', () => {
+      expect(buyRequest.request.body).toStrictEqual(MOCK_BUYER_REQUEST_BUY_DTO_WITH_BUYER_ADDRESS);
+    });
+
+    it('should have the app version header', () => {
+      expect(buyRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
   });
 });
