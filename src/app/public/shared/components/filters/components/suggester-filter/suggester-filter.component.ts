@@ -93,6 +93,14 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     }
   }
 
+  public handleReload(): void {
+    this.getOptions()
+      .pipe(take(1))
+      .subscribe(({ list }) => {
+        this.optionsSubject.next(list);
+      });
+  }
+
   private initializeFilter(): void {
     this.initLabel();
     this.initForm();

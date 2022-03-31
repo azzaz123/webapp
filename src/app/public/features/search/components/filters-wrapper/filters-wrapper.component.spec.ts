@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FiltersWrapperComponent } from './filters-wrapper.component';
 import { BubbleModule } from '@public/shared/components/bubble/bubble.module';
 import { DrawerModule } from '@public/shared/components/drawer/drawer.module';
-import { FilterGroupComponentStub } from '@public/shared/components/filters/components/filter-group/services/filter-group.component.stub';
+import { FilterGroupComponentStub } from '@public/shared/components/filters/components/filter-group/filter-group.component.stub';
 import {
   FILTER_PARAMETER_DRAFT_STORE_TOKEN,
   FILTER_PARAMETER_STORE_TOKEN,
@@ -22,6 +22,7 @@ import { CookieService } from 'ngx-cookie';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
+import { BubbleDrawerConfiguration } from '@public/shared/components/filters/core/interfaces/bubble-drawer-configuration.interface';
 
 @Component({
   selector: 'tsl-test-component',
@@ -34,11 +35,19 @@ describe('FiltersWrapperComponent', () => {
   let drawerStore: FilterParameterStoreService;
   let bubbleStore: FilterParameterStoreService;
   let navigator: SearchNavigatorService;
+  let filterGroupConfigurationService: FilterGroupConfigurationService;
   let fixture: ComponentFixture<TestComponent>;
   let debugElement: DebugElement;
 
   const drawerPredicate = By.directive(DrawerComponent);
   const filtersButton = By.css('.FiltersWrapper__bar > .m-1');
+  const filtersConfig = {
+    bubble: [],
+    drawer: [],
+    rules: {
+      reload: [{ parentParamKey: FILTER_QUERY_PARAM_KEY.bathrooms, childFilterConfigId: 'childFilterConfigId' }],
+    },
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -54,7 +63,14 @@ describe('FiltersWrapperComponent', () => {
         ]),
       ],
       providers: [
-        FilterGroupConfigurationService,
+        {
+          provide: FilterGroupConfigurationService,
+          use: {
+            getConfiguration(): BubbleDrawerConfiguration {
+              return filtersConfig;
+            },
+          },
+        },
         {
           provide: FILTER_PARAMETER_DRAFT_STORE_TOKEN,
           useClass: FilterParameterStoreService,
@@ -73,6 +89,7 @@ describe('FiltersWrapperComponent', () => {
     bubbleStore = TestBed.inject<FilterParameterStoreService>(FILTER_PARAMETER_STORE_TOKEN);
     drawerStore = TestBed.inject<FilterParameterStoreService>(FILTER_PARAMETER_DRAFT_STORE_TOKEN);
     navigator = TestBed.inject(SearchNavigatorService);
+    filterGroupConfigurationService = TestBed.inject(FilterGroupConfigurationService);
     debugElement = fixture.debugElement;
     component = debugElement.query(By.directive(FiltersWrapperComponent)).componentInstance;
     fixture.detectChanges();
@@ -181,6 +198,7 @@ describe('FiltersWrapperComponent', () => {
 
   describe('when bubble value changes', () => {
     const newValues: FilterParameter[] = [{ key: FILTER_QUERY_PARAM_KEY.categoryId, value: '200' }];
+
     it('should upsert bubble store values', () => {
       spyOn(navigator, 'navigate');
 
@@ -247,6 +265,14 @@ describe('FiltersWrapperComponent', () => {
 
       expect(parameters).toEqual(newValues);
     });
+
+    it('should ask for new filter group configuration rules', () => {
+      spyOn(filterGroupConfigurationService, 'getConfiguration');
+
+      drawerStore.setParameters(newValues);
+
+      expect(filterGroupConfigurationService.getConfiguration).toHaveBeenCalledWith(drawerStore.getParameters());
+    });
   });
 
   describe('when bubble store values change', () => {
@@ -277,6 +303,14 @@ describe('FiltersWrapperComponent', () => {
 
       expect(drawerStore.setParameters).toHaveBeenCalledTimes(1);
       expect(drawerStore.setParameters).toHaveBeenCalledWith(newValues);
+    });
+
+    it('should ask for new filter group configuration rules', () => {
+      spyOn(filterGroupConfigurationService, 'getConfiguration');
+
+      bubbleStore.setParameters(newValues);
+
+      expect(filterGroupConfigurationService.getConfiguration).toHaveBeenCalledWith(bubbleStore.getParameters());
     });
   });
 

@@ -46,6 +46,10 @@ export class FilterHostComponent implements OnInit, OnChanges, OnDestroy {
     this.visibilitySubscription.add(this.visibilityService.attach(this).subscribe(this.handleVisibilityChange.bind(this)));
   }
 
+  public reload(): void {
+    this.filter.handleReload();
+  }
+
   private injectFilter(): void {
     const ref = this.host.viewContainerRef.createComponent(this.hostConfig.factory, 0);
     this.filter = ref.instance;
