@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
 import { CreditCard } from '@api/core/model';
 import { I18nService } from '@core/i18n/i18n.service';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
 import { PAYVIEW_PAYMENT_ICONS } from '@private/features/payview/constants/payview-payment-icons';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -56,11 +56,11 @@ export class PayviewPaymentMethodComponent {
   }
 
   public get isCreditCard(): boolean {
-    return this.method.method === PaymentMethod.CREDIT_CARD;
+    return this.method.method === PAYVIEW_PAYMENT_METHOD.CREDIT_CARD;
   }
 
   public get isPayPal(): boolean {
-    return this.method.method === PaymentMethod.PAYPAL;
+    return this.method.method === PAYVIEW_PAYMENT_METHOD.PAYPAL;
   }
 
   public selectMethod(index: number): void {

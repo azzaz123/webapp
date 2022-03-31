@@ -6,7 +6,7 @@ import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments/enums/payment-method.enum';
 import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-add-promocode-transaction-pay.interface';
 import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
 import { USER_ACTION, ADDRESS_TYPE } from './tracking-events-action.enum';
@@ -104,14 +104,14 @@ function getAddOrEditAddress(delivery: PayviewStateDelivery, eventType: PAYVIEW_
   return delivery.methods.current.lastAddressUsed ? USER_ACTION.EDIT : USER_ACTION.ADD;
 }
 
-function getPreselectedPaymentMethod(paymentPreference: PaymentMethod): ViewTransactionPayScreen['preselectedPaymentMethod'] {
+function getPreselectedPaymentMethod(paymentPreference: PAYVIEW_PAYMENT_METHOD): ViewTransactionPayScreen['preselectedPaymentMethod'] {
   return PRESELECTED_PAYMENT_METHOD_CONVERTER[paymentPreference];
 }
 
-const PRESELECTED_PAYMENT_METHOD_CONVERTER: Record<PaymentMethod, ViewTransactionPayScreen['preselectedPaymentMethod']> = {
-  [PaymentMethod.CREDIT_CARD]: 'bank card',
-  [PaymentMethod.PAYPAL]: 'paypal',
-  [PaymentMethod.WALLET]: 'wallet',
-  [PaymentMethod.WALLET_AND_CREDIT_CARD]: 'wallet, bank card',
-  [PaymentMethod.WALLET_AND_PAYPAL]: 'wallet, paypal',
+const PRESELECTED_PAYMENT_METHOD_CONVERTER: Record<PAYVIEW_PAYMENT_METHOD, ViewTransactionPayScreen['preselectedPaymentMethod']> = {
+  [PAYVIEW_PAYMENT_METHOD.CREDIT_CARD]: 'bank card',
+  [PAYVIEW_PAYMENT_METHOD.PAYPAL]: 'paypal',
+  [PAYVIEW_PAYMENT_METHOD.WALLET]: 'wallet',
+  [PAYVIEW_PAYMENT_METHOD.WALLET_AND_CREDIT_CARD]: 'wallet, bank card',
+  [PAYVIEW_PAYMENT_METHOD.WALLET_AND_PAYPAL]: 'wallet, paypal',
 };

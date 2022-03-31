@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 import { CreditCard } from '@api/core/model';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
 import { PayviewPaymentService } from '@private/features/payview/modules/payment/services/payview-payment.service';
 
@@ -13,7 +13,7 @@ import { PayviewPaymentService } from '@private/features/payview/modules/payment
 })
 export class PayviewPaymentMethodsComponent implements OnInit {
   @Input() public card: CreditCard;
-  @Input() public defaultMethod: PaymentMethod;
+  @Input() public defaultMethod: PAYVIEW_PAYMENT_METHOD;
   @Input() public methods: PaymentsPaymentMethod[];
 
   private selectedMethodIndex: number;
@@ -37,7 +37,7 @@ export class PayviewPaymentMethodsComponent implements OnInit {
   }
 
   public isCreditCard(paymentMethod: PaymentsPaymentMethod): boolean {
-    return paymentMethod.method === PaymentMethod.CREDIT_CARD;
+    return paymentMethod.method === PAYVIEW_PAYMENT_METHOD.CREDIT_CARD;
   }
 
   public isSelected(index: number): boolean {
