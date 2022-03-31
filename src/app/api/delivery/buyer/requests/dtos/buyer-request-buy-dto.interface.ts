@@ -6,6 +6,7 @@ export interface BuyerRequestBuyDto {
     amount: number;
     currency: string;
   };
+  promocode?: string;
   carrier_delivery_mode: DeliveryModeDto;
 }
 
