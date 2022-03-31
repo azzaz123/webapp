@@ -6,6 +6,7 @@
     <tsl-filter-group
       [values]="bubbleValues$ | async"
       [config]="bubbleFilterConfigurations$ | async | extractFilterConfigs:FILTER_VARIANT.BUBBLE"
+      [rules]="filterGroupRules$ | async"
       [variant]="FILTER_VARIANT.BUBBLE"
       (valueChange)="bubbleChange($event)"
       (openStateChange)="bubbleOpenStateChange($event)"></tsl-filter-group>
@@ -19,6 +20,7 @@
     *ngIf="drawerConfig.isOpen"
     [values]="drawerValues$ | async"
     [config]="drawerFilterConfigurations$ | async | extractFilterConfigs:FILTER_VARIANT.CONTENT"
+    [rules]="filterGroupRules$ | async"
     [variant]="FILTER_VARIANT.CONTENT"
     (openStateChange)="drawerOpenStateChange($event)"
     (valueChange)="drawerChange($event)"></tsl-filter-group>

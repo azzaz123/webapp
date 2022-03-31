@@ -12,6 +12,8 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import { PaginatedList } from '@api/core/model/lists/paginated-list.interface';
+import { throwError } from 'rxjs';
 
 jest.mock('./data/hardcoded-options', () => ({
   HARDCODED_OPTIONS: {
@@ -210,6 +212,22 @@ describe('FilterOptionService', () => {
             mappedSiblingParam2: 'siblingParam2',
           });
         }));
+      });
+    });
+
+    describe('and the api fails', () => {
+      it('should reurn an empty list with null pagination info', (done) => {
+        const expectedPaginatedResponse: PaginatedList<FilterOption, string> = {
+          list: [],
+          paginationParameter: null,
+        };
+
+        spyOn(filterOptionsApiService, 'getApiOptions').and.returnValue(throwError('api error'));
+
+        service.getOptions('pureApi' as ConfigurationId).subscribe((result: PaginatedList<FilterOption>) => {
+          expect(result).toEqual(expectedPaginatedResponse);
+          done();
+        });
       });
     });
   });
