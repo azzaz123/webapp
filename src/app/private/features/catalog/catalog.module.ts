@@ -3,7 +3,6 @@ import { catalogRoutedComponents, CatalogRoutingModule } from './catalog.routing
 import { SharedModule } from '@shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ReviewsModule } from '@private/features/reviews/reviews.module';
 import { CatalogItemComponent } from './components/catalog-item/catalog-item.component';
 import { SelectedItemsComponent } from './components/selected-items/selected-items.component';
 import { SubscriptionsSlotItemComponent } from './components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
@@ -28,7 +27,6 @@ import { VisibilityApiModule } from '@api/visibility/visibility-api.module';
     ReactiveFormsModule,
     NgbButtonsModule,
     NgbTooltipModule,
-    ReviewsModule,
     ItemAvatarModule,
     CustomCurrencyModule,
     NavLinksModule,
