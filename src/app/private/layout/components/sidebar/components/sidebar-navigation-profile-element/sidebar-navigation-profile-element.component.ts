@@ -9,4 +9,5 @@ import { SidebarNavigationProfileElement } from '../../interfaces/sidebar-naviga
 })
 export class SidebarNavigationProfileElementComponent {
   @Input() element: SidebarNavigationProfileElement;
+  @Input() collapsed: boolean;
 }

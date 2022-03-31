@@ -1,7 +1,7 @@
 <a *ngIf="element else placeholder" class="SidebarNavigationProfileElement d-flex align-items-center mx-2 my-4"
     [routerLink]="element.href">
     <tsl-user-avatar [imageUrl]="element.avatar" [size]="32"></tsl-user-avatar>
-    <div class="SidebarNavigationProfileElement__user d-flex flex-column ml-2">
+    <div class="SidebarNavigationProfileElement__user flex-column ml-2" [hidden]="collapsed">
         <tsl-pro-badge *ngIf="element.professional"></tsl-pro-badge>
         <h3 class="SidebarNavigationProfileElement__username text-truncate m-0">{{ element.text }}</h3>
         <div class="d-flex align-items-center">

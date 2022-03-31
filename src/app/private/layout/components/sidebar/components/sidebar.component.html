@@ -5,7 +5,7 @@
     <tsl-svg-icon src="/assets/icons/sidebar/sidebar_arrow.svg"></tsl-svg-icon>
   </button>
   
-  <tsl-sidebar-navigation-profile-element [element]="profileNavigationElement$ | async"></tsl-sidebar-navigation-profile-element>
+  <tsl-sidebar-navigation-profile-element [element]="profileNavigationElement$ | async" [collapsed]="collapsed$ | async"></tsl-sidebar-navigation-profile-element>
 
   <a *ngxPermissionsOnly="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
     [routerLink]="['/pro/dashboard']" routerLinkActive="Sidebar__entry--active">
