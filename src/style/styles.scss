@@ -71,6 +71,7 @@ body {
 
 ::-webkit-scrollbar {
   width: $scrollbars-width;
+  height: $scrollbars-width;
 }
 
 ::-webkit-scrollbar-track-piece {

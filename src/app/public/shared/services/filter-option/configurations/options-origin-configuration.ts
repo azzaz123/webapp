@@ -177,7 +177,8 @@ export const OPTIONS_ORIGIN_CONFIGURATION: OriginConfiguration = {
   },
   [PHONE_N_ACCESORIES_CONFIGURATION_ID.BRAND_MODEL]: {
     apiConfiguration: {
-      method: 'getPhoneNAccessoriesBrandsAndModels',
+      method: 'getPhoneNAccessoriesBrandsAndModelsByObjectTypeId',
+      requiredSiblingParams: [{ key: FILTER_QUERY_PARAM_KEY.objectType }],
     },
     mapperConfiguration: {
       method: 'formatBrandModel',

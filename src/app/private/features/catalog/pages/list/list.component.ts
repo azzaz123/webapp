@@ -87,7 +87,7 @@ export class ListComponent implements OnInit, OnDestroy {
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
   public items: Item[] = [];
-  public selectedStatus: STATUS | string = STATUS.PUBLISHED;
+  public selectedStatus: STATUS = STATUS.PUBLISHED;
   public loading = true;
   public end: boolean;
   public scrollTop: number;
@@ -135,7 +135,6 @@ export class ListComponent implements OnInit, OnDestroy {
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
     private catalogManagerService: CatalogManagerApiService,
-    private deviceService: DeviceDetectorService,
     private analyticsService: AnalyticsService,
     private i18nService: I18nService,
     private permissionService: NgxPermissionsService,
@@ -245,13 +244,8 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.logout().subscribe();
   }
 
-  public filterByStatus(status: string) {
+  public filterByStatus(status: STATUS) {
     this.deselect();
-
-    if (status === 'reviews') {
-      this.items = [];
-      this.selectedStatus = status;
-    }
 
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
@@ -492,13 +486,6 @@ export class ListComponent implements OnInit, OnDestroy {
       { id: STATUS.SOLD, display: this.i18n.translate(TRANSLATION_KEY.SOLD) },
       { id: STATUS.INACTIVE, display: this.i18n.translate(TRANSLATION_KEY.INACTIVE), counter: { currentVal: this.counters?.onHold } },
     ];
-
-    if (this.deviceService.isMobile()) {
-      this.normalNavLinks.push({
-        id: 'reviews',
-        display: this.i18n.translate(TRANSLATION_KEY.REVIEWS),
-      });
-    }
   }
 
   private onOpenWallacoinsModal(): void {

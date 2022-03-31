@@ -8,12 +8,13 @@ import {
   FILTER_PARAMETER_STORE_TOKEN,
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, merge, pipe } from 'rxjs';
 import { FilterGroupConfiguration } from '@public/shared/services/filter-group-configuration/interfaces/filter-group-config.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { SearchNavigatorService } from '@core/search/search-navigator.service';
 import { FILTERS_SOURCE } from '@public/core/services/search-tracking-events/enums/filters-source-enum';
-
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FilterGroupRules } from '@public/shared/components/filters/core/interfaces/filter-group-rules.interface';
 /* eslint-disable  @typescript-eslint/member-ordering */
 @Component({
   selector: 'tsl-filters-wrapper',
@@ -42,6 +43,7 @@ export class FiltersWrapperComponent {
   private drawerFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
   private bubbleFilterConfigurationsSubject = new BehaviorSubject<FilterGroupConfiguration>(null);
 
+  private filterGroupRulesSubject = new BehaviorSubject<FilterGroupRules>(null);
   private drawerValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
   private bubbleValuesSubject = new BehaviorSubject<FilterParameter[]>([]);
   private openedBubbleSubject = new BehaviorSubject<boolean>(false);
@@ -53,6 +55,7 @@ export class FiltersWrapperComponent {
   public openedBubble$ = this.openedBubbleSubject.asObservable();
   public bubbleValues$ = this.bubbleValuesSubject.asObservable();
   public drawerValues$ = this.drawerValuesSubject.asObservable();
+  public filterGroupRules$ = this.filterGroupRulesSubject.asObservable();
   public isDrawerContentScrollable$ = this.isDrawerContentScrollableSubject.asObservable();
 
   constructor(
@@ -64,6 +67,12 @@ export class FiltersWrapperComponent {
     this.subscriptions.add(this.bubbleStore.parameters$.subscribe(this.handleBubbleStoreChange.bind(this)));
 
     this.subscriptions.add(this.drawerStore.parameters$.subscribe(this.handleDrawerStoreChange.bind(this)));
+
+    this.subscriptions.add(
+      merge(this.bubbleStore.parameters$, this.drawerStore.parameters$)
+        .pipe(debounceTime(500))
+        .subscribe(this.handleFilterStoreChange.bind(this))
+    );
   }
 
   public toggleDrawer(): void {
@@ -133,6 +142,10 @@ export class FiltersWrapperComponent {
     } else {
       this.drawerValuesSubject.next(parameters);
     }
+  }
+
+  private handleFilterStoreChange(parameters: FilterParameter[]): void {
+    this.filterGroupRulesSubject.next(this.filterGroupConfigurationService.getConfiguration(parameters)?.config?.rules || null);
   }
 
   private cleanParameters(parameters: FilterParameter[], configurationParameters: FilterParameter[]): FilterParameter[] {
