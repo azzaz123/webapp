@@ -11,7 +11,6 @@ import {
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
-import { ItemFavouritesService } from '@public/core/services/item-favourites/item-favourites.service';
 import {
   RECOMMENDED_ITEM_MOCK,
   RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES,
@@ -24,7 +23,6 @@ import { MapRecommendedItemCardService } from './map-recommended-item-card.servi
 describe('MapRecommendedItemCardService', () => {
   let service: MapRecommendedItemCardService;
   let uuidService: UuidService;
-  let itemFavouritesService: ItemFavouritesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,58 +40,33 @@ describe('MapRecommendedItemCardService', () => {
       ],
     });
     service = TestBed.inject(MapRecommendedItemCardService);
-    itemFavouritesService = TestBed.inject(ItemFavouritesService);
     uuidService = TestBed.inject(UuidService);
-    spyOn(uuidService, 'getUUID').and.returnValue('1213');
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when we map items and check the favourite...', () => {
+  describe('when we map items', () => {
     describe('and the item is NOT favourited...', () => {
-      it('should call and return the map recommended items with the favourited flag false', () => {
-        let cardsResponse: ItemCard[];
-        spyOn(itemFavouritesService, 'getFavouritedItemIds').and.returnValue(of([]));
-        spyOn(service, 'mapRecommendedItems').and.callThrough();
+      it('should return the map recommended items with the favourited flag false', () => {
+        const cardsResponse = service.mapRecommendedItemsFavouriteCheck([RECOMMENDED_ITEM_NON_FAVOURITED_MOCK]);
 
-        service
-          .mapRecommendedItemsFavouriteCheck([RECOMMENDED_ITEM_NON_FAVOURITED_MOCK])
-          .subscribe((response: ItemCard[]) => (cardsResponse = response));
-
-        expect(service.mapRecommendedItems).toHaveBeenCalledWith([RECOMMENDED_ITEM_NON_FAVOURITED_MOCK]);
         expect(cardsResponse).toStrictEqual([MOCK_RECOMMENDED_ITEM_CARD_NON_FAVOURITE]);
       });
     });
 
     describe('and the item is favourited...', () => {
       it('should call and return the map recommended items with the favourited flag true', () => {
-        let cardsResponse: ItemCard[];
-        spyOn(itemFavouritesService, 'getFavouritedItemIds').and.returnValue(of([RECOMMENDED_ITEM_MOCK.id]));
-        spyOn(service, 'mapRecommendedItems').and.callThrough();
+        const cardsResponse = service.mapRecommendedItemsFavouriteCheck([RECOMMENDED_ITEM_MOCK]);
 
-        service
-          .mapRecommendedItemsFavouriteCheck([RECOMMENDED_ITEM_NON_FAVOURITED_MOCK])
-          .subscribe((response: ItemCard[]) => (cardsResponse = response));
-
-        expect(service.mapRecommendedItems).toHaveBeenCalledWith([RECOMMENDED_ITEM_MOCK]);
         expect(cardsResponse).toStrictEqual([MOCK_RECOMMENDED_ITEM_CARD]);
       });
-    });
-  });
-
-  describe('when we map an item response...', () => {
-    it('should return the correct mapped item card', () => {
-      expect(service.mapRecommendedItems([RECOMMENDED_ITEM_MOCK, RECOMMENDED_ITEM_MOCK])).toStrictEqual([
-        MOCK_RECOMMENDED_ITEM_CARD,
-        MOCK_RECOMMENDED_ITEM_CARD,
-      ]);
     });
 
     describe(`and the item doesn't have images`, () => {
       it('should set the image as null', () => {
-        expect(service.mapRecommendedItems([RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES])).toStrictEqual([
+        expect(service.mapRecommendedItemsFavouriteCheck([RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES])).toStrictEqual([
           MOCK_RECOMMENDED_ITEM_CARD_WITHOUT_IMAGES,
         ]);
       });
