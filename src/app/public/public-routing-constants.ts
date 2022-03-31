@@ -7,8 +7,9 @@ export enum PUBLIC_PATHS {
   USER_DETAIL = 'user',
   PROCESS_COMPLETE = 'process-complete',
   NOT_FOUND = '404',
-  NOT_AVAILABLE = 'not-available',
 }
+
+export const NON_PARITY_URLS = ['/member-get-member'];
 
 export enum PUBLIC_PATH_PARAMS {
   ID = 'id',

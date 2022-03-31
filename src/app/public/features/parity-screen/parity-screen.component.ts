@@ -13,7 +13,7 @@ export class ParityScreenComponent implements AfterViewInit {
   @ViewChild('qrCode', { static: false }) qrCode: any;
 
   public qrSize: QR_CODE_SIZE;
-  public qrData: string;
+  public qrData: string = 'https://es.wallapop.com/app/search';
   private imgURL: string = 'assets/images/generic-landing/wallapop-logo-black-round.svg';
   private mutationObserverCompatibility: boolean;
   private mutationObserverInstance: MutationObserver;
@@ -26,7 +26,6 @@ export class ParityScreenComponent implements AfterViewInit {
     this.publicFooterService.setShow(false);
     this.mutationObserverCompatibility = !!this.window.MutationObserver;
     this.qrSize = this.setQrSize(this.deviceService.isMobile());
-    this.qrData = 'https://www.wallapop.com/';
   }
 
   public ngAfterViewInit(): void {

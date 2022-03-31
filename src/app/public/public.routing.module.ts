@@ -3,7 +3,7 @@ import { RouterModule, Route } from '@angular/router';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { PUBLIC_PATHS, PUBLIC_PATH_PARAMS } from './public-routing-constants';
 import { PublicComponent } from './public.component';
-import { urlMatcher } from './public-routing.utils';
+import { nonParityUrlMatcher } from './public-routing.utils';
 
 const routes: Route[] = [
   {
@@ -37,7 +37,7 @@ const routes: Route[] = [
         loadChildren: () => import('./features/error/error.module').then((m) => m.ErrorModule),
       },
       {
-        matcher: urlMatcher,
+        matcher: nonParityUrlMatcher,
         loadChildren: () => import('./features/parity-screen/parity-screen.module').then((m) => m.ParityScreenModule),
       },
     ],
