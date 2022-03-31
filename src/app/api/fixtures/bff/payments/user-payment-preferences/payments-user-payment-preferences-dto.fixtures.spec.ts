@@ -17,6 +17,15 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE: PaymentsUserPaymen
   },
 };
 
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PREFERENCE_RESPONSE: PaymentsUserPaymentPreferencesDto = {
+  defaults: {
+    payment_method: null,
+    use_wallet: true,
+    wallet_blocked: false,
+  },
+  preferences: null,
+};
+
 export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_UPDATE_REQUEST: PaymentsUserPaymentPreferencesUpdateDto = {
   payment_method: 'paypal',
   use_wallet: false,
@@ -34,6 +43,15 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES: PaymentsUserPaymentPreferen
     useWallet: false,
     walletBlocked: false,
   },
+};
+
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PREFERENCE: PaymentsUserPaymentPreferences = {
+  defaults: {
+    paymentMethod: null,
+    useWallet: true,
+    walletBlocked: false,
+  },
+  preferences: null,
 };
 
 export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_CREDIT_CARD: PaymentsUserPaymentPreferences = {
