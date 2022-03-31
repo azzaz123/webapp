@@ -21,6 +21,24 @@
     padding: 0 $spacer * 0.5;
   }
 
+  &__avatarPlaceholder {
+    @include AvatarPlaceholder;
+    @include square(32px);
+    margin: 0 $spacer * 0.5;
+    min-width: 32px;
+    min-height: 32px;
+    flex-shrink: 0;
+  }
+
+  &__usernamePlaceholder {
+    @include TextPlaceholder;
+    height: 24px;
+  }
+
+  &__textPlaceholder {
+    @include TextPlaceholder;
+  }
+
   &:hover {
   }
 }
