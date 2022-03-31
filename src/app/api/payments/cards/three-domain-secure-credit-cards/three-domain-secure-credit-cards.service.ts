@@ -14,7 +14,7 @@ type GetCreditCardRequest = (ignoreInvalidCard: boolean) => Observable<CreditCar
 @Injectable({
   providedIn: 'root',
 })
-export class ThreeDomainSecureService {
+export class ThreeDomainSecureCreditCardsService {
   constructor(private webViewModalService: WebViewModalService) {}
 
   public checkThreeDomainSecure(getCreditCardRequest: GetCreditCardRequest): Observable<void> {
