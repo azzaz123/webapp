@@ -244,7 +244,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.logout().subscribe();
   }
 
-  public filterByStatus(status: string) {
+  public filterByStatus(status: STATUS) {
     this.deselect();
 
     if (status !== this.selectedStatus) {
