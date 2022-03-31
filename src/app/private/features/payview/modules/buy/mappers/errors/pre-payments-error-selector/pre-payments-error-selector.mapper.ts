@@ -18,7 +18,7 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 export const prePaymentsErrorSelector = (payviewState: PayviewState): PrePaymentError | null => {
   let error: PrePaymentError;
   if (!payviewState) {
-    error = new PrePaymentUnknownError();
+    return new PrePaymentUnknownError();
   }
   const deliveryError: PrePaymentError = checkDeliveryMethodConditions(payviewState.delivery);
   const paymentError: PrePaymentError = checkPaymentConditions(payviewState.payment);
