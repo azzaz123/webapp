@@ -20,6 +20,15 @@ export class UnsubscribeModalComponent implements OnInit {
   public hasSubscription = false;
   public isProfessional = false;
 
+  public readonly REASONS_TEXT = {
+    1: $localize`:@@delete_account_reason_view_all_users_dont_use_app_text:I'm not using the app`,
+    2: $localize`:@@delete_account_reason_view_all_users_no_interesting_items_nor_sellers_text:Can't find interesting item`,
+    3: $localize`:@@delete_account_reason_view_all_users_use_other_platform_text:I use other platforms`,
+    4: $localize`:@@delete_account_reason_view_all_users_technical_issues_text:Technical issues`,
+    5: $localize`:@@delete_account_reason_view_all_users_security_issues_text:Security issue`,
+    6: $localize`:@@delete_account_reason_view_all_users_other_reason_text:Other reason:`,
+  };
+
   constructor(
     public activeModal: NgbActiveModal,
     private userService: UserService,

@@ -57,7 +57,7 @@
     </h1>
     <div *ngFor="let reason of reasons" class="input-radio my-3">
       <input type="radio" class="mr-2" [value]="reason.reason_id" [(ngModel)]="selectedReason" />
-      <span class="UnsubscribeModal__reason">{{ reason.name }}</span>
+      <span class="UnsubscribeModal__reason">{{ REASONS_TEXT[reason?.reason_id] }}</span>
     </div>
 
     <p class="UnsubscribeModal__cutom-reason text-right" [hidden]="selectedReason !== 6">
