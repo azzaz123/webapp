@@ -241,7 +241,7 @@ describe('FilterGroupComponent', () => {
 
         component.ngOnChanges(changes);
 
-        expect(host.reload).toHaveBeenCalled();
+        expect(host.reload).toHaveBeenCalledTimes(1);
       });
     });
   });
