@@ -1,0 +1,22 @@
+@import '~style/common';
+
+.SidebarNavigationProfileElement {
+  appearance: none;
+  text-decoration: none;
+  color: $blue-grey-1;
+
+  &__username {
+    font-size: 16px;
+  }
+
+  &__reviewsCount {
+    font-size: 14px;
+  }
+
+  tsl-user-avatar {
+    padding: 0 $spacer * 0.5;
+  }
+
+  &:hover {
+  }
+}

@@ -1,0 +1,28 @@
+<a *ngIf="element else placeholder" class="SidebarNavigationProfileElement d-flex align-items-center mx-2 my-4"
+    [routerLink]="element.href">
+    <tsl-user-avatar [imageUrl]="element.avatar" [size]="32"></tsl-user-avatar>
+    <div class="SidebarNavigationProfileElement__user d-flex flex-column ml-2">
+        <tsl-pro-badge *ngIf="element.professional"></tsl-pro-badge>
+        <h3 class="SidebarNavigationProfileElement__username text-truncate m-0">{{ element.text }}</h3>
+        <div class="d-flex align-items-center">
+            <tsl-stars [stars]="element.reviews" [width]="12" [height]="12" [normalized]="false"></tsl-stars>
+            <span class="SidebarNavigationProfileElement__reviewsCount">({{ element.reviews_count }})</span>
+        </div>
+    </div>
+</a>
+
+<ng-template #placeholder>
+    <div class="SidebarNavigationProfileElement d-flex align-items-center px-3">
+        <div class="SidebarNavigationProfileElement__avatarPlaceholder mr-3">
+        </div>
+        <div class="w-100 d-flex flex-column">
+            <div class="SidebarNavigationProfileElement__usernamePlaceholder mb-2">
+            </div>
+            <div class="d-flex align-items-center">
+                <div
+                    class="SidebarNavigationProfileElement__textPlaceholder SidebarNavigationProfileElement__textPlaceholder--half">
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
