@@ -25,20 +25,25 @@ import { FASHION_CONFIGURATION_ID } from '@public/shared/components/filters/core
 import { SelectFilterComponent } from '@public/shared/components/filters/components/select-filter/select-filter.component';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
 import { COMMON_CONSUMER_GOODS_CONFIGURATION_ID } from '../../core/enums/configuration-ids/consumer-goods-configuration-ids.enum';
+import { FilterGroupRulesService } from './services/filter-group-rules.service';
+import { FilterGroupRules } from '../../core/interfaces/filter-group-rules.interface';
+import { ConfigurationId } from '../../core/types/configuration-id.type';
 
 @Component({
   selector: 'tsl-test-component',
-  template: ` <tsl-filter-group [values]="values" [config]="config" [variant]="variant"></tsl-filter-group> `,
+  template: ` <tsl-filter-group [values]="values" [config]="config" [variant]="variant" [rules]="rules"></tsl-filter-group> `,
 })
 class TestComponent {
   @Input() values: FilterParameter[];
   @Input() config: FilterConfig<unknown>[] = [];
   @Input() variant: FILTER_VARIANT = FILTER_VARIANT.BUBBLE;
+  @Input() rules: FilterGroupRules;
 }
 
 describe('FilterGroupComponent', () => {
   let component: FilterGroupComponent;
   let testComponent: TestComponent;
+  let filterGroupRulesService: FilterGroupRulesService;
   let fixture: ComponentFixture<TestComponent>;
   let debugElement: DebugElement;
 
@@ -89,6 +94,15 @@ describe('FilterGroupComponent', () => {
     },
   ];
 
+  const rules: FilterGroupRules = {
+    reload: [
+      {
+        parentParamKey: FILTER_QUERY_PARAM_KEY.brand,
+        childFilterConfigId: COMMON_CONFIGURATION_ID.POSTED_AGO,
+      },
+    ],
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestComponent, FilterGroupComponent, FilterHostComponent, FilterValuesPipe, FilterHostDirective],
@@ -103,6 +117,14 @@ describe('FilterGroupComponent', () => {
           useClass: FilterParameterStoreService,
         },
         HostVisibilityService,
+        {
+          provide: FilterGroupRulesService,
+          use: {
+            getFilterConfigIdsToBeReloaded(): ConfigurationId[keyof ConfigurationId][] {
+              return [COMMON_CONSUMER_GOODS_CONFIGURATION_ID.OBJECT_TYPE];
+            },
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -112,8 +134,10 @@ describe('FilterGroupComponent', () => {
     debugElement = fixture.debugElement;
     testComponent = fixture.componentInstance;
     component = debugElement.query(By.directive(FilterGroupComponent)).componentInstance;
+    filterGroupRulesService = TestBed.inject(FilterGroupRulesService);
 
     testComponent.config = initialConfig;
+    testComponent.rules = rules;
     testComponent.values = values;
     testComponent.variant = FILTER_VARIANT.CONTENT;
     fixture.detectChanges();
@@ -192,6 +216,33 @@ describe('FilterGroupComponent', () => {
 
     it('should update host config to refresh values', () => {
       expect(component['updateHostConfigs']).toHaveBeenCalled();
+    });
+  });
+
+  describe('when checking for filter group rule actions', () => {
+    const changes = {
+      values: new SimpleChange([], [{ key: FILTER_QUERY_PARAM_KEY.brand, value: 'brand' }], false),
+    };
+
+    it('should ask for filter config ids to be reloaded', () => {
+      spyOn(filterGroupRulesService, 'getFilterConfigIdsToBeReloaded');
+
+      component.ngOnChanges(changes);
+
+      expect(filterGroupRulesService.getFilterConfigIdsToBeReloaded).toHaveBeenCalledWith(rules.reload, changes.values);
+    });
+
+    it('should update filter hosts if required', () => {
+      filterGroupRulesService.getFilterConfigIdsToBeReloaded(rules.reload, changes.values)?.forEach((filterConfigIdToBeReloaded) => {
+        const host = component.filterHostsComponent.find(
+          (filterHostComponent) => filterHostComponent.hostConfig.filterConfig.id === filterConfigIdToBeReloaded
+        );
+        spyOn(host, 'reload');
+
+        component.ngOnChanges(changes);
+
+        expect(host.reload).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

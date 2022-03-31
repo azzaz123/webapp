@@ -25,7 +25,6 @@ import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
-import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SortFilterModule } from '../components/sort-filter/sort-filter.module';
 import { SearchAdsService } from '../core/ads/search-ads.service';
 import { SearchService } from '../core/services/search.service';
@@ -59,6 +58,7 @@ import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 import { SearchLayoutStubComponent } from '@fixtures/shared/components/search-layout.component.stub';
+import { FiltersWrapperStubModule } from '../components/filters-wrapper/filters-wrapper.module.stub';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -140,7 +140,7 @@ describe('SearchComponent', () => {
         NgxPermissionsAllowStubDirective,
       ],
       imports: [
-        FiltersWrapperModule,
+        FiltersWrapperStubModule,
         HttpClientTestingModule,
         SortFilterModule,
         ButtonModule,
