@@ -4,7 +4,6 @@ import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
 import { CATEGORY_IDS } from '../app/core/category/category-ids';
 import { Item, ITEM_TYPES } from '../app/core/item/item';
-import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
@@ -1568,7 +1567,7 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   engine: 'engine',
   gearbox: 'gearbox',
   horsepower: 100,
-  category_id: CARS_CATEGORY,
+  category_id: CATEGORY_IDS.CAR.toString(),
   sale_price: 123.45,
   currency_code: 'EUR',
   sale_conditions: {
@@ -1586,7 +1585,7 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
 
 export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
   id: '',
-  category_id: REALESTATE_CATEGORY,
+  category_id: CATEGORY_IDS.REAL_ESTATE,
   title: 'title',
   sale_price: 100,
   currency_code: 'EUR',

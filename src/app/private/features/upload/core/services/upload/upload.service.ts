@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
 import { ITEM_TYPES } from '@core/item/item';
-import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { CarContent, ItemResponse, RealEstateResponse } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { Image } from '@core/user/user-response.interface';
@@ -176,7 +176,8 @@ export class UploadService {
     url: string,
     fieldName: string
   ): UploadInput {
-    if (values.category_id !== REALESTATE_CATEGORY) {
+    console.log('buildUploadEvent', values.category_id);
+    if (+values.category_id !== CATEGORY_IDS.REAL_ESTATE) {
       delete values.location;
     } else {
       delete values.id;

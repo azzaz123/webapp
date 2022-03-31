@@ -437,8 +437,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public isHeroCategory(category_id: number): boolean {
-    const HERO_CATEGORIES = [CATEGORY_IDS.CAR, CATEGORY_IDS.SERVICES, CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.JOBS];
-
+    const HERO_CATEGORIES = [CATEGORY_IDS.CAR, CATEGORY_IDS.SERVICES, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.JOBS];
     return HERO_CATEGORIES.includes(+category_id);
   }
 
