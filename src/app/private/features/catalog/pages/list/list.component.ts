@@ -87,7 +87,7 @@ export class ListComponent implements OnInit, OnDestroy {
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
   public items: Item[] = [];
-  public selectedStatus: STATUS | string = STATUS.PUBLISHED;
+  public selectedStatus: STATUS = STATUS.PUBLISHED;
   public loading = true;
   public end: boolean;
   public scrollTop: number;
