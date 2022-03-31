@@ -254,7 +254,7 @@ describe('UploadCarComponent', () => {
           currency_code: MOCK_CAR.currencyCode,
           storytelling: MOCK_CAR.description,
           sale_conditions: MOCK_CAR.saleConditions,
-          category_id: MOCK_CAR.categoryId.toString(),
+          category_id: MOCK_CAR.categoryId,
           num_seats: MOCK_CAR.numSeats,
           num_doors: MOCK_CAR.numDoors,
           body_type: MOCK_CAR.bodyType,
@@ -316,7 +316,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.value).toEqual({
         body_type: null,
         brand: 'New brand',
-        category_id: `${MOCK_CAR.categoryId}`,
+        category_id: MOCK_CAR.categoryId,
         currency_code: 'EUR',
         engine: null,
         financed_price: MOCK_CAR.financedPrice,
@@ -368,7 +368,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.value).toEqual({
         body_type: null,
         brand: MOCK_CAR.brand,
-        category_id: `${MOCK_CAR.categoryId}`,
+        category_id: MOCK_CAR.categoryId,
         currency_code: 'EUR',
         engine: null,
         financed_price: MOCK_CAR.financedPrice,
@@ -430,7 +430,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.value).toEqual({
         body_type: null,
         brand: MOCK_CAR.brand,
-        category_id: `${MOCK_CAR.categoryId}`,
+        category_id: MOCK_CAR.categoryId,
         currency_code: 'EUR',
         engine: null,
         financed_price: MOCK_CAR.financedPrice,
