@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DeviceService } from '@core/device/device.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { User } from '@core/user/user';
+import { UserStats } from '@core/user/user-stats.interface';
+import { UserService } from '@core/user/user.service';
+import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { SIDEBAR_NAVIGATION_ELEMENTS } from '../../interfaces/sidebar-navigation-element.interface';
+import { SidebarNavigationProfileElement } from '../../interfaces/sidebar-navigation-profile-element.interface';
 
 const SIDEBAR_COLLAPSED_PREFERENCE_KEY = 'sidebarCollapsed';
 
@@ -8,7 +16,13 @@ const SIDEBAR_COLLAPSED_PREFERENCE_KEY = 'sidebarCollapsed';
 export class SidebarService {
   private readonly _sidebarCollapsed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.getCollapsedPreference());
 
-  constructor(private deviceService: DeviceService) {}
+  constructor(private deviceService: DeviceService, private userService: UserService) {}
+
+  public get profileNavigationElement$(): Observable<SidebarNavigationProfileElement> {
+    return combineLatest([this.userService.user$, this.userService.getStats()]).pipe(
+      map(([user, stats]) => this.mapProfileNavigationElement(user, stats))
+    );
+  }
 
   public get sidebarCollapsed$(): Observable<boolean> {
     return this._sidebarCollapsed$.asObservable();
@@ -44,5 +58,19 @@ export class SidebarService {
       return false;
     }
     return false;
+  }
+
+  private mapProfileNavigationElement(user: User, stats: UserStats): SidebarNavigationProfileElement {
+    return {
+      id: SIDEBAR_NAVIGATION_ELEMENTS.PROFILE,
+      professional: user.featured,
+      text: user.microName,
+      alternativeText: user.microName,
+      reviews: stats.ratings.reviews,
+      reviews_count: stats.counters.reviews,
+      avatar: user.image?.urls_by_size.medium,
+      href: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.INFO}`,
+      external: false,
+    };
   }
 }
