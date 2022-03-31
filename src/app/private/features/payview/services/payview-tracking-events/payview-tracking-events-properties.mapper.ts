@@ -11,8 +11,10 @@ import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/event
 import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
 import { USER_ACTION, ADDRESS_TYPE } from './tracking-events-action.enum';
 import { PayviewStateDelivery } from '../../interfaces/payview-state-delivery.interface';
+import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
+  const paymentPreferences: PaymentsUserPaymentPreference = payviewState.payment.preferences.preferences;
   return {
     screenId: SCREEN_IDS.Checkout,
     itemId: payviewState.item.id,
@@ -20,8 +22,8 @@ export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payvi
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
     feesPrice: payviewState.costs.buyerCost.fees.amount.total,
     sellerUserId: payviewState.itemDetails.sellerUserHash,
-    preselectedPaymentMethod: getPreselectedPaymentMethod(payviewState.payment.preferences.preferences.paymentMethod),
-    useWallet: payviewState.payment.preferences.preferences.useWallet,
+    preselectedPaymentMethod: paymentPreferences ? getPreselectedPaymentMethod(paymentPreferences.paymentMethod) : null,
+    useWallet: paymentPreferences ? paymentPreferences.useWallet : false,
     sellerCountry: payviewState.itemDetails.sellerCountry,
   };
 }
