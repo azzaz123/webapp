@@ -37,7 +37,7 @@ const mapToPreference: ToDomainMapper<PaymentsUserPaymentPreferenceDto, Payments
   const { id, payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = preference;
   return {
     id,
-    paymentMethod: mapPaymentMethodDtoToPaymentMethod(paymentMethod),
+    paymentMethod: paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null,
     useWallet,
     walletBlocked,
   };

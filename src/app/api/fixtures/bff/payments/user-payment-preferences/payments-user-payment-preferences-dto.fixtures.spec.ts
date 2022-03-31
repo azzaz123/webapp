@@ -17,6 +17,20 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE: PaymentsUserPaymen
   },
 };
 
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PAYMENT_METHOD_RESPONSE: PaymentsUserPaymentPreferencesDto = {
+  defaults: {
+    payment_method: null,
+    use_wallet: true,
+    wallet_blocked: false,
+  },
+  preferences: {
+    id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    payment_method: null,
+    use_wallet: false,
+    wallet_blocked: false,
+  },
+};
+
 export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PREFERENCE_RESPONSE: PaymentsUserPaymentPreferencesDto = {
   defaults: {
     payment_method: null,
@@ -52,6 +66,20 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PREFERENCE: Payments
     walletBlocked: false,
   },
   preferences: null,
+};
+
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PAYMENT_METHOD: PaymentsUserPaymentPreferences = {
+  defaults: {
+    paymentMethod: null,
+    useWallet: true,
+    walletBlocked: false,
+  },
+  preferences: {
+    id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    paymentMethod: null,
+    useWallet: false,
+    walletBlocked: false,
+  },
 };
 
 export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_CREDIT_CARD: PaymentsUserPaymentPreferences = {
