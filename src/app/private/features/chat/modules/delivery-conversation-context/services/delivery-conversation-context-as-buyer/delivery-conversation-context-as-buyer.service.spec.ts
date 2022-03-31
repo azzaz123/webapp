@@ -81,7 +81,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
     describe('and when delivery feature flag is disabled', () => {
       beforeEach(() => {
         const MOCK_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
-          (request) => request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING
+          (request) => request.status.request === BUYER_REQUEST_STATUS.ACCEPTED || request.status.request === BUYER_REQUEST_STATUS.PENDING
         );
         spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_SUCCESSFUL_REQUESTS));
         spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
@@ -102,7 +102,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       describe('and when the last request is in a pending or accepted state', () => {
         beforeEach(() => {
           const MOCK_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
-            (request) => request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING
+            (request) => request.status.request === BUYER_REQUEST_STATUS.ACCEPTED || request.status.request === BUYER_REQUEST_STATUS.PENDING
           );
           spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_SUCCESSFUL_REQUESTS));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
@@ -119,7 +119,8 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       describe('and when the last request is NOT in a pending or accepted state', () => {
         beforeEach(() => {
           const MOCK_NON_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
-            (request) => !(request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING)
+            (request) =>
+              !(request.status.request === BUYER_REQUEST_STATUS.ACCEPTED || request.status.request === BUYER_REQUEST_STATUS.PENDING)
           );
           spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_NON_SUCCESSFUL_REQUESTS));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
