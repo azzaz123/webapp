@@ -66,7 +66,7 @@ describe('BuyerRequestsHttpService', () => {
     });
   });
 
-  describe('when asking to buy a request', () => {
+  describe('when asking to buy the buyer request', () => {
     const expectedUrl: string = BUYER_REQUESTS_ENDPOINT;
     let buyRequest: TestRequest;
 
