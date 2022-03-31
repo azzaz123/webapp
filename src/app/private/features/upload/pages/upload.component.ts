@@ -7,7 +7,7 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { CARS_CATEGORY } from '@core/item/item-categories';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
 import { UserService } from '@core/user/user.service';
@@ -20,7 +20,8 @@ import { UserService } from '@core/user/user.service';
 export class UploadComponent implements OnInit {
   @ViewChild('scrollPanel', { static: true }) scrollPanel: ElementRef;
 
-  public categoryId: string;
+  public categoryId: number;
+  public CATEGORY_IDS = CATEGORY_IDS;
 
   constructor(
     private userService: UserService,
@@ -31,14 +32,14 @@ export class UploadComponent implements OnInit {
   ngOnInit() {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
-        this.setCategory(CARS_CATEGORY);
+        this.setCategory(CATEGORY_IDS.CAR);
       }
     });
 
     this.trustAndSafetyService.submitProfile(SessionProfileDataLocation.OPEN_CREATE_LISTING);
   }
 
-  public setCategory(categoryId: string) {
+  public setCategory(categoryId: number) {
     this.categoryId = categoryId;
     this.trackEvent();
   }
