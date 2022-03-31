@@ -17,26 +17,26 @@ $modal-border-radius: 5px;
     right: $spacing-ml;
   }
 
-  &__description {
+  &__description,
+  &__reason {
     color: $blue-grey-2;
     font-size: $font-size-m;
   }
 
-  .custom-reason {
+  &__cutom-reason {
+    color: $blue-grey-2;
     font-size: $font-size-s;
     margin-bottom: $spacing-ms;
     overflow: hidden;
-    margin-top: $spacing-xl;
+
+    &--counter {
+      font-size: $font-size-xs;
+    }
   }
-  .counter {
-    font-size: $font-size-xs;
-  }
-  textarea {
+
+  &__textarea {
     border-radius: $border-radius;
     height: 160px;
     margin-bottom: $spacing-ml;
-  }
-  .title {
-    margin-right: $spacing-ml;
   }
 }

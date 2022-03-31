@@ -51,39 +51,35 @@
     >
   </div>
 
-  <div class="pt-5" [hidden]="step === 1">
-    <h1 class="UnsubscribeModal__title my-2" i18n="@@delete_account_reason_view_all_users_title">
+  <div class="pt-2" [hidden]="step === 1">
+    <h1 class="UnsubscribeModal__title mt-3 mb-4" i18n="@@delete_account_reason_view_all_users_title">
       Why do you want to delete your account?
     </h1>
-    <button
-      class="btn btn-secondary btn-block btn-reason"
-      *ngFor="let reason of reasons"
-      [ngClass]="{ selected: selectedReason === reason.reason_id }"
-      (click)="selectedReason = reason.reason_id"
-    >
-      {{ reason.name }}
-    </button>
+    <div *ngFor="let reason of reasons" class="input-radio my-3">
+      <input type="radio" class="mr-2" [value]="reason.reason_id" [(ngModel)]="selectedReason" />
+      <span class="UnsubscribeModal__reason">{{ reason.name }}</span>
+    </div>
 
-    <p class="custom-reason" [hidden]="selectedReason !== 6">
-      <span class="float-right counter">{{ customReason?.length || 0 }}/300</span>
+    <p class="UnsubscribeModal__cutom-reason text-right" [hidden]="selectedReason !== 6">
+      <span class="UnsubscribeModal__cutom-reason--counter">{{ customReason?.length || 0 }}/300</span>
     </p>
     <textarea
       [hidden]="selectedReason !== 6"
-      i18n-placeholder="@@web_profile_modal_unsubscribe_272"
+      i18n-placeholder="@@delete_account_reason_view_all_users_input_text_field_placeholder"
       placeholder="Tell us what happened..."
-      class="form-control"
+      class="UnsubscribeModal__textarea form-control"
       [(ngModel)]="customReason"
       maxlength="300"
     ></textarea>
-    <div class="text-right">
-      <button
-        class="btn btn-primary"
-        [disabled]="!selectedReason || (selectedReason === 6 && !customReason)"
-        (click)="send()"
-        i18n="@@web_profile_modal_unsubscribe_273"
-      >
-        Send
-      </button>
-    </div>
+
+    <tsl-button
+      class="UnsubscribeModal__delete-btn w-100 pt-4"
+      className="btn-primary btn-primary--bold w-100"
+      [disabled]="!selectedReason || (selectedReason === 6 && !customReason)"
+      i18n="@@delete_account_reason_view_all_users_send_button"
+      (click)="send()"
+    >
+      Send</tsl-button
+    >
   </div>
 </div>
