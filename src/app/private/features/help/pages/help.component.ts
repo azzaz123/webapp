@@ -5,7 +5,7 @@ import { finalize, take } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { SELLBYTEL_PHONE, CARDEALER_COMMERCIAL_CONTACT_MAIL } from '@core/constants';
 import { HelpService } from '../core/services/help.service';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 @Component({
   selector: 'tsl-help',

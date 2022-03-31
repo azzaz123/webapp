@@ -9,7 +9,15 @@
               <span class="p-0" i18n="@@pay_view_buyer_top_bar_title">Make a purchase</span>
             </a>
             <div class="d-flex">
-              <a class="mr-4" [href]="helpUrl" target="_blank" i18n="@@pay_view_buyer_top_bar_link" id="helpLink">Help</a>
+              <a
+                class="mr-4"
+                (click)="trackCliCkHelpTransactionalEvent()"
+                [href]="helpUrl"
+                target="_blank"
+                i18n="@@pay_view_buyer_top_bar_link"
+                id="helpLink"
+                >Help</a
+              >
               <tsl-svg-icon
                 id="cross"
                 src="/assets/icons/cross.svg"

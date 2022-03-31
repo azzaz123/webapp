@@ -24,7 +24,7 @@ import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '@core/constants';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 @Component({
   selector: 'tsl-stripe-card-element',

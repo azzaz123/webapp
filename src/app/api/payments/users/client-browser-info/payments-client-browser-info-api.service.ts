@@ -57,6 +57,9 @@ export class PaymentsClientBrowserInfoApiService {
       modalHeight = this.window.innerHeight - EXTERNAL_PROVIDER_MODAL_HEADER_HEIGHT_PX;
     }
 
+    modalWidth = Math.round(modalWidth);
+    modalHeight = Math.round(modalHeight);
+
     return {
       modalWidth,
       modalHeight,
