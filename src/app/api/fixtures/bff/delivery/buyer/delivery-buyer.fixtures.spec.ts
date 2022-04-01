@@ -94,6 +94,19 @@ export const MOCK_CURRENT_DELIVERY_BUYER_METHOD_WITHOUT_LASTADDRESSUSED: Deliver
   lastAddressUsed: null,
 };
 
+export const MOCK_CURRENT_DELIVERY_CARRIER_OFFICE_METHOD: DeliveryBuyerDeliveryMethod = {
+  method: DELIVERY_MODE.CARRIER_OFFICE,
+  icon: 'http://prod-delivery-resources.wallapop.com/default_home.png',
+  carrier: null,
+  deliveryTimes: { from: 3, to: 7 },
+  lastAddressUsed: null,
+};
+
+export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS_WITH_CARRIER_OFFICE_METHOD: DeliveryBuyerDeliveryMethods = {
+  ...MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
+  current: MOCK_CURRENT_DELIVERY_CARRIER_OFFICE_METHOD,
+};
+
 export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS_WITHOUT_LASTADDRESSUSED: DeliveryBuyerDeliveryMethods = {
   ...MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
   current: MOCK_CURRENT_DELIVERY_BUYER_METHOD_WITHOUT_LASTADDRESSUSED,
