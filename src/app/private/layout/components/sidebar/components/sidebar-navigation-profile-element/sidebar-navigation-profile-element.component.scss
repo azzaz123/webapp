@@ -1,16 +1,16 @@
 @import '~style/common';
+@import '../../styles/sidebar-navigation-element';
 
 .SidebarNavigationProfileElement {
-  appearance: none;
-  text-decoration: none;
-  color: $blue-grey-1;
+  @include SidebarNavigationElement;
 
   &__username {
-    font-size: 16px;
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-m;
   }
 
   &__reviewsCount {
-    font-size: 14px;
+    font-size: $font-size-s;
   }
 
   &__user {
@@ -37,8 +37,5 @@
 
   &__textPlaceholder {
     @include TextPlaceholder;
-  }
-
-  &:hover {
   }
 }
