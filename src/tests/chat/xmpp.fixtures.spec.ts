@@ -1,7 +1,7 @@
 import { XMPP_MESSAGE_TYPE } from '@core/xmpp/xmpp.enum';
 import { XmppBodyMessage, NormalXmppMessage } from '@core/xmpp/xmpp.interface';
 import { StanzaIO } from '@core/xmpp/xmpp.provider';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 import { OTHER_USER_ID, USER_ID } from '@fixtures/user.fixtures.spec';
 
 export const mamFirstIndex = '1899';
