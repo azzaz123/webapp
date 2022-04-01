@@ -1,12 +1,17 @@
 @import '~style/common';
 @import '../../styles/sidebar-navigation-element';
 
+$username-max-width: 105px;
+$element-min-height: 56px;
+
 .SidebarNavigationProfileElement {
   @include SidebarNavigationElement;
+  min-height: $element-min-height;
 
   &__username {
     font-weight: $font-weight-chunky;
     font-size: $font-size-m;
+    max-width: $username-max-width;
   }
 
   &__reviewsCount {

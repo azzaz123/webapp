@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ICON_TYPE } from '@shared/pro-badge/pro-badge.interface';
 import { SidebarNavigationProfileElement } from '../../interfaces/sidebar-navigation-profile-element.interface';
 
 @Component({
@@ -10,4 +11,6 @@ import { SidebarNavigationProfileElement } from '../../interfaces/sidebar-naviga
 export class SidebarNavigationProfileElementComponent {
   @Input() element: SidebarNavigationProfileElement;
   @Input() collapsed: boolean;
+
+  public readonly PRO_BADGE_SIZE: ICON_TYPE = ICON_TYPE.SMALL;
 }

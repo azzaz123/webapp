@@ -2,8 +2,10 @@
     [routerLink]="element.href">
     <tsl-user-avatar [imageUrl]="element.avatar" [size]="32"></tsl-user-avatar>
     <div class="SidebarNavigationProfileElement__user flex-column ml-2" [hidden]="collapsed">
-        <tsl-pro-badge *ngIf="element.professional"></tsl-pro-badge>
-        <h3 class="SidebarNavigationProfileElement__username text-truncate m-0">{{ element.text }}</h3>
+        <div class="d-flex align-items-center">
+            <h3 class="SidebarNavigationProfileElement__username text-truncate m-0 mr-1">{{ element.text }}</h3>
+            <tsl-pro-badge [iconType]="PRO_BADGE_SIZE" *ngIf="element.professional"></tsl-pro-badge>
+        </div>
         <div class="d-flex align-items-center">
             <tsl-stars [stars]="element.reviews" [width]="12" [height]="12" [normalized]="false"></tsl-stars>
             <span class="SidebarNavigationProfileElement__reviewsCount">({{ element.reviews_count }})</span>
