@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
-
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ChatSignal, ChatSignalType, InboxMessage, MessageStatus, MessageType } from '@private/features/chat/core/model';
 import { of } from 'rxjs';
@@ -32,11 +30,11 @@ import {
   MESSAGE_BODY,
   queryId,
   MOCKED_SERVER_RECEIVED_RECEIPT,
-  MOCK_NEW_NORMAL_XMPP_MESSAGE_WITHOUT_PAYLOAD,
-  MOCK_NEW_NORMAL_DELIVERY_XMPP_MESSAGE,
   getJidsFromUserIds,
   getUserIdsFromJids,
+  MOCK_DELIVERY_WITHOUT_PAYLOAD_NORMAL_XMPP_MESSAGE,
 } from '@fixtures/chat/xmpp.fixtures.spec';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 
 describe('Service: Xmpp', () => {
   let service: XmppService;
@@ -44,6 +42,7 @@ describe('Service: Xmpp', () => {
   let sendIqSpy: jasmine.Spy;
   let connectSpy: jasmine.Spy;
   let remoteConsoleService: RemoteConsoleService;
+  let deliveryRealTimeService: DeliveryRealTimeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -67,6 +66,7 @@ describe('Service: Xmpp', () => {
     sendIqSpy = spyOn(MOCKED_CLIENT, 'sendIq').and.callThrough();
     service = TestBed.inject(XmppService);
     remoteConsoleService = TestBed.inject(RemoteConsoleService);
+    deliveryRealTimeService = TestBed.inject(DeliveryRealTimeService);
     spyOn(console, 'warn');
   });
 
@@ -807,29 +807,15 @@ describe('Service: Xmpp', () => {
     });
 
     describe('and when message type is normal', () => {
-      describe('and when message does not have payload', () => {
-        it('should do nothing', fakeAsync(() => {
-          let result: string;
-
-          service.deliveryRealtimeMessage$.subscribe((data) => (result = data));
-          service['onNewMessage'](MOCK_NEW_NORMAL_XMPP_MESSAGE_WITHOUT_PAYLOAD as unknown as XmppBodyMessage);
-          tick();
-
-          expect(result).toBeFalsy();
-        }));
+      beforeEach(() => {
+        spyOn(deliveryRealTimeService, 'check');
+        service['onNewMessage'](MOCK_DELIVERY_WITHOUT_PAYLOAD_NORMAL_XMPP_MESSAGE as unknown as XmppBodyMessage);
       });
 
-      describe('and when message is delivery message', () => {
-        it('should notify new normal delivery message', fakeAsync(() => {
-          let result: string;
-
-          service.deliveryRealtimeMessage$.subscribe((data) => (result = data));
-          service['onNewMessage'](MOCK_NEW_NORMAL_DELIVERY_XMPP_MESSAGE as unknown as XmppBodyMessage);
-          tick();
-
-          expect(result).toEqual(MOCK_NEW_NORMAL_DELIVERY_XMPP_MESSAGE.payload.type);
-        }));
-      });
+      it('should notify delivery real time logic', fakeAsync(() => {
+        expect(deliveryRealTimeService.check).toHaveBeenCalledTimes(1);
+        expect(deliveryRealTimeService.check).toHaveBeenCalledWith(MOCK_DELIVERY_WITHOUT_PAYLOAD_NORMAL_XMPP_MESSAGE);
+      }));
     });
   });
 
