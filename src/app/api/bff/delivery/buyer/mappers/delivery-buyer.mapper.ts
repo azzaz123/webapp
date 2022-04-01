@@ -30,7 +30,6 @@ export const mapDeliveryBuyerDeliveryMethodsDtoToDeliveryBuyerDeliveryMethods: T
   DeliveryBuyerDeliveryMethods
 > = (input: DeliveryBuyerDeliveryMethodsDto): DeliveryBuyerDeliveryMethods => {
   const { delivery_methods: deliveryMethods, default: defaultMethod } = input;
-
   const methods: DeliveryBuyerDeliveryMethod[] = deliveryMethods.map((method: DeliveryBuyerDeliveryMethodDto) => {
     return mapToDeliveryMethod(method);
   });

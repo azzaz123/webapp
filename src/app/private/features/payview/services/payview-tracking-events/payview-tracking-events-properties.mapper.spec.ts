@@ -15,6 +15,7 @@ import {
   MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE,
   MOCK_PAYVIEW_STATE_WITH_WALLET_AND_PAYPAL_PREFERENCE,
   MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_ADDRESS,
+  MOCK_PAYVIEW_STATE_WITHOUT_PAYMENT_PREFERENCE,
 } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces/click-add-edit-address.interface';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
@@ -37,6 +38,7 @@ import {
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_CREDIT_CARD,
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_PAYPAL,
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_HOME_AND_ADD_ACTION,
+  MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITHOUT_PAYMENT_PREFERENCE,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 describe('when mapping the payview state properties into the click add edit card event properties', () => {
@@ -159,6 +161,16 @@ describe('when mapping the payview state properties into the view transaction pa
       );
 
       expect(expectedProperties).toStrictEqual(MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_PAYPAL);
+    });
+  });
+
+  describe(`and the user don't have a preselected method`, () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: ViewTransactionPayScreen = getViewTransactionPayScreenEventPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITHOUT_PAYMENT_PREFERENCE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITHOUT_PAYMENT_PREFERENCE);
     });
   });
 });
