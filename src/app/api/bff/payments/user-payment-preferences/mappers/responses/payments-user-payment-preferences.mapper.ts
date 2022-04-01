@@ -16,7 +16,7 @@ export const mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreference
 
   return {
     defaults: mapToDefaults(defaults),
-    preferences: mapToPreference(preferences),
+    preferences: preferences ? mapToPreference(preferences) : null,
   };
 };
 
@@ -25,7 +25,7 @@ const mapToDefaults: ToDomainMapper<PaymentsUserPaymentDefaultsDto, PaymentsUser
 ): PaymentsUserPaymentAvailability => {
   const { payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = defaults;
   return {
-    paymentMethod: mapPaymentMethodDtoToPaymentMethod(paymentMethod),
+    paymentMethod: paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null,
     useWallet,
     walletBlocked,
   };
@@ -37,7 +37,7 @@ const mapToPreference: ToDomainMapper<PaymentsUserPaymentPreferenceDto, Payments
   const { id, payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = preference;
   return {
     id,
-    paymentMethod: mapPaymentMethodDtoToPaymentMethod(paymentMethod),
+    paymentMethod: paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null,
     useWallet,
     walletBlocked,
   };
