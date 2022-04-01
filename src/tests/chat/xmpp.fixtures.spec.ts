@@ -94,7 +94,7 @@ export function getJidsFromUserIds(ids: string[]) {
 
 export const JIDS = getJidsFromUserIds(['1', '2', '3']);
 
-export const MOCK_NEW_NORMAL_XMPP_MESSAGE_WITHOUT_PAYLOAD: NormalXmppMessage = {
+export const MOCK_NORMAL_XMPP_MESSAGE_WITHOUT_PAYLOAD: NormalXmppMessage = {
   to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
   from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
   timestamp: { body: '2017-03-23T12:24:19.844620Z' },
@@ -103,7 +103,7 @@ export const MOCK_NEW_NORMAL_XMPP_MESSAGE_WITHOUT_PAYLOAD: NormalXmppMessage = {
   lang: 'en',
 };
 
-export const MOCK_NEW_NORMAL_DELIVERY_XMPP_MESSAGE: NormalXmppMessage = {
+export const MOCK_DELIVERY_WITHOUT_PAYLOAD_NORMAL_XMPP_MESSAGE: NormalXmppMessage = {
   to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
   from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
   timestamp: { body: '2017-03-23T12:24:19.844620Z' },
@@ -111,4 +111,31 @@ export const MOCK_NEW_NORMAL_DELIVERY_XMPP_MESSAGE: NormalXmppMessage = {
   type: XMPP_MESSAGE_TYPE.NORMAL,
   lang: 'en',
   payload: { type: 'delivery.to_buyer.delivery.on_hold_at_carrier' },
+};
+
+export const MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE: NormalXmppMessage = {
+  to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
+  from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
+  timestamp: { body: '2017-03-23T12:24:19.844620Z' },
+  id: 'id',
+  type: XMPP_MESSAGE_TYPE.NORMAL,
+  lang: 'en',
+  payload: {
+    type: 'delivery.to_buyer.request.payment.3ds_ready',
+    payload: {
+      buyer_user_hash: '8x6qnq34oe6y',
+      item_hash: 'mzng4lxq8g6n',
+      request_id: '609dc6a4-c154-483f-b0e4-1c83524c227a',
+    },
+  },
+};
+
+export const MOCK_UNKNOWN_NORMAL_XMPP_MESSAGE: NormalXmppMessage = {
+  to: new StanzaIO.JID(USER_ID, environment.xmppDomain),
+  from: new StanzaIO.JID(OTHER_USER_ID, environment.xmppDomain),
+  timestamp: { body: '2017-03-23T12:24:19.844620Z' },
+  id: 'id',
+  type: XMPP_MESSAGE_TYPE.NORMAL,
+  lang: 'en',
+  payload: { type: 'unknown.quediuvosté.shibersish' },
 };
