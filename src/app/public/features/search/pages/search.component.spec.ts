@@ -57,9 +57,7 @@ import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
-import { CategoryCardsStubComponent } from '@fixtures/web-components/category-cards.stub';
 import { SearchLayoutStubComponent } from '@fixtures/shared/components/search-layout.component.stub';
-import { CATEGORY_CARDS_VISIBILITY_RULES } from '../core/services/constants/category-cards-visibility-rules';
 import { FiltersWrapperStubModule } from '../components/filters-wrapper/filters-wrapper.module.stub';
 
 @Directive({
@@ -139,7 +137,6 @@ describe('SearchComponent', () => {
         AdSlotShoppingComponentStub,
         ItemCardListComponentStub,
         InfiniteScrollStubDirective,
-        CategoryCardsStubComponent,
         NgxPermissionsAllowStubDirective,
       ],
       imports: [
@@ -989,91 +986,6 @@ describe('SearchComponent', () => {
             expect(objectTypeId).toBeUndefined();
             done();
           });
-        });
-      });
-    });
-
-    describe('when checking for categories slider visibility', () => {
-      const categoryCardsSelector = 'tsl-category-cards';
-
-      describe('and filters contain not allowed params', () => {
-        const notAllowedParam: FilterParameter = {
-          key: FILTER_QUERY_PARAM_KEY.bodyType,
-          value: '1234',
-        };
-
-        beforeEach(() => {
-          parametersSubject.next([notAllowedParam]);
-          fixture.detectChanges();
-        });
-
-        it('categories slider should NOT be visible', () => {
-          expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
-        });
-      });
-
-      describe('and filters contain allowed params', () => {
-        const allowedParam: FilterParameter = {
-          key: FILTER_QUERY_PARAM_KEY.orderBy,
-          value: '1234',
-        };
-
-        describe('and required params are set', () => {
-          const requiredParam: FilterParameter = {
-            key: FILTER_QUERY_PARAM_KEY.categoryId,
-            value: '1234',
-          };
-
-          beforeEach(() => {
-            parametersSubject.next([allowedParam, requiredParam]);
-            fixture.detectChanges();
-          });
-
-          it('categories slider should be visible', () => {
-            expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeTruthy();
-          });
-
-          describe('and they have mltiple values', () => {
-            const notAllowedParam: FilterParameter = {
-              key: FILTER_QUERY_PARAM_KEY.objectType,
-              value: '1234, 1234',
-            };
-
-            beforeEach(() => {
-              parametersSubject.next([allowedParam, requiredParam, notAllowedParam]);
-              fixture.detectChanges();
-            });
-
-            it('categories slider should NOT be visible', () => {
-              expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
-            });
-          });
-        });
-
-        describe('and required params are NOT set', () => {
-          beforeEach(() => {
-            parametersSubject.next([allowedParam]);
-            fixture.detectChanges();
-          });
-          it('categories slider should NOT be visible', () => {
-            expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
-          });
-        });
-      });
-
-      describe('and filters contain not allowed param values', () => {
-        const notAllowedParam: FilterParameter = {
-          key: FILTER_QUERY_PARAM_KEY.categoryId,
-          value: CATEGORY_CARDS_VISIBILITY_RULES.NOT_ALLOWED_PARAMETER_VALUES.category_ids[0].toString(),
-        };
-
-        beforeEach(() => {
-          parametersSubject.next([notAllowedParam]);
-          fixture.detectChanges();
-        });
-
-        it('categories slider should NOT be visible', () => {
-          expect(fixture.debugElement.query(By.css(categoryCardsSelector))).toBeFalsy();
         });
       });
     });
