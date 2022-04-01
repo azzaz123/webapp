@@ -26,7 +26,7 @@ describe('when we are checking pre payments errors before buying a product', () 
     });
   });
 
-  describe(`and the user don't have a selected carrier`, () => {
+  describe(`and the user doesn't have a selected carrier`, () => {
     it('should return a no delivery method selected error', () => {
       const result: NoDeliveryMethodSelectedError = prePaymentsErrorSelector(MOCK_PAYVIEW_STATE_WITHOUT_SELECTED_CARRIER);
 
@@ -34,7 +34,7 @@ describe('when we are checking pre payments errors before buying a product', () 
     });
   });
 
-  describe(`and the user selected HPU delivery and don't have delivery address`, () => {
+  describe(`and the user selected HPU delivery and doesn't have delivery address`, () => {
     it('should return a empty buyer address error', () => {
       const result: EmptyBuyerAddressError = prePaymentsErrorSelector(MOCK_PAYVIEW_STATE_BUYER_ADDRESS_WITHOUT_LAST_ADDRESS);
 
