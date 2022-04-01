@@ -5,8 +5,6 @@ import { RecommenderItem } from '@public/core/services/api/recommender/interface
 
 @Injectable()
 export class MapRecommendedItemCardService {
-  constructor() {}
-
   public mapRecommendedItemsFavouriteCheck(recommendedItems: RecommenderItem[]): ItemCard[] {
     return recommendedItems.map((item: RecommenderItem) => this.mapRecommendedItem(item));
   }

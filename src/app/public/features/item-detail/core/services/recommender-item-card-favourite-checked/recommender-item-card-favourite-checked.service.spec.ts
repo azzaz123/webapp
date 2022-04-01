@@ -7,7 +7,7 @@ import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
+import { RecommendationsApiService } from '@public/core/services/api/recommender/recommendations-api.service';
 import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
 import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { RECOMMENDED_ITEMS_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
@@ -31,7 +31,7 @@ describe('RecommenderItemCardFavouriteCheckedService', () => {
         ItemDetailService,
         ItemApiService,
         PublicUserApiService,
-        RecommenderApiService,
+        RecommendationsApiService,
         MapItemService,
         MapRecommendedItemCardService,
         {
