@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { mapImageDtosToImages } from '@api/core/mappers';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
+import { RecommenderItemDto } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 
 @Injectable()
 export class MapRecommendedItemCardService {
-  public mapRecommendedItemsFavouriteCheck(recommendedItems: RecommenderItem[]): ItemCard[] {
-    return recommendedItems.map((item: RecommenderItem) => this.mapRecommendedItem(item));
+  public mapRecommendedItemsFavouriteCheck(recommendedItems: RecommenderItemDto[]): ItemCard[] {
+    return recommendedItems.map(this.mapRecommendedItem);
   }
 
-  private mapRecommendedItem(recommendedItem: RecommenderItem): ItemCard {
+  private mapRecommendedItem(recommendedItem: RecommenderItemDto): ItemCard {
     return {
       id: recommendedItem.id,
       categoryId: Number.parseInt(recommendedItem.category_id),

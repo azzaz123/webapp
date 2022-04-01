@@ -9,7 +9,6 @@ import {
   MOCK_RECOMMENDED_ITEM_CARD_WITHOUT_IMAGES,
 } from '@fixtures/item-card.fixtures.spec';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
 import {
   RECOMMENDED_ITEM_MOCK,
@@ -17,12 +16,10 @@ import {
   RECOMMENDED_ITEM_NON_FAVOURITED_MOCK,
 } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
-import { of } from 'rxjs';
 import { MapRecommendedItemCardService } from './map-recommended-item-card.service';
 
 describe('MapRecommendedItemCardService', () => {
   let service: MapRecommendedItemCardService;
-  let uuidService: UuidService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -40,7 +37,6 @@ describe('MapRecommendedItemCardService', () => {
       ],
     });
     service = TestBed.inject(MapRecommendedItemCardService);
-    uuidService = TestBed.inject(UuidService);
   });
 
   it('should be created', () => {

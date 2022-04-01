@@ -1,6 +1,6 @@
 import { ImageDto, PriceDto } from '@api/core/dtos';
 
-export interface RecommenderItem {
+export interface RecommenderItemDto {
   id: string;
   category_id: string;
   price: PriceDto;

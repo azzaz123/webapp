@@ -155,8 +155,8 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
     if (this.isItemRecommendations(categoryId)) {
-      this.recommenderItemCardFavouriteCheckedService.getItems(itemId).subscribe((recommendedArray) => {
-        this.recommendedItems$.next(recommendedArray);
+      this.recommenderItemCardFavouriteCheckedService.getItems(itemId).subscribe((recommendedItems: ItemCardsWithRecommenedType) => {
+        this.recommendedItems$.next(recommendedItems);
       });
     }
   }

@@ -1,11 +1,10 @@
-import { Item } from '@core/item/item';
 import { Image } from '@core/user/user-response.interface';
 import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
-import { RecommenderItem } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
+import { RecommenderItemDto } from '@public/core/services/api/recommender/interfaces/recommender-item.interface';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
 
 const urlImage = 'https://localhost:6006/images/item-camera.jpg';
-export const RECOMMENDED_ITEM_MOCK: RecommenderItem = {
+export const RECOMMENDED_ITEM_MOCK: RecommenderItemDto = {
   category_id: '100',
   favorited: { flag: true },
   id: '34342',
@@ -26,12 +25,12 @@ export const RECOMMENDED_ITEM_MOCK: RecommenderItem = {
   slug: 'slug',
 };
 
-export const RECOMMENDED_ITEM_NON_FAVOURITED_MOCK: RecommenderItem = {
+export const RECOMMENDED_ITEM_NON_FAVOURITED_MOCK: RecommenderItemDto = {
   ...RECOMMENDED_ITEM_MOCK,
   favorited: { flag: false },
 };
 
-export const RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES: RecommenderItem = {
+export const RECOMMENDED_ITEM_MOCK_WITHOUT_IMAGES: RecommenderItemDto = {
   category_id: '100',
   favorited: { flag: true },
   id: '34342',
