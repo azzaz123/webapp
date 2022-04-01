@@ -1,10 +1,4 @@
 import {
-  AlreadyInProgressTransactionError,
-  NonPurchasableItemError,
-  NotShippableItemError,
-  PostalCodeTemporarilyRestrictedError,
-} from '@api/core/errors/delivery/accept-screen/accept-request';
-import {
   AlreadyUsedPromocodeError,
   BlockedBuyerError,
   BlockedSellerError,
@@ -22,6 +16,10 @@ import {
   NotActiveYetPromocodeError,
   NotExistingPromocodeError,
   UserHasNoCardError,
+  AlreadyInProgressTransactionError,
+  NonPurchasableItemError,
+  NotShippableItemError,
+  PostalCodeTemporarilyRestrictedError,
 } from '@api/core/errors/delivery/payview/buyer-requests';
 import { NoCarrierOfficeAddressForUserError } from '@api/core/errors/delivery/payview/buyer-requests/no-carrier-office-address-for-user.error';
 import { ErrorMapper } from '@api/core/utils/classes';
