@@ -12,6 +12,7 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 import { UuidService } from '@core/uuid/uuid.service';
 import { mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties } from './mappers/responses/buyer-request-buy-mapper/buyer-request-buy.mapper';
 import { BuyRequestErrorMapper } from './mappers/errors/buy-request/buy-request-error-mapper';
+import { BuyRequestErrorResponse } from './dtos/errors';
 
 @Injectable()
 export class BuyerRequestsApiService {
@@ -30,6 +31,6 @@ export class BuyerRequestsApiService {
     const buyRequestId: string = this.uuidService.getUUID();
     return this.buyerRequestsHttpService
       .buy(mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties(state, buyRequestId))
-      .pipe(catchError(this.errorMapper.map));
+      .pipe(catchError((error: BuyRequestErrorResponse) => this.errorMapper.map(error)));
   }
 }
