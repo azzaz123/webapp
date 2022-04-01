@@ -1,5 +1,5 @@
 <a *ngIf="element else placeholder" class="SidebarNavigationProfileElement d-flex align-items-center mx-2 my-4"
-    [routerLink]="element.href">
+    [routerLink]="element.href" routerLinkActive="SidebarNavigationProfileElement--active">
     <tsl-user-avatar [imageUrl]="element.avatar" [size]="32"></tsl-user-avatar>
     <div class="SidebarNavigationProfileElement__user flex-column ml-2" [hidden]="collapsed">
         <div class="d-flex align-items-center">

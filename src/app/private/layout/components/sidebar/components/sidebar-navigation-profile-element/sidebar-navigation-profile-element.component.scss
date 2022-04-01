@@ -2,7 +2,7 @@
 @import '../../styles/sidebar-navigation-element';
 
 $username-max-width: 105px;
-$element-min-height: 56px;
+$element-min-height: 60px;
 
 .SidebarNavigationProfileElement {
   @include SidebarNavigationElement;
