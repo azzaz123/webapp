@@ -9,10 +9,9 @@ import { of } from 'rxjs';
 import {
   mappedFavouritedPublishedItemFixture,
   mappedPublishedItemFixture,
-  publishedItemFixture,
   userIdFixture,
 } from '@api/fixtures/catalog/published/published-item.fixtures';
-import { publishedResponseFixture } from '@api/fixtures/catalog/published/published-response.fixtures';
+import { publishedResponseFixture, favoritedPublishedResponseFixture } from '@api/fixtures/catalog/published/published-response.fixtures';
 import { PUBLISHED_QUERY_PARAMS, WALL_QUERY_PARAMS } from '@api/catalog/dtos';
 import { wallResponseFixture } from '@api/fixtures/catalog/wall/wall-response.fixtures';
 import { mappedFavouritedWallItemFixture, mappedWallItemFixture, wallItemFixture } from '@api/fixtures/catalog/wall/wall-item.fixtures';
@@ -38,7 +37,7 @@ describe('CatalogApiService', () => {
         spyOn(httpService, 'getUserPublishedItems').and.returnValue(of(publishedResponseFixture));
         let response: PaginatedList<ItemCard>;
 
-        service.getUserPublishedItems(userIdFixture, false).subscribe((data: PaginatedList<ItemCard>) => {
+        service.getUserPublishedItems(userIdFixture).subscribe((data: PaginatedList<ItemCard>) => {
           response = data;
         });
 
@@ -50,18 +49,15 @@ describe('CatalogApiService', () => {
 
     describe('with favourites', () => {
       it('should return domain item card formatted published items', () => {
-        spyOn(httpService, 'getUserPublishedItems').and.returnValue(of(publishedResponseFixture));
-        spyOn(favouritesApiService, 'getFavouriteItemsId').and.returnValue(of([mappedFavouritedPublishedItemFixture.id]));
+        spyOn(httpService, 'getUserPublishedItems').and.returnValue(of(favoritedPublishedResponseFixture));
         let response: PaginatedList<ItemCard>;
 
-        service.getUserPublishedItems(userIdFixture, true).subscribe((data: PaginatedList<ItemCard>) => {
+        service.getUserPublishedItems(userIdFixture).subscribe((data: PaginatedList<ItemCard>) => {
           response = data;
         });
 
         expect(httpService.getUserPublishedItems).toHaveBeenCalledTimes(1);
         expect(httpService.getUserPublishedItems).toHaveBeenCalledWith(userIdFixture, undefined);
-        expect(favouritesApiService.getFavouriteItemsId).toHaveBeenCalledTimes(1);
-        expect(favouritesApiService.getFavouriteItemsId).toHaveBeenCalledWith([publishedItemFixture.id]);
         expect(response).toEqual({ list: [mappedFavouritedPublishedItemFixture], paginationParameter: 'nextParameter' });
       });
     });
@@ -71,7 +67,7 @@ describe('CatalogApiService', () => {
         spyOn(httpService, 'getUserPublishedItems').and.returnValue(of(publishedResponseFixture));
         let response: PaginatedList<ItemCard>;
 
-        service.getUserPublishedItems(userIdFixture, false, 'oldNextParameter').subscribe((data: PaginatedList<ItemCard>) => {
+        service.getUserPublishedItems(userIdFixture, 'oldNextParameter').subscribe((data: PaginatedList<ItemCard>) => {
           response = data;
         });
 

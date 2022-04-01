@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { take } from 'rxjs/operators';
+import { LOGIN_SOURCE } from '@public/shared/components/item-card-list/enums/login-source.enum';
 
 @Component({
   selector: 'tsl-favourite-user',
@@ -14,6 +15,7 @@ export class FavouriteUserComponent implements OnDestroy {
   @Output() userFavouriteChanged: EventEmitter<boolean> = new EventEmitter();
 
   subscriptions: Subscription[] = [];
+  public readonly clickFavLoginSource = LOGIN_SOURCE.FAVORITE_USER;
 
   constructor(private publicProfileService: PublicProfileService) {}
 

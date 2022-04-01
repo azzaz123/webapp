@@ -3,7 +3,7 @@ import { Component, OnInit, Input, EventEmitter, Output, Injectable, LOCALE_ID, 
 import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { style, animate, transition, trigger } from '@angular/animations';
 import { I18nService } from '@core/i18n/i18n.service';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;

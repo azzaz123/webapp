@@ -3,11 +3,19 @@
 @import '~web-styleguide/scss/text';
 
 .PayviewSummary {
-  &__thankyou {
+  &__text {
     font-size: $spacing-m;
-    font-weight: $font-weight-chunky;
+    &--large {
+      font-size: $font-size-l;
+    }
+    &--bold {
+      font-weight: $font-weight-chunky;
+    }
     &--walla {
       color: $walla-main;
+    }
+    &--gray {
+      color: $blue-grey-1;
     }
   }
 

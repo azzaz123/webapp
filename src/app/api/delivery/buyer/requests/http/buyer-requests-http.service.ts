@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import {
@@ -10,6 +10,8 @@ import { BuyerRequestsItemsDetailsDto } from '@api/delivery/buyer/requests/dtos/
 import { BuyerRequestsDto } from '@api/delivery/buyer/requests/dtos/buyer-request-dto.interface';
 
 import { Observable } from 'rxjs';
+import { BuyerRequestBuyDto } from '../dtos/buyer-request-buy-dto.interface';
+import { APP_VERSION } from '@environments/version';
 
 @Injectable()
 export class BuyerRequestsHttpService {
@@ -21,5 +23,17 @@ export class BuyerRequestsHttpService {
 
   public getItemsDetails(itemHash: string): Observable<BuyerRequestsItemsDetailsDto> {
     return this.http.get<BuyerRequestsItemsDetailsDto>(BUYER_REQUESTS_ITEMS_DETAILS(itemHash));
+  }
+
+  public buy(buyerRequestBuy: BuyerRequestBuyDto): Observable<void> {
+    return this.http.post<void>(BUYER_REQUESTS_ENDPOINT, buyerRequestBuy, this.getHeaders());
+  }
+
+  private getHeaders(): { headers: HttpHeaders } {
+    return {
+      headers: new HttpHeaders({
+        'X-AppVersion': APP_VERSION.replace(/\./g, ''),
+      }),
+    };
   }
 }

@@ -4,14 +4,16 @@ import { CountryOptionsAndDefault } from '@private/features/delivery/interfaces/
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '@private/features/delivery/enums/delivery-address-previous-pages.enum';
-import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DeliveryBuyerDeliveryMethod, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCountriesService } from '@private/features/delivery/services/countries/delivery-countries/delivery-countries.service';
 import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
+import { PAYVIEW_BUY_EVENT_TYPE } from '@private/features/payview/modules/buy/enums/payview-buy-event-type.enum';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '@private/features/payview/modules/delivery/enums/payview-delivery-event-type.enum';
 import { PAYVIEW_EVENT_TYPE } from '@private/features/payview/enums/payview-event-type.enum';
 import { PAYVIEW_PAYMENT_EVENT_TYPE } from '@private/features/payview/modules/payment/enums/payview-payment-event-type.enum';
 import { PAYVIEW_PROMOTION_EVENT_TYPE } from '@private/features/payview/modules/promotion/enums/payview-promotion-event-type.enum';
 import { PAYVIEW_STEPS } from '@private/features/payview/enums/payview-steps.enum';
+import { PayviewBuyService } from '@private/features/payview/modules/buy/services/payview-buy.service';
 import { PayviewDeliveryService } from '@private/features/payview/modules/delivery/services/payview-delivery.service';
 import { PayviewError } from '@private/features/payview/interfaces/payview-error.interface';
 import { PayviewPaymentService } from '@private/features/payview/modules/payment/services/payview-payment.service';
@@ -19,10 +21,21 @@ import { PayviewPromotionService } from '@private/features/payview/modules/promo
 import { PayviewService } from '@private/features/payview/services/payview/payview.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 import { PayviewStateManagementService } from '@private/features/payview/services/state-management/payview-state-management.service';
+import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
+import { take } from 'rxjs/operators';
+import {
+  getClickHelpTransactionalEventPropertiesFromPayviewState,
+  getClickAddEditCardEventPropertiesFromPayviewState,
+  getClickAddEditAddressEventPropertiesFromPayviewState,
+  getViewTransactionPayScreenEventPropertiesFromPayviewState,
+  getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
+  getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState,
+} from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -39,6 +52,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   public countries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE: DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
   private subscriptions: Subscription[] = [];
+  private readonly trackViewTransactionPayScreen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
@@ -47,7 +61,9 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private customerHelpService: CustomerHelpService,
     private deliveryCountries: DeliveryCountriesService,
     private promotionService: PayviewPromotionService,
-    private paymentService: PayviewPaymentService
+    private paymentService: PayviewPaymentService,
+    private payviewTrackingEventsService: PayviewTrackingEventsService,
+    private buyService: PayviewBuyService
   ) {}
 
   public ngOnDestroy(): void {
@@ -73,6 +89,18 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.activeModal.close();
   }
 
+  public getFullAddress(methods: DeliveryBuyerDeliveryMethods): string {
+    return methods?.addressLabel;
+  }
+
+  public getSelectedCarrier(methods: DeliveryBuyerDeliveryMethods): POST_OFFICE_CARRIER {
+    return methods?.current?.carrier ?? POST_OFFICE_CARRIER.CORREOS;
+  }
+
+  public getUserOfficeId(methods: DeliveryBuyerDeliveryMethods): string {
+    return methods?.current?.lastAddressUsed?.id;
+  }
+
   public goBack(): void {
     this.goToStep(PAYVIEW_STEPS.PAYVIEW);
   }
@@ -93,6 +121,16 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     return this.payviewStateManagementService.payViewState$;
   }
 
+  public trackCliCkHelpTransactionalEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackClickHelpTransactional(
+          getClickHelpTransactionalEventPropertiesFromPayviewState(payviewState)
+        )
+      );
+  }
+
   private goToStep(step: PAYVIEW_STEPS): void {
     this.stepper.goToStep(step);
   }
@@ -106,6 +144,16 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscribeToDeliveryEventBus();
     this.subscribeToPromotionEventBus();
     this.subscribeToPaymentEventBus();
+    this.subscribeToPayviewState();
+    this.subscribeToBuyEventBus();
+  }
+
+  private subscribeToBuyEventBus(): void {
+    this.subscriptions.push(
+      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, (value: string) => {
+        this.payviewStateManagementService.buy();
+      })
+    );
   }
 
   private subscribeToDeliveryEventBus(): void {
@@ -116,11 +164,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN, () => {
+        this.trackClickAddEditAddressEvent(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_ADDRESS_SCREEN);
         this.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
       })
     );
     this.subscriptions.push(
       this.deliveryService.on(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP, () => {
+        this.trackClickAddEditAddressEvent(PAYVIEW_DELIVERY_EVENT_TYPE.OPEN_PICK_UP_POINT_MAP);
         this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
       })
     );
@@ -134,6 +184,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.paymentService.on(PAYVIEW_PAYMENT_EVENT_TYPE.OPEN_CREDIT_CARD, () => {
+        this.trackClickAddEditCardEvent();
         this.goToStep(PAYVIEW_STEPS.CREDIT_CARD);
       })
     );
@@ -142,11 +193,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscribeToPromotionEventBus(): void {
     this.subscriptions.push(
       this.promotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.OPEN_PROMOCODE_EDITOR, () => {
+        this.trackClickAddPromocodeTransactionPayEvent();
         this.goToStep(PAYVIEW_STEPS.PROMOTION_EDITOR);
       })
     );
     this.subscriptions.push(
       this.promotionService.on(PAYVIEW_PROMOTION_EVENT_TYPE.APPLY_PROMOCODE, (value: string) => {
+        this.trackClickApplyPromocodeTransactionPayEvent();
         this.payviewStateManagementService.applyPromocode(value);
       })
     );
@@ -159,6 +212,16 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private subscribeToStateManagementEventBus(): void {
     this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, (error: PayviewError) => {
+        this.buyService.error(error);
+      })
+    );
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY, () => {
+        // TODO - 18/03/2022 - Do something like closing the payview, show success toast or so on...
+      })
+    );
+    this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_REFRESH_COSTS, (error: PayviewError) => {
         this.promotionService.error(error);
       })
@@ -170,11 +233,66 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
   }
 
+  private subscribeToPayviewState(): void {
+    this.subscriptions.push(
+      this.payviewState$.subscribe((payviewState: PayviewState) => {
+        if (payviewState && !this.trackViewTransactionPayScreen$.value) {
+          this.trackViewTransactionPayScreenEvent(payviewState);
+        }
+      })
+    );
+  }
+
   private unsubscribe(): void {
     this.subscriptions.forEach((subscription: Subscription) => {
       if (!!subscription) {
         subscription.unsubscribe();
       }
     });
+  }
+
+  private trackClickAddEditCardEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackClickAddEditCard(getClickAddEditCardEventPropertiesFromPayviewState(payviewState))
+      );
+  }
+
+  private trackClickAddEditAddressEvent(eventType: PAYVIEW_DELIVERY_EVENT_TYPE): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackClickAddEditAddress(
+          getClickAddEditAddressEventPropertiesFromPayviewState(payviewState, eventType)
+        )
+      );
+  }
+
+  private trackViewTransactionPayScreenEvent(payviewState: PayviewState): void {
+    this.payviewTrackingEventsService.trackViewTransactionPayScreen(
+      getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState)
+    );
+    this.trackViewTransactionPayScreen$.next(true);
+  }
+
+  private trackClickAddPromocodeTransactionPayEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackClickAddPromocodeTransactionPay(
+          getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState(payviewState)
+        )
+      );
+  }
+
+  private trackClickApplyPromocodeTransactionPayEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackClickApplyPromocodeTransactionPay(
+          getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState(payviewState)
+        )
+      );
   }
 }

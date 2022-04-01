@@ -11,7 +11,7 @@ import {
 } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
 import { mapToPayviewError } from '@private/features/payview/services/state-management/payview-state-management.mappers';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
 import { PAYVIEW_EVENT_PAYLOAD } from '@private/features/payview/types/payview-event-payload.type';
 import { PAYVIEW_EVENT_TYPE } from '@private/features/payview/enums/payview-event-type.enum';
@@ -36,6 +36,11 @@ export class PayviewStateManagementService {
   public applyPromocode(value: string): void {
     const payviewState = { ...this.stateSubject.getValue() };
     this.refreshCosts(payviewState, value);
+  }
+
+  public buy(): void {
+    const payviewState = { ...this.stateSubject.getValue() };
+    this.request(payviewState);
   }
 
   public set itemHash(value: string) {
@@ -216,6 +221,24 @@ export class PayviewStateManagementService {
     });
   }
 
+  private request(payviewState: PayviewState): void {
+    const subscription: Subscription = this.payviewService
+      .request()
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY));
+        },
+        error: (error: HttpErrorResponse) => {
+          this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, error));
+          subscription.unsubscribe();
+        },
+        complete: () => {
+          subscription.unsubscribe();
+        },
+      });
+  }
+
   private setCurrentDeliveryMethod(payviewState: PayviewState, mode: DELIVERY_MODE): void {
     const defaultIndex: DeliveryBuyerDefaultDeliveryMethod = this.getDefaultDeliveryMethod(
       payviewState.delivery.methods.deliveryMethods,
@@ -225,7 +248,7 @@ export class PayviewStateManagementService {
     payviewState.delivery.methods.current = payviewState.delivery.methods.deliveryMethods[defaultIndex.index];
   }
 
-  private setCurrentPaymentMethod(payviewState: PayviewState, method: PaymentMethod): void {
+  private setCurrentPaymentMethod(payviewState: PayviewState, method: PAYVIEW_PAYMENT_METHOD): void {
     //TODO: Delegating wallet usage to state but enforcing in here to not use it
     const preferences: PaymentsUserPaymentPreference = { ...payviewState.payment.preferences.preferences, useWallet: false };
     preferences.paymentMethod = method;
