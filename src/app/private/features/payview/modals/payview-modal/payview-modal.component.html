@@ -75,7 +75,7 @@
         [fullAddress]="getFullAddress(payviewState.delivery.methods)"
         [selectedCarrier]="getSelectedCarrier(payviewState.delivery.methods)"
         [userOfficeId]="getUserOfficeId(payviewState.delivery.methods)"
-        (goToDeliveryAddress)="goToDeliveryAddress()"
+        (goToDeliveryAddress)="goToDeliveryAddressFromMap()"
         (selectedOfficeSucceeded)="closeDeliveryEditor()"
       ></tsl-delivery-map>
     </ng-template>
