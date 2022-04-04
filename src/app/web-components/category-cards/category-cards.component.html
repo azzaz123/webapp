@@ -1,0 +1,13 @@
+<p class="CategoryCards__title">{{ title$ | async }}</p>
+<div class="CategoryCards__wrapper" #scrollWrapper>
+  <w-category-cards
+    class="CategoryCards__slider"
+    [ngClass]="{ 'CategoryCards__slider--full': (categoryCardsEmpty$ | async) === false }"
+    [attr.category-id]="categoryId"
+    [attr.object-type-id]="objectTypeId"
+    [attr.token]="token"
+    [attr.language]="locale"
+    (cardClick)="cardClick($event)"
+    (empty)="setCategoryCardsEmpty($event)"
+  ></w-category-cards>
+</div>

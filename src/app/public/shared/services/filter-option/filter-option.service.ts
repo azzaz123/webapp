@@ -8,8 +8,8 @@ import { OPTIONS_ORIGIN_CONFIGURATION, OriginConfigurationValue } from './config
 import { ConfigurationId } from '../../components/filters/core/types/configuration-id.type';
 import { HARDCODED_OPTIONS } from './data/hardcoded-options';
 import { VisibilityModifierConfig, KeyMapper, OptionsApiOrigin, RequiredSiblingParam } from './interfaces/option-api-origin.interface';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import {
   FILTER_PARAMETER_DRAFT_STORE_TOKEN,
   FilterParameterStoreService,
@@ -108,6 +108,12 @@ export class FilterOptionService {
             }
 
             return paginatedResponse;
+          }),
+          catchError(() => {
+            return of({
+              list: [],
+              paginationParameter: null,
+            });
           })
         )
         .subscribe((paginatedResponse: PaginatedList<FilterOption, string>) => {

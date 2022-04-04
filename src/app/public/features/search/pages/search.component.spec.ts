@@ -25,7 +25,6 @@ import { random } from 'faker';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
-import { FiltersWrapperModule } from '../components/filters-wrapper/filters-wrapper.module';
 import { SortFilterModule } from '../components/sort-filter/sort-filter.module';
 import { SearchAdsService } from '../core/ads/search-ads.service';
 import { SearchService } from '../core/services/search.service';
@@ -59,6 +58,7 @@ import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { ExperimentationServiceMock } from '@fixtures/experimentation.fixtures.spec';
 import { SearchLayoutStubComponent } from '@fixtures/shared/components/search-layout.component.stub';
+import { FiltersWrapperStubModule } from '../components/filters-wrapper/filters-wrapper.module.stub';
 
 @Directive({
   selector: '[tslInfiniteScroll]',
@@ -140,7 +140,7 @@ describe('SearchComponent', () => {
         NgxPermissionsAllowStubDirective,
       ],
       imports: [
-        FiltersWrapperModule,
+        FiltersWrapperStubModule,
         HttpClientTestingModule,
         SortFilterModule,
         ButtonModule,
@@ -878,6 +878,116 @@ describe('SearchComponent', () => {
 
         expect(bottomAdSlot).toBeFalsy();
       }));
+    });
+  });
+
+  describe('when no permission testing is involved ', () => {
+    beforeEach(async () => {
+      fixture = TestBed.createComponent(SearchComponent);
+      searchListTrackingEventsService = TestBed.inject(SearchListTrackingEventsService);
+      searchTrackingEventsService = TestBed.inject(SearchTrackingEventsService);
+      filterParameterStoreService = TestBed.inject(FilterParameterStoreService);
+
+      component = fixture.componentInstance;
+      component.ngOnInit();
+    });
+
+    describe('when sort by relevance is applied', () => {
+      beforeEach(() => {
+        component['sortBySubject'].next(SORT_BY.RELEVANCE);
+      });
+
+      it('should show info bubble', () => {
+        const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
+
+        component.sortBy$.subscribe(() => {
+          expect(infoBubbleElement).toBeTruthy();
+        });
+      });
+
+      it('info bubble should have the correct text ', () => {
+        const infoBubbleText = 'infoBubbleText';
+
+        searchResponseExtraDataSubject.next({ searchId: '', bubble: infoBubbleText, sortBy: SORT_BY.RELEVANCE });
+
+        expect(component.infoBubbleText).toEqual(infoBubbleText);
+      });
+    });
+
+    describe('when sort by relevance is NOT applied', () => {
+      it('should hide info bubble', () => {
+        const infoBubbleElement = fixture.debugElement.query(By.css(infoBubbleSelector));
+
+        expect(infoBubbleElement).toBeFalsy();
+      });
+    });
+
+    describe('when filter parameters change', () => {
+      beforeEach(() => {
+        component.ngOnInit();
+      });
+
+      describe('and have category', () => {
+        const categoryFilter: FilterParameter = {
+          key: FILTER_QUERY_PARAM_KEY.categoryId,
+          value: '1234',
+        };
+
+        beforeEach(() => {
+          parametersSubject.next([categoryFilter]);
+        });
+
+        it('categoryId should be updated', (done) => {
+          component.categoryId$.subscribe((categoryId) => {
+            expect(categoryId).toEqual(categoryFilter.value);
+            done();
+          });
+        });
+      });
+
+      describe('and not have category', () => {
+        beforeEach(() => {
+          parametersSubject.next([]);
+        });
+
+        it('categoryId should be updated', (done) => {
+          component.categoryId$.subscribe((categoryId) => {
+            expect(categoryId).toBeUndefined();
+            done();
+          });
+        });
+      });
+
+      describe('and have object type', () => {
+        const objectTypeFilter: FilterParameter = {
+          key: FILTER_QUERY_PARAM_KEY.objectType,
+          value: '1234',
+        };
+
+        beforeEach(() => {
+          parametersSubject.next([objectTypeFilter]);
+        });
+
+        it('objectTypeId should be updated', (done) => {
+          component.objectTypeId$.subscribe((objectTypeId) => {
+            expect(objectTypeId).toEqual(objectTypeFilter.value);
+            done();
+          });
+        });
+      });
+
+      describe('and not have object type', () => {
+        beforeEach(() => {
+          parametersSubject.next([]);
+        });
+
+        it('objectTypeId should be updated', (done) => {
+          component.objectTypeId$.subscribe((objectTypeId) => {
+            expect(objectTypeId).toBeUndefined();
+            done();
+          });
+        });
+      });
     });
   });
 });

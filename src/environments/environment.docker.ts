@@ -1,4 +1,3 @@
-import { APP_LOCALE } from '@configs/subdomains.config';
 import { Environment } from './environment.interface';
 
 export const getDockNum = (): string => {

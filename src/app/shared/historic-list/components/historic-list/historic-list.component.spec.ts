@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ITEM } from '@private/core/services/fixtures/item-required-data.fixtures';
 import { ImageFallbackModule } from '@public/core/directives/image-fallback/image-fallback.module';
 import { MOCK_HISTORIC_ELEMENT } from '@shared/historic-list/fixtures/historic-element.fixtures.spec';
 import {

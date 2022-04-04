@@ -4,7 +4,7 @@ import { SocialMetaTagService } from '@core/social-meta-tag/social-meta-tag.serv
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
+import { RecommendationsApiService } from '@public/core/services/api/recommender/recommendations-api.service';
 import { AdsModule } from '@public/shared/components/ads/ads.module';
 import { ItemImagesCarouselModule } from '@public/shared/components/item-images-carousel/item-images-carousel.module';
 import { AdSlotModule } from '@shared/ads/ad-slot/ad-slot.module';
@@ -65,7 +65,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ItemDetailTrackEventsService,
     ItemApiService,
     PublicUserApiService,
-    RecommenderApiService,
+    RecommendationsApiService,
     MapItemService,
     SocialMetaTagService,
     MapSpecificationsService,

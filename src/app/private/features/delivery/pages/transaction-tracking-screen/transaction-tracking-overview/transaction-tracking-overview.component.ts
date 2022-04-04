@@ -12,7 +12,7 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
 import { catchError, tap, filter } from 'rxjs/operators';
 import { Observable, throwError, Subscription } from 'rxjs';
 import { TransactionTrackingScreenStoreService } from '../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
-import { XmppService } from '@core/xmpp/xmpp.service';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-overview',
@@ -32,7 +32,7 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
     private storeService: TransactionTrackingScreenStoreService,
     private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService,
     private errorActionService: SharedErrorActionService,
-    private xmppService: XmppService,
+    private deliveryRealTimeService: DeliveryRealTimeService,
     private router: Router
   ) {}
 
@@ -55,7 +55,7 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
 
   private listenForDeliveryNotifications(requestId: string): void {
     this.subscriptions.add(
-      this.xmppService.deliveryRealtimeMessage$.subscribe(() => this.initializeTransactionTrackingAndDetails(requestId))
+      this.deliveryRealTimeService.deliveryRealTimeNotifications$.subscribe(() => this.initializeTransactionTrackingAndDetails(requestId))
     );
   }
 
