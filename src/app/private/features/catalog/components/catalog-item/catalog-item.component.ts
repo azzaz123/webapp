@@ -16,6 +16,7 @@ import { ItemDetailRoutePipe } from '@shared/pipes';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { LEGACY_CATEGORY_IDS } from '@core/category/category-ids';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -99,21 +100,30 @@ export class CatalogItemComponent implements OnInit {
   }
 
   private reactivateItem(item: Item): void {
-    this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
-      this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
-      if (missingRequiredData) {
-        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
-      } else {
-        this.itemService.reactivateItem(item.id).subscribe(
-          () => {
-            this.itemChange.emit({
-              item,
-              action: ITEM_CHANGE_ACTION.REACTIVATED,
-            });
-          },
-          () => this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: TOAST_TYPES.ERROR })
-        );
-      }
-    });
+    if (LEGACY_CATEGORY_IDS.includes(+item.categoryId)) {
+      this.navigateToReactivationEdit();
+    } else {
+      this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
+        this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
+        if (missingRequiredData) {
+          this.navigateToReactivationEdit();
+        } else {
+          this.itemService.reactivateItem(item.id).subscribe(
+            () => {
+              this.itemChange.emit({
+                item,
+                action: ITEM_CHANGE_ACTION.REACTIVATED,
+              });
+            },
+            () =>
+              this.toastService.show({ text: this.i18nService.translate(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE), type: TOAST_TYPES.ERROR })
+          );
+        }
+      });
+    }
+  }
+
+  private navigateToReactivationEdit(): void {
+    this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
   }
 }
