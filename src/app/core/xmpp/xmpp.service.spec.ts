@@ -46,7 +46,12 @@ describe('Service: Xmpp', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [XmppService, EventService, { provide: RemoteConsoleService, useClass: MockRemoteConsoleService }],
+      providers: [
+        XmppService,
+        EventService,
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+        { provide: DeliveryRealTimeService, useValue: { check: () => {} } },
+      ],
     });
     service = TestBed.inject(XmppService);
     eventService = TestBed.inject(EventService);

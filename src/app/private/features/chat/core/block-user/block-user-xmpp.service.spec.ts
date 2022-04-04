@@ -4,6 +4,7 @@ import { RemoteConsoleService } from '@core/remote-console';
 import { XmppService } from '@core/xmpp/xmpp.service';
 import { MockRemoteConsoleService } from '@fixtures/remote-console.fixtures.spec';
 import { MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { of } from 'rxjs';
 import { BlockUserXmppService } from './block-user-xmpp.service';
 
@@ -13,7 +14,13 @@ let xmppService: XmppService;
 describe('BlockUserXmppService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BlockUserXmppService, XmppService, EventService, { provide: RemoteConsoleService, useClass: MockRemoteConsoleService }],
+      providers: [
+        BlockUserXmppService,
+        XmppService,
+        EventService,
+        { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
+        { provide: DeliveryRealTimeService, useValue: {} },
+      ],
     });
     service = TestBed.inject(BlockUserXmppService);
     xmppService = TestBed.inject(XmppService);
