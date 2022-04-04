@@ -6,7 +6,7 @@ export enum BUY_REQUEST_ERROR_CODES {
   NON_PURCHASABLE_ITEM = 'non purchasable item',
   BLOCKED_SELLER = 'seller blocked by buyer',
   BLOCKED_BUYER = 'buyer blocked by seller',
-  USER_HAS_NO_CARD = 'invalid card',
+  INVALID_CARD = 'invalid card',
   CURRENCY_NOT_ACCEPTED = 'currency not accepted',
   MAX_REQUEST_NUMBER_EXCEEDED = 'transaction number exceeded',
   ALREADY_USED_PROMOCODE = 'promocode already used',

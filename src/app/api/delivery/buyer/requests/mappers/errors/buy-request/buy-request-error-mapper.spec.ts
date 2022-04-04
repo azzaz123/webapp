@@ -12,12 +12,12 @@ import {
   InternationalShippingNotEnabledForUserError,
   ItemCategoryDifferentToPromocodeItemCategoryError,
   ItemMaxWeightGreaterThanPromocodeMaxWeightError,
-  ItemPriceSmallerThankPromocodeMinPriceError,
+  ItemPriceSmallerThanPromocodeMinPriceError,
   MaxRequestNumberExceededError,
   NoAddressForUserError,
   NotActiveYetPromocodeError,
   NotExistingPromocodeError,
-  UserHasNoCardError,
+  InvalidCardError,
   AlreadyInProgressTransactionError,
   NonPurchasableItemError,
   NotShippableItemError,
@@ -44,7 +44,7 @@ import {
   MOCK_NO_ADDRESS_FOR_USER_ERROR_RESPONSE,
   MOCK_NO_CARRIER_OFFICE_ADDRESS_FOR_USER_ERROR_RESPONSE,
   MOCK_POSTAL_CODE_TEMPORARILY_RESTRICTED_ERROR_RESPONSE,
-  MOCK_USER_HAS_NO_CARD_ERROR_RESPONSE,
+  MOCK_INVALID_CARD_ERROR_RESPONSE,
 } from '@fixtures/private/delivery/payview/buy-request-errors.fixtures.spec';
 
 const buyRequestErrorMapper = new BuyRequestErrorMapper();
@@ -138,11 +138,11 @@ describe('when we receive an error from backend when we are trying to buy an ite
     it('should map the error to the correct domain instance', () => {
       let result: BuyerRequestsError;
 
-      buyRequestErrorMapper.map(MOCK_USER_HAS_NO_CARD_ERROR_RESPONSE).subscribe({
+      buyRequestErrorMapper.map(MOCK_INVALID_CARD_ERROR_RESPONSE).subscribe({
         error: (errors) => (result = errors[0]),
       });
 
-      expect(result instanceof UserHasNoCardError).toBe(true);
+      expect(result instanceof InvalidCardError).toBe(true);
     });
   });
 
@@ -224,7 +224,7 @@ describe('when we receive an error from backend when we are trying to buy an ite
         error: (errors) => (result = errors[0]),
       });
 
-      expect(result instanceof ItemPriceSmallerThankPromocodeMinPriceError).toBe(true);
+      expect(result instanceof ItemPriceSmallerThanPromocodeMinPriceError).toBe(true);
     });
   });
 

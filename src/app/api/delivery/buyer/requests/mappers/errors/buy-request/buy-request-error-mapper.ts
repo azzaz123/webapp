@@ -10,12 +10,12 @@ import {
   InternationalShippingNotEnabledForUserError,
   ItemCategoryDifferentToPromocodeItemCategoryError,
   ItemMaxWeightGreaterThanPromocodeMaxWeightError,
-  ItemPriceSmallerThankPromocodeMinPriceError,
+  ItemPriceSmallerThanPromocodeMinPriceError,
   MaxRequestNumberExceededError,
   NoAddressForUserError,
   NotActiveYetPromocodeError,
   NotExistingPromocodeError,
-  UserHasNoCardError,
+  InvalidCardError,
   AlreadyInProgressTransactionError,
   NonPurchasableItemError,
   NotShippableItemError,
@@ -53,8 +53,8 @@ export class BuyRequestErrorMapper extends ErrorMapper<BuyRequestErrorResponse> 
     if (error.error_code === BUY_REQUEST_ERROR_CODES.BLOCKED_BUYER) {
       return new BlockedBuyerError();
     }
-    if (error.error_code === BUY_REQUEST_ERROR_CODES.USER_HAS_NO_CARD) {
-      return new UserHasNoCardError();
+    if (error.error_code === BUY_REQUEST_ERROR_CODES.INVALID_CARD) {
+      return new InvalidCardError();
     }
     if (error.error_code === BUY_REQUEST_ERROR_CODES.CURRENCY_NOT_ACCEPTED) {
       return new CurrencyNotAcceptedError();
@@ -75,7 +75,7 @@ export class BuyRequestErrorMapper extends ErrorMapper<BuyRequestErrorResponse> 
       return new ItemMaxWeightGreaterThanPromocodeMaxWeightError();
     }
     if (error.error_code === BUY_REQUEST_ERROR_CODES.ITEM_PRICE_SMALLER_THAN_PROMOCODE_MIN_PRICE) {
-      return new ItemPriceSmallerThankPromocodeMinPriceError();
+      return new ItemPriceSmallerThanPromocodeMinPriceError();
     }
     if (error.error_code === BUY_REQUEST_ERROR_CODES.NOT_ACTIVE_YET_PROMOCODE) {
       return new NotActiveYetPromocodeError();

@@ -77,14 +77,14 @@ export const MOCK_BLOCKED_BUYER_ERROR_RESPONSE: BuyRequestErrorResponse = {
   error: [MOCK_BLOCKED_BUYER_ERROR],
 };
 
-const MOCK_USER_HAS_NO_CARD_ERROR: BuyRequestErrorDto = {
-  error_code: BUY_REQUEST_ERROR_CODES.USER_HAS_NO_CARD,
-  message: 'USER_HAS_NO_CARD ♥',
+const MOCK_INVALID_CARD_ERROR: BuyRequestErrorDto = {
+  error_code: BUY_REQUEST_ERROR_CODES.INVALID_CARD,
+  message: 'INVALID_CARD ♥',
 };
 
-export const MOCK_USER_HAS_NO_CARD_ERROR_RESPONSE: BuyRequestErrorResponse = {
+export const MOCK_INVALID_CARD_ERROR_RESPONSE: BuyRequestErrorResponse = {
   ...MOCK_BASE_ERROR_RESPONSE,
-  error: [MOCK_USER_HAS_NO_CARD_ERROR],
+  error: [MOCK_INVALID_CARD_ERROR],
 };
 
 const MOCK_CURRENCY_NOT_ACCEPTED_ERROR: BuyRequestErrorDto = {

@@ -131,7 +131,7 @@ describe('BuyerRequestsApiService', () => {
       });
     });
 
-    describe('and the request fails and returns a backend error', () => {
+    describe('and the request fails due to a server error', () => {
       let errors: BuyerRequestsError[];
 
       beforeEach(fakeAsync(() => {

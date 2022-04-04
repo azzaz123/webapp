@@ -17,5 +17,5 @@ export * from './not-active-yet-promocode.error';
 export * from './not-existing-promocode.error';
 export * from './not-shippable-item.error';
 export * from './postal-code-temporarily-restricted.error';
-export * from './user-has-no-card.error';
+export * from './invalid-card.error';
 export * from './buyer-requests.error';
