@@ -28,7 +28,7 @@ const mapToDefaults: ToDomainMapper<PaymentsUserPaymentDefaultsDto, PaymentsUser
   const { payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = defaults;
   const mappedPaymentMethod: PAYVIEW_PAYMENT_METHOD = paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null;
   return {
-    paymentMethod: mappedPaymentMethod ? mapToAvailablePayment(mappedPaymentMethod) : null,
+    paymentMethod: paymentMethod ? mapToAvailablePayment(mappedPaymentMethod) : null,
     useWallet,
     walletBlocked,
   };
@@ -41,7 +41,7 @@ const mapToPreference: ToDomainMapper<PaymentsUserPaymentPreferenceDto, Payments
   const mappedPaymentMethod: PAYVIEW_PAYMENT_METHOD = paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null;
   return {
     id,
-    paymentMethod: mappedPaymentMethod ? mapToAvailablePayment(mappedPaymentMethod) : null,
+    paymentMethod: paymentMethod ? mapToAvailablePayment(mappedPaymentMethod) : null,
     useWallet,
     walletBlocked,
   };
