@@ -11,6 +11,11 @@
     &--selection {
       display: block;
     }
+
+    tsl-button ::ng-deep > .btn.btn-big {
+      padding-right: $spacing-ml;
+      padding-left: $spacing-ml;
+    }
   }
 }
 

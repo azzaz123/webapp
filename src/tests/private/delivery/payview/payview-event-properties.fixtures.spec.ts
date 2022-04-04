@@ -47,6 +47,12 @@ export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_P
   preselectedPaymentMethod: 'wallet, paypal',
 };
 
+export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITHOUT_PAYMENT_PREFERENCE: ViewTransactionPayScreen = {
+  ...MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD,
+  useWallet: false,
+  preselectedPaymentMethod: null,
+};
+
 export const MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION: ClickAddEditCard = {
   screenId: SCREEN_IDS.Checkout,
   itemId: MOCK_PAYVIEW_ITEM.id,

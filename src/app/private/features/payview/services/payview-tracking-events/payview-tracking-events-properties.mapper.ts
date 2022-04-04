@@ -6,13 +6,15 @@ import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
 import { ClickHelpTransactional } from '@core/analytics/resources/events-interfaces/click-help-transactional.interface';
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments/enums/payment-method.enum';
 import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-add-promocode-transaction-pay.interface';
 import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
 import { USER_ACTION, ADDRESS_TYPE } from './tracking-events-action.enum';
 import { PayviewStateDelivery } from '../../interfaces/payview-state-delivery.interface';
+import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
+  const paymentPreferences: PaymentsUserPaymentPreference = payviewState.payment.preferences.preferences;
   return {
     screenId: SCREEN_IDS.Checkout,
     itemId: payviewState.item.id,
@@ -20,8 +22,8 @@ export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payvi
     itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
     feesPrice: payviewState.costs.buyerCost.fees.amount.total,
     sellerUserId: payviewState.itemDetails.sellerUserHash,
-    preselectedPaymentMethod: getPreselectedPaymentMethod(payviewState.payment.preferences.preferences.paymentMethod),
-    useWallet: payviewState.payment.preferences.preferences.useWallet,
+    preselectedPaymentMethod: paymentPreferences ? getPreselectedPaymentMethod(paymentPreferences.paymentMethod) : null,
+    useWallet: paymentPreferences ? paymentPreferences.useWallet : false,
     sellerCountry: payviewState.itemDetails.sellerCountry,
   };
 }
@@ -104,14 +106,14 @@ function getAddOrEditAddress(delivery: PayviewStateDelivery, eventType: PAYVIEW_
   return delivery.methods.current.lastAddressUsed ? USER_ACTION.EDIT : USER_ACTION.ADD;
 }
 
-function getPreselectedPaymentMethod(paymentPreference: PaymentMethod): ViewTransactionPayScreen['preselectedPaymentMethod'] {
+function getPreselectedPaymentMethod(paymentPreference: PAYVIEW_PAYMENT_METHOD): ViewTransactionPayScreen['preselectedPaymentMethod'] {
   return PRESELECTED_PAYMENT_METHOD_CONVERTER[paymentPreference];
 }
 
-const PRESELECTED_PAYMENT_METHOD_CONVERTER: Record<PaymentMethod, ViewTransactionPayScreen['preselectedPaymentMethod']> = {
-  [PaymentMethod.CREDIT_CARD]: 'bank card',
-  [PaymentMethod.PAYPAL]: 'paypal',
-  [PaymentMethod.WALLET]: 'wallet',
-  [PaymentMethod.WALLET_AND_CREDIT_CARD]: 'wallet, bank card',
-  [PaymentMethod.WALLET_AND_PAYPAL]: 'wallet, paypal',
+const PRESELECTED_PAYMENT_METHOD_CONVERTER: Record<PAYVIEW_PAYMENT_METHOD, ViewTransactionPayScreen['preselectedPaymentMethod']> = {
+  [PAYVIEW_PAYMENT_METHOD.CREDIT_CARD]: 'bank card',
+  [PAYVIEW_PAYMENT_METHOD.PAYPAL]: 'paypal',
+  [PAYVIEW_PAYMENT_METHOD.WALLET]: 'wallet',
+  [PAYVIEW_PAYMENT_METHOD.WALLET_AND_CREDIT_CARD]: 'wallet, bank card',
+  [PAYVIEW_PAYMENT_METHOD.WALLET_AND_PAYPAL]: 'wallet, paypal',
 };

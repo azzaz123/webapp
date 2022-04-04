@@ -1,4 +1,4 @@
-export enum PaymentMethod {
+export enum PAYVIEW_PAYMENT_METHOD {
   CREDIT_CARD,
   PAYPAL,
   WALLET,

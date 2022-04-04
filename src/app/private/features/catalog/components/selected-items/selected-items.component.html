@@ -1,18 +1,19 @@
 <div class="SelectedItems" [ngClass]="{'SelectedItems--selection': itemService.selectedItems.length > 0}">
 
   <div class="container h-100">
-    <div class="row h-100">
+    <div class="d-flex h-100 justify-content-around">
 
-      <div class="col-3 d-none d-md-flex align-items-center justify-content-start">
-        <div class="SelectedItems__total-selected" [hidden]="itemService.selectedItems.length === 0"
-          (click)="deselect()">
+      <div class="d-none d-md-flex align-items-center justify-content-start">
+        <div class="SelectedItems__total-selected px-2 mr-3" [hidden]="itemService.selectedItems.length === 0"
+             (click)="deselect()">
           <a class="mr-2">
             <ng-container [ngPlural]="itemService.selectedItems.length">
               <ng-template ngPluralCase="=1">
                 <ng-container i18n="@@web_catalog_components_selected_items_111">1 item selected</ng-container>
               </ng-template>
               <ng-template ngPluralCase="other">
-                <ng-container i18n="@@web_catalog_components_selected_items_112">{{itemService.selectedItems.length}} items selected
+                <ng-container i18n="@@web_catalog_components_selected_items_112">{{itemService.selectedItems.length}}
+                  items selected
                 </ng-container>
               </ng-template>
             </ng-container>
@@ -20,7 +21,7 @@
         </div>
       </div>
 
-      <div class="col-6 col-md-4 d-flex align-items-center justify-content-center">
+      <div class="d-none d-sm-flex align-items-center">
         <div *ngFor="let item of selectedItems | slice:0:4; let last = last" class="SelectedItems__item">
           <tsl-item-avatar [item]="item" size="small">
           </tsl-item-avatar>
@@ -31,13 +32,23 @@
         </div>
       </div>
 
-      <div class="col-6 col-md-5 d-flex align-items-center justify-content-end">
+      <div class="d-sm-none align-items-center w-100 justify-content-center {{selectedSubscriptionSlot && selectedStatus === STATUS.ACTIVE ? 'd-none' : 'd-flex'}}" >
+        <div *ngFor="let item of selectedItems | slice:0:2; let last = last" class="SelectedItems__item">
+          <tsl-item-avatar [item]="item" size="small">
+          </tsl-item-avatar>
+          <div *ngIf="selectedItems.length - 1 > 1 && last" class="last">
+            <span>+{{selectedItems.length - 1}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ml-auto d-flex align-items-center justify-content-end">
         <div class="SelectedItems__actions d-flex align-items-center">
 
           <!-- Delete -->
           <button class="btn-delete dark d-flex align-items-center justify-content-center"
-            (click)="onClickAction('delete')" [hidden]="itemService.selectedAction === 'feature'"
-            [disabled]="!itemService.selectedItems.length">
+                  (click)="onClickAction('delete')" [hidden]="itemService.selectedAction === 'feature'"
+                  [disabled]="!itemService.selectedItems.length">
             <tsl-svg-icon src="/assets/icons/delete.svg"></tsl-svg-icon>
             <span i18n="@@web_catalog_components_selected_items_113">Delete</span>
           </button>
@@ -50,23 +61,29 @@
             i18n="@@web_catalog_components_selected_items_114">Deactivate</button>
 
           <!-- Activate responsive -->
-          <button *ngIf="showActiveButton" class="btn-activate"
-            [disabled]="!itemService.selectedItems.length" (click)="onClickAction('activate')" i18n="@@web_catalog_components_selected_items_557">Activate</button>
+          <button *ngIf="showActiveButton && !selectedSubscriptionSlot" class="btn-activate"
+                  [disabled]="!itemService.selectedItems.length" (click)="onClickAction('activate')"
+                  i18n="@@web_catalog_components_selected_items_557">Activate
+          </button>
 
-          <div class="SelectedItems__feature d-none d-md-flex flex-column ml-4" *ngIf="!hideFeaturedButton || showActiveButton">
+          <div class="SelectedItems__feature d-flex flex-column ml-md-4"
+               [ngClass]="{ 'd-none d-md-flex': selectedStatus === STATUS.ACTIVE }"
+               *ngIf="!hideFeaturedButton || showActiveButton">
             <!-- Feature -->
             <ng-container *ngxPermissionsOnly="PERMISSIONS.bumps">
               <ng-container *ngIf="!hideFeaturedButton">
                 <tsl-button className="btn-primary btn-big" [disabled]="itemService.selectedItems.length === 0"
-                [routerLink]="BUMP_PATH" (click)="trackClickBumpItems()"
-                i18n="@@web_catalog_components_selected_items_558">Feature</tsl-button>
+                            [routerLink]="BUMP_PATH" (click)="trackClickBumpItems()"
+                            i18n="@@web_catalog_components_selected_items_558">Feature
+                </tsl-button>
               </ng-container>
             </ng-container>
-            <ng-container  *ngIf="showActiveButton">
-            <!-- Activate -->
+            <ng-container *ngIf="showActiveButton">
+              <!-- Activate -->
               <tsl-button className="btn-primary btn-big" [disabled]="!itemService.selectedItems.length"
-              (click)="onClickAction('activate')"
-              i18n="@@web_catalog_components_selected_items_641">Activate</tsl-button>
+                          (click)="onClickAction('activate')"
+                          i18n="@@web_catalog_components_selected_items_641">Activate
+              </tsl-button>
             </ng-container>
           </div>
 
