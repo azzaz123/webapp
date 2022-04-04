@@ -33,4 +33,8 @@ export class BuyerRequestsApiService {
       .buy(mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties(state, buyRequestId))
       .pipe(catchError((error: BuyRequestErrorResponse) => this.errorMapper.map(error)));
   }
+
+  public cancelRequest(buyerRequestId: string): Observable<void> {
+    return this.buyerRequestsHttpService.cancel(buyerRequestId);
+  }
 }

@@ -27,6 +27,7 @@ import { RemoteConsoleService } from '../remote-console';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Message } from './message';
 import { RealTimeService } from './real-time.service';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 
 let service: RealTimeService;
 let eventService: EventService;
@@ -46,6 +47,7 @@ describe('RealTimeService', () => {
         { provide: RemoteConsoleService, useClass: MockRemoteConsoleService },
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: ConnectionService, useClass: MockConnectionService },
+        { provide: DeliveryRealTimeService, useValue: {} },
         I18nService,
       ],
     });

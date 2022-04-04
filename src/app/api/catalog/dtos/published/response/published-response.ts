@@ -1,6 +1,6 @@
-import { PublishedItem, PublishedMeta } from '@api/catalog/dtos';
+import { PublishedItemDto, PublishedMeta } from '@api/catalog/dtos';
 
 export interface PublishedResponse {
-  data: PublishedItem[];
+  data: PublishedItemDto[];
   meta: PublishedMeta;
 }

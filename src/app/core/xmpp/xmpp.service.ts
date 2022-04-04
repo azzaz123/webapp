@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import {
   ChatSignal,
   ChatSignalType,
@@ -17,7 +18,7 @@ import { EventService } from '../event/event.service';
 import { RemoteConsoleService } from '../remote-console';
 import { User } from '../user/user';
 import { XMPP_MESSAGE_TYPE } from './xmpp.enum';
-import { JID, NormalXmppMessage, XmppBodyMessage, XMPPClient } from './xmpp.interface';
+import { JID, NormalXmppMessage, XmppBodyMessage, XMPPClient, XmppMessage } from './xmpp.interface';
 import { StanzaIO } from './xmpp.provider';
 
 @Injectable()
@@ -35,15 +36,12 @@ export class XmppService {
   private canProcessRealtime = false;
   private xmppError = { message: 'XMPP disconnected' };
 
-  //TODO: This should be moved to a separated service
-  private readonly _deliveryRealtimeMessage$: Subject<string> = new Subject<string>();
-
-  constructor(private eventService: EventService, private remoteConsoleService: RemoteConsoleService) {
+  constructor(
+    private eventService: EventService,
+    private remoteConsoleService: RemoteConsoleService,
+    private deliveryRealTimeService: DeliveryRealTimeService
+  ) {
     this.clientConnected$.next(false);
-  }
-
-  public get deliveryRealtimeMessage$(): Observable<string> {
-    return this._deliveryRealtimeMessage$.asObservable();
   }
 
   get clientConnected(): boolean {
@@ -260,7 +258,7 @@ export class XmppService {
 
   private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
     if (this.isNormalXmppMessage(message)) {
-      this.handleNewNormalMessage(message);
+      this.onNewNormalMessage(message);
     }
 
     const replaceTimestamp = !message.timestamp || message.carbonSent;
@@ -325,17 +323,8 @@ export class XmppService {
     );
   }
 
-  private handleNewNormalMessage(message: NormalXmppMessage): void {
-    const { payload } = message;
-    if (!payload) {
-      return;
-    }
-
-    const payloadMessageType: string = message.payload.type;
-    const isDeliveryMessage: boolean = payloadMessageType.startsWith('delivery');
-    if (isDeliveryMessage) {
-      this._deliveryRealtimeMessage$.next(payloadMessageType);
-    }
+  private onNewNormalMessage(message: NormalXmppMessage): void {
+    this.deliveryRealTimeService.check(message);
   }
 
   private setDefaultPrivacyList(): Observable<any> {
@@ -574,7 +563,7 @@ export class XmppService {
     return new JID(userId, environment.xmppDomain, withResource ? this.resource : null);
   }
 
-  private isNormalXmppMessage(message: unknown): message is NormalXmppMessage {
+  private isNormalXmppMessage(message: XmppMessage | NormalXmppMessage): message is NormalXmppMessage {
     return (message as NormalXmppMessage).type === XMPP_MESSAGE_TYPE.NORMAL;
   }
 }

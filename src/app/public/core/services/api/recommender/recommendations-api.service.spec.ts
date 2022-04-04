@@ -1,19 +1,19 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { RecommenderApiService, GET_RECOMMENDATIONS_ENDPOINT } from './recommender-api.service';
+import { RecommendationsApiService, GET_RECOMMENDATIONS_ENDPOINT } from './recommendations-api.service';
 
 describe('RecommenderApiService', () => {
   let httpMock: HttpTestingController;
-  let recommenderApiService: RecommenderApiService;
+  let recommendationsApiService: RecommendationsApiService;
   const ITEM_ID = '123';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RecommenderApiService],
+      providers: [RecommendationsApiService],
       imports: [HttpClientTestingModule],
     });
 
-    recommenderApiService = TestBed.inject(RecommenderApiService);
+    recommendationsApiService = TestBed.inject(RecommendationsApiService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -25,7 +25,7 @@ describe('RecommenderApiService', () => {
     it('should ask for the recommended items', () => {
       const expectedUrl = GET_RECOMMENDATIONS_ENDPOINT(ITEM_ID);
 
-      recommenderApiService.getRecommendedItemsByItemId(ITEM_ID).subscribe();
+      recommendationsApiService.getRecommendedItemsByItemId(ITEM_ID).subscribe();
       const req = httpMock.expectOne(expectedUrl);
       req.flush({});
 

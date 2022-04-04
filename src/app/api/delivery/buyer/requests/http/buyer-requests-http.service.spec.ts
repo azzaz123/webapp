@@ -2,6 +2,7 @@ import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@an
 import { TestBed } from '@angular/core/testing';
 
 import {
+  BUYER_CANCEL_REQUEST_ENDPOINT,
   BUYER_REQUESTS_ENDPOINT,
   BUYER_REQUESTS_ITEMS_DETAILS,
   BUYER_REQUESTS_ITEM_HASH_QUERY_PARAM_KEY,
@@ -13,6 +14,7 @@ import { MOCK_BUYER_REQUESTS_ITEMS_DETAILS_DTO } from '@api/fixtures/delivery/bu
 import { MOCK_BUYER_REQUESTS_DTO } from '@api/fixtures/delivery/buyer/requests/buyer-requests-dto.fixtures.spec';
 import { MOCK_BUYER_REQUEST_BUY_DTO_WITH_BUYER_ADDRESS } from '@api/fixtures/delivery/buyer/requests/buyer-request-buy-dto.fixtures.spec';
 import { APP_VERSION } from '@environments/version';
+import { MOCK_BUYER_REQUESTS } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 
 describe('BuyerRequestsHttpService', () => {
   const MOCK_ITEM_HASH: string = '9jdxdd2rylzk';
@@ -86,6 +88,32 @@ describe('BuyerRequestsHttpService', () => {
 
     it('should have the app version header', () => {
       expect(buyRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
+    });
+  });
+
+  describe('when asking to cancel the buyer request', () => {
+    let cancelBuyerRequest: TestRequest;
+
+    beforeEach(() => {
+      const buyerRequestId: string = MOCK_BUYER_REQUESTS[0].id;
+      const expectedUrl: string = BUYER_CANCEL_REQUEST_ENDPOINT(buyerRequestId);
+
+      service.cancel(buyerRequestId).subscribe();
+
+      cancelBuyerRequest = httpMock.expectOne(expectedUrl);
+      cancelBuyerRequest.flush({});
+    });
+
+    it('should ask the server with valid petition type', () => {
+      expect(cancelBuyerRequest.request.method).toBe('PUT');
+    });
+
+    it('should just ask the cancelation URL without payload', () => {
+      expect(cancelBuyerRequest.request.body).toStrictEqual(null);
+    });
+
+    it('should send the app version', () => {
+      expect(cancelBuyerRequest.request.headers.get('X-AppVersion')).toEqual(APP_VERSION.replace(/\./g, ''));
     });
   });
 });
