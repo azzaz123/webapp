@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input, Output, EventEmitter } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -81,6 +81,7 @@ class FakeDeliveryMapComponent {
   @Input() userOfficeId: number;
   @Input() selectedCarrier: unknown;
   @Input() fullAddress: string;
+  @Output() goToDeliveryAddress: EventEmitter<void> = new EventEmitter();
 }
 
 @Component({
@@ -565,6 +566,82 @@ describe('PayviewModalComponent', () => {
 
             expect(promotionEditorComponent).toBeFalsy();
           });
+
+          describe('WHEN the user clicks over back button', () => {
+            describe('and the user is in the delivery address form, and previously coming from the delivery map', () => {
+              beforeEach(() => {
+                fixture.debugElement.query(By.directive(FakeDeliveryMapComponent)).triggerEventHandler('goToDeliveryAddress', {});
+                spyOn(component.stepper, 'goToStep');
+
+                fixture.detectChanges();
+              });
+
+              it('should redirect to the delivery map step', () => {
+                const buttonBack = debugElement.query(By.css(payviewModalBackSelector));
+
+                buttonBack.triggerEventHandler('click', null);
+
+                expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+                expect(component.stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+              });
+            });
+
+            describe('and the user is in the delivery address form, and NOT previously coming from the delivery map', () => {
+              beforeEach(() => {
+                component.stepper.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
+                spyOn(component.stepper, 'goToStep');
+
+                fixture.detectChanges();
+              });
+
+              it('should redirect to the payview step', () => {
+                const buttonBack = debugElement.query(By.css(payviewModalBackSelector));
+
+                buttonBack.triggerEventHandler('click', null);
+
+                expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+                expect(component.stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PAYVIEW);
+              });
+            });
+          });
+
+          describe('WHEN the delivery address has been saved', () => {
+            describe('and the user comes from the delivery map', () => {
+              beforeEach(() => {
+                spyOn(component.stepper, 'goToStep');
+                spyOn(payviewStateManagementService, 'refreshByDelivery');
+
+                fixture.debugElement.query(By.directive(FakeDeliveryMapComponent)).triggerEventHandler('goToDeliveryAddress', {});
+                component.closeDeliveryEditor();
+              });
+
+              it('should redirect to the delivery map step', () => {
+                expect(component.stepper.goToStep).toHaveBeenCalledTimes(2);
+                expect(component.stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+              });
+
+              it('should call to refresh the delivery information', () => {
+                expect(payviewStateManagementService.refreshByDelivery).toHaveBeenCalledTimes(1);
+              });
+            });
+
+            describe('and the user does NOT come from the delivery map', () => {
+              beforeEach(() => {
+                spyOn(payviewStateManagementService, 'refreshByDelivery');
+                spyOn(component.stepper, 'goToStep');
+                component.closeDeliveryEditor();
+              });
+
+              it('should redirect to the payview step', () => {
+                expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+                expect(component.stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PAYVIEW);
+              });
+
+              it('should call to refresh the delivery information', () => {
+                expect(payviewStateManagementService.refreshByDelivery).toHaveBeenCalledTimes(1);
+              });
+            });
+          });
         });
 
         describe('WHEN stepper is on the fourth step', () => {
@@ -612,23 +689,6 @@ describe('PayviewModalComponent', () => {
             const promotionEditorComponent = debugElement.query(By.directive(PayviewPromotionEditorComponent));
 
             expect(promotionEditorComponent).toBeTruthy();
-          });
-        });
-
-        describe('WHEN the user clicks over back button', () => {
-          beforeEach(() => {
-            component.stepper.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
-            spyOn(component.stepper, 'goToStep');
-
-            fixture.detectChanges();
-          });
-
-          it('should redirect to the payview step', () => {
-            const buttonBack = debugElement.query(By.css(payviewModalBackSelector));
-
-            buttonBack.triggerEventHandler('click', null);
-
-            expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
           });
         });
 
@@ -917,21 +977,6 @@ describe('PayviewModalComponent', () => {
 
         expect(stepperSpy).toHaveBeenCalledTimes(1);
         expect(stepperSpy).toHaveBeenCalledWith(PAYVIEW_STEPS.PAYVIEW);
-      });
-    });
-
-    describe('WHEN the delivery address has been saved', () => {
-      beforeEach(() => {
-        spyOn(payviewStateManagementService, 'refreshByDelivery');
-        component.closeDeliveryEditor();
-      });
-
-      it('should redirect to the payview step', () => {
-        expect(stepper.goToStep).toHaveBeenCalledTimes(1);
-      });
-
-      it('should call to refresh the delivery information', () => {
-        expect(payviewStateManagementService.refreshByDelivery).toHaveBeenCalledTimes(1);
       });
     });
 
