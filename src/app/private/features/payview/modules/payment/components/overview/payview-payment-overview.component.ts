@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { CreditCard } from '@api/core/model';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsPaymentMethod } from '@api/core/model/payments/interfaces/payments-payment-method.interface';
 import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
 import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
@@ -17,7 +17,7 @@ export class PayviewPaymentOverviewComponent {
   @Input() public methods: PaymentsPaymentMethods;
   @Input() public preferences: PaymentsUserPaymentPreferences;
 
-  public get defaultPaymentMethod(): PaymentMethod {
+  public get defaultPaymentMethod(): PAYVIEW_PAYMENT_METHOD {
     return this.preferences?.preferences?.paymentMethod ?? this.preferences?.defaults?.paymentMethod;
   }
 

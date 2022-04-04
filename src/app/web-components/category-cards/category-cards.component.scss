@@ -1,0 +1,31 @@
+@import '~style/common';
+
+:host {
+  background-color: $white;
+  display: block;
+
+  z-index: 1;
+  .CategoryCards {
+    &__wrapper {
+      overflow: auto;
+      padding-bottom: $spacer * 0.5;
+    }
+
+    &__slider {
+      display: flex;
+      padding: 0 $spacer;
+      width: fit-content;
+
+      &--full {
+        margin-top: $spacer * 0.5;
+      }
+    }
+
+    &__title {
+      font-size: $font-size-l;
+      font-weight: bold;
+      margin: 0;
+      padding: $spacer * 0.5 0 0 $spacer * 1.25;
+    }
+  }
+}

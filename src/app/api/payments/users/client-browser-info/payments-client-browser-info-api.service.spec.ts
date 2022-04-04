@@ -105,7 +105,7 @@ describe('PaymentsClientBrowserInfoApiService', () => {
           isJavaEnabled: MOCK_WINDOW_NAVIGATOR.javaEnabled(),
           isJavaScriptEnabled: true,
           language: MOCK_WINDOW_NAVIGATOR.language,
-          modalWidth: MOCK_WINDOW_INNER_WIDTH * EXTERNAL_PROVIDER_MODAL_LARGE_WIDTH_PROPORTION,
+          modalWidth: Math.round(MOCK_WINDOW_INNER_WIDTH * EXTERNAL_PROVIDER_MODAL_LARGE_WIDTH_PROPORTION),
           modalHeight: EXTERNAL_PROVIDER_MODAL_HEIGHT_PX - EXTERNAL_PROVIDER_MODAL_HEADER_HEIGHT_PX,
           timeZoneOffset: MOCK_TIMEZONE_OFFSET,
           userAgent: MOCK_WINDOW_NAVIGATOR.userAgent,

@@ -750,4 +750,20 @@ describe('SuggesterFilterComponent', () => {
       });
     });
   });
+
+  describe('when asking for reload', () => {
+    beforeEach(() => {
+      testComponent.config = basicConfig;
+      fixture.detectChanges();
+    });
+
+    it('should ask for new options', () => {
+      spyOn(optionService, 'getOptions').and.returnValue(of([]));
+
+      component.handleReload();
+
+      expect(optionService.getOptions).toHaveBeenCalledTimes(1);
+      expect(optionService.getOptions).toHaveBeenCalledWith(basicConfig.id);
+    });
+  });
 });

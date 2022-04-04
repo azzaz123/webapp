@@ -5,7 +5,7 @@
         <tsl-pro-badge *ngIf="element.professional"></tsl-pro-badge>
         <h3 class="DrawerNavigationProfileElement__username text-truncate m-0">{{ element.text }}</h3>
         <div class="d-flex align-items-center">
-            <tsl-stars [stars]="element.reviews"></tsl-stars>
+            <tsl-stars [stars]="element.reviews" [normalized]="false"></tsl-stars>
             <span class="DrawerNavigationProfileElement__reviewsCount">({{ element.reviews_count }})</span>
         </div>
     </div>
