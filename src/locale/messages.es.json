@@ -797,12 +797,6 @@
     "pay_view_buyer_top_bar_link": "¿Dudas?",
     "pay_view_buyer_policies_description_refined": "Compra con seguridad, protegemos tus transacciones. Al realizar esta compra aceptas las Condiciones de uso y la Política de privacidad de Wallapop.",
     "pay_view_buyer_buy_button": "Comprar",
-<<<<<<< HEAD
-    "pay_view_buyer_snackbar_generic_error_payment_error_message": "La compra no se ha realizado, algo ha fallado durante el pago. Vuelve a intentarlo.",
-    "pay_view_buyer_bargain_pop_up_price_out_of_range_inline_error": "No puedes proponer este precio, está fuera del rango aceptado.",
-    "pay_view_buyer_sender_address_request_due_to_pickup_point_method_modal_description": "Es necesario que añadas tu dirección. En caso de que quieras hacer una devolución, serás el remitente.",
-=======
->>>>>>> 7aed7864eaace69dda001cce27cc44f2235c0693
     "pay_view_buyer_delivery_method_title": "¿Dónde quieres recibirlo?",
     "pay_view_buyer_delivery_method_shipment_guarantee_label": "Envío con garantía",
     "pay_view_buyer_delivery_method_po_selector_title": "Punto de recogida",
