@@ -24,7 +24,7 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CATEGORY_IDS, LEGACY_CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryOption, CategoryResponse, SuggestedCategory } from '@core/category/category-response.interface';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -131,7 +131,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly DEFAULT_MAX_HASHTAGS = 5;
   public readonly DEBOUNCE_TIME_MS = 500;
-  public readonly LEGACY_CATEGORY_IDS = [13000];
 
   private focused: boolean;
   private oldFormValue: any;
@@ -558,7 +557,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       currency_code: this.item.currencyCode,
       description: this.item.description,
       sale_conditions: this.getSaleConditions(),
-      category_id: this.LEGACY_CATEGORY_IDS.includes(this.item.categoryId) ? null : this.item.categoryId.toString(),
+      category_id: LEGACY_CATEGORY_IDS.includes(this.item.categoryId) ? null : this.item.categoryId.toString(),
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
       images: this.uploadService.convertImagesToFiles(this.item.images),

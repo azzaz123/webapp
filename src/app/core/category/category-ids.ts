@@ -21,3 +21,5 @@ export const CATEGORY_IDS = {
   SERVICES: 13200,
   OTHERS: 12485,
 };
+
+export const LEGACY_CATEGORY_IDS = [13000];

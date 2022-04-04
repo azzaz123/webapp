@@ -2,7 +2,7 @@ import { OrderEvent } from '@private/features/catalog/components/selected-items/
 import { clone } from 'lodash-es';
 import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
-import { CATEGORY_IDS } from '../app/core/category/category-ids';
+import { CATEGORY_IDS, LEGACY_CATEGORY_IDS } from '../app/core/category/category-ids';
 import { Item, ITEM_TYPES } from '../app/core/item/item';
 import {
   AllowedActionResponse,
@@ -341,7 +341,7 @@ export const MOCK_ITEM_WITH_LECAGY_CATEGORY: Item = new Item(
   ITEM_DATA.owner,
   ITEM_DATA.title,
   ITEM_DATA.description,
-  13000,
+  LEGACY_CATEGORY_IDS[0],
   ITEM_DATA.location,
   ITEM_DATA.sale_price,
   ITEM_DATA.currency_code,
