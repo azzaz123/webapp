@@ -2,10 +2,12 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/delivery-item-details-api.service';
-import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
-import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
-import { MOCK_BUYER_REQUESTS } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
+import {
+  MOCK_BUYER_REQUESTS,
+  MOCK_BUYER_REQUEST_ACCEPTED,
+  MOCK_BUYER_REQUEST_EXPIRED,
+} from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 import {
   MOCK_DELIVERY_ITEM_DETAILS,
   MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE,
@@ -80,10 +82,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   describe('when asking for buyer context', () => {
     describe('and when delivery feature flag is disabled', () => {
       beforeEach(() => {
-        const MOCK_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
-          (request) => request.status.request === BUYER_REQUEST_STATUS.ACCEPTED || request.status.request === BUYER_REQUEST_STATUS.PENDING
-        );
-        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_SUCCESSFUL_REQUESTS));
+        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_EXPIRED]));
         spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
       });
@@ -101,10 +100,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
     describe('when buyer has done previously buy requests to current item', () => {
       describe('and when the last request is in a pending or accepted state', () => {
         beforeEach(() => {
-          const MOCK_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
-            (request) => request.status.request === BUYER_REQUEST_STATUS.ACCEPTED || request.status.request === BUYER_REQUEST_STATUS.PENDING
-          );
-          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_SUCCESSFUL_REQUESTS));
+          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_ACCEPTED]));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         });
 
@@ -118,11 +114,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
       describe('and when the last request is NOT in a pending or accepted state', () => {
         beforeEach(() => {
-          const MOCK_NON_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
-            (request) =>
-              !(request.status.request === BUYER_REQUEST_STATUS.ACCEPTED || request.status.request === BUYER_REQUEST_STATUS.PENDING)
-          );
-          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_NON_SUCCESSFUL_REQUESTS));
+          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_EXPIRED]));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         });
 
