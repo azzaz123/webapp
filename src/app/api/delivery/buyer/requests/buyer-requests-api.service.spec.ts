@@ -45,6 +45,9 @@ describe('BuyerRequestsApiService', () => {
             buy() {
               return of({});
             },
+            cancel(_buyerRequestId: string) {
+              return of({});
+            },
           },
         },
         {
@@ -168,6 +171,25 @@ describe('BuyerRequestsApiService', () => {
         expect(buyerRequestsHttpService.buy).toHaveBeenCalledTimes(1);
         expect(buyerRequestsHttpService.buy).toHaveBeenCalledWith(MOCK_BUYER_REQUEST_BUY_DTO_WITH_BUYER_ADDRESS_AND_PROMOCODE);
       });
+    });
+  });
+
+  describe('when asking to cancel a buyer request', () => {
+    const buyerRequestId: string = MOCK_BUYER_REQUESTS[0].id;
+
+    beforeEach(fakeAsync(() => {
+      spyOn(buyerRequestsHttpService, 'cancel').and.callThrough();
+
+      service.cancelRequest(buyerRequestId).subscribe();
+      tick();
+    }));
+
+    it('should ask the server to cancel the buyer request just once', () => {
+      expect(buyerRequestsHttpService.cancel).toHaveBeenCalledTimes(1);
+    });
+
+    it('should ask the server to cancel the specific buyer request', () => {
+      expect(buyerRequestsHttpService.cancel).toHaveBeenCalledWith(buyerRequestId);
     });
   });
 });

@@ -28,4 +28,8 @@ export class BuyerRequestsApiService {
     const buyRequestId: string = this.uuidService.getUUID();
     return this.buyerRequestsHttpService.buy(mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties(state, buyRequestId));
   }
+
+  public cancelRequest(buyerRequestId: string): Observable<void> {
+    return this.buyerRequestsHttpService.cancel(buyerRequestId);
+  }
 }
