@@ -6,27 +6,32 @@ import { UserService } from '@core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SITE_URL } from '@configs/site-url.config';
 import { combineLatest } from 'rxjs';
-
+import { UNSUBSCRIBE_STEP } from './interfaces/unsubscribe-step.enum';
+import { UNSUBSCRIBE_REASON } from './interfaces/unsubscribe-reason.enum';
 @Component({
   selector: 'tsl-unsubscribe-modal',
   templateUrl: './unsubscribe-modal.component.html',
   styleUrls: ['./unsubscribe-modal.component.scss'],
 })
 export class UnsubscribeModalComponent implements OnInit {
-  public step = 1;
+  public step: number;
   public reasons: UnsubscribeReason[];
   public selectedReason: number;
   public customReason: string;
-  public hasSubscription = false;
-  public isProfessional = false;
+  public hasSubscription: boolean = false;
+  public isProfessional: boolean = false;
 
-  public readonly REASONS_TEXT = {
-    1: $localize`:@@delete_account_reason_view_all_users_dont_use_app_text:I'm not using the app`,
-    2: $localize`:@@delete_account_reason_view_all_users_no_interesting_items_nor_sellers_text:Can't find interesting item`,
-    3: $localize`:@@delete_account_reason_view_all_users_use_other_platform_text:I use other platforms`,
-    4: $localize`:@@delete_account_reason_view_all_users_technical_issues_text:Technical issues`,
-    5: $localize`:@@delete_account_reason_view_all_users_security_issues_text:Security issue`,
-    6: $localize`:@@delete_account_reason_view_all_users_other_reason_text:Other reason:`,
+  public readonly MAX_LENGHT_OHTER_REASON: number = 300;
+  public readonly STEP = UNSUBSCRIBE_STEP;
+  public readonly OTHER_REASON_ID: number = UNSUBSCRIBE_REASON.OTHER_REASON;
+
+  public readonly REASONS_TEXT: Record<UNSUBSCRIBE_REASON, string> = {
+    [UNSUBSCRIBE_REASON.NOT_USING_APP]: $localize`:@@delete_account_reason_view_all_users_dont_use_app_text:I'm not using the app`,
+    [UNSUBSCRIBE_REASON.CANT_FIND_INTERESTING_ITEM]: $localize`:@@delete_account_reason_view_all_users_no_interesting_items_nor_sellers_text:Can't find interesting item`,
+    [UNSUBSCRIBE_REASON.USE_OTHER_PLATFORMS]: $localize`:@@delete_account_reason_view_all_users_use_other_platform_text:I use other platforms`,
+    [UNSUBSCRIBE_REASON.TECHNICAL_ISSUES]: $localize`:@@delete_account_reason_view_all_users_technical_issues_text:Technical issues`,
+    [UNSUBSCRIBE_REASON.SECURITY_ISSUES]: $localize`:@@delete_account_reason_view_all_users_security_issues_text:Security issue`,
+    [UNSUBSCRIBE_REASON.OTHER_REASON]: $localize`:@@delete_account_reason_view_all_users_other_reason_text:Other reason:`,
   };
 
   constructor(
@@ -46,9 +51,14 @@ export class UnsubscribeModalComponent implements OnInit {
     );
 
     this.hasSubscription = this.userService.isProUser();
+    this.step = this.STEP.CONFIRMATION;
   }
 
-  public send() {
+  public confirmDeleteAccount(): void {
+    this.step = this.STEP.QUESTIONNAIRE;
+  }
+
+  public send(): void {
     this.userService.unsubscribe(this.selectedReason, this.customReason).subscribe(() => {
       this.activeModal.close();
       this.accessTokenService.deleteAccessToken();
