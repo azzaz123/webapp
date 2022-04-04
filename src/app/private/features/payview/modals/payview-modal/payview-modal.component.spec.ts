@@ -598,19 +598,40 @@ describe('PayviewModalComponent', () => {
         });
 
         describe('WHEN the user clicks over back button', () => {
-          beforeEach(() => {
-            component.stepper.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
-            spyOn(component.stepper, 'goToStep');
+          describe('and the user is in the delivery address form, and previously coming from the delivery map', () => {
+            beforeEach(() => {
+              component.goToDeliveryAddressFromMap();
+              spyOn(component.stepper, 'goToStep');
 
-            fixture.detectChanges();
+              fixture.detectChanges();
+            });
+
+            it('should redirect to the delivery map step', () => {
+              const buttonBack = debugElement.query(By.css(payviewModalBackSelector));
+
+              buttonBack.triggerEventHandler('click', null);
+
+              expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+              expect(component.stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+            });
           });
 
-          it('should redirect to the payview step', () => {
-            const buttonBack = debugElement.query(By.css(payviewModalBackSelector));
+          describe('and the user is in the delivery address form, and NOT previously coming from the delivery map', () => {
+            beforeEach(() => {
+              component.stepper.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
+              spyOn(component.stepper, 'goToStep');
 
-            buttonBack.triggerEventHandler('click', null);
+              fixture.detectChanges();
+            });
 
-            expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+            it('should redirect to the payview step', () => {
+              const buttonBack = debugElement.query(By.css(payviewModalBackSelector));
+
+              buttonBack.triggerEventHandler('click', null);
+
+              expect(component.stepper.goToStep).toHaveBeenCalledTimes(1);
+              expect(component.stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PAYVIEW);
+            });
           });
         });
 
@@ -903,17 +924,38 @@ describe('PayviewModalComponent', () => {
     });
 
     describe('WHEN the delivery address has been saved', () => {
-      beforeEach(() => {
-        spyOn(payviewStateManagementService, 'refreshByDelivery');
-        component.closeDeliveryEditor();
+      describe('and the user comes from the delivery map', () => {
+        beforeEach(() => {
+          component.goToDeliveryAddressFromMap();
+          spyOn(component, 'goToDeliveryAddressFromMap');
+          spyOn(payviewStateManagementService, 'refreshByDelivery');
+          component.closeDeliveryEditor();
+        });
+
+        it('should redirect to the delivery map step', () => {
+          expect(stepper.goToStep).toHaveBeenCalledTimes(2);
+          expect(stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+        });
+
+        it('should call to refresh the delivery information', () => {
+          expect(payviewStateManagementService.refreshByDelivery).toHaveBeenCalledTimes(1);
+        });
       });
 
-      it('should redirect to the payview step', () => {
-        expect(stepper.goToStep).toHaveBeenCalledTimes(1);
-      });
+      describe('and the user does NOT come from the delivery map', () => {
+        beforeEach(() => {
+          spyOn(payviewStateManagementService, 'refreshByDelivery');
+          component.closeDeliveryEditor();
+        });
 
-      it('should call to refresh the delivery information', () => {
-        expect(payviewStateManagementService.refreshByDelivery).toHaveBeenCalledTimes(1);
+        it('should redirect to the payview step', () => {
+          expect(stepper.goToStep).toHaveBeenCalledTimes(1);
+          expect(stepper.goToStep).toHaveBeenCalledWith(PAYVIEW_STEPS.PAYVIEW);
+        });
+
+        it('should call to refresh the delivery information', () => {
+          expect(payviewStateManagementService.refreshByDelivery).toHaveBeenCalledTimes(1);
+        });
       });
     });
 
