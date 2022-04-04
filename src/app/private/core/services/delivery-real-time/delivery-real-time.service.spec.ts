@@ -13,7 +13,9 @@ describe('DeliveryRealTimeService', () => {
   let service: DeliveryRealTimeService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [DeliveryRealTimeService],
+    });
     service = TestBed.inject(DeliveryRealTimeService);
   });
 

@@ -34,6 +34,7 @@ import { DeliveryRealTimeService } from './services/delivery-real-time/delivery-
     DesktopNotificationsService,
     XmppService,
     RealTimeService,
+    DeliveryRealTimeService,
     InboxService,
     BlockUserService,
     BlockUserXmppService,
@@ -51,7 +52,6 @@ import { DeliveryRealTimeService } from './services/delivery-real-time/delivery-
     UploaderService,
     DeliveryDevelopmentGuard,
     YouGuard,
-    DeliveryRealTimeService,
   ],
 })
 export class PrivateCoreModule {}

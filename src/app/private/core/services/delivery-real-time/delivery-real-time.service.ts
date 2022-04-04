@@ -3,9 +3,7 @@ import { NormalXmppMessage } from '@core/xmpp/xmpp.interface';
 import { Subject, Observable } from 'rxjs';
 import { DeliveryRealTimeNotification } from './delivery-real-time-notification.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class DeliveryRealTimeService {
   private _deliveryRealTimeNotifications$: Subject<DeliveryRealTimeNotification> = new Subject<DeliveryRealTimeNotification>();
 
