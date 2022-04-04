@@ -3,7 +3,7 @@
 .tutorial {
   &.main-veil {
     & {
-      position: absolute;
+      position: fixed;
       top: 0;
       right: 0;
       bottom: 0;
@@ -26,9 +26,11 @@
         overflow-y: scroll;
       }
       .info {
-        width: 60%;
-        min-width: 800px;
         text-align: center;
+        @media (min-width: 1500px) {
+          width: 60%;
+        }
+
         &.step-2 {
           width: 45%;
         }
@@ -206,6 +208,12 @@
           }
         }
       }
+    }
+  }
+
+  &__link {
+    a {
+      font-size: $font-size-m;
     }
   }
 }

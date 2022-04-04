@@ -105,6 +105,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.beta.ts"
+                },
+                {
+                  "replace": "src/scripts/wallapop-web-components/category-cards/category-cards.js",
+                  "with": "src/scripts/wallapop-web-components/category-cards/category-cards.beta.js"
                 }
               ],
               "optimization": true,
@@ -135,6 +139,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/scripts/wallapop-web-components/category-cards/category-cards.js",
+                  "with": "src/scripts/wallapop-web-components/category-cards/category-cards.prod.js"
                 }
               ],
               "optimization": true,

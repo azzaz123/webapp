@@ -13,7 +13,7 @@ import { CARD_TYPES } from '@public/shared/components/item-card-list/enums/card-
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { ColumnsConfig } from '@public/shared/components/item-card-list/interfaces/cols-config.interface';
 import { SlotsConfig } from '@public/shared/components/item-card-list/interfaces/slots-config.interface';
-import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription, of } from 'rxjs';
 import { delay, distinctUntilChanged, filter, skip, map, tap, pairwise } from 'rxjs/operators';
 import { AdShoppingChannel } from '../core/ads/shopping/ad-shopping-channel';
 import { AD_SHOPPING_PUBLIC_SEARCH, AdShoppingPageOptionPublicSearchFactory } from '../core/ads/shopping/search-ads-shopping.config';
@@ -40,6 +40,7 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { SORT_BY } from '@api/core/model/lists/sort.enum';
 import { ExperimentationService } from '@core/experimentation/services/experimentation/experimentation.service';
 import { OPTIMIZELY_FLAG_KEYS } from '@core/experimentation/vendors/optimizely/resources/optimizely-flag-keys';
+import { CATEGORY_CARDS_VISIBILITY_RULES } from '../core/services/constants/category-cards-visibility-rules';
 
 export const REGULAR_CARDS_COLUMNS_CONFIG: ColumnsConfig = {
   xl: 4,
@@ -105,6 +106,10 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
 
   public infoBubbleText: string;
   public showInfoBubble = false;
+
+  public categoryId$: Observable<string>;
+  public objectTypeId$: Observable<string>;
+  public showCategoryCards$: Observable<boolean> = this.buildShowCategoryCardsObservable();
 
   @HostListener('window:scroll', ['$event'])
   @debounce(500)
@@ -181,6 +186,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     );
 
     this.manageKeywordChange();
+    this.filterParameterStoreListener();
   }
 
   public onAttach(): void {
@@ -228,6 +234,24 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
     this.resetSearchId = value;
   }
 
+  private filterParameterStoreListener(): void {
+    this.subscription.add(
+      this.filterParameterStore.parameters$
+        .pipe(
+          map((params) =>
+            params.filter((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId || param.key === FILTER_QUERY_PARAM_KEY.objectType)
+          )
+        )
+        .subscribe((filterParameters: FilterParameter[]) => {
+          const categoryId = filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.categoryId)?.value;
+          const objectTypeId = filterParameters.find((param) => param.key === FILTER_QUERY_PARAM_KEY.objectType)?.value;
+
+          this.categoryId$ = of(categoryId);
+          this.objectTypeId$ = of(objectTypeId);
+        })
+    );
+  }
+
   private manageKeywordChange(): void {
     this.subscription.add(
       this.filterParameterStore.parameters$.pipe(pairwise()).subscribe(([prev, curr]: [FilterParameter[], FilterParameter[]]) => {
@@ -265,6 +289,41 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       filter(() => this.router.url?.split('?')[0] === `/${PUBLIC_PATHS.SEARCH}`),
       distinctUntilChanged((prevParams, nextParams) => isEqual(prevParams, nextParams)),
       map((params: Params) => this.queryStringService.mapQueryToFilterParams(params))
+    );
+  }
+
+  private buildShowCategoryCardsObservable(): Observable<boolean> {
+    return this.filterParameterStore.parameters$.pipe(
+      map((params) => {
+        const requiredParamsToShowCategoryCards = params.filter((param) =>
+          CATEGORY_CARDS_VISIBILITY_RULES.REQUIRED_PARAMETER_KEYS.includes(param.key)
+        );
+
+        const hasNotAllowedParamValuesToShowCategoryCards = params.some((filterParameter) => {
+          const notAllowedFilterParameter = CATEGORY_CARDS_VISIBILITY_RULES.NOT_ALLOWED_PARAMETER_VALUES[filterParameter.key];
+          return notAllowedFilterParameter && notAllowedFilterParameter.toString().includes(filterParameter.value);
+        });
+
+        const hasNotAllowedMultiParamValuesToShowCategoryCards = !!params.reduce((acc, curr) => {
+          if (CATEGORY_CARDS_VISIBILITY_RULES.ALLOWED_PARAMETER_KEYS.includes(curr.key) && curr.value.split(',').length > 1) acc.push(curr);
+          return acc;
+        }, []).length;
+
+        if (
+          requiredParamsToShowCategoryCards.length === CATEGORY_CARDS_VISIBILITY_RULES.REQUIRED_PARAMETER_KEYS.length &&
+          !hasNotAllowedParamValuesToShowCategoryCards &&
+          !hasNotAllowedMultiParamValuesToShowCategoryCards
+        ) {
+          const notAllowedParamsToShowCategoryCards = params.reduce((acc, curr) => {
+            if (!CATEGORY_CARDS_VISIBILITY_RULES.ALLOWED_PARAMETER_KEYS.includes(curr.key)) acc.push(curr);
+            return acc;
+          }, []);
+
+          return !notAllowedParamsToShowCategoryCards.length;
+        } else {
+          return false;
+        }
+      })
     );
   }
 
