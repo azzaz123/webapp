@@ -6,7 +6,7 @@ import {
   ITEM_WITH_REQUIRED_OBJECT_TYPE,
   ITEM_WITH_REQUIRED_OBJECT_TYPE_LEVEL_2,
   ITEM_WITH_REQUIRED_SIZE,
-} from '../fixtures/item-required-data.fixtures';
+} from './fixtures/item-required-data.fixtures';
 import { ItemRequiredDataService } from './item-required-data.service';
 
 describe('ItemRequiredDataService', () => {
