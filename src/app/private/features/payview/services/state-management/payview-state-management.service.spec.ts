@@ -24,6 +24,8 @@ import { PayviewStateManagementService } from '@private/features/payview/service
 
 import { delay, mergeMap } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
+import { CreditCard } from '@api/core/model';
+import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 
 describe('PayviewStateManagementService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
@@ -37,6 +39,9 @@ describe('PayviewStateManagementService', () => {
         {
           provide: PayviewService,
           useValue: {
+            get card() {
+              return of(MOCK_CREDIT_CARD);
+            },
             getCosts() {},
             getDeliveryCosts() {},
             getDeliveryMethods() {},
@@ -377,6 +382,67 @@ describe('PayviewStateManagementService', () => {
       }));
     });
 
+    describe('WHEN refreshing by credit card', () => {
+      let fakeCreditCard: CreditCard;
+      let creditCardSpy: jest.SpyInstance;
+
+      beforeEach(fakeAsync(() => {
+        fakeCreditCard = { ...MOCK_CREDIT_CARD };
+        payviewState = null;
+
+        creditCardSpy = jest.spyOn(payviewService, 'card', 'get').mockReturnValue(of(fakeCreditCard).pipe(delay(1)));
+
+        service.refreshByCreditCard();
+
+        tick(1);
+      }));
+
+      it('should call to payview service in order to refresh the credit card information', fakeAsync(() => {
+        expect(creditCardSpy).toHaveBeenCalledTimes(1);
+      }));
+
+      it('should update the payview state ', fakeAsync(() => {
+        const expectedPayviewState = { ...MOCK_PAYVIEW_STATE };
+
+        expect(payviewState).toStrictEqual(expectedPayviewState);
+      }));
+    });
+
+    describe('WHEN there is an error refreshing the credit card', () => {
+      const fakeCreditCard: CreditCard = { ...MOCK_CREDIT_CARD };
+      const fakeError: Error = new Error('The server is broken');
+      const fakePayviewState: PayviewState = { ...MOCK_PAYVIEW_STATE };
+      let creditCardSpy: jest.SpyInstance;
+      let result: PayviewError;
+
+      beforeEach(fakeAsync(() => {
+        payviewState = null;
+        const subscription = service.on(PAYVIEW_EVENT_TYPE.ERROR_ON_REFRESH_CREDIT_CARD, (payload: PayviewError) => {
+          subscription.unsubscribe();
+          result = payload;
+        });
+        creditCardSpy = jest.spyOn(payviewService, 'card', 'get').mockReturnValue(
+          of(fakeCreditCard).pipe(
+            delay(1),
+            mergeMap((e) => throwError(fakeError))
+          )
+        );
+
+        service.refreshByCreditCard();
+        tick(1);
+      }));
+
+      it('should call to payview service in order to refresh the credit card information', fakeAsync(() => {
+        expect(creditCardSpy).toHaveBeenCalledTimes(1);
+      }));
+
+      it('should send a error event', fakeAsync(() => {
+        const expected: PayviewError = { code: null, message: fakeError.message };
+
+        expect(result).toEqual(expected);
+      }));
+    });
+
     describe('WHEN there is an error retrieving delivery costs', () => {
       const fakeError: Error = new Error('The server is broken');
 
@@ -655,14 +721,8 @@ describe('PayviewStateManagementService', () => {
       }));
 
       it('should call to payview service in order to save the payment method', fakeAsync(() => {
-        let result: number = 0;
-
         expect(userPreferencesSpy).toHaveBeenCalledTimes(1);
-        expect(userPreferencesSpy).toHaveBeenCalledWith(
-          payviewState.payment.preferences.preferences.id,
-          selectedPaymentMethod.method,
-          false
-        );
+        expect(userPreferencesSpy).toHaveBeenCalledWith(payviewState.payment.preferences);
       }));
 
       it('should call to payview service in order to refresh costs', fakeAsync(() => {
@@ -677,6 +737,44 @@ describe('PayviewStateManagementService', () => {
 
       it('should update the payment method of the payview state', fakeAsync(() => {
         expect(payviewState.payment.preferences.preferences.paymentMethod).toStrictEqual(selectedPaymentMethod.method);
+      }));
+    });
+
+    describe('WHEN there is an error setting the payment method', () => {
+      const fakeCosts: DeliveryBuyerCalculatorCosts = { ...MOCK_PAYVIEW_STATE.costs };
+      const fakeError: Error = new Error('The server is broken');
+      const fakePaymentMethod: PaymentsPaymentMethod = MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods[1];
+
+      let fakePayviewState: PayviewState;
+      let result: PayviewError;
+
+      beforeEach(fakeAsync(() => {
+        payviewState = null;
+        const subscription = service.on(PAYVIEW_EVENT_TYPE.ERROR_ON_SET_PAYMENT_METHOD, (payload: PayviewError) => {
+          subscription.unsubscribe();
+          result = payload;
+        });
+        spyOn(payviewService, 'getCosts').and.returnValue(of(fakeCosts).pipe(delay(1)));
+        spyOn(payviewService, 'setUserPaymentPreferences').and.returnValue(
+          of(fakePaymentMethod).pipe(
+            delay(1),
+            mergeMap((e) => throwError(fakeError))
+          )
+        );
+
+        service.setPaymentMethod(fakePaymentMethod);
+        tick(1);
+      }));
+
+      it('should call to payview service in order to set the payment method', fakeAsync(() => {
+        expect(payviewService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
+        expect(payviewService.setUserPaymentPreferences).toHaveBeenCalledWith(payviewState.payment.preferences);
+      }));
+
+      it('should send a error event', fakeAsync(() => {
+        const expected: PayviewError = { code: null, message: fakeError.message };
+
+        expect(result).toEqual(expected);
       }));
     });
   });

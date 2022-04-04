@@ -43,12 +43,13 @@ export class ItemCardListComponent {
 
   constructor(private itemCardService: ItemCardService, private checkSessionService: CheckSessionService) {}
 
-  public toggleFavourite(item: ItemCard): void {
+  public toggleFavourite(event: { item: ItemCard; loginSource: string }): void {
+    const { item, loginSource } = event;
     if (this.checkSessionService.hasSession()) {
       this.itemCardService.toggleFavourite(item);
       this.toggleFavouriteEvent.emit(item);
     } else {
-      this.checkSessionService.checkSessionAction();
+      this.checkSessionService.checkSessionAction(loginSource);
     }
   }
 

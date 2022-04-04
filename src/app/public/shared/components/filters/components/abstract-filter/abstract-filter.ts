@@ -69,6 +69,8 @@ export abstract class AbstractFilter<T extends Record<keyof T, FILTER_QUERY_PARA
     this.openStateChange.emit(isOpen);
   }
 
+  public handleReload(): void {}
+
   public getValue(key: keyof T): string {
     return this._value?.find((parameter: FilterParameter) => parameter.key === this.config.mapKey[key])?.value;
   }

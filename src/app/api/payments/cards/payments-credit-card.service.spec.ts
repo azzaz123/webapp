@@ -120,6 +120,31 @@ describe('PaymentsCreditCardService', () => {
         expect(methodResultError instanceof CardInvalidError).toBe(true);
       }));
     });
+
+    describe('AND WHEN card service return an error', () => {
+      const fakeError: Error = new Error('The server is broken');
+
+      beforeEach(() => {
+        spyOn(paymentsHttpService, 'get').and.returnValue(throwError(fakeError));
+      });
+
+      it('should propagete the error', fakeAsync(() => {
+        let methodResponse;
+        let errorResponse;
+
+        service.get(false).subscribe({
+          next: (data) => (methodResponse = data),
+          error: (error) => {
+            errorResponse = error;
+          },
+        });
+
+        tick();
+
+        expect(methodResponse).toBeFalsy();
+        expect(errorResponse).toEqual(fakeError);
+      }));
+    });
   });
 
   describe('when asking to create a card', () => {

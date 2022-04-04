@@ -12,6 +12,8 @@ import {
 import { PayviewError } from '@private/features/payview/interfaces/payview-error.interface';
 import { PayviewPromotionEditorComponent } from '@private/features/payview/modules/promotion/components/editor/payview-promotion-editor.component';
 import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
+import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('PayviewPromotionEditorComponent', () => {
   const payviewPromotionEditorSelector: string = '.PayviewPromotionEditor';
@@ -26,8 +28,8 @@ describe('PayviewPromotionEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PayviewPromotionEditorComponent],
-      imports: [ButtonModule, FormsModule],
+      declarations: [PayviewPromotionEditorComponent, SvgIconComponent],
+      imports: [ButtonModule, FormsModule, HttpClientTestingModule],
       providers: [PayviewPromotionService],
     }).compileComponents();
   });
@@ -88,13 +90,38 @@ describe('PayviewPromotionEditorComponent', () => {
   });
 
   describe('WHEN user clicks over apply button', () => {
-    it('should apply the promocode', () => {
+    let button: DebugElement;
+    beforeEach(() => {
       spyOn(promotionService, 'applyPromocode');
-      const button = debugElement.query(By.directive(ButtonComponent));
+      button = debugElement.query(By.directive(ButtonComponent));
+    });
 
-      button.triggerEventHandler('click', null);
+    describe('and the promocode is NOT empty', () => {
+      beforeEach(() => {
+        component.promocode = 'TRXWEBRULES';
 
-      expect(promotionService.applyPromocode).toHaveBeenCalledTimes(1);
+        button.triggerEventHandler('click', null);
+      });
+
+      it('should apply the promocode', () => {
+        expect(promotionService.applyPromocode).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('and the promocode is empty', () => {
+      beforeEach(() => {
+        component.promocode = null;
+
+        button.triggerEventHandler('click', null);
+      });
+
+      it('should NOT apply the promocode', () => {
+        expect(promotionService.applyPromocode).not.toHaveBeenCalledTimes(1);
+      });
+
+      it('should show an error message', () => {
+        expect(component.errorMessage).toStrictEqual(PAYVIEW_PROMOTION_ERRORS['promocode does not exist']);
+      });
     });
   });
 

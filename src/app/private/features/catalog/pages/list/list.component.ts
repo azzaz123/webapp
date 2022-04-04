@@ -5,6 +5,7 @@ import { PaginatedList } from '@api/core/model';
 import { ISort, SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import { MeApiService } from '@api/me/me-api.service';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
@@ -86,7 +87,7 @@ export class ListComponent implements OnInit, OnDestroy {
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
   public items: Item[] = [];
-  public selectedStatus: STATUS | string = STATUS.PUBLISHED;
+  public selectedStatus: STATUS = STATUS.PUBLISHED;
   public loading = true;
   public end: boolean;
   public scrollTop: number;
@@ -134,13 +135,13 @@ export class ListComponent implements OnInit, OnDestroy {
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
     private catalogManagerService: CatalogManagerApiService,
-    private deviceService: DeviceDetectorService,
     private analyticsService: AnalyticsService,
     private i18nService: I18nService,
     private permissionService: NgxPermissionsService,
     private listingLimitService: ListingLimitService,
     private meApiService: MeApiService,
-    private catalogItemTrackingEventService: CatalogItemTrackingEventService
+    private catalogItemTrackingEventService: CatalogItemTrackingEventService,
+    private visibilityService: VisibilityApiService
   ) {}
 
   public get itemsAmount() {
@@ -243,13 +244,8 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.logout().subscribe();
   }
 
-  public filterByStatus(status: string) {
+  public filterByStatus(status: STATUS) {
     this.deselect();
-
-    if (status === 'reviews') {
-      this.items = [];
-      this.selectedStatus = status;
-    }
 
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
@@ -490,13 +486,6 @@ export class ListComponent implements OnInit, OnDestroy {
       { id: STATUS.SOLD, display: this.i18n.translate(TRANSLATION_KEY.SOLD) },
       { id: STATUS.INACTIVE, display: this.i18n.translate(TRANSLATION_KEY.INACTIVE), counter: { currentVal: this.counters?.onHold } },
     ];
-
-    if (this.deviceService.isMobile()) {
-      this.normalNavLinks.push({
-        id: 'reviews',
-        display: this.i18n.translate(TRANSLATION_KEY.REVIEWS),
-      });
-    }
   }
 
   private onOpenWallacoinsModal(): void {
@@ -512,6 +501,9 @@ export class ListComponent implements OnInit, OnDestroy {
         this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
           windowClass: 'modal-standard',
         });
+        this.visibilityService
+          .hasItemOrUserBalance(this.user.id, itemId)
+          .subscribe((isFree) => (this.bumpSuggestionModalRef.componentInstance.isFreeBump = isFree));
         this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
           this.bumpSuggestionModalRef = null;
           if (result?.redirect) {
@@ -538,7 +530,7 @@ export class ListComponent implements OnInit, OnDestroy {
         creditInfo.factor = 1;
       }
       this.creditInfo = creditInfo;
-      if (this.bumpSuggestionModalRef) {
+      if (this.bumpSuggestionModalRef && !this.bumpSuggestionModalRef.componentInstance.isFreeBump) {
         this.getCheapestProductPrice(this.bumpSuggestionModalRef, this.route.snapshot.params['itemId'], creditInfo);
         this.bumpSuggestionModalRef.componentInstance.productCurrency = creditInfo.currencyName;
       }

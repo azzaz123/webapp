@@ -10,8 +10,8 @@ export const mapPaymentsClientBrowserInfoToDto: ToApiMapper<PaymentsClientBrowse
     isJavaScriptEnabled: javascript_enabled,
     language,
     colorDepth,
-    screenHeight,
-    screenWidth,
+    modalWidth,
+    modalHeight,
     timeZoneOffset: time_zone_offset,
     userAgent: user_agent,
   } = input;
@@ -20,8 +20,8 @@ export const mapPaymentsClientBrowserInfoToDto: ToApiMapper<PaymentsClientBrowse
     javascript_enabled,
     language,
     color_depth: colorDepth.toString(),
-    screen_height: screenHeight.toString(),
-    screen_width: screenWidth.toString(),
+    screen_height: modalHeight.toString(),
+    screen_width: modalWidth.toString(),
     time_zone_offset,
     user_agent,
   };

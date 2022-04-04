@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie';
 import { SEO_COOKIE_LOCATION_KEY } from '@public/features/search/core/services/enums/seo-cookie-location-key.enum';
 import { SEARCH_LOCATION_KEY } from '@public/features/search/core/services/enums/local-storage-location-key.enum';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 @Injectable()
 export class QueryStringLocationService {

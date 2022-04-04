@@ -152,4 +152,9 @@ export enum SCREEN_IDS {
   LeavePhoneNumberPRO = 322,
   MyFavoriteSearchesSection = 323,
   BumpCheckout = 324,
+  SelfServiceWebview = 325,
+  TermsCommunicationsConsentUpdate = 326,
+  PurchaseDeliveryMethod = 327,
+  P2PDeliveryOnboarding = 328,
+  P2PPaymentMethod = 329,
 }

@@ -1,3 +1,3 @@
 export enum WINDOW_MESSAGE_TYPE {
-  SUCCESS,
+  PROCESS_COMPLETE,
 }

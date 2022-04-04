@@ -5,7 +5,8 @@ $element-height: 48px;
 .DrawerNavigationElement {
   background-color: $white;
   height: $element-height;
-  -webkit-tap-highlight-color: $blue-grey-5;
+  -webkit-tap-highlight-color: rgba($blue-grey-5, 0.5);
+  appearance: none;
 
   &__text {
     text-decoration: none;

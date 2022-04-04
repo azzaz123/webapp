@@ -73,6 +73,7 @@ import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component'
 import { MeApiService } from '@api/me/me-api.service';
 import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -280,6 +281,14 @@ describe('ListComponent', () => {
               },
             },
           },
+          {
+            provide: VisibilityApiService,
+            useValue: {
+              hasItemOrUserBalance() {
+                return of(true);
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -398,30 +407,6 @@ describe('ListComponent', () => {
         component.ngOnInit();
 
         expect(modalService.open).not.toHaveBeenCalled();
-      });
-
-      it('should show a wallet button', () => {
-        expect(walletButton).toBeTruthy();
-      });
-
-      describe('and when clicking the wallet button', () => {
-        it('should navigate to wallet', () => {
-          expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
-        });
-      });
-
-      it('should show a delivery button', () => {
-        expect(deliveryButton).toBeTruthy();
-      });
-
-      describe('and when clicking the delivery button', () => {
-        it('should navigate to delivery', () => {
-          expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
-        });
-      });
-
-      it('should point to the wallet path', () => {
-        expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
       });
     });
 
@@ -603,17 +588,6 @@ describe('ListComponent', () => {
           expect(slotsCards.length).toEqual(0);
         }));
       });
-    });
-  });
-
-  describe('logout', () => {
-    it('should logout after clicking logout button', () => {
-      spyOn(userService, 'logout').and.returnValue(of());
-      const logoutButton = fixture.debugElement.query(By.css('.logout')).nativeNode;
-
-      logoutButton.click();
-
-      expect(userService.logout).toHaveBeenCalled();
     });
   });
 
@@ -1558,69 +1532,6 @@ describe('ListComponent', () => {
         expect(itemService.get).toHaveBeenCalledWith(item.id);
         expect(component.items[3]).toEqual(MOCK_ITEM_V3);
       }));
-    });
-  });
-
-  describe('Pro button', () => {
-    let proButton: DebugElement;
-
-    describe('and has subscriptions permission', () => {
-      beforeEach(async () => {
-        permissionService.addPermission(PERMISSIONS.subscriptions);
-
-        await fixture.whenStable();
-
-        proButton = fixture.debugElement.query(By.css(prosButtonSelector));
-      });
-
-      it('should show button', () => {
-        expect(proButton).toBeTruthy();
-      });
-
-      it('should redirect to pro section', () => {
-        proButton.nativeElement.click();
-
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([PRO_PATHS.PRO_MANAGER]);
-      });
-
-      describe('and is not pro user', () => {
-        beforeEach(() => {
-          jest.spyOn(userService, 'isPro', 'get').mockReturnValue(false);
-          spyOn(i18nService, 'translate').and.callThrough();
-          fixture.detectChanges();
-        });
-
-        it('should show become pro label', () => {
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.BECOME_PRO);
-        });
-      });
-
-      describe('and is pro user', () => {
-        beforeEach(() => {
-          jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
-          spyOn(i18nService, 'translate').and.callThrough();
-          fixture.detectChanges();
-        });
-
-        it('should show pro label', () => {
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.WALLAPOP_PRO);
-        });
-      });
-    });
-
-    describe('and has not subscriptions permission', () => {
-      beforeEach(() => {
-        permissionService.removePermission(PERMISSIONS.subscriptions);
-
-        fixture.detectChanges();
-
-        proButton = fixture.debugElement.query(By.css(prosButtonSelector));
-      });
-
-      it('should not show button', () => {
-        expect(proButton).toBeFalsy();
-      });
     });
   });
 });

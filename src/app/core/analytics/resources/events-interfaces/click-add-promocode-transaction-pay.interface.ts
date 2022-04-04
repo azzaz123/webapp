@@ -22,10 +22,6 @@ export interface ClickAddPromocodeTransactionPay {
    */
   searchId?: string;
   /**
-   * If the transacion is Buy Now or not
-   */
-  isBuyNow: boolean;
-  /**
    * Item price without fees
    */
   itemPrice: number;
@@ -36,5 +32,5 @@ export interface ClickAddPromocodeTransactionPay {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 209 | 238;
+  screenId: 238 | 313;
 }

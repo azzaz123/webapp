@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { BuyerRequestsItemsDetails } from '@api/core/model/delivery/buyer-request/buyer-requests-items-details.interface';
+import { CardInvalidError } from '@api/core/errors/payments/cards';
 import { CreditCard } from '@api/core/model';
 import { DeliveryAddress } from '@api/core/model/delivery/address/delivery-address.interface';
 import { DeliveryAddressService } from '@private/features/delivery/services/address/delivery-address/delivery-address.service';
@@ -15,15 +16,15 @@ import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
 import { mapToDeliveryAddress } from '@private/features/payview/services/payview/payview.mappers';
 import { Money } from '@api/core/model/money.interface';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsCreditCardService } from '@api/payments/cards';
-import { PaymentService } from '@core/payments/payment.service';
 import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
 import { PaymentsPaymentMethodsService } from '@api/payments/payment-methods/payments-payment-methods.service';
 import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesService } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.service';
 import { PaymentsWalletsService } from '@api/payments/wallets/payments-wallets.service';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 import { catchError, concatMap, map, mergeMap, take } from 'rxjs/operators';
 import { forkJoin, Observable, ObservableInput, of } from 'rxjs';
@@ -44,7 +45,7 @@ export class PayviewService {
     private itemService: ItemService,
     private paymentMethodsService: PaymentsPaymentMethodsService,
     private paymentPreferencesService: PaymentsUserPaymentPreferencesService,
-    private paymentService: PaymentService,
+    private toastService: ToastService,
     private walletsService: PaymentsWalletsService
   ) {}
 
@@ -53,6 +54,18 @@ export class PayviewService {
       take(1),
       map(mapToDeliveryAddress),
       catchError(() => of(null))
+    );
+  }
+
+  public get card(): Observable<CreditCard> {
+    return this.creditCardService.get().pipe(
+      take(1),
+      catchError((error) => {
+        if (error instanceof CardInvalidError) {
+          this.showToast(error.message, TOAST_TYPES.ERROR);
+        }
+        return of(null);
+      })
     );
   }
 
@@ -120,15 +133,12 @@ export class PayviewService {
       );
   }
 
-  public setUserPaymentPreferences(paymentId: string, method: PaymentMethod, useWallet: boolean): Observable<void> {
-    return this.paymentService.updateUserPreferences(paymentId, method, useWallet);
+  public setUserPaymentPreferences(preferences: PaymentsUserPaymentPreferences): Observable<void> {
+    return this.paymentPreferencesService.update(preferences);
   }
 
-  private get card(): Observable<CreditCard> {
-    return this.creditCardService.get().pipe(
-      take(1),
-      catchError(() => of(null))
-    );
+  public request(): Observable<null> {
+    return of(null);
   }
 
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
@@ -158,7 +168,7 @@ export class PayviewService {
   }
 
   private get paymentPreferences(): Observable<PaymentsUserPaymentPreferences> {
-    return this.paymentPreferencesService.paymentUserPreferences.pipe(take(1));
+    return this.paymentPreferencesService.get().pipe(take(1));
   }
 
   private getState(
@@ -188,6 +198,13 @@ export class PayviewService {
         preferences: paymentPreferences,
         wallet,
       },
+    });
+  }
+
+  private showToast(text: string, type: TOAST_TYPES): void {
+    this.toastService.show({
+      text,
+      type,
     });
   }
 

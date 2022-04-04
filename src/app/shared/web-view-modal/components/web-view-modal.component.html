@@ -1,0 +1,10 @@
+<div class="w-100 h-100 d-flex flex-column">
+  <div class="WebViewModal__header p-3 d-flex justify-content-between align-items-center">
+    <div class="WebViewModal__title">{{title}}</div>
+    <div class="WebViewModal__close-icon" (click)="runOnCloseCallback()"><tsl-svg-icon [src]="CLOSE_ICON_SRC" [width]="CLOSE_ICON_SIZE"></tsl-svg-icon></div>
+  </div>
+
+  <div class="w-100 h-100 align-content-center align-items-center">
+    <iframe #webview class="w-100 h-100 border-0"></iframe>
+  </div>
+</div>

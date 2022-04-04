@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { PaymentService, PAYMENTS_API_URL, PROTOOL_API_URL } from './payment.service';
-import { BillingInfoResponse, CreditInfo, Packs, Products, UserPaymentPreferences } from './payment.interface';
+import { BillingInfoResponse, CreditInfo, Packs, Products } from './payment.interface';
 import {
   BILLING_INFO_RESPONSE,
   BUMPS_PRODUCT_RESPONSE,
@@ -18,8 +18,6 @@ import { PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
 import { CREDITS_FACTOR, CREDITS_PACK_ID, Pack } from './pack';
 import { environment } from '@environments/environment';
 import { TestRequest, HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
-import { PaymentMethodDto } from '@api/shared/types/payment-method-dto.type';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -298,23 +296,6 @@ describe('PaymentService', () => {
       service.deleteCache();
 
       expect(service['perksModel']).toBeNull();
-    });
-  });
-
-  describe('updateUserPreferences', () => {
-    it('should update user payment preferences', () => {
-      const fakePaymentId: string = '1234-5678-9012';
-      const fakePaymentMethod: PaymentMethod = PaymentMethod.PAYPAL;
-      const fakePayload: UserPaymentPreferences = { payment_method: 'paypal', use_wallet: false };
-      const expectedUrl = `${environment.baseUrl}${PAYMENTS_API_URL}/user_payment_preferences/${fakePaymentId}`;
-
-      service.updateUserPreferences(fakePaymentId, fakePaymentMethod, false).subscribe();
-      const req: TestRequest = httpMock.expectOne(expectedUrl);
-      req.flush(null);
-
-      expect(req.request.url).toBe(expectedUrl);
-      expect(req.request.method).toBe('PUT');
-      expect(req.request.body).toEqual(fakePayload);
     });
   });
 });
