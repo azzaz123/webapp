@@ -1,7 +1,7 @@
 import { RECOMMENDER_TYPE } from '../enums/recomender-type.enum';
-import { RecommenderItem } from './recommender-item.interface';
+import { RecommenderItemDto } from './recommender-item.interface';
 
 export interface RecommendedItemsBodyResponse {
-  recommended_items: RecommenderItem[];
-  recommended_type: RECOMMENDER_TYPE;
+  data: RecommenderItemDto[];
+  meta: { recommended: { type: RECOMMENDER_TYPE } };
 }

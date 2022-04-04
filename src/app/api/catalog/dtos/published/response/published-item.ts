@@ -1,7 +1,7 @@
 import { CatalogItemAttributes } from '@api/catalog/dtos';
 import { ImageDto, PriceDto } from '@api/core/dtos';
 
-export interface PublishedItem {
+export interface PublishedItemDto {
   id: string;
   category_id: string;
   title: string;

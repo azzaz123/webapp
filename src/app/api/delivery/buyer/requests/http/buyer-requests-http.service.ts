@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import {
+  BUYER_CANCEL_REQUEST_ENDPOINT,
   BUYER_REQUESTS_ENDPOINT,
   BUYER_REQUESTS_ITEMS_DETAILS,
   BUYER_REQUESTS_ITEM_HASH_QUERY_PARAM_KEY,
@@ -26,14 +27,16 @@ export class BuyerRequestsHttpService {
   }
 
   public buy(buyerRequestBuy: BuyerRequestBuyDto): Observable<void> {
-    return this.http.post<void>(BUYER_REQUESTS_ENDPOINT, buyerRequestBuy, this.getHeaders());
+    return this.http.post<void>(BUYER_REQUESTS_ENDPOINT, buyerRequestBuy, { headers: this.getHeaders() });
   }
 
-  private getHeaders(): { headers: HttpHeaders } {
-    return {
-      headers: new HttpHeaders({
-        'X-AppVersion': APP_VERSION.replace(/\./g, ''),
-      }),
-    };
+  public cancel(buyerRequestId: string): Observable<void> {
+    return this.http.put<void>(BUYER_CANCEL_REQUEST_ENDPOINT(buyerRequestId), null, { headers: this.getHeaders() });
+  }
+
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'X-AppVersion': APP_VERSION.replace(/\./g, ''),
+    });
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of } from 'rxjs';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
-import { PUBLISHED_QUERY_PARAMS, PublishedItem, PublishedResponse, WALL_QUERY_PARAMS, WallItem, WallResponse } from '@api/catalog/dtos';
+import { PUBLISHED_QUERY_PARAMS, PublishedResponse, WALL_QUERY_PARAMS, WallItem, WallResponse } from '@api/catalog/dtos';
 import { map, switchMap } from 'rxjs/operators';
 import { Location, PaginatedList } from '@api/core/model';
 import { FavouritesApiService } from '@public/core/services/api/favourites/favourites-api.service';

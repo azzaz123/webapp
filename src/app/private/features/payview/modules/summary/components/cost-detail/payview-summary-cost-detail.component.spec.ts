@@ -119,7 +119,7 @@ describe('PayviewSummaryCostDetailComponent', () => {
         const target = debugElement.query(By.css(payviewSummaryCostDetailInsuranceTitleSelector));
 
         expect((target.nativeElement as HTMLSpanElement).innerHTML).toContain(
-          $localize`:@@web_pay_view_buyer_summary_insurance_label:Insurance`
+          $localize`:@@pay_view_buyer_summary_insurance_label:Insurance`
         );
       });
 

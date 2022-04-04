@@ -12,7 +12,6 @@ import { ToastService } from '@layout/toast/core/services/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { PublicProfileService } from '@public/features/public-profile/core/services/public-profile.service';
 import { MapItemService } from '@public/core/services/map-item/map-item.service';
@@ -56,7 +55,6 @@ describe('ItemDetailHeaderComponent', () => {
       providers: [
         PublicUserApiService,
         ItemApiService,
-        RecommenderApiService,
         MapItemService,
         ToastService,
         I18nService,
