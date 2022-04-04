@@ -10,7 +10,7 @@ import {
   MOCK_BUYER_REQUESTS_ITEMS_DETAILS,
   MOCK_BUYER_REQUESTS_ITEMS_DETAILS_DTO,
 } from '@api/fixtures/delivery/buyer/requests/buyer-requests-items-details-dto.fixtures.spec';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { UuidService } from '@core/uuid/uuid.service';
 import {
   MOCK_BUYER_REQUEST_BUY_DTO_WITH_BUYER_ADDRESS,
@@ -22,6 +22,9 @@ import {
   MOCK_PAYVIEW_STATE_WITH_CARRIER_OFFICE_DELIVERY_METHOD,
   MOCK_PAYVIEW_STATE_WITH_PROMOCODE,
 } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
+import { MOCK_NO_CARRIER_OFFICE_ADDRESS_FOR_USER_ERROR_RESPONSE } from '@fixtures/private/delivery/payview/buy-request-errors.fixtures.spec';
+import { BuyerRequestsError } from '@api/core/errors/delivery/payview/buyer-requests';
+import { NoCarrierOfficeAddressForUserError } from '@api/core/errors/delivery/payview/buyer-requests/no-carrier-office-address-for-user.error';
 
 describe('BuyerRequestsApiService', () => {
   const MOCK_UUID: string = '12345';
@@ -125,6 +128,33 @@ describe('BuyerRequestsApiService', () => {
       it('should ask server to buy the buyer request', () => {
         expect(buyerRequestsHttpService.buy).toHaveBeenCalledTimes(1);
         expect(buyerRequestsHttpService.buy).toHaveBeenCalledWith(MOCK_BUYER_REQUEST_BUY_DTO_WITH_BUYER_ADDRESS);
+      });
+    });
+
+    describe('and the request fails due to a server error', () => {
+      let errors: BuyerRequestsError[];
+
+      beforeEach(fakeAsync(() => {
+        spyOn(buyerRequestsHttpService, 'buy').and.returnValue(throwError(MOCK_NO_CARRIER_OFFICE_ADDRESS_FOR_USER_ERROR_RESPONSE));
+        spyOn(uuidService, 'getUUID').and.callThrough();
+
+        service.buyRequest(MOCK_PAYVIEW_STATE).subscribe({
+          error: (errorResponse: BuyerRequestsError[]) => (errors = errorResponse),
+        });
+        tick();
+      }));
+
+      it('should generate new uuid for the buy request', () => {
+        expect(uuidService.getUUID).toHaveBeenCalledTimes(1);
+      });
+
+      it('should ask server to buy the buyer request', () => {
+        expect(buyerRequestsHttpService.buy).toHaveBeenCalledTimes(1);
+        expect(buyerRequestsHttpService.buy).toHaveBeenCalledWith(MOCK_BUYER_REQUEST_BUY_DTO_WITH_BUYER_ADDRESS);
+      });
+
+      it('should return the error mapped', () => {
+        expect(errors[0] instanceof NoCarrierOfficeAddressForUserError).toBe(true);
       });
     });
   });

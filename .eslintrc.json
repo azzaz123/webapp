@@ -41,7 +41,8 @@
         "@typescript-eslint/semi": "warn",
         "@typescript-eslint/default-param-last": "warn",
         "eqeqeq": "error",
-        "no-debugger": 2
+        "no-debugger": 2,
+        "no-restricted-imports": ["error", "@environments/environment.beta", "@environments/environment.docker", "@environments/environment.prod"]
       }
     },
     {

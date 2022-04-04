@@ -5,11 +5,15 @@ import { CategoriesHttpService } from './http/categories-http.service';
 import { CategoriesApiService } from './categories-api.service';
 import {
   categoriesFixture,
+  categoriesWithPresentationResponseFixture,
+  mappedCategoriesWithPresentationFixture,
   mappedSearchCategoriesFixture,
   mappedUploadCategoriesFixture,
 } from '@api/fixtures/categories/categories.fixtures';
 import { CategoriesFilterOption } from '@public/shared/components/filters/components/categories-filter/interfaces/categories-filter-option.interface';
 import { CategoryResponse } from '@core/category/category-response.interface';
+import { CategoryWithPresentation } from '@core/category/category-with-presentation.interface';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 describe('CategoriesApiService', () => {
   let service: CategoriesApiService;
@@ -24,7 +28,7 @@ describe('CategoriesApiService', () => {
     httpService = TestBed.inject(CategoriesHttpService);
   });
 
-  describe('when asked to retrieve search categories', () => {
+  describe('when asking to retrieve search categories', () => {
     it('should return domain search categories', () => {
       spyOn(httpService, 'getCategories').and.returnValue(of(categoriesFixture));
       let response: CategoriesFilterOption[];
@@ -39,7 +43,7 @@ describe('CategoriesApiService', () => {
     });
   });
 
-  describe('when asked to retrieve upload categories', () => {
+  describe('when asking to retrieve upload categories', () => {
     it('should return domain upload categories', () => {
       spyOn(httpService, 'getCategories').and.returnValue(of(categoriesFixture));
       let response: CategoryResponse[];
@@ -51,6 +55,49 @@ describe('CategoriesApiService', () => {
       expect(httpService.getCategories).toHaveBeenCalledTimes(1);
       expect(httpService.getCategories).toHaveBeenCalledWith('upload');
       expect(response).toEqual(mappedUploadCategoriesFixture);
+    });
+  });
+
+  describe('when asking to retrieve categories with presentation', () => {
+    it('should return domain ategories with presentation', () => {
+      spyOn(httpService, 'getCategoriesWithPresentation').and.returnValue(of(categoriesWithPresentationResponseFixture));
+      let response: CategoryWithPresentation[];
+
+      service.getCategoriesWithPresentation().subscribe((res: CategoryWithPresentation[]) => {
+        response = res;
+      });
+
+      expect(httpService.getCategoriesWithPresentation).toHaveBeenCalledTimes(1);
+      expect(response).toEqual(mappedCategoriesWithPresentationFixture);
+    });
+  });
+
+  describe('when asking to retrieve categories with presentation by id', () => {
+    it('should return domain ategories with presentation by id', () => {
+      spyOn(httpService, 'getCategoriesWithPresentation').and.returnValue(of(categoriesWithPresentationResponseFixture));
+      let response: CategoryWithPresentation[];
+
+      service.getCategoriesWithPresentationByParentId(CATEGORY_IDS.FASHION_ACCESSORIES).subscribe((res: CategoryWithPresentation[]) => {
+        response = res;
+      });
+
+      expect(httpService.getCategoriesWithPresentation).toHaveBeenCalledTimes(1);
+      expect(response).toEqual(mappedCategoriesWithPresentationFixture[1].subcategories);
+    });
+  });
+
+  describe('when asking to retrieve category with presentation by id', () => {
+    it('should return domain ategories with presentation by id', () => {
+      spyOn(httpService, 'getCategoriesWithPresentation').and.returnValue(of(categoriesWithPresentationResponseFixture));
+      let response: CategoryWithPresentation;
+      const thirdLevelCategory = mappedCategoriesWithPresentationFixture[1].subcategories[0].subcategories[0];
+
+      service.getCategoryWithPresentationById(thirdLevelCategory.id).subscribe((res: CategoryWithPresentation) => {
+        response = res;
+      });
+
+      expect(httpService.getCategoriesWithPresentation).toHaveBeenCalledTimes(1);
+      expect(response).toEqual(thirdLevelCategory);
     });
   });
 });

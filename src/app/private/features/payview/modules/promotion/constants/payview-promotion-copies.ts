@@ -8,7 +8,7 @@ export const PAYVIEW_PROMOTION_ERRORS: Record<PAYVIEW_PROMOTION_ERROR_CODES, str
   ['promocode already used']: $localize`:@@pay_view_buyer_promo_code_pop_up_already_used_inline_error:This promotional code has already been used.`,
   ['promocode expired']: $localize`:@@pay_view_buyer_promo_code_pop_up_expired_inline_error:Ouch! This promotional code has expired.`,
   ['item category different to promocode item category']: $localize`:@@pay_view_buyer_promo_code_pop_up_category_unmatch_inline_error:This promotion cannot be applied to this kind of product category.`,
-  ['item max weight greater than promocode max weight']: $localize`:@@pay_view_buyer_promo_code_pop_up_max_weight_exceeded_inline_error:This promotion cannot be applied, the product is too heavy`,
+  ['item max weight greater than promocode max weight']: $localize`:@@pay_view_buyer_promo_code_pop_up_max_weight_exceeded_inline_error:This promotion cannot be applied, the product is too heavy.`,
   ['item price smaller than promocode min price']: $localize`:@@pay_view_buyer_promo_code_pop_up_min_price_not_reached_inline_error:This promotion cannot be applied to such a low price purchase.`,
   ['promocode not active yet']: $localize`:@@pay_view_buyer_promo_code_pop_up_not_active_yet_inline_error:This promotion is not active yet. Be patient.`,
   ['promocode does not exist']: $localize`:@@pay_view_buyer_promo_code_pop_up_no_valid_inline_error:This promotional code doesn't exist.`,

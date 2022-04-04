@@ -1,7 +1,6 @@
 import { Environment } from './environment.interface';
 import { environment as environmentBeta } from './environment.beta';
 import { dockNum } from './docknum';
-import { APP_LOCALE } from '@configs/subdomains.config';
 
 const environmentLocal: Environment = {
   production: false,
