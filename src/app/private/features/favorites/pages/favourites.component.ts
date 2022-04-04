@@ -40,7 +40,13 @@ export class FavouritesComponent implements OnInit {
   public filterByStatus(status: string) {
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
-      this.selectedStatus === 'products' ? this.getItems() : this.getProfiles();
+      if (this.selectedStatus === 'products') {
+        this.getItems();
+      } else if (this.selectedStatus === 'profiles') {
+        this.getProfiles();
+      } else {
+        // this.getSearches()
+      }
       this.getNumberOfFavorites();
     }
   }
@@ -104,7 +110,13 @@ export class FavouritesComponent implements OnInit {
   }
 
   public loadMore() {
-    this.selectedStatus === 'products' ? this.getItems(true) : this.getProfiles(true);
+    if (this.selectedStatus === 'products') {
+      this.getItems(true);
+    } else if (this.selectedStatus === 'profiles') {
+      this.getProfiles(true);
+    } else {
+      // this.getSearches(true)
+    }
   }
 
   public getNumberOfFavorites() {
@@ -121,6 +133,12 @@ export class FavouritesComponent implements OnInit {
   }
 
   private setNumberOfFavorites() {
-    this.numberOfFavorites = this.selectedStatus === 'products' ? this.counters.favorites : this.counters.profile_favorited;
+    if (this.selectedStatus === 'products') {
+      this.numberOfFavorites = this.counters.favorites;
+    } else if (this.selectedStatus === 'profiles') {
+      this.numberOfFavorites = this.counters.profile_favorited;
+    } else {
+      this.numberOfFavorites = 0;
+    }
   }
 }
