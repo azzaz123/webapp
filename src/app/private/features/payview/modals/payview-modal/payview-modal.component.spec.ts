@@ -375,6 +375,24 @@ describe('PayviewModalComponent', () => {
           );
         });
 
+        it('should have the transaction protection link', () => {
+          const link = fixture.debugElement.query(By.css('#protectYourTransactionsLink'));
+
+          expect(link.attributes.href).toEqual(component.TRANSACTIONS_PROTECTION_URL);
+        });
+
+        it('should have the specific terms and conditions link', () => {
+          const link = fixture.debugElement.query(By.css('#termsAndConditionsLink'));
+
+          expect(link.attributes.href).toEqual(component.TERMS_AND_CONDITIONS_URL);
+        });
+
+        it('should have the specific privacy policy link', () => {
+          const link = fixture.debugElement.query(By.css('#privacyPolicyLink'));
+
+          expect(link.attributes.href).toEqual(component.PRIVACY_POLICY_URL);
+        });
+
         describe('WHEN stepper is on the second step', () => {
           beforeEach(() => {
             component.stepper.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
