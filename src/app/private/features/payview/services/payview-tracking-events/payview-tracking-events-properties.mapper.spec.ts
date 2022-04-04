@@ -5,6 +5,7 @@ import {
   getClickHelpTransactionalEventPropertiesFromPayviewState,
   getViewTransactionPayScreenEventPropertiesFromPayviewState,
   getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
+  getPayTransactionEventPropertiesFromPayviewState,
 } from './payview-tracking-events-properties.mapper';
 import {
   MOCK_PAYVIEW_STATE,
@@ -16,6 +17,8 @@ import {
   MOCK_PAYVIEW_STATE_WITH_WALLET_AND_PAYPAL_PREFERENCE,
   MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_ADDRESS,
   MOCK_PAYVIEW_STATE_WITHOUT_PAYMENT_PREFERENCE,
+  MOCK_PAYVIEW_STATE_DOPO_WITHOUT_DELIVERY_ADDRESS,
+  MOCK_PAYVIEW_STATE_WITH_PROMOCODE,
 } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces/click-add-edit-address.interface';
 import { PAYVIEW_DELIVERY_EVENT_TYPE } from '../../modules/delivery/enums/payview-delivery-event-type.enum';
@@ -23,6 +26,7 @@ import { ClickHelpTransactional } from '@core/analytics/resources/events-interfa
 import { ViewTransactionPayScreen } from '@core/analytics/resources/events-interfaces/view-transaction-pay-screen.interface';
 import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-add-promocode-transaction-pay.interface';
 import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
+import { PayTransaction } from '@core/analytics/resources/events-interfaces/pay-transaction.interface';
 import {
   MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
   MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
@@ -39,6 +43,12 @@ import {
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_WALLET_AND_PAYPAL,
   MOCK_CLICK_ADD_EDIT_ADDRESS_EVENT_WITH_HOME_AND_ADD_ACTION,
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITHOUT_PAYMENT_PREFERENCE,
+  MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
+  MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL,
+  MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET,
+  MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET_AND_CREDIT_CARD,
+  MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL_AND_CARRIER_OFFICE,
+  MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL_AND_PROMOCODE,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 describe('when mapping the payview state properties into the click add edit card event properties', () => {
@@ -190,5 +200,73 @@ describe('when mapping the payview state properties into the click apply promoco
       getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
 
     expect(expectedProperties).toStrictEqual(MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY);
+  });
+});
+
+describe('when mapping the payview state properties into the pay transaction event properties', () => {
+  describe('and the current selected payment method is paypal and the delivery method is buyer address', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: PayTransaction = getPayTransactionEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
+
+      expect(expectedProperties).toStrictEqual(MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL);
+    });
+  });
+
+  describe('and the current selected payment method is credit card', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: PayTransaction = getPayTransactionEventPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD);
+    });
+  });
+
+  describe('and the current selected payment method is wallet', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: PayTransaction = getPayTransactionEventPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITH_WALLET_PREFERENCE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET);
+    });
+  });
+
+  describe('and the current selected payment method is wallet and credit card', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: PayTransaction = getPayTransactionEventPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET_AND_CREDIT_CARD);
+    });
+  });
+
+  describe('and the current selected payment method is wallet and paypal', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: PayTransaction = getPayTransactionEventPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET_AND_CREDIT_CARD);
+    });
+  });
+
+  describe('and the current selected delivery method is carrier office', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: PayTransaction = getPayTransactionEventPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_DOPO_WITHOUT_DELIVERY_ADDRESS
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL_AND_CARRIER_OFFICE);
+    });
+  });
+
+  describe('and promocode is applied', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: PayTransaction = getPayTransactionEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_PROMOCODE);
+
+      expect(expectedProperties).toStrictEqual(MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL_AND_PROMOCODE);
+    });
   });
 });

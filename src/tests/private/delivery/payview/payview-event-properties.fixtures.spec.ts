@@ -136,9 +136,46 @@ export const MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD: PayTransaction = {
   categoryId: MOCK_PAYVIEW_ITEM.categoryId,
   itemPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.productPrice.amount.total,
   sellerUserId: MOCK_PAYVIEW_ITEM.owner,
+  feesPrice: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS.buyerCost.fees.amount.total,
   isBumped: false,
   paymentMethod: 'bank card',
+  deliveryMethod: 'buyer address',
   walletBalanceAmount: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY.amount.total,
+  isPromoApplied: false,
+};
+
+export const MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL: PayTransaction = {
+  ...MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
+  paymentMethod: 'paypal',
+};
+
+export const MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL_AND_PROMOCODE: PayTransaction = {
+  ...MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
+  feesPrice: 2.5,
+  itemPrice: 56.7,
+  paymentMethod: 'paypal',
+  isPromoApplied: true,
+};
+
+export const MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL_AND_CARRIER_OFFICE: PayTransaction = {
+  ...MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
+  deliveryMethod: 'carrier office',
+  paymentMethod: 'paypal',
+};
+
+export const MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET: PayTransaction = {
+  ...MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
+  paymentMethod: 'wallet',
+};
+
+export const MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET_AND_CREDIT_CARD: PayTransaction = {
+  ...MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
+  paymentMethod: 'wallet, bank card',
+};
+
+export const MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET_AND_PAYPAL: PayTransaction = {
+  ...MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD,
+  paymentMethod: 'wallet, paypal',
 };
 
 export const MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD: TransactionPaymentSuccess = {

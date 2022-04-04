@@ -12,6 +12,8 @@ import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/eve
 import { USER_ACTION, ADDRESS_TYPE } from './tracking-events-action.enum';
 import { PayviewStateDelivery } from '../../interfaces/payview-state-delivery.interface';
 import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
+import { PayTransaction } from '@core/analytics/resources/events-interfaces/pay-transaction.interface';
+import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
   const paymentPreferences: PaymentsUserPaymentPreference = payviewState.payment.preferences.preferences;
@@ -87,6 +89,22 @@ export function getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewSt
   };
 }
 
+export function getPayTransactionEventPropertiesFromPayviewState(payviewState: PayviewState): PayTransaction {
+  return {
+    screenId: SCREEN_IDS.Checkout,
+    itemId: payviewState.item.id,
+    categoryId: payviewState.item.categoryId,
+    itemPrice: payviewState.costs.buyerCost.productPrice.amount.total,
+    sellerUserId: payviewState.item.owner,
+    feesPrice: payviewState.costs.buyerCost.fees.amount.total,
+    isBumped: !!payviewState.item.flags?.bumped,
+    paymentMethod: SELECTED_PAYMENT_METHOD_CONVERTER[payviewState.payment.preferences.preferences.paymentMethod],
+    deliveryMethod: DELIVERY_MODE_CONVERTER[payviewState.delivery.methods.current.method],
+    walletBalanceAmount: payviewState.payment.wallet.amount.total,
+    isPromoApplied: !!payviewState.costs?.promotion?.promocode,
+  };
+}
+
 function getAddOrEditCard(card: CreditCard): ClickAddEditCard['addOrEdit'] {
   return card ? USER_ACTION.EDIT : USER_ACTION.ADD;
 }
@@ -107,13 +125,18 @@ function getAddOrEditAddress(delivery: PayviewStateDelivery, eventType: PAYVIEW_
 }
 
 function getPreselectedPaymentMethod(paymentPreference: PAYVIEW_PAYMENT_METHOD): ViewTransactionPayScreen['preselectedPaymentMethod'] {
-  return PRESELECTED_PAYMENT_METHOD_CONVERTER[paymentPreference];
+  return SELECTED_PAYMENT_METHOD_CONVERTER[paymentPreference];
 }
 
-const PRESELECTED_PAYMENT_METHOD_CONVERTER: Record<PAYVIEW_PAYMENT_METHOD, ViewTransactionPayScreen['preselectedPaymentMethod']> = {
+const SELECTED_PAYMENT_METHOD_CONVERTER: Record<PAYVIEW_PAYMENT_METHOD, ViewTransactionPayScreen['preselectedPaymentMethod']> = {
   [PAYVIEW_PAYMENT_METHOD.CREDIT_CARD]: 'bank card',
   [PAYVIEW_PAYMENT_METHOD.PAYPAL]: 'paypal',
   [PAYVIEW_PAYMENT_METHOD.WALLET]: 'wallet',
   [PAYVIEW_PAYMENT_METHOD.WALLET_AND_CREDIT_CARD]: 'wallet, bank card',
   [PAYVIEW_PAYMENT_METHOD.WALLET_AND_PAYPAL]: 'wallet, paypal',
+};
+
+const DELIVERY_MODE_CONVERTER: Record<DELIVERY_MODE, PayTransaction['deliveryMethod']> = {
+  [DELIVERY_MODE.BUYER_ADDRESS]: 'buyer address',
+  [DELIVERY_MODE.CARRIER_OFFICE]: 'carrier office',
 };
