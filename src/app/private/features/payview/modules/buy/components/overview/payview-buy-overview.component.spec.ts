@@ -58,6 +58,7 @@ describe('PayviewBuyOverviewComponent', () => {
       beforeEach(() => {
         spyOn(toastService, 'show');
         spyOn(payviewBuyService, 'buy');
+        spyOn(component.clickBuyButton, 'emit');
       });
 
       describe('and there is any error', () => {
@@ -80,6 +81,10 @@ describe('PayviewBuyOverviewComponent', () => {
         it('should NOT request buy item', () => {
           expect(payviewBuyService.buy).not.toHaveBeenCalled();
         });
+
+        it('should emit that the buy button has been clicked', () => {
+          expect(component.clickBuyButton.emit).toHaveBeenCalledTimes(1);
+        });
       });
 
       describe('and the request is correct', () => {
@@ -96,6 +101,10 @@ describe('PayviewBuyOverviewComponent', () => {
 
         it('should request buy item', () => {
           expect(payviewBuyService.buy).toHaveBeenCalledTimes(1);
+        });
+
+        it('should emit that the buy button has been clicked', () => {
+          expect(component.clickBuyButton.emit).toHaveBeenCalledTimes(1);
         });
       });
     });
