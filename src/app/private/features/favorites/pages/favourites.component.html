@@ -74,9 +74,15 @@
         </div>
       </div>
 
-      <div class="cards-container" *ngIf="selectedStatus === 'searches'">
+      <div class="cards-container" [ngClass]="searches.length === 0 && 'centered'"
+           *ngIf="selectedStatus === 'searches'">
+        <tsl-empty-state
+          *ngIf="!loading && searches.length === 0"
+          [title]="emptyStateSearchesProperties.title"
+          [description]="emptyStateSearchesProperties.description"
+          [illustrationSrc]="emptyStateSearchesProperties.illustrationSrc"
+        ></tsl-empty-state>
         <div class="card-wrapper">
-
         </div>
       </div>
     </div>
