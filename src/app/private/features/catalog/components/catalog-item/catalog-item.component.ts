@@ -15,7 +15,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ItemDetailRoutePipe } from '@shared/pipes';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
-import { AnalyticsService } from '@core/analytics/analytics.service';
+import { LEGACY_CATEGORY_IDS } from '@core/category/category-ids';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -99,10 +99,15 @@ export class CatalogItemComponent implements OnInit {
   }
 
   private reactivateItem(item: Item): void {
+    if (LEGACY_CATEGORY_IDS.includes(+item.categoryId)) {
+      this.navigateToReactivationEdit();
+      return;
+    }
+
     this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
       this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
       if (missingRequiredData) {
-        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+        this.navigateToReactivationEdit();
       } else {
         this.itemService.reactivateItem(item.id).subscribe(
           () => {
@@ -115,5 +120,9 @@ export class CatalogItemComponent implements OnInit {
         );
       }
     });
+  }
+
+  private navigateToReactivationEdit(): void {
+    this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
   }
 }

@@ -2,8 +2,8 @@ import { map } from 'lodash-es';
 import { IOption } from '@shared/dropdown/utils/option.interface';
 import { Car } from '../app/core/item/car';
 import { CAR_ID } from './upload.fixtures.spec';
-import { CARS_CATEGORY } from '../app/core/item/item-categories';
 import { CarContent, CarInfo } from '../app/core/item/item-response.interface';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 export const CAR_BODY_TYPES_RESPONSE: any = [
   {
@@ -233,7 +233,7 @@ export const CAR_CONTENT_DATA = {
 
 export const CAR_DATA_FORM = {
   ...CAR_CONTENT_DATA,
-  category_id: CARS_CATEGORY,
+  category_id: CATEGORY_IDS.CAR,
 };
 
 export const CAR_DATA = {
