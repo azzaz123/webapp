@@ -8,7 +8,15 @@
 
     <h1 class="UnsubscribeModal__title my-2" i18n="@@delete_account_view_all_users_title">Are you sure you want to delete your account?</h1>
     <div class="UnsubscribeModal__description my-4">
-      <div *ngIf="!isProfessional">
+      <div *ngIf="isProfessional$ | async as isProfessional; else notProfessional">
+        <div class="UnsubscribeModal__description--professional">
+          <span i18n="@@delete_account_view_car_dealer_intro_text"
+            >Oh, it's a pity you're leaving... You must first contact our sales team to unsubscribe from Wallapop Motor by sending an email
+            to ventas.motor@wallapop.com</span
+          >
+        </div>
+      </div>
+      <ng-template #notProfessional class="UnsubscribeModal__description--no-professional">
         <span i18n="@@delete_account_view_all_users_intro_text">
           Oh, it's a pity you're leaving... but it's your decision and we respect it. Be sure to:
         </span>
@@ -17,20 +25,18 @@
           <li class="my-2" i18n="@@delete_account_view_all_users_check_balance_text">
             No balance in your wallet. If you have credit left, you can transfer it to your bank for free
           </li>
-          <li *ngIf="hasSubscription" class="my-2" i18n="@@delete_account_view_non_pro_user_check_subscriptions_text">
+          <li
+            *ngIf="isProUser"
+            class="UnsubscribeModal__description--pro my-2"
+            i18n="@@delete_account_view_non_pro_user_check_subscriptions_text"
+          >
             No active Wallapop PRO subscriptions (How to unsubscribe)
           </li>
         </ul>
         <span i18n="@@delete_account_view_all_users_delete_account_more_info_text">
           To find out what is entailed in the deletion of your Wallapop account, check this article.
         </span>
-      </div>
-      <div *ngIf="isProfessional">
-        <span i18n="@@delete_account_view_car_dealer_intro_text"
-          >Oh, it's a pity you're leaving... You must first contact our sales team to unsubscribe from Wallapop Motor by sending an email to
-          ventas.motor@wallapop.com</span
-        >
-      </div>
+      </ng-template>
     </div>
 
     <tsl-button

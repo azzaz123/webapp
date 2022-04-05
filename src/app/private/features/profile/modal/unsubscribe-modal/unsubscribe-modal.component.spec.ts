@@ -1,10 +1,10 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { SITE_URL } from '@configs/site-url.config';
 import { EventService } from '@core/event/event.service';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { CUSTOM_REASON, MOCK_UNSUBSCRIBE_REASONS, SELECTED_REASON } from '@fixtures/user.fixtures.spec';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -34,7 +34,7 @@ describe('UnsubscribeModalComponent', () => {
                 return of({});
               },
               isProUser() {
-                return of(false);
+                return false;
               },
               isProfessional() {
                 return of(false);
@@ -92,29 +92,38 @@ describe('UnsubscribeModalComponent', () => {
 
     it('should show warning if user is pro', () => {
       spyOn(userService, 'isProUser').and.returnValue(true);
-
       component.ngOnInit();
+      fixture.detectChanges();
+
+      const proDescription: HTMLElement = fixture.debugElement.query(By.css('.UnsubscribeModal__description--pro')).nativeElement;
 
       expect(userService.isProUser).toHaveBeenCalled();
-      expect(component.hasSubscription).toBe(true);
+      expect(component.isProUser).toBe(true);
+      expect(proDescription).toBeTruthy();
     });
 
     it('should show an extra warning if user is car dealer', () => {
       spyOn(userService, 'isProfessional').and.returnValue(of(true));
 
       component.ngOnInit();
+      fixture.detectChanges();
 
-      expect(userService.isProfessional).toHaveBeenCalled();
-      expect(component.isProfessional).toBe(true);
+      const carDealerDescription: HTMLElement = fixture.debugElement.query(
+        By.css('.UnsubscribeModal__description--professional')
+      ).nativeElement;
+
+      expect(carDealerDescription).toBeTruthy();
     });
 
     it('should show normal message if user is not pro', () => {
       spyOn(userService, 'isProUser').and.returnValue(false);
+      const proDescription = fixture.debugElement.query(By.css('.UnsubscribeModal__description--pro'));
 
       component.ngOnInit();
 
       expect(userService.isProUser).toHaveBeenCalled();
-      expect(component.hasSubscription).toBe(false);
+      expect(component.isProUser).toBe(false);
+      expect(proDescription).toBeFalsy();
     });
   });
 

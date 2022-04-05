@@ -5,7 +5,7 @@ import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
 import { UserService } from '@core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SITE_URL } from '@configs/site-url.config';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { UNSUBSCRIBE_STEP } from './interfaces/unsubscribe-step.enum';
 import { UNSUBSCRIBE_REASON } from './interfaces/unsubscribe-reason.enum';
 @Component({
@@ -18,8 +18,8 @@ export class UnsubscribeModalComponent implements OnInit {
   public reasons: UnsubscribeReason[];
   public selectedReason: number;
   public customReason: string;
-  public hasSubscription: boolean = false;
-  public isProfessional: boolean = false;
+  public isProUser: boolean = false;
+  public isProfessional$: Observable<boolean>;
 
   public readonly MAX_LENGHT_OHTER_REASON: number = 300;
   public readonly STEP = UNSUBSCRIBE_STEP;
@@ -43,14 +43,11 @@ export class UnsubscribeModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    combineLatest([this.userService.getUnsubscribeReasons(), this.userService.isProfessional()]).subscribe(
-      ([reasons, isProfessional]: [UnsubscribeReason[], boolean]) => {
-        this.reasons = reasons;
-        this.isProfessional = isProfessional;
-      }
-    );
-
-    this.hasSubscription = this.userService.isProUser();
+    this.userService.getUnsubscribeReasons().subscribe((reasons: UnsubscribeReason[]) => {
+      this.reasons = reasons;
+    });
+    this.isProfessional$ = this.userService.isProfessional();
+    this.isProUser = this.userService.isProUser();
     this.changeStep(this.STEP.CONFIRMATION);
   }
 
