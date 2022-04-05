@@ -9,6 +9,7 @@ import { MeApiService } from '@api/me/me-api.service';
 import { finalize, take } from 'rxjs/operators';
 import { PaginatedList } from '@api/core/model';
 import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Component({
   selector: 'tsl-favourites',
@@ -29,7 +30,8 @@ export class FavouritesComponent implements OnInit {
     public meApiService: MeApiService,
     private userService: UserService,
     private profileService: ProfileService,
-    private favouritesListTrackingEventsService: FavouritesListTrackingEventsService
+    private favouritesListTrackingEventsService: FavouritesListTrackingEventsService,
+    public featureFlagService: FeatureFlagService
   ) {}
 
   public ngOnInit() {
@@ -45,7 +47,7 @@ export class FavouritesComponent implements OnInit {
       } else if (this.selectedStatus === 'profiles') {
         this.getProfiles();
       } else {
-        // this.getSearches()
+        return;
       }
       this.getNumberOfFavorites();
     }
@@ -115,7 +117,7 @@ export class FavouritesComponent implements OnInit {
     } else if (this.selectedStatus === 'profiles') {
       this.getProfiles(true);
     } else {
-      // this.getSearches(true)
+      return;
     }
   }
 
@@ -138,7 +140,7 @@ export class FavouritesComponent implements OnInit {
     } else if (this.selectedStatus === 'profiles') {
       this.numberOfFavorites = this.counters.profile_favorited;
     } else {
-      this.numberOfFavorites = 0;
+      return;
     }
   }
 }

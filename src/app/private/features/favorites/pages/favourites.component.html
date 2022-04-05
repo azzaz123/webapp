@@ -8,10 +8,13 @@
             <h1 class="header-title" i18n="@@web_favorites_pages_201">Your favorites</h1>
           </div>
           <div class="header-row">
-            <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n="@@web_wallapop_products_like_most">These are the Wallapop products that you like the most</h4>
-            <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n="@@web_wallapop_profiles_like_most">These are the Wallapop profiles that you like the most</h4>
-            <h4 class="header-subtitle" *ngIf="selectedStatus === 'searches'" i18n="@@web_wallapop_profiles_like_most">
-              These are the Wallapop searches that you like the most</h4>
+            <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n="@@web_wallapop_products_like_most">
+              These are the Wallapop products that you like the most</h4>
+            <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n="@@web_wallapop_profiles_like_most">
+              These are the Wallapop profiles that you like the most</h4>
+            <h4 class="header-subtitle" *ngIf="selectedStatus === 'searches'"
+                i18n="@@favorites_view_tab_searches_subtitle_subtitle_web_specific">
+              These are the searches you have marked as favorites</h4>
           </div>
         </div>
         <div class="col-2 offset-1 header-numbers">
@@ -34,8 +37,9 @@
              i18n="@@web_favorites_pages_204">Products</a>
           <a (click)="filterByStatus('profiles')" [ngClass]="{active: selectedStatus === 'profiles'}" class="nav-link"
              i18n="@@web_favorites_pages_205">Profiles</a>
-          <a (click)="filterByStatus('searches')" [ngClass]="{active: selectedStatus === 'searches'}" class="nav-link"
-             i18n="@@web_favorites_pages_205">Searches</a>
+          <a *ngIf="featureFlagService.isExperimentalFeaturesEnabled()" (click)="filterByStatus('searches')"
+             [ngClass]="{active: selectedStatus === 'searches'}" class="nav-link"
+             i18n="@@favorites_view_tab_searches_label">Searches</a>
         </nav>
       </div>
     </div>
@@ -55,11 +59,6 @@
           the profiles you
           saved as favourite
         </div>
-        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'searches'" i18n="@@web_favorites_pages_207">In
-          this list you can see all
-          the searches you
-          saved as favourite
-        </div>
       </div>
       <div class="cards-container" *ngIf="selectedStatus === 'products'">
         <div class="card-wrapper" *ngFor="let item of items; let i = index">
@@ -75,7 +74,9 @@
       </div>
 
       <div class="cards-container" *ngIf="selectedStatus === 'searches'">
-        Empty
+        <div class="card-wrapper">
+
+        </div>
       </div>
     </div>
   </div>
