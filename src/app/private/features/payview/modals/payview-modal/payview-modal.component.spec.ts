@@ -1,6 +1,15 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input, Output, EventEmitter } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DebugElement,
+  Input,
+  Output,
+  EventEmitter,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -221,6 +230,7 @@ describe('PayviewModalComponent', () => {
         PayviewService,
         PayviewBuyService,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

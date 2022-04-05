@@ -8,13 +8,12 @@ import { WebViewModalService } from '@shared/web-view-modal/services/web-view-mo
 import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
 import { filter, concatMap, take, takeUntil, tap, catchError, map } from 'rxjs/operators';
 
-const THREE_DOMAIN_SECURE_START_URL = (id: string): string => `${environment.baseUrl}api/v3/payments/cards/start_3ds/${id}`;
 type GetCreditCardRequest = (ignoreInvalidCard: boolean) => Observable<CreditCard>;
 
 @Injectable({
   providedIn: 'root',
 })
-export class ThreeDomainSecureService {
+export class ThreeDomainSecureCreditCardsService {
   constructor(private webViewModalService: WebViewModalService) {}
 
   public checkThreeDomainSecure(getCreditCardRequest: GetCreditCardRequest): Observable<void> {
@@ -27,6 +26,10 @@ export class ThreeDomainSecureService {
 
   public cardNeedsToBeRemoved(card: CreditCard): boolean {
     return this.isInvalidCard(card) || this.isPending3DSCard(card);
+  }
+
+  private getCardValidationExternalUrl(id: string): string {
+    return `${environment.baseUrl}api/v3/payments/cards/start_3ds/${id}`;
   }
 
   private checkCardUntilKnownStatus(getCreditCard: GetCreditCardRequest): Observable<CreditCard> {
@@ -53,7 +56,7 @@ export class ThreeDomainSecureService {
 
   private start3DSValidation(card: CreditCard): Observable<void> {
     const { id } = card;
-    const threeDSecureStartUrl: string = THREE_DOMAIN_SECURE_START_URL(id);
+    const threeDSecureStartUrl: string = this.getCardValidationExternalUrl(id);
     const threeDSecureTitle: string = $localize`:@@three3ds_verification_title:Credit card verification`;
 
     return this.webViewModalService

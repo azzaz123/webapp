@@ -18,7 +18,7 @@ export class WebViewModalComponent implements AfterViewInit, OnDestroy {
   public readonly CLOSE_ICON_SIZE: number = 16;
   private subscription: Subscription = new Subscription();
 
-  constructor(@Inject(WINDOW_TOKEN) private window, private windowMessageService: WindowMessageService) {}
+  constructor(@Inject(WINDOW_TOKEN) private window: Window, private windowMessageService: WindowMessageService) {}
 
   ngAfterViewInit() {
     this.iframeRef.setAttribute('src', this.startUrl);
