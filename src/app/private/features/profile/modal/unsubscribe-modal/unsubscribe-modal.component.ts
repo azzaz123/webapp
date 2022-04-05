@@ -5,7 +5,7 @@ import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
 import { UserService } from '@core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SITE_URL } from '@configs/site-url.config';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UNSUBSCRIBE_STEP } from './interfaces/unsubscribe-step.enum';
 import { UNSUBSCRIBE_REASON } from './interfaces/unsubscribe-reason.enum';
 @Component({
@@ -32,6 +32,16 @@ export class UnsubscribeModalComponent implements OnInit {
     [UNSUBSCRIBE_REASON.TECHNICAL_ISSUES]: $localize`:@@delete_account_reason_view_all_users_technical_issues_text:Technical issues`,
     [UNSUBSCRIBE_REASON.SECURITY_ISSUES]: $localize`:@@delete_account_reason_view_all_users_security_issues_text:Security issue`,
     [UNSUBSCRIBE_REASON.OTHER_REASON]: $localize`:@@delete_account_reason_view_all_users_other_reason_text:Other reason:`,
+  };
+
+  public readonly DELETE_ACCOUNT_ARTICLE: Record<string, string> = {
+    label: $localize`:@@delete_account_view_all_users_delete_account_more_info_part_2_text_web_specific:this article`,
+    link: $localize`:@@delete_account_view_all_users_delete_account_more_info_part_2_link_web_specific:https://ayuda.wallapop.com/hc/en-us/articles/360002050898-Quiero-darme-de-baja`,
+  };
+
+  public readonly HOW_TO_UNSUBSCRIBE: Record<string, string> = {
+    label: $localize`:@@delete_account_view_non_pro_user_check_subscriptions_part_2_text_web_specific:How to unsubscribe`,
+    link: $localize`:@@delete_account_view_non_pro_user_check_subscriptions_part_2_link_web_specific:https://ayuda.wallapop.com/hc/en-us/articles/360004667357-Cancelar-suscripci%C3%B3n`,
   };
 
   constructor(
