@@ -557,7 +557,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       currency_code: this.item.currencyCode,
       description: this.item.description,
       sale_conditions: this.getSaleConditions(),
-      category_id: LEGACY_CATEGORY_IDS.includes(this.item.categoryId) ? null : this.item.categoryId.toString(),
+      category_id: this.getCategoryId(),
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
       images: this.uploadService.convertImagesToFiles(this.item.images),
@@ -712,6 +712,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private getSaleConditions(): ItemSaleConditions {
     this.item.saleConditions.supports_shipping = !!this.item.deliveryInfo;
     return this.item.saleConditions ? this.item.saleConditions : null;
+  }
+
+  private getCategoryId(): string | null {
+    return LEGACY_CATEGORY_IDS.includes(this.item.categoryId) ? null : this.item.categoryId.toString();
   }
 
   private invalidForm(): void {
