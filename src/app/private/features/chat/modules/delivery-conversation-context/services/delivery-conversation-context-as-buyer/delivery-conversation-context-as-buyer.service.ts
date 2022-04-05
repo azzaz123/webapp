@@ -98,7 +98,8 @@ export class DeliveryConversationContextAsBuyerService {
     // In web, while we don't have the payview entry point in the item detail,
     // we will show the buy banner when last request is not accepted or it is not pending
     const lastRequestFailed: boolean = !(
-      this.lastRequest?.status === BUYER_REQUEST_STATUS.ACCEPTED || this.lastRequest?.status === BUYER_REQUEST_STATUS.PENDING
+      this.lastRequest?.status.request === BUYER_REQUEST_STATUS.ACCEPTED ||
+      this.lastRequest?.status.request === BUYER_REQUEST_STATUS.PENDING
     );
     const showBuyBanner: boolean = buyerHasNoRequests || lastRequestFailed;
 

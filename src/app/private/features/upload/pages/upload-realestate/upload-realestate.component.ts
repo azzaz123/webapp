@@ -15,7 +15,6 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { ItemLocation } from '@core/geolocation/address-response.interface';
 import { ITEM_TYPES } from '@core/item/item';
-import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { RealestateContent, RealEstateResponse } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { Realestate } from '@core/item/realestate';
@@ -36,6 +35,7 @@ import { forkJoin, Observable, of, Subscriber } from 'rxjs';
 import { LocationSelectorModalComponent } from '@shared/modals/location-selector-modal/location-selector-modal.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -84,7 +84,7 @@ export class UploadRealestateComponent implements OnInit {
   ) {
     this.uploadForm = fb.group({
       id: '',
-      category_id: REALESTATE_CATEGORY,
+      category_id: CATEGORY_IDS.REAL_ESTATE,
       images: [[], [Validators.required]],
       title: ['', [Validators.required]],
       sale_price: ['', [Validators.required, Validators.min(0), Validators.max(999999999)]],

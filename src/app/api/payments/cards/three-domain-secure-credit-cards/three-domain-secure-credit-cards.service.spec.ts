@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 
-import { ThreeDomainSecureService } from './three-domain-secure.service';
+import { ThreeDomainSecureCreditCardsService } from './three-domain-secure-credit-cards.service';
 
-describe('ThreeDomainSecureService', () => {
-  let service: ThreeDomainSecureService;
+describe('ThreeDomainSecureCreditCardsService', () => {
+  let service: ThreeDomainSecureCreditCardsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [WebViewModalService],
     });
-    service = TestBed.inject(ThreeDomainSecureService);
+    service = TestBed.inject(ThreeDomainSecureCreditCardsService);
   });
 
   it('should be created', () => {
