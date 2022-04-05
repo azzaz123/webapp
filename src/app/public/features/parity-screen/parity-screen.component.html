@@ -12,9 +12,7 @@
     <qrcode [qrdata]="qrData" [width]="qrSize" [margin]="2" [errorCorrectionLevel]="'M'" #qrCode> </qrcode>
   </div>
   <div *ngIf="device === DevicesType.MOBILE" class="GenericLanding__appButton mt-5">
-    <a href="{{ storeAddress }}">
-      <tsl-button class="btn-primary"> Get the app </tsl-button>
-    </a>
+    <a href="{{ storeAddress }}" class="btn btn-primary" target="_blank"> Get the app </a>
   </div>
   <div class="GenericLanding__icon mt-auto">
     <img src="/assets/images/generic-landing/only-app-landing.svg" alt="mobile-blob" />
