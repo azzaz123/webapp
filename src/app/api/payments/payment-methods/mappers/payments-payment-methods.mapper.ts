@@ -4,6 +4,7 @@ import { PaymentsPaymentMethodDto } from '@api/payments/payment-methods/dtos/pay
 import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
 import { PaymentsPaymentMethodsDto } from '@api/payments/payment-methods/dtos/payments-payment-methods-dto.interface';
 import { ToDomainMapper } from '@api/core/utils/types';
+import { AVAILABLE_PAYMENT_METHODS } from '@api/core/model/payments/constants/available-payments';
 
 export const mapPaymentsPaymentMethodsDtoToPaymentsPaymentMethods: ToDomainMapper<PaymentsPaymentMethodsDto, PaymentsPaymentMethods> = (
   input: PaymentsPaymentMethodsDto
@@ -11,7 +12,9 @@ export const mapPaymentsPaymentMethodsDtoToPaymentsPaymentMethods: ToDomainMappe
   const { payment_methods: paymentMethods } = input;
 
   return {
-    paymentMethods: mapToPaymentsPaymentMethods(paymentMethods),
+    paymentMethods: mapToPaymentsPaymentMethods(paymentMethods).filter((paymentMethod: PaymentsPaymentMethod) =>
+      AVAILABLE_PAYMENT_METHODS.includes(paymentMethod.method)
+    ),
   };
 };
 
