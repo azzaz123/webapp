@@ -61,8 +61,10 @@ import {
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
   MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY,
   MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY,
+  MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
+import { PayviewBuyOverviewComponent } from '../../modules/buy/components/overview/payview-buy-overview.component';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -170,6 +172,7 @@ describe('PayviewModalComponent', () => {
         PayviewSummaryOverviewComponent,
         PayviewSummaryPaymentMethodComponent,
         SvgIconComponent,
+        PayviewBuyOverviewComponent,
       ],
       imports: [
         BrowserAnimationsModule,
@@ -208,6 +211,7 @@ describe('PayviewModalComponent', () => {
             trackViewTransactionPayScreen() {},
             trackClickAddPromocodeTransactionPay() {},
             trackClickApplyPromocodeTransactionPay() {},
+            trackPayTransaction() {},
           },
         },
         ItemService,
@@ -392,6 +396,20 @@ describe('PayviewModalComponent', () => {
           const link = fixture.debugElement.query(By.css('#privacyPolicyLink'));
 
           expect(link.attributes.href).toEqual(component.PRIVACY_POLICY_URL);
+        });
+
+        describe('when the user clicks the buy button', () => {
+          beforeEach(fakeAsync(() => {
+            spyOn(payviewTrackingEventsService, 'trackPayTransaction');
+            fixture.debugElement.query(By.directive(PayviewBuyOverviewComponent)).triggerEventHandler('clickBuyButton', {});
+
+            tick();
+          }));
+
+          it('should ask for tracking event', () => {
+            expect(payviewTrackingEventsService.trackPayTransaction).toHaveBeenCalledTimes(1);
+            expect(payviewTrackingEventsService.trackPayTransaction).toHaveBeenCalledWith(MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL);
+          });
         });
 
         describe('WHEN stepper is on the second step', () => {
