@@ -10,6 +10,7 @@ import { finalize, take } from 'rxjs/operators';
 import { PaginatedList } from '@api/core/model';
 import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
 import { FeatureFlagService } from '@core/user/featureflag.service';
+import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 
 @Component({
   selector: 'tsl-favourites',
@@ -17,8 +18,16 @@ import { FeatureFlagService } from '@core/user/featureflag.service';
   styleUrls: ['./favourites.component.scss'],
 })
 export class FavouritesComponent implements OnInit {
+  public readonly emptyStateSearchesProperties: EmptyStateProperties = {
+    title: $localize`:@@engagement_empty_state_saved_searches_title_web_specific:Things you want to find`,
+    description: $localize`:@@engagement_empty_state_saved_searches_message_web_specific:To save a search, tap the \"Favorite\" icon when making one. We'll notify you when there are items that match your criteria.`,
+    illustrationSrc: '/assets/images/commons/pop-save-search.svg',
+  };
+
   public items: Item[] = [];
   public profiles: Profile[] = [];
+  //TO-DO refactor any below
+  public searches: any[] = [];
   public selectedStatus = 'products';
   public loading = false;
   public end = false;
