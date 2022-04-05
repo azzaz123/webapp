@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { PAYVIEW_BUY_EVENT_TYPE } from '@private/features/payview/modules/buy/enums/payview-buy-event-type.enum';
 import { PayviewBuyService } from '@private/features/payview/modules/buy/services/payview-buy.service';
-import { PayviewError } from '@private/features/payview/interfaces/payview-error.interface';
 
 import { Subscription } from 'rxjs';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
@@ -22,7 +21,7 @@ export class PayviewBuyOverviewComponent implements OnDestroy, OnInit {
 
   private subscription: Subscription;
 
-  constructor(private buyService: PayviewBuyService, private changeDetectorRef: ChangeDetectorRef, private toastService: ToastService) {}
+  constructor(private buyService: PayviewBuyService, private toastService: ToastService) {}
 
   public ngOnDestroy(): void {
     this.unsubscribe();
@@ -42,9 +41,7 @@ export class PayviewBuyOverviewComponent implements OnDestroy, OnInit {
   }
 
   private subscribe(): void {
-    this.subscription = this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.ERROR, (error: PayviewError) => {
-      this.changeDetectorRef.detectChanges();
-    });
+    this.subscription = this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.ERROR, () => {});
   }
 
   private unsubscribe(): void {
