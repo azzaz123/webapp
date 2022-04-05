@@ -27,7 +27,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   public navLinks: NavLink[] = [
     {
       id: `/${PRIVATE_PATHS.WALLET}/${WALLET_PATHS.BALANCE}`,
-      display: $localize`:@@profile_menu_wallet:Wallet`,
+      display: $localize`:@@wallet_view_top_bar_title:Wallet`,
     },
     {
       id: bankDetailsId,
