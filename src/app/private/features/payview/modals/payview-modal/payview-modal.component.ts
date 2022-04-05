@@ -36,6 +36,7 @@ import {
   getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
   getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
+import { headerTitles } from '../../constants/header-titles';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -50,6 +51,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   @Input() public itemHash: string;
 
   public countries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
+  public headerTitle: string = headerTitles[PAYVIEW_STEPS.PAYVIEW];
   public readonly TRANSACTIONS_PROTECTION_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.TRANSACTIONS_PROTECTION);
   public readonly TERMS_AND_CONDITIONS_URL: string = $localize`:@@web_footer_links_terms_href:https://about.wallapop.com/en/legal-terms-and-conditions`;
   public readonly PRIVACY_POLICY_URL: string = $localize`:@@web_footer_links_privacy_href:https://about.wallapop.com/en/privacy-policy`;
@@ -57,13 +59,6 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscriptions: Subscription[] = [];
   private readonly trackViewTransactionPayScreen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private headerTitles: Record<PAYVIEW_STEPS, string> = {
-    [PAYVIEW_STEPS.CREDIT_CARD]: $localize`:@@delivery_add_credit_card_edit_mode_title:Edit credit card`,
-    [PAYVIEW_STEPS.DELIVERY_ADDRESS]: $localize`:@@address_view_all_users_top_bar_edit_title:Edit your address`,
-    [PAYVIEW_STEPS.PAYVIEW]: $localize`:@@pay_view_buyer_top_bar_title:Make a purchase`,
-    [PAYVIEW_STEPS.PICK_UP_POINT_MAP]: $localize`:@@delivery_package_drop_selector_title:Select a point`,
-    [PAYVIEW_STEPS.PROMOTION_EDITOR]: $localize`:@@pay_view_buyer_top_bar_title:Make a purchase`,
-  };
 
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
@@ -87,7 +82,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public closeCreditCardEditor(): void {
-    this.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
+    this.goToStep(PAYVIEW_STEPS.PAYVIEW);
     this.payviewStateManagementService.refreshByCreditCard();
   }
 
@@ -95,7 +90,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     if (this.isMapPreviousPage$.value) {
       this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
     } else {
-      this.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
+      this.goToStep(PAYVIEW_STEPS.PAYVIEW);
     }
     this.payviewStateManagementService.refreshByDelivery();
   }
@@ -142,10 +137,6 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     return this.payviewStateManagementService.payViewState$;
   }
 
-  public get headerTitle(): string {
-    return this.headerTitles[this.stepper.activeId];
-  }
-
   public trackCliCkHelpTransactionalEvent(): void {
     this.payviewState$
       .pipe(take(1))
@@ -157,6 +148,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   private goToStep(step: PAYVIEW_STEPS): void {
+    this.headerTitle = headerTitles[step];
     this.stepper.goToStep(step);
   }
 
