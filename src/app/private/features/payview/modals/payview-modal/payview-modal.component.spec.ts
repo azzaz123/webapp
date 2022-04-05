@@ -74,6 +74,9 @@ import {
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
 import { PayviewBuyOverviewComponent } from '../../modules/buy/components/overview/payview-buy-overview.component';
+import { UserService } from '@core/user/user.service';
+import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
+import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -110,7 +113,9 @@ class FakeComponent extends PayviewModalComponent {
     promotionService: PayviewPromotionService,
     paymentService: PayviewPaymentService,
     payviewTrackingEventsService: PayviewTrackingEventsService,
-    buyService: PayviewBuyService
+    buyService: PayviewBuyService,
+    buyerRequestApiService: BuyerRequestsApiService,
+    userService: UserService
   ) {
     super(
       payviewStateManagementService,
@@ -121,7 +126,9 @@ class FakeComponent extends PayviewModalComponent {
       promotionService,
       paymentService,
       payviewTrackingEventsService,
-      buyService
+      buyService,
+      buyerRequestApiService,
+      userService
     );
   }
 }
@@ -161,6 +168,9 @@ describe('PayviewModalComponent', () => {
   let stepper: StepperComponent;
   let stepperSpy: jasmine.Spy;
   let payviewTrackingEventsService: PayviewTrackingEventsService;
+  let buyerRequestApiService: BuyerRequestsApiService;
+  let userService: UserService;
+  let buyService: PayviewBuyService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -221,6 +231,18 @@ describe('PayviewModalComponent', () => {
             trackClickAddPromocodeTransactionPay() {},
             trackClickApplyPromocodeTransactionPay() {},
             trackPayTransaction() {},
+            trackTransactionPaymentSuccess() {},
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
+            get() {
+              return of(MOCK_OTHER_USER);
+            },
+            getLoggedUserInformation() {
+              return of(MOCK_USER);
+            },
           },
         },
         ItemService,
@@ -232,6 +254,8 @@ describe('PayviewModalComponent', () => {
         PayviewPromotionService,
         PayviewStateManagementService,
         PayviewService,
+        PayviewBuyService,
+        BuyerRequestsApiService,
         PayviewBuyService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -249,6 +273,9 @@ describe('PayviewModalComponent', () => {
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
       payviewTrackingEventsService = TestBed.inject(PayviewTrackingEventsService);
+      buyerRequestApiService = TestBed.inject(BuyerRequestsApiService);
+      userService = TestBed.inject(UserService);
+      buyService = TestBed.inject(PayviewBuyService);
 
       fixture = TestBed.createComponent(FakeComponent);
       component = fixture.componentInstance;
