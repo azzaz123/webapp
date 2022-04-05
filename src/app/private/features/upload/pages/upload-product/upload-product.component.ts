@@ -24,7 +24,7 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CATEGORY_IDS, LEGACY_CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryOption, CategoryResponse, SuggestedCategory } from '@core/category/category-response.interface';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -437,8 +437,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public isHeroCategory(category_id: number): boolean {
-    const HERO_CATEGORIES = [CATEGORY_IDS.CAR, CATEGORY_IDS.SERVICES, CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.JOBS];
-
+    const HERO_CATEGORIES = [CATEGORY_IDS.CAR, CATEGORY_IDS.SERVICES, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.JOBS];
     return HERO_CATEGORIES.includes(+category_id);
   }
 
@@ -558,7 +557,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       currency_code: this.item.currencyCode,
       description: this.item.description,
       sale_conditions: this.getSaleConditions(),
-      category_id: this.item.categoryId.toString(),
+      category_id: this.getCategoryId(),
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
       images: this.uploadService.convertImagesToFiles(this.item.images),
@@ -713,6 +712,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private getSaleConditions(): ItemSaleConditions {
     this.item.saleConditions.supports_shipping = !!this.item.deliveryInfo;
     return this.item.saleConditions ? this.item.saleConditions : null;
+  }
+
+  private getCategoryId(): string | null {
+    return LEGACY_CATEGORY_IDS.includes(this.item.categoryId) ? null : this.item.categoryId.toString();
   }
 
   private invalidForm(): void {

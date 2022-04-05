@@ -2,9 +2,8 @@ import { OrderEvent } from '@private/features/catalog/components/selected-items/
 import { clone } from 'lodash-es';
 import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
-import { CATEGORY_IDS } from '../app/core/category/category-ids';
+import { CATEGORY_IDS, LEGACY_CATEGORY_IDS } from '../app/core/category/category-ids';
 import { Item, ITEM_TYPES } from '../app/core/item/item';
-import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
@@ -321,6 +320,28 @@ export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.title,
   ITEM_DATA.description,
   ITEM_DATA.category_id,
+  ITEM_DATA.location,
+  ITEM_DATA.sale_price,
+  ITEM_DATA.currency_code,
+  ITEM_DATA.modified_date,
+  ITEM_DATA.url,
+  ITEM_DATA.flags,
+  ITEM_DATA.actions_allowed,
+  ITEM_DATA.sale_conditions,
+  ITEM_DATA.main_image,
+  ITEM_DATA.images,
+  ITEM_DATA.web_slug,
+  ITEM_DATA.published_date,
+  ITEM_DATA.delivery_info
+);
+
+export const MOCK_ITEM_WITH_LECAGY_CATEGORY: Item = new Item(
+  ITEM_DATA.id,
+  ITEM_DATA.legacy_id,
+  ITEM_DATA.owner,
+  ITEM_DATA.title,
+  ITEM_DATA.description,
+  LEGACY_CATEGORY_IDS[0],
   ITEM_DATA.location,
   ITEM_DATA.sale_price,
   ITEM_DATA.currency_code,
@@ -1568,7 +1589,7 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   engine: 'engine',
   gearbox: 'gearbox',
   horsepower: 100,
-  category_id: CARS_CATEGORY,
+  category_id: CATEGORY_IDS.CAR.toString(),
   sale_price: 123.45,
   currency_code: 'EUR',
   sale_conditions: {
@@ -1586,7 +1607,7 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
 
 export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
   id: '',
-  category_id: REALESTATE_CATEGORY,
+  category_id: CATEGORY_IDS.REAL_ESTATE,
   title: 'title',
   sale_price: 100,
   currency_code: 'EUR',

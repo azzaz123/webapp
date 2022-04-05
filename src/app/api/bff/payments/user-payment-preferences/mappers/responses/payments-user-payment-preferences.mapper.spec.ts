@@ -1,7 +1,9 @@
 import { mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences } from './payments-user-payment-preferences.mapper';
 import {
-  MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
+  MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD,
+  MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE_WITH_NOT_AVAILABLE_DEFAULTS,
+  MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE_WITH_NOT_AVAILABLE_PREFERENCES,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PAYMENT_METHOD,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PAYMENT_METHOD_RESPONSE,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PREFERENCE,
@@ -11,11 +13,31 @@ import {
 describe('mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences', () => {
   describe('when mapping from user payment preferences DTO', () => {
     describe('and the user has preferences specified', () => {
-      it('should map to a user payment preferences entity', () => {
-        const mappedUserPaymentPreferences = mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences(
-          MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE
-        );
-        expect(mappedUserPaymentPreferences).toEqual(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
+      describe('and the preferences and defaults are available', () => {
+        it('should map to a user payment preferences entity', () => {
+          const mappedUserPaymentPreferences = mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences(
+            MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE
+          );
+          expect(mappedUserPaymentPreferences).toEqual(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD);
+        });
+      });
+
+      describe('and the preferences are NOT available', () => {
+        it('should map to a user payment preference with an available preference', () => {
+          const mappedUserPaymentPreferences = mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences(
+            MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE_WITH_NOT_AVAILABLE_PREFERENCES
+          );
+          expect(mappedUserPaymentPreferences).toEqual(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD);
+        });
+      });
+
+      describe('and the defaults are NOT available', () => {
+        it('should map to a user payment preference with an available defaults', () => {
+          const mappedUserPaymentPreferences = mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences(
+            MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE_WITH_NOT_AVAILABLE_DEFAULTS
+          );
+          expect(mappedUserPaymentPreferences).toEqual(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD);
+        });
       });
     });
 

@@ -13,6 +13,7 @@ import {
   ITEM_DELIVERY_INFO,
   MOCK_ITEM,
   MOCK_ITEM_FASHION,
+  MOCK_ITEM_WITH_LECAGY_CATEGORY,
 } from '@fixtures/item.fixtures.spec';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
@@ -286,6 +287,33 @@ describe('UploadProductComponent', () => {
         description: MOCK_ITEM.description,
         sale_conditions: MOCK_ITEM.saleConditions,
         category_id: ITEM_CATEGORY_ID + '',
+        delivery_info: ITEM_DELIVERY_INFO,
+        images: [],
+        location: {
+          address: '',
+          latitude: '',
+          longitude: '',
+        },
+        extra_info: {
+          condition: null,
+        },
+        hashtags: [],
+      });
+    });
+
+    it('should set item if exists and category as null if it`s a legacy one', () => {
+      component.item = MOCK_ITEM_WITH_LECAGY_CATEGORY;
+
+      component.ngOnInit();
+
+      expect(component.uploadForm.value).toEqual({
+        id: MOCK_ITEM.id,
+        title: MOCK_ITEM.title,
+        sale_price: MOCK_ITEM.salePrice,
+        currency_code: MOCK_ITEM.currencyCode,
+        description: MOCK_ITEM.description,
+        sale_conditions: MOCK_ITEM.saleConditions,
+        category_id: null,
         delivery_info: ITEM_DELIVERY_INFO,
         images: [],
         location: {
