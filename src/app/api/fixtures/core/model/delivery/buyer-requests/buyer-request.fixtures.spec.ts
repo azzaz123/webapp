@@ -34,4 +34,12 @@ export const MOCK_BUYER_REQUEST_EXPIRED: BuyerRequest = {
   },
 };
 
+export const MOCK_BUYER_REQUEST_PAYMENT_READY: BuyerRequest = {
+  id: 'cc9c2911-e068-4404-b579-baadda664693',
+  status: {
+    request: BUYER_REQUEST_STATUS.PENDING,
+    payment: BUYER_REQUEST_PAYMENT_STATUS.READY,
+  },
+};
+
 export const MOCK_BUYER_REQUESTS: BuyerRequest[] = [MOCK_BUYER_REQUEST_REJECTED, MOCK_BUYER_REQUEST_EXPIRED, MOCK_BUYER_REQUEST_ACCEPTED];
