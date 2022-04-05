@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div class="cards-container" [ngClass]="searches.length === 0 && 'centered'"
+      <div class="cards-container" [ngClass]="searches.length === 0 && 'justify-content-center'"
            *ngIf="selectedStatus === 'searches'">
         <tsl-empty-state
           *ngIf="!loading && searches.length === 0"
