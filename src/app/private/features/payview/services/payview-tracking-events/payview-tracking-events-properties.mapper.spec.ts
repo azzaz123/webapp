@@ -1,3 +1,4 @@
+import { TransactionPaymentSuccess } from '@core/analytics/resources/events-interfaces/transaction-payment-success.interface';
 import { ClickAddEditCard } from '@core/analytics/resources/events-interfaces/click-add-edit-card.interface';
 import {
   getClickAddEditCardEventPropertiesFromPayviewState,
@@ -6,6 +7,7 @@ import {
   getViewTransactionPayScreenEventPropertiesFromPayviewState,
   getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
   getPayTransactionEventPropertiesFromPayviewState,
+  getTransactionPaymentSuccessPropertiesFromPayviewState,
 } from './payview-tracking-events-properties.mapper';
 import {
   MOCK_PAYVIEW_STATE,
@@ -49,6 +51,11 @@ import {
   MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET_AND_CREDIT_CARD,
   MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL_AND_CARRIER_OFFICE,
   MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL_AND_PROMOCODE,
+  MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET_AND_CREDIT_CARD,
+  MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET_AND_PAYPAL,
+  MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_PAYPAL,
+  MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD,
+  MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 describe('when mapping the payview state properties into the click add edit card event properties', () => {
@@ -267,6 +274,71 @@ describe('when mapping the payview state properties into the pay transaction eve
       const expectedProperties: PayTransaction = getPayTransactionEventPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_PROMOCODE);
 
       expect(expectedProperties).toStrictEqual(MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL_AND_PROMOCODE);
+    });
+  });
+});
+
+describe('when mapping the payview state properties into the transaction payment success properties', () => {
+  const MOCK_REQUEST_ID: string = '1234';
+  const MOCK_COUNTRY_CODE: string = 'ES';
+
+  describe('and the current selected payment method is credit card', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE,
+        MOCK_REQUEST_ID,
+        MOCK_COUNTRY_CODE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD);
+    });
+  });
+
+  describe('and the current selected payment method is paypal', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE,
+        MOCK_REQUEST_ID,
+        MOCK_COUNTRY_CODE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_PAYPAL);
+    });
+  });
+
+  describe('and the current selected payment method is wallet', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITH_WALLET_PREFERENCE,
+        MOCK_REQUEST_ID,
+        MOCK_COUNTRY_CODE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET);
+    });
+  });
+
+  describe('and the current selected payment method is wallet and credit card', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE,
+        MOCK_REQUEST_ID,
+        MOCK_COUNTRY_CODE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET_AND_CREDIT_CARD);
+    });
+  });
+
+  describe('and the preselected payment method is wallet and paypal', () => {
+    it('should return the properties mapped', () => {
+      const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
+        MOCK_PAYVIEW_STATE_WITH_WALLET_AND_PAYPAL_PREFERENCE,
+        MOCK_REQUEST_ID,
+        MOCK_COUNTRY_CODE
+      );
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET_AND_PAYPAL);
     });
   });
 });

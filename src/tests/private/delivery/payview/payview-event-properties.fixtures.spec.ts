@@ -181,10 +181,30 @@ export const MOCK_PAY_TRANSACTION_EVENT_WITH_WALLET_AND_PAYPAL: PayTransaction =
 export const MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD: TransactionPaymentSuccess = {
   screenId: SCREEN_IDS.Checkout,
   itemId: MOCK_PAYVIEW_ITEM.id,
+  requestId: '1234',
   country: 'ES',
   language: 'ES',
-  currency: 'EUR',
   paymentMethod: 'bank card',
+};
+
+export const MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET: TransactionPaymentSuccess = {
+  ...MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD,
+  paymentMethod: 'wallet',
+};
+
+export const MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_PAYPAL: TransactionPaymentSuccess = {
+  ...MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD,
+  paymentMethod: 'paypal',
+};
+
+export const MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET_AND_CREDIT_CARD: TransactionPaymentSuccess = {
+  ...MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD,
+  paymentMethod: 'wallet, bank card',
+};
+
+export const MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET_AND_PAYPAL: TransactionPaymentSuccess = {
+  ...MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD,
+  paymentMethod: 'wallet, paypal',
 };
 
 export const MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT: TransactionCheckoutError = {
