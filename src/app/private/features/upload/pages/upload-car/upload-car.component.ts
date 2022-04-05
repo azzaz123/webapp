@@ -15,7 +15,6 @@ import { ErrorsService } from '@core/errors/errors.service';
 import { whitespaceValidator } from '@core/form-validators/formValidators.func';
 import { Car } from '@core/item/car';
 import { ITEM_TYPES } from '@core/item/item';
-import { CARS_CATEGORY } from '@core/item/item-categories';
 import { CarContent, CarInfo } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -34,6 +33,7 @@ import { PreviewModalComponent } from '../../modals/preview-modal/preview-modal.
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -87,7 +87,7 @@ export class UploadCarComponent implements OnInit {
   ) {
     this.uploadForm = fb.group({
       id: '',
-      category_id: CARS_CATEGORY,
+      category_id: CATEGORY_IDS.CAR,
       images: [[], [Validators.required]],
       model: ['', [Validators.required, whitespaceValidator]],
       brand: ['', [Validators.required, whitespaceValidator]],

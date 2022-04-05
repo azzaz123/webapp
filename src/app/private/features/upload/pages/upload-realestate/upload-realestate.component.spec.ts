@@ -14,7 +14,6 @@ import {
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { ITEM_TYPES } from '@core/item/item';
-import { REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { RealestateContent } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
@@ -43,6 +42,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { LocationSelectorModalComponent } from '@shared/modals/location-selector-modal/location-selector-modal.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -252,7 +252,7 @@ describe('UploadRealestateComponent', () => {
 
   describe('onSubmit', () => {
     it('should has category set by default', () => {
-      expect(component.uploadForm.get('category_id').value).toBe(REALESTATE_CATEGORY);
+      expect(component.uploadForm.get('category_id').value).toBe(CATEGORY_IDS.REAL_ESTATE);
     });
 
     it('should emit uploadEvent if form is valid', () => {

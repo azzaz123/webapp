@@ -9,6 +9,7 @@ import {
   Output,
   EventEmitter,
   CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -230,7 +231,7 @@ describe('PayviewModalComponent', () => {
         PayviewService,
         PayviewBuyService,
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

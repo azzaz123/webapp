@@ -15,7 +15,6 @@ import { AnalyticsService } from '@core/analytics/analytics.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { Car } from '@core/item/car';
 import { ITEM_TYPES } from '@core/item/item';
-import { CARS_CATEGORY } from '@core/item/item-categories';
 import { CarContent } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { SubscriptionsService } from '@core/subscriptions/subscriptions.service';
@@ -55,6 +54,7 @@ import { UploadCarComponent } from './upload-car.component';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -203,7 +203,7 @@ describe('UploadCarComponent', () => {
     it('should initialize the upload form with default values', () => {
       expect(component.uploadForm.value).toEqual({
         id: '',
-        category_id: CARS_CATEGORY,
+        category_id: CATEGORY_IDS.CAR,
         images: [],
         model: '',
         brand: '',
@@ -254,7 +254,7 @@ describe('UploadCarComponent', () => {
           currency_code: MOCK_CAR.currencyCode,
           storytelling: MOCK_CAR.description,
           sale_conditions: MOCK_CAR.saleConditions,
-          category_id: MOCK_CAR.categoryId.toString(),
+          category_id: MOCK_CAR.categoryId,
           num_seats: MOCK_CAR.numSeats,
           num_doors: MOCK_CAR.numDoors,
           body_type: MOCK_CAR.bodyType,
@@ -316,7 +316,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.value).toEqual({
         body_type: null,
         brand: 'New brand',
-        category_id: `${MOCK_CAR.categoryId}`,
+        category_id: MOCK_CAR.categoryId,
         currency_code: 'EUR',
         engine: null,
         financed_price: MOCK_CAR.financedPrice,
@@ -368,7 +368,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.value).toEqual({
         body_type: null,
         brand: MOCK_CAR.brand,
-        category_id: `${MOCK_CAR.categoryId}`,
+        category_id: MOCK_CAR.categoryId,
         currency_code: 'EUR',
         engine: null,
         financed_price: MOCK_CAR.financedPrice,
@@ -430,7 +430,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.value).toEqual({
         body_type: null,
         brand: MOCK_CAR.brand,
-        category_id: `${MOCK_CAR.categoryId}`,
+        category_id: MOCK_CAR.categoryId,
         currency_code: 'EUR',
         engine: null,
         financed_price: MOCK_CAR.financedPrice,
@@ -486,7 +486,7 @@ describe('UploadCarComponent', () => {
 
   describe('onSubmit', () => {
     it('should has category set by default', () => {
-      expect(component.uploadForm.get('category_id').value).toBe(CARS_CATEGORY);
+      expect(component.uploadForm.get('category_id').value).toBe(CATEGORY_IDS.CAR);
     });
 
     it('should emit uploadEvent if form is valid', () => {
@@ -862,7 +862,7 @@ describe('UploadCarComponent', () => {
         engine: MOCK_CAR.engine,
         gearbox: MOCK_CAR.gearbox,
         horsepower: MOCK_CAR.horsepower,
-        category_id: CARS_CATEGORY,
+        category_id: CATEGORY_IDS.CAR,
         sale_price: MOCK_CAR.salePrice,
         currency_code: MOCK_CAR.currencyCode,
         sale_conditions: {

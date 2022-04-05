@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -9,6 +10,7 @@ import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 export class CategorySelectorComponent {
   @Output() selected: EventEmitter<string> = new EventEmitter();
   public category: number;
+  public CATEGORY_IDS = CATEGORY_IDS;
 
   constructor(config: NgbPopoverConfig) {
     config.placement = 'right';
