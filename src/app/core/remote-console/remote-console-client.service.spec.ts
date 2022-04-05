@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { RemoteConsoleClientService } from './remote-console-client.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as localEnvironmentFile from '@environments/environment';
+/* eslint-disable no-restricted-imports */
 import * as prodEnvironmentFile from '@environments/environment.prod';
 import { Environment } from '@environments/environment.interface';
 

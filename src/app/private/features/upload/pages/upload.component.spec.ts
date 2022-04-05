@@ -8,7 +8,7 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { CARS_CATEGORY } from '@core/item/item-categories';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { MockTrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.fixtures.spec';
 import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
@@ -71,7 +71,7 @@ describe('UploadComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.setCategory).toHaveBeenCalledWith(CARS_CATEGORY);
+      expect(component.setCategory).toHaveBeenCalledWith(CATEGORY_IDS.CAR);
     });
 
     it('should not set any category if user is not professional', () => {

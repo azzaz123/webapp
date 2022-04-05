@@ -17,12 +17,12 @@ import { PaymentsClientBrowserInfoApiService } from '../users/client-browser-inf
 import { PaymentsCreditCardHttpService } from './http/payments-credit-card-http.service';
 
 import { PaymentsCreditCardService } from './payments-credit-card.service';
-import { ThreeDomainSecureService } from './three-domain-secure/three-domain-secure.service';
+import { ThreeDomainSecureCreditCardsService } from './three-domain-secure-credit-cards/three-domain-secure-credit-cards.service';
 
 describe('PaymentsCreditCardService', () => {
   let service: PaymentsCreditCardService;
   let paymentsHttpService: PaymentsCreditCardHttpService;
-  let threeDomainSecureService: ThreeDomainSecureService;
+  let threeDomainSecureCreditCardsService: ThreeDomainSecureCreditCardsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -31,7 +31,7 @@ describe('PaymentsCreditCardService', () => {
         PaymentsCreditCardService,
         PaymentsCreditCardHttpService,
         {
-          provide: ThreeDomainSecureService,
+          provide: ThreeDomainSecureCreditCardsService,
           useValue: { checkThreeDomainSecure: () => of(true), cardNeedsToBeRemoved: () => true },
         },
         {
@@ -42,7 +42,7 @@ describe('PaymentsCreditCardService', () => {
     });
     service = TestBed.inject(PaymentsCreditCardService);
     paymentsHttpService = TestBed.inject(PaymentsCreditCardHttpService);
-    threeDomainSecureService = TestBed.inject(ThreeDomainSecureService);
+    threeDomainSecureCreditCardsService = TestBed.inject(ThreeDomainSecureCreditCardsService);
   });
 
   it('should be created', () => {
@@ -62,7 +62,7 @@ describe('PaymentsCreditCardService', () => {
     describe('and card is valid', () => {
       beforeEach(() => {
         spyOn(paymentsHttpService, 'get').and.returnValue(of(mockPaymentsCreditCard));
-        spyOn(threeDomainSecureService, 'cardNeedsToBeRemoved').and.returnValue(false);
+        spyOn(threeDomainSecureCreditCardsService, 'cardNeedsToBeRemoved').and.returnValue(false);
       });
 
       it('should map server response to web context', fakeAsync(() => {
@@ -89,7 +89,7 @@ describe('PaymentsCreditCardService', () => {
       beforeEach(() => {
         spyOn(paymentsHttpService, 'get').and.returnValue(of(mockInvalidPaymentsCreditCard));
         spyOn(paymentsHttpService, 'delete').and.returnValue(of(null));
-        spyOn(threeDomainSecureService, 'cardNeedsToBeRemoved').and.returnValue(true);
+        spyOn(threeDomainSecureCreditCardsService, 'cardNeedsToBeRemoved').and.returnValue(true);
       });
 
       it('should set credit card as it does not exist', fakeAsync(() => {
