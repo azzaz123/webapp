@@ -9,8 +9,8 @@ import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/eve
 import { PayTransaction } from '@core/analytics/resources/events-interfaces/pay-transaction.interface';
 import { TransactionPaymentSuccess } from '@core/analytics/resources/events-interfaces/transaction-payment-success.interface';
 import { MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
-import { TransactionPaymentError } from '@core/analytics/resources/events-interfaces/transaction-payment-error.interface';
 import { ClickAddEditAddress } from '@core/analytics/resources/events-interfaces/click-add-edit-address.interface';
+import { TransactionCheckoutError } from '@core/analytics/resources/events-interfaces/transaction-checkout-error.interface';
 
 export const MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_CREDIT_CARD: ViewTransactionPayScreen = {
   screenId: SCREEN_IDS.Checkout,
@@ -187,7 +187,7 @@ export const MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD: TransactionPayme
   paymentMethod: 'bank card',
 };
 
-export const MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT: TransactionPaymentError = {
+export const MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT: TransactionCheckoutError = {
   screenId: SCREEN_IDS.Checkout,
   itemId: MOCK_PAYVIEW_ITEM.id,
   errorType: 'cancel payment',

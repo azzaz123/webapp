@@ -10,7 +10,7 @@ import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/event
 import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
 import { PayTransaction } from '@core/analytics/resources/events-interfaces/pay-transaction.interface';
 import { TransactionPaymentSuccess } from '@core/analytics/resources/events-interfaces/transaction-payment-success.interface';
-import { TransactionPaymentError } from '@core/analytics/resources/events-interfaces/transaction-payment-error.interface';
+import { TransactionCheckoutError } from '@core/analytics/resources/events-interfaces/transaction-checkout-error.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -97,8 +97,8 @@ export class PayviewTrackingEventsService {
     this.analyticsService.trackEvent(event);
   }
 
-  public trackTransactionPaymentError(attributes: TransactionPaymentError): void {
-    const event: AnalyticsEvent<TransactionPaymentError> = {
+  public trackTransactionPaymentError(attributes: TransactionCheckoutError): void {
+    const event: AnalyticsEvent<TransactionCheckoutError> = {
       name: ANALYTICS_EVENT_NAMES.TransactionPaymentError,
       eventType: ANALYTIC_EVENT_TYPES.Transaction,
       attributes,

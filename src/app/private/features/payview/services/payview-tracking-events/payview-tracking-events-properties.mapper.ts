@@ -14,6 +14,7 @@ import { PayviewStateDelivery } from '../../interfaces/payview-state-delivery.in
 import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
 import { PayTransaction } from '@core/analytics/resources/events-interfaces/pay-transaction.interface';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
+import { TransactionPaymentSuccess } from '@core/analytics/resources/events-interfaces/transaction-payment-success.interface';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
   const paymentPreferences: PaymentsUserPaymentPreference = payviewState.payment.preferences.preferences;
@@ -102,6 +103,15 @@ export function getPayTransactionEventPropertiesFromPayviewState(payviewState: P
     deliveryMethod: DELIVERY_MODE_CONVERTER[payviewState.delivery.methods.current.method],
     walletBalanceAmount: payviewState.payment.wallet.amount.total,
     isPromoApplied: !!payviewState.costs?.promotion?.promocode,
+  };
+}
+
+export function getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState: PayviewState, id: string): TransactionPaymentSuccess {
+  return {
+    screenId: SCREEN_IDS.Checkout,
+    itemId: payviewState.item.id,
+    paymentMethod: SELECTED_PAYMENT_METHOD_CONVERTER[payviewState.payment.preferences.preferences.paymentMethod],
+    requestId: id,
   };
 }
 

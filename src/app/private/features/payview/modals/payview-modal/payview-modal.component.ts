@@ -35,6 +35,7 @@ import {
   getViewTransactionPayScreenEventPropertiesFromPayviewState,
   getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
   getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState,
+  getPayTransactionEventPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 
 @Component({
@@ -142,6 +143,14 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
         this.payviewTrackingEventsService.trackClickHelpTransactional(
           getClickHelpTransactionalEventPropertiesFromPayviewState(payviewState)
         )
+      );
+  }
+
+  public trackPayTransactionEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackPayTransaction(getPayTransactionEventPropertiesFromPayviewState(payviewState))
       );
   }
 
