@@ -45,7 +45,7 @@
       class="UnsubscribeModal__delete-btn w-100 pt-2"
       className="btn-secondary btn-secondary--bold w-100"
       i18n="@@delete_account_view_all_users_delete_button"
-      (click)="confirmDeleteAccount()"
+      (click)="changeStep(STEP.QUESTIONNAIRE)"
     >
       Delete account</tsl-button
     >
@@ -60,11 +60,11 @@
       <span class="UnsubscribeModal__reason">{{ REASONS_TEXT[reason?.reason_id] }}</span>
     </div>
 
-    <p class="UnsubscribeModal__cutom-reason text-right" [hidden]="selectedReason !== OTHER_REASON_ID">
+    <p class="UnsubscribeModal__cutom-reason text-right" [hidden]="selectedReason !== UNSUBSCRIBE_REASON.OTHER_REASON">
       <span class="UnsubscribeModal__cutom-reason--counter">{{ customReason?.length || 0 }}/{{ MAX_LENGHT_OHTER_REASON }}</span>
     </p>
     <textarea
-      [hidden]="selectedReason !== OTHER_REASON_ID"
+      [hidden]="selectedReason !== UNSUBSCRIBE_REASON.OTHER_REASON"
       i18n-placeholder="@@delete_account_reason_view_all_users_input_text_field_placeholder"
       placeholder="Tell us what happened..."
       class="UnsubscribeModal__textarea form-control"
@@ -75,7 +75,7 @@
     <tsl-button
       class="UnsubscribeModal__delete-btn w-100 pt-4"
       className="btn-primary btn-primary--bold w-100"
-      [disabled]="!selectedReason || (selectedReason === OTHER_REASON_ID && !customReason)"
+      [disabled]="!selectedReason || (selectedReason === UNSUBSCRIBE_REASON.OTHER_REASON && !customReason)"
       i18n="@@delete_account_reason_view_all_users_send_button"
       (click)="send()"
     >

@@ -14,7 +14,7 @@ import { UNSUBSCRIBE_REASON } from './interfaces/unsubscribe-reason.enum';
   styleUrls: ['./unsubscribe-modal.component.scss'],
 })
 export class UnsubscribeModalComponent implements OnInit {
-  public step: number;
+  public step: UNSUBSCRIBE_STEP;
   public reasons: UnsubscribeReason[];
   public selectedReason: number;
   public customReason: string;
@@ -23,7 +23,7 @@ export class UnsubscribeModalComponent implements OnInit {
 
   public readonly MAX_LENGHT_OHTER_REASON: number = 300;
   public readonly STEP = UNSUBSCRIBE_STEP;
-  public readonly OTHER_REASON_ID: number = UNSUBSCRIBE_REASON.OTHER_REASON;
+  public readonly UNSUBSCRIBE_REASON = UNSUBSCRIBE_REASON;
 
   public readonly REASONS_TEXT: Record<UNSUBSCRIBE_REASON, string> = {
     [UNSUBSCRIBE_REASON.NOT_USING_APP]: $localize`:@@delete_account_reason_view_all_users_dont_use_app_text:I'm not using the app`,
@@ -51,11 +51,11 @@ export class UnsubscribeModalComponent implements OnInit {
     );
 
     this.hasSubscription = this.userService.isProUser();
-    this.step = this.STEP.CONFIRMATION;
+    this.changeStep(this.STEP.CONFIRMATION);
   }
 
-  public confirmDeleteAccount(): void {
-    this.step = this.STEP.QUESTIONNAIRE;
+  public changeStep(newStep: UNSUBSCRIBE_STEP): void {
+    this.step = newStep;
   }
 
   public send(): void {
