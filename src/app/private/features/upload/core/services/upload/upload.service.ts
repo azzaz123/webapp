@@ -176,7 +176,6 @@ export class UploadService {
     url: string,
     fieldName: string
   ): UploadInput {
-    console.log('buildUploadEvent', values.category_id);
     if (+values.category_id !== CATEGORY_IDS.REAL_ESTATE) {
       delete values.location;
     } else {
