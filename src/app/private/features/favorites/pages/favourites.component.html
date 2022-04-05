@@ -17,7 +17,8 @@
               These are the searches you have marked as favorites</h4>
           </div>
         </div>
-        <div class="col-2 offset-1 header-numbers">
+        <div class="col-2 offset-1 header-numbers"
+             *ngIf="selectedStatus === 'products' || selectedStatus === 'profiles'">
           <div class="d-flex align-items-center justify-content-end">
             <div class="text-center">
               <p class="header-numbers-top">{{numberOfFavorites}}</p>

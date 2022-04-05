@@ -135,12 +135,6 @@ export class FavouritesComponent implements OnInit {
   }
 
   private setNumberOfFavorites() {
-    if (this.selectedStatus === 'products') {
-      this.numberOfFavorites = this.counters.favorites;
-    } else if (this.selectedStatus === 'profiles') {
-      this.numberOfFavorites = this.counters.profile_favorited;
-    } else {
-      return;
-    }
+    this.numberOfFavorites = this.selectedStatus === 'products' ? this.counters.favorites : this.counters.profile_favorited;
   }
 }
