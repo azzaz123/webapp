@@ -51,11 +51,36 @@
       ></tsl-payview-payment-overview>
       <div class="mt-4">
         <tsl-payview-summary-overview [showPurchaseSummaryTitle]="true" [payviewState]="payviewState"></tsl-payview-summary-overview>
-        <div class="container mt-4">
-          <span class="PayviewModal__policiesText d-block p-1" i18n="@@pay_view_buyer_policies_description_refined"
-            >Buy safely, we protect your transactions. By making this purchase you accept the Terms of use and Privacy policies of
-            Wallapop.</span
+        <div class="container mt-4 PayviewModal__policiesText">
+          <span i18n="@@pay_view_buyer_policies_description_part1_buy_safely_text_web_specific" class="mr-1">Buy safely,</span>
+          <a
+            id="protectYourTransactionsLink"
+            [href]="TRANSACTIONS_PROTECTION_URL"
+            target="_blank"
+            i18n="@@pay_view_buyer_policies_description_part2_protect_url_web_specific"
+            >we protect your transactions</a
           >
+          <span i18n="@@pay_view_buyer_policies_description_part3_accept_purchase_text_web_specific" class="mr-1"
+            >. By making this purchase you accept the</span
+          >
+          <a
+            id="termsAndConditionsLink"
+            [href]="TERMS_AND_CONDITIONS_URL"
+            target="_blank"
+            i18n="@@pay_view_buyer_policies_description_part4_terms_of_use_url_web_specific"
+            class="mr-1"
+            >Terms and Conditions</a
+          >
+          <span i18n="@@pay_view_buyer_policies_description_part5_and_text_web_specific" class="mr-1">and the</span>
+          <a
+            id="privacyPolicyLink"
+            [href]="PRIVACY_POLICY_URL"
+            target="_blank"
+            i18n="@@pay_view_buyer_policies_description_part6_privacy_policy_url_web_specific"
+            class="mr-1"
+            >Privacy policy</a
+          >
+          <span i18n="@@pay_view_buyer_policies_description_part7_wallapop_text_web_specific">of Wallapop.</span>
         </div>
         <div class="container mt-4 pb-3">
           <tsl-payview-buy-overview [payviewState]="payviewState"></tsl-payview-buy-overview>
@@ -75,7 +100,7 @@
         [fullAddress]="getFullAddress(payviewState.delivery.methods)"
         [selectedCarrier]="getSelectedCarrier(payviewState.delivery.methods)"
         [userOfficeId]="getUserOfficeId(payviewState.delivery.methods)"
-        (goToDeliveryAddress)="goToDeliveryAddress()"
+        (goToDeliveryAddress)="goToDeliveryAddressFromMap()"
         (selectedOfficeSucceeded)="closeDeliveryEditor()"
       ></tsl-delivery-map>
     </ng-template>

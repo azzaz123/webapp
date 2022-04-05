@@ -15,4 +15,5 @@ export const itCustomerHelpPages: CustomerHelpPages = {
   [CUSTOMER_HELP_PAGE.ACCEPT_SCREEN]: `${CUSTOMER_HELP_SITE_BASE.ITALIAN}it/articles/4406234655121-Ho-già-accettato-l-offerta-cosa-succede-adesso-`,
   [CUSTOMER_HELP_PAGE.PAYVIEW]: `${CUSTOMER_HELP_SITE_BASE.ITALIAN}it/articles/4406234851089-Inizia-a-fare-acquisti-con-Spedizioni-Wallapop`,
   [CUSTOMER_HELP_PAGE.PAYVIEW_DELIVERY]: `${CUSTOMER_HELP_SITE_BASE.ITALIAN}it/articles/4420390252433-Come-proteggiamo-le-tue-spedizioni`,
+  [CUSTOMER_HELP_PAGE.TRANSACTIONS_PROTECTION]: `${CUSTOMER_HELP_SITE_BASE.ITALIAN}it/articles/4406234046609-Come-proteggiamo-le-tue-transazioni`,
 };

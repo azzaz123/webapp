@@ -50,9 +50,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   @Input() public itemHash: string;
 
   public countries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
+  public readonly TRANSACTIONS_PROTECTION_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.TRANSACTIONS_PROTECTION);
+  public readonly TERMS_AND_CONDITIONS_URL: string = $localize`:@@web_footer_links_terms_href:https://about.wallapop.com/en/legal-terms-and-conditions`;
+  public readonly PRIVACY_POLICY_URL: string = $localize`:@@web_footer_links_privacy_href:https://about.wallapop.com/en/privacy-policy`;
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE: DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
   private subscriptions: Subscription[] = [];
   private readonly trackViewTransactionPayScreen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
@@ -81,7 +85,11 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public closeDeliveryEditor(): void {
-    this.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
+    if (this.isMapPreviousPage$.value) {
+      this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+    } else {
+      this.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
+    }
     this.payviewStateManagementService.refreshByDelivery();
   }
 
@@ -102,11 +110,17 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public goBack(): void {
-    this.goToStep(PAYVIEW_STEPS.PAYVIEW);
+    if (this.isMapPreviousPage$.value) {
+      this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
+      this.isMapPreviousPage$.next(false);
+    } else {
+      this.goToStep(PAYVIEW_STEPS.PAYVIEW);
+    }
   }
 
-  public goToDeliveryAddress(): void {
+  public goToDeliveryAddressFromMap(): void {
     this.goToStep(PAYVIEW_STEPS.DELIVERY_ADDRESS);
+    this.isMapPreviousPage$.next(true);
   }
 
   public get helpUrl(): string {
@@ -228,7 +242,11 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_REFRESH_COSTS, () => {
-        this.goToStep(PAYVIEW_STEPS.PAYVIEW);
+        if (this.isMapPreviousPage$.value) {
+          this.isMapPreviousPage$.next(false);
+        } else {
+          this.goToStep(PAYVIEW_STEPS.PAYVIEW);
+        }
       })
     );
   }

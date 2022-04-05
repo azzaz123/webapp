@@ -7,7 +7,7 @@ import { DeleteItemBodyResponse, ReserveItemBodyResponse } from '@public/core/se
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
 import { RecommendedItemsBodyResponse } from '@public/core/services/api/recommender/interfaces/recommender-response.interface';
-import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
+import { RecommendationsApiService } from '@public/core/services/api/recommender/recommendations-api.service';
 import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { concatMap, mergeMap } from 'rxjs/operators';
@@ -19,7 +19,7 @@ export class ItemDetailService {
   constructor(
     private itemApiService: ItemApiService,
     private publicUserApiService: PublicUserApiService,
-    private recommenderApiService: RecommenderApiService,
+    private recommendationsApiService: RecommendationsApiService,
     private mapItemService: MapItemService
   ) {}
 
@@ -45,7 +45,7 @@ export class ItemDetailService {
   }
 
   public getRecommendedItems(itemId: string): Observable<RecommendedItemsBodyResponse> {
-    return this.recommenderApiService.getRecommendedItemsByItemId(itemId);
+    return this.recommendationsApiService.getRecommendedItemsByItemId(itemId);
   }
 
   public deleteItem(itemId: string): Observable<DeleteItemBodyResponse> {
