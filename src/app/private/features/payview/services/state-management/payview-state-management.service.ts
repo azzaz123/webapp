@@ -223,7 +223,7 @@ export class PayviewStateManagementService {
 
   private request(payviewState: PayviewState): void {
     const subscription: Subscription = this.payviewService
-      .request()
+      .request(payviewState)
       .pipe(take(1))
       .subscribe({
         next: () => {

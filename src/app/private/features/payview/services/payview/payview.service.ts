@@ -137,7 +137,8 @@ export class PayviewService {
     return this.paymentPreferencesService.update(preferences);
   }
 
-  public request(): Observable<null> {
+  public request(payviewState: PayviewState): Observable<null> {
+    this.buyerRequestService.buyRequest(payviewState);
     return of(null);
   }
 

@@ -7,7 +7,7 @@ import { mapBuyerRequestsDtoToBuyerRequests } from '@api/delivery/buyer/requests
 import { mapBuyerRequestsItemsDetailsDtoToBuyerRequestsItemsDetails } from '@api/delivery/buyer/requests/mappers/responses/buyer-requests-items-details.mapper';
 
 import { catchError, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 import { UuidService } from '@core/uuid/uuid.service';
 import { mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties } from './mappers/responses/buyer-request-buy-mapper/buyer-request-buy.mapper';
@@ -16,6 +16,7 @@ import { BuyRequestErrorResponse } from './dtos/errors';
 
 @Injectable()
 export class BuyerRequestsApiService {
+  public readonly buyRequestId$: ReplaySubject<string> = new ReplaySubject<string>(1);
   private errorMapper: BuyRequestErrorMapper = new BuyRequestErrorMapper();
   constructor(private buyerRequestsHttpService: BuyerRequestsHttpService, private uuidService: UuidService) {}
 
@@ -29,6 +30,8 @@ export class BuyerRequestsApiService {
 
   public buyRequest(state: PayviewState): Observable<void> {
     const buyRequestId: string = this.uuidService.getUUID();
+    this.buyRequestId$.next(buyRequestId);
+
     return this.buyerRequestsHttpService
       .buy(mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties(state, buyRequestId))
       .pipe(catchError((error: BuyRequestErrorResponse) => this.errorMapper.map(error)));

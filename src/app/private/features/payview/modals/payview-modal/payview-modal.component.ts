@@ -28,6 +28,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
 import { take } from 'rxjs/operators';
+import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
+import { UserService } from '@core/user/user.service';
 import {
   getClickHelpTransactionalEventPropertiesFromPayviewState,
   getClickAddEditCardEventPropertiesFromPayviewState,
@@ -36,6 +38,7 @@ import {
   getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
   getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState,
   getPayTransactionEventPropertiesFromPayviewState,
+  getTransactionPaymentSuccessPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 
 @Component({
@@ -68,7 +71,9 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private promotionService: PayviewPromotionService,
     private paymentService: PayviewPaymentService,
     private payviewTrackingEventsService: PayviewTrackingEventsService,
-    private buyService: PayviewBuyService
+    private buyService: PayviewBuyService,
+    private buyerRequestApiService: BuyerRequestsApiService,
+    private userService: UserService
   ) {}
 
   public ngOnDestroy(): void {
@@ -241,6 +246,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY, () => {
+        this.trackTransactionPaymentSuccessEvent();
         // TODO - 18/03/2022 - Do something like closing the payview, show success toast or so on...
       })
     );
@@ -321,5 +327,34 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
           getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState(payviewState)
         )
       );
+  }
+
+  private trackTransactionPaymentSuccessEvent(): void {
+    const buyRequestId: string = this.getBuyRequestId();
+    const buyerCountryCode: string = this.getBuyerCountryCode();
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackTransactionPaymentSuccess(
+          getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState, buyRequestId, buyerCountryCode)
+        )
+      );
+  }
+
+  private getBuyRequestId(): string {
+    let buyRequestId: string;
+    this.buyerRequestApiService.buyRequestId$.pipe(take(1)).subscribe((requestId) => (buyRequestId = requestId));
+
+    return buyRequestId;
+  }
+
+  private getBuyerCountryCode(): string {
+    let countryCode: string;
+    this.userService
+      .getLoggedUserInformation()
+      .pipe(take(1))
+      .subscribe((userCountryCode) => (countryCode = userCountryCode.location.country_code));
+
+    return countryCode;
   }
 }
