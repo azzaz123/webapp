@@ -13,7 +13,7 @@ import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM, MOCK_ITEM_WITH_LECAGY_CATEGORY } from '@fixtures/item.fixtures.spec';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -272,6 +272,20 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should navigate to reactivation view reactivateItem', () => {
+        expect(router.navigate).toHaveBeenCalledWith([`/catalog/edit/${component.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+      });
+    });
+
+    describe('and item has legacy category id', () => {
+      beforeEach(() => {
+        item = MOCK_ITEM_WITH_LECAGY_CATEGORY;
+      });
+
+      it('should navigate to reactivation view reactivateItem', () => {
+        spyOn(router, 'navigate');
+
+        component.reactivate(item);
+
         expect(router.navigate).toHaveBeenCalledWith([`/catalog/edit/${component.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
       });
     });

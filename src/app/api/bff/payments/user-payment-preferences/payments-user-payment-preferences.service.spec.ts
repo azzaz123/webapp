@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 
 import {
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
+  MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_UPDATE_REQUEST,
 } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
@@ -45,7 +46,7 @@ describe('PaymentsUserPaymentPreferencesService', () => {
 
       service.get().subscribe((data) => (response = data));
 
-      expect(response).toEqual(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
+      expect(response).toEqual(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD);
     });
   });
 

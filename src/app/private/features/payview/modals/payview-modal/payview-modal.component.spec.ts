@@ -1,6 +1,16 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input, Output, EventEmitter } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DebugElement,
+  Input,
+  Output,
+  EventEmitter,
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -63,6 +73,7 @@ import {
   MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
+import { headerTitles } from '../../constants/header-titles';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -145,7 +156,6 @@ describe('PayviewModalComponent', () => {
   let payviewPaymentService: PayviewPaymentService;
   let payviewPromotionService: PayviewPromotionService;
   let payviewService: PayviewService;
-  let payviewBuyService: PayviewBuyService;
   let payviewStateManagementService: PayviewStateManagementService;
   let stepper: StepperComponent;
   let stepperSpy: jasmine.Spy;
@@ -221,6 +231,7 @@ describe('PayviewModalComponent', () => {
         PayviewService,
         PayviewBuyService,
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -231,7 +242,6 @@ describe('PayviewModalComponent', () => {
       payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
       payviewPaymentService = TestBed.inject(PayviewPaymentService);
       payviewPromotionService = TestBed.inject(PayviewPromotionService);
-      payviewBuyService = TestBed.inject(PayviewBuyService);
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
       payviewTrackingEventsService = TestBed.inject(PayviewTrackingEventsService);
@@ -269,6 +279,12 @@ describe('PayviewModalComponent', () => {
       const target = debugElement.query(By.css(payviewModalHelpSelector));
 
       expect((target.nativeElement as HTMLAnchorElement).href).toBe(fakeHelpUrl);
+    });
+
+    it('should show the specific payview title', () => {
+      const headerText: string = fixture.debugElement.query(By.css('#headerTitle')).nativeElement.innerHTML;
+
+      expect(headerText).toStrictEqual(headerTitles[PAYVIEW_STEPS.PAYVIEW]);
     });
 
     describe('WHEN user clicks the close button', () => {
