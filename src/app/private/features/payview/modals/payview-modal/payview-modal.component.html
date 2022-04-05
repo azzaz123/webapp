@@ -6,7 +6,7 @@
           <div class="d-flex justify-content-between">
             <a class="d-flex" [ngClass]="{ PayviewModal__back: isSecondaryStep }" (click)="goBack()">
               <tsl-svg-icon *ngIf="isSecondaryStep" class="align-self-center mr-3" src="/assets/icons/back-arrow.svg"></tsl-svg-icon>
-              <span class="p-0" i18n="@@pay_view_buyer_top_bar_title">Make a purchase</span>
+              <span class="p-0">{{ headerTitle }}</span>
             </a>
             <div class="d-flex">
               <a
