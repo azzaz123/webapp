@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, Inject, ViewChild } from '@angular/core';
 import { DeviceService } from '@core/device/device.service';
+import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { QR_CODE_SIZE } from '@public/features/parity-screen/parity-screen.enum';
+import { ADJUST_IOS_URL, ADJUST_ANDROID_URL } from '@core/constants';
 
 @Component({
   selector: 'tsl-parity',
@@ -14,6 +16,10 @@ export class ParityScreenComponent implements AfterViewInit {
 
   public qrSize: QR_CODE_SIZE;
   public qrData: string = 'https://es.wallapop.com/app/search';
+  public device: DeviceType;
+  public DevicesType: typeof DeviceType = DeviceType;
+  public storeAddress: string;
+  private deviceOs: string;
   private imgURL: string = 'assets/images/generic-landing/wallapop-logo-black-round.svg';
   private mutationObserverCompatibility: boolean;
   private mutationObserverInstance: MutationObserver;
@@ -25,11 +31,16 @@ export class ParityScreenComponent implements AfterViewInit {
   ) {
     this.publicFooterService.setShow(false);
     this.mutationObserverCompatibility = !!this.window.MutationObserver;
+    this.device = this.deviceService.getDeviceType();
     this.qrSize = this.setQrSize(this.deviceService.isMobile());
+    this.deviceOs = this.deviceService.getOSName();
+    this.storeAddress = this.deviceOs === 'iOS' ? ADJUST_IOS_URL : ADJUST_ANDROID_URL;
   }
 
   public ngAfterViewInit(): void {
-    this.observeQrCode();
+    if (this.deviceService.isDesktop() || this.deviceService.isTablet()) {
+      this.observeQrCode();
+    }
   }
 
   private observeQrCode(): void {

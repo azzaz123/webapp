@@ -8,8 +8,13 @@
   >
     To continue, scan the QR code, download the Wallapop app and you're ready. It'll just take a second!
   </p>
-  <div class="GenericLanding__qrCode mt-5">
+  <div *ngIf="device !== DevicesType.MOBILE" class="GenericLanding__qrCode mt-5">
     <qrcode [qrdata]="qrData" [width]="qrSize" [margin]="2" [errorCorrectionLevel]="'M'" #qrCode> </qrcode>
+  </div>
+  <div *ngIf="device === DevicesType.MOBILE" class="GenericLanding__appButton mt-5">
+    <a href="{{ storeAddress }}">
+      <tsl-button class="btn-primary"> Get the app </tsl-button>
+    </a>
   </div>
   <div class="GenericLanding__icon mt-auto">
     <img src="/assets/images/generic-landing/only-app-landing.svg" alt="mobile-blob" />
