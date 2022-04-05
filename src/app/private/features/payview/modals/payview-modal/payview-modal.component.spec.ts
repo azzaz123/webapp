@@ -8,6 +8,7 @@ import {
   Input,
   Output,
   EventEmitter,
+  CUSTOM_ELEMENTS_SCHEMA,
   NO_ERRORS_SCHEMA,
 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -77,6 +78,7 @@ import { PayviewBuyOverviewComponent } from '../../modules/buy/components/overvi
 import { UserService } from '@core/user/user.service';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { headerTitles } from '../../constants/header-titles';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -163,7 +165,6 @@ describe('PayviewModalComponent', () => {
   let payviewPaymentService: PayviewPaymentService;
   let payviewPromotionService: PayviewPromotionService;
   let payviewService: PayviewService;
-  let payviewBuyService: PayviewBuyService;
   let payviewStateManagementService: PayviewStateManagementService;
   let stepper: StepperComponent;
   let stepperSpy: jasmine.Spy;
@@ -258,7 +259,7 @@ describe('PayviewModalComponent', () => {
         BuyerRequestsApiService,
         PayviewBuyService,
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -269,7 +270,6 @@ describe('PayviewModalComponent', () => {
       payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
       payviewPaymentService = TestBed.inject(PayviewPaymentService);
       payviewPromotionService = TestBed.inject(PayviewPromotionService);
-      payviewBuyService = TestBed.inject(PayviewBuyService);
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
       payviewTrackingEventsService = TestBed.inject(PayviewTrackingEventsService);
@@ -310,6 +310,12 @@ describe('PayviewModalComponent', () => {
       const target = debugElement.query(By.css(payviewModalHelpSelector));
 
       expect((target.nativeElement as HTMLAnchorElement).href).toBe(fakeHelpUrl);
+    });
+
+    it('should show the specific payview title', () => {
+      const headerText: string = fixture.debugElement.query(By.css('#headerTitle')).nativeElement.innerHTML;
+
+      expect(headerText).toStrictEqual(headerTitles[PAYVIEW_STEPS.PAYVIEW]);
     });
 
     describe('WHEN user clicks the close button', () => {
