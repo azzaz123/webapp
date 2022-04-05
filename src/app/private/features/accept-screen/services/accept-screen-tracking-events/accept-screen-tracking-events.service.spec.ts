@@ -2,7 +2,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import {
   MOCK_CLICK_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_HPU,
@@ -14,32 +13,19 @@ import {
   MOCK_CLICK_SCHEDULE_HPU_EVENT_PROPERTIES,
   MOCK_VIEW_ACCEPT_OFFER_EVENT_PROPERTIES_WITH_HPU,
 } from '@fixtures/private/delivery/accept-screen/accept-screen-event-properties.fixtures.spec';
-import { of } from 'rxjs';
 import { AcceptScreenTrackingEventsService } from './accept-screen-tracking-events.service';
 
 describe('AcceptScreenTrackingEventsService', () => {
   let service: AcceptScreenTrackingEventsService;
   let analyticsService: AnalyticsService;
-  let featureFlagService: FeatureFlagService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
-        {
-          provide: FeatureFlagService,
-          useValue: {
-            getLocalFlag() {
-              return of(false);
-            },
-          },
-        },
-      ],
+      providers: [{ provide: AnalyticsService, useClass: MockAnalyticsService }],
     });
     service = TestBed.inject(AcceptScreenTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
-    featureFlagService = TestBed.inject(FeatureFlagService);
   });
 
   it('should be created', () => {

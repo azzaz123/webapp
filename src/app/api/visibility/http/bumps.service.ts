@@ -1,19 +1,35 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BumpsPackageUse } from '@api/core/model/bumps/bumps-package-use.interface';
+import { ItemsWithAvailableProductsResponse } from '@core/item/item-response.interface';
 import { Observable } from 'rxjs';
-import { BumpsPackageBalanceDTO } from '../dtos/bumps/bumps-package-balance.interface';
-import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE } from './endpoints';
+import { BumpsPackageBalanceResponse } from '../dtos/bumps/bumps-package-balance.interface';
+import { BumpsPackageUseDTO } from '../dtos/bumps/bumps-package-use.interface';
+import { ItemsBalanceDTO } from '../dtos/bumps/items-balance.interface';
+import { BUMPS_PACKAGE_BALANCE, BUMPS_PACKAGE_USE, ITEMS_WITH_PRODUCTS, ITEMS_CHECK_BUMP_BALANCE } from './endpoints';
 
 @Injectable()
 export class BumpsHttpService {
   constructor(private httpClient: HttpClient) {}
 
-  public getBalance(userId: string): Observable<BumpsPackageBalanceDTO[]> {
-    return this.httpClient.get<BumpsPackageBalanceDTO[]>(BUMPS_PACKAGE_BALANCE(userId));
+  public getBalance(userId: string): Observable<BumpsPackageBalanceResponse> {
+    return this.httpClient.get<BumpsPackageBalanceResponse>(BUMPS_PACKAGE_BALANCE(userId));
   }
 
-  public useBumpPackage(cart: BumpsPackageUse[]): Observable<void> {
+  public getItemsBalance(userId: string, itemIds: string[]): Observable<ItemsBalanceDTO> {
+    return this.httpClient.post<ItemsBalanceDTO>(ITEMS_CHECK_BUMP_BALANCE(userId), {
+      item_ids: itemIds,
+    });
+  }
+
+  public useBumpPackage(cart: BumpsPackageUseDTO): Observable<void> {
     return this.httpClient.post<void>(BUMPS_PACKAGE_USE, cart);
+  }
+
+  public getItemsWithAvailableProducts(ids: string[]): Observable<ItemsWithAvailableProductsResponse[]> {
+    return this.httpClient.get<ItemsWithAvailableProductsResponse[]>(ITEMS_WITH_PRODUCTS, {
+      params: {
+        itemsIds: ids.join(','),
+      },
+    });
   }
 }

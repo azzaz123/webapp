@@ -1,7 +1,7 @@
 import { PurchasingItem, Purchase, AutorenewItem } from '../app/core/payments/purchase.interface';
 import { PerksModel } from '../app/core/payments/payment.model';
 import { getMockItem } from './item.fixtures.spec';
-import { COINS_PACK_ID, CREDITS_PACK_ID, Pack } from '../app/core/payments/pack';
+import { COINS_PACK_ID, CREDITS_PACK_ID, Pack, PACKS_TYPES } from '../app/core/payments/pack';
 import {
   BillingInfoResponse,
   Packs,
@@ -13,6 +13,7 @@ import {
   FinancialCard,
   PaymentMethodResponse,
   SetupIntentResponse,
+  CreditInfo,
 } from '../app/core/payments/payment.interface';
 import { PurchasesModel } from '../app/core/payments/purchase.model';
 import { STRIPE_CARD } from './stripe.fixtures.spec';
@@ -51,7 +52,7 @@ export const PURCHASES_RESPONSE: Purchase[] = [
     national: true,
     bump: false,
     autorenew: false,
-    visibility_flags: { bumped: true, highlighted: false, urgent: false },
+    visibility_flags: { bumped: true, highlighted: false },
   },
   {
     item_id: '2',
@@ -61,7 +62,7 @@ export const PURCHASES_RESPONSE: Purchase[] = [
     national: false,
     bump: true,
     autorenew: true,
-    visibility_flags: { bumped: true, highlighted: false, urgent: false },
+    visibility_flags: { bumped: true, highlighted: false },
   },
   {
     item_id: '3',
@@ -71,7 +72,7 @@ export const PURCHASES_RESPONSE: Purchase[] = [
     national: true,
     bump: false,
     autorenew: true,
-    visibility_flags: { bumped: true, highlighted: false, urgent: false },
+    visibility_flags: { bumped: true, highlighted: false },
   },
 ];
 
@@ -616,6 +617,12 @@ export const SETUP_INTENT_DATA: SetupIntentResponse = {
     status: 'succeeded',
     usage: 'off_session',
   },
+};
+
+export const MOCK_CREDIT_INFO: CreditInfo = {
+  currencyName: PACKS_TYPES.WALLACREDITS,
+  credit: 20,
+  factor: 1,
 };
 
 export function createPerksModelFixture(): PerksModel {

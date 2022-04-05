@@ -22,17 +22,13 @@ export interface ViewTransactionPayScreen {
    */
   searchId?: string;
   /**
-   * If the transacion is Buy Now or not
-   */
-  isBuyNow: boolean;
-  /**
    * Item price without fees
    */
   itemPrice: number;
   /**
-   * Total price of the transaction including fees (delivery, insurance)
+   * Delivery and insurance fees
    */
-  totalPrice?: number;
+  feesPrice?: number;
   /**
    * Identifier of the user that the item belongs to
    */
@@ -40,11 +36,11 @@ export interface ViewTransactionPayScreen {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 209 | 238;
+  screenId: 238;
   /**
    * Preselected payment method
    */
-  preselectedPaymentMethod?: 'bank card' | 'paypal';
+  preselectedPaymentMethod?: 'bank card' | 'paypal' | 'wallet' | 'wallet, bank card' | 'wallet, paypal';
   /**
    * Indicates whether wallet toggle is switched on
    */

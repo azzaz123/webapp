@@ -23,6 +23,8 @@ import { UploaderService } from '@shared/uploader/uploader.service';
 import { SubscriptionBenefitsService } from '@core/subscriptions/subscription-benefits/services/subscription-benefits.service';
 import { DeliveryDevelopmentGuard } from '@private/features/delivery/guards/delivery-development.guard';
 import { SubscriptionsHttpService } from '@core/subscriptions/http/subscriptions-http.service';
+import { YouGuard } from '@private/features/you/guards/you.guard';
+import { DeliveryRealTimeService } from './services/delivery-real-time/delivery-real-time.service';
 
 @NgModule({
   imports: [ConversationModule.forRoot(), ProfileModule, RemoteConsoleModule],
@@ -32,6 +34,7 @@ import { SubscriptionsHttpService } from '@core/subscriptions/http/subscriptions
     DesktopNotificationsService,
     XmppService,
     RealTimeService,
+    DeliveryRealTimeService,
     InboxService,
     BlockUserService,
     BlockUserXmppService,
@@ -48,6 +51,7 @@ import { SubscriptionsHttpService } from '@core/subscriptions/http/subscriptions
     InboxConversationService,
     UploaderService,
     DeliveryDevelopmentGuard,
+    YouGuard,
   ],
 })
 export class PrivateCoreModule {}

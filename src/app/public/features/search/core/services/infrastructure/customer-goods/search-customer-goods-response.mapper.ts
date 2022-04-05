@@ -20,7 +20,7 @@ export function SearchItemCustomerGoodsResponseMapper({search_objects}: SearchRe
     flags: {
       pending: item.flags.pending,
       sold: item.flags.sold,
-      favorite: false,
+      favorite: item.favorited,
       reserved: item.flags.reserved,
       banned: item.flags.banned,
       expired: item.flags.expired,
@@ -29,7 +29,6 @@ export function SearchItemCustomerGoodsResponseMapper({search_objects}: SearchRe
     bumpFlags: {
       bumped: item.visibility_flags.bumped,
       highlighted: item.visibility_flags.highlighted,
-      urgent: item.visibility_flags.urgent,
       country_bumped: item.visibility_flags.country_bumped,
       boosted: item.visibility_flags.boosted
     },

@@ -1,7 +1,10 @@
 import { Image } from '@core/user/user-response.interface';
 import { ItemCard, ItemCardsWithRecommenedType } from '@public/core/interfaces/item-card.interface';
 import { RECOMMENDER_TYPE } from '@public/core/services/api/recommender/enums/recomender-type.enum';
-import { RECOMMENDED_ITEM_MOCK } from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
+import {
+  RECOMMENDED_ITEM_IMAGE,
+  RECOMMENDED_ITEM_MOCK,
+} from '@public/features/item-detail/components/recommended-items/constants/recommended-items.fixtures.spec';
 import { SearchPagination } from '@public/features/search/interfaces/search-pagination.interface';
 import { ITEM_BUMP_FLAGS, ITEM_DATA, ITEM_DISTANCE, ITEM_SALE_CONDITIONS } from './item.fixtures.spec';
 import { USER_ID } from './user.fixtures.spec';
@@ -29,32 +32,22 @@ export const MOCK_PAGINATED_CARD_LIST: PaginatedList<ItemCard> = {
 };
 
 export const MOCK_RECOMMENDED_ITEM_CARD_IMAGE: Image = {
-  id: '1213',
-  original_width: RECOMMENDED_ITEM_MOCK.images[0].original_width,
-  original_height: RECOMMENDED_ITEM_MOCK.images[0].original_height,
-  average_hex_color: '',
-  urls_by_size: {
-    original: RECOMMENDED_ITEM_MOCK.images[0].original,
-    small: RECOMMENDED_ITEM_MOCK.images[0].small,
-    large: RECOMMENDED_ITEM_MOCK.images[0].large,
-    medium: RECOMMENDED_ITEM_MOCK.images[0].medium,
-    xlarge: RECOMMENDED_ITEM_MOCK.images[0].xlarge,
-  },
+  ...RECOMMENDED_ITEM_IMAGE,
 };
 
 export const MOCK_RECOMMENDED_ITEM_CARD: ItemCard = {
   id: RECOMMENDED_ITEM_MOCK.id,
   categoryId: 100,
-  ownerId: RECOMMENDED_ITEM_MOCK.seller_id,
+  ownerId: RECOMMENDED_ITEM_MOCK.user_id,
   title: RECOMMENDED_ITEM_MOCK.title,
-  salePrice: RECOMMENDED_ITEM_MOCK.price,
+  salePrice: RECOMMENDED_ITEM_MOCK.price.amount,
   images: [MOCK_RECOMMENDED_ITEM_CARD_IMAGE],
-  webSlug: RECOMMENDED_ITEM_MOCK.web_slug,
-  currencyCode: RECOMMENDED_ITEM_MOCK.currency,
+  webSlug: RECOMMENDED_ITEM_MOCK.slug,
+  currencyCode: RECOMMENDED_ITEM_MOCK.price.currency,
   flags: {
     pending: false,
     sold: false,
-    favorite: RECOMMENDED_ITEM_MOCK.favorited,
+    favorite: RECOMMENDED_ITEM_MOCK.favorited.flag,
     reserved: false,
     banned: false,
     expired: false,

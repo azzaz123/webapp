@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { DeliveryBuyerDeliveryMethod } from '@api/core/model/delivery/buyer/delivery-methods';
+import { DeliveryBuyerDeliveryMethod, DeliveryBuyerDeliveryMethods } from '@api/core/model/delivery/buyer/delivery-methods';
 import { DeliveryCosts } from '@api/core/model/delivery/costs/delivery-costs.interface';
-import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
 @Component({
   selector: 'tsl-payview-delivery-overview',
@@ -11,25 +10,22 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayviewDeliveryOverviewComponent {
-  @Input() public payviewState: PayviewState;
+  @Input() public costs: DeliveryCosts;
+  @Input() public methods: DeliveryBuyerDeliveryMethods;
 
   public get defaultDeliveryMethod(): number {
-    return this.payviewState.delivery.methods.default.index;
-  }
-
-  public get deliveryCosts(): DeliveryCosts {
-    return this.payviewState.delivery.costs;
+    return this.methods.default.index;
   }
 
   public get deliveryMethods(): DeliveryBuyerDeliveryMethod[] {
-    return this.payviewState.delivery.methods.deliveryMethods;
+    return this.methods.deliveryMethods;
   }
 
   public get showDelivery(): boolean {
-    return !!this.payviewState?.delivery;
+    return !!this.costs && !!this.methods;
   }
 
   public get showDeliveryPoints(): boolean {
-    return !!this.payviewState.delivery.methods.deliveryMethods && this.payviewState.delivery.methods.deliveryMethods.length > 0;
+    return !!this.methods.deliveryMethods && this.methods.deliveryMethods.length > 0;
   }
 }

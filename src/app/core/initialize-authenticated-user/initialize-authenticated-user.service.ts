@@ -26,7 +26,7 @@ export class InitializeAuthenticatedUserService {
 
     const user = await this.userService.initializeUser();
     this.permissionsService.setUserPermissions(user);
-    this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS);
+    this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS).toPromise();
 
     await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(user);
 

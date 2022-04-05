@@ -1,0 +1,24 @@
+@import '~style/common';
+
+.SubscriptionHeaderCheckout {
+  margin-bottom: $spacing-ml;
+  font-weight: $font-weight-chunky;
+  &__title {
+    font-size: $font-size-l;
+    margin-right: $spacing-ms;
+  }
+
+  &__counter {
+    &:not(:last-child) {
+      margin-right: $spacing-ms;
+    }
+    background: $skyblue-main;
+    border-radius: 16px;
+    padding: $spacing-xs $spacing-ms;
+    color: $white;
+
+    &--completed {
+      background: $negative-main;
+    }
+  }
+}

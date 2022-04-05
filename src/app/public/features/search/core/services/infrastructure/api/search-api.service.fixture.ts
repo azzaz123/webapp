@@ -32,6 +32,7 @@ function SearchBaseItemResponseFactory(): SearchBaseItemResponse {
     title: 'titleItem',
     distance: 32636,
     images: [SearchItemImageResponseFactory()],
+    favorited: false,
     flags: {
       banned: false,
       expired: false,
@@ -45,7 +46,6 @@ function SearchBaseItemResponseFactory(): SearchBaseItemResponse {
       bumped: false,
       country_bumped: false,
       highlighted: false,
-      urgent: false,
     },
     price: 2352,
     currency: '€',

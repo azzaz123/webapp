@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import {
   ChatSignal,
   ChatSignalType,
@@ -10,18 +11,20 @@ import {
   MessageType,
 } from '@private/features/chat/core/model';
 import { clone, eq, includes, remove } from 'lodash-es';
-import { from, Observable, Observer, of, ReplaySubject, throwError } from 'rxjs';
+import { from, Observable, Observer, of, ReplaySubject, Subject, throwError } from 'rxjs';
 import { map, mergeMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { EventService } from '../event/event.service';
 import { RemoteConsoleService } from '../remote-console';
 import { User } from '../user/user';
-import { JID, XmppBodyMessage, XMPPClient } from './xmpp.interface';
+import { XMPP_MESSAGE_TYPE } from './xmpp.enum';
+import { JID, NormalXmppMessage, XmppBodyMessage, XMPPClient, XmppMessage } from './xmpp.interface';
 import { StanzaIO } from './xmpp.provider';
 
 @Injectable()
 export class XmppService {
   public blockedUsers: string[];
+
   private client: XMPPClient;
   private _clientConnected = false;
   private blockedListAvailable = false;
@@ -33,7 +36,11 @@ export class XmppService {
   private canProcessRealtime = false;
   private xmppError = { message: 'XMPP disconnected' };
 
-  constructor(private eventService: EventService, private remoteConsoleService: RemoteConsoleService) {
+  constructor(
+    private eventService: EventService,
+    private remoteConsoleService: RemoteConsoleService,
+    private deliveryRealTimeService: DeliveryRealTimeService
+  ) {
     this.clientConnected$.next(false);
   }
 
@@ -82,7 +89,7 @@ export class XmppService {
   public sendConversationStatus(userId: string, thread: string) {
     this.client.sendMessage({
       to: this.createJid(userId),
-      type: 'chat',
+      type: XMPP_MESSAGE_TYPE.CHAT,
       thread: thread,
       read: {
         xmlns: 'wallapop:thread:status',
@@ -114,7 +121,7 @@ export class XmppService {
   public sendMessageDeliveryReceipt(toId: string, id: string, thread: string) {
     this.client.sendMessage({
       to: this.createJid(toId),
-      type: 'chat',
+      type: XMPP_MESSAGE_TYPE.CHAT,
       thread: thread,
       received: {
         xmlns: 'urn:xmpp:receipts',
@@ -154,7 +161,7 @@ export class XmppService {
       to: this.createJid(conversation.user.id),
       from: this.self,
       thread: conversation.id,
-      type: 'chat',
+      type: XMPP_MESSAGE_TYPE.CHAT,
       request: {
         xmlns: 'urn:xmpp:receipts',
       },
@@ -250,6 +257,10 @@ export class XmppService {
   }
 
   private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
+    if (this.isNormalXmppMessage(message)) {
+      this.onNewNormalMessage(message);
+    }
+
     const replaceTimestamp = !message.timestamp || message.carbonSent;
     if (message.carbonSent) {
       message = message.carbonSent.forwarded.message;
@@ -310,6 +321,10 @@ export class XmppService {
       messageType,
       message.payload
     );
+  }
+
+  private onNewNormalMessage(message: NormalXmppMessage): void {
+    this.deliveryRealTimeService.check(message);
   }
 
   private setDefaultPrivacyList(): Observable<any> {
@@ -546,5 +561,9 @@ export class XmppService {
 
   private createJid(userId: string, withResource = false): JID {
     return new JID(userId, environment.xmppDomain, withResource ? this.resource : null);
+  }
+
+  private isNormalXmppMessage(message: XmppMessage | NormalXmppMessage): message is NormalXmppMessage {
+    return (message as NormalXmppMessage).type === XMPP_MESSAGE_TYPE.NORMAL;
   }
 }

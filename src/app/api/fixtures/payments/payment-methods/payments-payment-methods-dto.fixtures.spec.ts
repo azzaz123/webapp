@@ -1,11 +1,23 @@
-import { mapPaymentMethodDtoToPaymentMethod } from '@api/shared/mappers/payment-method-dto-to-payment-method.mapper';
 import { PaymentsPaymentMethods } from '@api/core/model/payments/interfaces/payments-payment-methods.interface';
 import { PaymentsPaymentMethodsDto } from '@api/payments/payment-methods/dtos/payments-payment-methods-dto.interface';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
 
 export const MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE: PaymentsPaymentMethodsDto = {
   payment_methods: [{ method: 'paypal' }, { method: 'credit card' }],
 };
 
 export const MOCK_PAYMENTS_PAYMENT_METHODS: PaymentsPaymentMethods = {
-  paymentMethods: [{ method: mapPaymentMethodDtoToPaymentMethod('paypal') }, { method: mapPaymentMethodDtoToPaymentMethod('credit card') }],
+  paymentMethods: [{ method: PAYVIEW_PAYMENT_METHOD.PAYPAL }, { method: PAYVIEW_PAYMENT_METHOD.CREDIT_CARD }],
+};
+
+export const MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE_WITH_NON_AVAILABLE_METHODS: PaymentsPaymentMethodsDto = {
+  payment_methods: [{ method: 'paypal' }, { method: 'credit card' }],
+};
+
+export const MOCK_PAYMENTS_PAYMENT_METHODS_RESPONSE_WITH_AVAILABLE_METHODS: PaymentsPaymentMethodsDto = {
+  payment_methods: [{ method: 'credit card' }],
+};
+
+export const MOCK_PAYMENTS_PAYMENT_METHODS_WITH_ONLY_CREDIT_CARD: PaymentsPaymentMethods = {
+  paymentMethods: [{ method: PAYVIEW_PAYMENT_METHOD.CREDIT_CARD }],
 };

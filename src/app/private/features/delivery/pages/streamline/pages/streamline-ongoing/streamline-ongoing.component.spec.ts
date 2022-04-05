@@ -24,13 +24,9 @@ import { StreamlineOngoingComponent } from '@private/features/delivery/pages/str
 import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 
-import { ReplaySubject, throwError, of, Observable } from 'rxjs';
+import { ReplaySubject, throwError } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
-import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
 
 const PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID: string = `${PATH_TO_ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
 
@@ -39,8 +35,6 @@ describe('StreamlineOngoingComponent', () => {
   let fixture: ComponentFixture<StreamlineOngoingComponent>;
   let streamlineOngoingUIService: StreamlineOngoingUIService;
   let router: Router;
-  let modalService: NgbModal;
-  let featureflagService: FeatureFlagService;
 
   let loadingReplaySubject: ReplaySubject<boolean> = new ReplaySubject(1);
   let historicListReplaySubject: ReplaySubject<HistoricList> = new ReplaySubject(1);
@@ -62,14 +56,6 @@ describe('StreamlineOngoingComponent', () => {
             reset: () => {},
           },
         },
-        {
-          provide: FeatureFlagService,
-          useValue: {
-            getLocalFlag(_flag: FEATURE_FLAGS_ENUM.DELIVERY): Observable<boolean> {
-              return of(false);
-            },
-          },
-        },
         { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
         { provide: NgbModal, useClass: NgbModalMock },
       ],
@@ -82,8 +68,6 @@ describe('StreamlineOngoingComponent', () => {
 
     router = TestBed.inject(Router);
     streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
-    modalService = TestBed.inject(NgbModal);
-    featureflagService = TestBed.inject(FeatureFlagService);
 
     fixture.detectChanges();
     spyOn(router, 'navigate');
@@ -156,32 +140,11 @@ describe('StreamlineOngoingComponent', () => {
         });
 
         describe('and the user is the seller', () => {
-          describe('and the delivery feature flag is NOT enabled', () => {
-            beforeEach(() => {
-              spyOn(modalService, 'open').and.callThrough();
+          it('should navigate to the accept screen page', () => {
+            component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER);
 
-              component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER);
-            });
-
-            it('should stay at the same page', () => {
-              expect(router.navigate).not.toHaveBeenCalled();
-            });
-
-            it('should open the accept screen awareness modal', () => {
-              expect(modalService.open).toHaveBeenCalledTimes(1);
-              expect(modalService.open).toHaveBeenCalledWith(AcceptScreenAwarenessModalComponent);
-            });
-          });
-
-          describe('and the delivery feature flag is enabled', () => {
-            it('should navigate to the accept screen page', () => {
-              spyOn(featureflagService, 'getLocalFlag').and.returnValue(of(true));
-
-              component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER);
-
-              expect(router.navigate).toHaveBeenCalledTimes(1);
-              expect(router.navigate).toHaveBeenCalledWith([PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID]);
-            });
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID]);
           });
         });
       });
@@ -236,14 +199,6 @@ describe('WHEN there is an error retrieving the shipping list', () => {
             },
             getItems: () => {},
             reset: () => {},
-          },
-        },
-        {
-          provide: FeatureFlagService,
-          useValue: {
-            getLocalFlag(_flag: FEATURE_FLAGS_ENUM.DELIVERY): Observable<boolean> {
-              return of(false);
-            },
           },
         },
         { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },

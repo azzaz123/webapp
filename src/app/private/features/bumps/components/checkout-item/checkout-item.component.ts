@@ -1,87 +1,144 @@
-import { takeWhile } from 'rxjs/operators';
-import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
-import { ItemWithProducts } from '@core/item/item-response.interface';
-import { keys } from 'lodash-es';
-import { CartService } from '@shared/catalog/cart/cart.service';
-import { CartChange, CartItem } from '@shared/catalog/cart/cart-item.interface';
-import { BUMP_PROVINCIAL_TYPES, BUMP_TYPES } from '@shared/catalog/cart/cart-base';
-import { Cart } from '@shared/catalog/cart/cart';
+import { Component, Input, OnInit, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Duration, Product } from '@core/item/item-response.interface';
 import { CreditInfo } from '@core/payments/payment.interface';
+import { ItemWithProducts, SelectedProduct } from '@api/core/model/bumps/item-products.interface';
+import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
+import { modalConfig, PRO_MODAL_TYPE } from '@shared/modals/pro-modal/pro-modal.constants';
+import { BumpPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
 
 @Component({
   selector: 'tsl-checkout-item',
   templateUrl: './checkout-item.component.html',
   styleUrls: ['./checkout-item.component.scss'],
 })
-export class CheckoutItemComponent implements OnInit, OnDestroy, OnChanges {
+export class CheckoutItemComponent implements OnInit, OnChanges {
   @Input() creditInfo: CreditInfo;
   @Input() itemWithProducts: ItemWithProducts;
-  types: string[] = BUMP_TYPES;
-  durations: string[];
-  _duration: string;
-  selectedType: string;
-  selectedDuration: string;
-  provincialBump: boolean;
-  private active = true;
+  @Input() availableFreeBumps: number = 0;
+  @Output() itemChanged: EventEmitter<SelectedProduct> = new EventEmitter();
+  @Output() itemRemoved: EventEmitter<string> = new EventEmitter();
+  public selectedType: Product;
+  public availableTypes: Product[];
+  public availableDurations: Duration[];
+  public isFreeOptionSelected: boolean;
+  public isFreeOptionAvailable: boolean;
+  public isFreeOptionDisabled: boolean;
+  public readonly BUMP_TYPES = BUMP_TYPE;
+  private _selectedDuration: Duration;
 
-  set duration(value: string) {
-    this._duration = value;
-    if (this.selectedType) {
-      this.select(this.selectedType);
-    }
-  }
-  get duration(): string {
-    return this._duration;
-  }
-
-  constructor(private cartService: CartService) {}
+  constructor(private modalService: NgbModal) {}
 
   ngOnInit() {
-    this.cartService.createInstance(new Cart());
-    this.durations = keys(this.itemWithProducts.products);
-    this.duration = this.durations[1];
-    this.cartService.cart$.pipe(takeWhile(() => this.active)).subscribe((cartChange: CartChange) => {
-      this.onRemoveOrClean(cartChange);
-    });
-    this.provincialBump = !this.itemWithProducts.products['168'].citybump;
-    if (this.provincialBump) {
-      this.types = BUMP_PROVINCIAL_TYPES;
+    this.isFreeOptionAvailable = !!this.getFirstAvailableFreeOption();
+    this.isFreeOptionDisabled = this.availableFreeBumps === 0;
+
+    if (this.isFreeOptionAvailable && !this.isFreeOptionDisabled) {
+      this.isFreeOptionSelected = true;
     }
+    this.getAvailableProducts();
+  }
+
+  get selectedDuration(): Duration {
+    return this._selectedDuration;
+  }
+
+  set selectedDuration(value: Duration) {
+    this._selectedDuration = value;
+    this.addToCart();
   }
 
   ngOnChanges() {
     if (this.creditInfo && !this.selectedType) {
-      this.selectedType = this.types[0];
-      this.select(this.selectedType);
+      this.selectType(this.itemWithProducts.products[0]);
     }
   }
 
-  ngOnDestroy() {
-    this.active = false;
+  public getAvailableProducts(): void {
+    if (this.isFreeOptionSelected) {
+      this.availableTypes = this.getFreeTypes();
+      const firstAvailableType = this.getFirstAvailableFreeOption();
+      this.selectedType = this.availableTypes.find((type) => type.name === firstAvailableType.type);
+      this.availableDurations = this.selectedType.durations;
+      this.selectedDuration = this.selectedType.durations[0];
+    } else {
+      this.availableTypes = this.itemWithProducts.products;
+      this.selectedType = this.itemWithProducts.products[0];
+      this.availableDurations = this.selectedType.durations.filter((duration) => duration.id);
+      this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_index];
+    }
   }
 
-  select(type: string) {
-    if (this.selectedType === type && this.selectedDuration === this.duration) {
-      this.cartService.remove(this.itemWithProducts.item.id, type);
+  public toggleItem(): void {
+    if (this.isFreeOptionSelected && !this.availableFreeBumps) {
+      this.showBumpLimitModal();
       return;
     }
-    this.selectedType = type;
-    this.selectedDuration = this.duration;
-    this.itemWithProducts.item.flags.bump_type = type;
-    this.itemWithProducts.item.flags.bumped = true;
-    const cartItem: CartItem = {
-      item: this.itemWithProducts.item,
-      duration: this.itemWithProducts.products[this.selectedDuration][type],
-    };
-    this.cartService.add(cartItem, type);
+    this.getAvailableProducts();
   }
 
-  private onRemoveOrClean(cartChange: CartChange) {
-    if ((cartChange.action === 'remove' && cartChange.itemId === this.itemWithProducts.item.id) || cartChange.action === 'clean') {
-      this.selectedType = undefined;
-      this.selectedDuration = undefined;
-      this.itemWithProducts.item.flags.bump_type = undefined;
-      this.itemWithProducts.item.flags.bumped = false;
+  public onRemoveItem(itemId: string): void {
+    this.itemRemoved.emit(itemId);
+  }
+
+  public selectDuration(duration: Duration): void {
+    this.selectedDuration = duration;
+  }
+
+  public selectType(type: Product): void {
+    this.selectedType = type;
+
+    if (this.selectedDuration) {
+      const newDuration = this.selectedType.durations.find((duration) => duration.duration === this.selectedDuration.duration);
+      this.availableDurations = this.selectedType.durations;
+      this.selectedDuration = newDuration ? newDuration : this.selectedType.durations[this.selectedType.default_duration_index];
+    } else {
+      this.selectedDuration = this.selectedType.durations[this.selectedType.default_duration_index];
     }
+  }
+
+  private addToCart(): void {
+    const cartItem: SelectedProduct = {
+      item: this.itemWithProducts.item,
+      productType: this.selectedType.name,
+      duration: this.selectedDuration,
+      isFree: this.isFreeOptionSelected,
+      isProvincialBump: this.itemWithProducts.isProvincialBump,
+    };
+
+    this.itemChanged.emit(cartItem);
+  }
+
+  private getFreeTypes(): Product[] {
+    const freeTypes: Product[] = [];
+    this.itemWithProducts.products.forEach((bumpType) => {
+      const freeProducts = bumpType.durations.filter((duration) => duration.isFreeOption);
+
+      if (freeProducts.length) {
+        freeTypes.push({ ...bumpType, durations: freeProducts });
+      }
+    });
+    return freeTypes;
+  }
+
+  private getFirstAvailableFreeOption(): BumpPackageBalance {
+    if (!this.itemWithProducts.balance.length) {
+      return null;
+    }
+    return this.itemWithProducts.balance.find((bump) => bump.used < bump.total + bump.extra);
+  }
+
+  private showBumpLimitModal(): void {
+    const modalRef = this.modalService.open(ProModalComponent, { windowClass: 'pro-modal' });
+    modalRef.componentInstance.modalConfig = modalConfig[PRO_MODAL_TYPE.bump_limit];
+    modalRef.result.then(
+      () => {
+        this.isFreeOptionSelected = false;
+      },
+      () => {
+        this.isFreeOptionSelected = false;
+      }
+    );
   }
 }

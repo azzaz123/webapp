@@ -29,3 +29,14 @@ enum CATEGORY_FIELD_NAME {
   SIZE = 'size',
   GENDER = 'gender',
 }
+
+export interface CategoriesWithPresentationResponseDto {
+  categories: CategoryWithPresentationDto[];
+}
+export interface CategoryWithPresentationDto {
+  // probably this will be the main category dto in the future
+  id: number;
+  name: string;
+  subcategories: CategoryWithPresentationDto[];
+  presentation: { background_color: string; image_url: string; title_color: string };
+}

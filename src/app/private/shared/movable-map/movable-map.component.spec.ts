@@ -39,7 +39,7 @@ describe('MovableMapComponent', () => {
             platform: {
               createDefaultLayers() {
                 return {
-                  vector: {
+                  raster: {
                     normal: {
                       map: 'map',
                     },

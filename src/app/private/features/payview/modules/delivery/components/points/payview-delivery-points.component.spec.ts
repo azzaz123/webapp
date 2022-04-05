@@ -75,8 +75,8 @@ describe('PayviewDeliveryPointsComponent', () => {
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
 
-        component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-        component.deliveryMethods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
+        component.costs = MOCK_DELIVERY_COSTS_ITEM;
+        component.methods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
 
         fixture.detectChanges();
       });
@@ -84,7 +84,7 @@ describe('PayviewDeliveryPointsComponent', () => {
       it('should show all the delivery methods', () => {
         const target = debugElement.queryAll(By.directive(FakePayviewDeliveryPointComponent)).length;
 
-        expect(target).toBe(component.deliveryMethods.length);
+        expect(target).toBe(component.methods.length);
       });
 
       describe('WHEN the delivery method is pick-up point', () => {
@@ -95,11 +95,11 @@ describe('PayviewDeliveryPointsComponent', () => {
         });
 
         it('should assign the corresponding delivery costs', () => {
-          expect(targetElement.componentInstance.deliveryCosts).toEqual(MOCK_DELIVERY_COSTS_ITEM);
+          expect(targetElement.componentInstance.costs).toEqual(MOCK_DELIVERY_COSTS_ITEM);
         });
 
         it('should assign the corresponding delivery method', () => {
-          expect(targetElement.componentInstance.deliveryMethod).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0]);
+          expect(targetElement.componentInstance.method).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[0]);
         });
 
         it('should assign the corresponding id', () => {
@@ -119,11 +119,11 @@ describe('PayviewDeliveryPointsComponent', () => {
         });
 
         it('should assign the corresponding delivery costs', () => {
-          expect(targetElement.componentInstance.deliveryCosts).toEqual(MOCK_DELIVERY_COSTS_ITEM);
+          expect(targetElement.componentInstance.costs).toEqual(MOCK_DELIVERY_COSTS_ITEM);
         });
 
         it('should assign the corresponding delivery method', () => {
-          expect(targetElement.componentInstance.deliveryMethod).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]);
+          expect(targetElement.componentInstance.method).toEqual(MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods[1]);
         });
 
         it('should assign the corresponding id', () => {
@@ -142,7 +142,7 @@ describe('PayviewDeliveryPointsComponent', () => {
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
 
-        component.deliveryMethods = null;
+        component.methods = null;
 
         fixture.detectChanges();
       });
@@ -160,8 +160,8 @@ describe('PayviewDeliveryPointsComponent', () => {
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
 
-        component.deliveryCosts = null;
-        component.deliveryMethods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
+        component.costs = null;
+        component.methods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
 
         fixture.detectChanges();
       });
@@ -185,8 +185,8 @@ describe('PayviewDeliveryPointsComponent', () => {
       component = fixture.componentInstance;
       debugElement = fixture.debugElement;
 
-      component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-      component.deliveryMethods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
+      component.costs = MOCK_DELIVERY_COSTS_ITEM;
+      component.methods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
 
       fixture.detectChanges();
 
@@ -200,7 +200,7 @@ describe('PayviewDeliveryPointsComponent', () => {
 
     it('should set the delivery method selected', () => {
       expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
-      expect(deliveryServiceSpy).toHaveBeenCalledWith(component.deliveryMethods[fakeIndex]);
+      expect(deliveryServiceSpy).toHaveBeenCalledWith(component.methods[fakeIndex]);
     });
   });
 
@@ -216,8 +216,8 @@ describe('PayviewDeliveryPointsComponent', () => {
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
 
-        component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-        component.deliveryMethods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
+        component.costs = MOCK_DELIVERY_COSTS_ITEM;
+        component.methods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
 
         fixture.detectChanges();
 
@@ -241,8 +241,8 @@ describe('PayviewDeliveryPointsComponent', () => {
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
 
-        component.deliveryCosts = MOCK_DELIVERY_COSTS_ITEM;
-        component.deliveryMethods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
+        component.costs = MOCK_DELIVERY_COSTS_ITEM;
+        component.methods = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.deliveryMethods;
 
         fixture.detectChanges();
 
@@ -283,7 +283,7 @@ describe('PayviewDeliveryPointsComponent', () => {
     it('should raise the event corresponding to the delivery method selection', () => {
       component.selectPoint(1);
       expect(deliveryServiceSpy).toHaveBeenCalledTimes(1);
-      expect(deliveryServiceSpy).toHaveBeenCalledWith(component.deliveryMethods[1]);
+      expect(deliveryServiceSpy).toHaveBeenCalledWith(component.methods[1]);
     });
   });
 });

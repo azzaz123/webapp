@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SellerRequest } from '@api/core/model/delivery/seller-requests/seller-request.interface';
 import { SellerRequestsApiService } from '@api/delivery/seller/requests/seller-requests-api.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InboxConversation } from '@private/features/chat/core/model';
+import { InboxConversation, InboxItem } from '@private/features/chat/core/model';
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { Observable } from 'rxjs';
 import {
@@ -21,8 +21,8 @@ import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/de
 import { DeliveryItemDetails } from '@api/core/model/delivery/item-detail/delivery-item-details.interface';
 import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
 import { CATALOG_PATHS } from '@private/features/catalog/catalog-routing-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { SCREEN_IDS } from '@core/analytics/analytics-constants';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 
 @Injectable()
 export class DeliveryConversationContextAsSellerService {
@@ -31,9 +31,9 @@ export class DeliveryConversationContextAsSellerService {
   constructor(
     private router: Router,
     private modalService: NgbModal,
-    private featureFlagService: FeatureFlagService,
     private sellerRequestsApiService: SellerRequestsApiService,
-    private deliveryItemDetailsApiService: DeliveryItemDetailsApiService
+    private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
+    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
   ) {}
 
   public getBannerPropertiesAsSeller(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -58,10 +58,12 @@ export class DeliveryConversationContextAsSellerService {
       const { item } = conversation;
       const modalRef = this.modalService.open(EditItemSalePriceModalComponent, { windowClass: 'modal-small' }).componentInstance;
       modalRef.item = item;
+      this.trackClickEditItemPrice(conversation.item);
       return;
     }
 
     if (action === DELIVERY_BANNER_ACTION.ACTIVATE_SHIPPING) {
+      this.trackClickActivateShipping(conversation.item);
       return this.navigateToEditItemShippingToggle(conversation);
     }
 
@@ -83,14 +85,8 @@ export class DeliveryConversationContextAsSellerService {
   }
 
   private navigateToAcceptScreen(requestId: string): void {
-    this.featureFlagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((enabled) => {
-      const isDisabled: boolean = !enabled;
-      if (isDisabled) {
-        return this.openAwarenessModal();
-      }
-      const route: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
-      this.router.navigate([route]);
-    });
+    const route: string = `${PRIVATE_PATHS.ACCEPT_SCREEN}/${requestId}`;
+    this.router.navigate([route]);
   }
 
   private navigateToEditItemShippingToggle(conversation: InboxConversation): void {
@@ -126,5 +122,23 @@ export class DeliveryConversationContextAsSellerService {
 
   private openAwarenessModal(): void {
     this.modalService.open(TRXAwarenessModalComponent);
+  }
+
+  private trackClickEditItemPrice(item: InboxItem): void {
+    this.deliveryBannerTrackingEventsService.trackClickEditItemPrice({
+      itemId: item.id,
+      categoryId: item.categoryId,
+      itemPrice: item.price.amount,
+      screenId: SCREEN_IDS.Chat,
+    });
+  }
+
+  private trackClickActivateShipping(item: InboxItem): void {
+    this.deliveryBannerTrackingEventsService.trackClickActivateShipping({
+      itemId: item.id,
+      categoryId: item.categoryId,
+      screenId: SCREEN_IDS.Chat,
+      itemPrice: item.price.amount,
+    });
   }
 }

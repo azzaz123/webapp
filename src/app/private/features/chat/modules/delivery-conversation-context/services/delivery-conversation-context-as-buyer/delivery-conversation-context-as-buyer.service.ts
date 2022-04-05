@@ -15,19 +15,24 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { InboxConversation } from '@private/features/chat/core/model';
+import { InboxConversation, InboxItem } from '@private/features/chat/core/model';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
 import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
+import { SCREEN_IDS } from '@core/analytics/analytics-constants';
+import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
   private lastRequest: BuyerRequest;
 
   constructor(
+    private featureFlagService: FeatureFlagService,
     private buyerRequestsApiService: BuyerRequestsApiService,
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
   ) {}
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -56,6 +61,7 @@ export class DeliveryConversationContextAsBuyerService {
 
   public handleBannerCTAClick(conversation: InboxConversation, action: DELIVERY_BANNER_ACTION): void {
     if (action === DELIVERY_BANNER_ACTION.OPEN_PAYVIEW) {
+      this.trackClickBannerBuy(conversation.item);
       return this.redirectToPayview(conversation);
     }
 
@@ -82,6 +88,11 @@ export class DeliveryConversationContextAsBuyerService {
     const isNotShippable: boolean = !deliveryItemDetails.isShippable;
     const buyerHasNoRequests: boolean = buyerRequests.length === 0;
 
+    // TODO: Remove "isDeliveryFeaturesDisabled" when opening buyer banners
+    // Doing this logic in the mapping to allow third voices to have delivery context of this service
+    // Jira reference: https://wallapop.atlassian.net/browse/WPA-11990
+    const isDeliveryFeaturesDisabled: boolean = !this.featureFlagService.isExperimentalFeaturesEnabled();
+
     // TODO: Review/remove this condition when TRX MVP is done
     // Apps hide the buy banner for this case and user has to go to item detail to open payview
     // In web, while we don't have the payview entry point in the item detail,
@@ -91,7 +102,7 @@ export class DeliveryConversationContextAsBuyerService {
     );
     const showBuyBanner: boolean = buyerHasNoRequests || lastRequestFailed;
 
-    if (isNotShippable) {
+    if (isDeliveryFeaturesDisabled || isNotShippable) {
       return null;
     }
 
@@ -108,5 +119,14 @@ export class DeliveryConversationContextAsBuyerService {
 
   private openAwarenessModal(): void {
     this.modalService.open(TRXAwarenessModalComponent);
+  }
+
+  private trackClickBannerBuy(item: InboxItem): void {
+    this.deliveryBannerTrackingEventsService.trackClickBannerBuy({
+      itemId: item.id,
+      categoryId: item.categoryId,
+      screenId: SCREEN_IDS.Chat,
+      itemPrice: item.price.amount,
+    });
   }
 }

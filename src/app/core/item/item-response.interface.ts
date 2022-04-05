@@ -90,7 +90,6 @@ export interface ItemProResponse {
 export interface ItemVisibilityFlags {
   bumped: boolean;
   highlighted: boolean;
-  urgent: boolean;
   country_bumped: boolean;
   boosted: boolean;
 }
@@ -169,7 +168,6 @@ export interface Purchase {
   visibility_flags: {
     bumped: boolean;
     highlighted: boolean;
-    urgent: boolean;
   };
 }
 
@@ -183,13 +181,16 @@ export interface Product {
   name: string;
   default_duration_index: number;
   durations: Duration[];
+  location_name?: string;
+  features?: string[];
 }
 
 export interface Duration {
   id: string;
   duration: number;
   market_code: string;
-  original_market_code: string;
+  original_market_code?: string;
+  is_free?: boolean;
 }
 
 export interface SelectedItemsAction {
@@ -304,7 +305,6 @@ export interface ItemFlags {
   review_done?: boolean;
   bumped?: boolean;
   highlighted?: boolean;
-  urgent?: boolean;
   bump_type?: string;
   onhold?: boolean;
   notAvailable?: boolean;

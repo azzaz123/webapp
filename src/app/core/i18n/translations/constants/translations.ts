@@ -211,4 +211,6 @@ export const translations: Translations = {
   [TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_DESCRIPTION]: $localize`:@@map_view_all_users_all_all_no_user_location_pop_up_description:To select a point on the map, you must first add your address.`,
   [TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_ADD_BUTTON]: $localize`:@@map_view_all_users_all_all_no_user_location_pop_up_add_button:Add`,
   [TRANSLATION_KEY.DELIVERY_MAP_LOCATION_POP_UP_CANCEL_BUTTON]: $localize`:@@map_view_all_users_all_all_no_user_location_pop_up_cancel_button:Cancel`,
+  [TRANSLATION_KEY.PAYVIEW_PAYMENT_ADD_CREDIT_CARD]: $localize`:@@pay_view_buyer_payment_method_credit_card_add_button:Add credit card`,
+  [TRANSLATION_KEY.PAYVIEW_PAYMENT_EDIT_CREDIT_CARD]: $localize`:@@pay_view_buyer_payment_method_credit_card_edit_button:Change credit card`,
 };

@@ -8,6 +8,7 @@ import { PRO_PATHS } from './features/pro/pro-routing-constants';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { PROFILE_PATHS } from './features/profile/profile-routing-constants';
 import { CATALOG_PATHS } from './features/catalog/catalog-routing-constants';
+import { YouGuard } from './features/you/guards/you.guard';
 
 const routes: Routes = [
   {
@@ -150,6 +151,11 @@ const routes: Routes = [
           { path: '', pathMatch: 'full', redirectTo: `/${PRIVATE_PATHS.CHAT}` },
           { path: 'view', redirectTo: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.VERIFICATIONS}` },
         ],
+      },
+      {
+        path: PRIVATE_PATHS.YOU,
+        canLoad: [YouGuard],
+        loadChildren: () => import('@private/features/you/you.module').then((m) => m.YouModule),
       },
     ],
   },

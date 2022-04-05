@@ -1,7 +1,7 @@
 import { CatalogItemAttributes } from '@api/catalog/dtos';
 import { ImageDto, PriceDto } from '@api/core/dtos';
 
-export interface PublishedItem {
+export interface PublishedItemDto {
   id: string;
   category_id: string;
   title: string;
@@ -11,5 +11,6 @@ export interface PublishedItem {
   type_attributes: CatalogItemAttributes;
   slug: string;
   reserved?: { flag: boolean };
+  favorited?: { flag: boolean };
   bump?: { type: string };
 }

@@ -3,7 +3,7 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { environment } from '@environments/environment';
 import { ACCEPT_HEADERS } from '@public/core/constants/header-constants';
 import { IOption } from '@shared/dropdown/utils/option.interface';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Brand, BrandModel, Model, ObjectType, Size, SizesResponse } from '../../models/brand-model.interface';

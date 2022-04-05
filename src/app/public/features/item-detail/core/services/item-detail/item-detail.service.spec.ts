@@ -5,7 +5,7 @@ import { MOCK_FULL_USER_WITHOUT_PHONE, USER_DATA } from '@fixtures/user.fixtures
 import { ITEM_COUNTERS_DATA, ITEM_BUMP_FLAGS } from '@fixtures/item.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
+import { RecommendationsApiService } from '@public/core/services/api/recommender/recommendations-api.service';
 import { MapItemService } from '@public/core/services/map-item/map-item.service';
 import { of } from 'rxjs';
 import { ItemDetailService } from './item-detail.service';
@@ -15,7 +15,7 @@ describe('ItemDetailService', () => {
   let itemDetailService: ItemDetailService;
   let itemApiService: ItemApiService;
   let publicUserApiService: PublicUserApiService;
-  let recommenderApiService: RecommenderApiService;
+  let recommendationsApiService: RecommendationsApiService;
   let mapItemService: MapItemService;
   const itemId = '123';
 
@@ -60,7 +60,7 @@ describe('ItemDetailService', () => {
             },
           },
         },
-        RecommenderApiService,
+        RecommendationsApiService,
         MapItemService,
       ],
       imports: [HttpClientTestingModule],
@@ -68,7 +68,7 @@ describe('ItemDetailService', () => {
     itemDetailService = TestBed.inject(ItemDetailService);
     itemApiService = TestBed.inject(ItemApiService);
     publicUserApiService = TestBed.inject(PublicUserApiService);
-    recommenderApiService = TestBed.inject(RecommenderApiService);
+    recommendationsApiService = TestBed.inject(RecommendationsApiService);
     mapItemService = TestBed.inject(MapItemService);
   });
 
@@ -100,11 +100,11 @@ describe('ItemDetailService', () => {
 
   describe('getRecommendedItems', () => {
     it('should call the recommenderApiService getRecommendedItems function', () => {
-      spyOn(recommenderApiService, 'getRecommendedItemsByItemId');
+      spyOn(recommendationsApiService, 'getRecommendedItemsByItemId');
 
       itemDetailService.getRecommendedItems(itemId);
 
-      expect(recommenderApiService.getRecommendedItemsByItemId).toHaveBeenCalledWith(itemId);
+      expect(recommendationsApiService.getRecommendedItemsByItemId).toHaveBeenCalledWith(itemId);
     });
   });
 

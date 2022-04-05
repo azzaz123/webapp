@@ -18,17 +18,19 @@ const routes: Route[] = [
     data: {
       title: 'Chat',
     },
+    children: [
+      {
+        path: `${PRIVATE_PATHS.ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
+        loadChildren: () => import('@private/features/accept-screen/accept-screen.module').then((m) => m.AcceptScreenModule),
+      },
+      {
+        path: `${PRIVATE_PATHS.PAYVIEW}/:${PRIVATE_PATH_PARAMS.ID}`,
+        canLoad: [DeliveryDevelopmentGuard],
+        loadChildren: () => import('@private/features/payview/payview.module').then((m) => m.PayviewModule),
+      },
+    ],
   },
-  {
-    path: `${PRIVATE_PATHS.ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
-    canLoad: [DeliveryDevelopmentGuard],
-    loadChildren: () => import('@private/features/accept-screen/accept-screen.module').then((m) => m.AcceptScreenModule),
-  },
-  {
-    path: `${PRIVATE_PATHS.PAYVIEW}/:${PRIVATE_PATH_PARAMS.ID}`,
-    canLoad: [DeliveryDevelopmentGuard],
-    loadChildren: () => import('@private/features/payview/payview.module').then((m) => m.PayviewModule),
-  },
+
   {
     path: '**',
     redirectTo: '',

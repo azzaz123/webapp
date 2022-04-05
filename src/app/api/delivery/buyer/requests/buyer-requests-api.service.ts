@@ -6,12 +6,18 @@ import { BuyerRequestsItemsDetails } from '@api/core/model/delivery/buyer-reques
 import { mapBuyerRequestsDtoToBuyerRequests } from '@api/delivery/buyer/requests/mappers/responses/buyer-requests.mapper';
 import { mapBuyerRequestsItemsDetailsDtoToBuyerRequestsItemsDetails } from '@api/delivery/buyer/requests/mappers/responses/buyer-requests-items-details.mapper';
 
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
+import { UuidService } from '@core/uuid/uuid.service';
+import { mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties } from './mappers/responses/buyer-request-buy-mapper/buyer-request-buy.mapper';
+import { BuyRequestErrorMapper } from './mappers/errors/buy-request/buy-request-error-mapper';
+import { BuyRequestErrorResponse } from './dtos/errors';
 
 @Injectable()
 export class BuyerRequestsApiService {
-  constructor(private buyerRequestsHttpService: BuyerRequestsHttpService) {}
+  private errorMapper: BuyRequestErrorMapper = new BuyRequestErrorMapper();
+  constructor(private buyerRequestsHttpService: BuyerRequestsHttpService, private uuidService: UuidService) {}
 
   public getRequestsAsBuyerByItemHash(itemHash: string): Observable<BuyerRequest[]> {
     return this.buyerRequestsHttpService.get(itemHash).pipe(map(mapBuyerRequestsDtoToBuyerRequests));
@@ -19,5 +25,16 @@ export class BuyerRequestsApiService {
 
   public getRequestsItemsDetails(itemHash: string): Observable<BuyerRequestsItemsDetails> {
     return this.buyerRequestsHttpService.getItemsDetails(itemHash).pipe(map(mapBuyerRequestsItemsDetailsDtoToBuyerRequestsItemsDetails));
+  }
+
+  public buyRequest(state: PayviewState): Observable<void> {
+    const buyRequestId: string = this.uuidService.getUUID();
+    return this.buyerRequestsHttpService
+      .buy(mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties(state, buyRequestId))
+      .pipe(catchError((error: BuyRequestErrorResponse) => this.errorMapper.map(error)));
+  }
+
+  public cancelRequest(buyerRequestId: string): Observable<void> {
+    return this.buyerRequestsHttpService.cancel(buyerRequestId);
   }
 }

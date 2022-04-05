@@ -1,16 +1,16 @@
+import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
+import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
+import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments/enums/payment-method.enum';
 import { PayviewSummaryPaymentMethodComponent } from '@private/features/payview/modules/summary/components/payment-method/payview-summary-payment-method.component';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
-import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
-import { By } from '@angular/platform-browser';
-import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 
 describe('PayviewSummaryPaymentMethodComponent', () => {
-  const iconPath: string = './assets/icons/payview';
+  const iconPath: string = '/assets/icons/payview';
   const payviewSummaryPaymentMethod: string = '.PayviewSummaryPaymentMethod';
   const payviewSummaryPaymentMethodCurrent: string = `${payviewSummaryPaymentMethod}__paymentMethodCurrent`;
   const payviewSummaryPaymentMethodIcon: string = 'tsl-svg-icon';
@@ -56,7 +56,7 @@ describe('PayviewSummaryPaymentMethodComponent', () => {
           component = fixture.componentInstance;
           debugElement = fixture.debugElement;
           component.paymentMethod = { ...MOCK_PAYVIEW_STATE }.payment.preferences.preferences;
-          component.paymentMethod.paymentMethod = PaymentMethod.PAYPAL;
+          component.paymentMethod.paymentMethod = PAYVIEW_PAYMENT_METHOD.PAYPAL;
 
           fixture.detectChanges();
         });
@@ -83,7 +83,7 @@ describe('PayviewSummaryPaymentMethodComponent', () => {
           debugElement = fixture.debugElement;
           component.paymentMethod = { ...MOCK_PAYVIEW_STATE }.payment.preferences.preferences;
           component.creditCard = MOCK_CREDIT_CARD;
-          component.paymentMethod.paymentMethod = PaymentMethod.CREDIT_CARD;
+          component.paymentMethod.paymentMethod = PAYVIEW_PAYMENT_METHOD.CREDIT_CARD;
 
           fixture.detectChanges();
         });

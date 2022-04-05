@@ -36,5 +36,5 @@ export interface ClickAddEditAddress {
   /**
    * Identifier of the screen where the click is done
    */
-  screenId: 148 | 209 | 210 | 238;
+  screenId: 148 | 210 | 238 | 311;
 }

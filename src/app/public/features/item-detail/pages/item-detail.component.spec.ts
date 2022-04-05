@@ -42,7 +42,7 @@ import { AdComponentStub } from '@fixtures/shared';
 import { MockedUserService, MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
 import { PublicUserApiService } from '@public/core/services/api/public-user/public-user-api.service';
-import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
+import { RecommendationsApiService } from '@public/core/services/api/recommender/recommendations-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { ItemFavouritesModule } from '@public/core/services/item-favourites/item-favourites.module';
@@ -154,7 +154,7 @@ describe('ItemDetailComponent', () => {
         MapRecommendedItemCardService,
         ItemDetailService,
         PublicUserApiService,
-        RecommenderApiService,
+        RecommendationsApiService,
         MapItemService,
         NgxPermissionsService,
         {
