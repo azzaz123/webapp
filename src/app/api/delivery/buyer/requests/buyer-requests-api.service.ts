@@ -7,7 +7,7 @@ import { mapBuyerRequestsDtoToBuyerRequests } from '@api/delivery/buyer/requests
 import { mapBuyerRequestsItemsDetailsDtoToBuyerRequestsItemsDetails } from '@api/delivery/buyer/requests/mappers/responses/buyer-requests-items-details.mapper';
 
 import { catchError, map } from 'rxjs/operators';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 import { mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties } from './mappers/responses/buyer-request-buy-mapper/buyer-request-buy.mapper';
 import { BuyRequestErrorMapper } from './mappers/errors/buy-request/buy-request-error-mapper';
@@ -15,7 +15,6 @@ import { BuyRequestErrorResponse } from './dtos/errors';
 
 @Injectable()
 export class BuyerRequestsApiService {
-  public readonly buyRequestId$: ReplaySubject<string> = new ReplaySubject<string>(1);
   private errorMapper: BuyRequestErrorMapper = new BuyRequestErrorMapper();
   constructor(private buyerRequestsHttpService: BuyerRequestsHttpService) {}
 
