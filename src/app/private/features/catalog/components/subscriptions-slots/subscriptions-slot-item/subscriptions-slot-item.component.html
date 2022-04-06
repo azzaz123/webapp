@@ -22,8 +22,16 @@
     </ng-template>
     <ng-container *ngIf="subscriptionSlot.bumpBalance?.length">
     <div *ngIf="subscriptionSlot.bumpBalance[0] as zoneBump" class="SubscriptionsSlotItem__description">
-      <b>{{zoneBump.used}}/{{zoneBump.total}}</b><span ngPreserveWhitespaces> </span>
-      <span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_bumps_applied_text_no_placeholders">items highlighted</span>
+      <div>
+        <b>{{zoneBump.used}}/{{zoneBump.total}}</b><span ngPreserveWhitespaces> </span>
+        <span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_bumps_applied_text_no_placeholders">items highlighted</span>
+      </div>
+      <div *ngIf="zoneBump.extra">
+        <b><span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_1_text_web_specific"
+        >Extra!</span></b><span ngPreserveWhitespaces> </span>
+        <span *ngIf="zoneBump.extra === 1" i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.one">Highlight {{zoneBump.extra}} extra item</span>
+        <span *ngIf="zoneBump.extra !== 1" i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.other">Highlight {{zoneBump.extra}} extra items</span>
+      </div>
     </div>
     </ng-container>
   </div>
