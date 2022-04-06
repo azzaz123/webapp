@@ -805,6 +805,8 @@
     "favorites_view_tab_searches_label": "Searches",
     "web_favorites_pages_206": "In this list you can see all the products you saved as favourite",
     "web_favorites_pages_207": "In this list you can see all the profiles you saved as favourite",
+    "engagement_empty_state_saved_searches_title_web_specific": "Things you want to find",
+    "engagement_empty_state_saved_searches_message_web_specific": "To save a search, tap the \"Favorite\" icon when making one. We'll notify you when there are items that match your criteria.",
     "web_help_pages_208": "Your help center",
     "web_help_pages_209": "We hope that you can find here the answers for all your questions",
     "web_help_pages_210": "Contact details",

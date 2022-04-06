@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { FavouritesComponent } from './favourites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
@@ -316,6 +316,17 @@ describe('FavouritesComponent', () => {
 
       expect(component.trackClickFavoriteItem).toHaveBeenCalledWith(index);
       expect(component.trackClickFavoriteItem).toHaveBeenCalledTimes(1);
+    });
+  });
+  describe('when clicking on Searches section', () => {
+    beforeEach(() => {
+      component.selectedStatus = 'searches';
+      component.searches = [];
+      fixture.detectChanges();
+    });
+    it('and are no searches, should render empty state', () => {
+      const counter: DebugElement = fixture.debugElement.query(By.css('tsl-empty-state'));
+      expect(counter).toBeTruthy();
     });
   });
 });
