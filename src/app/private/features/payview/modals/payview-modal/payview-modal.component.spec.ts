@@ -74,6 +74,11 @@ import {
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
 import { headerTitles } from '../../constants/header-titles';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
+import { UuidService } from '@core/uuid/uuid.service';
+import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
+import { RouterTestingModule } from '@angular/router/testing';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -110,7 +115,8 @@ class FakeComponent extends PayviewModalComponent {
     promotionService: PayviewPromotionService,
     paymentService: PayviewPaymentService,
     payviewTrackingEventsService: PayviewTrackingEventsService,
-    buyService: PayviewBuyService
+    buyService: PayviewBuyService,
+    uuidService: UuidService
   ) {
     super(
       payviewStateManagementService,
@@ -121,7 +127,8 @@ class FakeComponent extends PayviewModalComponent {
       promotionService,
       paymentService,
       payviewTrackingEventsService,
-      buyService
+      buyService,
+      uuidService
     );
   }
 }
@@ -189,6 +196,7 @@ describe('PayviewModalComponent', () => {
         HttpClientTestingModule,
         NgxPermissionsModule.forRoot(),
         StepperModule,
+        RouterTestingModule,
       ],
       providers: [
         {
@@ -218,6 +226,22 @@ describe('PayviewModalComponent', () => {
             trackViewTransactionPayScreen() {},
             trackClickAddPromocodeTransactionPay() {},
             trackClickApplyPromocodeTransactionPay() {},
+          },
+        },
+        {
+          provide: DeliveryRealTimeService,
+          useValue: {
+            get deliveryRealTimeNotifications$() {
+              return of(MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE);
+            },
+          },
+        },
+        {
+          provide: DeliveryPaymentReadyService,
+          useValue: {
+            continueBuyerRequestBuyFlow() {
+              return of(null);
+            },
           },
         },
         ItemService,

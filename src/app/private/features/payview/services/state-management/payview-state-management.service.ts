@@ -55,10 +55,7 @@ export class PayviewStateManagementService {
 
   public set buyerRequestId(value: string) {
     this.buyerRequestIdSubject.next(value);
-  }
-
-  public get buyerRequestId$(): Observable<string> {
-    return this.buyerRequestIdSubject.asObservable();
+    this.stateSubject.next({ ...this.stateSubject.value, buyerRequestId: value });
   }
 
   public on(eventType: PAYVIEW_EVENT_TYPE, handler: (payload: PAYVIEW_EVENT_PAYLOAD) => void): Subscription {
@@ -232,7 +229,7 @@ export class PayviewStateManagementService {
 
   private request(payviewState: PayviewState): void {
     const subscription: Subscription = this.payviewService
-      .request()
+      .request(payviewState)
       .pipe(take(1))
       .subscribe({
         next: () => {

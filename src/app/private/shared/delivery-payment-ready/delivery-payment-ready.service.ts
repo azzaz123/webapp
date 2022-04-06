@@ -10,12 +10,12 @@ import { WebViewModalService } from '@shared/web-view-modal/services/web-view-mo
 import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DeliveryPaymentReadyService {
   constructor(@Inject(WINDOW_TOKEN) private window: Window, private webViewModalService: WebViewModalService) {}
 
   public continueBuyerRequestBuyFlow(buyerRequest: BuyerRequest, paymentMethod: PAYVIEW_PAYMENT_METHOD): Observable<void> {
-    const isContinueFlowNotNeeded: boolean = buyerRequest.status.payment === BUYER_REQUEST_PAYMENT_STATUS.SUCCEEDED;
+    const isContinueFlowNotNeeded: boolean = buyerRequest.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
     if (isContinueFlowNotNeeded) {
       return of(null);
     }

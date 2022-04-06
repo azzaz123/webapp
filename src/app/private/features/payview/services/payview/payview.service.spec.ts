@@ -36,6 +36,11 @@ import { of, throwError } from 'rxjs';
 import { CreditCard } from '@api/core/model';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { CardInvalidError } from '@api/core/errors/payments/cards';
+import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
+import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
+import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PayviewService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
@@ -137,10 +142,26 @@ describe('PayviewService', () => {
             },
           },
         },
+        {
+          provide: DeliveryRealTimeService,
+          useValue: {
+            get deliveryRealTimeNotifications$() {
+              return of(MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE);
+            },
+          },
+        },
+        {
+          provide: DeliveryPaymentReadyService,
+          useValue: {
+            continueBuyerRequestBuyFlow() {
+              return of(null);
+            },
+          },
+        },
         PayviewService,
         ToastService,
       ],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
     });
     service = TestBed.inject(PayviewService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
@@ -178,7 +199,7 @@ describe('PayviewService', () => {
       paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
-      service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
+      service.getCurrentState(fakeItemHash, MOCK_UUID).subscribe((response: PayviewState) => {
         payviewState = response;
       });
 
@@ -257,7 +278,7 @@ describe('PayviewService', () => {
       paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
-      service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
+      service.getCurrentState(fakeItemHash, MOCK_UUID).subscribe((response: PayviewState) => {
         payviewState = response;
       });
 
@@ -339,7 +360,7 @@ describe('PayviewService', () => {
       paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
-      service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
+      service.getCurrentState(fakeItemHash, MOCK_UUID).subscribe((response: PayviewState) => {
         payviewState = response;
       });
 
