@@ -42,16 +42,7 @@
               >Extra!</span
             ></b
           ><span ngPreserveWhitespaces> </span>
-          <span
-            *ngIf="zoneBumps.extra === 1"
-            i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.one"
-            >Highlight {{ zoneBumps.extra }} extra item</span
-          >
-          <span
-            *ngIf="zoneBumps.extra !== 1"
-            i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.other"
-            >Highlight {{ zoneBumps.extra }} extra items</span
-          >
+          <span>{{ extraBumpsText(zoneBumps.extra) }}</span>
         </div>
       </div>
     </ng-container>
@@ -60,7 +51,7 @@
     </ng-template>
     <div class="SubscriptionCard__price text-md-left mb-2">
       <ng-container *ngIf="!isSubscribed; else subscriptionPrice">
-        <tsl-subscription-price-discount [subscription]="subscription" [tierDiscount]="tierDiscount"> </tsl-subscription-price-discount>
+        <tsl-subscription-price-discount [subscription]="subscription" [tierDiscount]="tierDiscount"></tsl-subscription-price-discount>
         <span i18n="@@pro_subscription_purchase_non_subscribed_visibility_feature_description" *ngIf="hasBumpsAvailable"
           >You'll be able to highlight several items each month at no extra cost.</span
         >
@@ -112,6 +103,6 @@
     </div>
   </div>
   <div class="SubscriptionCard__icon">
-    <img [src]="iconSrc" />
+    <img [src]="iconSrc" alt="icon" />
   </div>
 </div>
