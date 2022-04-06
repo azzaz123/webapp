@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { CreditCard } from '@api/core/model';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments/enums/payment-method.enum';
 import { PaymentsUserPaymentPreference } from '@api/core/model/payments/interfaces/payments-user-payment-preference.interface';
 import { PAYVIEW_PAYMENT_ICONS } from '@private/features/payview/constants/payview-payment-icons';
 
@@ -22,11 +22,11 @@ export class PayviewSummaryPaymentMethodComponent {
   }
 
   public get isCreditCard(): boolean {
-    return this.paymentMethod.paymentMethod === PaymentMethod.CREDIT_CARD;
+    return this.paymentMethod.paymentMethod === PAYVIEW_PAYMENT_METHOD.CREDIT_CARD;
   }
 
   public get isPayPal(): boolean {
-    return this.paymentMethod.paymentMethod === PaymentMethod.PAYPAL;
+    return this.paymentMethod.paymentMethod === PAYVIEW_PAYMENT_METHOD.PAYPAL;
   }
 
   public get creditCardLastFourDigits(): string {

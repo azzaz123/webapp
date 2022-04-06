@@ -17,7 +17,7 @@ import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracki
 
 import { of, throwError, Subject, BehaviorSubject } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { XmppService } from '@core/xmpp/xmpp.service';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 
 describe('TransactionTrackingOverviewComponent', () => {
   const MOCK_TRANSACTION_TRACKING_ID: string = 'Laia';
@@ -33,7 +33,7 @@ describe('TransactionTrackingOverviewComponent', () => {
   const transactionTrackingDetailsSubject: BehaviorSubject<TransactionTrackingDetails> = new BehaviorSubject(
     MOCK_TRANSACTION_TRACKING_DETAILS
   );
-  const deliveryRealtimeMessageSubject: Subject<string> = new Subject<string>();
+  const deliveryRealtimeNotificationSubject: Subject<string> = new Subject<string>();
 
   let component: TransactionTrackingOverviewComponent;
   let fixture: ComponentFixture<TransactionTrackingOverviewComponent>;
@@ -107,9 +107,9 @@ describe('TransactionTrackingOverviewComponent', () => {
           },
         },
         {
-          provide: XmppService,
+          provide: DeliveryRealTimeService,
           useValue: {
-            deliveryRealtimeMessage$: deliveryRealtimeMessageSubject.asObservable(),
+            deliveryRealTimeNotifications$: deliveryRealtimeNotificationSubject.asObservable(),
           },
         },
       ],
@@ -273,7 +273,7 @@ describe('TransactionTrackingOverviewComponent', () => {
 
     describe('and when there is a new delivery notification', () => {
       beforeEach(fakeAsync(() => {
-        deliveryRealtimeMessageSubject.next(MOCK_DELIVERY_NOTIFICATION);
+        deliveryRealtimeNotificationSubject.next(MOCK_DELIVERY_NOTIFICATION);
         tick();
       }));
 

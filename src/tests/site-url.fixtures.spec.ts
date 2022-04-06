@@ -1,5 +1,5 @@
 import { FUNCTIONAL_WEBAPP_SUBDOMAIN } from '@configs/subdomains.config';
-import { environment } from '@environments/environment.beta';
+import { environment } from '@environments/environment';
 
 const SUBDOMAIN: FUNCTIONAL_WEBAPP_SUBDOMAIN = 'es';
 

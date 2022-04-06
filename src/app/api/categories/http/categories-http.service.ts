@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { CategoryDto } from '../dtos';
+import { CategoriesWithPresentationResponseDto, CategoryDto, CategoryWithPresentationDto } from '../dtos';
 import { ACCEPT_HEADERS, HEADER_NAMES } from '@public/core/constants/header-constants';
-import { CATEGORIES_ENDPOINT } from './endpoints';
+import { CATEGORIES_ENDPOINT, CATEGORIES_WITH_PRESENTATION_ENDPOINT } from './endpoints';
 
 @Injectable()
 export class CategoriesHttpService {
@@ -19,5 +19,9 @@ export class CategoriesHttpService {
         context,
       },
     });
+  }
+
+  public getCategoriesWithPresentation(): Observable<CategoriesWithPresentationResponseDto> {
+    return this.httpClient.get<CategoriesWithPresentationResponseDto>(CATEGORIES_WITH_PRESENTATION_ENDPOINT);
   }
 }

@@ -1,26 +1,13 @@
-import { RECOMMENDER_TYPE } from '../enums/recomender-type.enum';
+import { ImageDto, PriceDto } from '@api/core/dtos';
 
-export interface RecommenderItem {
-  category_id: number;
-  currency: string;
-  favorited: boolean;
+export interface RecommenderItemDto {
   id: string;
-  images: RecommenderItemImage[];
-  price: number;
-  seller_id: string;
-  shipping_allowed: boolean;
+  category_id: string;
+  price: PriceDto;
+  favorited: { flag: boolean };
+  images?: ImageDto[];
+  user_id: string;
+  supports_shipping: { flag: boolean };
   title: string;
-  web_slug: string;
-  recommended_type: RECOMMENDER_TYPE;
-}
-
-export interface RecommenderItemImage {
-  large: string;
-  medium: string;
-  original: string;
-  original_height: number;
-  original_width: number;
-  small: string;
-  xlarge: string;
-  xsmall: string;
+  slug: string;
 }

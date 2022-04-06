@@ -1,6 +1,6 @@
 import { By } from '@angular/platform-browser';
-import { Component, DebugElement, Input } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
@@ -8,7 +8,7 @@ import { DeliveryRadioSelectorModule } from '@private/shared/delivery-radio-sele
 import { I18nService } from '@core/i18n/i18n.service';
 import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
-import { PaymentMethod } from '@api/core/model/payments/enums/payment-method.enum';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments/enums/payment-method.enum';
 import { PayviewPaymentHeaderComponent } from '@private/features/payview/modules/payment/components/header/payview-payment-header.component';
 import { PayviewPaymentMethodComponent } from '@private/features/payview/modules/payment/components/method/payview-payment-method.component';
 import { PayviewPaymentMethodsComponent } from '@private/features/payview/modules/payment/components/methods/payview-payment-methods.component';
@@ -74,7 +74,7 @@ describe('PayviewPaymentMethodsComponent', () => {
         debugElement = fixture.debugElement;
 
         component.card = MOCK_CREDIT_CARD;
-        component.defaultMethod = PaymentMethod.WALLET;
+        component.defaultMethod = PAYVIEW_PAYMENT_METHOD.WALLET;
         component.methods = MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods;
 
         fixture.detectChanges();
@@ -167,7 +167,7 @@ describe('PayviewPaymentMethodsComponent', () => {
       debugElement = fixture.debugElement;
 
       component.card = MOCK_CREDIT_CARD;
-      component.defaultMethod = PaymentMethod.PAYPAL;
+      component.defaultMethod = PAYVIEW_PAYMENT_METHOD.PAYPAL;
       component.methods = MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods;
 
       fixture.detectChanges();
@@ -199,7 +199,7 @@ describe('PayviewPaymentMethodsComponent', () => {
         debugElement = fixture.debugElement;
 
         component.card = MOCK_CREDIT_CARD;
-        component.defaultMethod = PaymentMethod.CREDIT_CARD;
+        component.defaultMethod = PAYVIEW_PAYMENT_METHOD.CREDIT_CARD;
         component.methods = MOCK_PAYMENTS_PAYMENT_METHODS.paymentMethods;
 
         fixture.detectChanges();
