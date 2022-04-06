@@ -279,13 +279,10 @@ describe('when mapping the payview state properties into the pay transaction eve
 });
 
 describe('when mapping the payview state properties into the transaction payment success properties', () => {
-  const MOCK_REQUEST_ID: string = '1234';
-
   describe('and the current selected payment method is credit card', () => {
     it('should return the properties mapped', () => {
       const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
-        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE,
-        MOCK_REQUEST_ID
+        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE
       );
 
       expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD);
@@ -294,10 +291,7 @@ describe('when mapping the payview state properties into the transaction payment
 
   describe('and the current selected payment method is paypal', () => {
     it('should return the properties mapped', () => {
-      const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
-        MOCK_PAYVIEW_STATE,
-        MOCK_REQUEST_ID
-      );
+      const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(MOCK_PAYVIEW_STATE);
 
       expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_PAYPAL);
     });
@@ -306,8 +300,7 @@ describe('when mapping the payview state properties into the transaction payment
   describe('and the current selected payment method is wallet', () => {
     it('should return the properties mapped', () => {
       const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
-        MOCK_PAYVIEW_STATE_WITH_WALLET_PREFERENCE,
-        MOCK_REQUEST_ID
+        MOCK_PAYVIEW_STATE_WITH_WALLET_PREFERENCE
       );
 
       expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET);
@@ -317,8 +310,7 @@ describe('when mapping the payview state properties into the transaction payment
   describe('and the current selected payment method is wallet and credit card', () => {
     it('should return the properties mapped', () => {
       const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
-        MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE,
-        MOCK_REQUEST_ID
+        MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE
       );
 
       expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET_AND_CREDIT_CARD);
@@ -328,8 +320,7 @@ describe('when mapping the payview state properties into the transaction payment
   describe('and the preselected payment method is wallet and paypal', () => {
     it('should return the properties mapped', () => {
       const expectedProperties: TransactionPaymentSuccess = getTransactionPaymentSuccessPropertiesFromPayviewState(
-        MOCK_PAYVIEW_STATE_WITH_WALLET_AND_PAYPAL_PREFERENCE,
-        MOCK_REQUEST_ID
+        MOCK_PAYVIEW_STATE_WITH_WALLET_AND_PAYPAL_PREFERENCE
       );
 
       expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET_AND_PAYPAL);

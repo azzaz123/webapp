@@ -336,20 +336,12 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   private trackTransactionPaymentSuccessEvent(): void {
-    const buyRequestId: string = this.getBuyRequestId();
     this.payviewState$
       .pipe(take(1))
       .subscribe((payviewState: PayviewState) =>
         this.payviewTrackingEventsService.trackTransactionPaymentSuccess(
-          getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState, buyRequestId)
+          getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState)
         )
       );
-  }
-
-  private getBuyRequestId(): string {
-    let buyRequestId: string;
-    this.buyerRequestApiService.buyRequestId$.pipe(take(1)).subscribe((requestId) => (buyRequestId = requestId));
-
-    return buyRequestId;
   }
 }
