@@ -86,7 +86,7 @@ export class PayviewService {
     return this.deliveryBuyerService.getDeliveryMethods(itemHash).pipe(take(1));
   }
 
-  public getCurrentState(itemHash: string): Observable<PayviewState> {
+  public getCurrentState(itemHash: string, buyerRequestId: string): Observable<PayviewState> {
     this.itemHash = itemHash;
 
     return forkJoin(this.stateSources)
@@ -113,7 +113,8 @@ export class PayviewService {
               itemDetails,
               paymentMethods,
               paymentPreferences,
-              wallet
+              wallet,
+              buyerRequestId
             );
           }
         )
@@ -181,7 +182,8 @@ export class PayviewService {
     itemDetails: BuyerRequestsItemsDetails,
     paymentMethods: PaymentsPaymentMethods,
     paymentPreferences: PaymentsUserPaymentPreferences,
-    wallet: Money
+    wallet: Money,
+    buyerRequestId: string
   ): Observable<PayviewState> {
     return of({
       costs,
@@ -198,6 +200,7 @@ export class PayviewService {
         preferences: paymentPreferences,
         wallet,
       },
+      buyerRequestId,
     });
   }
 

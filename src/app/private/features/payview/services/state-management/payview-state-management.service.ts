@@ -29,6 +29,7 @@ import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
 export class PayviewStateManagementService {
   private readonly actionSubject: Subject<PayviewEvent> = new Subject<PayviewEvent>();
   private readonly itemHashSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  private readonly buyerRequestIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   private readonly stateSubject: BehaviorSubject<PayviewState> = new BehaviorSubject<PayviewState>(null);
 
   constructor(private payviewService: PayviewService) {}
@@ -50,6 +51,14 @@ export class PayviewStateManagementService {
 
   public get itemHash$(): Observable<string> {
     return this.itemHashSubject.asObservable();
+  }
+
+  public set buyerRequestId(value: string) {
+    this.buyerRequestIdSubject.next(value);
+  }
+
+  public get buyerRequestId$(): Observable<string> {
+    return this.buyerRequestIdSubject.asObservable();
   }
 
   public on(eventType: PAYVIEW_EVENT_TYPE, handler: (payload: PAYVIEW_EVENT_PAYLOAD) => void): Subscription {
@@ -107,9 +116,9 @@ export class PayviewStateManagementService {
     return { type: type, payload: mapToPayviewError(payload) };
   }
 
-  private getCurrentState(value: string): void {
+  private getCurrentState(itemHash: string): void {
     const subscription: Subscription = this.payviewService
-      .getCurrentState(value)
+      .getCurrentState(itemHash, this.buyerRequestIdSubject.value)
       .pipe(take(1))
       .subscribe({
         next: (payviewState: PayviewState) => {

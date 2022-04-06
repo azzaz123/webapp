@@ -37,6 +37,7 @@ import {
   getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 import { headerTitles } from '../../constants/header-titles';
+import { UuidService } from '@core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -69,7 +70,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private promotionService: PayviewPromotionService,
     private paymentService: PayviewPaymentService,
     private payviewTrackingEventsService: PayviewTrackingEventsService,
-    private buyService: PayviewBuyService
+    private buyService: PayviewBuyService,
+    private uuidService: UuidService
   ) {}
 
   public ngOnDestroy(): void {
@@ -168,6 +170,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscribeToBuyEventBus(): void {
     this.subscriptions.push(
       this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, (value: string) => {
+        this.payviewStateManagementService.buyerRequestId = this.uuidService.getUUID();
         this.payviewStateManagementService.buy();
       })
     );
