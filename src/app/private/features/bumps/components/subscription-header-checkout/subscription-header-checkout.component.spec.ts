@@ -75,29 +75,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
         expect(counters.length).toEqual(component.balance.length);
         component.balance.forEach((bump, index) => {
           const counter: HTMLElement = counters[index].nativeElement;
-          expect(counter.textContent).toContain(bump.total);
-          expect(counter.textContent).toContain(bump.used);
-        });
-      });
-      describe('And is zone bump', () => {
-        describe('And is not provincial bump', () => {
-          it('should show local label', () => {
-            fixture.detectChanges();
-            const counter = debugElement.query(By.css('.SubscriptionHeaderCheckout__counter')).nativeElement;
-
-            expect(counter.textContent).toContain($localize`:@@web_cart_454:Local`);
-          });
-        });
-        describe('And is provincial bump', () => {
-          beforeEach(() => {
-            component.isProvincialBump = true;
-            fixture.detectChanges();
-          });
-          it('should show local label', () => {
-            const counter = debugElement.query(By.css('.SubscriptionHeaderCheckout__counter')).nativeElement;
-
-            expect(counter.textContent).toContain($localize`:@@web_cart_455:Provincial`);
-          });
+          expect(counter.textContent).toContain(bump.remaining);
         });
       });
     });
@@ -119,9 +97,7 @@ describe('SubscriptionHeaderCheckoutComponent', () => {
         expect(counters.length).toEqual(component.balance.length);
         component.balance.forEach((bump, index) => {
           const counter: HTMLElement = counters[index].nativeElement;
-          expect(counter.textContent).toContain(bump.total);
-          expect(counter.textContent).toContain(component.getBumpName(bump.type));
-          expect(counter.textContent).toContain(bump.used);
+          expect(counter.textContent).toContain(bump.remaining);
         });
       });
       it('and has a counter with limit reached', () => {
