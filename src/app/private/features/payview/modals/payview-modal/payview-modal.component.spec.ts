@@ -79,6 +79,13 @@ import { UserService } from '@core/user/user.service';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { headerTitles } from '../../constants/header-titles';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
+import { UuidService } from '@core/uuid/uuid.service';
+import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
+import { RouterTestingModule } from '@angular/router/testing';
+import { PAYVIEW_BUY_EVENT_TYPE } from '../../modules/buy/enums/payview-buy-event-type.enum';
+import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -117,7 +124,8 @@ class FakeComponent extends PayviewModalComponent {
     payviewTrackingEventsService: PayviewTrackingEventsService,
     buyService: PayviewBuyService,
     buyerRequestApiService: BuyerRequestsApiService,
-    userService: UserService
+    userService: UserService,
+    uuidService: UuidService
   ) {
     super(
       payviewStateManagementService,
@@ -130,7 +138,8 @@ class FakeComponent extends PayviewModalComponent {
       payviewTrackingEventsService,
       buyService,
       buyerRequestApiService,
-      userService
+      userService,
+      uuidService
     );
   }
 }
@@ -161,6 +170,7 @@ describe('PayviewModalComponent', () => {
   let debugElement: DebugElement;
   let fixture: ComponentFixture<FakeComponent>;
   let itemHashSpy: jest.SpyInstance;
+  let buyerRequestIdSpy: jest.SpyInstance;
   let payviewDeliveryService: PayviewDeliveryService;
   let payviewPaymentService: PayviewPaymentService;
   let payviewPromotionService: PayviewPromotionService;
@@ -172,6 +182,7 @@ describe('PayviewModalComponent', () => {
   let buyerRequestApiService: BuyerRequestsApiService;
   let userService: UserService;
   let buyService: PayviewBuyService;
+  let uuidService: UuidService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -202,6 +213,7 @@ describe('PayviewModalComponent', () => {
         HttpClientTestingModule,
         NgxPermissionsModule.forRoot(),
         StepperModule,
+        RouterTestingModule,
       ],
       providers: [
         {
@@ -246,6 +258,30 @@ describe('PayviewModalComponent', () => {
             },
           },
         },
+        {
+          provide: DeliveryRealTimeService,
+          useValue: {
+            get deliveryRealTimeNotifications$() {
+              return of(MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE);
+            },
+          },
+        },
+        {
+          provide: DeliveryPaymentReadyService,
+          useValue: {
+            continueBuyerRequestBuyFlow() {
+              return of(null);
+            },
+          },
+        },
+        {
+          provide: UuidService,
+          useValue: {
+            getUUID() {
+              return MOCK_UUID;
+            },
+          },
+        },
         ItemService,
         NgbActiveModal,
         PaymentsWalletsService,
@@ -276,6 +312,7 @@ describe('PayviewModalComponent', () => {
       buyerRequestApiService = TestBed.inject(BuyerRequestsApiService);
       userService = TestBed.inject(UserService);
       buyService = TestBed.inject(PayviewBuyService);
+      uuidService = TestBed.inject(UuidService);
 
       fixture = TestBed.createComponent(FakeComponent);
       component = fixture.componentInstance;
@@ -325,6 +362,30 @@ describe('PayviewModalComponent', () => {
         target.click();
 
         expect(activeModalService.close).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('when the user clicks the buy button', () => {
+      describe('and there is NO prepayment errors', () => {
+        beforeEach(() => {
+          spyOn(payviewStateManagementService, 'buy').and.callFake(() => {});
+          buyerRequestIdSpy = jest.spyOn(payviewStateManagementService, 'buyerRequestId', 'set');
+          spyOn(uuidService, 'getUUID').and.callThrough();
+          buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, () => {});
+          buyService.buy();
+        });
+
+        it('should generate a unique id only once', () => {
+          expect(uuidService.getUUID).toHaveBeenCalledTimes(1);
+        });
+
+        it('should set the unique id only once', () => {
+          expect(buyerRequestIdSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('should set the unique id with a valid one', () => {
+          expect(buyerRequestIdSpy).toHaveBeenCalledWith(MOCK_UUID);
+        });
       });
     });
 

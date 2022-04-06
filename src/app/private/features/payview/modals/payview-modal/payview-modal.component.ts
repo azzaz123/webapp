@@ -41,6 +41,7 @@ import {
   getTransactionPaymentSuccessPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 import { headerTitles } from '../../constants/header-titles';
+import { UuidService } from '@core/uuid/uuid.service';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -75,7 +76,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private payviewTrackingEventsService: PayviewTrackingEventsService,
     private buyService: PayviewBuyService,
     private buyerRequestApiService: BuyerRequestsApiService,
-    private userService: UserService
+    private userService: UserService,
+    private uuidService: UuidService
   ) {}
 
   public ngOnDestroy(): void {
@@ -182,6 +184,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscribeToBuyEventBus(): void {
     this.subscriptions.push(
       this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, (value: string) => {
+        this.payviewStateManagementService.buyerRequestId = this.uuidService.getUUID();
         this.payviewStateManagementService.buy();
       })
     );
