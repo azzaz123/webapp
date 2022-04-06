@@ -154,6 +154,12 @@ export class PayviewService {
     return this.sendPaymentUserInfo(state.payment.preferences).pipe(concatMap(() => this.buyFlow(state)));
   }
 
+  private sendPaymentUserInfo(paymentPreferences: PaymentsUserPaymentPreferences): Observable<void> {
+    return this.paymentsClientBrowserInfoApiService
+      .sendBrowserInfo()
+      .pipe(concatMap(() => this.paymentPreferencesService.update(paymentPreferences)));
+  }
+
   private buyFlow(state: PayviewState): Observable<void> {
     return this.buyerRequestService
       .buyRequest(state)
@@ -170,14 +176,14 @@ export class PayviewService {
       );
   }
 
+  private waitPaymentReady(payviewState: PayviewState): Observable<BuyerRequest> {
+    return this.listenToThreeDomainNotification().pipe(concatMap(() => this.getBuyerRequestById(payviewState)));
+  }
+
   private listenToThreeDomainNotification(): Observable<DeliveryRealTimeNotification> {
     return this.deliveryRealTimeService.deliveryRealTimeNotifications$.pipe(
       filter((notification) => notification.id.endsWith('3ds_ready'))
     );
-  }
-
-  private waitPaymentReady(payviewState: PayviewState): Observable<BuyerRequest> {
-    return this.listenToThreeDomainNotification().pipe(concatMap(() => this.getBuyerRequestById(payviewState)));
   }
 
   private getBuyerRequestById(payviewState: PayviewState): Observable<BuyerRequest> {
@@ -186,12 +192,6 @@ export class PayviewService {
     return this.buyerRequestService
       .getRequestsAsBuyerByItemHash(itemHash)
       .pipe(map((requests) => requests.find((r) => r.id === buyerRequestId)));
-  }
-
-  private sendPaymentUserInfo(paymentPreferences: PaymentsUserPaymentPreferences): Observable<void> {
-    return this.paymentsClientBrowserInfoApiService
-      .sendBrowserInfo()
-      .pipe(concatMap(() => this.paymentPreferencesService.update(paymentPreferences)));
   }
 
   private redirectToTTS(requestId: string): void {
