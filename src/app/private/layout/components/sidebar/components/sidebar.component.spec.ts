@@ -29,6 +29,7 @@ import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NotificationApiService } from '@api/notification/notification-api.service';
+import { SidebarNavigationProfileElementStubComponent } from '@fixtures/private/layout/sidebar/components/sidebar-navigation-profile-element.stub';
 
 @Component({
   template: '',
@@ -71,7 +72,7 @@ describe('SidebarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent],
+        declarations: [SidebarComponent, RouterLinkDirectiveStub, SidebarNavigationProfileElementStubComponent, MockComponent],
         imports: [NgxPermissionsModule.forRoot(), RouterTestingModule.withRoutes(routes)],
         providers: [
           {
