@@ -15,6 +15,17 @@ import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
 import { PayTransaction } from '@core/analytics/resources/events-interfaces/pay-transaction.interface';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { TransactionPaymentSuccess } from '@core/analytics/resources/events-interfaces/transaction-payment-success.interface';
+import { TransactionCheckoutError } from '@core/analytics/resources/events-interfaces/transaction-checkout-error.interface';
+import { BuyerRequestsError } from '@api/core/errors/delivery/payview/buyer-requests/buyer-requests.error';
+import { NoAddressForUserError } from '@api/core/errors/delivery/payview/buyer-requests/no-address-for-user.error';
+import { NotExistingPromocodeError } from '@api/core/errors/delivery/payview/buyer-requests/not-existing-promocode.error';
+import { ExpiredPromocodeError } from '@api/core/errors/delivery/payview/buyer-requests/expired-promocode.error';
+import { CarrierOfficeAddressAndHomeAddressCountriesDoNotMatchError } from '@api/core/errors/delivery/payview/buyer-requests/carrier-office-address-and-home-address-countries-do-not-match.error';
+import { NonPurchasableItemError } from '@api/core/errors/delivery/payview/buyer-requests/non-purchasable-item.error';
+import { BlockedSellerError } from '@api/core/errors/delivery/payview/buyer-requests/blocked-seller.error';
+import { BlockedBuyerError } from '@api/core/errors/delivery/payview/buyer-requests/blocked-buyer.error';
+import { InvalidCardError } from '@api/core/errors/delivery/payview/buyer-requests/invalid-card.error';
+import { DuplicatedRequestError } from '@api/core/errors/delivery/payview/buyer-requests/duplicated-request.error';
 
 export function getViewTransactionPayScreenEventPropertiesFromPayviewState(payviewState: PayviewState): ViewTransactionPayScreen {
   const paymentPreferences: PaymentsUserPaymentPreference = payviewState.payment.preferences.preferences;
@@ -117,6 +128,19 @@ export function getTransactionPaymentSuccessPropertiesFromPayviewState(payviewSt
   };
 }
 
+export function getTransactionCheckoutErrorPropertiesFromPayviewState(
+  payviewState: PayviewState,
+  error: BuyerRequestsError
+): TransactionCheckoutError {
+  return {
+    screenId: SCREEN_IDS.Checkout,
+    itemId: payviewState.item.id,
+    paymentMethod: SELECTED_PAYMENT_METHOD_CONVERTER[payviewState.payment.preferences.preferences.paymentMethod],
+    errorType: errorTypeConverter(error),
+    walletBalanceAmount: payviewState.payment.wallet.amount.total,
+  };
+}
+
 function getAddOrEditCard(card: CreditCard): ClickAddEditCard['addOrEdit'] {
   return card ? USER_ACTION.EDIT : USER_ACTION.ADD;
 }
@@ -152,3 +176,29 @@ const DELIVERY_MODE_CONVERTER: Record<DELIVERY_MODE, PayTransaction['deliveryMet
   [DELIVERY_MODE.BUYER_ADDRESS]: 'buyer address',
   [DELIVERY_MODE.CARRIER_OFFICE]: 'carrier office',
 };
+
+function errorTypeConverter(error: BuyerRequestsError) {
+  if (error instanceof NoAddressForUserError) {
+    return 'address missing';
+  }
+
+  if (error instanceof NotExistingPromocodeError || error instanceof ExpiredPromocodeError) {
+    return 'promocode not valid';
+  }
+
+  if (error instanceof CarrierOfficeAddressAndHomeAddressCountriesDoNotMatchError) {
+    return 'address not supported';
+  }
+
+  if (
+    error instanceof NonPurchasableItemError ||
+    error instanceof BlockedSellerError ||
+    error instanceof BlockedBuyerError ||
+    error instanceof InvalidCardError ||
+    error instanceof DuplicatedRequestError
+  ) {
+    return 'payment failed';
+  }
+
+  return 'unknown error';
+}
