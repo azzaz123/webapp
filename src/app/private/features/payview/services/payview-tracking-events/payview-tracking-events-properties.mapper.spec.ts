@@ -8,6 +8,7 @@ import {
   getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
   getPayTransactionEventPropertiesFromPayviewState,
   getTransactionPaymentSuccessPropertiesFromPayviewState,
+  getTransactionCheckoutErrorPropertiesFromPayviewState,
 } from './payview-tracking-events-properties.mapper';
 import {
   MOCK_PAYVIEW_STATE,
@@ -29,6 +30,16 @@ import { ViewTransactionPayScreen } from '@core/analytics/resources/events-inter
 import { ClickAddPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-add-promocode-transaction-pay.interface';
 import { ClickApplyPromocodeTransactionPay } from '@core/analytics/resources/events-interfaces/click-apply-promocode-transaction-pay.interface';
 import { PayTransaction } from '@core/analytics/resources/events-interfaces/pay-transaction.interface';
+import { BuyerRequestsError } from '@api/core/errors/delivery/payview/buyer-requests/buyer-requests.error';
+import { BuyRequestErrorMapper } from '@api/delivery/buyer/requests/mappers/errors/buy-request/buy-request-error-mapper';
+import {
+  MOCK_NO_ADDRESS_FOR_USER_ERROR_RESPONSE,
+  MOCK_EXPIRED_PROMOCODE_ERROR_RESPONSE,
+  MOCK_POSTAL_CODE_TEMPORARILY_RESTRICTED_ERROR_RESPONSE,
+  MOCK_INVALID_CARD_ERROR_RESPONSE,
+  MOCK_CARRIER_OFFICE_ADDRESS_AND_HOME_ADDRESS_COUNTRIES_DO_NOT_MATCH_ERROR_RESPONSE,
+} from '@fixtures/private/delivery/payview/buy-request-errors.fixtures.spec';
+import { TransactionCheckoutError } from '@core/analytics/resources/events-interfaces/transaction-checkout-error.interface';
 import {
   MOCK_ADD_EDIT_CARD_EVENT_WITH_ADD_ACTION,
   MOCK_ADD_EDIT_CARD_EVENT_WITH_EDIT_ACTION,
@@ -56,6 +67,11 @@ import {
   MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_PAYPAL,
   MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_CREDIT_CARD,
   MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET,
+  MOCK_TRANSACTION_PAYMENT_ERROR_WITH_ADDRESS_MISSING,
+  MOCK_TRANSACTION_PAYMENT_ERROR_WITH_PROMOCODE_NOT_VALID,
+  MOCK_TRANSACTION_PAYMENT_ERROR_WITH_PAYMENT_FAILED,
+  MOCK_TRANSACTION_PAYMENT_ERROR_WITH_ADDRESS_NOT_SUPPORTED,
+  MOCK_TRANSACTION_PAYMENT_ERROR_WITH_UNKNOWN,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 
 describe('when mapping the payview state properties into the click add edit card event properties', () => {
@@ -324,6 +340,67 @@ describe('when mapping the payview state properties into the transaction payment
       );
 
       expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_WALLET_AND_PAYPAL);
+    });
+  });
+});
+
+describe('when mapping the payview state properties into the transaction checkout error properties', () => {
+  const buyRequestErrorMapper = new BuyRequestErrorMapper();
+  let result: BuyerRequestsError;
+  let expectedProperties: TransactionCheckoutError;
+
+  describe('and the address is missing', () => {
+    it('should return the properties mapped', () => {
+      buyRequestErrorMapper.map(MOCK_NO_ADDRESS_FOR_USER_ERROR_RESPONSE).subscribe({
+        error: (errors) => (result = errors),
+      });
+      expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_ERROR_WITH_ADDRESS_MISSING);
+    });
+  });
+
+  describe('and the promocode already expired', () => {
+    it('should return the properties mapped', () => {
+      buyRequestErrorMapper.map(MOCK_EXPIRED_PROMOCODE_ERROR_RESPONSE).subscribe({
+        error: (errors) => (result = errors),
+      });
+      expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_ERROR_WITH_PROMOCODE_NOT_VALID);
+    });
+  });
+
+  describe('and there is an invalid card error', () => {
+    it('should return the properties mapped', () => {
+      buyRequestErrorMapper.map(MOCK_INVALID_CARD_ERROR_RESPONSE).subscribe({
+        error: (errors) => (result = errors),
+      });
+      expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_ERROR_WITH_PAYMENT_FAILED);
+    });
+  });
+
+  describe('and there is a carrier office address that does not match a home address country error', () => {
+    it('should return the properties mapped', () => {
+      buyRequestErrorMapper.map(MOCK_CARRIER_OFFICE_ADDRESS_AND_HOME_ADDRESS_COUNTRIES_DO_NOT_MATCH_ERROR_RESPONSE).subscribe({
+        error: (errors) => (result = errors),
+      });
+      expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_ERROR_WITH_ADDRESS_NOT_SUPPORTED);
+    });
+  });
+
+  describe('and there is an unknown error', () => {
+    it('should return the properties mapped', () => {
+      buyRequestErrorMapper.map(MOCK_POSTAL_CODE_TEMPORARILY_RESTRICTED_ERROR_RESPONSE).subscribe({
+        error: (errors) => (result = errors),
+      });
+      expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
+
+      expect(expectedProperties).toStrictEqual(MOCK_TRANSACTION_PAYMENT_ERROR_WITH_UNKNOWN);
     });
   });
 });

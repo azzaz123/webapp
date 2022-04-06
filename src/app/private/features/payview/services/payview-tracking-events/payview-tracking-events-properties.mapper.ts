@@ -136,7 +136,7 @@ export function getTransactionCheckoutErrorPropertiesFromPayviewState(
     screenId: SCREEN_IDS.Checkout,
     itemId: payviewState.item.id,
     paymentMethod: SELECTED_PAYMENT_METHOD_CONVERTER[payviewState.payment.preferences.preferences.paymentMethod],
-    errorType: errorTypeConverter(error),
+    errorType: errorTypeConverter(error[0]),
     walletBalanceAmount: payviewState.payment.wallet.amount.total,
   };
 }

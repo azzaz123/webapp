@@ -215,3 +215,28 @@ export const MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT: TransactionChec
   paymentMethod: 'bank card',
   walletBalanceAmount: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY.amount.total,
 };
+
+export const MOCK_TRANSACTION_PAYMENT_ERROR_WITH_ADDRESS_MISSING: TransactionCheckoutError = {
+  ...MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT,
+  errorType: 'address missing',
+};
+
+export const MOCK_TRANSACTION_PAYMENT_ERROR_WITH_PROMOCODE_NOT_VALID: TransactionCheckoutError = {
+  ...MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT,
+  errorType: 'promocode not valid',
+};
+
+export const MOCK_TRANSACTION_PAYMENT_ERROR_WITH_PAYMENT_FAILED: TransactionCheckoutError = {
+  ...MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT,
+  errorType: 'payment failed',
+};
+
+export const MOCK_TRANSACTION_PAYMENT_ERROR_WITH_ADDRESS_NOT_SUPPORTED: TransactionCheckoutError = {
+  ...MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT,
+  errorType: 'address not supported',
+};
+
+export const MOCK_TRANSACTION_PAYMENT_ERROR_WITH_UNKNOWN: TransactionCheckoutError = {
+  ...MOCK_TRANSACTION_PAYMENT_ERROR_WITH_CANCEL_PAYMENT,
+  errorType: 'unknown error',
+};
