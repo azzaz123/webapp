@@ -27,10 +27,8 @@ import { BuyerRequestsError } from '@api/core/errors/delivery/payview/buyer-requ
 import { NoCarrierOfficeAddressForUserError } from '@api/core/errors/delivery/payview/buyer-requests/no-carrier-office-address-for-user.error';
 
 describe('BuyerRequestsApiService', () => {
-  const MOCK_UUID: string = '12345';
   let service: BuyerRequestsApiService;
   let buyerRequestsHttpService: BuyerRequestsHttpService;
-  let uuidService: UuidService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -53,19 +51,10 @@ describe('BuyerRequestsApiService', () => {
             },
           },
         },
-        {
-          provide: UuidService,
-          useValue: {
-            getUUID() {
-              return MOCK_UUID;
-            },
-          },
-        },
       ],
     });
     service = TestBed.inject(BuyerRequestsApiService);
     buyerRequestsHttpService = TestBed.inject(BuyerRequestsHttpService);
-    uuidService = TestBed.inject(UuidService);
   });
 
   it('should be created', () => {
@@ -118,15 +107,10 @@ describe('BuyerRequestsApiService', () => {
     describe('and the request succeed', () => {
       beforeEach(fakeAsync(() => {
         spyOn(buyerRequestsHttpService, 'buy').and.callThrough();
-        spyOn(uuidService, 'getUUID').and.callThrough();
 
         service.buyRequest(MOCK_PAYVIEW_STATE).subscribe();
         tick();
       }));
-
-      it('should generate new uuid for the buy request', () => {
-        expect(uuidService.getUUID).toHaveBeenCalledTimes(1);
-      });
 
       it('should ask server to buy the buyer request', () => {
         expect(buyerRequestsHttpService.buy).toHaveBeenCalledTimes(1);
@@ -139,17 +123,12 @@ describe('BuyerRequestsApiService', () => {
 
       beforeEach(fakeAsync(() => {
         spyOn(buyerRequestsHttpService, 'buy').and.returnValue(throwError(MOCK_NO_CARRIER_OFFICE_ADDRESS_FOR_USER_ERROR_RESPONSE));
-        spyOn(uuidService, 'getUUID').and.callThrough();
 
         service.buyRequest(MOCK_PAYVIEW_STATE).subscribe({
           error: (errorResponse: BuyerRequestsError[]) => (errors = errorResponse),
         });
         tick();
       }));
-
-      it('should generate new uuid for the buy request', () => {
-        expect(uuidService.getUUID).toHaveBeenCalledTimes(1);
-      });
 
       it('should ask server to buy the buyer request', () => {
         expect(buyerRequestsHttpService.buy).toHaveBeenCalledTimes(1);
@@ -166,15 +145,10 @@ describe('BuyerRequestsApiService', () => {
     describe('and the request succeed', () => {
       beforeEach(fakeAsync(() => {
         spyOn(buyerRequestsHttpService, 'buy').and.callThrough();
-        spyOn(uuidService, 'getUUID').and.callThrough();
 
         service.buyRequest(MOCK_PAYVIEW_STATE_WITH_CARRIER_OFFICE_DELIVERY_METHOD).subscribe();
         tick();
       }));
-
-      it('should generate new uuid for the buy request', () => {
-        expect(uuidService.getUUID).toHaveBeenCalledTimes(1);
-      });
 
       it('should ask server to buy the buyer request', () => {
         expect(buyerRequestsHttpService.buy).toHaveBeenCalledTimes(1);
@@ -187,15 +161,10 @@ describe('BuyerRequestsApiService', () => {
     describe('and the request succeed', () => {
       beforeEach(fakeAsync(() => {
         spyOn(buyerRequestsHttpService, 'buy').and.callThrough();
-        spyOn(uuidService, 'getUUID').and.callThrough();
 
         service.buyRequest(MOCK_PAYVIEW_STATE_WITH_PROMOCODE).subscribe();
         tick();
       }));
-
-      it('should generate new uuid for the buy request', () => {
-        expect(uuidService.getUUID).toHaveBeenCalledTimes(1);
-      });
 
       it('should ask server to buy the buyer request', () => {
         expect(buyerRequestsHttpService.buy).toHaveBeenCalledTimes(1);

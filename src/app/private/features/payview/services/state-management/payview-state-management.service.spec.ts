@@ -29,6 +29,9 @@ import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtu
 
 describe('PayviewStateManagementService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
+  const mockUuid: string = '1234-abcd';
+  const mockBuyerRequestId: string = 'abc-123';
+
   let service: PayviewStateManagementService;
   let payviewService: PayviewService;
 
@@ -55,6 +58,7 @@ describe('PayviewStateManagementService', () => {
     });
     payviewService = TestBed.inject(PayviewService);
     service = TestBed.inject(PayviewStateManagementService);
+    service.buyerRequestId = mockUuid;
   });
 
   it('should be created', () => {
@@ -87,7 +91,7 @@ describe('PayviewStateManagementService', () => {
 
     it('should request the payview state', fakeAsync(() => {
       expect(getCurrentStateSpy).toHaveBeenCalledTimes(1);
-      expect(getCurrentStateSpy).toHaveBeenCalledWith(fakeItemHash);
+      expect(getCurrentStateSpy).toHaveBeenCalledWith(fakeItemHash, mockUuid);
     }));
 
     it('should update the payview state ', fakeAsync(() => {
@@ -322,7 +326,7 @@ describe('PayviewStateManagementService', () => {
 
       it('should call to payview service', fakeAsync(() => {
         expect(payviewService.getCurrentState).toHaveBeenCalledTimes(1);
-        expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash);
+        expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash, mockUuid);
       }));
 
       it('should update the payview state ', fakeAsync(() => {
@@ -833,7 +837,7 @@ describe('PayviewStateManagementService', () => {
 
     it('should request the payview state', fakeAsync(() => {
       expect(payviewService.getCurrentState).toHaveBeenCalledTimes(1);
-      expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash);
+      expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash, mockUuid);
     }));
 
     it('should not update the payview state ', fakeAsync(() => {
@@ -843,5 +847,23 @@ describe('PayviewStateManagementService', () => {
     it('should update the item hash', fakeAsync(() => {
       expect(itemHash).toBeTruthy();
     }));
+  });
+
+  describe('WHEN defining buyer request id', () => {
+    let payviewState: PayviewState;
+
+    beforeEach(() => {
+      service.payViewState$.subscribe((newState: PayviewState) => {
+        payviewState = newState;
+      });
+
+      service.buyerRequestId = mockBuyerRequestId;
+    });
+
+    it('should update the state subject', () => {
+      expect(payviewState).toStrictEqual({
+        buyerRequestId: mockBuyerRequestId,
+      });
+    });
   });
 });

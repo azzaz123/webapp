@@ -10,4 +10,5 @@ export interface PayviewState {
   item: PayviewItem;
   itemDetails: BuyerRequestsItemsDetails;
   payment: PayviewStatePayment;
+  buyerRequestId: string;
 }
