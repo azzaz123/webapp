@@ -8,11 +8,17 @@
             <h1 class="header-title" i18n="@@web_favorites_pages_201">Your favorites</h1>
           </div>
           <div class="header-row">
-            <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n="@@web_wallapop_products_like_most">These are the Wallapop products that you like the most</h4>
-            <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n="@@web_wallapop_profiles_like_most">These are the Wallapop profiles that you like the most</h4>
+            <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n="@@web_wallapop_products_like_most">
+              These are the Wallapop products that you like the most</h4>
+            <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n="@@web_wallapop_profiles_like_most">
+              These are the Wallapop profiles that you like the most</h4>
+            <h4 class="header-subtitle" *ngIf="selectedStatus === 'searches'"
+                i18n="@@favorites_view_tab_searches_subtitle_web_specific">
+              These are the searches you have marked as favorites</h4>
           </div>
         </div>
-        <div class="col-2 offset-1 header-numbers">
+        <div class="col-2 offset-1 header-numbers"
+             *ngIf="selectedStatus === 'products' || selectedStatus === 'profiles'">
           <div class="d-flex align-items-center justify-content-end">
             <div class="text-center">
               <p class="header-numbers-top">{{numberOfFavorites}}</p>
@@ -29,33 +35,48 @@
       <div class="col-12">
         <nav class="nav filters-nav">
           <a (click)="filterByStatus('products')" [ngClass]="{active: selectedStatus === 'products'}" class="nav-link"
-            i18n="@@web_favorites_pages_204">Products</a>
+             i18n="@@web_favorites_pages_204">Products</a>
           <a (click)="filterByStatus('profiles')" [ngClass]="{active: selectedStatus === 'profiles'}" class="nav-link"
-            i18n="@@web_favorites_pages_205">Profiles</a>
+             i18n="@@web_favorites_pages_205">Profiles</a>
+          <a *ngIf="featureFlagService.isExperimentalFeaturesEnabled()" (click)="filterByStatus('searches')"
+             [ngClass]="{active: selectedStatus === 'searches'}" class="nav-link"
+             i18n="@@favorites_view_tab_searches_label">Searches</a>
         </nav>
       </div>
     </div>
     <div class="mt-3">
       <div class="favorites-empty-state"
-        *ngIf="!items.length && !loading && selectedStatus === 'products' || !profiles.length && !loading && selectedStatus === 'profiles'">
+           *ngIf="!items.length && !loading && selectedStatus === 'products' || !profiles.length && !loading && selectedStatus === 'profiles'">
         <img src="/assets/images/placeholders/favorites-empty-state.svg" class="d-none d-md-block w-100 h-100">
-        <img src="/assets/images/placeholders/favorites-empty-state-mobile.svg" width="304" height="547" class="d-block d-md-none">
-        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'products'" i18n="@@web_favorites_pages_206">In this list you can see all
+        <img src="/assets/images/placeholders/favorites-empty-state-mobile.svg" width="304" height="547"
+             class="d-block d-md-none">
+        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'products'" i18n="@@web_favorites_pages_206">In
+          this list you can see all
           the products you
-          saved as favourite</div>
-        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'profiles'" i18n="@@web_favorites_pages_207">In this list you can see all
+          saved as favourite
+        </div>
+        <div class="d-none d-md-block message" *ngIf="selectedStatus === 'profiles'" i18n="@@web_favorites_pages_207">In
+          this list you can see all
           the profiles you
-          saved as favourite</div>
+          saved as favourite
+        </div>
       </div>
       <div class="cards-container" *ngIf="selectedStatus === 'products'">
         <div class="card-wrapper" *ngFor="let item of items; let i = index">
-          <tsl-item-card-favourite [item]="item" (favoriteChange)="onFavoriteChange($event)" (click)="trackClickFavoriteItem(i)"> </tsl-item-card-favourite>
+          <tsl-item-card-favourite [item]="item" (favoriteChange)="onFavoriteChange($event)"
+                                   (click)="trackClickFavoriteItem(i)"></tsl-item-card-favourite>
         </div>
       </div>
       <div class="cards-container" *ngIf="selectedStatus === 'profiles'">
         <div class="card-wrapper" *ngFor="let profile of profiles">
           <tsl-profile-card-favorite [profile]="profile" (favoriteProfileChange)="onFavoriteProfileChange($event)">
           </tsl-profile-card-favorite>
+        </div>
+      </div>
+
+      <div class="cards-container" *ngIf="selectedStatus === 'searches'">
+        <div class="card-wrapper">
+
         </div>
       </div>
     </div>

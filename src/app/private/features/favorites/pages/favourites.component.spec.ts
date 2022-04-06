@@ -10,6 +10,8 @@ import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 import { MeApiService } from '@api/me/me-api.service';
 import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
 import { By } from '@angular/platform-browser';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 describe('FavouritesComponent', () => {
   let component: FavouritesComponent;
@@ -55,6 +57,7 @@ describe('FavouritesComponent', () => {
               trackClickItemCardEvent() {},
             },
           },
+          { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         ],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
