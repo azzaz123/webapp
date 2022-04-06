@@ -26,8 +26,7 @@ import { delay, mergeMap } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
 import { CreditCard } from '@api/core/model';
 import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
-import { AnalyticsService } from '@core/analytics/analytics.service';
-import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
+import { PayviewTrackingEventsService } from '../payview-tracking-events/payview-tracking-events.service';
 
 describe('PayviewStateManagementService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
@@ -56,7 +55,12 @@ describe('PayviewStateManagementService', () => {
             setUserPaymentPreferences() {},
           },
         },
-        { provide: AnalyticsService, useClass: MockAnalyticsService },
+        {
+          provide: PayviewTrackingEventsService,
+          useValue: {
+            trackTransactionPaymentError() {},
+          },
+        },
       ],
     });
     payviewService = TestBed.inject(PayviewService);
