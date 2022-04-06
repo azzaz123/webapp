@@ -3,6 +3,7 @@ import { NavLink, SortLink } from './nav-link.interface';
 import { FullScreenModalComponent } from '../modals/full-screen-menu/full-screen-modal.component';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { STATUS } from '@private/features/catalog/components/selected-items/selected-product.interface';
 
 @Component({
   selector: 'tsl-nav-links',

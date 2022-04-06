@@ -12,7 +12,6 @@ import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH,
 export class ItemAvatarComponent implements OnChanges {
   @Input() fallbackLight: boolean;
   @Input() item: Item;
-  @Input() inboxItem: InboxItem;
   @Input() size: 'small' | 'medium' | 'big' | 'bigger' | 'xl' | 'rectangle-xl' | 'full';
   @Input() showAvailableStatus = true;
   public avatar: string;

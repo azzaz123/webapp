@@ -244,11 +244,12 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.logout().subscribe();
   }
 
-  public filterByStatus(status: STATUS) {
+  public filterByStatus(status: string) {
+    const newStatus = status as STATUS;
     this.deselect();
 
-    if (status !== this.selectedStatus) {
-      this.selectedStatus = status;
+    if (newStatus !== this.selectedStatus) {
+      this.selectedStatus = newStatus;
       this.nextPage = null;
       this.getItems();
       this.getNumberOfProducts();

@@ -8,7 +8,7 @@
     <label i18n="@@web_picture_upload_534">Main image</label>
   </div>
   <div class="col-12 col-md-6 offset-md-1 d-flex">
-    <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.medium" size="80"></tsl-user-avatar>
+    <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.medium" [size]="80"></tsl-user-avatar>
     <div class="upload-button">
       <label class="btn btn-upload"
         [ngClass]="{disabled: isLoading}">
