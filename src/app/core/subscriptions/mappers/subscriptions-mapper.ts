@@ -72,7 +72,7 @@ function mapSubscription(subscription: SubscriptionsV3Response): SubscriptionsRe
 }
 
 function mapTiers(tiersDto: TierDto[]): Tier[] {
-  const tiers: Tier[] = tiersDto.map((tierDto) => {
+  return tiersDto.map((tierDto) => {
     const tier: Tier = {
       ...tierDto,
       limit: tierDto.perks.find((perk) => perk.name === PERK_NAMES.LIMIT)
@@ -91,7 +91,6 @@ function mapTiers(tiersDto: TierDto[]): Tier[] {
     }
     return tier;
   });
-  return tiers;
 }
 
 function mapBumps(perks: Perks[]): Bumps[] {
@@ -104,6 +103,7 @@ function mapBumps(perks: Perks[]): Bumps[] {
         name: bump.name as BUMP_NAMES,
         used: bump.used ? bump.used : 0,
         duration_days: bump.duration_days ? bump.duration_days : 0,
+        extra: bump.extra ? bump.extra : 0,
       });
     });
   return bumps;

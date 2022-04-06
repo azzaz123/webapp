@@ -16,25 +16,42 @@
       </ng-template>
     </tsl-discount-badge>
     <div class="SubscriptionCard__title mb-1">{{ subscription.category_name }}</div>
-    <ng-container *ngIf="subscription.selected_tier?.bumps.length; else noBumps">
+    <ng-container *ngIf="subscription.selected_tier?.bumps[0] as zoneBumps; else noBumps">
       <div class="SubscriptionCard__benefits mb-2">
         <div class="d-flex mb-2">
           <tsl-svg-icon class="mr-2 mt-1" src="/assets/icons/check.svg"></tsl-svg-icon>
           <span>{{ descriptionText }}</span>
         </div>
+        <ng-container></ng-container>
         <div class="d-flex mb-2">
           <tsl-svg-icon class="mr-2 mt-1" src="/assets/icons/check.svg"></tsl-svg-icon>
           <span i18n="@@pro_subscription_purchase_subscription_details_list_monthly_bumps_text"
-            >Highlight {{ subscription.selected_tier.bumps[0].quantity }} items monthly (duration:
-            {{ subscription.selected_tier.bumps[0].duration_days }} days)</span
+            >Highlight {{ zoneBumps.quantity }} items monthly (duration: {{ zoneBumps.duration_days }} days)</span
           >
         </div>
         <div class="text-md-left">
           <b
             ><span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_bumps_applied_text"
-              >{{ subscription.selected_tier.bumps[0].used }}/{{ subscription.selected_tier.bumps[0].quantity }} items highlighted</span
+              >{{ zoneBumps.used }}/{{ zoneBumps.quantity }} items highlighted</span
             >
           </b>
+        </div>
+        <div *ngIf="zoneBumps.extra" class="text-md-left">
+          <b
+            ><span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_1_text_web_specific"
+              >Extra!</span
+            ></b
+          ><span ngPreserveWhitespaces> </span>
+          <span
+            *ngIf="zoneBumps.extra === 1"
+            i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.one"
+            >Highlight {{ zoneBumps.extra }} extra item</span
+          >
+          <span
+            *ngIf="zoneBumps.extra !== 1"
+            i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.other"
+            >Highlight {{ zoneBumps.extra }} extra items</span
+          >
         </div>
       </div>
     </ng-container>
