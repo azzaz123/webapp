@@ -26,7 +26,7 @@ export class FavouritesComponent implements OnInit {
 
   public items: Item[] = [];
   public profiles: Profile[] = [];
-  //TO-DO refactor any below
+  //TO-DO refactor type any below
   public searches: any[] = [];
   public selectedStatus = 'products';
   public loading = false;
