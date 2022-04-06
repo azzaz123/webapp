@@ -28,8 +28,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
 import { take } from 'rxjs/operators';
-import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
-import { UserService } from '@core/user/user.service';
 import {
   getClickHelpTransactionalEventPropertiesFromPayviewState,
   getClickAddEditCardEventPropertiesFromPayviewState,
@@ -75,8 +73,6 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private paymentService: PayviewPaymentService,
     private payviewTrackingEventsService: PayviewTrackingEventsService,
     private buyService: PayviewBuyService,
-    private buyerRequestApiService: BuyerRequestsApiService,
-    private userService: UserService,
     private uuidService: UuidService
   ) {}
 

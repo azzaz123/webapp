@@ -123,8 +123,6 @@ class FakeComponent extends PayviewModalComponent {
     paymentService: PayviewPaymentService,
     payviewTrackingEventsService: PayviewTrackingEventsService,
     buyService: PayviewBuyService,
-    buyerRequestApiService: BuyerRequestsApiService,
-    userService: UserService,
     uuidService: UuidService
   ) {
     super(
@@ -137,8 +135,6 @@ class FakeComponent extends PayviewModalComponent {
       paymentService,
       payviewTrackingEventsService,
       buyService,
-      buyerRequestApiService,
-      userService,
       uuidService
     );
   }
@@ -179,8 +175,6 @@ describe('PayviewModalComponent', () => {
   let stepper: StepperComponent;
   let stepperSpy: jasmine.Spy;
   let payviewTrackingEventsService: PayviewTrackingEventsService;
-  let buyerRequestApiService: BuyerRequestsApiService;
-  let userService: UserService;
   let buyService: PayviewBuyService;
   let uuidService: UuidService;
 
@@ -309,8 +303,6 @@ describe('PayviewModalComponent', () => {
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
       payviewTrackingEventsService = TestBed.inject(PayviewTrackingEventsService);
-      buyerRequestApiService = TestBed.inject(BuyerRequestsApiService);
-      userService = TestBed.inject(UserService);
       buyService = TestBed.inject(PayviewBuyService);
       uuidService = TestBed.inject(UuidService);
 
