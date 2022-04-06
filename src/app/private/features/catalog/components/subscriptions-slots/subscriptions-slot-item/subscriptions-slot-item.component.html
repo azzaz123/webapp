@@ -4,7 +4,7 @@
   }">
 
   <div class="SubscriptionsSlotItem__icon mr-3 d-sm-flex justify-content-center align-items-center d-none">
-    <img src="/assets/images/subscriptions/types/{{subscriptionSlot.subscription.category_icon}}.svg">
+    <img src="/assets/images/subscriptions/types/{{subscriptionSlot.subscription.category_icon}}.svg" alt="subscription icon">
   </div>
 
   <div class="SubscriptionsSlotItem__info">
@@ -29,8 +29,7 @@
       <div *ngIf="zoneBump.extra">
         <b><span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_1_text_web_specific"
         >Extra!</span></b><span ngPreserveWhitespaces> </span>
-        <span *ngIf="zoneBump.extra === 1" i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.one">Highlight {{zoneBump.extra}} extra item</span>
-        <span *ngIf="zoneBump.extra !== 1" i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.other">Highlight {{zoneBump.extra}} extra items</span>
+        <span>{{ extraBumpsText(zoneBump.extra) }}</span>
       </div>
     </div>
     </ng-container>
