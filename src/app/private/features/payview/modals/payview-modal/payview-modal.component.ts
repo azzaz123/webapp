@@ -334,12 +334,11 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private trackTransactionPaymentSuccessEvent(): void {
     const buyRequestId: string = this.getBuyRequestId();
-    const buyerCountryCode: string = this.getBuyerCountryCode();
     this.payviewState$
       .pipe(take(1))
       .subscribe((payviewState: PayviewState) =>
         this.payviewTrackingEventsService.trackTransactionPaymentSuccess(
-          getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState, buyRequestId, buyerCountryCode)
+          getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState, buyRequestId)
         )
       );
   }
@@ -349,15 +348,5 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.buyerRequestApiService.buyRequestId$.pipe(take(1)).subscribe((requestId) => (buyRequestId = requestId));
 
     return buyRequestId;
-  }
-
-  private getBuyerCountryCode(): string {
-    let countryCode: string;
-    this.userService
-      .getLoggedUserInformation()
-      .pipe(take(1))
-      .subscribe((userCountryCode) => (countryCode = userCountryCode.location.country_code));
-
-    return countryCode;
   }
 }

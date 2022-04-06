@@ -106,18 +106,14 @@ export function getPayTransactionEventPropertiesFromPayviewState(payviewState: P
   };
 }
 
-export function getTransactionPaymentSuccessPropertiesFromPayviewState(
-  payviewState: PayviewState,
-  id: string,
-  buyerCountryCode: string
-): TransactionPaymentSuccess {
+export function getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState: PayviewState, id: string): TransactionPaymentSuccess {
   return {
     screenId: SCREEN_IDS.Checkout,
     itemId: payviewState.item.id,
     paymentMethod: SELECTED_PAYMENT_METHOD_CONVERTER[payviewState.payment.preferences.preferences.paymentMethod],
     requestId: id,
-    country: buyerCountryCode,
-    language: buyerCountryCode,
+    country: payviewState.delivery.address.country,
+    language: payviewState.delivery.address.country,
   };
 }
 
