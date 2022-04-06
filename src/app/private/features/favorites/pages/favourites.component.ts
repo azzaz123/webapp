@@ -9,6 +9,8 @@ import { MeApiService } from '@api/me/me-api.service';
 import { finalize, take } from 'rxjs/operators';
 import { PaginatedList } from '@api/core/model';
 import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 
 @Component({
   selector: 'tsl-favourites',
@@ -16,8 +18,16 @@ import { FavouritesListTrackingEventsService } from '../services/favourites-list
   styleUrls: ['./favourites.component.scss'],
 })
 export class FavouritesComponent implements OnInit {
+  public readonly emptyStateSearchesProperties: EmptyStateProperties = {
+    title: $localize`:@@engagement_empty_state_saved_searches_title_web_specific:Things you want to find`,
+    description: $localize`:@@engagement_empty_state_saved_searches_message_web_specific:To save a search, tap the \"Favorite\" icon when making one. We'll notify you when there are items that match your criteria.`,
+    illustrationSrc: '/assets/images/commons/pop-save-search.svg',
+  };
+
   public items: Item[] = [];
   public profiles: Profile[] = [];
+  //TO-DO refactor type any below
+  public searches: any[] = [];
   public selectedStatus = 'products';
   public loading = false;
   public end = false;
@@ -29,7 +39,8 @@ export class FavouritesComponent implements OnInit {
     public meApiService: MeApiService,
     private userService: UserService,
     private profileService: ProfileService,
-    private favouritesListTrackingEventsService: FavouritesListTrackingEventsService
+    private favouritesListTrackingEventsService: FavouritesListTrackingEventsService,
+    public featureFlagService: FeatureFlagService
   ) {}
 
   public ngOnInit() {
@@ -40,7 +51,13 @@ export class FavouritesComponent implements OnInit {
   public filterByStatus(status: string) {
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
-      this.selectedStatus === 'products' ? this.getItems() : this.getProfiles();
+      if (this.selectedStatus === 'products') {
+        this.getItems();
+      } else if (this.selectedStatus === 'profiles') {
+        this.getProfiles();
+      } else {
+        return;
+      }
       this.getNumberOfFavorites();
     }
   }
@@ -104,7 +121,13 @@ export class FavouritesComponent implements OnInit {
   }
 
   public loadMore() {
-    this.selectedStatus === 'products' ? this.getItems(true) : this.getProfiles(true);
+    if (this.selectedStatus === 'products') {
+      this.getItems(true);
+    } else if (this.selectedStatus === 'profiles') {
+      this.getProfiles(true);
+    } else {
+      return;
+    }
   }
 
   public getNumberOfFavorites() {

@@ -11,6 +11,7 @@ import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-curre
 import { MeApiModule } from '@api/me/me-api.module';
 import { FavouritesListTrackingEventsService } from './services/favourites-list-tracking-events.service';
 import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
+import { EmptyStateModule } from '@public/shared/components/empty-state/empty-state.module';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { ProBadgeModule } from '@shared/pro-badge/pro-badge.module';
     CustomCurrencyModule,
     MeApiModule,
     ProBadgeModule,
+    EmptyStateModule,
   ],
   declarations: [favoritesRoutedComponents, ItemCardFavouriteComponent, ProfileCardFavoriteComponent, ProfileImagesComponent],
   providers: [FavouritesListTrackingEventsService],
