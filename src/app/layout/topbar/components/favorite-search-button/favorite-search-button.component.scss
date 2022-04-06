@@ -1,0 +1,298 @@
+@import '~style/common';
+
+$vertical-padding: $spacing-ms;
+
+:host {
+  display: inline-block;
+
+  &[className*='btn-block'] {
+    display: block;
+    width: 100%;
+  }
+}
+
+.btn {
+  color: $white;
+  padding: $vertical-padding $spacing-ml;
+  border-radius: $button-border-radius;
+  transition: all 0.2s ease-in-out, padding 0s;
+
+  &:focus,
+  &.focus {
+    box-shadow: none;
+  }
+
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+
+  &.btn-reserve {
+    background-color: $skyblue-dark;
+  }
+
+  &.btn-delete {
+    background-color: $negative-main;
+  }
+
+  &:not([disabled]):not(.btn-primary):hover {
+    opacity: 0.8;
+  }
+
+  &.btn-primary {
+    &--bold {
+      font-weight: $font-weight-chunky;
+    }
+
+    &.disabled,
+    &:disabled {
+      cursor: inherit;
+
+      &:active {
+        background-color: $walla-main;
+        border-color: transparent;
+      }
+    }
+
+    &:not([disabled]) {
+      &:hover {
+        background-color: $walla-dark;
+        border-color: transparent;
+      }
+    }
+  }
+
+  &.btn-secondary {
+    color: $walla-main;
+    background-color: $white;
+    border-color: $blue-grey-4;
+
+    &:hover {
+      color: #0f9989;
+      border-color: #0f9989;
+    }
+
+    &:focus {
+      color: $walla-main;
+      border-color: $blue-grey-4;
+      background-color: $white;
+    }
+  }
+
+  &.loading {
+    tsl-svg-icon ::ng-deep svg {
+      margin: 0 auto;
+    }
+  }
+
+  &.btn-big {
+    padding-left: $spacing-xxxl;
+    padding-right: $spacing-xxxl;
+  }
+
+  &.btn-filter {
+    padding-top: $spacing-s;
+    padding-bottom: $spacing-s;
+  }
+
+  &.btn-feature {
+    background: $blue-grey-2;
+    border-color: transparent;
+
+    &:hover {
+      background: $walla-main;
+    }
+  }
+
+  &.btn-inactive {
+    background-color: $white;
+    border: 2px dashed $magenta-main;
+    color: $magenta-main;
+    cursor: default;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+    border-radius: 5px;
+    width: 170px;
+  }
+
+  &.btn-outline-primary {
+    color: $walla-main;
+
+    &:hover {
+      color: $white;
+
+      &:disabled {
+        color: $blue-grey-4;
+        cursor: not-allowed;
+      }
+    }
+
+    &:disabled {
+      border-color: $blue-grey-4;
+      color: $blue-grey-4;
+    }
+  }
+
+  &.btn-gray {
+    background-color: $blue-grey-5;
+    color: $blue-grey-3;
+  }
+
+  &.btn-third-voice {
+    $third-voice-vertical-padding: $spacing-s;
+    $third-voice-text-line-height: 1.5;
+    $third-voice-height: $third-voice-vertical-padding * 2 + $third-voice-text-line-height * 16px;
+
+    min-height: $third-voice-height;
+    max-height: $third-voice-height;
+    padding: $third-voice-vertical-padding $spacing-xl;
+    font-size: $font-size-s;
+    line-height: $third-voice-text-line-height;
+    background-color: $softblue-dark;
+  }
+
+  &.stripe {
+    padding: $spacing-s $spacing-ml;
+  }
+
+  &.payment {
+    padding: 0 $spacing-ml;
+  }
+
+  &.basic {
+    color: $walla-main;
+    background-color: transparent;
+    border: 0;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &-dark {
+      color: $blue-grey-1;
+    }
+
+    &--grey {
+      color: $blue-grey-3;
+    }
+  }
+
+  &.invoice {
+    color: $blue-grey-1;
+    background-color: transparent;
+    border: 0;
+    font-weight: bold;
+    font-size: $font-size-s;
+
+    &--selected {
+      background-color: $blue-grey-1;
+      color: $white;
+    }
+  }
+
+  &.btn-dark {
+    background-color: $blue-grey-1;
+    padding: 0 $spacing-l;
+    color: $white;
+    border: 0;
+    font-weight: bold;
+    font-size: $font-size-s;
+    width: 170px;
+    height: 40px;
+  }
+
+  &.btn-white {
+    background-color: $white;
+    padding: 0 $spacing-l;
+    border: 0;
+    font-weight: bold;
+    font-size: $font-size-s;
+    height: 40px;
+
+    @include media-breakpoint-up(md) {
+      width: 170px;
+    }
+
+    &--danger {
+      color: $negative-main;
+    }
+
+    &--warning {
+      color: $orange-main;
+    }
+
+    &--success {
+      color: $walla-main;
+    }
+
+    &--medium-fontsize {
+      font-size: $font-size-m !important;
+    }
+  }
+
+  &.btn-activation {
+    width: 170px;
+    height: 40px;
+    padding: 0 $spacing-ml;
+    padding-left: $spacing-ms;
+    font-size: $font-size-s;
+    @include media-breakpoint-down(md) {
+      width: 85px;
+      padding: 0;
+      span {
+        display: none;
+      }
+    }
+  }
+
+  &.btn-icon {
+    @include square(40px);
+    align-items: center;
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+  }
+
+  &.btn-modal-primary {
+    height: 40px;
+    padding: 0 $spacing-ml;
+    font-size: $font-size-s;
+    font-weight: bold;
+    width: 100%;
+    max-width: 371px;
+  }
+
+  &.btn-link {
+    color: $walla-main;
+
+    &--negative {
+      color: $negative-main;
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  &--width {
+    width: 100%;
+  }
+
+  &--big {
+    height: 50px;
+  }
+
+  &--noPadding {
+    padding: 0;
+  }
+
+  &--thin {
+    padding: 11px 19px;
+    line-height: 20px;
+    border: 0px;
+  }
+}
