@@ -26,15 +26,15 @@
             No balance in your wallet. If you have credit left, you can transfer it to your bank for free
           </li>
           <li *ngIf="isProUser" class="UnsubscribeModal__description--pro my-2">
-            <span i18n="@@delete_account_view_non_pro_user_check_subscriptions_part_1_text_web_specific"
-              >No active Wallapop PRO subscriptions
-            </span>
+            <span class="mr-1" i18n="@@delete_account_view_non_pro_user_check_subscriptions_part_1_text_web_specific"
+              >No active Wallapop PRO subscriptions</span
+            >
             <a [href]="HOW_TO_UNSUBSCRIBE.link" target="_blank">{{ HOW_TO_UNSUBSCRIBE.label }}</a>
           </li>
         </ul>
-        <span i18n="@@delete_account_view_all_users_delete_account_more_info_part_1_text_web_specific">
-          To find out what is entailed in the deletion of your Wallapop account, check
-        </span>
+        <span class="mr-1" i18n="@@delete_account_view_all_users_delete_account_more_info_part_1_text_web_specific">
+          To find out what is entailed in the deletion of your Wallapop account, check</span
+        >
         <a [href]="DELETE_ACCOUNT_ARTICLE.link" target="_blank">{{ DELETE_ACCOUNT_ARTICLE.label }}</a>
       </ng-template>
     </div>
