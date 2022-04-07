@@ -98,8 +98,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.payviewStateManagementService.refreshByDelivery();
   }
 
-  public closeModal(): void {
-    this.closeCallback && this.closeCallback();
+  public closeModal(buyRequestId: string = null): void {
+    this.closeCallback && this.closeCallback(buyRequestId);
   }
 
   public getFullAddress(methods: DeliveryBuyerDeliveryMethods): string {
@@ -246,9 +246,14 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       })
     );
     this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_GET_CURRENT_STATE, (error: PayviewError) => {
+        this.closeModal();
+      })
+    );
+    this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY, () => {
         this.trackTransactionPaymentSuccessEvent();
-        // TODO - 18/03/2022 - Do something like closing the payview, show success toast or so on...
+        this.closeModalOnPaymentSuccess();
       })
     );
     this.subscriptions.push(
@@ -283,6 +288,10 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
         subscription.unsubscribe();
       }
     });
+  }
+
+  private closeModalOnPaymentSuccess(): void {
+    this.payviewState$.pipe(take(1)).subscribe((payviewState: PayviewState) => this.closeModal(payviewState.buyerRequestId));
   }
 
   private trackClickAddEditCardEvent(): void {

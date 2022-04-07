@@ -1,3 +1,4 @@
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
@@ -26,18 +27,19 @@ export class PayviewComponent implements OnInit {
     this.route.navigate([PRIVATE_PATHS.CHAT]);
   }
 
+  private redirectToTTS(requestId: string): void {
+    const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
+    this.route.navigate([route]);
+  }
+
   private openModal(itemHash: string): void {
     const modalRef = this.modalService.open(PayviewModalComponent, { backdrop: 'static', windowClass: DELIVERY_MODAL_CLASSNAME });
     modalRef.componentInstance.itemHash = itemHash;
     modalRef.componentInstance.closeCallback = modalRef.close.bind(modalRef);
 
     modalRef.result.then(
-      () => {
-        this.navigateToChat();
-      },
-      () => {
-        this.navigateToChat();
-      }
+      (requestId: string) => (requestId ? this.redirectToTTS(requestId) : this.navigateToChat()),
+      () => this.navigateToChat()
     );
   }
 }
