@@ -40,6 +40,8 @@ import {
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 import { headerTitles } from '../../constants/header-titles';
 import { UuidService } from '@core/uuid/uuid.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -74,7 +76,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private paymentService: PayviewPaymentService,
     private payviewTrackingEventsService: PayviewTrackingEventsService,
     private buyService: PayviewBuyService,
-    private uuidService: UuidService
+    private uuidService: UuidService,
+    private toastService: ToastService
   ) {}
 
   public ngOnDestroy(): void {
@@ -265,6 +268,12 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       })
     );
     this.subscriptions.push(
+      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.ERROR, (error: PayviewError) => {
+        this.showErrorToast(error.message);
+      })
+    );
+
+    this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY, () => {
         this.trackTransactionPaymentSuccessEvent();
         // TODO - 18/03/2022 - Do something like closing the payview, show success toast or so on...
@@ -365,5 +374,12 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private markPayviewAsNotLoading(): void {
     this.isPayviewLoadingSubject.next(false);
+  }
+
+  private showErrorToast(text: string): void {
+    this.toastService.show({
+      text,
+      type: TOAST_TYPES.ERROR,
+    });
   }
 }
