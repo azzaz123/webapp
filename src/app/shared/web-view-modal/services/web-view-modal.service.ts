@@ -13,7 +13,7 @@ export class WebViewModalService {
     const modalref = this.modalService.open(WebViewModalComponent, { backdrop: 'static', windowClass: modalClassName });
     modalref.componentInstance.startUrl = url;
     modalref.componentInstance.title = title;
-    modalref.componentInstance.onCloseCallback = modalref.close.bind(modalref);
+    modalref.componentInstance.closeCallback = modalref.close.bind(modalref);
     return from(modalref.result);
   }
 }

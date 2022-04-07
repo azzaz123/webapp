@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 export class WebViewModalComponent implements AfterViewInit, OnDestroy {
   @Input() startUrl: string;
   @Input() title: string;
-  @Input() onCloseCallback: Function;
+  @Input() closeCallback: Function;
   @ViewChild('webview', { static: true }) webviewElement: ElementRef<HTMLIFrameElement>;
 
   public readonly CLOSE_ICON_SRC: string = '/assets/icons/cross.svg';
@@ -22,9 +22,9 @@ export class WebViewModalComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.iframeRef.setAttribute('src', this.startUrl);
-    this.subscription.add(this.windowMessageService.listen(this.window).subscribe(() => this.runOnCloseCallback()));
+    this.subscription.add(this.windowMessageService.listen(this.window).subscribe(() => this.closeModal()));
     try {
-      this.subscription.add(this.windowMessageService.listen(this.iframeRef.contentWindow).subscribe(() => this.runOnCloseCallback()));
+      this.subscription.add(this.windowMessageService.listen(this.iframeRef.contentWindow).subscribe(() => this.closeModal()));
     } catch {}
   }
 
@@ -32,9 +32,9 @@ export class WebViewModalComponent implements AfterViewInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  public runOnCloseCallback(): void {
-    if (!!this.onCloseCallback) {
-      this.onCloseCallback(true);
+  public closeModal(closedByUser: boolean = false): void {
+    if (!!this.closeCallback) {
+      this.closeCallback(closedByUser);
     }
   }
 
