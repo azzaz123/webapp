@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, EventEmitter, Output } from '@angular/core';
 
 import { PAYVIEW_BUY_EVENT_TYPE } from '@private/features/payview/modules/buy/enums/payview-buy-event-type.enum';
 import { PayviewBuyService } from '@private/features/payview/modules/buy/services/payview-buy.service';
@@ -18,6 +18,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 })
 export class PayviewBuyOverviewComponent implements OnDestroy, OnInit {
   @Input() payviewState: PayviewState;
+  @Output() clickBuyButton: EventEmitter<void> = new EventEmitter();
 
   private subscription: Subscription;
 
@@ -32,6 +33,7 @@ export class PayviewBuyOverviewComponent implements OnDestroy, OnInit {
   }
 
   public buy(): void {
+    this.clickBuyButton.emit();
     const prePaymentError: PrePaymentError = prePaymentsErrorSelector(this.payviewState);
     if (prePaymentError) {
       this.showErrorToast(prePaymentError.message);

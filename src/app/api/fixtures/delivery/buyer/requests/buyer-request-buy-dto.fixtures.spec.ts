@@ -1,7 +1,8 @@
 import { BuyerRequestBuyDto } from '@api/delivery/buyer/requests/dtos/buyer-request-buy-dto.interface';
+import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
 
 export const MOCK_BUYER_REQUEST_BUY_DTO_WITH_BUYER_ADDRESS: BuyerRequestBuyDto = {
-  id: '12345',
+  id: MOCK_UUID,
   item_hash: 'p61v99q1rx65',
   seller_user_hash: 'v4z4rv0lx86y',
   offered_price: {
