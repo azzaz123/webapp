@@ -20,10 +20,19 @@
     z-index: 1;
     width: 28px;
     height: 28px;
+
     ::ng-deep svg path {
       fill: $blue-grey-3;
     }
   }
+
+  .FavoriteSearchButton__container {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   &__input {
     width: 100%;
     height: 42px;

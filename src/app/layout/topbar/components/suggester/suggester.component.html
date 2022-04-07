@@ -13,7 +13,11 @@
       (keydown.enter)="submitSearch()"
     />
   <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
-  <tsl-favorite-search-button></tsl-favorite-search-button>
+  <div class="FavoriteSearchButton__container">
+    <tsl-favorite-search-button [className]="className" [svgSrc]="svgSrc"
+                                [isActive]="isActive"></tsl-favorite-search-button>
+  </div>
+
   <tsl-svg-icon
     *ngIf="(searchBoxValue$ | async).keywords"
     (click)="resetKeyword()"
