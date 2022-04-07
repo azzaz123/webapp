@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-response.interface';
 
 @Component({
   selector: 'tsl-favorite-search-button',
@@ -6,9 +7,12 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./favorite-search-button.component.scss'],
 })
 export class FavoriteSearchButtonComponent {
-  @Input() className: string;
   @Input() isActive: boolean;
   @Input() svgSrc: string;
 
-  public onClick() {}
+  @Output() public clickedButton = new EventEmitter<boolean>();
+
+  public onClick() {
+    this.clickedButton.emit(this.isActive);
+  }
 }

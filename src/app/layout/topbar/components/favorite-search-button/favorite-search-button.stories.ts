@@ -18,19 +18,17 @@ const Template: Story<FavoriteSearchButtonComponent> = (args: FavoriteSearchButt
     declarations: [FavoriteSearchButtonComponent],
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
-  template: `<tsl-favorite-search-button [className]="className" [svgSrc]="svgSrc" [isActive]="isActive"></tsl-favorite-search-button>`,
+  template: `<tsl-favorite-search-button [svgSrc]="svgSrc" [isActive]="isActive"></tsl-favorite-search-button>`,
 });
 
 export const Active = Template.bind({});
 Active.args = {
-  className: 'search-active',
   isActive: true,
   svgSrc: '/assets/icons/fullheart-fs.svg',
 };
 
 export const Inactive = Template.bind({});
 Inactive.args = {
-  className: 'search-inactive',
   isActive: false,
   svgSrc: '/assets/icons/emptyheart-fs.svg',
 };

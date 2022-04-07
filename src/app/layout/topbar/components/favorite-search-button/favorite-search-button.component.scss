@@ -1,4 +1,13 @@
 @import '~style/common';
 
-.btn {
+.FavoriteButton {
+  box-sizing: border-box;
+  max-height: 30px;
+  max-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 21px;
+  background-color: $blue-grey-4;
+  border: 0;
 }
