@@ -2,9 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import {
+  BASE_PAYMENT_PREFERENCES_ENDPOINT,
   USER_PAYMENT_PREFERENCES_ENDPOINT,
   USER_PAYMENT_PREFERENCES_UPDATE_ENDPOINT,
 } from '@api/bff/payments/user-payment-preferences/http/endpoints';
+import { UuidService } from '@core/uuid/uuid.service';
 
 import { Observable } from 'rxjs';
 import { PaymentsUserPaymentPreferencesUpdateDto } from '../dtos/requests/payments-user-payment-preferences-update.interface';
@@ -18,6 +20,11 @@ export class PaymentsUserPaymentPreferencesHttpService {
 
   public get(): Observable<PaymentsUserPaymentPreferencesDto> {
     return this.http.get<PaymentsUserPaymentPreferencesDto>(USER_PAYMENT_PREFERENCES_ENDPOINT);
+  }
+
+  public create(body: PaymentsUserPaymentPreferencesUpdateDto): Observable<void> {
+    const id: string = UuidService.getUUID();
+    return this.http.post<void>(BASE_PAYMENT_PREFERENCES_ENDPOINT, { ...body, id });
   }
 
   public update(id: string, body: PaymentsUserPaymentPreferencesUpdateDto): Observable<void> {

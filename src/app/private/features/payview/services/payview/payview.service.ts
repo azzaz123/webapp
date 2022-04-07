@@ -147,7 +147,7 @@ export class PayviewService {
   }
 
   public setUserPaymentPreferences(preferences: PaymentsUserPaymentPreferences): Observable<void> {
-    return this.paymentPreferencesService.update(preferences);
+    return this.paymentPreferencesService.setUserPaymentPreferences(preferences);
   }
 
   public request(state: PayviewState): Observable<void> {
@@ -157,7 +157,7 @@ export class PayviewService {
   private sendPaymentUserInfo(paymentPreferences: PaymentsUserPaymentPreferences): Observable<void> {
     return this.paymentsClientBrowserInfoApiService
       .sendBrowserInfo()
-      .pipe(concatMap(() => this.paymentPreferencesService.update(paymentPreferences)));
+      .pipe(concatMap(() => this.setUserPaymentPreferences(paymentPreferences)));
   }
 
   private buyFlow(state: PayviewState): Observable<void> {

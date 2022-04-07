@@ -54,7 +54,7 @@ describe('PaymentsUserPaymentPreferencesService', () => {
     beforeEach(() => {
       spyOn(userPaymentPreferencesHttpService, 'update').and.returnValue(of(null));
 
-      service.update(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES).subscribe();
+      service.setUserPaymentPreferences(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES).subscribe();
     });
 
     it('should ask to update the user payment preferences', () => {
