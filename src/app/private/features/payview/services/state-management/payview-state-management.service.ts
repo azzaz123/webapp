@@ -241,12 +241,10 @@ export class PayviewStateManagementService {
         },
         error: (errors: BuyerRequestsError[]) => {
           const error: BuyerRequestsError = errors[0];
-          const payload: PayviewError = error
-            ? {
-                code: error.name,
-                message: error.message,
-              }
-            : null;
+          const payload: PayviewError = {
+            code: error ? error.name : '',
+            message: error ? error.message : '',
+          };
 
           this.actionSubject.next({
             type: PAYVIEW_EVENT_TYPE.ERROR_ON_BUY,
