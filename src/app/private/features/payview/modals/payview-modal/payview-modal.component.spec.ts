@@ -86,6 +86,9 @@ import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/x
 import { RouterTestingModule } from '@angular/router/testing';
 import { PAYVIEW_BUY_EVENT_TYPE } from '../../modules/buy/enums/payview-buy-event-type.enum';
 import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
+import { PAYVIEW_EVENT_TYPE } from '../../enums/payview-event-type.enum';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -123,7 +126,8 @@ class FakeComponent extends PayviewModalComponent {
     paymentService: PayviewPaymentService,
     payviewTrackingEventsService: PayviewTrackingEventsService,
     buyService: PayviewBuyService,
-    uuidService: UuidService
+    uuidService: UuidService,
+    toastService: ToastService
   ) {
     super(
       payviewStateManagementService,
@@ -135,7 +139,8 @@ class FakeComponent extends PayviewModalComponent {
       paymentService,
       payviewTrackingEventsService,
       buyService,
-      uuidService
+      uuidService,
+      toastService
     );
   }
 }
@@ -275,6 +280,10 @@ describe('PayviewModalComponent', () => {
               return MOCK_UUID;
             },
           },
+        },
+        {
+          provide: ToastService,
+          useClass: MockToastService,
         },
         ItemService,
         NgbActiveModal,
@@ -419,6 +428,9 @@ describe('PayviewModalComponent', () => {
           component.itemHash = fakeItemHash;
 
           tick();
+          fixture.detectChanges();
+          // FIX ME: we need to delete the next line, this should not be hardcalled
+          component['markPayviewAsNotLoading']();
           fixture.detectChanges();
         }));
 
@@ -1242,6 +1254,9 @@ describe('PayviewModalComponent', () => {
           debugElement = fixture.debugElement;
 
           fixture.detectChanges();
+          // FIX ME: we need to delete the next line, this should not be hardcalled
+          component['markPayviewAsNotLoading']();
+          fixture.detectChanges();
         });
 
         it('should not show the summary block', () => {
@@ -1294,6 +1309,9 @@ describe('PayviewModalComponent', () => {
           component = fixture.componentInstance;
           debugElement = fixture.debugElement;
 
+          fixture.detectChanges();
+          // FIX ME: we need to delete the next line, this should not be hardcalled
+          component['markPayviewAsNotLoading']();
           fixture.detectChanges();
         });
 

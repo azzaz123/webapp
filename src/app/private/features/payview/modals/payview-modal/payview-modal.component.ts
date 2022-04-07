@@ -262,7 +262,6 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, (error: PayviewError) => {
-        console.log('erorr on buy');
         this.markPayviewAsNotLoading();
         this.buyService.error(error);
       })
