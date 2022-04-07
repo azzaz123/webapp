@@ -71,6 +71,7 @@ import {
   MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY,
   MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY,
   MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL,
+  MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_PAYPAL,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
 import { PayviewBuyOverviewComponent } from '../../modules/buy/components/overview/payview-buy-overview.component';
@@ -309,21 +310,6 @@ describe('PayviewModalComponent', () => {
       component.stepper = stepper;
       stepperSpy = spyOn(stepper, 'goToStep');
       spyOn(customerHelpService, 'getPageUrl').and.callThrough();
-    });
-
-    describe('and the payment succeded', () => {
-      beforeEach(() => {
-        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
-        spyOn(payviewService, 'request').and.returnValue(of(MOCK_PAYVIEW_STATE));
-        spyOn(component, 'closeModal').and.callThrough();
-
-        component['closeModalOnPaymentSuccess']();
-        fixture.detectChanges();
-      });
-
-      it('should close the modal', () => {
-        expect(component.closeModal).toHaveBeenCalledWith(MOCK_PAYVIEW_STATE.buyerRequestId);
-      });
     });
 
     it('should create', () => {
@@ -1244,6 +1230,29 @@ describe('PayviewModalComponent', () => {
         const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSpinnerSelector));
         expect(loadingContainerRef).toBeTruthy();
       }));
+
+      describe('and the payment succeded', () => {
+        beforeEach(() => {
+          jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+          spyOn(payviewService, 'request').and.returnValue(of(MOCK_PAYVIEW_STATE));
+          spyOn(component, 'closeModal').and.callThrough();
+          spyOn(payviewTrackingEventsService, 'trackTransactionPaymentSuccess');
+
+          component['trackTransactionPaymentSuccessEvent']();
+          component['closeModalOnPaymentSuccess']();
+        });
+
+        it('should close the modal', () => {
+          expect(component.closeModal).toHaveBeenCalledWith(MOCK_PAYVIEW_STATE.buyerRequestId);
+        });
+
+        it('should ask for tracking event', () => {
+          expect(payviewTrackingEventsService.trackTransactionPaymentSuccess).toHaveBeenCalledTimes(1);
+          expect(payviewTrackingEventsService.trackTransactionPaymentSuccess).toHaveBeenCalledWith(
+            MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_PAYPAL
+          );
+        });
+      });
 
       describe('WHEN the state does not have a value', () => {
         beforeEach(() => {
