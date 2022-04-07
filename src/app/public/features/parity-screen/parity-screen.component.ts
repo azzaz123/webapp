@@ -4,7 +4,7 @@ import { DeviceType } from '@core/device/deviceType.enum';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { QR_CODE_SIZE } from '@public/features/parity-screen/parity-screen.enum';
-import { ADJUST_IOS_URL, ADJUST_ANDROID_URL } from '@core/constants';
+import { ADJUST_GENERIC_STORE_APP_URL } from '@core/constants';
 
 @Component({
   selector: 'tsl-parity',
@@ -15,12 +15,10 @@ export class ParityScreenComponent implements AfterViewInit {
   @ViewChild('qrCode', { static: false }) qrCode: any;
 
   public qrSize: QR_CODE_SIZE;
-  public qrData: string = 'https://es.wallapop.com/app/search';
+  public url: string = ADJUST_GENERIC_STORE_APP_URL;
   public device: DeviceType;
   public DevicesType: typeof DeviceType = DeviceType;
-  public storeAddress: string;
-  private deviceOs: string;
-  private imgURL: string = 'assets/images/generic-landing/wallapop-logo-black-round.svg';
+  private wallapopIconRound: string = 'assets/images/generic-landing/wallapop-logo-black-round.svg';
   private mutationObserverCompatibility: boolean;
   private mutationObserverInstance: MutationObserver;
 
@@ -33,8 +31,6 @@ export class ParityScreenComponent implements AfterViewInit {
     this.mutationObserverCompatibility = !!this.window.MutationObserver;
     this.device = this.deviceService.getDeviceType();
     this.qrSize = this.setQrSize(this.deviceService.isMobile());
-    this.deviceOs = this.deviceService.getOSName();
-    this.storeAddress = this.deviceOs === 'iOS' ? ADJUST_IOS_URL : ADJUST_ANDROID_URL;
   }
 
   public ngAfterViewInit(): void {
@@ -58,7 +54,7 @@ export class ParityScreenComponent implements AfterViewInit {
         if (target.nodeName === 'CANVAS') {
           const context = target.getContext('2d');
           const image = new Image();
-          image.src = this.imgURL;
+          image.src = this.wallapopIconRound;
           const iWidth = 38;
           const iHeight = 38;
           target.style.verticalAlign = 'bottom';

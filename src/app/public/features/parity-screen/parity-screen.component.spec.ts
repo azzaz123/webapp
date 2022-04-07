@@ -1,12 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DeviceService } from '@core/device/device.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { QRCodeModule } from 'angularx-qrcode';
 import { ParityScreenComponent } from './parity-screen.component';
 import { DeviceType } from '@core/device/deviceType.enum';
-import { ADJUST_IOS_URL, ADJUST_ANDROID_URL } from '@core/constants';
 
 describe('Parity Screen', () => {
   let component: ParityScreenComponent;
@@ -36,7 +35,6 @@ describe('Parity Screen', () => {
         isMobile: () => true,
         isTablet: () => false,
         isDesktop: () => false,
-        getOSName: () => 'iOS',
         getDeviceType: () => DeviceType.MOBILE,
       };
 
@@ -77,7 +75,6 @@ describe('Parity Screen', () => {
         isTablet: () => false,
         isDesktop: () => true,
         getDeviceType: () => DeviceType.DESKTOP,
-        getOSName: () => {},
       };
 
       await TestBed.configureTestingModule({
@@ -131,7 +128,6 @@ describe('Parity Screen', () => {
         isTablet: () => false,
         isDesktop: () => false,
         getDeviceType: () => DeviceType.MOBILE,
-        getOSName: () => {},
       };
 
       await TestBed.configureTestingModule({
