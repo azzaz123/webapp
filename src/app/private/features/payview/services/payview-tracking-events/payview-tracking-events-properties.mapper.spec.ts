@@ -352,7 +352,7 @@ describe('when mapping the payview state properties into the transaction checkou
   describe('and the address is missing', () => {
     it('should return the properties mapped', () => {
       buyRequestErrorMapper.map(MOCK_NO_ADDRESS_FOR_USER_ERROR_RESPONSE).subscribe({
-        error: (errors) => (result = errors),
+        error: (errors) => (result = errors[0]),
       });
       expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
 
@@ -363,7 +363,7 @@ describe('when mapping the payview state properties into the transaction checkou
   describe('and the promocode already expired', () => {
     it('should return the properties mapped', () => {
       buyRequestErrorMapper.map(MOCK_EXPIRED_PROMOCODE_ERROR_RESPONSE).subscribe({
-        error: (errors) => (result = errors),
+        error: (errors) => (result = errors[0]),
       });
       expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
 
@@ -374,7 +374,7 @@ describe('when mapping the payview state properties into the transaction checkou
   describe('and there is an invalid card error', () => {
     it('should return the properties mapped', () => {
       buyRequestErrorMapper.map(MOCK_INVALID_CARD_ERROR_RESPONSE).subscribe({
-        error: (errors) => (result = errors),
+        error: (errors) => (result = errors[0]),
       });
       expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
 
@@ -385,7 +385,7 @@ describe('when mapping the payview state properties into the transaction checkou
   describe('and there is a carrier office address that does not match a home address country error', () => {
     it('should return the properties mapped', () => {
       buyRequestErrorMapper.map(MOCK_CARRIER_OFFICE_ADDRESS_AND_HOME_ADDRESS_COUNTRIES_DO_NOT_MATCH_ERROR_RESPONSE).subscribe({
-        error: (errors) => (result = errors),
+        error: (errors) => (result = errors[0]),
       });
       expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
 
@@ -396,7 +396,7 @@ describe('when mapping the payview state properties into the transaction checkou
   describe('and there is an unknown error', () => {
     it('should return the properties mapped', () => {
       buyRequestErrorMapper.map(MOCK_POSTAL_CODE_TEMPORARILY_RESTRICTED_ERROR_RESPONSE).subscribe({
-        error: (errors) => (result = errors),
+        error: (errors) => (result = errors[0]),
       });
       expectedProperties = getTransactionCheckoutErrorPropertiesFromPayviewState(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE, result);
 
