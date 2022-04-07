@@ -3,205 +3,34 @@ import { HttpClientModule } from '@angular/common/http';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { Story, Meta } from '@storybook/angular/types-6-0';
 import { styledWrapperDecorator } from '@stories/decorators/styled-wrapper/styled-wrapper.decorator';
-import { ButtonComponent } from './favorite-search-button.component';
+import { FavoriteSearchButtonComponent } from './favorite-search-button.component';
 
 export default {
-  title: 'Webapp/Shared/Button',
-  component: ButtonComponent,
+  title: 'Webapp/Public/Shared/Components/FavoriteSearchButton',
+  component: FavoriteSearchButtonComponent,
   decorators: [styledWrapperDecorator('max-width: 220px;')],
 } as Meta;
 
-const Template: Story<ButtonComponent> = (args: ButtonComponent) => ({
-  component: ButtonComponent,
+const Template: Story<FavoriteSearchButtonComponent> = (args: FavoriteSearchButtonComponent) => ({
+  component: FavoriteSearchButtonComponent,
   props: args,
   moduleMetadata: {
-    declarations: [ButtonComponent],
+    declarations: [FavoriteSearchButtonComponent],
     imports: [CommonModule, SvgIconModule, HttpClientModule],
   },
-  template: `<tsl-button *ngIf="!storyFlagInnerHTML" [className]="className" [classLoading]="classLoading" [type]="type" [disabled]="disabled" [loading]="loading">{{label}}</tsl-button>
-    <tsl-button *ngIf="storyFlagInnerHTML" [className]="className" [classLoading]="classLoading" [type]="type" [disabled]="disabled" [loading]="loading">
-      <tsl-svg-icon src="/assets/icons/cross.svg"></tsl-svg-icon>
-    </tsl-button>
-    `,
+  template: `<tsl-favorite-search-button [className]="className" [svgSrc]="svgSrc" [isActive]="isActive"></tsl-favorite-search-button>`,
 });
 
-export const Default = Template.bind({});
-Default.args = {
-  label: 'Default',
-  className: '',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Reserve = Template.bind({});
-Reserve.args = {
-  label: 'Reserve',
-  className: 'btn-reserve',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Delete = Template.bind({});
-Delete.args = {
-  label: 'Delete',
-  className: 'btn-delete',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Primary = Template.bind({});
-Primary.args = {
-  label: 'Primary',
-  className: 'btn-primary',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
-  label: 'Loading',
-  className: 'btn-loading',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Big = Template.bind({});
-Big.args = {
-  label: 'Big',
-  className: 'btn-big',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Feature = Template.bind({});
-Feature.args = {
-  label: 'Feature',
-  className: 'btn-feature',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
+export const Active = Template.bind({});
+Active.args = {
+  className: 'search-active',
+  isActive: true,
+  svgSrc: '/assets/icons/fullheart-fs.svg',
 };
 
 export const Inactive = Template.bind({});
 Inactive.args = {
-  label: 'Inactive',
-  className: 'btn-inactive',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const OutlinePrimary = Template.bind({});
-OutlinePrimary.args = {
-  label: 'Outline Primary',
-  className: 'btn-outline-primary',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Gray = Template.bind({});
-Gray.args = {
-  label: 'Gray',
-  className: 'btn-gray',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const ThirdVoice = Template.bind({});
-ThirdVoice.args = {
-  label: 'Third Voice',
-  className: 'btn-third-voice',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Stripe = Template.bind({});
-Stripe.args = {
-  label: 'Stripe',
-  className: 'stripe',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Payment = Template.bind({});
-Payment.args = {
-  label: 'Payment',
-  className: 'payment',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Basic = Template.bind({});
-Basic.args = {
-  label: 'Basic',
-  className: 'basic',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Invoice = Template.bind({});
-Invoice.args = {
-  label: 'Invoice',
-  className: 'invoice',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Dark = Template.bind({});
-Dark.args = {
-  label: 'Dark',
-  className: 'btn-dark',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const BasicGrey = Template.bind({});
-BasicGrey.args = {
-  label: 'Basic grey',
-  className: 'basic basic--grey',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-};
-
-export const Icon = Template.bind({});
-Icon.args = {
-  label: '',
-  className: 'btn-icon',
-  classLoading: '',
-  type: '',
-  disabled: false,
-  loading: false,
-  storyFlagInnerHTML: true,
+  className: 'search-inactive',
+  isActive: false,
+  svgSrc: '/assets/icons/emptyheart-fs.svg',
 };

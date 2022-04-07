@@ -6,5 +6,9 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./favorite-search-button.component.scss'],
 })
 export class FavoriteSearchButtonComponent {
-  constructor() {}
+  @Input() className: string;
+  @Input() isActive: boolean;
+  @Input() svgSrc: string;
+
+  public onClick() {}
 }
