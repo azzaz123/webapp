@@ -306,10 +306,24 @@ describe('PayviewModalComponent', () => {
       stepper = TestBed.createComponent(StepperComponent).componentInstance;
 
       fixture.detectChanges();
-
       component.stepper = stepper;
       stepperSpy = spyOn(stepper, 'goToStep');
       spyOn(customerHelpService, 'getPageUrl').and.callThrough();
+    });
+
+    describe('and the payment succeded', () => {
+      beforeEach(() => {
+        jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+        spyOn(payviewService, 'request').and.returnValue(of(MOCK_PAYVIEW_STATE));
+        spyOn(component, 'closeModal').and.callThrough();
+
+        component['closeModalOnPaymentSuccess']();
+        fixture.detectChanges();
+      });
+
+      it('should close the modal', () => {
+        expect(component.closeModal).toHaveBeenCalledWith(MOCK_PAYVIEW_STATE.buyerRequestId);
+      });
     });
 
     it('should create', () => {
@@ -358,7 +372,6 @@ describe('PayviewModalComponent', () => {
     describe('when the user clicks the buy button', () => {
       describe('and there is NO prepayment errors', () => {
         beforeEach(() => {
-          spyOn(payviewStateManagementService, 'buy').and.callFake(() => {});
           buyerRequestIdSpy = jest.spyOn(payviewStateManagementService, 'buyerRequestId', 'set');
           spyOn(uuidService, 'getUUID').and.callThrough();
           buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, () => {});
