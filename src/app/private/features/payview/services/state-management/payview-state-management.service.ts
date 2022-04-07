@@ -22,6 +22,9 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
+import { BuyerRequestsError } from '@api/core/errors/delivery/payview/buyer-requests/buyer-requests.error';
+import { PayviewTrackingEventsService } from '../payview-tracking-events/payview-tracking-events.service';
+import { getTransactionCheckoutErrorPropertiesFromPayviewState } from '../payview-tracking-events/payview-tracking-events-properties.mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +35,7 @@ export class PayviewStateManagementService {
   private readonly buyerRequestIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   private readonly stateSubject: BehaviorSubject<PayviewState> = new BehaviorSubject<PayviewState>(null);
 
-  constructor(private payviewService: PayviewService) {}
+  constructor(private payviewService: PayviewService, private payviewTrackingService: PayviewTrackingEventsService) {}
 
   public applyPromocode(value: string): void {
     const payviewState = { ...this.stateSubject.getValue() };
@@ -235,14 +238,18 @@ export class PayviewStateManagementService {
         next: () => {
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY));
         },
-        error: (error: HttpErrorResponse) => {
-          this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, error));
+        error: (error: BuyerRequestsError) => {
+          this.trackTransactionCheckoutErrorEvent(payviewState, error);
           subscription.unsubscribe();
         },
         complete: () => {
           subscription.unsubscribe();
         },
       });
+  }
+
+  private trackTransactionCheckoutErrorEvent(payviewState: PayviewState, error: BuyerRequestsError): void {
+    this.payviewTrackingService.trackTransactionPaymentError(getTransactionCheckoutErrorPropertiesFromPayviewState(payviewState, error));
   }
 
   private setCurrentDeliveryMethod(payviewState: PayviewState, mode: DELIVERY_MODE): void {

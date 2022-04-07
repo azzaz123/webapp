@@ -35,6 +35,8 @@ import {
   getViewTransactionPayScreenEventPropertiesFromPayviewState,
   getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
   getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState,
+  getPayTransactionEventPropertiesFromPayviewState,
+  getTransactionPaymentSuccessPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 import { headerTitles } from '../../constants/header-titles';
 import { UuidService } from '@core/uuid/uuid.service';
@@ -149,6 +151,14 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       );
   }
 
+  public trackPayTransactionEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackPayTransaction(getPayTransactionEventPropertiesFromPayviewState(payviewState))
+      );
+  }
+
   private goToStep(step: PAYVIEW_STEPS): void {
     this.headerTitle = headerTitles[step];
     this.stepper.goToStep(step);
@@ -238,6 +248,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY, () => {
+        this.trackTransactionPaymentSuccessEvent();
         // TODO - 18/03/2022 - Do something like closing the payview, show success toast or so on...
       })
     );
@@ -316,6 +327,16 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       .subscribe((payviewState: PayviewState) =>
         this.payviewTrackingEventsService.trackClickApplyPromocodeTransactionPay(
           getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState(payviewState)
+        )
+      );
+  }
+
+  private trackTransactionPaymentSuccessEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackTransactionPaymentSuccess(
+          getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState)
         )
       );
   }

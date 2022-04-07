@@ -71,8 +71,13 @@ import {
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
   MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY,
   MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY,
+  MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
+import { PayviewBuyOverviewComponent } from '../../modules/buy/components/overview/payview-buy-overview.component';
+import { UserService } from '@core/user/user.service';
+import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
+import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { headerTitles } from '../../constants/header-titles';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { UuidService } from '@core/uuid/uuid.service';
@@ -80,7 +85,7 @@ import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-re
 import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PAYVIEW_BUY_EVENT_TYPE } from '../../modules/buy/enums/payview-buy-event-type.enum';
-import { MOCK_UUID } from '../../../../../../tests/core/uuid/uuid.fixtures.spec';
+import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -192,6 +197,7 @@ describe('PayviewModalComponent', () => {
         PayviewSummaryOverviewComponent,
         PayviewSummaryPaymentMethodComponent,
         SvgIconComponent,
+        PayviewBuyOverviewComponent,
       ],
       imports: [
         BrowserAnimationsModule,
@@ -231,6 +237,19 @@ describe('PayviewModalComponent', () => {
             trackViewTransactionPayScreen() {},
             trackClickAddPromocodeTransactionPay() {},
             trackClickApplyPromocodeTransactionPay() {},
+            trackPayTransaction() {},
+            trackTransactionPaymentSuccess() {},
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
+            get() {
+              return of(MOCK_OTHER_USER);
+            },
+            getLoggedUserInformation() {
+              return of(MOCK_USER);
+            },
           },
         },
         {
@@ -266,6 +285,8 @@ describe('PayviewModalComponent', () => {
         PayviewPromotionService,
         PayviewStateManagementService,
         PayviewService,
+        PayviewBuyService,
+        BuyerRequestsApiService,
         PayviewBuyService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -471,6 +492,20 @@ describe('PayviewModalComponent', () => {
           const link = fixture.debugElement.query(By.css('#privacyPolicyLink'));
 
           expect(link.attributes.href).toEqual(component.PRIVACY_POLICY_URL);
+        });
+
+        describe('when the user clicks the buy button', () => {
+          beforeEach(fakeAsync(() => {
+            spyOn(payviewTrackingEventsService, 'trackPayTransaction');
+            fixture.debugElement.query(By.directive(PayviewBuyOverviewComponent)).triggerEventHandler('clickBuyButton', {});
+
+            tick();
+          }));
+
+          it('should ask for tracking event', () => {
+            expect(payviewTrackingEventsService.trackPayTransaction).toHaveBeenCalledTimes(1);
+            expect(payviewTrackingEventsService.trackPayTransaction).toHaveBeenCalledWith(MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL);
+          });
         });
 
         describe('WHEN stepper is on the second step', () => {
