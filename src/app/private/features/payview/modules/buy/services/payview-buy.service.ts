@@ -5,11 +5,12 @@ import { PayviewBuyEvent } from '@private/features/payview/modules/buy/interface
 import { PayviewError } from '@private/features/payview/interfaces/payview-error.interface';
 
 import { filter, map } from 'rxjs/operators';
-import { Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PayviewBuyService {
   private eventBusSubject: Subject<PayviewBuyEvent> = new Subject<PayviewBuyEvent>();
+  private isBuyButtonDisabledSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   public on(eventType: PAYVIEW_BUY_EVENT_TYPE, handler: (payload: string | PayviewError | null) => void): Subscription {
     return this.eventBusSubject
@@ -23,11 +24,25 @@ export class PayviewBuyService {
   }
 
   public buy(): void {
+    this.disableBuyButton();
     this.eventBusSubject.next(this.getBuyEvent(PAYVIEW_BUY_EVENT_TYPE.BUY, null));
   }
 
   public error(error: PayviewError): void {
+    this.enableBuyButton();
     this.eventBusSubject.next(this.getBuyEvent(PAYVIEW_BUY_EVENT_TYPE.ERROR, error));
+  }
+
+  public get isBuyButtonDisabled$(): Observable<boolean> {
+    return this.isBuyButtonDisabledSubject.asObservable();
+  }
+
+  private enableBuyButton(): void {
+    this.isBuyButtonDisabledSubject.next(false);
+  }
+
+  private disableBuyButton(): void {
+    this.isBuyButtonDisabledSubject.next(true);
   }
 
   private getBuyEvent(type: PAYVIEW_BUY_EVENT_TYPE, payload: string | null | PayviewError): PayviewBuyEvent {

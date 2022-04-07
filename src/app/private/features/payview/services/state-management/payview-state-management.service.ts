@@ -239,6 +239,7 @@ export class PayviewStateManagementService {
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY));
         },
         error: (error: BuyerRequestsError) => {
+          this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY));
           this.trackTransactionCheckoutErrorEvent(payviewState, error);
           subscription.unsubscribe();
         },
