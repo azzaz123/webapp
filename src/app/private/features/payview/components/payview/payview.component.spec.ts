@@ -10,6 +10,7 @@ import { PayviewModalComponent } from '@private/features/payview/modals/payview-
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'tsl-blank',
@@ -20,8 +21,9 @@ class FakeComponent {}
 describe('PayviewComponent', () => {
   const chatPath: string = PRIVATE_PATHS.CHAT;
   const fakeItemHash: string = 'this_is_a_fake_hash';
-  const MOCK_RESULT_PROMISE: Promise<void> = Promise.resolve();
-  const MOCK_CLOSE_CALLBACK = () => {};
+  const MOCK_MODAL_RESULT_SUBJECT: ReplaySubject<void> = new ReplaySubject<void>();
+  const MOCK_RESULT_PROMISE: Promise<void> = MOCK_MODAL_RESULT_SUBJECT.asObservable().toPromise();
+  const MOCK_CLOSE_CALLBACK = () => MOCK_MODAL_RESULT_SUBJECT.complete();
   const MOCK_MODAL_REF: Partial<NgbModalRef> = {
     close: MOCK_CLOSE_CALLBACK,
     dismiss: MOCK_CLOSE_CALLBACK,
@@ -71,6 +73,7 @@ describe('PayviewComponent', () => {
       router = TestBed.inject(Router);
 
       spyOn(modalService, 'open').and.returnValue(modalRef);
+      spyOn(router, 'navigate');
       fixture.detectChanges();
     });
 
@@ -96,8 +99,6 @@ describe('PayviewComponent', () => {
 
     describe('when the modal closes', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(router, 'navigate');
-
         modalRef.close();
         tick();
       }));
@@ -109,8 +110,7 @@ describe('PayviewComponent', () => {
 
     describe('when the modal dismisses', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(router, 'navigate');
-
+        // TODO: Review dismiss logic in test		Date: 2022/04/07
         modalRef.dismiss();
         tick();
       }));
