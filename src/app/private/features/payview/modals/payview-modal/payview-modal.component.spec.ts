@@ -116,7 +116,6 @@ class FakeComponent extends PayviewModalComponent {
   constructor(
     payviewStateManagementService: PayviewStateManagementService,
     payviewDeliveryService: PayviewDeliveryService,
-    activeModal: NgbActiveModal,
     customerHelpService: CustomerHelpService,
     deliveryCountries: DeliveryCountriesService,
     promotionService: PayviewPromotionService,
@@ -128,7 +127,6 @@ class FakeComponent extends PayviewModalComponent {
     super(
       payviewStateManagementService,
       payviewDeliveryService,
-      activeModal,
       customerHelpService,
       deliveryCountries,
       promotionService,
@@ -160,7 +158,6 @@ describe('PayviewModalComponent', () => {
   const payviewModalHelpSelector: string = '#helpLink';
   const payviewModalSpinnerSelector: string = `${payviewModal}__spinner`;
 
-  let activeModalService: NgbActiveModal;
   let component: PayviewModalComponent;
   let customerHelpService: CustomerHelpService;
   let debugElement: DebugElement;
@@ -277,7 +274,6 @@ describe('PayviewModalComponent', () => {
           },
         },
         ItemService,
-        NgbActiveModal,
         PaymentsWalletsService,
         PaymentsWalletsHttpService,
         PayviewDeliveryService,
@@ -295,7 +291,6 @@ describe('PayviewModalComponent', () => {
 
   describe('WHEN the component initializes', () => {
     beforeEach(() => {
-      activeModalService = TestBed.inject(NgbActiveModal);
       customerHelpService = TestBed.inject(CustomerHelpService);
       payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
       payviewPaymentService = TestBed.inject(PayviewPaymentService);
@@ -316,7 +311,6 @@ describe('PayviewModalComponent', () => {
       component.stepper = stepper;
       stepperSpy = spyOn(stepper, 'goToStep');
       spyOn(customerHelpService, 'getPageUrl').and.callThrough();
-      spyOn(activeModalService, 'close').and.callThrough();
     });
 
     it('should create', () => {
@@ -348,12 +342,17 @@ describe('PayviewModalComponent', () => {
     });
 
     describe('WHEN user clicks the close button', () => {
-      it('should close the modal window', () => {
+      const MOCK_CALLBACK: jasmine.Spy = jasmine.createSpy();
+
+      beforeEach(() => {
+        component.closeCallback = MOCK_CALLBACK;
         const target = fixture.debugElement.query(By.css(payviewModalCloseSelector)).nativeElement;
 
         target.click();
+      });
 
-        expect(activeModalService.close).toHaveBeenCalledTimes(1);
+      it('should close the modal window', () => {
+        expect(MOCK_CALLBACK).toHaveBeenCalledTimes(1);
       });
     });
 

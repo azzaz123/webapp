@@ -24,7 +24,6 @@ import { PayviewStateManagementService } from '@private/features/payview/service
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
 import { take } from 'rxjs/operators';
@@ -52,6 +51,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   @ViewChild(StepperComponent) stepper: StepperComponent;
 
   @Input() public itemHash: string;
+  @Input() public closeCallback: Function;
 
   public countries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
   public headerTitle: string = headerTitles[PAYVIEW_STEPS.PAYVIEW];
@@ -66,7 +66,6 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
     private deliveryService: PayviewDeliveryService,
-    private activeModal: NgbActiveModal,
     private customerHelpService: CustomerHelpService,
     private deliveryCountries: DeliveryCountriesService,
     private promotionService: PayviewPromotionService,
@@ -100,7 +99,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public closeModal(): void {
-    this.activeModal.close();
+    this.closeCallback && this.closeCallback();
   }
 
   public getFullAddress(methods: DeliveryBuyerDeliveryMethods): string {

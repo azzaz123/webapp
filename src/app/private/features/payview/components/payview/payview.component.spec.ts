@@ -20,6 +20,14 @@ class FakeComponent {}
 describe('PayviewComponent', () => {
   const chatPath: string = PRIVATE_PATHS.CHAT;
   const fakeItemHash: string = 'this_is_a_fake_hash';
+  const MOCK_RESULT_PROMISE: Promise<void> = Promise.resolve();
+  const MOCK_CLOSE_CALLBACK = () => {};
+  const MOCK_MODAL_REF: Partial<NgbModalRef> = {
+    close: MOCK_CLOSE_CALLBACK,
+    dismiss: MOCK_CLOSE_CALLBACK,
+    componentInstance: {},
+    result: MOCK_RESULT_PROMISE,
+  };
 
   let component: PayviewComponent;
   let fixture: ComponentFixture<PayviewComponent>;
@@ -41,7 +49,12 @@ describe('PayviewComponent', () => {
             },
           },
         },
-        NgbModal,
+        {
+          provide: NgbModal,
+          useValue: {
+            open: () => MOCK_MODAL_REF,
+          },
+        },
       ],
 
       imports: [HttpClientTestingModule, RouterTestingModule],
@@ -74,30 +87,37 @@ describe('PayviewComponent', () => {
       expect(modalRef.componentInstance.itemHash).toEqual(fakeItemHash);
     });
 
-    describe('WHEN Modal closes', () => {
-      beforeEach(() => {
-        spyOn(router, 'navigate');
-      });
+    it('should assign the corresponding close logic to the payview modal component', () => {
+      const stringifiedCallbackInComponent: string = JSON.stringify(modalRef.componentInstance.closeCallback);
+      const stringifiedCallbackExpected: string = JSON.stringify(MOCK_CLOSE_CALLBACK.bind(MOCK_MODAL_REF));
 
-      it('should navigate to chat', fakeAsync(() => {
-        modalRef.close();
-        tick();
-
-        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
-      }));
+      expect(stringifiedCallbackInComponent).toEqual(stringifiedCallbackExpected);
     });
 
-    describe('WHEN Modal dismisses', () => {
-      beforeEach(() => {
+    describe('when the modal closes', () => {
+      beforeEach(fakeAsync(() => {
         spyOn(router, 'navigate');
-      });
 
-      it('should navigate to chat', fakeAsync(() => {
+        modalRef.close();
+        tick();
+      }));
+
+      it('should navigate to chat', () => {
+        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
+      });
+    });
+
+    describe('when the modal dismisses', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(router, 'navigate');
+
         modalRef.dismiss();
         tick();
-
-        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
       }));
+
+      it('should navigate to chat', () => {
+        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
+      });
     });
   });
 });
