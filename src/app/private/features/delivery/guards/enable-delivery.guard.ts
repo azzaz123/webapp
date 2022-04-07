@@ -5,7 +5,7 @@ import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { APP_PATHS } from 'app/app-routing-constants';
 
 @Injectable()
-export class EnableDeliveryGuard implements CanActivate {
+export class EnableDeliveryExperimentalFeaturesGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): boolean {

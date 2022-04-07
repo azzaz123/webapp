@@ -4,16 +4,16 @@ import { DELIVERY_EXPERIMENTAL_FEATURES_KEY } from '@private/core/services/deliv
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
 import { APP_PATHS } from 'app/app-routing-constants';
 
-import { EnableDeliveryGuard } from './enable-delivery.guard';
+import { EnableDeliveryExperimentalFeaturesGuard } from './enable-delivery.guard';
 
-describe('EnableDeliveryGuard', () => {
-  let guard: EnableDeliveryGuard;
+describe('EnableDeliveryExperimentalFeaturesGuard', () => {
+  let guard: EnableDeliveryExperimentalFeaturesGuard;
   let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        EnableDeliveryGuard,
+        EnableDeliveryExperimentalFeaturesGuard,
         {
           provide: localStorage,
           useValue: {
@@ -30,7 +30,7 @@ describe('EnableDeliveryGuard', () => {
     });
 
     router = TestBed.inject(Router);
-    guard = TestBed.inject(EnableDeliveryGuard);
+    guard = TestBed.inject(EnableDeliveryExperimentalFeaturesGuard);
   });
 
   describe('when loading a route', () => {

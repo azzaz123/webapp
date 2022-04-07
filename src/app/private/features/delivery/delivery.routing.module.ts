@@ -9,7 +9,7 @@ import { StreamlineModule } from './pages/streamline/streamline.module';
 import { CreateDisputeModule } from './pages/create-dispute/create-dispute.module';
 import { DeliveryDevelopmentGuard } from './guards/delivery-development.guard';
 import { StreamlineCompletedModule } from './pages/streamline/pages/streamline-completed-overview/streamline-completed.module';
-import { EnableDeliveryGuard } from './guards/enable-delivery.guard';
+import { EnableDeliveryExperimentalFeaturesGuard } from './guards/enable-delivery.guard';
 
 // NOTE: they childs are begin loaded in a NON LAZY way but with the module
 const routes: Route[] = [
@@ -49,7 +49,7 @@ const routes: Route[] = [
       },
       {
         path: DELIVERY_PATHS.ENABLE,
-        canActivate: [EnableDeliveryGuard],
+        canActivate: [EnableDeliveryExperimentalFeaturesGuard],
       },
       {
         path: '**',
