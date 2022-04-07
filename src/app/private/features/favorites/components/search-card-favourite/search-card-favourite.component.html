@@ -1,0 +1,20 @@
+<div class="FavouriteSearch col-12 d-flex align-items-center mb-2" *ngIf="favouriteSearch"
+    (click)="handleFavouriteSearchClick()">
+    <div class="FavouriteSearch__info d-flex flex-column py-3">
+        <span class="FavouriteSearch__query text-truncate">
+            {{ favouriteSearch.query }}
+        </span>
+        <span class="FavouriteSearch__filters text-truncate">
+            {{ favouriteSearch.filters }}
+        </span>
+    </div>
+    <div class="FavouriteSearch__badge align-self-start px-2 py-3">
+        <span *ngIf="favouriteSearch.gotNewItems" class="badge badge-primary badge-pill"> ¡Nuevo! </span>
+    </div>
+    <div class="FavouriteSearch__iconContainer d-flex flex-column align-items-center pl-3 py-3">
+        <tsl-svg-icon src="/assets/icons/heart-full.svg" class="FavouriteSearch__icon active mb-1"></tsl-svg-icon>
+        <span class="mt-1">
+            Eliminar
+        </span>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+@import '~style/common';
+
+$transition: all 0.25s ease;
+
+.FavouriteSearch {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $blue-grey-5;
+  transition: $transition;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 10px 0 rgba($blue-grey-1, 0.1);
+  }
+
+  &__info {
+    flex-grow: 1;
+    overflow: hidden;
+  }
+
+  &__query {
+    color: $blue-grey-1;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__filters {
+    color: $blue-grey-2;
+  }
+
+  &__badge {
+    span {
+      background-color: $magenta-main;
+    }
+  }
+
+  &__iconContainer {
+    border-left: 1px solid $blue-grey-5;
+    ::ng-deep svg path {
+      fill: $negative-main;
+    }
+
+    span {
+      font-size: $font-size-s;
+    }
+  }
+}
