@@ -11,6 +11,7 @@ export class EnableDeliveryGuard implements CanActivate {
   canActivate(): boolean {
     localStorage.setItem(DELIVERY_EXPERIMENTAL_FEATURES_KEY, 'true');
 
+    // TODO: Validate with the team where do we want to redirect
     this.router.navigate([`${APP_PATHS.PUBLIC}/${PUBLIC_PATHS.SEARCH}`]);
 
     return false;

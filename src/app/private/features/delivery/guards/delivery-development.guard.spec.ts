@@ -1,15 +1,16 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { FeatureFlagService } from '@core/user/featureflag.service';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
-import { of } from 'rxjs';
+import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
+import { BehaviorSubject } from 'rxjs';
 
 import { DeliveryDevelopmentGuard } from './delivery-development.guard';
 
 describe('DeliveryDevelopmentGuard', () => {
+  const featuresEnabledSuject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   let guard: DeliveryDevelopmentGuard;
-  let featureFlagService: FeatureFlagService;
+  let deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService;
   let router: Router;
 
   beforeEach(() => {
@@ -18,8 +19,10 @@ describe('DeliveryDevelopmentGuard', () => {
       providers: [
         DeliveryDevelopmentGuard,
         {
-          provide: FeatureFlagService,
-          useClass: FeatureFlagServiceMock,
+          provide: DeliveryExperimentalFeaturesService,
+          useValue: {
+            featuresEnabled$: featuresEnabledSuject.asObservable(),
+          },
         },
         {
           provide: Router,
@@ -31,7 +34,7 @@ describe('DeliveryDevelopmentGuard', () => {
     });
 
     guard = TestBed.inject(DeliveryDevelopmentGuard);
-    featureFlagService = TestBed.inject(FeatureFlagService);
+    deliveryExperimentalFeaturesService = TestBed.inject(DeliveryExperimentalFeaturesService);
     router = TestBed.inject(Router);
   });
 
@@ -41,7 +44,7 @@ describe('DeliveryDevelopmentGuard', () => {
 
   describe('when the feature flag gets the delivery feature flag...', () => {
     it('should return true', () => {
-      spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(true));
+      featuresEnabledSuject.next(true);
       let flagResponse: boolean;
 
       guard.canLoad().subscribe((isActive: boolean) => (flagResponse = isActive));
@@ -52,7 +55,7 @@ describe('DeliveryDevelopmentGuard', () => {
 
   describe(`when the feature flag don't get the delivery feature flag...`, () => {
     beforeEach(() => {
-      spyOn(featureFlagService, 'getLocalFlag').and.returnValue(of(false));
+      featuresEnabledSuject.next(false);
       spyOn(router, 'navigate');
     });
 

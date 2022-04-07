@@ -6,11 +6,41 @@ describe('DeliveryExperimentalFeaturesService', () => {
   let service: DeliveryExperimentalFeaturesService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        DeliveryExperimentalFeaturesService,
+        {
+          provide: localStorage,
+          useValue: {
+            getItem: () => {},
+          },
+        },
+      ],
+    });
     service = TestBed.inject(DeliveryExperimentalFeaturesService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  describe('featuresEnabled$', () => {
+    describe('when the delivery experimental features are enabled', () => {
+      it('should return true', (done) => {
+        spyOn(localStorage, 'getItem').and.returnValue(true);
+
+        service.featuresEnabled$.subscribe((enabled) => {
+          expect(enabled).toBe(true);
+          done();
+        });
+      });
+    });
+
+    describe('when the delivery experimental features are not enabled', () => {
+      it('should return false', (done) => {
+        spyOn(localStorage, 'getItem').and.returnValue(false);
+
+        service.featuresEnabled$.subscribe((enabled) => {
+          expect(enabled).toBe(false);
+          done();
+        });
+      });
+    });
   });
 });
