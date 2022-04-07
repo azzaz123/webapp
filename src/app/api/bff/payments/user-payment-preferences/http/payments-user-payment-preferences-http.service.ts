@@ -22,8 +22,7 @@ export class PaymentsUserPaymentPreferencesHttpService {
     return this.http.get<PaymentsUserPaymentPreferencesDto>(USER_PAYMENT_PREFERENCES_ENDPOINT);
   }
 
-  public create(body: PaymentsUserPaymentPreferencesUpdateDto): Observable<void> {
-    const id: string = UuidService.getUUID();
+  public create(id: string, body: PaymentsUserPaymentPreferencesUpdateDto): Observable<void> {
     return this.http.post<void>(BASE_PAYMENT_PREFERENCES_ENDPOINT, { ...body, id });
   }
 

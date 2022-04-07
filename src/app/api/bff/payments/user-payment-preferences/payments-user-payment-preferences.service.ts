@@ -8,12 +8,13 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { PaymentsUserPaymentPreferencesUpdateDto } from './dtos/requests/payments-user-payment-preferences-update.interface';
 import { mapUserPaymentsPreferencesToDto } from './mappers/requests/payments-user-payment-preferences-update.mapper';
+import { UuidService } from '@core/uuid/uuid.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaymentsUserPaymentPreferencesService {
-  constructor(private paymentUserPreferencesHttpService: PaymentsUserPaymentPreferencesHttpService) {}
+  constructor(private paymentUserPreferencesHttpService: PaymentsUserPaymentPreferencesHttpService, private uuidService: UuidService) {}
 
   public get(): Observable<PaymentsUserPaymentPreferences> {
     return this.paymentUserPreferencesHttpService.get().pipe(map(mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences));
@@ -25,6 +26,6 @@ export class PaymentsUserPaymentPreferencesService {
     if (id) {
       return this.paymentUserPreferencesHttpService.update(id, preferencesDto);
     }
-    return this.paymentUserPreferencesHttpService.create(preferencesDto);
+    return this.paymentUserPreferencesHttpService.create(this.uuidService.getUUID(), preferencesDto);
   }
 }
