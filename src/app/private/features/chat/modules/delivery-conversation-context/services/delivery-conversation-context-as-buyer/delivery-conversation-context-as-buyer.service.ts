@@ -4,7 +4,7 @@ import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-reque
 import { DeliveryItemDetails } from '@api/core/model/delivery/item-detail/delivery-item-details.interface';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { DeliveryBanner } from '@private/features/chat/modules/delivery-banner/interfaces/delivery-banner.interface';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
 import {
   ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES,
@@ -20,19 +20,19 @@ import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-
 import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
-import { FeatureFlagService } from '@core/user/featureflag.service';
+import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 
 @Injectable()
 export class DeliveryConversationContextAsBuyerService {
   private lastRequest: BuyerRequest;
 
   constructor(
-    private featureFlagService: FeatureFlagService,
     private buyerRequestsApiService: BuyerRequestsApiService,
     private deliveryItemDetailsApiService: DeliveryItemDetailsApiService,
     private router: Router,
     private modalService: NgbModal,
-    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService
+    private deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService,
+    private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService
   ) {}
 
   public getBannerPropertiesAsBuyer(conversation: InboxConversation): Observable<DeliveryBanner | null> {
@@ -42,9 +42,12 @@ export class DeliveryConversationContextAsBuyerService {
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       tap((requests) => (this.lastRequest = requests ? requests[0] : null)),
       concatMap((buyerRequests: BuyerRequest[]) => {
-        return this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash).pipe(
-          map((deliveryItemDetails: DeliveryItemDetails) => {
-            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, deliveryItemDetails);
+        return combineLatest([
+          this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash),
+          this.deliveryExperimentalFeaturesService.featuresEnabled$,
+        ]).pipe(
+          map(([deliveryItemDetails, featuresEnabled]) => {
+            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, deliveryItemDetails, featuresEnabled);
           })
         );
       })
@@ -82,16 +85,16 @@ export class DeliveryConversationContextAsBuyerService {
 
   private mapDeliveryDetailsAsBuyerToBannerProperties(
     buyerRequests: BuyerRequest[],
-    deliveryItemDetails: DeliveryItemDetails
+    deliveryItemDetails: DeliveryItemDetails,
+    isDeliveryFeaturesEnabled: boolean
   ): DeliveryBanner {
     const isShippingNotAllowed: boolean = !deliveryItemDetails.isShippingAllowed;
     const isNotShippable: boolean = !deliveryItemDetails.isShippable;
     const buyerHasNoRequests: boolean = buyerRequests.length === 0;
 
-    // TODO: Remove "isDeliveryFeaturesDisabled" when opening buyer banners
+    // TODO: Remove "isDeliveryFeaturesEnabled" when opening buyer banners
     // Doing this logic in the mapping to allow third voices to have delivery context of this service
     // Jira reference: https://wallapop.atlassian.net/browse/WPA-11990
-    const isDeliveryFeaturesDisabled: boolean = !this.featureFlagService.isExperimentalFeaturesEnabled();
 
     // TODO: Review/remove this condition when TRX MVP is done
     // Apps hide the buy banner for this case and user has to go to item detail to open payview
@@ -103,7 +106,7 @@ export class DeliveryConversationContextAsBuyerService {
     );
     const showBuyBanner: boolean = buyerHasNoRequests || lastRequestFailed;
 
-    if (isDeliveryFeaturesDisabled || isNotShippable) {
+    if (!isDeliveryFeaturesEnabled || isNotShippable) {
       return null;
     }
 

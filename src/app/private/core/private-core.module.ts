@@ -25,6 +25,8 @@ import { DeliveryDevelopmentGuard } from '@private/features/delivery/guards/deli
 import { SubscriptionsHttpService } from '@core/subscriptions/http/subscriptions-http.service';
 import { YouGuard } from '@private/features/you/guards/you.guard';
 import { DeliveryRealTimeService } from './services/delivery-real-time/delivery-real-time.service';
+import { EnableDeliveryGuard } from '@private/features/delivery/guards/enable-delivery.guard';
+import { DeliveryExperimentalFeaturesService } from './services/delivery-experimental-features/delivery-experimental-features.service';
 
 @NgModule({
   imports: [ConversationModule.forRoot(), ProfileModule, RemoteConsoleModule],
@@ -51,6 +53,8 @@ import { DeliveryRealTimeService } from './services/delivery-real-time/delivery-
     InboxConversationService,
     UploaderService,
     DeliveryDevelopmentGuard,
+    DeliveryExperimentalFeaturesService,
+    EnableDeliveryGuard,
     YouGuard,
   ],
 })
