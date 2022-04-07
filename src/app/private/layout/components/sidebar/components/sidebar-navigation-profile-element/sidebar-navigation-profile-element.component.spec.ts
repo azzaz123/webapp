@@ -84,7 +84,17 @@ describe('SidebarNavigationProfileElementComponent', () => {
         expect(reviewsCount.innerHTML).toEqual(`(${MOCK_SIDEBAR_NAVIGATION_PROFILE_ELEMENT.reviews_count})`);
       });
 
-      describe('and the sidebar is collapsed', () => {});
+      describe('and the sidebar is collapsed', () => {
+        it('should hide the user information (username, reviews and reviews count)', () => {
+          component.element = MOCK_SIDEBAR_NAVIGATION_PROFILE_ELEMENT;
+          component.collapsed = true;
+
+          fixture.detectChanges();
+          const userInformationElement = fixture.debugElement.query(By.css('.SidebarNavigationProfileElement__user')).nativeElement;
+
+          expect(userInformationElement.hidden).toEqual(true);
+        });
+      });
 
       describe('and the user is a professional', () => {
         it('should show the professional badge', () => {
