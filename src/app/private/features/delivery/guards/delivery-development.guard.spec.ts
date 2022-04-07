@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 import { DeliveryDevelopmentGuard } from './delivery-development.guard';
 
 describe('DeliveryDevelopmentGuard', () => {
-  const featuresEnabledSuject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  const featuresEnabledSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   let guard: DeliveryDevelopmentGuard;
   let deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService;
@@ -21,7 +21,7 @@ describe('DeliveryDevelopmentGuard', () => {
         {
           provide: DeliveryExperimentalFeaturesService,
           useValue: {
-            featuresEnabled$: featuresEnabledSuject.asObservable(),
+            featuresEnabled$: featuresEnabledSubject.asObservable(),
           },
         },
         {
@@ -44,7 +44,7 @@ describe('DeliveryDevelopmentGuard', () => {
 
   describe('when the feature flag gets the delivery feature flag...', () => {
     it('should return true', () => {
-      featuresEnabledSuject.next(true);
+      featuresEnabledSubject.next(true);
       let flagResponse: boolean;
 
       guard.canLoad().subscribe((isActive: boolean) => (flagResponse = isActive));
@@ -55,7 +55,7 @@ describe('DeliveryDevelopmentGuard', () => {
 
   describe(`when the feature flag don't get the delivery feature flag...`, () => {
     beforeEach(() => {
-      featuresEnabledSuject.next(false);
+      featuresEnabledSubject.next(false);
       spyOn(router, 'navigate');
     });
 
