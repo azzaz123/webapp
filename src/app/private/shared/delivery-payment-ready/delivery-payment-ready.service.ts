@@ -8,7 +8,7 @@ import { environment } from '@environments/environment';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
-import { tap, takeUntil } from 'rxjs/operators';
+import { tap, takeUntil, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class DeliveryPaymentReadyService {
@@ -43,7 +43,7 @@ export class DeliveryPaymentReadyService {
   }
 
   private continueCreditCardFlow(externalCardFlowUrl: string): Observable<void> {
-    return this.webViewModalService.open(externalCardFlowUrl, this.title, DELIVERY_MODAL_CLASSNAME);
+    return this.webViewModalService.open(externalCardFlowUrl, this.title, DELIVERY_MODAL_CLASSNAME).pipe(map(() => {}));
   }
 
   //TODO: This needs to be reviewed, from both technical and legal POVs
