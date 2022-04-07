@@ -8,6 +8,8 @@ import { CategoryService } from '@core/category/category.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { CategoryResponse } from '@core/category/category-response.interface';
+import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
+import { FavoriteSearchButtonProperties } from '@layout/topbar/components/favorite-search-button/favorite-search-button.interface';
 
 @Component({
   selector: 'tsl-suggester',
@@ -15,6 +17,16 @@ import { CategoryResponse } from '@core/category/category-response.interface';
   styleUrls: ['./suggester.component.scss'],
 })
 export class SuggesterComponent implements OnInit, OnDestroy {
+  public isOnFocus: boolean = false;
+  public readonly activeFavoriteSearchButtonProperties: FavoriteSearchButtonProperties = {
+    isActive: true,
+    svgSrc: '/assets/icons/fullheart-fs.svg',
+  };
+  public readonly inactiveFavoriteSearchButtonProperties: FavoriteSearchButtonProperties = {
+    isActive: false,
+    svgSrc: '/assets/icons/emptyheart-fs.svg',
+  };
+  public favoriteSearchButtonProperties: FavoriteSearchButtonProperties = this.inactiveFavoriteSearchButtonProperties;
   private static SEARCH_BOX_INITIAL_VALUE = '';
   private static DEFAULT_PLACEHOLDER_VALUE = $localize`:@@web_components_suggester_7:Search in All categories`;
 
@@ -57,6 +69,8 @@ export class SuggesterComponent implements OnInit, OnDestroy {
     this.searchBoxPlaceholderSubject.next(placeholder);
   }
 
+  public toggleOnFocus = () => (this.isOnFocus = !this.isOnFocus);
+
   public suggest = (text$: Observable<string>) =>
     text$.pipe(
       distinctUntilChanged(),
@@ -86,6 +100,12 @@ export class SuggesterComponent implements OnInit, OnDestroy {
   public submitSearch(): void {
     this.searching = false;
     this.searchSubmit.emit(this.searchBoxValue);
+  }
+
+  public clickedButton(isActive: boolean) {
+    this.favoriteSearchButtonProperties = isActive
+      ? this.inactiveFavoriteSearchButtonProperties
+      : this.activeFavoriteSearchButtonProperties;
   }
 
   private onSearchKeywordChange(): Observable<SearchBoxValue> {

@@ -9,20 +9,24 @@
       [ngbTypeahead]="suggest"
       [resultTemplate]="suggesterTemplate"
       [focusFirst]="false"
+      (focus)="toggleOnFocus()"
+      (focusout)="toggleOnFocus()"
       (ngModelChange)="searchBoxValueChange($event)"
       (keydown.enter)="submitSearch()"
     />
   <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
-  <div class="FavoriteSearchButton__container">
-    <tsl-favorite-search-button [className]="className" [svgSrc]="svgSrc"
-                                [isActive]="isActive"></tsl-favorite-search-button>
-  </div>
+
 
   <tsl-svg-icon
-    *ngIf="(searchBoxValue$ | async).keywords"
+    *ngIf="(searchBoxValue$ | async).keywords && isOnFocus"
     (click)="resetKeyword()"
     class="SearchBox__reset" src="/assets/icons/top-bar/search-box-reset.svg" width="21" height="21">
   </tsl-svg-icon>
+  <div class="FavoriteSearchButton__container" *ngIf="(searchBoxValue$ | async).keywords && !isOnFocus">
+    <tsl-favorite-search-button [svgSrc]="favoriteSearchButtonProperties.svgSrc"
+                                [isActive]="favoriteSearchButtonProperties.isActive"
+                                (clickedButton)="clickedButton($event)"></tsl-favorite-search-button>
+  </div>
 </div>
 
 <ng-template #suggesterTemplate let-suggestion="result">
