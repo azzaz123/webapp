@@ -62,6 +62,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscriptions: Subscription[] = [];
   private readonly trackViewTransactionPayScreen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private isPayviewLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
@@ -83,6 +84,10 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   public ngOnInit(): void {
     this.payviewStateManagementService.itemHash = this.itemHash;
     this.subscribe();
+  }
+
+  public get isPayviewLoading$(): Observable<boolean> {
+    return this.isPayviewLoadingSubject.asObservable();
   }
 
   public closeCreditCardEditor(): void {
@@ -179,7 +184,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private subscribeToBuyEventBus(): void {
     this.subscriptions.push(
-      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, (value: string) => {
+      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, () => {
+        this.markPayviewAsLoading();
         this.payviewStateManagementService.buyerRequestId = this.uuidService.getUUID();
         this.payviewStateManagementService.buy();
       })
@@ -242,7 +248,19 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private subscribeToStateManagementEventBus(): void {
     this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_GET_CURRENT_STATE, (error: PayviewError) => {
+        this.markPayviewAsNotLoading();
+      })
+    );
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_GET_CURRENT_STATE, () => {
+        this.closeModal();
+      })
+    );
+    this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, (error: PayviewError) => {
+        console.log('erorr on buy');
+        this.markPayviewAsNotLoading();
         this.buyService.error(error);
       })
     );
@@ -339,5 +357,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
           getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState)
         )
       );
+  }
+
+  private markPayviewAsLoading(): void {
+    this.isPayviewLoadingSubject.next(true);
+  }
+
+  private markPayviewAsNotLoading(): void {
+    this.isPayviewLoadingSubject.next(false);
   }
 }
