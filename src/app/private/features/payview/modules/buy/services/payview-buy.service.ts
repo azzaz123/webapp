@@ -37,7 +37,7 @@ export class PayviewBuyService {
     return this.isBuyButtonDisabledSubject.asObservable();
   }
 
-  private enableBuyButton(): void {
+  public enableBuyButton(): void {
     this.isBuyButtonDisabledSubject.next(false);
   }
 

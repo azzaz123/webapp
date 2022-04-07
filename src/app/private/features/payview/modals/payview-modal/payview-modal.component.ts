@@ -85,6 +85,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public ngOnInit(): void {
+    this.buyService.enableBuyButton();
     this.payviewStateManagementService.itemHash = this.itemHash;
     this.subscribe();
   }
