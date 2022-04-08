@@ -141,7 +141,7 @@ describe('PayviewService', () => {
             get() {
               return of(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
             },
-            update: () => of(null),
+            setUserPaymentPreferences: () => of(null),
           },
         },
         {
@@ -539,7 +539,7 @@ describe('PayviewService', () => {
 
   describe('WHEN updating the user payment preferences', () => {
     beforeEach(() => {
-      spyOn(paymentsUserPaymentPreferencesService, 'update').and.callThrough();
+      spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.callThrough();
     });
 
     it('should call to the payment server to update the corresponding preferences', fakeAsync(() => {
@@ -555,8 +555,8 @@ describe('PayviewService', () => {
       tick(1);
 
       expect(result).toEqual(1);
-      expect(paymentsUserPaymentPreferencesService.update).toHaveBeenCalledTimes(1);
-      expect(paymentsUserPaymentPreferencesService.update).toHaveBeenCalledWith(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
+      expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
+      expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
     }));
   });
 
@@ -666,7 +666,7 @@ describe('PayviewService', () => {
     const MOCK_BUYER_REQUEST: BuyerRequest = { ...MOCK_BUYER_REQUEST_PAYMENT_READY, id: MOCK_BUYER_REQUEST_ID };
 
     beforeEach(fakeAsync(() => {
-      spyOn(paymentsUserPaymentPreferencesService, 'update').and.callThrough();
+      spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.callThrough();
       spyOn(paymentsClientBrowserInfoApiService, 'sendBrowserInfo').and.callThrough();
       jest.spyOn(deliveryRealTimeService, 'deliveryRealTimeNotifications$', 'get').mockReturnValue(of(MOCK_3DS_REALTIME_NOTIFICATION));
       spyOn(deliveryPaymentReadyService, 'continueBuyerRequestBuyFlow').and.callThrough();
@@ -676,11 +676,11 @@ describe('PayviewService', () => {
     }));
 
     it('should send latest payment user preferences only once', () => {
-      expect(paymentsUserPaymentPreferencesService.update).toHaveBeenCalledTimes(1);
+      expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
     });
 
     it('should send latest payment user preferences with valid data', () => {
-      expect(paymentsUserPaymentPreferencesService.update).toHaveBeenCalledWith(MOCK_USER_PAYMENT_PREFERENCES);
+      expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(MOCK_USER_PAYMENT_PREFERENCES);
     });
 
     it('should get current buyer request from server only once', () => {

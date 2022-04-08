@@ -39,6 +39,8 @@ import {
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
 import { headerTitles } from '../../constants/header-titles';
 import { UuidService } from '@core/uuid/uuid.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -62,6 +64,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscriptions: Subscription[] = [];
   private readonly trackViewTransactionPayScreen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private isPayviewLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
@@ -72,7 +75,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     private paymentService: PayviewPaymentService,
     private payviewTrackingEventsService: PayviewTrackingEventsService,
     private buyService: PayviewBuyService,
-    private uuidService: UuidService
+    private uuidService: UuidService,
+    private toastService: ToastService
   ) {}
 
   public ngOnDestroy(): void {
@@ -80,8 +84,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public ngOnInit(): void {
+    this.buyService.enableBuyButton();
     this.payviewStateManagementService.itemHash = this.itemHash;
     this.subscribe();
+  }
+
+  public get isPayviewLoading$(): Observable<boolean> {
+    return this.isPayviewLoadingSubject.asObservable();
   }
 
   public closeCreditCardEditor(): void {
@@ -178,7 +187,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private subscribeToBuyEventBus(): void {
     this.subscriptions.push(
-      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, (value: string) => {
+      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, () => {
+        this.markPayviewAsLoading();
         this.payviewStateManagementService.buyerRequestId = this.uuidService.getUUID();
         this.payviewStateManagementService.buy();
       })
@@ -241,8 +251,24 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private subscribeToStateManagementEventBus(): void {
     this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_GET_CURRENT_STATE, (error: PayviewError) => {
+        this.markPayviewAsNotLoading();
+      })
+    );
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_GET_CURRENT_STATE, () => {
+        this.closeModal();
+      })
+    );
+    this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, (error: PayviewError) => {
+        this.markPayviewAsNotLoading();
         this.buyService.error(error);
+      })
+    );
+    this.subscriptions.push(
+      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.ERROR, (error: PayviewError) => {
+        this.showErrorToast(error.message);
       })
     );
     this.subscriptions.push(
@@ -347,5 +373,20 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
           getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState)
         )
       );
+  }
+
+  private markPayviewAsLoading(): void {
+    this.isPayviewLoadingSubject.next(true);
+  }
+
+  private markPayviewAsNotLoading(): void {
+    this.isPayviewLoadingSubject.next(false);
+  }
+
+  private showErrorToast(text: string): void {
+    this.toastService.show({
+      text,
+      type: TOAST_TYPES.ERROR,
+    });
   }
 }

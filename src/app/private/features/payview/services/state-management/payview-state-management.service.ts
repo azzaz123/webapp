@@ -25,6 +25,7 @@ import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
 import { BuyerRequestsError } from '@api/core/errors/delivery/payview/buyer-requests/buyer-requests.error';
 import { PayviewTrackingEventsService } from '../payview-tracking-events/payview-tracking-events.service';
 import { getTransactionCheckoutErrorPropertiesFromPayviewState } from '../payview-tracking-events/payview-tracking-events-properties.mapper';
+import { PayviewError } from '../../interfaces/payview-error.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -238,7 +239,17 @@ export class PayviewStateManagementService {
         next: () => {
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY));
         },
-        error: (error: BuyerRequestsError) => {
+        error: (errors: BuyerRequestsError[]) => {
+          const error: BuyerRequestsError = errors[0];
+          const payload: PayviewError = {
+            code: error ? error.name : '',
+            message: error ? error.message : '',
+          };
+
+          this.actionSubject.next({
+            type: PAYVIEW_EVENT_TYPE.ERROR_ON_BUY,
+            payload,
+          });
           this.trackTransactionCheckoutErrorEvent(payviewState, error);
           subscription.unsubscribe();
         },
