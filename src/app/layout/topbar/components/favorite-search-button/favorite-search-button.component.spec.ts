@@ -25,4 +25,19 @@ describe('FavoriteSearchButtonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('when clicking on favbutton', () => {
+    it('should emit isActive prop to parent', () => {
+      spyOn(component.clickedButton, 'emit');
+      const nativeElement = fixture.nativeElement;
+      const button = nativeElement.querySelector('button');
+      component.isActive = true;
+      fixture.detectChanges();
+
+      button.dispatchEvent(new Event('click'));
+      fixture.detectChanges();
+
+      expect(component.clickedButton.emit).toHaveBeenCalledWith(component.isActive);
+    });
+  });
 });
