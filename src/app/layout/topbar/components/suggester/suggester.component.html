@@ -18,15 +18,17 @@
 
 
   <tsl-svg-icon
-    *ngIf="(searchBoxValue$ | async).keywords && isOnFocus"
+    *ngIf="featureFlagService.isExperimentalFeaturesEnabled() ? (searchBoxValue$ | async).keywords && isOnFocus : (searchBoxValue$ | async).keywords"
     (click)="resetKeyword()"
     class="SearchBox__reset" src="/assets/icons/top-bar/search-box-reset.svg" width="21" height="21">
   </tsl-svg-icon>
-  <div class="FavoriteSearchButton__container" *ngIf="(searchBoxValue$ | async).keywords && !isOnFocus">
+  <div class="FavoriteSearchButton__container"
+       *ngIf="featureFlagService.isExperimentalFeaturesEnabled() && (searchBoxValue$ | async).keywords && !isOnFocus">
     <tsl-favorite-search-button [svgSrc]="favoriteSearchButtonProperties.svgSrc"
                                 [isActive]="favoriteSearchButtonProperties.isActive"
                                 (clickedButton)="clickedButton($event)"></tsl-favorite-search-button>
   </div>
+
 </div>
 
 <ng-template #suggesterTemplate let-suggestion="result">

@@ -10,6 +10,7 @@ import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/
 import { CategoryResponse } from '@core/category/category-response.interface';
 import { EmptyStateProperties } from '@public/shared/components/empty-state/empty-state-properties.interface';
 import { FavoriteSearchButtonProperties } from '@layout/topbar/components/favorite-search-button/favorite-search-button.interface';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 
 @Component({
   selector: 'tsl-suggester',
@@ -17,6 +18,11 @@ import { FavoriteSearchButtonProperties } from '@layout/topbar/components/favori
   styleUrls: ['./suggester.component.scss'],
 })
 export class SuggesterComponent implements OnInit, OnDestroy {
+  private static SEARCH_BOX_INITIAL_VALUE = '';
+  private static DEFAULT_PLACEHOLDER_VALUE = $localize`:@@web_components_suggester_7:Search in All categories`;
+  @Output() public searchSubmit = new EventEmitter<SearchBoxValue>();
+  @Output() public searchCancel = new EventEmitter<SearchBoxValue>();
+
   public isOnFocus: boolean = false;
   public readonly activeFavoriteSearchButtonProperties: FavoriteSearchButtonProperties = {
     isActive: true,
@@ -27,18 +33,18 @@ export class SuggesterComponent implements OnInit, OnDestroy {
     svgSrc: '/assets/icons/emptyheart-fs.svg',
   };
   public favoriteSearchButtonProperties: FavoriteSearchButtonProperties = this.inactiveFavoriteSearchButtonProperties;
-  private static SEARCH_BOX_INITIAL_VALUE = '';
-  private static DEFAULT_PLACEHOLDER_VALUE = $localize`:@@web_components_suggester_7:Search in All categories`;
-
-  @Output() public searchSubmit = new EventEmitter<SearchBoxValue>();
-  @Output() public searchCancel = new EventEmitter<SearchBoxValue>();
 
   private readonly searchBoxValueSubject = new BehaviorSubject<SearchBoxValue>({ keywords: SuggesterComponent.SEARCH_BOX_INITIAL_VALUE });
   private readonly searchBoxPlaceholderSubject: BehaviorSubject<string> = new BehaviorSubject('');
   private searching = false;
   private subscriptions = new Subscription();
 
-  constructor(private suggesterService: SuggesterService, private route: ActivatedRoute, private categoryService: CategoryService) {}
+  constructor(
+    private suggesterService: SuggesterService,
+    private route: ActivatedRoute,
+    private categoryService: CategoryService,
+    public featureFlagService: FeatureFlagService
+  ) {}
 
   ngOnInit() {
     this.subscriptions.add(this.onSearchKeywordChange().subscribe());
