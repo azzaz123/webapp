@@ -29,7 +29,6 @@ export class InitializeAuthenticatedUserService {
     this.featureFlagsService.getFlags(INIT_FEATURE_FLAGS).toPromise();
 
     await this.analyticsService.initializeAnalyticsWithAuthenticatedUser(user);
-
     this.experimentationService.initializeExperimentationWithAuthenticatedUser();
     this.externalCommsService.initializeBraze();
   }
