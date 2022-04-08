@@ -24,7 +24,6 @@ import { PayviewStateManagementService } from '@private/features/payview/service
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
 import { take } from 'rxjs/operators';
@@ -54,6 +53,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   @ViewChild(StepperComponent) stepper: StepperComponent;
 
   @Input() public itemHash: string;
+  @Input() public closeCallback: Function;
 
   public countries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
   public headerTitle: string = headerTitles[PAYVIEW_STEPS.PAYVIEW];
@@ -69,7 +69,6 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
     private deliveryService: PayviewDeliveryService,
-    private activeModal: NgbActiveModal,
     private customerHelpService: CustomerHelpService,
     private deliveryCountries: DeliveryCountriesService,
     private promotionService: PayviewPromotionService,
@@ -108,8 +107,8 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.payviewStateManagementService.refreshByDelivery();
   }
 
-  public closeModal(): void {
-    this.activeModal.close();
+  public closeModal(buyRequestId: string = null): void {
+    this.closeCallback && this.closeCallback(buyRequestId);
   }
 
   public getFullAddress(methods: DeliveryBuyerDeliveryMethods): string {
@@ -272,11 +271,15 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
         this.showErrorToast(error.message);
       })
     );
-
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_GET_CURRENT_STATE, (error: PayviewError) => {
+        this.closeModal();
+      })
+    );
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY, () => {
         this.trackTransactionPaymentSuccessEvent();
-        // TODO - 18/03/2022 - Do something like closing the payview, show success toast or so on...
+        this.closeModalOnPaymentSuccess();
       })
     );
     this.subscriptions.push(
@@ -311,6 +314,10 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
         subscription.unsubscribe();
       }
     });
+  }
+
+  private closeModalOnPaymentSuccess(): void {
+    this.payviewState$.pipe(take(1)).subscribe((payviewState: PayviewState) => this.closeModal(payviewState.buyerRequestId));
   }
 
   private trackClickAddEditCardEvent(): void {

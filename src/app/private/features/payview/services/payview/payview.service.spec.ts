@@ -43,14 +43,10 @@ import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
 import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
-import { RouterTestingModule } from '@angular/router/testing';
 import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
-import { PaymentsUserPaymentPreference, PaymentsUserPaymentPreferences, PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
+import { PaymentsUserPaymentPreferences, PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
 import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
 import { MOCK_BUYER_REQUEST_PAYMENT_READY } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
-import { Router } from '@angular/router';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 
 describe('PayviewService', () => {
@@ -71,7 +67,6 @@ describe('PayviewService', () => {
   let paymentsWalletsService: PaymentsWalletsService;
   let paymentsClientBrowserInfoApiService: PaymentsClientBrowserInfoApiService;
   let toastService: ToastService;
-  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -182,7 +177,7 @@ describe('PayviewService', () => {
         PayviewService,
         ToastService,
       ],
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(PayviewService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
@@ -199,7 +194,6 @@ describe('PayviewService', () => {
     paymentsWalletsService = TestBed.inject(PaymentsWalletsService);
     paymentsClientBrowserInfoApiService = TestBed.inject(PaymentsClientBrowserInfoApiService);
     toastService = TestBed.inject(ToastService);
-    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {
@@ -670,7 +664,6 @@ describe('PayviewService', () => {
       id: 'whatever.3ds_ready',
     };
     const MOCK_BUYER_REQUEST: BuyerRequest = { ...MOCK_BUYER_REQUEST_PAYMENT_READY, id: MOCK_BUYER_REQUEST_ID };
-    const MOCK_TTS_REDIRECT_URL: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUEST_ID}`;
 
     beforeEach(fakeAsync(() => {
       spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.callThrough();
@@ -678,7 +671,6 @@ describe('PayviewService', () => {
       jest.spyOn(deliveryRealTimeService, 'deliveryRealTimeNotifications$', 'get').mockReturnValue(of(MOCK_3DS_REALTIME_NOTIFICATION));
       spyOn(deliveryPaymentReadyService, 'continueBuyerRequestBuyFlow').and.callThrough();
       spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST]));
-      spyOn(router, 'navigate');
       service.request(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE).subscribe();
       tick();
     }));
@@ -705,14 +697,6 @@ describe('PayviewService', () => {
 
     it('should ask to delivery payment ready handler to continue flow with valid data', () => {
       expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(MOCK_BUYER_REQUEST, MOCK_PAYMENT_METHOD);
-    });
-
-    it('should redirect to the TTS only once', () => {
-      expect(router.navigate).toHaveBeenCalledTimes(1);
-    });
-
-    it('should redirect to the TTS', () => {
-      expect(router.navigate).toHaveBeenCalledWith([MOCK_TTS_REDIRECT_URL]);
     });
   });
 });
