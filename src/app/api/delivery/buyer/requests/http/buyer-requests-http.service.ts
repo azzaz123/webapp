@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 import { BuyerRequestBuyDto } from '../dtos/buyer-request-buy-dto.interface';
 import { APP_VERSION } from '@environments/version';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BuyerRequestsHttpService {
   constructor(private http: HttpClient) {}
 

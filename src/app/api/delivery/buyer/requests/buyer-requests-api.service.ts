@@ -13,7 +13,7 @@ import { mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties } from './mappe
 import { BuyRequestErrorMapper } from './mappers/errors/buy-request/buy-request-error-mapper';
 import { BuyRequestErrorResponse } from './dtos/errors';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BuyerRequestsApiService {
   private errorMapper: BuyRequestErrorMapper = new BuyRequestErrorMapper();
   constructor(private buyerRequestsHttpService: BuyerRequestsHttpService) {}
