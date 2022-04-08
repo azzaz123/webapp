@@ -9,6 +9,8 @@ import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { By } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash-es';
+import { CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
+import { InboxItem } from '@private/features/chat/core/model';
 
 @Component({
   selector: 'tsl-svg-icon',
@@ -148,19 +150,20 @@ describe('ItemAvatarComponent', () => {
   });
 
   describe('Not available', () => {
-    describe('and is not available item', () => {
+    describe('and has to show status', () => {
       beforeEach(() => {
-        component.item = cloneDeep(MOCK_ITEM);
-        component.item.sold = false;
-        component.item.reserved = false;
-        component.item.notAvailable = true;
+        component.showAvailableStatus = true;
       });
-      describe('and has to show status', () => {
+      describe('and is unpublished item', () => {
         beforeEach(() => {
-          component.showAvailableStatus = true;
+          component.item = cloneDeep(CREATE_MOCK_INBOX_CONVERSATION().item) as InboxItem;
+          component.item.sold = false;
+          component.item.reserved = false;
+          component.item.notAvailable = false;
+          component.item.unpublished = true;
           fixture.detectChanges();
         });
-        it('should not show not available icon', () => {
+        it('should show not available icon', () => {
           const element = fixture.debugElement.query(By.css('.not-available')).query(By.directive(MockSvgIconComponent));
           expect(element).toBeTruthy();
 
@@ -168,9 +171,29 @@ describe('ItemAvatarComponent', () => {
           expect(icon.src).toBe('/assets/icons/warning.svg');
         });
       });
-      describe('and has not to show status', () => {
+      describe('and is not available item', () => {
         beforeEach(() => {
-          component.showAvailableStatus = false;
+          component.item = cloneDeep(MOCK_ITEM);
+          component.item.sold = false;
+          component.item.reserved = false;
+          component.item.notAvailable = true;
+          fixture.detectChanges();
+        });
+        it('should show not available icon', () => {
+          const element = fixture.debugElement.query(By.css('.not-available')).query(By.directive(MockSvgIconComponent));
+          expect(element).toBeTruthy();
+
+          const icon: MockSvgIconComponent = element.componentInstance;
+          expect(icon.src).toBe('/assets/icons/warning.svg');
+        });
+      });
+      describe('and is available item', () => {
+        beforeEach(() => {
+          component.item = cloneDeep(MOCK_ITEM);
+          component.item.sold = false;
+          component.item.reserved = false;
+          component.item.notAvailable = false;
+          component.showAvailableStatus = true;
           fixture.detectChanges();
         });
         it('should not show not available icon', () => {
@@ -179,16 +202,16 @@ describe('ItemAvatarComponent', () => {
         });
       });
     });
-    describe('and is available item', () => {
+    describe('and has not to show status', () => {
       beforeEach(() => {
+        component.showAvailableStatus = false;
         component.item = cloneDeep(MOCK_ITEM);
         component.item.sold = false;
         component.item.reserved = false;
-        component.item.notAvailable = false;
-        component.showAvailableStatus = true;
+        component.item.notAvailable = true;
         fixture.detectChanges();
       });
-      it('should show not available icon', () => {
+      it('should not show not available icon', () => {
         const element = fixture.debugElement.query(By.css('.not-available'));
         expect(element).toBeFalsy();
       });

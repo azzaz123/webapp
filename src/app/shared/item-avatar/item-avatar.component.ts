@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { InboxItem } from '@private/features/chat/core/model';
 import { environment } from '../../../environments/environment';
@@ -18,6 +18,8 @@ export class ItemAvatarComponent implements OnChanges {
   public avatar: string;
   public fallback: string;
   public readonly PERMISSIONS = PERMISSIONS;
+
+  constructor(public cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes?: any) {
     this.avatar = this.item && this.item.mainImage && this.item.mainImage.urls_by_size ? this.item.mainImage.urls_by_size.small : '';
@@ -54,6 +56,12 @@ export class ItemAvatarComponent implements OnChanges {
   }
 
   get isNotAvailable(): boolean {
-    return this.item.notAvailable && this.showAvailableStatus;
+    if (!this.showAvailableStatus) {
+      return false;
+    }
+    if (this.item instanceof InboxItem && this.item.unpublished) {
+      return true;
+    }
+    return this.item.notAvailable;
   }
 }
