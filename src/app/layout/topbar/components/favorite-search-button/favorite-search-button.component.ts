@@ -12,7 +12,7 @@ export class FavoriteSearchButtonComponent {
 
   @Output() public clickedButton = new EventEmitter<boolean>();
 
-  public onClick() {
+  public onClick(): void {
     this.clickedButton.emit(this.isActive);
   }
 }
