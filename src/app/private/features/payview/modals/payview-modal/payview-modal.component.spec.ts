@@ -1238,6 +1238,7 @@ describe('PayviewModalComponent', () => {
           spyOn(component, 'closeModal').and.callThrough();
           spyOn(payviewTrackingEventsService, 'trackTransactionPaymentSuccess');
 
+          // TODO: When refactor the payview we need to remove calling on private methods. We did this for this specific moment where we cannot trigger it in another way.		Date: 2022/04/08
           component['trackTransactionPaymentSuccessEvent']();
           component['closeModalOnPaymentSuccess']();
         });
