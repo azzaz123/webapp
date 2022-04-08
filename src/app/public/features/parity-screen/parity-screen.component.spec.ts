@@ -1,11 +1,12 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DeviceService } from '@core/device/device.service';
-import { WINDOW_TOKEN } from '@core/window/window.token';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { QRCodeModule } from 'angularx-qrcode';
 import { ParityScreenComponent } from './parity-screen.component';
 import { DeviceType } from '@core/device/deviceType.enum';
+import { QrIconInjectorService } from '@shared/qr-icon-injector/qr-icon-injector.service';
+import { By } from '@angular/platform-browser';
 
 describe('Parity Screen', () => {
   let component: ParityScreenComponent;
@@ -13,23 +14,13 @@ describe('Parity Screen', () => {
 
   let publicFooterServiceMock;
   let deviceServiceMock;
-  let mutationObserverMock;
-  let windowMock;
+  let qrIconInjectorServiceMock;
 
   beforeEach(
     waitForAsync(() => {
-      windowMock = {
-        MutationObserver: mutationObserverMock,
+      qrIconInjectorServiceMock = {
+        injectLogo: jest.fn(),
       };
-
-      mutationObserverMock = jest.fn(function MutationObserver(callback) {
-        this.observe = jest.fn();
-        this.trigger = (mockedMutationList) => {
-          callback(mockedMutationList, this);
-        };
-      });
-
-      global.MutationObserver = mutationObserverMock;
 
       deviceServiceMock = {
         isMobile: () => true,
@@ -55,18 +46,14 @@ describe('Parity Screen', () => {
             useValue: deviceServiceMock,
           },
           {
-            provide: WINDOW_TOKEN,
-            useValue: windowMock,
+            provide: QrIconInjectorService,
+            useValue: qrIconInjectorServiceMock,
           },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );
-
-  afterEach(() => {
-    mutationObserverMock.mockClear();
-  });
 
   describe('when it is desktop', () => {
     beforeEach(async () => {
@@ -100,24 +87,20 @@ describe('Parity Screen', () => {
       expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(false);
     });
 
-    it('should start mutation observer after view init when it exists', () => {
-      const [observerInstance] = mutationObserverMock.mock.instances;
-
-      component.ngAfterViewInit();
-      fixture.detectChanges();
-
-      expect(observerInstance).toBeDefined();
-      expect(observerInstance.observe).toHaveBeenCalled();
+    it('should inject the logo', () => {
+      expect(qrIconInjectorServiceMock.injectLogo).toHaveBeenCalled();
     });
 
-    it('should not start mutation observer after view init when it does not exist', () => {
-      mutationObserverMock.mockClear();
-      windowMock.MutationObserver = null;
+    it('should show the QR', () => {
+      const qrCode = fixture.debugElement.query(By.css('.GenericLanding__qrCode'));
 
-      component.ngAfterViewInit();
-      const [observerInstance] = mutationObserverMock.mock.instances;
+      expect(qrCode).toBeDefined();
+    });
 
-      expect(observerInstance).not.toBeDefined();
+    it('should not show the download app button', () => {
+      const button = fixture.debugElement.query(By.css('.GenericLanding__appButton'));
+
+      expect(button).toBeNull();
     });
   });
 
@@ -153,13 +136,20 @@ describe('Parity Screen', () => {
       expect(publicFooterServiceMock.setShow).toHaveBeenCalledWith(false);
     });
 
-    it('should not start mutation observer after view init', () => {
-      const [observerInstance] = mutationObserverMock.mock.instances;
+    it('should not inject the logo', () => {
+      expect(qrIconInjectorServiceMock.injectLogo).not.toHaveBeenCalled();
+    });
 
-      component.ngAfterViewInit();
-      fixture.detectChanges();
+    it('should show the download app button', () => {
+      const button = fixture.debugElement.query(By.css('.GenericLanding__appButton'));
 
-      expect(observerInstance).not.toBeDefined();
+      expect(button).toBeDefined();
+    });
+
+    it('should not show the QR', () => {
+      const qrCode = fixture.debugElement.query(By.css('.GenericLanding__qrCode'));
+
+      expect(qrCode).toBeNull();
     });
   });
 });
