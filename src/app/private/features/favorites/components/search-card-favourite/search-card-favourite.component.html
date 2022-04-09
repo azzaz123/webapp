@@ -1,20 +1,36 @@
-<div class="FavouriteSearch col-12 d-flex align-items-center mb-2" *ngIf="favouriteSearch"
-    (click)="handleFavouriteSearchClick()">
-    <div class="FavouriteSearch__info d-flex flex-column py-3">
-        <span class="FavouriteSearch__query text-truncate">
-            {{ favouriteSearch.query }}
-        </span>
-        <span class="FavouriteSearch__filters text-truncate">
-            {{ favouriteSearch.filters }}
-        </span>
+<div class="FavouriteSearch mb-2">
+    <div class="FavouriteSearch__container-veil col-12 d-flex flex-column align-items-center px-0" *ngIf="favouriteSearch && !favouriteSearch.isActive">
+        <div class="top d-flex align-items-center py-2">
+            <span class="title">
+                Inactive
+            </span>
+            <tsl-svg-icon src="/assets/icons/cross.svg" class="cross-icon" (click)="handleFavouriteSearchDeleteClick()"></tsl-svg-icon>
+        </div>
+        <div class="bottom d-flex justify-content-center">
+            <tsl-button class="d-flex flex-column justify-content-center" (click)="handleReactivateFavouriteClick()" className="btn-reactivate">
+                Reactivate
+            </tsl-button>
+        </div>
     </div>
-    <div class="FavouriteSearch__badge align-self-start px-2 py-3">
-        <span *ngIf="favouriteSearch.gotNewItems" class="badge badge-primary badge-pill"> ¡Nuevo! </span>
-    </div>
-    <div class="FavouriteSearch__iconContainer d-flex flex-column align-items-center pl-3 py-3">
-        <tsl-svg-icon src="/assets/icons/heart-full.svg" class="FavouriteSearch__icon active mb-1"></tsl-svg-icon>
-        <span class="mt-1">
-            Eliminar
-        </span>
+
+    <div class="FavouriteSearch__container col-12 d-flex align-items-center" *ngIf="favouriteSearch">
+        <div class="FavouriteSearch__info d-flex flex-column py-4" (click)="handleFavouriteSearchClick()">
+            <span class="FavouriteSearch__query text-truncate">
+                {{ favouriteSearch.query }}
+            </span>
+            <span class="FavouriteSearch__filters text-truncate">
+                {{ favouriteSearch.filters }}
+            </span>
+        </div>
+        <div class="FavouriteSearch__badge align-self-start px-2 py-3">
+            <span *ngIf="favouriteSearch.gotNewResults" class="badge badge-primary badge-pill"> New! </span>
+        </div>
+        <div class="FavouriteSearch__iconContainer d-flex flex-column align-items-center pl-3 py-3" (click)="handleFavouriteSearchDeleteClick()">
+            <tsl-svg-icon src="/assets/icons/heart-full.svg" class="FavouriteSearch__icon active mb-1">
+            </tsl-svg-icon>
+            <span class="mt-1">
+                Delete
+            </span>
+        </div>
     </div>
 </div>

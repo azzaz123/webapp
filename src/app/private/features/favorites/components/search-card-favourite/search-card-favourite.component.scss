@@ -3,10 +3,53 @@
 $transition: all 0.25s ease;
 
 .FavouriteSearch {
-  background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
   transition: $transition;
+  position: relative;
+
+  &__container {
+    background: $white;
+    border-radius: $border-radius;
+    &-veil {
+      opacity: 0.9;
+      border-radius: $border-radius;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      height: 100%;
+      .top {
+        width: 100%;
+        background: $negative-main;
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+        .title {
+          flex-grow: 1;
+          text-align: center;
+          color: $white;
+        }
+        .cross-icon {
+          position: absolute;
+          left: 97%;
+          ::ng-deep svg path {
+            fill: $white;
+          }
+        }
+      }
+      .bottom {
+        background: $blue-grey-5;
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+        width: 100%;
+        height: 100%;
+        ::ng-deep .btn-reactivate {
+          padding: $spacing-s $spacing-xxxl;
+          background-color: $negative-main;
+        }
+      }
+    }
+  }
 
   &:hover {
     transform: translateY(-2px);

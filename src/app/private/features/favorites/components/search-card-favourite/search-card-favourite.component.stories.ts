@@ -6,6 +6,7 @@ import { SearchCardFavouriteComponent } from './search-card-favourite.component'
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { FavouriteSearch } from '@api/core/model/favourites/search/favouriteSearch.interface';
 import { HttpClientModule } from '@angular/common/http';
+import { ButtonModule } from '@shared/button/button.module';
 
 @Component({
   selector: 'tsl-story-search-card-favourite',
@@ -24,7 +25,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [StorySearchCardFavouriteComponent, SearchCardFavouriteComponent],
-      imports: [CommonModule, HttpClientModule, SvgIconModule],
+      imports: [CommonModule, HttpClientModule, SvgIconModule, ButtonModule],
       providers: [],
     }),
   ],
@@ -40,16 +41,22 @@ export const Default = Template.bind({});
 Default.args = {
   favouriteSearches: [
     {
-      query: 'lorem ipsum',
+      query: 'lorem ipsum malvo',
       filters: 'lorem ipsum dolor sit amet consectetur ad elit',
       isActive: true,
-      gotNewItems: false,
+      gotNewResults: false,
     },
     {
-      query: 'lorem ipsum',
+      query: 'lorem ipsum malvo',
       filters: 'lorem ipsum dolor sit amet consectetur ad elit',
       isActive: true,
-      gotNewItems: true,
+      gotNewResults: true,
+    },
+    {
+      query: 'lorem ipsum malvo',
+      filters: 'lorem ipsum dolor sit amet consectetur ad elit',
+      isActive: false,
+      gotNewResults: true,
     },
   ],
 };
@@ -62,14 +69,21 @@ LongTitle.args = {
         'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
       filters: 'lorem ipsum dolor sit amet consectetur ad elit',
       isActive: true,
-      gotNewItems: false,
+      gotNewResults: false,
     },
     {
       query:
         'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
       filters: 'lorem ipsum dolor sit amet consectetur ad elit',
       isActive: true,
-      gotNewItems: true,
+      gotNewResults: true,
+    },
+    {
+      query:
+        'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+      filters: 'lorem ipsum dolor sit amet consectetur ad elit',
+      isActive: false,
+      gotNewResults: true,
     },
   ],
 };
@@ -82,14 +96,21 @@ LongDescription.args = {
       filters:
         'lorem ipsum dolor sit amet consectetur ad elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
       isActive: true,
-      gotNewItems: false,
+      gotNewResults: false,
     },
     {
       query: 'lorem ipsum dolor sit',
       filters:
         'lorem ipsum dolor sit amet consectetur ad elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
       isActive: true,
-      gotNewItems: true,
+      gotNewResults: true,
+    },
+    {
+      query: 'lorem ipsum dolor sit',
+      filters:
+        'lorem ipsum dolor sit amet consectetur ad elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+      isActive: false,
+      gotNewResults: true,
     },
   ],
 };
@@ -103,7 +124,7 @@ LongEverything.args = {
       filters:
         'lorem ipsum dolor sit amet consectetur ad elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
       isActive: true,
-      gotNewItems: false,
+      gotNewResults: false,
     },
     {
       query:
@@ -111,7 +132,15 @@ LongEverything.args = {
       filters:
         'lorem ipsum dolor sit amet consectetur ad elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
       isActive: true,
-      gotNewItems: true,
+      gotNewResults: true,
+    },
+    {
+      query:
+        'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+      filters:
+        'lorem ipsum dolor sit amet consectetur ad elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+      isActive: false,
+      gotNewResults: true,
     },
   ],
 };

@@ -11,7 +11,9 @@ export class SearchCardFavouriteComponent {
 
   constructor() {}
 
-  public handleFavouriteSearchClick(): void {
-    console.log('handleFavouriteSearchClick');
-  }
+  public handleFavouriteSearchClick(): void {}
+
+  public handleFavouriteSearchDeleteClick(): void {}
+
+  public handleReactivateFavouriteClick(): void {}
 }
