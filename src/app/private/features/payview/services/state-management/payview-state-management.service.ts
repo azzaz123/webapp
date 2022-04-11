@@ -26,6 +26,10 @@ import { BuyerRequestsError } from '@api/core/errors/delivery/payview/buyer-requ
 import { PayviewTrackingEventsService } from '../payview-tracking-events/payview-tracking-events.service';
 import { getTransactionCheckoutErrorPropertiesFromPayviewState } from '../payview-tracking-events/payview-tracking-events-properties.mapper';
 import { PayviewError } from '../../interfaces/payview-error.interface';
+import {
+  UserPaymentPreferencesUnknownError,
+  UserPaymentPreferencesError,
+} from '@api/core/errors/delivery/payview/user-payment-preferences';
 
 @Injectable({
   providedIn: 'root',
@@ -239,13 +243,16 @@ export class PayviewStateManagementService {
         next: () => {
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY));
         },
-        error: (errors: BuyerRequestsError[]) => {
+        error: (errors: BuyerRequestsError | UserPaymentPreferencesError[]) => {
           const error: BuyerRequestsError = errors[0];
           const payload: PayviewError = {
             code: error ? error.name : '',
             message: error ? error.message : '',
           };
 
+          if (!(error instanceof UserPaymentPreferencesUnknownError)) {
+            this.updatePaymentPreferencesBuyerStatus(payviewState);
+          }
           this.actionSubject.next({
             type: PAYVIEW_EVENT_TYPE.ERROR_ON_BUY,
             payload,
@@ -284,7 +291,7 @@ export class PayviewStateManagementService {
       .subscribe({
         next: () => {
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_SET_PAYMENT_METHOD));
-          this.stateSubject.next(payviewState);
+          this.updatePaymentPreferencesBuyerStatus(payviewState);
         },
         error: (error: HttpErrorResponse) => {
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.ERROR_ON_SET_PAYMENT_METHOD, error));
@@ -294,5 +301,10 @@ export class PayviewStateManagementService {
           subscription.unsubscribe();
         },
       });
+  }
+
+  private updatePaymentPreferencesBuyerStatus(payviewState: PayviewState): void {
+    payviewState.payment.preferences.preferences.isNewBuyer = false;
+    this.stateSubject.next(payviewState);
   }
 }

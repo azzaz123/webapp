@@ -27,12 +27,13 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 
 import { catchError, concatMap, filter, map, mergeMap, take } from 'rxjs/operators';
-import { forkJoin, Observable, ObservableInput, of } from 'rxjs';
+import { forkJoin, Observable, ObservableInput, of, throwError } from 'rxjs';
 import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
 import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
+import { UserPaymentPreferencesUnknownError } from '@api/core/errors/delivery/payview/user-payment-preferences';
 
 @Injectable({
   providedIn: 'root',
@@ -143,7 +144,9 @@ export class PayviewService {
   }
 
   public setUserPaymentPreferences(preferences: PaymentsUserPaymentPreferences): Observable<void> {
-    return this.paymentPreferencesService.setUserPaymentPreferences(preferences);
+    return this.paymentPreferencesService
+      .setUserPaymentPreferences(preferences)
+      .pipe(catchError(() => throwError([new UserPaymentPreferencesUnknownError()])));
   }
 
   public request(state: PayviewState): Observable<void> {
