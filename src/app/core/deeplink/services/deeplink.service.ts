@@ -12,7 +12,7 @@ import {
   printableLabelDeeplinkPrefix,
   userProfileDeeplinkPrefix,
   zendeskArticleDeeplinkPrefix,
-} from '@api/core/utils/deeplink/constants/deeplink-prefixes';
+} from '@core/deeplink/constants/deeplink-prefixes';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID } from '@core/external-links/customer-help/enums/external-customer-ticket-form-page-id.enum';
 import { getCustomerHelpUrl, UNIFIED_EXTERNAL_CUSTOMER_HELP_PAGE_ID } from '@core/external-links/customer-help/get-customer-help-url';
