@@ -109,30 +109,6 @@ describe('FeatureFlagService', () => {
       expect(dataResponse).toBe(mockResponse.active);
     });
 
-    describe('when handling delivery flag...', () => {
-      describe('and the experimentalFeatures are enabled...', () => {
-        it('should return true', () => {
-          spyOn(localStorage, 'getItem').and.returnValue(true);
-          let dataResponse: boolean;
-
-          service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
-
-          expect(dataResponse).toBe(true);
-        });
-      });
-    });
-
-    describe('and the experimentalFeatures are not enabled...', () => {
-      it('should return false', () => {
-        spyOn(localStorage, 'getItem').and.returnValue(false);
-        let dataResponse: boolean;
-
-        service.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive) => (dataResponse = isActive));
-
-        expect(dataResponse).toBe(false);
-      });
-    });
-
     describe('Permissions', () => {
       beforeEach(() => {
         spyOn(permissionService, 'addPermission').and.callThrough();
