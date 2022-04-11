@@ -32,6 +32,7 @@ import { Observable, of, Subscriber } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { deeplinkType } from './types/deeplink.type';
 import { deeplinkAvailabilities } from './constants/deeplink-availability';
+import { deeplinkExternalNavigation } from './constants/deeplink-external-navigation';
 
 @Injectable()
 export class DeeplinkService {
@@ -81,6 +82,10 @@ export class DeeplinkService {
 
   private isAvailable(deeplink: string): boolean {
     return deeplinkAvailabilities[this.getDeeplinkType(deeplink)];
+  }
+
+  private isExternalNavigation(deeplink: string): boolean {
+    return deeplinkExternalNavigation[this.getDeeplinkType(deeplink)];
   }
 
   private getBarcodeWebLink(deeplink: string): string {
@@ -189,21 +194,6 @@ export class DeeplinkService {
     const HELP_LOCALE = HELP_LOCALE_BY_APP_LOCALE[this.locale];
     const formId = deeplink.split('f=').pop();
     return !!formId ? getTicketFormUrl(formId as unknown as EXTERNAL_CUSTOMER_TICKET_FORM_PAGE_ID, HELP_LOCALE) : null;
-  }
-
-  private isExternalNavigation(deeplink: string): boolean {
-    const deeplinks: Record<deeplinkType, boolean> = {
-      barcodeLabel: false,
-      pay: false,
-      instructions: false,
-      item: true,
-      printableLabel: true,
-      unknown: false,
-      userProfile: false,
-      zendeskArticle: true,
-      zendeskForm: true,
-    };
-    return deeplinks[this.getDeeplinkType(deeplink)];
   }
 
   private navigateToRoute(deeplink: string): void {
