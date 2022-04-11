@@ -63,7 +63,7 @@ export class SidebarService {
   private mapProfileNavigationElement(user: User, stats: UserStats): SidebarNavigationProfileElement {
     return {
       id: SIDEBAR_NAVIGATION_ELEMENTS.PROFILE,
-      professional: user.featured,
+      isPro: user.featured,
       text: user.microName,
       alternativeText: user.microName,
       reviews: stats.ratings.reviews,

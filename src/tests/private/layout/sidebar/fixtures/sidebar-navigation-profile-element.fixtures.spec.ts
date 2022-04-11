@@ -5,7 +5,7 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 export const MOCK_SIDEBAR_NAVIGATION_PROFILE_ELEMENT: SidebarNavigationProfileElement = {
   id: SIDEBAR_NAVIGATION_ELEMENTS.PROFILE,
-  professional: MOCK_USER.featured,
+  isPro: MOCK_USER.featured,
   text: MOCK_USER.microName,
   alternativeText: MOCK_USER.microName,
   reviews: MOCK_USER_STATS.ratings.reviews,

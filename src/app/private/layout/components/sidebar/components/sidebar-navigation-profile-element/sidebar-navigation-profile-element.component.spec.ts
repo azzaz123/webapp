@@ -98,7 +98,7 @@ describe('SidebarNavigationProfileElementComponent', () => {
 
       describe('and the user is a professional', () => {
         it('should show the professional badge', () => {
-          component.element = { ...MOCK_SIDEBAR_NAVIGATION_PROFILE_ELEMENT, professional: true };
+          component.element = { ...MOCK_SIDEBAR_NAVIGATION_PROFILE_ELEMENT, isPro: true };
 
           fixture.detectChanges();
           const proBadge = fixture.debugElement.query(By.directive(ProBadgeStubComponent)).nativeElement;
