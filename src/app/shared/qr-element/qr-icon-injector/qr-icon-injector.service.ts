@@ -1,9 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class QrIconInjectorService {
   private mutationObserverCompatibility: boolean;
   private mutationObserverInstance: MutationObserver;

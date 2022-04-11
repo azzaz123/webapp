@@ -3,7 +3,8 @@ import { DeviceService } from '@core/device/device.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 import { ADJUST_GENERIC_STORE_APP_URL } from '@core/constants';
-import { QrIconInjectorService } from '@shared/qr-icon-injector/qr-icon-injector.service';
+import { QrIconInjectorService } from '@shared/qr-element/qr-icon-injector/qr-icon-injector.service';
+import { QrElement } from '@shared/qr-element/interfaces/qr-element.interface';
 
 @Component({
   selector: 'tsl-parity',
@@ -11,9 +12,9 @@ import { QrIconInjectorService } from '@shared/qr-icon-injector/qr-icon-injector
   styleUrls: ['./parity-screen.component.scss'],
 })
 export class ParityScreenComponent implements AfterViewInit {
-  @ViewChild('qrCode', { static: false }) qrCode: any;
+  @ViewChild('qrCode', { static: false }) qrCode: QrElement;
 
-  public qrSize: string;
+  public readonly QR_SIZE = 180;
   public url: string = ADJUST_GENERIC_STORE_APP_URL;
   public device: DeviceType;
   public readonly DevicesType = DeviceType;
@@ -26,7 +27,6 @@ export class ParityScreenComponent implements AfterViewInit {
   ) {
     this.publicFooterService.setShow(false);
     this.device = this.deviceService.getDeviceType();
-    this.qrSize = '180';
   }
 
   public ngAfterViewInit(): void {

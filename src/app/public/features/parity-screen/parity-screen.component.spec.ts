@@ -5,7 +5,7 @@ import { PublicFooterService } from '@public/core/services/footer/public-footer.
 import { QRCodeModule } from 'angularx-qrcode';
 import { ParityScreenComponent } from './parity-screen.component';
 import { DeviceType } from '@core/device/deviceType.enum';
-import { QrIconInjectorService } from '@shared/qr-icon-injector/qr-icon-injector.service';
+import { QrIconInjectorService } from '@shared/qr-element/qr-icon-injector/qr-icon-injector.service';
 import { By } from '@angular/platform-browser';
 
 describe('Parity Screen', () => {

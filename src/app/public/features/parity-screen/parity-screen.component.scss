@@ -9,38 +9,34 @@
   top: 0;
   display: flex;
   justify-content: center;
+}
 
-  .GenericLanding {
-    &__container {
-      @include media-breakpoint-down(sm) {
-        width: 100%;
-      }
-      width: 412px;
-      margin-top: 110px;
+.GenericLanding {
+  &__container {
+    @include media-breakpoint-down(sm) {
+      width: 100%;
     }
-    &__title {
-      font-size: $spacing-ml + $spacing-xs;
-      text-align: center;
-    }
-    &__description {
-      font-size: $spacing-m;
-      text-align: center;
-    }
-    &__qrCode {
-      border: 5px solid black;
-      border-radius: $border-radius-sm;
-    }
-    &__icon {
-      img {
-        width: 310px;
-        height: 172px;
-      }
-    }
+    width: 412px;
+    margin-top: $spacer * 6.875;
   }
-  .btn {
-    border-radius: $button-border-radius;
-    font-weight: $font-weight-chunky;
-    margin-top: $spacing-xl;
-    padding: $spacing-ms $spacing-xl;
+  &__title {
+    font-size: $font-size-lll;
   }
+  &__description {
+    font-size: $font-size-m;
+  }
+  &__qrCode {
+    border: 5px solid $blue-grey-1;
+    border-radius: $border-radius-sm;
+  }
+  &__icon {
+    width: 310px;
+    height: 172px;
+  }
+}
+.btn {
+  border-radius: $button-border-radius;
+  font-weight: $font-weight-chunky;
+  margin-top: $spacing-xl;
+  padding: $spacing-ms $spacing-xl;
 }
