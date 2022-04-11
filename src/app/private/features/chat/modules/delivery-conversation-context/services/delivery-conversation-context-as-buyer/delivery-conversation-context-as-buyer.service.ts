@@ -102,7 +102,8 @@ export class DeliveryConversationContextAsBuyerService {
     // we will show the buy banner when last request is not accepted or it is not pending
     const lastRequestFailed: boolean = !(
       this.lastRequest?.status.request === BUYER_REQUEST_STATUS.ACCEPTED ||
-      this.lastRequest?.status.request === BUYER_REQUEST_STATUS.PENDING
+      this.lastRequest?.status.request === BUYER_REQUEST_STATUS.PENDING ||
+      this.lastRequest?.status.request === BUYER_REQUEST_STATUS.PAYMENT_REQUIRED
     );
     const showBuyBanner: boolean = buyerHasNoRequests || lastRequestFailed;
 
