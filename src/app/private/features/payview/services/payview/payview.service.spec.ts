@@ -48,6 +48,10 @@ import { PaymentsUserPaymentPreferences, PAYVIEW_PAYMENT_METHOD } from '@api/cor
 import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
 import { MOCK_BUYER_REQUEST_PAYMENT_READY } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
+import {
+  UserPaymentPreferencesError,
+  UserPaymentPreferencesUnknownError,
+} from '@api/core/errors/delivery/payview/user-payment-preferences';
 
 describe('PayviewService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
@@ -538,26 +542,54 @@ describe('PayviewService', () => {
   });
 
   describe('WHEN updating the user payment preferences', () => {
-    beforeEach(() => {
-      spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.callThrough();
+    describe('and the request succeed', () => {
+      beforeEach(() => {
+        spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.callThrough();
+      });
+
+      it('should call to the payment server to update the corresponding preferences', fakeAsync(() => {
+        let result: number = 0;
+
+        const subscription = service
+          .setUserPaymentPreferences(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES)
+          .pipe(delay(1))
+          .subscribe(() => {
+            subscription.unsubscribe();
+            result++;
+          });
+        tick(1);
+
+        expect(result).toEqual(1);
+        expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
+        expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(
+          MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES
+        );
+      }));
     });
 
-    it('should call to the payment server to update the corresponding preferences', fakeAsync(() => {
-      let result: number = 0;
+    describe('and the request fails', () => {
+      beforeEach(() => {
+        spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.returnValue(throwError('network error'));
+      });
 
-      const subscription = service
-        .setUserPaymentPreferences(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES)
-        .pipe(delay(1))
-        .subscribe(() => {
-          subscription.unsubscribe();
-          result++;
-        });
-      tick(1);
+      it('should call to the payment server to update the corresponding preferences', fakeAsync(() => {
+        let result: UserPaymentPreferencesError[];
 
-      expect(result).toEqual(1);
-      expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
-      expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
-    }));
+        service.setUserPaymentPreferences(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES).subscribe(
+          () => {},
+          (error: UserPaymentPreferencesError[]) => {
+            result = error;
+          }
+        );
+        tick();
+
+        expect(result[0] instanceof UserPaymentPreferencesUnknownError).toBe(true);
+        expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
+        expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(
+          MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES
+        );
+      }));
+    });
   });
 
   describe('WHEN retrieving the card', () => {
