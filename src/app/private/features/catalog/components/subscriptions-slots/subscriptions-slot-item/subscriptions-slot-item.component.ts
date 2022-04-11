@@ -1,11 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import {
+  ANALYTIC_EVENT_TYPES,
+  ANALYTICS_EVENT_NAMES,
   AnalyticsEvent,
   ClickCatalogManagement,
   SCREEN_IDS,
-  ANALYTICS_EVENT_NAMES,
-  ANALYTIC_EVENT_TYPES,
 } from '@core/analytics/analytics-constants';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 
@@ -13,6 +13,7 @@ import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscripti
   selector: 'tsl-subscriptions-slot-item',
   templateUrl: './subscriptions-slot-item.component.html',
   styleUrls: ['./subscriptions-slot-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubscriptionsSlotItemComponent implements OnChanges {
   @Input() subscriptionSlot: SubscriptionSlot;
@@ -25,6 +26,12 @@ export class SubscriptionsSlotItemComponent implements OnChanges {
 
   ngOnChanges() {
     this.checkIsSelected();
+  }
+
+  public extraBumpsText(quantity: number): string {
+    return quantity === 1
+      ? $localize`:@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.one:Highlight ${quantity}:INTERPOLATION: extra item`
+      : $localize`:@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.other:Highlight ${quantity}:INTERPOLATION: extra items`;
   }
 
   public onClick(subscriptionSlot: SubscriptionSlot, e: any): void {
