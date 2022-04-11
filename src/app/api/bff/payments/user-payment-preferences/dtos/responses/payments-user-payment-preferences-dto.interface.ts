@@ -7,7 +7,7 @@ export interface PaymentsUserPaymentPreferencesDto {
     wallet_blocked: boolean;
   };
   preferences: {
-    id: string;
+    id?: string;
     payment_method: PaymentMethodDto;
     use_wallet: boolean;
     wallet_blocked: boolean;
