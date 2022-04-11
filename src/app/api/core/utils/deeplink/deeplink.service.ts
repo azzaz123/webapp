@@ -33,6 +33,7 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { DeeplinkType } from './types/deeplink.type';
 import { deeplinkAvailabilities } from './constants/deeplink-availability';
 import { deeplinkExternalNavigation } from './constants/deeplink-external-navigation';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class DeeplinkService {
@@ -139,19 +140,10 @@ export class DeeplinkService {
       return of(null);
     }
 
-    return new Observable((subscriber: Subscriber<string>) => {
-      this.itemService.get(itemId).subscribe({
-        next: (item: Item) => {
-          subscriber.next(!!item.webSlug ? this.itemDetailRoutePipe.transform(item.webSlug) : null);
-        },
-        error: (error: HttpErrorResponse) => {
-          subscriber.next(null);
-        },
-        complete: () => {
-          subscriber.complete();
-        },
-      });
-    });
+    return this.itemService.get(itemId).pipe(
+      map((item: Item) => (!!item.webSlug ? this.itemDetailRoutePipe.transform(item.webSlug) : null)),
+      catchError(() => of(null))
+    );
   }
 
   private getParams(deeplink: string): string[] {
@@ -170,19 +162,10 @@ export class DeeplinkService {
       return of(null);
     }
 
-    return new Observable((observer: Subscriber<string>) => {
-      this.userService.get(userId, false).subscribe({
-        next: (user: User) => {
-          observer.next(!!user.webSlug ? this.userProfileRoutePipe.transform(user.webSlug, userId) : null);
-        },
-        error: (error: HttpErrorResponse) => {
-          observer.next(null);
-        },
-        complete: () => {
-          observer.complete();
-        },
-      });
-    });
+    return this.userService.get(userId, false).pipe(
+      map((user: User) => (!!user.webSlug ? this.userProfileRoutePipe.transform(user.webSlug, userId) : null)),
+      catchError(() => of(null))
+    );
   }
 
   private getZendeskArticleWebLink(deeplink: string): string {
