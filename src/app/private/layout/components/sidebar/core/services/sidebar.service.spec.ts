@@ -147,7 +147,7 @@ describe('SidebarService', () => {
       service.profileNavigationElement$.subscribe((profileElement) => {
         expect(profileElement).toEqual({
           id: SIDEBAR_NAVIGATION_ELEMENTS.PROFILE,
-          professional: MOCK_USER.featured,
+          isPro: MOCK_USER.featured,
           text: MOCK_USER.microName,
           alternativeText: MOCK_USER.microName,
           reviews: MOCK_USER_STATS.ratings.reviews,

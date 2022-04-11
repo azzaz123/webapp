@@ -4,7 +4,7 @@
     <div class="SidebarNavigationProfileElement__user flex-column ml-2" [hidden]="collapsed">
         <div class="d-flex align-items-center">
             <h3 class="SidebarNavigationProfileElement__username text-truncate m-0 mr-1">{{ element.text }}</h3>
-            <tsl-pro-badge [iconType]="PRO_BADGE_SIZE" *ngIf="element.professional"></tsl-pro-badge>
+            <tsl-pro-badge [iconType]="PRO_BADGE_SIZE" *ngIf="element.isPro"></tsl-pro-badge>
         </div>
         <div class="d-flex align-items-center">
             <tsl-stars [stars]="element.reviews" [width]="12" [height]="12" [normalized]="false"></tsl-stars>
