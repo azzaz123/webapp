@@ -42,6 +42,7 @@ import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-pre
 import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { DeliveryAddressErrorTranslations } from '../../errors/constants/delivery-error-translations';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 describe('DeliveryAddressComponent', () => {
   const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
@@ -397,7 +398,7 @@ describe('DeliveryAddressComponent', () => {
 
             component.onSubmit();
 
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.PAYVIEW]);
+            expect(router.navigate).toHaveBeenCalledWith([PRIVATE_PATHS.PAYVIEW]);
           });
 
           it('should redirect to shipment tracking if we come from payview pay button', () => {

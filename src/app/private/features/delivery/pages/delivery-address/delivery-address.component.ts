@@ -52,6 +52,7 @@ import { DELIVERY_ADDRESS_LINKS } from '../../enums/delivery-address-links.enum'
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { DeliveryAddressInputsMaxLength } from './interfaces/delivery-address-inputs-max-length.interface';
 import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -443,7 +444,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
   private redirect(): void {
     switch (this.whereUserComes) {
       case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS:
-        this.router.navigate([DELIVERY_PATHS.PAYVIEW]);
+        this.router.navigate([PRIVATE_PATHS.PAYVIEW]);
         break;
       case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY:
         this.router.navigate([DELIVERY_PATHS.BUYS]);

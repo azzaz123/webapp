@@ -74,7 +74,7 @@ export class DeliveryConversationContextAsBuyerService {
   private redirectToPayview(conversation: InboxConversation): void {
     const { item } = conversation;
     const { id: itemHash } = item;
-    const route: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+    const route: string = `${PRIVATE_PATHS.CHAT}/${PRIVATE_PATHS.PAYVIEW}/${itemHash}`;
     this.router.navigate([route]);
   }
 

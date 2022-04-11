@@ -214,7 +214,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
       it('should navigate to the item payview', () => {
         const itemHash: string = MOCK_INBOX_CONVERSATION_AS_BUYER.item.id;
-        const expectedRoute: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+        const expectedRoute: string = `${PRIVATE_PATHS.CHAT}/${PRIVATE_PATHS.PAYVIEW}/${itemHash}`;
 
         expect(router.navigate).toHaveBeenCalledWith([expectedRoute]);
         expect(router.navigate).toHaveBeenCalledTimes(1);
