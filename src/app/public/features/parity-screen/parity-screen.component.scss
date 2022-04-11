@@ -19,16 +19,16 @@
       margin-top: 110px;
     }
     &__title {
-      font-size: 24px;
+      font-size: $spacing-ml + $spacing-xs;
       text-align: center;
     }
     &__description {
-      font-size: 16px;
+      font-size: $spacing-m;
       text-align: center;
     }
     &__qrCode {
       border: 5px solid black;
-      border-radius: 5px;
+      border-radius: $border-radius-sm;
     }
     &__icon {
       img {

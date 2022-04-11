@@ -16,7 +16,7 @@ export class ParityScreenComponent implements AfterViewInit {
   public qrSize: string;
   public url: string = ADJUST_GENERIC_STORE_APP_URL;
   public device: DeviceType;
-  public DevicesType: typeof DeviceType = DeviceType;
+  public readonly DevicesType = DeviceType;
   private wallapopIconRound: string = 'assets/images/generic-landing/wallapop-logo-black-round.svg';
 
   constructor(
