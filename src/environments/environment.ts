@@ -1,7 +1,6 @@
 import { Environment } from './environment.interface';
 import { environment as environmentBeta } from './environment.beta';
 import { dockNum } from './docknum';
-import { APP_LOCALE } from '@configs/subdomains.config';
 
 const environmentLocal: Environment = {
   production: false,
@@ -20,6 +19,7 @@ const environmentLocal: Environment = {
   didomiKey: '56d12b9e-69db-4641-a15a-9c19f73aed7d',
   threatMetrixOrgId: '6ldgf22r',
   threatMetrixProfilingDomain: 'clear.wallapop.com',
+  optimizelySdkKey: '62mynM5SVDrhD5aVV1xNz',
 };
 
 export const environment = dockNum === 'beta' ? environmentBeta : environmentLocal;

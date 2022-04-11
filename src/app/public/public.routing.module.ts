@@ -16,11 +16,6 @@ const routes: Route[] = [
         loadChildren: () => import('./features/login/login.module').then((m) => m.LoginModule),
       },
       {
-        path: PUBLIC_PATHS.REGISTER,
-        canLoad: [DevelopmentGuard],
-        loadChildren: () => import('./features/register/register.module').then((m) => m.RegisterModule),
-      },
-      {
         path: `${PUBLIC_PATHS.USER_DETAIL}/:${PUBLIC_PATH_PARAMS.WEBSLUG}`,
         loadChildren: () => import('./features/public-profile/public-profile.module').then((m) => m.PublicProfileModule),
       },
@@ -30,8 +25,11 @@ const routes: Route[] = [
       },
       {
         path: `${PUBLIC_PATHS.ITEM_DETAIL}/:${PUBLIC_PATH_PARAMS.ID}`,
-        canLoad: [DevelopmentGuard],
         loadChildren: () => import('./features/item-detail/item-detail.module').then((m) => m.ItemDetailModule),
+      },
+      {
+        path: `${PUBLIC_PATHS.PROCESS_COMPLETE}`,
+        loadChildren: () => import('./features/process-complete/process-complete.module').then((m) => m.ProcessCompleteModule),
       },
       {
         path: PUBLIC_PATHS.NOT_FOUND,

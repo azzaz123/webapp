@@ -91,7 +91,7 @@ $modal-border-radius: 0.3rem;
     margin-bottom: 0;
     font-size: $font-size-s;
   }
-  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio):not(.btn-text):not(.simple.light) {
+  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio):not(.btn-text):not(.simple.light):not(.btn-link) {
     color: $blue-grey-1;
     background-color: transparent;
     outline: 0;
@@ -191,21 +191,42 @@ $modal-border-radius: 0.3rem;
   }
 }
 
-.modal.kyc {
+.modal.delivery {
   .modal-dialog {
-    height: 630px;
     width: 80%;
     max-width: 720px;
+    height: 630px;
+    align-self: center;
 
     @include media-breakpoint-down(md) {
       width: 100% !important;
       height: 100% !important;
+      max-height: 100% !important;
+      margin: 0;
     }
   }
 
   .modal-content {
     max-width: inherit;
     height: inherit;
+    overflow: auto;
+  }
+}
+
+.modal.payview {
+  & .modal-dialog {
+    max-height: 80vh;
+    min-height: $spacing-xxxl;
+    overflow-y: scroll;
+    width: 100%;
+
+    @include media-breakpoint-up(xl) {
+      width: $modal-lg;
+    }
+
+    @include media-breakpoint-up(md) {
+      width: $modal-md;
+    }
   }
 }
 
@@ -458,6 +479,18 @@ $modal-border-radius: 0.3rem;
         }
       }
     }
+  }
+}
+
+.modal.modal-small {
+  .modal-dialog {
+    width: 100%;
+    max-width: 300px;
+    min-height: 280px;
+  }
+
+  .modal-content {
+    height: 100%;
   }
 }
 

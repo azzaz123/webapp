@@ -1,0 +1,49 @@
+@import '~style/common';
+
+.Checkout {
+  &__back {
+    color: $blue-grey-1;
+    position: absolute;
+    tsl-svg-icon {
+      margin-right: $spacing-ms;
+    }
+    &:hover {
+      text-decoration: none;
+      &,
+      tsl-svg-icon {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &__table-header {
+    .info {
+      font-size: $font-size-s;
+      tsl-svg-icon {
+        ::ng-deep svg path {
+          fill: $walla-main;
+        }
+      }
+      a {
+        text-decoration: underline;
+        cursor: pointer;
+        color: $walla-main;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  &__items {
+    &:not(:first-child) {
+      margin-top: $spacing-xl;
+    }
+  }
+
+  &__cart {
+    @include media-breakpoint-up(lg) {
+      max-width: 320px;
+    }
+  }
+}

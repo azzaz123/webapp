@@ -12,6 +12,10 @@
     }
   }
 
+  &__formWrapper {
+    flex: 1;
+  }
+
   &__back {
     cursor: pointer;
     color: $blue-grey-1;
@@ -22,5 +26,10 @@
         opacity: 0.8;
       }
     }
+  }
+
+  &__saveButton {
+    bottom: 0;
+    background-color: rgba($white, 0.8);
   }
 }

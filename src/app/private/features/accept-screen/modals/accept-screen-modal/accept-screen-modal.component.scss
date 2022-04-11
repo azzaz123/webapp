@@ -1,0 +1,88 @@
+@import '~style/common';
+
+$modal-header-height: 56px;
+
+:host {
+  height: inherit;
+}
+
+.AcceptScreenModal {
+  height: inherit;
+  overflow: hidden;
+
+  &__header {
+    height: $modal-header-height;
+    top: 0;
+    z-index: 1;
+    background-color: $white;
+  }
+
+  &__spinner {
+    padding: $spacing-l;
+  }
+
+  &__stepper {
+    overflow: auto;
+    height: calc(100% - #{$modal-header-height});
+  }
+
+  &__confirmButton {
+    bottom: 0;
+    background-color: rgba($white, 0.8);
+  }
+
+  &__cursorPointer {
+    cursor: pointer;
+  }
+
+  &__bottomLine {
+    border-bottom: 1px solid $blue-grey-4;
+  }
+
+  &__sellerAddressInfoWrapper {
+    flex: 1;
+  }
+
+  &__sellerAddressInfo {
+    flex: 1;
+  }
+
+  &__sellerWithAddressHeader {
+    font-size: $font-size-s;
+    color: $blue-grey-2;
+  }
+
+  &__title {
+    color: $blue-grey-1;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__carrierWrapper {
+    padding: $spacer * 0.75 0px;
+    flex: 1;
+  }
+
+  &__carrierIconWrapper {
+    @include square(48px);
+  }
+
+  &__carrierIcon {
+    border-radius: 5px;
+    object-fit: cover;
+    overflow: hidden;
+    width: inherit;
+    height: inherit;
+  }
+
+  &__carrierInformation {
+    font-size: $font-size-s;
+  }
+
+  &__carrierRestrictions {
+    background-color: $blue-grey-5;
+    border-radius: $border-radius;
+    font-size: $font-size-xs;
+    color: $blue-grey-2;
+  }
+}

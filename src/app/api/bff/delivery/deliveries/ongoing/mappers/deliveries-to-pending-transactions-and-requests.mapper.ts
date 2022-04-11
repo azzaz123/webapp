@@ -60,7 +60,7 @@ function getMappedTransactions(
   return deliveries
     .filter((delivery) => delivery.status !== ('REQUEST_CREATED' as DeliveryOngoingBuyerStatusDto))
     .map((transactionDto: OngoingDeliveryAsSellerDto | OngoingDeliveryAsBuyerDto) =>
-      mapRawDeliveryToPendingTransaction(transactionDto, isCurrentUserTheSeller)
+      mapEntityToDomain(transactionDto, isCurrentUserTheSeller)
     );
 }
 
@@ -70,20 +70,17 @@ function getMappedRequests(
 ): Request[] {
   return deliveries
     .filter((delivery) => delivery.status === ('REQUEST_CREATED' as DeliveryOngoingBuyerStatusDto))
-    .map((requestDto: OngoingDeliveryAsBuyerDto) => mapRawDeliveryToRequest(requestDto, isCurrentUserTheSeller));
+    .map((requestDto: OngoingDeliveryAsBuyerDto) => mapEntityToDomain(requestDto, isCurrentUserTheSeller) as Request);
 }
 
-const mapRawDeliveryToPendingTransaction = (
-  rawDelivery: OngoingDeliveryAsSellerDto | OngoingDeliveryAsBuyerDto,
-  isCurrentUserTheSeller: boolean
-) => {
+const mapEntityToDomain = (rawDelivery: OngoingDeliveryAsSellerDto | OngoingDeliveryAsBuyerDto, isCurrentUserTheSeller: boolean) => {
   const currencyCode: NumberCurrencyCode = {
     number: rawDelivery.item.cost.amount,
     currency: rawDelivery.item.cost.currency as CurrencyCode,
   };
   const statusName: DELIVERY_ONGOING_STATUS = mapDeliveryPendingTransactionStatusName(rawDelivery.status);
 
-  const mappedTransaction: DeliveryPendingTransaction = {
+  const mappedTransaction: DeliveryPendingTransaction | Request = {
     id: rawDelivery.request_id,
     item: {
       id: rawDelivery.item.hash,
@@ -105,35 +102,6 @@ const mapRawDeliveryToPendingTransaction = (
       translation: mapDeliveryPendingTransactionStatusTranslation(statusName, isCurrentUserTheSeller),
     },
     state: mapDeliveryPendingTransactionState(statusName),
-    moneyAmount: mapNumberAndCurrencyCodeToMoney(currencyCode),
-    isCurrentUserTheSeller,
-  };
-  return mappedTransaction;
-};
-
-const mapRawDeliveryToRequest = (rawDelivery: OngoingDeliveryAsSellerDto | OngoingDeliveryAsBuyerDto, isCurrentUserTheSeller: boolean) => {
-  const currencyCode: NumberCurrencyCode = {
-    number: rawDelivery.item.cost.amount,
-    currency: rawDelivery.item.cost.currency as CurrencyCode,
-  };
-
-  const mappedTransaction: Request = {
-    id: rawDelivery.request_id,
-    item: {
-      id: rawDelivery.item.hash,
-      imageUrl: rawDelivery.item.image,
-      title: rawDelivery.item.name,
-    },
-    buyer: {
-      id: rawDelivery.buyer.hash,
-      imageUrl: rawDelivery.buyer.image,
-      name: rawDelivery.buyer.name,
-    },
-    seller: {
-      id: rawDelivery.seller.hash,
-      imageUrl: rawDelivery.seller.image,
-      name: rawDelivery.seller.name,
-    },
     moneyAmount: mapNumberAndCurrencyCodeToMoney(currencyCode),
     isCurrentUserTheSeller,
   };

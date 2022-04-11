@@ -4,7 +4,7 @@ import { Counters, Ratings, ShippingCounterResponse, UserStats } from '@core/use
 import { UserData, UserProData, UserProDataNotifications } from '@core/user/user-data.interface';
 import { UnsubscribeReason } from '@core/user/unsubscribe-reason.interface';
 import { Image, UserExtrainfo, UserLocation, UserResponse, UserStatsOld, UserValidations } from '@core/user/user-response.interface';
-import { Observable, of } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { Item } from '@core/item/item';
 import { User } from '@core/user/user';
 
@@ -175,6 +175,23 @@ export const MOCK_USER: User = new User(
   USER_DATA.web_slug
 );
 
+export const MOCK_USER_WITHOUT_IMAGE: User = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  null,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  0,
+  USER_DATA.web_slug
+);
+
 export const MOCK_USER_WITHOUT_LOCATION: User = new User(
   USER_DATA.id,
   USER_DATA.micro_name,
@@ -196,6 +213,23 @@ export const MOCK_OTHER_USER: User = new User(
   'other',
   USER_DATA.micro_name,
   USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  0,
+  USER_DATA.web_slug
+);
+
+export const MOCK_OTHER_USER_WITHOUT_IMAGE: User = new User(
+  'other',
+  USER_DATA.micro_name,
+  null,
   USER_DATA.location,
   USER_DATA.stats,
   USER_DATA.validations,
@@ -345,6 +379,8 @@ export const MockUserService = {
 };
 
 export class MockedUserService {
+  private _userSubject: ReplaySubject<User> = new ReplaySubject();
+
   public get(url: string): Observable<User> {
     const data: any = USER_DATA;
     return of(
@@ -369,6 +405,15 @@ export class MockedUserService {
 
   public calculateDistanceFromItem(user: User, item: Item): number {
     return USER_ITEM_DISTANCE;
+  }
+
+  get userSubject$(): Observable<User> {
+    return this._userSubject.asObservable();
+  }
+
+  public initializeUser(): Promise<User> {
+    this._userSubject.next(new User(USER_ID));
+    return new Promise((resolve) => resolve(MOCK_FULL_USER));
   }
 
   get user(): User {

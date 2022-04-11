@@ -24,7 +24,7 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { CATEGORY_IDS } from '@core/category/category-ids';
+import { CATEGORY_IDS, LEGACY_CATEGORY_IDS } from '@core/category/category-ids';
 import { CategoryOption, CategoryResponse, SuggestedCategory } from '@core/category/category-response.interface';
 import { CategoryService } from '@core/category/category.service';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -43,8 +43,8 @@ import { KeywordSuggestion } from '@shared/keyword-suggester/keyword-suggestion.
 import { OUTPUT_TYPE, PendingFiles, UploadFile, UploadOutput, UPLOAD_ACTION } from '@shared/uploader/upload.interface';
 import { cloneDeep, isEqual, omit } from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { debounceTime, map, take, tap } from 'rxjs/operators';
+import { fromEvent, merge, Observable, Subject } from 'rxjs';
+import { debounceTime, map, pairwise, startWith, take, tap } from 'rxjs/operators';
 import { ProFeaturesComponent } from '../../components/pro-features/pro-features.component';
 import { DELIVERY_INFO } from '../../core/config/upload.constants';
 import { Brand, BrandModel, Model, ObjectType, SimpleObjectType } from '../../core/models/brand-model.interface';
@@ -80,12 +80,14 @@ function isObjectTypeRequiredValidator(formControl: AbstractControl) {
 export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
   @Input() categoryId: string;
   @Input() item: Item;
-  @Input() isReactivation = false;
+  @Input() isReactivation: boolean = false;
+  @Input() isActivateShipping: boolean = false;
   @Output() validationError: EventEmitter<any> = new EventEmitter();
   @Output() formChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() categorySelected = new EventEmitter<string>();
   @Input() suggestionValue: string;
   @ViewChild('title', { static: true }) titleField: ElementRef;
+  @ViewChild('shippingSection', { static: false }) shippingSectionElement: ElementRef;
   @ViewChild(ProFeaturesComponent) proFeaturesComponent: ProFeaturesComponent;
 
   MAX_DESCRIPTION_LENGTH = 640;
@@ -122,12 +124,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   public lastSuggestedCategoryText: string;
   public isProUser: boolean;
 
-  public isShippabilityAllowed = false;
-  public isShippabilityAllowedByCategory = false;
+  public isShippabilityAllowed = true;
+  public isShippabilityAllowedByCategory = true;
   public priceShippingRules: ShippingRulesPrice;
   public readonly SHIPPING_INFO_HELP_LINK = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.SHIPPING_SELL_WITH_SHIPPING);
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly DEFAULT_MAX_HASHTAGS = 5;
+  public readonly DEBOUNCE_TIME_MS = 500;
 
   private focused: boolean;
   private oldFormValue: any;
@@ -179,9 +182,13 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       if (this.item) {
         this.initializeEditForm();
 
-        this.dataReadyToValidate$.pipe(debounceTime(500), take(1)).subscribe(() => {
+        this.dataReadyToValidate$.pipe(debounceTime(this.DEBOUNCE_TIME_MS), take(1)).subscribe(() => {
           if (this.isReactivation) {
             this.itemReactivationService.reactivationValidation(this.uploadForm);
+          }
+
+          if (this.isActivateShipping) {
+            this.handleActivateShipping();
           }
         });
       }
@@ -190,7 +197,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     });
     this.detectTitleKeyboardChanges();
 
-    this.updateShippingToggleStatus(this.isShippabilityAllowed);
+    this.updateShippingToggleStatus(this.isShippabilityAllowed, false);
     this.isProUser = this.userService.isProUser();
   }
 
@@ -244,9 +251,6 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public onUploaded(response: ItemContent, action: UPLOAD_ACTION) {
     this.formChanged.emit(false);
-    if (!this.item) {
-      ga('send', 'event', 'Upload', 'done', 'Web mobile analysis');
-    }
 
     if (response.flags.onhold) {
       this.subscriptionService.getUserSubscriptionType().subscribe((type: SUBSCRIPTION_TYPES) => {
@@ -433,8 +437,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   public isHeroCategory(category_id: number): boolean {
-    const HERO_CATEGORIES = [CATEGORY_IDS.CAR, CATEGORY_IDS.SERVICES, CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.JOBS];
-
+    const HERO_CATEGORIES = [CATEGORY_IDS.CAR, CATEGORY_IDS.SERVICES, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.JOBS];
     return HERO_CATEGORIES.includes(+category_id);
   }
 
@@ -536,7 +539,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         gender: [{ value: null, disabled: true }, [Validators.required]],
         condition: [null],
       }),
-      hashtags: '',
+      hashtags: [[]],
     });
   }
 
@@ -554,7 +557,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
       currency_code: this.item.currencyCode,
       description: this.item.description,
       sale_conditions: this.getSaleConditions(),
-      category_id: this.item.categoryId.toString(),
+      category_id: this.getCategoryId(),
       delivery_info: this.getDeliveryInfo(),
       extra_info: this.getExtraInfo(),
       images: this.uploadService.convertImagesToFiles(this.item.images),
@@ -643,18 +646,27 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectShippabilityChanges(): void {
+    const supportsShipping = this.uploadForm.get('sale_conditions').get('supports_shipping').value;
+
     this.uploadForm
       .get('sale_conditions')
       .get('supports_shipping')
-      .valueChanges.subscribe((supportsShipping) => {
+      .valueChanges.pipe(startWith(supportsShipping), pairwise())
+      .subscribe(([prev, curr]: [boolean, boolean]) => {
         const deliveryInfo = this.uploadForm.get('delivery_info');
-        if (supportsShipping) {
-          deliveryInfo.setValidators([Validators.required]);
-        } else {
-          deliveryInfo.setValidators([]);
-          deliveryInfo.setValue(null);
+        if (prev !== curr) {
+          if (curr) {
+            this.setRequiredDeliveryInfo(true);
+          } else {
+            this.setRequiredDeliveryInfo(false);
+            deliveryInfo.setValue(null);
+          }
         }
       });
+  }
+
+  private setRequiredDeliveryInfo(required: boolean) {
+    this.uploadForm.get('delivery_info').setValidators(required ? [Validators.required] : []);
   }
 
   private handleUploadFormExtraFields(): void {
@@ -700,6 +712,10 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   private getSaleConditions(): ItemSaleConditions {
     this.item.saleConditions.supports_shipping = !!this.item.deliveryInfo;
     return this.item.saleConditions ? this.item.saleConditions : null;
+  }
+
+  private getCategoryId(): string | null {
+    return LEGACY_CATEGORY_IDS.includes(this.item.categoryId) ? null : this.item.categoryId.toString();
   }
 
   private invalidForm(): void {
@@ -917,22 +933,28 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     return this.objectTypes.find((objectType) => objectType.id === objectTypeId)?.has_children || false;
   }
 
-  private updateShippingToggleStatus(previousIsShippabilityAllowed: boolean): void {
-    const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
-    const subcategoryId = this.getSubcategoryId();
-    const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
-
-    this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
+  private updateShippingToggleStatus(previousIsShippabilityAllowed: boolean, performRestartIfNecessary: boolean = true): void {
+    this.getShippabilittyAllowance().subscribe((shippingToggleAllowance: ShippingToggleAllowance) => {
       this.isShippabilityAllowed = shippingToggleAllowance.category && shippingToggleAllowance.subcategory && shippingToggleAllowance.price;
       this.isShippabilityAllowedByCategory = shippingToggleAllowance.category && shippingToggleAllowance.subcategory;
       this.priceShippingRules = this.shippingToggleService.shippingRules.priceRangeAllowed;
 
-      if (!this.isShippabilityAllowed) {
-        this.restartShippingToggleFormData(false);
-      } else if (!previousIsShippabilityAllowed) {
-        this.restartShippingToggleFormData(true);
+      if (performRestartIfNecessary) {
+        if (!this.isShippabilityAllowed) {
+          this.restartShippingToggleFormData(false);
+        } else if (!previousIsShippabilityAllowed) {
+          this.restartShippingToggleFormData(true);
+        }
       }
     });
+  }
+
+  private getShippabilittyAllowance(): Observable<ShippingToggleAllowance> {
+    const categoryId = this.uploadForm.get('category_id')?.value || this.item?.categoryId;
+    const subcategoryId = this.getSubcategoryId();
+    const price = this.uploadForm.get('sale_price')?.value === 0 ? 0 : this.uploadForm.get('sale_price')?.value || this.item?.salePrice;
+
+    return this.shippingToggleService.isAllowed(categoryId, subcategoryId, price).pipe(take(1));
   }
 
   private getSubcategoryId(): string {
@@ -948,25 +970,22 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   }
 
   private detectShippabilityAllowanceChanges(): void {
-    this.uploadForm.get('category_id').valueChanges.subscribe(() => {
+    merge(
+      this.uploadForm.get('category_id').valueChanges,
+      this.uploadForm.get('extra_info').get('object_type').get('id').valueChanges,
+      this.uploadForm.get('extra_info').get('object_type_2').get('id').valueChanges,
+      this.uploadForm.get('sale_price').valueChanges
+    ).subscribe(() => {
       this.updateShippingToggleStatus(this.isShippabilityAllowed);
     });
-    this.uploadForm
-      .get('extra_info')
-      .get('object_type')
-      .get('id')
-      .valueChanges.subscribe(() => {
-        this.updateShippingToggleStatus(this.isShippabilityAllowed);
-      });
-    this.uploadForm
-      .get('extra_info')
-      .get('object_type_2')
-      .get('id')
-      .valueChanges.subscribe(() => {
-        this.updateShippingToggleStatus(this.isShippabilityAllowed);
-      });
-    this.uploadForm.get('sale_price').valueChanges.subscribe((price) => {
-      this.updateShippingToggleStatus(this.isShippabilityAllowed);
-    });
+  }
+
+  private handleActivateShipping(): void {
+    this.restartShippingToggleFormData(true);
+    this.scrollToShippingCheckbox();
+  }
+
+  private scrollToShippingCheckbox(): void {
+    this.shippingSectionElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }

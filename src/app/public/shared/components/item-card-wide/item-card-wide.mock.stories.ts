@@ -106,7 +106,6 @@ export const MOCK_ITEM_CARD_WIDE_BUMPED: ItemCard = {
   bumpFlags: {
     bumped: true,
     highlighted: false,
-    urgent: false,
     country_bumped: false,
     boosted: false,
   },
@@ -126,7 +125,6 @@ export const MOCK_ITEM_CARD_WIDE_COUNTRY_BUMPED: ItemCard = {
   bumpFlags: {
     bumped: false,
     highlighted: false,
-    urgent: false,
     country_bumped: true,
     boosted: false,
   },

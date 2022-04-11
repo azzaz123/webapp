@@ -14,8 +14,8 @@
           <div class="header-row">
             <h4 class="header-subtitle" i18n="@@web_profile_pages_316">From here you can view and edit your profile</h4>
             <div class="header-separator d-none d-md-flex">|</div>
-            <a 
-              class="header-link d-none d-md-flex" 
+            <a
+              class="header-link d-none d-md-flex"
               i18n="@@web_profile_pages_317"
               *ngIf="user"
               [routerLink]="user.webSlug | userProfileRoute:user.id"
@@ -38,7 +38,9 @@
           <a class="nav-link" [routerLink]="PROFILE_PATHS.INFO" routerLinkActive="active" i18n="@@web_profile_pages_318">Profile</a>
           <a class="nav-link" [routerLink]="PROFILE_PATHS.ACCOUNT" routerLinkActive="active" i18n="@@web_profile_pages_319">Account</a>
           <a class="nav-link" [routerLink]="PROFILE_PATHS.VERIFICATIONS" routerLinkActive="active" i18n="@@verification_and_security_all_users_top_bar_title">Verifications and Security</a>
-          </nav>
+          <a class="nav-link" [routerLink]="PROFILE_PATHS.NOTIFICATIONS" routerLinkActive="active"
+             i18n="@@inbox_view_notifications_tab_label">Notifications</a>
+        </nav>
       </div>
       <div class="d-none col-md-4 d-md-block">
         <div class="rating" *ngIf="userStats">

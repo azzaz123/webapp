@@ -10,6 +10,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
 import {
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG,
+  MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_DEEPLINK,
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITHOUT_ANALYTICS,
   MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS_2,
 } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
@@ -18,11 +19,10 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { of, throwError } from 'rxjs';
-import { TransactionTrackingScreenStoreService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
-
 import { TransactionTrackingActionDialogComponent } from './transaction-tracking-action-dialog.component';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 
 describe('TransactionTrackingActionDialogComponent', () => {
   const MOCK_USER_ACTION = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG.positive.action as TransactionTrackingActionUserAction;
@@ -40,9 +40,9 @@ describe('TransactionTrackingActionDialogComponent', () => {
   let fixture: ComponentFixture<TransactionTrackingActionDialogComponent>;
   let modalService: NgbModal;
   let transactionTrackingService: TransactionTrackingService;
+  let deeplinkService: DeeplinkService;
   let errorsService: ErrorsService;
   let de: DebugElement;
-  let storeService: TransactionTrackingScreenStoreService;
   let router: Router;
   let transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService;
 
@@ -74,12 +74,6 @@ describe('TransactionTrackingActionDialogComponent', () => {
           },
         },
         {
-          provide: TransactionTrackingScreenStoreService,
-          useValue: {
-            refresh() {},
-          },
-        },
-        {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
@@ -104,6 +98,12 @@ describe('TransactionTrackingActionDialogComponent', () => {
             trackClickActionTTS() {},
           },
         },
+        {
+          provide: DeeplinkService,
+          useValue: {
+            navigate: () => {},
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -114,8 +114,8 @@ describe('TransactionTrackingActionDialogComponent', () => {
     de = fixture.debugElement;
     modalService = TestBed.inject(NgbModal);
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
+    deeplinkService = TestBed.inject(DeeplinkService);
     errorsService = TestBed.inject(ErrorsService);
-    storeService = TestBed.inject(TransactionTrackingScreenStoreService);
     transactionTrackingScreenTrackingEventsService = TestBed.inject(TransactionTrackingScreenTrackingEventsService);
     router = TestBed.inject(Router);
   });
@@ -128,7 +128,6 @@ describe('TransactionTrackingActionDialogComponent', () => {
     let wrapperDialog: DebugElement;
 
     beforeEach(() => {
-      spyOn(storeService, 'refresh');
       spyOn(router, 'navigate');
       wrapperDialog = de.query(By.css('div'));
     });
@@ -167,10 +166,6 @@ describe('TransactionTrackingActionDialogComponent', () => {
         it('should show an error', () => {
           expect(errorsService.i18nError).toHaveBeenCalledTimes(1);
           expect(errorsService.i18nError).toHaveBeenCalledWith(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
-        });
-
-        it('should NOT refresh the transaction tracking store', () => {
-          expect(storeService.refresh).not.toHaveBeenCalled();
         });
 
         it('should stay at the same page', () => {
@@ -218,13 +213,24 @@ describe('TransactionTrackingActionDialogComponent', () => {
             expect(errorsService.i18nError).not.toHaveBeenCalled();
           });
 
-          it('should update the transaction tracking store', () => {
-            expect(storeService.refresh).toHaveBeenCalledTimes(1);
-          });
-
           it('should redirect to the TTS page', () => {
             expect(router.navigate).toHaveBeenCalledTimes(1);
             expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_REQUEST_ID}`]);
+          });
+
+          describe('and when the user action is a deeplink', () => {
+            beforeEach(fakeAsync(() => {
+              spyOn(deeplinkService, 'navigate');
+              component.dialogAction = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_DEEPLINK;
+              fixture.detectChanges();
+
+              wrapperDialog.nativeElement.click();
+              tick();
+            }));
+
+            it('should navigate using deeplink handling', () => {
+              expect(deeplinkService.navigate).toHaveBeenCalledTimes(1);
+            });
           });
         });
 
@@ -257,10 +263,6 @@ describe('TransactionTrackingActionDialogComponent', () => {
 
           it('should stay at the same page', () => {
             expect(router.navigate).not.toHaveBeenCalled();
-          });
-
-          it('should update the transaction tracking store', () => {
-            expect(storeService.refresh).toHaveBeenCalledTimes(1);
           });
         });
 
@@ -309,10 +311,6 @@ describe('TransactionTrackingActionDialogComponent', () => {
         wrapperDialog.nativeElement.click();
         tick();
       }));
-
-      it('should NOT refresh the transaction tracking store', () => {
-        expect(storeService.refresh).not.toHaveBeenCalled();
-      });
 
       it('should stay at the same page', () => {
         expect(router.navigate).not.toHaveBeenCalled();

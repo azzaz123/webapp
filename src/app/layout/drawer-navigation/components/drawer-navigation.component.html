@@ -1,0 +1,11 @@
+<nav class="DrawerNavigation">
+    <tsl-drawer-navigation-profile-element [element]="profileNavigationElement$ | async">
+    </tsl-drawer-navigation-profile-element>
+
+    <div class="DrawerNavigation__section mt-4" *ngFor="let section of navigationSections$ | async">
+        <h4 class="DrawerNavigation__title mb-2 px-2">{{ section.title }}</h4>
+        <ng-container *ngFor="let element of section.elements">
+            <tsl-drawer-navigation-element [element]="element"></tsl-drawer-navigation-element>
+        </ng-container>
+    </div>
+</nav>

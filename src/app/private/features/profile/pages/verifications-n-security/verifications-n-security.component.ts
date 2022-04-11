@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
-import { filter, take } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 import { EmailVerificationModalComponent } from '../../modal/email-verification/modals/email-verification-modal/email-verification-modal.component';
 import { PhoneVerificationModalComponent } from '../../modal/phone-verification/modals/phone-verification-modal/phone-verification-modal.component';
 import { VerificationsNSecurityTrackingEventsService } from '../../services/verifications-n-security-tracking-events.service';
+import { UserInformation } from './services/user-information.interface';
 import { VerificationsNSecurityStore } from './services/verifications-n-security-store.service';
 
 export enum VERIFICATIONS_N_SECURITY_TYPES {
@@ -32,6 +33,7 @@ export class VerificationsNSecurityComponent implements OnInit {
     true: $localize`:@@verification_and_security_all_users_change_button:Change`,
     false: $localize`:@@verification_and_security_all_users_verify_button:Verify`,
   };
+  public userInformation: UserInformation;
 
   constructor(
     private modalService: NgbModal,
@@ -41,17 +43,19 @@ export class VerificationsNSecurityComponent implements OnInit {
 
   ngOnInit(): void {
     this.verificationsNSecurityStore.initializeUserVerifications();
-    this.verificationsNSecurityStore.userVerifications$
-      .pipe(filter((userVerifications: UserVerifications) => !!userVerifications))
-      .subscribe((userVerifications: UserVerifications) => {
+
+    combineLatest([this.verificationsNSecurityStore.userVerifications$, this.verificationsNSecurityStore.userInformation$]).subscribe(
+      ([userVerifications, userInformation]: [UserVerifications, UserInformation]) => {
         this.verificationsNSecurityTrackingEventsService.verificationsNSecurityPageView(userVerifications);
-      });
+        this.userInformation = userInformation;
+      }
+    );
   }
 
   public onClickVerifyEmail(isVerifiedEmail: boolean): void {
     let modalRef: NgbModalRef;
     let modal: VerificationModalComponent = this.getEmailModal(isVerifiedEmail);
-    const email: string = this.verificationsNSecurityStore.userInformation.email;
+    const email: string = this.userInformation.email;
 
     modalRef = this.openModal(modal);
 

@@ -1,10 +1,15 @@
 
 <p *ngIf="value?.length > 0 && (shownChildrenOptionId$ | async) === null && reseteable" class="MultiSelectForm__reset position-absolute m-0" i18n="@@filter_by_subcategory_all_users_level_1_top_bar_restablish_label" (click)="unselectAll()">Reset</p> 
 
-<ng-container *ngFor="let option of extendedOptions$ | async">
+<ng-container *ngFor="let option of (extendedOptions$ | async); let i = index">
+
+  <div class="MultiSelectForm__separator px-3 pt-3 pb-2" *ngIf="(extendedOptions$ | async)[i-1]?.groupId !== option?.groupId && optionGroupConfig">    
+    {{optionGroupConfig[option?.groupId] || optionGroupConfig[DEFAULT_OPTION_GROUP_CONFIG] || ''}}
+  </div>
+
   <div *ngIf="(shownChildrenOptionId$ | async) === null" class="w-100">
-    <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="option" [isDisabled]="disabled || isDisabledByMaxLengthReached(option.checked)" 
-    (toggleOnChange)="handleSelectedOption()" (click)="showChildren(option);"></tsl-multi-select-option>
+    <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="option" [isDisabled]="isDisabled || isDisabledByMaxLengthReached(option.checked)" 
+    (toggleOnChange)="handleToggleChange($event)" (click)="showChildren(option);"></tsl-multi-select-option>
   </div>
 
   <ng-container *ngIf="(shownChildrenOptionId$ | async) === option.value">
@@ -24,7 +29,7 @@
   
       <div class="MultiSelectForm__children__options">
         <div *ngFor="let childOption of option.children" class="w-100">
-          <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="childOption" [isDisabled]="disabled || isDisabledByMaxLengthReached(childOption.checked)" (toggleOnChange)="handleSelectedOption()"></tsl-multi-select-option>
+          <tsl-multi-select-option class="MultiSelectForm__option d-block" [option]="childOption" [isDisabled]="isDisabled || isDisabledByMaxLengthReached(childOption.checked)" (toggleOnChange)="handleChildToggleChange($event, option)"></tsl-multi-select-option>
         </div>
       </div>
     </div>

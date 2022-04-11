@@ -1,0 +1,219 @@
+@import '~style/common';
+
+.tutorial {
+  &.main-veil {
+    & {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10000;
+    }
+    .content-veil {
+      & {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        margin-top: $topbar-height;
+        height: calc(100vh - #{$topbar-height});
+        margin-left: $sidebar-width;
+        color: $blue-grey-5;
+        font-size: $font-size-l;
+        background-color: rgba(37, 50, 56, 0.95);
+        justify-content: center;
+        overflow-y: scroll;
+      }
+      .info {
+        text-align: center;
+        @media (min-width: 1500px) {
+          width: 60%;
+        }
+
+        &.step-2 {
+          width: 45%;
+        }
+        h1 {
+          font-weight: $font-weight-skinny;
+        }
+        p,
+        span {
+          font-size: $font-size-m;
+        }
+        &.step-1 {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          p {
+            max-width: 900px;
+            align-self: center;
+          }
+        }
+        .bump-info {
+          display: flex;
+          flex-direction: row;
+          margin: $spacing-xl 0 0 0;
+          .col {
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid #4f5c61;
+            display: flex;
+            flex: 1;
+            &:last-child {
+              border-right: none;
+            }
+            h2 {
+              font-size: $font-size-ll;
+              font-weight: $font-weight-chunky;
+              margin: $spacing-ml 0 $spacing-ms;
+              width: 80%;
+            }
+            p {
+              font-size: $font-size-s;
+              color: $blue-grey-3;
+              max-width: 350px;
+            }
+            .box-price {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-end;
+              p {
+                color: $blue-grey-2;
+                margin: 0;
+              }
+              .price {
+                font-size: $font-size-xxxl;
+                font-weight: $font-weight-chunky;
+                color: $white;
+                line-height: $line-height-xxl;
+              }
+              .from-price {
+                text-transform: uppercase;
+              }
+              .users {
+                color: $white;
+              }
+            }
+          }
+          .logo {
+            display: flex;
+            height: 135px;
+            .logo-zone {
+              width: 80px;
+              height: 81px;
+              background: url(/assets/images/bump-tutorial-zone.svg);
+              background-size: 80px 81px;
+              align-self: flex-end;
+            }
+            .logo-city {
+              width: 116px;
+              height: 117px;
+              background: url(/assets/images/bump-tutorial-city.svg);
+              background-size: 116px 117px;
+              align-self: flex-end;
+            }
+            .logo-country {
+              width: 133px;
+              height: 134px;
+              background: url(/assets/images/bump-tutorial-country.svg);
+              background-size: 133px 134px;
+              align-self: flex-end;
+            }
+          }
+        }
+        .advantages {
+          display: flex;
+          flex-direction: row;
+          margin-top: $spacing-xxxl;
+          justify-content: space-between;
+          .content {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 50%;
+            margin-right: $spacing-xxxl;
+            h2 {
+              font-size: $font-size-ll;
+              font-weight: $font-weight-chunky;
+            }
+            p {
+              color: $blue-grey-3;
+            }
+          }
+          .special-background {
+            background: url(/assets/images/bump-tutorial-slice2.svg);
+            width: 244px;
+            height: 230px;
+          }
+          .appearance-background {
+            background: url(/assets/images/bump-tutorial-slice1.svg) no-repeat;
+            width: 244px;
+            height: 194px;
+          }
+        }
+      }
+      #controls {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        .btn-next {
+          color: $walla-main;
+          padding: $spacing-ms $spacing-xxl;
+          border-radius: 100px;
+          background: $white;
+          &:hover {
+            color: $walla-dark;
+          }
+        }
+        .dots {
+          text-align: center;
+          margin-bottom: $spacing-ml;
+          .dot {
+            display: inline-block;
+            @include square(7.6px);
+            opacity: 0.3;
+            background-color: $white;
+            border-radius: 50%;
+            margin: 0 $spacing-xs;
+            vertical-align: middle;
+            &.active {
+              @include square(10.8px);
+              opacity: 1;
+            }
+          }
+        }
+      }
+      #close {
+        position: absolute;
+        right: 20px;
+        top: 50px;
+        color: $white;
+        text-align: center;
+        cursor: pointer;
+        span {
+          opacity: 0.6;
+          font-size: $font-size-m;
+        }
+        tsl-svg-icon {
+          ::ng-deep path {
+            fill: $white;
+          }
+        }
+        &:hover {
+          text-decoration: none;
+          span {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
+  &__link {
+    a {
+      font-size: $font-size-m;
+    }
+  }
+}

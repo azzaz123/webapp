@@ -47,14 +47,6 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  private routeParamsSubscription(): Subscription {
-    return this.route.parent.params.subscribe((params) => {
-      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
-      this.userId = this.slugsUtilService.getUUIDfromSlug(webSlug);
-      this.loadItems();
-    });
-  }
-
   public toggleFavourite(itemCard: ItemCard): void {
     if (itemCard.ownerId) {
       this.userService
@@ -65,26 +57,6 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
         });
     } else {
       this.publicProfileTrackingEventsService.trackFavouriteOrUnfavouriteItemEvent(itemCard);
-    }
-  }
-
-  private loadItems(): void {
-    this.loading = true;
-    const shouldCheckForFavourites = this.userService.isLogged && !this.userService.isCurrentUser(this.userId);
-
-    try {
-      this.catalogApiService
-        .getUserPublishedItems(this.userId, shouldCheckForFavourites, this.paginationParameter)
-        .pipe(
-          finalize(() => (this.loading = false)),
-          take(1)
-        )
-        .subscribe(({ list, paginationParameter }: PaginatedList<ItemCard>) => {
-          this.items = this.items.concat(list);
-          this.paginationParameter = paginationParameter;
-        }, this.onError);
-    } catch (err: any) {
-      this.onError();
     }
   }
 
@@ -99,6 +71,33 @@ export class UserPublishedComponent implements OnInit, OnDestroy {
       });
     } else {
       this.publicProfileTrackingEventsService.trackClickItemCardEvent(itemCard, index);
+    }
+  }
+
+  private routeParamsSubscription(): Subscription {
+    return this.route.parent.params.subscribe((params) => {
+      const webSlug = params[PUBLIC_PATH_PARAMS.WEBSLUG];
+      this.userId = this.slugsUtilService.getUUIDfromSlug(webSlug);
+      this.loadItems();
+    });
+  }
+
+  private loadItems(): void {
+    this.loading = true;
+
+    try {
+      this.catalogApiService
+        .getUserPublishedItems(this.userId, this.paginationParameter)
+        .pipe(
+          finalize(() => (this.loading = false)),
+          take(1)
+        )
+        .subscribe(({ list, paginationParameter }: PaginatedList<ItemCard>) => {
+          this.items = this.items.concat(list);
+          this.paginationParameter = paginationParameter;
+        }, this.onError);
+    } catch (err: any) {
+      this.onError();
     }
   }
 

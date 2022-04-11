@@ -7,12 +7,16 @@ import {
   SUBSCRIPTION_MARKETS,
   TierDiscount,
   SUBSCRIPTION_CATEGORY_TYPES,
-  SubscriptionsV3Response,
+  PERK_NAMES,
+  BUMP_NAMES,
 } from '../app/core/subscriptions/subscriptions.interface';
 import { SUBSCRIPTION_TYPES } from '../app/core/subscriptions/subscriptions.service';
 import { SubscriptionBenefit } from '@core/subscriptions/subscription-benefits/interfaces/subscription-benefit.interface';
 import { CATEGORY_SUBSCRIPTIONS_IDS } from '@core/subscriptions/category-subscription-ids';
 import { CATEGORY_IDS } from '@core/category/category-ids';
+import { SubscriptionsV3Response, TierDto } from '@core/subscriptions/dtos/subscriptions/subscription-response.interface';
+import { CanEditSubscriptionResponseDto } from '@core/subscriptions/dtos/subscriptions/can-edit.subscription.interface';
+import { CanEditSubscriptionResponse } from '@api/core/model/subscriptions/can-edit-subscription/can-edit-subscription.interface';
 
 export class MockSubscriptionService {
   getSubscriptions() {
@@ -86,11 +90,17 @@ export class MockSubscriptionService {
   public editSubscription(): Observable<unknown> {
     return of({ status: 202 });
   }
+
   public cancelSubscription(): Observable<unknown> {
     return of({ status: 202 });
   }
+
   public continueSubscription(): Observable<unknown> {
     return of({ status: 202 });
+  }
+
+  public canUpdateTier(): Observable<CanEditSubscriptionResponse> {
+    return of(CAN_SUBSCRIPTION_BE_EDITED_OK);
   }
 }
 
@@ -124,25 +134,77 @@ export const TIER_DISCOUNT: TierDiscount = {
   no_discount_date: 1640908800000,
 };
 
-export const TIER_WITH_DISCOUNT: Tier = {
+export const TIER_WITH_DISCOUNT_NO_MAPPED: TierDto = {
   id: 'plan_FWuFVeTHEDyECd',
   limit: 9,
   price: 9.99,
   currency: '€',
   discount: TIER_DISCOUNT,
   is_basic: false,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 9,
+    },
+  ],
+};
+
+export const TIER_WITH_DISCOUNT: Tier = {
+  ...TIER_WITH_DISCOUNT_NO_MAPPED,
+  bumps: [],
 };
 
 export const TIER_2_WITH_DISCOUNT: Tier = {
   ...TIER_WITH_DISCOUNT,
   id: 'plan_FWuFVeTHEDyECz',
   limit: 50,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 50,
+    },
+  ],
+};
+
+export const MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP: Tier = {
+  ...TIER_WITH_DISCOUNT,
+  id: 'plan_FWuFVeTHEDyECz',
+  limit: 50,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 50,
+    },
+    {
+      name: BUMP_NAMES.ZONEBUMP,
+      quantity: 50,
+      used: 2,
+      duration_days: 2,
+    },
+  ],
+  bumps: [
+    {
+      name: BUMP_NAMES.ZONEBUMP,
+      quantity: 50,
+      used: 2,
+      duration_days: 2,
+      extra: 0,
+    },
+  ],
 };
 
 export const TIER_WITH_DISCOUNT_WITHOUT_LIMIT: Tier = {
   ...TIER_WITH_DISCOUNT,
   id: 'plan_FWuFVeTHEDyECe',
-  limit: null,
+  limit: undefined,
+  perks: [],
+};
+
+export const TIER_WITH_DISCOUNT_WITHOUT_LIMIT_NO_MAPPED: TierDto = {
+  ...TIER_WITH_DISCOUNT_NO_MAPPED,
+  id: 'plan_FWuFVeTHEDyECe',
+  limit: undefined,
+  perks: [],
 };
 
 export const TIER_BASIC_WITH_DISCOUNT: Tier = {
@@ -152,6 +214,13 @@ export const TIER_BASIC_WITH_DISCOUNT: Tier = {
   currency: '€',
   discount: TIER_DISCOUNT,
   is_basic: true,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 9,
+    },
+  ],
+  bumps: [],
 };
 
 export const TIER_NO_DISCOUNT_NO_BASIC: Tier = {
@@ -161,6 +230,13 @@ export const TIER_NO_DISCOUNT_NO_BASIC: Tier = {
   currency: '€',
   discount: null,
   is_basic: false,
+  perks: [
+    {
+      name: PERK_NAMES.LIMIT,
+      quantity: 9,
+    },
+  ],
+  bumps: [],
 };
 
 export const TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT: Tier = {
@@ -169,6 +245,9 @@ export const TIER_NO_DISCOUNT_NO_BASIC_NO_LIMIT: Tier = {
   currency: '€',
   discount: null,
   is_basic: false,
+  limit: undefined,
+  perks: [],
+  bumps: [],
 };
 
 const MOCK_CG_BASIC_DATA: Partial<SubscriptionsResponse> = {
@@ -255,12 +334,13 @@ function generateSubscription(
   let subscribedInfo: Partial<SubscriptionsResponse>;
   let trialInfo: Partial<SubscriptionsResponse>;
 
-  if (subscribedData.subscribed_from)
+  if (subscribedData.subscribed_from) {
     subscribedInfo = {
       selected_tier_id: tiers[0].id,
       selected_tier: tiers[0],
       market: market ? market : SUBSCRIPTION_MARKETS.STRIPE,
     };
+  }
 
   if (freeTrial) {
     trialInfo = {
@@ -284,6 +364,12 @@ export const MOCK_SUBSCRIPTION_RE_SUBSCRIBED: SubscriptionsResponse = generateSu
   TIER_WITH_DISCOUNT,
   TIER_WITH_DISCOUNT_WITHOUT_LIMIT,
 ]);
+
+export const MOCK_SUBSCRIPTION_RE_SUBSCRIBED_NO_MAPPED: SubscriptionsV3Response = generateSubscription(
+  MOCK_RE_BASIC_DATA,
+  MOCK_SUBSCRIBED_DATA,
+  [TIER_WITH_DISCOUNT_NO_MAPPED as Tier, TIER_WITH_DISCOUNT_WITHOUT_LIMIT_NO_MAPPED as Tier]
+);
 
 export const MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED: SubscriptionsResponse = generateSubscription(
   MOCK_CARS_BASIC_DATA,
@@ -429,7 +515,7 @@ export const SUBSCRIPTION_REQUIRES_PAYMENT: SubscriptionResponse = {
 
 export const MOCK_RESPONSE_V3_SUBSCRIPTIONS: SubscriptionsV3Response[] = [
   {
-    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED,
+    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED_NO_MAPPED,
     id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
   },
   {
@@ -454,5 +540,239 @@ export const MOCK_V3_MAPPED_SUBSCRIPTIONS: SubscriptionsResponse[] = [
   {
     ...MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED_MAPPED,
     id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
+  },
+];
+
+export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS: SubscriptionsV3Response[] = [
+  {
+    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED_NO_MAPPED,
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT_NO_MAPPED,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+            extra: 0,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CARS_NOT_SUBSCRIBED_NO_DISCOUNTS,
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT_NO_MAPPED,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+            extra: 0,
+          },
+          {
+            name: BUMP_NAMES.ZONEBUMP,
+            quantity: 8,
+            used: 5,
+            duration_days: 6,
+            extra: 0,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c07',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
+  },
+];
+
+export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED: SubscriptionsResponse[] = [
+  {
+    ...MOCK_SUBSCRIPTION_RE_SUBSCRIBED_MAPPED,
+    tiers: [
+      {
+        ...TIER_NO_DISCOUNT_NO_BASIC,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+          },
+        ],
+        bumps: [
+          {
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+            extra: 0,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT_NO_MAPPED,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+          },
+          {
+            name: BUMP_NAMES.ZONEBUMP,
+            quantity: 8,
+          },
+        ],
+        bumps: [
+          {
+            name: BUMP_NAMES.CITYBUMP,
+            quantity: 12,
+            used: 5,
+            duration_days: 6,
+            extra: 0,
+          },
+          {
+            name: BUMP_NAMES.ZONEBUMP,
+            quantity: 8,
+            used: 5,
+            duration_days: 6,
+            extra: 0,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c07',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CONSUMER_GOODS_NOT_SUBSCRIBED,
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c08',
+  },
+];
+
+export const CAN_SUBSCRIPTION_BE_EDITED_OK_DTO: CanEditSubscriptionResponseDto = {
+  allowed: true,
+  renewal_date: 1649376000000,
+};
+
+export const CAN_SUBSCRIPTION_BE_EDITED_OK: CanEditSubscriptionResponse = {
+  allowed: true,
+  renewalDate: '08/04/2022',
+};
+
+export const CAN_SUBSCRIPTION_BE_EDITED_FAIL: CanEditSubscriptionResponse = {
+  allowed: false,
+  renewalDate: '08/04/2022',
+};
+export const MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS_MAPPED_SUBSCRIBED: SubscriptionsResponse[] = [
+  {
+    ...MOCK_SUBSCRIPTION_MOTORBIKE_SUBSCRIBED_MAPPED,
+    selected_tier: {
+      ...TIER_WITH_DISCOUNT,
+      perks: [
+        { name: PERK_NAMES.LIMIT, quantity: 5 },
+        {
+          name: BUMP_NAMES.ZONEBUMP,
+          quantity: 12,
+          used: 2,
+          duration_days: 2,
+        },
+      ],
+      bumps: [
+        {
+          name: BUMP_NAMES.ZONEBUMP,
+          quantity: 12,
+          duration_days: 2,
+          used: 2,
+          extra: 0,
+        },
+      ],
+    },
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            duration_days: 2,
+            used: 2,
+          },
+        ],
+        bumps: [
+          {
+            name: BUMP_NAMES.ZONEBUMP,
+            quantity: 12,
+            duration_days: 2,
+            used: 2,
+            extra: 0,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
+  },
+  {
+    ...MOCK_SUBSCRIPTION_CARS_SUBSCRIBED_MAPPED,
+    selected_tier: {
+      ...TIER_WITH_DISCOUNT,
+      perks: [
+        { name: PERK_NAMES.LIMIT, quantity: 5 },
+        {
+          name: BUMP_NAMES.COUNTRYBUMP,
+          quantity: 12,
+          duration_days: 2,
+          used: 12,
+        },
+      ],
+      bumps: [
+        {
+          name: BUMP_NAMES.COUNTRYBUMP,
+          quantity: 12,
+          duration_days: 2,
+          used: 12,
+          extra: 0,
+        },
+      ],
+    },
+    tiers: [
+      {
+        ...TIER_WITH_DISCOUNT,
+        perks: [
+          { name: PERK_NAMES.LIMIT, quantity: 5 },
+          {
+            name: BUMP_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            used: 12,
+          },
+        ],
+        bumps: [
+          {
+            name: BUMP_NAMES.COUNTRYBUMP,
+            quantity: 12,
+            duration_days: 2,
+            used: 12,
+            extra: 0,
+          },
+        ],
+      },
+    ],
+    id: 'b522fba0-f685-4d78-8aa6-06d912619c06',
   },
 ];

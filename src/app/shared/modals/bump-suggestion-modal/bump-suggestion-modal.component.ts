@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '@core/item/item';
 import { SocialShareService } from '@core/social-share/social-share.service';
@@ -13,6 +13,7 @@ export class BumpSuggestionModalComponent {
   public item: Item;
   public productPrice: number;
   public productCurrency: string;
+  public isFreeBump: boolean;
 
   constructor(
     public activeModal: NgbActiveModal,

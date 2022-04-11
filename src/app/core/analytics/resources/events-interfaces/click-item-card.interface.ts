@@ -16,11 +16,11 @@ export interface ClickItemCard {
   /**
    * Identifier of the category that the item belongs to
    */
-  categoryId: number;
+  categoryId?: number;
   /**
    * Index of the item displayed in the screen
    */
-  position: number;
+  position?: number;
   /**
    * Name of the experiment or A/B testing applied to the user who click the item. The default value would be 'baseline'
    */
@@ -32,7 +32,7 @@ export interface ClickItemCard {
   /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: 110 | 111 | 29 | 187 | 188 | 140 | 190 | 194 | 210 | 214 | 217 | 219;
+  screenId: 110 | 111 | 29 | 187 | 188 | 140 | 190 | 194 | 210 | 214 | 217 | 219 | 306 | 308;
   /**
    * If the item clicked is from a professional user
    */
@@ -72,7 +72,7 @@ export interface ClickItemCard {
   /**
    * If the item clicked is a bumped item
    */
-  isBumped: boolean;
+  isBumped?: boolean;
   /**
    * When the event is triggered in SavedSearchesNewVsOld screen (217), specify if it is in the 'new' results or 'old'
    */

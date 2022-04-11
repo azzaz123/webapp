@@ -1,18 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PRIVATE_PATHS } from './private-routing-constants';
+import { PATH_TO_ACCEPT_SCREEN, PRIVATE_PATHS, PRIVATE_PATH_PARAMS } from './private-routing-constants';
 import { PrivateComponent } from './private.component';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from './features/pro/pro-routing-constants';
 import { DevelopmentGuard } from '@core/user/development.guard';
 import { PROFILE_PATHS } from './features/profile/profile-routing-constants';
+import { CATALOG_PATHS } from './features/catalog/catalog-routing-constants';
+import { YouGuard } from './features/you/guards/you.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: PrivateComponent,
     children: [
+      {
+        path: `${PRIVATE_PATHS.ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
+        redirectTo: `${PATH_TO_ACCEPT_SCREEN}/:${PRIVATE_PATH_PARAMS.ID}`,
+      },
       {
         path: 'pro',
         children: [
@@ -37,7 +43,7 @@ const routes: Routes = [
                 loadChildren: () => import('@private/features/catalog-pro/catalog-pro.module').then((m) => m.CatalogProModule),
               },
               {
-                path: 'upload',
+                path: CATALOG_PATHS.UPLOAD,
                 loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
                 canLoad: [NgxPermissionsGuard],
                 data: {
@@ -50,7 +56,7 @@ const routes: Routes = [
                 },
               },
               {
-                path: 'edit',
+                path: CATALOG_PATHS.EDIT,
                 loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
               },
             ],
@@ -74,7 +80,7 @@ const routes: Routes = [
       },
       {
         path: PRIVATE_PATHS.CHAT,
-        loadChildren: () => import('@private/features/chat/chat.module').then((m) => m.ChatModule),
+        loadChildren: () => import('@private/features/inbox/inbox-page.module').then((m) => m.InboxPageModule),
       },
       {
         path: 'favorites',
@@ -83,6 +89,10 @@ const routes: Routes = [
       {
         path: 'reviews',
         loadChildren: () => import('@private/features/reviews/reviews.module').then((m) => m.ReviewsModule),
+      },
+      {
+        path: PRIVATE_PATHS.BUMPS,
+        loadChildren: () => import('@private/features/bumps/bumps.module').then((m) => m.BumpsModule),
       },
       {
         path: 'wallacoins',
@@ -103,7 +113,7 @@ const routes: Routes = [
             loadChildren: () => import('@private/features/catalog/catalog.module').then((m) => m.CatalogModule),
           },
           {
-            path: 'upload',
+            path: CATALOG_PATHS.UPLOAD,
             loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
             canLoad: [NgxPermissionsGuard],
             data: {
@@ -116,7 +126,7 @@ const routes: Routes = [
             },
           },
           {
-            path: 'edit',
+            path: CATALOG_PATHS.EDIT,
             loadChildren: () => import('@private/features/upload/upload.module').then((m) => m.UploadModule),
           },
         ],
@@ -141,6 +151,11 @@ const routes: Routes = [
           { path: '', pathMatch: 'full', redirectTo: `/${PRIVATE_PATHS.CHAT}` },
           { path: 'view', redirectTo: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.VERIFICATIONS}` },
         ],
+      },
+      {
+        path: PRIVATE_PATHS.YOU,
+        canLoad: [YouGuard],
+        loadChildren: () => import('@private/features/you/you.module').then((m) => m.YouModule),
       },
     ],
   },

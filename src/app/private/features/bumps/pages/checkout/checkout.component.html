@@ -1,0 +1,45 @@
+<div class="page-content">
+  <div class="container">
+    <div class="Checkout__table-header d-flex justify-content-between mb-4">
+      <div>
+        <a class="Checkout__back d-flex align-items-center justify-content-center" [routerLink]="['/catalog/list']">
+          <tsl-svg-icon src="/assets/icons/back-arrow.svg"></tsl-svg-icon>
+          <span i18n="@@web_catalog_pages_checkout_674">Back</span></a
+        >
+      </div>
+      <div class="info d-flex">
+        <tsl-svg-icon class="mr-2" src="/assets/icons/feature.svg"></tsl-svg-icon>
+        <a (click)="bumpTutorial.show()" i18n="@@web_catalog_pages_checkout_563">What can features do for you?</a>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between flex-lg-nowrap flex-wrap Checkout" *ngIf="itemsWithProducts; else isLoading">
+      <div class="mr-lg-3 w-100">
+        <ng-container *ngFor="let itemsBySubscription of itemsWithProducts; let productIndex = index">
+          <div class="Checkout__items">
+            <tsl-subscription-header-checkout
+              *ngIf="user.featured"
+              [subscription]="itemsBySubscription.subscription"
+              [balance]="itemsBySubscription.balance"
+              [isProvincialBump]="itemsBySubscription.items[0].isProvincialBump"
+            ></tsl-subscription-header-checkout>
+            <tsl-checkout-item
+              *ngFor="let item of itemsBySubscription.items"
+              (itemRemoved)="onRemoveItem($event, productIndex)"
+              (itemChanged)="onChangeItem($event, productIndex)"
+              [itemWithProducts]="item"
+              [creditInfo]="creditInfo"
+              [availableFreeBumps]="itemsBySubscription.availableFreeBumps"
+            ></tsl-checkout-item>
+          </div>
+        </ng-container>
+      </div>
+      <div class="Checkout__cart w-100">
+        <tsl-cart [creditInfo]="creditInfo" [selectedItems]="itemsSelected" (confirmAction)="manageResponse($event)"></tsl-cart>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #isLoading>
+  <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
+</ng-template>
+<tsl-bump-tutorial></tsl-bump-tutorial>

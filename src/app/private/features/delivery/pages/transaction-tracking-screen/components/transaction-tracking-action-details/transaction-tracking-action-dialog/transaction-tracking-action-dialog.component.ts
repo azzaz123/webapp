@@ -1,7 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import { TransactionTrackingActionDialog, TransactionTrackingActionUserAction } from '@api/core/model/delivery/transaction/tracking';
+import {
+  TransactionTrackingActionDeeplink,
+  TransactionTrackingActionDetail,
+  TransactionTrackingActionDialog,
+  TransactionTrackingActionUserAction,
+} from '@api/core/model/delivery/transaction/tracking';
 import { COLORS } from '@core/colors/colors-constants';
 import { ErrorsService } from '@core/errors/errors.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
@@ -11,9 +16,9 @@ import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirmation-modal.interface';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
-import { TransactionTrackingScreenStoreService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
 import { ActionNameAnalytics } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/action-name-analytics-type';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-dialog',
@@ -31,8 +36,8 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
     private errorsService: ErrorsService,
     private router: Router,
     private route: ActivatedRoute,
-    private storeService: TransactionTrackingScreenStoreService,
-    private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService
+    private transactionTrackingScreenTrackingEventsService: TransactionTrackingScreenTrackingEventsService,
+    private deeplinkService: DeeplinkService
   ) {}
 
   ngOnInit() {
@@ -47,26 +52,33 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
     modalRef.result.then(
       () => {
         if (this.dialogAction.positive) {
-          this.sendUserAction();
+          return this.handlePositiveDialogAction();
         }
       },
       () => {}
     );
   }
 
-  private sendUserAction(): void {
-    const userAction = this.dialogAction.positive.action as TransactionTrackingActionUserAction;
-    this.transactionTrackingService.sendUserAction(userAction.transactionId, userAction.name).subscribe(
-      () => {
-        this.trackEvent(userAction);
-        this.storeService.refresh(this.requestId);
-        this.redirectToTTSIfInstructions();
-      },
-      () => {
-        // TODO: Error management states should be improved by cases		Date: 2021/12/02
-        this.errorsService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
-      }
-    );
+  private handlePositiveDialogAction(): void {
+    const { action } = this.dialogAction.positive;
+
+    if (this.isDeeplink(action)) {
+      return this.deeplinkService.navigate(action.linkUrl);
+    }
+
+    if (this.isAction(action)) {
+      this.transactionTrackingService.sendUserAction(action.transactionId, action.name).subscribe(
+        () => {
+          this.trackEvent(action);
+          this.redirectToTTSIfInstructions();
+        },
+        () => {
+          // TODO: Error management states should be improved by cases		Date: 2021/12/02
+          this.errorsService.i18nError(TRANSLATION_KEY.DEFAULT_ERROR_MESSAGE);
+        }
+      );
+      return;
+    }
   }
 
   private trackEvent(userAction: TransactionTrackingActionUserAction): void {
@@ -95,5 +107,13 @@ export class TransactionTrackingActionDialogComponent implements OnInit {
       const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${this.requestId}`;
       this.router.navigate([pathToTransactionTracking]);
     }
+  }
+
+  private isDeeplink(action: TransactionTrackingActionDetail): action is TransactionTrackingActionDeeplink {
+    return !!(action as TransactionTrackingActionDeeplink).isDeeplink;
+  }
+
+  private isAction(action: TransactionTrackingActionDetail): action is TransactionTrackingActionUserAction {
+    return !!(action as TransactionTrackingActionUserAction).name;
   }
 }

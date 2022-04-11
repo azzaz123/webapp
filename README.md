@@ -16,6 +16,8 @@ The private web app for Wallapop once you do login in the public one.
 
 To do a clean installation after downloading the repo, follow this steps:
 
+**NOTE**: In case you are you are the lucky owner of an **M1 Mac**, please refer to [this](https://github.com/nvm-sh/nvm#macos-troubleshooting) guide before installing nvm.
+
 1. Install [nvm](https://github.com/creationix/nvm), a node version manager.
 2. Install the node version specified in `.nvmrc` with `nvm install x`. E.g.: `nvm install 8.9.4`.
 3. Install [yarn](https://yarnpkg.com/lang/en/).
@@ -42,6 +44,22 @@ In order to instantiate a local sever, run one of the following commands:
 - Run `yarn start-beta` to use beta environment file with beta build configuration.
 
 Now you can navigate to `http://localhost:4200/login`.You should see the app running. If you change any of the source files, the app will automatically build again and reload the page.
+
+### Sharing local development server
+
+In case you want to access your current project state in any external browser:
+
+- Run `yarn start beta --host 0.0.0.0` (you will see a production warning but you can ignore it)
+
+The development server will serve content to any IP, internal or external.
+
+Example of usage:
+
+1. Run the command in your laptop. E.g.: your laptop has IPv4 192.168.1.39
+2. In your external device, open a web browser and navigate to your local IP with the port. `http` must be used. E.g.: http://192.168.1.39:4200/login
+3. You should be able to test the webapp in the external device
+
+Please note that you might need to modify the `/login` access or fake the user token
 
 ### Tests
 
@@ -163,6 +181,8 @@ If you wanna update the value of the libphonenumber-js metadata you should follo
 - Run `yarn libphonenumber-metadata` for update our metadata file.
 
 ## Documentation
+
+Initialization sequence diagrams: https://wallapop.atlassian.net/wiki/spaces/FE/pages/2596700235/Webapp+startup+sequence
 
 Chat sequence diagrams: https://confluence.wallapop.com/display/ROV/Chat+sequence+diagrams
 

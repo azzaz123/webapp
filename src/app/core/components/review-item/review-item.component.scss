@@ -6,6 +6,9 @@
   margin-bottom: $spacing-s;
   padding: $spacing-ml;
   min-height: 164px;
+  a:hover {
+    cursor: pointer;
+  }
   .info {
     padding: 0;
     width: calc(100% - 80px - #{$spacing-ml});
@@ -24,6 +27,10 @@
     a {
       color: $blue-grey-1;
     }
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
   .review-rating {
     tsl-svg-icon {
@@ -33,9 +40,6 @@
   }
   .review-comment {
     margin: $spacing-s 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .review-credits {
     font-size: $font-size-s;

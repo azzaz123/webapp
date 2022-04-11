@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { PaymentsWalletsApi } from '../dtos/responses';
 import { PAYMENTS_WALLETS_ENDPOINT } from './endpoints';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class PaymentsWalletsHttpService {
   constructor(private http: HttpClient) {}
 

@@ -1,12 +1,18 @@
 import { InboxMessageApi } from './api';
 
 export enum MessageType {
+  /* Projections and realtime */
   TEXT = 'text',
+  REVIEW = 'review',
+  SHIPPING_KEYWORDS = 'shipping_keywords_in_message_detected',
   /** Projections */
   PRICE_DROP = 'price_drop',
+  DELIVERY_GENERIC = 'delivery_generic',
+  TRANSACTION_CLAIM_PERIOD = 'delivery_transaction_claim_period_started',
   /** Real Time Service */
   DROP_PRICE = 'drop_price',
-  REVIEW = 'review',
+  DELIVERY = 'delivery',
+  TRANSACTION_CLAIM_PERIOD_RT = 'deliveryTransactionClaimPeriodStarted',
 }
 
 export enum MessageStatus {
@@ -16,7 +22,17 @@ export enum MessageStatus {
   READ = 'read',
 }
 
-export const MESSAGES_WHITE_LIST = [MessageType.TEXT, MessageType.REVIEW, MessageType.DROP_PRICE, MessageType.PRICE_DROP];
+export const MESSAGES_WHITE_LIST = [
+  MessageType.TEXT,
+  MessageType.REVIEW,
+  MessageType.DROP_PRICE,
+  MessageType.PRICE_DROP,
+  MessageType.DELIVERY,
+  MessageType.DELIVERY_GENERIC,
+  MessageType.SHIPPING_KEYWORDS,
+  MessageType.TRANSACTION_CLAIM_PERIOD,
+  MessageType.TRANSACTION_CLAIM_PERIOD_RT,
+];
 
 export const statusOrder = [MessageStatus.PENDING, MessageStatus.SENT, MessageStatus.RECEIVED, MessageStatus.READ];
 

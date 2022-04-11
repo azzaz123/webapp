@@ -6,7 +6,7 @@ export const environment: Environment = {
   name: 'beta',
   appDomain: `.beta.wallapop.com/`,
   protocol: 'https://',
-  baseUrl: 'https://beta.wallapop.com/',
+  baseUrl: 'https://api.beta.wallapop.com/',
   xmppDomain: 'beta.wallapop.com',
   wsUrl: 'wss://mongooseimprotool-beta.wallapop.com:443/ws-xmpp',
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
@@ -18,6 +18,7 @@ export const environment: Environment = {
   didomiKey: '56d12b9e-69db-4641-a15a-9c19f73aed7d',
   threatMetrixOrgId: '6ldgf22r',
   threatMetrixProfilingDomain: 'clear.wallapop.com',
+  optimizelySdkKey: '62mynM5SVDrhD5aVV1xNz',
 };
 
 export const isSWEnabled = false;

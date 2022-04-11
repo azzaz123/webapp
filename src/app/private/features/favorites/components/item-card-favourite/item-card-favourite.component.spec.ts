@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
+import { CustomCurrencyPipe } from '@shared/pipes';
 import { DecimalPipe } from '@angular/common';
 import { ItemCardFavouriteComponent } from './item-card-favourite.component';
 import { ItemService } from '@core/item/item.service';
@@ -12,11 +12,11 @@ import { MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { I18nService } from '@core/i18n/i18n.service';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
-import { By } from '@angular/platform-browser';
 import { FavouritesListTrackingEventsService } from '../../services/favourites-list-tracking-events.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@core/core.module';
 import { MARKET_PROVIDER } from '@configs/market.config';
+import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
 
 describe('ItemCardFavouriteComponent', () => {
   let component: ItemCardFavouriteComponent;
@@ -40,7 +40,7 @@ describe('ItemCardFavouriteComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, CoreModule],
-        declarations: [ItemCardFavouriteComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
+        declarations: [ItemCardFavouriteComponent, CustomCurrencyPipe, ItemRouteMockDirective],
         providers: [
           DecimalPipe,
           I18nService,
@@ -91,19 +91,9 @@ describe('ItemCardFavouriteComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('goToItemDetail', () => {
-    it('should change window url', () => {
-      spyOn(window, 'open');
-      const MOCK_ITEM_URL: string = MOCK_SITE_URL + 'item/' + MOCK_ITEM.webSlug;
-      const element = fixture.debugElement.query(By.css('a'));
-
-      expect(element.attributes.href).toEqual(MOCK_ITEM_URL);
-    });
-  });
-
   describe('removeFavorite', () => {
     beforeEach(() => {
-      spyOn(component.onFavoriteChange, 'emit');
+      spyOn(component.favoriteChange, 'emit');
     });
     it('should set favorited property to false', () => {
       component.item.favorited = true;
@@ -112,7 +102,7 @@ describe('ItemCardFavouriteComponent', () => {
     });
     it('should call onFavoriteChange emit method', () => {
       component.removeFavorite();
-      expect(component.onFavoriteChange.emit).toHaveBeenCalledWith(MOCK_ITEM);
+      expect(component.favoriteChange.emit).toHaveBeenCalledWith(MOCK_ITEM);
     });
   });
 

@@ -9,11 +9,29 @@ export interface SubscriptionResponse {
 
 export interface Tier {
   id: string;
-  limit?: number;
+  limit: number;
   price: number;
   currency: string;
   discount: TierDiscount;
   is_basic: boolean;
+  perks: Perks[];
+  bumps: Bumps[];
+}
+
+export interface Perks {
+  name: PERK_NAMES | BUMP_NAMES;
+  quantity: number;
+  used?: number;
+  duration_days?: number;
+  extra?: number;
+}
+
+export interface Bumps {
+  name: BUMP_NAMES;
+  quantity: number;
+  used: number;
+  duration_days: number;
+  extra: number;
 }
 
 export interface TierDiscount {
@@ -40,6 +58,15 @@ export enum SUBSCRIPTION_CATEGORY_TYPES {
   OLD_CONSUMER_GOODS = 'OLD_CONSUMERGOODS',
 }
 
+export enum PERK_NAMES {
+  LIMIT = 'limit',
+}
+
+export enum BUMP_NAMES {
+  ZONEBUMP = 'zonebump',
+  CITYBUMP = 'citybump',
+  COUNTRYBUMP = 'countrybump',
+}
 export interface SubscriptionsResponse {
   id?: string;
   category_id: number;
@@ -57,20 +84,4 @@ export interface SubscriptionsResponse {
   market?: SUBSCRIPTION_MARKETS;
   type: SUBSCRIPTION_CATEGORY_TYPES;
   category_ids: number[];
-}
-
-export interface SubscriptionsV3Response {
-  id?: string;
-  category_ids: number[];
-  current_limit?: number;
-  subscribed_from?: number;
-  selected_tier_id?: string;
-  default_tier_id: string;
-  trial_available: boolean;
-  trial_days: number;
-  tiers: Tier[];
-  selected_tier?: Tier;
-  subscribed_until?: number;
-  market?: SUBSCRIPTION_MARKETS;
-  type: SUBSCRIPTION_CATEGORY_TYPES;
 }

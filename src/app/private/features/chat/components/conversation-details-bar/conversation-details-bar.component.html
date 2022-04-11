@@ -24,14 +24,18 @@
         'faded-item': currentConversation.item.notAvailable || currentConversation.item.unpublished}">
 
     <div class="avatar-container d-none d-sm-block">
-      <a [href]="currentConversation?.item.itemSlug | itemDetailRoute" target="_blank" class="avatar">
+      <a   tslItemRoute
+      [itemSlug]="currentConversation?.item.itemSlug"
+      [itemUUID]="currentConversation?.item.id" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
                          size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
       </a>
     </div>
 
     <div class="avatar-container d-block d-sm-none">
-      <a [href]="currentConversation?.item.itemSlug | itemDetailRoute" target="_blank" class="avatar">
+      <a tslItemRoute
+      [itemSlug]="currentConversation?.item.itemSlug"
+      [itemUUID]="currentConversation?.item.id" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
       </a>

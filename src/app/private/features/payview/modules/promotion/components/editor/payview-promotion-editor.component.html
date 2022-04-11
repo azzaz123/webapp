@@ -1,0 +1,32 @@
+<div class="PayviewPromotionEditor container h-100 d-flex flex-column">
+  <div class="PayviewPromotionEditor__contentWrapper row justify-content-center">
+    <div class="col-12 col-md-7">
+      <span class="PayviewPromotionEditor__message d-block text-center mt-4">{{ firstSentence }}</span>
+      <span *ngIf="!!secondSentence" class="PayviewPromotionEditor__message d-block text-center">{{ secondSentence }}</span>
+      <div class="mt-2 align-self-center">
+        <div class="PayviewPromotionEditor__inputWrapper">
+          <input
+            id="promocode"
+            type="text"
+            class="PayviewPromotionEditor__input mb-1 w-100"
+            [(ngModel)]="promocode"
+            [ngClass]="{ 'PayviewPromotionEditor__input--error': !!errorMessage }"
+            i18n-placeholder="@@pay_view_buyer_promo_code_pop_up_placeholder"
+            placeholder="Promotional code"
+          />
+          <div *ngIf="!!errorMessage" class="PayviewPromotionEditor__error">
+            <span>{{ errorMessage }}</span>
+          </div>
+        </div>
+        <tsl-svg-icon class="mt-2 d-flex justify-content-center" src="/assets/icons/payview/pop-no-comission.svg"></tsl-svg-icon>
+      </div>
+    </div>
+  </div>
+  <div class="PayviewPromotionEditor__confirmButton row w-100 p-2 position-sticky align-self-center justify-content-center">
+    <div class="col-12 col-md-3 p-0">
+      <tsl-button className="btn btn-block btn-primary" i18n="@@pay_view_buyer_promo_code_pop_up_apply_button" (click)="apply()"
+        >Apply</tsl-button
+      >
+    </div>
+  </div>
+</div>

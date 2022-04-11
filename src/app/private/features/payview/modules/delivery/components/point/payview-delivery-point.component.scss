@@ -1,0 +1,41 @@
+@import '~style/common';
+
+.PayviewDeliveryPoint {
+  color: $blue-grey-1;
+  border-bottom: 1px solid $blue-grey-4;
+
+  &__pointWrapper {
+    flex: 1;
+    padding: $spacer * 0.75 0px;
+  }
+
+  &__pointIconWrapper {
+    @include square(48px);
+  }
+
+  &__pointIcon {
+    border-radius: 5px;
+    object-fit: cover;
+    overflow: hidden;
+    width: inherit;
+  }
+
+  &__informationWrapper {
+    padding-left: $spacing-xxxl;
+  }
+
+  &__deliveryEtaWrapper {
+    font-size: $font-size-s;
+    padding: 0 0 $spacing-xxs 0;
+  }
+  &__deliveryAddressWrapper {
+    font-size: $font-size-s;
+
+    padding: $spacing-xxs 0 0 0;
+  }
+
+  &__deliveryEta,
+  &__deliveryAddress {
+    font-weight: $font-weight-chunky;
+  }
+}

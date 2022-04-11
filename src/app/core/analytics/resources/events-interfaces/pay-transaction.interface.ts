@@ -22,25 +22,21 @@ export interface PayTransaction {
    */
   searchId?: string;
   /**
-   * If the transaction request comes from the buy now button or from transaction banner of the chat screen
-   */
-  isBuyNow: boolean;
-  /**
    * Identifier of the screen that the item was clicked from
    */
-  screenId: 209 | 238;
+  screenId: 238 | 313;
   /**
    * Identifier of the user that the item belongs to
    */
   sellerUserId: string;
   /**
-   * Offered price by the user. Even if the user does not offer a different price, this attribute will be sent with the same price than the itemPrice. In the Buy Now flow, the offered price will always the same than the itemPrice
-   */
-  offeredPrice: number;
-  /**
    * Item price without fees
    */
   itemPrice: number;
+  /**
+   * Delivery and insurance fees
+   */
+  feesPrice?: number;
   /**
    * If the item is a bumped item
    */
@@ -57,6 +53,14 @@ export interface PayTransaction {
    * Payment method the user has selected
    */
   paymentMethod?: 'bank card' | 'wallet' | 'wallet, bank card' | 'paypal' | 'wallet, paypal';
+  /**
+   * Delivery method the user has selected
+   */
+  deliveryMethod?: 'buyer address' | 'carrier office';
+  /**
+   * Promocode used
+   */
+  isPromoApplied?: boolean;
   /**
    * Test group of the user
    */

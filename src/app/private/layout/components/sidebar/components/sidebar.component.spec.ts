@@ -24,11 +24,11 @@ import {
 } from '@core/analytics/analytics-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PERMISSIONS } from '@core/user/user-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { SidebarService } from '../core/services/sidebar.service';
 import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 @Component({
   template: '',
@@ -78,6 +78,9 @@ describe('SidebarComponent', () => {
             provide: UserService,
             useValue: {
               user: MOCK_USER,
+              get isPro() {
+                return true;
+              },
               getStats() {
                 return of({
                   counters: mockCounters,
@@ -101,16 +104,16 @@ describe('SidebarComponent', () => {
               totalUnreadMessages$: of(1),
             },
           },
-          { provide: AnalyticsService, useClass: MockAnalyticsService },
-          NgxPermissionsService,
           {
-            provide: FeatureFlagService,
+            provide: NotificationApiService,
             useValue: {
-              getLocalFlag() {
-                return of(true);
-              },
+              totalUnreadNotifications$: of(0),
+              getNotifications: () => {},
+              refreshUnreadNotifications: () => {},
             },
           },
+          { provide: AnalyticsService, useClass: MockAnalyticsService },
+          NgxPermissionsService,
           {
             provide: SidebarService,
             useValue: {
@@ -231,6 +234,7 @@ describe('SidebarComponent', () => {
                 screenId: SCREEN_IDS.MyCatalog,
                 numberOfItems: mockCounters.publish,
                 proSubscriptionBanner: false,
+                isPro: true,
               },
             };
 
@@ -251,6 +255,7 @@ describe('SidebarComponent', () => {
                 screenId: SCREEN_IDS.MyCatalog,
                 numberOfItems: mockCounters.publish,
                 proSubscriptionBanner: true,
+                isPro: true,
               },
             };
 

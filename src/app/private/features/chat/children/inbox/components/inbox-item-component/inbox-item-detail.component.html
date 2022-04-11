@@ -1,4 +1,7 @@
-<a class="card" [href]="item.itemSlug | itemDetailRoute" target="_blank" [ngClass]="{'faded': item.notAvailable || item.unpublished }">
+<a class="card" 
+tslItemRoute
+[itemSlug]="item.itemSlug"
+[itemUUID]="item.id" [ngClass]="{'faded': item.notAvailable || item.unpublished }">
   <div class="image-overlay">
     <tsl-status-icon [unavailable]="item.notAvailable || item.unpublished"></tsl-status-icon>
     <img class="card-img-top" src="{{itemImageUrl}}" onError="this.src='/assets/images/fake-item.png'"/>
@@ -18,8 +21,8 @@
       <span i18n="@@web_chat_children_inbox_components_item_component_detail_152" *ngIf='!item.reserved'>Reserve</span>
       <span i18n="@@web_chat_children_inbox_components_item_component_detail_153" *ngIf='item.reserved'>Unreserve</span>
     </tsl-button>
-    <tsl-button className="btn-sold" (click)="prevent($event)" tslItemSold (callback)="trackSoldEvent(item)"
-                [item]="item" i18n="@@web_chat_children_inbox_components_item_component_detail_154">Sold
+    <tsl-button className="btn-sold" (click)="prevent($event)" tslItemSold [item]="item" 
+                i18n="@@web_chat_children_inbox_components_item_component_detail_154">Sold
     </tsl-button>
   </div>
 

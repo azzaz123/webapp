@@ -53,7 +53,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject } from 'rxjs';
 import { SubscriptionsSlotItemComponent } from '../../components/subscriptions-slots/subscriptions-slot-item/subscriptions-slot-item.component';
 import { SubscriptionsSlotsListComponent } from '../../components/subscriptions-slots/subscriptions-slots-list/subscriptions-slots-list.component';
-import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ListComponent } from './list.component';
 import { ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
 import { Counters } from '@core/user/user-stats.interface';
@@ -72,6 +71,9 @@ import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-l
 import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 import { MeApiService } from '@api/me/me-api.service';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
+import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -98,6 +100,7 @@ describe('ListComponent', () => {
   let featureFlagService: FeatureFlagService;
   let listingLimitService: ListingLimitService;
   let meApiService: MeApiService;
+  let catalogItemTrackingEventService: CatalogItemTrackingEventService;
 
   const prosButtonSelector = '.List__button--pros';
   const deliveryButtonSelector = '.List__button--delivery';
@@ -122,7 +125,7 @@ describe('ListComponent', () => {
       children: [{ path: '', component: ListComponent }],
     },
     { path: `${PRIVATE_PATHS.CATALOG}/list`, component: ListComponent },
-    { path: `${PRIVATE_PATHS.CATALOG}/checkout`, component: ListComponent },
+    { path: `${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, component: ListComponent },
     { path: `wallacoins`, component: ListComponent },
     { path: PRIVATE_PATHS.DELIVERY, component: ListComponent },
     { path: PRIVATE_PATHS.WALLET, component: ListComponent },
@@ -147,6 +150,7 @@ describe('ListComponent', () => {
           EventService,
           ToastService,
           NgxPermissionsService,
+          CatalogItemTrackingEventService,
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
           { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
           {
@@ -169,7 +173,6 @@ describe('ListComponent', () => {
               bulkReserve() {},
               purchaseProducts() {},
               selectItem() {},
-              getUrgentProducts() {},
               get() {
                 return of(MOCK_ITEM_V3);
               },
@@ -278,6 +281,14 @@ describe('ListComponent', () => {
               },
             },
           },
+          {
+            provide: VisibilityApiService,
+            useValue: {
+              hasItemOrUserBalance() {
+                return of(true);
+              },
+            },
+          },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -306,6 +317,7 @@ describe('ListComponent', () => {
     meApiService = TestBed.inject(MeApiService);
     meApiServiceSpy = spyOn(meApiService, 'getItems').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
+    catalogItemTrackingEventService = TestBed.inject(CatalogItemTrackingEventService);
 
     spyOn(router, 'navigate').and.callThrough();
     spyOn(errorService, 'i18nError');
@@ -366,19 +378,6 @@ describe('ListComponent', () => {
       });
     });
 
-    it('should open bump confirmation modal', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('bump');
-      spyOn(localStorage, 'removeItem');
-      component.ngOnInit();
-      tick();
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
-      expect(localStorage.removeItem).toHaveBeenCalled();
-    }));
-
     it('should reset page on router event', fakeAsync(() => {
       spyOn<any>(component, 'getItems');
       component['nextPage'] = '40';
@@ -408,30 +407,6 @@ describe('ListComponent', () => {
         component.ngOnInit();
 
         expect(modalService.open).not.toHaveBeenCalled();
-      });
-
-      it('should show a wallet button', () => {
-        expect(walletButton).toBeTruthy();
-      });
-
-      describe('and when clicking the wallet button', () => {
-        it('should navigate to wallet', () => {
-          expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
-        });
-      });
-
-      it('should show a delivery button', () => {
-        expect(deliveryButton).toBeTruthy();
-      });
-
-      describe('and when clicking the delivery button', () => {
-        it('should navigate to delivery', () => {
-          expect(deliveryButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.DELIVERY}`);
-        });
-      });
-
-      it('should point to the wallet path', () => {
-        expect(walletButton.nativeElement.getAttribute('href')).toEqual(`/${PRIVATE_PATHS.WALLET}`);
       });
     });
 
@@ -466,17 +441,30 @@ describe('ListComponent', () => {
           });
         }));
 
-        it('should redirect when modal CTA button modal is clicked', fakeAsync(() => {
-          modalSpy.and.returnValue({
-            result: Promise.resolve({ redirect: true }),
-            componentInstance: { item: null },
+        describe('and  CTA button modal is clicked ', () => {
+          beforeEach(() => {
+            modalSpy.and.returnValue({
+              result: Promise.resolve({ redirect: true }),
+              componentInstance: { item: null },
+            });
           });
-          component.ngOnInit();
-          tick();
+          it('should redirect', fakeAsync(() => {
+            component.ngOnInit();
+            tick();
 
-          expect(router.navigate).toHaveBeenCalledTimes(1);
-          expect(router.navigate).toHaveBeenCalledWith(['catalog/checkout', { itemId: '1' }]);
-        }));
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: '1' }]);
+          }));
+
+          it('should track event', fakeAsync(() => {
+            spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
+            component.ngOnInit();
+            tick();
+
+            expect(catalogItemTrackingEventService.trackClickBumpItems).toHaveBeenCalledTimes(1);
+            expect(catalogItemTrackingEventService.trackClickBumpItems).toHaveBeenCalledWith(1, true);
+          }));
+        });
 
         it('should not redirect when modal is closed', fakeAsync(() => {
           modalSpy.and.returnValue({
@@ -537,43 +525,6 @@ describe('ListComponent', () => {
         backdrop: 'static',
         windowClass: 'modal-standard',
       });
-    }));
-
-    it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('bump');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-    }));
-
-    it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('bumpWithCredits');
-      spyOn(localStorage, 'removeItem');
-      route.params = of({
-        code: 200,
-      });
-
-      component.ngOnInit();
-      tick();
-
-      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
-        windowClass: 'modal-standard',
-        backdrop: 'static',
-      });
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
-      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionSpent');
     }));
 
     it('should set selectedItems with items', () => {
@@ -637,17 +588,6 @@ describe('ListComponent', () => {
           expect(slotsCards.length).toEqual(0);
         }));
       });
-    });
-  });
-
-  describe('logout', () => {
-    it('should logout after clicking logout button', () => {
-      spyOn(userService, 'logout').and.returnValue(of());
-      const logoutButton = fixture.debugElement.query(By.css('.logout')).nativeNode;
-
-      logoutButton.click();
-
-      expect(userService.logout).toHaveBeenCalled();
     });
   });
 
@@ -1234,6 +1174,7 @@ describe('ListComponent', () => {
           screenId: SCREEN_IDS.MyCatalog,
           numberOfItems: mockCounters.publish,
           proSubscriptionBanner: false,
+          isPro: false,
         },
       };
 
@@ -1591,69 +1532,6 @@ describe('ListComponent', () => {
         expect(itemService.get).toHaveBeenCalledWith(item.id);
         expect(component.items[3]).toEqual(MOCK_ITEM_V3);
       }));
-    });
-  });
-
-  describe('Pro button', () => {
-    let proButton: DebugElement;
-
-    describe('and has subscriptions permission', () => {
-      beforeEach(async () => {
-        permissionService.addPermission(PERMISSIONS.subscriptions);
-
-        await fixture.whenStable();
-
-        proButton = fixture.debugElement.query(By.css(prosButtonSelector));
-      });
-
-      it('should show button', () => {
-        expect(proButton).toBeTruthy();
-      });
-
-      it('should redirect to pro section', () => {
-        proButton.nativeElement.click();
-
-        expect(router.navigate).toHaveBeenCalledTimes(1);
-        expect(router.navigate).toHaveBeenCalledWith([PRO_PATHS.PRO_MANAGER]);
-      });
-
-      describe('and is not pro user', () => {
-        beforeEach(() => {
-          jest.spyOn(userService, 'isPro', 'get').mockReturnValue(false);
-          spyOn(i18nService, 'translate').and.callThrough();
-          fixture.detectChanges();
-        });
-
-        it('should show become pro label', () => {
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.BECOME_PRO);
-        });
-      });
-
-      describe('and is pro user', () => {
-        beforeEach(() => {
-          jest.spyOn(userService, 'isPro', 'get').mockReturnValue(true);
-          spyOn(i18nService, 'translate').and.callThrough();
-          fixture.detectChanges();
-        });
-
-        it('should show pro label', () => {
-          expect(i18nService.translate).toHaveBeenCalledWith(TRANSLATION_KEY.WALLAPOP_PRO);
-        });
-      });
-    });
-
-    describe('and has not subscriptions permission', () => {
-      beforeEach(() => {
-        permissionService.removePermission(PERMISSIONS.subscriptions);
-
-        fixture.detectChanges();
-
-        proButton = fixture.debugElement.query(By.css(prosButtonSelector));
-      });
-
-      it('should not show button', () => {
-        expect(proButton).toBeFalsy();
-      });
     });
   });
 });

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, OnInit } from '@angular/core';
-import { NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { KYCDocumentation, KYCImagesNeeded } from '@private/features/wallet/interfaces/kyc/kyc-documentation.interface';
 import { KYCImages, KYC_IMAGES } from '@private/features/wallet/interfaces/kyc/kyc-images.interface';
 import { BANNER_TYPES } from '@shared/banner/banner-types.enum';
@@ -11,6 +10,7 @@ import { KYCTrackingEventsService } from '../../services/kyc-tracking-events/kyc
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { KYC_TAKE_IMAGE_OPTIONS } from '../kyc-image-options/kyc-image-options.enum';
+import { BannerSpecifications } from '@shared/banner/banner-specifications.interface';
 
 @Component({
   selector: 'tsl-kyc-upload-images',
@@ -34,9 +34,10 @@ export class KYCUploadImagesComponent implements OnInit, OnDestroy {
 
   public readonly MIME_TYPES = MIME_TYPES;
   public readonly VIDEO_PERMISSIONS_STATUS = VIDEO_PERMISSIONS_STATUS;
-  public readonly errorBannerSpecifications: NgbAlertConfig = {
+  public readonly errorBannerSpecifications: BannerSpecifications = {
     type: BANNER_TYPES.DANGER,
     dismissible: false,
+    isFullHeight: false,
   };
 
   public readonly activeStep$: BehaviorSubject<KYCImagesNeeded> = new BehaviorSubject<KYCImagesNeeded>(1);

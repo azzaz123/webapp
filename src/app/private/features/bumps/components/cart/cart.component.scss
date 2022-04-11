@@ -1,0 +1,83 @@
+@import '~style/common';
+
+.Cart {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $blue-grey-5;
+  max-height: 80vh;
+
+  @include media-breakpoint-up(lg) {
+    position: fixed;
+    width: 320px;
+  }
+
+  &__title {
+    font-size: $font-size-l;
+    line-height: $line-height-ml;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__wrapper {
+    border-bottom: solid 1px $blue-grey-5;
+    overflow: auto;
+  }
+
+  .walla-total,
+  .credit,
+  .total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-chunky;
+    text-transform: uppercase;
+    overflow: hidden;
+    clear: both;
+  }
+
+  .walla-total {
+    color: $blue-grey-2;
+    line-height: $line-height-l;
+    .price {
+      font-size: $font-size-l;
+    }
+  }
+
+  .credit {
+    color: $walla-main;
+    .price {
+      font-size: $font-size-s;
+    }
+  }
+
+  .total {
+    border-bottom: solid 1px $blue-grey-5;
+    .price {
+      font-size: $font-size-xl;
+    }
+  }
+
+  ul,
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__list {
+    &Description {
+      color: $blue-grey-2;
+      font-size: $font-size-s;
+    }
+  }
+
+  &__NewCard {
+    &--add,
+    &--used {
+      margin: $spacing-s 0;
+      font-size: $font-size-s;
+      color: $walla-main;
+      cursor: pointer;
+    }
+  }
+}

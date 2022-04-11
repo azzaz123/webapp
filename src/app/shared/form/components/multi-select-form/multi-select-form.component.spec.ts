@@ -8,12 +8,14 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import {
   optionsFixture,
   extendedOptionsFixture,
-  extendedOptionsWithChildrenFixture,
   optionsWithChildrenFixture,
-} from './fixtures/multi-select-option.fixtures';
+  extendedOptionsWithChildrenFixture,
+  optionsWithGroupFixture,
+  optionGroupIds,
+} from '../multi-select-form/fixtures/multi-select-option.fixtures';
+import { MultiSelectOptionComponent } from '../multi-select-form/multi-select-option/multi-select-option/multi-select-option.component';
+import { MultiSelectOptionModule } from '../multi-select-form/multi-select-option/multi-select-option/multi-select-option.module';
 import { MultiSelectFormComponent } from './multi-select-form.component';
-import { MultiSelectOptionComponent } from './multi-select-option/multi-select-option/multi-select-option.component';
-import { MultiSelectOptionModule } from './multi-select-option/multi-select-option/multi-select-option.module';
 
 export const value = ['bb', 'cc'];
 
@@ -35,6 +37,7 @@ describe('MultiSelectFormComponent', () => {
     fixture = TestBed.createComponent(MultiSelectFormComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
+    component.optionGroupConfig = {};
     fixture.detectChanges();
   });
 
@@ -109,7 +112,8 @@ describe('MultiSelectFormComponent', () => {
         const options = debugElement.queryAll(By.directive(MultiSelectOptionComponent));
         const optionToBeChecked: MultiSelectOptionComponent = options[2].componentInstance;
         optionToBeChecked.data.checked = true;
-        optionToBeChecked.toggleCheckbox();
+        optionToBeChecked.data.value = 'value';
+        optionToBeChecked.toggleOnChange.emit(optionToBeChecked.data);
 
         expect(component.value).toEqual([optionToBeChecked.data.value]);
       });
@@ -145,6 +149,7 @@ describe('MultiSelectFormComponent', () => {
 
           childOptions.forEach((childOption) => {
             childOption.componentInstance.data.checked = true;
+            childOption.componentInstance.data.value = true;
             childOption.componentInstance.toggleCheckbox();
           });
 
@@ -224,6 +229,32 @@ describe('MultiSelectFormComponent', () => {
 
       options.forEach((option: DebugElement) => {
         expect(option.componentInstance.data.checked).toBeFalsy;
+      });
+    });
+  });
+
+  describe('when options have separators', () => {
+    beforeEach(() => {
+      component.options = optionsWithGroupFixture;
+      component.optionGroupConfig = {
+        [optionGroupIds[0]]: '1',
+        [optionGroupIds[1]]: '2',
+      };
+
+      fixture.detectChanges();
+    });
+
+    it('should show separators', async () => {
+      let separators = fixture.debugElement.queryAll(By.css('.MultiSelectForm__separator'));
+
+      expect(separators.length).toBe(2);
+    });
+
+    it('should show correct content inside separators', async () => {
+      let separators = fixture.debugElement.queryAll(By.css('.MultiSelectForm__separator'));
+
+      separators.forEach((separator, index) => {
+        expect(separator.nativeElement.innerHTML.trim()).toEqual(component.optionGroupConfig[optionGroupIds[index]]);
       });
     });
   });

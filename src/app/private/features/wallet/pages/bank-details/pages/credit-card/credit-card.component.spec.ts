@@ -1,11 +1,12 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
   CardCvvIsInvalidError,
   CardExpirationDateIsInvalidError,
+  CardInvalidError,
   CardIsNotAuthorizedError,
   CardNumberIsInvalidError,
   CardOwnerNameIsInvalidError,
@@ -13,6 +14,7 @@ import {
   PlatformResponseIsInvalidError,
 } from '@api/core/errors/payments/cards';
 import {
+  mockCreditCard,
   mockCreditCardSyncRequest,
   mockCreditCardSyncRequestEmpty,
   mockFormCreditCardSyncRequest,
@@ -169,21 +171,24 @@ describe('CreditCreditCardComponent', () => {
     describe('and the form is not in progress...', () => {
       describe('when the form is valid...', () => {
         describe('and the credit card is new...', () => {
+          let routerSpy: jasmine.Spy;
+
           beforeEach(() => {
-            spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError(''));
             spyOn(toastService, 'show');
-            spyOn(router, 'navigate');
+            routerSpy = spyOn(router, 'navigate');
 
             component.initForm();
             component.creditCardForm.setValue(mockFormCreditCardSyncRequest);
           });
 
           describe('and server notifies a success...', () => {
-            beforeEach(() => {
-              spyOn(paymentsCreditCardService, 'create').and.returnValue(of(null));
+            beforeEach(fakeAsync(() => {
+              spyOn(paymentsCreditCardService, 'create').and.returnValue(of({}));
+              spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCard));
 
               triggerFormSubmit();
-            });
+              tick();
+            }));
 
             it('should call the create endpoint with valid data', () => {
               expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
@@ -196,8 +201,40 @@ describe('CreditCreditCardComponent', () => {
               });
             });
 
-            it('should redirect to the bank details page', () => {
-              expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
+            describe('WHEN the return route has been reported', () => {
+              it('should redirect to the bank details page', () => {
+                expect(routerSpy).toHaveBeenCalledWith([component.returnRoute]);
+              });
+            });
+
+            describe('WHEN the return route has not been reported', () => {
+              beforeEach(() => {
+                component.returnRoute = null;
+                routerSpy.calls.reset();
+
+                fixture.detectChanges();
+
+                triggerFormSubmit();
+              });
+
+              it('should not redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+            });
+
+            describe('WHEN the return route is empty', () => {
+              beforeEach(() => {
+                component.returnRoute = '';
+                routerSpy.calls.reset();
+
+                fixture.detectChanges();
+
+                triggerFormSubmit();
+              });
+
+              it('should not redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
             });
           });
 
@@ -359,13 +396,45 @@ describe('CreditCreditCardComponent', () => {
                 expect(router.navigate).not.toHaveBeenCalled();
               });
             });
+
+            describe('and when the server notifies card is invalid', () => {
+              const invalidError: CardInvalidError = new CardInvalidError();
+
+              beforeEach(() => {
+                spyOn(paymentsCreditCardService, 'create').and.returnValue(of({}));
+                spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError(invalidError));
+
+                triggerFormSubmit();
+              });
+
+              it('should call the create endpoint', () => {
+                expect(paymentsCreditCardService.create).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+              });
+
+              it('should show an error toast with valid message', () => {
+                expect(toastService.show).toHaveBeenCalledWith({
+                  text: invalidError.message,
+                  type: TOAST_TYPES.ERROR,
+                });
+              });
+
+              it('should show an error toast only once', () => {
+                expect(toastService.show).toHaveBeenCalledTimes(1);
+              });
+
+              it('should NOT redirect to the bank details page', () => {
+                expect(router.navigate).not.toHaveBeenCalled();
+              });
+            });
           });
         });
       });
 
       describe('and the credit card is an existing one...', () => {
+        let getCardSpy: jasmine.Spy;
+
         beforeEach(() => {
-          spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCardSyncRequest));
+          getCardSpy = spyOn(paymentsCreditCardService, 'get').and.returnValue(of(mockCreditCardSyncRequest));
           spyOn(toastService, 'show');
           spyOn(router, 'navigate');
 
@@ -392,7 +461,7 @@ describe('CreditCreditCardComponent', () => {
           });
 
           it('should redirect to the bank details page', () => {
-            expect(router.navigate).toHaveBeenCalledWith([component.BANK_DETAILS_URL]);
+            expect(router.navigate).toHaveBeenCalledWith([component.returnRoute]);
           });
         });
 
@@ -448,6 +517,36 @@ describe('CreditCreditCardComponent', () => {
 
             it('should not mark form as pending', () => {
               expect(component.creditCardForm.pending).toBe(false);
+            });
+
+            it('should NOT redirect to the bank details page', () => {
+              expect(router.navigate).not.toHaveBeenCalled();
+            });
+          });
+
+          describe('and when the server notifies card is invalid', () => {
+            const invalidError: CardInvalidError = new CardInvalidError();
+
+            beforeEach(() => {
+              spyOn(paymentsCreditCardService, 'update').and.returnValue(of({}));
+              getCardSpy.and.returnValue(throwError(invalidError));
+
+              triggerFormSubmit();
+            });
+
+            it('should call the update endpoint', () => {
+              expect(paymentsCreditCardService.update).toHaveBeenCalledWith(mockCreditCardSyncRequest);
+            });
+
+            it('should show an error toast with valid message', () => {
+              expect(toastService.show).toHaveBeenCalledWith({
+                text: invalidError.message,
+                type: TOAST_TYPES.ERROR,
+              });
+            });
+
+            it('should show an error toast only once', () => {
+              expect(toastService.show).toHaveBeenCalledTimes(1);
             });
 
             it('should NOT redirect to the bank details page', () => {
@@ -530,6 +629,20 @@ describe('CreditCreditCardComponent', () => {
       backButton.click();
 
       expect(location.back).toHaveBeenCalled();
+    });
+  });
+
+  describe('when we do not want to show the back button', () => {
+    beforeEach(() => {
+      component.showBackButton = false;
+
+      fixture.detectChanges();
+    });
+
+    it('should not show the link to go back', () => {
+      const backButton = fixture.debugElement.query(By.css(backAnchorSelector));
+
+      expect(backButton).toBeFalsy();
     });
   });
 

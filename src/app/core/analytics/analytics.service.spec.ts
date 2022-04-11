@@ -3,19 +3,18 @@ import { AnalyticsService } from './analytics.service';
 import { UserService } from '../user/user.service';
 import { MockedUserService, MOCK_FULL_USER } from '@fixtures/user.fixtures.spec';
 import { AnalyticsEvent, AnalyticsPageView } from './analytics-constants';
-import mParticle from '@mparticle/web-sdk';
 import { DeviceService } from '@core/device/device.service';
-import { MARKET_PROVIDER } from '../../../configs/market.config';
+import { MARKET_PROVIDER } from '@configs/market.config';
 import { LOCALE_ID } from '@angular/core';
 import { APP_LOCALE_MOCK, MARKET_MOCK } from '@fixtures/analytics.fixtures.spec';
+import { mParticle } from '@core/analytics/mparticle.constants';
 
 const user = {
   setUserAttribute: () => {},
 };
 
-jest.mock('@mparticle/web-sdk', () => ({
-  __esModule: true,
-  default: {
+jest.mock('@core/analytics/mparticle.constants', () => ({
+  mParticle: {
     init: (key, config) => {
       config.identityCallback({
         getUser: () => user,
@@ -28,7 +27,9 @@ jest.mock('@mparticle/web-sdk', () => ({
       getCurrentUser: () => user,
     },
   },
-  namedExport: 'mParticle',
+  appboyKit: {
+    register: () => {},
+  },
 }));
 
 describe('AnalyticsService', () => {
@@ -71,12 +72,11 @@ describe('AnalyticsService', () => {
   describe('initialize', () => {
     describe('when there is an identifier in cookies', () => {
       it('should initialize the analytics library with existing identifier', () => {
-        let user = mParticle.Identity.getCurrentUser();
         spyOn(mParticle, 'init').and.callThrough();
         spyOn(user, 'setUserAttribute');
         spyOn(deviceService, 'getDeviceId').and.returnValue('newUUID');
 
-        service.initialize();
+        service.initializeAnalyticsWithUnauthenticatedUser();
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(user.setUserAttribute).toHaveBeenCalledWith('deviceId', 'newUUID');
@@ -90,7 +90,7 @@ describe('AnalyticsService', () => {
         spyOn(mParticle.Identity.getCurrentUser(), 'setUserAttribute');
         spyOn(deviceService, 'getDeviceId').and.returnValue('newDeviceId');
 
-        service.initialize();
+        service.initializeAnalyticsWithUnauthenticatedUser();
 
         expect(mParticle.init).toHaveBeenCalled();
         expect(mParticle.Identity.getCurrentUser().setUserAttribute).toHaveBeenCalledWith('deviceId', 'newDeviceId');
@@ -100,13 +100,12 @@ describe('AnalyticsService', () => {
     describe('when there is a user logged with email and id', () => {
       it('should initialize the analytics library with email and id', () => {
         spyOn(mParticle, 'init').and.callThrough();
-        jest.spyOn(userService, 'user', 'get').mockReturnValue(MOCK_FULL_USER);
         const expectedIdentities = {
           customerid: MOCK_FULL_USER.id,
           email: MOCK_FULL_USER.email,
         };
 
-        service.initialize();
+        service.initializeAnalyticsWithAuthenticatedUser(MOCK_FULL_USER);
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(mParticle.init).toHaveBeenCalledWith(expect.anything(), {
@@ -121,10 +120,9 @@ describe('AnalyticsService', () => {
     describe('when there is not a user logged with email and id', () => {
       it('should initialize the analytics library without user Identities', () => {
         spyOn(mParticle, 'init').and.callThrough();
-        jest.spyOn(userService, 'isLogged', 'get').mockReturnValue(false);
         const expectedIdentities = {};
 
-        service.initialize();
+        service.initializeAnalyticsWithUnauthenticatedUser();
 
         expect(mParticle.init).toHaveBeenCalledTimes(1);
         expect(mParticle.init).toHaveBeenCalledWith(expect.anything(), {

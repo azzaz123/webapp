@@ -17,7 +17,7 @@ import { CarouselSlide } from '@shared/components/carousel-slides/carousel-slide
 import { ClickedItemCard } from '@public/shared/components/item-card-list/interfaces/clicked-item-card.interface';
 import { BUMPED_ITEM_FLAG_TYPES, STATUS_ITEM_FLAG_TYPES } from '@public/shared/components/item-flag/item-flag-constants';
 import { SOCIAL_SHARE_CHANNELS } from '@shared/social-share/enums/social-share-channels.enum';
-import { combineLatest, Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, ReplaySubject, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ItemFullScreenCarouselComponent } from '../components/item-fullscreen-carousel/item-fullscreen-carousel.component';
 import { ADS_ITEM_DETAIL, FactoryAdAffiliationSlotConfiguration, ItemDetailAdSlotsConfiguration } from '../core/ads/item-detail-ads.config';
@@ -38,17 +38,18 @@ import { PERMISSIONS } from '@core/user/user-constants';
 export class ItemDetailComponent implements OnInit, OnDestroy {
   @ViewChild(ItemFullScreenCarouselComponent, { static: true })
   itemDetailImagesModal: ItemFullScreenCarouselComponent;
-  public recommendedItems$: Observable<ItemCardsWithRecommenedType>;
+
+  public recommendedItems$: ReplaySubject<ItemCardsWithRecommenedType> = new ReplaySubject();
   public readonly deviceType: typeof DeviceType = DeviceType;
   public device: DeviceType;
   public adsSlotsItemDetail: ItemDetailAdSlotsConfiguration = ADS_ITEM_DETAIL;
   public adsAffiliationSlotConfiguration: AdSlotConfiguration[];
   public adsAffiliationsLoaded$: Observable<boolean>;
   public renderMap = false;
+  public readonly PERMISSIONS = PERMISSIONS;
+
   private subscriptions: Subscription = new Subscription();
   private itemDetail: ItemDetail;
-
-  public readonly PERMISSIONS = PERMISSIONS;
 
   constructor(
     private itemDetailStoreService: ItemDetailStoreService,
@@ -154,7 +155,9 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
 
   private initializeItemRecommendations(itemId: string, categoryId: number): void {
     if (this.isItemRecommendations(categoryId)) {
-      this.recommendedItems$ = this.recommenderItemCardFavouriteCheckedService.getItems(itemId);
+      this.recommenderItemCardFavouriteCheckedService.getItems(itemId).subscribe((recommendedItems: ItemCardsWithRecommenedType) => {
+        this.recommendedItems$.next(recommendedItems);
+      });
     }
   }
 

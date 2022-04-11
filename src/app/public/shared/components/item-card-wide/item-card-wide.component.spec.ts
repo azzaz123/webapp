@@ -25,6 +25,8 @@ import { DeviceService } from '@core/device/device.service';
 import { MockDeviceService } from '@fixtures/device.fixtures.spec';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { ToggleFavoriteInterface } from '@public/shared/components/item-card-list/interfaces/toggle-favorite.interface';
+import { LOGIN_SOURCE } from '@public/shared/components/item-card-list/enums/login-source.enum';
 
 describe('ItemCardWideComponent', () => {
   const favouriteIconSelector = 'tsl-favourite-icon';
@@ -36,7 +38,10 @@ describe('ItemCardWideComponent', () => {
     EUR: '€',
     GBP: '£',
   };
-
+  const mockToggleFavoriteInterface: ToggleFavoriteInterface = {
+    item: MOCK_ITEM_CARD_WIDE_BUMPED,
+    loginSource: LOGIN_SOURCE.FAVORITE_ITEM,
+  };
   let component: ItemCardWideComponent;
   let fixture: ComponentFixture<ItemCardWideComponent>;
   let decimalPipe: DecimalPipe;
@@ -169,7 +174,7 @@ describe('ItemCardWideComponent', () => {
 
             favouriteIconElement.dispatchEvent(event);
 
-            expect(component.toggleFavourite.emit).toBeCalled();
+            expect(component.toggleFavourite.emit).toBeCalledWith(mockToggleFavoriteInterface);
             expect(event.preventDefault).toHaveBeenCalled();
             expect(event.stopPropagation).toHaveBeenCalled();
           });

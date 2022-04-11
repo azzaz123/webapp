@@ -12,9 +12,10 @@ import { FilterParameterStoreService } from '@public/shared/services/filter-para
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
 import { Condition } from '@public/shared/services/filter-option/interfaces/option-responses/condition.interface';
+import { HttpResponse } from '@angular/common/http';
 
 export class MockFilterOptionApiService {
-  public getApiOptions(method: string, params: QueryParams, paginationOptions: PaginationOptions): Observable<unknown> {
+  public getApiOptions(method: string, params: QueryParams, paginationOptions: PaginationOptions): Observable<HttpResponse<unknown>> {
     return this[method](params, paginationOptions);
   }
 
@@ -103,14 +104,24 @@ export const formattedCarBrandNModel: FilterOption = {
   label: calcBrandModelLabel(brandNModel),
 };
 
-export const fashionBrand: FashionBrand = {
-  brand: 'brand',
+export const popularFashionBrand: FashionBrand = {
+  brand: 'popularBrand',
   is_popular: true,
 };
 
-export const formattedFashionBrand: FilterOption = {
-  label: fashionBrand.brand,
-  value: fashionBrand.brand,
+export const commonFashionBrand: FashionBrand = {
+  brand: 'commonBrand',
+  is_popular: false,
+};
+
+export const popularFormattedFashionBrand: FilterOption = {
+  label: popularFashionBrand.brand,
+  value: popularFashionBrand.brand,
+};
+
+export const commonFormattedFashionBrand: FilterOption = {
+  label: commonFashionBrand.brand,
+  value: commonFashionBrand.brand,
 };
 
 export const sizeNGender: SizeNGenderResponse = {

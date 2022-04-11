@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, OpenWallapop } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DeviceService } from '@core/device/device.service';
-import { ExternalCommsService } from '@core/external-comms.service';
 import { SessionService } from '@core/session/session.service';
 import { Observable } from 'rxjs';
 import { concatMap, take } from 'rxjs/operators';
@@ -13,31 +12,10 @@ import { concatMap, take } from 'rxjs/operators';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private analyticsService: AnalyticsService,
-    private deviceService: DeviceService,
-    private sessionService: SessionService,
-    private externalCommsService: ExternalCommsService
-  ) {}
+  constructor(private analyticsService: AnalyticsService, private deviceService: DeviceService, private sessionService: SessionService) {}
 
   ngOnInit(): void {
-    //TODO: This should be moved to a higer level entity (providers.ts or equivalent)
-    this.initSubscriptions();
-    this.initServices();
-  }
-
-  private initSubscriptions(): void {
     this.onNewSessionStart().subscribe(() => this.trackOpenWallapop());
-    this.onMParticleInit().subscribe(() => this.externalCommsService.initializeBrazeCommunications());
-  }
-
-  private initServices(): void {
-    this.sessionService.initSession();
-    this.analyticsService.initialize();
-  }
-
-  private onMParticleInit(): Observable<void> {
-    return this.analyticsService.mParticleReady$.pipe(take(1));
   }
 
   private onNewSessionStart(): Observable<void> {

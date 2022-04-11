@@ -12,9 +12,8 @@ import { Item } from '@core/item/item';
 import { SelectedItemsAction } from '@core/item/item-response.interface';
 import { ItemService } from '@core/item/item.service';
 import { UserService } from '@core/user/user.service';
-import { environment } from '@environments/environment';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
-import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM, PRODUCT_RESPONSE } from '@fixtures/item.fixtures.spec';
+import { ITEM_ID, ITEM_WEB_SLUG, MOCK_ITEM, MOCK_ITEM_WITH_LECAGY_CATEGORY } from '@fixtures/item.fixtures.spec';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
@@ -22,12 +21,14 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemRequiredDataService } from '@private/core/services/item-required-data/item-required-data.service';
 import { UPLOAD_PATHS } from '@private/features/upload/upload-routing-constants';
 import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
-import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of, ReplaySubject } from 'rxjs';
 import { ItemChangeEvent } from '../../core/item-change.interface';
 import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 import { CatalogItemComponent } from './catalog-item.component';
+import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -45,14 +46,14 @@ describe('CatalogItemComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CatalogItemComponent, CustomCurrencyPipe],
+        declarations: [CatalogItemComponent, CustomCurrencyPipe, ItemRouteMockDirective],
         providers: [
           DecimalPipe,
           EventService,
           ToastService,
           ItemRequiredDataService,
-          CatalogItemTrackingEventService,
           ItemDetailRoutePipe,
+          CatalogItemTrackingEventService,
           { provide: AnalyticsService, useClass: MockAnalyticsService },
           { provide: UserService, useClass: MockedUserService },
           {
@@ -155,15 +156,18 @@ describe('CatalogItemComponent', () => {
 
     beforeEach(fakeAsync(() => {
       item = MOCK_ITEM;
-      spyOn(component, 'select');
+      spyOn(router, 'navigate').and.callThrough();
+      spyOn(catalogItemTrackingEventService, 'trackClickBumpItems').and.callThrough();
       component.featureItem(item);
     }));
 
-    it('should set selectedAction', () => {
-      expect(itemService.selectedAction).toBe('feature');
+    it('should navigate to checkout', () => {
+      expect(router.navigate).toHaveBeenCalledWith([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: item.id }]);
     });
-    it('should call select', () => {
-      expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
+
+    it('should track event', () => {
+      expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledTimes(1);
+      expect(catalogItemTrackingEventService.trackClickBumpItems).toBeCalledWith(1);
     });
   });
 
@@ -271,6 +275,20 @@ describe('CatalogItemComponent', () => {
         expect(router.navigate).toHaveBeenCalledWith([`/catalog/edit/${component.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
       });
     });
+
+    describe('and item has legacy category id', () => {
+      beforeEach(() => {
+        item = MOCK_ITEM_WITH_LECAGY_CATEGORY;
+      });
+
+      it('should navigate to reactivation view reactivateItem', () => {
+        spyOn(router, 'navigate');
+
+        component.reactivate(item);
+
+        expect(router.navigate).toHaveBeenCalledWith([`/catalog/edit/${component.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+      });
+    });
   });
 
   describe('select', () => {
@@ -315,7 +333,6 @@ describe('CatalogItemComponent', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
         spyOn(eventService, 'emit');
-        spyOn(window as any, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
@@ -335,26 +352,6 @@ describe('CatalogItemComponent', () => {
       it('should emit ITEM_SOLD event', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
       });
-
-      it('should emit facebook ITEM_SOLD event', () => {
-        const facebookEvent = {
-          value: MOCK_ITEM.salePrice,
-          currency: MOCK_ITEM.currencyCode,
-        };
-
-        expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', facebookEvent);
-      });
-    });
-  });
-
-  describe('onClickInfoElement', () => {
-    it('should open the link', () => {
-      spyOn(window, 'open');
-
-      component.openItem();
-
-      expect(window.open).toHaveBeenCalledTimes(1);
-      expect(window.open).toHaveBeenCalledWith(component.link);
     });
   });
 

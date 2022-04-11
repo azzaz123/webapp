@@ -1,0 +1,54 @@
+<tsl-banner [specifications]="bannerStyleProperties">
+  <div class="BuyBanner h-100 w-100">
+    <div class="BuyBanner__infoWrapper d-flex flex-column">
+      <div class="BuyBanner__infoElement d-flex align-items-center">
+        <div class="BuyBanner__lottieWrapper">
+          <tsl-lottie [src]="lotties[0]" [loop]="true"></tsl-lottie>
+        </div>
+        <div>
+          <span class="BuyBanner__description mr-1" i18n="@@chat_buyer_shipping_enabled_banner_starting_price_description_part_1"
+            >Shipping from</span
+          ><span ngPreserveWhitespaces> </span><span class="BuyBanner__description--colorful">{{ bannerProperties.price }}</span>
+        </div>
+      </div>
+
+      <div class="BuyBanner__infoElement d-flex align-items-center">
+        <div class="BuyBanner__lottieWrapper">
+          <tsl-lottie [src]="lotties[1]" [loop]="true"></tsl-lottie>
+        </div>
+        <div>
+          <div>
+            <span class="BuyBanner__description" i18n="@@chat_buyer_shipping_enabled_banner_refund_guarantee_description_part_1"
+              >Shipment</span
+            >
+            <span ngPreserveWhitespaces> </span>
+            <span class="BuyBanner__description--colorful" i18n="@@chat_buyer_shipping_enabled_banner_refund_guarantee_description_part_2"
+              >guarantee</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="BuyBanner__infoElement d-flex align-items-center">
+        <div class="BuyBanner__lottieWrapper">
+          <tsl-lottie [src]="lotties[2]" [loop]="true"></tsl-lottie>
+        </div>
+        <div>
+          <span class="BuyBanner__description" i18n="@@chat_buyer_shipping_enabled_banner_secure_payment_description_part_1"
+            >Payment method</span
+          >
+          <span ngPreserveWhitespaces> </span>
+          <span class="BuyBanner__description--colorful" i18n="@@chat_buyer_shipping_enabled_banner_secure_payment_description_part_2"
+            >encrypted and secure</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="BuyBanner__CTA">
+      <tsl-button (click)="handleClickCTA()" [className]="'btn-primary btn--thin'" i18n="@@chat_buyer_shipping_enabled_banner_buy_button"
+        >Buy</tsl-button
+      >
+    </div>
+  </div>
+</tsl-banner>

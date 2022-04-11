@@ -1,0 +1,55 @@
+@import '~style/common';
+
+$banner-height: 66px;
+@mixin delivery-banner-top-position($element-position) {
+  top: -$spacing-ms - $banner-height * $element-position;
+}
+
+.BuyBanner {
+  position: relative;
+  overflow: hidden;
+
+  &__infoWrapper {
+    @include delivery-banner-top-position(0);
+    position: absolute;
+    left: 0;
+    max-width: 75%;
+    animation: slide 15s infinite alternate;
+  }
+
+  &__infoElement {
+    height: $banner-height;
+  }
+
+  &__lottieWrapper {
+    @include square(48px);
+  }
+
+  &__description {
+    &--colorful {
+      color: $walla-main;
+      font-weight: $font-weight-chunky;
+    }
+  }
+
+  &__CTA {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+@keyframes slide {
+  0%,
+  33% {
+    @include delivery-banner-top-position(0);
+  }
+  34%,
+  66% {
+    @include delivery-banner-top-position(1);
+  }
+  67%,
+  100% {
+    @include delivery-banner-top-position(2);
+  }
+}

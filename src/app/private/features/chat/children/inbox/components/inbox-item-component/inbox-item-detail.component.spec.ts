@@ -10,6 +10,7 @@ import { CustomCurrencyPipe, ItemDetailRoutePipe } from '@shared/pipes';
 import { CookieService } from 'ngx-cookie';
 import { of } from 'rxjs';
 import { InboxItemDetailComponent } from './inbox-item-detail.component';
+import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
 
 describe('Component: Item', () => {
   let component: InboxItemDetailComponent;
@@ -19,7 +20,7 @@ describe('Component: Item', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InboxItemDetailComponent, CustomCurrencyPipe, ItemDetailRoutePipe],
+      declarations: [InboxItemDetailComponent, CustomCurrencyPipe, ItemDetailRoutePipe, ItemRouteMockDirective],
       providers: [
         DecimalPipe,
         {
@@ -151,23 +152,6 @@ describe('Component: Item', () => {
       component.toggleReserve(event);
 
       expect(component.item.reserved).toBe(true);
-    });
-  });
-
-  describe('trackSoldEvent', () => {
-    beforeEach(() => {
-      component.item = MOCKED_INBOX_CONVERSATIONS[0].item;
-    });
-
-    it('should emit ITEM_SOLD event', () => {
-      spyOn(window as any, 'fbq');
-
-      component.trackSoldEvent(MOCKED_INBOX_CONVERSATIONS[0].item);
-
-      expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', {
-        value: MOCKED_INBOX_CONVERSATIONS[0].item.price.amount,
-        currency: MOCKED_INBOX_CONVERSATIONS[0].item.price.currency,
-      });
     });
   });
 });

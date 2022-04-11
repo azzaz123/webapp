@@ -1,0 +1,3 @@
+export enum WINDOW_MESSAGE_TYPE {
+  PROCESS_COMPLETE,
+}

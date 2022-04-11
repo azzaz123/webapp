@@ -4,15 +4,13 @@ import { Router } from '@angular/router';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { HistoricElement } from '@shared/historic-list/interfaces/historic-element.interface';
 import { HistoricList } from '@shared/historic-list/interfaces/historic-list.interface';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { PATH_TO_ACCEPT_SCREEN, PRIVATE_PATHS } from '@private/private-routing-constants';
 import { SharedErrorActionService } from '@shared/error-action';
 import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Request } from '@api/core/model/delivery';
-import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeliveryPendingTransaction } from '@api/core/model/delivery/transaction/delivery-pending-transaction.interface';
 import { DELIVERY_ONGOING_STATUS } from '@api/core/model/delivery/transaction/delivery-status/delivery-ongoing-status.enum';
 
@@ -29,8 +27,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   constructor(
     private streamlineOngoingUIService: StreamlineOngoingUIService,
     private router: Router,
-    private errorActionService: SharedErrorActionService,
-    private modalService: NgbModal
+    private errorActionService: SharedErrorActionService
   ) {}
 
   public get historicList$(): Observable<HistoricList> {
@@ -47,7 +44,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.streamlineOngoingUIService.getItems(this.isSellerPath);
+    this.streamlineOngoingUIService.getItems(this.isSellsPage);
   }
 
   ngOnDestroy(): void {
@@ -57,34 +54,36 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
   public onItemClick(historicElement: HistoricElement<DeliveryPendingTransaction | Request>): void {
     const isPendingTransaction: boolean = this.isPendingTransaction(historicElement);
     const isRequestAndSeller: boolean = !isPendingTransaction && historicElement.payload.isCurrentUserTheSeller;
+    const requestId: string = historicElement.id;
 
     if (isRequestAndSeller) {
-      this.openAcceptScreenAwarenessModal();
-      return;
+      this.redirectToAcceptScreen(requestId);
+    } else {
+      this.redirectToTTS(requestId);
     }
-
-    this.redirectToTTS(historicElement.id);
   }
 
   private redirectToTTS(requestId: string): void {
     const pathToTransactionTracking = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
-    this.router.navigate([pathToTransactionTracking]);
+    this.redirectToPage(pathToTransactionTracking);
   }
 
-  private openAcceptScreenAwarenessModal(): void {
-    this.modalService.open(AcceptScreenAwarenessModalComponent).result.then(
-      () => {},
-      () => {}
-    );
+  private redirectToAcceptScreen(requestId: string): void {
+    const pathToAcceptScreenWithRequestId: string = `${PATH_TO_ACCEPT_SCREEN}/${requestId}`;
+    this.redirectToPage(pathToAcceptScreenWithRequestId);
+  }
+
+  private redirectToPage(page: string): void {
+    this.router.navigate([page]);
   }
 
   private isPendingTransaction(
     input: HistoricElement<DeliveryPendingTransaction | Request>
   ): input is HistoricElement<DeliveryPendingTransaction> {
-    return !!(<HistoricElement<DeliveryPendingTransaction>>input).payload.status;
+    return (<HistoricElement<DeliveryPendingTransaction>>input).payload.status.name !== DELIVERY_ONGOING_STATUS.REQUEST_CREATED;
   }
 
-  private get isSellerPath(): boolean {
+  private get isSellsPage(): boolean {
     return this.router.url.includes(`/${DELIVERY_PATHS.SELLS}`);
   }
 }

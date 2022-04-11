@@ -168,6 +168,9 @@
         float: right;
       }
     }
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .item-details {

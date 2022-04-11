@@ -1,4 +1,3 @@
-import { APP_LOCALE } from '@configs/subdomains.config';
 import { Environment } from './environment.interface';
 
 export const getDockNum = (): string => {
@@ -24,8 +23,8 @@ export const environment: Environment = {
   appDomain: `.${docknum}.devel.wallapop.com/`,
   protocol: 'https://',
   baseUrl: `https://apigw.${docknum}.devel.wallapop.com/`,
-  xmppDomain: `mongooseimprotool-${docknum}.wallapop.com`,
-  wsUrl: `wss://mongooseimprotool-${docknum}.wallapop.com:5282/ws-xmpp`,
+  xmppDomain: `mongooseimprotool-${docknum}.devel.wallapop.com`,
+  wsUrl: `wss://mongooseimprotool-${docknum}.devel.wallapop.com:5282/ws-xmpp`,
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
   cookieSuffix: `${docknum}`,
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents',
@@ -35,6 +34,7 @@ export const environment: Environment = {
   didomiKey: '56d12b9e-69db-4641-a15a-9c19f73aed7d',
   threatMetrixOrgId: '6ldgf22r',
   threatMetrixProfilingDomain: 'clear.wallapop.com',
+  optimizelySdkKey: '62mynM5SVDrhD5aVV1xNz',
 };
 
 export const isSWEnabled = false;

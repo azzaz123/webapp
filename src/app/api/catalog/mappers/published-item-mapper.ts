@@ -1,16 +1,16 @@
-import { PublishedItem } from '@api/catalog/dtos';
+import { PublishedItemDto } from '@api/catalog/dtos';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
 import { mapImageDtosToImages } from '@api/core/mappers';
 import { formatDescription } from '@api/catalog/mappers/utils';
 import { ItemType } from '@api/core/model/item';
 import { CATEGORY_IDS } from '@core/category/category-ids';
 
-export function mapPublishedItemsToItemCards(publishedItems: PublishedItem[], userId: string, favouriteIds: string[]): ItemCard[] {
-  return publishedItems.map((item) => mapPublishedItemToItemCard(item, userId, favouriteIds));
+export function mapPublishedItemsToItemCards(publishedItems: PublishedItemDto[], userId: string): ItemCard[] {
+  return publishedItems.map((item) => mapPublishedItemToItemCard(item, userId));
 }
 
-function mapPublishedItemToItemCard(item: PublishedItem, userId: string, favoriteIds: string[]): ItemCard {
-  const { id, category_id, title, description, price, images = [], type_attributes = {}, slug, reserved, bump } = item;
+function mapPublishedItemToItemCard(item: PublishedItemDto, userId: string): ItemCard {
+  const { id, category_id, title, description, price, images = [], type_attributes = {}, slug, reserved, bump, favorited } = item;
 
   return {
     id,
@@ -29,7 +29,7 @@ function mapPublishedItemToItemCard(item: PublishedItem, userId: string, favorit
       banned: false,
       reserved: !!reserved?.flag,
       bumped: !!bump,
-      favorite: favoriteIds.includes(id),
+      favorite: !!favorited?.flag,
     },
   };
 }

@@ -7,6 +7,7 @@ import { LATEST_ITEM_COUNT, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
 import { MOCK_USER, MOCK_USER_STATS, USER_ID, USER_INFO_RESPONSE } from '@fixtures/user.fixtures.spec';
 import { of } from 'rxjs';
 import { InboxItemForSellComponent } from './inbox-item-for-sell.component';
+import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
 
 describe('InboxItemForSellComponent', () => {
   let component: InboxItemForSellComponent;
@@ -18,7 +19,7 @@ describe('InboxItemForSellComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [],
-        declarations: [InboxItemForSellComponent],
+        declarations: [InboxItemForSellComponent, ItemRouteMockDirective],
         providers: [
           {
             provide: ItemService,

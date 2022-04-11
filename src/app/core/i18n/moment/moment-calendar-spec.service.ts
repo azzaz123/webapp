@@ -1,5 +1,5 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 import { CalendarSpec } from 'moment';
 import { allCalendarConfigs } from './constants';
 import { defaultCalendarSpec as defaultEnglishCalendarSpec } from './constants/calendar-specs.en';

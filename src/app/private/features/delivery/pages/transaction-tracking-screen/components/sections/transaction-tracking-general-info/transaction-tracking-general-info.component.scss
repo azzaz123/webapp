@@ -7,8 +7,6 @@
 
   &__lottieContainer {
     border-radius: $border-radius * 2;
-    width: 224px;
-    height: 112px;
   }
 
   &__title {
@@ -18,6 +16,12 @@
 
   &__text {
     color: $blue-grey-1;
+  }
+
+  &__action {
+    &:not(:last-child) {
+      margin-bottom: $spacer * 0.75;
+    }
   }
 
   &__actionButton {

@@ -21,6 +21,7 @@ import { Observable } from 'rxjs';
 import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -29,10 +30,11 @@ import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent implements OnInit {
-  public readonly PRIVATE_PATHS = PRIVATE_PATHS;
-  public user: User;
   @Input() isProducts: boolean;
   @Input() isProfile: boolean;
+
+  public readonly PRIVATE_PATHS = PRIVATE_PATHS;
+  public user: User;
   public isProfessional: boolean;
   public readonly PERMISSIONS = PERMISSIONS;
   public readonly PRO_PATHS = PRO_PATHS;
@@ -45,6 +47,7 @@ export class SidebarComponent implements OnInit {
     private sidebarService: SidebarService,
     private userService: UserService,
     public unreadChatMessagesService: UnreadChatMessagesService,
+    public notificationApiService: NotificationApiService,
     private analyticsService: AnalyticsService,
     private deviceService: DeviceService,
     private customerHelpService: CustomerHelpService
@@ -78,6 +81,7 @@ export class SidebarComponent implements OnInit {
           screenId: SCREEN_IDS.MyCatalog,
           numberOfItems: userStats.counters.publish,
           proSubscriptionBanner: this.userService.suggestPro(),
+          isPro: this.userService.isPro,
         },
       };
       this.analyticsService.trackPageView(event);

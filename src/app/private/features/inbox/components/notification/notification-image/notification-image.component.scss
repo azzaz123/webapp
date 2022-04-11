@@ -1,0 +1,37 @@
+@import 'src/style/common';
+
+.NotificationImage {
+  width: 75px;
+  height: 75px;
+  margin-right: $spacing-m;
+  position: relative;
+  background-position: center;
+  background-size: cover;
+
+  &--rounded {
+    border-radius: $border-radius;
+  }
+  &--circle {
+    border-radius: 50%;
+  }
+
+  &__badge {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border-radius: 50%;
+    background-color: #fff;
+
+    tsl-svg-icon {
+      width: 15px;
+      height: 15px;
+
+      &.sold {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}

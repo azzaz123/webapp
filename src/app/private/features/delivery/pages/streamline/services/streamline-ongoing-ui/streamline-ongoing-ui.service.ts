@@ -35,7 +35,7 @@ export class StreamlineOngoingUIService {
     this._loading$.next(value);
   }
 
-  public getItems(isCurrentUserTheSeller: boolean): void {
+  public getItems(isSellsPage: boolean): void {
     const canNotLoadMoreItems = this.loading;
     if (canNotLoadMoreItems) {
       return;
@@ -43,7 +43,7 @@ export class StreamlineOngoingUIService {
 
     this.loading = true;
 
-    const request = isCurrentUserTheSeller
+    const request = isSellsPage
       ? this.deliveriesOngoingService.pendingTransactionsAndRequestsAsSeller
       : this.deliveriesOngoingService.pendingTransactionsAndRequestsAsBuyer;
     request

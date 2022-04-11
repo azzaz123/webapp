@@ -4,18 +4,35 @@
   }">
 
   <div class="SubscriptionsSlotItem__icon mr-3 d-sm-flex justify-content-center align-items-center d-none">
-    <img src="/assets/images/subscriptions/types/{{subscriptionSlot.subscription.category_icon}}.svg">
+    <img src="/assets/images/subscriptions/types/{{subscriptionSlot.subscription.category_icon}}.svg" alt="subscription icon">
   </div>
 
   <div class="SubscriptionsSlotItem__info">
     <div class="SubscriptionsSlotItem__title">
       <span i18n="@@web_manage_catalog_subscription">Manage {{subscriptionSlot.subscription.category_name}}</span>
     </div>
-    <div class="SubscriptionsSlotItem__description">
-      <span i18n="@@web_subscriptions_slot_item_publish_more_without_category_name">You can list
-        <b>{{subscriptionSlot.available}}</b> more
-      </span>
+    <div *ngIf="subscriptionSlot.limit; else noLimitText" class="SubscriptionsSlotItem__description">
+      <b>{{subscriptionSlot.limit - subscriptionSlot.available }}/{{subscriptionSlot.limit}}</b><span ngPreserveWhitespaces> </span>
+      <span i18n="@@pro_catalog_manager_active_items_counter">active items</span>
     </div>
+    <ng-template #noLimitText>
+      <div class="SubscriptionsSlotItem__description">
+        <span i18n="@@pro_catalog_manager_unlimited_active_items_label">Unlimited active items</span>
+      </div>
+    </ng-template>
+    <ng-container *ngIf="subscriptionSlot.bumpBalance?.length">
+    <div *ngIf="subscriptionSlot.bumpBalance[0] as zoneBump" class="SubscriptionsSlotItem__description">
+      <div>
+        <b>{{zoneBump.used}}/{{zoneBump.total}}</b><span ngPreserveWhitespaces> </span>
+        <span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_bumps_applied_text_no_placeholders">items highlighted</span>
+      </div>
+      <div *ngIf="zoneBump.extra">
+        <b><span i18n="@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_1_text_web_specific"
+        >Extra!</span></b><span ngPreserveWhitespaces> </span>
+        <span>{{ extraBumpsText(zoneBump.extra) }}</span>
+      </div>
+    </div>
+    </ng-container>
   </div>
 
   <div class="SubscriptionsSlotItem__cancel" *ngIf="isSelected" (click)="onClick(undefined, $event)">

@@ -1,0 +1,14 @@
+@import '~style/common';
+
+.PayviewDeliveryHeader {
+  &__where {
+    color: $blue-grey-1;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+  }
+  &__help {
+    color: $blue-grey-2;
+    font-size: $font-size-xs;
+    text-decoration-line: underline;
+  }
+}

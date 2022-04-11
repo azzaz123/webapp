@@ -36,7 +36,6 @@ export const MOCK_ITEM_FLAGS_INACTIVE: ItemFlags = {
 export const MOCK_ITEM_VISIBILITY_FLAGS: ItemVisibilityFlags = {
   bumped: false,
   highlighted: false,
-  urgent: false,
   country_bumped: false,
   boosted: false,
 };

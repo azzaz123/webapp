@@ -1,0 +1,37 @@
+<div class="h-100">
+  <div [formGroup]="searchLocationForm" class="container SearchBox py-2 px-3 position-relative w-100">
+    <input
+      class="SearchBox__input position-relative overflow-hidden"
+      formControlName="searchLocation"
+      type="text"
+      i18n-placeholder="@@collection_point_map_all_users_all_all_searchbox_placeholder"
+      placeholder="Search by address..."
+      [ngbTypeahead]="search"
+      (selectItem)="selectSuggestion($event.item)"
+      [resultTemplate]="locationTemplate"
+    />
+    <tsl-svg-icon class="SearchBox__glass position-absolute" src="/assets/icons/glass_icon.svg"></tsl-svg-icon>
+    <tsl-svg-icon
+      *ngIf="searchLocationForm.controls.searchLocation.value"
+      (click)="resetSearchQuery()"
+      class="SearchBox__reset position-absolute"
+      src="/assets/icons/top-bar/search-box-reset.svg"
+    >
+    </tsl-svg-icon>
+
+    <ng-template #locationTemplate let-location="result">
+      <div class="SearchBox__suggestion d-flex flex-column justify-content-center text-truncate">
+        <span>{{ location }}</span>
+      </div>
+    </ng-template>
+  </div>
+  <div class="MovableMap">
+    <tsl-movable-map
+      [markers]="mapMarkers"
+      [centerCoordinates]="mapCenterCoordinates"
+      (tapMap)="onTapMap()"
+      (tapMarker)="onTapMarker($event)"
+      (mapViewChangeEnd)="onMapViewChangeEnd($event)"
+    ></tsl-movable-map>
+  </div>
+</div>

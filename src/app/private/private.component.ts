@@ -16,7 +16,7 @@ import { StripeService } from '@core/stripe/stripe.service';
 import { User } from '@core/user/user';
 import { UserService } from '@core/user/user.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 @Component({
   selector: 'tsl-private',
@@ -86,7 +86,6 @@ export class PrivateComponent implements OnInit {
   }
 
   private initializeRouterEventListeners(): void {
-    this.updateUrlAndSendAnalytics();
     this.setTitle();
     this.setBodyClass();
   }
@@ -111,24 +110,6 @@ export class PrivateComponent implements OnInit {
     }
 
     return window.location.reload();
-  }
-
-  private updateUrlAndSendAnalytics(): void {
-    this.router.events
-      .pipe(
-        distinctUntilChanged((previous: any, current: any) => {
-          if (current instanceof NavigationEnd) {
-            this.previousUrl = previous.url;
-            this.currentUrl = current.url;
-            return previous.url === current.url;
-          }
-          return true;
-        })
-      )
-      .subscribe((x: any) => {
-        ga('set', 'page', x.url);
-        ga('send', 'pageview');
-      });
   }
 
   private updateSessionCookie(): void {

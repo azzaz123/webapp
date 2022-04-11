@@ -10,14 +10,16 @@ import { Subject } from 'rxjs';
   styleUrls: ['./items-stats.component.scss'],
 })
 export class ItemsStatsComponent implements OnInit {
-  public items: Item[] = [];
-  private init = 0;
-  public end: boolean;
-  public opens: boolean[] = [];
-  public prices: CheapestProducts;
   @Input() paginate: Subject<boolean>;
   @Output() stopPagination = new EventEmitter<boolean>();
   @Output() isLoading = new EventEmitter<boolean>();
+
+  public items: Item[] = [];
+  public end: boolean;
+  public opens: boolean[] = [];
+  public prices: CheapestProducts;
+
+  private since: string = null;
 
   constructor(private itemService: ItemService) {}
 
@@ -28,17 +30,22 @@ export class ItemsStatsComponent implements OnInit {
     });
   }
 
+  public onOpen(index: number) {
+    this.opens = this.items.map((_) => false);
+    this.opens[index] = true;
+  }
+
   private getItems(append?: boolean) {
     this.isLoading.next(true);
     if (!append) {
       this.items = [];
     }
-    this.itemService.mine(this.init, 'published').subscribe((itemsData: ItemsData) => {
+    this.itemService.mine(this.since, 'published').subscribe((itemsData: ItemsData) => {
       const items = itemsData.data;
-      this.init = itemsData.init;
+      this.since = itemsData.since;
       this.items = append ? this.items.concat(items) : items;
       this.isLoading.next(false);
-      this.end = !this.init;
+      this.end = !this.since;
       if (this.end) {
         this.stopPagination.next(true);
       }
@@ -46,11 +53,6 @@ export class ItemsStatsComponent implements OnInit {
         this.getProductsFromItems();
       }
     });
-  }
-
-  public onOpen(index: number) {
-    this.opens = this.items.map((_) => false);
-    this.opens[index] = true;
   }
 
   private getProductsFromItems() {

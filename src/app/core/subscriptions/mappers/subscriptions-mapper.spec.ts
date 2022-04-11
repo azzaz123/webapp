@@ -1,6 +1,11 @@
-import { mapSubscriptions, subscriptionMapper } from './subscriptions-mapper';
-import { MOCK_RESPONSE_V3_SUBSCRIPTIONS, MOCK_V3_MAPPED_SUBSCRIPTIONS } from '@fixtures/subscriptions.fixtures.spec';
-import { SUBSCRIPTION_CATEGORY_TYPES } from '../subscriptions.interface';
+import { mapCanEditSubscription, mapSubscriptions, subscriptionMapper } from './subscriptions-mapper';
+import {
+  CAN_SUBSCRIPTION_BE_EDITED_OK,
+  CAN_SUBSCRIPTION_BE_EDITED_OK_DTO,
+  MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS,
+  MOCK_RESPONSE_V3_SUBSCRIPTIONS,
+} from '@fixtures/subscriptions.fixtures.spec';
+import { BUMP_NAMES } from '../subscriptions.interface';
 
 describe('SubscriptionsMapper', () => {
   describe('getSubscriptions', () => {
@@ -53,6 +58,48 @@ describe('SubscriptionsMapper', () => {
 
         expect(subscriptionsMapped[1].selected_tier).toBeFalsy();
       });
+    });
+  });
+
+  describe('bumps', () => {
+    describe('and has more than one bump type', () => {
+      it('should map bumps', () => {
+        const subscriptionsMapped = mapSubscriptions(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS);
+
+        subscriptionsMapped[0].tiers.forEach((tier) => {
+          const expected = tier.perks.filter((bumps) => Object.values(BUMP_NAMES).includes(bumps.name as BUMP_NAMES));
+          expect(tier.bumps).toEqual(expected);
+          expect(tier.bumps.length).toEqual(1);
+        });
+      });
+    });
+    describe('and has multiple bump type', () => {
+      it('should map bumps', () => {
+        const subscriptionsMapped = mapSubscriptions(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS);
+
+        subscriptionsMapped[1].tiers.forEach((tier) => {
+          const expected = tier.perks.filter((bumps) => Object.values(BUMP_NAMES).includes(bumps.name as BUMP_NAMES));
+          expect(tier.bumps).toEqual(expected);
+          expect(tier.bumps.length).toEqual(2);
+        });
+      });
+    });
+    describe('and has not bump type', () => {
+      it('should not map bumps', () => {
+        const subscriptionsMapped = mapSubscriptions(MOCK_RESPONSE_SUBSCRIPTION_WITH_BUMPS);
+
+        subscriptionsMapped[2].tiers.forEach((tier) => {
+          expect(tier.bumps).toEqual([]);
+        });
+      });
+    });
+  });
+
+  describe('Can edit subscription', () => {
+    it('should map response', () => {
+      const response = mapCanEditSubscription(CAN_SUBSCRIPTION_BE_EDITED_OK_DTO);
+
+      expect(response).toEqual(CAN_SUBSCRIPTION_BE_EDITED_OK);
     });
   });
 });

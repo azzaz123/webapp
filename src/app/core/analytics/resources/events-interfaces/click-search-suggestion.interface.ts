@@ -21,4 +21,8 @@ export interface ClickSearchSuggestion {
    * Identifier of the screen in which the user has clicked on the keyboard search button
    */
   screenId: 111;
+  /**
+   * Position of the suggestion the user clicked on
+   */
+  position: number;
 }

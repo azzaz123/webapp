@@ -5,6 +5,8 @@ $margin: $spacer * 0.5;
 .RecommendedItems {
   background-color: $white;
   border-radius: $border-radius;
+  padding: $spacing-ml;
+  margin-top: $spacing-ml;
 
   &__title {
     color: $blue-grey-3;

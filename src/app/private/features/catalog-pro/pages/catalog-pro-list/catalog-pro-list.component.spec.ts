@@ -61,7 +61,6 @@ describe('CatalogProListComponent', () => {
               deselectItems() {},
               selectItem() {},
               purchaseProducts() {},
-              getUrgentProducts() {},
               get() {
                 return of(MOCK_ITEM_V3);
               },

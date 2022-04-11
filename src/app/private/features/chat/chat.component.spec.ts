@@ -21,11 +21,13 @@ import { InboxConversationService } from './core/inbox/inbox-conversation.servic
 import { InboxService } from './core/inbox/inbox.service';
 import { InboxConversation, MessageStatus, PhoneMethod } from './core/model';
 import { SendPhoneComponent } from './modals';
-import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
+import { PersonalDataInformationModalComponent } from './modals/personal-data-information-modal/personal-data-information-modal.component';
 import { ItemDetailRoutePipe } from '@shared/pipes';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { PUBLIC_PATHS } from '@public/public-routing-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 class MockUserService {
   public isProfessional() {
@@ -83,6 +85,7 @@ describe('Component: ChatComponent with ItemId', () => {
           useValue: MOCK_SITE_URL,
         },
         NgbModal,
+        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     });
@@ -284,7 +287,7 @@ describe('Component: ChatComponent with ItemId', () => {
 
         component.ngOnInit();
 
-        expect(modalService.open).toHaveBeenCalledWith(PersonalDataInformationModal, expectedModalOptions);
+        expect(modalService.open).toHaveBeenCalledWith(PersonalDataInformationModalComponent, expectedModalOptions);
       });
 
       it('should not open a modal if the seller is not YaEncontre', () => {

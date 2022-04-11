@@ -8,6 +8,9 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { of } from 'rxjs';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
+import { ButtonModule } from '@shared/button/button.module';
+import { By } from '@angular/platform-browser';
+import { ButtonComponent } from '@shared/button/button.component';
 
 describe('StripeCardElementComponent', () => {
   let component: StripeCardElementComponent;
@@ -19,7 +22,7 @@ describe('StripeCardElementComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [StripeCardElementComponent],
+        declarations: [StripeCardElementComponent, ButtonComponent],
         imports: [ReactiveFormsModule, FormsModule],
         providers: [
           I18nService,
@@ -35,6 +38,9 @@ describe('StripeCardElementComponent', () => {
               },
               getSetupIntent() {
                 return of('abc');
+              },
+              createToken() {
+                return Promise.resolve({ token: { id: '123' } });
               },
               lib: {
                 elements: () => {
@@ -178,6 +184,65 @@ describe('StripeCardElementComponent', () => {
       const stripeCardInputError: HTMLElement = fixture.elementRef.nativeElement.querySelector(stripeCardInputErrorSelector);
       expect(stripeCardError).toBeFalsy();
       expect(stripeCardInputError).toBeFalsy();
+    });
+  });
+  describe('Bump button', () => {
+    beforeEach(() => {
+      component.type = 'bump';
+      component.paymentError = null;
+      fixture.detectChanges();
+    });
+    it('should show button', () => {
+      const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+      expect(button.textContent).toEqual(
+        $localize`:@@highlight_item_view_pro_user_purchase_summary_highlight_button_web_specific:Highlight`
+      );
+    });
+    it('should show primary button', () => {
+      const button: HTMLElement = fixture.debugElement.query(By.css('button')).nativeElement;
+
+      expect(button.className).toEqual('btn btn--big btn-primary btn-primary--bold mt-3');
+    });
+    describe('And click button', () => {
+      describe('and is loading', () => {
+        beforeEach(() => {
+          component.loading = true;
+          component.type = 'bump';
+
+          fixture.detectChanges();
+        });
+        it('should be disabled', () => {
+          spyOn(component, 'onSubmit').and.callThrough();
+          const buttonDisabled = fixture.debugElement.query(By.css('button[disabled]'));
+
+          expect(buttonDisabled).toBeTruthy();
+        });
+      });
+      describe('and is not loading', () => {
+        beforeEach(() => {
+          component.loading = false;
+          component.type = 'bump';
+          fixture.detectChanges();
+        });
+        it('should emit click', fakeAsync(() => {
+          spyOn(component.stripeCardToken, 'emit').and.callThrough();
+          const button: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
+
+          button.click();
+          tick();
+          fixture.detectChanges();
+
+          expect(component.stripeCardToken.emit).toHaveBeenCalledTimes(1);
+          expect(component.stripeCardToken.emit).toHaveBeenCalledWith('123');
+        }));
+        it('should not be disabled', () => {
+          spyOn(component, 'onSubmit').and.callThrough();
+          const buttonDisabled = fixture.debugElement.query(By.css('button[disabled]'));
+
+          expect(buttonDisabled).toBeFalsy();
+        });
+      });
     });
   });
 });

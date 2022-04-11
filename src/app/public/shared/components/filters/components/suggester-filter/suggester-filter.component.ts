@@ -13,6 +13,7 @@ import { SuggesterFilterConfig } from './interfaces/suggester-filter-config.inte
 import { BehaviorSubject, Subject, Observable, Subscription, ReplaySubject } from 'rxjs';
 import { FilterParameter } from '@public/shared/components/filters/interfaces/filter-parameter.interface';
 import { FILTER_QUERY_PARAM_KEY } from '@public/shared/components/filters/enums/filter-query-param-key.enum';
+import { PaginatedList } from '@api/core/model';
 
 // TODO: Tech debt. Need to set to onpush
 @Component({
@@ -83,13 +84,21 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
     if (this.config.hasOptionsOnInit || !this.config.isLabelInValue) {
       this.getOptions()
         .pipe(take(1))
-        .subscribe((options) => {
-          this.optionsSubject.next(options);
+        .subscribe(({ list }) => {
+          this.optionsSubject.next(list);
           this.initializeFilter();
         });
     } else {
       this.initializeFilter();
     }
+  }
+
+  public handleReload(): void {
+    this.getOptions()
+      .pipe(take(1))
+      .subscribe(({ list }) => {
+        this.optionsSubject.next(list);
+      });
   }
 
   private initializeFilter(): void {
@@ -189,15 +198,15 @@ export class SuggesterFilterComponent extends AbstractSelectFilter<SuggesterFilt
   private getSuggestions(query: string): void {
     if (this.config.hasOptionsOnInit || query) {
       this.optionService
-        .getOptions(this.config.id, { text: query })
+        .getOptions(this.config.id, { text: query || null })
         .pipe(take(1))
-        .subscribe((options) => {
-          this.optionsSubject.next(options);
+        .subscribe(({ list }) => {
+          this.optionsSubject.next(list);
         });
     }
   }
 
-  private getOptions(): Observable<FilterOption[]> {
+  private getOptions(): Observable<PaginatedList<FilterOption>> {
     return this.optionService.getOptions(this.config.id);
   }
 }

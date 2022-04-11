@@ -12,6 +12,8 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { MOCK_SUBSCRIPTION_SLOT_CARS, MOCK_SUBSCRIPTION_SLOT_REAL_ESTATE } from '@fixtures/subscription-slots.fixtures.spec';
+import { By } from '@angular/platform-browser';
+import { MOCK_BUMPS_PACKAGE_BALANCE_MAPPED } from '@fixtures/bump-package.fixtures.spec';
 
 describe('SubscriptionsSlotItemComponent', () => {
   let component: SubscriptionsSlotItemComponent;
@@ -35,7 +37,6 @@ describe('SubscriptionsSlotItemComponent', () => {
     component.subscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
     component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
     analyticsService = TestBed.inject(AnalyticsService);
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -56,7 +57,9 @@ describe('SubscriptionsSlotItemComponent', () => {
   });
 
   describe('onClick', () => {
-    const event = { stopPropagation: () => {} };
+    const event = {
+      stopPropagation: () => {},
+    };
 
     beforeEach(() => {
       spyOn(component.selected, 'emit').and.callThrough();
@@ -112,6 +115,93 @@ describe('SubscriptionsSlotItemComponent', () => {
       component.onClick(MOCK_SUBSCRIPTION_SLOT_CARS, event);
 
       expect(analyticsService.trackEvent).not.toHaveBeenCalled();
+    });
+
+    describe('limit', () => {
+      describe('and has limit', () => {
+        it('should show counter', () => {
+          fixture.detectChanges();
+          const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+
+          expect(descriptions[0].nativeElement.textContent).toContain(
+            `${component.subscriptionSlot.limit - component.subscriptionSlot.available}/${component.subscriptionSlot.limit}`
+          );
+        });
+      });
+      describe('and has not limit', () => {
+        it('should show unlimited text', () => {
+          component.subscriptionSlot.limit = null;
+          fixture.detectChanges();
+
+          const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+
+          expect(descriptions[0].nativeElement.textContent).toEqual(
+            $localize`:@@pro_catalog_manager_unlimited_active_items_label:Unlimited active items`
+          );
+        });
+      });
+    });
+
+    describe('available bumps', () => {
+      describe('and has bumps', () => {
+        const expectedCounter = MOCK_BUMPS_PACKAGE_BALANCE_MAPPED[0].balance;
+
+        beforeEach(() => {
+          component.subscriptionSlot.bumpBalance = expectedCounter;
+        });
+        it('should show counter', () => {
+          fixture.detectChanges();
+          const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+
+          expect(descriptions[1].nativeElement.textContent).toContain(`${expectedCounter[0].used}/${expectedCounter[0].total}`);
+        });
+
+        describe('extra bumps', () => {
+          describe('and has not extra bumps', () => {
+            it('should not show extra bumps', () => {
+              const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+
+              fixture.detectChanges();
+
+              expect(descriptions[1]).toBeFalsy();
+            });
+          });
+          describe('and has extra bumps', () => {
+            describe('and has a single extra bump', () => {
+              const expectedExtraBump = 1;
+              beforeEach(() => {
+                component.subscriptionSlot.bumpBalance[0].extra = expectedExtraBump;
+                fixture.detectChanges();
+              });
+              it('should show extra bumps', () => {
+                const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+                expect(descriptions[1].nativeElement.textContent).toContain(expectedExtraBump);
+              });
+            });
+            describe('and has a multiple extra bumps', () => {
+              const expectedExtraBump = 5;
+              beforeEach(() => {
+                component.subscriptionSlot.bumpBalance[0].extra = expectedExtraBump;
+                fixture.detectChanges();
+              });
+              it('should show extra bumps', () => {
+                const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+                expect(descriptions[1].nativeElement.textContent).toContain(expectedExtraBump);
+              });
+            });
+          });
+        });
+      });
+      describe('and has not bumps', () => {
+        it('should not show counter', () => {
+          component.subscriptionSlot.bumpBalance = [];
+
+          fixture.detectChanges();
+          const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+
+          expect(descriptions[1]).toBeFalsy();
+        });
+      });
     });
   });
 });

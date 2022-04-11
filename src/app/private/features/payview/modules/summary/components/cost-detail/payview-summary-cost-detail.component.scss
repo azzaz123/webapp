@@ -1,0 +1,82 @@
+@use 'sass:math';
+@import '~style/common';
+
+$border-radius-10: math.div(10px, 16px) * $spacer;
+$spacing-1: math.div(1px, 16px) * $spacer;
+$spacing-10: math.div(10px, 16px) * $spacer;
+$spacing-14: math.div(14px, 16px) * $spacer;
+$spacing-28: math.div(28px, 16px) * $spacer;
+
+.PayviewSummaryCostDetail {
+  padding-top: $spacing-ml;
+
+  &__square {
+    background: $white;
+    border-radius: $border-radius-10;
+    box-shadow: 0px 2px 6px rgba(37, 50, 56, 0.15);
+    padding: $spacing-ml $spacing-ms;
+  }
+
+  &__details {
+    border-bottom: 1px solid $blue-grey-5;
+    padding-bottom: $spacing-28;
+  }
+
+  &__product {
+    font-size: $spacing-ml;
+    font-weight: $font-weight-chunky;
+  }
+
+  &__insurance,
+  &__shipping {
+    font-size: $spacing-14;
+  }
+
+  &__insurance {
+    margin-top: $spacing-ml;
+  }
+
+  &__shipping {
+    margin-top: $spacing-ms;
+  }
+
+  &__insuranceBadge,
+  &__shippingBadge {
+    background-color: $magenta-main;
+    border-radius: 21px;
+    color: $white;
+    font-size: $font-size-s;
+    font-weight: $font-weight-chunky;
+    line-height: $font-size-base;
+    margin-left: $spacing-xs;
+    padding: $spacing-1 $spacing-10;
+  }
+
+  &__insuranceDiscount,
+  &__shippingDiscount {
+    color: $magenta-main;
+    text-decoration-line: line-through;
+  }
+  &__total {
+    margin-top: $spacing-ml;
+  }
+
+  &__totalTitle,
+  &__totalCost {
+    font-weight: $font-weight-chunky;
+  }
+
+  &__totalTitle {
+    font-size: $spacing-m;
+  }
+
+  &__totalCost {
+    font-size: $font-size-xl;
+  }
+
+  &__text {
+    &--gray {
+      color: $blue-grey-2;
+    }
+  }
+}

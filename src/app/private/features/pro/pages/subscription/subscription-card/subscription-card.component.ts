@@ -42,17 +42,21 @@ export class SubscriptionCardComponent {
 
   get subscriptionBodyText(): string {
     return this.subscription.selected_tier.limit
-      ? this.getTextWithLimit(this.subscription.selected_tier.limit)
-      : $localize`:@@web_profile_pages_subscription_586:List without limits`;
+      ? $localize`:@@pro_subscription_purchase_subscription_details_list_tier_text:Manage up to ${this.subscription.selected_tier.limit}:INTERPOLATION: items`
+      : $localize`:@@pro_subscription_purchase_subscription_details_list_unlimited_tier_text:Manage unlimited active item`;
   }
 
-  private getTextWithLimit(limit: number): string {
-    return this.subscription.category_id === CATEGORY_SUBSCRIPTIONS_IDS.REAL_ESTATE
-      ? $localize`:@@web_profile_pages_subscription_332:List up to ${limit} real estate`
-      : $localize`:@@web_profile_pages_subscription_325:List up to ${limit} items`;
+  public extraBumpsText(quantity: number): string {
+    return quantity === 1
+      ? $localize`:@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.one:Highlight ${quantity}:INTERPOLATION: extra item`
+      : $localize`:@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.other:Highlight ${quantity}:INTERPOLATION: extra items`;
   }
 
   get iconSrc(): string {
     return `/assets/images/subscriptions/types/${this.subscription.category_icon}.svg`;
+  }
+
+  get hasBumpsAvailable(): boolean {
+    return !!this.subscription.tiers.find((tier) => tier.bumps.length);
   }
 }

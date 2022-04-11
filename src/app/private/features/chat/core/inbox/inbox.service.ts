@@ -16,6 +16,8 @@ import { InboxConversationService } from './inbox-conversation.service';
 @Injectable()
 export class InboxService {
   public static readonly PAGE_SIZE = 30;
+  public errorRetrievingInbox = false;
+  public errorRetrievingArchived = false;
 
   private inboxReady = false;
   private archivedInboxReady = false;
@@ -23,9 +25,6 @@ export class InboxService {
   private selfId: string;
   private nextPageToken: string = null;
   private nextArchivedPageToken: string = null;
-
-  public errorRetrievingInbox = false;
-  public errorRetrievingArchived = false;
 
   constructor(
     private http: HttpClient,

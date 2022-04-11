@@ -1,4 +1,4 @@
-import { HTTP_PROTOCOL } from 'configs/protocol.config';
+import { HTTP_PROTOCOL } from '@configs/protocol.config';
 
 export interface Environment {
   production: boolean;
@@ -17,4 +17,5 @@ export interface Environment {
   didomiKey: string;
   threatMetrixOrgId: string;
   threatMetrixProfilingDomain: string;
+  optimizelySdkKey: string;
 }

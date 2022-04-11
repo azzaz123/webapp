@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -11,6 +9,8 @@ import { DELIVERY_PATHS } from '../delivery-routing-constants';
 import { TRXAwarenessModalComponent } from '../modals/trx-awareness-modal/trx-awareness-modal.component';
 
 export const LOCAL_STORAGE_TRX_AWARENESS = 'trx-awareness';
+export const DELIVERY_TRACKING_PATH: string = `/${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}`;
+export const NO_NAV_LINK_SELECTED: string = 'nonSelected';
 @Component({
   selector: 'tsl-delivery',
   templateUrl: './delivery.component.html',
@@ -34,21 +34,16 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     display: $localize`:@@web_delivery_shipping_address:Address`,
   };
 
-  public navLinks: NavLink[] = [this.deliveryAddressNavLink];
+  public navLinks: NavLink[] = [this.buysNavLink, this.sellsNavLink, this.completedNavLink, this.deliveryAddressNavLink];
 
   public selectedNavLinkId: string;
   private subscriptions: Subscription = new Subscription();
 
-  constructor(
-    private router: Router,
-    private userService: UserService,
-    private modalService: NgbModal,
-    private featureflagService: FeatureFlagService
-  ) {
+  constructor(private router: Router, private userService: UserService, private modalService: NgbModal) {
     this.subscriptions.add(
       router.events.subscribe((event) => {
         if (event instanceof NavigationEnd && this.navLinks) {
-          const defaultUrl: string = this.deliveryAddressNavLink.id;
+          const defaultUrl: string = this.buysNavLink.id;
           const isDefaultUrlSelected: boolean = event.urlAfterRedirects === defaultUrl;
 
           this.selectNavLink(isDefaultUrlSelected ? defaultUrl : event.url);
@@ -58,7 +53,6 @@ export class DeliveryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.showStreamlineWhenDeliveryFeatureFlagEnabled();
     this.showTRXAwarenessModalForFirstTime();
   }
 
@@ -77,17 +71,6 @@ export class DeliveryComponent implements OnInit, OnDestroy {
     );
   }
 
-  private showStreamlineWhenDeliveryFeatureFlagEnabled(): void {
-    this.subscriptions.add(
-      this.featureflagService.getLocalFlag(FEATURE_FLAGS_ENUM.DELIVERY).subscribe((isActive: boolean) => {
-        if (isActive) {
-          this.navLinks = [this.buysNavLink, this.sellsNavLink, this.completedNavLink, this.deliveryAddressNavLink];
-        }
-        this.selectNavLink(this.router.url);
-      })
-    );
-  }
-
   private showTRXAwarenessModalForFirstTime(): void {
     if (this.shouldShowTRXAwarenessModal) {
       this.userService.saveLocalStore(LOCAL_STORAGE_TRX_AWARENESS, Date.now().toString());
@@ -100,6 +83,12 @@ export class DeliveryComponent implements OnInit, OnDestroy {
   }
 
   private selectNavLink(routeURL: string): void {
-    this.selectedNavLinkId = this.navLinks.find((link) => routeURL.startsWith(link.id))?.id;
+    const isTrackingPage: boolean = routeURL.startsWith(DELIVERY_TRACKING_PATH);
+
+    if (isTrackingPage) {
+      this.selectedNavLinkId = NO_NAV_LINK_SELECTED;
+    } else {
+      this.selectedNavLinkId = this.navLinks.find((link) => routeURL.startsWith(link.id))?.id;
+    }
   }
 }

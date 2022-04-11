@@ -5,6 +5,7 @@ import { PaginatedList } from '@api/core/model';
 import { ISort, SORT_KEYS } from '@api/core/model/subscriptions/items-by-subscription/sort-items.interface';
 import { SubscriptionSlot } from '@api/core/model/subscriptions/slots/subscription-slot.interface';
 import { MeApiService } from '@api/me/me-api.service';
+import { VisibilityApiService } from '@api/visibility/visibility-api.service';
 import {
   AnalyticsPageView,
   ANALYTICS_EVENT_NAMES,
@@ -36,8 +37,10 @@ import { PERMISSIONS } from '@core/user/user-constants';
 import { Counters, UserStats } from '@core/user/user-stats.interface';
 import { LOCAL_STORAGE_SUGGEST_PRO_SHOWN, LOCAL_STORAGE_TRY_PRO_SLOT, UserService } from '@core/user/user.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { BumpTutorialComponent } from '@shared/bump-tutorial/bump-tutorial.component';
 import { DeactivateItemsModalComponent } from '@shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { ConfirmationModalComponent } from '@shared/confirmation-modal/confirmation-modal.component';
 import { BumpSuggestionModalComponent } from '@shared/modals/bump-suggestion-modal/bump-suggestion-modal.component';
@@ -52,12 +55,10 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { Subscription } from 'rxjs';
 import { take, takeWhile } from 'rxjs/operators';
-import { BumpTutorialComponent } from '../../components/bump-tutorial/bump-tutorial.component';
 import { STATUS } from '../../components/selected-items/selected-product.interface';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
-import { BumpConfirmationModalComponent } from '../../modals/bump-confirmation-modal/bump-confirmation-modal.component';
+import { CatalogItemTrackingEventService } from '../../core/services/catalog-item-tracking-event.service';
 
-const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'purchaseListingFeeWithCredits'];
 export const SORTS: ISort[] = [
   {
     value: SORT_KEYS.DATE_DESC,
@@ -86,7 +87,7 @@ export class ListComponent implements OnInit, OnDestroy {
   @ViewChild(ItemSoldDirective, { static: true }) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent, { static: true }) bumpTutorial: BumpTutorialComponent;
   public items: Item[] = [];
-  public selectedStatus: STATUS | string = STATUS.PUBLISHED;
+  public selectedStatus: STATUS = STATUS.PUBLISHED;
   public loading = true;
   public end: boolean;
   public scrollTop: number;
@@ -134,12 +135,13 @@ export class ListComponent implements OnInit, OnDestroy {
     protected i18n: I18nService,
     private subscriptionsService: SubscriptionsService,
     private catalogManagerService: CatalogManagerApiService,
-    private deviceService: DeviceDetectorService,
     private analyticsService: AnalyticsService,
     private i18nService: I18nService,
     private permissionService: NgxPermissionsService,
     private listingLimitService: ListingLimitService,
-    private meApiService: MeApiService
+    private meApiService: MeApiService,
+    private catalogItemTrackingEventService: CatalogItemTrackingEventService,
+    private visibilityService: VisibilityApiService
   ) {}
 
   public get itemsAmount() {
@@ -163,7 +165,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems();
     this.getCreditInfo();
 
-    this.catalogManagerService.getSlots().subscribe((subscriptionSlots) => {
+    this.catalogManagerService.getSlots(this.user.id).subscribe((subscriptionSlots) => {
       this.setSubscriptionSlots(subscriptionSlots);
     });
 
@@ -203,44 +205,6 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
-        if (params && params.code) {
-          const modals = {
-            bump: BumpConfirmationModalComponent,
-          };
-          const transactionType = localStorage.getItem('transactionType');
-          let modalType = transactionType === 'bumpWithCredits' ? 'bump' : transactionType;
-          let modal;
-
-          if (params.code === '-1') {
-            modal = modals.bump;
-          } else {
-            modal = modalType && modals[modalType] ? modals[modalType] : null;
-          }
-          if (!modal) {
-            return;
-          }
-          let modalRef: NgbModalRef = this.modalService.open(modal, {
-            windowClass: 'modal-standard',
-            backdrop: 'static',
-          });
-          modalRef.componentInstance.code = params.code;
-          modalRef.componentInstance.creditUsed = TRANSACTIONS_WITH_CREDITS.includes(transactionType);
-          modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
-          modalRef.result.then(
-            () => {
-              modalRef = null;
-              localStorage.removeItem('transactionType');
-              localStorage.removeItem('transactionSpent');
-              this.router.navigate(['catalog/list']);
-            },
-            () => {
-              modalRef = null;
-              localStorage.removeItem('transactionType');
-              localStorage.removeItem('transactionSpent');
-              this.router.navigate(['wallacoins']);
-            }
-          );
-        }
         if (params && params.created) {
           this.showBumpSuggestionModal(params.itemId);
         } else if (params && params.updated) {
@@ -280,13 +244,8 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.logout().subscribe();
   }
 
-  public filterByStatus(status: string) {
+  public filterByStatus(status: STATUS) {
     this.deselect();
-
-    if (status === 'reviews') {
-      this.items = [];
-      this.selectedStatus = status;
-    }
 
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
@@ -527,13 +486,6 @@ export class ListComponent implements OnInit, OnDestroy {
       { id: STATUS.SOLD, display: this.i18n.translate(TRANSLATION_KEY.SOLD) },
       { id: STATUS.INACTIVE, display: this.i18n.translate(TRANSLATION_KEY.INACTIVE), counter: { currentVal: this.counters?.onHold } },
     ];
-
-    if (this.deviceService.isMobile()) {
-      this.normalNavLinks.push({
-        id: 'reviews',
-        display: this.i18n.translate(TRANSLATION_KEY.REVIEWS),
-      });
-    }
   }
 
   private onOpenWallacoinsModal(): void {
@@ -549,10 +501,14 @@ export class ListComponent implements OnInit, OnDestroy {
         this.bumpSuggestionModalRef = this.modalService.open(BumpSuggestionModalComponent, {
           windowClass: 'modal-standard',
         });
+        this.visibilityService
+          .hasItemOrUserBalance(this.user.id, itemId)
+          .subscribe((isFree) => (this.bumpSuggestionModalRef.componentInstance.isFreeBump = isFree));
         this.bumpSuggestionModalRef.result.then((result: { redirect: boolean; hasPrice?: boolean }) => {
           this.bumpSuggestionModalRef = null;
           if (result?.redirect) {
-            this.router.navigate(['catalog/checkout', { itemId }]);
+            this.catalogItemTrackingEventService.trackClickBumpItems(1, true);
+            this.router.navigate([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId }]);
           }
         });
       } else {
@@ -574,7 +530,7 @@ export class ListComponent implements OnInit, OnDestroy {
         creditInfo.factor = 1;
       }
       this.creditInfo = creditInfo;
-      if (this.bumpSuggestionModalRef) {
+      if (this.bumpSuggestionModalRef && !this.bumpSuggestionModalRef.componentInstance.isFreeBump) {
         this.getCheapestProductPrice(this.bumpSuggestionModalRef, this.route.snapshot.params['itemId'], creditInfo);
         this.bumpSuggestionModalRef.componentInstance.productCurrency = creditInfo.currencyName;
       }
@@ -885,6 +841,7 @@ export class ListComponent implements OnInit, OnDestroy {
         screenId: SCREEN_IDS.MyCatalog,
         numberOfItems: this.counters.publish,
         proSubscriptionBanner: this.showTryProSlot,
+        isPro: this.userService.isPro,
       },
     };
     this.analyticsService.trackPageView(event);

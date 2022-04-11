@@ -4,6 +4,10 @@ import { InboxMessage } from './inbox-message';
 import { InboxUser, InboxUserPlaceholder } from './inbox-user';
 
 export class InboxConversation {
+  public active = false;
+  public isTranslating = false;
+  public isAutomaticallyTranslatable = false;
+
   constructor(
     private _id: string,
     private _modifiedDate: Date,
@@ -18,10 +22,6 @@ export class InboxConversation {
     private _translatable?: boolean,
     private _phoneRequired?: boolean
   ) {}
-
-  public active = false;
-  public isTranslating = false;
-  public isAutomaticallyTranslatable = false;
 
   get cannotChat(): boolean {
     return this.user.blocked || !this.user.available || this.item.status === InboxItemStatus.NOT_AVAILABLE || !!this.phoneRequired;
@@ -119,18 +119,6 @@ export class InboxConversation {
     return this._translatable && this.hasTranslatableMessages();
   }
 
-  private hasTranslatableMessages(): boolean {
-    const interlocutorMessages = this.messages.filter((message) => !message.fromSelf);
-
-    for (let message of interlocutorMessages) {
-      if (!message.translation) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   static errorConversationFromMessage(message: InboxMessage) {
     const user = InboxUserPlaceholder;
     const item = InboxItemPlaceholder;
@@ -213,5 +201,17 @@ export class InboxConversation {
       id,
       conversation.with_user ? conversation.with_user.id : null
     );
+  }
+
+  private hasTranslatableMessages(): boolean {
+    const interlocutorMessages = this.messages.filter((message) => !message.fromSelf);
+
+    for (let message of interlocutorMessages) {
+      if (!message.translation) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

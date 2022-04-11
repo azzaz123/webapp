@@ -24,7 +24,7 @@ import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from '@core/constants';
 import { STRIPE_ERROR } from '@core/stripe/stripe.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 
 @Component({
   selector: 'tsl-stripe-card-element',
@@ -50,7 +50,7 @@ export class StripeCardElementComponent implements ControlValueAccessor, AfterVi
   @Input() showUseSavedCard = false;
   @Input() paymentError: STRIPE_ERROR;
   @Output() hasCard: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() stripeCard: EventEmitter<any> = new EventEmitter<any>();
+  @Output() stripeCard: EventEmitter<stripe.elements.Element> = new EventEmitter<stripe.elements.Element>();
   @Output() stripeCardToken: EventEmitter<string> = new EventEmitter<string>();
   @Output() handleStripeCardCreate: EventEmitter<PaymentMethodResponse> = new EventEmitter();
   @Output() handleStripeSetDefaultCard: EventEmitter<SetupIntent> = new EventEmitter();

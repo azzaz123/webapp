@@ -1,7 +1,7 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { AnalyticsEvent, ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES, ClickProInfo, SCREEN_IDS } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
-import { APP_LOCALE } from 'configs/subdomains.config';
+import { APP_LOCALE } from '@configs/subdomains.config';
 import { NgxPermissionsObject, NgxPermissionsService } from 'ngx-permissions';
 import { take } from 'rxjs/operators';
 import { FOOTER_APPS, FOOTER_SECTIONS, FOOTER_SOCIAL } from './constants/footer-constants';
@@ -36,6 +36,12 @@ export class FooterComponent implements OnInit {
     });
   }
 
+  public trackEvent(link: FooterLink): void {
+    if (link.trackEvent && this.trackingEventsConfig[link.trackEvent]) {
+      this.trackingEventsConfig[link.trackEvent]();
+    }
+  }
+
   private filterByLocale(sections: FooterLinkSection[], locale: APP_LOCALE): FooterLinkSection[] {
     return sections
       .filter((footerLinkSection: FooterLinkSection) => {
@@ -54,12 +60,6 @@ export class FooterComponent implements OnInit {
     return sections.filter((footerLinkSection: FooterLinkSection) => {
       return !footerLinkSection.permission || permissions[footerLinkSection.permission];
     });
-  }
-
-  public trackEvent(link: FooterLink): void {
-    if (link.trackEvent && this.trackingEventsConfig[link.trackEvent]) {
-      this.trackingEventsConfig[link.trackEvent]();
-    }
   }
 
   private trackClickProInfo(): void {

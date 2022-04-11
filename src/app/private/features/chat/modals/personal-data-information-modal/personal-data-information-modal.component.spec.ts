@@ -4,17 +4,17 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ButtonComponent } from 'app/shared/button/button.component';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { PersonalDataInformationModal } from './personal-data-information-modal.component';
+import { PersonalDataInformationModalComponent } from './personal-data-information-modal.component';
 
 describe('MaliciousConversationModalComponent', () => {
-  let component: PersonalDataInformationModal;
+  let component: PersonalDataInformationModalComponent;
   let activeModal: NgbActiveModal;
-  let fixture: ComponentFixture<PersonalDataInformationModal>;
+  let fixture: ComponentFixture<PersonalDataInformationModalComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ButtonComponent, PersonalDataInformationModal],
+        declarations: [ButtonComponent, PersonalDataInformationModalComponent],
         providers: [NgbActiveModal],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -22,7 +22,7 @@ describe('MaliciousConversationModalComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PersonalDataInformationModal);
+    fixture = TestBed.createComponent(PersonalDataInformationModalComponent);
     component = fixture.componentInstance;
     activeModal = TestBed.inject(NgbActiveModal);
     fixture.detectChanges();

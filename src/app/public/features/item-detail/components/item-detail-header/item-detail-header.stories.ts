@@ -20,7 +20,6 @@ import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
 import { HttpClientModule } from '@angular/common/http';
 import { ItemDetailService } from '../../core/services/item-detail/item-detail.service';
 import { ItemApiService } from '@public/core/services/api/item/item-api.service';
-import { RecommenderApiService } from '@public/core/services/api/recommender/recommender-api.service';
 import { CheckSessionService } from '@public/core/services/check-session/check-session.service';
 import { ItemCardService } from '@public/core/services/item-card/item-card.service';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
@@ -60,7 +59,6 @@ const Template: Story<ItemDetailHeaderComponent> = (args: ItemDetailHeaderCompon
       ToastService,
       ReviewService,
       PublicUserApiService,
-      RecommenderApiService,
       ItemDetailService,
       ItemApiService,
       MapItemService,

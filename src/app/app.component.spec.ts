@@ -1,10 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ANALYTICS_EVENT_NAMES, ANALYTIC_EVENT_TYPES } from '@core/analytics/analytics-constants';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { DeviceService } from '@core/device/device.service';
 import { ExternalCommsService } from '@core/external-comms.service';
 import { SessionService } from '@core/session/session.service';
+import { StandaloneService } from '@core/standalone/services/standalone.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MockCookieService } from '@fixtures/cookies.fixtures.spec';
 import { MockDeviceService, MOCK_DEVICE_UUID } from '@fixtures/device.fixtures.spec';
@@ -13,6 +14,8 @@ import { MockSessionService } from '@fixtures/session-service.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 
 import { AppComponent } from './app.component';
+import { UserService } from '@core/user/user.service';
+import { MockUserService } from '@fixtures/user.fixtures.spec';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -34,6 +37,11 @@ describe('AppComponent', () => {
         { provide: SessionService, useClass: MockSessionService },
         { provide: DeviceService, useValue: MockDeviceService },
         { provide: CookieService, useValue: MockCookieService },
+        { provide: UserService, useValue: MockUserService },
+        {
+          provide: StandaloneService,
+          useValue: { standalone: false },
+        },
       ],
     }).compileComponents();
   });
@@ -54,17 +62,15 @@ describe('AppComponent', () => {
   });
 
   describe('when the app initializes', () => {
-    it('should initialize the analytics library', () => {
-      spyOn(analyticsService, 'initialize');
-
-      component.ngOnInit();
-
-      expect(analyticsService.initialize).toHaveBeenCalledTimes(1);
-    });
+    const mockAppProviders = () => {
+      analyticsService.initializeAnalyticsWithUnauthenticatedUser();
+      sessionService.initSession();
+    };
 
     it('should send Open Wallapop if user has a new session', () => {
       spyOn(analyticsService, 'trackEvent');
 
+      mockAppProviders();
       component.ngOnInit();
 
       expect(analyticsService.trackEvent).toHaveBeenCalledWith({
@@ -83,6 +89,7 @@ describe('AppComponent', () => {
       jest.spyOn(sessionService, 'newSession$', 'get').mockReturnValue(undefined);
       spyOn(analyticsService, 'trackEvent');
 
+      mockAppProviders();
       component.ngOnInit();
 
       expect(analyticsService.trackEvent).not.toHaveBeenCalledWith({
@@ -90,14 +97,6 @@ describe('AppComponent', () => {
         eventType: ANALYTIC_EVENT_TYPES.Other,
         name: ANALYTICS_EVENT_NAMES.OpenWallapop,
       });
-    });
-
-    it('should initialize external Braze communications', () => {
-      spyOn(externalCommsService, 'initializeBrazeCommunications');
-
-      component.ngOnInit();
-
-      expect(externalCommsService.initializeBrazeCommunications).toHaveBeenCalledTimes(1);
     });
   });
 });

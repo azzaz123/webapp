@@ -13,10 +13,11 @@ import {
   ITEM_DELIVERY_INFO,
   MOCK_ITEM,
   MOCK_ITEM_FASHION,
+  MOCK_ITEM_WITH_LECAGY_CATEGORY,
 } from '@fixtures/item.fixtures.spec';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
-import { Component, Input, NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -286,6 +287,33 @@ describe('UploadProductComponent', () => {
         description: MOCK_ITEM.description,
         sale_conditions: MOCK_ITEM.saleConditions,
         category_id: ITEM_CATEGORY_ID + '',
+        delivery_info: ITEM_DELIVERY_INFO,
+        images: [],
+        location: {
+          address: '',
+          latitude: '',
+          longitude: '',
+        },
+        extra_info: {
+          condition: null,
+        },
+        hashtags: [],
+      });
+    });
+
+    it('should set item if exists and category as null if it`s a legacy one', () => {
+      component.item = MOCK_ITEM_WITH_LECAGY_CATEGORY;
+
+      component.ngOnInit();
+
+      expect(component.uploadForm.value).toEqual({
+        id: MOCK_ITEM.id,
+        title: MOCK_ITEM.title,
+        sale_price: MOCK_ITEM.salePrice,
+        currency_code: MOCK_ITEM.currencyCode,
+        description: MOCK_ITEM.description,
+        sale_conditions: MOCK_ITEM.saleConditions,
+        category_id: null,
         delivery_info: ITEM_DELIVERY_INFO,
         images: [],
         location: {
@@ -851,7 +879,7 @@ describe('UploadProductComponent', () => {
         sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
-        hashtags: '',
+        hashtags: [],
       };
 
       component.onSubmit();
@@ -877,7 +905,7 @@ describe('UploadProductComponent', () => {
         extra_info: {
           object_type: { id: 1 },
         },
-        hashtags: '',
+        hashtags: [],
       });
       component.uploadForm.get('extra_info').get('object_type').enable();
 
@@ -902,7 +930,7 @@ describe('UploadProductComponent', () => {
         sale_conditions: { ...MOCK_ITEM_FASHION.saleConditions, supports_shipping: false },
         sale_price: 1000000,
         title: 'test',
-        hashtags: '',
+        hashtags: [],
       };
 
       component.onSubmit();
@@ -1455,7 +1483,7 @@ describe('UploadProductComponent', () => {
         extra_info: {
           condition: null,
         },
-        hashtags: '',
+        hashtags: [],
       });
     });
 
@@ -1869,6 +1897,29 @@ describe('UploadProductComponent', () => {
 
         expect(submitButtonTextElement.innerHTML).toEqual('Reactivate item');
       });
+    });
+  });
+
+  describe('when is activate shipping', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(component.shippingSectionElement.nativeElement, 'scrollIntoView');
+      component.isActivateShipping = true;
+      component.item = MOCK_ITEM;
+
+      component.ngOnInit();
+      tick(component.DEBOUNCE_TIME_MS + 1);
+      fixture.detectChanges();
+    }));
+
+    it('should set the shipping toggle to checked', () => {
+      const supportsShippingFormValue: boolean = component.uploadForm.get('sale_conditions').get('supports_shipping').value;
+
+      expect(supportsShippingFormValue).toEqual(true);
+    });
+
+    it('should scroll browser view to shipping section', () => {
+      expect(component.shippingSectionElement.nativeElement.scrollIntoView).toHaveBeenCalledTimes(1);
+      expect(component.shippingSectionElement.nativeElement.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' });
     });
   });
 

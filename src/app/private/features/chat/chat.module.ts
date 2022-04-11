@@ -1,28 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
-import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
-import { SharedModule } from '@shared/shared.module';
-import { AutosizeModule } from 'ngx-autosize';
-import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
-import { InboxConversationComponent } from './children/inbox/components/inbox-conversation';
-import { InboxItemDetailComponent } from './children/inbox/components/inbox-item-component';
-import { InboxItemForSellComponent } from './children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component';
-import { InboxUserDetailComponent } from './children/inbox/components/inbox-user-component';
-import { InboxComponent } from './children/inbox/inbox.component';
-import { ItemReservedComponent } from './children/item/components/item-reserved';
-import { ItemSoldComponent } from './children/item/components/item-sold';
-import { MessageModule } from './children/message';
-import { ArchivedInboxConversationComponent } from './components/archived-inbox-conversation';
-import { ConnectionAlertComponent } from './components/connection-alert/inbox';
-import { ConversationDetailsBarComponent } from './components/conversation-details-bar';
-import { CurrentConversationComponent } from './components/current-conversation';
-import { InputComponent } from './components/input';
-import { ScrollingMessageComponent } from './components/scrolling-message';
-import { UserDetailComponent } from './components/user-detail';
-import { UserResponseRateModule } from './components/user-response-rate/user-response-rate.module';
+
+import { ArchivedInboxConversationComponent } from '@private/features/chat/components/archived-inbox-conversation';
 import {
   ArchiveInboxConversationComponent,
   BlockUserComponent,
@@ -30,13 +10,37 @@ import {
   ReportUserComponent,
   UnarchiveInboxConversationComponent,
   UnblockUserComponent,
-} from './modals';
-import { MaliciousConversationModalComponent } from './modals/malicious-conversation-modal/malicious-conversation-modal.component';
-import { PersonalDataInformationModal } from './modals/personal-data-information-modal/personal-data-information-modal.component';
-import { NgxPermissionsModule } from 'ngx-permissions';
-import { TranslateButtonModule } from '@core/components/translate-button/translate-button.module';
-import { ChatTranslationService } from '@private/features/chat/services/chat-translation.service';
+} from '@private/features/chat/modals';
 import { ChatApiModule } from '@api/chat/chat-api.module';
+import { chatRoutedComponents, ChatRoutingModule } from '@private/features/chat/chat.routes';
+import { ChatTranslationService } from '@private/features/chat/services/chat-translation/chat-translation.service';
+import { ConnectionAlertComponent } from '@private/features/chat/components/connection-alert/inbox';
+import { ConversationDetailsBarComponent } from '@private/features/chat/components/conversation-details-bar';
+import { CurrentConversationComponent } from '@private/features/chat/components/current-conversation';
+import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
+import { DeliveryBannerModule } from '@private/features/chat/modules/delivery-banner/delivery-banner.module';
+import { DeliveryConversationContextModule } from '@private/features/chat/modules/delivery-conversation-context/delivery-conversation-context.module';
+import { InboxComponent } from '@private/features/chat/children/inbox/inbox.component';
+import { InboxConversationComponent } from '@private/features/chat/children/inbox/components/inbox-conversation';
+import { InboxItemDetailComponent } from '@private/features/chat/children/inbox/components/inbox-item-component';
+import { InboxItemForSellComponent } from '@private/features/chat/children/inbox/components/inbox-item-for-sell/inbox-item-for-sell.component';
+import { InboxUserDetailComponent } from '@private/features/chat/children/inbox/components/inbox-user-component';
+import { InputComponent } from '@private/features/chat/components/input';
+import { ItemAvatarModule } from '@shared/item-avatar/item-avatar.module';
+import { ItemReservedComponent } from '@private/features/chat/children/item/components/item-reserved';
+import { ItemSoldComponent } from '@private/features/chat/children/item/components/item-sold';
+import { MaliciousConversationModalComponent } from '@private/features/chat/modals/malicious-conversation-modal/malicious-conversation-modal.component';
+import { MessageModule } from '@private/features/chat/children/message';
+import { PersonalDataInformationModalComponent } from '@private/features/chat/modals/personal-data-information-modal/personal-data-information-modal.component';
+import { ScrollingMessageComponent } from '@private/features/chat/components/scrolling-message';
+import { SharedModule } from '@shared/shared.module';
+import { TranslateButtonModule } from '@core/components/translate-button/translate-button.module';
+import { UserDetailComponent } from '@private/features/chat/components/user-detail';
+import { UserResponseRateModule } from '@private/features/chat/components/user-response-rate/user-response-rate.module';
+
+import { AutosizeModule } from 'ngx-autosize';
+import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   imports: [
@@ -55,6 +59,8 @@ import { ChatApiModule } from '@api/chat/chat-api.module';
     NgxPermissionsModule.forChild(),
     TranslateButtonModule,
     ChatApiModule,
+    DeliveryBannerModule,
+    DeliveryConversationContextModule,
   ],
   declarations: [
     chatRoutedComponents,
@@ -79,7 +85,7 @@ import { ChatApiModule } from '@api/chat/chat-api.module';
     ScrollingMessageComponent,
     ConversationDetailsBarComponent,
     MaliciousConversationModalComponent,
-    PersonalDataInformationModal,
+    PersonalDataInformationModalComponent,
   ],
   providers: [ChatTranslationService],
   exports: [InboxConversationComponent],
@@ -91,7 +97,7 @@ import { ChatApiModule } from '@api/chat/chat-api.module';
     BlockUserComponent,
     UnblockUserComponent,
     MaliciousConversationModalComponent,
-    PersonalDataInformationModal,
+    PersonalDataInformationModalComponent,
   ],
 })
 export class ChatModule {}

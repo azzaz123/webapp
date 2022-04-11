@@ -310,7 +310,7 @@
   </div>
 
   <ng-container>
-    <div class="box" *ngIf="isShippabilityAllowed" [ngbPopover]="coachmarkShippingWithToggle" [autoClose]="false" #p="ngbPopover">
+    <div class="box" *ngIf="isShippabilityAllowed" [ngbPopover]="coachmarkShippingWithToggle" [autoClose]="false" #p="ngbPopover" #shippingSection>
       <div data-toggle="buttons">
         <div class="row">
           <div class="col">
@@ -369,11 +369,6 @@
                   {{ delivery.value.max_weight_kg }}kg)</span
                 >
               </label>
-
-              <p class="error mt-4" i18n="@@upload_shipping_toggle_weight_selector_dimension_restrictions_description">
-                The weight of the package must not exceed the indicated weight. Regarding its dimensions, the sum of the length, height and
-                width cannot exceed 210 cm; and the longest side cannot exceed 120 cm.
-              </p>
             </div>
           </div>
         </div>

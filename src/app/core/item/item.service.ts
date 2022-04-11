@@ -80,7 +80,7 @@ export class ItemService {
     featured: [],
   };
 
-  private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
+  private bumpTypes = ['countrybump', 'citybump', 'zonebump'];
 
   constructor(private http: HttpClient, private i18n: I18nService, private uuidService: UuidService, private eventService: EventService) {}
 
@@ -94,6 +94,10 @@ export class ItemService {
     return this.http
       .get<ItemCounters>(`${environment.baseUrl}${ITEMS_API_URL}/${id}/counters`)
       .pipe(catchError(() => of({ views: 0, favorites: 0, conversations: 0 })));
+  }
+
+  public getPurchases(): Observable<Purchase[]> {
+    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
   }
 
   public bulkDelete(type: string): Observable<ItemBulkResponse> {
@@ -150,12 +154,11 @@ export class ItemService {
     }
   }
 
-  public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
+  public getPaginationItems(url: string, next?): Observable<ItemsData> {
     return this.http
       .get<HttpResponse<ItemResponse[]>>(`${environment.baseUrl}${url}`, {
         params: {
-          init: init,
-          expired: status,
+          since: next,
         },
         observe: 'response' as 'body',
       })
@@ -163,16 +166,8 @@ export class ItemService {
         map((r) => {
           const res: ItemResponse[] = r.body;
           const nextPage: string = r.headers.get('x-nextpage');
+          const params = new URLSearchParams(nextPage);
 
-          let params = {};
-          if (nextPage) {
-            nextPage.split('&').forEach((paramSplit) => {
-              const paramValues = paramSplit.split('=');
-              params[paramValues[0]] = paramValues[1];
-            });
-          }
-
-          const nextInit = params && params['init'] ? +params['init'] : null;
           let data: Item[] = [];
           if (res.length > 0) {
             data = res.map((i: ItemResponse) => {
@@ -185,59 +180,54 @@ export class ItemService {
           }
           return {
             data: data,
-            init: nextInit,
+            since: params.get('since'),
           };
         }),
         mergeMap((itemsData: ItemsData) => {
           return this.getPurchases().pipe(
             map((purchases: Purchase[]) => {
-              purchases.forEach((purchase: Purchase) => {
-                const index: number = findIndex(itemsData.data, {
-                  id: purchase.item_id,
-                });
-                if (index !== -1) {
-                  if (this.bumpTypes.includes(purchase.purchase_name)) {
-                    itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
-                  }
-                  if (purchase.visibility_flags) {
-                    itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
-                    itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
-                    itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
-                  }
-                }
-              });
+              this.mapBumpInfoToItemData(purchases, itemsData.data);
               return itemsData;
             })
           );
         }),
         map((itemsData: ItemsData) => {
-          this.selectedItems.forEach((selectedItemId: string) => {
-            const index: number = findIndex(itemsData.data, {
-              id: selectedItemId,
-            });
-            if (index !== -1) {
-              itemsData.data[index].selected = true;
-            }
-          });
+          this.mapSelectedInfoToItemData(itemsData.data);
           return itemsData;
         })
       );
   }
 
-  public mine(init: number, status?: string): Observable<ItemsData> {
-    return this.getPaginationItems(WEB_ITEMS_API_URL + '/mine/' + status, init, true);
+  public mapBumpInfoToItemData(purchases: Purchase[], itemsData: Item[]) {
+    purchases.forEach((purchase: Purchase) => {
+      const index: number = findIndex(itemsData, {
+        id: purchase.item_id,
+      });
+      if (index !== -1) {
+        if (this.bumpTypes.includes(purchase.purchase_name)) {
+          itemsData[index].bumpExpiringDate = purchase.expiration_date;
+        }
+        if (purchase.visibility_flags) {
+          itemsData[index].flags.bumped = purchase.visibility_flags.bumped;
+          itemsData[index].flags.highlighted = purchase.visibility_flags.highlighted;
+        }
+      }
+    });
   }
 
-  public myFavorites(init: number): Observable<ItemsData> {
-    return this.getPaginationItems(USERS_API_URL + '/me/items/favorites', init).pipe(
-      map((itemsData: ItemsData) => {
-        itemsData.data = itemsData.data.map((item: Item) => {
-          item.favorited = true;
-          return item;
-        });
-        return itemsData;
-      })
-    );
+  public mapSelectedInfoToItemData(itemsData: Item[]) {
+    this.selectedItems.forEach((selectedItemId: string) => {
+      const index: number = findIndex(itemsData, {
+        id: selectedItemId,
+      });
+      if (index !== -1) {
+        itemsData[index].selected = true;
+      }
+    });
+  }
+
+  public mine(next: string, status?: string): Observable<ItemsData> {
+    return this.getPaginationItems(ITEMS_API_URL + '/mine/' + status, next);
   }
 
   public deleteItem(id: string): Observable<any> {
@@ -601,9 +591,6 @@ export class ItemService {
     const data: ItemProResponse = <ItemProResponse>response;
     const content: ItemProContent = data.content;
     return this.mapItemPro(content);
-  }
-  private getPurchases(): Observable<Purchase[]> {
-    return this.http.get<Purchase[]>(`${environment.baseUrl}${WEB_ITEMS_API_URL}/mine/purchases`);
   }
 
   private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {

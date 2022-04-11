@@ -34,14 +34,7 @@ export class UserStatsComponent implements OnInit {
     this.checkStoreAddress();
   }
 
-  private checkStoreAddress(): void {
-    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
-      this.showStoreAdress =
-        !!permissions[PERMISSIONS.subscriptions] && this.userInfo.featured && this.userService.hasStoreLocation(this.userInfo);
-    });
-  }
-
-  togglePhone(): void {
+  public togglePhone(): void {
     this.showPhone = !this.showPhone;
   }
 
@@ -57,10 +50,17 @@ export class UserStatsComponent implements OnInit {
     }
   }
 
+  private checkStoreAddress(): void {
+    this.permissionService.permissions$.pipe(take(1)).subscribe((permissions) => {
+      this.showStoreAdress =
+        !!permissions[PERMISSIONS.subscriptions] && this.userInfo.featured && this.userService.hasStoreLocation(this.userInfo);
+    });
+  }
+
   private cleanCurrentURL(): string {
     const URL = this.router.url;
     let to = URL.lastIndexOf('/');
-    to = to == -1 ? URL.length : to + 1;
+    to = to === -1 ? URL.length : to + 1;
     return URL.substring(0, to);
   }
 }

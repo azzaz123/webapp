@@ -13,6 +13,9 @@ import { CatalogItemTrackingEventService } from '../../core/services/catalog-ite
 import { PERMISSIONS } from '@core/user/user-constants';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ItemDetailRoutePipe } from '@shared/pipes';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
+import { LEGACY_CATEGORY_IDS } from '@core/category/category-ids';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -65,8 +68,8 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public featureItem(item: Item): void {
-    this.itemService.selectedAction = 'feature';
-    this.select(item);
+    this.catalogItemTrackingEventService.trackClickBumpItems(1);
+    this.router.navigate([`${PRIVATE_PATHS.BUMPS}/${BUMPS_PATHS.CHECKOUT}`, { itemId: item.id }]);
   }
 
   public activateItem(item: Item): void {
@@ -88,10 +91,6 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public setSold(item: Item) {
-    fbq('track', 'CompleteRegistration', {
-      value: item.salePrice,
-      currency: item.currencyCode,
-    });
     this.itemChange.emit({
       item: item,
       action: ITEM_CHANGE_ACTION.SOLD,
@@ -99,15 +98,16 @@ export class CatalogItemComponent implements OnInit {
     this.eventService.emit(EventService.ITEM_SOLD, item);
   }
 
-  public openItem() {
-    window.open(this.link);
-  }
-
   private reactivateItem(item: Item): void {
+    if (LEGACY_CATEGORY_IDS.includes(+item.categoryId)) {
+      this.navigateToReactivationEdit();
+      return;
+    }
+
     this.itemRequiredDataService.hasMissingRequiredDataByItemId(item.id).subscribe((missingRequiredData: boolean) => {
       this.catalogItemTrackingEventService.trackReactivateItemEvent(item);
       if (missingRequiredData) {
-        this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
+        this.navigateToReactivationEdit();
       } else {
         this.itemService.reactivateItem(item.id).subscribe(
           () => {
@@ -120,5 +120,9 @@ export class CatalogItemComponent implements OnInit {
         );
       }
     });
+  }
+
+  private navigateToReactivationEdit(): void {
+    this.router.navigate([`/catalog/edit/${this.item.id}/${UPLOAD_PATHS.REACTIVATE}`]);
   }
 }

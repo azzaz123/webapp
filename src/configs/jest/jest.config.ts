@@ -1,4 +1,6 @@
 import 'jest-preset-angular/setup-jest';
+import { getTestBed } from '@angular/core/testing';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
 // Mock DOM interactions
 Object.defineProperty(window, 'CSS', { value: null });
@@ -40,10 +42,6 @@ Object.defineProperty(window, 'apstag', { value: GLOBAL_MOCKS.MOCK_APSTAG });
 Object.defineProperty(window, 'Criteo', { value: GLOBAL_MOCKS.MOCK_CRITEO });
 Object.defineProperty(window, 'Didomi', { value: GLOBAL_MOCKS.MOCK_DIDOMI });
 Object.defineProperty(window, 'IntersectionObserver', { value: GLOBAL_MOCKS.MockIntersectionObserver, writable: true });
-Object.defineProperty(window, 'fbq', {
-  value: GLOBAL_MOCKS.MOCK_FBQ,
-  writable: true,
-});
 Object.defineProperty(window, 'ga', { value: GLOBAL_MOCKS.MOCK_GA });
 Object.defineProperty(window, 'googletag', {
   value: GLOBAL_MOCKS.MOCK_GOOGLE_TAG,
@@ -61,10 +59,6 @@ Object.defineProperty(window, 'Notification', {
 Object.defineProperty(window, 'screen', { value: GLOBAL_MOCKS.MOCK_SCREEN });
 Object.defineProperty(window, 'sessionStorage', {
   value: GLOBAL_MOCKS.MOCK_SESSIONSTORAGE,
-});
-Object.defineProperty(window, 'pintrk', {
-  value: GLOBAL_MOCKS.MOCK_PINTRK,
-  writable: true,
 });
 Object.defineProperty(window, 'XMPP', { value: GLOBAL_MOCKS.MOCK_XMPP });
 Object.defineProperty(window, 'wadgtlft', {
@@ -92,4 +86,11 @@ Object.defineProperty(navigator, 'msMaxTouchPoints', {
 Object.defineProperty(navigator, 'languages', {
   value: GLOBAL_MOCKS.MOCK_NAVIGATOR_LANGUAGES,
   writable: true,
+});
+
+//TODO: Usign teardown strategy from Angular v12.2 in order to improve non-cached test performance
+//When upgrading to Angular v13, the default value will be true for all tests, so this won't be needed
+beforeEach(() => {
+  getTestBed().resetTestEnvironment();
+  getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), { teardown: { destroyAfterEach: true } });
 });

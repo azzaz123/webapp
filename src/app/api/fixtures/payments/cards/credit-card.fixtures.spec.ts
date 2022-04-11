@@ -1,3 +1,4 @@
+import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
 import { CreditCardSyncRequest } from '@api/core/model/cards/credit-card-sync-request.interface';
 import { CreditCard } from '@api/core/model/cards/credit-card.interface';
 import { PaymentsSyncCreditCardApi } from '@api/payments/cards/dtos/requests';
@@ -25,6 +26,15 @@ export const mockPaymentsCreditCard: PaymentsCreditCardApi = {
   status: 'VALID',
 };
 
+export const mockInvalidPaymentsCreditCard: PaymentsCreditCardApi = {
+  card_holder_name: 'Alejandro Magnou',
+  country: 'FRA',
+  expiration_date: '2025-12-01T00:00:00+0000',
+  id: '72c21846-a8e2-4fcf-9eec-118ece123828',
+  number_alias: '497010XXXXXX6588',
+  status: 'INVALID',
+};
+
 export const mockCreditCard: CreditCard = {
   brand: 'visa',
   expirationDate: new Date('Mon Dec 01 2025 01:00:00 GMT+0100'),
@@ -32,6 +42,7 @@ export const mockCreditCard: CreditCard = {
   lastFourDigits: '6588',
   ownerFullName: 'Lolaso Fino Bruh - 17:38',
   provider: 'mangopay',
+  status: CREDIT_CARD_STATUS.VALID,
 };
 
 export const mockFormCreditCardSyncRequest: CreditCardSyncRequest = {
@@ -83,4 +94,14 @@ export const mockPaymentsUpdateSyncCreditCardRequest: PaymentsSyncCreditCardApi 
   id: mockCreditCardSyncRequest.id,
   registration_id: mockTokenizerInformationResponse.id,
   token: mockCardTokenizedResponse,
+};
+
+export const MOCK_CREDIT_CARD: CreditCard = {
+  id: 'eb07a330-f1e6-4816-8e85-9246323fd614',
+  brand: 'visa',
+  lastFourDigits: '6596',
+  ownerFullName: 'test',
+  expirationDate: new Date('2025-08-01T00:00:00.000Z'),
+  provider: 'mangopay',
+  status: CREDIT_CARD_STATUS.VALID,
 };

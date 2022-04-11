@@ -1,0 +1,25 @@
+@use 'sass:math';
+@import '~style/common';
+
+$spacing-10: math.div(10px, 16px) * $spacer;
+$spacing-14: math.div(14px, 16px) * $spacer;
+
+.PayviewSummaryPaymentMethod {
+  background: $payview-summary-grey;
+  border-radius: $spacing-10;
+  margin-top: -$spacing-m;
+  padding-top: $spacing-m;
+
+  &__content {
+    padding: $spacing-ml;
+  }
+
+  &__paymentMethod {
+    font-size: $spacing-14;
+    padding-left: $spacing-ms;
+  }
+
+  &__paymentMethodTitle {
+    color: $blue-grey-2;
+  }
+}

@@ -17,7 +17,6 @@ export const EMPTY_ITEM_FLAGS: ItemFlags = {
 export const EMPTY_ITEM_VISIBILITY_FLAGS: ItemVisibilityFlags = {
   bumped: false,
   highlighted: false,
-  urgent: false,
   country_bumped: false,
   boosted: false,
 };

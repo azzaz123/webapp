@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { LottieService } from '@core/lottie/lottie.service';
@@ -12,9 +12,19 @@ import { LottieComponent } from './lottie.component';
 
 const mockLottiePlayer = new MockLottiePlayer();
 
+@Component({
+  selector: 'tsl-lottie-test-wrapper',
+  template: ` <tsl-lottie [src]="src" [loop]="loop"></tsl-lottie> `,
+})
+class LottieTestWrapperComponent {
+  @Input() src: string;
+  @Input() loop: boolean;
+}
+
 describe('LottieComponent', () => {
   let component: LottieComponent;
-  let fixture: ComponentFixture<LottieComponent>;
+  let wrapperComponent: LottieTestWrapperComponent;
+  let fixture: ComponentFixture<LottieTestWrapperComponent>;
   let debugElement: DebugElement;
 
   const lottieContainerSelector = `.${MockLottiePlayer.MOCK_LOTTIE_CONTAINER_CLASS}`;
@@ -28,14 +38,15 @@ describe('LottieComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SvgIconModule, HttpClientTestingModule],
       providers: [{ provide: LottieService, useValue: MockLottieService(mockLottiePlayer) }],
-      declarations: [LottieComponent],
+      declarations: [LottieComponent, LottieTestWrapperComponent],
     }).compileComponents();
   });
 
   beforeEach(fakeAsync(() => {
-    fixture = TestBed.createComponent(LottieComponent);
-    component = fixture.componentInstance;
-    component.src = mockLottieSrc;
+    fixture = TestBed.createComponent(LottieTestWrapperComponent);
+    wrapperComponent = fixture.componentInstance;
+    component = fixture.debugElement.query(By.directive(LottieComponent)).componentInstance;
+    wrapperComponent.src = mockLottieSrc;
     debugElement = fixture.debugElement;
     spyOn(mockLottiePlayer, 'loadAnimation').and.callThrough();
 
@@ -120,6 +131,38 @@ describe('LottieComponent', () => {
 
         expect(wasAnimationDestroyed).toBe(true);
       }));
+    });
+  });
+
+  describe('when changing lottie source once was rendered', () => {
+    const otherPath: string = 'newSrc';
+
+    beforeEach(() => {
+      wrapperComponent.src = otherPath;
+    });
+
+    it('should remove Lottie animation from browser', fakeAsync(() => {
+      let wasAnimationDestroyed = false;
+
+      mockLottiePlayer.animationDestroyed$.subscribe(() => (wasAnimationDestroyed = true));
+      fixture.detectChanges();
+
+      expect(wasAnimationDestroyed).toBe(true);
+    }));
+
+    it('should render animation with updated source', () => {
+      const container = document.createElement('div');
+      container.setAttribute('class', MockLottiePlayer.MOCK_LOTTIE_CONTAINER_CLASS);
+
+      const expectedConfig = {
+        container,
+        loop: component.loop,
+        path: otherPath,
+        renderer: 'svg',
+      };
+      fixture.detectChanges();
+
+      expect(mockLottiePlayer.loadAnimation).toHaveBeenCalledWith(expectedConfig);
     });
   });
 });

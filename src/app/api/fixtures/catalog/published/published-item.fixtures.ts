@@ -1,4 +1,4 @@
-import { CatalogItemAttributes, PublishedItem } from '@api/catalog/dtos';
+import { CatalogItemAttributes, PublishedItemDto } from '@api/catalog/dtos';
 import { itemImageFixture, mappedItemImageFixture } from '../../core/image.fixtures';
 import { CAR_ATTRIBUTE_TYPE, REAL_ESTATE_ATTRIBUTE_TYPE } from '../../../catalog/dtos/catalog-item-attribute-data';
 import { ItemCard } from '@public/core/interfaces/item-card.interface';
@@ -42,9 +42,8 @@ const price: PriceDto = {
 };
 
 export const userIdFixture = 'my-user-id';
-export const favouriteIdsFixture = ['my-item-id'];
 
-export const publishedItemFixture: PublishedItem = {
+export const publishedItemFixture: PublishedItemDto = {
   id,
   images: [itemImageFixture],
   category_id: noStorytellingCategoryId.toString(),
@@ -55,9 +54,14 @@ export const publishedItemFixture: PublishedItem = {
   price,
 };
 
-export const storytellingPublishedItemFixture: PublishedItem = {
+export const storytellingPublishedItemFixture: PublishedItemDto = {
   ...publishedItemFixture,
   category_id: storytellingCategoryId.toString(),
+};
+
+export const favoritedPublishedItemFixture: PublishedItemDto = {
+  ...publishedItemFixture,
+  favorited: { flag: true },
 };
 
 export const mappedPublishedItemFixture: ItemCard = {

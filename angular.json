@@ -37,6 +37,7 @@
               "src/assets",
               "src/favicon.ico",
               "src/manifest.json",
+              "src/manifest.webmanifest",
               "src/service-worker.js",
               {
                 "glob": "**/*",
@@ -71,7 +72,8 @@
               "moment",
               "hammerjs/hammer",
               "lottie-web",
-              "jsbarcode"
+              "jsbarcode",
+              "@optimizely/optimizely-sdk"
             ],
             "vendorChunk": true,
             "extractLicenses": false,

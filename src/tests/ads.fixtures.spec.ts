@@ -8,6 +8,8 @@ import {
 } from '@core/ads/constants';
 import { AdKeyWords, AdShoppingPageOptions, AdSlotConfiguration, AdSlotId, AdSlotGroupShoppingConfiguration } from '@core/ads/models';
 import { AdTargetings } from '@core/ads/models/ad-targetings';
+import { TcData, TcfApi, tcfApiCallback, TCF_API_COMMAND, TCF_API_VERSION, TCF_EVENT_STATUS } from '@core/ads/vendors/tcf/tcf.interface';
+import { TcfService } from '@core/ads/vendors/tcf/tcf.service';
 import { YieldBirdService } from '@core/ads/vendors/yieldbird/yieldbird.service';
 import { DeviceType } from '@core/device/deviceType.enum';
 import { of } from 'rxjs';
@@ -24,6 +26,10 @@ export const MockAdsService = {
   refreshSlots: () => {},
   refreshAllSlots: () => {},
   destroySlots: () => {},
+};
+
+export const MockTcfService = {
+  tcfApi: (command: TCF_API_COMMAND, version: TCF_API_VERSION, callback: tcfApiCallback) => {},
 };
 
 export const MockAmazonPublisherService = {
@@ -139,4 +145,9 @@ export const MockAdShoppingPageOptions: AdShoppingPageOptions = {
 
 export const MockYieldBirdService: YieldBirdService = {
   targetings: { yb_ab: 'test' },
+};
+
+export const MockTcData: TcData = {
+  eventStatus: TCF_EVENT_STATUS.USER_ACTION_COMPLETE,
+  tcString: 'some-consent-string',
 };

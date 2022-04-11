@@ -13,6 +13,9 @@ import { FavouriteIconComponent } from '../favourite-icon/favourite-icon.compone
 import { ItemCardComponent } from './item-card.component';
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
+import { ToggleFavoriteInterface } from '@public/shared/components/item-card-list/interfaces/toggle-favorite.interface';
+import { MOCK_ITEM_CARD_WIDE } from '@public/shared/components/item-card-wide/item-card-wide.mock.stories';
+import { LOGIN_SOURCE } from '@public/shared/components/item-card-list/enums/login-source.enum';
 
 describe('ItemCardComponent', () => {
   let component: ItemCardComponent;
@@ -20,7 +23,10 @@ describe('ItemCardComponent', () => {
   let de: DebugElement;
   let el: HTMLElement;
   let permissionService: NgxPermissionsService;
-
+  const mockToggleFavoriteInterface: ToggleFavoriteInterface = {
+    item: MOCK_ITEM_CARD,
+    loginSource: LOGIN_SOURCE.FAVORITE_ITEM,
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ItemCardComponent],
@@ -92,7 +98,7 @@ describe('ItemCardComponent', () => {
 
           favouriteIconElement.click();
 
-          expect(component.toggleFavourite.emit).toBeCalled();
+          expect(component.toggleFavourite.emit).toBeCalledWith(mockToggleFavoriteInterface);
         });
       });
     });
@@ -244,6 +250,26 @@ describe('ItemCardComponent', () => {
       favouriteIcon.click();
 
       expect(component.toggleFavourite.emit).toHaveBeenCalled();
+    });
+  });
+
+  describe('when it loads the image', () => {
+    it('and it is the second item and, considered Largest Contentful Paint (LCP), the image should be eager loaded', () => {
+      component.index = 1;
+
+      fixture.detectChanges();
+      const image = fixture.debugElement.query(By.css('.ItemCard__image > img'));
+
+      expect(image.attributes.loading).toBe('eager');
+    });
+
+    it('and it is NOT the second item, the image should be lazy loaded', () => {
+      component.index = 0;
+
+      fixture.detectChanges();
+      const image = fixture.debugElement.query(By.css('.ItemCard__image > img'));
+
+      expect(image.attributes.loading).toBe('lazy');
     });
   });
 });

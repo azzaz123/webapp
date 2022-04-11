@@ -1,15 +1,13 @@
 import { HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { ComponentFixtureAutoDetect, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { Item } from '@core/item/item';
 import { MockReleaseVersion } from '@core/release-version/release-version.fixtures.spec';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 import { environment } from '@environments/environment';
-import { APP_VERSION } from '@environments/version';
 import { PhoneMethod } from '@private/features/chat/core/model';
-import { ITEM_LOCATION, MOCK_ITEM } from '@fixtures/item.fixtures.spec';
+import { ITEM_LOCATION } from '@fixtures/item.fixtures.spec';
 import {
   CUSTOM_REASON,
   IMAGE,
@@ -18,7 +16,6 @@ import {
   MOCK_USER,
   MOCK_USER_STATS,
   SELECTED_REASON,
-  USERS_STATS,
   USER_DATA,
   USER_EDIT_DATA,
   USER_EMAIL,
@@ -28,12 +25,12 @@ import {
   USER_LOCATION_COORDINATES,
   USER_PRO_DATA,
   USER_PRO_INFO_RESPONSE,
+  USERS_STATS,
 } from '@fixtures/user.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { of } from 'rxjs';
 import { EventService } from '../event/event.service';
-import { FeatureFlagService } from './featureflag.service';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { User } from './user';
 import { Image, UserLocation } from './user-response.interface';
@@ -43,7 +40,6 @@ import {
   LOCAL_STORAGE_TRY_PRO_SLOT,
   LOGOUT_ENDPOINT,
   PROTOOL_EXTRA_INFO_ENDPOINT,
-  UserService,
   USER_BY_ID_ENDPOINT,
   USER_COVER_IMAGE_ENDPOINT,
   USER_EMAIL_ENDPOINT,
@@ -58,23 +54,23 @@ import {
   USER_STORE_LOCATION_ENDPOINT,
   USER_UNSUBSCRIBE_ENDPOINT,
   USER_UNSUBSCRIBE_REASONS_ENDPOINT,
+  UserService,
 } from './user.service';
-import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
 import { LOCALE_ID } from '@angular/core';
 import { StoreLocation, StoreLocationResponse } from '@core/geolocation/address-response.interface';
 import { cloneDeep } from 'lodash-es';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
+import { mParticle } from '@core/analytics/mparticle.constants';
+import { UserIdentities } from '@mparticle/web-sdk';
 
-jest.mock('@mparticle/web-sdk', () => ({
-  __esModule: true,
-  default: {
+jest.mock('@core/analytics/mparticle.constants', () => ({
+  mParticle: {
     Identity: {
       logout: () => null,
     },
   },
-  namedExport: 'mParticle',
 }));
 
 describe('Service: User', () => {
@@ -177,22 +173,13 @@ describe('Service: User', () => {
     });
   });
 
-  describe('initializeUserWithPermissions', () => {
+  describe('initializeUser', () => {
     it('should save the logged user information', () => {
-      service.initializeUserWithPermissions().subscribe();
+      service.initializeUser();
       const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
       req.flush(USER_DATA);
 
       expect(service.user).toEqual(MOCK_FULL_USER);
-    });
-
-    it('should set the permissions for logged user', () => {
-      spyOn(service, 'setPermission');
-      service.initializeUserWithPermissions().subscribe();
-      const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
-      req.flush(USER_DATA);
-
-      expect(service.setPermission).toHaveBeenCalledWith(MOCK_FULL_USER);
     });
 
     describe('when the user information cannot be retrieved', () => {
@@ -200,7 +187,7 @@ describe('Service: User', () => {
         accessTokenService.storeAccessToken('abc');
         spyOn(service, 'logout');
 
-        service.initializeUserWithPermissions().subscribe();
+        service.initializeUser();
         const req = httpMock.expectOne(`${environment.baseUrl}${USER_ENDPOINT}`);
         req.error(null, { status: 0, statusText: 'Unauthorized' });
 
@@ -363,6 +350,7 @@ describe('Service: User', () => {
     });
 
     it('should call deleteAccessToken and call event passing direct url and call flush permissions', () => {
+      spyOn(mParticle.Identity, 'logout').and.callFake((userIdentities: UserIdentities, callback) => callback({ getUser: () => true }));
       const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
 
       service.logout('redirect_url').subscribe();
@@ -375,7 +363,7 @@ describe('Service: User', () => {
     });
 
     it('should call mparticle logout', () => {
-      spyOn(mParticle.Identity, 'logout');
+      spyOn(mParticle.Identity, 'logout').and.callFake((userIdentities: UserIdentities, callback) => callback({ getUser: () => true }));
       const expectedUrl = `${environment.baseUrl}${LOGOUT_ENDPOINT}`;
 
       service.logout('redirect_url').subscribe();
@@ -395,11 +383,9 @@ describe('Service: User', () => {
     describe('when the distance between users is the same...', () => {
       it('should return 0 distance', () => {
         const user: User = MOCK_USER;
-        const item: Item = MOCK_ITEM;
-        const user2: User = new User(USER_ID, null, null, ITEM_LOCATION);
-        service['_user'] = user2;
+        service['_user'] = new User(USER_ID, null, null, ITEM_LOCATION);
 
-        const distance: number = service.calculateDistanceFromItem(user, item);
+        const distance: number = service.calculateDistanceFromItem(user);
 
         expect(distance).toBe(0);
       });
@@ -417,11 +403,9 @@ describe('Service: User', () => {
           title: '08009, Barcelona',
         };
         const user: User = MOCK_USER;
-        const item: Item = MOCK_ITEM;
-        const user2: User = new User(USER_ID, null, null, CUSTOM_USER_LOCATION);
-        service['_user'] = user2;
+        service['_user'] = new User(USER_ID, null, null, CUSTOM_USER_LOCATION);
 
-        const distance: number = service.calculateDistanceFromItem(user, item);
+        const distance: number = service.calculateDistanceFromItem(user);
 
         expect(distance > 0).toBeTruthy();
       });
@@ -430,10 +414,9 @@ describe('Service: User', () => {
     describe('when our own user dont have location...', () => {
       it('should return null distance', () => {
         const user: User = new User(USER_ID);
-        const item: Item = MOCK_ITEM;
         service['_user'] = new User(USER_ID);
 
-        const distance: number = service.calculateDistanceFromItem(user, item);
+        const distance: number = service.calculateDistanceFromItem(user);
 
         expect(distance).toBeNull();
       });
@@ -671,16 +654,6 @@ describe('Service: User', () => {
     });
   });
 
-  describe('setPermission', () => {
-    it('should call addPermission', () => {
-      spyOn(permissionService, 'addPermission').and.returnValue({});
-
-      service.setPermission(MOCK_USER);
-
-      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
-    });
-  });
-
   describe('isProfessional', () => {
     let val: boolean;
 
@@ -705,7 +678,7 @@ describe('Service: User', () => {
     it('should return true if user is featured', (done) => {
       spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_FULL_USER));
 
-      service.initializeUserWithPermissions().subscribe();
+      service.initializeUser();
       let resp = service.isProUser();
 
       expect(resp).toBe(true);
@@ -715,7 +688,7 @@ describe('Service: User', () => {
     it('should return false if user is not featured', (done) => {
       spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
 
-      service.initializeUserWithPermissions().subscribe();
+      service.initializeUser();
       let resp = service.isProUser();
 
       expect(resp).toBe(false);
@@ -792,7 +765,7 @@ describe('Service: User', () => {
         spyOn(localStorage, 'getItem').and.returnValue(true);
         spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
 
-        service.initializeUserWithPermissions().subscribe();
+        service.initializeUser();
 
         expect(localStorage.getItem).toHaveBeenCalledTimes(1);
         expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);
@@ -805,7 +778,7 @@ describe('Service: User', () => {
         spyOn(localStorage, 'getItem').and.returnValue(null);
         spyOn(service, 'getLoggedUserInformation').and.returnValue(of(MOCK_USER));
 
-        service.initializeUserWithPermissions().subscribe();
+        service.initializeUser();
 
         expect(localStorage.getItem).toHaveBeenCalledTimes(1);
         expect(localStorage.getItem).toHaveBeenCalledWith(`${MOCK_USER.id}-${LOCAL_STORAGE_CLICK_PRO_SECTION}`);

@@ -36,14 +36,14 @@ import { VisibleDirectiveModule } from '@shared/directives/visible/visible.direc
 import { NgxPermissionsModule, NgxPermissionsService } from 'ngx-permissions';
 import { PERMISSIONS } from '@core/user/user-constants';
 import { PRO_PATHS } from '@private/features/pro/pro-routing-constants';
-import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
+import { ChangeStoreLocationModalComponent } from '../../modal/change-store-location-modal/change-store-location-modal.component';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
 
 @Component({
   selector: 'tsl-cover-upload',
   template: '',
 })
-class MockCoverUpload {}
+class MockCoverUploadComponent {}
 
 describe('ProfileInfoComponent', () => {
   let component: ProfileInfoComponent;
@@ -132,7 +132,7 @@ describe('ProfileInfoComponent', () => {
           { provide: SubscriptionsService, useClass: MockSubscriptionService },
           { provide: AnalyticsService, useClass: MockAnalyticsService },
         ],
-        declarations: [ProfileInfoComponent, ProfileFormComponent, MockCoverUpload],
+        declarations: [ProfileInfoComponent, ProfileFormComponent, MockCoverUploadComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })
@@ -296,7 +296,7 @@ describe('ProfileInfoComponent', () => {
               fixture.detectChanges();
               component.onSubmit();
 
-              expect(modalService.open).toHaveBeenCalledWith(ChangeStoreLocationModal, { windowClass: 'change-store-location' });
+              expect(modalService.open).toHaveBeenCalledWith(ChangeStoreLocationModalComponent, { windowClass: 'change-store-location' });
               expect(modalService.open).toHaveBeenCalledTimes(1);
             });
             describe('and user wants to change location', () => {
@@ -633,7 +633,7 @@ describe('ProfileInfoComponent', () => {
         });
 
         it('should show cover field', () => {
-          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeTruthy();
+          expect(fixture.debugElement.query(By.directive(MockCoverUploadComponent))).toBeTruthy();
         });
 
         it('should show first name and last name', () => {
@@ -664,7 +664,7 @@ describe('ProfileInfoComponent', () => {
         });
 
         it('should not show cover field', () => {
-          expect(fixture.debugElement.query(By.directive(MockCoverUpload))).toBeFalsy();
+          expect(fixture.debugElement.query(By.directive(MockCoverUploadComponent))).toBeFalsy();
         });
 
         it('should show first name and last name', () => {

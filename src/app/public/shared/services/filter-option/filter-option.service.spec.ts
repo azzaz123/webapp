@@ -12,6 +12,8 @@ import {
   FilterParameterStoreService,
 } from '@public/shared/services/filter-parameter-store/filter-parameter-store.service';
 import { HostVisibilityService } from '@public/shared/components/filters/components/filter-group/components/filter-host/services/host-visibility.service';
+import { PaginatedList } from '@api/core/model/lists/paginated-list.interface';
+import { throwError } from 'rxjs';
 
 jest.mock('./data/hardcoded-options', () => ({
   HARDCODED_OPTIONS: {
@@ -111,7 +113,7 @@ describe('FilterOptionService', () => {
     it('should retrieve corresponding options', fakeAsync(() => {
       let options: FilterOption[];
 
-      service.getOptions('hardcoded' as ConfigurationId).subscribe((opts) => (options = opts));
+      service.getOptions('hardcoded' as ConfigurationId).subscribe(({ list }) => (options = list));
       tick();
 
       expect(options).toEqual([
@@ -175,7 +177,7 @@ describe('FilterOptionService', () => {
           tick();
 
           expect(filterOptionsApiService.apiMethod).toHaveBeenCalledWith({}, { offset: 0 });
-          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith({}, {});
+          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith(undefined, {});
         }));
       });
     });
@@ -205,14 +207,27 @@ describe('FilterOptionService', () => {
           service.getOptions('mapperWithRelatedParam' as ConfigurationId).subscribe();
           tick();
 
-          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith(
-            {},
-            {
-              siblingParam1: 'siblingParam1',
-              mappedSiblingParam2: 'siblingParam2',
-            }
-          );
+          expect(filterOptionsMapperService.mapperMethod).toHaveBeenCalledWith(undefined, {
+            siblingParam1: 'siblingParam1',
+            mappedSiblingParam2: 'siblingParam2',
+          });
         }));
+      });
+    });
+
+    describe('and the api fails', () => {
+      it('should reurn an empty list with null pagination info', (done) => {
+        const expectedPaginatedResponse: PaginatedList<FilterOption, string> = {
+          list: [],
+          paginationParameter: null,
+        };
+
+        spyOn(filterOptionsApiService, 'getApiOptions').and.returnValue(throwError('api error'));
+
+        service.getOptions('pureApi' as ConfigurationId).subscribe((result: PaginatedList<FilterOption>) => {
+          expect(result).toEqual(expectedPaginatedResponse);
+          done();
+        });
       });
     });
   });

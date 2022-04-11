@@ -4,7 +4,8 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { TrustAndSafetyService, USER_STARTER_ENDPOINT } from './trust-and-safety.service';
 import { SessionProfileData, SessionProfileDataLocation, SessionProfileDataPlatform, TMXStatusCode } from './trust-and-safety.interface';
 import { environment } from 'environments/environment';
-import { environment as prodEnv } from 'environments/environment.prod';
+/* eslint-disable no-restricted-imports */
+import { environment as prodEnv } from '@environments/environment.prod';
 import { UuidService } from '../uuid/uuid.service';
 
 jest.mock('./threat-metrix-embed-script', () => ({

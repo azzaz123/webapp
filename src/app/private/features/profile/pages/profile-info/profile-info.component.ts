@@ -5,7 +5,7 @@ import { Coordinate, StoreLocation } from '@core/geolocation/address-response.in
 import { User } from '@core/user/user';
 import { UserProInfo } from '@core/user/user-info.interface';
 import { UserService } from '@core/user/user.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CanComponentDeactivate } from '@core/guards/can-component-deactivate.interface';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { metadata } from 'assets/js/metadata-phonenumber';
@@ -28,7 +28,7 @@ import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.e
 import { PERMISSIONS } from '@core/user/user-constants';
 import { isEqual } from 'lodash-es';
 import { Observable, of } from 'rxjs';
-import { ChangeStoreLocationModal } from '../../modal/change-store-location-modal/change-store-location-modal.component';
+import { ChangeStoreLocationModalComponent } from '../../modal/change-store-location-modal/change-store-location-modal.component';
 import { UserLocation } from '@core/user/user-response.interface';
 import { Tier } from '@core/subscriptions/subscriptions.interface';
 import { ProModalComponent } from '@shared/modals/pro-modal/pro-modal.component';
@@ -54,9 +54,11 @@ export enum ANALYTICS_FIELDS {
   styleUrls: ['./profile-info.component.scss'],
 })
 export class ProfileInfoComponent implements CanComponentDeactivate {
+  @ViewChild(ProfileFormComponent, { static: true })
+  formComponent: ProfileFormComponent;
+
   public profileForm: FormGroup;
   public allowSegmentation: boolean;
-  private userInfo: UserProInfo;
   public user: User;
   public isPro: boolean;
   public updateLocationWhenSearching = false;
@@ -66,10 +68,9 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   public ANALYTICS_FIELDS = ANALYTICS_FIELDS;
   public renderMap = false;
   public readonly PERMISSIONS = PERMISSIONS;
-  private tierWithDiscount: Tier;
 
-  @ViewChild(ProfileFormComponent, { static: true })
-  formComponent: ProfileFormComponent;
+  private userInfo: UserProInfo;
+  private tierWithDiscount: Tier;
 
   constructor(
     private userService: UserService,
@@ -100,7 +101,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     });
   }
 
-  initForm() {
+  public initForm() {
     this.userService
       .getUserCover()
       .pipe(
@@ -118,62 +119,6 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
           this.user.coverImage = coverImage;
         }
       });
-  }
-
-  private getProUserData() {
-    this.userService.getProInfo().subscribe(
-      (userInfo: UserProInfo) => {
-        this.userInfo = userInfo;
-        this.setUserData();
-      },
-      () => {
-        this.setUserData();
-      }
-    );
-  }
-
-  private mapUserLocation(userLocation: UserLocation): Partial<UserLocation> {
-    return {
-      address: userLocation.title,
-      latitude: userLocation.approximated_latitude,
-      longitude: userLocation.approximated_longitude,
-    };
-  }
-
-  private setUserData() {
-    let userData: any = {
-      first_name: this.user.firstName,
-      last_name: this.user.lastName,
-    };
-
-    if (this.user.location) {
-      userData = {
-        ...userData,
-        location: this.mapUserLocation(this.user.location),
-      };
-    }
-
-    if (this.userInfo && this.isPro) {
-      userData = {
-        ...userData,
-        phone_number: this.userInfo.phone_number,
-        description: this.userInfo.description,
-        opening_hours: this.userInfo.opening_hours,
-        link: this.userInfo.link,
-      };
-      if (this.userService.hasStoreLocation(this.user)) {
-        userData = {
-          ...userData,
-          storeLocation: {
-            latitude: this.user.extraInfo.latitude,
-            longitude: this.user.extraInfo.longitude,
-            address: this.user.extraInfo.address,
-          },
-        };
-      }
-    }
-
-    this.profileForm.patchValue(userData);
   }
 
   public canExit() {
@@ -273,6 +218,77 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     }
   }
 
+  public openBecomeProModal(field: ANALYTICS_FIELDS): void {
+    if (!this.isPro) {
+      this.trackClickEditProField(field);
+      if (this.hasTrialAvailable === undefined) {
+        this.getTrialAvailable(() => this.manageModal());
+        return;
+      }
+      this.manageModal();
+    }
+  }
+
+  public onMapContainerVisible(): void {
+    this.renderMap = true;
+  }
+
+  private getProUserData() {
+    this.userService.getProInfo().subscribe(
+      (userInfo: UserProInfo) => {
+        this.userInfo = userInfo;
+        this.setUserData();
+      },
+      () => {
+        this.setUserData();
+      }
+    );
+  }
+
+  private mapUserLocation(userLocation: UserLocation): Partial<UserLocation> {
+    return {
+      address: userLocation.title,
+      latitude: userLocation.approximated_latitude,
+      longitude: userLocation.approximated_longitude,
+    };
+  }
+
+  private setUserData() {
+    let userData: any = {
+      first_name: this.user.firstName,
+      last_name: this.user.lastName,
+    };
+
+    if (this.user.location) {
+      userData = {
+        ...userData,
+        location: this.mapUserLocation(this.user.location),
+      };
+    }
+
+    if (this.userInfo && this.isPro) {
+      userData = {
+        ...userData,
+        phone_number: this.userInfo.phone_number,
+        description: this.userInfo.description,
+        opening_hours: this.userInfo.opening_hours,
+        link: this.userInfo.link,
+      };
+      if (this.userService.hasStoreLocation(this.user)) {
+        userData = {
+          ...userData,
+          storeLocation: {
+            latitude: this.user.extraInfo.latitude,
+            longitude: this.user.extraInfo.longitude,
+            address: this.user.extraInfo.address,
+          },
+        };
+      }
+    }
+
+    this.profileForm.patchValue(userData);
+  }
+
   private updateUserLocation(newLocation: Coordinate): Observable<UserLocation> {
     return this.userService.updateLocation(newLocation).pipe(
       tap((newUserLocation) => {
@@ -282,17 +298,6 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
         this.formComponent.initFormControl();
       })
     );
-  }
-
-  public openBecomeProModal(field: ANALYTICS_FIELDS): void {
-    if (!this.isPro) {
-      this.trackClickEditProField(field);
-      if (this.hasTrialAvailable == null) {
-        this.getTrialAvailable(() => this.manageModal());
-        return;
-      }
-      this.manageModal();
-    }
   }
 
   private checkAndSaveStoreLocation(storeLocationValue: StoreLocation): Observable<boolean> {
@@ -316,7 +321,7 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
   }
 
   private openChangeStoreLocationModal(): void {
-    const modalRef = this.modalService.open(ChangeStoreLocationModal, {
+    const modalRef = this.modalService.open(ChangeStoreLocationModalComponent, {
       windowClass: 'change-store-location',
     });
 
@@ -338,10 +343,6 @@ export class ProfileInfoComponent implements CanComponentDeactivate {
     this.updateUserLocation(newLocation)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe();
-  }
-
-  public onMapContainerVisible(): void {
-    this.renderMap = true;
   }
 
   private manageModal(): void {

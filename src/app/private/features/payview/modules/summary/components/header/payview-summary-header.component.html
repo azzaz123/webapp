@@ -1,0 +1,34 @@
+<div class="PayviewSummaryHeader" *ngIf="!!deliveryMethod">
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex text-truncate pr-2">
+      <div class="PayviewSummaryHeader__imageWrapper" *ngIf="!!image">
+        <img class="PayviewSummaryHeader__image" [alt]="title" [src]="imageUrl" />
+      </div>
+      <div class="PayviewSummaryHeader__deliveryInfo d-flex flex-column justify-content-center text-truncate">
+        <div *ngIf="showDeliveryTime" class="PayviewSummaryHeader__deliveryEtaWrapper d-inline text-truncate">
+          <span class="PayviewSummaryHeader__deliveryEtaTitle" i18n="@@pay_view_buyer_all_all_summary_eta_time_description"
+            >Delivery expected in {{ '' }}</span
+          >
+          <span class="PayviewSummaryHeader__deliveryEta pl-1" i18n="@@pay_view_buyer_all_all_summary_eta_time_days"
+            >{{ deliveryTime }} days</span
+          >
+        </div>
+        <div *ngIf="showAddress" class="PayviewSummaryHeader__deliveryAddressWrapper d-inline text-truncate">
+          <span
+            *ngIf="isOffice"
+            class="PayviewSummaryHeader__deliveryAddressTitle"
+            i18n="@@pay_view_buyer_po_po_summary_eta_office_description"
+            >Pick-up point: {{ '' }}</span
+          >
+          <span
+            *ngIf="isHome"
+            class="PayviewSummaryHeader__deliveryAddressTitle"
+            i18n="@@pay_view_buyer_all_ba_summary_eta_address_description"
+            >Address: {{ '' }}</span
+          >
+          <span class="PayviewSummaryHeader__deliveryAddress pl-1">{{ address }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

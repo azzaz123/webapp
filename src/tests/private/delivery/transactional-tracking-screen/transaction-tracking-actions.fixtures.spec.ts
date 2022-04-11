@@ -3,6 +3,7 @@ import {
   TransactionTrackingActionDeeplink,
   TransactionTrackingActionUserAction,
   TransactionTrackingActionDialog,
+  TransactionTrackingActionUnknown,
 } from '@api/core/model/delivery/transaction/tracking';
 
 export const MOCK_TRANSACTION_TRACKING_ACTION_USER_ACTION: TransactionTrackingActionUserAction = {
@@ -39,6 +40,10 @@ export const MOCK_TRANSACTION_TRACKING_ACTION_DIALOG: TransactionTrackingActionD
     title: 'Confirmar',
   },
   title: '¿Confirmas que ya has recibido el producto?',
+};
+
+export const MOCK_TRANSACTION_TRACKING_ACTION_UNKNOWN: TransactionTrackingActionUnknown = {
+  isUnknown: true,
 };
 
 export const MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_WITH_ANALYTICS: TransactionTrackingActionDialog = {
@@ -115,4 +120,17 @@ export const MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK_WITH_ANALYTICS: Transacti
     source: 'Blabla',
     userId: '456',
   },
+};
+
+export const MOCK_TRANSACTION_TRACKING_ACTION_DIALOG_DEEPLINK: TransactionTrackingActionDialog = {
+  isDialog: true,
+  description: 'Quieres abrir una disputa?',
+  negative: {
+    title: 'Nah',
+  },
+  positive: {
+    action: MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK,
+    title: 'Confirmar',
+  },
+  title: 'Vas a abrir una disputa',
 };

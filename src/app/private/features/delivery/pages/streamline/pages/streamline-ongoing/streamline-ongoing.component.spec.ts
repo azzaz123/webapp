@@ -18,7 +18,7 @@ import {
   MOCK_HISTORIC_LIST_EMPTY,
 } from '@shared/historic-list/fixtures/historic-list.fixtures.spec';
 import { MockSharedErrorActionService } from '@fixtures/private/wallet/shared/wallet-shared-error-action.fixtures.spec';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { PATH_TO_ACCEPT_SCREEN, PRIVATE_PATHS } from '@private/private-routing-constants';
 import { SharedErrorActionService } from '@shared/error-action';
 import { StreamlineOngoingComponent } from '@private/features/delivery/pages/streamline/pages/streamline-ongoing/streamline-ongoing.component';
 import { StreamlineOngoingUIService } from '@private/features/delivery/pages/streamline/services/streamline-ongoing-ui/streamline-ongoing-ui.service';
@@ -27,14 +27,14 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { ReplaySubject, throwError } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
-import { AcceptScreenAwarenessModalComponent } from '@private/features/delivery/modals/accept-screen-awareness-modal/accept-screen-awareness-modal.component';
+
+const PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID: string = `${PATH_TO_ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
 
 describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;
   let fixture: ComponentFixture<StreamlineOngoingComponent>;
   let streamlineOngoingUIService: StreamlineOngoingUIService;
   let router: Router;
-  let modalService: NgbModal;
 
   let loadingReplaySubject: ReplaySubject<boolean> = new ReplaySubject(1);
   let historicListReplaySubject: ReplaySubject<HistoricList> = new ReplaySubject(1);
@@ -68,7 +68,6 @@ describe('StreamlineOngoingComponent', () => {
 
     router = TestBed.inject(Router);
     streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
-    modalService = TestBed.inject(NgbModal);
 
     fixture.detectChanges();
     spyOn(router, 'navigate');
@@ -141,19 +140,11 @@ describe('StreamlineOngoingComponent', () => {
         });
 
         describe('and the user is the seller', () => {
-          beforeEach(() => {
-            spyOn(modalService, 'open').and.callThrough();
-
+          it('should navigate to the accept screen page', () => {
             component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER);
-          });
 
-          it('should stay at the same page', () => {
-            expect(router.navigate).not.toHaveBeenCalled();
-          });
-
-          it('should open the accept screen awareness modal', () => {
-            expect(modalService.open).toHaveBeenCalledTimes(1);
-            expect(modalService.open).toHaveBeenCalledWith(AcceptScreenAwarenessModalComponent);
+            expect(router.navigate).toHaveBeenCalledTimes(1);
+            expect(router.navigate).toHaveBeenCalledWith([PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID]);
           });
         });
       });

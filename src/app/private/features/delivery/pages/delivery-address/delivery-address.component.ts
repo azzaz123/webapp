@@ -1,6 +1,6 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DeliveryAddressApi } from '../../interfaces/delivery-address/delivery-address-api.interface';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { DeliveryLocationsService } from '../../services/locations/delivery-locations/delivery-locations.service';
 import { DeliveryAddressService } from '../../services/address/delivery-address/delivery-address.service';
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
@@ -52,6 +52,7 @@ import { DELIVERY_ADDRESS_LINKS } from '../../enums/delivery-address-links.enum'
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { DeliveryAddressInputsMaxLength } from './interfaces/delivery-address-inputs-max-length.interface';
 import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -59,7 +60,10 @@ import { DeliveryCountriesStoreService } from '../../services/countries/delivery
   styleUrls: ['./delivery-address.component.scss'],
 })
 export class DeliveryAddressComponent implements OnInit, OnDestroy {
+  @Input() showTitle: boolean = true;
   @Input() whereUserComes: DELIVERY_ADDRESS_PREVIOUS_PAGE;
+  @Output() addressSaveSucceded: EventEmitter<void> = new EventEmitter();
+
   @ViewChild(ProfileFormComponent, { static: true }) formComponent: ProfileFormComponent;
   @ViewChild('country_iso_code') countriesDropdown: DropdownComponent;
 
@@ -87,7 +91,8 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     street: '',
     flat_and_floor: '',
   };
-  public comesFromPayView: boolean;
+  public showDeleteButton: boolean;
+  public showStickyButton: boolean;
   private subscriptions: Subscription = new Subscription();
   private defaultCountry: DeliveryCountryDefault;
 
@@ -115,9 +120,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.deliveryAddressTrackEventsService.trackViewShippingAddressScreen();
-    this.comesFromPayView =
-      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
-      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
+    this.initializeShowDeleteButton();
 
     this.buildForm();
     this.eventService.subscribe(EventService.FORM_SUBMITTED, () => {
@@ -133,9 +136,9 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  public initForm(cache: boolean = true): void {
+  public initForm(): void {
     this.deliveryAddressService
-      .get(cache)
+      .get(false)
       .subscribe(
         (deliveryAddress: DeliveryAddressApi) => {
           if (deliveryAddress) {
@@ -363,7 +366,7 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
           this.formComponent.initFormControl();
           this.isNewForm = false;
           this.showToast(successKey, TOAST_TYPES.SUCCESS);
-          this.redirect();
+          this.addressSaveSucceded.emit();
         },
         (errors: DeliveryAddressError[]) => this.handleAddressErrors(errors)
       );
@@ -435,17 +438,6 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
       TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR_BEFORE_SAVE
     );
     errors.forEach((error) => this.setIncorrectControlAndShowError('postal_code', error.message));
-  }
-
-  private redirect(): void {
-    switch (this.whereUserComes) {
-      case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS:
-        this.router.navigate([DELIVERY_PATHS.PAYVIEW]);
-        break;
-      case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY:
-        this.router.navigate([DELIVERY_PATHS.BUYS]);
-        break;
-    }
   }
 
   private getLocationsAndHandlePostalCode(postalCode: string, countryISOCode: string): void {
@@ -560,5 +552,12 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.properties = properties;
 
     return modalRef;
+  }
+
+  private initializeShowDeleteButton(): void {
+    const isUserComingFromDelivery: boolean = this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+
+    this.showStickyButton = isUserComingFromDelivery;
+    this.showDeleteButton = !isUserComingFromDelivery;
   }
 }

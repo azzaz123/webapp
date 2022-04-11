@@ -5,6 +5,7 @@ export interface SearchBaseItemResponse {
   title: string;
   distance: number;
   images: SearchItemImageResponse[];
+  favorited: boolean,
   flags: {
     banned: boolean;
     expired: boolean;
@@ -18,7 +19,6 @@ export interface SearchBaseItemResponse {
     bumped: boolean;
     country_bumped: boolean;
     highlighted: boolean;
-    urgent: boolean;
   };
   user: {
     id: string;

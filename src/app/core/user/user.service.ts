@@ -1,10 +1,9 @@
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, ReplaySubject } from 'rxjs';
 
 import { catchError, tap, map, take, finalize } from 'rxjs/operators';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { User } from './user';
 import { EventService } from '../event/event.service';
-import { Item } from '../item/item';
 import { UserLocation, UserResponse, Image } from './user-response.interface';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '@environments/environment';
@@ -19,13 +18,13 @@ import { PhoneMethodResponse } from './phone-method.interface';
 
 import { APP_VERSION } from '@environments/version';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { InboxUser, InboxItem } from '@private/features/chat/core/model';
+import { InboxUser } from '@private/features/chat/core/model';
 import { ReleaseVersionService } from '@core/release-version/release-version.service';
 
-import mParticle from '@mparticle/web-sdk';
 import { PERMISSIONS } from './user-constants';
 import { APP_LOCALE } from '@configs/subdomains.config';
 import { SITE_URL } from '@configs/site-url.config';
+import { mParticle } from '@core/analytics/mparticle.constants';
 
 export const LOGOUT_ENDPOINT = 'shnm-portlet/api/v1/access.json/logout2';
 export const USER_BASE_ENDPOINT = 'api/v3/users/';
@@ -43,8 +42,6 @@ export const USER_PASSWORD_ENDPOINT = `${USER_ENDPOINT}password`;
 export const USER_UNSUBSCRIBE_ENDPOINT = `${USER_ENDPOINT}unsubscribe/`;
 export const USER_UNSUBSCRIBE_REASONS_ENDPOINT = `${USER_UNSUBSCRIBE_ENDPOINT}reason`;
 export const USER_STATS_BY_ID_ENDPOINT = (userId: string) => `${USER_BASE_ENDPOINT}${userId}/stats`;
-export const USER_PROFILE_SUBSCRIPTION_INFO_ENDPOINT = `${USER_ENDPOINT}profile-subscription-info/`;
-export const USER_PROFILE_SUBSCRIPTION_INFO_TYPE_ENDPOINT = `${USER_ENDPOINT}type`;
 
 export const PROTOOL_ENDPOINT = 'api/v3/protool/';
 export const PROTOOL_EXTRA_INFO_ENDPOINT = `${PROTOOL_ENDPOINT}extraInfo`;
@@ -63,6 +60,7 @@ export const LOCAL_STORAGE_SUGGEST_PRO_SHOWN = 'suggest-pro-shown';
 })
 export class UserService {
   private _user: User;
+  private readonly _userSubject: ReplaySubject<User> = new ReplaySubject();
   private _users: User[] = [];
   private presenceInterval: any;
   private _isProSectionClicked: boolean;
@@ -81,6 +79,10 @@ export class UserService {
 
   get user(): User {
     return this._user;
+  }
+
+  get user$(): Observable<User> {
+    return this._userSubject.asObservable();
   }
 
   get isPro(): boolean {
@@ -121,7 +123,7 @@ export class UserService {
     this.cookieService.remove('creditQuantity', cookieOptions);
     this.accessTokenService.deleteAccessToken();
     this.permissionService.flushPermissions();
-    this.logoutMParticle(this.event.emit(EventService.USER_LOGOUT, redirectUrl));
+    this.logoutMParticle(() => this.event.emit(EventService.USER_LOGOUT, redirectUrl));
   }
 
   public isCurrentUser(userId: string): boolean {
@@ -142,7 +144,7 @@ export class UserService {
     }
   }
 
-  public calculateDistanceFromItem(user: User | InboxUser, item: Item | InboxItem): number {
+  public calculateDistanceFromItem(user: User | InboxUser): number {
     if (!user.location || !this.user.location) {
       return null;
     }
@@ -166,7 +168,7 @@ export class UserService {
   }
 
   public getUserCover(): Observable<Image> {
-    return this.http.get<Image>(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`).pipe(catchError((error) => of({} as Image)));
+    return this.http.get<Image>(`${environment.baseUrl}${USER_COVER_IMAGE_ENDPOINT}`).pipe(catchError(() => of({} as Image)));
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
@@ -266,19 +268,21 @@ export class UserService {
     return this.http.post(`${environment.baseUrl}${USER_UNSUBSCRIBE_ENDPOINT}`, { reason_id, other_reason });
   }
 
-  public initializeUserWithPermissions(): Observable<boolean> {
-    return this.getLoggedUserInformation().pipe(
-      tap((user) => {
-        this._user = user;
-        this.isProUserSubject.next(this.isPro);
-      }),
-      tap((user) => this.setPermission(user)),
-      tap((user) => this.getStoredIsClickedProSection(user)),
-      catchError((error) => {
-        this.logout(null);
-        return of(error);
-      })
-    );
+  public initializeUser(): Promise<User> {
+    return this.getLoggedUserInformation()
+      .pipe(
+        tap((user) => {
+          this._user = user;
+          this._userSubject.next(user);
+          this.isProUserSubject.next(this.isPro);
+        }),
+        tap(() => this.getStoredIsClickedProSection()),
+        catchError((error) => {
+          this.logout(null);
+          return of(error);
+        })
+      )
+      .toPromise();
   }
 
   //TODO: This is needed for the current subscriptions flow but this should handled in some other way when
@@ -290,12 +294,6 @@ export class UserService {
         this.isProUserSubject.next(this.isPro);
       })
     );
-  }
-
-  public setPermission(user: User): void {
-    user.featured && user.type !== USER_TYPE.PROFESSIONAL
-      ? this.permissionService.addPermission(PERMISSIONS[USER_TYPE.FEATURED])
-      : this.permissionService.addPermission(PERMISSIONS[user.type]);
   }
 
   public hasPerm(permission: string): Observable<boolean> {
@@ -357,13 +355,14 @@ export class UserService {
     }, interval);
   }
 
-  private logoutMParticle(callback: any): void {
-    const identityCallback = (result: any) => {
+  // FIXME: This should be handled through the analytics service
+  private logoutMParticle(callback: () => void): void {
+    const identityCallback = (result: mParticle.IdentityResult) => {
       if (result.getUser()) {
-        return callback;
+        callback();
       }
     };
-    mParticle.Identity.logout({}, identityCallback);
+    mParticle.Identity.logout({ userIdentities: {} }, identityCallback);
   }
 
   private sendUserPresence() {
@@ -421,7 +420,7 @@ export class UserService {
     return (value * Math.PI) / 180;
   }
 
-  private getStoredIsClickedProSection(user: User): void {
+  private getStoredIsClickedProSection(): void {
     this._isProSectionClicked = !!this.getLocalStore(LOCAL_STORAGE_CLICK_PRO_SECTION);
   }
 }

@@ -1,0 +1,52 @@
+@import '~style/common';
+
+$modal-header-height: 56px;
+
+:host {
+  height: inherit;
+}
+
+.PayviewModal {
+  height: inherit;
+  overflow: hidden;
+
+  &__header {
+    padding: $spacer * 1.15;
+    height: $modal-header-height;
+    top: 0;
+    z-index: 1;
+    background-color: $white;
+  }
+
+  &__buyButton {
+    bottom: 0;
+    z-index: 2;
+    background-color: rgba($white, 0.8);
+  }
+
+  &__stepper {
+    overflow: auto;
+    height: calc(100% - #{$modal-header-height});
+  }
+
+  &__back {
+    cursor: pointer;
+  }
+
+  &__spinner {
+    padding: $spacing-l;
+  }
+
+  &__close {
+    cursor: pointer;
+  }
+
+  &__windowHeader {
+    padding-left: $spacing-ml;
+  }
+
+  &__policiesText {
+    font-size: $font-size-xs;
+    color: $blue-grey-3;
+  }
+}
