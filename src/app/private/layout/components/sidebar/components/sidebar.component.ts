@@ -22,6 +22,7 @@ import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { CUSTOMER_HELP_PAGE } from '@core/external-links/customer-help/customer-help-constants';
 import { NotificationApiService } from '@api/notification/notification-api.service';
+import { SidebarNavigationProfileElement } from '../interfaces/sidebar-navigation-profile-element.interface';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -42,6 +43,8 @@ export class SidebarComponent implements OnInit {
   public readonly isTouchDevice: boolean = this.deviceService.isTouchDevice();
   public readonly helpUrl = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.HOME);
   public isClickedProSection: boolean;
+
+  public readonly profileNavigationElement$: Observable<SidebarNavigationProfileElement> = this.sidebarService.profileNavigationElement$;
 
   constructor(
     private sidebarService: SidebarService,

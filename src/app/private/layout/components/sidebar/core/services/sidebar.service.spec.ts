@@ -1,5 +1,11 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { DeviceService } from '@core/device/device.service';
+import { UserService } from '@core/user/user.service';
+import { MOCK_USER, MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
+import { PROFILE_PATHS } from '@private/features/profile/profile-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { of } from 'rxjs';
+import { SIDEBAR_NAVIGATION_ELEMENTS } from '../../interfaces/sidebar-navigation-element.interface';
 
 import { SidebarService } from './sidebar.service';
 
@@ -15,6 +21,13 @@ describe('SidebarService', () => {
           provide: DeviceService,
           useValue: {
             isTablet: () => false,
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
+            user$: of(MOCK_USER),
+            getStats: () => of(MOCK_USER_STATS),
           },
         },
       ],
@@ -126,6 +139,25 @@ describe('SidebarService', () => {
           expect(collapsed).toBe(true);
         });
       }));
+    });
+  });
+
+  describe('profileNavigationElement$', () => {
+    it('should return the information needed for displaying the profile element', (done) => {
+      service.profileNavigationElement$.subscribe((profileElement) => {
+        expect(profileElement).toEqual({
+          id: SIDEBAR_NAVIGATION_ELEMENTS.PROFILE,
+          isPro: MOCK_USER.featured,
+          text: MOCK_USER.microName,
+          alternativeText: MOCK_USER.microName,
+          reviews: MOCK_USER_STATS.ratings.reviews,
+          reviews_count: MOCK_USER_STATS.counters.reviews,
+          avatar: MOCK_USER.image.urls_by_size.medium,
+          href: `/${PRIVATE_PATHS.PROFILE}/${PROFILE_PATHS.INFO}`,
+          external: false,
+        });
+        done();
+      });
     });
   });
 });
