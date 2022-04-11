@@ -30,17 +30,7 @@ import { UserService } from '@core/user/user.service';
 
 import { Observable, of, Subscriber } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-
-type deeplinkType =
-  | 'unknown'
-  | 'barcodeLabel'
-  | 'pay'
-  | 'instructions'
-  | 'item'
-  | 'printableLabel'
-  | 'userProfile'
-  | 'zendeskArticle'
-  | 'zendeskForm';
+import { deeplinkType } from './types/deeplink.type';
 
 @Injectable()
 export class DeeplinkService {
