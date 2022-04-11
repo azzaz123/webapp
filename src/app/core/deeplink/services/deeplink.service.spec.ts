@@ -15,43 +15,33 @@ import { UserService } from '@core/user/user.service';
 
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-
-const fakeBarcode = 'abcZYW123908';
-const fakeInstructionsType = 'packaging';
-const fakeItemId = 'this_is_a_fake_item_id';
-const fakeItemName = 'this-is-a-fake-item';
-const fakeItemWebSlug = `${fakeItemName}-1234567890`;
-const fakeItem = {
-  webSlug: fakeItemWebSlug,
-};
-const fakePrintableUrl = 'http://fake.url.fake';
-const fakeRequestId = '123-456-789-000';
-const fakeUserId = 'this_is_a_fake_user_id';
-const fakeUsername = 'this_is_a_fake_username';
-const fakeWebSlug = `${fakeUsername}-1234567890`;
-const fakeUser = {
-  id: fakeUserId,
-  firstName: fakeUsername,
-  webSlug: fakeWebSlug,
-};
-
-const allLanguages: APP_LOCALE[] = [`es`, `en`, `it`];
-const barcodeBaseDeeplink: string = `wallapop://delivery/barcode`;
-const barcodeDeeplink: string = `${barcodeBaseDeeplink}?b=${fakeBarcode}`;
-const checkDeliveryInstructionBaseDeeplink: string = `wallapop://shipping/transactiontracking/instructions`;
-const checkDeliveryInstructionDeeplink: string = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=${fakeInstructionsType}`;
-const itemBaseDeeplink: string = `wallapop://i`;
-const itemDeeplink: string = `${itemBaseDeeplink}/$itemId`;
-const packagingInstructionsDeeplink: string = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=${fakeInstructionsType}`;
-const printableLabelBaseDeeplink: string = `wallapop://trackinglabel`;
-const printableLabelDeeplink: string = `${printableLabelBaseDeeplink}?url=${fakePrintableUrl}`;
-const siteUrlMock: string = 'https://localhost/';
-const userProfileBaseDeeplink: string = `wallapop://p`;
-const userProfileDeeplink: string = `${userProfileBaseDeeplink}/$userId`;
-const zendeskArticleBaseDeeplink: string = `wallapop://customerSupport/faq/article`;
-const zendeskArticleDeeplink: string = `${zendeskArticleBaseDeeplink}?z=%s`;
-const zendeskCreateDisputeFormBaseDeeplink: string = `wallapop://customerSupport/form`;
-const zendeskCreateDisputeFormDeeplink: string = `${zendeskCreateDisputeFormBaseDeeplink}?f=360003316777`;
+import {
+  siteUrlMock,
+  allLanguages,
+  zendeskArticleBaseDeeplink,
+  zendeskCreateDisputeFormDeeplink,
+  zendeskCreateDisputeFormBaseDeeplink,
+  barcodeBaseDeeplink,
+  checkDeliveryInstructionBaseDeeplink,
+  itemBaseDeeplink,
+  printableLabelBaseDeeplink,
+  userProfileBaseDeeplink,
+  itemDeeplink,
+  printableLabelDeeplink,
+  zendeskArticleDeeplink,
+  checkDeliveryInstructionDeeplink,
+  packagingInstructionsDeeplink,
+  userProfileDeeplink,
+  fakeInstructionsType,
+  fakeItem,
+  fakeItemId,
+  fakeItemWebSlug,
+  fakePrintableUrl,
+  fakeRequestId,
+  fakeUser,
+  fakeUserId,
+  fakeUsername,
+} from '@fixtures/core/deeplink/deeplink.fixtures.spec';
 
 describe(`DeeplinkService`, () => {
   let router: Router;
