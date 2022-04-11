@@ -55,6 +55,7 @@ export class DeeplinkService {
     this.isExternalNavigation(deeplink) ? this.navigateToUrl(deeplink) : this.navigateToRoute(deeplink);
   }
 
+  //FIXME: This should be private
   public toWebLink(deeplink: string): Observable<string> {
     if (!deeplink) {
       return of(null);
