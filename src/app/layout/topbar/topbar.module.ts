@@ -10,9 +10,19 @@ import { FormsModule } from '@angular/forms';
 import { CustomCurrencyModule } from '@shared/pipes/custom-currency/custom-currency.module';
 import { TopbarTrackingEventsService } from './core/services/topbar-tracking-events/topbar-tracking-events.service';
 import { HomeRouteModule } from '@shared/home-route/home-route/home-route.module';
+import { FavoriteSearchButtonModule } from '@layout/topbar/components/favorite-search-button/favorite-search-button.module';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, FormsModule, RouterModule, NgbTypeaheadModule, CustomCurrencyModule, HomeRouteModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FormsModule,
+    RouterModule,
+    NgbTypeaheadModule,
+    CustomCurrencyModule,
+    HomeRouteModule,
+    FavoriteSearchButtonModule,
+  ],
   exports: [TopbarComponent, SuggesterComponent],
   declarations: [TopbarComponent, SuggesterComponent],
   providers: [SuggesterService, TopbarTrackingEventsService],
