@@ -31,6 +31,7 @@ import { UserService } from '@core/user/user.service';
 import { Observable, of, Subscriber } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { deeplinkType } from './types/deeplink.type';
+import { deeplinkAvailabilities } from './constants/deeplink-availability';
 
 @Injectable()
 export class DeeplinkService {
@@ -44,22 +45,6 @@ export class DeeplinkService {
     private userService: UserService,
     private toastService: ToastService
   ) {}
-
-  public isAvailable(deeplink: string): boolean {
-    const availabilities: Record<deeplinkType, boolean> = {
-      barcodeLabel: true,
-      pay: true,
-      instructions: true,
-      item: true,
-      printableLabel: true,
-      unknown: false,
-      userProfile: true,
-      zendeskArticle: true,
-      zendeskForm: true,
-    };
-
-    return availabilities[this.getDeeplinkType(deeplink)];
-  }
 
   public navigate(deeplink: string): void {
     if (!this.isAvailable(deeplink)) {
@@ -92,6 +77,10 @@ export class DeeplinkService {
       unknown: null,
     };
     return of(deeplinkMappers[this.getDeeplinkType(deeplink)]);
+  }
+
+  private isAvailable(deeplink: string): boolean {
+    return deeplinkAvailabilities[this.getDeeplinkType(deeplink)];
   }
 
   private getBarcodeWebLink(deeplink: string): string {
