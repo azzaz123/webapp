@@ -88,7 +88,6 @@ import { PAYVIEW_BUY_EVENT_TYPE } from '../../modules/buy/enums/payview-buy-even
 import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
-import { PAYVIEW_EVENT_TYPE } from '../../enums/payview-event-type.enum';
 
 @Component({
   selector: 'tsl-delivery-address',
