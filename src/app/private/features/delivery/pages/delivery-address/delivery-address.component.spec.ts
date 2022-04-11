@@ -30,7 +30,6 @@ import {
 import { ProfileFormComponent } from '@shared/profile/profile-form/profile-form.component';
 import { MOCK_DELIVERY_COUNTRIES_OPTIONS_AND_DEFAULT } from '@fixtures/private/delivery/delivery-countries.fixtures.spec';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-import { DELIVERY_PATHS } from '../../delivery-routing-constants';
 import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { DropdownComponent } from '@shared/dropdown/dropdown.component';
@@ -42,10 +41,8 @@ import { DELIVERY_ADDRESS_PREVIOUS_PAGE } from '../../enums/delivery-address-pre
 import { NumbersOnlyDirective } from '@shared/directives/numbers-only/numbers-only.directive';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { DeliveryAddressErrorTranslations } from '../../errors/constants/delivery-error-translations';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 describe('DeliveryAddressComponent', () => {
-  const payViewMessageSelector = '.DeliveryAddress__payViewInfoMessage';
   const boxStyleSelector = '.box';
   const countriesDropdownSelector = '#country_iso_code';
   const deleteButtonSelector = '#deleteButton';
@@ -70,7 +67,6 @@ describe('DeliveryAddressComponent', () => {
         FormBuilder,
         I18nService,
         ToastService,
-
         DeliveryCountriesApiService,
         DeliveryLocationsApiService,
         {
@@ -393,22 +389,6 @@ describe('DeliveryAddressComponent', () => {
         });
 
         describe('when redirecting to the next page...', () => {
-          it('should redirect to the payview if we come from payview add address button', () => {
-            component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
-
-            component.onSubmit();
-
-            expect(router.navigate).toHaveBeenCalledWith([PRIVATE_PATHS.PAYVIEW]);
-          });
-
-          it('should redirect to shipment tracking if we come from payview pay button', () => {
-            component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
-
-            component.onSubmit();
-
-            expect(router.navigate).toHaveBeenCalledWith([DELIVERY_PATHS.BUYS]);
-          });
-
           it('should stay at the same page by default', () => {
             component.whereUserComes = null;
 
@@ -613,62 +593,6 @@ describe('DeliveryAddressComponent', () => {
 
     it('should NOT apply the box style', () => {
       expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeFalsy();
-    });
-  });
-
-  describe('when the user comes from the pay on payview...', () => {
-    beforeEach(() => {
-      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
-      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
-      component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY;
-
-      component.ngOnInit();
-      component.initForm();
-      fixture.detectChanges();
-    });
-
-    it('should show an info message', () => {
-      expect(fixture.debugElement.query(By.css(payViewMessageSelector))).toBeTruthy();
-    });
-
-    it('should not appear the delete button', () => {
-      expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
-    });
-
-    it('should apply the sticky button style', () => {
-      expect(fixture.debugElement.query(By.css(stickyButtonSelector))).toBeTruthy();
-    });
-
-    it('should apply the box style', () => {
-      expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeTruthy();
-    });
-  });
-
-  describe('when the user comes from the payview add address...', () => {
-    beforeEach(() => {
-      spyOn(deliveryAddressService, 'get').and.returnValue(of(MOCK_DELIVERY_ADDRESS));
-      spyOn(deliveryLocationsService, 'getLocationsByPostalCodeAndCountry').and.returnValue(of([MOCK_DELIVERY_LOCATION]));
-      component.whereUserComes = DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS;
-
-      component.ngOnInit();
-      component.initForm();
-      fixture.detectChanges();
-    });
-
-    it('should NOT show an info message', () => {
-      expect(fixture.debugElement.query(By.css(payViewMessageSelector))).toBeFalsy();
-    });
-
-    it('should not appear the delete button', () => {
-      expect(fixture.debugElement.query(By.css(deleteButtonSelector))).toBeFalsy();
-    });
-
-    it('should apply the sticky button style', () => {
-      expect(fixture.debugElement.query(By.css(stickyButtonSelector))).toBeTruthy();
-    });
-
-    it('should apply the box style', () => {
-      expect(fixture.debugElement.query(By.css(boxStyleSelector))).toBeTruthy();
     });
   });
 
