@@ -78,6 +78,15 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES: PaymentsUserPaymentPreferen
   },
 };
 
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_ID: PaymentsUserPaymentPreferences = {
+  ...MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
+  preferences: {
+    paymentMethod: PAYVIEW_PAYMENT_METHOD.PAYPAL,
+    useWallet: false,
+    walletBlocked: false,
+  },
+};
+
 export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD: PaymentsUserPaymentPreferences = {
   defaults: {
     paymentMethod: PAYVIEW_PAYMENT_METHOD.CREDIT_CARD,

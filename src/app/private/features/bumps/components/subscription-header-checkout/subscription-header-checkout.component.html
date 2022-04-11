@@ -6,10 +6,9 @@
     <ng-container *ngFor="let bump of balance">
       <span
         class="SubscriptionHeaderCheckout__counter"
-        [ngClass]="{ 'SubscriptionHeaderCheckout__counter--completed': bump.used === bump.total + bump.extra }"
-        i18n="@@highlight_item_view_pro_user_item_card_bump_counter_bubble_web_specific"
+        [ngClass]="{ 'SubscriptionHeaderCheckout__counter--completed': bump.remaining === 0 }"
       >
-        {{ bump.used }}/{{ bump.total }} highlighted ({{ getBumpName(bump.type) }} area) so far this period
+        {{ getBumpQuantityText(bump.remaining) }}
       </span>
     </ng-container>
   </ng-container>

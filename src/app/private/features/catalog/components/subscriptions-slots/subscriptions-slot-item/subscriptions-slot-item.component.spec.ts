@@ -12,7 +12,6 @@ import {
   SCREEN_IDS,
 } from '@core/analytics/analytics-constants';
 import { MOCK_SUBSCRIPTION_SLOT_CARS, MOCK_SUBSCRIPTION_SLOT_REAL_ESTATE } from '@fixtures/subscription-slots.fixtures.spec';
-import { MOCK_TIER_2_WITH_DISCOUNT_WITH_ZONE_BUMP, TIER_2_WITH_DISCOUNT } from '@fixtures/subscriptions.fixtures.spec';
 import { By } from '@angular/platform-browser';
 import { MOCK_BUMPS_PACKAGE_BALANCE_MAPPED } from '@fixtures/bump-package.fixtures.spec';
 
@@ -38,7 +37,6 @@ describe('SubscriptionsSlotItemComponent', () => {
     component.subscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
     component.selectedSubscriptionSlot = MOCK_SUBSCRIPTION_SLOT_CARS;
     analyticsService = TestBed.inject(AnalyticsService);
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -59,7 +57,9 @@ describe('SubscriptionsSlotItemComponent', () => {
   });
 
   describe('onClick', () => {
-    const event = { stopPropagation: () => {} };
+    const event = {
+      stopPropagation: () => {},
+    };
 
     beforeEach(() => {
       spyOn(component.selected, 'emit').and.callThrough();
@@ -144,14 +144,52 @@ describe('SubscriptionsSlotItemComponent', () => {
 
     describe('available bumps', () => {
       describe('and has bumps', () => {
-        it('should show counter', () => {
-          const expectedCounter = MOCK_BUMPS_PACKAGE_BALANCE_MAPPED[0].balance;
-          component.subscriptionSlot.bumpBalance = expectedCounter;
+        const expectedCounter = MOCK_BUMPS_PACKAGE_BALANCE_MAPPED[0].balance;
 
+        beforeEach(() => {
+          component.subscriptionSlot.bumpBalance = expectedCounter;
+        });
+        it('should show counter', () => {
           fixture.detectChanges();
           const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
 
           expect(descriptions[1].nativeElement.textContent).toContain(`${expectedCounter[0].used}/${expectedCounter[0].total}`);
+        });
+
+        describe('extra bumps', () => {
+          describe('and has not extra bumps', () => {
+            it('should not show extra bumps', () => {
+              const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+
+              fixture.detectChanges();
+
+              expect(descriptions[1]).toBeFalsy();
+            });
+          });
+          describe('and has extra bumps', () => {
+            describe('and has a single extra bump', () => {
+              const expectedExtraBump = 1;
+              beforeEach(() => {
+                component.subscriptionSlot.bumpBalance[0].extra = expectedExtraBump;
+                fixture.detectChanges();
+              });
+              it('should show extra bumps', () => {
+                const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+                expect(descriptions[1].nativeElement.textContent).toContain(expectedExtraBump);
+              });
+            });
+            describe('and has a multiple extra bumps', () => {
+              const expectedExtraBump = 5;
+              beforeEach(() => {
+                component.subscriptionSlot.bumpBalance[0].extra = expectedExtraBump;
+                fixture.detectChanges();
+              });
+              it('should show extra bumps', () => {
+                const descriptions = fixture.debugElement.queryAll(By.css('.SubscriptionsSlotItem__description'));
+                expect(descriptions[1].nativeElement.textContent).toContain(expectedExtraBump);
+              });
+            });
+          });
         });
       });
       describe('and has not bumps', () => {
