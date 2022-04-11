@@ -11,7 +11,7 @@ export class WebViewModalService {
   constructor(private modalService: NgbModal) {}
 
   public open(url: string, title: string, modalClassName: string): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
-    const modalref = this.modalService.open(WebViewModalComponent, { backdrop: 'static', windowClass: modalClassName });
+    const modalref = this.modalService.open(WebViewModalComponent, { backdrop: 'static', windowClass: modalClassName, keyboard: false });
     modalref.componentInstance.startUrl = url;
     modalref.componentInstance.title = title;
     modalref.componentInstance.closeCallback = modalref.close.bind(modalref);
