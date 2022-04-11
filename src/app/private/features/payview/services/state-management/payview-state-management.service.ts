@@ -250,13 +250,13 @@ export class PayviewStateManagementService {
             message: error ? error.message : '',
           };
 
-          if (!(error instanceof UserPaymentPreferencesUnknownError)) {
-            this.updatePaymentPreferencesBuyerStatus(payviewState);
-          }
           this.actionSubject.next({
             type: PAYVIEW_EVENT_TYPE.ERROR_ON_BUY,
             payload,
           });
+          if (!(error instanceof UserPaymentPreferencesUnknownError)) {
+            this.updatePaymentPreferencesBuyerStatus(payviewState);
+          }
           this.trackTransactionCheckoutErrorEvent(payviewState, error);
           subscription.unsubscribe();
         },

@@ -903,29 +903,31 @@ describe('PayviewStateManagementService', () => {
     });
 
     describe('and the request failed', () => {
-      const MOCK_ERROR = {
-        name: 'this is an error name',
-        message: 'this is a message',
-      };
-      beforeEach(() => {
-        spyOn(payviewService, 'request').and.returnValue(throwError([MOCK_ERROR]));
+      describe(`and it doesn't fail for the user payment preferences setting`, () => {
+        const MOCK_ERROR = {
+          name: 'this is an error name',
+          message: 'this is a message',
+        };
+        beforeEach(() => {
+          spyOn(payviewService, 'request').and.returnValue(throwError([MOCK_ERROR]));
 
-        service.buy();
-      });
-
-      it('should request to do the payment', () => {
-        expect(service['actionSubject'].next).toHaveBeenCalledTimes(1);
-        expect(service['actionSubject'].next).toHaveBeenCalledWith({
-          type: PAYVIEW_EVENT_TYPE.ERROR_ON_BUY,
-          payload: {
-            code: MOCK_ERROR.name,
-            message: MOCK_ERROR.message,
-          },
+          service.buy();
         });
-      });
 
-      it('should trigger a error on buy action', () => {
-        expect(payviewService.request).toHaveBeenCalledTimes(1);
+        it('should request to do the payment', () => {
+          expect(service['actionSubject'].next).toHaveBeenCalledTimes(1);
+          expect(service['actionSubject'].next).toHaveBeenCalledWith({
+            type: PAYVIEW_EVENT_TYPE.ERROR_ON_BUY,
+            payload: {
+              code: MOCK_ERROR.name,
+              message: MOCK_ERROR.message,
+            },
+          });
+        });
+
+        it('should trigger a error on buy action', () => {
+          expect(payviewService.request).toHaveBeenCalledTimes(1);
+        });
       });
     });
   });
