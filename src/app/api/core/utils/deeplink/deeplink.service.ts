@@ -68,18 +68,7 @@ export class DeeplinkService {
       return this.getItemWebLink(deeplink);
     }
 
-    const deeplinkMappers: Record<DeeplinkType, string> = {
-      barcodeLabel: this.getBarcodeWebLink(deeplink),
-      pay: null,
-      instructions: this.getInstructionsWebLink(deeplink),
-      item: null,
-      printableLabel: this.getPrintableLabelWebLink(deeplink),
-      userProfile: null,
-      zendeskArticle: this.getZendeskArticleWebLink(deeplink),
-      zendeskForm: this.getZendeskCreateDisputeFormWebLink(deeplink),
-      unknown: null,
-    };
-    return of(deeplinkMappers[this.getDeeplinkType(deeplink)]);
+    return of(this.deeplinkMappers(deeplink));
   }
 
   private isAvailable(deeplink: string): boolean {
@@ -88,6 +77,40 @@ export class DeeplinkService {
 
   private isExternalNavigation(deeplink: string): boolean {
     return deeplinkExternalNavigation[this.getDeeplinkType(deeplink)];
+  }
+
+  private deeplinkMappers(deeplink: string): string {
+    const deeplinkType: DeeplinkType = this.getDeeplinkType(deeplink);
+
+    if (deeplinkType === 'barcodeLabel') {
+      return this.getBarcodeWebLink(deeplink);
+    }
+    if (deeplinkType === 'pay') {
+      return '';
+    }
+    if (deeplinkType === 'instructions') {
+      return this.getInstructionsWebLink(deeplink);
+    }
+    if (deeplinkType === 'item') {
+      return this.getBarcodeWebLink(deeplink);
+    }
+    if (deeplinkType === 'printableLabel') {
+      return this.getPrintableLabelWebLink(deeplink);
+    }
+    if (deeplinkType === 'userProfile') {
+      return this.getBarcodeWebLink(deeplink);
+    }
+    if (deeplinkType === 'zendeskArticle') {
+      return this.getZendeskArticleWebLink(deeplink);
+    }
+    if (deeplinkType === 'zendeskForm') {
+      return this.getZendeskCreateDisputeFormWebLink(deeplink);
+    }
+    if (deeplinkType === 'unknown') {
+      return null;
+    }
+
+    return null;
   }
 
   private getBarcodeWebLink(deeplink: string): string {
