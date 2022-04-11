@@ -22,7 +22,7 @@ import { of, throwError } from 'rxjs';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 import { TransactionTrackingActionDialogComponent } from './transaction-tracking-action-dialog.component';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
-import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
+import { DeeplinkService } from '@api/core/utils/deeplink/services/deeplink.service';
 
 describe('TransactionTrackingActionDialogComponent', () => {
   const MOCK_USER_ACTION = MOCK_TRANSACTION_TRACKING_ACTION_DIALOG.positive.action as TransactionTrackingActionUserAction;

@@ -30,9 +30,9 @@ import { UserService } from '@core/user/user.service';
 
 import { Observable, of, Subscriber } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import { DeeplinkType } from './types/deeplink.type';
-import { deeplinkAvailabilities } from './constants/deeplink-availability';
-import { deeplinkExternalNavigation } from './constants/deeplink-external-navigation';
+import { DeeplinkType } from '../types/deeplink.type';
+import { deeplinkAvailabilities } from '../constants/deeplink-availability';
+import { deeplinkExternalNavigation } from '../constants/deeplink-external-navigation';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable()

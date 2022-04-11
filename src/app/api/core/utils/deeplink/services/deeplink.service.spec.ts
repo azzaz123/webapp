@@ -3,7 +3,7 @@ import { LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { APP_LOCALE } from '@configs/subdomains.config';
-import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
+import { DeeplinkService } from '@api/core/utils/deeplink/services/deeplink.service';
 import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { ItemService } from '@core/item/item.service';

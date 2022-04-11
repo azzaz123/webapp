@@ -25,7 +25,7 @@ import {
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { ErrorsService } from '@core/errors/errors.service';
 import { MockErrorService } from '@fixtures/error.fixtures.spec';
-import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
+import { DeeplinkService } from '@api/core/utils/deeplink/services/deeplink.service';
 import { TransactionTrackingScreenTrackingEventsService } from '../../../services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionTrackingScreenStoreService } from '../../../services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
