@@ -1,5 +1,5 @@
 import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
-import { PRIVATE_PATHS, PATH_TO_ACCEPT_SCREEN } from '@private/private-routing-constants';
+import { PRIVATE_PATHS, PATH_TO_ACCEPT_SCREEN, PATH_TO_PAYVIEW } from '@private/private-routing-constants';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 
@@ -41,7 +41,7 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
     this.initializeTransactionTrackingAndDetails(requestId, true);
     this.listenForDeliveryNotifications(requestId);
 
-    this.checkIfUserGoesBackToAcceptScreen();
+    this.checkIfUserGoesBack();
   }
 
   ngOnDestroy(): void {
@@ -88,13 +88,18 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
     );
   }
 
-  private checkIfUserGoesBackToAcceptScreen(): void {
+  private checkIfUserGoesBack(): void {
     this.subscriptions.add(
       this.router.events.pipe(filter((event) => event instanceof NavigationStart)).subscribe((event: NavigationStart) => {
         const isUserGoingBack: boolean = event.navigationTrigger === 'popstate';
 
-        if (isUserGoingBack && this.isAcceptScreenRedirection(event.url)) {
-          this.redirectToStreamlineOngoing();
+        if (isUserGoingBack) {
+          if (this.isAcceptScreenRedirection(event.url)) {
+            this.redirectToStreamlineOngoing();
+          }
+          if (this.isPayviewRedirection(event.url)) {
+            this.redirectToPage(PRIVATE_PATHS.CHAT);
+          }
         }
       })
     );
@@ -102,6 +107,10 @@ export class TransactionTrackingOverviewComponent implements OnInit, OnDestroy {
 
   private isAcceptScreenRedirection(url: string): boolean {
     return url.includes(PATH_TO_ACCEPT_SCREEN);
+  }
+
+  private isPayviewRedirection(url: string): boolean {
+    return url.includes(PATH_TO_PAYVIEW);
   }
 
   private redirectToStreamlineOngoing(): void {

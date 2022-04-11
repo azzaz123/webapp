@@ -18,7 +18,7 @@ import { MOCK_INBOX_CONVERSATION_AS_BUYER } from '@fixtures/chat';
 import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { PATH_TO_PAYVIEW, PRIVATE_PATHS } from '@private/private-routing-constants';
 import { of, BehaviorSubject } from 'rxjs';
 import { ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
 import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
@@ -214,7 +214,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
       it('should navigate to the item payview', () => {
         const itemHash: string = MOCK_INBOX_CONVERSATION_AS_BUYER.item.id;
-        const expectedRoute: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+        const expectedRoute: string = `${PATH_TO_PAYVIEW}/${itemHash}`;
 
         expect(router.navigate).toHaveBeenCalledWith([expectedRoute]);
         expect(router.navigate).toHaveBeenCalledTimes(1);

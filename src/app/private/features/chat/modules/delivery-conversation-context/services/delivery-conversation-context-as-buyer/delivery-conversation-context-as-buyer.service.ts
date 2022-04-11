@@ -13,7 +13,7 @@ import {
 import { TRXAwarenessModalComponent } from '@private/features/delivery/modals/trx-awareness-modal/trx-awareness-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { PATH_TO_PAYVIEW, PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
 import { InboxConversation, InboxItem } from '@private/features/chat/core/model';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
@@ -74,7 +74,7 @@ export class DeliveryConversationContextAsBuyerService {
   private redirectToPayview(conversation: InboxConversation): void {
     const { item } = conversation;
     const { id: itemHash } = item;
-    const route: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+    const route: string = `${PATH_TO_PAYVIEW}/${itemHash}`;
     this.router.navigate([route]);
   }
 
