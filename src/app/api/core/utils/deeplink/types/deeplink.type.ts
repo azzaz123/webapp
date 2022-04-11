@@ -1,4 +1,4 @@
-export type deeplinkType =
+export type DeeplinkType =
   | 'unknown'
   | 'barcodeLabel'
   | 'pay'

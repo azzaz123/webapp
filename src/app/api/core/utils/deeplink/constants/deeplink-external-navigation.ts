@@ -1,6 +1,6 @@
-import { deeplinkType } from '../types/deeplink.type';
+import { DeeplinkType } from '../types/deeplink.type';
 
-export const deeplinkExternalNavigation: Record<deeplinkType, boolean> = {
+export const deeplinkExternalNavigation: Record<DeeplinkType, boolean> = {
   barcodeLabel: false,
   pay: false,
   instructions: false,

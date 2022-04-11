@@ -30,7 +30,7 @@ import { UserService } from '@core/user/user.service';
 
 import { Observable, of, Subscriber } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-import { deeplinkType } from './types/deeplink.type';
+import { DeeplinkType } from './types/deeplink.type';
 import { deeplinkAvailabilities } from './constants/deeplink-availability';
 import { deeplinkExternalNavigation } from './constants/deeplink-external-navigation';
 
@@ -66,7 +66,7 @@ export class DeeplinkService {
       return this.getItemWebLink(deeplink);
     }
 
-    const deeplinkMappers: Record<deeplinkType, string> = {
+    const deeplinkMappers: Record<DeeplinkType, string> = {
       barcodeLabel: this.getBarcodeWebLink(deeplink),
       pay: null,
       instructions: this.getInstructionsWebLink(deeplink),
@@ -94,7 +94,7 @@ export class DeeplinkService {
     return !!barcode ? `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${TRANSACTION_TRACKING_PATHS.BARCODE}/${barcode}` : null;
   }
 
-  private getDeeplinkType(deeplink: string): deeplinkType {
+  private getDeeplinkType(deeplink: string): DeeplinkType {
     if (deeplink.startsWith(barcodeLabelDeeplinkPrefix)) {
       return 'barcodeLabel';
     }

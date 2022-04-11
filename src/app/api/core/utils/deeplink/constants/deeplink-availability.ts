@@ -1,6 +1,6 @@
-import { deeplinkType } from '../types/deeplink.type';
+import { DeeplinkType } from '../types/deeplink.type';
 
-export const deeplinkAvailabilities: Record<deeplinkType, boolean> = {
+export const deeplinkAvailabilities: Record<DeeplinkType, boolean> = {
   barcodeLabel: true,
   pay: true,
   instructions: true,
