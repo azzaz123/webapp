@@ -46,6 +46,12 @@ export class SubscriptionCardComponent {
       : $localize`:@@pro_subscription_purchase_subscription_details_list_unlimited_tier_text:Manage unlimited active item`;
   }
 
+  public extraBumpsText(quantity: number): string {
+    return quantity === 1
+      ? $localize`:@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.one:Highlight ${quantity}:INTERPOLATION: extra item`
+      : $localize`:@@pro_manage_subscriptions_view_active_subscriptions_details_extra_bumps_pending_part_2_text_web_specific.other:Highlight ${quantity}:INTERPOLATION: extra items`;
+  }
+
   get iconSrc(): string {
     return `/assets/images/subscriptions/types/${this.subscription.category_icon}.svg`;
   }

@@ -133,6 +133,39 @@ describe('SubscriptionCardComponent', () => {
         expect(benefits[2].nativeElement.textContent).toContain(component.subscription.selected_tier.bumps[0].used);
         expect(benefits[2].nativeElement.textContent).toContain(component.subscription.selected_tier.bumps[0].quantity);
       });
+
+      describe('extra bumps', () => {
+        describe('and has not extra bumps', () => {
+          it('should not show extra bumps', () => {
+            const text = fixture.debugElement.query(By.css('.SubscriptionCard__benefits')).queryAll(By.css('div'));
+            expect(text[3]).toBeFalsy();
+          });
+        });
+        describe('and has extra bumps', () => {
+          describe('and has a single extra bump', () => {
+            const expectedExtraBump = 1;
+            beforeEach(() => {
+              component.subscription.tiers[0].bumps[0].extra = expectedExtraBump;
+              fixture.detectChanges();
+            });
+            it('should show extra bumps', () => {
+              const text = fixture.debugElement.query(By.css('.SubscriptionCard__benefits')).queryAll(By.css('div'));
+              expect(text[2].nativeElement.textContent).toContain(expectedExtraBump);
+            });
+          });
+          describe('and has a multiple extra bumps', () => {
+            const expectedExtraBump = 5;
+            beforeEach(() => {
+              component.subscription.tiers[0].bumps[0].extra = expectedExtraBump;
+              fixture.detectChanges();
+            });
+            it('should show extra bumps', () => {
+              const text = fixture.debugElement.query(By.css('.SubscriptionCard__benefits')).queryAll(By.css('div'));
+              expect(text[2].nativeElement.textContent).toContain(expectedExtraBump);
+            });
+          });
+        });
+      });
     });
 
     describe('end date', () => {
