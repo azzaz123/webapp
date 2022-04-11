@@ -506,29 +506,6 @@ describe(`DeeplinkService`, () => {
     });
   });
 
-  describe(`WHEN asking about the availability`, () => {
-    describe.each([
-      [barcodeDeeplink, true],
-      [checkDeliveryInstructionDeeplink, true],
-      [packagingInstructionsDeeplink, true],
-      [itemDeeplink, true],
-      [printableLabelDeeplink, true],
-      [userProfileDeeplink, true],
-      [zendeskArticleDeeplink, true],
-      [zendeskCreateDisputeFormDeeplink, true],
-    ])(`WHEN asking whether a deeplink is available for navigation`, (deeplink, expected) => {
-      it(`should correctly check the availability`, () => {
-        expect(service.isAvailable(deeplink)).toBe(expected);
-      });
-    });
-
-    describe(`AND WHEN there is an incorrect deeplink`, () => {
-      it(`should indicate the deeplink is not available`, () => {
-        expect(service.isAvailable(`fake-deeplink`)).toBeFalsy();
-      });
-    });
-  });
-
   describe.each([[itemDeeplink], [printableLabelDeeplink], [zendeskArticleDeeplink], [zendeskCreateDisputeFormDeeplink]])(
     `WHEN navigate to an external url`,
     (deeplink) => {
