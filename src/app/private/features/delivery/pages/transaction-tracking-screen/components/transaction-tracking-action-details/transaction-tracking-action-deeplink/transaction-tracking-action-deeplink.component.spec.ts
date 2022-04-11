@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DeeplinkService } from '@core/deeplink/services/deeplink.service';
+import { DeeplinkService } from '@shared/deeplink/services/deeplink.service';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_TRANSACTION_TRACKING_ACTION_DEEPLINK } from '@fixtures/private/delivery/transactional-tracking-screen/transaction-tracking-actions.fixtures.spec';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
