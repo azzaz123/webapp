@@ -8,6 +8,7 @@ import {
   checkDeliveryInstructionsDeeplinkPrefix,
   createDisputeZendeskFormDeeplinkPrefix,
   itemDeeplinkPrefix,
+  payDeeplinkPrefix,
   printableLabelDeeplinkPrefix,
   userProfileDeeplinkPrefix,
   zendeskArticleDeeplinkPrefix,
@@ -33,6 +34,7 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 type deeplinkType =
   | 'unknown'
   | 'barcodeLabel'
+  | 'pay'
   | 'instructions'
   | 'item'
   | 'printableLabel'
@@ -56,6 +58,7 @@ export class DeeplinkService {
   public isAvailable(deeplink: string): boolean {
     const availabilities: Record<deeplinkType, boolean> = {
       barcodeLabel: true,
+      pay: false,
       instructions: true,
       item: true,
       printableLabel: true,
@@ -117,6 +120,7 @@ export class DeeplinkService {
 
     const deeplinkMappers: Record<deeplinkType, string> = {
       barcodeLabel: this.getBarcodeWebLink(deeplink),
+      pay: null,
       instructions: this.getInstructionsWebLink(deeplink),
       item: null,
       printableLabel: this.getPrintableLabelWebLink(deeplink),
@@ -137,6 +141,9 @@ export class DeeplinkService {
   private getDeeplinkType(deeplink: string): deeplinkType {
     if (deeplink.startsWith(barcodeLabelDeeplinkPrefix)) {
       return 'barcodeLabel';
+    }
+    if (deeplink.startsWith(payDeeplinkPrefix)) {
+      return 'pay';
     }
     if (deeplink.startsWith(checkDeliveryInstructionsDeeplinkPrefix)) {
       return 'instructions';
@@ -236,6 +243,7 @@ export class DeeplinkService {
   private isExternalNavigation(deeplink: string): boolean {
     const deeplinks: Record<deeplinkType, boolean> = {
       barcodeLabel: false,
+      pay: false,
       instructions: false,
       item: true,
       printableLabel: true,
