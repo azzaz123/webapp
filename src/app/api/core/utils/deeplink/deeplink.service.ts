@@ -58,7 +58,7 @@ export class DeeplinkService {
   public isAvailable(deeplink: string): boolean {
     const availabilities: Record<deeplinkType, boolean> = {
       barcodeLabel: true,
-      pay: false,
+      pay: true,
       instructions: true,
       item: true,
       printableLabel: true,
@@ -69,34 +69,6 @@ export class DeeplinkService {
     };
 
     return availabilities[this.getDeeplinkType(deeplink)];
-  }
-
-  public isBarcodeLabelDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'barcodeLabel';
-  }
-
-  public isInstructionsDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'instructions';
-  }
-
-  public isItemDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'item';
-  }
-
-  public isPrintableLabelDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'printableLabel';
-  }
-
-  public isUserProfileDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'userProfile';
-  }
-
-  public isZendeskArticleDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'zendeskArticle';
-  }
-
-  public isZendeskCreateDisputeFormDeeplink(deeplink: string): boolean {
-    return this.getDeeplinkType(deeplink) === 'zendeskForm';
   }
 
   public navigate(deeplink: string): void {
