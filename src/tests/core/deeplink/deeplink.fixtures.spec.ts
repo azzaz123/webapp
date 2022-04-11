@@ -1,4 +1,5 @@
 import { APP_LOCALE } from '@configs/subdomains.config';
+import { payDeeplinkPrefix } from '@shared/deeplink/constants/deeplink-prefixes';
 
 export const fakeBarcode = 'abcZYW123908';
 export const fakeInstructionsType = 'packaging';
@@ -22,6 +23,7 @@ export const fakeUser = {
 export const allLanguages: APP_LOCALE[] = [`es`, `en`, `it`];
 export const barcodeBaseDeeplink: string = `wallapop://delivery/barcode`;
 export const barcodeDeeplink: string = `${barcodeBaseDeeplink}?b=${fakeBarcode}`;
+export const checkoutDeeplink: string = `${payDeeplinkPrefix}${fakeItemId}`;
 export const checkDeliveryInstructionBaseDeeplink: string = `wallapop://shipping/transactiontracking/instructions`;
 export const checkDeliveryInstructionDeeplink: string = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=${fakeInstructionsType}`;
 export const itemBaseDeeplink: string = `wallapop://i`;

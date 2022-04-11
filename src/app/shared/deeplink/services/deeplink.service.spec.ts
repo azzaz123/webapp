@@ -41,7 +41,9 @@ import {
   fakeUser,
   fakeUserId,
   fakeUsername,
+  checkoutDeeplink,
 } from '@fixtures/core/deeplink/deeplink.fixtures.spec';
+import { PayDeeplinkService } from '../pay-deeplink/pay-deeplink.service';
 
 describe(`DeeplinkService`, () => {
   let router: Router;
@@ -50,6 +52,7 @@ describe(`DeeplinkService`, () => {
   let toastService: ToastService;
   let itemService: ItemService;
   let userService: UserService;
+  let payDeeplinkService: PayDeeplinkService;
 
   const MOCK_LOCALE_VALUE_SUBJECT: BehaviorSubject<APP_LOCALE> = new BehaviorSubject<APP_LOCALE>(`es`);
 
@@ -93,6 +96,12 @@ describe(`DeeplinkService`, () => {
           provide: ToastService,
           useClass: MockToastService,
         },
+        {
+          provide: PayDeeplinkService,
+          useValue: {
+            handle: () => of(''),
+          },
+        },
       ],
     });
 
@@ -102,6 +111,7 @@ describe(`DeeplinkService`, () => {
     toastService = TestBed.inject(ToastService);
     itemService = TestBed.inject(ItemService);
     userService = TestBed.inject(UserService);
+    payDeeplinkService = TestBed.inject(PayDeeplinkService);
 
     spyOn(router, 'navigate');
     spyOn(toastService, 'show');
@@ -245,6 +255,22 @@ describe(`DeeplinkService`, () => {
 
         flush();
       }));
+    });
+  });
+
+  describe('and when the deeplink is a checkout link', () => {
+    beforeEach(() => {
+      spyOn(payDeeplinkService, 'handle').and.callThrough();
+
+      service.navigate(checkoutDeeplink);
+    });
+
+    it('should delegate handling to pay deeplink service only once', () => {
+      expect(payDeeplinkService.handle).toHaveBeenCalledTimes(1);
+    });
+
+    it('should delegate handling to pay deeplink service with raw deeplink', () => {
+      expect(payDeeplinkService.handle).toHaveBeenCalledWith(checkoutDeeplink);
     });
   });
 

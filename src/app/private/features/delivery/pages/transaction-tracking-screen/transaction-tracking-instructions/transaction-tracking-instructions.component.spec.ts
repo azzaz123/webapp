@@ -110,7 +110,10 @@ describe('TransactionTrackingInstructionsComponent', () => {
             trackClickActionTTS() {},
           },
         },
-        DeeplinkService,
+        {
+          provide: DeeplinkService,
+          useValue: { navigate: () => {} },
+        },
         ErrorsService,
         ItemDetailRoutePipe,
         {

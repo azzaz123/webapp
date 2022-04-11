@@ -34,6 +34,7 @@ import { DeeplinkType } from '../types/deeplink.type';
 import { deeplinkAvailabilities } from '../constants/deeplink-availability';
 import { deeplinkExternalNavigation } from '../constants/deeplink-external-navigation';
 import { catchError, map } from 'rxjs/operators';
+import { PayDeeplinkService } from '../pay-deeplink/pay-deeplink.service';
 
 @Injectable()
 export class DeeplinkService {
@@ -45,7 +46,8 @@ export class DeeplinkService {
     private itemService: ItemService,
     private itemDetailRoutePipe: ItemDetailRoutePipe,
     private userService: UserService,
-    private userProfileRoutePipe: UserProfileRoutePipe
+    private userProfileRoutePipe: UserProfileRoutePipe,
+    private payDeeplinkService: PayDeeplinkService
   ) {}
 
   public navigate(deeplink: string): void {
@@ -71,7 +73,7 @@ export class DeeplinkService {
       return this.getItemWebLink(deeplink);
     }
     if (deeplinkType === 'pay') {
-      return of(null);
+      return this.payDeeplinkService.handle(deeplink);
     }
 
     return of(this.deeplinkMappers(deeplinkType, deeplink));
