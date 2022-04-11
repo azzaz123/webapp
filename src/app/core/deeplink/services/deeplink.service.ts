@@ -28,7 +28,7 @@ import { User } from '@core/user/user';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { UserService } from '@core/user/user.service';
 
-import { Observable, of, Subscriber } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { DeeplinkType } from '../types/deeplink.type';
 import { deeplinkAvailabilities } from '../constants/deeplink-availability';
@@ -40,12 +40,12 @@ export class DeeplinkService {
   constructor(
     @Inject(LOCALE_ID) private locale: APP_LOCALE,
     @Inject(WINDOW_TOKEN) private window: Window,
-    private itemDetailRoutePipe: ItemDetailRoutePipe,
-    private itemService: ItemService,
-    private userProfileRoutePipe: UserProfileRoutePipe,
     private router: Router,
+    private toastService: ToastService,
+    private itemService: ItemService,
+    private itemDetailRoutePipe: ItemDetailRoutePipe,
     private userService: UserService,
-    private toastService: ToastService
+    private userProfileRoutePipe: UserProfileRoutePipe
   ) {}
 
   public navigate(deeplink: string): void {
@@ -61,14 +61,20 @@ export class DeeplinkService {
     if (!deeplink) {
       return of(null);
     }
-    if (this.getDeeplinkType(deeplink) === 'userProfile') {
+
+    const deeplinkType: DeeplinkType = this.getDeeplinkType(deeplink);
+
+    if (deeplinkType === 'userProfile') {
       return this.getUserProfileWebLink(deeplink);
     }
-    if (this.getDeeplinkType(deeplink) === 'item') {
+    if (deeplinkType === 'item') {
       return this.getItemWebLink(deeplink);
     }
+    if (deeplinkType === 'pay') {
+      return of(null);
+    }
 
-    return of(this.deeplinkMappers(deeplink));
+    return of(this.deeplinkMappers(deeplinkType, deeplink));
   }
 
   private isAvailable(deeplink: string): boolean {
@@ -79,26 +85,15 @@ export class DeeplinkService {
     return deeplinkExternalNavigation[this.getDeeplinkType(deeplink)];
   }
 
-  private deeplinkMappers(deeplink: string): string {
-    const deeplinkType: DeeplinkType = this.getDeeplinkType(deeplink);
-
+  private deeplinkMappers(deeplinkType: DeeplinkType, deeplink: string): string {
     if (deeplinkType === 'barcodeLabel') {
       return this.getBarcodeWebLink(deeplink);
-    }
-    if (deeplinkType === 'pay') {
-      return '';
     }
     if (deeplinkType === 'instructions') {
       return this.getInstructionsWebLink(deeplink);
     }
-    if (deeplinkType === 'item') {
-      return this.getBarcodeWebLink(deeplink);
-    }
     if (deeplinkType === 'printableLabel') {
       return this.getPrintableLabelWebLink(deeplink);
-    }
-    if (deeplinkType === 'userProfile') {
-      return this.getBarcodeWebLink(deeplink);
     }
     if (deeplinkType === 'zendeskArticle') {
       return this.getZendeskArticleWebLink(deeplink);
@@ -111,12 +106,6 @@ export class DeeplinkService {
     }
 
     return null;
-  }
-
-  private getBarcodeWebLink(deeplink: string): string {
-    const params = this.getParams(deeplink);
-    const barcode = !!params && !!params[0] ? params[0].split('=').pop() : null;
-    return !!barcode ? `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${TRANSACTION_TRACKING_PATHS.BARCODE}/${barcode}` : null;
   }
 
   private getDeeplinkType(deeplink: string): DeeplinkType {
@@ -145,6 +134,12 @@ export class DeeplinkService {
       return 'zendeskForm';
     }
     return 'unknown';
+  }
+
+  private getBarcodeWebLink(deeplink: string): string {
+    const params = this.getParams(deeplink);
+    const barcode = !!params && !!params[0] ? params[0].split('=').pop() : null;
+    return !!barcode ? `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${TRANSACTION_TRACKING_PATHS.BARCODE}/${barcode}` : null;
   }
 
   private getInstructionsWebLink(deeplink: string): string {
