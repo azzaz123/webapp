@@ -245,11 +245,10 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public filterByStatus(status: string) {
-    const newStatus = status as STATUS;
     this.deselect();
 
-    if (newStatus !== this.selectedStatus) {
-      this.selectedStatus = newStatus;
+    if (status !== this.selectedStatus) {
+      this.selectedStatus = status as STATUS;
       this.nextPage = null;
       this.getItems();
       this.getNumberOfProducts();
