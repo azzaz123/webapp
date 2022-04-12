@@ -6,39 +6,24 @@ import {
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_UPDATE_REQUEST,
-  MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_ID,
+  MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES,
 } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
 import { PaymentsUserPaymentPreferences } from '@api/core/model/payments/interfaces/payments-user-payment-preferences.interface';
 import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/user-payment-preferences/http/payments-user-payment-preferences-http.service';
 import { PaymentsUserPaymentPreferencesService } from '@api/bff/payments/user-payment-preferences/payments-user-payment-preferences.service';
-
 import { of } from 'rxjs';
-import { UuidService } from '@core/uuid/uuid.service';
 
 describe('PaymentsUserPaymentPreferencesService', () => {
   let service: PaymentsUserPaymentPreferencesService;
   let userPaymentPreferencesHttpService: PaymentsUserPaymentPreferencesHttpService;
-  let uuidService: UuidService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        PaymentsUserPaymentPreferencesService,
-        PaymentsUserPaymentPreferencesHttpService,
-        {
-          provide: UuidService,
-          useValue: {
-            getUUID() {
-              return 'laia';
-            },
-          },
-        },
-      ],
+      providers: [PaymentsUserPaymentPreferencesService, PaymentsUserPaymentPreferencesHttpService],
     });
     service = TestBed.inject(PaymentsUserPaymentPreferencesService);
     userPaymentPreferencesHttpService = TestBed.inject(PaymentsUserPaymentPreferencesHttpService);
-    uuidService = TestBed.inject(UuidService);
   });
 
   it('should be created', () => {
@@ -94,9 +79,7 @@ describe('PaymentsUserPaymentPreferencesService', () => {
 
     describe('and the user has NOT payment preferences', () => {
       beforeEach(() => {
-        spyOn(uuidService, 'getUUID').and.callThrough();
-
-        service.setUserPaymentPreferences(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_ID).subscribe();
+        service.setUserPaymentPreferences(MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES).subscribe();
       });
 
       it('should NOT ask to update the user payment preferences', () => {
@@ -107,13 +90,9 @@ describe('PaymentsUserPaymentPreferencesService', () => {
         expect(userPaymentPreferencesHttpService.create).toHaveBeenCalledTimes(1);
       });
 
-      it('should generate a UUID', () => {
-        expect(uuidService.getUUID).toHaveBeenCalledTimes(1);
-      });
-
       it('should ask with valid request', () => {
         expect(userPaymentPreferencesHttpService.create).toHaveBeenCalledWith(
-          'laia',
+          MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES.preferences.id,
           MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_UPDATE_REQUEST
         );
       });
