@@ -30,6 +30,11 @@ export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS_RESPONSE: DeliveryBuyerDeliver
   default: { index: 1 },
 };
 
+export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS_RESPONSE_WITHOUT_DELIVERY_METHODS: DeliveryBuyerDeliveryMethodsDto = {
+  ...MOCK_DELIVERY_BUYER_DELIVERY_METHODS_RESPONSE,
+  delivery_methods: [],
+};
+
 export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods = {
   deliveryMethods: [
     {
@@ -65,6 +70,13 @@ export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods 
     },
   },
   addressLabel: 'calle jtrx 6, 1, 08199 Montserrat, España',
+};
+
+export const MOCK_DELIVERY_BUYER_WITHOUT_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods = {
+  ...MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
+  deliveryMethods: [],
+  addressLabel: null,
+  current: null,
 };
 
 export const MOCK_CURRENT_DELIVERY_CARRIER_OFFICE_WITHOUT_LASTADDRESSUSED: DeliveryBuyerDeliveryMethod = {

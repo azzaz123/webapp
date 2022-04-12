@@ -1,6 +1,6 @@
 import { STREAMLINE_PATHS } from '@private/features/delivery/pages/streamline/streamline.routing.constants';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { PRIVATE_PATHS, PATH_TO_ACCEPT_SCREEN } from '@private/private-routing-constants';
+import { PRIVATE_PATHS, PATH_TO_ACCEPT_SCREEN, PATH_TO_PAYVIEW } from '@private/private-routing-constants';
 import { ActivatedRoute, Router, NavigationStart, RouterEvent } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
@@ -204,6 +204,20 @@ describe('TransactionTrackingOverviewComponent', () => {
         const pathToStreamlineOngoing: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.SELLS}/${STREAMLINE_PATHS.ONGOING}`;
 
         expect(router.navigate).toHaveBeenCalledWith([pathToStreamlineOngoing]);
+      });
+    });
+
+    describe('and the user navigates back to the Payview', () => {
+      beforeEach(fakeAsync(() => {
+        const pathToPayview: string = `${PATH_TO_PAYVIEW}/232323`;
+        routerEvents.next(new NavigationStart(1, pathToPayview, 'popstate'));
+
+        tick();
+        fixture.detectChanges();
+      }));
+
+      it('should redirect to the chat', () => {
+        expect(router.navigate).toHaveBeenCalledWith([PRIVATE_PATHS.CHAT]);
       });
     });
 

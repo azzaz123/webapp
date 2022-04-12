@@ -12,6 +12,8 @@ import { SearchBoxValue } from '@layout/topbar/core/interfaces/suggester-respons
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoryService } from '@core/category/category.service';
 import { CATEGORY_DATA_WEB } from '@fixtures/category.fixtures.spec';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 const MOCK_SEARCH_KEYWORD: SearchBoxValue = { [FILTER_QUERY_PARAM_KEY.keywords]: 'iphone' };
 const MOCK_SUGGESTER_RESPONSE = SUGGESTER_DATA_WEB[0];
@@ -55,6 +57,7 @@ describe('SuggesterComponent', () => {
               },
             },
           },
+          { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
           EventService,
         ],
       }).compileComponents();

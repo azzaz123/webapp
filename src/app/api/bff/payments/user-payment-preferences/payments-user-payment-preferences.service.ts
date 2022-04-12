@@ -19,9 +19,11 @@ export class PaymentsUserPaymentPreferencesService {
     return this.paymentUserPreferencesHttpService.get().pipe(map(mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences));
   }
 
-  public update(newPreferences: PaymentsUserPaymentPreferences): Observable<void> {
-    const { id } = newPreferences.preferences;
+  public setUserPaymentPreferences(newPreferences: PaymentsUserPaymentPreferences): Observable<void> {
+    const { id, isNewBuyer } = newPreferences.preferences;
     const preferencesDto: PaymentsUserPaymentPreferencesUpdateDto = mapUserPaymentsPreferencesToDto(newPreferences);
-    return this.paymentUserPreferencesHttpService.update(id, preferencesDto);
+    return isNewBuyer
+      ? this.paymentUserPreferencesHttpService.create(id, preferencesDto)
+      : this.paymentUserPreferencesHttpService.update(id, preferencesDto);
   }
 }

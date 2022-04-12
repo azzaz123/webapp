@@ -1,0 +1,4 @@
+export enum WEB_VIEW_MODAL_CLOSURE_METHOD {
+  AUTOMATIC,
+  MANUAL,
+}

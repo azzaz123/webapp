@@ -19,6 +19,7 @@ export const MOCK_BUMPS_PACKAGE_BALANCE: BumpsPackageBalanceDTO[] = [
         total: 5,
         used: 3,
         extra: 0,
+        remaining: 2,
       },
       {
         type: 'countrybump',
@@ -26,6 +27,7 @@ export const MOCK_BUMPS_PACKAGE_BALANCE: BumpsPackageBalanceDTO[] = [
         total: 100,
         used: 90,
         extra: 0,
+        remaining: 10,
       },
     ],
   },
@@ -39,6 +41,7 @@ export const MOCK_BUMPS_PACKAGE_BALANCE: BumpsPackageBalanceDTO[] = [
         total: 9,
         used: 2,
         extra: 0,
+        remaining: 7,
       },
     ],
   },
@@ -73,6 +76,7 @@ export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED_COMPLETED: BumpPackageBalance[] =
     duration_days: 2,
     used: 12,
     extra: 0,
+    remaining: 0,
   },
 ];
 
@@ -83,6 +87,7 @@ export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED_ONE_BUMP: BumpPackageBalance[] = 
     duration_days: 2,
     used: 2,
     extra: 0,
+    remaining: 10,
   },
 ];
 
@@ -97,6 +102,7 @@ export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED: BumpsPackageBalance[] = [
         total: 5,
         used: 3,
         extra: 0,
+        remaining: 2,
       },
       {
         type: BUMP_TYPE.COUNTRY_BUMP,
@@ -104,6 +110,7 @@ export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED: BumpsPackageBalance[] = [
         total: 100,
         used: 90,
         extra: 0,
+        remaining: 10,
       },
     ],
   },
@@ -117,6 +124,7 @@ export const MOCK_BUMPS_PACKAGE_BALANCE_MAPPED: BumpsPackageBalance[] = [
         total: 9,
         used: 2,
         extra: 0,
+        remaining: 7,
       },
     ],
   },

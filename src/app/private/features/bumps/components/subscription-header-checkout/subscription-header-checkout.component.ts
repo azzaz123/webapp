@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { BumpPackageBalance } from '@api/core/model/bumps/bumps-package-balance.interface';
 import { SubscriptionsResponse } from '@core/subscriptions/subscriptions.interface';
-import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 @Component({
   selector: 'tsl-subscription-header-checkout',
   templateUrl: './subscription-header-checkout.component.html',
@@ -11,18 +10,15 @@ import { BUMP_TYPE } from '@api/core/model/bumps/bump.interface';
 export class SubscriptionHeaderCheckoutComponent {
   @Input() subscription: SubscriptionsResponse;
   @Input() balance: BumpPackageBalance[];
-  @Input() isProvincialBump: boolean;
 
-  public getBumpName(bumpType: BUMP_TYPE): string {
-    switch (bumpType) {
-      case BUMP_TYPE.ZONE_BUMP:
-        return this.isProvincialBump ? $localize`:@@web_cart_455:Provincial` : $localize`:@@web_cart_454:Local`;
-      case BUMP_TYPE.CITY_BUMP:
-        return $localize`:@@web_cart_663:City`;
-      case BUMP_TYPE.COUNTRY_BUMP:
-        return $localize`:@@web_cart_664:Country`;
+  public getBumpQuantityText(quantity: number): string {
+    switch (quantity) {
+      case 0:
+        return $localize`:@@highlight_item_view_pro_user_item_card_bump_counter_bubble_2v_web_specific.zero:You can’t highlight more items`;
+      case 1:
+        return $localize`:@@highlight_item_view_pro_user_item_card_bump_counter_bubble_2v_web_specific.one:You can highlight ${quantity}:INTERPOLATION: item`;
       default:
-        return bumpType;
+        return $localize`:@@highlight_item_view_pro_user_item_card_bump_counter_bubble_2v_web_specific.other:You can highlight ${quantity}:INTERPOLATION: items`;
     }
   }
 }

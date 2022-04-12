@@ -7,4 +7,6 @@ import { Component, Input } from '@angular/core';
 export class StarsStubComponent {
   @Input() stars: number;
   @Input() normalized;
+  @Input() width;
+  @Input() height;
 }

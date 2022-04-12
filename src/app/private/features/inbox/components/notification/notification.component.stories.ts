@@ -11,6 +11,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AnalyticsService } from '@core/analytics/analytics.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { NotificationImageModule } from '@private/features/inbox/components/notification/notification-image/notification-image.module';
+import { UserService } from '@core/user/user.service';
+import { BehaviorSubject } from 'rxjs';
+import { ExternalCommsService } from '@core/external-comms.service';
+import { NotificationApiService } from '@api/notification/notification-api.service';
 
 @Component({
   selector: 'tsl-story-notifications-container',
@@ -34,6 +38,19 @@ export default {
         {
           provide: AnalyticsService,
           useClass: MockAnalyticsService,
+        },
+        NotificationApiService,
+        {
+          provide: ExternalCommsService,
+          useValue: {
+            brazeReady$: new BehaviorSubject(true),
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
+            isLogged: true,
+          },
         },
       ],
     }),

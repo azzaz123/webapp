@@ -10,6 +10,7 @@ import { PayviewModalComponent } from '@private/features/payview/modals/payview-
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'tsl-blank',
@@ -20,6 +21,15 @@ class FakeComponent {}
 describe('PayviewComponent', () => {
   const chatPath: string = PRIVATE_PATHS.CHAT;
   const fakeItemHash: string = 'this_is_a_fake_hash';
+  const MOCK_MODAL_RESULT_SUBJECT: ReplaySubject<void> = new ReplaySubject<void>();
+  const MOCK_RESULT_PROMISE: Promise<void> = MOCK_MODAL_RESULT_SUBJECT.asObservable().toPromise();
+  const MOCK_CLOSE_CALLBACK = () => MOCK_MODAL_RESULT_SUBJECT.complete();
+  const MOCK_MODAL_REF: Partial<NgbModalRef> = {
+    close: MOCK_CLOSE_CALLBACK,
+    dismiss: MOCK_CLOSE_CALLBACK,
+    componentInstance: {},
+    result: MOCK_RESULT_PROMISE,
+  };
 
   let component: PayviewComponent;
   let fixture: ComponentFixture<PayviewComponent>;
@@ -41,7 +51,12 @@ describe('PayviewComponent', () => {
             },
           },
         },
-        NgbModal,
+        {
+          provide: NgbModal,
+          useValue: {
+            open: () => MOCK_MODAL_REF,
+          },
+        },
       ],
 
       imports: [HttpClientTestingModule, RouterTestingModule],
@@ -58,6 +73,7 @@ describe('PayviewComponent', () => {
       router = TestBed.inject(Router);
 
       spyOn(modalService, 'open').and.returnValue(modalRef);
+      spyOn(router, 'navigate');
       fixture.detectChanges();
     });
 
@@ -74,30 +90,34 @@ describe('PayviewComponent', () => {
       expect(modalRef.componentInstance.itemHash).toEqual(fakeItemHash);
     });
 
-    describe('WHEN Modal closes', () => {
-      beforeEach(() => {
-        spyOn(router, 'navigate');
-      });
+    it('should assign the corresponding close logic to the payview modal component', () => {
+      const stringifiedCallbackInComponent: string = JSON.stringify(modalRef.componentInstance.closeCallback);
+      const stringifiedCallbackExpected: string = JSON.stringify(MOCK_CLOSE_CALLBACK.bind(MOCK_MODAL_REF));
 
-      it('should navigate to chat', fakeAsync(() => {
-        modalRef.close();
-        tick();
-
-        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
-      }));
+      expect(stringifiedCallbackInComponent).toEqual(stringifiedCallbackExpected);
     });
 
-    describe('WHEN Modal dismisses', () => {
-      beforeEach(() => {
-        spyOn(router, 'navigate');
-      });
+    describe('when the modal closes', () => {
+      beforeEach(fakeAsync(() => {
+        modalRef.close();
+        tick();
+      }));
 
-      it('should navigate to chat', fakeAsync(() => {
+      it('should navigate to chat', () => {
+        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
+      });
+    });
+
+    describe('when the modal dismisses', () => {
+      beforeEach(fakeAsync(() => {
+        // TODO: Review dismiss logic in test		Date: 2022/04/07
         modalRef.dismiss();
         tick();
-
-        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
       }));
+
+      it('should navigate to chat', () => {
+        expect(router.navigate).toHaveBeenCalledWith([chatPath]);
+      });
     });
   });
 });

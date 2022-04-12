@@ -1,0 +1,47 @@
+@import '~style/common';
+@import '../../styles/sidebar-navigation-element';
+
+$username-max-width: 105px;
+$element-min-height: 60px;
+
+.SidebarNavigationProfileElement {
+  @include SidebarNavigationElement;
+  min-height: $element-min-height;
+
+  &__username {
+    font-weight: $font-weight-chunky;
+    font-size: $font-size-m;
+    max-width: $username-max-width;
+  }
+
+  &__reviewsCount {
+    color: $blue-grey-3;
+    font-size: $font-size-s;
+  }
+
+  &__user {
+    display: flex;
+  }
+
+  tsl-user-avatar {
+    padding: 0 $spacer * 0.5;
+  }
+
+  &__avatarPlaceholder {
+    @include AvatarPlaceholder;
+    @include square(32px);
+    margin: 0 $spacer * 0.5;
+    min-width: 32px;
+    min-height: 32px;
+    flex-shrink: 0;
+  }
+
+  &__usernamePlaceholder {
+    @include TextPlaceholder;
+    height: 24px;
+  }
+
+  &__textPlaceholder {
+    @include TextPlaceholder;
+  }
+}
