@@ -125,6 +125,10 @@ $vertical-padding: $spacing-ms;
     font-size: $font-size-s;
     line-height: $third-voice-text-line-height;
     background-color: $softblue-dark;
+
+    &:disabled {
+      cursor: default;
+    }
   }
   &.stripe {
     padding: $spacing-s $spacing-ml;
@@ -263,7 +267,7 @@ $vertical-padding: $spacing-ms;
 
   &--thin {
     padding: 11px 19px;
-    line-height: 20px;
+    line-height: 19px;
     border: 0px;
   }
 }

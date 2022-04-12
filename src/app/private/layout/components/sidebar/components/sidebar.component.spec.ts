@@ -29,6 +29,7 @@ import { DeviceService } from '@core/device/device.service';
 import { CustomerHelpService } from '@core/external-links/customer-help/customer-help.service';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { NotificationApiService } from '@api/notification/notification-api.service';
+import { SidebarNavigationProfileElementStubComponent } from '@fixtures/private/layout/sidebar/components/sidebar-navigation-profile-element.stub';
 
 @Component({
   template: '',
@@ -71,7 +72,7 @@ describe('SidebarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SidebarComponent, RouterLinkDirectiveStub, MockComponent],
+        declarations: [SidebarComponent, RouterLinkDirectiveStub, SidebarNavigationProfileElementStubComponent, MockComponent],
         imports: [NgxPermissionsModule.forRoot(), RouterTestingModule.withRoutes(routes)],
         providers: [
           {
@@ -170,31 +171,6 @@ describe('SidebarComponent', () => {
   });
 
   describe('Sidebar icons', () => {
-    it('should be shown profile icon as "active" when is in a profile section', () => {
-      component.isProfile = true;
-      const element: HTMLElement = fixture.nativeElement.querySelector('#sidebar-profile');
-
-      component.ngOnInit();
-      fixture.detectChanges();
-
-      expect(element.className).toContain('Sidebar__entry--active');
-    });
-
-    it('should be shown profile icon as "active" when is in profile url route', fakeAsync(() => {
-      fixture.ngZone.run(() => {
-        component.isProfile = false;
-        router.navigate(['profile']);
-
-        tick();
-        var activeLinks = fixture.debugElement
-          .queryAll(By.css('.Sidebar__entry--active'))
-          .map((element) => element.injector.get(RouterLinkDirectiveStub) as RouterLinkDirectiveStub);
-
-        expect(activeLinks.length).toBe(1);
-        expect(activeLinks[0].linkParams).toEqual(['/profile']);
-      });
-    }));
-
     it('should be shown catalog icon as "active" when it is in a product section', () => {
       component.isProducts = true;
       const element: HTMLElement = fixture.nativeElement.querySelector('#sidebar-catalog');

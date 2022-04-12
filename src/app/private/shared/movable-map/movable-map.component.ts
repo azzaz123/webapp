@@ -221,7 +221,9 @@ export class MovableMapComponent implements AfterViewInit, OnDestroy, OnChanges 
 
   private setLastSelectedMarker(marker: H.map.Marker): void {
     if (this.lastSelectedMarker) {
-      this.setMarkerToNonSelected(this.lastSelectedMarker);
+      if (this.lastSelectedMarker !== marker) {
+        this.setMarkerToNonSelected(this.lastSelectedMarker);
+      }
     }
     this.lastSelectedMarker = marker;
   }

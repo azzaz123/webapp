@@ -7,6 +7,7 @@ import {
 } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
 import { PaymentsUserPaymentPreferencesHttpService } from '@api/bff/payments/user-payment-preferences/http/payments-user-payment-preferences-http.service';
 import {
+  BASE_PAYMENT_PREFERENCES_ENDPOINT,
   USER_PAYMENT_PREFERENCES_ENDPOINT,
   USER_PAYMENT_PREFERENCES_UPDATE_ENDPOINT,
 } from '@api/bff/payments/user-payment-preferences/http/endpoints';
@@ -63,6 +64,24 @@ describe('PaymentsUserPaymentPreferencesHttpService', () => {
       expect(req.request.url).toBe(expectedUrl);
       expect(req.request.method).toBe('PUT');
       expect(req.request.body).toEqual(body);
+    });
+  });
+
+  describe('when asking to create the user payment preferences', () => {
+    it('should ask to create the user payment preferences', () => {
+      const MOCK_ID: string = '8sd89';
+      const body: PaymentsUserPaymentPreferencesUpdateDto = {
+        payment_method: 'paypal',
+        use_wallet: false,
+      };
+
+      service.create(MOCK_ID, body).subscribe();
+      const req: TestRequest = httpMock.expectOne(BASE_PAYMENT_PREFERENCES_ENDPOINT);
+      req.flush(null);
+
+      expect(req.request.url).toBe(BASE_PAYMENT_PREFERENCES_ENDPOINT);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual({ ...body, id: MOCK_ID });
     });
   });
 });

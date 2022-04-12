@@ -2,6 +2,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PrePaymentError } from '@api/core/errors/delivery/payview/pre-payment';
 import { PaymentsError } from '@api/core/errors/payments/payments.error';
 import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
+import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import {
   MOCK_BUYER_REQUEST_PAYMENT_READY,
   MOCK_BUYER_REQUEST_REJECTED,
@@ -9,24 +10,30 @@ import {
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { environment } from '@environments/environment';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
+import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
-import { of } from 'rxjs';
+import { of, ReplaySubject, Subject } from 'rxjs';
 
 import { DeliveryPaymentReadyService } from './delivery-payment-ready.service';
 
 describe('DeliveryPaymentReadyService', () => {
   let service: DeliveryPaymentReadyService;
+  let buyerRequestsApiService: BuyerRequestsApiService;
   let webViewModalService: WebViewModalService;
+
+  const MOCK_MODAL_RESULT_SUBJECT: Subject<WEB_VIEW_MODAL_CLOSURE_METHOD> = new Subject<WEB_VIEW_MODAL_CLOSURE_METHOD>();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         DeliveryPaymentReadyService,
         { provide: WINDOW_TOKEN, useValue: { open: () => {} } },
-        { provide: WebViewModalService, useValue: { open: () => of(null) } },
+        { provide: WebViewModalService, useValue: { open: () => MOCK_MODAL_RESULT_SUBJECT.asObservable() } },
+        { provide: BuyerRequestsApiService, useValue: { cancelRequest: () => of(null) } },
       ],
     });
     service = TestBed.inject(DeliveryPaymentReadyService);
+    buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
     webViewModalService = TestBed.inject(WebViewModalService);
 
     spyOn(webViewModalService, 'open').and.callThrough();
@@ -37,8 +44,12 @@ describe('DeliveryPaymentReadyService', () => {
   });
 
   describe('when handling a request with credit card as payment method', () => {
+    let result: WEB_VIEW_MODAL_CLOSURE_METHOD;
+
     beforeEach(fakeAsync(() => {
-      service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY, PAYVIEW_PAYMENT_METHOD.CREDIT_CARD).subscribe();
+      service
+        .continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY, PAYVIEW_PAYMENT_METHOD.CREDIT_CARD)
+        .subscribe((data) => (result = data));
       tick();
     }));
 
@@ -50,6 +61,46 @@ describe('DeliveryPaymentReadyService', () => {
       const expectedUrl: string = `${environment.baseUrl}api/v3/delivery/request/payment/start/${MOCK_BUYER_REQUEST_PAYMENT_READY.id}`;
       const expectedTitle: string = $localize`:@@checkout_summary_view_buyer_top_bar_title:Make a purchase`;
       expect(webViewModalService.open).toHaveBeenCalledWith(expectedUrl, expectedTitle, DELIVERY_MODAL_CLASSNAME);
+    });
+
+    describe('and when user closes the modal manually', () => {
+      const MOCK_ID: string = MOCK_BUYER_REQUEST_PAYMENT_READY.id;
+
+      beforeEach(fakeAsync(() => {
+        spyOn(buyerRequestsApiService, 'cancelRequest').and.callThrough();
+
+        MOCK_MODAL_RESULT_SUBJECT.next(WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL);
+        tick();
+      }));
+
+      it('should cancel the request once', () => {
+        expect(buyerRequestsApiService.cancelRequest).toHaveBeenCalledTimes(1);
+      });
+
+      it('should cancel the request with the buyer request identifier', () => {
+        expect(buyerRequestsApiService.cancelRequest).toHaveBeenCalledWith(MOCK_ID);
+      });
+
+      it('should notify the request was cancelled manually', () => {
+        expect(result).toEqual(WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL);
+      });
+    });
+
+    describe('and when the modal is closed automatically', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(buyerRequestsApiService, 'cancelRequest').and.callThrough();
+
+        MOCK_MODAL_RESULT_SUBJECT.next(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
+        tick();
+      }));
+
+      it('should NOT cancel the request', () => {
+        expect(buyerRequestsApiService.cancelRequest).not.toHaveBeenCalled();
+      });
+
+      it('should notify modal was closed automatically', () => {
+        expect(result).toEqual(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
+      });
     });
   });
 
