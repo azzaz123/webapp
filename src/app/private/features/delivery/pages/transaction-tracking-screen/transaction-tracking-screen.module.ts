@@ -7,18 +7,12 @@ import {
   TransactionTrackingScreenRoutingModule,
 } from '@private/features/delivery/pages/transaction-tracking-screen';
 import { TransactionTrackingScreenStoreService } from './services/transaction-tracking-screen-store/transaction-tracking-screen-store.service';
-import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import { TransactionTrackingHttpService } from '@api/bff/delivery/transaction-tracking/http/transaction-tracking-http.service';
 import { TransactionTrackingScreenTrackingEventsService } from './services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
+import { TransactionTrackingModule } from '@api/bff/delivery/transaction-tracking/transaction-tracking.module';
 
 @NgModule({
-  imports: [CommonModule, SharedErrorActionModule, TransactionTrackingScreenRoutingModule],
+  imports: [CommonModule, SharedErrorActionModule, TransactionTrackingModule, TransactionTrackingScreenRoutingModule],
   declarations: [transactionTrackingScreenRoutedComponents],
-  providers: [
-    TransactionTrackingService,
-    TransactionTrackingHttpService,
-    TransactionTrackingScreenTrackingEventsService,
-    TransactionTrackingScreenStoreService,
-  ],
+  providers: [TransactionTrackingScreenTrackingEventsService, TransactionTrackingScreenStoreService],
 })
 export class TransactionTrackingScreenModule {}
