@@ -31,84 +31,95 @@
     </div>
   </div>
   <div
-    *ngIf="(payviewState$ | async) === null"
+    *ngIf="isPayviewLoading$ | async; else stepper"
     class="PayviewModal__spinner w-100 h-100 d-flex justify-content-center align-content-center align-items-center"
   >
     <tsl-svg-icon width="45" height="45" src="/assets/icons/spinner.svg" class="spinner"></tsl-svg-icon>
   </div>
-  <tsl-stepper *ngIf="payviewState$ | async as payviewState" class="PayviewModal__stepper pt-1">
-    <ng-template step>
-      <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
-      <tsl-payview-delivery-overview
-        [costs]="payviewState.delivery.costs"
-        [methods]="payviewState.delivery.methods"
-      ></tsl-payview-delivery-overview>
-      <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
-      <tsl-payview-payment-overview
-        [card]="payviewState.payment.card"
-        [methods]="payviewState.payment.methods"
-        [preferences]="payviewState.payment.preferences"
-      ></tsl-payview-payment-overview>
-      <div class="mt-4">
-        <tsl-payview-summary-overview [showPurchaseSummaryTitle]="true" [payviewState]="payviewState"></tsl-payview-summary-overview>
-        <div class="container mt-4 PayviewModal__policiesText">
-          <span i18n="@@pay_view_buyer_policies_description_part1_buy_safely_text_web_specific" class="mr-1">Buy safely,</span>
-          <a
-            id="protectYourTransactionsLink"
-            [href]="TRANSACTIONS_PROTECTION_URL"
-            target="_blank"
-            i18n="@@pay_view_buyer_policies_description_part2_protect_url_web_specific"
-            >we protect your transactions</a
-          >
-          <span i18n="@@pay_view_buyer_policies_description_part3_accept_purchase_text_web_specific" class="mr-1"
-            >. By making this purchase you accept the</span
-          >
-          <a
-            id="termsAndConditionsLink"
-            [href]="TERMS_AND_CONDITIONS_URL"
-            target="_blank"
-            i18n="@@pay_view_buyer_policies_description_part4_terms_of_use_url_web_specific"
-            class="mr-1"
-            >Terms and Conditions</a
-          >
-          <span i18n="@@pay_view_buyer_policies_description_part5_and_text_web_specific" class="mr-1">and the</span>
-          <a
-            id="privacyPolicyLink"
-            [href]="PRIVACY_POLICY_URL"
-            target="_blank"
-            i18n="@@pay_view_buyer_policies_description_part6_privacy_policy_url_web_specific"
-            class="mr-1"
-            >Privacy policy</a
-          >
-          <span i18n="@@pay_view_buyer_policies_description_part7_wallapop_text_web_specific">of Wallapop.</span>
+  <ng-template #stepper>
+    <tsl-stepper *ngIf="payviewState$ | async as payviewState" class="PayviewModal__stepper pt-1">
+      <ng-template step>
+        <tsl-payview-summary-overview [payviewState]="payviewState"></tsl-payview-summary-overview>
+        <tsl-payview-delivery-overview
+          [costs]="payviewState.delivery.costs"
+          [methods]="payviewState.delivery.methods"
+        ></tsl-payview-delivery-overview>
+        <tsl-payview-promotion-overview [costs]="payviewState.costs"></tsl-payview-promotion-overview>
+        <tsl-payview-payment-overview
+          [card]="payviewState.payment.card"
+          [methods]="payviewState.payment.methods"
+          [preferences]="payviewState.payment.preferences"
+        ></tsl-payview-payment-overview>
+        <div class="mt-4">
+          <tsl-payview-summary-overview [showPurchaseSummaryTitle]="true" [payviewState]="payviewState"></tsl-payview-summary-overview>
+          <div class="container mt-4 PayviewModal__policiesText">
+            <span i18n="@@pay_view_buyer_policies_description_part1_buy_safely_text_web_specific" class="mr-1">Buy safely,</span>
+            <a
+              id="protectYourTransactionsLink"
+              [href]="TRANSACTIONS_PROTECTION_URL"
+              target="_blank"
+              i18n="@@pay_view_buyer_policies_description_part2_protect_url_web_specific"
+              >we protect your transactions</a
+            >
+            <span i18n="@@pay_view_buyer_policies_description_part3_accept_purchase_text_web_specific" class="mr-1"
+              >. By making this purchase you accept the</span
+            >
+            <a
+              id="termsAndConditionsLink"
+              [href]="TERMS_AND_CONDITIONS_URL"
+              target="_blank"
+              i18n="@@pay_view_buyer_policies_description_part4_terms_of_use_url_web_specific"
+              class="mr-1"
+              >Terms and Conditions</a
+            >
+            <span i18n="@@pay_view_buyer_policies_description_part5_and_text_web_specific" class="mr-1">and the</span>
+            <a
+              id="privacyPolicyLink"
+              [href]="PRIVACY_POLICY_URL"
+              target="_blank"
+              i18n="@@pay_view_buyer_policies_description_part6_privacy_policy_url_web_specific"
+              class="mr-1"
+              >Privacy policy</a
+            >
+            <span i18n="@@pay_view_buyer_policies_description_part7_wallapop_text_web_specific">of Wallapop.</span>
+          </div>
         </div>
-        <div class="container mt-4 pb-3">
-          <tsl-payview-buy-overview [payviewState]="payviewState"></tsl-payview-buy-overview>
+        <div class="PayviewModal__buyButton p-2 position-sticky align-self-end">
+          <div class="container">
+            <div class="row justify-content-center align-self-center">
+              <div class="col-12 col-md-7">
+                <tsl-payview-buy-overview
+                  [payviewState]="payviewState"
+                  (clickBuyButton)="trackPayTransactionEvent()"
+                ></tsl-payview-buy-overview>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </ng-template>
-    <ng-template step>
-      <tsl-delivery-address
-        *ngIf="countries$ | async"
-        [showTitle]="false"
-        [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
-        (addressSaveSucceded)="closeDeliveryEditor()"
-      ></tsl-delivery-address>
-    </ng-template>
-    <ng-template step>
-      <tsl-delivery-map
-        [fullAddress]="getFullAddress(payviewState.delivery.methods)"
-        [selectedCarrier]="getSelectedCarrier(payviewState.delivery.methods)"
-        [userOfficeId]="getUserOfficeId(payviewState.delivery.methods)"
-        (goToDeliveryAddress)="goToDeliveryAddressFromMap()"
-        (selectedOfficeSucceeded)="closeDeliveryEditor()"
-      ></tsl-delivery-map>
-    </ng-template>
-    <ng-template step>
-      <tsl-payview-promotion-editor></tsl-payview-promotion-editor>
-    </ng-template>
-    <ng-template step>
-      <tsl-credit-card [returnRoute]="null" [showBackButton]="false" (saved)="closeCreditCardEditor()"></tsl-credit-card>
-    </ng-template>
-  </tsl-stepper>
+      </ng-template>
+      <ng-template step>
+        <tsl-delivery-address
+          *ngIf="countries$ | async"
+          [showTitle]="false"
+          [whereUserComes]="DELIVERY_ADDRESS_PREVIOUS_PAGE"
+          (addressSaveSucceded)="closeDeliveryEditor()"
+        ></tsl-delivery-address>
+      </ng-template>
+      <ng-template step>
+        <tsl-delivery-map
+          [fullAddress]="getFullAddress(payviewState.delivery.methods)"
+          [selectedCarrier]="getSelectedCarrier(payviewState.delivery.methods)"
+          [userOfficeId]="getUserOfficeId(payviewState.delivery.methods)"
+          (goToDeliveryAddress)="goToDeliveryAddressFromMap()"
+          (selectedOfficeSucceeded)="closeDeliveryEditor()"
+        ></tsl-delivery-map>
+      </ng-template>
+      <ng-template step>
+        <tsl-payview-promotion-editor></tsl-payview-promotion-editor>
+      </ng-template>
+      <ng-template step>
+        <tsl-credit-card [returnRoute]="null" [showBackButton]="false" (saved)="closeCreditCardEditor()"></tsl-credit-card>
+      </ng-template>
+    </tsl-stepper>
+  </ng-template>
 </div>

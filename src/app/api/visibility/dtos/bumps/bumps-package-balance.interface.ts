@@ -12,4 +12,5 @@ interface BumpPackageBalanceDTO {
   total: number;
   used: number;
   extra: number;
+  remaining: number;
 }

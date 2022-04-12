@@ -1,23 +1,34 @@
 <div class="SearchBox" [class.SearchBox--active]="(searchBoxValue$ | async).keywords">
     <input
-        class="SearchBox__input"
-        type="search"
-        [placeholder]="searchBoxPlaceholder$ | async"
-        maxlength="150"
-        [ngModel]="searchBoxValue$ | async"
-        [inputFormatter]="inputFormatter"
-        [ngbTypeahead]="suggest"
-        [resultTemplate]="suggesterTemplate"
-        [focusFirst]="false"
-        (ngModelChange)="searchBoxValueChange($event)"
-        (keydown.enter)="submitSearch()"
+      class="SearchBox__input"
+      type="search"
+      [placeholder]="searchBoxPlaceholder$ | async"
+      maxlength="150"
+      [ngModel]="searchBoxValue$ | async"
+      [inputFormatter]="inputFormatter"
+      [ngbTypeahead]="suggest"
+      [resultTemplate]="suggesterTemplate"
+      [focusFirst]="false"
+      (focus)="toggleOnFocus()"
+      (focusout)="toggleOnFocus()"
+      (ngModelChange)="searchBoxValueChange($event)"
+      (keydown.enter)="submitSearch()"
     />
-    <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" [width]="28" [height]="28"></tsl-svg-icon>
-    <tsl-svg-icon
-        *ngIf="(searchBoxValue$ | async).keywords"
-        (click)="resetKeyword()"
-        class="SearchBox__reset" src="/assets/icons/top-bar/search-box-reset.svg" width="21" height="21">
-    </tsl-svg-icon>
+  <tsl-svg-icon class="SearchBox__glass" src="/assets/icons/glass_icon.svg" width="28" height="28"></tsl-svg-icon>
+
+
+  <tsl-svg-icon
+    *ngIf="featureFlagService.isExperimentalFeaturesEnabled() ? (searchBoxValue$ | async).keywords && isOnFocus : (searchBoxValue$ | async).keywords"
+    (click)="resetKeyword()"
+    class="SearchBox__reset" src="/assets/icons/top-bar/search-box-reset.svg" width="21" height="21">
+  </tsl-svg-icon>
+  <div class="FavoriteSearchButton__container"
+       *ngIf="featureFlagService.isExperimentalFeaturesEnabled() && (searchBoxValue$ | async).keywords && !isOnFocus">
+    <tsl-favorite-search-button [svgSrc]="favoriteSearchButtonProperties.svgSrc"
+                                [isActive]="favoriteSearchButtonProperties.isActive"
+                                (clickedButton)="clickedButton($event)"></tsl-favorite-search-button>
+  </div>
+
 </div>
 
 <ng-template #suggesterTemplate let-suggestion="result">

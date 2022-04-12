@@ -26,10 +26,6 @@ export class BumpTutorialComponent implements OnInit, OnDestroy {
     this.dots = range(SLIDES_NUMBER);
   }
 
-  ngOnInit() {
-    this.subscriptionBumpsUrl = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.PROS_SUBSCRIPTION_BUMPS);
-  }
-
   @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
     if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
       this.tutorialService.nextStep();
@@ -40,6 +36,10 @@ export class BumpTutorialComponent implements OnInit, OnDestroy {
     if (event.keyCode === KEY_CODE.ESC) {
       this.hide();
     }
+  }
+
+  ngOnInit() {
+    this.subscriptionBumpsUrl = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.PROS_SUBSCRIPTION_BUMPS);
   }
 
   ngOnDestroy() {

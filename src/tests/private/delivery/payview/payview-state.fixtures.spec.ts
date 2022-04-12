@@ -14,6 +14,7 @@ import {
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_CREDIT_CARD,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_PAYPAL,
+  MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES,
 } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS } from '@api/fixtures/delivery/address/delivery-address.fixtures.spec';
 import {
@@ -24,6 +25,7 @@ import { MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2 } from '@api/fixtures/delivery/buye
 import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 import { MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
+import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
 import { MOCK_PAYVIEW_ITEM } from '@fixtures/private/delivery/payview/payview-item.fixtures.spec';
 import { PayviewState } from '@private/features/payview/interfaces/payview-state.interface';
 
@@ -40,6 +42,17 @@ export const MOCK_PAYVIEW_STATE: PayviewState = {
     card: MOCK_CREDIT_CARD,
     methods: MOCK_PAYMENTS_PAYMENT_METHODS,
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
+    wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
+  },
+  buyerRequestId: MOCK_UUID,
+};
+
+export const MOCK_PAYVIEW_STATE_WITH_NEW_BUYER: PayviewState = {
+  ...MOCK_PAYVIEW_STATE,
+  payment: {
+    card: MOCK_CREDIT_CARD,
+    methods: MOCK_PAYMENTS_PAYMENT_METHODS,
+    preferences: MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
 };
@@ -64,6 +77,7 @@ export const MOCK_PAYVIEW_STATE_WITHOUT_CREDIT_CARD: PayviewState = {
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
+  buyerRequestId: MOCK_UUID,
 };
 
 export const MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE: PayviewState = {
@@ -81,6 +95,7 @@ export const MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE: PayviewState = {
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_CREDIT_CARD,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
+  buyerRequestId: MOCK_UUID,
 };
 
 export const MOCK_PAYVIEW_STATE_WITH_WALLET_PREFERENCE: PayviewState = {
@@ -98,6 +113,7 @@ export const MOCK_PAYVIEW_STATE_WITH_WALLET_PREFERENCE: PayviewState = {
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
+  buyerRequestId: MOCK_UUID,
 };
 
 export const MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE: PayviewState = {
@@ -115,6 +131,7 @@ export const MOCK_PAYVIEW_STATE_WITH_WALLET_AND_CREDIT_CARD_PREFERENCE: PayviewS
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_CREDIT_CARD,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
+  buyerRequestId: MOCK_UUID,
 };
 
 export const MOCK_PAYVIEW_STATE_WITH_WALLET_AND_PAYPAL_PREFERENCE: PayviewState = {
@@ -132,6 +149,7 @@ export const MOCK_PAYVIEW_STATE_WITH_WALLET_AND_PAYPAL_PREFERENCE: PayviewState 
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_PAYPAL,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
+  buyerRequestId: MOCK_UUID,
 };
 
 export const MOCK_PAYVIEW_STATE_WITHOUT_PAYMENT_PREFERENCE: PayviewState = {
@@ -149,6 +167,7 @@ export const MOCK_PAYVIEW_STATE_WITHOUT_PAYMENT_PREFERENCE: PayviewState = {
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PREFERENCE,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
+  buyerRequestId: MOCK_UUID,
 };
 
 export const MOCK_PAYVIEW_STATE_WITHOUT_LASTADDRESSUSED: PayviewState = {
@@ -166,6 +185,7 @@ export const MOCK_PAYVIEW_STATE_WITHOUT_LASTADDRESSUSED: PayviewState = {
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
+  buyerRequestId: MOCK_UUID,
 };
 
 export const MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_ADDRESS: PayviewState = {
@@ -183,6 +203,7 @@ export const MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_ADDRESS: PayviewState = {
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
+  buyerRequestId: MOCK_UUID,
 };
 
 export const MOCK_PAYVIEW_STATE_WITHOUT_SELECTED_CARRIER: PayviewState = {
@@ -261,4 +282,5 @@ export const MOCK_PAYVIEW_STATE_WITH_CARRIER_OFFICE_DELIVERY_METHOD: PayviewStat
     preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
+  buyerRequestId: MOCK_UUID,
 };

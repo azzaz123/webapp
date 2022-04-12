@@ -12,8 +12,10 @@ import {
 import { EmptyPostOfficeAddressError } from '@api/core/errors/delivery/payview/pre-payment';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { By } from '@angular/platform-browser';
+import { BehaviorSubject } from 'rxjs';
 
 describe('PayviewBuyOverviewComponent', () => {
+  const isBuyButtonDisabledMockSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
   let component: PayviewBuyOverviewComponent;
   let debugElement: DebugElement;
   let fixture: ComponentFixture<PayviewBuyOverviewComponent>;
@@ -30,6 +32,9 @@ describe('PayviewBuyOverviewComponent', () => {
           useValue: {
             on() {},
             buy() {},
+            get isBuyButtonDisabled$() {
+              return isBuyButtonDisabledMockSubject.asObservable();
+            },
           },
         },
         {
@@ -58,6 +63,7 @@ describe('PayviewBuyOverviewComponent', () => {
       beforeEach(() => {
         spyOn(toastService, 'show');
         spyOn(payviewBuyService, 'buy');
+        spyOn(component.clickBuyButton, 'emit');
       });
 
       describe('and there is any error', () => {
@@ -80,6 +86,10 @@ describe('PayviewBuyOverviewComponent', () => {
         it('should NOT request buy item', () => {
           expect(payviewBuyService.buy).not.toHaveBeenCalled();
         });
+
+        it('should emit that the buy button has been clicked', () => {
+          expect(component.clickBuyButton.emit).toHaveBeenCalledTimes(1);
+        });
       });
 
       describe('and the request is correct', () => {
@@ -96,6 +106,40 @@ describe('PayviewBuyOverviewComponent', () => {
 
         it('should request buy item', () => {
           expect(payviewBuyService.buy).toHaveBeenCalledTimes(1);
+        });
+
+        it('should emit that the buy button has been clicked', () => {
+          expect(component.clickBuyButton.emit).toHaveBeenCalledTimes(1);
+        });
+      });
+    });
+
+    describe('and the service provides the buy button status', () => {
+      describe('and the status is disabled', () => {
+        beforeEach(() => {
+          isBuyButtonDisabledMockSubject.next(true);
+
+          fixture.detectChanges();
+        });
+
+        it('should show the buy button disabled', () => {
+          const buyButton: boolean = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance.disabled;
+
+          expect(buyButton).toBe(true);
+        });
+      });
+
+      describe('and the status is enabled', () => {
+        beforeEach(() => {
+          isBuyButtonDisabledMockSubject.next(false);
+
+          fixture.detectChanges();
+        });
+
+        it('should show the buy button enabled', () => {
+          const buyButton: boolean = fixture.debugElement.query(By.directive(ButtonComponent)).componentInstance.disabled;
+
+          expect(buyButton).toBe(false);
         });
       });
     });

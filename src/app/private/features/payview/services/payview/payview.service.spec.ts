@@ -22,7 +22,10 @@ import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-me
 import { MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
 import { MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY } from '@api/fixtures/payments/wallets/payments-wallets.fixtures.spec';
 import { MOCK_PAYVIEW_ITEM } from '@fixtures/private/delivery/payview/payview-item.fixtures.spec';
-import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
+import {
+  MOCK_PAYVIEW_STATE,
+  MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE,
+} from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsCreditCardService } from '@api/payments/cards';
 import { PaymentsPaymentMethodsService } from '@api/payments/payment-methods/payments-payment-methods.service';
@@ -36,6 +39,19 @@ import { of, throwError } from 'rxjs';
 import { CreditCard } from '@api/core/model';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { CardInvalidError } from '@api/core/errors/payments/cards';
+import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
+import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
+import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
+import { PaymentsUserPaymentPreferences, PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
+import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
+import { MOCK_BUYER_REQUEST_PAYMENT_READY } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
+import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
+import {
+  UserPaymentPreferencesError,
+  UserPaymentPreferencesUnknownError,
+} from '@api/core/errors/delivery/payview/user-payment-preferences';
 
 describe('PayviewService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
@@ -46,11 +62,14 @@ describe('PayviewService', () => {
   let deliveryBuyerService: DeliveryBuyerService;
   let deliveryBuyerCalculatorService: DeliveryBuyerCalculatorService;
   let deliveryCostsService: DeliveryCostsService;
+  let deliveryRealTimeService: DeliveryRealTimeService;
+  let deliveryPaymentReadyService: DeliveryPaymentReadyService;
   let itemService: ItemService;
   let paymentsCreditCardService: PaymentsCreditCardService;
   let paymentsPaymentMethodsService: PaymentsPaymentMethodsService;
   let paymentsUserPaymentPreferencesService: PaymentsUserPaymentPreferencesService;
   let paymentsWalletsService: PaymentsWalletsService;
+  let paymentsClientBrowserInfoApiService: PaymentsClientBrowserInfoApiService;
   let toastService: ToastService;
 
   beforeEach(() => {
@@ -59,9 +78,9 @@ describe('PayviewService', () => {
         {
           provide: BuyerRequestsApiService,
           useValue: {
-            getRequestsItemsDetails() {
-              return of(MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2);
-            },
+            getRequestsItemsDetails: () => of(MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2),
+            getRequestsAsBuyerByItemHash: () => of(null),
+            buyRequest: () => of(null),
           },
         },
         {
@@ -126,7 +145,7 @@ describe('PayviewService', () => {
             get() {
               return of(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
             },
-            update: () => of(null),
+            setUserPaymentPreferences: () => of(null),
           },
         },
         {
@@ -135,6 +154,28 @@ describe('PayviewService', () => {
             get walletBalance$() {
               return of(MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY);
             },
+          },
+        },
+        {
+          provide: DeliveryRealTimeService,
+          useValue: {
+            get deliveryRealTimeNotifications$() {
+              return of(MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE);
+            },
+          },
+        },
+        {
+          provide: DeliveryPaymentReadyService,
+          useValue: {
+            continueBuyerRequestBuyFlow() {
+              return of(null);
+            },
+          },
+        },
+        {
+          provide: PaymentsClientBrowserInfoApiService,
+          useValue: {
+            sendBrowserInfo: () => of(null),
           },
         },
         PayviewService,
@@ -148,11 +189,14 @@ describe('PayviewService', () => {
     deliveryBuyerService = TestBed.inject(DeliveryBuyerService);
     deliveryBuyerCalculatorService = TestBed.inject(DeliveryBuyerCalculatorService);
     deliveryCostsService = TestBed.inject(DeliveryCostsService);
+    deliveryRealTimeService = TestBed.inject(DeliveryRealTimeService);
+    deliveryPaymentReadyService = TestBed.inject(DeliveryPaymentReadyService);
     itemService = TestBed.inject(ItemService);
     paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
     paymentsPaymentMethodsService = TestBed.inject(PaymentsPaymentMethodsService);
     paymentsUserPaymentPreferencesService = TestBed.inject(PaymentsUserPaymentPreferencesService);
     paymentsWalletsService = TestBed.inject(PaymentsWalletsService);
+    paymentsClientBrowserInfoApiService = TestBed.inject(PaymentsClientBrowserInfoApiService);
     toastService = TestBed.inject(ToastService);
   });
 
@@ -178,7 +222,7 @@ describe('PayviewService', () => {
       paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
-      service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
+      service.getCurrentState(fakeItemHash, MOCK_UUID).subscribe((response: PayviewState) => {
         payviewState = response;
       });
 
@@ -257,7 +301,7 @@ describe('PayviewService', () => {
       paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
-      service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
+      service.getCurrentState(fakeItemHash, MOCK_UUID).subscribe((response: PayviewState) => {
         payviewState = response;
       });
 
@@ -339,7 +383,7 @@ describe('PayviewService', () => {
       paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
       paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
-      service.getCurrentState(fakeItemHash).subscribe((response: PayviewState) => {
+      service.getCurrentState(fakeItemHash, MOCK_UUID).subscribe((response: PayviewState) => {
         payviewState = response;
       });
 
@@ -498,26 +542,54 @@ describe('PayviewService', () => {
   });
 
   describe('WHEN updating the user payment preferences', () => {
-    beforeEach(() => {
-      spyOn(paymentsUserPaymentPreferencesService, 'update').and.callThrough();
+    describe('and the request succeed', () => {
+      beforeEach(() => {
+        spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.callThrough();
+      });
+
+      it('should call to the payment server to update the corresponding preferences', fakeAsync(() => {
+        let result: number = 0;
+
+        const subscription = service
+          .setUserPaymentPreferences(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES)
+          .pipe(delay(1))
+          .subscribe(() => {
+            subscription.unsubscribe();
+            result++;
+          });
+        tick(1);
+
+        expect(result).toEqual(1);
+        expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
+        expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(
+          MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES
+        );
+      }));
     });
 
-    it('should call to the payment server to update the corresponding preferences', fakeAsync(() => {
-      let result: number = 0;
+    describe('and the request fails', () => {
+      beforeEach(() => {
+        spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.returnValue(throwError('network error'));
+      });
 
-      const subscription = service
-        .setUserPaymentPreferences(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES)
-        .pipe(delay(1))
-        .subscribe(() => {
-          subscription.unsubscribe();
-          result++;
-        });
-      tick(1);
+      it('should call to the payment server to update the corresponding preferences', fakeAsync(() => {
+        let result: UserPaymentPreferencesError[];
 
-      expect(result).toEqual(1);
-      expect(paymentsUserPaymentPreferencesService.update).toHaveBeenCalledTimes(1);
-      expect(paymentsUserPaymentPreferencesService.update).toHaveBeenCalledWith(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES);
-    }));
+        service.setUserPaymentPreferences(MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES).subscribe(
+          () => {},
+          (error: UserPaymentPreferencesError[]) => {
+            result = error;
+          }
+        );
+        tick();
+
+        expect(result[0] instanceof UserPaymentPreferencesUnknownError).toBe(true);
+        expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
+        expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(
+          MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES
+        );
+      }));
+    });
   });
 
   describe('WHEN retrieving the card', () => {
@@ -611,6 +683,52 @@ describe('PayviewService', () => {
       it('should not update the credit card', fakeAsync(() => {
         expect(creditCard).toBeFalsy();
       }));
+    });
+  });
+
+  describe('when creating a buyer request', () => {
+    const MOCK_ITEM_HASH: string = MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.item.id;
+    const MOCK_USER_PAYMENT_PREFERENCES: PaymentsUserPaymentPreferences =
+      MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.payment.preferences;
+    const MOCK_PAYMENT_METHOD: PAYVIEW_PAYMENT_METHOD = MOCK_USER_PAYMENT_PREFERENCES.preferences.paymentMethod;
+    const MOCK_BUYER_REQUEST_ID: string = MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.buyerRequestId;
+    const MOCK_3DS_REALTIME_NOTIFICATION: DeliveryRealTimeNotification = {
+      id: 'whatever.3ds_ready',
+    };
+    const MOCK_BUYER_REQUEST: BuyerRequest = { ...MOCK_BUYER_REQUEST_PAYMENT_READY, id: MOCK_BUYER_REQUEST_ID };
+
+    beforeEach(fakeAsync(() => {
+      spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.callThrough();
+      spyOn(paymentsClientBrowserInfoApiService, 'sendBrowserInfo').and.callThrough();
+      jest.spyOn(deliveryRealTimeService, 'deliveryRealTimeNotifications$', 'get').mockReturnValue(of(MOCK_3DS_REALTIME_NOTIFICATION));
+      spyOn(deliveryPaymentReadyService, 'continueBuyerRequestBuyFlow').and.callThrough();
+      spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST]));
+      service.request(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE).subscribe();
+      tick();
+    }));
+
+    it('should send latest payment user preferences only once', () => {
+      expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledTimes(1);
+    });
+
+    it('should send latest payment user preferences with valid data', () => {
+      expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(MOCK_USER_PAYMENT_PREFERENCES);
+    });
+
+    it('should get current buyer request from server only once', () => {
+      expect(buyerRequestsApiService.getRequestsAsBuyerByItemHash).toHaveBeenCalledTimes(1);
+    });
+
+    it('should get current buyer request from server for current item', () => {
+      expect(buyerRequestsApiService.getRequestsAsBuyerByItemHash).toHaveBeenCalledWith(MOCK_ITEM_HASH);
+    });
+
+    it('should ask to delivery payment ready handler to continue flow only once', () => {
+      expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledTimes(1);
+    });
+
+    it('should ask to delivery payment ready handler to continue flow with valid data', () => {
+      expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(MOCK_BUYER_REQUEST, MOCK_PAYMENT_METHOD);
     });
   });
 });
