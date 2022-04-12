@@ -1,4 +1,6 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import {
@@ -9,14 +11,18 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { environment } from '@environments/environment';
 import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { of, ReplaySubject, Subject } from 'rxjs';
 
 import { DeliveryPaymentReadyService } from './delivery-payment-ready.service';
+import { PAYMENT_CONTINUED_POST_ACTION } from './enums/payment-continued-post-action.enum';
 
 describe('DeliveryPaymentReadyService', () => {
   let service: DeliveryPaymentReadyService;
+  let router: Router;
   let windowRef: Window;
   let transactionTrackingService: TransactionTrackingService;
   let buyerRequestsApiService: BuyerRequestsApiService;
@@ -27,6 +33,7 @@ describe('DeliveryPaymentReadyService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       providers: [
         DeliveryPaymentReadyService,
         { provide: WINDOW_TOKEN, useValue: { open: () => {} } },
@@ -44,6 +51,7 @@ describe('DeliveryPaymentReadyService', () => {
       ],
     });
     service = TestBed.inject(DeliveryPaymentReadyService);
+    router = TestBed.inject(Router);
     windowRef = TestBed.inject(WINDOW_TOKEN);
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
@@ -51,6 +59,7 @@ describe('DeliveryPaymentReadyService', () => {
 
     spyOn(webViewModalService, 'open').and.callThrough();
     spyOn(windowRef, 'open').and.callThrough();
+    spyOn(router, 'navigate');
   });
 
   it('should be created', () => {
@@ -169,6 +178,28 @@ describe('DeliveryPaymentReadyService', () => {
 
     it('should NOT open a web view', () => {
       expect(webViewModalService.open).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when asking the process to redirect to TTS once done', () => {
+    const MOCK_TTS_URL: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUEST_PAYMENT_READY.id}`;
+
+    beforeEach(fakeAsync(() => {
+      MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(true);
+      MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.complete();
+      MOCK_MODAL_RESULT_SUBJECT.next(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
+      MOCK_MODAL_RESULT_SUBJECT.complete();
+
+      service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS).subscribe();
+      tick();
+    }));
+
+    it('should go to TTS only once', () => {
+      expect(router.navigate).toBeCalledTimes(1);
+    });
+
+    it('should go to TTS URL', () => {
+      expect(router.navigate).toHaveBeenCalledWith([MOCK_TTS_URL]);
     });
   });
 });

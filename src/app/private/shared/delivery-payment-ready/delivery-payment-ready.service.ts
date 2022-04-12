@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { BUYER_REQUEST_PAYMENT_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-payment-status.enum';
@@ -9,22 +10,29 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { environment } from '@environments/environment';
 import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
+import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { Observable, of, ReplaySubject, timer } from 'rxjs';
-import { tap, takeUntil, concatMap, map } from 'rxjs/operators';
+import { tap, takeUntil, concatMap, map, finalize } from 'rxjs/operators';
+import { PAYMENT_CONTINUED_POST_ACTION } from './enums/payment-continued-post-action.enum';
 
 @Injectable()
 export class DeliveryPaymentReadyService {
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
+    private router: Router,
     private webViewModalService: WebViewModalService,
     private buyerRequestsApiService: BuyerRequestsApiService,
     private transactionTrackingService: TransactionTrackingService,
     private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService
   ) {}
 
-  public continueBuyerRequestBuyFlow(request: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
+  public continueBuyerRequestBuyFlow(
+    request: BuyerRequest,
+    postAction: PAYMENT_CONTINUED_POST_ACTION = PAYMENT_CONTINUED_POST_ACTION.NONE
+  ): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     const isContinueFlowNotNeeded: boolean = request.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
     if (isContinueFlowNotNeeded) {
       return of(null);
@@ -38,7 +46,8 @@ export class DeliveryPaymentReadyService {
             .pipe(concatMap((isPayPal) => (isPayPal ? this.continuePayPalFlow(request) : this.continueCreditCardFlow(request))));
         }
         return of(null);
-      })
+      }),
+      finalize(() => this.handleCompletedFlow(postAction, request.id))
     );
   }
 
@@ -100,5 +109,20 @@ export class DeliveryPaymentReadyService {
 
   private cancelRequest(id: string): Observable<void> {
     return this.buyerRequestsApiService.cancelRequest(id);
+  }
+
+  private redirectToTTS(id: string): void {
+    const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${id}`;
+    this.router.navigate([route]);
+  }
+
+  private handleCompletedFlow(action: PAYMENT_CONTINUED_POST_ACTION, id: string): void {
+    if (action === PAYMENT_CONTINUED_POST_ACTION.NONE) {
+      return;
+    }
+
+    if (action === PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS) {
+      return this.redirectToTTS(id);
+    }
   }
 }
