@@ -13,7 +13,7 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { UserService } from '@core/user/user.service';
 
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, of, ReplaySubject, throwError } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import {
   siteUrlMock,
@@ -43,7 +43,8 @@ import {
   fakeUsername,
   checkoutDeeplink,
 } from '@fixtures/core/deeplink/deeplink.fixtures.spec';
-import { PayDeeplinkService } from '../pay-deeplink/pay-deeplink.service';
+import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
+import { PATH_TO_PAYVIEW } from '@private/private-routing-constants';
 
 describe(`DeeplinkService`, () => {
   let router: Router;
@@ -52,9 +53,9 @@ describe(`DeeplinkService`, () => {
   let toastService: ToastService;
   let itemService: ItemService;
   let userService: UserService;
-  let payDeeplinkService: PayDeeplinkService;
 
   const MOCK_LOCALE_VALUE_SUBJECT: BehaviorSubject<APP_LOCALE> = new BehaviorSubject<APP_LOCALE>(`es`);
+  const MOCK_DELIVERY_FEATURE_FLAG_SUBJECT: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -97,9 +98,11 @@ describe(`DeeplinkService`, () => {
           useClass: MockToastService,
         },
         {
-          provide: PayDeeplinkService,
+          provide: DeliveryExperimentalFeaturesService,
           useValue: {
-            handle: () => of(''),
+            get featuresEnabled$() {
+              return MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.asObservable();
+            },
           },
         },
       ],
@@ -111,7 +114,6 @@ describe(`DeeplinkService`, () => {
     toastService = TestBed.inject(ToastService);
     itemService = TestBed.inject(ItemService);
     userService = TestBed.inject(UserService);
-    payDeeplinkService = TestBed.inject(PayDeeplinkService);
 
     spyOn(router, 'navigate');
     spyOn(toastService, 'show');
@@ -259,18 +261,46 @@ describe(`DeeplinkService`, () => {
   });
 
   describe('and when the deeplink is a checkout link', () => {
-    beforeEach(() => {
-      spyOn(payDeeplinkService, 'handle').and.callThrough();
+    describe('and the delivery feature flags is enabled', () => {
+      const payviewUrl: string = `${PATH_TO_PAYVIEW}/${fakeItemId}`;
 
-      service.navigate(checkoutDeeplink);
+      beforeEach(() => {
+        MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(true);
+
+        service.navigate(checkoutDeeplink);
+      });
+
+      it('should navigate once', () => {
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+      });
+
+      it('should navigate to payview', () => {
+        expect(router.navigate).toHaveBeenCalledWith([payviewUrl]);
+      });
     });
 
-    it('should delegate handling to pay deeplink service only once', () => {
-      expect(payDeeplinkService.handle).toHaveBeenCalledTimes(1);
-    });
+    describe('and the delivery feature flag is NOT enabled', () => {
+      beforeEach(() => {
+        MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(false);
 
-    it('should delegate handling to pay deeplink service with raw deeplink', () => {
-      expect(payDeeplinkService.handle).toHaveBeenCalledWith(checkoutDeeplink);
+        service.navigate(checkoutDeeplink);
+      });
+
+      it('should NOT navigate', () => {
+        expect(router.navigate).not.toHaveBeenCalled();
+      });
+
+      it('should display one toast', () => {
+        expect(toastService.show).toHaveBeenCalledTimes(1);
+      });
+
+      it('should display not available toast with error message', () => {
+        expect(toastService.show).toHaveBeenCalledWith({
+          title: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_title_web_specific:Feature not available`,
+          text: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_description_web_specific:We are working on it... We appreciate your patience!`,
+          type: TOAST_TYPES.ERROR,
+        });
+      });
     });
   });
 

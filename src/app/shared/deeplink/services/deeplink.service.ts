@@ -20,7 +20,7 @@ import { getTicketFormUrl } from '@core/external-links/customer-help/get-ticket-
 import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
 import { Item } from '@core/item/item';
 import { ItemService } from '@core/item/item.service';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
+import { PATH_TO_PAYVIEW, PRIVATE_PATHS } from '@private/private-routing-constants';
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
@@ -33,8 +33,8 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { DeeplinkType } from '../types/deeplink.type';
 import { deeplinkAvailabilities } from '../constants/deeplink-availability';
 import { deeplinkExternalNavigation } from '../constants/deeplink-external-navigation';
-import { catchError, map } from 'rxjs/operators';
-import { PayDeeplinkService } from '../pay-deeplink/pay-deeplink.service';
+import { catchError, map, take, tap } from 'rxjs/operators';
+import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 
 @Injectable()
 export class DeeplinkService {
@@ -47,7 +47,7 @@ export class DeeplinkService {
     private itemDetailRoutePipe: ItemDetailRoutePipe,
     private userService: UserService,
     private userProfileRoutePipe: UserProfileRoutePipe,
-    private payDeeplinkService: PayDeeplinkService
+    private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService
   ) {}
 
   public navigate(deeplink: string): void {
@@ -73,7 +73,7 @@ export class DeeplinkService {
       return this.getItemWebLink(deeplink);
     }
     if (deeplinkType === 'pay') {
-      return this.payDeeplinkService.handle(deeplink);
+      return this.getPayviewWebLink(deeplink).pipe(tap((link) => link === '' && this.showNotAvailableFeatureToast()));
     }
 
     return of(this.deeplinkMappers(deeplinkType, deeplink));
@@ -166,6 +166,16 @@ export class DeeplinkService {
     );
   }
 
+  //TODO: When removing the feature flag from the payview, we can generate the payview link without an observable
+  private getPayviewWebLink(deeplink: string): Observable<string> {
+    const params: string[] = this.getParams(deeplink);
+    const itemHash: string = params[0].split('=')[1];
+    return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
+      map((enabled) => (enabled ? `${PATH_TO_PAYVIEW}/${itemHash}` : '')),
+      take(1)
+    );
+  }
+
   private getParams(deeplink: string): string[] {
     const regExp: RegExp = new RegExp(/\w+=[\w\-]+/g);
     return deeplink.match(regExp);
@@ -202,7 +212,7 @@ export class DeeplinkService {
 
   private navigateToRoute(deeplink: string): void {
     this.toWebLink(deeplink).subscribe((webLink: string) => {
-      this.router.navigate([webLink]);
+      webLink !== '' && this.router.navigate([webLink]);
     });
   }
 
