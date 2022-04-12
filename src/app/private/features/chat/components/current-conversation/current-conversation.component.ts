@@ -128,7 +128,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
         this.scrollHeight = this.scrollLocalPosition + this.noMessages * this.MESSAGE_HEIGHT;
       }
 
-      if (this.currentConversation.isAutomaticallyTranslatable) {
+      if (this.currentConversation?.isAutomaticallyTranslatable) {
         this.translateConversation();
       }
 
@@ -197,7 +197,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public hasMoreMessages(): boolean {
-    return this.currentConversation.nextPageToken !== null && this.currentConversation.nextPageToken !== undefined;
+    return this.currentConversation?.nextPageToken !== null && this.currentConversation?.nextPageToken !== undefined;
   }
 
   public loadMoreMessages(scrollHeight: number = 0) {
@@ -269,7 +269,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
   }
 
   public translateConversation(): void {
-    if (!this.currentConversation.isTranslating && this.currentConversation.isTranslatable) {
+    if (!this.currentConversation?.isTranslating && this.currentConversation?.isTranslatable) {
       const conversation = this.currentConversation;
       conversation.isTranslating = true;
       this.translationService
@@ -302,7 +302,7 @@ export class CurrentConversationComponent implements OnInit, OnChanges, AfterVie
 
   private deliveryContextNeedsRefresh(newMessage: InboxMessage): boolean {
     const isDeliveryThirdVoice: boolean = this.isDeliveryThirdVoice(newMessage.type);
-    const isMessageInCurrentConversation: boolean = !!this.currentConversation.messages.find((m) => m.id === newMessage.id);
+    const isMessageInCurrentConversation: boolean = !!this.currentConversation?.messages.find((m) => m.id === newMessage.id);
     return isDeliveryThirdVoice && isMessageInCurrentConversation;
   }
 
