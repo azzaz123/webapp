@@ -101,6 +101,9 @@ describe('UserVerificationsHttpService', () => {
   describe('when asking to recover the password', () => {
     it('should retrieve an empty response', (done) => {
       const email = 'test@test.com';
+      let params: URLSearchParams = new URLSearchParams();
+      params.append('emailAddress', email);
+
       let response;
 
       service.passwordRecovery(email).subscribe((data) => {
@@ -112,7 +115,7 @@ describe('UserVerificationsHttpService', () => {
 
       expect(req.request.method).toBe('POST');
       expect(response).toEqual('');
-      expect(req.request.body).toEqual({ emailAddress: email });
+      expect(req.request.body).toEqual(params);
     });
   });
 });

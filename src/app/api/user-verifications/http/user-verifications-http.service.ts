@@ -38,7 +38,14 @@ export class UserVerificationsHttpService {
     return this.httpClient.post<PhoneVerificationApi>(VERIFY_USER_ENDPOINT, body);
   }
 
-  public passwordRecovery(emailAddress: string): Observable<void> {
-    return this.httpClient.post<void>(PASSWORD_RECOVERY_ENDPOINT, { emailAddress });
+  public passwordRecovery(email: string): Observable<void> {
+    let params: URLSearchParams = new URLSearchParams();
+    params.append('emailAddress', email);
+
+    return this.httpClient.post<void>(PASSWORD_RECOVERY_ENDPOINT, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    });
   }
 }
