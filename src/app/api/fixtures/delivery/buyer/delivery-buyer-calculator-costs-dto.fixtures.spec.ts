@@ -50,6 +50,7 @@ export const MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION: DeliveryBuyerC
   },
   promotion: {
     deliveryCostDiscountPercentage: 10,
+    feesDiscountPercentatge: 0,
     deliveryCostFixedPrice: { amount: { integer: 1, decimals: 0, total: 1.0 }, currency: { code: 'EUR', symbol: '€' } },
     feesFixedPrice: { amount: { integer: 2, decimals: 50, total: 2.5 }, currency: { code: 'EUR', symbol: '€' } },
     originalBuyerCost: {
@@ -58,6 +59,30 @@ export const MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION: DeliveryBuyerC
       fees: { amount: { integer: 6, decimals: 3, total: 6.03 }, currency: { code: 'EUR', symbol: '€' } },
       total: { amount: { integer: 82, decimals: 98, total: 82.98 }, currency: { code: 'EUR', symbol: '€' } },
     },
+    promotionName: null,
+    promocode: 'fakepromocode123321',
+  },
+};
+
+export const MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION_NAME: DeliveryBuyerCalculatorCosts = {
+  buyerCost: {
+    productPrice: { amount: { integer: 56, decimals: 70, total: 56.7 }, currency: { code: 'EUR', symbol: '€' } },
+    deliveryCost: { amount: { integer: 1, decimals: 0, total: 1.0 }, currency: { code: 'EUR', symbol: '€' } },
+    fees: { amount: { integer: 2, decimals: 50, total: 2.5 }, currency: { code: 'EUR', symbol: '€' } },
+    total: { amount: { integer: 59, decimals: 20, total: 59.2 }, currency: { code: 'EUR', symbol: '€' } },
+  },
+  promotion: {
+    deliveryCostDiscountPercentage: 10,
+    feesDiscountPercentatge: 0,
+    deliveryCostFixedPrice: { amount: { integer: 1, decimals: 0, total: 1.0 }, currency: { code: 'EUR', symbol: '€' } },
+    feesFixedPrice: { amount: { integer: 2, decimals: 50, total: 2.5 }, currency: { code: 'EUR', symbol: '€' } },
+    originalBuyerCost: {
+      productPrice: { amount: { integer: 63, decimals: 0, total: 63.0 }, currency: { code: 'EUR', symbol: '€' } },
+      deliveryCost: { amount: { integer: 13, decimals: 95, total: 13.95 }, currency: { code: 'EUR', symbol: '€' } },
+      fees: { amount: { integer: 6, decimals: 3, total: 6.03 }, currency: { code: 'EUR', symbol: '€' } },
+      total: { amount: { integer: 82, decimals: 98, total: 82.98 }, currency: { code: 'EUR', symbol: '€' } },
+    },
+    promotionName: 'Employees promotion',
     promocode: 'fakepromocode123321',
   },
 };
@@ -91,6 +116,8 @@ export const MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITHOUT_FIXED_DELIVERY_COST: D
     total: { amount: { integer: 59, decimals: 20, total: 59.2 }, currency: { code: 'EUR', symbol: '€' } },
   },
   promotion: {
+    feesDiscountPercentatge: 0,
+
     deliveryCostDiscountPercentage: 10,
     deliveryCostFixedPrice: null,
     feesFixedPrice: { amount: { integer: 2, decimals: 50, total: 2.5 }, currency: { code: 'EUR', symbol: '€' } },
@@ -100,6 +127,7 @@ export const MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITHOUT_FIXED_DELIVERY_COST: D
       fees: { amount: { integer: 6, decimals: 3, total: 6.03 }, currency: { code: 'EUR', symbol: '€' } },
       total: { amount: { integer: 82, decimals: 98, total: 82.98 }, currency: { code: 'EUR', symbol: '€' } },
     },
+    promotionName: null,
     promocode: 'fakepromocode123321',
   },
 };
@@ -133,6 +161,8 @@ export const MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITHOUT_FIXED_FEES_COST: Deliv
     total: { amount: { integer: 59, decimals: 20, total: 59.2 }, currency: { code: 'EUR', symbol: '€' } },
   },
   promotion: {
+    feesDiscountPercentatge: 0,
+    promotionName: null,
     deliveryCostDiscountPercentage: 10,
     deliveryCostFixedPrice: null,
     feesFixedPrice: null,
