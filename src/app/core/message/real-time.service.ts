@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
 import { RemoteConsoleService } from '../remote-console';
-import { AnalyticsService } from '../analytics/analytics.service';
 import { ConnectionService } from '../connection/connection.service';
 import { ConnectionType } from '../remote-console/connection-type';
 import { I18nService } from '../i18n/i18n.service';
