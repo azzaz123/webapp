@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AnalyticsService } from '@core/analytics/analytics.service';
+import { SearchIdService } from '@core/analytics/search/search-id/search-id.service';
 import { UserService } from '@core/user/user.service';
 import { MockAnalyticsService } from '@fixtures/analytics.fixtures.spec';
 import { MOCK_ITEM_CARD } from '@fixtures/item-card.fixtures.spec';
@@ -19,6 +20,7 @@ describe('SearchListTrackingEventsService', () => {
   let service: SearchListTrackingEventsService;
   let analyticsService: AnalyticsService;
   let userService: UserService;
+  let searchIdService: SearchIdService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,11 +29,13 @@ describe('SearchListTrackingEventsService', () => {
         SearchListTrackingEventsService,
         { provide: AnalyticsService, useClass: MockAnalyticsService },
         { provide: UserService, useClass: MockedUserService },
+        SearchIdService,
       ],
     });
     service = TestBed.inject(SearchListTrackingEventsService);
     analyticsService = TestBed.inject(AnalyticsService);
     userService = TestBed.inject(UserService);
+    searchIdService = TestBed.inject(SearchIdService);
   });
 
   it('should be created', () => {
@@ -78,6 +82,28 @@ describe('SearchListTrackingEventsService', () => {
         tick();
 
         expect(userService.get).not.toHaveBeenCalled();
+      }));
+    });
+
+    describe('and it comes from a search with searchId', () => {
+      it('should save item search id relation', fakeAsync(() => {
+        spyOn(searchIdService, 'setSearchIdByItemId');
+
+        service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, MOCK_SEARCH_ID);
+        tick();
+
+        expect(searchIdService.setSearchIdByItemId).toHaveBeenCalledWith(MOCK_ITEM_CARD.id, MOCK_SEARCH_ID);
+      }));
+    });
+
+    describe('and it comes from a search without searchId', () => {
+      it('should remove item search id relation', fakeAsync(() => {
+        spyOn(searchIdService, 'deleteSearchIdByItemId');
+
+        service.trackClickItemCardEvent(MOCK_ITEM_CARD, MOCK_ITEM_INDEX, null);
+        tick();
+
+        expect(searchIdService.deleteSearchIdByItemId).toHaveBeenCalledWith(MOCK_ITEM_CARD.id);
       }));
     });
   });
