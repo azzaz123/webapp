@@ -9,13 +9,6 @@
             <h3 *ngIf="!isNewForm" i18n="@@address_view_all_users_top_bar_edit_title">Edit your address</h3>
           </div>
         </div>
-        <div class="row" *ngIf="whereUserComes === PREVIOUS_PAGE.PAYVIEW_PAY">
-          <div class="col-md-11 offset-md-1">
-            <span i18n="@@address_view_all_users_form_plain_text_sender_need_explanation_text" class="DeliveryAddress__payViewInfoMessage"
-              >We need your address to be the sender in case of return</span
-            >
-          </div>
-        </div>
         <div class="form-group row align-items-center mt-2">
           <label for="country_iso_code" class="col-sm-12 col-md-5" i18n="@@address_view_all_users_sheet_country_selection_title"
             >Country</label
