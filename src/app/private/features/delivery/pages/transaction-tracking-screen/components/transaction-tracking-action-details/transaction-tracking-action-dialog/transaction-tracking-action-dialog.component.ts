@@ -18,7 +18,7 @@ import { ConfirmationModalProperties } from '@shared/confirmation-modal/confirma
 import { TRANSACTION_TRACKING_PATHS } from '@private/features/delivery/pages/transaction-tracking-screen/transaction-tracking-screen-routing-constants';
 import { ActionNameAnalytics } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/action-name-analytics-type';
 import { TransactionTrackingScreenTrackingEventsService } from '@private/features/delivery/pages/transaction-tracking-screen/services/transaction-tracking-screen-tracking-events/transaction-tracking-screen-tracking-events.service';
-import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
+import { DeeplinkService } from '@shared/deeplink/services/deeplink.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-dialog',
