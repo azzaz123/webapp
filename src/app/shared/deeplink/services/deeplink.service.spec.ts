@@ -1,9 +1,9 @@
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { APP_LOCALE } from '@configs/subdomains.config';
-import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
+import { DeeplinkService } from '@shared/deeplink/services/deeplink.service';
 import { HELP_LOCALE_BY_APP_LOCALE } from '@core/external-links/customer-help/constants/customer-help-locale';
 import { ItemDetailRoutePipe, UserProfileRoutePipe } from '@shared/pipes';
 import { ItemService } from '@core/item/item.service';
@@ -13,67 +13,63 @@ import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { UserService } from '@core/user/user.service';
 
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, ReplaySubject, throwError } from 'rxjs';
 import { WINDOW_TOKEN } from '@core/window/window.token';
-
-const fakeBarcode = 'abcZYW123908';
-const fakeInstructionsType = 'packaging';
-const fakeItemId = 'this_is_a_fake_item_id';
-const fakeItemName = 'this-is-a-fake-item';
-const fakeItemWebSlug = `${fakeItemName}-1234567890`;
-const fakeItem = {
-  webSlug: fakeItemWebSlug,
-};
-const fakePrintableUrl = 'http://fake.url.fake';
-const fakeRequestId = '123-456-789-000';
-const fakeUserId = 'this_is_a_fake_user_id';
-const fakeUsername = 'this_is_a_fake_username';
-const fakeWebSlug = `${fakeUsername}-1234567890`;
-const fakeUser = {
-  id: fakeUserId,
-  firstName: fakeUsername,
-  webSlug: fakeWebSlug,
-};
-
-const allLanguages: APP_LOCALE[] = [`es`, `en`, `it`];
-const barcodeBaseDeeplink: string = `wallapop://delivery/barcode`;
-const barcodeDeeplink: string = `${barcodeBaseDeeplink}?b=${fakeBarcode}`;
-const checkDeliveryInstructionBaseDeeplink: string = `wallapop://shipping/transactiontracking/instructions`;
-const checkDeliveryInstructionDeeplink: string = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=${fakeInstructionsType}`;
-const itemBaseDeeplink: string = `wallapop://i`;
-const itemDeeplink: string = `${itemBaseDeeplink}/$itemId`;
-const packagingInstructionsDeeplink: string = `${checkDeliveryInstructionBaseDeeplink}?request_id=${fakeRequestId}&type=${fakeInstructionsType}`;
-const printableLabelBaseDeeplink: string = `wallapop://trackinglabel`;
-const printableLabelDeeplink: string = `${printableLabelBaseDeeplink}?url=${fakePrintableUrl}`;
-const siteUrlMock: string = 'https://localhost/';
-const userProfileBaseDeeplink: string = `wallapop://p`;
-const userProfileDeeplink: string = `${userProfileBaseDeeplink}/$userId`;
-const zendeskArticleBaseDeeplink: string = `wallapop://customerSupport/faq/article`;
-const zendeskArticleDeeplink: string = `${zendeskArticleBaseDeeplink}?z=%s`;
-const zendeskCreateDisputeFormBaseDeeplink: string = `wallapop://customerSupport/form`;
-const zendeskCreateDisputeFormDeeplink: string = `${zendeskCreateDisputeFormBaseDeeplink}?f=360003316777`;
+import {
+  siteUrlMock,
+  allLanguages,
+  zendeskArticleBaseDeeplink,
+  zendeskCreateDisputeFormDeeplink,
+  zendeskCreateDisputeFormBaseDeeplink,
+  barcodeBaseDeeplink,
+  checkDeliveryInstructionBaseDeeplink,
+  itemBaseDeeplink,
+  printableLabelBaseDeeplink,
+  userProfileBaseDeeplink,
+  itemDeeplink,
+  printableLabelDeeplink,
+  zendeskArticleDeeplink,
+  checkDeliveryInstructionDeeplink,
+  packagingInstructionsDeeplink,
+  userProfileDeeplink,
+  fakeInstructionsType,
+  fakeItem,
+  fakeItemId,
+  fakeItemWebSlug,
+  fakePrintableUrl,
+  fakeRequestId,
+  fakeUser,
+  fakeUserId,
+  fakeUsername,
+  checkoutDeeplink,
+} from '@fixtures/core/deeplink/deeplink.fixtures.spec';
+import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
+import { PATH_TO_PAYVIEW } from '@private/private-routing-constants';
 
 describe(`DeeplinkService`, () => {
   let router: Router;
+  let windowRef: Window;
   let service: DeeplinkService;
-  let windowMock: Window;
   let toastService: ToastService;
   let itemService: ItemService;
   let userService: UserService;
-  const windowOpenMock = {
+
+  const MOCK_LOCALE_VALUE_SUBJECT: BehaviorSubject<APP_LOCALE> = new BehaviorSubject<APP_LOCALE>(`es`);
+  const MOCK_DELIVERY_FEATURE_FLAG_SUBJECT: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+  const MOCK_CHILD_WINDOW_REF: Window = {
     location: {
       href: '',
     },
-  };
+  } as Window;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: LOCALE_ID, useValue: `es` },
+        { provide: LOCALE_ID, useValue: MOCK_LOCALE_VALUE_SUBJECT.value },
         {
           provide: WINDOW_TOKEN,
           useValue: {
-            open: () => windowOpenMock,
+            open: () => MOCK_CHILD_WINDOW_REF,
           },
         },
         { provide: SITE_URL, useValue: siteUrlMock },
@@ -106,23 +102,37 @@ describe(`DeeplinkService`, () => {
           provide: ToastService,
           useClass: MockToastService,
         },
+        {
+          provide: DeliveryExperimentalFeaturesService,
+          useValue: {
+            get featuresEnabled$() {
+              return MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.asObservable();
+            },
+          },
+        },
       ],
     });
+
+    router = TestBed.inject(Router);
+    windowRef = TestBed.inject(WINDOW_TOKEN);
+    service = TestBed.inject(DeeplinkService);
+    toastService = TestBed.inject(ToastService);
+    itemService = TestBed.inject(ItemService);
+    userService = TestBed.inject(UserService);
+
+    spyOn(router, 'navigate');
+    spyOn(toastService, 'show');
+    spyOn(windowRef, 'open').and.callThrough();
   });
 
   it(`should be created`, () => {
-    const service = TestBed.inject(DeeplinkService);
-
     expect(service).toBeTruthy();
   });
 
   describe(`WHEN the deeplink is a customer support deeplink`, () => {
     describe.each([allLanguages])(`WHEN mapping deeplink to customer help url`, (locale) => {
       beforeEach(() => {
-        TestBed.overrideProvider(LOCALE_ID, { useValue: locale });
-        router = TestBed.inject(Router);
-        service = TestBed.inject(DeeplinkService);
-        windowMock = TestBed.inject(WINDOW_TOKEN);
+        MOCK_LOCALE_VALUE_SUBJECT.next(locale);
       });
 
       it(`should return the url according with the specified language`, fakeAsync(() => {
@@ -165,10 +175,7 @@ describe(`DeeplinkService`, () => {
   describe(`WHEN the deeplink is a create dispute customer support deeplink`, () => {
     describe.each([allLanguages])(`WHEN mapping deeplink to customer form url`, (locale) => {
       beforeEach(() => {
-        TestBed.overrideProvider(LOCALE_ID, { useValue: locale });
-        router = TestBed.inject(Router);
-        service = TestBed.inject(DeeplinkService);
-        toastService = TestBed.inject(ToastService);
+        MOCK_LOCALE_VALUE_SUBJECT.next(locale);
       });
 
       it(`should return the url according with the specified language`, fakeAsync(() => {
@@ -255,6 +262,50 @@ describe(`DeeplinkService`, () => {
 
         flush();
       }));
+    });
+  });
+
+  describe('and when the deeplink is a checkout link', () => {
+    describe('and the delivery feature flags is enabled', () => {
+      const payviewUrl: string = `${PATH_TO_PAYVIEW}/${fakeItemId}`;
+
+      beforeEach(() => {
+        MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(true);
+
+        service.navigate(checkoutDeeplink);
+      });
+
+      it('should navigate once', () => {
+        expect(router.navigate).toHaveBeenCalledTimes(1);
+      });
+
+      it('should navigate to payview', () => {
+        expect(router.navigate).toHaveBeenCalledWith([payviewUrl]);
+      });
+    });
+
+    describe('and the delivery feature flag is NOT enabled', () => {
+      beforeEach(() => {
+        MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(false);
+
+        service.navigate(checkoutDeeplink);
+      });
+
+      it('should NOT navigate', () => {
+        expect(router.navigate).not.toHaveBeenCalled();
+      });
+
+      it('should display one toast', () => {
+        expect(toastService.show).toHaveBeenCalledTimes(1);
+      });
+
+      it('should display not available toast with error message', () => {
+        expect(toastService.show).toHaveBeenCalledWith({
+          title: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_title_web_specific:Feature not available`,
+          text: $localize`:@@shipments_all_users_snackbar_tts_unavailable_feature_description_web_specific:We are working on it... We appreciate your patience!`,
+          type: TOAST_TYPES.ERROR,
+        });
+      });
     });
   });
 
@@ -358,11 +409,6 @@ describe(`DeeplinkService`, () => {
 
   describe(`WHEN the deeplink is a item deeplink`, () => {
     beforeEach(() => {
-      router = TestBed.inject(Router);
-      service = TestBed.inject(DeeplinkService);
-      itemService = TestBed.inject(ItemService);
-      toastService = TestBed.inject(ToastService);
-
       spyOn(itemService, 'get').and.callThrough();
     });
 
@@ -451,11 +497,6 @@ describe(`DeeplinkService`, () => {
 
   describe(`WHEN the deeplink is a user profile deeplink`, () => {
     beforeEach(() => {
-      router = TestBed.inject(Router);
-      service = TestBed.inject(DeeplinkService);
-      userService = TestBed.inject(UserService);
-      toastService = TestBed.inject(ToastService);
-
       spyOn(userService, 'get').and.callThrough();
     });
 
@@ -506,132 +547,24 @@ describe(`DeeplinkService`, () => {
     });
   });
 
-  describe(`WHEN asking whether the deeplink is a barcode deeplink`, () => {
-    describe.each([
-      [`${barcodeBaseDeeplink}?b=url`, true],
-      [`wallapop://no-delivery/barcode?b=url`, false],
-    ])(`WHEN`, (deeplink, expected) => {
-      it(`should correctly check the deeplink `, () => {
-        expect(service.isBarcodeLabelDeeplink(deeplink)).toBe(expected);
-      });
-    });
-  });
-
-  describe(`WHEN asking whether the deeplink is a check delivery instructions deeplink`, () => {
-    describe.each([
-      [checkDeliveryInstructionDeeplink, true],
-      [`wallapop://no-shipping/transactiontracking/instructions?request_id=${fakeRequestId}&type=${fakeInstructionsType}`, false],
-    ])(`WHEN`, (deeplink, expected) => {
-      it(`should correctly check the deeplink `, () => {
-        expect(service.isInstructionsDeeplink(deeplink)).toBe(expected);
-      });
-    });
-  });
-
-  describe(`WHEN asking whether the deeplink is an item deeplink`, () => {
-    describe.each([
-      [itemDeeplink, true],
-      [`wallapop://no-i/$itemId`, false],
-    ])(`WHEN`, (deeplink, expected) => {
-      it(`should correctly check the deeplink `, () => {
-        expect(service.isItemDeeplink(deeplink)).toBe(expected);
-      });
-    });
-  });
-
-  describe(`WHEN asking whether the deeplink is a packaging instructions deeplink`, () => {
-    describe.each([
-      [packagingInstructionsDeeplink, true],
-      [`wallapop://no-shipping/transactiontracking/instructions?request_id=${fakeRequestId}&type=${fakeInstructionsType}`, false],
-    ])(`WHEN`, (deeplink, expected) => {
-      it(`should correctly check the deeplink `, () => {
-        expect(service.isInstructionsDeeplink(deeplink)).toBe(expected);
-      });
-    });
-  });
-
-  describe(`WHEN asking whether the deeplink is a printable label deeplink`, () => {
-    describe.each([
-      [printableLabelDeeplink, true],
-      [`wallapop://no-trackinglabel?url=\${printableTagUrl.value}`, false],
-    ])(`WHEN`, (deeplink, expected) => {
-      it(`should correctly check the deeplink `, () => {
-        expect(service.isPrintableLabelDeeplink(deeplink)).toBe(expected);
-      });
-    });
-  });
-
-  describe(`WHEN asking whether the deeplink is an user profile deeplink`, () => {
-    describe.each([
-      [userProfileDeeplink, true],
-      [`wallapop://no-p/$userId`, false],
-    ])(`WHEN`, (deeplink, expected) => {
-      it(`should correctly check the deeplink `, () => {
-        expect(service.isUserProfileDeeplink(deeplink)).toBe(expected);
-      });
-    });
-  });
-
-  describe(`WHEN asking whether the deeplink is a Zendesk article deeplink`, () => {
-    describe.each([
-      [zendeskArticleDeeplink, true],
-      [`wallapop://no-customerSupport/faq/article?z=%s`, false],
-    ])(`WHEN`, (deeplink, expected) => {
-      it(`should correctly check the deeplink `, () => {
-        expect(service.isZendeskArticleDeeplink(deeplink)).toBe(expected);
-      });
-    });
-  });
-
-  describe(`WHEN asking whether the deeplink is a Zendesk create dispute form deeplink`, () => {
-    describe.each([
-      [zendeskCreateDisputeFormDeeplink, true],
-      [`wallapop://no-customerSupport/form?f=360003316777`, false],
-    ])(`WHEN`, (deeplink, expected) => {
-      it(`should correctly check the deeplink `, () => {
-        expect(service.isZendeskCreateDisputeFormDeeplink(deeplink)).toBe(expected);
-      });
-    });
-  });
-
-  describe(`WHEN asking about the availability`, () => {
-    describe.each([
-      [barcodeDeeplink, true],
-      [checkDeliveryInstructionDeeplink, true],
-      [packagingInstructionsDeeplink, true],
-      [itemDeeplink, true],
-      [printableLabelDeeplink, true],
-      [userProfileDeeplink, true],
-      [zendeskArticleDeeplink, true],
-      [zendeskCreateDisputeFormDeeplink, true],
-    ])(`WHEN asking whether a deeplink is available for navigation`, (deeplink, expected) => {
-      it(`should correctly check the availability`, () => {
-        expect(service.isAvailable(deeplink)).toBe(expected);
-      });
-    });
-
-    describe(`AND WHEN there is an incorrect deeplink`, () => {
-      it(`should indicate the deeplink is not available`, () => {
-        expect(service.isAvailable(`fake-deeplink`)).toBeFalsy();
-      });
-    });
-  });
-
   describe.each([[itemDeeplink], [printableLabelDeeplink], [zendeskArticleDeeplink], [zendeskCreateDisputeFormDeeplink]])(
     `WHEN navigate to an external url`,
     (deeplink) => {
+      beforeEach(fakeAsync(() => {
+        service.navigate(deeplink);
+        tick();
+      }));
+
       afterEach(() => {
-        windowOpenMock.location.href = '';
+        MOCK_CHILD_WINDOW_REF.location.href = '';
       });
 
       it(`should open a new tab`, fakeAsync(() => {
-        service.navigate(deeplink);
-
         service.toWebLink(deeplink).subscribe((webLink) => {
-          expect(windowOpenMock.location.href).toEqual(webLink);
+          expect(windowRef.open).toHaveBeenCalledTimes(1);
+          expect(MOCK_CHILD_WINDOW_REF.location.href).toEqual(webLink);
         });
-
-        flush();
+        tick();
       }));
     }
   );
@@ -639,10 +572,6 @@ describe(`DeeplinkService`, () => {
   describe.each([[checkDeliveryInstructionDeeplink], [packagingInstructionsDeeplink], [userProfileDeeplink]])(
     `WHEN navigate to an internal route`,
     (deeplink) => {
-      beforeEach(() => {
-        spyOn(router, `navigate`);
-      });
-
       it(`should navigate to an angular route`, fakeAsync(() => {
         service.navigate(deeplink);
 
@@ -658,9 +587,6 @@ describe(`DeeplinkService`, () => {
 
   describe.each([['some_kind_of_strange_deeplink'], ['some-unknown-url']])(`WHEN navigate to an unavailable deeplink`, (deeplink) => {
     beforeEach(() => {
-      spyOn(router, 'navigate');
-      spyOn(toastService, 'show');
-
       service.navigate(deeplink);
     });
 
@@ -676,7 +602,7 @@ describe(`DeeplinkService`, () => {
     }));
 
     it(`should not navigate`, fakeAsync(() => {
-      expect(windowOpenMock.location.href).toEqual('');
+      expect(windowRef.open).not.toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledTimes(0);
 
       flush();
@@ -685,16 +611,7 @@ describe(`DeeplinkService`, () => {
 
   describe('WHEN the deeplink is an user profile', () => {
     describe(`WHEN the user service crashes`, () => {
-      beforeEach(() => {
-        TestBed.overrideProvider(UserService, {
-          useValue: {
-            get: () => {
-              return throwError('unexpected error');
-            },
-          },
-        });
-        service = TestBed.inject(DeeplinkService);
-      });
+      beforeEach(() => spyOn(userService, 'get').and.returnValue(throwError('unexpected error')));
 
       it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
@@ -708,16 +625,7 @@ describe(`DeeplinkService`, () => {
     });
 
     describe(`WHEN the user service does not return any user`, () => {
-      beforeEach(() => {
-        TestBed.overrideProvider(UserService, {
-          useValue: {
-            get: () => {
-              return of({ webSlug: null });
-            },
-          },
-        });
-        service = TestBed.inject(DeeplinkService);
-      });
+      beforeEach(() => spyOn(userService, 'get').and.returnValue(of({ webSlug: null })));
 
       it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${userProfileBaseDeeplink}/${fakeUserId}`;
@@ -733,16 +641,7 @@ describe(`DeeplinkService`, () => {
 
   describe('WHEN the deeplink is an item', () => {
     describe(`WHEN the item service crashes`, () => {
-      beforeEach(() => {
-        TestBed.overrideProvider(ItemService, {
-          useValue: {
-            get: () => {
-              return throwError('unexpected error');
-            },
-          },
-        });
-        service = TestBed.inject(DeeplinkService);
-      });
+      beforeEach(() => spyOn(itemService, 'get').and.returnValue(throwError('unexpected error')));
 
       it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;
@@ -756,16 +655,7 @@ describe(`DeeplinkService`, () => {
     });
 
     describe(`WHEN the item service does not return any item`, () => {
-      beforeEach(() => {
-        TestBed.overrideProvider(ItemService, {
-          useValue: {
-            get: () => {
-              return of({ webSlug: null });
-            },
-          },
-        });
-        service = TestBed.inject(DeeplinkService);
-      });
+      beforeEach(() => spyOn(itemService, 'get').and.returnValue(of({ webSlug: null })));
 
       it(`should not return any url`, fakeAsync(() => {
         const deeplink = `${itemBaseDeeplink}/${fakeItemId}`;

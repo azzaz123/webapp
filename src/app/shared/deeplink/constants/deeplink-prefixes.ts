@@ -1,4 +1,5 @@
 export const barcodeLabelDeeplinkPrefix = 'wallapop://delivery/barcode?b=';
+export const payDeeplinkPrefix = 'wallapop://delivery/checkout?i=';
 export const checkDeliveryInstructionsDeeplinkPrefix = 'wallapop://shipping/transactiontracking/instructions?';
 export const createDisputeZendeskFormDeeplinkPrefix = 'wallapop://customerSupport/form?f=';
 export const itemDeeplinkPrefix = 'wallapop://i/';

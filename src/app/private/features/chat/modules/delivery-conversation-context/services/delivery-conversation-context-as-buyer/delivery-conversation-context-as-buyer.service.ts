@@ -39,15 +39,15 @@ export class DeliveryConversationContextAsBuyerService {
     const { item } = conversation;
     const { id: itemHash } = item;
 
-    return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
-      tap((requests) => (this.lastRequest = requests ? requests[0] : null)),
-      concatMap((buyerRequests: BuyerRequest[]) => {
+    return this.buyerRequestsApiService.getLastRequestAsBuyerByItemHash(itemHash).pipe(
+      tap((request) => (this.lastRequest = request)),
+      concatMap((buyerRequest: BuyerRequest) => {
         return combineLatest([
           this.deliveryItemDetailsApiService.getDeliveryDetailsByItemHash(itemHash),
           this.deliveryExperimentalFeaturesService.featuresEnabled$,
         ]).pipe(
           map(([deliveryItemDetails, featuresEnabled]) => {
-            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequests, deliveryItemDetails, featuresEnabled);
+            return this.mapDeliveryDetailsAsBuyerToBannerProperties(buyerRequest, deliveryItemDetails, featuresEnabled);
           })
         );
       })
@@ -84,13 +84,13 @@ export class DeliveryConversationContextAsBuyerService {
   }
 
   private mapDeliveryDetailsAsBuyerToBannerProperties(
-    buyerRequests: BuyerRequest[],
+    lastBuyerRequest: BuyerRequest,
     deliveryItemDetails: DeliveryItemDetails,
     isDeliveryFeaturesEnabled: boolean
   ): DeliveryBanner {
     const isShippingNotAllowed: boolean = !deliveryItemDetails.isShippingAllowed;
     const isNotShippable: boolean = !deliveryItemDetails.isShippable;
-    const buyerHasNoRequests: boolean = buyerRequests.length === 0;
+    const buyerHasNoLastRequest: boolean = !lastBuyerRequest;
 
     // TODO: Remove "isDeliveryFeaturesEnabled" when opening buyer banners
     // Doing this logic in the mapping to allow third voices to have delivery context of this service
@@ -101,11 +101,11 @@ export class DeliveryConversationContextAsBuyerService {
     // In web, while we don't have the payview entry point in the item detail,
     // we will show the buy banner when last request is not accepted or it is not pending
     const lastRequestFailed: boolean = !(
-      this.lastRequest?.status.request === BUYER_REQUEST_STATUS.ACCEPTED ||
-      this.lastRequest?.status.request === BUYER_REQUEST_STATUS.PENDING ||
-      this.lastRequest?.status.request === BUYER_REQUEST_STATUS.PAYMENT_REQUIRED
+      lastBuyerRequest?.status.request === BUYER_REQUEST_STATUS.ACCEPTED ||
+      lastBuyerRequest?.status.request === BUYER_REQUEST_STATUS.PENDING ||
+      lastBuyerRequest?.status.request === BUYER_REQUEST_STATUS.PAYMENT_REQUIRED
     );
-    const showBuyBanner: boolean = buyerHasNoRequests || lastRequestFailed;
+    const showBuyBanner: boolean = buyerHasNoLastRequest || lastRequestFailed;
 
     if (!isDeliveryFeaturesEnabled || isNotShippable) {
       return null;
