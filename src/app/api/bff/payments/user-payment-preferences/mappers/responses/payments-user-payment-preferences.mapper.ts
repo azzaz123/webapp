@@ -10,6 +10,13 @@ import { UuidService } from '@core/uuid/uuid.service';
 
 type PaymentsUserPaymentDefaultsDto = InnerType<PaymentsUserPaymentPreferencesDto, 'defaults'>;
 type PaymentsUserPaymentPreferenceDto = InnerType<PaymentsUserPaymentPreferencesDto, 'preferences'>;
+const DEFAULT_USER_PREFERENCES: PaymentsUserPaymentPreference = {
+  id: UuidService.getUUID(),
+  paymentMethod: null,
+  isNewBuyer: true,
+  useWallet: false,
+  walletBlocked: false,
+};
 
 export const mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences: ToDomainMapper<
   PaymentsUserPaymentPreferencesDto,
@@ -19,7 +26,7 @@ export const mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreference
 
   return {
     defaults: mapToDefaults(defaults),
-    preferences: preferences ? mapToPreference(preferences) : null,
+    preferences: preferences ? mapToPreference(preferences) : DEFAULT_USER_PREFERENCES,
   };
 };
 
@@ -41,8 +48,8 @@ const mapToPreference: ToDomainMapper<PaymentsUserPaymentPreferenceDto, Payments
   const { id, payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = preference;
   const mappedPaymentMethod: PAYVIEW_PAYMENT_METHOD = paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null;
   return {
-    id: id || UuidService.getUUID(),
-    isNewBuyer: !id,
+    id,
+    isNewBuyer: false,
     paymentMethod: paymentMethod ? mapToAvailablePayment(mappedPaymentMethod) : null,
     useWallet,
     walletBlocked,

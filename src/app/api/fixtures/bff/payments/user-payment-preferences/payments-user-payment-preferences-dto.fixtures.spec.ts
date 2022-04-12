@@ -17,13 +17,9 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE: PaymentsUserPaymen
   },
 };
 
-export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_ID_RESPONSE: PaymentsUserPaymentPreferencesDto = {
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PREFERENCES_RESPONSE: PaymentsUserPaymentPreferencesDto = {
   ...MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
-  preferences: {
-    payment_method: 'credit card',
-    use_wallet: false,
-    wallet_blocked: false,
-  },
+  preferences: null,
 };
 
 export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE_WITH_NOT_AVAILABLE_PREFERENCES: PaymentsUserPaymentPreferencesDto = {
