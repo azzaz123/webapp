@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { BUYER_REQUEST_PAYMENT_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-payment-status.enum';
+import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
+import { AVAILABLE_PAYMENT_METHODS } from '@api/core/model/payments/constants/available-payments';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { environment } from '@environments/environment';
@@ -61,29 +63,39 @@ export class DeliveryPaymentReadyService {
     );
   }
 
-  //TODO: This needs to be reviewed, from both technical and legal POVs
   private continuePayPalFlow(buyerRequest: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     const { id } = buyerRequest;
     const externalUrl: string = this.getExternalUrl(id);
 
-    const subject: ReplaySubject<void> = new ReplaySubject<void>();
-    const windowRef: Window = this.window.open(externalUrl, '_blank');
-
+    const subject: ReplaySubject<WEB_VIEW_MODAL_CLOSURE_METHOD> = new ReplaySubject<WEB_VIEW_MODAL_CLOSURE_METHOD>();
     const completeCurrentFlow = () => {
-      subject.next();
+      subject.next(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
       subject.complete();
     };
 
-    timer(0, 1000).pipe(
-      tap(() => {
-        if (!windowRef || windowRef.closed) {
-          return completeCurrentFlow();
-        }
-      }),
-      takeUntil(subject)
+    const isPayPalNotAvailable: boolean = !(
+      AVAILABLE_PAYMENT_METHODS.includes(PAYVIEW_PAYMENT_METHOD.PAYPAL) ||
+      AVAILABLE_PAYMENT_METHODS.includes(PAYVIEW_PAYMENT_METHOD.WALLET_AND_PAYPAL)
     );
+    if (isPayPalNotAvailable) {
+      subject.error(null);
+      return subject.asObservable();
+    }
 
-    return subject.asObservable().pipe(map(() => WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC));
+    const windowRef: Window = this.window.open(externalUrl, '_blank');
+
+    timer(0, 500)
+      .pipe(
+        tap(() => {
+          if (!windowRef || windowRef.closed) {
+            return completeCurrentFlow();
+          }
+        }),
+        takeUntil(subject)
+      )
+      .subscribe();
+
+    return subject.asObservable();
   }
 
   private cancelRequest(id: string): Observable<void> {
