@@ -280,6 +280,12 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       })
     );
     this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_CANCEL_REQUEST, () => {
+        this.buyService.enableBuyButton();
+        this.markPayviewAsNotLoading();
+      })
+    );
+    this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_REFRESH_COSTS, (error: PayviewError) => {
         this.promotionService.error(error);
       })

@@ -44,9 +44,12 @@ describe('DeliveryPaymentReadyService', () => {
   });
 
   describe('when handling a request with credit card as payment method', () => {
+    let result: WEB_VIEW_MODAL_CLOSURE_METHOD;
+
     beforeEach(fakeAsync(() => {
-      MOCK_MODAL_RESULT_SUBJECT.next(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
-      service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY, PAYVIEW_PAYMENT_METHOD.CREDIT_CARD).subscribe();
+      service
+        .continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY, PAYVIEW_PAYMENT_METHOD.CREDIT_CARD)
+        .subscribe((data) => (result = data));
       tick();
     }));
 
@@ -77,6 +80,10 @@ describe('DeliveryPaymentReadyService', () => {
       it('should cancel the request with the buyer request identifier', () => {
         expect(buyerRequestsApiService.cancelRequest).toHaveBeenCalledWith(MOCK_ID);
       });
+
+      it('should notify the request was cancelled manually', () => {
+        expect(result).toEqual(WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL);
+      });
     });
 
     describe('and when the modal is closed automatically', () => {
@@ -89,6 +96,10 @@ describe('DeliveryPaymentReadyService', () => {
 
       it('should NOT cancel the request', () => {
         expect(buyerRequestsApiService.cancelRequest).not.toHaveBeenCalled();
+      });
+
+      it('should notify modal was closed automatically', () => {
+        expect(result).toEqual(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
       });
     });
   });
