@@ -25,6 +25,7 @@ import { DeliveryDevelopmentGuard } from '@private/features/delivery/guards/deli
 import { SubscriptionsHttpService } from '@core/subscriptions/http/subscriptions-http.service';
 import { YouGuard } from '@private/features/you/guards/you.guard';
 import { DeliveryRealTimeService } from './services/delivery-real-time/delivery-real-time.service';
+import { ChatTrackingEventsService } from '@core/message/chat-tracking-events/chat-tracking-events.service';
 
 @NgModule({
   imports: [ConversationModule.forRoot(), ProfileModule, RemoteConsoleModule],
@@ -34,6 +35,7 @@ import { DeliveryRealTimeService } from './services/delivery-real-time/delivery-
     DesktopNotificationsService,
     XmppService,
     RealTimeService,
+    ChatTrackingEventsService,
     DeliveryRealTimeService,
     InboxService,
     BlockUserService,
