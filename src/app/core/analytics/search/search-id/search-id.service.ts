@@ -51,7 +51,7 @@ export class SearchIdService {
 
   private getSearchIdRecord(): SearchIdRecord {
     try {
-      return JSON.parse(this.STORAGE_SYSTEM.getItem(this.STORAGE_KEY));
+      return JSON.parse(this.STORAGE_SYSTEM.getItem(this.STORAGE_KEY)) || {};
     } catch (e) {
       return {};
     }
