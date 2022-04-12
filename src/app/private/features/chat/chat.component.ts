@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { USER_STRING_ID } from '@core/constants/string-ids.enum';
 import { EventService } from '@core/event/event.service';
-import { SEARCHID_STORAGE_NAME } from '@core/message/real-time.service';
 import { SessionProfileDataLocation } from '@core/trust-and-safety/trust-and-safety.interface';
 import { TrustAndSafetyService } from '@core/trust-and-safety/trust-and-safety.service';
 import { UserService } from '@core/user/user.service';
@@ -93,7 +92,6 @@ export class ChatComponent implements OnInit {
     }
 
     this.route.queryParams.subscribe((params: Params) => {
-      const searchId = params.searchId;
       const itemId = params.itemId;
       const conversationId = params.conversationId;
 
@@ -105,10 +103,6 @@ export class ChatComponent implements OnInit {
 
       if (conversationId || itemId) {
         this.trustAndSafetyService.submitProfile(SessionProfileDataLocation.OPEN_CHAT);
-      }
-
-      if (searchId) {
-        sessionStorage.setItem(SEARCHID_STORAGE_NAME, searchId);
       }
     });
   }

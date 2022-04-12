@@ -5,7 +5,6 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { USER_STRING_ID } from '@core/constants/string-ids.enum';
 import { EventService } from '@core/event/event.service';
 import { I18nService } from '@core/i18n/i18n.service';
-import { SEARCHID_STORAGE_NAME } from '@core/message/real-time.service';
 import { PhoneMethodResponse } from '@core/user/phone-method.interface';
 import { UserService } from '@core/user/user.service';
 import { InboxConversationServiceMock, InboxServiceMock, CREATE_MOCK_INBOX_CONVERSATION } from '@fixtures/chat';
@@ -205,20 +204,6 @@ describe('Component: ChatComponent with ItemId', () => {
 
       expect(trustAndSafetyService.submitProfile).toHaveBeenCalledTimes(1);
       expect(trustAndSafetyService.submitProfile).toHaveBeenCalledWith(SessionProfileDataLocation.OPEN_CHAT);
-    });
-
-    it('should save searchId if link contains searchId', () => {
-      const inboxConversation: InboxConversation = CREATE_MOCK_INBOX_CONVERSATION();
-      const searchId = '123456789';
-      spyOn(inboxService, 'isInboxReady').and.returnValue(true);
-      spyOn(inboxConversationService, 'openConversationByItemId$').and.returnValue(of(inboxConversation));
-      spyOn(sessionStorage, 'setItem');
-
-      activatedRoute.queryParams = from([{ itemId: 'itemId', searchId }]);
-
-      component.ngOnInit();
-
-      expect(sessionStorage.setItem).toHaveBeenCalledWith(SEARCHID_STORAGE_NAME, searchId);
     });
   });
 
