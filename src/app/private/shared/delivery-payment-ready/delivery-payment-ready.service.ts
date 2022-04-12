@@ -5,6 +5,7 @@ import { BUYER_REQUEST_PAYMENT_STATUS } from '@api/core/model/delivery/buyer-req
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { environment } from '@environments/environment';
+import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
@@ -17,7 +18,8 @@ export class DeliveryPaymentReadyService {
     @Inject(WINDOW_TOKEN) private window: Window,
     private webViewModalService: WebViewModalService,
     private buyerRequestsApiService: BuyerRequestsApiService,
-    private transactionTrackingService: TransactionTrackingService
+    private transactionTrackingService: TransactionTrackingService,
+    private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService
   ) {}
 
   public continueBuyerRequestBuyFlow(request: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
@@ -26,9 +28,16 @@ export class DeliveryPaymentReadyService {
       return of(null);
     }
 
-    return this.transactionTrackingService
-      .requestWasDoneWithPayPal(request.id)
-      .pipe(concatMap((isPayPal) => (isPayPal ? this.continuePayPalFlow(request) : this.continueCreditCardFlow(request))));
+    return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
+      concatMap((enabled) => {
+        if (enabled) {
+          return this.transactionTrackingService
+            .requestWasDoneWithPayPal(request.id)
+            .pipe(concatMap((isPayPal) => (isPayPal ? this.continuePayPalFlow(request) : this.continueCreditCardFlow(request))));
+        }
+        return of(null);
+      })
+    );
   }
 
   private get title(): string {

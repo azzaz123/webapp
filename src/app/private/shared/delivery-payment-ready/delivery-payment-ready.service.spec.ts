@@ -1,7 +1,5 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
-import { PrePaymentError } from '@api/core/errors/delivery/payview/pre-payment';
-import { PaymentsError } from '@api/core/errors/payments/payments.error';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import {
   MOCK_BUYER_REQUEST_PAYMENT_READY,
@@ -9,20 +7,23 @@ import {
 } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { environment } from '@environments/environment';
+import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
-import { of, Subject } from 'rxjs';
+import { of, ReplaySubject, Subject } from 'rxjs';
 
 import { DeliveryPaymentReadyService } from './delivery-payment-ready.service';
 
 describe('DeliveryPaymentReadyService', () => {
   let service: DeliveryPaymentReadyService;
+  let windowRef: Window;
   let transactionTrackingService: TransactionTrackingService;
   let buyerRequestsApiService: BuyerRequestsApiService;
   let webViewModalService: WebViewModalService;
 
   const MOCK_MODAL_RESULT_SUBJECT: Subject<WEB_VIEW_MODAL_CLOSURE_METHOD> = new Subject<WEB_VIEW_MODAL_CLOSURE_METHOD>();
+  const MOCK_DELIVERY_FEATURE_FLAG_SUBJECT: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -32,24 +33,69 @@ describe('DeliveryPaymentReadyService', () => {
         { provide: WebViewModalService, useValue: { open: () => MOCK_MODAL_RESULT_SUBJECT.asObservable() } },
         { provide: BuyerRequestsApiService, useValue: { cancelRequest: () => of(null) } },
         { provide: TransactionTrackingService, useValue: { requestWasDoneWithPayPal: () => of(false) } },
+        {
+          provide: DeliveryExperimentalFeaturesService,
+          useValue: {
+            get featuresEnabled$() {
+              return MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.asObservable();
+            },
+          },
+        },
       ],
     });
     service = TestBed.inject(DeliveryPaymentReadyService);
+    windowRef = TestBed.inject(WINDOW_TOKEN);
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
     webViewModalService = TestBed.inject(WebViewModalService);
 
     spyOn(webViewModalService, 'open').and.callThrough();
+    spyOn(windowRef, 'open').and.callThrough();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when handling a request with credit card as payment method', () => {
+  describe('when delivery feature flag is NOT enabled', () => {
+    let result: WEB_VIEW_MODAL_CLOSURE_METHOD;
+
+    beforeEach(() => {
+      MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(false);
+    });
+
+    describe('and when payment method used was PayPal', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(true));
+
+        service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY).subscribe((data) => (result = data));
+        tick();
+      }));
+
+      it('should NOT open a new window', () => {
+        expect(windowRef.open).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('and when payment method used was NOT PayPal', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(false));
+
+        service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY).subscribe((data) => (result = data));
+        tick();
+      }));
+
+      it('should NOT open a web view', () => {
+        expect(webViewModalService.open).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('when handling a request with credit card as payment method with delivery feature flag', () => {
     let result: WEB_VIEW_MODAL_CLOSURE_METHOD;
 
     beforeEach(fakeAsync(() => {
+      MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(true);
       spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(false));
 
       service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY).subscribe((data) => (result = data));
@@ -108,8 +154,9 @@ describe('DeliveryPaymentReadyService', () => {
   });
 
   //TODO: Implement with PayPal
-  describe('when handling a request with PayPal as payment method', () => {
+  describe('when handling a request with PayPal as payment method with delivery feature flag', () => {
     beforeEach(() => {
+      MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(true);
       spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(true));
     });
   });
