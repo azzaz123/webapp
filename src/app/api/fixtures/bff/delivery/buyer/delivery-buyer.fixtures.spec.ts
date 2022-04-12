@@ -67,6 +67,11 @@ export const MOCK_DELIVERY_BUYER_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods 
   addressLabel: 'calle jtrx 6, 1, 08199 Montserrat, España',
 };
 
+export const MOCK_DELIVERY_BUYER_WITHOUT_DELIVERY_METHODS: DeliveryBuyerDeliveryMethods = {
+  ...MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
+  deliveryMethods: [],
+};
+
 export const MOCK_CURRENT_DELIVERY_CARRIER_OFFICE_WITHOUT_LASTADDRESSUSED: DeliveryBuyerDeliveryMethod = {
   method: DELIVERY_MODE.CARRIER_OFFICE,
   icon: 'http://prod-delivery-resources.wallapop.com/default_home.png',
