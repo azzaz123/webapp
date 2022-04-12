@@ -691,6 +691,10 @@ describe('SearchComponent', () => {
         it('should set searchId reset status', () => {
           expect(component['resetSearchId']).toBeTruthy();
         });
+
+        it('should clean searchId', () => {
+          expect(component['searchId']).toBeNull();
+        });
       });
     });
 

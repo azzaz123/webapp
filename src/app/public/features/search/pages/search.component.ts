@@ -146,6 +146,7 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
           this.searchTrackingEventsService.trackSearchEvent(this.searchId, this.filterParameterStore.getParameters());
         } else {
           this.setResetSearchId(true);
+          this.searchId = null;
         }
 
         this.handleSearchResponseExtraData(searchResponseExtraData);
