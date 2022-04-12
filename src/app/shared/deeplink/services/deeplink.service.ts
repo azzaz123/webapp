@@ -217,7 +217,10 @@ export class DeeplinkService {
   }
 
   private navigateToUrl(deeplink: string): void {
-    this.toWebLink(deeplink).subscribe((webLink: string) => this.window.open(webLink));
+    const windowReference: Window = this.window.open();
+    this.toWebLink(deeplink).subscribe((webLink: string) => {
+      windowReference.location.href = webLink;
+    });
   }
 
   private showNotAvailableFeatureToast(): void {

@@ -1,4 +1,4 @@
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { LOCALE_ID } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -56,6 +56,11 @@ describe(`DeeplinkService`, () => {
 
   const MOCK_LOCALE_VALUE_SUBJECT: BehaviorSubject<APP_LOCALE> = new BehaviorSubject<APP_LOCALE>(`es`);
   const MOCK_DELIVERY_FEATURE_FLAG_SUBJECT: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+  const MOCK_CHILD_WINDOW_REF: Window = {
+    location: {
+      href: '',
+    },
+  } as Window;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -64,7 +69,7 @@ describe(`DeeplinkService`, () => {
         {
           provide: WINDOW_TOKEN,
           useValue: {
-            open: () => {},
+            open: () => MOCK_CHILD_WINDOW_REF,
           },
         },
         { provide: SITE_URL, useValue: siteUrlMock },
@@ -117,7 +122,7 @@ describe(`DeeplinkService`, () => {
 
     spyOn(router, 'navigate');
     spyOn(toastService, 'show');
-    spyOn(windowRef, 'open');
+    spyOn(windowRef, 'open').and.callThrough();
   });
 
   it(`should be created`, () => {
@@ -545,17 +550,21 @@ describe(`DeeplinkService`, () => {
   describe.each([[itemDeeplink], [printableLabelDeeplink], [zendeskArticleDeeplink], [zendeskCreateDisputeFormDeeplink]])(
     `WHEN navigate to an external url`,
     (deeplink) => {
-      beforeEach(() => {
+      beforeEach(fakeAsync(() => {
         service.navigate(deeplink);
+        tick();
+      }));
+
+      afterEach(() => {
+        MOCK_CHILD_WINDOW_REF.location.href = '';
       });
 
       it(`should open a new tab`, fakeAsync(() => {
         service.toWebLink(deeplink).subscribe((webLink) => {
           expect(windowRef.open).toHaveBeenCalledTimes(1);
-          expect(windowRef.open).toHaveBeenCalledWith(webLink);
+          expect(MOCK_CHILD_WINDOW_REF.location.href).toEqual(webLink);
         });
-
-        flush();
+        tick();
       }));
     }
   );
