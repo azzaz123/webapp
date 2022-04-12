@@ -16,6 +16,7 @@ import {
 
 import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { mapTransactionTrackingDescriptionToIsPayPalPaymentMethod } from './mappers/responses/details/is-paypal-payment-method/is-paypal-payment-method.mapper';
 
 export type TransactionTrackingActionType = TransactionTrackingActionTypeDto;
 export type TransactionTrackingUserAction = TransactionTrackingActionDetailPayloadUserActionNameDto;
@@ -30,6 +31,10 @@ export class TransactionTrackingService {
 
   public getDetails(requestId: string): Observable<TransactionTrackingDetails> {
     return this.transactionTrackingHttpService.getDetails(requestId).pipe(map(mapTransactionTrackingDetailsDtoTransactionTrackingDetails));
+  }
+
+  public requestWasDoneWithPayPal(requestId): Observable<boolean> {
+    return this.getDetails(requestId).pipe(map(mapTransactionTrackingDescriptionToIsPayPalPaymentMethod));
   }
 
   public getInstructions(requestId: string, actionType: TransactionTrackingActionType): Observable<TransactionTrackingInstructions> {
