@@ -4,20 +4,12 @@ import { XmppService } from '../xmpp/xmpp.service';
 import { EventService } from '../event/event.service';
 import { RemoteConsoleService } from '../remote-console';
 import { AnalyticsService } from '../analytics/analytics.service';
-import {
-  ANALYTIC_EVENT_TYPES,
-  ANALYTICS_EVENT_NAMES,
-  AnalyticsEvent,
-  SCREEN_IDS,
-  SendFirstMessage,
-} from '../analytics/analytics-constants';
 import { ConnectionService } from '../connection/connection.service';
 import { ConnectionType } from '../remote-console/connection-type';
 import { I18nService } from '../i18n/i18n.service';
 import { ChatSignal, ChatSignalType, InboxConversation, InboxMessage } from '@private/features/chat/core/model';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
-
-export const SEARCHID_STORAGE_NAME = 'searchId';
+import { ChatTrackingEventsService } from './chat-tracking-events/chat-tracking-events.service';
 
 @Injectable()
 export class RealTimeService {
@@ -26,9 +18,9 @@ export class RealTimeService {
     private xmpp: XmppService,
     private eventService: EventService,
     private remoteConsoleService: RemoteConsoleService,
-    private analyticsService: AnalyticsService,
     private i18n: I18nService,
-    private connectionService: ConnectionService
+    private connectionService: ConnectionService,
+    private chatTrackingEventsService: ChatTrackingEventsService
   ) {
     this.subscribeEventMessageSent();
     this.subscribeConnectionRestored();
@@ -107,7 +99,7 @@ export class RealTimeService {
   private subscribeEventMessageSent() {
     this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: InboxConversation, messageId: string) => {
       if (this.isFirstMessage(conversation)) {
-        this.trackSendFirstMessage(conversation);
+        this.chatTrackingEventsService.trackSendFirstMessage(conversation);
       }
     });
   }
@@ -120,30 +112,5 @@ export class RealTimeService {
 
   private isFirstMessage(conversation: InboxConversation): boolean {
     return conversation.messages.length === 1;
-  }
-
-  private trackSendFirstMessage(conversation: InboxConversation) {
-    const searchId = sessionStorage.getItem(SEARCHID_STORAGE_NAME);
-    const event: AnalyticsEvent<SendFirstMessage> = {
-      name: ANALYTICS_EVENT_NAMES.SendFirstMessage,
-      eventType: ANALYTIC_EVENT_TYPES.Other,
-      attributes: {
-        itemId: conversation.item.id,
-        sellerUserId: conversation.user.id,
-        conversationId: conversation.id,
-        screenId: SCREEN_IDS.Chat,
-        categoryId: conversation.item.categoryId,
-        country: this.analyticsService.market,
-        language: this.analyticsService.appLocale,
-        shippingAllowed: null,
-      },
-    };
-
-    if (searchId) {
-      event.attributes.searchId = searchId;
-    }
-
-    this.analyticsService.trackEvent(event);
-    sessionStorage.removeItem(SEARCHID_STORAGE_NAME);
   }
 }
