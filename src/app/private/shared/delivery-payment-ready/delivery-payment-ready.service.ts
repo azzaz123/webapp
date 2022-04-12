@@ -1,43 +1,34 @@
 import { Inject, Injectable } from '@angular/core';
-import { PrePaymentUnknownError } from '@api/core/errors/delivery/payview/pre-payment';
+import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { BUYER_REQUEST_PAYMENT_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-payment-status.enum';
-import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { environment } from '@environments/environment';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
-import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
+import { Observable, of, ReplaySubject, timer } from 'rxjs';
 import { tap, takeUntil, concatMap, map } from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class DeliveryPaymentReadyService {
   constructor(
     @Inject(WINDOW_TOKEN) private window: Window,
     private webViewModalService: WebViewModalService,
-    private buyerRequestsApiService: BuyerRequestsApiService
+    private buyerRequestsApiService: BuyerRequestsApiService,
+    private transactionTrackingService: TransactionTrackingService
   ) {}
 
-  public continueBuyerRequestBuyFlow(
-    buyerRequest: BuyerRequest,
-    paymentMethod: PAYVIEW_PAYMENT_METHOD
-  ): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
-    const isContinueFlowNotNeeded: boolean = buyerRequest.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
+  public continueBuyerRequestBuyFlow(request: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
+    const isContinueFlowNotNeeded: boolean = request.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
     if (isContinueFlowNotNeeded) {
       return of(null);
     }
 
-    if (paymentMethod === PAYVIEW_PAYMENT_METHOD.CREDIT_CARD) {
-      return this.continueCreditCardFlow(buyerRequest);
-    }
-
-    if (paymentMethod === PAYVIEW_PAYMENT_METHOD.PAYPAL) {
-      return this.continuePayPalFlow(buyerRequest);
-    }
-
-    return throwError(new PrePaymentUnknownError());
+    return this.transactionTrackingService
+      .requestWasDoneWithPayPal(request.id)
+      .pipe(concatMap((isPayPal) => (isPayPal ? this.continuePayPalFlow(request) : this.continueCreditCardFlow(request))));
   }
 
   private get title(): string {

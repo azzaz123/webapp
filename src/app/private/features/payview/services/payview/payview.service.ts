@@ -167,12 +167,7 @@ export class PayviewService {
       .pipe(
         concatMap(() =>
           this.waitPaymentReady(state).pipe(
-            concatMap((buyerRequest) =>
-              this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(
-                buyerRequest,
-                state.payment.preferences.preferences.paymentMethod
-              )
-            )
+            concatMap((buyerRequest) => this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(buyerRequest))
           )
         )
       );
