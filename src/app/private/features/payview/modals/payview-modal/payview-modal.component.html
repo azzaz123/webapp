@@ -83,11 +83,17 @@
             >
             <span i18n="@@pay_view_buyer_policies_description_part7_wallapop_text_web_specific">of Wallapop.</span>
           </div>
-          <div class="container mt-4 pb-3">
-            <tsl-payview-buy-overview
-              [payviewState]="payviewState"
-              (clickBuyButton)="trackPayTransactionEvent()"
-            ></tsl-payview-buy-overview>
+        </div>
+        <div class="PayviewModal__buyButton p-2 position-sticky align-self-end">
+          <div class="container">
+            <div class="row justify-content-center align-self-center">
+              <div class="col-12 col-md-7">
+                <tsl-payview-buy-overview
+                  [payviewState]="payviewState"
+                  (clickBuyButton)="trackPayTransactionEvent()"
+                ></tsl-payview-buy-overview>
+              </div>
+            </div>
           </div>
         </div>
       </ng-template>

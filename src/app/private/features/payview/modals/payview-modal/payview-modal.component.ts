@@ -65,6 +65,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private readonly trackViewTransactionPayScreen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isPayviewLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private readonly GENERIC_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
 
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
@@ -257,6 +258,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_GET_CURRENT_STATE, () => {
+        this.showErrorToast(this.GENERIC_ERROR_TRANSLATION);
         this.closeModal();
       })
     );
@@ -272,14 +274,15 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       })
     );
     this.subscriptions.push(
-      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_GET_CURRENT_STATE, (error: PayviewError) => {
-        this.closeModal();
-      })
-    );
-    this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY, () => {
         this.trackTransactionPaymentSuccessEvent();
         this.closeModalOnPaymentSuccess();
+      })
+    );
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_CANCEL_REQUEST, () => {
+        this.buyService.enableBuyButton();
+        this.markPayviewAsNotLoading();
       })
     );
     this.subscriptions.push(
