@@ -41,6 +41,7 @@ function mapPromocodeOrPromotionToPromotion(
   if (promotion) {
     return mapToDeliveryBuyerCalculatorPromotionCost(promotion);
   }
+  return null;
 }
 
 const mapToDeliveryBuyerCalculatorPromocodeCost = (
