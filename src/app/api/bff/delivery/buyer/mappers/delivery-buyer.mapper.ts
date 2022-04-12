@@ -30,13 +30,12 @@ export const mapDeliveryBuyerDeliveryMethodsDtoToDeliveryBuyerDeliveryMethods: T
   DeliveryBuyerDeliveryMethods
 > = (input: DeliveryBuyerDeliveryMethodsDto): DeliveryBuyerDeliveryMethods => {
   const { delivery_methods: deliveryMethods, default: defaultMethod } = input;
-  const methods: DeliveryBuyerDeliveryMethod[] = deliveryMethods.map((method: DeliveryBuyerDeliveryMethodDto) => {
-    return mapToDeliveryMethod(method);
-  });
+
+  const methods: DeliveryBuyerDeliveryMethod[] = deliveryMethods.length ? deliveryMethods.map(mapToDeliveryMethod) : [];
 
   return {
-    addressLabel: mapToAddressLabel(methods),
-    current: methods[defaultMethod.index],
+    addressLabel: methods.length ? mapToAddressLabel(methods) : null,
+    current: methods.length ? methods[defaultMethod.index] : null,
     deliveryMethods: methods,
     default: defaultMethod,
   };
