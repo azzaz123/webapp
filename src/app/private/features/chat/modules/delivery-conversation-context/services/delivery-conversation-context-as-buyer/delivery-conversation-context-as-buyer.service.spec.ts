@@ -7,6 +7,8 @@ import {
   MOCK_BUYER_REQUESTS,
   MOCK_BUYER_REQUEST_ACCEPTED,
   MOCK_BUYER_REQUEST_EXPIRED,
+  MOCK_BUYER_REQUEST_PAYMENT_READY,
+  MOCK_BUYER_REQUEST_PENDING,
 } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 import {
   MOCK_DELIVERY_ITEM_DETAILS,
@@ -30,6 +32,7 @@ import { PriceableDeliveryBanner } from '../../../delivery-banner/interfaces/pri
 import { DeliveryConversationContextAsBuyerService } from './delivery-conversation-context-as-buyer.service';
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
+import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 
 describe('DeliveryConversationContextAsBuyerService', () => {
   const featuresEnabledSubject: BehaviorSubject<boolean> = new BehaviorSubject(true);
@@ -96,9 +99,11 @@ describe('DeliveryConversationContextAsBuyerService', () => {
     });
 
     describe('when buyer has done previously buy requests to current item', () => {
-      describe('and when the last request is in a pending or accepted state', () => {
+      const testCases: BuyerRequest[][] = [[MOCK_BUYER_REQUEST_ACCEPTED], [MOCK_BUYER_REQUEST_PENDING], [MOCK_BUYER_REQUEST_PAYMENT_READY]];
+
+      describe.each(testCases)('and when the last request is still valid', (testCase) => {
         beforeEach(() => {
-          spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUEST_ACCEPTED));
+          spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(testCase));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
           featuresEnabledSubject.next(true);
         });
@@ -111,7 +116,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         }));
       });
 
-      describe('and when the last request is NOT in a pending or accepted state', () => {
+      describe('and when the last request is NOT pending, accepted or requires payment', () => {
         beforeEach(() => {
           spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUEST_EXPIRED));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
