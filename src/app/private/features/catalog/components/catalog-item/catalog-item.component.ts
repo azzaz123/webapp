@@ -61,8 +61,7 @@ export class CatalogItemComponent implements OnInit {
       this.itemService.selectedAction = 'reserve';
       this.itemService.reserveItem(item.id, true).subscribe(() => {
         this.item.reserved = true;
-        this.eventService.emit(EventService.ITEM_RESERVED, this.item);
-        this.itemAvatarComponent.cdr.markForCheck();
+        this.itemAvatarComponent.cdr.markForCheck(); // TODO WPA-12854
       });
     } else {
       this.itemService.reserveItem(item.id, false).subscribe(() => {

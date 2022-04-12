@@ -30,10 +30,7 @@ export class ItemAvatarComponent implements OnChanges {
   }
 
   get showOverlay(): boolean {
-    if (this.item instanceof Item && this.item.featured) {
-      return true;
-    }
-    return this.item.sold || this.item.reserved || this.item.notAvailable;
+    return this.isSold || this.isReserved || this.isFeatured || this.isFeaturedScheduled || this.isNotAvailable;
   }
 
   get isSold(): boolean {

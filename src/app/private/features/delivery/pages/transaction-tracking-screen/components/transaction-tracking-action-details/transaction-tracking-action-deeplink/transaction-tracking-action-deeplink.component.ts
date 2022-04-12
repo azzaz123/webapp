@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TransactionTrackingActionDeeplink } from '@api/core/model/delivery/transaction/tracking';
-import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
+import { DeeplinkService } from '@shared/deeplink/services/deeplink.service';
 
 @Component({
   selector: 'tsl-transaction-tracking-action-deeplink',

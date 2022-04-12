@@ -33,6 +33,7 @@ import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-re
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
+import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { UserPaymentPreferencesUnknownError } from '@api/core/errors/delivery/payview/user-payment-preferences';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 
@@ -196,9 +197,12 @@ export class PayviewService {
   }
 
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
-    const method = state.delivery.methods.deliveryMethods[state.delivery.methods.default.index];
+    const isThereAnyDeliveryMethod: boolean = !!state.delivery.methods.deliveryMethods.length;
+    const deliveryMode: DELIVERY_MODE = isThereAnyDeliveryMethod
+      ? state.delivery.methods.deliveryMethods[state.delivery.methods.default.index].method
+      : null;
 
-    return this.calculatorService.getCosts(state.itemDetails.price, this.itemHash, null, method.method).pipe(take(1));
+    return this.calculatorService.getCosts(state.itemDetails.price, this.itemHash, null, deliveryMode).pipe(take(1));
   }
 
   private get defaultDeliveryCosts(): Observable<DeliveryCosts> {
