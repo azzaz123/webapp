@@ -10,7 +10,7 @@ import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/d
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
-import { tap, takeUntil, concatMap } from 'rxjs/operators';
+import { tap, takeUntil, concatMap, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class DeliveryPaymentReadyService {
@@ -20,7 +20,10 @@ export class DeliveryPaymentReadyService {
     private buyerRequestsApiService: BuyerRequestsApiService
   ) {}
 
-  public continueBuyerRequestBuyFlow(buyerRequest: BuyerRequest, paymentMethod: PAYVIEW_PAYMENT_METHOD): Observable<void> {
+  public continueBuyerRequestBuyFlow(
+    buyerRequest: BuyerRequest,
+    paymentMethod: PAYVIEW_PAYMENT_METHOD
+  ): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     const isContinueFlowNotNeeded: boolean = buyerRequest.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
     if (isContinueFlowNotNeeded) {
       return of(null);
@@ -45,19 +48,21 @@ export class DeliveryPaymentReadyService {
     return `${environment.baseUrl}api/v3/delivery/request/payment/start/${id}`;
   }
 
-  private continueCreditCardFlow(buyerRequest: BuyerRequest): Observable<void> {
+  private continueCreditCardFlow(buyerRequest: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     const { id } = buyerRequest;
     const externalUrl: string = this.getExternalUrl(id);
 
     return this.webViewModalService.open(externalUrl, this.title, DELIVERY_MODAL_CLASSNAME).pipe(
       concatMap((closureMethod: WEB_VIEW_MODAL_CLOSURE_METHOD) => {
-        return closureMethod === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL ? this.cancelRequest(id) : of(null);
+        return closureMethod === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL
+          ? this.cancelRequest(id).pipe(map(() => closureMethod))
+          : of(closureMethod);
       })
     );
   }
 
   //TODO: This needs to be reviewed, from both technical and legal POVs
-  private continuePayPalFlow(buyerRequest: BuyerRequest): Observable<void> {
+  private continuePayPalFlow(buyerRequest: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     const { id } = buyerRequest;
     const externalUrl: string = this.getExternalUrl(id);
 
@@ -78,7 +83,7 @@ export class DeliveryPaymentReadyService {
       takeUntil(subject)
     );
 
-    return subject.asObservable();
+    return subject.asObservable().pipe(map(() => WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC));
   }
 
   private cancelRequest(id: string): Observable<void> {

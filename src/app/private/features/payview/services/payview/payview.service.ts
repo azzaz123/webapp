@@ -34,6 +34,7 @@ import { DeliveryRealTimeService } from '@private/core/services/delivery-real-ti
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
+import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 
 @Injectable({
   providedIn: 'root',
@@ -147,7 +148,7 @@ export class PayviewService {
     return this.paymentPreferencesService.setUserPaymentPreferences(preferences);
   }
 
-  public request(state: PayviewState): Observable<void> {
+  public request(state: PayviewState): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     return this.sendPaymentUserInfo(state.payment.preferences).pipe(concatMap(() => this.buyFlow(state)));
   }
 
@@ -157,7 +158,7 @@ export class PayviewService {
       .pipe(concatMap(() => this.setUserPaymentPreferences(paymentPreferences)));
   }
 
-  private buyFlow(state: PayviewState): Observable<void> {
+  private buyFlow(state: PayviewState): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     return this.buyerRequestService
       .buyRequest(state)
       .pipe(

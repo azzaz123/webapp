@@ -95,10 +95,6 @@ describe('ThirdVoiceDeliveryComponent', () => {
           thirdVoiceCTAElement = fixture.debugElement.query(By.directive(ButtonComponent));
         });
 
-        it('should set the button with loading state', () => {
-          expect(thirdVoiceCTAElement.componentInstance.loading).toEqual(true);
-        });
-
         it('should disable the button', () => {
           expect(thirdVoiceCTAElement.componentInstance.disabled).toEqual(true);
         });
@@ -111,10 +107,6 @@ describe('ThirdVoiceDeliveryComponent', () => {
           component.loading = false;
           fixture.detectChanges();
           thirdVoiceCTAElement = fixture.debugElement.query(By.directive(ButtonComponent));
-        });
-
-        it('should set the button with no loading state', () => {
-          expect(thirdVoiceCTAElement.componentInstance.loading).toEqual(false);
         });
 
         it('should enable the button', () => {
