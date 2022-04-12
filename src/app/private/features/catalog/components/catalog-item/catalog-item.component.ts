@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 import { ItemService } from '@core/item/item.service';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '../../core/item-change.interface';
@@ -46,8 +46,7 @@ export class CatalogItemComponent implements OnInit {
     private catalogItemTrackingEventService: CatalogItemTrackingEventService,
     private router: Router,
     private i18nService: I18nService,
-    private itemDetailRoutePipe: ItemDetailRoutePipe,
-    private cdr: ChangeDetectorRef
+    private itemDetailRoutePipe: ItemDetailRoutePipe
   ) {}
 
   ngOnInit() {
