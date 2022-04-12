@@ -56,6 +56,7 @@ const mapToDeliveryBuyerCalculatorPromocodeCost = (
         feesFixedPrice: !!input.fees_fixed_price ? mapAmountAndCurrenyToMoney<PriceDto>(input.fees_fixed_price) : null,
         originalBuyerCost: mapToDeliveryBuyerCalculatorCost(input.original_buyer_cost),
         promocode: input.promocode,
+        promotionName: null,
       }
     : null;
 };
@@ -74,14 +75,15 @@ const mapToDeliveryBuyerCalculatorPromotionCost = (
           ? getCostFixedPrice(input.fees_discount_percentage, input.original_buyer_cost.fees)
           : null,
         originalBuyerCost: mapToDeliveryBuyerCalculatorCost(input.original_buyer_cost),
-        promocode: input.description,
+        promocode: null,
+        promotionName: input.description,
       }
     : null;
 };
 
 function getCostFixedPrice(percentatge: number, deliveryCost: PriceDto): Money {
   const costWithPromotionApplied: PriceDto = {
-    amount: deliveryCost.amount * (1 - deliveryCost.amount / percentatge),
+    amount: deliveryCost.amount - (deliveryCost.amount * percentatge) / 100,
     currency: deliveryCost.currency,
   };
 

@@ -22,8 +22,8 @@ export class PayviewSummaryCostDetailComponent {
   }
 
   public get insuranceBadge(): string {
-    if (this.costs.promotion.promocode) {
-      return this.costs.promotion.promocode;
+    if (this.costs.promotion.promotionName) {
+      return this.costs.promotion.promotionName;
     }
     return this.isFreeInsurance
       ? $localize`:@@pay_view_buyer_summary_payment_free_badge:Free`
@@ -31,8 +31,8 @@ export class PayviewSummaryCostDetailComponent {
   }
 
   public get shippingBadge(): string {
-    if (this.costs.promotion.promocode) {
-      return this.costs.promotion.promocode;
+    if (this.costs.promotion.promotionName) {
+      return this.costs.promotion.promotionName;
     }
     return this.isFreeShipping
       ? $localize`:@@pay_view_buyer_summary_payment_free_badge:Free`

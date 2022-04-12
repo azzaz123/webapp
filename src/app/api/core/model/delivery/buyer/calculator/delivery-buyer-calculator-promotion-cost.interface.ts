@@ -8,4 +8,5 @@ export interface DeliveryBuyerCalculatorPromotionCost {
   feesFixedPrice: Money;
   originalBuyerCost: DeliveryBuyerCalculatorCost;
   promocode: string;
+  promotionName: string;
 }
