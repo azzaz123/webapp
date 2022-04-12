@@ -34,7 +34,6 @@ import { InfoBubbleModule } from './components/info-bubble/info-bubble.module';
 import { CatalogApiModule } from '@api/catalog/catalog-api.module';
 import { SearchCategoriesResolver } from './resolvers/search-categories.resolver';
 import { SearchLocationGuard } from './guards/search-location.guard';
-import { SearchIdService } from '@core/analytics/search/search-id/search-id.service';
 
 @NgModule({
   imports: [
@@ -75,7 +74,6 @@ import { SearchIdService } from '@core/analytics/search/search-id/search-id.serv
     HostVisibilityService,
     SearchLocationGuard,
     SearchCategoriesResolver,
-    SearchIdService,
   ],
   declarations: [SearchComponent, SearchLayoutComponent, SearchErrorLayoutComponent],
 })
