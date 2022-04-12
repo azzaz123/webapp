@@ -3,28 +3,29 @@
     There are things you can only do from the app
   </h1>
   <p
-    class="GenericLanding__description mt-1 text-center"
-    *ngIf="device === DevicesType.MOBILE"
+    class="GenericLanding__description mt-1 text-center px-5"
+    *ngIf="device === DeviceTypes.MOBILE"
     i18n="@@agnostic_ux_not_supported_by_web_empty_state_download_app_description"
   >
     To continue, download the Wallapop app and you're ready. It'll just take a second!
   </p>
   <p
     class="GenericLanding__description mt-1 text-center"
-    *ngIf="device !== DevicesType.MOBILE"
+    *ngIf="device !== DeviceTypes.MOBILE"
     i18n="@@agnostic_ux_not_supported_by_web_empty_state_qr_to_open_mobile_description_web_specific"
   >
     To continue, scan the QR code, download the Wallapop app and you're ready. It'll just take a second!
   </p>
-  <div *ngIf="device !== DevicesType.MOBILE" class="GenericLanding__qrCode mt-5">
+  <div *ngIf="device !== DeviceTypes.MOBILE" class="GenericLanding__qrCode mt-5">
     <qrcode [qrdata]="url" [width]="QR_SIZE" [margin]="2" [errorCorrectionLevel]="'M'" #qrCode> </qrcode>
+    <img src="assets/images/generic-landing/wallapop-logo-black-round.svg" class="logo" alt="wallapop-black-icon" />
   </div>
   <div
-    *ngIf="device === DevicesType.MOBILE"
+    *ngIf="device === DeviceTypes.MOBILE"
     class="GenericLanding__appButton mt-5"
     i18n="@@agnostic_ux_not_supported_by_web_empty_state_download_app_button"
   >
-    <a [href]="url" class="btn btn-primary mt-4" target="_blank"> Download the app </a>
+    <a [href]="url" class="btn btn-primary mt-4 py-3 px-4" target="_blank"> Download the app </a>
   </div>
   <div class="GenericLanding__icon mt-auto">
     <img src="/assets/images/generic-landing/only-app-landing.svg" alt="mobile-blob" />

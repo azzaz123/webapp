@@ -13,14 +13,17 @@
 
 .GenericLanding {
   &__container {
+    width: 412px;
     @include media-breakpoint-down(sm) {
       width: 100%;
     }
-    width: 412px;
     margin-top: $spacer * 6.875;
   }
   &__title {
     font-size: $font-size-lll;
+    @include media-breakpoint-down(sm) {
+      padding: 0 $spacer * 1.5;
+    }
   }
   &__description {
     font-size: $font-size-m;
@@ -28,6 +31,17 @@
   &__qrCode {
     border: 5px solid $blue-grey-1;
     border-radius: $border-radius-sm;
+    width: 190px;
+    height: 190px;
+    position: relative;
+    .logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 38px;
+      height: 38px;
+    }
   }
   &__icon {
     width: 310px;
@@ -37,5 +51,4 @@
 .btn {
   border-radius: $button-border-radius;
   font-weight: $font-weight-chunky;
-  padding: $spacing-ms $spacing-xl;
 }
