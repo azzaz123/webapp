@@ -24,7 +24,6 @@ import { PayviewStateManagementService } from '@private/features/payview/service
 import { POST_OFFICE_CARRIER } from '@api/core/model/delivery/post-offices-carriers.type';
 import { StepperComponent } from '@shared/stepper/stepper.component';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
 import { take } from 'rxjs/operators';
@@ -35,7 +34,13 @@ import {
   getViewTransactionPayScreenEventPropertiesFromPayviewState,
   getClickAddPromocodeTransactionPayEventPropertiesFromPayviewState,
   getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState,
+  getPayTransactionEventPropertiesFromPayviewState,
+  getTransactionPaymentSuccessPropertiesFromPayviewState,
 } from '../../services/payview-tracking-events/payview-tracking-events-properties.mapper';
+import { headerTitles } from '../../constants/header-titles';
+import { UuidService } from '@core/uuid/uuid.service';
+import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
+import { ToastService } from '@layout/toast/core/services/toast.service';
 
 @Component({
   selector: 'tsl-payview-modal',
@@ -48,8 +53,10 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   @ViewChild(StepperComponent) stepper: StepperComponent;
 
   @Input() public itemHash: string;
+  @Input() public closeCallback: Function;
 
   public countries$: Observable<CountryOptionsAndDefault> = this.deliveryCountries.getCountriesAsOptionsAndDefault();
+  public headerTitle: string = headerTitles[PAYVIEW_STEPS.PAYVIEW];
   public readonly TRANSACTIONS_PROTECTION_URL: string = this.customerHelpService.getPageUrl(CUSTOMER_HELP_PAGE.TRANSACTIONS_PROTECTION);
   public readonly TERMS_AND_CONDITIONS_URL: string = $localize`:@@web_footer_links_terms_href:https://about.wallapop.com/en/legal-terms-and-conditions`;
   public readonly PRIVACY_POLICY_URL: string = $localize`:@@web_footer_links_privacy_href:https://about.wallapop.com/en/privacy-policy`;
@@ -57,17 +64,20 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscriptions: Subscription[] = [];
   private readonly trackViewTransactionPayScreen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private isPayviewLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private readonly GENERIC_ERROR_TRANSLATION: string = $localize`:@@accept_view_seller_all_all_snackbar_generic_error:¡Oops! Something has gone wrong. Try again.`;
 
   constructor(
     private payviewStateManagementService: PayviewStateManagementService,
     private deliveryService: PayviewDeliveryService,
-    private activeModal: NgbActiveModal,
     private customerHelpService: CustomerHelpService,
     private deliveryCountries: DeliveryCountriesService,
     private promotionService: PayviewPromotionService,
     private paymentService: PayviewPaymentService,
     private payviewTrackingEventsService: PayviewTrackingEventsService,
-    private buyService: PayviewBuyService
+    private buyService: PayviewBuyService,
+    private uuidService: UuidService,
+    private toastService: ToastService
   ) {}
 
   public ngOnDestroy(): void {
@@ -75,12 +85,17 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   }
 
   public ngOnInit(): void {
+    this.buyService.enableBuyButton();
     this.payviewStateManagementService.itemHash = this.itemHash;
     this.subscribe();
   }
 
+  public get isPayviewLoading$(): Observable<boolean> {
+    return this.isPayviewLoadingSubject.asObservable();
+  }
+
   public closeCreditCardEditor(): void {
-    this.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
+    this.goToStep(PAYVIEW_STEPS.PAYVIEW);
     this.payviewStateManagementService.refreshByCreditCard();
   }
 
@@ -88,13 +103,13 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     if (this.isMapPreviousPage$.value) {
       this.goToStep(PAYVIEW_STEPS.PICK_UP_POINT_MAP);
     } else {
-      this.stepper.goToStep(PAYVIEW_STEPS.PAYVIEW);
+      this.goToStep(PAYVIEW_STEPS.PAYVIEW);
     }
     this.payviewStateManagementService.refreshByDelivery();
   }
 
-  public closeModal(): void {
-    this.activeModal.close();
+  public closeModal(buyRequestId: string = null): void {
+    this.closeCallback && this.closeCallback(buyRequestId);
   }
 
   public getFullAddress(methods: DeliveryBuyerDeliveryMethods): string {
@@ -145,7 +160,16 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
       );
   }
 
+  public trackPayTransactionEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackPayTransaction(getPayTransactionEventPropertiesFromPayviewState(payviewState))
+      );
+  }
+
   private goToStep(step: PAYVIEW_STEPS): void {
+    this.headerTitle = headerTitles[step];
     this.stepper.goToStep(step);
   }
 
@@ -164,7 +188,9 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private subscribeToBuyEventBus(): void {
     this.subscriptions.push(
-      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, (value: string) => {
+      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, () => {
+        this.markPayviewAsLoading();
+        this.payviewStateManagementService.buyerRequestId = this.uuidService.getUUID();
         this.payviewStateManagementService.buy();
       })
     );
@@ -226,13 +252,37 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private subscribeToStateManagementEventBus(): void {
     this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_GET_CURRENT_STATE, (error: PayviewError) => {
+        this.markPayviewAsNotLoading();
+      })
+    );
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_GET_CURRENT_STATE, () => {
+        this.showErrorToast(this.GENERIC_ERROR_TRANSLATION);
+        this.closeModal();
+      })
+    );
+    this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, (error: PayviewError) => {
+        this.markPayviewAsNotLoading();
         this.buyService.error(error);
       })
     );
     this.subscriptions.push(
+      this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.ERROR, (error: PayviewError) => {
+        this.showErrorToast(error.message);
+      })
+    );
+    this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY, () => {
-        // TODO - 18/03/2022 - Do something like closing the payview, show success toast or so on...
+        this.trackTransactionPaymentSuccessEvent();
+        this.closeModalOnPaymentSuccess();
+      })
+    );
+    this.subscriptions.push(
+      this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_CANCEL_REQUEST, () => {
+        this.buyService.enableBuyButton();
+        this.markPayviewAsNotLoading();
       })
     );
     this.subscriptions.push(
@@ -267,6 +317,10 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
         subscription.unsubscribe();
       }
     });
+  }
+
+  private closeModalOnPaymentSuccess(): void {
+    this.payviewState$.pipe(take(1)).subscribe((payviewState: PayviewState) => this.closeModal(payviewState.buyerRequestId));
   }
 
   private trackClickAddEditCardEvent(): void {
@@ -312,5 +366,30 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
           getClickApplyPromocodeTransactionPayEventPropertiesFromPayviewState(payviewState)
         )
       );
+  }
+
+  private trackTransactionPaymentSuccessEvent(): void {
+    this.payviewState$
+      .pipe(take(1))
+      .subscribe((payviewState: PayviewState) =>
+        this.payviewTrackingEventsService.trackTransactionPaymentSuccess(
+          getTransactionPaymentSuccessPropertiesFromPayviewState(payviewState)
+        )
+      );
+  }
+
+  private markPayviewAsLoading(): void {
+    this.isPayviewLoadingSubject.next(true);
+  }
+
+  private markPayviewAsNotLoading(): void {
+    this.isPayviewLoadingSubject.next(false);
+  }
+
+  private showErrorToast(text: string): void {
+    this.toastService.show({
+      text,
+      type: TOAST_TYPES.ERROR,
+    });
   }
 }

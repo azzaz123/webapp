@@ -1,10 +1,10 @@
 <div class="page-content" #scrollPanel>
   <div class="container upload-page">
     <tsl-category-selector (selected)="setCategory($event)" *ngxPermissionsExcept="['isProfessional']"></tsl-category-selector>
-    <tsl-upload-car *ngIf="categoryId === '100'" (validationError)="validationError()"> </tsl-upload-car>
-    <tsl-upload-realestate *ngIf="categoryId === '13000'" (validationError)="validationError()"> </tsl-upload-realestate>
+    <tsl-upload-car *ngIf="+categoryId === CATEGORY_IDS.CAR" (validationError)="validationError()"> </tsl-upload-car>
+    <tsl-upload-realestate *ngIf="+categoryId === CATEGORY_IDS.REAL_ESTATE" (validationError)="validationError()"> </tsl-upload-realestate>
     <tsl-upload-product
-      *ngIf="categoryId && categoryId !== '100' && categoryId !== '13000'"
+      *ngIf="categoryId && +categoryId !== CATEGORY_IDS.CAR && +categoryId !== CATEGORY_IDS.REAL_ESTATE"
       [categoryId]="categoryId"
       (validationError)="validationError()"
     >

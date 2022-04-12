@@ -4,17 +4,17 @@ import { CreditCard } from '@api/core/model';
 import { CREDIT_CARD_STATUS } from '@api/core/model/cards/credit-card-status.enum';
 import { environment } from '@environments/environment';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
+import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { Observable, of, ReplaySubject, throwError, timer } from 'rxjs';
 import { filter, concatMap, take, takeUntil, tap, catchError, map } from 'rxjs/operators';
 
-const THREE_DOMAIN_SECURE_START_URL = (id: string): string => `${environment.baseUrl}api/v3/payments/cards/start_3ds/${id}`;
 type GetCreditCardRequest = (ignoreInvalidCard: boolean) => Observable<CreditCard>;
 
 @Injectable({
   providedIn: 'root',
 })
-export class ThreeDomainSecureService {
+export class ThreeDomainSecureCreditCardsService {
   constructor(private webViewModalService: WebViewModalService) {}
 
   public checkThreeDomainSecure(getCreditCardRequest: GetCreditCardRequest): Observable<void> {
@@ -27,6 +27,10 @@ export class ThreeDomainSecureService {
 
   public cardNeedsToBeRemoved(card: CreditCard): boolean {
     return this.isInvalidCard(card) || this.isPending3DSCard(card);
+  }
+
+  private getCardValidationExternalUrl(id: string): string {
+    return `${environment.baseUrl}api/v3/payments/cards/start_3ds/${id}`;
   }
 
   private checkCardUntilKnownStatus(getCreditCard: GetCreditCardRequest): Observable<CreditCard> {
@@ -53,12 +57,13 @@ export class ThreeDomainSecureService {
 
   private start3DSValidation(card: CreditCard): Observable<void> {
     const { id } = card;
-    const threeDSecureStartUrl: string = THREE_DOMAIN_SECURE_START_URL(id);
+    const threeDSecureStartUrl: string = this.getCardValidationExternalUrl(id);
     const threeDSecureTitle: string = $localize`:@@three3ds_verification_title:Credit card verification`;
 
-    return this.webViewModalService
-      .open(threeDSecureStartUrl, threeDSecureTitle, DELIVERY_MODAL_CLASSNAME)
-      .pipe(catchError(() => throwError([new CardRegistrationFailedError()])));
+    return this.webViewModalService.open(threeDSecureStartUrl, threeDSecureTitle, DELIVERY_MODAL_CLASSNAME).pipe(
+      catchError(() => throwError([new CardRegistrationFailedError()])),
+      map(() => null)
+    );
   }
 
   private isInvalidCard(card: CreditCard): boolean {

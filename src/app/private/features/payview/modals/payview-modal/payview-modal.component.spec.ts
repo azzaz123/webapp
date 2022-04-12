@@ -1,6 +1,16 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input, Output, EventEmitter } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DebugElement,
+  Input,
+  Output,
+  EventEmitter,
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -48,7 +58,6 @@ import { StepperComponent } from '@shared/stepper/stepper.component';
 import { StepperModule } from '@shared/stepper/stepper.module';
 import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { of, throwError } from 'rxjs';
 import { PayviewTrackingEventsService } from '../../services/payview-tracking-events/payview-tracking-events.service';
@@ -61,8 +70,24 @@ import {
   MOCK_VIEW_TRANSACTION_PAY_SCREEN_EVENT_PROPERTIES_WITH_PAYPAL,
   MOCK_CLICK_ADD_PROMOCODE_TRANSACTION_PAY,
   MOCK_CLICK_APPLY_PROMOCODE_TRANSACTION_PAY,
+  MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL,
+  MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_PAYPAL,
 } from '@fixtures/private/delivery/payview/payview-event-properties.fixtures.spec';
 import { PayviewBuyService } from '../../modules/buy/services/payview-buy.service';
+import { PayviewBuyOverviewComponent } from '../../modules/buy/components/overview/payview-buy-overview.component';
+import { UserService } from '@core/user/user.service';
+import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
+import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
+import { headerTitles } from '../../constants/header-titles';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
+import { UuidService } from '@core/uuid/uuid.service';
+import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
+import { RouterTestingModule } from '@angular/router/testing';
+import { PAYVIEW_BUY_EVENT_TYPE } from '../../modules/buy/enums/payview-buy-event-type.enum';
+import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
+import { ToastService } from '@layout/toast/core/services/toast.service';
+import { MockToastService } from '@fixtures/toast-service.fixtures.spec';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -93,24 +118,26 @@ class FakeComponent extends PayviewModalComponent {
   constructor(
     payviewStateManagementService: PayviewStateManagementService,
     payviewDeliveryService: PayviewDeliveryService,
-    activeModal: NgbActiveModal,
     customerHelpService: CustomerHelpService,
     deliveryCountries: DeliveryCountriesService,
     promotionService: PayviewPromotionService,
     paymentService: PayviewPaymentService,
     payviewTrackingEventsService: PayviewTrackingEventsService,
-    buyService: PayviewBuyService
+    buyService: PayviewBuyService,
+    uuidService: UuidService,
+    toastService: ToastService
   ) {
     super(
       payviewStateManagementService,
       payviewDeliveryService,
-      activeModal,
       customerHelpService,
       deliveryCountries,
       promotionService,
       paymentService,
       payviewTrackingEventsService,
-      buyService
+      buyService,
+      uuidService,
+      toastService
     );
   }
 }
@@ -135,21 +162,22 @@ describe('PayviewModalComponent', () => {
   const payviewModalHelpSelector: string = '#helpLink';
   const payviewModalSpinnerSelector: string = `${payviewModal}__spinner`;
 
-  let activeModalService: NgbActiveModal;
   let component: PayviewModalComponent;
   let customerHelpService: CustomerHelpService;
   let debugElement: DebugElement;
   let fixture: ComponentFixture<FakeComponent>;
   let itemHashSpy: jest.SpyInstance;
+  let buyerRequestIdSpy: jest.SpyInstance;
   let payviewDeliveryService: PayviewDeliveryService;
   let payviewPaymentService: PayviewPaymentService;
   let payviewPromotionService: PayviewPromotionService;
   let payviewService: PayviewService;
-  let payviewBuyService: PayviewBuyService;
   let payviewStateManagementService: PayviewStateManagementService;
   let stepper: StepperComponent;
   let stepperSpy: jasmine.Spy;
   let payviewTrackingEventsService: PayviewTrackingEventsService;
+  let buyService: PayviewBuyService;
+  let uuidService: UuidService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -170,6 +198,7 @@ describe('PayviewModalComponent', () => {
         PayviewSummaryOverviewComponent,
         PayviewSummaryPaymentMethodComponent,
         SvgIconComponent,
+        PayviewBuyOverviewComponent,
       ],
       imports: [
         BrowserAnimationsModule,
@@ -179,6 +208,7 @@ describe('PayviewModalComponent', () => {
         HttpClientTestingModule,
         NgxPermissionsModule.forRoot(),
         StepperModule,
+        RouterTestingModule,
       ],
       providers: [
         {
@@ -208,10 +238,50 @@ describe('PayviewModalComponent', () => {
             trackViewTransactionPayScreen() {},
             trackClickAddPromocodeTransactionPay() {},
             trackClickApplyPromocodeTransactionPay() {},
+            trackPayTransaction() {},
+            trackTransactionPaymentSuccess() {},
           },
         },
+        {
+          provide: UserService,
+          useValue: {
+            get() {
+              return of(MOCK_OTHER_USER);
+            },
+            getLoggedUserInformation() {
+              return of(MOCK_USER);
+            },
+          },
+        },
+        {
+          provide: DeliveryRealTimeService,
+          useValue: {
+            get deliveryRealTimeNotifications$() {
+              return of(MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE);
+            },
+          },
+        },
+        {
+          provide: DeliveryPaymentReadyService,
+          useValue: {
+            continueBuyerRequestBuyFlow() {
+              return of(null);
+            },
+          },
+        },
+        {
+          provide: UuidService,
+          useValue: {
+            getUUID() {
+              return MOCK_UUID;
+            },
+          },
+        },
+        {
+          provide: ToastService,
+          useClass: MockToastService,
+        },
         ItemService,
-        NgbActiveModal,
         PaymentsWalletsService,
         PaymentsWalletsHttpService,
         PayviewDeliveryService,
@@ -220,21 +290,24 @@ describe('PayviewModalComponent', () => {
         PayviewStateManagementService,
         PayviewService,
         PayviewBuyService,
+        BuyerRequestsApiService,
+        PayviewBuyService,
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   describe('WHEN the component initializes', () => {
     beforeEach(() => {
-      activeModalService = TestBed.inject(NgbActiveModal);
       customerHelpService = TestBed.inject(CustomerHelpService);
       payviewDeliveryService = TestBed.inject(PayviewDeliveryService);
       payviewPaymentService = TestBed.inject(PayviewPaymentService);
       payviewPromotionService = TestBed.inject(PayviewPromotionService);
-      payviewBuyService = TestBed.inject(PayviewBuyService);
       payviewService = TestBed.inject(PayviewService);
       payviewStateManagementService = TestBed.inject(PayviewStateManagementService);
       payviewTrackingEventsService = TestBed.inject(PayviewTrackingEventsService);
+      buyService = TestBed.inject(PayviewBuyService);
+      uuidService = TestBed.inject(UuidService);
 
       fixture = TestBed.createComponent(FakeComponent);
       component = fixture.componentInstance;
@@ -242,11 +315,9 @@ describe('PayviewModalComponent', () => {
       stepper = TestBed.createComponent(StepperComponent).componentInstance;
 
       fixture.detectChanges();
-
       component.stepper = stepper;
       stepperSpy = spyOn(stepper, 'goToStep');
       spyOn(customerHelpService, 'getPageUrl').and.callThrough();
-      spyOn(activeModalService, 'close').and.callThrough();
     });
 
     it('should create', () => {
@@ -271,13 +342,47 @@ describe('PayviewModalComponent', () => {
       expect((target.nativeElement as HTMLAnchorElement).href).toBe(fakeHelpUrl);
     });
 
+    it('should show the specific payview title', () => {
+      const headerText: string = fixture.debugElement.query(By.css('#headerTitle')).nativeElement.innerHTML;
+
+      expect(headerText).toStrictEqual(headerTitles[PAYVIEW_STEPS.PAYVIEW]);
+    });
+
     describe('WHEN user clicks the close button', () => {
-      it('should close the modal window', () => {
+      const MOCK_CALLBACK: jasmine.Spy = jasmine.createSpy();
+
+      beforeEach(() => {
+        component.closeCallback = MOCK_CALLBACK;
         const target = fixture.debugElement.query(By.css(payviewModalCloseSelector)).nativeElement;
 
         target.click();
+      });
 
-        expect(activeModalService.close).toHaveBeenCalledTimes(1);
+      it('should close the modal window', () => {
+        expect(MOCK_CALLBACK).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('when the user clicks the buy button', () => {
+      describe('and there is NO prepayment errors', () => {
+        beforeEach(() => {
+          buyerRequestIdSpy = jest.spyOn(payviewStateManagementService, 'buyerRequestId', 'set');
+          spyOn(uuidService, 'getUUID').and.callThrough();
+          buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, () => {});
+          buyService.buy();
+        });
+
+        it('should generate a unique id only once', () => {
+          expect(uuidService.getUUID).toHaveBeenCalledTimes(1);
+        });
+
+        it('should set the unique id only once', () => {
+          expect(buyerRequestIdSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('should set the unique id with a valid one', () => {
+          expect(buyerRequestIdSpy).toHaveBeenCalledWith(MOCK_UUID);
+        });
       });
     });
 
@@ -319,6 +424,9 @@ describe('PayviewModalComponent', () => {
           component.itemHash = fakeItemHash;
 
           tick();
+          fixture.detectChanges();
+          // FIX ME: we need to delete the next line, this should not be hardcalled
+          component['markPayviewAsNotLoading']();
           fixture.detectChanges();
         }));
 
@@ -392,6 +500,20 @@ describe('PayviewModalComponent', () => {
           const link = fixture.debugElement.query(By.css('#privacyPolicyLink'));
 
           expect(link.attributes.href).toEqual(component.PRIVACY_POLICY_URL);
+        });
+
+        describe('when the user clicks the buy button', () => {
+          beforeEach(fakeAsync(() => {
+            spyOn(payviewTrackingEventsService, 'trackPayTransaction');
+            fixture.debugElement.query(By.directive(PayviewBuyOverviewComponent)).triggerEventHandler('clickBuyButton', {});
+
+            tick();
+          }));
+
+          it('should ask for tracking event', () => {
+            expect(payviewTrackingEventsService.trackPayTransaction).toHaveBeenCalledTimes(1);
+            expect(payviewTrackingEventsService.trackPayTransaction).toHaveBeenCalledWith(MOCK_PAY_TRANSACTION_EVENT_WITH_PAYPAL);
+          });
         });
 
         describe('WHEN stepper is on the second step', () => {
@@ -1120,6 +1242,30 @@ describe('PayviewModalComponent', () => {
         expect(loadingContainerRef).toBeTruthy();
       }));
 
+      describe('and the payment succeded', () => {
+        beforeEach(() => {
+          jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(MOCK_PAYVIEW_STATE));
+          spyOn(payviewService, 'request').and.returnValue(of(MOCK_PAYVIEW_STATE));
+          spyOn(component, 'closeModal').and.callThrough();
+          spyOn(payviewTrackingEventsService, 'trackTransactionPaymentSuccess');
+
+          // TODO: When refactor the payview we need to remove calling on private methods. We did this for this specific moment where we cannot trigger it in another way.		Date: 2022/04/08
+          component['trackTransactionPaymentSuccessEvent']();
+          component['closeModalOnPaymentSuccess']();
+        });
+
+        it('should close the modal', () => {
+          expect(component.closeModal).toHaveBeenCalledWith(MOCK_PAYVIEW_STATE.buyerRequestId);
+        });
+
+        it('should ask for tracking event', () => {
+          expect(payviewTrackingEventsService.trackTransactionPaymentSuccess).toHaveBeenCalledTimes(1);
+          expect(payviewTrackingEventsService.trackTransactionPaymentSuccess).toHaveBeenCalledWith(
+            MOCK_TRANSACTION_PAYMENT_SUCCESS_WITH_PAYPAL
+          );
+        });
+      });
+
       describe('WHEN the state does not have a value', () => {
         beforeEach(() => {
           jest.spyOn(payviewStateManagementService, 'payViewState$', 'get').mockReturnValue(of(null));
@@ -1127,6 +1273,9 @@ describe('PayviewModalComponent', () => {
           component = fixture.componentInstance;
           debugElement = fixture.debugElement;
 
+          fixture.detectChanges();
+          // FIX ME: we need to delete the next line, this should not be hardcalled
+          component['markPayviewAsNotLoading']();
           fixture.detectChanges();
         });
 
@@ -1180,6 +1329,9 @@ describe('PayviewModalComponent', () => {
           component = fixture.componentInstance;
           debugElement = fixture.debugElement;
 
+          fixture.detectChanges();
+          // FIX ME: we need to delete the next line, this should not be hardcalled
+          component['markPayviewAsNotLoading']();
           fixture.detectChanges();
         });
 

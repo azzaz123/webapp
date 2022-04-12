@@ -92,6 +92,17 @@ export class SubscriptionEditComponent implements OnInit {
     this.checkAndEditSubscription();
   }
 
+  public onClearSubscription(): void {
+    this.unselectSubscription.emit();
+  }
+
+  public openCategoriesModal(): void {
+    const modal = this.modalService.open(CategoryListingModalComponent, {
+      windowClass: 'category-listing',
+    });
+    modal.componentInstance.subscription = this.subscription;
+  }
+
   private checkAndEditSubscription(): void {
     this.subscriptionsService.canUpdateTier(this.subscription.id, this.selectedTier.id).subscribe(
       (response) => {
@@ -129,17 +140,6 @@ export class SubscriptionEditComponent implements OnInit {
           this.showToastError();
         }
       );
-  }
-
-  public onClearSubscription(): void {
-    this.unselectSubscription.emit();
-  }
-
-  public openCategoriesModal(): void {
-    const modal = this.modalService.open(CategoryListingModalComponent, {
-      windowClass: 'category-listing',
-    });
-    modal.componentInstance.subscription = this.subscription;
   }
 
   private checkTier(): void {

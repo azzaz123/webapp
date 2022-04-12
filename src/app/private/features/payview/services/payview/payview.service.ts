@@ -26,8 +26,14 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 
-import { catchError, concatMap, map, mergeMap, take } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, mergeMap, take } from 'rxjs/operators';
 import { forkJoin, Observable, ObservableInput, of } from 'rxjs';
+import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
+import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
+import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
+import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
+import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 
 @Injectable({
   providedIn: 'root',
@@ -43,8 +49,11 @@ export class PayviewService {
     private deliveryBuyerService: DeliveryBuyerService,
     private deliveryCostsService: DeliveryCostsService,
     private itemService: ItemService,
+    private paymentsClientBrowserInfoApiService: PaymentsClientBrowserInfoApiService,
     private paymentMethodsService: PaymentsPaymentMethodsService,
     private paymentPreferencesService: PaymentsUserPaymentPreferencesService,
+    private deliveryPaymentReadyService: DeliveryPaymentReadyService,
+    private deliveryRealTimeService: DeliveryRealTimeService,
     private toastService: ToastService,
     private walletsService: PaymentsWalletsService
   ) {}
@@ -86,7 +95,7 @@ export class PayviewService {
     return this.deliveryBuyerService.getDeliveryMethods(itemHash).pipe(take(1));
   }
 
-  public getCurrentState(itemHash: string): Observable<PayviewState> {
+  public getCurrentState(itemHash: string, buyerRequestId: string): Observable<PayviewState> {
     this.itemHash = itemHash;
 
     return forkJoin(this.stateSources)
@@ -113,7 +122,8 @@ export class PayviewService {
               itemDetails,
               paymentMethods,
               paymentPreferences,
-              wallet
+              wallet,
+              buyerRequestId
             );
           }
         )
@@ -134,11 +144,52 @@ export class PayviewService {
   }
 
   public setUserPaymentPreferences(preferences: PaymentsUserPaymentPreferences): Observable<void> {
-    return this.paymentPreferencesService.update(preferences);
+    return this.paymentPreferencesService.setUserPaymentPreferences(preferences);
   }
 
-  public request(): Observable<null> {
-    return of(null);
+  public request(state: PayviewState): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
+    return this.sendPaymentUserInfo(state.payment.preferences).pipe(concatMap(() => this.buyFlow(state)));
+  }
+
+  private sendPaymentUserInfo(paymentPreferences: PaymentsUserPaymentPreferences): Observable<void> {
+    return this.paymentsClientBrowserInfoApiService
+      .sendBrowserInfo()
+      .pipe(concatMap(() => this.setUserPaymentPreferences(paymentPreferences)));
+  }
+
+  private buyFlow(state: PayviewState): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
+    return this.buyerRequestService
+      .buyRequest(state)
+      .pipe(
+        concatMap(() =>
+          this.waitPaymentReady(state).pipe(
+            concatMap((buyerRequest) =>
+              this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(
+                buyerRequest,
+                state.payment.preferences.preferences.paymentMethod
+              )
+            )
+          )
+        )
+      );
+  }
+
+  private waitPaymentReady(payviewState: PayviewState): Observable<BuyerRequest> {
+    return this.listenToThreeDomainNotification().pipe(concatMap(() => this.getBuyerRequestById(payviewState)));
+  }
+
+  private listenToThreeDomainNotification(): Observable<DeliveryRealTimeNotification> {
+    return this.deliveryRealTimeService.deliveryRealTimeNotifications$.pipe(
+      filter((notification) => notification.id.endsWith('3ds_ready'))
+    );
+  }
+
+  private getBuyerRequestById(payviewState: PayviewState): Observable<BuyerRequest> {
+    const { item, buyerRequestId } = payviewState;
+    const { id: itemHash } = item;
+    return this.buyerRequestService
+      .getRequestsAsBuyerByItemHash(itemHash)
+      .pipe(map((requests) => requests.find((r) => r.id === buyerRequestId)));
   }
 
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
@@ -181,7 +232,8 @@ export class PayviewService {
     itemDetails: BuyerRequestsItemsDetails,
     paymentMethods: PaymentsPaymentMethods,
     paymentPreferences: PaymentsUserPaymentPreferences,
-    wallet: Money
+    wallet: Money,
+    buyerRequestId: string
   ): Observable<PayviewState> {
     return of({
       costs,
@@ -198,6 +250,7 @@ export class PayviewService {
         preferences: paymentPreferences,
         wallet,
       },
+      buyerRequestId,
     });
   }
 

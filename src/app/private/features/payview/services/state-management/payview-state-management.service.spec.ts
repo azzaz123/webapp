@@ -26,9 +26,14 @@ import { delay, mergeMap } from 'rxjs/operators';
 import { Observable, of, throwError } from 'rxjs';
 import { CreditCard } from '@api/core/model';
 import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
+import { PayviewTrackingEventsService } from '../payview-tracking-events/payview-tracking-events.service';
+import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 
 describe('PayviewStateManagementService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
+  const mockUuid: string = '1234-abcd';
+  const mockBuyerRequestId: string = 'abc-123';
+
   let service: PayviewStateManagementService;
   let payviewService: PayviewService;
 
@@ -39,6 +44,9 @@ describe('PayviewStateManagementService', () => {
         {
           provide: PayviewService,
           useValue: {
+            request() {
+              return of(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
+            },
             get card() {
               return of(MOCK_CREDIT_CARD);
             },
@@ -51,10 +59,17 @@ describe('PayviewStateManagementService', () => {
             setUserPaymentPreferences() {},
           },
         },
+        {
+          provide: PayviewTrackingEventsService,
+          useValue: {
+            trackTransactionPaymentError() {},
+          },
+        },
       ],
     });
     payviewService = TestBed.inject(PayviewService);
     service = TestBed.inject(PayviewStateManagementService);
+    service.buyerRequestId = mockUuid;
   });
 
   it('should be created', () => {
@@ -87,7 +102,7 @@ describe('PayviewStateManagementService', () => {
 
     it('should request the payview state', fakeAsync(() => {
       expect(getCurrentStateSpy).toHaveBeenCalledTimes(1);
-      expect(getCurrentStateSpy).toHaveBeenCalledWith(fakeItemHash);
+      expect(getCurrentStateSpy).toHaveBeenCalledWith(fakeItemHash, mockUuid);
     }));
 
     it('should update the payview state ', fakeAsync(() => {
@@ -322,7 +337,7 @@ describe('PayviewStateManagementService', () => {
 
       it('should call to payview service', fakeAsync(() => {
         expect(payviewService.getCurrentState).toHaveBeenCalledTimes(1);
-        expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash);
+        expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash, mockUuid);
       }));
 
       it('should update the payview state ', fakeAsync(() => {
@@ -833,7 +848,7 @@ describe('PayviewStateManagementService', () => {
 
     it('should request the payview state', fakeAsync(() => {
       expect(payviewService.getCurrentState).toHaveBeenCalledTimes(1);
-      expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash);
+      expect(payviewService.getCurrentState).toHaveBeenCalledWith(fakeItemHash, mockUuid);
     }));
 
     it('should not update the payview state ', fakeAsync(() => {
@@ -843,5 +858,96 @@ describe('PayviewStateManagementService', () => {
     it('should update the item hash', fakeAsync(() => {
       expect(itemHash).toBeTruthy();
     }));
+  });
+
+  describe('WHEN defining buyer request id', () => {
+    let payviewState: PayviewState;
+
+    beforeEach(() => {
+      service.payViewState$.subscribe((newState: PayviewState) => {
+        payviewState = newState;
+      });
+
+      service.buyerRequestId = mockBuyerRequestId;
+    });
+
+    it('should update the state subject', () => {
+      expect(payviewState).toStrictEqual({
+        buyerRequestId: mockBuyerRequestId,
+      });
+    });
+  });
+
+  describe('when buying a product', () => {
+    beforeEach(() => {
+      spyOn(service['actionSubject'], 'next').and.callThrough();
+    });
+
+    describe('and the request succeed automatically', () => {
+      beforeEach(() => {
+        spyOn(payviewService, 'request').and.returnValue(of(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC));
+
+        service.buy();
+      });
+
+      it('should request to do the payment', () => {
+        expect(payviewService.request).toHaveBeenCalledTimes(1);
+      });
+
+      it('should notify payment success', () => {
+        expect(service['actionSubject'].next).toHaveBeenCalledTimes(1);
+        expect(service['actionSubject'].next).toHaveBeenCalledWith({
+          type: PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY,
+          payload: null,
+        });
+      });
+    });
+
+    describe('and the buyer cancels the payment validation', () => {
+      beforeEach(() => {
+        spyOn(payviewService, 'request').and.returnValue(of(WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL));
+
+        service.buy();
+      });
+
+      it('should request to do the payment', () => {
+        expect(payviewService.request).toHaveBeenCalledTimes(1);
+      });
+
+      it('should notify cancel request', () => {
+        expect(service['actionSubject'].next).toHaveBeenCalledTimes(1);
+        expect(service['actionSubject'].next).toHaveBeenCalledWith({
+          type: PAYVIEW_EVENT_TYPE.SUCCESS_ON_CANCEL_REQUEST,
+          payload: null,
+        });
+      });
+    });
+
+    describe('and the request failed', () => {
+      const MOCK_ERROR = {
+        name: 'this is an error name',
+        message: 'this is a message',
+      };
+      beforeEach(() => {
+        spyOn(payviewService, 'request').and.returnValue(throwError([MOCK_ERROR]));
+
+        service.buy();
+      });
+
+      it('should request to do the payment', () => {
+        expect(service['actionSubject'].next).toHaveBeenCalledTimes(1);
+        expect(service['actionSubject'].next).toHaveBeenCalledWith({
+          type: PAYVIEW_EVENT_TYPE.ERROR_ON_BUY,
+          payload: {
+            code: MOCK_ERROR.name,
+            message: MOCK_ERROR.message,
+          },
+        });
+      });
+
+      it('should trigger a error on buy action', () => {
+        expect(payviewService.request).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 });

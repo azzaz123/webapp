@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+import { CATEGORY_IDS } from '@core/category/category-ids';
 import { AccessTokenService } from '@core/http/access-token.service';
 import { AUTHORIZATION_HEADER_NAME } from '@core/http/interceptors';
 import { ITEM_TYPES } from '@core/item/item';
-import { CARS_CATEGORY, REALESTATE_CATEGORY } from '@core/item/item-categories';
 import { ItemService } from '@core/item/item.service';
 import { environment } from '@environments/environment';
 import { ITEM_ID } from '@fixtures/item.fixtures.spec';
@@ -70,7 +70,7 @@ describe('UploadService', () => {
 
       it('should emit uploadFile event', () => {
         const VALUES: any = {
-          category_id: CARS_CATEGORY,
+          category_id: CATEGORY_IDS.CAR,
           images: [UPLOAD_FILE],
         };
 
@@ -96,7 +96,7 @@ describe('UploadService', () => {
       describe('with user location', () => {
         const VALUES: any = {
           images: [UPLOAD_FILE],
-          category_id: CARS_CATEGORY,
+          category_id: CATEGORY_IDS.CAR,
         };
         const VALUES_WITH_LOCATION: any = {
           ...VALUES,
@@ -197,7 +197,7 @@ describe('UploadService', () => {
 
         const VALUES: any = {
           ...VALUES_FINAL,
-          category_id: REALESTATE_CATEGORY,
+          category_id: CATEGORY_IDS.REAL_ESTATE,
           id: 100,
         };
 

@@ -41,7 +41,7 @@ export class PaymentsClientBrowserInfoApiService {
   }
 
   //FIXME: This should not be hardcoded and retrieved by rendering the modal and then getting the sizes. For now, copying and hardcoding same modal SCSS values
-  public get externalProviderModalSize(): { modalWidth: number; modalHeight: number } {
+  private get externalProviderModalSize(): { modalWidth: number; modalHeight: number } {
     const lgBreakpoint: string = '991px';
 
     let modalWidth: number = this.window.innerWidth * EXTERNAL_PROVIDER_MODAL_LARGE_WIDTH_PROPORTION;

@@ -2,24 +2,24 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DeliveryItemDetailsApiService } from '@api/bff/delivery/items/detail/delivery-item-details-api.service';
-import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
-import { BUYER_REQUEST_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-request-status.enum';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
-import { MOCK_BUYER_REQUESTS } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
+import {
+  MOCK_BUYER_REQUESTS,
+  MOCK_BUYER_REQUEST_ACCEPTED,
+  MOCK_BUYER_REQUEST_EXPIRED,
+} from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 import {
   MOCK_DELIVERY_ITEM_DETAILS,
   MOCK_DELIVERY_ITEM_DETAILS_NOT_SHIPPABLE,
   MOCK_DELIVERY_ITEM_DETAILS_SHIPPING_DISABLED,
 } from '@api/fixtures/core/model/delivery/item-detail/delivery-item-detail.fixtures.spec';
 import { SCREEN_IDS } from '@core/analytics/analytics-constants';
-import { FeatureFlagService } from '@core/user/featureflag.service';
 import { MOCK_INBOX_CONVERSATION_AS_BUYER } from '@fixtures/chat';
 import { MOCK_BUY_DELIVERY_BANNER_PROPERTIES } from '@fixtures/chat/delivery-banner/delivery-banner.fixtures.spec';
-import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { of } from 'rxjs';
+import { PATH_TO_PAYVIEW, PRIVATE_PATHS } from '@private/private-routing-constants';
+import { of, BehaviorSubject } from 'rxjs';
 import { ASK_SELLER_FOR_SHIPPING_BANNER_PROPERTIES } from '../../../delivery-banner/constants/delivery-banner-configs';
 import { DeliveryBannerTrackingEventsService } from '../../../delivery-banner/services/delivery-banner-tracking-events/delivery-banner-tracking-events.service';
 import { DELIVERY_BANNER_ACTION } from '../../../delivery-banner/enums/delivery-banner-action.enum';
@@ -29,10 +29,12 @@ import { PriceableDeliveryBanner } from '../../../delivery-banner/interfaces/pri
 
 import { DeliveryConversationContextAsBuyerService } from './delivery-conversation-context-as-buyer.service';
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
+import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 
 describe('DeliveryConversationContextAsBuyerService', () => {
+  const featuresEnabledSubject: BehaviorSubject<boolean> = new BehaviorSubject(true);
+
   let service: DeliveryConversationContextAsBuyerService;
-  let featureFlagService: FeatureFlagService;
   let buyerRequestsApiService: BuyerRequestsApiService;
   let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
   let deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService;
@@ -46,7 +48,6 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         DeliveryConversationContextAsBuyerService,
         { provide: BuyerRequestsApiService, useValue: { getRequestsAsBuyerByItemHash: () => of(null) } },
         { provide: DeliveryItemDetailsApiService, useValue: { getDeliveryDetailsByItemHash: (_itemHash: string) => of(null) } },
-        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         { provide: NgbModal, useValue: { open: () => {} } },
         {
           provide: DeliveryBannerTrackingEventsService,
@@ -55,15 +56,14 @@ describe('DeliveryConversationContextAsBuyerService', () => {
           },
         },
         {
-          provide: FeatureFlagService,
+          provide: DeliveryExperimentalFeaturesService,
           useValue: {
-            isExperimentalFeaturesEnabled: () => true,
+            featuresEnabled$: featuresEnabledSubject.asObservable(),
           },
         },
       ],
     });
     service = TestBed.inject(DeliveryConversationContextAsBuyerService);
-    featureFlagService = TestBed.inject(FeatureFlagService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
     deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
     deliveryBannerTrackingEventsService = TestBed.inject(DeliveryBannerTrackingEventsService);
@@ -80,12 +80,9 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   describe('when asking for buyer context', () => {
     describe('and when delivery feature flag is disabled', () => {
       beforeEach(() => {
-        const MOCK_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
-          (request) => request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING
-        );
-        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_SUCCESSFUL_REQUESTS));
+        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_EXPIRED]));
         spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
-        spyOn(featureFlagService, 'isExperimentalFeaturesEnabled').and.returnValue(false);
+        featuresEnabledSubject.next(false);
       });
 
       it('should hide banner', fakeAsync(() => {
@@ -101,11 +98,9 @@ describe('DeliveryConversationContextAsBuyerService', () => {
     describe('when buyer has done previously buy requests to current item', () => {
       describe('and when the last request is in a pending or accepted state', () => {
         beforeEach(() => {
-          const MOCK_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
-            (request) => request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING
-          );
-          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_SUCCESSFUL_REQUESTS));
+          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_ACCEPTED]));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
+          featuresEnabledSubject.next(true);
         });
 
         it('should hide banner', fakeAsync(() => {
@@ -118,10 +113,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
       describe('and when the last request is NOT in a pending or accepted state', () => {
         beforeEach(() => {
-          const MOCK_NON_SUCCESSFUL_REQUESTS: BuyerRequest[] = MOCK_BUYER_REQUESTS.filter(
-            (request) => !(request.status === BUYER_REQUEST_STATUS.ACCEPTED || request.status === BUYER_REQUEST_STATUS.PENDING)
-          );
-          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_NON_SUCCESSFUL_REQUESTS));
+          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_EXPIRED]));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         });
 
@@ -222,7 +214,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
       it('should navigate to the item payview', () => {
         const itemHash: string = MOCK_INBOX_CONVERSATION_AS_BUYER.item.id;
-        const expectedRoute: string = `${PRIVATE_PATHS.CHAT}/${DELIVERY_PATHS.PAYVIEW}/${itemHash}`;
+        const expectedRoute: string = `${PATH_TO_PAYVIEW}/${itemHash}`;
 
         expect(router.navigate).toHaveBeenCalledWith([expectedRoute]);
         expect(router.navigate).toHaveBeenCalledTimes(1);

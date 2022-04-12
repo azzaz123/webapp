@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { ComponentFixture, TestBed, fakeAsync, waitForAsync } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { FavouritesComponent } from './favourites.component';
 import { UserService } from '@core/user/user.service';
 import { MOCK_USER_STATS } from '@fixtures/user.fixtures.spec';
@@ -10,6 +10,8 @@ import { MOCK_PROFILE } from '@fixtures/profile.fixtures.spec';
 import { MeApiService } from '@api/me/me-api.service';
 import { FavouritesListTrackingEventsService } from '../services/favourites-list-tracking-events.service';
 import { By } from '@angular/platform-browser';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 
 describe('FavouritesComponent', () => {
   let component: FavouritesComponent;
@@ -55,6 +57,7 @@ describe('FavouritesComponent', () => {
               trackClickItemCardEvent() {},
             },
           },
+          { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
         ],
         schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
@@ -313,6 +316,17 @@ describe('FavouritesComponent', () => {
 
       expect(component.trackClickFavoriteItem).toHaveBeenCalledWith(index);
       expect(component.trackClickFavoriteItem).toHaveBeenCalledTimes(1);
+    });
+  });
+  describe('when clicking on Searches section', () => {
+    beforeEach(() => {
+      component.selectedStatus = 'searches';
+      component.searches = [];
+      fixture.detectChanges();
+    });
+    it('and are no searches, should render empty state', () => {
+      const counter: DebugElement = fixture.debugElement.query(By.css('tsl-empty-state'));
+      expect(counter).toBeTruthy();
     });
   });
 });

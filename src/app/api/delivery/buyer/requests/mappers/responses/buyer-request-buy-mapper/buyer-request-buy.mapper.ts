@@ -2,11 +2,11 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 import { BuyerRequestBuyDto, DeliveryModeDto } from '../../../dtos/buyer-request-buy-dto.interface';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 
-export const mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties = (input: PayviewState, buyRequestId: string): BuyerRequestBuyDto => {
-  const { item, delivery, costs } = input;
+export const mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties = (input: PayviewState): BuyerRequestBuyDto => {
+  const { item, delivery, costs, buyerRequestId: id } = input;
 
   return {
-    id: buyRequestId,
+    id,
     item_hash: item.id,
     seller_user_hash: item.owner,
     offered_price: {

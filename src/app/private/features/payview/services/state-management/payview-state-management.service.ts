@@ -22,6 +22,11 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
+import { BuyerRequestsError } from '@api/core/errors/delivery/payview/buyer-requests/buyer-requests.error';
+import { PayviewTrackingEventsService } from '../payview-tracking-events/payview-tracking-events.service';
+import { getTransactionCheckoutErrorPropertiesFromPayviewState } from '../payview-tracking-events/payview-tracking-events-properties.mapper';
+import { PayviewError } from '../../interfaces/payview-error.interface';
+import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 
 @Injectable({
   providedIn: 'root',
@@ -29,9 +34,10 @@ import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
 export class PayviewStateManagementService {
   private readonly actionSubject: Subject<PayviewEvent> = new Subject<PayviewEvent>();
   private readonly itemHashSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  private readonly buyerRequestIdSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   private readonly stateSubject: BehaviorSubject<PayviewState> = new BehaviorSubject<PayviewState>(null);
 
-  constructor(private payviewService: PayviewService) {}
+  constructor(private payviewService: PayviewService, private payviewTrackingService: PayviewTrackingEventsService) {}
 
   public applyPromocode(value: string): void {
     const payviewState = { ...this.stateSubject.getValue() };
@@ -50,6 +56,11 @@ export class PayviewStateManagementService {
 
   public get itemHash$(): Observable<string> {
     return this.itemHashSubject.asObservable();
+  }
+
+  public set buyerRequestId(value: string) {
+    this.buyerRequestIdSubject.next(value);
+    this.stateSubject.next({ ...this.stateSubject.value, buyerRequestId: value });
   }
 
   public on(eventType: PAYVIEW_EVENT_TYPE, handler: (payload: PAYVIEW_EVENT_PAYLOAD) => void): Subscription {
@@ -107,9 +118,9 @@ export class PayviewStateManagementService {
     return { type: type, payload: mapToPayviewError(payload) };
   }
 
-  private getCurrentState(value: string): void {
+  private getCurrentState(itemHash: string): void {
     const subscription: Subscription = this.payviewService
-      .getCurrentState(value)
+      .getCurrentState(itemHash, this.buyerRequestIdSubject.value)
       .pipe(take(1))
       .subscribe({
         next: (payviewState: PayviewState) => {
@@ -223,20 +234,37 @@ export class PayviewStateManagementService {
 
   private request(payviewState: PayviewState): void {
     const subscription: Subscription = this.payviewService
-      .request()
+      .request(payviewState)
       .pipe(take(1))
       .subscribe({
-        next: () => {
+        next: (method: WEB_VIEW_MODAL_CLOSURE_METHOD) => {
+          if (method === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL) {
+            return this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_CANCEL_REQUEST));
+          }
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY));
         },
-        error: (error: HttpErrorResponse) => {
-          this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, error));
+        error: (errors: BuyerRequestsError[]) => {
+          const error: BuyerRequestsError = errors[0];
+          const payload: PayviewError = {
+            code: error ? error.name : '',
+            message: error ? error.message : '',
+          };
+
+          this.actionSubject.next({
+            type: PAYVIEW_EVENT_TYPE.ERROR_ON_BUY,
+            payload,
+          });
+          this.trackTransactionCheckoutErrorEvent(payviewState, error);
           subscription.unsubscribe();
         },
         complete: () => {
           subscription.unsubscribe();
         },
       });
+  }
+
+  private trackTransactionCheckoutErrorEvent(payviewState: PayviewState, error: BuyerRequestsError): void {
+    this.payviewTrackingService.trackTransactionPaymentError(getTransactionCheckoutErrorPropertiesFromPayviewState(payviewState, error));
   }
 
   private setCurrentDeliveryMethod(payviewState: PayviewState, mode: DELIVERY_MODE): void {

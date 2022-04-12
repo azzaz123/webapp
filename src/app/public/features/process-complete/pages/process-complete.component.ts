@@ -3,6 +3,7 @@ import { WINDOW_MESSAGE_TYPE } from '@core/window-message/enums/window-message-t
 import { WindowMessage } from '@core/window-message/interfaces/window-message.interface';
 import { WindowMessageService } from '@core/window-message/services/window-message.service';
 import { WINDOW_TOKEN } from '@core/window/window.token';
+import { PublicFooterService } from '@public/core/services/footer/public-footer.service';
 
 @Component({
   selector: 'tsl-process-complete',
@@ -10,9 +11,14 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
   styleUrls: ['./process-complete.component.scss'],
 })
 export class ProcessCompleteComponent implements OnInit {
-  constructor(@Inject(WINDOW_TOKEN) private window: Window, private windowMessageService: WindowMessageService) {}
+  constructor(
+    @Inject(WINDOW_TOKEN) private window: Window,
+    private windowMessageService: WindowMessageService,
+    private footerService: PublicFooterService
+  ) {}
 
   ngOnInit(): void {
+    this.hideFooter();
     this.sendSuccessMessageToSelfWindow();
     this.sendSuccessMessageToParentWindow();
     this.closeCurrentWindow();
@@ -24,6 +30,10 @@ export class ProcessCompleteComponent implements OnInit {
 
   private closeCurrentWindow(): void {
     this.window.close();
+  }
+
+  private hideFooter(): void {
+    this.footerService.setShow(false);
   }
 
   private sendSuccessMessageToSelfWindow(): void {
