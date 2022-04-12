@@ -49,7 +49,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       imports: [RouterTestingModule],
       providers: [
         DeliveryConversationContextAsBuyerService,
-        { provide: BuyerRequestsApiService, useValue: { getRequestsAsBuyerByItemHash: () => of(null) } },
+        { provide: BuyerRequestsApiService, useValue: { getLastRequestAsBuyerByItemHash: () => of(null) } },
         { provide: DeliveryItemDetailsApiService, useValue: { getDeliveryDetailsByItemHash: (_itemHash: string) => of(null) } },
         { provide: NgbModal, useValue: { open: () => {} } },
         {
@@ -83,7 +83,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   describe('when asking for buyer context', () => {
     describe('and when delivery feature flag is disabled', () => {
       beforeEach(() => {
-        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_EXPIRED]));
+        spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUEST_EXPIRED));
         spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         featuresEnabledSubject.next(false);
       });
@@ -103,7 +103,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
       describe.each(testCases)('and when the last request is still valid', (testCase) => {
         beforeEach(() => {
-          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([testCase]));
+          spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(testCase));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
           featuresEnabledSubject.next(true);
         });
@@ -118,7 +118,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
       describe('and when the last request is NOT pending, accepted or requires payment', () => {
         beforeEach(() => {
-          spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_EXPIRED]));
+          spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUEST_EXPIRED));
           spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
         });
 
@@ -139,7 +139,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
     describe('when buyer has 0 requests to current item', () => {
       beforeEach(() => {
-        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([]));
+        spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(null));
       });
 
       describe('and server responses with buy cost price', () => {
@@ -240,7 +240,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   describe('when handling third voices CTA click', () => {
     describe('and when there is last buyer request', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUESTS));
+        spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(MOCK_BUYER_REQUEST_ACCEPTED));
         spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
 
         service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();
@@ -249,7 +249,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
       }));
 
       it('should redirect to TTS', () => {
-        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUESTS[0].id}`;
+        const expectedUrl = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${MOCK_BUYER_REQUEST_ACCEPTED.id}`;
 
         service.handleThirdVoiceCTAClick();
 
@@ -260,7 +260,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
     describe('and when there is no last buyer request', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([]));
+        spyOn(buyerRequestsApiService, 'getLastRequestAsBuyerByItemHash').and.returnValue(of(null));
         spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
 
         service.getBannerPropertiesAsBuyer(MOCK_INBOX_CONVERSATION_AS_BUYER).subscribe();

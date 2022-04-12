@@ -5,6 +5,7 @@ import {
   MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
   MOCK_DELIVERY_BUYER_DELIVERY_METHODS_WITHOUT_LASTADDRESSUSED,
   MOCK_DELIVERY_BUYER_DELIVERY_METHODS_WITH_CARRIER_OFFICE_METHOD,
+  MOCK_DELIVERY_BUYER_WITHOUT_DELIVERY_METHODS,
 } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COSTS_ITEM } from '@api/fixtures/bff/delivery/costs/delivery-costs.fixtures.spec';
 import {
@@ -14,6 +15,7 @@ import {
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_CREDIT_CARD,
   MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_PAYPAL,
+  MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES,
 } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS } from '@api/fixtures/delivery/address/delivery-address.fixtures.spec';
 import {
@@ -44,6 +46,16 @@ export const MOCK_PAYVIEW_STATE: PayviewState = {
     wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
   },
   buyerRequestId: MOCK_UUID,
+};
+
+export const MOCK_PAYVIEW_STATE_WITH_NEW_BUYER: PayviewState = {
+  ...MOCK_PAYVIEW_STATE,
+  payment: {
+    card: MOCK_CREDIT_CARD,
+    methods: MOCK_PAYMENTS_PAYMENT_METHODS,
+    preferences: MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES,
+    wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
+  },
 };
 
 export const MOCK_PAYVIEW_STATE_WITH_PROMOCODE: PayviewState = {
@@ -262,6 +274,24 @@ export const MOCK_PAYVIEW_STATE_WITH_CARRIER_OFFICE_DELIVERY_METHOD: PayviewStat
     address: MOCK_DELIVERY_ADDRESS,
     costs: MOCK_DELIVERY_COSTS_ITEM,
     methods: MOCK_DELIVERY_BUYER_DELIVERY_METHODS_WITH_CARRIER_OFFICE_METHOD,
+  },
+  item: MOCK_PAYVIEW_ITEM,
+  itemDetails: MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2,
+  payment: {
+    card: MOCK_CREDIT_CARD,
+    methods: MOCK_PAYMENTS_PAYMENT_METHODS,
+    preferences: MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
+    wallet: MOCK_PAYMENTS_WALLET_MAPPED_WITHOUT_MONEY,
+  },
+  buyerRequestId: MOCK_UUID,
+};
+
+export const MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_METHODS: PayviewState = {
+  costs: MOCK_DELIVERY_BUYER_CALCULATOR_COSTS,
+  delivery: {
+    address: MOCK_DELIVERY_ADDRESS,
+    costs: MOCK_DELIVERY_COSTS_ITEM,
+    methods: MOCK_DELIVERY_BUYER_WITHOUT_DELIVERY_METHODS,
   },
   item: MOCK_PAYVIEW_ITEM,
   itemDetails: MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2,

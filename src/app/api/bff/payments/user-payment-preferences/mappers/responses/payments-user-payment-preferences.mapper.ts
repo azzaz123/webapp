@@ -6,6 +6,7 @@ import { InnerType, ToDomainMapper } from '@api/core/utils/types';
 import { PaymentsUserPaymentPreferencesDto } from '../../dtos/responses/payments-user-payment-preferences-dto.interface';
 import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
 import { AVAILABLE_PAYMENT_METHODS } from '@api/core/model/payments/constants/available-payments';
+import { UuidService } from '@core/uuid/uuid.service';
 
 type PaymentsUserPaymentDefaultsDto = InnerType<PaymentsUserPaymentPreferencesDto, 'defaults'>;
 type PaymentsUserPaymentPreferenceDto = InnerType<PaymentsUserPaymentPreferencesDto, 'preferences'>;
@@ -18,7 +19,7 @@ export const mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreference
 
   return {
     defaults: mapToDefaults(defaults),
-    preferences: preferences ? mapToPreference(preferences) : null,
+    preferences: preferences ? mapToPreference(preferences) : mapToDefaultPreference(defaults),
   };
 };
 
@@ -34,6 +35,20 @@ const mapToDefaults: ToDomainMapper<PaymentsUserPaymentDefaultsDto, PaymentsUser
   };
 };
 
+const mapToDefaultPreference: ToDomainMapper<PaymentsUserPaymentDefaultsDto, PaymentsUserPaymentPreference> = (
+  defaults: PaymentsUserPaymentDefaultsDto
+): PaymentsUserPaymentPreference => {
+  const { payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = defaults;
+  const mappedPaymentMethod: PAYVIEW_PAYMENT_METHOD = paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null;
+  return {
+    id: UuidService.getUUID(),
+    isNewBuyer: true,
+    paymentMethod: paymentMethod ? mapToAvailablePayment(mappedPaymentMethod) : null,
+    useWallet,
+    walletBlocked,
+  };
+};
+
 const mapToPreference: ToDomainMapper<PaymentsUserPaymentPreferenceDto, PaymentsUserPaymentPreference> = (
   preference: PaymentsUserPaymentPreferenceDto
 ): PaymentsUserPaymentPreference => {
@@ -41,6 +56,7 @@ const mapToPreference: ToDomainMapper<PaymentsUserPaymentPreferenceDto, Payments
   const mappedPaymentMethod: PAYVIEW_PAYMENT_METHOD = paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null;
   return {
     id,
+    isNewBuyer: false,
     paymentMethod: paymentMethod ? mapToAvailablePayment(mappedPaymentMethod) : null,
     useWallet,
     walletBlocked,
