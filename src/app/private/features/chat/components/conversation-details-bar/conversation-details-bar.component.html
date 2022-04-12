@@ -3,9 +3,9 @@
   <tsl-svg-icon src="/assets/icons/back-arrow.svg" class="d-xl-none back-arrow" (click)="navigationBack()"></tsl-svg-icon>
 
   <div class="lg-device-container d-none d-xl-inline-flex">
-    <a 
-      *ngIf="currentConversation?.user.webSlug" 
-      [routerLink]="currentConversation?.user.webSlug | userProfileRoute: currentConversation?.user.id" 
+    <a
+      *ngIf="currentConversation?.user.webSlug"
+      [routerLink]="currentConversation?.user.webSlug | userProfileRoute: currentConversation?.user.id"
       class="user-avatar"
     >
       <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
@@ -27,7 +27,7 @@
       <a   tslItemRoute
       [itemSlug]="currentConversation?.item.itemSlug"
       [itemUUID]="currentConversation?.item.id" class="avatar">
-        <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
+        <tsl-item-avatar [item]="currentConversation.item"
                          size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
       </a>
     </div>
@@ -36,7 +36,7 @@
       <a tslItemRoute
       [itemSlug]="currentConversation?.item.itemSlug"
       [itemUUID]="currentConversation?.item.id" class="avatar">
-        <tsl-item-avatar [item]="currentConversation.item" [inboxItem]="currentConversation.item"
+        <tsl-item-avatar [item]="currentConversation.item"
                          size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
       </a>
     </div>
@@ -60,8 +60,8 @@
   <div ngbDropdown placement="bottom-right" class="conversation-header-menu" [ngClass]="{'expanded': isExpanded}">
 
     <div class="conversation-header-avatar d-xl-none">
-      <a 
-        *ngIf="currentConversation?.user.webSlug" 
+      <a
+        *ngIf="currentConversation?.user.webSlug"
         [routerLink]="currentConversation?.user.webSlug | userProfileRoute: currentConversation?.user.id"
         class="user-avatar"
       >
