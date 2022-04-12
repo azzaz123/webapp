@@ -3,7 +3,9 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { SearchIdRecord } from './interfaces/search-id-record.interface';
 import { SearchId } from './interfaces/search-id.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SearchIdService {
   private readonly STORAGE_KEY = 'searchId';
   private readonly STORAGE_SYSTEM: Storage;
