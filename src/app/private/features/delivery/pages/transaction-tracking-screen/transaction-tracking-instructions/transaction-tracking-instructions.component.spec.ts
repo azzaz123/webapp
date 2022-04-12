@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
 import { BypassHTMLModule } from '@shared/pipes/bypass-html/bypass-html.module';
-import { DeeplinkService } from '@api/core/utils/deeplink/deeplink.service';
+import { DeeplinkService } from '@shared/deeplink/services/deeplink.service';
 import { DELIVERY_PATH_PARAMS } from '@private/features/delivery/delivery-routing-constants';
 import { environment } from '@environments/environment';
 import { ErrorsService } from '@core/errors/errors.service';
@@ -110,7 +110,10 @@ describe('TransactionTrackingInstructionsComponent', () => {
             trackClickActionTTS() {},
           },
         },
-        DeeplinkService,
+        {
+          provide: DeeplinkService,
+          useValue: { navigate: () => {} },
+        },
         ErrorsService,
         ItemDetailRoutePipe,
         {

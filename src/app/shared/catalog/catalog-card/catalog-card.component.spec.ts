@@ -15,6 +15,7 @@ import { CatalogCardComponent } from './catalog-card.component';
 import { SITE_URL } from '@configs/site-url.config';
 import { MOCK_SITE_URL } from '@fixtures/site-url.fixtures.spec';
 import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
+import { ItemAvatarComponent } from '@shared/item-avatar/item-avatar.component';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
@@ -33,7 +34,7 @@ describe('CatalogCardComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CatalogCardComponent, CustomCurrencyPipe, ItemRouteMockDirective],
+        declarations: [CatalogCardComponent, CustomCurrencyPipe, ItemRouteMockDirective, ItemAvatarComponent],
         providers: [
           DecimalPipe,
           I18nService,

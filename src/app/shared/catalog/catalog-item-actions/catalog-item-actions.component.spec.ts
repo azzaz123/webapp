@@ -19,6 +19,7 @@ import { EventService } from '../../../core/event/event.service';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
 import { ListingLimitService } from '@core/subscriptions/listing-limit/listing-limit.service';
 import { ListingLimitServiceMock } from '@fixtures/private/pros/listing-limit.fixtures.spec';
+import { ItemAvatarComponent } from '@shared/item-avatar/item-avatar.component';
 
 describe('CatalogItemActionsComponent', () => {
   let component: CatalogItemActionsComponent;
@@ -34,7 +35,7 @@ describe('CatalogItemActionsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CatalogItemActionsComponent],
+        declarations: [CatalogItemActionsComponent, ItemAvatarComponent],
         providers: [
           I18nService,
           ToastService,
