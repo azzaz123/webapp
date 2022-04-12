@@ -104,17 +104,13 @@ describe('UserVerificationsHttpService', () => {
       let params: URLSearchParams = new URLSearchParams();
       params.append('emailAddress', email);
 
-      let response;
-
-      service.passwordRecovery(email).subscribe((data) => {
-        response = data;
+      service.passwordRecovery(email).subscribe(() => {
         done();
       });
       const req: TestRequest = httpMock.expectOne(PASSWORD_RECOVERY_ENDPOINT);
       req.flush('', { status: 204, statusText: '' });
 
       expect(req.request.method).toBe('POST');
-      expect(response).toEqual('');
       expect(req.request.body).toEqual(params);
     });
   });
