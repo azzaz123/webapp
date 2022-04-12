@@ -82,6 +82,42 @@ describe('BuyerRequestsApiService', () => {
     });
   });
 
+  describe('when asking to get the last request as buyer by item', () => {
+    const MOCK_ITEM_HASH: string = '9jdxdd2rylzk';
+    let result: BuyerRequest;
+    let buyerRequestSpy: jasmine.Spy;
+
+    beforeEach(fakeAsync(() => {
+      buyerRequestSpy = spyOn(buyerRequestsHttpService, 'get');
+      buyerRequestSpy.and.callThrough();
+
+      service.getLastRequestAsBuyerByItemHash(MOCK_ITEM_HASH).subscribe((data: BuyerRequest) => (result = data));
+      tick();
+    }));
+
+    it('should ask server for requests information', () => {
+      expect(buyerRequestsHttpService.get).toHaveBeenCalledTimes(1);
+      expect(buyerRequestsHttpService.get).toHaveBeenCalledWith(MOCK_ITEM_HASH);
+    });
+
+    it('should return the request response mapped into our model domain', () => {
+      expect(result).toStrictEqual(MOCK_BUYER_REQUESTS[0]);
+    });
+
+    describe('and when user does not have requests as buyer', () => {
+      beforeEach(fakeAsync(() => {
+        buyerRequestSpy.and.returnValue(of([]));
+
+        service.getLastRequestAsBuyerByItemHash(MOCK_ITEM_HASH).subscribe((data: BuyerRequest) => (result = data));
+        tick();
+      }));
+
+      it('should return nothing', () => {
+        expect(result).toBe(null);
+      });
+    });
+  });
+
   describe('when asking to get the items details', () => {
     const fakeItemId: string = '9jdxdd2rylzk';
     let response: BuyerRequestsItemsDetails;

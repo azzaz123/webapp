@@ -22,6 +22,10 @@ export class BuyerRequestsApiService {
     return this.buyerRequestsHttpService.get(itemHash).pipe(map(mapBuyerRequestsDtoToBuyerRequests));
   }
 
+  public getLastRequestAsBuyerByItemHash(itemHash: string): Observable<BuyerRequest | null> {
+    return this.getRequestsAsBuyerByItemHash(itemHash).pipe(map((requests) => (requests.length === 0 ? null : requests[0])));
+  }
+
   public getRequestsItemsDetails(itemHash: string): Observable<BuyerRequestsItemsDetails> {
     return this.buyerRequestsHttpService.getItemsDetails(itemHash).pipe(map(mapBuyerRequestsItemsDetailsDtoToBuyerRequestsItemsDetails));
   }
