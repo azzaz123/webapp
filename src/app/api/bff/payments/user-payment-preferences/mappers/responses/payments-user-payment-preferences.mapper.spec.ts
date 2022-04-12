@@ -53,9 +53,15 @@ describe('mapPaymentsUserPaymentPreferncesDtoToPaymentsUserPaymentPreferences', 
         );
         expect(mappedPreferences.id).toBeDefined();
         expect(mappedPreferences.isNewBuyer).toStrictEqual(true);
-        expect(mappedPreferences.paymentMethod).toStrictEqual(null);
-        expect(mappedPreferences.useWallet).toStrictEqual(false);
-        expect(mappedPreferences.walletBlocked).toStrictEqual(false);
+        expect(mappedPreferences.paymentMethod).toStrictEqual(
+          MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD.defaults.paymentMethod
+        );
+        expect(mappedPreferences.useWallet).toStrictEqual(
+          MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD.defaults.useWallet
+        );
+        expect(mappedPreferences.walletBlocked).toStrictEqual(
+          MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD.defaults.walletBlocked
+        );
       });
     });
 

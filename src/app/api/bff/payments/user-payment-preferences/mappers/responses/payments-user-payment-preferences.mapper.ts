@@ -10,13 +10,6 @@ import { UuidService } from '@core/uuid/uuid.service';
 
 type PaymentsUserPaymentDefaultsDto = InnerType<PaymentsUserPaymentPreferencesDto, 'defaults'>;
 type PaymentsUserPaymentPreferenceDto = InnerType<PaymentsUserPaymentPreferencesDto, 'preferences'>;
-const DEFAULT_USER_PREFERENCES: PaymentsUserPaymentPreference = {
-  id: UuidService.getUUID(),
-  paymentMethod: null,
-  isNewBuyer: true,
-  useWallet: false,
-  walletBlocked: false,
-};
 
 export const mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreferences: ToDomainMapper<
   PaymentsUserPaymentPreferencesDto,
@@ -26,7 +19,7 @@ export const mapPaymentsUserPaymentPreferencesDtoToPaymentsUserPaymentPreference
 
   return {
     defaults: mapToDefaults(defaults),
-    preferences: preferences ? mapToPreference(preferences) : DEFAULT_USER_PREFERENCES,
+    preferences: preferences ? mapToPreference(preferences) : mapToDefaultPreference(defaults),
   };
 };
 
@@ -36,6 +29,20 @@ const mapToDefaults: ToDomainMapper<PaymentsUserPaymentDefaultsDto, PaymentsUser
   const { payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = defaults;
   const mappedPaymentMethod: PAYVIEW_PAYMENT_METHOD = paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null;
   return {
+    paymentMethod: paymentMethod ? mapToAvailablePayment(mappedPaymentMethod) : null,
+    useWallet,
+    walletBlocked,
+  };
+};
+
+const mapToDefaultPreference: ToDomainMapper<PaymentsUserPaymentDefaultsDto, PaymentsUserPaymentPreference> = (
+  defaults: PaymentsUserPaymentDefaultsDto
+): PaymentsUserPaymentPreference => {
+  const { payment_method: paymentMethod, use_wallet: useWallet, wallet_blocked: walletBlocked } = defaults;
+  const mappedPaymentMethod: PAYVIEW_PAYMENT_METHOD = paymentMethod ? mapPaymentMethodDtoToPaymentMethod(paymentMethod) : null;
+  return {
+    id: UuidService.getUUID(),
+    isNewBuyer: true,
     paymentMethod: paymentMethod ? mapToAvailablePayment(mappedPaymentMethod) : null,
     useWallet,
     walletBlocked,
