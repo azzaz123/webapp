@@ -202,6 +202,11 @@ describe('PayviewService', () => {
     paymentsWalletsService = TestBed.inject(PaymentsWalletsService);
     paymentsClientBrowserInfoApiService = TestBed.inject(PaymentsClientBrowserInfoApiService);
     toastService = TestBed.inject(ToastService);
+
+    spyOn(deliveryCostsService, 'getCosts').and.callThrough();
+    spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
+    spyOn(itemService, 'get').and.callThrough();
+    spyOn(buyerRequestsApiService, 'getRequestsItemsDetails').and.callThrough();
   });
 
   it('should be created', () => {
@@ -216,12 +221,8 @@ describe('PayviewService', () => {
 
     describe('and there are delivery methods', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(buyerRequestsApiService, 'getRequestsItemsDetails').and.callThrough();
         spyOn(deliveryAddressService, 'get').and.callThrough();
         spyOn(deliveryBuyerService, 'getDeliveryMethods').and.callThrough();
-        spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
-        spyOn(deliveryCostsService, 'getCosts').and.callThrough();
-        spyOn(itemService, 'get').and.callThrough();
         spyOn(paymentsCreditCardService, 'get').and.callThrough();
         paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
         paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
@@ -290,12 +291,8 @@ describe('PayviewService', () => {
 
     describe('and there are NO delivery methods', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(buyerRequestsApiService, 'getRequestsItemsDetails').and.callThrough();
         spyOn(deliveryAddressService, 'get').and.callThrough();
         spyOn(deliveryBuyerService, 'getDeliveryMethods').and.returnValue(of(MOCK_DELIVERY_BUYER_WITHOUT_DELIVERY_METHODS));
-        spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
-        spyOn(deliveryCostsService, 'getCosts').and.callThrough();
-        spyOn(itemService, 'get').and.callThrough();
         spyOn(paymentsCreditCardService, 'get').and.callThrough();
         paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
         paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
@@ -364,12 +361,8 @@ describe('PayviewService', () => {
     let paymentWalletSpy;
 
     beforeEach(fakeAsync(() => {
-      spyOn(buyerRequestsApiService, 'getRequestsItemsDetails').and.callThrough();
       spyOn(deliveryAddressService, 'get').and.returnValue(throwError('The server is broken'));
       spyOn(deliveryBuyerService, 'getDeliveryMethods').and.callThrough();
-      spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
-      spyOn(deliveryCostsService, 'getCosts').and.callThrough();
-      spyOn(itemService, 'get').and.callThrough();
       spyOn(paymentsCreditCardService, 'get').and.callThrough();
       paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
       paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
@@ -446,12 +439,8 @@ describe('PayviewService', () => {
     let paymentWalletSpy;
 
     beforeEach(fakeAsync(() => {
-      spyOn(buyerRequestsApiService, 'getRequestsItemsDetails').and.callThrough();
       spyOn(deliveryAddressService, 'get').and.returnValue(throwError('The server is broken'));
       spyOn(deliveryBuyerService, 'getDeliveryMethods').and.callThrough();
-      spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
-      spyOn(deliveryCostsService, 'getCosts').and.callThrough();
-      spyOn(itemService, 'get').and.callThrough();
       spyOn(paymentsCreditCardService, 'get').and.returnValue(throwError('The server is broken'));
       paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
       paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
@@ -522,10 +511,6 @@ describe('PayviewService', () => {
   });
 
   describe('WHEN retrieving the costs', () => {
-    beforeEach(() => {
-      spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
-    });
-
     it('should call to the calculator server to get the corresponding information', fakeAsync(() => {
       const fakeAmount: Money = { amount: { decimals: 0, integer: 63, total: 63 }, currency: { code: 'EUR', symbol: '€' } };
       const fakeDeliveryMethod: DeliveryBuyerDeliveryMethod = MOCK_DELIVERY_BUYER_DELIVERY_METHODS.current;
@@ -570,10 +555,6 @@ describe('PayviewService', () => {
   });
 
   describe('WHEN retrieving the delivery costs', () => {
-    beforeEach(() => {
-      spyOn(deliveryCostsService, 'getCosts').and.callThrough();
-    });
-
     it('should call to the delivery costs server to get the corresponding information', fakeAsync(() => {
       let result: DeliveryCosts;
 
