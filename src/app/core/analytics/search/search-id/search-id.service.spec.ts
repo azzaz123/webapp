@@ -65,6 +65,16 @@ describe('SearchIdService', () => {
           expect(service.getSearchIdByItemId(existingItemId)).toEqual(null);
         });
       });
+
+      describe('but stored value is not able to be parsed as JSON', () => {
+        beforeEach(() => {
+          global.localStorage.setItem(service['STORAGE_KEY'], JSON.stringify('randomString'));
+        });
+
+        it('should return no searchId', () => {
+          expect(service.getSearchIdByItemId(existingItemId)).toEqual(null);
+        });
+      });
     });
   });
 });
