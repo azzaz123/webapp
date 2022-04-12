@@ -16,7 +16,10 @@ import { MOCK_BUYER_REQUESTS_ITEMS_DETAILS_2 } from '@api/fixtures/delivery/buye
 import { MOCK_CREDIT_CARD } from '@api/fixtures/payments/cards/credit-card.fixtures.spec';
 import { MOCK_DELIVERY_ADDRESS, MOCK_DELIVERY_ADDRESS_API } from '@api/fixtures/delivery/address/delivery-address.fixtures.spec';
 import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
-import { MOCK_DELIVERY_BUYER_DELIVERY_METHODS } from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
+import {
+  MOCK_DELIVERY_BUYER_DELIVERY_METHODS,
+  MOCK_DELIVERY_BUYER_WITHOUT_DELIVERY_METHODS,
+} from '@api/fixtures/bff/delivery/buyer/delivery-buyer.fixtures.spec';
 import { MOCK_DELIVERY_COSTS_ITEM } from '@api/fixtures/bff/delivery/costs/delivery-costs.fixtures.spec';
 import { MOCK_PAYMENTS_PAYMENT_METHODS } from '@api/fixtures/payments/payment-methods/payments-payment-methods-dto.fixtures.spec';
 import { MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES } from '@api/fixtures/bff/payments/user-payment-preferences/payments-user-payment-preferences-dto.fixtures.spec';
@@ -25,6 +28,7 @@ import { MOCK_PAYVIEW_ITEM } from '@fixtures/private/delivery/payview/payview-it
 import {
   MOCK_PAYVIEW_STATE,
   MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE,
+  MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_METHODS,
 } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { Money } from '@api/core/model/money.interface';
 import { PaymentsCreditCardService } from '@api/payments/cards';
@@ -206,76 +210,146 @@ describe('PayviewService', () => {
     let paymentPreferencesSpy;
     let paymentWalletSpy;
 
-    beforeEach(fakeAsync(() => {
-      spyOn(buyerRequestsApiService, 'getRequestsItemsDetails').and.callThrough();
-      spyOn(deliveryAddressService, 'get').and.callThrough();
-      spyOn(deliveryBuyerService, 'getDeliveryMethods').and.callThrough();
-      spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
-      spyOn(deliveryCostsService, 'getCosts').and.callThrough();
-      spyOn(itemService, 'get').and.callThrough();
-      spyOn(paymentsCreditCardService, 'get').and.callThrough();
-      paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
-      paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
-      paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
+    describe('and there are delivery methods', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(buyerRequestsApiService, 'getRequestsItemsDetails').and.callThrough();
+        spyOn(deliveryAddressService, 'get').and.callThrough();
+        spyOn(deliveryBuyerService, 'getDeliveryMethods').and.callThrough();
+        spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
+        spyOn(deliveryCostsService, 'getCosts').and.callThrough();
+        spyOn(itemService, 'get').and.callThrough();
+        spyOn(paymentsCreditCardService, 'get').and.callThrough();
+        paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
+        paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
+        paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
-      service.getCurrentState(fakeItemHash, MOCK_UUID).subscribe((response: PayviewState) => {
-        payviewState = response;
+        service.getCurrentState(fakeItemHash, MOCK_UUID).subscribe((response: PayviewState) => {
+          payviewState = response;
+        });
+
+        tick();
+      }));
+
+      it('should call to the buyer request server to get the corresponding information', () => {
+        expect(buyerRequestsApiService.getRequestsItemsDetails).toHaveBeenCalledTimes(1);
+        expect(buyerRequestsApiService.getRequestsItemsDetails).toHaveBeenCalledWith(fakeItemHash);
       });
 
-      tick();
-    }));
+      it('should call to the address server to get the corresponding information', () => {
+        expect(deliveryAddressService.get).toHaveBeenCalledTimes(1);
+      });
 
-    it('should call to the buyer request server to get the corresponding information', () => {
-      expect(buyerRequestsApiService.getRequestsItemsDetails).toHaveBeenCalledTimes(1);
-      expect(buyerRequestsApiService.getRequestsItemsDetails).toHaveBeenCalledWith(fakeItemHash);
+      it('should call to the delivery buyer server to get the corresponding information', () => {
+        expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledTimes(1);
+        expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledWith(fakeItemHash);
+      });
+
+      it('should call to the calculator server to get the corresponding information', () => {
+        const expectedAmount: Money = { amount: { decimals: 0, integer: 63, total: 63 }, currency: { code: 'EUR', symbol: '€' } };
+        const expectedPromocode: string = null;
+        const expectedDeliveryMode: DELIVERY_MODE = DELIVERY_MODE.BUYER_ADDRESS;
+
+        expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledTimes(1);
+        expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledWith(
+          expectedAmount,
+          fakeItemHash,
+          expectedPromocode,
+          expectedDeliveryMode
+        );
+      });
+
+      it('should call to the item server to get the corresponding information', () => {
+        expect(itemService.get).toHaveBeenCalledTimes(1);
+        expect(itemService.get).toHaveBeenCalledWith(fakeItemHash);
+      });
+
+      it('should call to the credit card server to get the corresponding information', () => {
+        expect(paymentsCreditCardService.get).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call to the payment methods server to get the corresponding information', () => {
+        expect(paymentMethodsSpy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call to the payment user preferences server to get the corresponding information', () => {
+        expect(paymentPreferencesSpy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call to the wallet balance server to get the corresponding information', () => {
+        expect(paymentWalletSpy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should get a valid payview state', () => {
+        expect(payviewState).toMatchObject(MOCK_PAYVIEW_STATE);
+      });
     });
 
-    it('should call to the address server to get the corresponding information', () => {
-      expect(deliveryAddressService.get).toHaveBeenCalledTimes(1);
-    });
+    describe('and there are NO delivery methods', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(buyerRequestsApiService, 'getRequestsItemsDetails').and.callThrough();
+        spyOn(deliveryAddressService, 'get').and.callThrough();
+        spyOn(deliveryBuyerService, 'getDeliveryMethods').and.returnValue(of(MOCK_DELIVERY_BUYER_WITHOUT_DELIVERY_METHODS));
+        spyOn(deliveryBuyerCalculatorService, 'getCosts').and.callThrough();
+        spyOn(deliveryCostsService, 'getCosts').and.callThrough();
+        spyOn(itemService, 'get').and.callThrough();
+        spyOn(paymentsCreditCardService, 'get').and.callThrough();
+        paymentMethodsSpy = jest.spyOn(paymentsPaymentMethodsService, 'paymentMethods', 'get');
+        paymentPreferencesSpy = jest.spyOn(paymentsUserPaymentPreferencesService, 'get');
+        paymentWalletSpy = jest.spyOn(paymentsWalletsService, 'walletBalance$', 'get');
 
-    it('should call to the delivery buyer server to get the corresponding information', () => {
-      expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledTimes(1);
-      expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledWith(fakeItemHash);
-    });
+        service.getCurrentState(fakeItemHash, MOCK_UUID).subscribe((response: PayviewState) => {
+          payviewState = response;
+        });
 
-    it('should call to the calculator server to get the corresponding information', () => {
-      const expectedAmount: Money = { amount: { decimals: 0, integer: 63, total: 63 }, currency: { code: 'EUR', symbol: '€' } };
-      const expectedPromocode: string = null;
-      const expectedDeliveryMode: DELIVERY_MODE = DELIVERY_MODE.BUYER_ADDRESS;
+        tick();
+      }));
 
-      expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledTimes(1);
-      expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledWith(
-        expectedAmount,
-        fakeItemHash,
-        expectedPromocode,
-        expectedDeliveryMode
-      );
-    });
+      it('should call to the buyer request server to get the corresponding information', () => {
+        expect(buyerRequestsApiService.getRequestsItemsDetails).toHaveBeenCalledTimes(1);
+        expect(buyerRequestsApiService.getRequestsItemsDetails).toHaveBeenCalledWith(fakeItemHash);
+      });
 
-    it('should call to the item server to get the corresponding information', () => {
-      expect(itemService.get).toHaveBeenCalledTimes(1);
-      expect(itemService.get).toHaveBeenCalledWith(fakeItemHash);
-    });
+      it('should call to the address server to get the corresponding information', () => {
+        expect(deliveryAddressService.get).toHaveBeenCalledTimes(1);
+      });
 
-    it('should call to the credit card server to get the corresponding information', () => {
-      expect(paymentsCreditCardService.get).toHaveBeenCalledTimes(1);
-    });
+      it('should call to the delivery buyer server to get the corresponding information', () => {
+        expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledTimes(1);
+        expect(deliveryBuyerService.getDeliveryMethods).toHaveBeenCalledWith(fakeItemHash);
+      });
 
-    it('should call to the payment methods server to get the corresponding information', () => {
-      expect(paymentMethodsSpy).toHaveBeenCalledTimes(1);
-    });
+      it('should call to the calculator server to get the corresponding information', () => {
+        const expectedAmount: Money = { amount: { decimals: 0, integer: 63, total: 63 }, currency: { code: 'EUR', symbol: '€' } };
+        const expectedPromocode: string = null;
 
-    it('should call to the payment user preferences server to get the corresponding information', () => {
-      expect(paymentPreferencesSpy).toHaveBeenCalledTimes(1);
-    });
+        expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledTimes(1);
+        expect(deliveryBuyerCalculatorService.getCosts).toHaveBeenCalledWith(expectedAmount, fakeItemHash, expectedPromocode, null);
+      });
 
-    it('should call to the wallet balance server to get the corresponding information', () => {
-      expect(paymentWalletSpy).toHaveBeenCalledTimes(1);
-    });
+      it('should call to the item server to get the corresponding information', () => {
+        expect(itemService.get).toHaveBeenCalledTimes(1);
+        expect(itemService.get).toHaveBeenCalledWith(fakeItemHash);
+      });
 
-    it('should get a valid payview state', () => {
-      expect(payviewState).toMatchObject(MOCK_PAYVIEW_STATE);
+      it('should call to the credit card server to get the corresponding information', () => {
+        expect(paymentsCreditCardService.get).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call to the payment methods server to get the corresponding information', () => {
+        expect(paymentMethodsSpy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call to the payment user preferences server to get the corresponding information', () => {
+        expect(paymentPreferencesSpy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call to the wallet balance server to get the corresponding information', () => {
+        expect(paymentWalletSpy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should get a valid payview state', () => {
+        expect(payviewState).toMatchObject(MOCK_PAYVIEW_STATE_WITHOUT_DELIVERY_METHODS);
+      });
     });
   });
 
