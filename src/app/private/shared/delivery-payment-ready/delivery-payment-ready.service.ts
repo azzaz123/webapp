@@ -35,7 +35,7 @@ export class DeliveryPaymentReadyService {
     postAction: PAYMENT_CONTINUED_POST_ACTION = PAYMENT_CONTINUED_POST_ACTION.NONE
   ): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
-      concatMap((requests) => {
+      concatMap((requests: BuyerRequest[]) => {
         const request: BuyerRequest = requests.find((r) => r.id === requestId);
         if (!request) {
           return of(null);
@@ -47,7 +47,7 @@ export class DeliveryPaymentReadyService {
         }
 
         return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
-          concatMap((enabled) => {
+          concatMap((enabled: boolean) => {
             if (enabled) {
               return this.transactionTrackingService
                 .requestWasDoneWithPayPal(request.id)
