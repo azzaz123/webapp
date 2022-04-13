@@ -1,4 +1,4 @@
-<a class="user-info" 
+<a class="user-info"
   [routerLink]="isNavigable ? [user.webSlug | userProfileRoute:user.id] : []"
   [ngClass]="{'faded': !user.available }"
   class="device-{{deviceType}}"
@@ -26,7 +26,7 @@
   </div>
 
   <div class="avatar-block">
-    <tsl-user-avatar [user]="user" size="{{avatarSize}}"></tsl-user-avatar>
+    <tsl-user-avatar [user]="user" [size]="avatarSize"></tsl-user-avatar>
     <div class="status-block status-block-{{avatarSize}}">
       <tsl-status-icon [blocked]="user.blocked" [unavailable]="!user.available"></tsl-status-icon>
     </div>
