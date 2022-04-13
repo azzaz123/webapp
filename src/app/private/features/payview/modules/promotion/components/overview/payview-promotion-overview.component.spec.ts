@@ -5,7 +5,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { ButtonComponent } from '@shared/button/button.component';
-import { MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION } from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
+import {
+  MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION,
+  MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION_NAME,
+} from '@api/fixtures/delivery/buyer/delivery-buyer-calculator-costs-dto.fixtures.spec';
 import { MOCK_PAYVIEW_STATE } from '@fixtures/private/delivery/payview/payview-state.fixtures.spec';
 import { PayviewPromotionOverviewComponent } from '@private/features/payview/modules/promotion/components/overview/payview-promotion-overview.component';
 import { PayviewPromotionService } from '@private/features/payview/modules/promotion/services/payview-promotion.service';
@@ -14,6 +17,8 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
 describe('PayviewPromotionOverviewComponent', () => {
   const payviewPromotionSelector: string = '.PayviewPromotion';
+  const promocodeSelector: string = '#promocode';
+  const cancelButtonSelector: string = '#cancelButton';
   const payviewPromotionCodeDescriptionSelector: string = `${payviewPromotionSelector}__codeDescription`;
   const payviewPromotionCodeCheckSelector: string = `${payviewPromotionSelector}__codeCheck`;
 
@@ -89,43 +94,72 @@ describe('PayviewPromotionOverviewComponent', () => {
           });
         });
       });
-      describe('WHEN there is a promotion', () => {
-        beforeEach(() => {
-          component.costs = MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION;
 
-          changeDetectorRef.detectChanges();
-        });
-
-        it('should show the promocode', () => {
-          const target: HTMLDivElement = debugElement.query(By.css(payviewPromotionCodeDescriptionSelector))
-            .nativeElement as HTMLDivElement;
-
-          expect(target.innerHTML).toContain(component.costs.promotion.promocode.toUpperCase());
-        });
-
-        it('should show the code check', () => {
-          const target = debugElement.query(By.css(payviewPromotionCodeCheckSelector));
-
-          expect(target).toBeTruthy();
-        });
-
-        it('should show the "cancel" button', () => {
-          const target: HTMLButtonElement = debugElement.query(By.directive(ButtonComponent)).nativeElement as HTMLButtonElement;
-
-          expect(target.innerHTML).toContain($localize`:@@pay_view_buyer_promo_code_cancel_button:Cancel`);
-        });
-
-        describe('WHEN user clicks over cancel button', () => {
+      describe('WHEN there is a promocode', () => {
+        describe('and the promocode is not a promotion', () => {
           beforeEach(() => {
-            spyOn(promotionService, 'removePromocode');
+            component.costs = MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION;
+
+            changeDetectorRef.detectChanges();
           });
 
-          it('should send the corresponding event', () => {
-            const button = debugElement.query(By.directive(ButtonComponent));
+          it('should show the promocode', () => {
+            const target: HTMLDivElement = debugElement.query(By.css(payviewPromotionCodeDescriptionSelector))
+              .nativeElement as HTMLDivElement;
 
-            button.triggerEventHandler('click', null);
+            expect(target.innerHTML).toContain(component.costs.promotion.promocode.toUpperCase());
+          });
 
-            expect(promotionService.removePromocode).toHaveBeenCalledTimes(1);
+          it('should show the code check', () => {
+            const target = debugElement.query(By.css(payviewPromotionCodeCheckSelector));
+
+            expect(target).toBeTruthy();
+          });
+
+          it('should show the "cancel" button', () => {
+            const target: HTMLButtonElement = debugElement.query(By.directive(ButtonComponent)).nativeElement as HTMLButtonElement;
+
+            expect(target.innerHTML).toContain($localize`:@@pay_view_buyer_promo_code_cancel_button:Cancel`);
+          });
+
+          describe('WHEN user clicks over cancel button', () => {
+            beforeEach(() => {
+              spyOn(promotionService, 'removePromocode');
+            });
+
+            it('should send the corresponding event', () => {
+              const button = debugElement.query(By.directive(ButtonComponent));
+
+              button.triggerEventHandler('click', null);
+
+              expect(promotionService.removePromocode).toHaveBeenCalledTimes(1);
+            });
+          });
+        });
+
+        describe('and the promocode is a promotion', () => {
+          beforeEach(() => {
+            component.costs = MOCK_DELIVERY_BUYER_CALCULATOR_COSTS_WITH_PROMOTION_NAME;
+
+            changeDetectorRef.detectChanges();
+          });
+
+          it('should NOT show the promocode', () => {
+            const target = debugElement.query(By.css(promocodeSelector));
+
+            expect(target).toBeFalsy();
+          });
+
+          it('should NOT show the code check', () => {
+            const target = debugElement.query(By.css(payviewPromotionCodeCheckSelector));
+
+            expect(target).toBeFalsy();
+          });
+
+          it('should show the "cancel" button', () => {
+            const target = debugElement.query(By.css(cancelButtonSelector));
+
+            expect(target).toBeFalsy();
           });
         });
       });

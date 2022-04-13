@@ -29,6 +29,7 @@ import { CatalogItemComponent } from './catalog-item.component';
 import { ItemRouteMockDirective } from '@fixtures/item-route.fixtures.spec';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { BUMPS_PATHS } from '@private/features/bumps/bumps-routing-constants';
+import { ItemAvatarComponent } from '@shared/item-avatar/item-avatar.component';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -46,7 +47,7 @@ describe('CatalogItemComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CatalogItemComponent, CustomCurrencyPipe, ItemRouteMockDirective],
+        declarations: [CatalogItemComponent, CustomCurrencyPipe, ItemRouteMockDirective, ItemAvatarComponent],
         providers: [
           DecimalPipe,
           EventService,
