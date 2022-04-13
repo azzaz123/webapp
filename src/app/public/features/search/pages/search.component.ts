@@ -152,7 +152,6 @@ export class SearchComponent implements OnInit, OnAttach, OnDetach {
       })
     );
 
-    this.experimentationService.initExperimentContext();
     this.experimentationService.getVariations({
       flagKeys: [OPTIMIZELY_FLAG_KEYS.WebmParticleTest],
     });
