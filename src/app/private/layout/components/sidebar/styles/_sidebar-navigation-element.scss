@@ -1,0 +1,18 @@
+@mixin SidebarNavigationElement {
+  appearance: none;
+  position: relative;
+  min-height: 48px;
+  color: $blue-grey-1;
+
+  &--active,
+  &:hover {
+    background-color: $blue-grey-5;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+
+  &:active {
+    background-color: $blue-grey-4;
+    transition: background-color 100ms ease-in;
+  }
+}

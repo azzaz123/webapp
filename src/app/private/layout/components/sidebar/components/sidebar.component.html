@@ -4,13 +4,8 @@
     [ngClass]="{ 'Sidebar__collapse--visible': isTouchDevice }" (click)="toggleCollapse()">
     <tsl-svg-icon src="/assets/icons/sidebar/sidebar_arrow.svg"></tsl-svg-icon>
   </button>
-
-  <a id="sidebar-profile" class="Sidebar__entry mx-2 my-4 d-flex align-items-center" [routerLink]="['/profile']" routerLinkActive="Sidebar__entry--active"
-    [ngClass]="{'Sidebar__entry--active': isProfile}">
-    <tsl-user-avatar class="Sidebar__avatar" [size]="32" [user]="user" [imageUrl]="user?.image?.urls_by_size.medium">
-    </tsl-user-avatar>
-    <span class="Sidebar__label ml-2" i18n="@@web_components_sidebar_611">Profile</span>
-  </a>
+  
+  <tsl-sidebar-navigation-profile-element [element]="profileNavigationElement$ | async" [collapsed]="collapsed$ | async"></tsl-sidebar-navigation-profile-element>
 
   <a *ngxPermissionsOnly="PERMISSIONS.professional" class="Sidebar__entry mx-2 mb-1 d-flex align-items-center"
     [routerLink]="['/pro/dashboard']" routerLinkActive="Sidebar__entry--active">

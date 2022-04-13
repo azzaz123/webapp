@@ -96,20 +96,8 @@ export class FeatureFlagService {
       );
   }
 
-  // TODO add permissions if is required
-  public getLocalFlag(name: FEATURE_FLAGS_ENUM): Observable<boolean> {
-    if (name === FEATURE_FLAGS_ENUM.DELIVERY) {
-      return of(this.getDeliveryFeatureFlag());
-    }
-    return of(false);
-  }
-
   public isExperimentalFeaturesEnabled(): boolean {
     return !!localStorage.getItem('experimentalFeatures');
-  }
-
-  private getDeliveryFeatureFlag(): boolean {
-    return this.isExperimentalFeaturesEnabled();
   }
 
   private checkPermission(featureFlagName: FEATURE_FLAGS_ENUM, isFlagActive: boolean): void {

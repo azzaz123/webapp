@@ -18,6 +18,12 @@ $modal-header-height: 56px;
     background-color: $white;
   }
 
+  &__buyButton {
+    bottom: 0;
+    z-index: 2;
+    background-color: rgba($white, 0.8);
+  }
+
   &__stepper {
     overflow: auto;
     height: calc(100% - #{$modal-header-height});

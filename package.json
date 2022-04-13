@@ -54,6 +54,7 @@
     "@sentry/angular": "^6.8.0",
     "@sentry/tracing": "^6.15.0",
     "@types/faker": "^5.1.5",
+    "angularx-qrcode": "12.0.3",
     "bootstrap": "4.0.0",
     "crypto-js": "^3.1.9-1",
     "echarts": "^4.7.0",

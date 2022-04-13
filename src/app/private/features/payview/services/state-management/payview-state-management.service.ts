@@ -25,6 +25,8 @@ import { PaymentsUserPaymentPreference } from '@api/core/model/payments';
 import { BuyerRequestsError } from '@api/core/errors/delivery/payview/buyer-requests/buyer-requests.error';
 import { PayviewTrackingEventsService } from '../payview-tracking-events/payview-tracking-events.service';
 import { getTransactionCheckoutErrorPropertiesFromPayviewState } from '../payview-tracking-events/payview-tracking-events-properties.mapper';
+import { PayviewError } from '../../interfaces/payview-error.interface';
+import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 
 @Injectable({
   providedIn: 'root',
@@ -235,10 +237,23 @@ export class PayviewStateManagementService {
       .request(payviewState)
       .pipe(take(1))
       .subscribe({
-        next: () => {
+        next: (method: WEB_VIEW_MODAL_CLOSURE_METHOD) => {
+          if (method === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL) {
+            return this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_CANCEL_REQUEST));
+          }
           this.actionSubject.next(this.getActionEvent(PAYVIEW_EVENT_TYPE.SUCCESS_ON_BUY));
         },
-        error: (error: BuyerRequestsError) => {
+        error: (errors: BuyerRequestsError[]) => {
+          const error: BuyerRequestsError = errors[0];
+          const payload: PayviewError = {
+            code: error ? error.name : '',
+            message: error ? error.message : '',
+          };
+
+          this.actionSubject.next({
+            type: PAYVIEW_EVENT_TYPE.ERROR_ON_BUY,
+            payload,
+          });
           this.trackTransactionCheckoutErrorEvent(payviewState, error);
           subscription.unsubscribe();
         },

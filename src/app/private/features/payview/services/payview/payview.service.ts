@@ -26,16 +26,14 @@ import { PayviewState } from '@private/features/payview/interfaces/payview-state
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { ToastService } from '@layout/toast/core/services/toast.service';
 
-import { catchError, concatMap, filter, map, mergeMap, take, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, mergeMap, take } from 'rxjs/operators';
 import { forkJoin, Observable, ObservableInput, of } from 'rxjs';
 import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
 import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
-import { PRIVATE_PATHS } from '@private/private-routing-constants';
-import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-constants';
-import { Router } from '@angular/router';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
+import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +54,6 @@ export class PayviewService {
     private paymentPreferencesService: PaymentsUserPaymentPreferencesService,
     private deliveryPaymentReadyService: DeliveryPaymentReadyService,
     private deliveryRealTimeService: DeliveryRealTimeService,
-    private router: Router,
     private toastService: ToastService,
     private walletsService: PaymentsWalletsService
   ) {}
@@ -147,29 +144,30 @@ export class PayviewService {
   }
 
   public setUserPaymentPreferences(preferences: PaymentsUserPaymentPreferences): Observable<void> {
-    return this.paymentPreferencesService.update(preferences);
+    return this.paymentPreferencesService.setUserPaymentPreferences(preferences);
   }
 
-  public request(state: PayviewState): Observable<void> {
+  public request(state: PayviewState): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     return this.sendPaymentUserInfo(state.payment.preferences).pipe(concatMap(() => this.buyFlow(state)));
   }
 
   private sendPaymentUserInfo(paymentPreferences: PaymentsUserPaymentPreferences): Observable<void> {
     return this.paymentsClientBrowserInfoApiService
       .sendBrowserInfo()
-      .pipe(concatMap(() => this.paymentPreferencesService.update(paymentPreferences)));
+      .pipe(concatMap(() => this.setUserPaymentPreferences(paymentPreferences)));
   }
 
-  private buyFlow(state: PayviewState): Observable<void> {
+  private buyFlow(state: PayviewState): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     return this.buyerRequestService
       .buyRequest(state)
       .pipe(
         concatMap(() =>
           this.waitPaymentReady(state).pipe(
             concatMap((buyerRequest) =>
-              this.deliveryPaymentReadyService
-                .continueBuyerRequestBuyFlow(buyerRequest, state.payment.preferences.preferences.paymentMethod)
-                .pipe(tap(() => this.redirectToTTS(state.buyerRequestId)))
+              this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(
+                buyerRequest,
+                state.payment.preferences.preferences.paymentMethod
+              )
             )
           )
         )
@@ -192,11 +190,6 @@ export class PayviewService {
     return this.buyerRequestService
       .getRequestsAsBuyerByItemHash(itemHash)
       .pipe(map((requests) => requests.find((r) => r.id === buyerRequestId)));
-  }
-
-  private redirectToTTS(requestId: string): void {
-    const route: string = `${PRIVATE_PATHS.DELIVERY}/${DELIVERY_PATHS.TRACKING}/${requestId}`;
-    this.router.navigate([route]);
   }
 
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
