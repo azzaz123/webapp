@@ -59,7 +59,7 @@ export class AnalyticsService {
     const userIdentities = this.getUserIdentities(user);
     const mParticleLoggedConfig = this.getMParticleConfig(userIdentities);
 
-    return import('@mparticle/web-optimizely-kit').then((_optimizelyKit) => {
+    return import('@mtempranowalla/web-optimizely-kit').then((_optimizelyKit) => {
       _optimizelyKit.register(mParticleLoggedConfig);
       return this.initializeMParticleSDK(mParticleLoggedConfig);
     });

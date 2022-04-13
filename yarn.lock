@@ -2107,14 +2107,6 @@
   dependencies:
     "@mparticle/web-sdk" "^2.11.0"
 
-"@mparticle/web-optimizely-kit@2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@mparticle/web-optimizely-kit/-/web-optimizely-kit-2.1.4.tgz#41d7384283993b55fc01e72ab8c37c884341849d"
-  integrity sha512-DfvX0p5qGnW9NHK2Vkf4qGuuLlQpZGzc92bYOq5PHh47QxGJQ1/CItU8bYlVPj5Z2tOH7aLKsEQOfTOQZEcxUw==
-  dependencies:
-    "@mparticle/web-sdk" "^2.11.1"
-    isobject "^4.0.0"
-
 "@mparticle/web-sdk@^2.11.0", "@mparticle/web-sdk@^2.11.3":
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/@mparticle/web-sdk/-/web-sdk-2.14.1.tgz#8d0c64254118a5a4c1d930719cf58a02ebceb452"
@@ -2138,6 +2130,13 @@
   dependencies:
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
+
+"@mtempranowalla/web-optimizely-kit@https://github.com/mtempranoWalla/mparticle-javascript-integration-optimizely#2.1.8":
+  version "2.1.8"
+  resolved "https://github.com/mtempranoWalla/mparticle-javascript-integration-optimizely#d0b2f62a70175fad27b05804467de2ed6be04b91"
+  dependencies:
+    "@mparticle/web-sdk" "^2.11.1"
+    isobject "^4.0.0"
 
 "@ng-bootstrap/ng-bootstrap@6.0.3":
   version "6.0.3"
