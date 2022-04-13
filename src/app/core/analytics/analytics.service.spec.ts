@@ -36,7 +36,7 @@ jest.mock('@core/analytics/mparticle.constants', () => ({
   },
 }));
 
-jest.mock('@mparticle/web-optimizely-kit', () => optimizelyKit);
+jest.mock('@mtempranowalla/web-optimizely-kit', () => optimizelyKit);
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
