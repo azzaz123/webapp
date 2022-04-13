@@ -38,7 +38,10 @@ describe('DeliveryPaymentReadyService', () => {
         DeliveryPaymentReadyService,
         { provide: WINDOW_TOKEN, useValue: { open: () => {} } },
         { provide: WebViewModalService, useValue: { open: () => MOCK_MODAL_RESULT_SUBJECT.asObservable() } },
-        { provide: BuyerRequestsApiService, useValue: { cancelRequest: () => of(null) } },
+        {
+          provide: BuyerRequestsApiService,
+          useValue: { cancelRequest: () => of(null), getRequestsAsBuyerByItemHash: () => of([MOCK_BUYER_REQUEST_PAYMENT_READY]) },
+        },
         { provide: TransactionTrackingService, useValue: { requestWasDoneWithPayPal: () => of(false) } },
         {
           provide: DeliveryExperimentalFeaturesService,
@@ -77,7 +80,9 @@ describe('DeliveryPaymentReadyService', () => {
       beforeEach(fakeAsync(() => {
         spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(true));
 
-        service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY).subscribe((data) => (result = data));
+        service
+          .continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash)
+          .subscribe((data) => (result = data));
         tick();
       }));
 
@@ -90,7 +95,9 @@ describe('DeliveryPaymentReadyService', () => {
       beforeEach(fakeAsync(() => {
         spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(false));
 
-        service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY).subscribe((data) => (result = data));
+        service
+          .continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash)
+          .subscribe((data) => (result = data));
         tick();
       }));
 
@@ -107,7 +114,9 @@ describe('DeliveryPaymentReadyService', () => {
       MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(true);
       spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(false));
 
-      service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY).subscribe((data) => (result = data));
+      service
+        .continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash)
+        .subscribe((data) => (result = data));
       tick();
     }));
 
@@ -172,7 +181,9 @@ describe('DeliveryPaymentReadyService', () => {
 
   describe('when handling a request with payment that is not ready', () => {
     beforeEach(fakeAsync(() => {
-      service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_REJECTED).subscribe();
+      spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_REJECTED]));
+      service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_REJECTED.id, MOCK_BUYER_REQUEST_REJECTED.itemHash).subscribe();
+
       tick();
     }));
 
@@ -190,7 +201,13 @@ describe('DeliveryPaymentReadyService', () => {
       MOCK_MODAL_RESULT_SUBJECT.next(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
       MOCK_MODAL_RESULT_SUBJECT.complete();
 
-      service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS).subscribe();
+      service
+        .continueBuyerRequestBuyFlow(
+          MOCK_BUYER_REQUEST_PAYMENT_READY.id,
+          MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
+          PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS
+        )
+        .subscribe();
       tick();
     }));
 
@@ -200,6 +217,16 @@ describe('DeliveryPaymentReadyService', () => {
 
     it('should go to TTS URL', () => {
       expect(router.navigate).toHaveBeenCalledWith([MOCK_TTS_URL]);
+    });
+  });
+
+  describe('when asking to continue the payment to a non existing buyer request for that item', () => {
+    beforeEach(() => {
+      spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([]));
+    });
+
+    it('should NOT open a web view', () => {
+      expect(webViewModalService.open).not.toHaveBeenCalled();
     });
   });
 });

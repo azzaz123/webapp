@@ -30,24 +30,34 @@ export class DeliveryPaymentReadyService {
   ) {}
 
   public continueBuyerRequestBuyFlow(
-    request: BuyerRequest,
+    requestId: string,
+    itemHash: string,
     postAction: PAYMENT_CONTINUED_POST_ACTION = PAYMENT_CONTINUED_POST_ACTION.NONE
   ): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
-    const isContinueFlowNotNeeded: boolean = request.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
-    if (isContinueFlowNotNeeded) {
-      return of(null);
-    }
-
-    return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
-      concatMap((enabled) => {
-        if (enabled) {
-          return this.transactionTrackingService
-            .requestWasDoneWithPayPal(request.id)
-            .pipe(concatMap((isPayPal) => (isPayPal ? this.continuePayPalFlow(request) : this.continueCreditCardFlow(request))));
+    return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
+      concatMap((requests) => {
+        const request: BuyerRequest = requests.find((r) => r.id === requestId);
+        if (!request) {
+          return of(null);
         }
-        return of(null);
-      }),
-      finalize(() => this.handleCompletedFlow(postAction, request.id))
+
+        const isContinueFlowNotNeeded: boolean = request.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
+        if (isContinueFlowNotNeeded) {
+          return of(null);
+        }
+
+        return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
+          concatMap((enabled) => {
+            if (enabled) {
+              return this.transactionTrackingService
+                .requestWasDoneWithPayPal(request.id)
+                .pipe(concatMap((isPayPal) => (isPayPal ? this.continuePayPalFlow(request) : this.continueCreditCardFlow(request))));
+            }
+            return of(null);
+          }),
+          finalize(() => this.handleCompletedFlow(postAction, request.id))
+        );
+      })
     );
   }
 

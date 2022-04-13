@@ -769,20 +769,15 @@ describe('PayviewService', () => {
       expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(MOCK_USER_PAYMENT_PREFERENCES);
     });
 
-    it('should get current buyer request from server only once', () => {
-      expect(buyerRequestsApiService.getRequestsAsBuyerByItemHash).toHaveBeenCalledTimes(1);
-    });
-
-    it('should get current buyer request from server for current item', () => {
-      expect(buyerRequestsApiService.getRequestsAsBuyerByItemHash).toHaveBeenCalledWith(MOCK_ITEM_HASH);
-    });
-
     it('should ask to delivery payment ready handler to continue flow only once', () => {
       expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledTimes(1);
     });
 
     it('should ask to delivery payment ready handler to continue flow with valid data', () => {
-      expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(MOCK_BUYER_REQUEST);
+      expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(
+        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.buyerRequestId,
+        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.itemDetails.itemHash
+      );
     });
   });
 });

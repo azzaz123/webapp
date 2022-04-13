@@ -296,7 +296,8 @@ describe('DeliveryConversationContextAsBuyerService', () => {
 
         it('should ask to continue payment flow with last buyer request and redirect to TTS as fallback', () => {
           expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(
-            MOCK_BUYER_REQUEST_PAYMENT_READY,
+            MOCK_BUYER_REQUEST_PAYMENT_READY.id,
+            MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
             PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS
           );
         });

@@ -166,29 +166,21 @@ export class PayviewService {
       .buyRequest(state)
       .pipe(
         concatMap(() =>
-          this.waitPaymentReady(state).pipe(
-            concatMap((buyerRequest) => this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(buyerRequest))
+          this.waitPaymentReady().pipe(
+            concatMap(() => this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(state.buyerRequestId, state.itemDetails.itemHash))
           )
         )
       );
   }
 
-  private waitPaymentReady(payviewState: PayviewState): Observable<BuyerRequest> {
-    return this.listenToThreeDomainNotification().pipe(concatMap(() => this.getBuyerRequestById(payviewState)));
+  private waitPaymentReady(): Observable<void> {
+    return this.listenToThreeDomainNotification().pipe(map(() => {}));
   }
 
   private listenToThreeDomainNotification(): Observable<DeliveryRealTimeNotification> {
     return this.deliveryRealTimeService.deliveryRealTimeNotifications$.pipe(
       filter((notification) => notification.id.endsWith('3ds_ready'))
     );
-  }
-
-  private getBuyerRequestById(payviewState: PayviewState): Observable<BuyerRequest> {
-    const { item, buyerRequestId } = payviewState;
-    const { id: itemHash } = item;
-    return this.buyerRequestService
-      .getRequestsAsBuyerByItemHash(itemHash)
-      .pipe(map((requests) => requests.find((r) => r.id === buyerRequestId)));
   }
 
   private getDefaultCosts(state: PayviewState): Observable<DeliveryBuyerCalculatorCosts> {
