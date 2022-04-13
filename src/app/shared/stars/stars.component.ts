@@ -12,6 +12,9 @@ const STARS_MAX_VALUE = 5;
 export class StarsComponent implements OnChanges {
   @Input() stars: number;
   @Input() normalized = true;
+  @Input() width: number = 14;
+  @Input() height: number = 14;
+
   public starsArray: Star[];
 
   constructor() {}

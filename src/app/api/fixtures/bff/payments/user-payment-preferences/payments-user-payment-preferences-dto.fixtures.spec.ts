@@ -17,6 +17,11 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE: PaymentsUserPaymen
   },
 };
 
+export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PREFERENCES_RESPONSE: PaymentsUserPaymentPreferencesDto = {
+  ...MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
+  preferences: null,
+};
+
 export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE_WITH_NOT_AVAILABLE_PREFERENCES: PaymentsUserPaymentPreferencesDto = {
   ...MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
   preferences: {
@@ -72,6 +77,18 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES: PaymentsUserPaymentPreferen
   },
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    isNewBuyer: false,
+    paymentMethod: PAYVIEW_PAYMENT_METHOD.PAYPAL,
+    useWallet: false,
+    walletBlocked: false,
+  },
+};
+
+export const MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES: PaymentsUserPaymentPreferences = {
+  ...MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES,
+  preferences: {
+    id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    isNewBuyer: true,
     paymentMethod: PAYVIEW_PAYMENT_METHOD.PAYPAL,
     useWallet: false,
     walletBlocked: false,
@@ -86,6 +103,23 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD: Payme
   },
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    isNewBuyer: false,
+
+    paymentMethod: PAYVIEW_PAYMENT_METHOD.CREDIT_CARD,
+    useWallet: false,
+    walletBlocked: false,
+  },
+};
+
+export const MOCK_PAYMENTS_NEW_USER_PAYMENT_PREFERENCES_WITH_ONLY_CREDIT_CARD: PaymentsUserPaymentPreferences = {
+  defaults: {
+    paymentMethod: PAYVIEW_PAYMENT_METHOD.CREDIT_CARD,
+    useWallet: true,
+    walletBlocked: false,
+  },
+  preferences: {
+    id: '198b2073-f719-4c41-88cd-eee661f99cee',
+    isNewBuyer: true,
     paymentMethod: PAYVIEW_PAYMENT_METHOD.CREDIT_CARD,
     useWallet: false,
     walletBlocked: false,
@@ -109,6 +143,7 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITHOUT_PAYMENT_METHOD: Paym
   },
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    isNewBuyer: false,
     paymentMethod: null,
     useWallet: false,
     walletBlocked: false,
@@ -123,6 +158,7 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_CREDIT_CARD: PaymentsUs
   },
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    isNewBuyer: false,
     paymentMethod: PAYVIEW_PAYMENT_METHOD.CREDIT_CARD,
     useWallet: false,
     walletBlocked: false,
@@ -137,6 +173,7 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET: PaymentsUserPay
   },
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    isNewBuyer: false,
     paymentMethod: PAYVIEW_PAYMENT_METHOD.WALLET,
     useWallet: true,
     walletBlocked: false,
@@ -151,6 +188,7 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_CREDIT_CARD:
   },
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    isNewBuyer: false,
     paymentMethod: PAYVIEW_PAYMENT_METHOD.WALLET_AND_CREDIT_CARD,
     useWallet: true,
     walletBlocked: false,
@@ -165,6 +203,7 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_WITH_WALLET_AND_PAYPAL: Paym
   },
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
+    isNewBuyer: false,
     paymentMethod: PAYVIEW_PAYMENT_METHOD.WALLET_AND_PAYPAL,
     useWallet: true,
     walletBlocked: false,

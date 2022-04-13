@@ -20,7 +20,9 @@ describe('PayviewBuyService', () => {
     it('should send a notification to subscribers', fakeAsync(() => {
       const expected: number = 1;
       let result: number = 0;
+      let isBuyButtonDisabled: boolean;
 
+      service.isBuyButtonDisabled$.subscribe((result) => (isBuyButtonDisabled = result));
       const subscription = service.on(PAYVIEW_BUY_EVENT_TYPE.BUY, () => {
         subscription.unsubscribe();
         result++;
@@ -30,6 +32,7 @@ describe('PayviewBuyService', () => {
       tick();
 
       expect(result).toBe(expected);
+      expect(isBuyButtonDisabled).toBe(true);
     }));
   });
 
@@ -40,6 +43,9 @@ describe('PayviewBuyService', () => {
         message: 'This_is_a_fake_message',
       };
       let result: PayviewError;
+      let isBuyButtonDisabled: boolean;
+
+      service.isBuyButtonDisabled$.subscribe((result) => (isBuyButtonDisabled = result));
       const subscription = service.on(PAYVIEW_BUY_EVENT_TYPE.ERROR, (payload: PayviewError) => {
         subscription.unsubscribe();
         result = payload;
@@ -49,6 +55,7 @@ describe('PayviewBuyService', () => {
       tick();
 
       expect(result).toEqual(fakeError);
+      expect(isBuyButtonDisabled).toBe(false);
     }));
   });
 });

@@ -23,6 +23,7 @@ export interface Perks {
   quantity: number;
   used?: number;
   duration_days?: number;
+  extra?: number;
 }
 
 export interface Bumps {
@@ -30,6 +31,7 @@ export interface Bumps {
   quantity: number;
   used: number;
   duration_days: number;
+  extra: number;
 }
 
 export interface TierDiscount {

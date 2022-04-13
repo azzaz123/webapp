@@ -52,6 +52,7 @@ import { DELIVERY_ADDRESS_LINKS } from '../../enums/delivery-address-links.enum'
 import { TOAST_TYPES } from '@layout/toast/core/interfaces/toast.interface';
 import { DeliveryAddressInputsMaxLength } from './interfaces/delivery-address-inputs-max-length.interface';
 import { DeliveryCountriesStoreService } from '../../services/countries/delivery-countries-store/delivery-countries-store.service';
+import { PRIVATE_PATHS } from '@private/private-routing-constants';
 
 @Component({
   selector: 'tsl-delivery-address',
@@ -366,7 +367,6 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
           this.isNewForm = false;
           this.showToast(successKey, TOAST_TYPES.SUCCESS);
           this.addressSaveSucceded.emit();
-          this.redirect();
         },
         (errors: DeliveryAddressError[]) => this.handleAddressErrors(errors)
       );
@@ -438,17 +438,6 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
       TRANSLATION_KEY.DELIVERY_ADDRESS_POSTAL_CODE_NOT_ALLOWED_ERROR_BEFORE_SAVE
     );
     errors.forEach((error) => this.setIncorrectControlAndShowError('postal_code', error.message));
-  }
-
-  private redirect(): void {
-    switch (this.whereUserComes) {
-      case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS:
-        this.router.navigate([DELIVERY_PATHS.PAYVIEW]);
-        break;
-      case DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY:
-        this.router.navigate([DELIVERY_PATHS.BUYS]);
-        break;
-    }
   }
 
   private getLocationsAndHandlePostalCode(postalCode: string, countryISOCode: string): void {
@@ -566,12 +555,9 @@ export class DeliveryAddressComponent implements OnInit, OnDestroy {
   }
 
   private initializeShowDeleteButton(): void {
-    const isUserComingFromPayviewOrDelivery: boolean =
-      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_ADD_ADDRESS ||
-      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.PAYVIEW_PAY ||
-      this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+    const isUserComingFromDelivery: boolean = this.whereUserComes === DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
 
-    this.showStickyButton = isUserComingFromPayviewOrDelivery;
-    this.showDeleteButton = !isUserComingFromPayviewOrDelivery;
+    this.showStickyButton = isUserComingFromDelivery;
+    this.showDeleteButton = !isUserComingFromDelivery;
   }
 }

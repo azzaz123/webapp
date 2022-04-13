@@ -13,13 +13,17 @@ import { mapPayviewStatePropertiesToBuyerRequestBuyDtoProperties } from './mappe
 import { BuyRequestErrorMapper } from './mappers/errors/buy-request/buy-request-error-mapper';
 import { BuyRequestErrorResponse } from './dtos/errors';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BuyerRequestsApiService {
   private errorMapper: BuyRequestErrorMapper = new BuyRequestErrorMapper();
   constructor(private buyerRequestsHttpService: BuyerRequestsHttpService) {}
 
   public getRequestsAsBuyerByItemHash(itemHash: string): Observable<BuyerRequest[]> {
     return this.buyerRequestsHttpService.get(itemHash).pipe(map(mapBuyerRequestsDtoToBuyerRequests));
+  }
+
+  public getLastRequestAsBuyerByItemHash(itemHash: string): Observable<BuyerRequest | null> {
+    return this.getRequestsAsBuyerByItemHash(itemHash).pipe(map((requests) => (requests.length === 0 ? null : requests[0])));
   }
 
   public getRequestsItemsDetails(itemHash: string): Observable<BuyerRequestsItemsDetails> {

@@ -2,15 +2,14 @@
 
 import { TestBed } from '@angular/core/testing';
 import { StarsComponent } from './stars.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SvgIconStubComponent } from '@fixtures/shared/components/svg-icon.component.stub';
 
 describe('Component: Stars', () => {
   let component: StarsComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [StarsComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [StarsComponent, SvgIconStubComponent],
     });
     component = TestBed.createComponent(StarsComponent).componentInstance;
   });

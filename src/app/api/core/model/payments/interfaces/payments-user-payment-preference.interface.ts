@@ -2,4 +2,5 @@ import { PaymentsUserPaymentAvailability } from '@api/core/model/payments/interf
 
 export interface PaymentsUserPaymentPreference extends PaymentsUserPaymentAvailability {
   id: string;
+  isNewBuyer: boolean;
 }

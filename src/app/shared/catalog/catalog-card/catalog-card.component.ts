@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,6 +8,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { EventService } from '../../../core/event/event.service';
 import { ItemChangeEvent, ITEM_CHANGE_ACTION } from '@private/features/catalog/core/item-change.interface';
 import { TRANSLATION_KEY } from '@core/i18n/translations/enum/translation-keys.enum';
+import { ItemAvatarComponent } from '@shared/item-avatar/item-avatar.component';
 
 @Component({
   selector: 'tsl-catalog-card',
@@ -18,6 +19,7 @@ export class CatalogCardComponent implements OnInit {
   @Input() item: Item;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   @Output() bumpCancel: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild(ItemAvatarComponent) itemAvatarComponent: ItemAvatarComponent;
   public link: string;
   public bumpName: string;
   public tooltipMessages = {
@@ -65,13 +67,15 @@ export class CatalogCardComponent implements OnInit {
     if (!item.reserved) {
       this.itemService.selectedAction = 'reserve';
       this.itemService.reserveItem(item.id, true).subscribe(() => {
-        item.reserved = true;
-        this.eventService.emit(EventService.ITEM_RESERVED, item);
+        this.item.reserved = true;
+        this.eventService.emit(EventService.ITEM_RESERVED, this.item);
+        this.itemAvatarComponent.cdr.markForCheck();
       });
     } else {
       this.itemService.reserveItem(item.id, false).subscribe(() => {
-        item.reserved = false;
-        this.eventService.emit(EventService.ITEM_RESERVED, item);
+        this.item.reserved = false;
+        this.eventService.emit(EventService.ITEM_RESERVED, this.item);
+        this.itemAvatarComponent.cdr.markForCheck();
       });
     }
   }
