@@ -8,6 +8,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ConfirmPaymentModalComponent {
   public readonly popOnboardBuyImage: string = 'assets/images/confirm-payment-modal/pop-onboard-buy.svg';
+
   constructor(private activeModal: NgbActiveModal) {}
 
   public onClose(): void {
