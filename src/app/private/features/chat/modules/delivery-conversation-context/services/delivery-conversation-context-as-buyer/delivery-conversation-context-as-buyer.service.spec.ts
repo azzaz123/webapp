@@ -301,6 +301,10 @@ describe('DeliveryConversationContextAsBuyerService', () => {
             PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS
           );
         });
+
+        it('should NOT redirect to TTS (redirect will be done when payment is done)', () => {
+          expect(router.navigate).not.toHaveBeenCalled();
+        });
       });
     });
 
