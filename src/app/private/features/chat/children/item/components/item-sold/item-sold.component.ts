@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Item } from '@core/item/item';
+import { InboxItem } from '@private/features/chat/core/model';
 
 @Component({
   selector: 'tsl-item-sold',
@@ -7,7 +8,7 @@ import { Item } from '@core/item/item';
   styleUrls: ['./item-sold.component.scss'],
 })
 export class ItemSoldComponent {
-  @Input() item: Item;
+  @Input() item: Item | InboxItem;
 
   constructor() {}
 }

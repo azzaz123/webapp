@@ -5,9 +5,17 @@ import { HistoricListModule } from '@shared/historic-list/historic-list.module';
 import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { StreamlineOngoingUIService } from '../../services/streamline-ongoing-ui/streamline-ongoing-ui.service';
 import { DeliveriesOngoingModule } from '@api/bff/delivery/deliveries/ongoing/deliveries-ongoing.module';
+import { DeliveryPaymentReadyModule } from '@private/shared/delivery-payment-ready/delivery-payment-ready.module';
 
 @NgModule({
-  imports: [CommonModule, HistoricListModule, SvgIconModule, StreamlineOngoingRoutingModule, DeliveriesOngoingModule],
+  imports: [
+    CommonModule,
+    HistoricListModule,
+    SvgIconModule,
+    StreamlineOngoingRoutingModule,
+    DeliveriesOngoingModule,
+    DeliveryPaymentReadyModule,
+  ],
   declarations: [streamlineOngoingRoutedComponents],
   providers: [StreamlineOngoingUIService],
 })

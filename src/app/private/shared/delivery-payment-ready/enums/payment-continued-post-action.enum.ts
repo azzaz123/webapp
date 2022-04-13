@@ -1,0 +1,4 @@
+export enum PAYMENT_CONTINUED_POST_ACTION {
+  NONE,
+  REDIRECT_TTS,
+}

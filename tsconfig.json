@@ -62,5 +62,17 @@
     "typeRoots": [
       "node_modules/@types"
     ]
+  },
+  "angularCompilerOptions": {
+    "strictInputTypes": true,
+    "strictInputAccessModifiers": true,
+    "strictNullInputTypes": true,
+    "strictAttributeTypes": true,
+    "strictSafeNavigationTypes": true,
+    "strictDomLocalRefTypes": true,
+    "strictOutputEventTypes": true,
+    "strictDomEventTypes": true,
+    "strictContextGenerics": true,
+    "strictLiteralTypes": true
   }
 }

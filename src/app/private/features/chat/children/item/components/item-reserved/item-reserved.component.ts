@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Item } from '@core/item/item';
+import { InboxItem } from '@private/features/chat/core/model';
 
 @Component({
   selector: 'tsl-item-reserved',
@@ -7,5 +8,5 @@ import { Item } from '@core/item/item';
   styleUrls: ['./item-reserved.component.scss'],
 })
 export class ItemReservedComponent {
-  @Input() item: Item;
+  @Input() item: Item | InboxItem;
 }
