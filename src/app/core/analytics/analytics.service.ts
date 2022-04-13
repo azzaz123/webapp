@@ -12,7 +12,6 @@ import { APP_LOCALE } from '@configs/subdomains.config';
 
 // FIXME: This kits probably need to be registered
 import '@mparticle/web-google-analytics-kit';
-import '@mparticle/web-optimizely-kit';
 
 // TODO: This should not be exported. Anything that uses this should start using the getDeviceId method
 export const DEVICE_ID_COOKIE_NAME = 'device_id';
@@ -60,7 +59,10 @@ export class AnalyticsService {
     const userIdentities = this.getUserIdentities(user);
     const mParticleLoggedConfig = this.getMParticleConfig(userIdentities);
 
-    return this.initializeMParticleSDK(mParticleLoggedConfig);
+    return import('@mparticle/web-optimizely-kit').then((_optimizelyKit) => {
+      _optimizelyKit.register(mParticleLoggedConfig);
+      return this.initializeMParticleSDK(mParticleLoggedConfig);
+    });
   }
 
   public initializeAnalyticsWithUnauthenticatedUser(): Promise<void> {
