@@ -69,7 +69,7 @@ export class ExperimentationService {
     }
   }
 
-  public setNewOptimizelyUserAttributes(attributes: { [key: string]: string }): void {
+  public setNewOptimizelyUserAttributes(attributes: { [key: string]: string | number | boolean }): void {
     if (this.userService.isLogged) {
       this.optimizelyService.setNewOptimizelyUserAttributes(attributes);
     }

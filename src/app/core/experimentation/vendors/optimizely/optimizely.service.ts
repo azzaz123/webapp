@@ -12,6 +12,7 @@ import { BASE_USER_ATTRIBUTES } from './resources/user-attributes.constants';
 /**
  * Do not import this service directly, use the exposed methods in the ExperimentationService.
  * Any change in this file must be reviewed by the Innovation Speed team
+ * Documentation on how to use this module: https://wallapop.atlassian.net/wiki/spaces/IS/pages/2548957337/Web+Fullstack+integration+details
  */
 @Injectable({
   providedIn: 'root',
@@ -54,7 +55,7 @@ export class OptimizelyService {
     return this.optimizelyUserContext.decideForKeys(flagKeys, options);
   }
 
-  public setNewOptimizelyUserAttributes(attributesToAdd: { [key: string]: string }) {
+  public setNewOptimizelyUserAttributes(attributesToAdd: { [key: string]: string | number | boolean }) {
     const currentUserAttributes = this.optimizelyUserContext.getAttributes();
     const newUserAttributes = Object.keys(attributesToAdd).filter((keyToAdd) => !currentUserAttributes[keyToAdd]);
 
