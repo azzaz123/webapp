@@ -54,10 +54,10 @@ export class DeliveryPaymentReadyService {
                 .pipe(concatMap((isPayPal) => (isPayPal ? this.continuePayPalFlow(request) : this.continueCreditCardFlow(request))));
             }
             return of(null);
-          }),
-          finalize(() => this.handleCompletedFlow(postAction, request.id))
+          })
         );
-      })
+      }),
+      finalize(() => this.handleCompletedFlow(postAction, requestId))
     );
   }
 
