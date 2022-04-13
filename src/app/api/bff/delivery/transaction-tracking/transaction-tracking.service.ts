@@ -33,7 +33,7 @@ export class TransactionTrackingService {
     return this.transactionTrackingHttpService.getDetails(requestId).pipe(map(mapTransactionTrackingDetailsDtoTransactionTrackingDetails));
   }
 
-  public requestWasDoneWithPayPal(requestId): Observable<boolean> {
+  public requestWasDoneWithPayPal(requestId: string): Observable<boolean> {
     return this.getDetails(requestId).pipe(map(mapTransactionTrackingDescriptionToIsPayPalPaymentMethod));
   }
 
