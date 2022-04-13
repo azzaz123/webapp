@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-confirm-payment-modal',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./confirm-payment-modal.component.scss'],
 })
 export class ConfirmPaymentModalComponent {
-  constructor() {}
+  public readonly popOnBoardBuyImage: string = 'assets/images/confirm-payment-modal/pop-onboard-buy.svg';
+  constructor(private activeModal: NgbActiveModal) {}
+
+  public onClose(): void {
+    this.activeModal.close();
+  }
 }
