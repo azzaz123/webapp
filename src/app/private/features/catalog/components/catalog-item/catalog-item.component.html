@@ -19,11 +19,11 @@
 
       <div class="CatalogItem__content-veil" *ngIf="selectMode" (click)="select(item)"></div>
 
-      <div class="col p-0 d-flex align-items-center justify-content-center item-image clickable" 
+      <div class="col p-0 d-flex align-items-center justify-content-center item-image clickable"
       [ngClass]="{'item-image--onHold': item.flags.onhold }" tslItemRoute
       [itemSlug]="item.webSlug"
       [itemUUID]="item.id">
-        <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
+        <tsl-item-avatar [item]="item" [size]="'big'" [fallbackLight]="true"></tsl-item-avatar>
       </div>
 
       <div class="col overflow-sm-hidden">

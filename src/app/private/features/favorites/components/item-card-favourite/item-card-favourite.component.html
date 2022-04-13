@@ -1,10 +1,10 @@
-<a 
+<a
 tslItemRoute
 [itemSlug]="item.webSlug"
 [itemUUID]="item.id">
   <tsl-card>
     <tsl-card-image>
-      <tsl-item-avatar [item]="item" size="full" fallbackLight="true"></tsl-item-avatar>
+      <tsl-item-avatar [item]="item" [size]="'full'" [fallbackLight]="true"></tsl-item-avatar>
     </tsl-card-image>
     <tsl-card-content>
       <h5 class="tsl-card-title"> {{item.salePrice | customCurrency:item.currencyCode}} </h5>

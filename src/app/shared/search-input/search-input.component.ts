@@ -32,8 +32,9 @@ export class SearchInputComponent implements OnChanges {
     }
   }
 
-  public search(term: string) {
-    this.term.next(term);
+  public search(e: Event) {
+    const input = e.target as HTMLInputElement;
+    this.term.next(input.value);
   }
 
   public closeSearch(e?: Event): void {

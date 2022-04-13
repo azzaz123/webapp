@@ -28,7 +28,7 @@
       [itemSlug]="currentConversation?.item.itemSlug"
       [itemUUID]="currentConversation?.item.id" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item"
-                         size="{{isExpanded ? 'xl': 'medium'}}"></tsl-item-avatar>
+                         [size]="isExpanded ? 'xl': 'medium'"></tsl-item-avatar>
       </a>
     </div>
 
@@ -37,7 +37,7 @@
       [itemSlug]="currentConversation?.item.itemSlug"
       [itemUUID]="currentConversation?.item.id" class="avatar">
         <tsl-item-avatar [item]="currentConversation.item"
-                         size="{{isExpanded ? 'rectangle-xl': 'medium'}}"></tsl-item-avatar>
+                         [size]="isExpanded ? 'rectangle-xl': 'medium'"></tsl-item-avatar>
       </a>
     </div>
 
