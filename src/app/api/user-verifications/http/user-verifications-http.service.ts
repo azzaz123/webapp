@@ -4,7 +4,13 @@ import { Observable } from 'rxjs';
 import { PhoneVerificationBodyRequest, VERIFICATION_TYPE } from '../dtos/requests';
 import { EmailVerificationApi, UserVerificationsApi } from '../dtos/responses';
 import { PhoneVerificationApi } from '../dtos/responses/phone-verification-api.interface';
-import { EXTRA_INFO_ENDPOINT, SEND_VERIFY_EMAIL_ENDPOINT, SEND_VERIFY_PHONE_ENDPOINT, VERIFY_USER_ENDPOINT } from './endpoints';
+import {
+  EXTRA_INFO_ENDPOINT,
+  PASSWORD_RECOVERY_ENDPOINT,
+  SEND_VERIFY_EMAIL_ENDPOINT,
+  SEND_VERIFY_PHONE_ENDPOINT,
+  VERIFY_USER_ENDPOINT,
+} from './endpoints';
 
 const SEND_VERIFY_EMAIL_BODY = '';
 
@@ -30,5 +36,16 @@ export class UserVerificationsHttpService {
     const body: PhoneVerificationBodyRequest = { code: smsCode, type, mobileNumber };
 
     return this.httpClient.post<PhoneVerificationApi>(VERIFY_USER_ENDPOINT, body);
+  }
+
+  public passwordRecovery(email: string): Observable<void> {
+    let params: URLSearchParams = new URLSearchParams();
+    params.append('emailAddress', email);
+
+    return this.httpClient.post<void>(PASSWORD_RECOVERY_ENDPOINT, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      },
+    });
   }
 }
