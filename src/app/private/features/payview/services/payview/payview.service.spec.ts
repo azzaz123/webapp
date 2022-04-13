@@ -745,7 +745,6 @@ describe('PayviewService', () => {
     const MOCK_ITEM_HASH: string = MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.item.id;
     const MOCK_USER_PAYMENT_PREFERENCES: PaymentsUserPaymentPreferences =
       MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.payment.preferences;
-    const MOCK_PAYMENT_METHOD: PAYVIEW_PAYMENT_METHOD = MOCK_USER_PAYMENT_PREFERENCES.preferences.paymentMethod;
     const MOCK_BUYER_REQUEST_ID: string = MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.buyerRequestId;
     const MOCK_3DS_REALTIME_NOTIFICATION: DeliveryRealTimeNotification = {
       id: 'whatever.3ds_ready',
@@ -770,20 +769,15 @@ describe('PayviewService', () => {
       expect(paymentsUserPaymentPreferencesService.setUserPaymentPreferences).toHaveBeenCalledWith(MOCK_USER_PAYMENT_PREFERENCES);
     });
 
-    it('should get current buyer request from server only once', () => {
-      expect(buyerRequestsApiService.getRequestsAsBuyerByItemHash).toHaveBeenCalledTimes(1);
-    });
-
-    it('should get current buyer request from server for current item', () => {
-      expect(buyerRequestsApiService.getRequestsAsBuyerByItemHash).toHaveBeenCalledWith(MOCK_ITEM_HASH);
-    });
-
     it('should ask to delivery payment ready handler to continue flow only once', () => {
       expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledTimes(1);
     });
 
     it('should ask to delivery payment ready handler to continue flow with valid data', () => {
-      expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(MOCK_BUYER_REQUEST, MOCK_PAYMENT_METHOD);
+      expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(
+        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.buyerRequestId,
+        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.itemDetails.itemHash
+      );
     });
   });
 });
