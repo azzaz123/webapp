@@ -166,20 +166,17 @@ export class PayviewService {
       .buyRequest(state)
       .pipe(
         concatMap(() =>
-          this.waitPaymentReady().pipe(
+          this.listenToThreeDomainNotification().pipe(
             concatMap(() => this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(state.buyerRequestId, state.itemDetails.itemHash))
           )
         )
       );
   }
 
-  private waitPaymentReady(): Observable<void> {
-    return this.listenToThreeDomainNotification().pipe(map(() => {}));
-  }
-
-  private listenToThreeDomainNotification(): Observable<DeliveryRealTimeNotification> {
+  private listenToThreeDomainNotification(): Observable<void> {
     return this.deliveryRealTimeService.deliveryRealTimeNotifications$.pipe(
-      filter((notification) => notification.id.endsWith('3ds_ready'))
+      filter((notification) => notification.id.endsWith('3ds_ready')),
+      map(() => {})
     );
   }
 
