@@ -1,7 +1,7 @@
 <div class="ConfirmPaymentModal d-flex flex-column w-100 align-items-center p-4">
-  <img src="assets/images/confirm-payment-modal/pop-onboard-buy.svg" alt="pop onboard buy image" class="mb-3" />
+  <img [src]="popOnboardBuyImage" alt="pop onboard buy image" class="ConfirmPaymentModal__image mb-3" id="fresk" />
   <span i18n="@@pay_view_buyer_modal_3ds_confirm_payment_title" class="ConfirmPaymentModal__title mb-3 text-center">Safer payments</span>
-  <span i18n="@@pay_view_buyer_modal_3ds_confirm_payment_description" id="ConfirmPaymentModalFirstDescription" class="mb-4 text-center"
+  <span i18n="@@pay_view_buyer_modal_3ds_confirm_payment_description" class="mb-4 text-center ConfirmPaymentModal__description"
     >To make sure your payments are secure, we sometimes ask you to confirm them through your bank. It's a simple process!</span
   >
   <tsl-button i18n="@@pay_view_buyer_modal_3ds_confirm_payment_confirm_button" (click)="onClose()">Understood</tsl-button>
