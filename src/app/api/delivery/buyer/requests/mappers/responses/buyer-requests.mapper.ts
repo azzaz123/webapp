@@ -10,10 +10,11 @@ type BuyerRequestPaymentStatusRequestDto = 'null' | 'pending' | 'ready' | 'in pr
 
 export const mapBuyerRequestsDtoToBuyerRequests: ToDomainMapper<BuyerRequestsDto, BuyerRequest[]> = (input: BuyerRequestsDto) => {
   return input.map((buyerRequestDto: BuyerRequestDto) => {
-    const { id, status: statusRaw } = buyerRequestDto;
+    const { id, status: statusRaw, item_hash: itemHash } = buyerRequestDto;
 
     const buyerRequest: BuyerRequest = {
       id,
+      itemHash,
       status: {
         request: mapRequestStatusToDomain[statusRaw.request] || BUYER_REQUEST_STATUS.NONE,
         payment: mapPaymentStatusToDomain[statusRaw.payment] || BUYER_REQUEST_PAYMENT_STATUS.NONE,
