@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input } from '@angular/core';
+import { CONFIRM_PAYMENT_MODAL_CLOSURE } from './confirm-payment-modal-closure.enum';
 
 @Component({
   selector: 'tsl-confirm-payment-modal',
@@ -7,11 +7,11 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./confirm-payment-modal.component.scss'],
 })
 export class ConfirmPaymentModalComponent {
-  public readonly popOnboardBuyImage: string = 'assets/images/confirm-payment-modal/pop-onboard-buy.svg';
+  @Input() closeCallback: (result: CONFIRM_PAYMENT_MODAL_CLOSURE) => {};
+  public readonly paypalIconUrl: string = 'assets/images/confirm-payment-modal/paypal.svg';
+  public readonly CONFIRM_PAYMENT_MODAL_CLOSURE = CONFIRM_PAYMENT_MODAL_CLOSURE;
 
-  constructor(private activeModal: NgbActiveModal) {}
-
-  public onClose(): void {
-    this.activeModal.close();
+  public onClose(result: CONFIRM_PAYMENT_MODAL_CLOSURE): void {
+    this.closeCallback && this.closeCallback(result);
   }
 }
