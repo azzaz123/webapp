@@ -30,39 +30,54 @@ export class DeliveryPaymentReadyService {
     itemHash: string,
     postAction: PAYMENT_CONTINUED_POST_ACTION = PAYMENT_CONTINUED_POST_ACTION.NONE
   ): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
-    return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
+    return this.isFeatureEnabled().pipe(
       filter((enabled) => enabled),
-      concatMap(() => {
-        return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
-          concatMap((requests: BuyerRequest[]) => {
-            const request: BuyerRequest = requests.find((r) => r.id === requestId);
-            if (!request) {
-              return of(null);
-            }
-
-            const isContinueFlowNotNeeded: boolean = request.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
-            if (isContinueFlowNotNeeded) {
-              return of(null);
-            }
-
-            return this.transactionTrackingService.requestWasDoneWithPayPal(request.id).pipe(
-              concatMap((isPayPal) => {
-                const continueFlow = isPayPal
-                  ? this.continueToPayPalService.continue(request)
-                  : this.continueWithCreditCardService.continue(request);
-                return continueFlow.pipe(
-                  concatMap((closureMethod) => {
-                    const closureFlow = closureMethod === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL ? this.cancelRequest(request.id) : of(null);
-                    return closureFlow.pipe(map(() => closureMethod));
-                  })
-                );
-              })
-            );
-          }),
+      concatMap(() =>
+        this.checkBuyerRequest(requestId, itemHash).pipe(
+          concatMap((request: BuyerRequest) =>
+            this.isPayPalRequest(request.id).pipe(
+              concatMap((isPayPal: boolean) =>
+                this.getContinueFlow(isPayPal, request).pipe(
+                  concatMap((closureMethod: WEB_VIEW_MODAL_CLOSURE_METHOD) => this.getCloseFlow(closureMethod, request))
+                )
+              )
+            )
+          ),
           finalize(() => this.handleCompletedFlow(postAction, requestId))
-        );
-      })
+        )
+      )
     );
+  }
+
+  private isFeatureEnabled(): Observable<boolean> {
+    return this.deliveryExperimentalFeaturesService.featuresEnabled$;
+  }
+
+  private checkBuyerRequest(requestId: string, itemHash: string) {
+    return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
+      filter((requests: BuyerRequest[]) => {
+        const request: BuyerRequest = requests.find((r) => r.id === requestId);
+        const requestExists: boolean = !!request;
+        const isContinueFlowNeeded: boolean = requestExists && request.status.payment === BUYER_REQUEST_PAYMENT_STATUS.READY;
+
+        return requestExists && isContinueFlowNeeded;
+      }),
+      map((requests) => requests.find((r) => r.id === requestId))
+    );
+  }
+
+  private isPayPalRequest(id: string) {
+    return this.transactionTrackingService.requestWasDoneWithPayPal(id);
+  }
+
+  private getContinueFlow(isPayPal: boolean, request: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
+    const continueFlow = isPayPal ? this.continueToPayPalService.continue(request) : this.continueWithCreditCardService.continue(request);
+    return continueFlow;
+  }
+
+  private getCloseFlow(closureMethod: WEB_VIEW_MODAL_CLOSURE_METHOD, request: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
+    const closureFlow = closureMethod === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL ? this.cancelRequest(request.id) : of(null);
+    return closureFlow.pipe(map(() => closureMethod));
   }
 
   private cancelRequest(id: string): Observable<void> {
