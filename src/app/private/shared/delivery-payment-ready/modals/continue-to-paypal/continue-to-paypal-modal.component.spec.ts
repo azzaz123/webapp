@@ -44,19 +44,23 @@ describe('ContinueToPayPalComponent', () => {
 
   it('should show the description message', () => {
     const title: string = de.query(By.css(descriptionSelector)).nativeElement.innerHTML;
-    const expectedTitle = $localize`:web_authorize_paypal_purchase:For your security, you will be required to authorize your purchase with PayPal`;
+    const expectedTitle = $localize`:pay_view_buyer_modal_3ds_confirm_payment_paypal_specific_description:For your payment to be secure, you must authorize it through PayPal. It's a simple process!`;
 
-    expect(title).toBe(expectedTitle);
+    expect(title).toEqual(expectedTitle);
   });
 
   it('should show the continue button text', () => {
     const understoodButton: HTMLElement = de.queryAll(By.directive(ButtonComponent))[0].nativeElement;
-    expect(understoodButton.textContent).toEqual($localize`:@@web_authorize_paypal_continue:Continue`);
+    expect(understoodButton.textContent).toEqual(
+      $localize`:@@pay_view_buyer_modal_3ds_confirm_payment_paypal_specific_continue_button:Continue`
+    );
   });
 
   it('should show the cancel button text', () => {
     const understoodButton: HTMLElement = de.queryAll(By.directive(ButtonComponent))[1].nativeElement;
-    expect(understoodButton.textContent).toEqual($localize`:@@web_authorize_paypal_cancel:Cancel`);
+    expect(understoodButton.textContent).toEqual(
+      $localize`:@@pay_view_buyer_modal_3ds_confirm_payment_paypal_specific_cancel_button:Cancel`
+    );
   });
 
   describe('and we click on the confirm button', () => {
