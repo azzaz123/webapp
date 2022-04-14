@@ -13,6 +13,8 @@ export const APPLE_STORE_SUBSCRIPTIONS_HELP_URL = 'https://support.apple.com/es-
 export const CAR_DEALER_TYPEFORM_URL = 'https://wallapop.typeform.com/to/xj3GPt';
 export const ADJUST_IOS_URL = 'https://app.adjust.com/5usw8hf';
 export const ADJUST_ANDROID_URL = 'https://app.adjust.com/kn4pkvs';
+export const ADJUST_GENERIC_STORE_APP_URL =
+  'https://w6c2.adj.st/p.wallapop.com/wall?adj_t=g3fz4o8_bflvbs1&adj_deep_link=wallapop%3A%2F%2Fp.wallapop.com%2Fwall';
 
 export const CURRENCY_SYMBOLS = {
   EUR: '€',

@@ -73,7 +73,8 @@
               "hammerjs/hammer",
               "lottie-web",
               "jsbarcode",
-              "@optimizely/optimizely-sdk"
+              "@optimizely/optimizely-sdk",
+              "qrcode"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
