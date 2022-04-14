@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '@shared/button/button.component';
-import { VERIFICATIONS_N_SECURITY_TYPES } from '../../verifications-n-security.component';
+import { VERIFICATIONS_N_SECURITY_STATUS } from '../../interfaces/verifications-n-security-status.enum';
 
 import { VerificationCardComponent } from './verification-card.component';
 
@@ -23,9 +23,8 @@ describe('VerificationCardComponent', () => {
 
   describe('when it has a verified email', () => {
     beforeEach(() => {
-      component.isVerified = true;
+      component.status = VERIFICATIONS_N_SECURITY_STATUS.VERIFIED;
       component.title = 'email';
-      component.textButton = 'change';
       fixture.detectChanges();
     });
 
@@ -38,7 +37,7 @@ describe('VerificationCardComponent', () => {
     it('should show the change button', () => {
       const changeButton: HTMLElement = fixture.debugElement.query(By.directive(ButtonComponent)).nativeElement;
 
-      expect(changeButton.textContent).toContain(component.textButton);
+      expect(changeButton.textContent).toContain('Change');
     });
 
     it('should show the change button with secondary styles', () => {
@@ -62,9 +61,8 @@ describe('VerificationCardComponent', () => {
 
   describe('when it has a not verified email', () => {
     beforeEach(() => {
-      component.isVerified = false;
+      component.status = VERIFICATIONS_N_SECURITY_STATUS.NOT_VERIFIED;
       component.title = 'email';
-      component.textButton = 'verify';
       component.footerLegend = 'test@wallapop.com';
       fixture.detectChanges();
     });
