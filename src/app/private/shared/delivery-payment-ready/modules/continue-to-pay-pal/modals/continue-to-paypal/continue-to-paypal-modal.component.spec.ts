@@ -12,9 +12,9 @@ describe('ContinueToPayPalModalComponent', () => {
   let fixture: ComponentFixture<ContinueToPayPalModalComponent>;
   let de: DebugElement;
 
-  const ContinueToPayPalSelector: string = '.ContinueToPayPal__';
-  const payPalLogoSelector: string = `${ContinueToPayPalSelector}paypalLogo`;
-  const descriptionSelector: string = `${ContinueToPayPalSelector}description`;
+  const continueToPayPalSelector: string = '.ContinueToPayPalModal__';
+  const payPalLogoSelector: string = `${continueToPayPalSelector}paypalLogo`;
+  const descriptionSelector: string = `${continueToPayPalSelector}description`;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
