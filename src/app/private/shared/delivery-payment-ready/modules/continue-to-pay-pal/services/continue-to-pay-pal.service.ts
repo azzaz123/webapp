@@ -4,12 +4,12 @@ import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
 import { AVAILABLE_PAYMENT_METHODS } from '@api/core/model/payments/constants/available-payments';
 import { WINDOW_TOKEN } from '@core/window/window.token';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { START_DELIVERY_PAYMENT_URL } from '@private/shared/delivery-payment-ready/constants/continue-delivery-payment.constants';
+import { CONTINUE_TO_PAYPAL_CLOSURE_REASON } from '@private/shared/delivery-payment-ready/enums/continue-to-paypal-closure-reason.enum';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { Observable, ReplaySubject, timer, from, of } from 'rxjs';
 import { concatMap, tap, takeUntil } from 'rxjs/operators';
-import { START_DELIVERY_PAYMENT_URL } from '../../constants/continue-delivery-payment.constants';
-import { CONTINUE_TO_PAYPAL_CLOSURE_REASON } from '../../enums/continue-to-paypal-closure-reason.enum';
-import { ContinueToPayPalModalComponent } from './modals/continue-to-paypal/continue-to-paypal-modal.component';
+import { ContinueToPayPalModalComponent } from '../modals/continue-to-paypal/continue-to-paypal-modal.component';
 
 @Injectable()
 export class ContinueToPayPalService {
