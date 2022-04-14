@@ -15,7 +15,7 @@ import { ContinueToPayPalService } from './modules/continue-to-pay-pal/services/
 import { ContinueWithCreditCardService } from './modules/continue-with-credit-card/services/continue-with-credit-card.service';
 
 @Injectable()
-export class DeliveryPaymentReadyService {
+export class ContinueDeliveryPaymentService {
   constructor(
     private router: Router,
     private buyerRequestsApiService: BuyerRequestsApiService,

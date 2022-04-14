@@ -46,7 +46,7 @@ import { CardInvalidError } from '@api/core/errors/payments/cards';
 import { MOCK_UUID } from '@fixtures/core/uuid/uuid.fixtures.spec';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
-import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment';
 import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
 import { PaymentsUserPaymentPreferences, PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
 import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
@@ -56,7 +56,7 @@ import {
   UserPaymentPreferencesError,
   UserPaymentPreferencesUnknownError,
 } from '@api/core/errors/delivery/payview/user-payment-preferences';
-import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/delivery-payment-ready/enums/payment-continued-post-action.enum';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 describe('PayviewService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
@@ -68,7 +68,7 @@ describe('PayviewService', () => {
   let deliveryBuyerCalculatorService: DeliveryBuyerCalculatorService;
   let deliveryCostsService: DeliveryCostsService;
   let deliveryRealTimeService: DeliveryRealTimeService;
-  let deliveryPaymentReadyService: DeliveryPaymentReadyService;
+  let continueDeliveryPaymentService: ContinueDeliveryPaymentService;
   let itemService: ItemService;
   let paymentsCreditCardService: PaymentsCreditCardService;
   let paymentsPaymentMethodsService: PaymentsPaymentMethodsService;
@@ -170,7 +170,7 @@ describe('PayviewService', () => {
           },
         },
         {
-          provide: DeliveryPaymentReadyService,
+          provide: ContinueDeliveryPaymentService,
           useValue: {
             continue() {
               return of(null);
@@ -195,7 +195,7 @@ describe('PayviewService', () => {
     deliveryBuyerCalculatorService = TestBed.inject(DeliveryBuyerCalculatorService);
     deliveryCostsService = TestBed.inject(DeliveryCostsService);
     deliveryRealTimeService = TestBed.inject(DeliveryRealTimeService);
-    deliveryPaymentReadyService = TestBed.inject(DeliveryPaymentReadyService);
+    continueDeliveryPaymentService = TestBed.inject(ContinueDeliveryPaymentService);
     itemService = TestBed.inject(ItemService);
     paymentsCreditCardService = TestBed.inject(PaymentsCreditCardService);
     paymentsPaymentMethodsService = TestBed.inject(PaymentsPaymentMethodsService);
@@ -756,7 +756,7 @@ describe('PayviewService', () => {
       spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.callThrough();
       spyOn(paymentsClientBrowserInfoApiService, 'sendBrowserInfo').and.callThrough();
       jest.spyOn(deliveryRealTimeService, 'deliveryRealTimeNotifications$', 'get').mockReturnValue(of(MOCK_3DS_REALTIME_NOTIFICATION));
-      spyOn(deliveryPaymentReadyService, 'continue').and.callThrough();
+      spyOn(continueDeliveryPaymentService, 'continue').and.callThrough();
       spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST]));
       service.request(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE).subscribe();
       tick();
@@ -771,11 +771,11 @@ describe('PayviewService', () => {
     });
 
     it('should ask to delivery payment ready handler to continue flow only once', () => {
-      expect(deliveryPaymentReadyService.continue).toHaveBeenCalledTimes(1);
+      expect(continueDeliveryPaymentService.continue).toHaveBeenCalledTimes(1);
     });
 
     it('should ask to delivery payment ready handler to continue flow with valid data', () => {
-      expect(deliveryPaymentReadyService.continue).toHaveBeenCalledWith(
+      expect(continueDeliveryPaymentService.continue).toHaveBeenCalledWith(
         MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.buyerRequestId,
         MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.itemDetails.itemHash,
         PAYMENT_CONTINUED_POST_ACTION.NONE

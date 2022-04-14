@@ -1,7 +1,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_BUYER_REQUEST_PAYMENT_READY } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
-import { START_DELIVERY_PAYMENT_URL } from '@private/shared/delivery-payment-ready/constants/continue-delivery-payment.constants';
+import { START_DELIVERY_PAYMENT_URL } from '@private/shared/continue-delivery-payment/constants/continue-delivery-payment.constants';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { ReplaySubject } from 'rxjs';

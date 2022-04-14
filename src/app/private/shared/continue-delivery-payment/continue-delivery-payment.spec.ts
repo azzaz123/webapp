@@ -16,13 +16,13 @@ import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
 import { of } from 'rxjs';
 
-import { DeliveryPaymentReadyService } from './delivery-payment-ready.service';
+import { ContinueDeliveryPaymentService } from './continue-delivery-payment';
 import { PAYMENT_CONTINUED_POST_ACTION } from './enums/payment-continued-post-action.enum';
 import { ContinueToPayPalService } from './modules/continue-to-pay-pal/services/continue-to-pay-pal.service';
 import { ContinueWithCreditCardService } from './modules/continue-with-credit-card/services/continue-with-credit-card.service';
 
-describe('DeliveryPaymentReadyService', () => {
-  let service: DeliveryPaymentReadyService;
+describe('ContinueDeliveryPaymentService', () => {
+  let service: ContinueDeliveryPaymentService;
   let router: Router;
   let windowRef: Window;
   let transactionTrackingService: TransactionTrackingService;
@@ -40,7 +40,7 @@ describe('DeliveryPaymentReadyService', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
-        DeliveryPaymentReadyService,
+        ContinueDeliveryPaymentService,
         { provide: WINDOW_TOKEN, useValue: { open: () => {} } },
         {
           provide: BuyerRequestsApiService,
@@ -69,7 +69,7 @@ describe('DeliveryPaymentReadyService', () => {
         },
       ],
     });
-    service = TestBed.inject(DeliveryPaymentReadyService);
+    service = TestBed.inject(ContinueDeliveryPaymentService);
     router = TestBed.inject(Router);
     windowRef = TestBed.inject(WINDOW_TOKEN);
     transactionTrackingService = TestBed.inject(TransactionTrackingService);

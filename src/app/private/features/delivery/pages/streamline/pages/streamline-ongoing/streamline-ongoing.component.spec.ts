@@ -27,8 +27,8 @@ import { SvgIconModule } from '@shared/svg-icon/svg-icon.module';
 import { of, ReplaySubject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalMock } from '@fixtures/ngb-modal.fixtures.spec';
-import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
-import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/delivery-payment-ready/enums/payment-continued-post-action.enum';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 const PATH_TO_ACCEPT_SCREEN_WITH_REQUEST_ID: string = `${PATH_TO_ACCEPT_SCREEN}/${MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_SELLER.id}`;
 
@@ -36,7 +36,7 @@ describe('StreamlineOngoingComponent', () => {
   let component: StreamlineOngoingComponent;
   let fixture: ComponentFixture<StreamlineOngoingComponent>;
   let streamlineOngoingUIService: StreamlineOngoingUIService;
-  let deliveryPaymentReadyService: DeliveryPaymentReadyService;
+  let continueDeliveryPaymentService: ContinueDeliveryPaymentService;
   let errorActionService: SharedErrorActionService;
   let router: Router;
 
@@ -62,7 +62,7 @@ describe('StreamlineOngoingComponent', () => {
         },
         { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
         { provide: NgbModal, useClass: NgbModalMock },
-        { provide: DeliveryPaymentReadyService, useValue: { continue: () => of(null) } },
+        { provide: ContinueDeliveryPaymentService, useValue: { continue: () => of(null) } },
       ],
     }).compileComponents();
   });
@@ -73,12 +73,12 @@ describe('StreamlineOngoingComponent', () => {
 
     router = TestBed.inject(Router);
     streamlineOngoingUIService = TestBed.inject(StreamlineOngoingUIService);
-    deliveryPaymentReadyService = TestBed.inject(DeliveryPaymentReadyService);
+    continueDeliveryPaymentService = TestBed.inject(ContinueDeliveryPaymentService);
     errorActionService = TestBed.inject(SharedErrorActionService);
 
     fixture.detectChanges();
     spyOn(router, 'navigate');
-    spyOn(deliveryPaymentReadyService, 'continue').and.callThrough();
+    spyOn(continueDeliveryPaymentService, 'continue').and.callThrough();
   });
 
   it('should create', () => {
@@ -139,11 +139,11 @@ describe('StreamlineOngoingComponent', () => {
         describe('and the user is the buyer', () => {
           beforeEach(() => component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER));
           it('should delegate click handle to continue payment logic once', () => {
-            expect(deliveryPaymentReadyService.continue).toHaveBeenCalledTimes(1);
+            expect(continueDeliveryPaymentService.continue).toHaveBeenCalledTimes(1);
           });
 
           it('should delegate click handle to continue payment logic with valid data', () => {
-            expect(deliveryPaymentReadyService.continue).toHaveBeenCalledWith(
+            expect(continueDeliveryPaymentService.continue).toHaveBeenCalledWith(
               MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER.id,
               MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER.payload.item.id,
               PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS
