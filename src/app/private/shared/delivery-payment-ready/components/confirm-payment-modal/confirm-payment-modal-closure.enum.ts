@@ -1,0 +1,4 @@
+export enum CONFIRM_PAYMENT_MODAL_CLOSURE {
+  CONTINUE,
+  CANCEL,
+}
