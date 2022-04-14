@@ -9,7 +9,7 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { Observable, of } from 'rxjs';
-import { concatMap, finalize, map } from 'rxjs/operators';
+import { concatMap, filter, finalize, map } from 'rxjs/operators';
 import { PAYMENT_CONTINUED_POST_ACTION } from './enums/payment-continued-post-action.enum';
 import { ContinueToPayPalService } from './modules/continue-to-pay-pal/services/continue-to-pay-pal.service';
 import { ContinueWithCreditCardService } from './modules/continue-with-credit-card/services/continue-with-credit-card.service';
@@ -30,41 +30,38 @@ export class DeliveryPaymentReadyService {
     itemHash: string,
     postAction: PAYMENT_CONTINUED_POST_ACTION = PAYMENT_CONTINUED_POST_ACTION.NONE
   ): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
-    return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
-      concatMap((requests: BuyerRequest[]) => {
-        const request: BuyerRequest = requests.find((r) => r.id === requestId);
-        if (!request) {
-          return of(null);
-        }
-
-        const isContinueFlowNotNeeded: boolean = request.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
-        if (isContinueFlowNotNeeded) {
-          return of(null);
-        }
-
-        return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
-          concatMap((enabled: boolean) => {
-            if (enabled) {
-              return this.transactionTrackingService.requestWasDoneWithPayPal(request.id).pipe(
-                concatMap((isPayPal) => {
-                  const continueFlow = isPayPal
-                    ? this.continueToPayPalService.continue(request)
-                    : this.continueWithCreditCardService.continue(request);
-                  return continueFlow.pipe(
-                    concatMap((closureMethod) => {
-                      const closureFlow =
-                        closureMethod === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL ? this.cancelRequest(request.id) : of(null);
-                      return closureFlow.pipe(map(() => closureMethod));
-                    })
-                  );
-                })
-              );
+    return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
+      filter((enabled) => enabled),
+      concatMap(() => {
+        return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
+          concatMap((requests: BuyerRequest[]) => {
+            const request: BuyerRequest = requests.find((r) => r.id === requestId);
+            if (!request) {
+              return of(null);
             }
-            return of(null);
-          })
+
+            const isContinueFlowNotNeeded: boolean = request.status.payment !== BUYER_REQUEST_PAYMENT_STATUS.READY;
+            if (isContinueFlowNotNeeded) {
+              return of(null);
+            }
+
+            return this.transactionTrackingService.requestWasDoneWithPayPal(request.id).pipe(
+              concatMap((isPayPal) => {
+                const continueFlow = isPayPal
+                  ? this.continueToPayPalService.continue(request)
+                  : this.continueWithCreditCardService.continue(request);
+                return continueFlow.pipe(
+                  concatMap((closureMethod) => {
+                    const closureFlow = closureMethod === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL ? this.cancelRequest(request.id) : of(null);
+                    return closureFlow.pipe(map(() => closureMethod));
+                  })
+                );
+              })
+            );
+          }),
+          finalize(() => this.handleCompletedFlow(postAction, requestId))
         );
-      }),
-      finalize(() => this.handleCompletedFlow(postAction, requestId))
+      })
     );
   }
 
