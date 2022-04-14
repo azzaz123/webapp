@@ -96,11 +96,7 @@ describe('DeliveryPaymentReadyService', () => {
       enabledFeatureFlagSpy.mockReturnValue(of(false));
 
       service
-        .continueBuyerRequestBuyFlow(
-          MOCK_BUYER_REQUEST_PAYMENT_READY.id,
-          MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
-          PAYMENT_CONTINUED_POST_ACTION.NONE
-        )
+        .continue(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash, PAYMENT_CONTINUED_POST_ACTION.NONE)
         .subscribe();
       tick();
     }));
@@ -122,11 +118,7 @@ describe('DeliveryPaymentReadyService', () => {
       spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(false));
 
       service
-        .continueBuyerRequestBuyFlow(
-          MOCK_BUYER_REQUEST_PAYMENT_READY.id,
-          MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
-          PAYMENT_CONTINUED_POST_ACTION.NONE
-        )
+        .continue(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash, PAYMENT_CONTINUED_POST_ACTION.NONE)
         .subscribe((data) => (result = data));
       tick();
     }));
@@ -147,11 +139,7 @@ describe('DeliveryPaymentReadyService', () => {
 
         creditCardContinueSpy.and.returnValue(of(WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL));
         service
-          .continueBuyerRequestBuyFlow(
-            MOCK_BUYER_REQUEST_PAYMENT_READY.id,
-            MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
-            PAYMENT_CONTINUED_POST_ACTION.NONE
-          )
+          .continue(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash, PAYMENT_CONTINUED_POST_ACTION.NONE)
           .subscribe((data) => (result = data));
         tick();
       }));
@@ -175,11 +163,7 @@ describe('DeliveryPaymentReadyService', () => {
         creditCardContinueSpy.and.returnValue(of(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC));
 
         service
-          .continueBuyerRequestBuyFlow(
-            MOCK_BUYER_REQUEST_PAYMENT_READY.id,
-            MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
-            PAYMENT_CONTINUED_POST_ACTION.NONE
-          )
+          .continue(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash, PAYMENT_CONTINUED_POST_ACTION.NONE)
           .subscribe((data) => (result = data));
         tick();
       }));
@@ -201,11 +185,7 @@ describe('DeliveryPaymentReadyService', () => {
       spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(true));
 
       service
-        .continueBuyerRequestBuyFlow(
-          MOCK_BUYER_REQUEST_PAYMENT_READY.id,
-          MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
-          PAYMENT_CONTINUED_POST_ACTION.NONE
-        )
+        .continue(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash, PAYMENT_CONTINUED_POST_ACTION.NONE)
         .subscribe();
       tick();
     }));
@@ -223,11 +203,7 @@ describe('DeliveryPaymentReadyService', () => {
     beforeEach(fakeAsync(() => {
       spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_REJECTED]));
       service
-        .continueBuyerRequestBuyFlow(
-          MOCK_BUYER_REQUEST_REJECTED.id,
-          MOCK_BUYER_REQUEST_REJECTED.itemHash,
-          PAYMENT_CONTINUED_POST_ACTION.NONE
-        )
+        .continue(MOCK_BUYER_REQUEST_REJECTED.id, MOCK_BUYER_REQUEST_REJECTED.itemHash, PAYMENT_CONTINUED_POST_ACTION.NONE)
         .subscribe();
 
       tick();
@@ -249,7 +225,7 @@ describe('DeliveryPaymentReadyService', () => {
       creditCardContinueSpy.and.returnValue(of(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC));
 
       service
-        .continueBuyerRequestBuyFlow(
+        .continue(
           MOCK_BUYER_REQUEST_PAYMENT_READY.id,
           MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
           PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS

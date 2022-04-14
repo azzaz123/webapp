@@ -70,7 +70,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         {
           provide: DeliveryPaymentReadyService,
           useValue: {
-            continueBuyerRequestBuyFlow: () => of(null),
+            continue: () => of(null),
           },
         },
       ],
@@ -250,7 +250,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   describe('when handling third voices CTA click', () => {
     beforeEach(() => {
       spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
-      spyOn(deliveryPaymentReadyService, 'continueBuyerRequestBuyFlow').and.callThrough();
+      spyOn(deliveryPaymentReadyService, 'continue').and.callThrough();
     });
 
     describe('and when there is last buyer request', () => {
@@ -275,7 +275,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         });
 
         it('should NOT open continue payment flow', () => {
-          expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).not.toHaveBeenCalled();
+          expect(deliveryPaymentReadyService.continue).not.toHaveBeenCalled();
         });
       });
 
@@ -291,11 +291,11 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         }));
 
         it('should ask to continue payment flow once', () => {
-          expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledTimes(1);
+          expect(deliveryPaymentReadyService.continue).toHaveBeenCalledTimes(1);
         });
 
         it('should ask to continue payment flow with last buyer request and redirect to TTS as fallback', () => {
-          expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(
+          expect(deliveryPaymentReadyService.continue).toHaveBeenCalledWith(
             MOCK_BUYER_REQUEST_PAYMENT_READY.id,
             MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
             PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS

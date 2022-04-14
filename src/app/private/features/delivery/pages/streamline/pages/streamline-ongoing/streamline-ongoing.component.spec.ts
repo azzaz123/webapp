@@ -62,7 +62,7 @@ describe('StreamlineOngoingComponent', () => {
         },
         { provide: SharedErrorActionService, useValue: MockSharedErrorActionService },
         { provide: NgbModal, useClass: NgbModalMock },
-        { provide: DeliveryPaymentReadyService, useValue: { continueBuyerRequestBuyFlow: () => of(null) } },
+        { provide: DeliveryPaymentReadyService, useValue: { continue: () => of(null) } },
       ],
     }).compileComponents();
   });
@@ -78,7 +78,7 @@ describe('StreamlineOngoingComponent', () => {
 
     fixture.detectChanges();
     spyOn(router, 'navigate');
-    spyOn(deliveryPaymentReadyService, 'continueBuyerRequestBuyFlow').and.callThrough();
+    spyOn(deliveryPaymentReadyService, 'continue').and.callThrough();
   });
 
   it('should create', () => {
@@ -139,11 +139,11 @@ describe('StreamlineOngoingComponent', () => {
         describe('and the user is the buyer', () => {
           beforeEach(() => component.onItemClick(MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER));
           it('should delegate click handle to continue payment logic once', () => {
-            expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledTimes(1);
+            expect(deliveryPaymentReadyService.continue).toHaveBeenCalledTimes(1);
           });
 
           it('should delegate click handle to continue payment logic with valid data', () => {
-            expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(
+            expect(deliveryPaymentReadyService.continue).toHaveBeenCalledWith(
               MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER.id,
               MOCK_HISTORIC_ELEMENT_WITH_REQUEST_AS_BUYER.payload.item.id,
               PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS

@@ -269,7 +269,7 @@ describe('PayviewModalComponent', () => {
         {
           provide: DeliveryPaymentReadyService,
           useValue: {
-            continueBuyerRequestBuyFlow() {
+            continue() {
               return of(null);
             },
           },

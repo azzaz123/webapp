@@ -25,7 +25,7 @@ export class DeliveryPaymentReadyService {
     private continueWithCreditCardService: ContinueWithCreditCardService
   ) {}
 
-  public continueBuyerRequestBuyFlow(
+  public continue(
     requestId: string,
     itemHash: string,
     postAction: PAYMENT_CONTINUED_POST_ACTION = PAYMENT_CONTINUED_POST_ACTION.NONE

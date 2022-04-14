@@ -167,7 +167,7 @@ export class PayviewService {
         concatMap(() =>
           this.listenToThreeDomainNotification().pipe(
             concatMap(() =>
-              this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(
+              this.deliveryPaymentReadyService.continue(
                 state.buyerRequestId,
                 state.itemDetails.itemHash,
                 PAYMENT_CONTINUED_POST_ACTION.NONE

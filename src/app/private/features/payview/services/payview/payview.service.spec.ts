@@ -172,7 +172,7 @@ describe('PayviewService', () => {
         {
           provide: DeliveryPaymentReadyService,
           useValue: {
-            continueBuyerRequestBuyFlow() {
+            continue() {
               return of(null);
             },
           },
@@ -756,7 +756,7 @@ describe('PayviewService', () => {
       spyOn(paymentsUserPaymentPreferencesService, 'setUserPaymentPreferences').and.callThrough();
       spyOn(paymentsClientBrowserInfoApiService, 'sendBrowserInfo').and.callThrough();
       jest.spyOn(deliveryRealTimeService, 'deliveryRealTimeNotifications$', 'get').mockReturnValue(of(MOCK_3DS_REALTIME_NOTIFICATION));
-      spyOn(deliveryPaymentReadyService, 'continueBuyerRequestBuyFlow').and.callThrough();
+      spyOn(deliveryPaymentReadyService, 'continue').and.callThrough();
       spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST]));
       service.request(MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE).subscribe();
       tick();
@@ -771,11 +771,11 @@ describe('PayviewService', () => {
     });
 
     it('should ask to delivery payment ready handler to continue flow only once', () => {
-      expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledTimes(1);
+      expect(deliveryPaymentReadyService.continue).toHaveBeenCalledTimes(1);
     });
 
     it('should ask to delivery payment ready handler to continue flow with valid data', () => {
-      expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(
+      expect(deliveryPaymentReadyService.continue).toHaveBeenCalledWith(
         MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.buyerRequestId,
         MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.itemDetails.itemHash,
         PAYMENT_CONTINUED_POST_ACTION.NONE

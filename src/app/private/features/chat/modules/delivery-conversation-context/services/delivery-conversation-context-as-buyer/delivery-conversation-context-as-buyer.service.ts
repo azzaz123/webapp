@@ -78,7 +78,7 @@ export class DeliveryConversationContextAsBuyerService {
 
   private openContinuePaymentFlow(): void {
     this.deliveryPaymentReadyService
-      .continueBuyerRequestBuyFlow(this.lastRequest.id, this.lastRequest.itemHash, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
+      .continue(this.lastRequest.id, this.lastRequest.itemHash, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
       .subscribe();
   }
 

@@ -64,7 +64,7 @@ export class StreamlineOngoingComponent implements OnInit, OnDestroy {
       isCurrentUserTheSeller
         ? this.redirectToAcceptScreen(requestId)
         : this.deliveryPaymentReadyService
-            .continueBuyerRequestBuyFlow(requestId, historicElement.payload.item.id, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
+            .continue(requestId, historicElement.payload.item.id, PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS)
             .subscribe();
       return;
     }
