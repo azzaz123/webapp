@@ -53,7 +53,7 @@ export class ContinueDeliveryPaymentService {
     return this.deliveryExperimentalFeaturesService.featuresEnabled$;
   }
 
-  private checkBuyerRequest(requestId: string, itemHash: string) {
+  private checkBuyerRequest(requestId: string, itemHash: string): Observable<BuyerRequest> {
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       filter((requests: BuyerRequest[]) => {
         const request: BuyerRequest = requests.find((r) => r.id === requestId);
@@ -66,7 +66,7 @@ export class ContinueDeliveryPaymentService {
     );
   }
 
-  private isPayPalRequest(id: string) {
+  private isPayPalRequest(id: string): Observable<boolean> {
     return this.transactionTrackingService.requestWasDoneWithPayPal(id);
   }
 
