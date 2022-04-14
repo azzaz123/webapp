@@ -6,7 +6,9 @@ describe('ContinueToPayPalService', () => {
   let service: ContinueToPayPalService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [ContinueToPayPalService],
+    });
     service = TestBed.inject(ContinueToPayPalService);
   });
 
