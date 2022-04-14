@@ -1,0 +1,10 @@
+<div class="ContinueToPayPal d-flex flex-column w-100 align-items-center p-4">
+  <img [src]="paypalIconUrl" alt="paypal" class="ContinueToPayPal__paypalLogo mb-3" />
+  <span i18n="@@web_authorize_paypal_purchase" class="mb-4 text-center ContinueToPayPal__description"
+    >For your security, you will be required to authorize your purchase with PayPal</span
+  >
+  <tsl-button i18n="@@web_authorize_paypal_continue" (click)="onClose(CONTINUE_TO_PAYPAL_CLOSURE_REASON.CONTINUE)">Continue</tsl-button>
+  <tsl-button i18n="@@web_authorize_paypal_cancel" [className]="'btn-link'" (click)="onClose(CONTINUE_TO_PAYPAL_CLOSURE_REASON.CANCEL)"
+    >Cancel</tsl-button
+  >
+</div>

@@ -1,32 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfirmPaymentModalComponent } from './confirm-payment-modal.component';
+import { ContinueToPayPalComponent } from './continue-to-paypal-modal.component';
 import { DebugElement } from '@angular/core';
 import { ButtonComponent } from '@shared/button/button.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
-import { CONFIRM_PAYMENT_MODAL_CLOSURE } from './confirm-payment-modal-closure.enum';
+import { CONTINUE_TO_PAYPAL_CLOSURE_REASON } from '../../enums/continue-to-paypal-closure-reason.enum';
 
-describe('ConfirmPaymentModalComponent', () => {
-  let component: ConfirmPaymentModalComponent;
-  let fixture: ComponentFixture<ConfirmPaymentModalComponent>;
+describe('ContinueToPayPalComponent', () => {
+  let component: ContinueToPayPalComponent;
+  let fixture: ComponentFixture<ContinueToPayPalComponent>;
   let de: DebugElement;
 
-  const confirmPaymentModalSelector: string = '.ConfirmPaymentModal__';
-  const payPalLogoSelector: string = `${confirmPaymentModalSelector}paypalLogo`;
-  const descriptionSelector: string = `${confirmPaymentModalSelector}description`;
+  const ContinueToPayPalSelector: string = '.ContinueToPayPal__';
+  const payPalLogoSelector: string = `${ContinueToPayPalSelector}paypalLogo`;
+  const descriptionSelector: string = `${ContinueToPayPalSelector}description`;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ConfirmPaymentModalComponent, ButtonComponent],
+      declarations: [ContinueToPayPalComponent, ButtonComponent],
       imports: [HttpClientTestingModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmPaymentModalComponent);
+    fixture = TestBed.createComponent(ContinueToPayPalComponent);
     component = fixture.componentInstance;
-    component.closeCallback = (_result: CONFIRM_PAYMENT_MODAL_CLOSURE) => null;
+    component.closeCallback = (_result: CONTINUE_TO_PAYPAL_CLOSURE_REASON) => null;
     de = fixture.debugElement;
     fixture.detectChanges();
   });
@@ -71,7 +71,7 @@ describe('ConfirmPaymentModalComponent', () => {
     });
 
     it('should close the modal with confirm value', () => {
-      expect(component.closeCallback).toHaveBeenCalledWith(CONFIRM_PAYMENT_MODAL_CLOSURE.CONTINUE);
+      expect(component.closeCallback).toHaveBeenCalledWith(CONTINUE_TO_PAYPAL_CLOSURE_REASON.CONTINUE);
     });
   });
 
@@ -87,7 +87,7 @@ describe('ConfirmPaymentModalComponent', () => {
     });
 
     it('should close the modal with confirm value', () => {
-      expect(component.closeCallback).toHaveBeenCalledWith(CONFIRM_PAYMENT_MODAL_CLOSURE.CANCEL);
+      expect(component.closeCallback).toHaveBeenCalledWith(CONTINUE_TO_PAYPAL_CLOSURE_REASON.CANCEL);
     });
   });
 });
