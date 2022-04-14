@@ -17,9 +17,6 @@ export class ContinueToPayPalService implements ContinuePaymentService {
   constructor(@Inject(WINDOW_TOKEN) private window: Window, private modalService: NgbModal) {}
 
   public continue(buyerRequest: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
-    const { id } = buyerRequest;
-    const externalUrl: string = START_DELIVERY_PAYMENT_URL(id);
-
     const subject: ReplaySubject<WEB_VIEW_MODAL_CLOSURE_METHOD> = new ReplaySubject<WEB_VIEW_MODAL_CLOSURE_METHOD>();
 
     const isPayPalNotAvailable: boolean = !(
@@ -36,7 +33,8 @@ export class ContinueToPayPalService implements ContinuePaymentService {
         if (confirmClosureMethod === CONTINUE_TO_PAYPAL_CLOSURE_REASON.CANCEL) {
           return of(WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL);
         }
-
+        const { id } = buyerRequest;
+        const externalUrl: string = START_DELIVERY_PAYMENT_URL(id);
         const windowRef: Window = this.window.open(externalUrl, '_blank');
 
         timer(0, 500)
