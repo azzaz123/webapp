@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContinueToPayPalComponent } from './continue-to-paypal-modal.component';
+import { ContinueToPayPalModalComponent } from './continue-to-paypal-modal.component';
 import { DebugElement } from '@angular/core';
 import { ButtonComponent } from '@shared/button/button.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
-import { CONTINUE_TO_PAYPAL_CLOSURE_REASON } from '../../enums/continue-to-paypal-closure-reason.enum';
+import { CONTINUE_TO_PAYPAL_CLOSURE_REASON } from '../../../../enums/continue-to-paypal-closure-reason.enum';
 
-describe('ContinueToPayPalComponent', () => {
-  let component: ContinueToPayPalComponent;
-  let fixture: ComponentFixture<ContinueToPayPalComponent>;
+describe('ContinueToPayPalModalComponent', () => {
+  let component: ContinueToPayPalModalComponent;
+  let fixture: ComponentFixture<ContinueToPayPalModalComponent>;
   let de: DebugElement;
 
   const ContinueToPayPalSelector: string = '.ContinueToPayPal__';
@@ -18,13 +18,13 @@ describe('ContinueToPayPalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContinueToPayPalComponent, ButtonComponent],
+      declarations: [ContinueToPayPalModalComponent, ButtonComponent],
       imports: [HttpClientTestingModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContinueToPayPalComponent);
+    fixture = TestBed.createComponent(ContinueToPayPalModalComponent);
     component = fixture.componentInstance;
     component.closeCallback = (_result: CONTINUE_TO_PAYPAL_CLOSURE_REASON) => null;
     de = fixture.debugElement;
