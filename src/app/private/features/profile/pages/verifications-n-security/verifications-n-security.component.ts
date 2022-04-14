@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserVerifications, VERIFICATION_METHOD } from '@api/core/model/verifications';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
 import { combineLatest } from 'rxjs';
@@ -36,7 +37,8 @@ export class VerificationsNSecurityComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private verificationsNSecurityTrackingEventsService: VerificationsNSecurityTrackingEventsService,
-    public verificationsNSecurityStore: VerificationsNSecurityStore
+    public verificationsNSecurityStore: VerificationsNSecurityStore,
+    public featureFlagService: FeatureFlagService
   ) {
     this.userVerificationsStatus = {
       [VERIFICATIONS_N_SECURITY_TYPES.EMAIL]: VERIFICATIONS_N_SECURITY_STATUS.NONE,

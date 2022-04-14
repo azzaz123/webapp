@@ -10,7 +10,9 @@ import {
   MOCK_USER_VERIFICATIONS_PHONE_VERIFIED,
 } from '@api/fixtures/user-verifications/user-verifications.fixtures.spec';
 import { UserVerificationsService } from '@api/user-verifications/user-verifications.service';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
 import { MockedUserService } from '@fixtures/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from '@shared/profile/edit-email/email-modal/email-modal.component';
@@ -84,6 +86,7 @@ describe('VerificationsNSecurityComponent', () => {
             },
           },
         },
+        { provide: FeatureFlagService, useClass: FeatureFlagServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
