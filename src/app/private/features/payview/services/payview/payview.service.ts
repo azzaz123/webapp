@@ -31,8 +31,6 @@ import { forkJoin, Observable, ObservableInput, of, throwError } from 'rxjs';
 import { PaymentsClientBrowserInfoApiService } from '@api/payments/users/client-browser-info/payments-client-browser-info-api.service';
 import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
-import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
-import { DeliveryRealTimeNotification } from '@private/core/services/delivery-real-time/delivery-real-time-notification.interface';
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { UserPaymentPreferencesUnknownError } from '@api/core/errors/delivery/payview/user-payment-preferences';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
