@@ -81,7 +81,11 @@ describe('DeliveryPaymentReadyService', () => {
         spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(true));
 
         service
-          .continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash)
+          .continueBuyerRequestBuyFlow(
+            MOCK_BUYER_REQUEST_PAYMENT_READY.id,
+            MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
+            PAYMENT_CONTINUED_POST_ACTION.NONE
+          )
           .subscribe((data) => (result = data));
         tick();
       }));
@@ -96,7 +100,11 @@ describe('DeliveryPaymentReadyService', () => {
         spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(false));
 
         service
-          .continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash)
+          .continueBuyerRequestBuyFlow(
+            MOCK_BUYER_REQUEST_PAYMENT_READY.id,
+            MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
+            PAYMENT_CONTINUED_POST_ACTION.NONE
+          )
           .subscribe((data) => (result = data));
         tick();
       }));
@@ -115,7 +123,11 @@ describe('DeliveryPaymentReadyService', () => {
       spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(false));
 
       service
-        .continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_PAYMENT_READY.id, MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash)
+        .continueBuyerRequestBuyFlow(
+          MOCK_BUYER_REQUEST_PAYMENT_READY.id,
+          MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
+          PAYMENT_CONTINUED_POST_ACTION.NONE
+        )
         .subscribe((data) => (result = data));
       tick();
     }));
@@ -182,7 +194,13 @@ describe('DeliveryPaymentReadyService', () => {
   describe('when handling a request with payment that is not ready', () => {
     beforeEach(fakeAsync(() => {
       spyOn(buyerRequestsApiService, 'getRequestsAsBuyerByItemHash').and.returnValue(of([MOCK_BUYER_REQUEST_REJECTED]));
-      service.continueBuyerRequestBuyFlow(MOCK_BUYER_REQUEST_REJECTED.id, MOCK_BUYER_REQUEST_REJECTED.itemHash).subscribe();
+      service
+        .continueBuyerRequestBuyFlow(
+          MOCK_BUYER_REQUEST_REJECTED.id,
+          MOCK_BUYER_REQUEST_REJECTED.itemHash,
+          PAYMENT_CONTINUED_POST_ACTION.NONE
+        )
+        .subscribe();
 
       tick();
     }));

@@ -32,7 +32,7 @@ export class DeliveryPaymentReadyService {
   public continueBuyerRequestBuyFlow(
     requestId: string,
     itemHash: string,
-    postAction: PAYMENT_CONTINUED_POST_ACTION = PAYMENT_CONTINUED_POST_ACTION.NONE
+    postAction: PAYMENT_CONTINUED_POST_ACTION
   ): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       concatMap((requests: BuyerRequest[]) => {

@@ -56,6 +56,7 @@ import {
   UserPaymentPreferencesError,
   UserPaymentPreferencesUnknownError,
 } from '@api/core/errors/delivery/payview/user-payment-preferences';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/delivery-payment-ready/enums/payment-continued-post-action.enum';
 
 describe('PayviewService', () => {
   const fakeItemHash: string = 'this_is_a_fake_item_hash';
@@ -776,7 +777,8 @@ describe('PayviewService', () => {
     it('should ask to delivery payment ready handler to continue flow with valid data', () => {
       expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(
         MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.buyerRequestId,
-        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.itemDetails.itemHash
+        MOCK_PAYVIEW_STATE_WITH_CREDIT_CARD_PREFERENCE.itemDetails.itemHash,
+        PAYMENT_CONTINUED_POST_ACTION.NONE
       );
     });
   });

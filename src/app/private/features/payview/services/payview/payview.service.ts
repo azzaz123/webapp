@@ -36,6 +36,7 @@ import { DeliveryRealTimeNotification } from '@private/core/services/delivery-re
 import { DELIVERY_MODE } from '@api/core/model/delivery/delivery-mode.type';
 import { UserPaymentPreferencesUnknownError } from '@api/core/errors/delivery/payview/user-payment-preferences';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/delivery-payment-ready/enums/payment-continued-post-action.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -167,7 +168,13 @@ export class PayviewService {
       .pipe(
         concatMap(() =>
           this.listenToThreeDomainNotification().pipe(
-            concatMap(() => this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(state.buyerRequestId, state.itemDetails.itemHash))
+            concatMap(() =>
+              this.deliveryPaymentReadyService.continueBuyerRequestBuyFlow(
+                state.buyerRequestId,
+                state.itemDetails.itemHash,
+                PAYMENT_CONTINUED_POST_ACTION.NONE
+              )
+            )
           )
         )
       );
