@@ -1,12 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { BUYER_REQUEST_PAYMENT_STATUS } from '@api/core/model/delivery/buyer-request/status/buyer-payment-status.enum';
-import { PAYVIEW_PAYMENT_METHOD } from '@api/core/model/payments';
-import { AVAILABLE_PAYMENT_METHODS } from '@api/core/model/payments/constants/available-payments';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
-import { WINDOW_TOKEN } from '@core/window/window.token';
 import { environment } from '@environments/environment';
 import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { DELIVERY_MODAL_CLASSNAME } from '@private/features/delivery/constants/delivery-constants';
@@ -14,25 +11,26 @@ import { DELIVERY_PATHS } from '@private/features/delivery/delivery-routing-cons
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
 import { WebViewModalService } from '@shared/web-view-modal/services/web-view-modal.service';
-import { Observable, of, ReplaySubject, timer } from 'rxjs';
-import { tap, takeUntil, concatMap, map, finalize } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { concatMap, finalize } from 'rxjs/operators';
 import { PAYMENT_CONTINUED_POST_ACTION } from './enums/payment-continued-post-action.enum';
+import { ContinueToPayPalService } from './modules/continue-to-pay-pal/services/continue-to-pay-pal.service';
 
 @Injectable()
 export class DeliveryPaymentReadyService {
   constructor(
-    @Inject(WINDOW_TOKEN) private window: Window,
     private router: Router,
     private webViewModalService: WebViewModalService,
     private buyerRequestsApiService: BuyerRequestsApiService,
     private transactionTrackingService: TransactionTrackingService,
-    private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService
+    private deliveryExperimentalFeaturesService: DeliveryExperimentalFeaturesService,
+    private continueToPayPalService: ContinueToPayPalService
   ) {}
 
   public continueBuyerRequestBuyFlow(
     requestId: string,
     itemHash: string,
-    postAction: PAYMENT_CONTINUED_POST_ACTION
+    postAction: PAYMENT_CONTINUED_POST_ACTION = PAYMENT_CONTINUED_POST_ACTION.NONE
   ): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     return this.buyerRequestsApiService.getRequestsAsBuyerByItemHash(itemHash).pipe(
       concatMap((requests: BuyerRequest[]) => {
@@ -49,9 +47,16 @@ export class DeliveryPaymentReadyService {
         return this.deliveryExperimentalFeaturesService.featuresEnabled$.pipe(
           concatMap((enabled: boolean) => {
             if (enabled) {
-              return this.transactionTrackingService
-                .requestWasDoneWithPayPal(request.id)
-                .pipe(concatMap((isPayPal) => (isPayPal ? this.continuePayPalFlow(request) : this.continueCreditCardFlow(request))));
+              return this.transactionTrackingService.requestWasDoneWithPayPal(request.id).pipe(
+                concatMap((isPayPal) => {
+                  const continueFlow = isPayPal ? this.continueToPayPalService.continue(request) : this.continueCreditCardFlow(request);
+                  return continueFlow.pipe(
+                    concatMap((closureMethod) =>
+                      closureMethod === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL ? this.cancelRequest(request.id) : of(null)
+                    )
+                  );
+                })
+              );
             }
             return of(null);
           })
@@ -73,48 +78,7 @@ export class DeliveryPaymentReadyService {
     const { id } = buyerRequest;
     const externalUrl: string = this.getExternalUrl(id);
 
-    return this.webViewModalService.open(externalUrl, this.title, DELIVERY_MODAL_CLASSNAME).pipe(
-      concatMap((closureMethod: WEB_VIEW_MODAL_CLOSURE_METHOD) => {
-        return closureMethod === WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL
-          ? this.cancelRequest(id).pipe(map(() => closureMethod))
-          : of(closureMethod);
-      })
-    );
-  }
-
-  private continuePayPalFlow(buyerRequest: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
-    const { id } = buyerRequest;
-    const externalUrl: string = this.getExternalUrl(id);
-
-    const subject: ReplaySubject<WEB_VIEW_MODAL_CLOSURE_METHOD> = new ReplaySubject<WEB_VIEW_MODAL_CLOSURE_METHOD>();
-    const completeCurrentFlow = () => {
-      subject.next(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
-      subject.complete();
-    };
-
-    const isPayPalNotAvailable: boolean = !(
-      AVAILABLE_PAYMENT_METHODS.includes(PAYVIEW_PAYMENT_METHOD.PAYPAL) ||
-      AVAILABLE_PAYMENT_METHODS.includes(PAYVIEW_PAYMENT_METHOD.WALLET_AND_PAYPAL)
-    );
-    if (isPayPalNotAvailable) {
-      subject.error(null);
-      return subject.asObservable();
-    }
-
-    const windowRef: Window = this.window.open(externalUrl, '_blank');
-
-    timer(0, 500)
-      .pipe(
-        tap(() => {
-          if (!windowRef || windowRef.closed) {
-            return completeCurrentFlow();
-          }
-        }),
-        takeUntil(subject)
-      )
-      .subscribe();
-
-    return subject.asObservable();
+    return this.webViewModalService.open(externalUrl, this.title, DELIVERY_MODAL_CLASSNAME);
   }
 
   private cancelRequest(id: string): Observable<void> {

@@ -2,6 +2,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TransactionTrackingService } from '@api/bff/delivery/transaction-tracking/transaction-tracking.service';
+import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
 import { BuyerRequestsApiService } from '@api/delivery/buyer/requests/buyer-requests-api.service';
 import {
   MOCK_BUYER_REQUEST_PAYMENT_READY,
@@ -19,6 +20,7 @@ import { of, ReplaySubject, Subject } from 'rxjs';
 
 import { DeliveryPaymentReadyService } from './delivery-payment-ready.service';
 import { PAYMENT_CONTINUED_POST_ACTION } from './enums/payment-continued-post-action.enum';
+import { ContinueToPayPalService } from './modules/continue-to-pay-pal/services/continue-to-pay-pal.service';
 
 describe('DeliveryPaymentReadyService', () => {
   let service: DeliveryPaymentReadyService;
@@ -27,6 +29,7 @@ describe('DeliveryPaymentReadyService', () => {
   let transactionTrackingService: TransactionTrackingService;
   let buyerRequestsApiService: BuyerRequestsApiService;
   let webViewModalService: WebViewModalService;
+  let continueToPayPalService: ContinueToPayPalService;
 
   const MOCK_MODAL_RESULT_SUBJECT: Subject<WEB_VIEW_MODAL_CLOSURE_METHOD> = new Subject<WEB_VIEW_MODAL_CLOSURE_METHOD>();
   const MOCK_DELIVERY_FEATURE_FLAG_SUBJECT: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
@@ -51,6 +54,12 @@ describe('DeliveryPaymentReadyService', () => {
             },
           },
         },
+        {
+          provide: ContinueToPayPalService,
+          useValue: {
+            continue: (_request: BuyerRequest) => of(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC),
+          },
+        },
       ],
     });
     service = TestBed.inject(DeliveryPaymentReadyService);
@@ -59,10 +68,12 @@ describe('DeliveryPaymentReadyService', () => {
     transactionTrackingService = TestBed.inject(TransactionTrackingService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
     webViewModalService = TestBed.inject(WebViewModalService);
+    continueToPayPalService = TestBed.inject(ContinueToPayPalService);
 
     spyOn(webViewModalService, 'open').and.callThrough();
     spyOn(windowRef, 'open').and.callThrough();
     spyOn(router, 'navigate');
+    spyOn(continueToPayPalService, 'continue').and.callThrough();
   });
 
   it('should be created', () => {
@@ -70,8 +81,6 @@ describe('DeliveryPaymentReadyService', () => {
   });
 
   describe('when delivery feature flag is NOT enabled', () => {
-    let result: WEB_VIEW_MODAL_CLOSURE_METHOD;
-
     beforeEach(() => {
       MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(false);
     });
@@ -86,12 +95,12 @@ describe('DeliveryPaymentReadyService', () => {
             MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
             PAYMENT_CONTINUED_POST_ACTION.NONE
           )
-          .subscribe((data) => (result = data));
+          .subscribe();
         tick();
       }));
 
-      it('should NOT open a new window', () => {
-        expect(windowRef.open).not.toHaveBeenCalled();
+      it('should NOT ask to continue payment with PayPal', () => {
+        expect(continueToPayPalService.continue).not.toHaveBeenCalled();
       });
     });
 
@@ -105,7 +114,7 @@ describe('DeliveryPaymentReadyService', () => {
             MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
             PAYMENT_CONTINUED_POST_ACTION.NONE
           )
-          .subscribe((data) => (result = data));
+          .subscribe();
         tick();
       }));
 
@@ -149,6 +158,13 @@ describe('DeliveryPaymentReadyService', () => {
         spyOn(buyerRequestsApiService, 'cancelRequest').and.callThrough();
 
         MOCK_MODAL_RESULT_SUBJECT.next(WEB_VIEW_MODAL_CLOSURE_METHOD.MANUAL);
+        service
+          .continueBuyerRequestBuyFlow(
+            MOCK_BUYER_REQUEST_PAYMENT_READY.id,
+            MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
+            PAYMENT_CONTINUED_POST_ACTION.NONE
+          )
+          .subscribe((data) => (result = data));
         tick();
       }));
 
@@ -170,6 +186,13 @@ describe('DeliveryPaymentReadyService', () => {
         spyOn(buyerRequestsApiService, 'cancelRequest').and.callThrough();
 
         MOCK_MODAL_RESULT_SUBJECT.next(WEB_VIEW_MODAL_CLOSURE_METHOD.AUTOMATIC);
+        service
+          .continueBuyerRequestBuyFlow(
+            MOCK_BUYER_REQUEST_PAYMENT_READY.id,
+            MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
+            PAYMENT_CONTINUED_POST_ACTION.NONE
+          )
+          .subscribe((data) => (result = data));
         tick();
       }));
 
@@ -183,11 +206,27 @@ describe('DeliveryPaymentReadyService', () => {
     });
   });
 
-  //TODO: Implement with PayPal
   describe('when handling a request with PayPal as payment method with delivery feature flag', () => {
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       MOCK_DELIVERY_FEATURE_FLAG_SUBJECT.next(true);
       spyOn(transactionTrackingService, 'requestWasDoneWithPayPal').and.returnValue(of(true));
+
+      service
+        .continueBuyerRequestBuyFlow(
+          MOCK_BUYER_REQUEST_PAYMENT_READY.id,
+          MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
+          PAYMENT_CONTINUED_POST_ACTION.NONE
+        )
+        .subscribe();
+      tick();
+    }));
+
+    it('should delegate logic to PayPal continue payment handler once', () => {
+      expect(continueToPayPalService.continue).toHaveBeenCalledTimes(1);
+    });
+
+    it('should delegate logic to PayPal continue payment handler with buyer request', () => {
+      expect(continueToPayPalService.continue).toHaveBeenCalledWith(MOCK_BUYER_REQUEST_PAYMENT_READY);
     });
   });
 
@@ -207,6 +246,10 @@ describe('DeliveryPaymentReadyService', () => {
 
     it('should NOT open a web view', () => {
       expect(webViewModalService.open).not.toHaveBeenCalled();
+    });
+
+    it('should NOT ask to continue payment with PayPal', () => {
+      expect(continueToPayPalService.continue).not.toHaveBeenCalled();
     });
   });
 
@@ -245,6 +288,10 @@ describe('DeliveryPaymentReadyService', () => {
 
     it('should NOT open a web view', () => {
       expect(webViewModalService.open).not.toHaveBeenCalled();
+    });
+
+    it('should NOT ask to continue payment with PayPal', () => {
+      expect(continueToPayPalService.continue).not.toHaveBeenCalled();
     });
   });
 });
