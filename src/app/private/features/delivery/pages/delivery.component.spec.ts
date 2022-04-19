@@ -18,6 +18,9 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { NO_NAV_LINK_SELECTED, DELIVERY_TRACKING_PATH } from './delivery.component';
+import { FeatureFlagService } from '@core/user/featureflag.service';
+import { FeatureFlagServiceMock } from '@fixtures/feature-flag.fixtures.spec';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
 
 describe('DeliveryComponent', () => {
   const FAKE_DATE_NOW = 1627743615459;
@@ -31,6 +34,7 @@ describe('DeliveryComponent', () => {
   let fixture: ComponentFixture<DeliveryComponent>;
   let router: Router;
   let userService: UserService;
+  let featureFlagService: FeatureFlagService;
   let modalService: NgbModal;
 
   beforeEach(async () => {
@@ -56,6 +60,10 @@ describe('DeliveryComponent', () => {
             },
           },
         },
+        {
+          provide: FeatureFlagService,
+          useClass: FeatureFlagServiceMock,
+        },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceMock },
       ],
     }).compileComponents();
@@ -67,6 +75,7 @@ describe('DeliveryComponent', () => {
     router = TestBed.inject(Router);
     userService = TestBed.inject(UserService);
     modalService = TestBed.inject(NgbModal);
+    featureFlagService = TestBed.inject(FeatureFlagService);
 
     spyOn(Date, 'now').and.returnValue(FAKE_DATE_NOW);
     spyOn(userService, 'saveLocalStore');
@@ -175,18 +184,45 @@ describe('DeliveryComponent', () => {
   describe('when the user has not previously viewed the TRX Awareness Modal', () => {
     beforeEach(() => {
       spyOn(userService, 'getLocalStore').and.returnValue(false);
-
-      fixture.detectChanges();
     });
 
-    it('should open the TRX Awareness Modal', () => {
-      expect(modalService.open).toHaveBeenCalledTimes(1);
-      expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+    describe('and the feature flag is enabled', () => {
+      beforeEach(() => {
+        spyOn(featureFlagService, 'getStoredFlag').and.returnValue({
+          active: true,
+          name: FEATURE_FLAGS_ENUM.DELIVERY,
+        });
+
+        fixture.detectChanges();
+      });
+      it('should NOT open the TRX Awareness Modal', () => {
+        expect(modalService.open).not.toHaveBeenCalled();
+      });
+
+      it('should NOT save the user view in the local store', () => {
+        expect(userService.saveLocalStore).not.toHaveBeenCalled();
+      });
     });
 
-    it('should save the user view in the local store', () => {
-      expect(userService.saveLocalStore).toHaveBeenCalledTimes(1);
-      expect(userService.saveLocalStore).toHaveBeenCalledWith(LOCAL_STORAGE_TRX_AWARENESS, FAKE_DATE_NOW.toString());
+    describe('and the feature flag is NOT enabled', () => {
+      beforeEach(() => {
+        spyOn(featureFlagService, 'getStoredFlag').and.returnValue({
+          active: false,
+          name: FEATURE_FLAGS_ENUM.DELIVERY,
+        });
+
+        fixture.detectChanges();
+      });
+
+      it('should open the TRX Awareness Modal', () => {
+        expect(modalService.open).toHaveBeenCalledTimes(1);
+        expect(modalService.open).toHaveBeenCalledWith(TRXAwarenessModalComponent);
+      });
+
+      it('should save the user view in the local store', () => {
+        expect(userService.saveLocalStore).toHaveBeenCalledTimes(1);
+        expect(userService.saveLocalStore).toHaveBeenCalledWith(LOCAL_STORAGE_TRX_AWARENESS, FAKE_DATE_NOW.toString());
+      });
     });
   });
 

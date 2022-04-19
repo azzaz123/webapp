@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { FEATURE_FLAGS_ENUM } from '@core/user/featureflag-constants';
+import { FeatureFlagService } from '@core/user/featureflag.service';
 import { UserService } from '@core/user/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PRIVATE_PATHS } from '@private/private-routing-constants';
@@ -39,7 +41,12 @@ export class DeliveryComponent implements OnInit, OnDestroy {
   public selectedNavLinkId: string;
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private router: Router, private userService: UserService, private modalService: NgbModal) {
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private modalService: NgbModal,
+    private featureFlagService: FeatureFlagService
+  ) {
     this.subscriptions.add(
       router.events.subscribe((event) => {
         if (event instanceof NavigationEnd && this.navLinks) {
@@ -79,7 +86,10 @@ export class DeliveryComponent implements OnInit, OnDestroy {
   }
 
   private get shouldShowTRXAwarenessModal(): boolean {
-    return !this.userService.getLocalStore(LOCAL_STORAGE_TRX_AWARENESS);
+    return (
+      !this.userService.getLocalStore(LOCAL_STORAGE_TRX_AWARENESS) &&
+      !this.featureFlagService.getStoredFlag(FEATURE_FLAGS_ENUM.DELIVERY).active
+    );
   }
 
   private selectNavLink(routeURL: string): void {
