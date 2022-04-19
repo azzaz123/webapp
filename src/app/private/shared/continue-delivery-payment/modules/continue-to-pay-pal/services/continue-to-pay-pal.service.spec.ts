@@ -6,10 +6,9 @@ import { WINDOW_TOKEN } from '@core/window/window.token';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MOCK_BUYER_REQUEST_PAYMENT_READY } from '@api/fixtures/core/model/delivery/buyer-requests/buyer-request.fixtures.spec';
 import { ContinueToPayPalModalComponent } from '../modals/continue-to-paypal/continue-to-paypal-modal.component';
-import { CONTINUE_TO_PAYPAL_CLOSURE_REASON } from '@private/shared/continue-delivery-payment/enums/continue-to-paypal-closure-reason.enum';
 import { START_DELIVERY_PAYMENT_URL } from '@private/shared/continue-delivery-payment/constants/continue-delivery-payment.constants';
 import { WEB_VIEW_MODAL_CLOSURE_METHOD } from '@shared/web-view-modal/enums/web-view-modal-closure-method';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 
 describe('ContinueToPayPalService', () => {
   let service: ContinueToPayPalService;
@@ -48,31 +47,10 @@ describe('ContinueToPayPalService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('when PayPal is not available', () => {
-    let errorResult: null;
-
-    beforeEach(fakeAsync(() => {
-      setPayPalAvailability(false);
-
-      service.continue(MOCK_BUYER_REQUEST_PAYMENT_READY).subscribe({ error: (e) => (errorResult = e) });
-      tick();
-    }));
-
-    it('should NOT open a modal', () => {
-      expect(modalService.open).not.toHaveBeenCalled();
-    });
-
-    it('should notify error', () => {
-      expect(errorResult).not.toBeUndefined();
-    });
-  });
-
   describe('when handling request that needs PayPal', () => {
     let result: WEB_VIEW_MODAL_CLOSURE_METHOD;
 
     beforeEach(fakeAsync(() => {
-      setPayPalAvailability(true);
-
       service.continue(MOCK_BUYER_REQUEST_PAYMENT_READY).subscribe((data) => (result = data));
       tick();
     }));
@@ -106,8 +84,4 @@ describe('ContinueToPayPalService', () => {
       });
     });
   });
-
-  function setPayPalAvailability(isPayPalAvailable: boolean): void {
-    spyOn(Array.prototype, 'includes').and.callFake(() => isPayPalAvailable);
-  }
 });
