@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { WINDOW_TOKEN } from '@core/window/window.token';
+import { LOCAL_STORAGE_TOKEN } from '@core/local-storage/local-storage.token';
 import { SearchIdRecord } from './interfaces/search-id-record.interface';
 import { SearchId } from './interfaces/search-id.interface';
 
@@ -9,8 +9,8 @@ export class SearchIdService {
   private readonly STORAGE_SYSTEM: Storage;
   private readonly EXPIRATION_MS = 3600 * 2 * 1000;
 
-  constructor(@Inject(WINDOW_TOKEN) private window: Window) {
-    this.STORAGE_SYSTEM = this.window.localStorage;
+  constructor(@Inject(LOCAL_STORAGE_TOKEN) private localStorage: Storage) {
+    this.STORAGE_SYSTEM = this.localStorage;
   }
 
   public setSearchIdByItemId(itemId: string, searchId: string): void {

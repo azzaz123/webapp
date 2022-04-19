@@ -1,11 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { date } from 'faker';
 import { SearchIdRecord } from './interfaces/search-id-record.interface';
 import { SearchIdService } from './search-id.service';
 
 describe('SearchIdService', () => {
   let service: SearchIdService;
-  let storageMock = {};
 
   const existingItemId = 'item1';
   const randomItemId = 'item0';
