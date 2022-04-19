@@ -33,14 +33,14 @@ import { DeliveryConversationContextAsBuyerService } from './delivery-conversati
 import { DeliveryBanner } from '../../../delivery-banner/interfaces/delivery-banner.interface';
 import { DeliveryExperimentalFeaturesService } from '@private/core/services/delivery-experimental-features/delivery-experimental-features.service';
 import { BuyerRequest } from '@api/core/model/delivery/buyer-request/buyer-request.interface';
-import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
-import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/delivery-payment-ready/enums/payment-continued-post-action.enum';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
+import { PAYMENT_CONTINUED_POST_ACTION } from '@private/shared/continue-delivery-payment/enums/payment-continued-post-action.enum';
 
 describe('DeliveryConversationContextAsBuyerService', () => {
   const featuresEnabledSubject: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   let service: DeliveryConversationContextAsBuyerService;
-  let deliveryPaymentReadyService: DeliveryPaymentReadyService;
+  let continueDeliveryPaymentService: ContinueDeliveryPaymentService;
   let buyerRequestsApiService: BuyerRequestsApiService;
   let deliveryItemDetailsApiService: DeliveryItemDetailsApiService;
   let deliveryBannerTrackingEventsService: DeliveryBannerTrackingEventsService;
@@ -68,15 +68,15 @@ describe('DeliveryConversationContextAsBuyerService', () => {
           },
         },
         {
-          provide: DeliveryPaymentReadyService,
+          provide: ContinueDeliveryPaymentService,
           useValue: {
-            continueBuyerRequestBuyFlow: () => of(null),
+            continue: () => of(null),
           },
         },
       ],
     });
     service = TestBed.inject(DeliveryConversationContextAsBuyerService);
-    deliveryPaymentReadyService = TestBed.inject(DeliveryPaymentReadyService);
+    continueDeliveryPaymentService = TestBed.inject(ContinueDeliveryPaymentService);
     buyerRequestsApiService = TestBed.inject(BuyerRequestsApiService);
     deliveryItemDetailsApiService = TestBed.inject(DeliveryItemDetailsApiService);
     deliveryBannerTrackingEventsService = TestBed.inject(DeliveryBannerTrackingEventsService);
@@ -250,7 +250,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
   describe('when handling third voices CTA click', () => {
     beforeEach(() => {
       spyOn(deliveryItemDetailsApiService, 'getDeliveryDetailsByItemHash').and.returnValue(of(MOCK_DELIVERY_ITEM_DETAILS));
-      spyOn(deliveryPaymentReadyService, 'continueBuyerRequestBuyFlow').and.callThrough();
+      spyOn(continueDeliveryPaymentService, 'continue').and.callThrough();
     });
 
     describe('and when there is last buyer request', () => {
@@ -275,7 +275,7 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         });
 
         it('should NOT open continue payment flow', () => {
-          expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).not.toHaveBeenCalled();
+          expect(continueDeliveryPaymentService.continue).not.toHaveBeenCalled();
         });
       });
 
@@ -291,11 +291,11 @@ describe('DeliveryConversationContextAsBuyerService', () => {
         }));
 
         it('should ask to continue payment flow once', () => {
-          expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledTimes(1);
+          expect(continueDeliveryPaymentService.continue).toHaveBeenCalledTimes(1);
         });
 
         it('should ask to continue payment flow with last buyer request and redirect to TTS as fallback', () => {
-          expect(deliveryPaymentReadyService.continueBuyerRequestBuyFlow).toHaveBeenCalledWith(
+          expect(continueDeliveryPaymentService.continue).toHaveBeenCalledWith(
             MOCK_BUYER_REQUEST_PAYMENT_READY.id,
             MOCK_BUYER_REQUEST_PAYMENT_READY.itemHash,
             PAYMENT_CONTINUED_POST_ACTION.REDIRECT_TTS

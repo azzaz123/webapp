@@ -85,7 +85,7 @@ import { MOCK_OTHER_USER, MOCK_USER } from '@fixtures/user.fixtures.spec';
 import { headerTitles } from '../../constants/header-titles';
 import { DeliveryRealTimeService } from '@private/core/services/delivery-real-time/delivery-real-time.service';
 import { UuidService } from '@core/uuid/uuid.service';
-import { DeliveryPaymentReadyService } from '@private/shared/delivery-payment-ready/delivery-payment-ready.service';
+import { ContinueDeliveryPaymentService } from '@private/shared/continue-delivery-payment/continue-delivery-payment.service';
 import { MOCK_DELIVERY_WITH_PAYLOAD_NORMAL_XMPP_MESSAGE } from '@fixtures/chat/xmpp.fixtures.spec';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PAYVIEW_BUY_EVENT_TYPE } from '../../modules/buy/enums/payview-buy-event-type.enum';
@@ -267,9 +267,9 @@ describe('PayviewModalComponent', () => {
           },
         },
         {
-          provide: DeliveryPaymentReadyService,
+          provide: ContinueDeliveryPaymentService,
           useValue: {
-            continueBuyerRequestBuyFlow() {
+            continue() {
               return of(null);
             },
           },
