@@ -155,6 +155,7 @@ describe('PayviewTrackingEventsService', () => {
     beforeEach(() => {
       spyOn(analyticsService, 'trackEvent');
       spyOn(searchIdService, 'getSearchIdByItemId');
+      spyOn(searchIdService, 'deleteSearchIdByItemId');
       service.trackPayTransaction(MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD);
     });
 
@@ -175,6 +176,10 @@ describe('PayviewTrackingEventsService', () => {
           searchId: searchIdService.getSearchIdByItemId(MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD.itemId),
         },
       });
+    });
+
+    it('should delete the searchId', () => {
+      expect(searchIdService.deleteSearchIdByItemId).toHaveBeenCalledWith(MOCK_PAY_TRANSACTION_EVENT_WITH_CREDIT_CARD.itemId);
     });
   });
 

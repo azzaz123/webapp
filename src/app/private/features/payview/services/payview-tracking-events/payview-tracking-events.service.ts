@@ -88,6 +88,7 @@ export class PayviewTrackingEventsService {
       },
     };
 
+    this.searchIdService.deleteSearchIdByItemId(attributes.itemId);
     this.analyticsService.trackEvent(event);
   }
 
