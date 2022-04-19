@@ -26,7 +26,7 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE_WITH_NOT_AVAILABLE_
   ...MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
   preferences: {
     id: '46211e5c-5d3c-4794-9f45-c10b5f117860',
-    payment_method: 'paypal',
+    payment_method: 'wallet',
     use_wallet: false,
     wallet_blocked: false,
   },
@@ -35,7 +35,7 @@ export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE_WITH_NOT_AVAILABLE_
 export const MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE_WITH_NOT_AVAILABLE_DEFAULTS: PaymentsUserPaymentPreferencesDto = {
   ...MOCK_PAYMENTS_USER_PAYMENT_PREFERENCES_RESPONSE,
   defaults: {
-    payment_method: 'paypal',
+    payment_method: 'wallet',
     use_wallet: true,
     wallet_blocked: false,
   },

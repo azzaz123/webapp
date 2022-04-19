@@ -61,6 +61,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   public readonly TERMS_AND_CONDITIONS_URL: string = $localize`:@@web_footer_links_terms_href:https://about.wallapop.com/en/legal-terms-and-conditions`;
   public readonly PRIVACY_POLICY_URL: string = $localize`:@@web_footer_links_privacy_href:https://about.wallapop.com/en/privacy-policy`;
   public readonly DELIVERY_ADDRESS_PREVIOUS_PAGE: DELIVERY_ADDRESS_PREVIOUS_PAGE = DELIVERY_ADDRESS_PREVIOUS_PAGE.DELIVERY;
+  public readonly isPayLoadingMessage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private subscriptions: Subscription[] = [];
   private readonly trackViewTransactionPayScreen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isMapPreviousPage$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -189,6 +190,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscribeToBuyEventBus(): void {
     this.subscriptions.push(
       this.buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, () => {
+        this.setPayLoadingMessage(true);
         this.markPayviewAsLoading();
         this.payviewStateManagementService.buyerRequestId = this.uuidService.getUUID();
         this.payviewStateManagementService.buy();
@@ -253,6 +255,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
   private subscribeToStateManagementEventBus(): void {
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_GET_CURRENT_STATE, (error: PayviewError) => {
+        this.setPayLoadingMessage(false);
         this.markPayviewAsNotLoading();
       })
     );
@@ -264,6 +267,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     );
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.ERROR_ON_BUY, (error: PayviewError) => {
+        this.setPayLoadingMessage(false);
         this.markPayviewAsNotLoading();
         this.buyService.error(error);
       })
@@ -282,6 +286,7 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
     this.subscriptions.push(
       this.payviewStateManagementService.on(PAYVIEW_EVENT_TYPE.SUCCESS_ON_CANCEL_REQUEST, () => {
         this.buyService.enableBuyButton();
+        this.setPayLoadingMessage(false);
         this.markPayviewAsNotLoading();
       })
     );
@@ -384,6 +389,10 @@ export class PayviewModalComponent implements OnDestroy, OnInit {
 
   private markPayviewAsNotLoading(): void {
     this.isPayviewLoadingSubject.next(false);
+  }
+
+  private setPayLoadingMessage(isMessage: boolean): void {
+    isMessage ? this.isPayLoadingMessage$.next(true) : this.isPayLoadingMessage$.next(false);
   }
 
   private showErrorToast(text: string): void {

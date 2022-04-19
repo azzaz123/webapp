@@ -19,15 +19,6 @@ export class ContinueToPayPalService implements ContinuePaymentService {
   public continue(buyerRequest: BuyerRequest): Observable<WEB_VIEW_MODAL_CLOSURE_METHOD> {
     const subject: ReplaySubject<WEB_VIEW_MODAL_CLOSURE_METHOD> = new ReplaySubject<WEB_VIEW_MODAL_CLOSURE_METHOD>();
 
-    const isPayPalNotAvailable: boolean = !(
-      AVAILABLE_PAYMENT_METHODS.includes(PAYVIEW_PAYMENT_METHOD.PAYPAL) ||
-      AVAILABLE_PAYMENT_METHODS.includes(PAYVIEW_PAYMENT_METHOD.WALLET_AND_PAYPAL)
-    );
-    if (isPayPalNotAvailable) {
-      subject.error(null);
-      return subject.asObservable();
-    }
-
     return this.openContinueToPayPal().pipe(
       concatMap((confirmClosureMethod: CONTINUE_TO_PAYPAL_CLOSURE_REASON) => {
         if (confirmClosureMethod === CONTINUE_TO_PAYPAL_CLOSURE_REASON.CANCEL) {
