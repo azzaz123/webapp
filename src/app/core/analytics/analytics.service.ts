@@ -92,6 +92,7 @@ export class AnalyticsService {
 
     if (mParticleUser) {
       mParticleUser.setUserAttribute('deviceId', this.deviceService.getDeviceId());
+      mParticleUser.setUserAttribute('deviceType', this.deviceService.getDeviceType());
     }
   }
 
