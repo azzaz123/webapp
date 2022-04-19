@@ -166,6 +166,7 @@ describe('PayviewModalComponent', () => {
   const payviewModalHelpSelector: string = '#helpLink';
   const payviewModalSpinnerSelector: string = `${payviewModal}__spinner`;
   const deliveryPointSelector: string = `${payviewModal}__content`;
+  const payviewModalPayLoadingMessageSelector: string = `#payLoadingMessage`;
 
   let component: PayviewModalComponent;
   let customerHelpService: CustomerHelpService;
@@ -375,6 +376,8 @@ describe('PayviewModalComponent', () => {
           spyOn(uuidService, 'getUUID').and.callThrough();
           buyService.on(PAYVIEW_BUY_EVENT_TYPE.BUY, () => {});
           buyService.buy();
+
+          fixture.detectChanges();
         });
 
         it('should generate a unique id only once', () => {
@@ -387,6 +390,21 @@ describe('PayviewModalComponent', () => {
 
         it('should set the unique id with a valid one', () => {
           expect(buyerRequestIdSpy).toHaveBeenCalledWith(MOCK_UUID);
+        });
+
+        it('should show the loading animation', () => {
+          const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSpinnerSelector));
+          console.log(loadingContainerRef.nativeElement.innerHTML);
+          expect(loadingContainerRef).toBeTruthy();
+        });
+
+        it('should show the pay loading message with the corresponding text', () => {
+          const expectedMessage: string = $localize`:waiting_3ds_message:Connecting with the server…`;
+          const payLoadingMessage: DebugElement = fixture.debugElement.query(By.css(payviewModalPayLoadingMessageSelector));
+          const message: string = fixture.debugElement.query(By.css(payviewModalPayLoadingMessageSelector)).nativeElement.innerHTML;
+
+          expect(payLoadingMessage).toBeTruthy();
+          expect(message).toEqual(expectedMessage);
         });
       });
     });
@@ -463,6 +481,12 @@ describe('PayviewModalComponent', () => {
           const loadingContainerRef = fixture.debugElement.query(By.css(payviewModalSpinnerSelector));
           expect(loadingContainerRef).toBeFalsy();
         }));
+
+        it('should NOT show the pay loading message', () => {
+          const payLoadingMessage: DebugElement = fixture.debugElement.query(By.css(payviewModalPayLoadingMessageSelector));
+
+          expect(payLoadingMessage).toBeFalsy();
+        });
 
         it('should not show the delivery address', () => {
           const deliveryAddressComponent = debugElement.query(By.directive(FakeDeliveryAddressComponent));
